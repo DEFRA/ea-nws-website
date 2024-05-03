@@ -1,4 +1,4 @@
-export default function TextInput({ name, value, onChange }) {
+export default function TextInput({ name, className, value, onChange }) {
   const handleChange = (event) => {
     onChange(event.target.value);
   };
@@ -6,13 +6,11 @@ export default function TextInput({ name, value, onChange }) {
   return (
     <>
       <div class="govuk-form-group">
-        <h1 class="govuk-label">
-          <label class="govuk-label govuk-label" for="event-name">
-            {name}
-          </label>
-        </h1>
+        <label class="govuk-label" for="event-name">
+          {name}
+        </label>
         <input
-          className="govuk-input--width-20"
+          className={className}
           id="event-name"
           type="text"
           value={value}

@@ -1,14 +1,13 @@
 const routes = [].concat(
-  require('../routes/home'),
-  require('../routes/about'),
-  require('../routes/public')
-)
+  require("../routes/public"),
+  require("../routes/start")
+);
 
 module.exports = {
   plugin: {
-    name: 'router',
+    name: "router",
     register: (server, options) => {
-      server.route(routes)
-    }
-  }
-}
+      server.route(routes);
+    },
+  },
+};

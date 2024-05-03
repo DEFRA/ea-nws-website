@@ -1,4 +1,4 @@
-export default function SummaryList(rows) {
+export default function SummaryList(rows, onAddClick, onChangeClick) {
   return (
     <>
       <dl class="govuk-summary-list">
@@ -9,12 +9,19 @@ export default function SummaryList(rows) {
             <dd class="govuk-summary-list__actions">
               {row.change ? (
                 <dd className="govuk-summary-list__actions">
-                  <a className="govuk-link">Change</a>
+                  <a
+                    className="govuk-link"
+                    onClick={() => onChangeClick(index)}
+                  >
+                    Change
+                  </a>
                 </dd>
               ) : null}
               {row.add ? (
                 <dd className="govuk-summary-list__actions">
-                  <a className="govuk-link">Add</a>
+                  <a className="govuk-link" onClick={() => onAddClick(index)}>
+                    Add
+                  </a>
                 </dd>
               ) : null}
             </dd>

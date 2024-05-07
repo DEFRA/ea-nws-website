@@ -12,10 +12,16 @@ module.exports = [
     }
   },
   {
-    method: ["POST"],
+    method: ["POST" , "PUT"],
     path: "/signIn",
     handler: (request, h) => {
-      return "RECEIVED!"
+      const { email } = request.payload;
+      //do some email validation
+
+      const response = {
+        message: "RECEIVED: " + email
+      };
+      return h.response(response).code(200);
     }
   }
 ];

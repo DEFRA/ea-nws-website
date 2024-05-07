@@ -36,17 +36,20 @@ const EmailForm = props =>{
         body: raw,
       })
       .then(response => {
-        response.text()})
-      .then(result =>  {
         try {
-          result = JSON.parse(result)
-        } 
-        catch (error) {
-          console.log("Error parsing JSON Response:", error)
+            return response.json().then(data => ({
+                data: data,
+                status: response.status
+            }));
+        } catch (error) {
+            console.log("Error parsing JSON Response:", error)
+            throw error;
         }
-        console.log("Response: ", result)
         })
-      .catch(error => console.log('error', error));    
+        .then(res => {          
+          console.log(res.status, res.data.message);
+      })
+      .catch(error => console.log("ERROR: ", error)); 
   }
 
   return (
@@ -70,9 +73,7 @@ const EmailForm = props =>{
   )
 }
 
-const sendEmail = props => {
 
-}
 
 export default function SignInPage() {
   return (

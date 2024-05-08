@@ -21,8 +21,7 @@ const EmailForm = props =>{
       setErrorMessage("Enter your email address")
       return;
     }
-    console.log("Email: ", email)
-
+    window.sessionStorage.setItem("userEmail", email)
     event.target.reset()
     window.location.replace("CheckYourEmailPage")
   }
@@ -73,6 +72,7 @@ const EmailForm = props =>{
         type="text"
       />
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+      <br></br>      <br></br>
       <button type="submit" class="govuk-button" data-module="govuk-button">
         Continue
       </button>            

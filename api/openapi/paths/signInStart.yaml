@@ -1,31 +1,8 @@
 post:
   operationId: 'getSignInStart'
-  summary: Returns if an email address exists in DB or not
-  description: Optional extended description in CommonMark or HTML.
+  description: Returns 200 if an email address exists in GeoSAFE, 400 if it doesn't (invalid@email.com)
   responses:
     '200':
-      description: successful request
-      content:
-        application/json:
-          schema: 
-            type: object
-            properties:
-              success:
-                type: boolean
-                example: true
-              message:
-                type: string
-                example: "The email is valid"
+      description: email address is found
     '400':
-      description: bad request
-      content:
-        application/json:
-          schema: 
-            type: object
-            properties:
-              success:
-                type: boolean
-                example: false
-              message:
-                type: string
-                example: "The email is invalid"
+      description: email address is not found

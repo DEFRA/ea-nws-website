@@ -21,7 +21,7 @@ export default function SignOutAutomatically(){
                 </p>
             </div>
             <div class="govuk-width-container">
-                <h2 class="govuk-heading-l">You've been signed out for secuirty reasons</h2>
+                <h2 class="govuk-heading-l">You've been signed out for security reasons</h2>
                 <p class="govuk-body">You can sign back in if you need to.</p>
                 <Button text={"sign in"} className={"govuk-button"} onClick={test} />
 

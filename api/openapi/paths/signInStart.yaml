@@ -1,13 +1,31 @@
-get:
+post:
   operationId: 'getSignInStart'
   summary: Returns if an email address exists in DB or not
   description: Optional extended description in CommonMark or HTML.
   responses:
     '200':
-      description: A Boolean
+      description: successful request
       content:
         application/json:
           schema: 
-            type: array
-            items: 
-              type: boolean
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: true
+              message:
+                type: string
+                example: "The email is valid"
+    '400':
+      description: bad request
+      content:
+        application/json:
+          schema: 
+            type: object
+            properties:
+              success:
+                type: boolean
+                example: false
+              message:
+                type: string
+                example: "The email is invalid"

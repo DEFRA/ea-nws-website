@@ -5,15 +5,24 @@ import { useState } from 'react';
 const EmailForm = props =>{
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const email = event.target.emailAddress.value;
+    const emailExists = await checkEmail(email)
     if(!validateEmail(email)){
-      setErrorMessage("Please enter a valid email address.");
+      setErrorMessage("Enter an email address in the correct format, like name@example.com");
+      return;
+    }
+    if(!emailExists){
+      setErrorMessage("Email address is not recognised - check and try again");
+      return;
+    }
+    if(email === ""){
+      setErrorMessage("Enter your email address")
       return;
     }
     console.log("Email: ", email)
-    sendEmail(email)
+
     event.target.reset()
     window.location.replace("CheckYourEmailPage")
   }
@@ -23,9 +32,11 @@ const EmailForm = props =>{
     return emailPattern.test(email);
   };
 
-  const sendEmail = (email) => {
+  const checkEmail = async (email) => {
+    let emailExists = false;
     var raw = JSON.stringify({"email": email});
-    fetch("http://localhost:3000/signIn", 
+    try{
+      const response = await fetch("http://localhost:3000/signInStart", 
       {
         method: "POST",
         mode: 'cors',
@@ -35,21 +46,18 @@ const EmailForm = props =>{
         },
         body: raw,
       })
-      .then(response => {
-        try {
-            return response.json().then(data => ({
-                data: data,
-                status: response.status
-            }));
-        } catch (error) {
-            console.log("Error parsing JSON Response:", error)
-            throw error;
-        }
-        })
-        .then(res => {          
-          console.log(res.status, res.data.message);
-      })
-      .catch(error => console.log("ERROR: ", error)); 
+      const responseData = await response.json();
+      const statusCode = responseData['code'];  
+      console.log("StatusCode", statusCode)
+      console.log("StatusCodeType", typeof statusCode)
+      console.log(responseData)
+      // Assign the status code to isValid
+      emailExists = statusCode === 200? true: false;
+    }
+    catch (error) {
+      console.log("ERROR: ", error);
+    }
+    return emailExists;
   }
 
   return (

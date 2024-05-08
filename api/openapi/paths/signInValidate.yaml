@@ -1,0 +1,14 @@
+get:
+  operationId: 'getSignInValidation'
+  summary: Returns a list of users.
+  description: Optional extended description in CommonMark or HTML.
+  required: true
+  responses:
+    '200':    # status code
+      description: A JSON with the sign in code
+      content:
+        application/json:
+          schema: 
+            type: array
+            items: 
+              type: string

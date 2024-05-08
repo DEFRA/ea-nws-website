@@ -15,7 +15,7 @@ const api = new OpenAPIBackend({
   handlers: {
     getRegister: registerHandlers.getRegister,
     getSignInStart: signInHandlers.getSigninStart,
-    getSignInValidation: signInHandlers.getSigninValidate,
+    getSignInValidate: signInHandlers.getSigninValidate,
     validationFail: validationHandlers.validationFail,
     notFound: validationHandlers.notFound,
   },

@@ -2,14 +2,13 @@
 
 async function getSigninStart(context, req) {
   if(req.payload.email === 'invalid@email.com') {
-    console.log("The email was invalid!")
-    return { code: 400 };
+    return { code: 500 };
   }
-  return { code: 200 };
+  return { code: 200, signInToken: "123456" };
   };
 
-async function getSigninValidate(context, req) {
+async function getSignInValidate(context, req) {
   return { operationId: context.operation.responses[200] };
 };
   
-  module.exports = { getSigninStart, getSigninValidate };
+  module.exports = { getSigninStart, getSignInValidate };

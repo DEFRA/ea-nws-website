@@ -1,5 +1,6 @@
 import Header from "../gov-uk-components/Header";
 import Footer from "../gov-uk-components/Footer";
+import { Outlet, Link } from "react-router-dom";
 
 export default function StartPage() {
   return (
@@ -34,8 +35,17 @@ export default function StartPage() {
             contact your local council
           </a>
         </p>
+
+        <p class="govuk-body">
+          To recieve updates about potential flooding in your area: 
+          <a href="register" class="govuk-link">
+           Register here
+        </a>
+        </p>
       </div>
       <Footer />
     </>
+    
   );
 }
+

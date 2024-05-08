@@ -2,6 +2,7 @@ export default function Header() {
   return (
     <>
      <header class="govuk-header" data-module="govuk-header">
+     <meta name="hmrc-timeout-dialog" content="hmrc-timeout-dialog" data-language="en" data-timeout="70" data-countdown="68" data-keep-alive-url="?continue=true" data-sign-out-url="?lang=English" data-timeout-url="" data-title="" data-message="" data-message-suffix="" data-keep-alive-button-text="" data-sign-out-button-text="" data-synchronise-tabs="" data-hide-sign-out-button="" />
   <div class="govuk-header__container govuk-width-container">
     <div class="govuk-header__logo">
       <a href="#" class="govuk-header__link govuk-header__link--homepage">

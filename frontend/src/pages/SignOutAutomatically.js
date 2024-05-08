@@ -1,11 +1,13 @@
 import Header from "../gov-uk-components/Header";
 import Footer from "../gov-uk-components/Footer";
 import Button from "../gov-uk-components/Button";
-export default function SignOutAutomatically() {
 
-        function test() {
-            console.log("hello")
-        }
+
+export default function SignOutAutomatically() {
+    function test() {
+        console.log("hello")
+    }
+        
 
     return(
         <>

@@ -12,7 +12,14 @@ async function getSigninStart(context, req) {
 
 async function getSigninValidate(context, req) {
   console.log("Received SignInValidate request -- \n Code: ", req.payload.code, " - SignInToken: ", req.payload.signInToken)
-  return { operationId: context.operation.responses[200] };
+  if(req.payload.code === "999999"){
+    console.log("Invalid token")
+    return {statusCode: 101, desc: "InvalidToken"}
+  }
+  console.log("Valid token")
+  const profile = {id: '1', enabled: true, firstName: 'John', lastName: 'Smith'}
+  const registration = {partner: '4', name: 'NWS England'}
+  return { authToken: "MockGUIDAuthToken",  profile: profile, registration, registration};
 };
   
   module.exports = { getSigninStart, getSigninValidate };

@@ -6,3 +6,5 @@ api/node_modules
 npm-debug.log
 server/public/build
 lcov.info
+frontend/tests/__pycache__/test_seleniumUI.cpython-310-pytest-8.1.1.pyc
+frontend/tests/__pycache__/test_selenium.cpython-310-pytest-8.1.1.pyc

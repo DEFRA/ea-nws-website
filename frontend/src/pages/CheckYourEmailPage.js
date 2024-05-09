@@ -4,17 +4,13 @@ import InsetText from "../gov-uk-components/InsetText";
 import { useState } from 'react';
 
 const userEmail = window.sessionStorage.getItem("userEmail")
+const signInToken = window.sessionStorage.getItem("signInToken")
 const SignInCodeForm = props =>{
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const code = event.target.code.value;
-    /*const emailExists = await checkEmail(email)
-    if(!emailExists){
-      setErrorMessage("Email address is not recognised - check and try again");
-      return;
-    }*/
     if(code === ""){
       setErrorMessage("Enter code")
       return;
@@ -24,7 +20,8 @@ const SignInCodeForm = props =>{
 
   const checkCode = async (code) => {
     let validCode = false;
-    var raw = JSON.stringify({"code": validCode});
+
+    var raw = JSON.stringify({"signInToken": signInToken, "code": code});
     try{
       const response = await fetch("http://localhost:3000/signInValidate", 
       {
@@ -37,17 +34,16 @@ const SignInCodeForm = props =>{
         body: raw,
       })
       const responseData = await response.json();
-      const statusCode = responseData['code'];  
-      console.log("StatusCode", statusCode)
-      console.log("StatusCodeType", typeof statusCode)
+      const authToken = responseData['authToken'];  
+      console.log("authToken", authToken)
       console.log(responseData)
       // Assign the status code to isValid
-      validCode = statusCode === 200? true: false;
+      //validCode = authToken === 200? true: false;
     }
     catch (error) {
       console.log("ERROR: ", error);
     }
-    return validCode;
+    return 200;
   }
 
   return (

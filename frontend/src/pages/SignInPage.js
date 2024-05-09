@@ -33,6 +33,7 @@ const EmailForm = props =>{
 
   const checkEmail = async (email) => {
     let emailExists = false;
+    let signInToken = "";
     var raw = JSON.stringify({"email": email});
     try{
       const response = await fetch("http://localhost:3000/signInStart", 
@@ -46,16 +47,16 @@ const EmailForm = props =>{
         body: raw,
       })
       const responseData = await response.json();
-      const statusCode = responseData['code'];  
-      console.log("StatusCode", statusCode)
-      console.log("StatusCodeType", typeof statusCode)
-      console.log(responseData)
+      const statusCode = responseData['statusCode'];  
+      signInToken = responseData['signInToken'];  
       // Assign the status code to isValid
       emailExists = statusCode === 200? true: false;
     }
     catch (error) {
+
       console.log("ERROR: ", error);
     }
+    window.sessionStorage.setItem("signInToken", signInToken)
     return emailExists;
   }
 

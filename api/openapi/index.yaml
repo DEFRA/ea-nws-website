@@ -3,9 +3,9 @@ info:
   title: 'EA_NWS_API'
   version: '1.0.0'
 paths:
-  /member/signInStart:    
+  /member/signinStart:    
     $ref: './paths/signInStart.yaml'
-  /member/signInValidate:
+  /member/signinValidate:
     $ref: './paths/signInValidate.yaml'
   /member/registerStart:
     $ref: './paths/registerStart.yaml'

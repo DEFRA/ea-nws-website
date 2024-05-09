@@ -1,14 +1,18 @@
 
 
 async function getSigninStart(context, req) {
+  console.log("Received SignInStart request for: ", req.payload)
   if(req.payload.email === 'invalid@email.com') {
-    return { code: 500 };
+    console.log("Invalid email, responding 500")
+    return { statusCode: 500, signInToken: "" };
   }
-  return { code: 200, signInToken: "123456" };
+  console.log("Valid email, responding 200")
+  return { statusCode: 200, signInToken: "123456" };
   };
 
-async function getSignInValidate(context, req) {
+async function getSigninValidate(context, req) {
+  console.log("Received SignInValidate request -- \n Code: ", req.payload.code, " - SignInToken: ", req.payload.signInToken)
   return { operationId: context.operation.responses[200] };
 };
   
-  module.exports = { getSigninStart, getSignInValidate };
+  module.exports = { getSigninStart, getSigninValidate };

@@ -19,10 +19,11 @@ export default function Table({ caption, tableHeadings, tableRows }) {
         {tableRows ? (
           <tbody class="govuk-table__body">
             <tr class="govuk-table__row">
-              <th scope="row" class="govuk-table__header">
-                Severe flood warnings
-              </th>
-              <td class="govuk-table__cell">✅ Always included</td>
+              {tableRows.map((row, index) => (
+                <td key={index} scope="col" class="govuk-table__cell">
+                  {row.text}
+                </td>
+              ))}
             </tr>
           </tbody>
         ) : null}

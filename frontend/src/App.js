@@ -1,9 +1,9 @@
-import StartPage from "./pages/StartPage";
+import ConfirmDeleteContactDetailsPage from "./pages/ContactDetails/ConfirmDeleteContactDetailsPage";
 
 export default function App() {
   return (
     <>
-      <StartPage />
+      <ConfirmDeleteContactDetailsPage />
     </>
   );
 }

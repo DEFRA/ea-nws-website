@@ -3,14 +3,17 @@ import PhaseBanner from "../gov-uk-components/PhaseBanner";
 export default function Header() {
   return (
     <>
-      <header class="govuk-header" data-module="govuk-header">
-        <div class="govuk-header__container govuk-width-container">
-          <div class="govuk-header__logo">
-            <a href="#" class="govuk-header__link govuk-header__link--homepage">
+      <header className="govuk-header" data-module="govuk-header">
+        <div className="govuk-header__container govuk-width-container">
+          <div className="govuk-header__logo">
+            <a
+              href="#"
+              className="govuk-header__link govuk-header__link--homepage"
+            >
               <svg
                 focusable="false"
                 role="img"
-                class="govuk-header__logotype"
+                className="govuk-header__logotype"
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 148 30"
                 height="30"
@@ -22,10 +25,10 @@ export default function Header() {
               </svg>
             </a>
           </div>
-          <div class="govuk-header__content">
-            <a class="govuk-header__link govuk-header__service-name">
+          <div className="govuk-header__content">
+            <p className="govuk-header__link govuk-header__service-name">
               Get flood warnings by text, phone or email
-            </a>
+            </p>
           </div>
         </div>
       </header>

@@ -8,12 +8,11 @@ module.exports = [
 
     handler: (request, h) => {
       const data = {
-        emailAddresses: ["matthew.pepper@gmail.com", "perry.pepper@gmail.com"],
-        telephones: ["07343 454590", "07889 668367"],
-        phone: ["01475 721535"],
+        emailaddresses: ["matthew.pepper@gmail.com", "perry.pepper@gmail.com"],
+        texts: ["07343 454590", "07889 668367"],
+        phones: ["01475 721535"],
       };
 
-      // Return the data as the response payload
       return h.response(data);
     },
   },

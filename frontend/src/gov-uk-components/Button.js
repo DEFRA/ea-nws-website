@@ -3,7 +3,7 @@ export default function Button({ text, className, onClick }) {
     <>
       <button
         type="submit"
-        class={className}
+        className={className}
         onClick={onClick}
         data-module="govuk-button"
       >

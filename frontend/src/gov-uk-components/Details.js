@@ -1,11 +1,11 @@
 export default function Details({ title, text }) {
   return (
     <>
-      <details class="govuk-details">
-        <summary class="govuk-details__summary">
-          <span class="govuk-details__summary-text">{title}</span>
+      <details className="govuk-details">
+        <summary className="govuk-details__summary">
+          <span className="govuk-details__summary-text">{title}</span>
         </summary>
-        <div class="govuk-details__text">{text}</div>
+        <div className="govuk-details__text">{text}</div>
       </details>
     </>
   );

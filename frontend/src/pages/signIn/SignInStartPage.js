@@ -1,5 +1,5 @@
-import Header from "../gov-uk-components/Header";
-import Footer from "../gov-uk-components/Footer";
+import Header from "../../gov-uk-components/Header";
+import Footer from "../../gov-uk-components/Footer";
 import { useState } from 'react';
 
 const EmailForm = props => {
@@ -73,10 +73,10 @@ const EmailForm = props => {
         id="email-address" 
         name="emailAddress" 
         type="text"
-      />
+      />  
+      <br></br>
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <br></br>      <br></br>
-      <button type="submit" class="govuk-button" data-module="govuk-button">
+      <button type="submit" class="govuk-button" data-module="govuk-button" style={{marginTop: '10px'}}>
         Continue
       </button>            
     </div>
@@ -84,14 +84,12 @@ const EmailForm = props => {
   )
 }
 
-
-
 export default function SignInPage() {
   return (
     <>
       <Header />
       <div class="govuk-width-container">
-        <a href="StartPage" class="govuk-back-link">Back</a>
+        <a href="Start" class="govuk-back-link">Back</a>
         <h2 class="govuk-heading-l">Sign in to your flood warnings account</h2>
         <div class="govuk-body">
           You can:
@@ -101,7 +99,7 @@ export default function SignInPage() {
             <li>delete your account</li>
           </ul>
           <EmailForm></EmailForm>
-          <a href="/" class="govuk-link">Sign up if you do not have an account</a>
+          <a href="Start" class="govuk-link">Sign up if you do not have an account</a>
         </div>
       </div>
       <Footer />

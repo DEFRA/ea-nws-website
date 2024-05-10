@@ -1,6 +1,6 @@
-import Header from "../gov-uk-components/Header";
-import Footer from "../gov-uk-components/Footer";
-import InsetText from "../gov-uk-components/InsetText";
+import Header from "../../gov-uk-components/Header";
+import Footer from "../../gov-uk-components/Footer";
+import InsetText from "../../gov-uk-components/InsetText";
 import { useState } from 'react';
 
 const userEmail = window.sessionStorage.getItem("userEmail")
@@ -82,9 +82,9 @@ const SignInValidateForm = props =>{
         name="code" 
         type="text"
       />
+      <br></br>
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <br></br>      <br></br>
-      <button type="submit" class="govuk-button" data-module="govuk-button">
+      <button type="submit" class="govuk-button" data-module="govuk-button" style={{marginTop: '10px'}}>
         Continue
       </button>            
     </div>

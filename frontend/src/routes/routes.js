@@ -1,7 +1,7 @@
 import React from "react";
 import StartPage from "../pages/StartPage";
-import SignInPage from "../pages/SignInPage";
-import CheckYourEmailPage from "../pages/CheckYourEmailPage";
+import SignInPage from "../pages/signIn/SignInStartPage";
+import CheckYourEmailPage from "../pages/signIn/SignInValidatePage";
 
 const routes = [
     { path: "/start", component: <StartPage /> },

@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from "react";
 import Header from "../../gov-uk-components/Header";
 import Footer from "../../gov-uk-components/Footer";
 import PhaseBanner from "../../gov-uk-components/PhaseBanner";
@@ -5,11 +6,26 @@ import InsetText from "../../gov-uk-components/InsetText";
 import Button from "../../gov-uk-components/Button";
 import NotificationBanner from "../../gov-uk-components/NotificationBanner";
 import Details from "../../gov-uk-components/Details";
+import { Link, useLocation } from "react-router-dom";
+import axios from "axios";
 
 export default function ContactDetailsPage() {
-  const emailAddresses = ["matthew.pepper@gmail.com"];
-  const telephones = ["07343 454590", "07889 668367"];
-  const phone = ["01475 721535"];
+  const location = useLocation();
+  const [data, setData] = useState(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("/contactdetails");
+        console.log(response.data);
+        setData(response.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
 
   const detailsMessage = (
     <div>
@@ -31,13 +47,16 @@ export default function ContactDetailsPage() {
 
       <div class="govuk-width-container">
         <PhaseBanner />
-        <NotificationBanner
-          title={"Email address removed"}
-          className={
-            "govuk-notification-banner govuk-notification-banner--success"
-          }
-          text={"matthew.pepper@gmail.com"}
-        />
+        {location.state !== null ? (
+          <NotificationBanner
+            className={
+              "govuk-notification-banner govuk-notification-banner--success"
+            }
+            title="Success"
+            heading={location.state.removedType + " removed"}
+            text={location.state.removedContact}
+          />
+        ) : null}
         <a href="#" class="govuk-link">
           Back to Home
         </a>
@@ -60,21 +79,27 @@ export default function ContactDetailsPage() {
               <h3 class="govuk-heading-m">Emails</h3>
               <table class="govuk-table">
                 <tbody class="govuk-table__body">
-                  {emailAddresses.map((email, index) => (
+                  {data.map((email, index) => (
                     <tr class="govuk-table__row">
-                      <td class="govuk-table__cell">{email}</td>
+                      <td class="govuk-table__cell govuk-!-width-full">
+                        {email}
+                      </td>
                       <td class="govuk-table__cell">
-                        {emailAddresses.length > 1 ? (
-                          <a href="#" class="govuk-link">
+                        {data.length > 1 ? (
+                          <Link
+                            to="/managecontacts/confirm"
+                            state={{ type: "email address", contact: email }}
+                            className="govuk-link"
+                          >
                             Remove
-                          </a>
+                          </Link>
                         ) : null}
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-              {emailAddresses.length === 1 ? (
+              {data.length === 1 ? (
                 <Details
                   title={"If you want to remove this contact"}
                   text={detailsMessage}
@@ -87,13 +112,22 @@ export default function ContactDetailsPage() {
               <h3 class="govuk-heading-m">Texts</h3>
               <table class="govuk-table">
                 <tbody class="govuk-table__body">
-                  {telephones.map((number, index) => (
+                  {data.map((number, index) => (
                     <tr class="govuk-table__row">
-                      <td class="govuk-table__cell">{number}</td>
+                      <td class="govuk-table__cell govuk-!-width-full">
+                        {number}
+                      </td>
                       <td class="govuk-table__cell">
-                        <a href="#" class="govuk-link">
+                        <Link
+                          to="/managecontacts/confirm"
+                          state={{
+                            type: "mobile telephone number",
+                            contact: number,
+                          }}
+                          className="govuk-link"
+                        >
                           Remove
-                        </a>
+                        </Link>
                       </td>
                     </tr>
                   ))}
@@ -106,13 +140,20 @@ export default function ContactDetailsPage() {
               <h3 class="govuk-heading-m">Phone call warnings</h3>
               <table class="govuk-table">
                 <tbody class="govuk-table__body">
-                  {phone.map((n, index) => (
+                  {data.map((n, index) => (
                     <tr class="govuk-table__row">
-                      <td class="govuk-table__cell">{n}</td>
+                      <td class="govuk-table__cell govuk-!-width-full">{n}</td>
                       <td class="govuk-table__cell">
-                        <a href="#" class="govuk-link">
+                        <Link
+                          to="/managecontacts/confirm"
+                          state={{
+                            type: "telephone number",
+                            contact: n,
+                          }}
+                          className="govuk-link"
+                        >
                           Remove
-                        </a>
+                        </Link>
                       </td>
                     </tr>
                   ))}

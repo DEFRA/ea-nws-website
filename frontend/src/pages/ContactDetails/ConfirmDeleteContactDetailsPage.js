@@ -5,31 +5,47 @@ import InsetText from "../../gov-uk-components/InsetText";
 import Button from "../../gov-uk-components/Button";
 import NotificationBanner from "../../gov-uk-components/NotificationBanner";
 import Details from "../../gov-uk-components/Details";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import React from "react";
 
 export default function ConfirmDeleteContactDetailsPage() {
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const removeContact = () => {
+    console.log("removed");
+    navigate("/managecontacts", {
+      state: {
+        removedType: location.state.type,
+        removedContact: location.state.contact,
+      },
+    });
+  };
+
   return (
     <>
       <Header />
-      <div class="govuk-width-container">
+      <div className="govuk-width-container">
         <PhaseBanner />
-        <a href="#" class="govuk-back-link">
+        <Link to="/managecontacts" className="govuk-back-link">
           Back
-        </a>
-        <main class="govuk-main-wrapper">
-          <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-              <h2 class="govuk-heading-l">
-                Are you sure you want to remove this email address ?
+        </Link>
+        <main className="govuk-main-wrapper">
+          <div className="govuk-grid-row">
+            <div className="govuk-grid-column-two-thirds">
+              <h2 className="govuk-heading-l">
+                Are you sure you want to remove this {location.state.type}?
               </h2>
-              <InsetText text={"mary.pepper@gmail.com"} />
+              <InsetText text={location.state.contact} />
               <Button
                 className={"govuk-button govuk-button--warning"}
                 text={"Remove"}
+                onClick={removeContact}
               />
               &nbsp;
-              <a href="#" class="govuk-link">
+              <Link to="/managecontacts" className="govuk-link">
                 Cancel
-              </a>
+              </Link>
             </div>
           </div>
         </main>

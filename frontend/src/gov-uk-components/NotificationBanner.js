@@ -1,4 +1,9 @@
-export default function NotificationBanner({ title, className, text }) {
+export default function NotificationBanner({
+  className,
+  title,
+  heading,
+  text,
+}) {
   return (
     <>
       <div
@@ -16,6 +21,9 @@ export default function NotificationBanner({ title, className, text }) {
           </h2>
         </div>
         <div class="govuk-notification-banner__content">
+          {heading ? (
+            <h3 class="govuk-notification-banner__heading">{heading}</h3>
+          ) : null}
           <p class="govuk-body">{text}</p>
         </div>
       </div>

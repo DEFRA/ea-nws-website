@@ -19,8 +19,6 @@ const SignInCodeForm = props =>{
   }
 
   const checkCode = async (code) => {
-    let validCode = false;
-
     var raw = JSON.stringify({"signInToken": signInToken, "code": code});
     try{
       const response = await fetch("http://localhost:3000/signInValidate", 

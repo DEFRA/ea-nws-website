@@ -5,21 +5,41 @@ import { useState } from 'react';
 
 const userEmail = window.sessionStorage.getItem("userEmail")
 const signInToken = window.sessionStorage.getItem("signInToken")
-const SignInCodeForm = props =>{
+
+const validateNumber = (input, digits) => {
+  const numberPattern = new RegExp(`^[0-9]{${digits}}$`);
+  return numberPattern.test(input);
+};
+
+const SignInValidateForm = props =>{
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const code = event.target.code.value;
+
     if(code === ""){
       setErrorMessage("Enter code")
       return;
     }
+    if(!validateNumber(code, 6)){
+      setErrorMessage("Code must be 6 numbers")
+      return;
+    }
+    const apiReturn = await validateCode(code);
+    if(!apiReturn){
+      setErrorMessage("Invalid code")
+      return;
+    }
     event.target.reset()
+    window.location.replace("Start")
   }
 
-  const checkCode = async (code) => {
-    var raw = JSON.stringify({"signInToken": signInToken, "code": code});
+  const validateCode = async (code) => {
+    var raw = JSON.stringify({"signinToken": signInToken, "code": code});
+    let authToken;
+    let profile;
+    let registration;
     try{
       const response = await fetch("http://localhost:3000/signInValidate", 
       {
@@ -32,16 +52,22 @@ const SignInCodeForm = props =>{
         body: raw,
       })
       const responseData = await response.json();
-      const authToken = responseData['authToken'];  
-      console.log("authToken", authToken)
-      console.log(responseData)
-      // Assign the status code to isValid
-      //validCode = authToken === 200? true: false;
+      console.log("ResponseData", responseData)
+      if(responseData.hasOwnProperty('code')){
+        return false
+      }
+      authToken = responseData['authToken'];  
+      profile = responseData['profile']; 
+      registration = responseData['registration']; 
     }
     catch (error) {
       console.log("ERROR: ", error);
     }
-    return 200;
+  
+    window.sessionStorage.setItem("authToken", authToken)
+    window.sessionStorage.setItem("profile", profile)
+    window.sessionStorage.setItem("registration", registration)
+    return true;
   }
 
   return (
@@ -76,7 +102,7 @@ export default function CheckYourEmailPage() {
         <div class="govuk-body">
           We've sent a code to:
           <InsetText text={userEmail}></InsetText>
-          <SignInCodeForm></SignInCodeForm>
+          <SignInValidateForm></SignInValidateForm>
         </div>
       </div>
 

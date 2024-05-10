@@ -1,20 +1,18 @@
-
-
 async function getSigninStart(context, req) {
   console.log("Received SignInStart request for: ", req.payload)
   if(req.payload.email === 'invalid@email.com') {
     console.log("Invalid email, responding 500")
-    return { statusCode: 500, signInToken: "" };
+    return { code: 101, desc: "unknown email" };
   }
   console.log("Valid email, responding 200")
-  return { statusCode: 200, signInToken: "123456" };
+  return { code: 200, signInToken: "123456" };
   };
 
 async function getSigninValidate(context, req) {
-  console.log("Received SignInValidate request -- \n Code: ", req.payload.code, " - SignInToken: ", req.payload.signInToken)
+  console.log("Received SignInValidate request -- \n Code: ", req.payload.code, " - SignInToken: ", req.payload.signinToken)
   if(req.payload.code === "999999"){
     console.log("Invalid token")
-    return {statusCode: 101, desc: "InvalidToken"}
+    return {code: 101, desc: "InvalidToken"}
   }
   console.log("Valid token")
   const profile = {id: '1', enabled: true, firstName: 'John', lastName: 'Smith'}

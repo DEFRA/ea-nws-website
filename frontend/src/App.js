@@ -1,17 +1,15 @@
-import StartPage from "./pages/StartPage";
-import React from 'react';
-import { Route, Routes, Link, BrowserRouter } from "react-router-dom";
-import SignInPage from "./pages/SignInPage";
-import CheckYourEmailPage from "./pages/CheckYourEmailPage";
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import routes from "./routes/routes";
 
 export default function App() {
   return (
-    <>
+    <BrowserRouter basename="/">
       <Routes>
-        <Route exact path="/" element={<StartPage/>}/>
-        <Route path="/SignInPage" element={<SignInPage/>}/>
-        <Route path="/CheckYourEmailPage" element={<CheckYourEmailPage/>}/>
+        {routes.map((route, index) => (
+          <Route key={index} path={route.path} element={route.component} />
+        ))}
       </Routes>
-    </>
+    </BrowserRouter>
   );
 }

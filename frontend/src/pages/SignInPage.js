@@ -2,28 +2,31 @@ import Header from "../gov-uk-components/Header";
 import Footer from "../gov-uk-components/Footer";
 import { useState } from 'react';
 
-const EmailForm = props =>{
+const EmailForm = props => {
   const [errorMessage, setErrorMessage] = useState("");
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     const email = event.target.emailAddress.value;
-    const emailExists = await checkEmail(email)
-    if(!validateEmail(email)){
-      setErrorMessage("Enter an email address in the correct format, like name@example.com");
-      return;
-    }
-    if(!emailExists){
-      setErrorMessage("Email address is not recognised - check and try again");
-      return;
-    }
+
     if(email === ""){
       setErrorMessage("Enter your email address")
       return;
     }
+    if(!validateEmail(email)){
+      setErrorMessage("Enter an email address in the correct format, like name@example.com");
+      return;
+    }
+    const emailExists = await checkEmail(email)
+    if(!emailExists){
+      setErrorMessage("Email address is not recognised - check and try again");
+      return;
+    }
+
     window.sessionStorage.setItem("userEmail", email)
     event.target.reset()
     window.location.replace("CheckYourEmailPage")
+    
   }
 
   const validateEmail = (email) => {
@@ -47,13 +50,12 @@ const EmailForm = props =>{
         body: raw,
       })
       const responseData = await response.json();
-      const statusCode = responseData['statusCode'];  
+      const code = responseData['code'];  
       signInToken = responseData['signInToken'];  
       // Assign the status code to isValid
-      emailExists = statusCode === 200? true: false;
+      emailExists = code === 200? true: false;
     }
     catch (error) {
-
       console.log("ERROR: ", error);
     }
     window.sessionStorage.setItem("signInToken", signInToken)
@@ -99,7 +101,7 @@ export default function SignInPage() {
             <li>delete your account</li>
           </ul>
           <EmailForm></EmailForm>
-          <a href="#" class="govuk-link">Sign up if you do not have an account</a>
+          <a href="/" class="govuk-link">Sign up if you do not have an account</a>
         </div>
       </div>
       <Footer />

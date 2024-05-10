@@ -1,6 +1,8 @@
 import Header from "../../gov-uk-components/Header";
 import Footer from "../../gov-uk-components/Footer";
+import TextInput from "../../gov-uk-components/TextInput";
 import { useState } from 'react';
+const backendCall = require('../../services/BackendService')
 
 const EmailForm = props => {
   const [errorMessage, setErrorMessage] = useState("");
@@ -35,52 +37,27 @@ const EmailForm = props => {
   };
 
   const checkEmail = async (email) => {
-    let emailExists = false;
     let signInToken = "";
     var raw = JSON.stringify({"email": email});
-    try{
-      const response = await fetch("http://localhost:3000/signInStart", 
-      {
-        method: "POST",
-        mode: 'cors',
-        credentials: 'same-origin',
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: raw,
-      })
-      const responseData = await response.json();
-      const code = responseData['code'];  
-      signInToken = responseData['signInToken'];  
-      // Assign the status code to isValid
-      emailExists = code === 200? true: false;
+    const responseData = await backendCall(raw, "http://localhost:3000/signInStart")
+    const code = responseData['code'];  
+    signInToken = responseData['signInToken'];  
+    // Assign the status code to isValid
+    if (code === 101){
+      return false;
     }
-    catch (error) {
-      console.log("ERROR: ", error);
-    }
-    window.sessionStorage.setItem("signInToken", signInToken)
-    return emailExists;
+    window.sessionStorage.setItem("signInToken", signInToken);
+    return true;
   }
 
   return (
-  <form onSubmit={handleSubmit}>
-    <div class="govuk-form-group">
-      <label class="govuk-label" for="email-address">
-        Email address
-      </label>
-      <input 
-        class="govuk-input govuk-input--width-20" 
-        id="email-address" 
-        name="emailAddress" 
-        type="text"
-      />  
-      <br></br>
+    <form onSubmit={handleSubmit}>
+      <TextInput name="Email address" id="emailAddress"></TextInput>
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <button type="submit" class="govuk-button" data-module="govuk-button" style={{marginTop: '10px'}}>
+      <button type="submit" class="govuk-button" data-module="govuk-button" >
         Continue
-      </button>            
-    </div>
-  </form>
+      </button>   
+    </form>
   )
 }
 

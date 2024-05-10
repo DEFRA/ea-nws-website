@@ -1,8 +1,9 @@
 import Header from "../../gov-uk-components/Header";
 import Footer from "../../gov-uk-components/Footer";
 import InsetText from "../../gov-uk-components/InsetText";
+import TextInput from "../../gov-uk-components/TextInput";
 import { useState } from 'react';
-
+const backendCall = require('../../services/BackendService')
 const userEmail = window.sessionStorage.getItem("userEmail")
 const signInToken = window.sessionStorage.getItem("signInToken")
 
@@ -37,58 +38,27 @@ const SignInValidateForm = props =>{
 
   const validateCode = async (code) => {
     var raw = JSON.stringify({"signinToken": signInToken, "code": code});
-    let authToken;
-    let profile;
-    let registration;
-    try{
-      const response = await fetch("http://localhost:3000/signInValidate", 
-      {
-        method: "POST",
-        mode: 'cors',
-        credentials: 'same-origin',
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: raw,
-      })
-      const responseData = await response.json();
-      console.log("ResponseData", responseData)
-      if(responseData.hasOwnProperty('code')){
-        return false
-      }
-      authToken = responseData['authToken'];  
-      profile = responseData['profile']; 
-      registration = responseData['registration']; 
+
+    const responseData = await backendCall(raw, "http://localhost:3000/signInValidate");
+    console.log("ResponseData", responseData)
+    if(responseData.hasOwnProperty('code')){
+      return false
     }
-    catch (error) {
-      console.log("ERROR: ", error);
-    }
-  
-    window.sessionStorage.setItem("authToken", authToken)
-    window.sessionStorage.setItem("profile", profile)
-    window.sessionStorage.setItem("registration", registration)
+      
+    window.sessionStorage.setItem("authToken", responseData['authToken'])
+    window.sessionStorage.setItem("profile", responseData['profile'])
+    window.sessionStorage.setItem("registration", responseData['registration'])
     return true;
   }
 
   return (
-  <form onSubmit={handleSubmit}>
-    <div class="govuk-form-group">
-      <label class="govuk-label" for="code">
-        Enter code
-      </label>
-      <input 
-        class="govuk-input govuk-input--width-20" 
-        id="code" 
-        name="code" 
-        type="text"
-      />
-      <br></br>
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <button type="submit" class="govuk-button" data-module="govuk-button" style={{marginTop: '10px'}}>
-        Continue
-      </button>            
-    </div>
-  </form>
+    <form onSubmit={handleSubmit}>
+    <TextInput name="Enter code" id="code"></TextInput>
+    {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+    <button type="submit" class="govuk-button" data-module="govuk-button" >
+      Continue
+    </button>   
+  </form> 
   )
 }
 

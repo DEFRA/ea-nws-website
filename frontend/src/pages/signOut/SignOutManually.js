@@ -30,9 +30,9 @@ export default function SignOutManually(){
 
     testloggedOut(loggedOut);
 
-        function test() {
-            console.log("hello")
-        }
+    function redirect() {
+        window.location.href = "/SignInPage";
+    }
 
     return(
         <>
@@ -50,7 +50,7 @@ export default function SignOutManually(){
             <div class="govuk-width-container">
                 <h2 class="govuk-heading-l">You've signed out</h2>
                 <p class="govuk-body">You can sign back in if you need to.</p>
-                <Button text={"sign in"} className={"govuk-button"} onClick={test} />
+                <Button text={"sign in"} className={"govuk-button"} onClick={redirect} />
 
                 <h3 class="govuk-heading-s">More about flooding</h3>
 

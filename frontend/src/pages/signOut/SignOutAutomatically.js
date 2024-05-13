@@ -3,11 +3,11 @@ import Footer from "../../gov-uk-components/Footer";
 import Button from "../../gov-uk-components/Button";
 const userEmail = window.sessionStorage.getItem("userEmail");
 const signInToken = window.sessionStorage.getItem("signInToken");
-const backendCall = require('../../services/BackendService')
+const backendCall = require('../../services/BackendService');
 
 const loggedOut = async() => {
     let raw = JSON.stringify({"signinToken":signInToken});
-    const responseData = await backendCall(raw,"http://localhost:3000/signOutAutomatically");
+    const responseData = await backendCall(raw,"signOutAutomatically");
 
     if (signInToken !== "" && userEmail !== ""){
         window.sessionStorage.setItem("authToken", responseData[''])

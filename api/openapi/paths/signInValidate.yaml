@@ -1,14 +1,185 @@
-get:
-  operationId: 'getSignInValidation'
-  summary: Returns a list of users.
-  description: Optional extended description in CommonMark or HTML.
-  required: true
+post:
+  tags:
+    - Member
+  operationId: 'getSignInValidate'
+  summary: Validate the signin of a user
+  description: >-
+    This RPC transforms a signin token into an authentication token if the
+    code provided matches the expected code, and provides the profile of the
+    authenticated member.  
+
+    If a device id is provided, a mobile subscription is created if not
+    already existing, and the member is linked to this device id.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          example:
+            signinToken: >-
+              gAAAAABkOTKFFw4yVZEJnXHG3KRYP9K_CZ5b6KuHWYllrLnbpl_swmI1teEDzpLdqq98JDoCn9H8_ZyemrultxEpHibHyEg3fRPYVLy5jKPKGJ3v6ULXZiSvHDRFKPvxDuwOs9TdLA5H_pOTwenbTpm6g54Janu24aiOq2PYzr2F81-h3jpszYvW0y7b4mGHeUzPlOc6fniHfd_ewt2H5BKlGPKEpMX-Mr_sHXfFXH-BEOmSTQmm7fE=
+            code: '445300'
   responses:
-    '200':    # status code
-      description: A JSON with the sign in code
+    200:
+      description: OK
+      headers:
+        Date:
+          schema:
+            type: string
+            example: Fri, 14 Apr 2023 11:22:39 GMT
+        Server:
+          schema:
+            type: string
+            example: Apache/2.4.38 (Debian)
+        Accept-Encoding:
+          schema:
+            type: string
+            example: identity, gzip, deflate
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+            example: '*'
+        Cache-Control:
+          schema:
+            type: string
+            example: no-store, no-cache, must-revalidate
+        Pragma:
+          schema:
+            type: string
+            example: no-cache
+        Content-Type:
+          schema:
+            type: string
+            example: application/json; charset=utf-8
+        Content-Encoding:
+          schema:
+            type: string
+            example: gzip
+        Content-Length:
+          schema:
+            type: integer
+            example: '772'
+        Keep-Alive:
+          schema:
+            type: string
+            example: timeout=5, max=100
+        Connection:
+          schema:
+            type: string
+            example: Keep-Alive
       content:
         application/json:
-          schema: 
-            type: array
-            items: 
-              type: string
+          schema:
+            type: object
+          example:
+            authToken: >-
+              gAAAAABkW99rkj1pW_YuwL92_o1DxoZfsn3A3Co4rMolCxfKnEMLtSE5f9nULMDxxmxQYeNoXiPHaPzgn7mA4Yz1P25FFqv-cqo2i8kdW-UeKc_CwSHVgZ3BN_FK3S8WIw0PL8N0Xh2MAJZvKlnFYR2Gvv9LPk9RGcd8V4pWkQ7CqhA0bvWxPdSdr1YAX8IVjk6f7X6UVTKC
+            profile:
+              id: ''
+              enabled: false
+              firstname: ''
+              lastname: ''
+              emails:
+                - roger.rabbit@intersec.com
+              mobilePhones:
+                - +336********
+              homePhones: []
+              language: EN
+              additionals: []
+              unverified:
+                emails: []
+                mobilePhones: []
+                homePhones:
+                  - address: +336********
+              pois:
+                - address: Exeter, Royaume-Uni
+                  coordinates:
+                    latitude: 50726037
+                    longitude: -3527489
+            registrations:
+              - partner:
+                  id: '4'
+                  name: NFWS England
+                  description: >-
+                    We work to create better places for people and wildlife
+                    and support sustainable development.  EA is an executive
+                    non-departmental public bodysponsored by the Department
+                    for Environment Food & Rural Affairs supported by 1
+                    public body.
+                  longName: Environment Agency - England
+                  logoUrl: https://app-uk-nfws.intersec.com/static/favicon.png
+                  backgroundUrl: >-
+                    https://assets.publishing.service.gov.uk/government/uploads/system/uploads/image_data/file/174575/s300_coast_1.jpg
+                  urlSlug: england
+                registrationDate: 1683741990
+                params:
+                  channelVoiceEnabled: true
+                  channelSmsEnabled: true
+                  channelEmailEnabled: true
+                  partnerCanView: false
+                  partnerCanEdit: false
+                  categories:
+                    - domain: NFWS
+                      code: FLOOD_ALERT
+                    - domain: NFWS
+                      code: FLOOD_WARNING
+                    - domain: NFWS
+                      code: SEVERE_FLOOD_WARNING
+    500:
+      description: Internal Server Error
+      headers:
+        date:
+          schema:
+            type: string
+            example: Mon, 11 Mar 2024 17:12:56 GMT
+        content-type:
+          schema:
+            type: string
+            example: application/json; charset=utf-8
+        content-length:
+          schema:
+            type: integer
+            example: '56'
+        accept-encoding:
+          schema:
+            type: string
+            example: identity, gzip, deflate
+        access-control-allow-origin:
+          schema:
+            type: string
+            example: '*'
+        cache-control:
+          schema:
+            type: string
+            example: no-store, no-cache, must-revalidate
+        pragma:
+          schema:
+            type: string
+            example: no-cache
+        content-encoding:
+          schema:
+            type: string
+            example: gzip
+        x-iplb-request-id:
+          schema:
+            type: string
+            example: 3656328B:C96C_05C462FB:01BB_65EF3B98_CCE37:2B3A
+        x-iplb-instance:
+          schema:
+            type: integer
+            example: '53497'
+      content:
+        application/json:
+          schema:
+            type: object
+          examples:
+            example-0:
+              summary: Failed validating the signin, invalid token (101)
+              value:
+                code: 101
+                desc: invalid token
+            example-1:
+              summary: Failed validating the signin, invalid code (101)
+              value:
+                code: 101
+                desc: invalid code

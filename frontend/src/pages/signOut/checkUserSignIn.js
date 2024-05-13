@@ -1,19 +1,15 @@
 const signInToken = window.sessionStorage.getItem("signInToken");
 
-const checkUserSignout = route => {
-    const routesDontNeedSignIn = ["/signoutmanually", "/signoutautomatically", "/start",
-"/SignInPage","/CheckYourEmailPage"]; /*this list may increase*/
+const userIsSigndout = () => {
+    let raw = JSON.stringify({"signinToken":signInToken});
 
-    if (!routesDontNeedSignIn.includes(route)){
-
-        let raw = JSON.stringify({"signinToken":signInToken});
-        if (raw === ""){
-            return true;
+    if (raw === ""){
+        return true;
         }
-        else{
-            return false;
-        }
+    else{
+        return false;
     }
+    
 }
 
-module.exports = checkUserSignout
+module.exports = userIsSigndout

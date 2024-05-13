@@ -54,7 +54,7 @@ const EmailForm = props => {
   return (
     <form onSubmit={handleSubmit}>
       <TextInput name="Email address" id="emailAddress"></TextInput>
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+      {errorMessage && <p style={{ color: 'red' }} id="errorMessage">{errorMessage}</p>}
       <button type="submit" class="govuk-button" data-module="govuk-button" >
         Continue
       </button>   

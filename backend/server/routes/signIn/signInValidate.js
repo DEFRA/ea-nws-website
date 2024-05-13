@@ -1,6 +1,4 @@
-const joi = require("@hapi/joi");
-const axios = require("axios");
-const path = require("path");
+const apiCall = require("../../services/ApiService")
 
 const apiSignInValidateCall = async (signInToken, code) => {
   let isValid = 400;
@@ -9,35 +7,20 @@ const apiSignInValidateCall = async (signInToken, code) => {
   if(!signInValidateValidation(signInToken, code, 6)){
     return {"code": 101, "desc": "invalid code"}
   }
-  try {
-    const response = await fetch("http://localhost:9000/member/signinValidate", {
-      method: "POST",
-      mode: 'cors',
-      credentials: 'same-origin',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: raw,
-    });
 
-    // Parse the JSON response and get the status code
-    const responseData = await response.json();
-    if(responseData.hasOwnProperty('code')){
-      isValid = responseData['code']
-      desc = responseData['desc']
-    }
-    else{
-      isValid = 200
-      profile = responseData['profile'];
-      authToken = responseData['authToken']
-      registration = responseData['registration']
-    }
-
-
+  // Parse the JSON response and get the status code
+  const responseData = await apiCall(raw, "member/signinValidate");
+  if(responseData.hasOwnProperty('code')){
+    isValid = responseData['code']
+    desc = responseData['desc']
   }
-  catch (error) {
-    console.error("ERROR: ", error);
+  else{
+    isValid = 200
+    profile = responseData['profile'];
+    authToken = responseData['authToken']
+    registration = responseData['registration']
   }
+
   
   return isValid === 200? {"authToken": authToken, "profile": profile, "registration": registration} : {"code": isValid, "desc": desc};
 }

@@ -39,7 +39,8 @@ const EmailForm = props => {
   const checkEmail = async (email) => {
     let signInToken = "";
     var raw = JSON.stringify({"email": email});
-    const responseData = await backendCall(raw, "http://localhost:3000/signInStart")
+    const responseData = await backendCall(raw, "signInStart")
+    
     const code = responseData['code'];  
     signInToken = responseData['signInToken'];  
     // Assign the status code to isValid

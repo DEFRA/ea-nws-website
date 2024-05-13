@@ -3,6 +3,7 @@ import Footer from "../../gov-uk-components/Footer";
 import InsetText from "../../gov-uk-components/InsetText";
 import TextInput from "../../gov-uk-components/TextInput";
 import { useState } from 'react';
+
 const backendCall = require('../../services/BackendService')
 const userEmail = window.sessionStorage.getItem("userEmail")
 const signInToken = window.sessionStorage.getItem("signInToken")
@@ -39,7 +40,7 @@ const SignInValidateForm = props =>{
   const validateCode = async (code) => {
     var raw = JSON.stringify({"signinToken": signInToken, "code": code});
 
-    const responseData = await backendCall(raw, "http://localhost:3000/signInValidate");
+    const responseData = await backendCall(raw, "signInValidate");
     console.log("ResponseData", responseData)
     if(responseData.hasOwnProperty('code')){
       return false

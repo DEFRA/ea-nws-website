@@ -1,6 +1,6 @@
-const backendCall = async (raw, call) => {
+const apiCall = async (raw, call) => {
     let responseData;
-    const url = "http://localhost:3000/"+ call
+    const url = "http://localhost:9000/"+ call
     try{
         const response = await fetch(url, 
         {
@@ -20,4 +20,4 @@ const backendCall = async (raw, call) => {
       return responseData;
 }
 
-module.exports = backendCall;
+module.exports = apiCall;

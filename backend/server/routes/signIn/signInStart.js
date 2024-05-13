@@ -1,3 +1,5 @@
+const apiCall = require("../../services/ApiService")
+
 const apiSignInStartCall = async (email) => {
   let isValid = 400;
   let signInToken = "";
@@ -6,31 +8,19 @@ const apiSignInStartCall = async (email) => {
   if(!signInStartValidation(email)){
     return {"code": 101, "desc": "Invalid email"};
   }
-  try {
-    const response = await fetch("http://localhost:9000/member/signinStart", {
-      method: "POST",
-      mode: 'cors',
-      credentials: 'same-origin',
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: raw,
-    });
-    const responseData = await response.json();
-    if(responseData.hasOwnProperty('desc')){
-      isValid = responseData['code']
-      desc = responseData['desc']
-    }
-    else{
-      console.log("responseData",responseData)
-      isValid = responseData['code'];
-      signInToken = responseData['signInToken']
-    }
-    console.log("Received from API: ", responseData)
+  
+  const responseData = await apiCall(raw, 'member/signinStart');
+  if(responseData.hasOwnProperty('desc')){
+    isValid = responseData['code']
+    desc = responseData['desc']
   }
-  catch (error) {
-    console.error("ERROR: ", error);
+  else{
+    console.log("responseData",responseData)
+    isValid = responseData['code'];
+    signInToken = responseData['signInToken']
   }
+  console.log("Received from API: ", responseData)
+
   console.log({"code": isValid, "signInToken": signInToken})
   return {"code": isValid, "signInToken": signInToken};
 }

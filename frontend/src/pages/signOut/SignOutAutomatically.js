@@ -1,11 +1,38 @@
-import Header from "../gov-uk-components/Header";
-import Footer from "../gov-uk-components/Footer";
-import Button from "../gov-uk-components/Button";
-export default function SignOutManually(){
+import Header from "../../gov-uk-components/Header";
+import Footer from "../../gov-uk-components/Footer";
+import Button from "../../gov-uk-components/Button";
+const userEmail = window.sessionStorage.getItem("userEmail");
+const signInToken = window.sessionStorage.getItem("signInToken");
+const backendCall = require('../../services/BackendService')
 
-        function test() {
-            console.log("hello")
+const loggedOut = async() => {
+    let raw = JSON.stringify({"signinToken":signInToken});
+    const responseData = await backendCall(raw,"http://localhost:3000/signOutAutomatically");
+
+    if (signInToken !== "" && userEmail !== ""){
+        window.sessionStorage.setItem("authToken", responseData[''])
+        window.sessionStorage.setItem("profile",responseData[''])
+        window.sessionStorage.setItem("userEmail",responseData[''])
+        return true
+    }
+}
+export default function SignOutAutomatically() {
+
+    function testloggedOut(loggedOut) {
+        if (loggedOut === true) {
+            console.log("user has been logged out")
         }
+        else{
+            console.log("There is no user to log out")
+        }
+    }
+
+    testloggedOut(loggedOut);
+
+    function test() {
+        console.log("hello")
+    }
+        
 
     return(
         <>
@@ -21,7 +48,7 @@ export default function SignOutManually(){
                 </p>
             </div>
             <div class="govuk-width-container">
-                <h2 class="govuk-heading-l">You've signed out</h2>
+                <h2 class="govuk-heading-l">You've been signed out for security reasons</h2>
                 <p class="govuk-body">You can sign back in if you need to.</p>
                 <Button text={"sign in"} className={"govuk-button"} onClick={test} />
 

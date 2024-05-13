@@ -1,11 +1,15 @@
 import Header from "../../gov-uk-components/Header";
 import Footer from "../../gov-uk-components/Footer";
 import Button from "../../gov-uk-components/Button";
+import routes from "../../routes/routes";
+
+
 
 
 export default function SignBackIn() {
-    function test() {
-        console.log("hello");
+    
+    function redirect() {
+        window.location.href = "/SignInPage";
     }
 
     return(<>
@@ -22,7 +26,7 @@ export default function SignBackIn() {
             </div>
             <div class="govuk-width-container">
                 <h1 class="govuk-heading-l">You need to sign back in to view this page</h1>
-                <Button text={"sign in"} className={"govuk-button"} onClick={test} />
+                <Button text={"sign in"} className={"govuk-button"} onClick={redirect} />
             </div>
             <Footer />
     

@@ -1,6 +1,7 @@
-import Header from "../gov-uk-components/Header";
-import Footer from "../gov-uk-components/Footer";
-import Button from "../gov-uk-components/Button";
+import Header from "../../gov-uk-components/Header";
+import Footer from "../../gov-uk-components/Footer";
+import Button from "../../gov-uk-components/Button";
+
 
 export default function SignBackIn() {
     function test() {

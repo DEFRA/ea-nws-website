@@ -40,7 +40,9 @@ const EmailForm = props => {
     let signInToken = "";
     var raw = JSON.stringify({"email": email});
     const responseData = await backendCall(raw, "signInStart")
-    
+    if(responseData === undefined){
+      return false
+    }
     const code = responseData['code'];  
     signInToken = responseData['signInToken'];  
     // Assign the status code to isValid

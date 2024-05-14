@@ -41,8 +41,8 @@ const SignInValidateForm = props =>{
     var raw = JSON.stringify({"signinToken": signInToken, "code": code});
 
     const responseData = await backendCall(raw, "signInValidate");
-    console.log("ResponseData", responseData)
-    if(responseData.hasOwnProperty('code')){
+
+    if( responseData === undefined || responseData.hasOwnProperty('code')){
       return false
     }
       

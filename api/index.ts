@@ -1,4 +1,3 @@
-import 'source-map-support/register';
 import OpenAPIBackend from 'openapi-backend';
 import Hapi from '@hapi/hapi';
  

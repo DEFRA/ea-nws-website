@@ -1,4 +1,7 @@
-export default function ErrorSummary({ errorList }) {
+const ErrorSummary = ({errorList}) => {
+  if (!errorList || errorList.length === 0) {
+    return null;
+  }
   return (
     <>
       <div class="govuk-error-summary" data-module="govuk-error-summary">
@@ -8,7 +11,7 @@ export default function ErrorSummary({ errorList }) {
             <ul class="govuk-list govuk-error-summary__list">
               {errorList.map((error, index) => (
                 <li key={index}>
-                  <a href="#">{error}</a>
+                  <a href="/">{error}</a>
                 </li>
               ))}
             </ul>
@@ -18,3 +21,5 @@ export default function ErrorSummary({ errorList }) {
     </>
   );
 }
+
+export default ErrorSummary;

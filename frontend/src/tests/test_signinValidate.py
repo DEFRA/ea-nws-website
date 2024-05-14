@@ -1,6 +1,7 @@
 import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+import time
 
 url = "http://localhost:3001/CheckYourEmailPage"
 def test_SignInValidate_render(get_browser):
@@ -52,4 +53,14 @@ def test_SignInValidate_validCode(get_browser):
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)
     assert browser.current_url == "http://localhost:3001/Start"
+    browser.quit()
+
+def test_SignInValidate_emailAppears(get_browser):
+    browser = get_browser
+    browser.get("http://localhost:3001/SignInPage")
+    browser.find_element(By.ID, "emailAddress").send_keys("valid@email.uk")
+    browser.find_element(By.CLASS_NAME, "govuk-button").click()
+    time.sleep(1)
+    assert browser.current_url == "http://localhost:3001/CheckYourEmailPage"
+    assert "valid@email.uk" in browser.page_source
     browser.quit()

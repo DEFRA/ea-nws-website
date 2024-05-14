@@ -6,3 +6,5 @@ api/node_modules
 npm-debug.log
 server/public/build
 lcov.info
+frontend/src/tests/__pycache__
+api/index.js

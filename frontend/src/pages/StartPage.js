@@ -44,24 +44,6 @@ export default function StartPage() {
         </a>
         </p>
 
-        <p class="govuk-body">
-          To recieve updates about potential flooding in your area: 
-          <a href="register" class="govuk-link">
-           Register here
-        </a>
-        </p>
-      </div>
-      <div class="govuk-width-container govuk-body">
-        <h2 class="govuk-heading">If you've already signed up</h2>
-        <p>
-          <a href="SignInPage">Sign in </a> 
-           to your account to:
-        </p>
-        <ul class="govuk-list govuk-list--bullet">
-          <li>update your details</li>
-          <li>remove warnings</li>
-          <li>delete your account</li>
-        </ul>
       </div>
       <div class="govuk-width-container govuk-body">
         <h2 class="govuk-heading">If you've already signed up</h2>

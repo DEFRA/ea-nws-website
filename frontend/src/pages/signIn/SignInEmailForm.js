@@ -6,27 +6,28 @@ const EmailForm = ({ errorList, setErrorList }) => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const email = event.target.emailAddress.value;
-    let errors = []
+    const errors = []
     if (email === "") {
-        errors.push("Enter your email address");
-      return;
+      errors.push("Enter your email address");
     }
-    if (!validateEmail(email)) {
-        errors.push("Enter an email address in the correct format, like name@example.com");
-      return;
+    else if (!validateEmail(email)) {
+      errors.push("Enter an email address in the correct format, like name@example.com");
     }
-    const emailExists = await checkEmail(email);
-    if (!emailExists) {
+    if(errors.length === 0){
+      const emailExists = await checkEmail(email);
+      if (!emailExists) {
         errors.push("Email address is not recognised - check and try again");
+      }
+    }
+
+    if(errors.length > 0){        
+      setErrorList(errors);
       return;
     }
-    if(errors.length > 0){        
-        setErrorList(errors);
-        return;
-    }
+    setErrorList([]);
     window.sessionStorage.setItem("userEmail", email);
     event.target.reset();
-    window.location.replace("CheckYourEmailPage");
+    window.location.replace("SignInValidate");
   };
 
   const validateEmail = (email) => {
@@ -52,8 +53,7 @@ const EmailForm = ({ errorList, setErrorList }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <TextInput name="Email address" id="emailAddress"></TextInput>
-      {errorList && <p style={{ color: 'red' }} id="errorMessage">{errorList[0]}</p>}
+      <TextInput name="Email address" id="emailAddress" errorList={errorList}></TextInput>
       <button type="submit" className="govuk-button" data-module="govuk-button">
         Continue
       </button>

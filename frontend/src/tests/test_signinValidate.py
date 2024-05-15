@@ -3,7 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 
-url = "http://localhost:3001/CheckYourEmailPage"
+url = "http://localhost:3001/SignInValidate"
+previous_url = "http://localhost:3001/SignInStart"
 def test_SignInValidate_render(get_browser):
     browser = get_browser
     browser.get(url)
@@ -16,7 +17,7 @@ def test_SignInValidate_backButton(get_browser):
     browser = get_browser
     browser.get(url)
     browser.find_element(By.CLASS_NAME, "govuk-back-link").click()
-    assert browser.current_url == "http://localhost:3001/SignInPage"
+    assert browser.current_url == previous_url
     browser.quit()
 
 def test_SignInValidate_emptyCode(get_browser):
@@ -57,10 +58,10 @@ def test_SignInValidate_validCode(get_browser):
 
 def test_SignInValidate_emailAppears(get_browser):
     browser = get_browser
-    browser.get("http://localhost:3001/SignInPage")
+    browser.get(previous_url)
     browser.find_element(By.ID, "emailAddress").send_keys("valid@email.uk")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)
-    assert browser.current_url == "http://localhost:3001/CheckYourEmailPage"
+    assert browser.current_url == url
     assert "valid@email.uk" in browser.page_source
     browser.quit()

@@ -3,7 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 
-url = "http://localhost:3001/SignInPage"
+url = "http://localhost:3001/SignInStart"
+nextPage = "http://localhost:3001/SignInValidate"
 def test_SignInStart_render(get_browser):
     browser = get_browser
     browser.get(url)
@@ -52,7 +53,7 @@ def test_SignInStart_validEmail(get_browser):
     browser.find_element(By.ID, "emailAddress").send_keys("valid@email.uk")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)
-    assert browser.current_url == "http://localhost:3001/CheckYourEmailPage"
+    assert browser.current_url == nextPage
     browser.quit()
 
 

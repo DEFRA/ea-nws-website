@@ -39,7 +39,7 @@ export default function StartPage() {
       <div class="govuk-width-container govuk-body">
         <h2 class="govuk-heading">If you've already signed up</h2>
         <p>
-          <a href="SignInPage">Sign in </a> 
+          <a href="SignInStart">Sign in </a> 
            to your account to:
         </p>
         <ul class="govuk-list govuk-list--bullet">

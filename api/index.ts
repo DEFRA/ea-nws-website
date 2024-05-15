@@ -1,16 +1,16 @@
-import OpenAPIBackend from 'openapi-backend';
-import Hapi from '@hapi/hapi';
- 
+import OpenAPIBackend from "openapi-backend";
+import Hapi from "@hapi/hapi";
+
 const server = new Hapi.Server({ port: 9000 });
 
 // calling handlers
-const signInHandlers = require('./handlers/signInHandlers')
-const registerHandlers = require('./handlers/registerHandlers') 
-const validationHandlers = require('./handlers/validationHandlers')
+const signInHandlers = require("./handlers/signInHandlers");
+const registerHandlers = require("./handlers/registerHandlers");
+const validationHandlers = require("./handlers/validationHandlers");
 
 // define api
 const api = new OpenAPIBackend({
-  definition: './openapi/index.yaml',
+  definition: "./openapi/index.yaml",
   handlers: {
     getRegister: registerHandlers.getRegister,
     getSignInStart: signInHandlers.getSigninStart,
@@ -19,13 +19,13 @@ const api = new OpenAPIBackend({
     notFound: validationHandlers.notFound,
   },
 });
- 
+
 api.init();
- 
+
 // use as a catch-all handler
 server.route({
-  method: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  path: '/{path*}',
+  method: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+  path: "/{path*}",
   handler: (req, h) =>
     api.handleRequest(
       {
@@ -36,9 +36,9 @@ server.route({
         headers: req.headers,
       },
       req,
-      h,
+      h
     ),
 });
- 
+
 // start server
 server.start().then(() => console.info(`listening on ${server.info.uri}`));

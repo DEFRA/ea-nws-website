@@ -8,3 +8,5 @@ server/public/build
 lcov.info
 frontend/tests/__pycache__/test_seleniumUI.cpython-310-pytest-8.1.1.pyc
 frontend/tests/__pycache__/test_selenium.cpython-310-pytest-8.1.1.pyc
+frontend/src/tests/__pycache__/conftest.cpython-310-pytest-8.1.1.pyc
+frontend/src/tests/__pycache__/test_SignBackIn.cpython-310-pytest-8.1.1.pyc

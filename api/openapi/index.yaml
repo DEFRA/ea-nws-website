@@ -1,0 +1,13 @@
+openapi: '3.0.1'
+info:
+  title: 'EA_NWS_API'
+  version: '1.0.0'
+paths:
+  /member/signinStart:    
+    $ref: './paths/signInStart.yaml'
+  /member/signinValidate:
+    $ref: './paths/signInValidate.yaml'
+  /member/registerStart:
+    $ref: './paths/registerStart.yaml'
+  /member/registerValidate:
+    $ref: './paths/registerValidate.yaml'

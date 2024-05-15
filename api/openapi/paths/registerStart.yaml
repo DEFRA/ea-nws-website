@@ -1,0 +1,13 @@
+get:
+  operationId: 'getRegister'
+  summary: WIP
+  description: WIP
+  responses:
+    '200':
+      description: WIP
+      content:
+        application/json:
+          schema: 
+            type: array
+            items: 
+              type: boolean

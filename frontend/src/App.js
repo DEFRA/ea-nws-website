@@ -7,11 +7,9 @@ import userIsSigndout from "./services/CheckUserSignInService"
 
 export default function App() {
   
+  let userLoggedout = false //use this while running tests as allows access when account isnt created
+  //let userLoggedout = userIsSigndout() // use  this for actual program
   
-  let userLoggedout = userIsSigndout()
-  //comment bellow is variable for testing untill user is actually signed in 
-  //let userLoggedout = false
-  //for testing
   console.log(userLoggedout)
   //this if statement may increase as non authentication needed pages are developed
   if ((userLoggedout === true) && (window.location.href !== "http://localhost:3000/Start" && window.location.href !== "http://localhost:3000/SignInPage")) {

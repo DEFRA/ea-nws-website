@@ -1,5 +1,5 @@
 import React from "react";
-import StartPage from "../pages/signOut/StartPage";
+import StartPage from "../pages/StartPage";
 import SignOutManually from "../pages/signOut/SignOutManually";
 import SignOutAutomatically from "../pages/signOut/SignOutAutomatically";
 import SignBackIn from "../pages/signOut/SignBackIn";

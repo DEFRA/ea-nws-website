@@ -5,6 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 
+# have top var uncommented and bottom commented in app.js
 url = "http://localhost:3000/SignOutManually"
 def test_signOutManually_render(get_browser):
     browser = get_browser

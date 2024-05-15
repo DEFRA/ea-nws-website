@@ -3,7 +3,7 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 
-# to test this file have the test var in app.js uncommented and nontest var uncommented
+# to test this file have the top variable in app.js uncommented and bottom var uncommented
 url = "http://localhost:3000/SignOutAutomatically"
 def test_signOutAutomatically_render(get_browser):
     browser = get_browser

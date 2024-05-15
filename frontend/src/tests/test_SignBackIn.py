@@ -3,7 +3,7 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
-# to test this file have the test var in app.js commented out and non test var commented
+# have top var commented and bottom uncommented
 
 url = "http://localhost:3000/SignBackIn"
 def test_signBackIn_render(get_browser):

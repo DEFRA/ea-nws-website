@@ -1,5 +1,5 @@
-import Header from "../../gov-uk-components/Header";
-import Footer from "../../gov-uk-components/Footer";
+import Header from "../gov-uk-components/Header";
+import Footer from "../gov-uk-components/Footer";
 import * as React from "react";
 
 export default function StartPage() {

@@ -6,13 +6,14 @@ import userIsSigndout from "./services/CheckUserSignInService"
 
 
 export default function App() {
-  // the two var bellow checks if the user is logged out. 
-  // the bottom one checks if there is a user present
-  // the top simulates a user being present
-  // cant access some pages without user being present
-  // takes too long to log into account just to test pages
-  // each test file says what comment to comment/uncomment for each test
-  let userLoggedout = false //use for testing
+  /* the two var bellow checks if the user is logged out. 
+   the bottom one checks if there is a user present
+   the top simulates a user being present
+   cant access some pages without user being present
+   takes too long to log into account just to test pages
+   each test file says what comment to comment/uncomment for each test*/
+  
+  //let userLoggedout = false //use for testing
   let userLoggedout = userIsSigndout() // use  this for actual program
   
   console.log(userLoggedout)

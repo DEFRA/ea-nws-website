@@ -6,8 +6,9 @@ import userIsSigndout from "./services/CheckUserSignInService"
 
 
 export default function App() {
-  
+  //remove bellow variable when not testing
   let userLoggedout = false //use this while running tests as allows access when account isnt created
+  //uncomment bellow variable when not testing
   //let userLoggedout = userIsSigndout() // use  this for actual program
   
   console.log(userLoggedout)

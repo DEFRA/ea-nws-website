@@ -1,12 +1,14 @@
-const signInToken = window.sessionStorage.getItem("signInToken");
-
 const userIsSigndout = () => {
+    const signInToken = window.sessionStorage.getItem("signInToken");
     let raw = JSON.stringify({"signinToken":signInToken});
 
-    if (raw === ""){
+    
+    if (signInToken === null){
+        
         return true;
         }
     else{
+        
         return false;
     }
     

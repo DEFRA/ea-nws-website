@@ -12,6 +12,7 @@ def get_browser():
     driver_service = webdriver.FirefoxService(executable_path=geckodriver_path)
     browser = webdriver.Firefox(service=driver_service)    
     yield browser
+    browser.quit()
 
 # Fixture to compile TypeScript API code
 @pytest.fixture(scope="session")

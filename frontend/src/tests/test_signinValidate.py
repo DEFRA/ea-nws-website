@@ -5,20 +5,19 @@ import time
 
 url = "http://localhost:3001/SignInValidate"
 previous_url = "http://localhost:3001/SignInStart"
+
 def test_SignInValidate_render(get_browser):
     browser = get_browser
     browser.get(url)
     assert browser.title == "React App"
     assert "Check your email" in browser.page_source
     assert browser.current_url == url
-    browser.quit()
 
 def test_SignInValidate_backButton(get_browser):
     browser = get_browser
     browser.get(url)
     browser.find_element(By.CLASS_NAME, "govuk-back-link").click()
     assert browser.current_url == previous_url
-    browser.quit()
 
 def test_SignInValidate_emptyCode(get_browser):
     browser = get_browser
@@ -27,7 +26,6 @@ def test_SignInValidate_emptyCode(get_browser):
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     assert "Enter code" in browser.page_source
     assert browser.current_url == url
-    browser.quit()
 
 def test_SignInValidate_incorrectFormatCode(get_browser):
     browser = get_browser
@@ -36,16 +34,15 @@ def test_SignInValidate_incorrectFormatCode(get_browser):
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     assert "Code must be 6 numbers" in browser.page_source
     assert browser.current_url == url
-    browser.quit()
 
 def test_SignInValidate_invalidCode(get_browser):
     browser = get_browser
     browser.get(url)
     browser.find_element(By.ID, "code").send_keys("999999")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
+    time.sleep(1)
     assert "Invalid code" in browser.page_source
     assert browser.current_url == url
-    browser.quit()
 
 def test_SignInValidate_validCode(get_browser):
     browser = get_browser
@@ -54,7 +51,6 @@ def test_SignInValidate_validCode(get_browser):
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)
     assert browser.current_url == "http://localhost:3001/Start"
-    browser.quit()
 
 def test_SignInValidate_emailAppears(get_browser):
     browser = get_browser
@@ -64,4 +60,3 @@ def test_SignInValidate_emailAppears(get_browser):
     time.sleep(1)
     assert browser.current_url == url
     assert "valid@email.uk" in browser.page_source
-    browser.quit()

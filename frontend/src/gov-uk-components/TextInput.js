@@ -5,7 +5,6 @@ export default function TextInput({ name, className, value, onChange = () => {},
 
   return (
     <>
-
       <div class={errorList.length ===0 ? 'govuk-form-group' : 'govuk-form-group govuk-form-group--error'} >
         <label class="govuk-label" for={id}>
           {name}

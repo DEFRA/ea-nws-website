@@ -12,7 +12,7 @@ const apiSignInStartCall = async (email) => {
 
   const responseData = await apiCall(raw, 'member/signinStart')
   console.log('Received from API: ', responseData)
-  if (responseData.hasOwnProperty('desc')) {
+  if (Object.prototype.hasOwnProperty.call(responseData, 'desc')) {
     isValid = responseData.code
     desc = responseData.desc
     return { code: isValid, desc }

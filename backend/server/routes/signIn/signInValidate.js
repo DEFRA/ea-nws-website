@@ -13,7 +13,7 @@ const apiSignInValidateCall = async (signInToken, code) => {
 
   // Parse the JSON response and get the status code
   const responseData = await apiCall(raw, 'member/signinValidate')
-  if (responseData.hasOwnProperty('code')) {
+  if (Object.prototype.hasOwnProperty.call(responseData, 'code')) {
     isValid = responseData.code
     desc = responseData.desc
   } else {
@@ -43,7 +43,7 @@ module.exports = [
         const apiResponse = await apiSignInValidateCall(signinToken, code)
         console.log(apiResponse)
         let response
-        if (apiResponse.hasOwnProperty('code')) {
+        if (Object.prototype.hasOwnProperty.call(apiResponse, 'code')) {
           console.log('Invalid')
           response = {
             code: apiResponse.code,

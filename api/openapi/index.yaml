@@ -4,10 +4,12 @@ info:
   version: "1.0.0"
 paths:
   /member/signinStart:
-    $ref: "./paths/signInStart.yaml"
+    $ref: "./paths/signin/signInStart.yaml"
   /member/signinValidate:
-    $ref: "./paths/signInValidate.yaml"
+    $ref: "./paths/signin/signInValidate.yaml"
   /member/registerStart:
-    $ref: "./paths/registerStart.yaml"
+    $ref: "./paths/register/registerStart.yaml"
   /member/registerValidate:
-    $ref: "./paths/registerValidate.yaml"
+    $ref: "./paths/register/registerValidate.yaml"
+  /member/contactdetails:
+    $ref: "./paths/contact_details/contactDetails.yaml"

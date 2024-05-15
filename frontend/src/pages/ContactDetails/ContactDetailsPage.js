@@ -14,19 +14,11 @@ export default function ContactDetailsPage() {
   const [data, setData] = useState({});
   const [loading, setLoading] = useState(true);
 
-  const fetchData = useCallback(async () => {
-    try {
-      const response = await axios.get("/contactdetails");
-      setData(response.data);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching location:", error);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchData();
-  }, [fetchData]);
+  setData({
+    emailaddresses: ["matthew.pepper@gmail.com", "perry.pepper@gmail.com"],
+    texts: ["07343 454590", "07889 668367"],
+    phones: ["01475 721535"],
+  });
 
   return (
     <>

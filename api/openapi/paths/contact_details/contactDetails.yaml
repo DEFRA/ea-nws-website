@@ -1,0 +1,122 @@
+get:
+  tags:
+    - Member
+  summary: User has requested to view their contact details.
+  operationId: "getContactDetails"
+  description: >-
+    A user has requested to view their contact details which can include 
+    the following: email addresses, texts and phone call warnings.
+  responses:
+    200:
+      description: OK
+      headers:
+        Date:
+          schema:
+            type: string
+            example: Fri, 14 Apr 2023 11:22:39 GMT
+        Server:
+          schema:
+            type: string
+            example: Apache/2.4.38 (Debian)
+        Accept-Encoding:
+          schema:
+            type: string
+            example: identity, gzip, deflate
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+            example: "*"
+        Cache-Control:
+          schema:
+            type: string
+            example: no-store, no-cache, must-revalidate
+        Pragma:
+          schema:
+            type: string
+            example: no-cache
+        Content-Type:
+          schema:
+            type: string
+            example: application/json; charset=utf-8
+        Content-Encoding:
+          schema:
+            type: string
+            example: gzip
+        Content-Length:
+          schema:
+            type: integer
+            example: "772"
+        Keep-Alive:
+          schema:
+            type: string
+            example: timeout=5, max=100
+        Connection:
+          schema:
+            type: string
+            example: Keep-Alive
+      content:
+        application/json:
+          schema:
+            type: object
+          example:
+            emailaddresses:
+              - "matthew.pepper@gmail.com"
+              - "perry.pepper@gmail.com"
+            texts:
+              - "07343 454590"
+              - "07889 668367"
+            phones:
+              - "1475 721535"
+    500:
+      description: Internal Server Error
+      headers:
+        date:
+          schema:
+            type: string
+            example: Mon, 11 Mar 2024 17:12:56 GMT
+        content-type:
+          schema:
+            type: string
+            example: application/json; charset=utf-8
+        content-length:
+          schema:
+            type: integer
+            example: "56"
+        accept-encoding:
+          schema:
+            type: string
+            example: identity, gzip, deflate
+        access-control-allow-origin:
+          schema:
+            type: string
+            example: "*"
+        cache-control:
+          schema:
+            type: string
+            example: no-store, no-cache, must-revalidate
+        pragma:
+          schema:
+            type: string
+            example: no-cache
+        content-encoding:
+          schema:
+            type: string
+            example: gzip
+        x-iplb-request-id:
+          schema:
+            type: string
+            example: 3656328B:C96C_05C462FB:01BB_65EF3B98_CCE37:2B3A
+        x-iplb-instance:
+          schema:
+            type: integer
+            example: "53497"
+      content:
+        application/json:
+          schema:
+            type: object
+          examples:
+            example-0:
+              summary: Failed validating the signin, invalid token (101)
+              value:
+                code: 101
+                desc: invalid

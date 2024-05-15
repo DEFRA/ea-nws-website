@@ -10,6 +10,8 @@ export default function App() {
   
   
   let userLoggedout = userIsSigndout()
+  //comment bellow is variable for testing untill user is actually signed in 
+  //let userLoggedout = false
   //for testing
   console.log(userLoggedout)
   //this if statement may increase as non authentication needed pages are developed

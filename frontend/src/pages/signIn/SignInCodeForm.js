@@ -29,16 +29,16 @@ const CodeForm = ({ errorList, setErrorList }) => {
   };
 
   const validateCode = async (code) => {
-    var raw = JSON.stringify({ signinToken: signInToken, code: code });
+    const raw = JSON.stringify({ signinToken: signInToken, code });
     const responseData = await backendCall(raw, "signInValidate");
 
     if (responseData === undefined || responseData.hasOwnProperty("code")) {
       return false;
     }
 
-    window.sessionStorage.setItem("authToken", responseData["authToken"]);
-    window.sessionStorage.setItem("profile", responseData["profile"]);
-    window.sessionStorage.setItem("registration", responseData["registration"]);
+    window.sessionStorage.setItem("authToken", responseData.authToken);
+    window.sessionStorage.setItem("profile", responseData.profile);
+    window.sessionStorage.setItem("registration", responseData.registration);
     return true;
   };
 
@@ -49,7 +49,7 @@ const CodeForm = ({ errorList, setErrorList }) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <TextInput name="Enter code" id="code" errorList={errorList}></TextInput>
+      <TextInput name="Enter code" id="code" errorList={errorList} />
       <button type="submit" class="govuk-button" data-module="govuk-button">
         Continue
       </button>

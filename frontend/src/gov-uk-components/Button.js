@@ -1,14 +1,14 @@
-export default function Button({ text, className, onClick }) {
+export default function Button ({ text, className, onClick }) {
   return (
     <>
       <button
-        type="submit"
+        type='submit'
         class={className}
         onClick={onClick}
-        data-module="govuk-button"
+        data-module='govuk-button'
       >
         {text}
       </button>
     </>
-  );
+  )
 }

@@ -12,20 +12,20 @@ const startRoutes = [{ path: "/start", component: <StartPage /> }]
 //contact routes
 const contactRoutes = [
 {
-    path: "/signoutmanually", 
+    path: "/SignOutManually", 
     component: <SignOutManually/>
 },
 {
-    path: "/signoutautomatically",
+    path: "/SignOutAutomatically",
     component: <SignOutAutomatically/>
 },
 {
-    path:"/signbackin",
+    path:"/SignBackIn",
      component: <SignBackIn/>
 
 },
 
-{   path: "/start",
+{   path: "/Start",
     component: <StartPage /> 
 },
 { 

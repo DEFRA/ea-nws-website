@@ -2,22 +2,7 @@ export default function Header() {
   return (
     <>
      <header class="govuk-header" data-module="govuk-header">
-     <meta name="hmrc-timeout-dialog"
-      content="hmrc-timeout-dialog" 
-      data-language="en" 
-      data-timeout="900" 
-      data-countdown="780" 
-      data-keep-alive-url="?continue=true" 
-      data-sign-out-url="/signoutautomatically" 
-      data-timeout-url="/signoutwarning"
-      data-title="Auto sign out" 
-      data-message="You're about to be signed out" 
-      data-message-suffix="For your're security we will sign you out in 2 minuets" 
-      data-keep-alive-button-text="Stay signed in" 
-      data-sign-out-button-text="Sign out" 
-      data-synchronise-tabs
-      data-hide-sign-out-button 
-      />
+     
 
 
   <div class="govuk-header__container govuk-width-container">

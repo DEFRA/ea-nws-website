@@ -1,41 +1,37 @@
-import React, { useState, useEffect, useCallback } from "react";
-import Header from "../../gov-uk-components/Header";
-import Footer from "../../gov-uk-components/Footer";
-import PhaseBanner from "../../gov-uk-components/PhaseBanner";
-import InsetText from "../../gov-uk-components/InsetText";
-import NotificationBanner from "../../gov-uk-components/NotificationBanner";
-import { useLocation } from "react-router-dom";
-import axios from "axios";
-import LoadingSpinner from "../../custom-components/LoadingSpinner";
-import ContactDetailsTable from "./ContactDetailsTable";
+import React, { useState } from 'react'
+import { useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
+import LoadingSpinner from '../../custom-components/LoadingSpinner'
+import Footer from '../../gov-uk-components/Footer'
+import Header from '../../gov-uk-components/Header'
+import InsetText from '../../gov-uk-components/InsetText'
+import NotificationBanner from '../../gov-uk-components/NotificationBanner'
+import PhaseBanner from '../../gov-uk-components/PhaseBanner'
+import ContactDetailsTable from './ContactDetailsTable'
 
 export default function ContactDetailsPage() {
-  const location = useLocation();
-  const [data, setData] = useState({});
-  const [loading, setLoading] = useState(true);
+  const location = useLocation()
+  const [loading, setLoading] = useState(false)
 
-  setData({
-    emailaddresses: ["matthew.pepper@gmail.com", "perry.pepper@gmail.com"],
-    texts: ["07343 454590", "07889 668367"],
-    phones: ["01475 721535"],
-  });
+  //[TODO] we need to perform a check if this is null
+  //most likely would be null if the user has logged out etc
+  //but we should take the user to an error page or something similar
+  const profile = useSelector((state) => state.user.profile)
 
   return (
     <>
       <Header />
       <div className="govuk-width-container">
         {loading ? (
-          <LoadingSpinner text={"loading..."} />
+          <LoadingSpinner text="loading..." />
         ) : (
           <>
             <PhaseBanner />
             {location.state !== null ? (
               <NotificationBanner
-                className={
-                  "govuk-notification-banner govuk-notification-banner--success"
-                }
+                className="govuk-notification-banner govuk-notification-banner--success"
                 title="Success"
-                heading={location.state.removedType + " removed"}
+                heading={location.state.removedType + ' removed'}
                 text={location.state.removedContact}
               />
             ) : null}
@@ -53,39 +49,35 @@ export default function ContactDetailsPage() {
                     emails and numbers. You can add more for friends and family,
                     if you wish.
                   </p>
-                  <InsetText
-                    text={
-                      "You must confirm each address and number before we can send flood messages to them."
+                  <InsetText text="You must confirm each address and number before we can send flood messages to them." />
+                  <ContactDetailsTable
+                    contacts={profile.emails}
+                    contactTitle="Emails"
+                    contactType="email address"
+                    notRemovable={
+                      profile.emails.length === 1 &&
+                      profile.mobilePhones.length === 0 &&
+                      profile.homePhones.length === 0
                     }
                   />
                   <ContactDetailsTable
-                    contacts={data.emailaddresses}
-                    contactTitle={"Emails"}
-                    contactType={"email address"}
+                    contacts={profile.mobilePhones}
+                    contactTitle="mobilePhones"
+                    contactType="mobile telephone number"
                     notRemovable={
-                      data.emailaddresses.length === 1 &&
-                      data.texts.length === 0 &&
-                      data.phones.length === 0
+                      profile.emails.length === 0 &&
+                      profile.mobilePhones.length === 1 &&
+                      profile.homePhones.length === 0
                     }
                   />
                   <ContactDetailsTable
-                    contacts={data.texts}
-                    contactTitle={"Texts"}
-                    contactType={"mobile telephone number"}
+                    contacts={profile.homePhones}
+                    contactTitle="Phone call warnings"
+                    contactType="telephone number"
                     notRemovable={
-                      data.emailaddresses.length === 0 &&
-                      data.texts.length === 1 &&
-                      data.phones.length === 0
-                    }
-                  />
-                  <ContactDetailsTable
-                    contacts={data.phones}
-                    contactTitle={"Phone call warnings"}
-                    contactType={"telephone number"}
-                    notRemovable={
-                      data.emailaddresses.length === 0 &&
-                      data.texts.length === 0 &&
-                      data.phones.length === 1
+                      profile.emails.length === 0 &&
+                      profile.mobilePhones.length === 0 &&
+                      profile.homePhones.length === 1
                     }
                   />
                 </div>
@@ -96,5 +88,5 @@ export default function ContactDetailsPage() {
       </div>
       <Footer />
     </>
-  );
+  )
 }

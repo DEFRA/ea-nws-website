@@ -1,26 +1,23 @@
-import Header from "../../gov-uk-components/Header";
-import Footer from "../../gov-uk-components/Footer";
-import PhaseBanner from "../../gov-uk-components/PhaseBanner";
-import InsetText from "../../gov-uk-components/InsetText";
-import Button from "../../gov-uk-components/Button";
-import NotificationBanner from "../../gov-uk-components/NotificationBanner";
-import Details from "../../gov-uk-components/Details";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import React from "react";
+import React from 'react'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import Button from '../../gov-uk-components/Button'
+import Footer from '../../gov-uk-components/Footer'
+import Header from '../../gov-uk-components/Header'
+import InsetText from '../../gov-uk-components/InsetText'
+import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
 export default function ConfirmDeleteContactDetailsPage() {
-  const location = useLocation();
-  const navigate = useNavigate();
+  const location = useLocation()
+  const navigate = useNavigate()
 
   const removeContact = () => {
-    console.log("removed");
-    navigate("/managecontacts", {
+    navigate('/managecontacts', {
       state: {
         removedType: location.state.type,
-        removedContact: location.state.contact,
-      },
-    });
-  };
+        removedContact: location.state.contact
+      }
+    })
+  }
 
   return (
     <>
@@ -38,8 +35,8 @@ export default function ConfirmDeleteContactDetailsPage() {
               </h2>
               <InsetText text={location.state.contact} />
               <Button
-                className={"govuk-button govuk-button--warning"}
-                text={"Remove"}
+                className="govuk-button govuk-button--warning"
+                text="Remove"
                 onClick={removeContact}
               />
               &nbsp;
@@ -52,5 +49,5 @@ export default function ConfirmDeleteContactDetailsPage() {
       </div>
       <Footer />
     </>
-  );
+  )
 }

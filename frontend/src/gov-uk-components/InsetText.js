@@ -1,7 +1,7 @@
-export default function TextInput({ text }) {
+export default function TextInput ({ text }) {
   return (
     <>
-      <div className="govuk-inset-text">{text}</div>
+      <div className='govuk-inset-text'>{text}</div>
     </>
-  );
+  )
 }

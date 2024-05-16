@@ -5,6 +5,8 @@ import SignOutAutomatically from "../pages/signOut/SignOutAutomatically";
 import SignBackIn from "../pages/signOut/SignBackIn";
 import SignInPage from "../pages/signIn/SignInStartPage";
 import CheckYourEmailPage from "../pages/signIn/SignInValidatePage";
+import InitialEmailRegistrationPage from "../pages/register/InitialEmailRegistrationPage";
+import ValidateEmailForRegistration from "../pages/register/ValidateEmailForRegistration";
 
 //start routes
 const startRoutes = [{ path: "/start", component: <StartPage /> }]
@@ -35,7 +37,8 @@ const contactRoutes = [
 {   
     path: "/CheckYourEmailPage",
      component: <CheckYourEmailPage /> 
-}
+},{ path: "/register", component: <InitialEmailRegistrationPage /> },
+{ path: "/ValidateEmailForRegistration", component: <ValidateEmailForRegistration /> },
 
 ];
 

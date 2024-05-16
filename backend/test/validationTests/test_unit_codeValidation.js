@@ -3,6 +3,7 @@ const Code = require("@hapi/code");
 const { describe, it } = (exports.lab = Lab.script());
 const { expect } = Code;
 const codeValidation = require("../../server/services/Validations/CodeValidation");
+
 describe("codeValidation", () => {
   it("should return true for a valid code of correct length", () => {
     const result = codeValidation("123456", 6);

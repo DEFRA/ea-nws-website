@@ -4,60 +4,50 @@ const { expect } = require("@hapi/code");
 const lab = (exports.lab = Lab.script());
 const axios = require("axios");
 const path = require("path");
+const fetch = require("node-fetch");
 
 const apiDir = path.resolve(__dirname, "../../api");
 let apiProcess;
 
 lab.before(async () => {
-  console.log(__dirname);
-  console.log(apiDir);
   // Compile TypeScript code to JavaScript
-  /*console.log("Compiling TypeScript code...");
+  console.log("Compiling TypeScript code...");
   try {
     execSync("tsc --project tsconfig.json", { cwd: apiDir, stdio: "inherit" });
   } catch (error) {
     console.error("TypeScript compilation failed");
     process.exit(1);
-  }*/
+  }
 
   // Start the API server
   console.log("Starting API server...");
   apiProcess = spawn("node", ["index.js"], {
     env: { ...process.env, PORT: "9000" },
     cwd: apiDir,
+    stdio: "inherit",
   });
-  console.log("Started");
   // Wait until the server is ready
-  await new Promise((resolve, reject) => {
-    const timeout = setTimeout(() => {
-      reject(new Error("Server did not start within 10 seconds"));
-    }, 10000); // 10 seconds timeout
-
-    console.log("awaiting");
-    apiProcess.stdout.on("data", (data) => {
-      if (data.toString().includes("Server running on")) {
-        clearTimeout(timeout);
-        resolve();
-      }
-    });
-    console.log("B");
-    apiProcess.stderr.on("data", (data) => {
-      console.error(data.toString());
-      clearTimeout(timeout);
-      reject(data.toString());
-    });
-    console.log("C");
-    apiProcess.on("error", (err) => {
-      clearTimeout(timeout);
-      reject(err);
-    });
-    console.log("D");
-  });
+  await new Promise((resolve) => setTimeout(resolve, 5000));
 });
 
-lab.after(async () => {
-  // Stop the API server
+lab.onCleanup = async () => {
   if (apiProcess) {
-    apiProcess.kill();
+    console.log("Terminating API process...");
+    apiProcess.kill("SIGTERM");
+    await new Promise((resolve) => {
+      apiProcess.on("close", () => {
+        console.log("API process terminated");
+        resolve();
+      });
+    });
+    console.log("Waiting for port release...");
+    await new Promise((resolve) => setTimeout(resolve, 5000)); // Wait for 5 seconds after killing the process
+    console.log("Cleanup complete");
   }
+};
+
+lab.test("example test", async () => {
+  const response = await fetch("http://localhost:9000/"); // Adjust the endpoint
+  const data = await response.json();
+  expect(data).to.be.an.object();
 });

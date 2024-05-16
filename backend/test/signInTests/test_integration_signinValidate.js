@@ -34,7 +34,7 @@ lab.experiment("Integration tests", () => {
       url: "/signInValidate",
       payload: {
         signinToken: "654321",
-        code: " ",
+        code: "",
       },
     };
     const response = await server.inject(options);
@@ -62,7 +62,7 @@ lab.experiment("Integration tests", () => {
         url: "/signInValidate",
         payload: {
           signinToken: "654321",
-          code: "123456",
+          code: "678901",
         },
       };
       const response = await server.inject(options);

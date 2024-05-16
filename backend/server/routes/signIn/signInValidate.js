@@ -14,6 +14,7 @@ const apiSignInValidateCall = async (signInToken, code) => {
 
   // Parse the JSON response and get the status code
   const responseData = await apiCall(raw, "member/signinValidate");
+  if (responseData === undefined) return;
   if (Object.prototype.hasOwnProperty.call(responseData, "code")) {
     isValid = responseData.code;
     desc = responseData.desc;
@@ -26,7 +27,7 @@ const apiSignInValidateCall = async (signInToken, code) => {
 
   return isValid === 200
     ? { authToken, profile, registration }
-    : { code: isValid, desc };
+    : { code: isValid, desc: desc };
 };
 
 module.exports = [
@@ -35,9 +36,11 @@ module.exports = [
     path: "/signInValidate",
     handler: async (request, h) => {
       try {
+        if (request.payload === null) {
+          return h.response({ message: "Bad request" }).code(400);
+        }
         const { signinToken, code } = request.payload;
         const apiResponse = await apiSignInValidateCall(signinToken, code);
-        console.log(apiResponse);
         let response;
         if (Object.prototype.hasOwnProperty.call(apiResponse, "code")) {
           console.log("Invalid");
@@ -53,7 +56,6 @@ module.exports = [
             registration: apiResponse.registration,
           };
         }
-
         return h.response(response);
       } catch (error) {
         console.error("Error:", error);

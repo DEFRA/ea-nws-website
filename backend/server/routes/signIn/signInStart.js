@@ -13,10 +13,11 @@ const apiSignInStartCall = async (email) => {
 
   const responseData = await apiCall(raw, "member/signinStart");
   console.log("Received from API: ", responseData);
+  if (responseData === undefined) return;
   if (Object.prototype.hasOwnProperty.call(responseData, "desc")) {
     isValid = responseData.code;
     desc = responseData.desc;
-    return { code: isValid, desc };
+    return { code: isValid, desc: desc };
   } else {
     console.log("responseData", responseData);
     isValid = responseData.code;
@@ -31,8 +32,10 @@ module.exports = [
     path: "/signInStart",
     handler: async (request, h) => {
       try {
+        if (request.payload === null) {
+          return h.response({ message: "Bad request" }).code(400);
+        }
         const { email } = request.payload;
-        // do some email validation
         const apiResponse = await apiSignInStartCall(email);
         const response = {
           code: apiResponse.code,

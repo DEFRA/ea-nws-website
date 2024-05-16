@@ -11,14 +11,17 @@ lab.experiment("Integration tests", () => {
     server = await createServer();
   });
 
-  lab.test("POST / the payload is missing from the POST call", async () => {
-    const options = {
-      method: "POST",
-      url: "/signInValidate",
-    };
-    const response = await server.inject(options);
-    Code.expect(response.statusCode).to.equal(500);
-  });
+  lab.test(
+    "POST / the payload is missing from the POST call, bad request",
+    async () => {
+      const options = {
+        method: "POST",
+        url: "/signInValidate",
+      };
+      const response = await server.inject(options);
+      Code.expect(response.statusCode).to.equal(400);
+    }
+  );
 
   lab.test("GET / sending a GET instead of POST", async () => {
     const options = {

@@ -1,4 +1,5 @@
-import fetch from "node-fetch";
+//import fetch from "node-fetch";
+
 const apiCall = async (raw, call) => {
   let responseData;
   const url = "http://localhost:9000/" + call;

@@ -47,7 +47,7 @@ lab.experiment("Integration tests", () => {
     Code.expect(response.result.code).to.equal(101);
   });
 
-  lab.test("POST / route runs with invalid email format", async () => {
+  lab.test("POST / route runs with valid email format", async () => {
     const options = {
       method: "POST",
       url: "/signInStart",

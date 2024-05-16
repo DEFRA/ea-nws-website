@@ -2,16 +2,16 @@ import Header from "../../gov-uk-components/Header";
 import Footer from "../../gov-uk-components/Footer";
 import Button from "../../gov-uk-components/Button";
 import routes from "../../routes/routes";
-import { Navigate } from "react-router";
+import { useNavigate } from "react-router-dom";
 
 
 
 
 export default function SignBackIn() {
-    
+    const navigate = useNavigate()
     function redirect() {
-        //Navigate("/SignInPage")
-        window.location.href = "/SignInPage";
+        navigate("/SignInPage")
+        //window.location.href = "/SignInPage";
     }
 
     return(<>

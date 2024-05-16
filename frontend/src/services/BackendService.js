@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 const backendCall = async (raw, call) => {
   let responseData;
   const url = "http://localhost:3000/" + call;

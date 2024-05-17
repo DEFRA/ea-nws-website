@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import SignBackIn from './pages/signOut/SignBackIn'
-import { routes } from './routes/routes'
+import { routes, unAuthRoutes } from './routes/routes'
 import userIsSigndout from './services/CheckUserSignInService'
 
 export default function App() {
@@ -14,22 +14,36 @@ export default function App() {
 
   //let userLoggedout = false //use for testing
   let userLoggedout = userIsSigndout() // use  this for actual program
-
   console.log(userLoggedout)
-  //this if statement may increase as non authentication needed pages are developed
-  // if (
-  //   userLoggedout === true &&
-  //   window.location.href !== 'http://localhost:3000/Start' &&
-  //   window.location.href !== 'http://localhost:3000/SignInPage'
-  // ) {
-  //   console.log(window.location.href)
-  //   return <SignBackIn />
-  // } else {
 
+  let validRoute = (routes, unAuthRoutes) => {
+    if (unAuthRoutes.includes(routes)) {
+      return true
+    } else {
+      return false
+    }
+  }
+  // fix this
   return userLoggedout ? (
-    <BrowserRouter basename="/">
-      <SignBackIn />
-    </BrowserRouter>
+    validRoute ? (
+      <BrowserRouter basename="/">
+        <Routes>
+          {unAuthRoutes.map((unAuthRoutes, index) => (
+            <Route
+              key={index}
+              path={unAuthRoutes.path}
+              element={unAuthRoutes.component}
+            />
+          ))}
+        </Routes>
+      </BrowserRouter>
+    ) : (
+      <BrowserRouter basename="/">
+        <Routes>
+          <SignBackIn />
+        </Routes>
+      </BrowserRouter>
+    )
   ) : (
     <BrowserRouter basename="/">
       <Routes>
@@ -39,26 +53,60 @@ export default function App() {
       </Routes>
     </BrowserRouter>
   )
-
-  // return (
-  //   <BrowserRouter basename='/'>
-  //     <Routes>
-  //     {unAuthRoutes.map((route,index) = (
-  //       Route key={index} path={unAuthRoutes.path} element={unAuthRoutes.component} />
-  //     ))}
-  //     </Routes>
-  //   </BrowserRouter>
-  // ):
-
-  // return (
-  //   <BrowserRouter basename="/">
-  //     <Routes>
-  //       {routes.map((route, index) => (
-  //         <Route key={index} path={route.path} element={route.component} />
-  //       ))}
-  //     </Routes>
-  //   </BrowserRouter>
-  // )
 }
 
-//}
+// return (
+//   <BrowserRouter basename='/'>
+//     <Routes>
+//     {unAuthRoutes.map((route,index) = (
+//       Route key={index} path={unAuthRoutes.path} element={unAuthRoutes.component} />
+//     ))}
+//     </Routes>
+//   </BrowserRouter>)
+
+//   return userLoggedout ? (
+//     <BrowserRouter basename="/">
+//       <Routes>
+
+//         {unAuthRoutes.map((unAuthRoutes, index) => (
+//           <Route
+//             key={index}
+//             path={unAuthRoutes.path}
+//             element={unAuthRoutes.component}
+//           />
+//         ))}
+
+//       </Routes>
+//     </BrowserRouter>
+//   ) : (
+//     <BrowserRouter basename="/">
+//       <Routes>
+//         {routes.map((route, index) => (
+//           <Route key={index} path={route.path} element={route.component} />
+//         ))}
+//       </Routes>
+//     </BrowserRouter>
+//   )
+
+//   // return (
+//   //   <BrowserRouter basename='/'>
+//   //     <Routes>
+//   //     {unAuthRoutes.map((route,index) = (
+//   //       Route key={index} path={unAuthRoutes.path} element={unAuthRoutes.component} />
+//   //     ))}
+//   //     </Routes>
+//   //   </BrowserRouter>
+//   // ):
+
+//   // return (
+//   //   <BrowserRouter basename="/">
+//   //     <Routes>
+//   //       {routes.map((route, index) => (
+//   //         <Route key={index} path={route.path} element={route.component} />
+//   //       ))}
+//   //     </Routes>
+//   //   </BrowserRouter>
+//   // )
+// }
+
+// //

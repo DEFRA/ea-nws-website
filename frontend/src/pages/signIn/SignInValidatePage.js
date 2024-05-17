@@ -10,8 +10,8 @@ import {
   setProfile,
   setRegistration
 } from '../../redux/userSlice'
+import { backendCall } from '../../services/BackendService'
 
-const backendCall = require('../../services/BackendService')
 const userEmail = window.sessionStorage.getItem('userEmail')
 const signInToken = window.sessionStorage.getItem('signInToken')
 
@@ -64,25 +64,25 @@ const SignInValidateForm = (props) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <TextInput name='Enter code' id='code' />
+      <TextInput name="Enter code" id="code" />
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <button type='submit' class='govuk-button' data-module='govuk-button'>
+      <button type="submit" class="govuk-button" data-module="govuk-button">
         Continue
       </button>
     </form>
   )
 }
 
-export default function CheckYourEmailPage () {
+export default function CheckYourEmailPage() {
   return (
     <>
       <Header />
-      <div class='govuk-width-container'>
-        <a href='SignInPage' class='govuk-back-link'>
+      <div class="govuk-width-container">
+        <a href="SignInPage" class="govuk-back-link">
           Back
         </a>
-        <h2 class='govuk-heading-l'>Check your email</h2>
-        <div class='govuk-body'>
+        <h2 class="govuk-heading-l">Check your email</h2>
+        <div class="govuk-body">
           We've sent a code to:
           <InsetText text={userEmail} />
           <SignInValidateForm />

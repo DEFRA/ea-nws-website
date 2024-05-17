@@ -18,21 +18,19 @@ export default function ConfirmDeleteContactDetailsPage() {
   // most likely would be null if the user has logged out etc
   // but we should take the user to an error page or something similar
   const session = useSelector((state) => state.session)
-  console.log('session', session)
 
   const removeContact = async () => {
-    const updatedProfile = removeItemFromProfile(
+    const updatedProfile = removeContactFromProfile(
       session.profile,
       location.state.contact
     )
-    dispatch(setProfile(updatedProfile))
-    console.log('updated session profile', updatedProfile)
     const data = JSON.stringify({
       authToken: session.authToken,
       profile: updatedProfile
     })
-    console.log(data)
-    await backendCall(data, 'updateprofile')
+    const response = await backendCall(data, 'profile/update')
+    console.log('response', response)
+    dispatch(setProfile(updatedProfile))
     navigate('/managecontacts', {
       state: {
         removedType: location.state.type,
@@ -41,7 +39,7 @@ export default function ConfirmDeleteContactDetailsPage() {
     })
   }
 
-  const removeItemFromProfile = (profile, valueToRemove) => {
+  const removeContactFromProfile = (profile, valueToRemove) => {
     const updatedProfile = { ...profile }
     const propertiesToCheck = ['emails', 'mobilePhones', 'homePhones']
 

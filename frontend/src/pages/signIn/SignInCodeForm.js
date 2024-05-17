@@ -43,7 +43,7 @@ const SignInCodeForm = (props) => {
   }
 
   const validateCode = async (code) => {
-    const raw = JSON.stringify({ signinToken: signinToken, code: code })
+    const raw = JSON.stringify({ signinToken, code })
     const responseData = await backendCall(raw, 'signInValidate')
 
     if (
@@ -62,12 +62,12 @@ const SignInCodeForm = (props) => {
   return (
     <form onSubmit={handleSubmit}>
       <TextInput
-        name="Enter code"
-        id="code"
+        name='Enter code'
+        id='code'
         errorList={props.errorList}
         onChange={setCode}
       />
-      <Button className="govuk-button" text="Continue"></Button>
+      <Button className='govuk-button' text='Continue' />
     </form>
   )
 }

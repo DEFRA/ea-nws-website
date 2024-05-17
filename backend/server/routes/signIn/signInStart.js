@@ -3,8 +3,6 @@ const signInStartValidation = require('../../services/Validations/EmailValidatio
 
 const apiSignInStartCall = async (email) => {
   let isValid = 400
-  let signInToken = ''
-  let desc = ''
   const raw = JSON.stringify({ email })
   console.log('Received from front-end: ', raw)
   if (!signInStartValidation(email)) {
@@ -16,12 +14,12 @@ const apiSignInStartCall = async (email) => {
   if (responseData === undefined) return
   if (Object.prototype.hasOwnProperty.call(responseData, 'desc')) {
     isValid = responseData.code
-    desc = responseData.desc
+    const desc = responseData.desc
     return { code: isValid, desc: desc }
   } else {
     console.log('responseData', responseData)
     isValid = responseData.code
-    signinToken = responseData.signInToken
+    const signinToken = responseData.signInToken
     return { code: isValid, signinToken }
   }
 }

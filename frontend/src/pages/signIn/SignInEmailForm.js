@@ -57,12 +57,12 @@ const SignInEmailForm = (props) => {
   return (
     <form onSubmit={handleSubmit}>
       <TextInput
-        name="Email address"
-        id="emailAddress"
+        name='Email address'
+        id='emailAddress'
         errorList={props.errorList}
         onChange={setEmail}
       />
-      <Button className="govuk-button" text="Continue"></Button>
+      <Button className='govuk-button' text='Continue' />
     </form>
   )
 }

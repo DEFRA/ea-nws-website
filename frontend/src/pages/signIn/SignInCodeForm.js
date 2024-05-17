@@ -1,16 +1,30 @@
+import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
+import Button from '../../gov-uk-components/Button'
 import TextInput from '../../gov-uk-components/TextInput'
+import {
+  setAuthToken,
+  setProfile,
+  setRegistration
+} from '../../redux/userSlice'
+import backendCall from '../../services/BackendService'
+import codeValidation from '../../services/Validations/CodeValidation'
 
-const backendCall = require('../../services/BackendService')
-const signInToken = window.sessionStorage.getItem('signInToken')
+const SignInCodeForm = (props) => {
+  const location = useLocation()
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
 
-const CodeForm = ({ errorList, setErrorList }) => {
+  const signinToken = location.state.signinToken
+  const [code, setCode] = useState('')
+
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const code = event.target.code.value
     const errors = []
     if (code === '') {
       errors.push('Enter code')
-    } else if (!validateNumber(code, 6)) {
+    } else if (!codeValidation(code, 6)) {
       errors.push('Code must be 6 numbers')
     }
     if (errors.length === 0) {
@@ -20,16 +34,16 @@ const CodeForm = ({ errorList, setErrorList }) => {
       }
     }
     if (errors.length > 0) {
-      setErrorList(errors)
+      props.setErrorList(errors)
       return
     }
-    setErrorList()
+    props.setErrorList()
     event.target.reset()
-    window.location.replace('Start')
+    navigate('/start')
   }
 
   const validateCode = async (code) => {
-    const raw = JSON.stringify({ signinToken: signInToken, code })
+    const raw = JSON.stringify({ signinToken: signinToken, code: code })
     const responseData = await backendCall(raw, 'signInValidate')
 
     if (
@@ -38,26 +52,24 @@ const CodeForm = ({ errorList, setErrorList }) => {
     ) {
       return false
     }
+    dispatch(setAuthToken(responseData.authToken))
+    dispatch(setProfile(responseData.profile))
+    dispatch(setRegistration(responseData.registration))
 
-    window.sessionStorage.setItem('authToken', responseData.authToken)
-    window.sessionStorage.setItem('profile', responseData.profile)
-    window.sessionStorage.setItem('registration', responseData.registration)
     return true
-  }
-
-  const validateNumber = (input, digits) => {
-    const numberPattern = new RegExp(`^[0-9]{${digits}}$`)
-    return numberPattern.test(input)
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      <TextInput name='Enter code' id='code' errorList={errorList} />
-      <button type='submit' class='govuk-button' data-module='govuk-button'>
-        Continue
-      </button>
+      <TextInput
+        name="Enter code"
+        id="code"
+        errorList={props.errorList}
+        onChange={setCode}
+      />
+      <Button className="govuk-button" text="Continue"></Button>
     </form>
   )
 }
 
-export default CodeForm
+export default SignInCodeForm

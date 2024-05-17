@@ -1,15 +1,31 @@
+import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import Button from '../../gov-uk-components/Button'
 import TextInput from '../../gov-uk-components/TextInput'
+import backendCall from '../../services/BackendService'
+import emailValidation from '../../services/Validations/EmailValidation'
 
-const backendCall = require('../../services/BackendService')
+const SignInEmailForm = (props) => {
+  const navigate = useNavigate()
 
-const EmailForm = ({ errorList, setErrorList }) => {
+  const signInNavigate = () => {
+    navigate('/SignInValidate', {
+      state: {
+        email,
+        signinToken
+      }
+    })
+  }
+  const [email, setEmail] = useState('')
+  const [signinToken, setsigninToken] = useState('')
+
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const email = event.target.emailAddress.value
+
     const errors = []
     if (email === '') {
       errors.push('Enter your email address')
-    } else if (!validateEmail(email)) {
+    } else if (!emailValidation(email)) {
       errors.push(
         'Enter an email address in the correct format, like name@example.com'
       )
@@ -22,48 +38,42 @@ const EmailForm = ({ errorList, setErrorList }) => {
     }
 
     if (errors.length > 0) {
-      setErrorList(errors)
+      props.setErrorList(errors)
       return
     }
-    setErrorList([])
-    window.sessionStorage.setItem('userEmail', email)
+    props.setErrorList([])
+    setEmail(email)
+    signInNavigate()
     event.target.reset()
-    window.location.replace('SignInValidate')
-  }
-
-  const validateEmail = (email) => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailPattern.test(email)
   }
 
   const checkEmail = async (email) => {
-    let signInToken = ''
+    let signinToken = ''
     const raw = JSON.stringify({ email })
     const responseData = await backendCall(raw, 'signInStart')
     if (responseData === undefined) {
       return false
     }
     const code = responseData.code
-    signInToken = responseData.signInToken
+    signinToken = responseData.signInToken
     if (code === 101) {
       return false
     }
-    window.sessionStorage.setItem('signInToken', signInToken)
+    setsigninToken(signinToken)
     return true
   }
 
   return (
     <form onSubmit={handleSubmit}>
       <TextInput
-        name='Email address'
-        id='emailAddress'
-        errorList={errorList}
+        name="Email address"
+        id="emailAddress"
+        errorList={props.errorList}
+        onChange={setEmail}
       />
-      <button type='submit' className='govuk-button' data-module='govuk-button'>
-        Continue
-      </button>
+      <Button className="govuk-button" text="Continue"></Button>
     </form>
   )
 }
 
-export default EmailForm
+export default SignInEmailForm

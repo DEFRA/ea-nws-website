@@ -1,4 +1,4 @@
-const apiCall = require('../../services/ApiService')
+const { apiCall } = require('../../services/ApiService')
 
 const apiSignInValidateCall = async (signInToken, code) => {
   let isValid = 400

@@ -6,13 +6,8 @@ module.exports = [
     path: '/profile/update',
 
     handler: async (request, h) => {
-      console.log('payload', request.payload)
-      const { authToken, profile } = request.payload
-
       const response = await apiCall(request.payload, 'member/updateprofile')
-      console.log('response', response)
-
-      return h.response(profile)
+      return h.response(response)
     }
   }
 ]

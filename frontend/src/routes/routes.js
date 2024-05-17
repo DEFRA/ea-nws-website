@@ -14,6 +14,14 @@ const siginRoutes = [
   { path: '/signin/validate', component: <CheckYourEmailPage /> }
 ]
 
+const registerRoutes = [
+  { path: '/register', component: <InitialEmailRegistrationPage /> },
+  {
+    path: '/ValidateEmailForRegistration',
+    component: <ValidateEmailForRegistration />
+  }
+]
+
 // contact routes
 const contactRoutes = [
   { path: '/managecontacts', component: <ContactDetailsPage /> },
@@ -23,6 +31,11 @@ const contactRoutes = [
   }
 ]
 
-const routes = [...startRoutes, ...siginRoutes, ...contactRoutes]
+const routes = [
+  ...startRoutes,
+  ...siginRoutes,
+  ...registerRoutes,
+  ...contactRoutes
+]
 
 export default routes

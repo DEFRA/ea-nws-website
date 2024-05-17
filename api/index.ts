@@ -14,7 +14,8 @@ const validationHandlers = require('./handlers/validationHandlers')
 const api = new OpenAPIBackend({
   definition: './openapi/index.yaml',
   handlers: {
-    getRegister: registerHandlers.getRegister,
+    getRegisterStart: registerHandlers.getRegisterStart,
+    getRegisterValidate: registerHandlers.getRegisterValidate,
     getSignInStart: signInHandlers.getSigninStart,
     getSignInValidate: signInHandlers.getSigninValidate,
     getUpdateProfile: updateProfileHandler.getUpdateProfile,

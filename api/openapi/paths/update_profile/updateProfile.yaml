@@ -40,92 +40,25 @@ post:
             profile:
               id: ''
               enabled: false
-              firstname: Javier
-              lastname: Rabbit
-              emails: []
-              mobilePhones: []
+              firstname: ''
+              lastname: ''
+              emails:
+                - roger.rabbit@intersec.com
+              mobilePhones:
+                - +336********
               homePhones: []
-              language: FR
+              language: EN
               additionals: []
               unverified:
-                emails:
-                  - address: roger.rabbit@gmx.com
-                  - address: javier.rabbit@gmail.com
-                mobilePhones:
-                  - address: +336********
+                emails: []
+                mobilePhones: []
                 homePhones:
-                  - address: +331********
+                  - address: +336********
               pois:
-                - address: RIVERHAYES LATCHMOOR GREEN, THORVERTON, EXETER, EX5 5LY
+                - address: Exeter, Royaume-Uni
                   coordinates:
-                    latitude: 53038212
-                    longitude: -3803321
-                - address: 3, LONDON TERRACE, PENMACHNO, BETWS-Y-COED, LL24 0YF
-                  coordinates:
-                    latitude: 53038762
-                    longitude: -3803799
-                - address: >-
-                    LONDON HOUSE, HIGH STREET, LLANFAIR CAEREINION, Y
-                    TRALLWNG, SY21 0QS
-                  coordinates:
-                    latitude: 52647922
-                    longitude: -3326470
-                - address: >-
-                    LONG BARN, NEW LODGE FARM, PETERCHURCH, HEREFORD, HR3
-                    6BJ
-                  coordinates:
-                    latitude: 52045694
-                    longitude: -3012498
-                - address: 15, ST JOHN'S WAY, HACKNEY, LONDON, N19 3PR
-                  coordinates:
-                    latitude: 51568282
-                    longitude: -130459
-                - address: 15, PARK STREET, BROUGHTON, SALFORD, M7 4JL
-                  coordinates:
-                    latitude: 53503528
-                    longitude: -2248191
-                - address: 6, MAIN STREET, CALDECOTT, CORBY, NN17 3DL
-                  coordinates:
-                    latitude: 52486285
-                    longitude: -762676
-                - address: 1, CHURCH STREET, SPROXTON, MELTON MOWBRAY, LE14 4PJ
-                  coordinates:
-                    latitude: 52817654
-                    longitude: -897262
-                - address: 3, BIRDWELL ROAD, WITTON, BIRMINGHAM, B6 6SE
-                  coordinates:
-                    latitude: 52499273
-                    longitude: -1896877
-                - address: 3, SOUTH END, FRODSHAM, WARRINGTON, WA6 7AU
-                  coordinates:
-                    latitude: 53295202
-                    longitude: -2720613
-                - address: 33, UPPER BELGRAVE ROAD, CLIFTON, BRISTOL, BS8 2XN
-                  coordinates:
-                    latitude: 51459123
-                    longitude: -2619273
-                - address: 3, HIGH STREET, THRAPSTON, KETTERING, NN14 4JH
-                  coordinates:
-                    latitude: 52382301
-                    longitude: -554245
-                - address: 2, UNION STREET, TOTTON, SOUTHAMPTON, SO40 9DS
-                  coordinates:
-                    latitude: 50916096
-                    longitude: -1484986
-                - address: >-
-                    4, SOUTH PARADE, SUTTON BONINGTON, LOUGHBOROUGH, LE12
-                    5NR
-                  coordinates:
-                    latitude: 52836027
-                    longitude: -1216102
-                - address: 18, MAES Y RHOS, PENYGROES, CAERNARFON, LL54 6AE
-                  coordinates:
-                    latitude: 53069538
-                    longitude: -4272549
-                - address: 23, SHREWSBURY CLOSE, EAGLESTONE, MILTON KEYNES, MK6 5BQ
-                  coordinates:
-                    latitude: 52013912
-                    longitude: -755356
+                    latitude: 50726037
+                    longitude: -3527489
   parameters:
     - name: Content-Type
       in: header

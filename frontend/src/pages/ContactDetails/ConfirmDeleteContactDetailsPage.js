@@ -8,6 +8,7 @@ import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
+import { handleResponse } from '../../services/HandleResponse'
 
 export default function ConfirmDeleteContactDetailsPage() {
   const location = useLocation()
@@ -29,14 +30,16 @@ export default function ConfirmDeleteContactDetailsPage() {
       profile: updatedProfile
     })
     const response = await backendCall(data, 'profile/update')
-    console.log('response', response)
-    dispatch(setProfile(updatedProfile))
-    navigate('/managecontacts', {
-      state: {
-        removedType: location.state.type,
-        removedContact: location.state.contact
-      }
-    })
+    const responseData = handleResponse(response, navigate)
+    if (responseData) {
+      dispatch(setProfile(updatedProfile))
+      navigate('/managecontacts', {
+        state: {
+          removedType: location.state.type,
+          removedContact: location.state.contact
+        }
+      })
+    }
   }
 
   const removeContactFromProfile = (profile, valueToRemove) => {

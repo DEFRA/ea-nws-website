@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import SignBackIn from './pages/signOut/SignBackIn'
-import { routes, unAuthRoutes } from './routes/routes'
+import { routes } from './routes/routes'
 import userIsSigndout from './services/CheckUserSignInService'
 
 export default function App() {
@@ -28,11 +28,7 @@ export default function App() {
 
   return userLoggedout ? (
     <BrowserRouter basename="/">
-      <Routes>
-        {unAuthRoutes.map((unAuthRoutes, index) => (
-          <Route key={index} path="/SignBackIn" element=<SignBackIn /> />
-        ))}
-      </Routes>
+      <SignBackIn />
     </BrowserRouter>
   ) : (
     <BrowserRouter basename="/">

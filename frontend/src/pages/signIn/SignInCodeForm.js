@@ -63,7 +63,6 @@ const SignInCodeForm = (props) => {
     <form onSubmit={handleSubmit}>
       <TextInput
         name='Enter code'
-        id='code'
         errorList={props.errorList}
         onChange={setCode}
       />

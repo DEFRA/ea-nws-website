@@ -1,12 +1,12 @@
 {
-  "name": "National Warning System",
+  "name": "back-end",
   "version": "0.0.1",
   "description": "National Warning System",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "build:css": "bin/build-css",
-    "build": "bin/build",
+    "build:css": "node-sass --output-style=expanded --output=server/public/build/stylesheets client/sass",
+    "build": "npm run build:css",
     "lint": "standard",
     "unit-test": "lab -c -r console -o stdout -r lcov -o lcov.info",
     "test": "npm run lint && npm run unit-test",

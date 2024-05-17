@@ -11,7 +11,7 @@ export default function SignInPage() {
     <>
       <Header />
       <div class="govuk-width-container">
-        <Link to="/start" className="govuk-back-link">
+        <Link to="/" className="govuk-back-link">
           Back
         </Link>
         <ErrorSummary errorList={errorList} />
@@ -24,7 +24,7 @@ export default function SignInPage() {
             <li>delete your account</li>
           </ul>
           <SignInEmailForm errorList={errorList} setErrorList={setErrorList} />
-          <Link to="/Start" className="govuk-link">
+          <Link to="/" className="govuk-link">
             Sign up if you do not have an account
           </Link>
         </div>

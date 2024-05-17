@@ -1,7 +1,7 @@
-import Header from "../gov-uk-components/Header";
-import Footer from "../gov-uk-components/Footer";
-import * as React from "react";
-import { Outlet, Link } from "react-router-dom";
+import * as React from 'react'
+import { Link } from 'react-router-dom'
+import Footer from '../gov-uk-components/Footer'
+import Header from '../gov-uk-components/Header'
 
 export default function StartPage() {
   return (
@@ -31,7 +31,7 @@ export default function StartPage() {
         <p class="govuk-body">
           This service does not cover surface water flooding. If you want to
           know if there is surface water flooding (also known as 'flash
-          flooding') in your area,{" "}
+          flooding') in your area,{' '}
           <a href="/" class="govuk-link">
             contact your local council
           </a>
@@ -47,7 +47,7 @@ export default function StartPage() {
       <div class="govuk-width-container govuk-body">
         <h2 class="govuk-heading">If you've already signed up</h2>
         <p>
-          <a href="SignInStart">Sign in </a>
+          <Link to="/signin">Sign in </Link>
           to your account to:
         </p>
         <ul class="govuk-list govuk-list--bullet">
@@ -58,5 +58,5 @@ export default function StartPage() {
       </div>
       <Footer />
     </>
-  );
+  )
 }

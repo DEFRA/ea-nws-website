@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
@@ -13,9 +13,9 @@ export default function SignInValidatePage() {
     <>
       <Header />
       <div class="govuk-width-container">
-        <a href="SignInStart" class="govuk-back-link">
+        <Link to="/signin" className="govuk-back-link">
           Back
-        </a>
+        </Link>
         <ErrorSummary errorList={errorList} />
         <h2 class="govuk-heading-l">Check your email</h2>
         <div class="govuk-body">

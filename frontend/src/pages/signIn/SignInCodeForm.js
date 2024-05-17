@@ -39,7 +39,7 @@ const SignInCodeForm = (props) => {
     }
     props.setErrorList()
     event.target.reset()
-    navigate('/start')
+    navigate('/')
   }
 
   const validateCode = async (code) => {

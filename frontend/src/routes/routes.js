@@ -1,19 +1,17 @@
-import React from "react";
-import StartPage from "../pages/StartPage";
-import SignInStart from "../pages/signIn/SignInStartPage";
-import SignInValidate from "../pages/signIn/SignInValidatePage";
-import InitialEmailRegistrationPage from "../pages/register/InitialEmailRegistrationPage";
-import ValidateEmailForRegistration from "../pages/register/ValidateEmailForRegistration";
+import React from 'react'
+import StartPage from '../pages/StartPage'
+import SignInStart from '../pages/signIn/SignInStartPage'
+import SignInValidate from '../pages/signIn/SignInValidatePage'
 
-const routes = [
-  { path: "/start", component: <StartPage /> },
-  { path: "/SignInStart", component: <SignInStart /> },
-  { path: "/SignInValidate", component: <SignInValidate /> },
-  { path: "/register", component: <InitialEmailRegistrationPage /> },
-  {
-    path: "/ValidateEmailForRegistration",
-    component: <ValidateEmailForRegistration />,
-  },
-];
+// start routes
+const startRoutes = [{ path: '/', component: <StartPage /> }]
 
-export default routes;
+// sign in routes
+const siginRoutes = [
+  { path: '/signin', component: <SignInStart /> },
+  { path: '/signin/validate', component: <SignInValidate /> }
+]
+
+const routes = [...startRoutes, ...siginRoutes]
+
+export default routes

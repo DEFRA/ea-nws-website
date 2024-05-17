@@ -9,7 +9,7 @@ const SignInEmailForm = (props) => {
   const navigate = useNavigate()
 
   const signInNavigate = () => {
-    navigate('/SignInValidate', {
+    navigate('/signin/validate', {
       state: {
         email,
         signinToken

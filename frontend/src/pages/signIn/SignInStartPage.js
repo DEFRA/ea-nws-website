@@ -56,38 +56,38 @@ const EmailForm = (props) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <TextInput name="Email address" id="emailAddress" />
+      <TextInput name='Email address' id='emailAddress' />
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <button type="submit" class="govuk-button" data-module="govuk-button">
+      <button type='submit' class='govuk-button' data-module='govuk-button'>
         Continue
       </button>
     </form>
   )
 }
 
-export default function SignInPage() {
+export default function SignInPage () {
   return (
     <>
       <Header />
-      <div class="govuk-width-container">
-        <a href="Start" class="govuk-back-link">
+      <div class='govuk-width-container'>
+        <a href='Start' class='govuk-back-link'>
           Back
         </a>
-        <h2 class="govuk-heading-l">Sign in to your flood warnings account</h2>
-        <div class="govuk-body">
+        <h2 class='govuk-heading-l'>Sign in to your flood warnings account</h2>
+        <div class='govuk-body'>
           You can:
-          <ul class="govuk-list govuk-list--bullet">
+          <ul class='govuk-list govuk-list--bullet'>
             <li>update or remove your locations</li>
             <li>change how you get flood messages</li>
             <li>delete your account</li>
           </ul>
           <EmailForm />
-          <a href="Start" class="govuk-link">
+          <a href='Start' class='govuk-link'>
             Sign up if you do not have an account
           </a>
         </div>
       </div>
-      <Link to="/managecontacts" className="govuk-link">
+      <Link to='/managecontacts' className='govuk-link'>
         manage contacts
       </Link>
       <Footer />

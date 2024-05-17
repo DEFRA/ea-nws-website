@@ -1,4 +1,10 @@
-export default function TextInput ({ name, className, value, onChange = () => {}, id }) {
+export default function TextInput ({
+  name,
+  className,
+  value,
+  onChange = () => {},
+  id
+}) {
   const handleChange = (event) => {
     onChange(event.target.value)
   }

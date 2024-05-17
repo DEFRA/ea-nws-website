@@ -30,22 +30,22 @@ export default function ContactDetailsTable ({
         ? (
           <table className='govuk-table'>
             <tbody className='govuk-table__body'>
-              {contacts.map((email, index) => (
+              {contacts.map((contact, index) => (
                 <tr key={index} className='govuk-table__row'>
                   <td className='govuk-table__cell govuk-!-width-full'>
-                    {email}
+                    {contact}
                   </td>
                   {!notRemovable && (
                     <td className='govuk-table__cell'>
                       <Link
                         to='/managecontacts/confirm'
                         state={{
-                  type: contactType,
-                  contact: email
-                }}
+                          type: contactType,
+                          contact
+                        }}
                         className='govuk-link'
                       >
-                      Remove
+                        Remove
                       </Link>
                     </td>
                   )}

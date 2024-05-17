@@ -1,22 +1,58 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
+import { setProfile } from '../../redux/userSlice'
+import { backendCall } from '../../services/BackendService'
 
 export default function ConfirmDeleteContactDetailsPage() {
   const location = useLocation()
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const removeContact = () => {
+  // [TODO] we need to perform a check if this is null
+  // most likely would be null if the user has logged out etc
+  // but we should take the user to an error page or something similar
+  const session = useSelector((state) => state.session)
+  console.log('session', session)
+
+  const removeContact = async () => {
+    const updatedProfile = removeItemFromProfile(
+      session.profile,
+      location.state.contact
+    )
+    dispatch(setProfile(updatedProfile))
+    console.log('updated session profile', updatedProfile)
+    const data = JSON.stringify({
+      authToken: session.authToken,
+      profile: updatedProfile
+    })
+    console.log(data)
+    await backendCall(data, 'updateprofile')
     navigate('/managecontacts', {
       state: {
         removedType: location.state.type,
         removedContact: location.state.contact
       }
     })
+  }
+
+  const removeItemFromProfile = (profile, valueToRemove) => {
+    const updatedProfile = { ...profile }
+    const propertiesToCheck = ['emails', 'mobilePhones', 'homePhones']
+
+    propertiesToCheck.forEach((property) => {
+      if (Array.isArray(updatedProfile[property])) {
+        updatedProfile[property] = updatedProfile[property].filter(
+          (item) => item !== valueToRemove
+        )
+      }
+    })
+    return updatedProfile
   }
 
   return (
@@ -39,8 +75,8 @@ export default function ConfirmDeleteContactDetailsPage() {
                 text="Remove"
                 onClick={removeContact}
               />
-              &nbsp;
-              <Link to="/managecontacts" className="govuk-link">
+              &nbsp; &nbsp;
+              <Link to="/managecontacts" className="govuk-body govuk-link">
                 Cancel
               </Link>
             </div>

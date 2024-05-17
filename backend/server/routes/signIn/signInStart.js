@@ -21,8 +21,8 @@ const apiSignInStartCall = async (email) => {
   } else {
     console.log('responseData', responseData)
     isValid = responseData.code
-    signInToken = responseData.signInToken
-    return { code: isValid, signinToken: signInToken }
+    signinToken = responseData.signInToken
+    return { code: isValid, signinToken }
   }
 }
 

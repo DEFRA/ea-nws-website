@@ -7,22 +7,12 @@ import emailValidation from '../../services/Validations/EmailValidation'
 
 const SignInEmailForm = (props) => {
   const navigate = useNavigate()
-
-  const signInNavigate = () => {
-    navigate('/signin/validate', {
-      state: {
-        email,
-        signinToken
-      }
-    })
-  }
   const [email, setEmail] = useState('')
-  const [signinToken, setsigninToken] = useState('')
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-
     const errors = []
+    let signinToken = null
     if (email === '') {
       errors.push('Enter your email address')
     } else if (!emailValidation(email)) {
@@ -31,9 +21,11 @@ const SignInEmailForm = (props) => {
       )
     }
     if (errors.length === 0) {
-      const emailExists = await checkEmail(email)
+      const { emailExists, signInToken: token } = await checkEmail(email)
       if (!emailExists) {
         errors.push('Email address is not recognised - check and try again')
+      } else {
+        signinToken = token
       }
     }
 
@@ -42,25 +34,24 @@ const SignInEmailForm = (props) => {
       return
     }
     props.setErrorList([])
-    setEmail(email)
-    signInNavigate()
+    navigate('/signin/validate', {
+      state: { signinToken, email }
+    })
     event.target.reset()
   }
 
   const checkEmail = async (email) => {
-    let signinToken = ''
     const raw = JSON.stringify({ email })
     const responseData = await backendCall(raw, 'signInStart')
     if (responseData === undefined) {
-      return false
+      return { emailExists: false, signInToken: null }
     }
     const code = responseData.code
-    signinToken = responseData.signInToken
-    if (code === 101) {
-      return false
+    if (code === 106) {
+      return { emailExists: false, signInToken: null }
     }
-    setsigninToken(signinToken)
-    return true
+    const signInToken = responseData.signInToken
+    return { emailExists: true, signInToken }
   }
 
   return (

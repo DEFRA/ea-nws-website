@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
 import TextInput from '../../gov-uk-components/TextInput'
 import {
@@ -12,11 +12,11 @@ import backendCall from '../../services/BackendService'
 import codeValidation from '../../services/Validations/CodeValidation'
 
 const SignInCodeForm = (props) => {
-  const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const signinToken = location.state.signinToken
+  const signinToken = props.signinToken
+
   const [code, setCode] = useState('')
 
   const handleSubmit = async (event) => {

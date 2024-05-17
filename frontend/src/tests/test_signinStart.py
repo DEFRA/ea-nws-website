@@ -3,9 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 
-url = "http://localhost:3001/SignInStart"
-nextPage = "http://localhost:3001/SignInValidate"
-
+url = "http://localhost:3001/signin"
+nextPage = "http://localhost:3001/signin/validate"
 
 def test_SignInStart_render(get_browser):
     browser = get_browser
@@ -18,7 +17,7 @@ def test_SignInStart_backButton(get_browser):
     browser = get_browser
     browser.get(url)
     browser.find_element(By.CLASS_NAME, "govuk-back-link").click()
-    assert browser.current_url == "http://localhost:3001/Start"
+    assert browser.current_url == "http://localhost:3001/"
 
 def test_SignInStart_emptyEmail(get_browser):
     browser = get_browser
@@ -52,5 +51,6 @@ def test_SignInStart_validEmail(get_browser):
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)
     assert browser.current_url == nextPage
+
 
 

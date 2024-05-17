@@ -1,97 +1,97 @@
-const Lab = require("@hapi/lab");
-const Code = require("@hapi/code");
-const lab = (exports.lab = Lab.script());
-const createServer = require("../../server");
+const Lab = require('@hapi/lab')
+const Code = require('@hapi/code')
+const lab = (exports.lab = Lab.script())
+const createServer = require('../../server')
 
-lab.experiment("Web test", () => {
-  let server;
+lab.experiment('Web test', () => {
+  let server
 
   // Create server before the tests
   lab.before(async () => {
-    server = await createServer();
-  });
+    server = await createServer()
+  })
 
-  lab.test("GET /startReact route works", async () => {
+  lab.test('GET /startReact route works', async () => {
     const options = {
-      method: "GET",
-      url: "/startreact",
-    };
+      method: 'GET',
+      url: '/startreact'
+    }
 
-    const response = await server.inject(options);
-    Code.expect(response.statusCode).to.equal(200);
-    Code.expect(response.headers["content-type"]).to.include("text/html");
-  });
+    const response = await server.inject(options)
+    Code.expect(response.statusCode).to.equal(200)
+    Code.expect(response.headers['content-type']).to.include('text/html')
+  })
 
-  lab.test("POST / route runs with valid payload", async () => {
+  lab.test('POST / route runs with valid payload', async () => {
     const options = {
-      method: "POST",
-      url: "/registerStart",
+      method: 'POST',
+      url: '/registerStart',
       payload: {
-        email: "test@test.com",
-      },
-    };
+        email: 'test@test.com'
+      }
+    }
 
-    const response = await server.inject(options);
-    Code.expect(response.statusCode).to.equal(200);
-    Code.expect(response.statusMessage).to.equal("OK");
-    Code.expect(response.result.registerToken).to.equal("123456");
-  });
+    const response = await server.inject(options)
+    Code.expect(response.statusCode).to.equal(200)
+    Code.expect(response.statusMessage).to.equal('OK')
+    Code.expect(response.result.registerToken).to.equal('123456')
+  })
 
-  lab.test("POST / route runs with invalid payload", async () => {
+  lab.test('POST / route runs with invalid payload', async () => {
     const options = {
-      method: "POST",
-      url: "/registerStart",
+      method: 'POST',
+      url: '/registerStart',
       payload: {
-        email: "invalid",
-      },
-    };
+        email: 'invalid'
+      }
+    }
 
-    const response = await server.inject(options);
-    Code.expect(response.result.code).to.equal(101);
-  });
+    const response = await server.inject(options)
+    Code.expect(response.result.code).to.equal(101)
+  })
 
   lab.test(
-    "POST / route runs with invalid payload as email already registered",
+    'POST / route runs with invalid payload as email already registered',
     async () => {
       const options = {
-        method: "POST",
-        url: "/registerStart",
+        method: 'POST',
+        url: '/registerStart',
         payload: {
-          email: "emailAlreadyInUse@email.com",
-        },
-      };
+          email: 'emailAlreadyInUse@email.com'
+        }
+      }
 
-      const response = await server.inject(options);
-      Code.expect(response.result.code).to.equal(101);
+      const response = await server.inject(options)
+      Code.expect(response.result.code).to.equal(101)
     }
-  );
+  )
 
-  lab.test("POST / route runs with invalid payload as missing @", async () => {
+  lab.test('POST / route runs with invalid payload as missing @', async () => {
     const options = {
-      method: "POST",
-      url: "/registerStart",
+      method: 'POST',
+      url: '/registerStart',
       payload: {
-        email: "invalidemail.com",
-      },
-    };
+        email: 'invalidemail.com'
+      }
+    }
 
-    const response = await server.inject(options);
-    Code.expect(response.result.code).to.equal(101);
-  });
+    const response = await server.inject(options)
+    Code.expect(response.result.code).to.equal(101)
+  })
 
   lab.test(
-    "POST / route runs with invalid payload as missing .com",
+    'POST / route runs with invalid payload as missing .com',
     async () => {
       const options = {
-        method: "POST",
-        url: "/registerStart",
+        method: 'POST',
+        url: '/registerStart',
         payload: {
-          email: "invalidemail@",
-        },
-      };
+          email: 'invalidemail@'
+        }
+      }
 
-      const response = await server.inject(options);
-      Code.expect(response.result.code).to.equal(101);
+      const response = await server.inject(options)
+      Code.expect(response.result.code).to.equal(101)
     }
-  );
-});
+  )
+})

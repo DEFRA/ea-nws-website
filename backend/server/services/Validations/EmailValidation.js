@@ -1,6 +1,6 @@
 const emailValidation = (email) => {
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return email !== "" && emailPattern.test(email);
-};
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  return email !== '' && emailPattern.test(email)
+}
 
-module.exports = emailValidation;
+module.exports = emailValidation

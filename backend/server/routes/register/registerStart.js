@@ -3,9 +3,10 @@ const emailValidation = require("../../services/Validations/EmailValidation");
 
 const apiRegisterCall = async (email) => {
   let isValid = 400;
+  let desc;
   console.log("reached api call");
   let registerToken = "";
-  var raw = JSON.stringify({ email: email });
+  const raw = JSON.stringify({ email: email });
   console.log("Received from front-end: ", raw);
   if (!emailValidation(email)) {
     console.log("returning code 101", email);
@@ -14,12 +15,12 @@ const apiRegisterCall = async (email) => {
 
   const responseData = await apiCall(raw, "member/registerStart");
   if (Object.prototype.hasOwnProperty.call(responseData, "desc")) {
-    isValid = responseData["code"];
-    desc = responseData["desc"];
+    isValid = responseData.code;
+    desc = responseData.desc;
   } else {
     console.log("responseData", responseData);
-    isValid = responseData["code"];
-    registerToken = responseData["registerToken"];
+    isValid = responseData.code;
+    registerToken = responseData.registerToken;
   }
   console.log("Received from API: ", responseData);
   return { code: isValid, registerToken: registerToken };
@@ -32,11 +33,11 @@ module.exports = [
     handler: async (request, h) => {
       try {
         const { email } = request.payload;
-        //do some email validation
+        // do some email validation
         const apiResponse = await apiRegisterCall(email);
         const response = {
-          code: apiResponse["code"],
-          registerToken: apiResponse["registerToken"],
+          code: apiResponse.code,
+          registerToken: apiResponse.registerToken,
         };
 
         return h.response(response);

@@ -1,66 +1,66 @@
-const apiCall = require("../../services/ApiService");
-const codeValidation = require("../../services/Validations/CodeValidation");
+const apiCall = require('../../services/ApiService')
+const codeValidation = require('../../services/Validations/CodeValidation')
 
 const apiSignInValidateCall = async (signInToken, code) => {
-  let isValid = 400;
-  let desc;
-  let profile;
-  let authToken;
-  let registration;
-  const raw = JSON.stringify({ signinToken: signInToken, code });
-  if (signInToken !== "" && !codeValidation(code, 6)) {
-    return { code: 101, desc: "invalid code" };
+  let isValid = 400
+  let desc
+  let profile
+  let authToken
+  let registration
+  const raw = JSON.stringify({ signinToken: signInToken, code })
+  if (signInToken !== '' && !codeValidation(code, 6)) {
+    return { code: 101, desc: 'invalid code' }
   }
 
   // Parse the JSON response and get the status code
-  const responseData = await apiCall(raw, "member/signinValidate");
-  if (responseData === undefined) return;
-  if (Object.prototype.hasOwnProperty.call(responseData, "code")) {
-    isValid = responseData.code;
-    desc = responseData.desc;
+  const responseData = await apiCall(raw, 'member/signinValidate')
+  if (responseData === undefined) return
+  if (Object.prototype.hasOwnProperty.call(responseData, 'code')) {
+    isValid = responseData.code
+    desc = responseData.desc
   } else {
-    isValid = 200;
-    profile = responseData.profile;
-    authToken = responseData.authToken;
-    registration = responseData.registration;
+    isValid = 200
+    profile = responseData.profile
+    authToken = responseData.authToken
+    registration = responseData.registration
   }
 
   return isValid === 200
     ? { authToken, profile, registration }
-    : { code: isValid, desc: desc };
-};
+    : { code: isValid, desc: desc }
+}
 
 module.exports = [
   {
-    method: ["POST", "PUT"],
-    path: "/signInValidate",
+    method: ['POST', 'PUT'],
+    path: '/signInValidate',
     handler: async (request, h) => {
       try {
         if (request.payload === null) {
-          return h.response({ message: "Bad request" }).code(400);
+          return h.response({ message: 'Bad request' }).code(400)
         }
-        const { signinToken, code } = request.payload;
-        const apiResponse = await apiSignInValidateCall(signinToken, code);
-        let response;
-        if (Object.prototype.hasOwnProperty.call(apiResponse, "code")) {
-          console.log("Invalid");
+        const { signinToken, code } = request.payload
+        const apiResponse = await apiSignInValidateCall(signinToken, code)
+        let response
+        if (Object.prototype.hasOwnProperty.call(apiResponse, 'code')) {
+          console.log('Invalid')
           response = {
             code: apiResponse.code,
-            desc: apiResponse.desc,
-          };
+            desc: apiResponse.desc
+          }
         } else {
-          console.log("Valid");
+          console.log('Valid')
           response = {
             authToken: apiResponse.authToken,
             profile: apiResponse.profile,
-            registration: apiResponse.registration,
-          };
+            registration: apiResponse.registration
+          }
         }
-        return h.response(response);
+        return h.response(response)
       } catch (error) {
-        console.error("Error:", error);
-        return h.response({ message: "Internal server error" }).code(500);
+        console.error('Error:', error)
+        return h.response({ message: 'Internal server error' }).code(500)
       }
-    },
-  },
-];
+    }
+  }
+]

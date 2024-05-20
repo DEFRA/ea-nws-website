@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
@@ -29,9 +29,9 @@ export default function ContactDetailsPage() {
             text={location.state.removedContact}
           />
         ) : null}
-        <a href="#" className="govuk-link">
+        <Link to="/home" className="govuk-link">
           Back to Home
-        </a>
+        </Link>
         <main className="govuk-main-wrapper">
           <div className="govuk-grid-row">
             <div className="govuk-grid-column-two-thirds">

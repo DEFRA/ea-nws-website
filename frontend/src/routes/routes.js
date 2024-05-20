@@ -2,6 +2,7 @@ import React from 'react'
 import ConfirmDeleteContactDetailsPage from '../pages/ContactDetails/ConfirmDeleteContactDetailsPage'
 import ContactDetailsPage from '../pages/ContactDetails/ContactDetailsPage'
 import StartPage from '../pages/StartPage'
+import HomePage from '../pages/home/HomePage'
 import InitialEmailRegistrationPage from '../pages/register/InitialEmailRegistrationPage'
 import ValidateEmailForRegistration from '../pages/register/ValidateEmailForRegistration'
 import SignInPage from '../pages/signIn/SignInStartPage'
@@ -16,6 +17,7 @@ const siginRoutes = [
   { path: '/signin/validate', component: <CheckYourEmailPage /> }
 ]
 
+//register routes
 const registerRoutes = [
   { path: '/register', component: <InitialEmailRegistrationPage /> },
   {
@@ -23,6 +25,9 @@ const registerRoutes = [
     component: <ValidateEmailForRegistration />
   }
 ]
+
+// home
+const homeRoutes = [{ path: '/home', component: <HomePage /> }]
 
 // contact routes
 const contactRoutes = [
@@ -37,6 +42,7 @@ const routes = [
   ...startRoutes,
   ...siginRoutes,
   ...registerRoutes,
+  ...homeRoutes,
   ...contactRoutes
 ]
 

@@ -41,7 +41,7 @@ const SignInValidateForm = (props) => {
       setErrorMessage('Invalid code')
       return
     }
-    navigate('/signin')
+    navigate('/home')
   }
 
   const validateCode = async (code) => {

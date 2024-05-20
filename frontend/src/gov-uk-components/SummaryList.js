@@ -1,4 +1,6 @@
-export default function SummaryList(rows, onAddClick, onChangeClick) {
+import React from 'react'
+
+export default function SummaryList({ rows, onAddClick, onChangeClick }) {
   return (
     <>
       <dl className="govuk-summary-list">

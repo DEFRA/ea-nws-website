@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import TextInput from '../../gov-uk-components/TextInput'
@@ -82,14 +82,11 @@ export default function SignInPage() {
             <li>delete your account</li>
           </ul>
           <EmailForm />
-          <a href="Start" className="govuk-link">
+          <a href="register" className="govuk-link">
             Sign up if you do not have an account
           </a>
         </div>
       </div>
-      <Link to="/managecontacts" className="govuk-link">
-        manage contacts
-      </Link>
       <Footer />
     </>
   )

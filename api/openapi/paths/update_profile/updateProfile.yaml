@@ -38,22 +38,24 @@ post:
             authToken: >-
               MockGUIDAuthToken
             profile:
-              id: ''
-              enabled: false
-              firstname: ''
-              lastname: ''
+              id: '1'
+              enabled: true
+              firstname: 'John'
+              lastname: 'Smith'
               emails:
-                - roger.rabbit@intersec.com
+                - perry.pepper@gmail.com
               mobilePhones:
-                - +336********
-              homePhones: []
+                - '07343 454590'
+                - '07889 668367'
+              homePhones:
+                - '01475 721535'
               language: EN
               additionals: []
               unverified:
                 emails: []
                 mobilePhones: []
                 homePhones:
-                  - address: +336********
+                  - address: '+336********'
               pois:
                 - address: Exeter, Royaume-Uni
                   coordinates:
@@ -71,7 +73,7 @@ post:
         type: string
       example: application/json
   responses:
-    '200':
+    200:
       description: OK
       headers:
         Date:
@@ -126,132 +128,33 @@ post:
             example-0:
               summary: Updated the profile of a user (simple)
               value:
-                authToken: >-
-                  gAAAAABkOTd_oh-J9BgJ8yvLLgU16Fj8d4MTLjL4dd7ho6crKo10hVJjYJZccThQoA_54YaWTXJ3UkGbEqURemIdkM4bbJepXL-Qo5KZoY2vajHEcioSYibC6pJhj0if9xhcjgjTsiGJAbTs_wL6RJvT2AiSzLhIyXzw2aLreb3ac9AT8-fSbD-1yMuuPVty_KKWvqZBEO1i
-                profile:
-                  id: ''
-                  enabled: false
-                  firstname: Javier
-                  lastname: Rabbit
-                  emails: []
-                  mobilePhones: []
-                  homePhones: []
-                  language: EN
-                  additionals: []
-                  unverified:
-                    emails: []
-                    mobilePhones: []
-                    homePhones:
-                      - address: +331********
-                  pois:
-                    - address: Exeter, Royaume-Uni
-                      coordinates:
-                        latitude: 50726037
-                        longitude: -3527489
-            example-1:
-              summary: >-
-                Updated the profile of a user with several POIs, with
-                coordinates
-              value:
-                authToken: >-
-                  gAAAAABkOTd_oh-J9BgJ8yvLLgU16Fj8d4MTLjL4dd7ho6crKo10hVJjYJZccThQoA_54YaWTXJ3UkGbEqURemIdkM4bbJepXL-Qo5KZoY2vajHEcioSYibC6pJhj0if9xhcjgjTsiGJAbTs_wL6RJvT2AiSzLhIyXzw2aLreb3ac9AT8-fSbD-1yMuuPVty_KKWvqZBEO1i
-                profile:
-                  id: ''
-                  enabled: false
-                  firstname: Javier
-                  lastname: Rabbit
-                  emails:
-                    - roger.rabbit@intersec.com
-                  mobilePhones:
-                    - +336********
-                  homePhones:
-                    - +331********
-                  language: FR
-                  additionals: []
-                  unverified:
-                    emails:
-                      - address: roger.rabbit@gmx.com
-                      - address: nathan.lemaire@gmail.com
-                    mobilePhones:
-                      - address: +336********
-                    homePhones:
-                      - address: +331********
-                  pois:
-                    - address: >-
-                        RIVERHAYES LATCHMOOR GREEN, THORVERTON, EXETER, EX5
-                        5LY
-                      coordinates:
-                        latitude: 53038212
-                        longitude: -3803321
-                    - address: 3, LONDON TERRACE, PENMACHNO, BETWS-Y-COED, LL24 0YF
-                      coordinates:
-                        latitude: 53038762
-                        longitude: -3803799
-                    - address: >-
-                        LONDON HOUSE, HIGH STREET, LLANFAIR CAEREINION, Y
-                        TRALLWNG, SY21 0QS
-                      coordinates:
-                        latitude: 52647922
-                        longitude: -3326470
-                    - address: >-
-                        LONG BARN, NEW LODGE FARM, PETERCHURCH, HEREFORD,
-                        HR3 6BJ
-                      coordinates:
-                        latitude: 52045694
-                        longitude: -3012498
-                    - address: 15, ST JOHN'S WAY, HACKNEY, LONDON, N19 3PR
-                      coordinates:
-                        latitude: 51568282
-                        longitude: -130459
-                    - address: 15, PARK STREET, BROUGHTON, SALFORD, M7 4JL
-                      coordinates:
-                        latitude: 53503528
-                        longitude: -2248191
-                    - address: 6, MAIN STREET, CALDECOTT, CORBY, NN17 3DL
-                      coordinates:
-                        latitude: 52486285
-                        longitude: -762676
-                    - address: 1, CHURCH STREET, SPROXTON, MELTON MOWBRAY, LE14 4PJ
-                      coordinates:
-                        latitude: 52817654
-                        longitude: -897262
-                    - address: 3, BIRDWELL ROAD, WITTON, BIRMINGHAM, B6 6SE
-                      coordinates:
-                        latitude: 52499273
-                        longitude: -1896877
-                    - address: 3, SOUTH END, FRODSHAM, WARRINGTON, WA6 7AU
-                      coordinates:
-                        latitude: 53295202
-                        longitude: -2720613
-                    - address: 33, UPPER BELGRAVE ROAD, CLIFTON, BRISTOL, BS8 2XN
-                      coordinates:
-                        latitude: 51459123
-                        longitude: -2619273
-                    - address: 3, HIGH STREET, THRAPSTON, KETTERING, NN14 4JH
-                      coordinates:
-                        latitude: 52382301
-                        longitude: -554245
-                    - address: 2, UNION STREET, TOTTON, SOUTHAMPTON, SO40 9DS
-                      coordinates:
-                        latitude: 50916096
-                        longitude: -1484986
-                    - address: >-
-                        4, SOUTH PARADE, SUTTON BONINGTON, LOUGHBOROUGH,
-                        LE12 5NR
-                      coordinates:
-                        latitude: 52836027
-                        longitude: -1216102
-                    - address: 18, MAES Y RHOS, PENYGROES, CAERNARFON, LL54 6AE
-                      coordinates:
-                        latitude: 53069538
-                        longitude: -4272549
-                    - address: >-
-                        23, SHREWSBURY CLOSE, EAGLESTONE, MILTON KEYNES, MK6
-                        5BQ
-                      coordinates:
-                        latitude: 52013912
-                        longitude: -755356
-    '500':
+            authToken: >-
+              MockGUIDAuthToken
+            profile:
+              id: '1'
+              enabled: true
+              firstname: 'John'
+              lastname: 'Smith'
+              emails:
+                - perry.pepper@gmail.com
+              mobilePhones:
+                - '07343 454590'
+                - '07889 668367'
+              homePhones:
+                - '01475 721535'
+              language: EN
+              additionals: []
+              unverified:
+                emails: []
+                mobilePhones: []
+                homePhones:
+                  - address: '+336********'
+              pois:
+                - address: Exeter, Royaume-Uni
+                  coordinates:
+                    latitude: 50726037
+                    longitude: -3527489
+    500:
       description: Internal Server Error
       headers:
         date:

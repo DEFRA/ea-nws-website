@@ -9,7 +9,6 @@ lab.experiment('Web test', () => {
   // Create server before the tests
   lab.before(async () => {
     server = await createServer()
-    
   })
 
   lab.test('POST /registerValidate route runs with valid payload', async () => {
@@ -36,7 +35,7 @@ lab.experiment('Web test', () => {
     }
 
     const response = await server.inject(options)
-  
+
     Code.expect(response.result.code).to.equal(101)
     Code.expect(response.result.desc).to.equal('invalid code')
   })

@@ -3,7 +3,7 @@ const handleResponse = (response, navigate) => {
     case 200:
       return response
     case 400:
-      navigate('/badrequest')
+      navigate('/')
       return
     case 404:
       navigate('/notfound')

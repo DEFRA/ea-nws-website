@@ -2,6 +2,8 @@ import React from 'react'
 import ConfirmDeleteContactDetailsPage from '../pages/ContactDetails/ConfirmDeleteContactDetailsPage'
 import ContactDetailsPage from '../pages/ContactDetails/ContactDetailsPage'
 import StartPage from '../pages/StartPage'
+import InitialEmailRegistrationPage from '../pages/register/InitialEmailRegistrationPage'
+import ValidateEmailForRegistration from '../pages/register/ValidateEmailForRegistration'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import CheckYourEmailPage from '../pages/signIn/SignInValidatePage'
 

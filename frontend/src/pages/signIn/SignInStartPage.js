@@ -8,11 +8,10 @@ import { backendCall } from '../../services/BackendService'
 const EmailForm = (props) => {
   const navigate = useNavigate()
   const [errorMessage, setErrorMessage] = useState('')
+  const [email, setEmail] = useState('')
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const email = event.target.emailAddress.value
-
     if (email === '') {
       setErrorMessage('Enter your email address')
       return
@@ -30,7 +29,6 @@ const EmailForm = (props) => {
     }
 
     window.sessionStorage.setItem('userEmail', email)
-    event.target.reset()
     navigate('/signin/validate')
   }
 
@@ -56,9 +54,9 @@ const EmailForm = (props) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <TextInput name="Email address" id="emailAddress" />
+      <TextInput name="Email address" onChange={(val) => setEmail(val)} />
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <button type="submit" class="govuk-button" data-module="govuk-button">
+      <button type="submit" className="govuk-button" data-module="govuk-button">
         Continue
       </button>
     </form>
@@ -69,20 +67,22 @@ export default function SignInPage() {
   return (
     <>
       <Header />
-      <div class="govuk-width-container">
-        <a href="Start" class="govuk-back-link">
+      <div className="govuk-width-container">
+        <a href="Start" className="govuk-back-link">
           Back
         </a>
-        <h2 class="govuk-heading-l">Sign in to your flood warnings account</h2>
-        <div class="govuk-body">
+        <h2 className="govuk-heading-l">
+          Sign in to your flood warnings account
+        </h2>
+        <div className="govuk-body">
           You can:
-          <ul class="govuk-list govuk-list--bullet">
+          <ul className="govuk-list govuk-list--bullet">
             <li>update or remove your locations</li>
             <li>change how you get flood messages</li>
             <li>delete your account</li>
           </ul>
           <EmailForm />
-          <a href="Start" class="govuk-link">
+          <a href="Start" className="govuk-link">
             Sign up if you do not have an account
           </a>
         </div>

@@ -20,6 +20,7 @@ async function getSigninValidate(context, req) {
     return { code: 101, desc: 'InvalidToken' }
   }
   console.log('Valid token')
+
   const profile = {
     id: '1',
     enabled: true,
@@ -27,13 +28,33 @@ async function getSigninValidate(context, req) {
     lastName: 'Smith',
     emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
     mobilePhones: ['07343 454590', '07889 668367'],
-    homePhones: ['01475 721535']
+    homePhones: ['01475 721535'],
+    language: 'EN',
+    additionals: [],
+    unverified: {
+      emails: [],
+      mobilePhones: [],
+      homePhones: [
+        {
+          address: '+336********'
+        }
+      ]
+    },
+    pois: [
+      {
+        address: 'Exeter, Royaume-Uni',
+        coordinates: {
+          latitude: 50726037,
+          longitude: -3527489
+        }
+      }
+    ]
   }
+
   const registration = { partner: '4', name: 'NWS England' }
   return {
     authToken: 'MockGUIDAuthToken',
-    profile: profile,
-    registration,
+    profile,
     registration
   }
 }

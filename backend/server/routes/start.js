@@ -1,11 +1,10 @@
-const joi = require("@hapi/joi");
-const axios = require("axios");
-
 module.exports = [
   {
-    method: ["GET"],
-    path: "/startreact",
+    method: ['GET'],
+    path: '/startreact',
 
-    handler: (request, h) => {return "hello"},
-  },
-];
+    handler: (request, h) => {
+      return 'hello'
+    }
+  }
+]

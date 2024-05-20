@@ -1,14 +1,16 @@
+import React from 'react'
+
 export default function Button({ text, className, onClick }) {
   return (
     <>
       <button
         type="submit"
-        class={className}
+        className={className}
         onClick={onClick}
         data-module="govuk-button"
       >
         {text}
       </button>
     </>
-  );
+  )
 }

@@ -27,10 +27,6 @@ const unauthenticatedRoutes = [
     path: '/SignBackIn',
     component: <SignBackIn />
   },
-  {
-    path: '/start',
-    component: <StartPage />
-  },
 
   { path: '/Start', component: <StartPage /> },
   {

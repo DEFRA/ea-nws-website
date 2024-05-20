@@ -12,7 +12,7 @@ export default function TextInput({ name, className, value, onChange }) {
           {name}
         </label>
         <input
-          id="text-input"
+          id="govuk-text-input"
           className={className}
           type="text"
           value={value}

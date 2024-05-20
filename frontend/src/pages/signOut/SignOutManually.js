@@ -1,38 +1,29 @@
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import Button from '../../gov-uk-components/Button'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
-const userEmail = window.sessionStorage.getItem('userEmail')
-const signInToken = window.sessionStorage.getItem('signInToken')
-const backendCall = require('../../services/BackendService')
-
-const loggedOut = async () => {
-  let raw = JSON.stringify({ signinToken: signInToken })
-  const responseData = await backendCall(
-    raw,
-    'http://localhost:3000/signOutAutomatically'
-  )
-
-  if (signInToken !== '' && userEmail !== '') {
-    window.sessionStorage.setItem('authToken', responseData[''])
-    window.sessionStorage.setItem('profile', responseData[''])
-    window.sessionStorage.setItem('userEmail', responseData[''])
-    return true
-  }
-}
+import { clearAuth } from '../../redux/userSlice'
 
 export default function SignOutManually() {
   const navigate = useNavigate()
-  function testloggedOut(loggedOut) {
-    if (loggedOut === true) {
-      console.log('user has been logged out')
+  const dispatch = useDispatch()
+  const session = useSelector((state) => state.session)
+
+  function loggedOut() {
+    if (session.authToken !== null) {
+      dispatch(clearAuth)
+      return true
     } else {
-      console.log('There is no user to log out')
+      return false
     }
   }
 
-  testloggedOut(loggedOut)
-
+  if (loggedOut() === true) {
+    console.log('User removed')
+  } else {
+    console.log('no user to remove')
+  }
   function redirect() {
     navigate('/SignInPage')
   }

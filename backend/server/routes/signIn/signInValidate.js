@@ -1,14 +1,14 @@
 const apiCall = require('../../services/ApiService')
 const codeValidation = require('../../services/Validations/CodeValidation')
 
-const apiSignInValidateCall = async (signInToken, code) => {
+const apiSignInValidateCall = async (signinToken, code) => {
   let isValid = 400
   let desc
   let profile
   let authToken
   let registration
-  const raw = JSON.stringify({ signinToken: signInToken, code })
-  if (signInToken !== '' && !codeValidation(code, 6)) {
+  const raw = JSON.stringify({ signinToken: signinToken, code })
+  if (signinToken !== '' && !codeValidation(code, 6)) {
     return { code: 101, desc: 'invalid code' }
   }
 
@@ -42,6 +42,8 @@ module.exports = [
         if (request.payload === null) {
           return h.response({ message: 'Bad request' }).code(400)
         }
+        console.log('PAYLOADBACKEND')
+        console.log(request.payload)
         const { signinToken, code } = request.payload
         const apiResponse = await apiSignInValidateCall(signinToken, code)
         let response

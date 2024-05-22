@@ -3,7 +3,7 @@ export default function TextInput({
   className,
   value,
   onChange = () => {},
-  errorList = []
+  error = ''
 }) {
   const handleChange = (event) => {
     onChange(event.target.value)
@@ -13,7 +13,7 @@ export default function TextInput({
     <>
       <div
         class={
-          errorList.length === 0
+          error === ''
             ? 'govuk-form-group'
             : 'govuk-form-group govuk-form-group--error'
         }
@@ -21,17 +21,13 @@ export default function TextInput({
         <label class="govuk-label" for="event-name">
           {name}
         </label>
-        {errorList.length > 0 && (
+        {error !== '' && (
           <p id="{id}-error" className="govuk-error-message">
-            <span className="govuk-visually-hidden">Error:</span> {errorList}
+            <span className="govuk-visually-hidden">Error:</span> {error}
           </p>
         )}
         <input
-          className={
-            errorList.length === 0
-              ? className
-              : 'govuk-input govuk-input--error'
-          }
+          className={error === '' ? className : 'govuk-input--error'}
           name={name}
           id="event-name"
           type="text"

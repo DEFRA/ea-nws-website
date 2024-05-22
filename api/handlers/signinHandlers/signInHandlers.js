@@ -7,7 +7,7 @@ async function getSigninStart(context, req) {
     return responseCodes.UNKNOWN_EMAIL
   }
   console.log('Valid email, responding 200')
-  return { ...responseCodes.SUCCESS, signInToken: '123456' }
+  return { ...responseCodes.SUCCESS, signinToken: '123456' }
 }
 
 async function getSigninValidate(context, req) {

@@ -19,7 +19,7 @@ const apiSignInStartCall = async (email) => {
   } else {
     console.log('responseData', responseData)
     isValid = responseData.code
-    const signinToken = responseData.signInToken
+    const signinToken = responseData.signinToken
     return { code: isValid, signinToken }
   }
 }
@@ -37,7 +37,7 @@ module.exports = [
         const apiResponse = await apiSignInStartCall(email)
         const response = {
           code: apiResponse.code,
-          signInToken: apiResponse.signInToken
+          signinToken: apiResponse.signinToken
         }
 
         return h.response(response)

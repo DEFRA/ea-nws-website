@@ -29,12 +29,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "uitest": "python3 -m pytest src/tests"
-    "test": "jest",
-    "eject": "react-scripts eject",
-    "lint": "standard"
+    "uitest": "python3 -m pytest src/tests",
+    "test": "jest"
   },
   "eslintConfig": {
     "extends": [

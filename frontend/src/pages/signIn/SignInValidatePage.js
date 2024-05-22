@@ -82,5 +82,4 @@ export default function SignInValidatePage() {
       <Footer />
     </>
   )
-  )
 }

@@ -4,27 +4,36 @@
   "private": true,
   "proxy": "http://localhost:3000",
   "dependencies": {
+    "@babel/core": "^7.24.5",
+    "@babel/preset-env": "^7.24.5",
+    "@babel/preset-react": "^7.24.1",
+    "@reduxjs/toolkit": "^2.2.5",
     "@reduxjs/toolkit": "^2.2.5",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.6.8",
+    "bootstrap": "^5.3.3",
     "govuk-frontend": "^5.3.1",
     "hmrc-frontend": "^6.17.0",
     "react": "^18.3.1",
+    "react-bootstrap": "^2.10.2",
     "react-dom": "^18.3.1",
+    "react-redux": "^9.1.2",
     "react-redux": "^9.1.2",
     "react-router": "^6.23.0",
     "react-router-dom": "^6.23.0",
     "react-scripts": "5.0.1",
+    "redux": "^5.0.1",
     "sass": "^1.76.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "test": "jest",
+    "eject": "react-scripts eject",
+    "lint": "standard"
   },
   "eslintConfig": {
     "extends": [
@@ -45,6 +54,12 @@
     ]
   },
   "devDependencies": {
-    "react-router-dom": "^6.23.0"
+    "standard": "^17.1.0"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ]
   }
 }

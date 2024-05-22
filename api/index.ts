@@ -1,12 +1,13 @@
-import 'source-map-support/register';
-import OpenAPIBackend from 'openapi-backend';
-import Hapi from '@hapi/hapi';
- 
-const server = new Hapi.Server({ port: 9000 });
+import Hapi from '@hapi/hapi'
+import OpenAPIBackend from 'openapi-backend'
+import 'source-map-support/register'
+
+const server = new Hapi.Server({ port: 9000 })
 
 // calling handlers
-const signInHandlers = require('./handlers/signInHandlers')
-const registerHandlers = require('./handlers/registerHandlers') 
+const signInHandlers = require('./handlers/signin/signInHandlers')
+const registerHandlers = require('./handlers/register/registerHandlers')
+const updateProfileHandler = require('./handlers/updateProfile/updateProfileHandler')
 const validationHandlers = require('./handlers/validationHandlers')
 
 // define api
@@ -17,13 +18,14 @@ const api = new OpenAPIBackend({
     getRegisterValidate: registerHandlers.getRegisterValidate,
     getSignInStart: signInHandlers.getSigninStart,
     getSignInValidate: signInHandlers.getSigninValidate,
+    getUpdateProfile: updateProfileHandler.getUpdateProfile,
     validationFail: validationHandlers.validationFail,
-    notFound: validationHandlers.notFound,
-  },
-});
- 
-api.init();
- 
+    notFound: validationHandlers.notFound
+  }
+})
+
+api.init()
+
 // use as a catch-all handler
 server.route({
   method: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
@@ -35,12 +37,12 @@ server.route({
         path: req.path,
         body: req.payload,
         query: req.query,
-        headers: req.headers,
+        headers: req.headers
       },
       req,
-      h,
-    ),
-});
- 
+      h
+    )
+})
+
 // start server
-server.start().then(() => console.info(`listening on ${server.info.uri}`));
+server.start().then(() => console.info(`listening on ${server.info.uri}`))

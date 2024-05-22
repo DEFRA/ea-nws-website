@@ -1,22 +1,24 @@
-export default function TextInput({ name, className, value, onChange = () => {}, id }) {
+import React from 'react'
+
+export default function TextInput({ name, className, value, onChange }) {
   const handleChange = (event) => {
-    onChange(event.target.value);
-  };
+    onChange(event.target.value)
+  }
 
   return (
     <>
-      <div class="govuk-form-group">
-        <label class="govuk-label" for={id}>
+      <div className="govuk-form-group">
+        <label className="govuk-label" htmlFor="govuk-text-input">
           {name}
         </label>
         <input
+          id="govuk-text-input"
           className={className}
-          id={id}
           type="text"
           value={value}
           onChange={handleChange}
         />
       </div>
     </>
-  );
+  )
 }

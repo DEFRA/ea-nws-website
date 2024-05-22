@@ -7,7 +7,7 @@ export default function SignBackIn() {
   const navigate = useNavigate()
 
   function redirect() {
-    navigate('/SignInPage')
+    navigate('/signin')
   }
 
   return (

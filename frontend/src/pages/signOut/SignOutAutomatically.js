@@ -26,7 +26,7 @@ export default function SignOutAutomatically() {
   }
 
   function redirect() {
-    navigate('/SignInPage')
+    navigate('/signin')
   }
 
   return (

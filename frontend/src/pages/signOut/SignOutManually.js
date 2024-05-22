@@ -25,7 +25,7 @@ export default function SignOutManually() {
     console.log('no user to remove')
   }
   function redirect() {
-    navigate('/SignInPage')
+    navigate('/signinpage')
   }
 
   return (

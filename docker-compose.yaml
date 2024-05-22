@@ -4,16 +4,16 @@ services:
       context: api/.
       dockerfile: Dockerfile
     ports:
-      - "9000:9000"
+      - '9000:9000'
   backend:
     build:
       context: backend/.
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - '5000:5000'
   frontend:
     build:
       context: frontend/.
       dockerfile: Dockerfile
     ports:
-      - "8000:8000"
+      - '3000:3000'

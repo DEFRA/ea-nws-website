@@ -1,11 +1,13 @@
+const responseCodes = require('./responseCodes')
+
 async function getSigninStart(context, req) {
   console.log('Received SignInStart request for: ', req.payload)
   if (req.payload.email === 'invalid@email.com') {
-    console.log('Invalid email, responding 500')
-    return { code: 106, desc: 'unknown email' }
+    console.log('Unknown email, responding 106')
+    return responseCodes.UNKNOWN_EMAIL
   }
   console.log('Valid email, responding 200')
-  return { code: 200, signInToken: '123456' }
+  return { ...responseCodes.SUCCESS, signInToken: '123456' }
 }
 
 async function getSigninValidate(context, req) {
@@ -15,9 +17,9 @@ async function getSigninValidate(context, req) {
     ' - SignInToken: ',
     req.payload.signinToken
   )
-  if (req.payload.code === '999999') {
+  if (req.payload.code === '999999' || req.payload.signinToken === undefined) {
     console.log('Invalid token')
-    return { code: 101, desc: 'InvalidToken' }
+    return responseCodes.INVALID_TOKEN
   }
   console.log('Valid token')
   const profile = {

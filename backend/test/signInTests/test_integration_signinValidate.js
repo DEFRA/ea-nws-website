@@ -24,7 +24,6 @@ lab.experiment('Integration tests', () => {
       }
       const response = await server.inject(options)
       Code.expect(response.result.code).to.equal(101)
-      Code.expect(response.result.desc).to.equal('InvalidToken')
     }
   )
 

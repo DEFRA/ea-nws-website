@@ -5,7 +5,7 @@ from selenium.webdriver.common.by import By
 import time
 # have top var commented and bottom uncommented
 
-url = "http://localhost:3000/SignBackIn"
+url = "http://localhost:3000/signbackin"
 def test_signBackIn_render(get_browser):
     browser = get_browser
     browser.get(url)
@@ -18,16 +18,16 @@ def test_signBackIn_SignIn_button(get_browser):
     browser = get_browser
     browser.get(url)
     browser.find_element(By.CLASS_NAME,"govuk-button").click()
-    assert browser.current_url == "http://localhost:3000/SignInPage"
+    assert browser.current_url == "http://localhost:3000/signin"
 
 
 def test_restricted_redirected_signOutAutomatically(get_browser):
     browser = get_browser
-    browser.get("http://localhost:3000/SignOutAutomatically")
+    browser.get("http://localhost:3000/signoutautomatically")
     assert "You need to sign back in to view this page" in browser.page_source
 
 
 def test_restricted_redirected_signOutManually(get_browser):
     browser = get_browser
-    browser.get("http://localhost:3000/SignOutManually")
+    browser.get("http://localhost:3000/signoutmanually")
     assert "You need to sign back in to view this page" in browser.page_source 

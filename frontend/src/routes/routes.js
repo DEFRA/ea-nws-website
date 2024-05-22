@@ -48,7 +48,7 @@ const signOutRoutes = [
   { path: '/signout/manually', component: <signOutManually /> }
 ]
 
-const routes = [
+export const routes = [
   ...indexRoutes,
   ...startRoutes,
   ...siginRoutes,

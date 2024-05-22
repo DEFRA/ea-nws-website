@@ -59,8 +59,6 @@ module.exports = [
             registration: apiResponse.registration
           }
         }
-        console.log('APIRESPONSE', apiResponse)
-        //console.log(response)
         return h.response(response)
       } catch (error) {
         console.error('Error:', error)

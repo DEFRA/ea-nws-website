@@ -1,4 +1,4 @@
-const responseCodes = require('./responseCodes')
+const responseCodes = require('../responseCodes')
 
 async function getSigninStart(context, req) {
   console.log('Received SignInStart request for: ', req.payload)

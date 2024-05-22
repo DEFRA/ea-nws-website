@@ -7,8 +7,9 @@ import InitialEmailRegistrationPage from '../pages/register/InitialEmailRegistra
 import ValidateEmailForRegistration from '../pages/register/ValidateEmailForRegistration'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import CheckYourEmailPage from '../pages/signIn/SignInValidatePage'
+import SignBackIn from '../pages/signOut/SignBackIn'
+import SignOutAutomatically from '../pages/signOut/SignOutAutomatically'
 import StartPage from '../pages/start/StartPage'
-
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
 
@@ -40,6 +41,11 @@ const contactRoutes = [
     path: '/managecontacts/confirm',
     component: <ConfirmDeleteContactDetailsPage />
   }
+]
+const signBackRoute = [{ path: '/signbackin', component: <SignBackIn /> }]
+const signOutRoutes = [
+  { path: 'signout/automatically', component: <SignOutAutomatically /> },
+  { path: '/signout/manually', component: <signOutManually /> }
 ]
 
 const routes = [

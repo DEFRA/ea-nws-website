@@ -1,7 +1,7 @@
 post:
   tags:
     - Member
-  operationId: 'getSignInValidate'
+  operationId: "getSignInValidate"
   summary: Validate the signin of a user
   description: >-
     This RPC transforms a signin token into an authentication token if the
@@ -18,7 +18,7 @@ post:
           example:
             signinToken: >-
               gAAAAABkOTKFFw4yVZEJnXHG3KRYP9K_CZ5b6KuHWYllrLnbpl_swmI1teEDzpLdqq98JDoCn9H8_ZyemrultxEpHibHyEg3fRPYVLy5jKPKGJ3v6ULXZiSvHDRFKPvxDuwOs9TdLA5H_pOTwenbTpm6g54Janu24aiOq2PYzr2F81-h3jpszYvW0y7b4mGHeUzPlOc6fniHfd_ewt2H5BKlGPKEpMX-Mr_sHXfFXH-BEOmSTQmm7fE=
-            code: '445300'
+            code: "445300"
   responses:
     200:
       description: OK
@@ -38,7 +38,7 @@ post:
         Access-Control-Allow-Origin:
           schema:
             type: string
-            example: '*'
+            example: "*"
         Cache-Control:
           schema:
             type: string
@@ -58,7 +58,7 @@ post:
         Content-Length:
           schema:
             type: integer
-            example: '772'
+            example: "772"
         Keep-Alive:
           schema:
             type: string
@@ -75,10 +75,10 @@ post:
             authToken: >-
               gAAAAABkW99rkj1pW_YuwL92_o1DxoZfsn3A3Co4rMolCxfKnEMLtSE5f9nULMDxxmxQYeNoXiPHaPzgn7mA4Yz1P25FFqv-cqo2i8kdW-UeKc_CwSHVgZ3BN_FK3S8WIw0PL8N0Xh2MAJZvKlnFYR2Gvv9LPk9RGcd8V4pWkQ7CqhA0bvWxPdSdr1YAX8IVjk6f7X6UVTKC
             profile:
-              id: ''
+              id: ""
               enabled: false
-              firstname: ''
-              lastname: ''
+              firstname: ""
+              lastname: ""
               emails:
                 - roger.rabbit@intersec.com
               mobilePhones:
@@ -98,7 +98,7 @@ post:
                     longitude: -3527489
             registrations:
               - partner:
-                  id: '4'
+                  id: "4"
                   name: NFWS England
                   description: >-
                     We work to create better places for people and wildlife
@@ -139,7 +139,7 @@ post:
         content-length:
           schema:
             type: integer
-            example: '56'
+            example: "56"
         accept-encoding:
           schema:
             type: string
@@ -147,7 +147,7 @@ post:
         access-control-allow-origin:
           schema:
             type: string
-            example: '*'
+            example: "*"
         cache-control:
           schema:
             type: string
@@ -167,7 +167,7 @@ post:
         x-iplb-instance:
           schema:
             type: integer
-            example: '53497'
+            example: "53497"
       content:
         application/json:
           schema:

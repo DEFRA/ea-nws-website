@@ -9,7 +9,6 @@ lab.experiment('Web test', () => {
   // Create server before the tests
   lab.before(async () => {
     server = await createServer()
-    
   })
 
   lab.test('GET /startReact route works', async () => {

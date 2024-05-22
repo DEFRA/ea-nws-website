@@ -8,6 +8,7 @@ export default function SignBackIn() {
 
   function redirect() {
     navigate('/signin')
+    navigate(0)
   }
 
   return (

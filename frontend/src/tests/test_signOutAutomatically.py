@@ -26,6 +26,7 @@ def test_signOutAutomatically_button(get_browser):
     browser = get_browser
     browser.get(url1)
     browser.find_element(By.ID, "emailAddress").send_keys("valid@email.uk")
+    browser.get(url2)
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)
     browser.find_element(By.ID, 'code').send_keys("123456")

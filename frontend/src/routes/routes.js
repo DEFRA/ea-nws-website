@@ -1,4 +1,4 @@
-import { default as React, default as React } from 'react'
+import { default as React } from 'react'
 import ConfirmDeleteContactDetailsPage from '../pages/ContactDetails/ConfirmDeleteContactDetailsPage'
 import ContactDetailsPage from '../pages/ContactDetails/ContactDetailsPage'
 import StartPage from '../pages/StartPage'
@@ -41,19 +41,7 @@ const contactRoutes = [
   }
 ]
 
-const routes = [
-  ...startRoutes,
-  ...siginRoutes,
-  ...registerRoutes,
-  ...homeRoutes,
-  ...contactRoutes
-]
-
-export default routes
-
-//start routes
-
-const authenticatedRoutes = [
+const signOutRoutes = [
   {
     path: '/signoutmanually',
     component: <SignOutManually />
@@ -64,35 +52,27 @@ const authenticatedRoutes = [
   }
 ]
 
-//contact routes
-const unauthenticatedRoutes = [
+const signBackRoute = [
   {
     path: '/signbackin',
     component: <SignBackIn />
-  },
-
-  { path: '/start', component: <StartPage /> },
-  {
-    path: '/signin',
-    component: <SignInPage />
-  },
-  {
-    path: '/checkyouremail',
-    component: <CheckYourEmailPage />
-  },
-  {
-    path: '/register',
-    component: <InitialEmailRegistrationPage />
-  },
-  {
-    path: '/Validateemailforregistration',
-    component: <ValidateEmailForRegistration />
   }
 ]
 
-export const unAuthRoutes = [...unauthenticatedRoutes]
-export const authRoutes = [...authenticatedRoutes]
-export const routes = [...authRoutes, ...unAuthRoutes]
-//const routes = [...unAuthRoutes, ...authRoutes]
-
-//export default routes
+//export all routes
+export const routes = [
+  ...startRoutes,
+  ...siginRoutes,
+  ...registerRoutes,
+  ...homeRoutes,
+  ...contactRoutes,
+  ...signOutRoutes,
+  ...signBackRoute
+]
+// export unauth routes
+export const unAuthRoutes = [
+  ...startRoutes,
+  ...siginRoutes,
+  ...registerRoutes,
+  ...signBackRoute
+]

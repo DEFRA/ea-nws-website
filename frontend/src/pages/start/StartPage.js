@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { Link } from 'react-router-dom'
-import Footer from '../gov-uk-components/Footer'
-import Header from '../gov-uk-components/Header'
-import PhaseBanner from '../gov-uk-components/PhaseBanner'
+import Footer from '../../gov-uk-components/Footer'
+import Header from '../../gov-uk-components/Header'
+import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
 export default function StartPage() {
   return (
@@ -21,7 +21,7 @@ export default function StartPage() {
                 is at risk of flooding.{' '}
               </p>
               <p className="govuk-body">
-                This service sends warnings about flooding from rivers, the sear
+                This service sends warnings about flooding from rivers, the sea
                 or groundwater, depending on your area.
               </p>
               <p className="govuk-body">
@@ -30,11 +30,7 @@ export default function StartPage() {
               </p>
               <h2 className="govuk-heading-m">Sign up for the first time</h2>
               <p className="govuk-body">
-                <Link
-                  //this needs updated when we have the page
-                  to="/signin"
-                  className="govuk-link"
-                >
+                <Link to="/signin" className="govuk-link">
                   Sign in
                 </Link>{' '}
                 to your account to:

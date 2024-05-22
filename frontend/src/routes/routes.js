@@ -1,12 +1,16 @@
 import React from 'react'
 import ConfirmDeleteContactDetailsPage from '../pages/ContactDetails/ConfirmDeleteContactDetailsPage'
 import ContactDetailsPage from '../pages/ContactDetails/ContactDetailsPage'
-import StartPage from '../pages/StartPage'
+import Index from '../pages/Index'
 import HomePage from '../pages/home/HomePage'
 import InitialEmailRegistrationPage from '../pages/register/InitialEmailRegistrationPage'
 import ValidateEmailForRegistration from '../pages/register/ValidateEmailForRegistration'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import CheckYourEmailPage from '../pages/signIn/SignInValidatePage'
+import StartPage from '../pages/start/StartPage'
+
+// index routes
+const indexRoutes = [{ path: '/index', component: <Index /> }]
 
 // start routes
 const startRoutes = [{ path: '/', component: <StartPage /> }]
@@ -21,7 +25,7 @@ const siginRoutes = [
 const registerRoutes = [
   { path: '/register', component: <InitialEmailRegistrationPage /> },
   {
-    path: '/ValidateEmailForRegistration',
+    path: '/register/validate',
     component: <ValidateEmailForRegistration />
   }
 ]
@@ -39,6 +43,7 @@ const contactRoutes = [
 ]
 
 const routes = [
+  ...indexRoutes,
   ...startRoutes,
   ...siginRoutes,
   ...registerRoutes,

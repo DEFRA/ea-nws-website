@@ -12,11 +12,11 @@ import SignOutManually from '../pages/signOut/SignOutManually'
 
 const authenticatedRoutes = [
   {
-    path: '/SignOutManually',
+    path: '/signoutmanually',
     component: <SignOutManually />
   },
   {
-    path: '/SignOutAutomatically',
+    path: '/signoutautomatically',
     component: <SignOutAutomatically />
   }
 ]
@@ -24,17 +24,17 @@ const authenticatedRoutes = [
 //contact routes
 const unauthenticatedRoutes = [
   {
-    path: '/SignBackIn',
+    path: '/signbackin',
     component: <SignBackIn />
   },
 
-  { path: '/Start', component: <StartPage /> },
+  { path: '/start', component: <StartPage /> },
   {
-    path: '/SignInPage',
+    path: '/signin',
     component: <SignInPage />
   },
   {
-    path: '/CheckYourEmailPage',
+    path: '/checkyouremail',
     component: <CheckYourEmailPage />
   },
   {
@@ -42,7 +42,7 @@ const unauthenticatedRoutes = [
     component: <InitialEmailRegistrationPage />
   },
   {
-    path: '/ValidateEmailForRegistration',
+    path: '/Validateemailforregistration',
     component: <ValidateEmailForRegistration />
   }
 ]

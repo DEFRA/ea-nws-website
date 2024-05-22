@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
 
 const userSlice = createSlice({
-  name: 'user',
+  name: 'session',
   initialState: {
     authToken: null,
     profile: null,
@@ -12,14 +12,13 @@ const userSlice = createSlice({
       state.authToken = action.payload
     },
     setProfile: (state, action) => {
-      console.log('redux store', action.payload)
       state.profile = action.payload
-      console.log('state profile', state.profile)
     },
     setRegistration: (state, action) => {
       state.registration = action.payload
     },
     clearAuth: (state) => {
+      console.log('cleared')
       state.authToken = null
       state.profile = null
       state.registration = null

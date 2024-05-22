@@ -65,7 +65,7 @@ export default function SignInPage() {
         <h2 class="govuk-heading-l">Sign in to your flood warnings account</h2>
         <div class="govuk-body">
           You can:
-          <ul class="govuk-list govuk-list--bullet">
+          <ul className="govuk-list govuk-list--bullet">
             <li>update or remove your locations</li>
             <li>change how you get flood messages</li>
             <li>delete your account</li>
@@ -84,5 +84,6 @@ export default function SignInPage() {
       </div>
       <Footer />
     </>
+  )
   )
 }

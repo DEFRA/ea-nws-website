@@ -26,6 +26,9 @@ const apiSignInValidateCall = async (signinToken, code) => {
     profile = responseData.profile
     authToken = responseData.authToken
     registration = responseData.registration
+    profile = responseData.profile
+    authToken = responseData.authToken
+    registration = responseData.registration
   }
 
   return isValid === 200
@@ -42,8 +45,7 @@ module.exports = [
         if (request.payload === null) {
           return h.response({ message: 'Bad request' }).code(400)
         }
-        console.log('PAYLOADBACKEND')
-        console.log(request.payload)
+
         const { signinToken, code } = request.payload
         const apiResponse = await apiSignInValidateCall(signinToken, code)
         let response
@@ -61,6 +63,7 @@ module.exports = [
             registration: apiResponse.registration
           }
         }
+
         return h.response(response)
       } catch (error) {
         console.error('Error:', error)

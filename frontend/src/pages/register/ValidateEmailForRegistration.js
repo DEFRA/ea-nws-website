@@ -15,11 +15,9 @@ const validateNumber = (input, digits) => {
 
 const ValidateEmailForRegistrationForm = (props) => {
   const [errorMessage, setErrorMessage] = useState('')
+  const [code, setCode] = useState('')
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
-    const code = event.target.code.value
-
     if (code === '') {
       setErrorMessage('Enter code')
       return
@@ -33,30 +31,29 @@ const ValidateEmailForRegistrationForm = (props) => {
       setErrorMessage('Invalid code')
       return
     }
-    event.target.reset()
     window.location.replace('Start')
   }
 
   const validateCode = async (code) => {
-    const raw = JSON.stringify({ registerToken, code })
+    var raw = JSON.stringify({ registerToken: registerToken, code: code })
 
     const responseData = await backendCall(raw, 'registerValidate')
     console.log('ResponseData', responseData)
-    if (Object.prototype.hasOwnProperty.call(responseData, 'code')) {
+    if (responseData.hasOwnProperty('code')) {
       return false
     }
 
-    window.sessionStorage.setItem('authToken', responseData.authToken)
-    window.sessionStorage.setItem('profile', responseData.profile)
-    window.sessionStorage.setItem('registration', responseData.registration)
+    window.sessionStorage.setItem('authToken', responseData['authToken'])
+    window.sessionStorage.setItem('profile', responseData['profile'])
+    window.sessionStorage.setItem('registration', responseData['registration'])
     return true
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      <TextInput name="Enter code" id="code" />
+      <TextInput name="Enter code" onChange={(val) => setCode(val)}></TextInput>
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <button type="submit" class="govuk-button" data-module="govuk-button">
+      <button type="submit" className="govuk-button" data-module="govuk-button">
         Continue
       </button>
     </form>
@@ -67,12 +64,12 @@ export default function ValidateEmailForRegistration() {
   return (
     <>
       <Header />
-      <div class="govuk-width-container">
-        <a href="register" class="govuk-back-link">
+      <div className="govuk-width-container">
+        <a href="register" className="govuk-back-link">
           Back
         </a>
-        <h2 class="govuk-heading-l">Check your email</h2>
-        <div class="govuk-body">
+        <h2 className="govuk-heading-l">Check your email</h2>
+        <div className="govuk-body">
           We've sent a code to:
           <InsetText text={userEmail} />
           <ValidateEmailForRegistrationForm />

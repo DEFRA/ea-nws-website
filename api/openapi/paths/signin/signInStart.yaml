@@ -3,16 +3,16 @@ post:
     - Member
   summary: Start authentication of a user.
   operationId: 'getSignInStart'
-  description: >-    
-        This RPC is used to authenticate a member based on his email or his
-        phone number. Either \\ref email or \\ref mobilePhone should be set. If
-        both are set, \\ref mobilePhone is ignored.
+  description: >-
+    This RPC is used to authenticate a member based on his email or his
+    phone number. Either \\ref email or \\ref mobilePhone should be set. If
+    both are set, \\ref mobilePhone is ignored.
 
 
-        If the email or mobile phone is known, a code is sent to the email
-        address, or mobile phone by SMS, and a temporary signin token is
-        provided. This token is only valid in \\ref signinValidate, to transform
-        this signin token into an auth token.
+    If the email or mobile phone is known, a code is sent to the email
+    address, or mobile phone by SMS, and a temporary signin token is
+    provided. This token is only valid in \\ref signinValidate, to transform
+    this signin token into an auth token.
   requestBody:
     content:
       application/json:
@@ -50,7 +50,7 @@ post:
               value:
                 signinToken: >-
                   gAAAAABkOTcdnMmy9y9pgowrd6hx9K-72YGsdu4MOb9wHhKyQaqZaxE7MNHW6Js7knjmGewUhrVgZMfghSWhpIHr2D5DuhPLBPH8-KV9sdj2MRCfj1klg2NR7b2yTv2qB1z6IYvId3XbsBo6Wyqquwj9f73zJEsIIwOInAQGQ24nhpZqFaDhF-jawbm2izWb4-8QDCgveq68diOceMA4NLVYBhbRwAJTeonwbTdRwFVTTrE6jNo8cGY=
-    
+
     '500':
       description: email address is not found
       content:

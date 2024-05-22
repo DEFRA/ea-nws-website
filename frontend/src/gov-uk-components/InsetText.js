@@ -1,7 +1,9 @@
-export default function TextInput ({ text }) {
+import React from 'react'
+
+export default function InsetText({ text }) {
   return (
     <>
-      <div class='govuk-inset-text'>{text}</div>
+      <div className="govuk-inset-text">{text}</div>
     </>
   )
 }

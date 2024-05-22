@@ -2,7 +2,7 @@ export default function TextInput({
   name,
   className,
   value,
-  onChange = () => {},
+  onChange,
   error = ''
 }) {
   const handleChange = (event) => {
@@ -18,7 +18,7 @@ export default function TextInput({
             : 'govuk-form-group govuk-form-group--error'
         }
       >
-        <label class="govuk-label" for="event-name">
+        <label className="govuk-label" htmlFor="govuk-text-input">
           {name}
         </label>
         {error !== '' && (

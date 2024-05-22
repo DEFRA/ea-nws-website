@@ -20,7 +20,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.code).to.equal(106)
+    Code.expect(response.result.code).to.equal(101)
   })
 
   lab.test('POST / route runs with invalid email format', async () => {

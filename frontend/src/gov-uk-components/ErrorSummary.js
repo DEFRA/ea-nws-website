@@ -3,11 +3,11 @@ const ErrorSummary = ({ errorList }) => {
     <></>
   ) : (
     <>
-      <div class="govuk-error-summary" data-module="govuk-error-summary">
+      <div className="govuk-error-summary" data-module="govuk-error-summary">
         <div role="alert">
-          <h2 class="govuk-error-summary__title">There is a problem</h2>
-          <div class="govuk-error-summary__body">
-            <ul class="govuk-list govuk-error-summary__list">
+          <h2 className="govuk-error-summary__title">There is a problem</h2>
+          <div className="govuk-error-summary__body">
+            <ul className="govuk-list govuk-error-summary__list">
               {errorList.map((error, index) => (
                 <li key={index}>
                   <a href="/">{error}</a>

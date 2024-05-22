@@ -33,6 +33,7 @@ module.exports = [
       try {
         const { registerToken, code } = request.payload
         const apiResponse = await apiRegisterValidateCall(registerToken, code)
+        console.log(apiResponse)
         let response
         if (Object.prototype.hasOwnProperty.call(apiResponse, 'code')) {
           console.log('Invalid')

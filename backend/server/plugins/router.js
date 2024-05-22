@@ -4,7 +4,8 @@ const routes = [].concat(
   require('../routes/signIn/signInStart'),
   require('../routes/signIn/signInValidate'),
   require('../routes/register/registerStart'),
-  require('../routes/register/registerValidate')
+  require('../routes/register/registerValidate'),
+  require('../routes/update_profile/update_profile')
 )
 
 module.exports = {

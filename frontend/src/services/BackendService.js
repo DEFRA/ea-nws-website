@@ -1,6 +1,6 @@
-const backendCall = async (raw, call) => {
+const backendCall = async (data, path) => {
   let responseData
-  const url = 'http://localhost:3000/' + call
+  const url = 'http://localhost:3000/' + path
   try {
     const response = await fetch(url, {
       method: 'POST',
@@ -9,7 +9,7 @@ const backendCall = async (raw, call) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: raw
+      body: data
     })
     responseData = await response.json()
   } catch (error) {
@@ -18,4 +18,4 @@ const backendCall = async (raw, call) => {
   return responseData
 }
 
-module.exports = backendCall
+module.exports = { backendCall }

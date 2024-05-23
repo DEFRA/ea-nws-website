@@ -47,7 +47,7 @@ const ValidateEmailForRegistrationForm = (props) => {
   return (
     <form onSubmit={handleSubmit}>
       <TextInput name="Enter code" onChange={(val) => setCode(val)}></TextInput>
-      {//errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
+      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       <button type="submit" className="govuk-button" data-module="govuk-button">
         ContinueS
       </button>

@@ -73,7 +73,7 @@ export default function SignInValidatePage() {
           <InsetText text={location.state.email} />
           <Input
             name="Enter code"
-            type="text"
+            inputType="text"
             error={error}
             onChange={setCode}
           />

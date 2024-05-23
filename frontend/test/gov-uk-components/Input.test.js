@@ -13,7 +13,7 @@ describe('TextInput component', () => {
         className="test-class"
         value=""
         onChange={mockOnChange}
-        type="text"
+        inputType="text"
       />
     )
 
@@ -29,7 +29,7 @@ describe('TextInput component', () => {
         className="test-class"
         value=""
         onChange={mockOnChange}
-        type="text"
+        inputType="text"
       />
     )
 
@@ -46,7 +46,7 @@ describe('TextInput component', () => {
         className="test-class"
         value="Initial Value"
         onChange={mockOnChange}
-        type="text"
+        inputType="text"
       />
     )
 
@@ -65,7 +65,7 @@ describe('TextInput component', () => {
         value=""
         onChange={mockOnChange}
         error={errorMessage}
-        type="text"
+        inputType="text"
       />
     )
 

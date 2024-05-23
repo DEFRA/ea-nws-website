@@ -11,7 +11,7 @@ const ErrorSummary = ({ errorList }) => {
             <ul className="govuk-list govuk-error-summary__list">
               {errorList.map((error, index) => (
                 <li key={index}>
-                  <p href="/">{error}</p>
+                  <a href="/">{error}</a>
                 </li>
               ))}
             </ul>

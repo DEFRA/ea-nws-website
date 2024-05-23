@@ -65,7 +65,7 @@ export default function SignInStartPage() {
           </ul>
           <Input
             name="Email address"
-            type="text"
+            inputType="text"
             error={error}
             onChange={setEmail}
           />

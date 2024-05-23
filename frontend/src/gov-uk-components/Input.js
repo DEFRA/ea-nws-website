@@ -1,7 +1,7 @@
 import React from 'react'
 export default function TextInput({
   name,
-  classNameName,
+  className,
   value,
   onChange,
   error = ''
@@ -23,13 +23,13 @@ export default function TextInput({
           {name}
         </label>
         {error === '' && (
-          <p id="error" classNameName="govuk-error-message">
-            <span classNameName="govuk-visually-hidden">Error:</span> {error}
+          <p id="error" className="govuk-error-message">
+            <span className="govuk-visually-hidden">Error:</span> {error}
           </p>
         )}
         <input
-          classNameName={
-            error === '' ? classNameName : 'govuk-input govuk-input--error'
+          className={
+            error === '' ? className : 'govuk-input govuk-input--error'
           }
           name={name}
           id="govuk-input"

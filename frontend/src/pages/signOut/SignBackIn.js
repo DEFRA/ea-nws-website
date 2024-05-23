@@ -20,7 +20,7 @@ export default function SignBackIn() {
         </h1>
         <Button
           text={'Sign in'}
-          classNameName={'govuk-button'}
+          className={'govuk-button'}
           onClick={redirect}
         />
       </div>

@@ -65,7 +65,7 @@ export default function SignInValidatePage() {
     <>
       <Header />
       <div className="govuk-width-container">
-        <Link to="/signin" classNameName="govuk-back-link">
+        <Link to="/signin" className="govuk-back-link">
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
@@ -75,7 +75,7 @@ export default function SignInValidatePage() {
           <InsetText text={location.state.email} />
           <Input name="Enter code" error={error} onChange={setCode} />
           <Button
-            classNameName="govuk-button"
+            className="govuk-button"
             text="Continue"
             onClick={handleSubmit}
           />

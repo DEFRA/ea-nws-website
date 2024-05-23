@@ -56,7 +56,7 @@ export default function SignInStartPage() {
     <>
       <Header />
       <div className="govuk-width-container">
-        <Link to="/" classNameName="govuk-back-link">
+        <Link to="/" className="govuk-back-link">
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
@@ -65,19 +65,19 @@ export default function SignInStartPage() {
         </h2>
         <div className="govuk-body">
           You can:
-          <ul classNameName="govuk-list govuk-list--bullet">
+          <ul className="govuk-list govuk-list--bullet">
             <li>update or remove your locations</li>
             <li>change how you get flood messages</li>
             <li>delete your account</li>
           </ul>
           <Input name="Email address" error={error} onChange={setEmail} />
           <Button
-            classNameName="govuk-button"
+            className="govuk-button"
             text="Continue"
             onClick={handleSubmit}
           />
           <br></br>
-          <Link to="/" classNameName="govuk-link">
+          <Link to="/" className="govuk-link">
             Sign up if you do not have an account
           </Link>
         </div>

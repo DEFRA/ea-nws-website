@@ -5,11 +5,7 @@ export default function signOutLayout(text, redirect) {
     <div>
       <h2 className="govuk-heading-l">{text}</h2>
       <p className="govuk-body">You can sign back in if you need to.</p>
-      <Button
-        text={'Sign in'}
-        classNameName={'govuk-button'}
-        onClick={redirect}
-      />
+      <Button text={'Sign in'} className={'govuk-button'} onClick={redirect} />
 
       <h3 className="govuk-heading-s">More about flooding</h3>
 

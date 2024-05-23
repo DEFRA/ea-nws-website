@@ -19,26 +19,26 @@ export default function ContactDetailsPage() {
   return (
     <>
       <Header />
-      <div classNameName="govuk-width-container">
+      <div className="govuk-width-container">
         <PhaseBanner />
         {location.state !== null ? (
           <NotificationBanner
-            classNameName="govuk-notification-banner govuk-notification-banner--success"
+            className="govuk-notification-banner govuk-notification-banner--success"
             title="Success"
             heading={location.state.removedType + ' removed'}
             text={location.state.removedContact}
           />
         ) : null}
-        <Link to="/home" classNameName="govuk-link">
+        <Link to="/home" className="govuk-link">
           Back to Home
         </Link>
-        <main classNameName="govuk-main-wrapper">
-          <div classNameName="govuk-grid-row">
-            <div classNameName="govuk-grid-column-two-thirds">
-              <h2 classNameName="govuk-heading-l">
+        <main className="govuk-main-wrapper">
+          <div className="govuk-grid-row">
+            <div className="govuk-grid-column-two-thirds">
+              <h2 className="govuk-heading-l">
                 Your email addresses and telephone numbers
               </h2>
-              <p classNameName="govuk-body">
+              <p className="govuk-body">
                 We'll send flood messages for all your location to all these
                 emails and numbers. You can add more for friends and family, if
                 you wish.

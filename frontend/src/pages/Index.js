@@ -67,24 +67,24 @@ export default function IndexPage() {
             <div className="govuk-grid-column-two-thirds">
               <h1 className="govuk-heading-xl">Next Warning Service Index</h1>
               <NotificationBanner
-                classNameName="govuk-notification-banner govuk-notification-banner--success"
+                className="govuk-notification-banner govuk-notification-banner--success"
                 title="Mock session"
                 text={mockSessionActive ? 'Active' : 'Not Active'}
               />
               <p className="govuk-body">A quick link to each page</p>
               <ul className="govuk-list">
                 <li>
-                  <Link to="/" classNameName="govuk-link">
+                  <Link to="/" className="govuk-link">
                     Start page
                   </Link>
                 </li>
                 <li>
-                  <Link to="/signin" classNameName="govuk-link">
+                  <Link to="/signin" className="govuk-link">
                     Sign in page
                   </Link>
                 </li>
                 <li>
-                  <Link to="/register" classNameName="govuk-link">
+                  <Link to="/register" className="govuk-link">
                     Register page
                   </Link>
                 </li>
@@ -95,18 +95,18 @@ export default function IndexPage() {
                 start/kill the mock session
               </p>
               <Button
-                classNameName="govuk-button"
+                className="govuk-button"
                 text="Activate/Deactivate Mock Session"
                 onClick={mockSession}
               />
               <ul className="govuk-list">
                 <li>
-                  <Link to="/home" classNameName="govuk-link">
+                  <Link to="/home" className="govuk-link">
                     Home page
                   </Link>
                 </li>
                 <li>
-                  <Link to="/managecontacts" classNameName="govuk-link">
+                  <Link to="/managecontacts" className="govuk-link">
                     Manage Contacts page
                   </Link>
                 </li>

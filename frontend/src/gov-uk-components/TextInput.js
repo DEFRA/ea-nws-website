@@ -1,3 +1,4 @@
+import React from 'react'
 export default function TextInput({
   name,
   className,
@@ -12,7 +13,7 @@ export default function TextInput({
   return (
     <>
       <div
-        class={
+        className={
           error === ''
             ? 'govuk-form-group'
             : 'govuk-form-group govuk-form-group--error'
@@ -29,7 +30,7 @@ export default function TextInput({
         <input
           className={error === '' ? className : 'govuk-input--error'}
           name={name}
-          id="event-name"
+          id="govuk-text-input"
           type="text"
           value={value}
           onChange={handleChange}

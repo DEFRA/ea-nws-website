@@ -1,3 +1,4 @@
+import React from 'react'
 const ErrorSummary = ({ errorList }) => {
   return !errorList || errorList.length === 0 ? (
     <></>
@@ -10,7 +11,7 @@ const ErrorSummary = ({ errorList }) => {
             <ul className="govuk-list govuk-error-summary__list">
               {errorList.map((error, index) => (
                 <li key={index}>
-                  <a href="/">{error}</a>
+                  <p href="/">{error}</p>
                 </li>
               ))}
             </ul>

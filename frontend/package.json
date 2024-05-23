@@ -15,6 +15,7 @@
     "bootstrap": "^5.3.3",
     "govuk-frontend": "^5.3.1",
     "hmrc-frontend": "^6.17.0",
+    "node-fetch": "^2.7.0",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.2",
     "react-dom": "^18.3.1",
@@ -29,9 +30,9 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
     "eject": "react-scripts eject",
-    "lint": "standard"
+    "uitest": "python3 -m pytest src/tests",
+    "test": "jest"
   },
   "eslintConfig": {
     "extends": [

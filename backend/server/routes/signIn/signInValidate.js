@@ -1,16 +1,24 @@
-const { apiCall } = require('../../services/ApiService')
+const apiCall = require('../../services/ApiService')
+const codeValidation = require('../../services/Validations/CodeValidation')
 
-const apiSignInValidateCall = async (signInToken, code) => {
+const apiSignInValidateCall = async (signinToken, code) => {
   let isValid = 400
   let desc
-  const raw = JSON.stringify({ signinToken: signInToken, code: code })
-  if (!signInValidateValidation(signInToken, code, 6)) {
+  let profile
+  let authToken
+  let registration
+  const raw = JSON.stringify({ signinToken: signinToken, code })
+  if (signinToken !== '' && !codeValidation(code, 6)) {
     return { code: 101, desc: 'invalid code' }
   }
 
   // Parse the JSON response and get the status code
   const responseData = await apiCall(raw, 'member/signinValidate')
-  if (responseData.hasOwnProperty('code')) {
+  if (responseData === undefined) return
+  if (
+    Object.prototype.hasOwnProperty.call(responseData, 'code') &&
+    responseData.code === 101
+  ) {
     isValid = responseData.code
     desc = responseData.desc
   } else {
@@ -18,16 +26,14 @@ const apiSignInValidateCall = async (signInToken, code) => {
     profile = responseData.profile
     authToken = responseData.authToken
     registration = responseData.registration
+    profile = responseData.profile
+    authToken = responseData.authToken
+    registration = responseData.registration
   }
 
   return isValid === 200
-    ? { authToken: authToken, profile: profile, registration: registration }
+    ? { authToken, profile, registration }
     : { code: isValid, desc: desc }
-}
-
-const signInValidateValidation = (signInToken, code, length) => {
-  const numberPattern = new RegExp(`^[0-9]{${length}}$`)
-  return signInToken !== '' && code != '' && numberPattern.test(code)
 }
 
 module.exports = [
@@ -36,11 +42,14 @@ module.exports = [
     path: '/signInValidate',
     handler: async (request, h) => {
       try {
+        if (request.payload === null) {
+          return h.response({ message: 'Bad request' }).code(400)
+        }
+
         const { signinToken, code } = request.payload
         const apiResponse = await apiSignInValidateCall(signinToken, code)
-        console.log(apiResponse)
         let response
-        if (apiResponse.hasOwnProperty('code')) {
+        if (!Object.prototype.hasOwnProperty.call(apiResponse, 'authToken')) {
           console.log('Invalid')
           response = {
             code: apiResponse.code,

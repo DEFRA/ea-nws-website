@@ -18,4 +18,4 @@ const backendCall = async (data, path) => {
   return responseData
 }
 
-module.exports = { backendCall }
+module.exports = backendCall

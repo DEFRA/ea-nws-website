@@ -1,4 +1,4 @@
-export default function Table({ caption, tableHeadings, tableRows }) {
+export default function Table ({ caption, tableHeadings, tableRows }) {
   return (
     <>
       <table className="govuk-table">

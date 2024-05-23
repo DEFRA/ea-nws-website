@@ -22,7 +22,7 @@ export default function TextInput({
         <label class="govuk-label" htmlFor="govuk-input">
           {name}
         </label>
-        {error == '' && (
+        {error === '' && (
           <p id="error" className="govuk-error-message">
             <span className="govuk-visually-hidden">Error:</span> {error}
           </p>

@@ -8,8 +8,6 @@ import { routes, unAuthRoutes } from './routes/routes'
 export default function App() {
   const session = useSelector((state) => state.session)
 
-  let userLoggedout = false //use for testing
-
   let userAuth = () => {
     if (session.authToken !== null) {
       return true

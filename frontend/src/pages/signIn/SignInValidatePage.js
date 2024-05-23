@@ -20,9 +20,8 @@ export default function SignInValidatePage() {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
-  const signinToken = location.state.signinToken
   const [code, setCode] = useState('')
+  const signinToken = location.state.signinToken
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -43,7 +42,10 @@ export default function SignInValidatePage() {
   }
 
   const validateCode = async (code) => {
-    const raw = JSON.stringify({ signinToken, code })
+    const raw = JSON.stringify({
+      signinToken,
+      code
+    })
     const responseData = await backendCall(raw, 'signInValidate')
 
     if (

@@ -8,7 +8,7 @@ import TextInput from '../../gov-uk-components/TextInput'
 import backendCall from '../../services/BackendService'
 import emailValidation from '../../services/Validations/EmailValidation'
 
-export default function SignInPage() {
+export default function SignInStartPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
@@ -31,7 +31,6 @@ export default function SignInPage() {
       setError('Email address is not recognised - check and try again')
       return
     }
-    signinToken = token
 
     navigate('/signin/validate', {
       state: { signinToken, email }
@@ -41,7 +40,7 @@ export default function SignInPage() {
   const checkEmail = async (email) => {
     const raw = JSON.stringify({ email })
     const responseData = await backendCall(raw, 'signInStart')
-    console.log('responseData', responseData)
+
     if (responseData === undefined) {
       return { emailExists: false, signinToken: null }
     }

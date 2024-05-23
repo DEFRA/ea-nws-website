@@ -5,8 +5,8 @@ import Button from '../../gov-uk-components/Button'
 import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
+import Input from '../../gov-uk-components/Input'
 import InsetText from '../../gov-uk-components/InsetText'
-import TextInput from '../../gov-uk-components/TextInput'
 import {
   setAuthToken,
   setProfile,
@@ -73,7 +73,7 @@ export default function SignInValidatePage() {
         <div class="govuk-body">
           We've sent a code to:
           <InsetText text={location.state.email} />
-          <TextInput name="Enter code" error={error} onChange={setCode} />
+          <Input name="Enter code" error={error} onChange={setCode} />
           <Button
             className="govuk-button"
             text="Continue"

@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
+import Input from '../../../gov-uk-components/Input'
 import InsetText from '../../../gov-uk-components/InsetText'
-import TextInput from '../../../gov-uk-components/TextInput'
-
 const backendCall = require('../../../services/BackendService')
 const userEmail = window.sessionStorage.getItem('userEmail')
 const registerToken = window.sessionStorage.getItem('registerToken')
@@ -50,7 +49,7 @@ const ValidateEmailForRegistrationForm = (props) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <TextInput name="Enter code" onChange={(val) => setCode(val)}></TextInput>
+      <Input name="Enter code" onChange={(val) => setCode(val)}></Input>
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       <button type="submit" className="govuk-button" data-module="govuk-button">
         Continue

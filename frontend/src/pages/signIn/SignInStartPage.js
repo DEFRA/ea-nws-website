@@ -4,7 +4,7 @@ import Button from '../../gov-uk-components/Button'
 import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
-import TextInput from '../../gov-uk-components/TextInput'
+import Input from '../../gov-uk-components/Input'
 import backendCall from '../../services/BackendService'
 import emailValidation from '../../services/Validations/EmailValidation'
 
@@ -68,7 +68,7 @@ export default function SignInStartPage() {
             <li>change how you get flood messages</li>
             <li>delete your account</li>
           </ul>
-          <TextInput name="Email address" error={error} onChange={setEmail} />
+          <Input name="Email address" error={error} onChange={setEmail} />
           <Button
             className="govuk-button"
             text="Continue"

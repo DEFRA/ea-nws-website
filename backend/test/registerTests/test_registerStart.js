@@ -1,7 +1,7 @@
 const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
-const lab = exports.lab = Lab.script()
-const createServer = require('../server')
+const lab = (exports.lab = Lab.script())
+const createServer = require('../../server')
 
 lab.experiment('Web test', () => {
   let server
@@ -50,18 +50,21 @@ lab.experiment('Web test', () => {
     Code.expect(response.result.code).to.equal(101)
   })
 
-  lab.test('POST / route runs with invalid payload as email already registered', async () => {
-    const options = {
-      method: 'POST',
-      url: '/registerStart',
-      payload: {
-        email: 'emailAlreadyInUse@email.com'
+  lab.test(
+    'POST / route runs with invalid payload as email already registered',
+    async () => {
+      const options = {
+        method: 'POST',
+        url: '/registerStart',
+        payload: {
+          email: 'emailAlreadyInUse@email.com'
+        }
       }
-    }
 
-    const response = await server.inject(options)
-    Code.expect(response.result.code).to.equal(101)
-  })
+      const response = await server.inject(options)
+      Code.expect(response.result.code).to.equal(101)
+    }
+  )
 
   lab.test('POST / route runs with invalid payload as missing @', async () => {
     const options = {
@@ -76,16 +79,19 @@ lab.experiment('Web test', () => {
     Code.expect(response.result.code).to.equal(101)
   })
 
-  lab.test('POST / route runs with invalid payload as missing .com', async () => {
-    const options = {
-      method: 'POST',
-      url: '/registerStart',
-      payload: {
-        email: 'invalidemail@'
+  lab.test(
+    'POST / route runs with invalid payload as missing .com',
+    async () => {
+      const options = {
+        method: 'POST',
+        url: '/registerStart',
+        payload: {
+          email: 'invalidemail@'
+        }
       }
-    }
 
-    const response = await server.inject(options)
-    Code.expect(response.result.code).to.equal(101)
-  })
+      const response = await server.inject(options)
+      Code.expect(response.result.code).to.equal(101)
+    }
+  )
 })

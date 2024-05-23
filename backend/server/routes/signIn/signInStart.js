@@ -1,32 +1,27 @@
-const { apiCall } = require('../../services/ApiService')
+const apiCall = require('../../services/ApiService')
+const emailValidation = require('../../services/Validations/EmailValidation')
 
 const apiSignInStartCall = async (email) => {
   let isValid = 400
-  let signInToken = ''
-  const raw = JSON.stringify({ email: email })
+  const raw = JSON.stringify({ email })
   console.log('Received from front-end: ', raw)
-  if (!signInStartValidation(email)) {
+  if (!emailValidation(email)) {
     return { code: 101, desc: 'Invalid email' }
   }
 
   const responseData = await apiCall(raw, 'member/signinStart')
-  if (responseData.hasOwnProperty('desc')) {
+  console.log('Received from API: ', responseData)
+  if (responseData === undefined) return
+  if (Object.prototype.hasOwnProperty.call(responseData, 'desc')) {
     isValid = responseData.code
-    desc = responseData.desc
+    const desc = responseData.desc
+    return { code: isValid, desc: desc }
   } else {
     console.log('responseData', responseData)
     isValid = responseData.code
-    signInToken = responseData.signInToken
+    const signinToken = responseData.signinToken
+    return { code: isValid, signinToken }
   }
-  console.log('Received from API: ', responseData)
-
-  console.log({ code: isValid, signInToken: signInToken })
-  return { code: isValid, signInToken: signInToken }
-}
-
-const signInStartValidation = (email) => {
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  return email != '' && emailPattern.test(email)
 }
 
 module.exports = [
@@ -35,12 +30,14 @@ module.exports = [
     path: '/signInStart',
     handler: async (request, h) => {
       try {
+        if (request.payload === null) {
+          return h.response({ message: 'Bad request' }).code(400)
+        }
         const { email } = request.payload
-        // do some email validation
         const apiResponse = await apiSignInStartCall(email)
         const response = {
           code: apiResponse.code,
-          signInToken: apiResponse.signInToken
+          signinToken: apiResponse.signinToken
         }
 
         return h.response(response)

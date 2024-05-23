@@ -50,4 +50,27 @@ describe('TextInput component', () => {
     const inputElement = screen.getByLabelText('Test Name')
     expect(inputElement).toHaveValue('Initial Value')
   })
+
+  test('renders the input with error message and error class when there is an error', () => {
+    const mockOnChange = jest.fn()
+    const errorMessage = 'This is an error message'
+
+    render(
+      <TextInput
+        name="Test Name"
+        className="test-class"
+        value=""
+        onChange={mockOnChange}
+        error={errorMessage}
+      />
+    )
+
+    const inputElement = screen.getByLabelText('Test Name')
+    const errorElement = screen.getByText(errorMessage)
+
+    expect(inputElement).toBeInTheDocument()
+    expect(inputElement).toHaveClass('govuk-input--error')
+    expect(errorElement).toBeInTheDocument()
+    expect(errorElement).toHaveClass('govuk-error-message')
+  })
 })

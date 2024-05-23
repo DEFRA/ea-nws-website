@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import Footer from '../../gov-uk-components/Footer'
-import Header from '../../gov-uk-components/Header'
-import TextInput from '../../gov-uk-components/TextInput'
-const backendCall = require('../../services/BackendService')
+import Footer from '../../../gov-uk-components/Footer'
+import Header from '../../../gov-uk-components/Header'
+import TextInput from '../../../gov-uk-components/TextInput'
+const backendCall = require('../../../services/BackendService')
 
 const EmailForm = (props) => {
   const [errorMessage, setErrorMessage] = useState('')
@@ -35,14 +35,11 @@ const EmailForm = (props) => {
   }
 
   const checkEmail = async (email) => {
-    console.log('email value', email)
     let registerToken = ''
     var raw = JSON.stringify({ email: email })
     const responseData = await backendCall(raw, 'registerStart')
-    console.log('response data', responseData)
 
     const code = responseData['code']
-    console.log('code returned', code)
     registerToken = responseData['registerToken']
     // Assign the status code to isValid
     if (code === 101) {
@@ -50,7 +47,7 @@ const EmailForm = (props) => {
     }
 
     window.sessionStorage.setItem('registerToken', registerToken)
-    console.log('register token', registerToken)
+
     return true
   }
 

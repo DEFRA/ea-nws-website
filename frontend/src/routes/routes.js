@@ -1,12 +1,12 @@
 import React from 'react'
-import ConfirmDeleteContactDetailsPage from '../pages/ContactDetails/ConfirmDeleteContactDetailsPage'
-import ContactDetailsPage from '../pages/ContactDetails/ContactDetailsPage'
+import ConfirmDeleteContactDetailsPage from '../pages/contact-details/ConfirmDeleteContactDetailsPage'
+import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
 import Index from '../pages/Index'
 import HomePage from '../pages/home/HomePage'
-import InitialEmailRegistrationPage from '../pages/register/InitialEmailRegistrationPage'
-import ValidateEmailForRegistration from '../pages/register/ValidateEmailForRegistration'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import CheckYourEmailPage from '../pages/signIn/SignInValidatePage'
+import ValidateEmailForRegistration from '../pages/signup/account/ValidateEmailForRegistration'
+import InitialEmailRegistrationPage from '../pages/signup/account/InitialEmailRegistrationPage'
 import StartPage from '../pages/start/StartPage'
 
 // index routes

@@ -1,7 +1,8 @@
 import React from 'react'
-
-export default function ErrorSummary({ errorList }) {
-  return (
+const ErrorSummary = ({ errorList }) => {
+  return !errorList || errorList.length === 0 ? (
+    <></>
+  ) : (
     <>
       <div className="govuk-error-summary" data-module="govuk-error-summary">
         <div role="alert">
@@ -10,7 +11,7 @@ export default function ErrorSummary({ errorList }) {
             <ul className="govuk-list govuk-error-summary__list">
               {errorList.map((error, index) => (
                 <li key={index}>
-                  <a href="#">{error}</a>
+                  <p href="/">{error}</p>
                 </li>
               ))}
             </ul>
@@ -20,3 +21,5 @@ export default function ErrorSummary({ errorList }) {
     </>
   )
 }
+
+export default ErrorSummary

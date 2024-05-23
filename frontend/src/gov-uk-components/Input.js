@@ -1,4 +1,10 @@
-export default function TextInput({ name, className, value, onChange, error }) {
+export default function TextInput({
+  name,
+  className,
+  value,
+  onChange,
+  error = ''
+}) {
   const handleChange = (event) => {
     onChange(event.target.value)
   }
@@ -7,23 +13,25 @@ export default function TextInput({ name, className, value, onChange, error }) {
     <>
       <div
         class={
-          error
+          error === ''
             ? 'govuk-form-group'
             : 'govuk-form-group govuk-form-group--error'
         }
       >
-        <label class="govuk-label" for="event-name">
+        <label class="govuk-label" htmlFor="govuk-input">
           {name}
         </label>
-        {error && (
-          <p id="{id}-error" className="govuk-error-message">
+        {error == '' && (
+          <p id="error" className="govuk-error-message">
             <span className="govuk-visually-hidden">Error:</span> {error}
           </p>
         )}
         <input
-          className={error ? className : 'govuk-input govuk-input--error'}
+          className={
+            error === '' ? className : 'govuk-input govuk-input--error'
+          }
           name={name}
-          id="event-name"
+          id="govuk-input"
           type="text"
           value={value}
           onChange={handleChange}

@@ -36,7 +36,6 @@ export default function SignInPage() {
     navigate('/signin/validate', {
       state: { signinToken, email }
     })
-    //event.target.reset()
   }
 
   const checkEmail = async (email) => {
@@ -47,7 +46,7 @@ export default function SignInPage() {
       return { emailExists: false, signinToken: null }
     }
     const code = responseData.code
-    if (code === 106) {
+    if (code === 101) {
       return { emailExists: false, signinToken: null }
     }
     const signinToken = responseData.signinToken

@@ -64,18 +64,18 @@ export default function SignInValidatePage() {
   return (
     <>
       <Header />
-      <div class="govuk-width-container">
-        <Link to="/signin" className="govuk-back-link">
+      <div className="govuk-width-container">
+        <Link to="/signin" classNameName="govuk-back-link">
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 class="govuk-heading-l">Check your email</h2>
-        <div class="govuk-body">
+        <h2 className="govuk-heading-l">Check your email</h2>
+        <div className="govuk-body">
           We've sent a code to:
           <InsetText text={location.state.email} />
           <Input name="Enter code" error={error} onChange={setCode} />
           <Button
-            className="govuk-button"
+            classNameName="govuk-button"
             text="Continue"
             onClick={handleSubmit}
           />

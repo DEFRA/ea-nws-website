@@ -8,13 +8,13 @@ export default function HomePage() {
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
+      <div classNameName="govuk-width-container">
         <PhaseBanner />
-        <h1 className="govuk-heading-l">Home</h1>
+        <h1 classNameName="govuk-heading-l">Home</h1>
         <Link
           //this needs updated when we have the page
           to="/home"
-          className="govuk-button govuk-button--secondary"
+          classNameName="govuk-button govuk-button--secondary"
         >
           Add new location
         </Link>
@@ -22,14 +22,14 @@ export default function HomePage() {
         <Link
           //this needs updated when we have the page
           to="/home"
-          className="govuk-button govuk-button--secondary"
+          classNameName="govuk-button govuk-button--secondary"
         >
           Unsubscribe from flood alerts
         </Link>
         &nbsp; &nbsp;
         <Link
           to="/managecontacts"
-          className="govuk-button govuk-button--secondary"
+          classNameName="govuk-button govuk-button--secondary"
         >
           Your email addresses and numbers
         </Link>

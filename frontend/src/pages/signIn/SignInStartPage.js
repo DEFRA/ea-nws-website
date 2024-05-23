@@ -55,27 +55,29 @@ export default function SignInStartPage() {
   return (
     <>
       <Header />
-      <div class="govuk-width-container">
-        <Link to="/" className="govuk-back-link">
+      <div className="govuk-width-container">
+        <Link to="/" classNameName="govuk-back-link">
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 class="govuk-heading-l">Sign in to your flood warnings account</h2>
-        <div class="govuk-body">
+        <h2 className="govuk-heading-l">
+          Sign in to your flood warnings account
+        </h2>
+        <div className="govuk-body">
           You can:
-          <ul className="govuk-list govuk-list--bullet">
+          <ul classNameName="govuk-list govuk-list--bullet">
             <li>update or remove your locations</li>
             <li>change how you get flood messages</li>
             <li>delete your account</li>
           </ul>
           <Input name="Email address" error={error} onChange={setEmail} />
           <Button
-            className="govuk-button"
+            classNameName="govuk-button"
             text="Continue"
             onClick={handleSubmit}
           />
           <br></br>
-          <Link to="/" className="govuk-link">
+          <Link to="/" classNameName="govuk-link">
             Sign up if you do not have an account
           </Link>
         </div>

@@ -14,13 +14,13 @@ export default function SignBackIn() {
   return (
     <>
       <Header />
-      <div class="govuk-width-container">
-        <h1 class="govuk-heading-l">
+      <div className="govuk-width-container">
+        <h1 className="govuk-heading-l">
           You need to sign back in to view this page
         </h1>
         <Button
           text={'Sign in'}
-          className={'govuk-button'}
+          classNameName={'govuk-button'}
           onClick={redirect}
         />
       </div>

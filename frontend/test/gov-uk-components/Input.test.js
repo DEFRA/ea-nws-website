@@ -10,9 +10,9 @@ describe('Input Component', () => {
     onChange: jest.fn(),
     error: ''
   }
-  it('renders without crashing', () => {
-    render(<Input {...defaultProps} />)
-  })
+  // it('renders without crashing', () => {
+  //   render(<Input {...defaultProps} />)
+  // })
   it('displays the correct label', () => {
     render(<Input {...defaultProps} />)
     expect(screen.getByLabelText(defaultProps.name)).toBeInTheDocument()

@@ -1,12 +1,16 @@
 import React from 'react'
-import ConfirmDeleteContactDetailsPage from '../pages/ContactDetails/ConfirmDeleteContactDetailsPage'
-import ContactDetailsPage from '../pages/ContactDetails/ContactDetailsPage'
 import Index from '../pages/Index'
+import ConfirmDeleteContactDetailsPage from '../pages/contact-details/ConfirmDeleteContactDetailsPage'
+import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
 import HomePage from '../pages/home/HomePage'
-import InitialEmailRegistrationPage from '../pages/register/InitialEmailRegistrationPage'
-import ValidateEmailForRegistration from '../pages/register/ValidateEmailForRegistration'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import CheckYourEmailPage from '../pages/signIn/SignInValidatePage'
+import InitialEmailRegistrationPage from '../pages/signup/account/InitialEmailRegistrationPage'
+import ValidateEmailForRegistration from '../pages/signup/account/ValidateEmailForRegistration'
+import WarningContactsPreferencePage from '../pages/signup/channel-preferences/WarningContactsPreferencePage'
+import AddMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/AddMobilePhonePage'
+import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/SkipConfirmMobilePhonePage'
+import ValidateMobilePhone from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhone'
 import StartPage from '../pages/start/StartPage'
 
 // index routes
@@ -15,19 +19,35 @@ const indexRoutes = [{ path: '/index', component: <Index /> }]
 // start routes
 const startRoutes = [{ path: '/', component: <StartPage /> }]
 
+//sign up routes
+const signupRoutes = [
+  { path: '/signup', component: <InitialEmailRegistrationPage /> },
+  {
+    path: '/signup/validate',
+    component: <ValidateEmailForRegistration />
+  },
+  {
+    path: '/signup/contactpreferences',
+    component: <WarningContactsPreferencePage />
+  },
+  {
+    path: '/signup/contactpreferences/mobile',
+    component: <AddMobilePhonePage />
+  },
+  {
+    path: '/signup/contactpreferences/mobile/validate',
+    component: <ValidateMobilePhone />
+  },
+  {
+    path: '/signup/contactpreferences/mobile/skipconfirmation',
+    component: <SkipConfirmMobilePhonePage />
+  }
+]
+
 // sign in routes
 const siginRoutes = [
   { path: '/signin', component: <SignInPage /> },
   { path: '/signin/validate', component: <CheckYourEmailPage /> }
-]
-
-//register routes
-const registerRoutes = [
-  { path: '/register', component: <InitialEmailRegistrationPage /> },
-  {
-    path: '/register/validate',
-    component: <ValidateEmailForRegistration />
-  }
 ]
 
 // home
@@ -45,8 +65,8 @@ const contactRoutes = [
 const routes = [
   ...indexRoutes,
   ...startRoutes,
+  ...signupRoutes,
   ...siginRoutes,
-  ...registerRoutes,
   ...homeRoutes,
   ...contactRoutes
 ]

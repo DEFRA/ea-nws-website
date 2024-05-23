@@ -1,8 +1,8 @@
 import { useState } from 'react'
-import Footer from '../../gov-uk-components/Footer'
-import Header from '../../gov-uk-components/Header'
-import TextInput from '../../gov-uk-components/TextInput'
-const backendCall = require('../../services/BackendService')
+import Footer from '../../../gov-uk-components/Footer'
+import Header from '../../../gov-uk-components/Header'
+import Input from '../../../gov-uk-components/Input'
+const backendCall = require('../../../services/BackendService')
 
 const EmailForm = (props) => {
   const [errorMessage, setErrorMessage] = useState('')
@@ -56,7 +56,11 @@ const EmailForm = (props) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <TextInput name="Email address" onChange={(val) => setEmail(val)} />
+      <Input
+        inputType={'text'}
+        name="Email address"
+        onChange={(val) => setEmail(val)}
+      />
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       <button type="submit" className="govuk-button" data-module="govuk-button">
         Continue

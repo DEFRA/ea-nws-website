@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function TextInput({ name, className, value, onChange }) {
+export default function Input({ name, className, value, inputType, onChange }) {
   const handleChange = (event) => {
     onChange(event.target.value)
   }
@@ -14,7 +14,7 @@ export default function TextInput({ name, className, value, onChange }) {
         <input
           id="govuk-text-input"
           className={className}
-          type="text"
+          type={inputType}
           value={value}
           onChange={handleChange}
         />

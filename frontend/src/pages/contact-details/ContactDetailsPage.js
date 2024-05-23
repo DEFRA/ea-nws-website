@@ -29,7 +29,7 @@ export default function ContactDetailsPage() {
             text={location.state.removedContact}
           />
         ) : null}
-        <Link to="/home" className="govuk-link">
+        <Link to="/home" className="govuk-lin">
           Back to Home
         </Link>
         <main className="govuk-main-wrapper">

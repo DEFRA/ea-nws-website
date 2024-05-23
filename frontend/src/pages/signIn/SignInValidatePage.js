@@ -3,8 +3,8 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
+import Input from '../../gov-uk-components/Input'
 import InsetText from '../../gov-uk-components/InsetText'
-import TextInput from '../../gov-uk-components/TextInput'
 import {
   setAuthToken,
   setProfile,
@@ -62,7 +62,11 @@ const SignInValidateForm = (props) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <TextInput name="Enter code" onChange={(val) => setCode(val)} />
+      <Input
+        inputType={'text'}
+        name="Enter code"
+        onChange={(val) => setCode(val)}
+      />
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
       <button type="submit" className="govuk-button" data-module="govuk-button">
         Continue

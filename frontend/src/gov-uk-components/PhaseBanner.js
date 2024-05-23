@@ -1,7 +1,7 @@
 export default function Header() {
   return (
     <>
-      <div className="govuk-phase-banner govuk-body govuk-!-margin-bottom-3">
+      <div className="govuk-phase-banner">
         <p className="govuk-phase-banner__content">
           <strong className="govuk-tag govuk-phase-banner__content__tag">
             Alpha

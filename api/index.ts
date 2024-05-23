@@ -1,6 +1,5 @@
 import Hapi from '@hapi/hapi'
 import OpenAPIBackend from 'openapi-backend'
-import 'source-map-support/register'
 
 const server = new Hapi.Server({ port: 9000 })
 

@@ -1,10 +1,10 @@
 import { useState } from 'react'
-import Footer from '../../gov-uk-components/Footer'
-import Header from '../../gov-uk-components/Header'
-import InsetText from '../../gov-uk-components/InsetText'
-import TextInput from '../../gov-uk-components/TextInput'
+import Footer from '../../../gov-uk-components/Footer'
+import Header from '../../../gov-uk-components/Header'
+import InsetText from '../../../gov-uk-components/InsetText'
+import TextInput from '../../../gov-uk-components/TextInput'
 
-const backendCall = require('../../services/BackendService')
+const backendCall = require('../../../services/BackendService')
 const userEmail = window.sessionStorage.getItem('userEmail')
 const registerToken = window.sessionStorage.getItem('registerToken')
 
@@ -38,7 +38,6 @@ const ValidateEmailForRegistrationForm = (props) => {
     var raw = JSON.stringify({ registerToken: registerToken, code: code })
 
     const responseData = await backendCall(raw, 'registerValidate')
-    console.log('ResponseData', responseData)
     if (responseData.hasOwnProperty('code')) {
       return false
     }
@@ -71,8 +70,8 @@ export default function ValidateEmailForRegistration() {
         <h2 className="govuk-heading-l">Check your email</h2>
         <div className="govuk-body">
           We've sent a code to:
-          <InsetText text={userEmail}></InsetText>
-          <ValidateEmailForRegistrationForm></ValidateEmailForRegistrationForm>
+          <InsetText text={userEmail} />
+          <ValidateEmailForRegistrationForm />
         </div>
       </div>
 

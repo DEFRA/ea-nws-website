@@ -7,7 +7,7 @@ export default function Button({ text, className, onClick }) {
         type="submit"
         className={className}
         onClick={onClick}
-        data-module="govuk-button"
+        data-module='govuk-button'
       >
         {text}
       </button>

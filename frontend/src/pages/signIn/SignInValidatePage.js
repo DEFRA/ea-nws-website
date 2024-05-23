@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import Button from '../../gov-uk-components/Button'
+import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
@@ -10,49 +12,48 @@ import {
   setProfile,
   setRegistration
 } from '../../redux/userSlice'
-import { backendCall } from '../../services/BackendService'
+import backendCall from '../../services/BackendService'
+import codeValidation from '../../services/Validations/CodeValidation'
 
-const userEmail = window.sessionStorage.getItem('userEmail')
-const signInToken = window.sessionStorage.getItem('signInToken')
-
-const validateNumber = (input, digits) => {
-  const numberPattern = new RegExp(`^[0-9]{${digits}}$`)
-  return numberPattern.test(input)
-}
-
-const SignInValidateForm = (props) => {
+export default function SignInValidatePage() {
+  const location = useLocation()
+  const [error, setError] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [errorMessage, setErrorMessage] = useState('')
   const [code, setCode] = useState('')
+  const signinToken = location.state.signinToken
 
   const handleSubmit = async (event) => {
     event.preventDefault()
     if (code === '') {
-      setErrorMessage('Enter code')
+      setError('Enter code')
+      return
+    } else if (!codeValidation(code, 6)) {
+      setError('Code must be 6 numbers')
       return
     }
-    if (!validateNumber(code, 6)) {
-      setErrorMessage('Code must be 6 numbers')
+
+    const backendResponse = await validateCode(code)
+    if (!backendResponse) {
+      setError('Invalid code')
       return
     }
-    const apiReturn = await validateCode(code)
-    if (!apiReturn) {
-      setErrorMessage('Invalid code')
-      return
-    }
-    navigate('/home')
+    navigate('/')
   }
 
   const validateCode = async (code) => {
-    const raw = JSON.stringify({ signinToken: signInToken, code })
-
+    const raw = JSON.stringify({
+      signinToken,
+      code
+    })
     const responseData = await backendCall(raw, 'signInValidate')
-    console.log('ResponseData', responseData)
-    if (responseData.hasOwnProperty('code')) {
+
+    if (
+      responseData === undefined ||
+      Object.prototype.hasOwnProperty.call(responseData, 'code')
+    ) {
       return false
     }
-
     dispatch(setAuthToken(responseData.authToken))
     dispatch(setProfile(responseData.profile))
     dispatch(setRegistration(responseData.registration))
@@ -61,32 +62,25 @@ const SignInValidateForm = (props) => {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <TextInput name="Enter code" onChange={(val) => setCode(val)} />
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <button type="submit" className="govuk-button" data-module="govuk-button">
-        Continue
-      </button>
-    </form>
-  )
-}
-
-export default function CheckYourEmailPage() {
-  return (
     <>
       <Header />
-      <div className="govuk-width-container">
-        <a href="SignInPage" className="govuk-back-link">
+      <div class="govuk-width-container">
+        <Link to="/signin" className="govuk-back-link">
           Back
-        </a>
-        <h2 className="govuk-heading-l">Check your email</h2>
-        <div className="govuk-body">
+        </Link>
+        <ErrorSummary errorList={error === '' ? [] : [error]} />
+        <h2 class="govuk-heading-l">Check your email</h2>
+        <div class="govuk-body">
           We've sent a code to:
-          <InsetText text={userEmail} />
-          <SignInValidateForm />
+          <InsetText text={location.state.email} />
+          <TextInput name="Enter code" error={error} onChange={setCode} />
+          <Button
+            className="govuk-button"
+            text="Continue"
+            onClick={handleSubmit}
+          />
         </div>
       </div>
-
       <Footer />
     </>
   )

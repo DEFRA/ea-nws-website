@@ -55,7 +55,11 @@ const EmailForm = (props) => {
     <form onSubmit={handleSubmit}>
       <Input name="Email address" onChange={(val) => setEmail(val)} />
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <button type="submit" className="govuk-button" data-module="govuk-button">
+      <button
+        type="submit"
+        classNameName="govuk-button"
+        data-module="govuk-button"
+      >
         Continue
       </button>
     </form>
@@ -66,17 +70,17 @@ export default function InitialEmailRegistrationPage() {
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
-        <a href="Start" className="govuk-back-link">
+      <div classNameName="govuk-width-container">
+        <a href="Start" classNameName="govuk-back-link">
           Back
         </a>
-        <h2 className="govuk-heading-l">
+        <h2 classNameName="govuk-heading-l">
           Register for your flood warning account
         </h2>
-        <div className="govuk-body">
+        <div classNameName="govuk-body">
           <p>Enter a valid email address for registration</p>
           <EmailForm />
-          <a href="SignInPage" className="govuk-link">
+          <a href="SignInPage" classNameName="govuk-link">
             Sign in if you already have an account
           </a>
         </div>

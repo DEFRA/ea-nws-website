@@ -61,52 +61,52 @@ export default function IndexPage() {
 
   return (
     <>
-      <div class="govuk-width-container">
-        <main class="govuk-main-wrapper">
-          <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-              <h1 class="govuk-heading-xl">Next Warning Service Index</h1>
+      <div className="govuk-width-container">
+        <main className="govuk-main-wrapper">
+          <div className="govuk-grid-row">
+            <div className="govuk-grid-column-two-thirds">
+              <h1 className="govuk-heading-xl">Next Warning Service Index</h1>
               <NotificationBanner
-                className="govuk-notification-banner govuk-notification-banner--success"
+                classNameName="govuk-notification-banner govuk-notification-banner--success"
                 title="Mock session"
                 text={mockSessionActive ? 'Active' : 'Not Active'}
               />
-              <p class="govuk-body">A quick link to each page</p>
-              <ul class="govuk-list">
+              <p className="govuk-body">A quick link to each page</p>
+              <ul className="govuk-list">
                 <li>
-                  <Link to="/" className="govuk-link">
+                  <Link to="/" classNameName="govuk-link">
                     Start page
                   </Link>
                 </li>
                 <li>
-                  <Link to="/signin" className="govuk-link">
+                  <Link to="/signin" classNameName="govuk-link">
                     Sign in page
                   </Link>
                 </li>
                 <li>
-                  <Link to="/register" className="govuk-link">
+                  <Link to="/register" classNameName="govuk-link">
                     Register page
                   </Link>
                 </li>
               </ul>
 
-              <p class="govuk-body">
+              <p className="govuk-body">
                 A session is required to access the below pages - click below to
                 start/kill the mock session
               </p>
               <Button
-                className="govuk-button"
+                classNameName="govuk-button"
                 text="Activate/Deactivate Mock Session"
                 onClick={mockSession}
               />
-              <ul class="govuk-list">
+              <ul className="govuk-list">
                 <li>
-                  <Link to="/home" className="govuk-link">
+                  <Link to="/home" classNameName="govuk-link">
                     Home page
                   </Link>
                 </li>
                 <li>
-                  <Link to="/managecontacts" className="govuk-link">
+                  <Link to="/managecontacts" classNameName="govuk-link">
                     Manage Contacts page
                   </Link>
                 </li>

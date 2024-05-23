@@ -1,13 +1,13 @@
 import React from 'react'
 
-export default function Button({ text, className, onClick }) {
+export default function Button({ text, classNameName, onClick }) {
   return (
     <>
       <button
         type="submit"
-        className={className}
+        classNameName={classNameName}
         onClick={onClick}
-        data-module='govuk-button'
+        data-module="govuk-button"
       >
         {text}
       </button>

@@ -1,9 +1,9 @@
 const apiCall = require('../../services/ApiService')
-const emailValidation = require('../../services/Validations/EmailValidation')
+const emailValidation = require('../../services/validations/EmailValidation')
 
 const apiSignInStartCall = async (email) => {
   let isValid = 400
-  const raw = JSON.stringify({ email })
+  const raw = { email }
   console.log('Received from front-end: ', raw)
   if (!emailValidation(email)) {
     return { code: 101, desc: 'Invalid email' }

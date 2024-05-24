@@ -12,8 +12,8 @@ paths:
   /member/registerValidate:
     $ref: './paths/signup/registerValidate.yaml'
   /member/verifyMobilePhoneStart:
-    $ref: './paths/signup/channel-preferences//mobile/verifyMobilePhoneStart.yaml'
+    $ref: './paths/signup/channel-preferences/mobile/verifyMobilePhoneStart.yaml'
   /member/verifyMobilePhoneValidate:
-    $ref: './paths/signup/channel-preferences//mobile/verifyMobilePhoneValidate.yaml'
+    $ref: './paths/signup/channel-preferences/mobile/verifyMobilePhoneValidate.yaml'
   /member/updateprofile:
-    $ref: './paths/update_profile/updateProfile.yaml'
+    $ref: './paths/update-profile/updateProfile.yaml'

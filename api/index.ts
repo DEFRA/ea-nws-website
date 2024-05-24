@@ -1,11 +1,12 @@
 import Hapi from '@hapi/hapi'
 import OpenAPIBackend from 'openapi-backend'
 
-const server = new Hapi.Server({ port: 9000 })
+const server = new Hapi.Server({ port: 9001 })
 
 // calling handlers
 const signInHandlers = require('./handlers/signin/signInHandlers')
-const registerHandlers = require('./handlers/register/registerHandlers')
+const registerHandlers = require('./handlers/signup/registerHandlers')
+const mobileAuthenticationHandler = require('./handlers/signup/channel-preferences/mobile/mobileAuthentictionHandlers')
 const updateProfileHandler = require('./handlers/updateProfile/updateProfileHandler')
 const validationHandlers = require('./handlers/validationHandlers')
 
@@ -13,10 +14,18 @@ const validationHandlers = require('./handlers/validationHandlers')
 const api = new OpenAPIBackend({
   definition: './openapi/index.yaml',
   handlers: {
+    //sign up routes
     getRegisterStart: registerHandlers.getRegisterStart,
     getRegisterValidate: registerHandlers.getRegisterValidate,
+    //mobile authentication
+    getMobileStart: mobileAuthenticationHandler.getMobileStart,
+    getMobileValidate: mobileAuthenticationHandler.getMobileValidate,
+
+    //sign in routes
     getSignInStart: signInHandlers.getSigninStart,
     getSignInValidate: signInHandlers.getSigninValidate,
+
+    //update profile routes
     getUpdateProfile: updateProfileHandler.getUpdateProfile,
     validationFail: validationHandlers.validationFail,
     notFound: validationHandlers.notFound

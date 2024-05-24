@@ -59,7 +59,7 @@ export default function ValidateMobilePhone() {
               inputType="text"
               value={code}
               name="Enter code"
-              onChange={setCode}
+              onChange={(val) => setCode(val)}
               error={error}
               className="govuk-input govuk-input--width-10"
             />

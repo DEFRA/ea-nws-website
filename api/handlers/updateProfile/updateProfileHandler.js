@@ -1,6 +1,6 @@
-async function updateProfile(context, req) {
+async function getUpdateProfile(context, req) {
   console.log('payload', req.payload)
-  return { operationId: context.operation.responses[200] }
+  return { test: 'works' }
 }
 
-module.exports = { updateProfile }
+module.exports = { getUpdateProfile }

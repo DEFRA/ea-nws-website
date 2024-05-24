@@ -1,11 +1,11 @@
 const apiCall = require('../../services/ApiService')
-const emailValidation = require('../../services/Validations/EmailValidation')
+const emailValidation = require('../../services/validations/EmailValidation')
 
 const apiRegisterCall = async (email) => {
   let isValid = 400
   console.log('reached api call')
   let registerToken = ''
-  const raw = JSON.stringify({ email: email })
+  const raw = { email: email }
   console.log('Received from front-end: ', raw)
   if (email !== '' && !emailValidation(email)) {
     console.log('returning code 101', email)

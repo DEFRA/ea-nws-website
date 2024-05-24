@@ -6,7 +6,11 @@ module.exports = [
     path: '/signup/contactpreferences/mobile/add',
     handler: async (request, h) => {
       //request.payload = { authToken, msisdn }
-      response = await apiCall(request.payload, 'member/verifyMobilePhoneStart')
+      const response = await apiCall(
+        request.payload,
+        'member/verifyMobilePhoneStart'
+      )
+      return response
     }
   },
   {

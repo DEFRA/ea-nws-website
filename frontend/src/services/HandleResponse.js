@@ -3,13 +3,11 @@ const handleResponse = (response, navigate) => {
     case 200:
       return response
     case 400:
-      navigate('/')
-      return
+      return response
     case 404:
-      navigate('/notfound')
-      return
+      return response
     case 500:
-      navigate('/error')
+      return response
   }
 }
 

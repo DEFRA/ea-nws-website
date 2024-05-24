@@ -1,3 +1,5 @@
+const fetch = require('node-fetch')
+
 const apiCall = async (data, path) => {
   let responseData
   const url = 'http://localhost:9000/' + path
@@ -18,4 +20,4 @@ const apiCall = async (data, path) => {
   return responseData
 }
 
-module.exports = { apiCall }
+module.exports = apiCall

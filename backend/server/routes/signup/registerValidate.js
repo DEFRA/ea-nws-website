@@ -1,16 +1,18 @@
 const apiCall = require('../../services/ApiService')
+const codeValidation = require('../../services/Validations/CodeValidation')
 
 const apiRegisterValidateCall = async (registerToken, code) => {
   let isValid = 400
   let desc
+  let authToken
   const raw = JSON.stringify({ registerToken: registerToken, code: code })
-  if (!registerValidateValidation(registerToken, code, 6)) {
+  if (registerToken !== '' && !codeValidation(code, 6)) {
     return { code: 101, desc: 'invalid code' }
   }
 
   // Parse the JSON response and get the status code
   const responseData = await apiCall(raw, 'member/registerValidate')
-  if (responseData.hasOwnProperty('code')) {
+  if (Object.prototype.hasOwnProperty.call(responseData, 'code')) {
     isValid = responseData.code
     desc = responseData.desc
   } else {
@@ -18,12 +20,9 @@ const apiRegisterValidateCall = async (registerToken, code) => {
     authToken = responseData.authToken
   }
 
-  return isValid === 200 ? { authToken: authToken } : { code: isValid, desc: desc }
-}
-
-const registerValidateValidation = (registerToken, code, length) => {
-  const numberPattern = new RegExp(`^[0-9]{${length}}$`)
-  return registerToken != '' && code != '' && numberPattern.test(code)
+  return isValid === 200
+    ? { authToken: authToken }
+    : { code: isValid, desc: desc }
 }
 
 module.exports = [
@@ -36,7 +35,7 @@ module.exports = [
         const apiResponse = await apiRegisterValidateCall(registerToken, code)
         console.log(apiResponse)
         let response
-        if (apiResponse.hasOwnProperty('code')) {
+        if (Object.prototype.hasOwnProperty.call(apiResponse, 'code')) {
           console.log('Invalid')
           response = {
             code: apiResponse.code,

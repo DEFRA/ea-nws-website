@@ -54,28 +54,28 @@ const ValidateEmailForRegistrationForm = (props) => {
   return (
     <form onSubmit={handleSubmit}>
       <Input
-        inputType='text'
-        name='Enter code'
+        inputType="text"
+        name="Enter code"
         onChange={(val) => setCode(val)}
       />
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <button type='submit' className='govuk-button' data-module='govuk-button'>
+      <button type="submit" className="govuk-button" data-module="govuk-button">
         Continue
       </button>
     </form>
   )
 }
 
-export default function ValidateEmailForRegistration () {
+export default function ValidateEmailForRegistration() {
   return (
     <>
       <Header />
-      <div className='govuk-width-container'>
-        <a href='register' className='govuk-back-link'>
+      <div className="govuk-width-container">
+        <a href="register" className="govuk-back-link">
           Back
         </a>
-        <h2 className='govuk-heading-l'>Check your email</h2>
-        <div className='govuk-body'>
+        <h2 className="govuk-heading-l">Check your email</h2>
+        <div className="govuk-body">
           We've sent a code to:
           <InsetText text={userEmail} />
           <ValidateEmailForRegistrationForm />

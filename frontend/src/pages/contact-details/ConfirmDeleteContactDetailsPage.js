@@ -29,9 +29,7 @@ export default function ConfirmDeleteContactDetailsPage () {
       authToken: session.authToken,
       profile: updatedProfile
     })
-    console.log('data', data)
     const response = await backendCall(data, 'profile/update')
-    console.log('response', response)
     const responseData = handleResponse(response, navigate)
 
     if (responseData) {

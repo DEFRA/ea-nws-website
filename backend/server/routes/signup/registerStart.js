@@ -1,4 +1,5 @@
 const apiCall = require('../../services/ApiService')
+const emailValidation = require('../../services/Validations/EmailValidation')
 
 const apiRegisterCall = async (email) => {
   let isValid = 400
@@ -6,15 +7,14 @@ const apiRegisterCall = async (email) => {
   let registerToken = ''
   const raw = JSON.stringify({ email: email })
   console.log('Received from front-end: ', raw)
-  if (!registerValidation(email)) {
+  if (email !== '' && !emailValidation(email)) {
     console.log('returning code 101', email)
     return { code: 101, desc: 'Invalid email' }
   }
 
   const responseData = await apiCall(raw, 'member/registerStart')
-  if (responseData.hasOwnProperty('desc')) {
+  if (Object.prototype.hasOwnProperty.call(responseData, 'desc')) {
     isValid = responseData.code
-    desc = responseData.desc
   } else {
     console.log('responseData', responseData)
     isValid = responseData.code
@@ -24,11 +24,6 @@ const apiRegisterCall = async (email) => {
 
   console.log({ code: isValid, registerToken: registerToken })
   return { code: isValid, registerToken: registerToken }
-}
-
-const registerValidation = (email) => {
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-  return email != '' && emailPattern.test(email)
 }
 
 module.exports = [

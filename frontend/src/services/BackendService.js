@@ -9,7 +9,7 @@ const backendCall = async (data, path) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: data
+      body: JSON.stringify(data)
     })
     responseData = await response.json()
   } catch (error) {

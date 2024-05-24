@@ -7,6 +7,7 @@ import Footer from '../../../../gov-uk-components/Footer'
 import Header from '../../../../gov-uk-components/Header'
 import Input from '../../../../gov-uk-components/Input'
 import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
+import backendCall from '../../../../services/BackendService'
 import phoneValidation from '../../../../services/Validations/PhoneValidation'
 
 export default function AddLandlinePhonePage() {
@@ -14,12 +15,14 @@ export default function AddLandlinePhonePage() {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [error, setError] = useState('')
 
-  function handleSubmit() {
+  const handleSubmit = async () => {
     const validationError = phoneValidation(phoneNumber, 'mobileAndLandline')
     setError(validationError)
     if (validationError !== '') {
       return
     }
+    const data = { authToken: 'authToken', phoneNumber: phoneNumber }
+    await backendCall(data, 'signup/contactpreferences/landline/add')
     navigate('/signup/contactpreferences/landline/validate', {
       state: { phoneNumber }
     })

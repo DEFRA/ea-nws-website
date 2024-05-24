@@ -40,11 +40,11 @@ export default function SignInValidatePage() {
   }
 
   const validateCode = async (code) => {
-    const raw = JSON.stringify({
+    const data = {
       signinToken,
       code
-    })
-    const responseData = await backendCall(raw, 'signInValidate')
+    }
+    const responseData = await backendCall(data, 'signInValidate')
 
     if (
       responseData === undefined ||

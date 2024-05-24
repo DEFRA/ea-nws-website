@@ -38,7 +38,7 @@ const apiSignInValidateCall = async (signinToken, code) => {
 
 module.exports = [
   {
-    method: ['POST', 'PUT'],
+    method: ['POST'],
     path: '/signInValidate',
     handler: async (request, h) => {
       try {

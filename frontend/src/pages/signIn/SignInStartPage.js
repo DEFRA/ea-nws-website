@@ -33,8 +33,8 @@ export default function SignInStartPage() {
   }
 
   const checkEmail = async (email) => {
-    const raw = JSON.stringify({ email })
-    const responseData = await backendCall(raw, 'signInStart')
+    const data = { email }
+    const responseData = await backendCall(data, 'signInStart')
 
     if (responseData === undefined) {
       return { emailExists: false, signinToken: null }

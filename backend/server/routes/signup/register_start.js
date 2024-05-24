@@ -1,43 +1,43 @@
 const apiCall = require('../../services/ApiService')
 const emailValidation = require('../../services/Validations/EmailValidation')
 
-const apiSignInStartCall = async (email) => {
+const apiRegisterCall = async (email) => {
   let isValid = 400
-  const raw = JSON.stringify({ email })
+  console.log('reached api call')
+  let registerToken = ''
+  const raw = JSON.stringify({ email: email })
   console.log('Received from front-end: ', raw)
-  if (!emailValidation(email)) {
+  if (email !== '' && !emailValidation(email)) {
+    console.log('returning code 101', email)
     return { code: 101, desc: 'Invalid email' }
   }
 
-  const responseData = await apiCall(raw, 'member/signinStart')
-  console.log('Received from API: ', responseData)
-  if (responseData === undefined) return
+  const responseData = await apiCall(raw, 'member/registerStart')
   if (Object.prototype.hasOwnProperty.call(responseData, 'desc')) {
     isValid = responseData.code
-    const desc = responseData.desc
-    return { code: isValid, desc: desc }
   } else {
     console.log('responseData', responseData)
     isValid = responseData.code
-    const signinToken = responseData.signinToken
-    return { code: isValid, signinToken }
+    registerToken = responseData.registerToken
   }
+  console.log('Received from API: ', responseData)
+
+  console.log({ code: isValid, registerToken: registerToken })
+  return { code: isValid, registerToken: registerToken }
 }
 
 module.exports = [
   {
     method: ['POST', 'PUT'],
-    path: '/signInStart',
+    path: '/register_start',
     handler: async (request, h) => {
       try {
-        if (request.payload === null) {
-          return h.response({ message: 'Bad request' }).code(400)
-        }
         const { email } = request.payload
-        const apiResponse = await apiSignInStartCall(email)
+        // do some email validation
+        const apiResponse = await apiRegisterCall(email)
         const response = {
           code: apiResponse.code,
-          signinToken: apiResponse.signinToken
+          registerToken: apiResponse.registerToken
         }
 
         return h.response(response)

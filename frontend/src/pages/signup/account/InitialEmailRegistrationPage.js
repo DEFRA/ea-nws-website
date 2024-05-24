@@ -1,7 +1,8 @@
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
-import TextInput from '../../../gov-uk-components/TextInput'
+import TextInput from '../../../gov-uk-components/Input'
 const backendCall = require('../../../services/BackendService')
 
 const EmailForm = (props) => {
@@ -9,6 +10,7 @@ const EmailForm = (props) => {
   const [email, setEmail] = useState('')
 
   const handleSubmit = async (event) => {
+    event.preventDefault()
     if (email === '') {
       setErrorMessage('Enter your email address')
       return
@@ -26,7 +28,7 @@ const EmailForm = (props) => {
     }
 
     window.sessionStorage.setItem('userEmail', email)
-    window.location.replace('ValidateEmailForRegistration')
+    window.location.replace('/register/validate')
   }
 
   const validateEmail = (email) => {
@@ -36,7 +38,7 @@ const EmailForm = (props) => {
 
   const checkEmail = async (email) => {
     let registerToken = ''
-    var raw = JSON.stringify({ email: email })
+    var raw = JSON.stringify({ email })
     const responseData = await backendCall(raw, 'registerStart')
 
     const code = responseData['code']
@@ -76,9 +78,9 @@ export default function InitialEmailRegistrationPage() {
         <div className="govuk-body">
           <p>Enter a valid email address for registration</p>
           <EmailForm />
-          <a href="SignInPage" className="govuk-link">
-            Sign in if you already have an account
-          </a>
+          <Link to="/signin" className="govuk-link">
+            Sign up if you do not have an account
+          </Link>
         </div>
       </div>
       <Footer />

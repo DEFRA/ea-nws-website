@@ -1,8 +1,8 @@
 import { useState } from 'react'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
+import TextInput from '../../../gov-uk-components/Input'
 import InsetText from '../../../gov-uk-components/InsetText'
-import TextInput from '../../../gov-uk-components/TextInput'
 
 const backendCall = require('../../../services/BackendService')
 const userEmail = window.sessionStorage.getItem('userEmail')
@@ -18,6 +18,7 @@ const ValidateEmailForRegistrationForm = (props) => {
   const [code, setCode] = useState('')
 
   const handleSubmit = async (event) => {
+    event.preventDefault()
     if (code === '') {
       setErrorMessage('Enter code')
       return
@@ -31,7 +32,7 @@ const ValidateEmailForRegistrationForm = (props) => {
       setErrorMessage('Invalid code')
       return
     }
-    window.location.replace('Start')
+    window.location.replace('/signup/contactpreferences')
   }
 
   const validateCode = async (code) => {

@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Button from '../../../../gov-uk-components/Button'
 import ErrorSummary from '../../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../../gov-uk-components/Footer'
@@ -10,7 +10,6 @@ import InsetText from '../../../../gov-uk-components/InsetText'
 import codeValidation from '../../../../services/Validations/CodeValidation'
 
 export default function ValidateLandlinePhonePage() {
-  const navigate = useNavigate()
   const location = useLocation()
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
@@ -42,19 +41,18 @@ export default function ValidateLandlinePhonePage() {
             name="Enter code"
             inputType="text"
             error={error}
-            onChange={setCode}
+            onChange={(val) => setCode(val)}
           />
           <Button
             className="govuk-button"
             text="Continue"
             onClick={handleSubmit}
           />
+          &nbsp; &nbsp;
           <Link
             className="govuk-link"
-            to={{
-              pathname: '/signup/contactpreferences/landline/skipconfirm',
-              state: { phoneNumber: location.state.phoneNumber }
-            }}
+            to="/signup/contactpreferences/landline/skipconfirm"
+            state={{ phoneNumber: location.state.phoneNumber }}
           >
             Skip and confirm later
           </Link>

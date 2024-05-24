@@ -75,7 +75,7 @@ export default function SignInValidatePage() {
             name="Enter code"
             inputType="text"
             error={error}
-            onChange={setCode}
+            onChange={(val) => setCode(val)}
           />
           <Button
             className="govuk-button"

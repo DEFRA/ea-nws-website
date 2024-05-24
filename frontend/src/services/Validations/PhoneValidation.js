@@ -1,13 +1,13 @@
 const phoneValidation = (number, type) => {
   switch (type) {
     case 'mobile':
-      if (mobile === '') {
+      if (number === '') {
         return 'Enter a UK mobile telephone number'
       }
       const ukMobileRegex = /^(\+44\s?7\d{3}|\(?07\d{3}\)?)\s?\d{3}\s?\d{3}$/
 
       // Remove all spaces, hyphens, and brackets for a cleaner validation
-      const sanitizedMobile = mobile.replace(/[\s\-()]/g, '')
+      const sanitizedMobile = number.replace(/[\s\-()]/g, '')
 
       if (!ukMobileRegex.test(sanitizedMobile)) {
         return 'Enter a valid UK mobile telephone number'

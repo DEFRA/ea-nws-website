@@ -67,7 +67,7 @@ export default function SignInStartPage() {
             name="Email address"
             inputType="text"
             error={error}
-            onChange={setEmail}
+            onChange={(val) => setEmail(val)}
           />
           <Button
             className="govuk-button"

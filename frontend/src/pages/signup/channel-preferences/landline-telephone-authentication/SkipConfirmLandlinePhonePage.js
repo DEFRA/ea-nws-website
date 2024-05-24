@@ -8,7 +8,6 @@ import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
 export default function SkipConfirmLandlinePhonePage() {
   const location = useLocation()
   const navigate = useNavigate()
-  console.log(location.state)
   function handleSubmit() {}
 
   return (
@@ -19,13 +18,14 @@ export default function SkipConfirmLandlinePhonePage() {
           <div class="govuk-grid-column-two-thirds">
             <PhaseBanner />
             <Link
-              to="/signup/contactpreferences/mobile"
+              to="/signup/contactpreferences/landline/validate"
+              state={{ phoneNumber: location.state.phoneNumber }}
               className="govuk-back-link"
             >
               Back
             </Link>
             <h1 class="govuk-heading-l govuk-!-margin-top-6">
-              We cannot send flood messages to {location.state.phoneNumber}
+              We cannot send flood messages to {location.state.phoneNumber}{' '}
               until you confirm this number
             </h1>
             <Button
@@ -33,11 +33,14 @@ export default function SkipConfirmLandlinePhonePage() {
               className={'govuk-button'}
               onClick={handleSubmit}
             />
-            <p class="govuk-body">
-              <a href="#" class="govuk-link">
-                Confirm now
-              </a>
-            </p>
+            &nbsp; &nbsp;
+            <Link
+              to="/signup/contactpreferences/landline/validate"
+              state={{ phoneNumber: location.state.phoneNumber }}
+              className="govuk-body govuk-link"
+            >
+              Confirm now
+            </Link>
           </div>
         </div>
       </div>

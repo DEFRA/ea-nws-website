@@ -7,7 +7,7 @@ import Footer from '../../../../gov-uk-components/Footer'
 import Header from '../../../../gov-uk-components/Header'
 import Input from '../../../../gov-uk-components/Input'
 import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
-import phoneNumberValidation from '../../../../services/Validations/PhoneNumberValidation'
+import phoneValidation from '../../../../services/Validations/PhoneValidation'
 
 export default function AddLandlinePhonePage() {
   const navigate = useNavigate()
@@ -15,7 +15,7 @@ export default function AddLandlinePhonePage() {
   const [error, setError] = useState('')
 
   function handleSubmit() {
-    const validationError = phoneNumberValidation(phoneNumber)
+    const validationError = phoneValidation(phoneNumber, 'mobileAndLandline')
     setError(validationError)
     if (validationError !== '') {
       return
@@ -47,7 +47,7 @@ export default function AddLandlinePhonePage() {
               inputType={'text'}
               value={phoneNumber}
               name={'UK landline or mobile telephone number'}
-              onChange={setPhoneNumber}
+              onChange={(val) => setPhoneNumber(val)}
               className={'govuk-input govuk-input--width-20'}
               error={error}
             />

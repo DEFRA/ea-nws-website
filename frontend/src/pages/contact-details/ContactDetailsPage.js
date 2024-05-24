@@ -8,7 +8,7 @@ import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import ContactDetailsTable from './ContactDetailsTable'
 
-export default function ContactDetailsPage() {
+export default function ContactDetailsPage () {
   const location = useLocation()
 
   // [TODO] we need to perform a check if this is null
@@ -19,35 +19,37 @@ export default function ContactDetailsPage() {
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
+      <div className='govuk-width-container'>
         <PhaseBanner />
-        {location.state !== null ? (
-          <NotificationBanner
-            className="govuk-notification-banner govuk-notification-banner--success"
-            title="Success"
-            heading={location.state.removedType + ' removed'}
-            text={location.state.removedContact}
-          />
-        ) : null}
-        <Link to="/home" className="govuk-lin">
+        {location.state !== null
+          ? (
+            <NotificationBanner
+              className='govuk-notification-banner govuk-notification-banner--success'
+              title='Success'
+              heading={location.state.removedType + ' removed'}
+              text={location.state.removedContact}
+            />
+            )
+          : null}
+        <Link to='/home' className='govuk-lin'>
           Back to Home
         </Link>
-        <main className="govuk-main-wrapper">
-          <div className="govuk-grid-row">
-            <div className="govuk-grid-column-two-thirds">
-              <h2 className="govuk-heading-l">
+        <main className='govuk-main-wrapper'>
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-two-thirds'>
+              <h2 className='govuk-heading-l'>
                 Your email addresses and telephone numbers
               </h2>
-              <p className="govuk-body">
+              <p className='govuk-body'>
                 We'll send flood messages for all your location to all these
                 emails and numbers. You can add more for friends and family, if
                 you wish.
               </p>
-              <InsetText text="You must confirm each address and number before we can send flood messages to them." />
+              <InsetText text='You must confirm each address and number before we can send flood messages to them.' />
               <ContactDetailsTable
                 contacts={profile.emails}
-                contactTitle="Emails"
-                contactType="email address"
+                contactTitle='Emails'
+                contactType='email address'
                 notRemovable={
                   profile.emails.length === 1 &&
                   profile.mobilePhones.length === 0 &&
@@ -56,8 +58,8 @@ export default function ContactDetailsPage() {
               />
               <ContactDetailsTable
                 contacts={profile.mobilePhones}
-                contactTitle="Texts"
-                contactType="mobile telephone number"
+                contactTitle='Texts'
+                contactType='mobile telephone number'
                 notRemovable={
                   profile.emails.length === 0 &&
                   profile.mobilePhones.length === 1 &&
@@ -66,8 +68,8 @@ export default function ContactDetailsPage() {
               />
               <ContactDetailsTable
                 contacts={profile.homePhones}
-                contactTitle="Phone call warnings"
-                contactType="telephone number"
+                contactTitle='Phone call warnings'
+                contactType='telephone number'
                 notRemovable={
                   profile.emails.length === 0 &&
                   profile.mobilePhones.length === 0 &&

@@ -8,8 +8,12 @@ paths:
   /member/signinValidate:
     $ref: './paths/signin/signInValidate.yaml'
   /member/registerStart:
-    $ref: './paths/register/registerStart.yaml'
+    $ref: './paths/signup/registerStart.yaml'
   /member/registerValidate:
-    $ref: './paths/register/registerValidate.yaml'
+    $ref: './paths/signup/registerValidate.yaml'
+  /member/verifyMobilePhoneStart:
+    $ref: './paths/signup/channel-preferences//mobile/verifyMobilePhoneStart.yaml'
+  /member/verifyMobilePhoneValidate:
+    $ref: './paths/signup/channel-preferences//mobile/verifyMobilePhoneValidate.yaml'
   /member/updateprofile:
     $ref: './paths/update_profile/updateProfile.yaml'

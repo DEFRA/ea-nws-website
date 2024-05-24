@@ -1,20 +1,36 @@
 import React from 'react'
 
-export default function Input({ name, className, value, inputType, onChange }) {
+export default function Input ({
+  name,
+  className,
+  value,
+  onChange,
+  error = ''
+}) {
   const handleChange = (event) => {
     onChange(event.target.value)
   }
 
   return (
     <>
-      <div className="govuk-form-group">
-        <label className="govuk-label" htmlFor="govuk-text-input">
+      <div
+        className={
+          error === ''
+            ? 'govuk-form-group'
+            : 'govuk-form-group govuk-form-group--error'
+        }
+      >
+        <label className='govuk-label' htmlFor='govuk-input'>
           {name}
         </label>
+        {error && <p className='govuk-error-message'>{error}</p>}
         <input
-          id="govuk-text-input"
-          className={className}
-          type={inputType}
+          className={
+            error === '' ? className : className + ' govuk-input--error'
+          }
+          name={name}
+          id='govuk-input'
+          type='text'
           value={value}
           onChange={handleChange}
         />

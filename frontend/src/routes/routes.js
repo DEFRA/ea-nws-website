@@ -10,7 +10,7 @@ import ValidateEmailForRegistration from '../pages/signup/account/ValidateEmailF
 import WarningContactsPreferencePage from '../pages/signup/channel-preferences/WarningContactsPreferencePage'
 import AddMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/AddMobilePhonePage'
 import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/SkipConfirmMobilePhonePage'
-import ValidateMobilePhone from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhone'
+import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
 import StartPage from '../pages/start/StartPage'
 
 // index routes
@@ -19,7 +19,7 @@ const indexRoutes = [{ path: '/index', component: <Index /> }]
 // start routes
 const startRoutes = [{ path: '/', component: <StartPage /> }]
 
-//sign up routes
+// sign up routes
 const signupRoutes = [
   { path: '/signup', component: <InitialEmailRegistrationPage /> },
   {
@@ -36,7 +36,7 @@ const signupRoutes = [
   },
   {
     path: '/signup/contactpreferences/mobile/validate',
-    component: <ValidateMobilePhone />
+    component: <ValidateMobilePhonePage />
   },
   {
     path: '/signup/contactpreferences/mobile/skipconfirmation',

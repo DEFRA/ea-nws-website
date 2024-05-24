@@ -1,10 +1,12 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import Input from '../../../gov-uk-components/Input'
 const backendCall = require('../../../services/BackendService')
 
 const EmailForm = (props) => {
+  const navigate = useNavigate()
   const [errorMessage, setErrorMessage] = useState('')
   const [email, setEmail] = useState('')
 
@@ -26,7 +28,7 @@ const EmailForm = (props) => {
     }
 
     window.sessionStorage.setItem('userEmail', email)
-    window.location.replace('ValidateEmailForRegistration')
+    navigate('signup/validate')
   }
 
   const validateEmail = (email) => {
@@ -37,13 +39,13 @@ const EmailForm = (props) => {
   const checkEmail = async (email) => {
     console.log('email value', email)
     let registerToken = ''
-    var raw = JSON.stringify({ email: email })
+    const raw = JSON.stringify({ email })
     const responseData = await backendCall(raw, 'registerStart')
     console.log('response data', responseData)
 
-    const code = responseData['code']
+    const code = responseData.code
     console.log('code returned', code)
-    registerToken = responseData['registerToken']
+    registerToken = responseData.registerToken
     // Assign the status code to isValid
     if (code === 101) {
       return false
@@ -57,33 +59,33 @@ const EmailForm = (props) => {
   return (
     <form onSubmit={handleSubmit}>
       <Input
-        inputType={'text'}
-        name="Email address"
+        inputType='text'
+        name='Email address'
         onChange={(val) => setEmail(val)}
       />
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <button type="submit" className="govuk-button" data-module="govuk-button">
+      <button type='submit' className='govuk-button' data-module='govuk-button'>
         Continue
       </button>
     </form>
   )
 }
 
-export default function InitialEmailRegistrationPage() {
+export default function InitialEmailRegistrationPage () {
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
-        <a href="Start" className="govuk-back-link">
+      <div className='govuk-width-container'>
+        <a href='Start' className='govuk-back-link'>
           Back
         </a>
-        <h2 className="govuk-heading-l">
+        <h2 className='govuk-heading-l'>
           Register for your flood warning account
         </h2>
-        <div className="govuk-body">
+        <div className='govuk-body'>
           <p>Enter a valid email address for registration</p>
           <EmailForm />
-          <a href="SignInPage" className="govuk-link">
+          <a href='SignInPage' className='govuk-link'>
             Sign in if you already have an account
           </a>
         </div>

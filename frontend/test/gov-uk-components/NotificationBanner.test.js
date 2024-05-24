@@ -7,10 +7,10 @@ describe('NotificationBanner component', () => {
   test('renders with the correct title, heading, and text', () => {
     render(
       <NotificationBanner
-        className="custom-class"
-        title="Notification Title"
-        heading="Notification Heading"
-        text="This is the notification text."
+        className='custom-class'
+        title='Notification Title'
+        heading='Notification Heading'
+        text='This is the notification text.'
       />
     )
 
@@ -26,9 +26,9 @@ describe('NotificationBanner component', () => {
   test('renders with the correct title and text, without heading', () => {
     render(
       <NotificationBanner
-        className="custom-class"
-        title="Notification Title"
-        text="This is the notification text."
+        className='custom-class'
+        title='Notification Title'
+        text='This is the notification text.'
       />
     )
 
@@ -45,9 +45,9 @@ describe('NotificationBanner component', () => {
   test('applies the correct class name', () => {
     render(
       <NotificationBanner
-        className="custom-class"
-        title="Notification Title"
-        text="This is the notification text."
+        className='custom-class'
+        title='Notification Title'
+        text='This is the notification text.'
       />
     )
 

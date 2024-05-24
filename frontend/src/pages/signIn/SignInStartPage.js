@@ -55,7 +55,7 @@ const EmailForm = (props) => {
   return (
     <form onSubmit={handleSubmit}>
       <Input
-        inputType={'text'}
+        inputType="text"
         name="Email address"
         onChange={(val) => setEmail(val)}
       />
@@ -86,7 +86,7 @@ export default function SignInPage() {
             <li>delete your account</li>
           </ul>
           <EmailForm />
-          <a href="register" className="govuk-link">
+          <a href="signup" className="govuk-link">
             Sign up if you do not have an account
           </a>
         </div>

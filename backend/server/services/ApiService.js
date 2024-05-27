@@ -1,16 +1,15 @@
 const axios = require('axios')
 
 const apiCall = async (data, path) => {
-  let responseData
   const url = 'http://localhost:9000/' + path
   try {
-    const response = await axios.post(url, data, {
+    const response = await axios.post(url, JSON.stringify(data), {
       headers: {
         'Content-Type': 'application/json'
       },
       withCredentials: true
     })
-    console.log('response data', response.data)
+
     if (response.status === 200) {
       return { status: response.status, data: response.data }
     }
@@ -31,7 +30,7 @@ const apiCall = async (data, path) => {
       console.log('No response received:', error.request)
     }
   }
-  return responseData
+  return null
 }
 
 module.exports = { apiCall }

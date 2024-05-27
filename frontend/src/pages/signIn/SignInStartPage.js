@@ -15,18 +15,17 @@ export default function SignInStartPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    let signinToken = null
     const validationError = emailValidation(email)
     setError(validationError)
     if (validationError !== '') {
       return
-    } else {
-      const { emailExists, signinToken: token } = await checkEmail(email)
-      if (!emailExists) {
-        setError('Email address is not recognised - check and try again')
-        return
-      }
     }
+    const { emailExists, signinToken: token } = await checkEmail(email)
+    if (!emailExists) {
+      setError('Email address is not recognised - check and try again')
+      return
+    }
+    const signinToken = token
     navigate('/signin/validate', {
       state: { signinToken, email }
     })
@@ -43,8 +42,8 @@ export default function SignInStartPage() {
     if (code === 106) {
       return { emailExists: false, signinToken: null }
     }
-    const signinToken = responseData.signinToken
-    return { emailExists: true, signinToken }
+
+    return { emailExists: true, signinToken: responseData.signinToken }
   }
 
   return (

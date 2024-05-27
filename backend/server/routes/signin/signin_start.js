@@ -1,27 +1,20 @@
-const apiCall = require('../../services/ApiService')
+const apiService = require('../../services/ApiService')
 const emailValidation = require('../../services/Validations/EmailValidation')
 
 const apiSignInStartCall = async (email) => {
-  let isValid = 400
-  const raw = JSON.stringify({ email })
-  console.log('Received from front-end: ', raw)
+  const data = { email }
+  console.log('Received from front-end: ', data)
+
   if (!emailValidation(email)) {
-    return { code: 101, desc: 'Invalid email' }
+    return { code: 106, desc: 'Invalid email' }
   }
 
-  const responseData = await apiCall(raw, 'member/signinStart')
+  const responseData = await apiService.apiCall(data, 'member/signinStart')
   console.log('Received from API: ', responseData)
   if (responseData === undefined) return
-  if (Object.prototype.hasOwnProperty.call(responseData, 'desc')) {
-    isValid = responseData.code
-    const desc = responseData.desc
-    return { code: isValid, desc: desc }
-  } else {
-    console.log('responseData', responseData)
-    isValid = responseData.code
-    const signinToken = responseData.signinToken
-    return { code: isValid, signinToken }
-  }
+  console.log('Status:', responseData.status)
+
+  return responseData.data
 }
 
 module.exports = [
@@ -35,12 +28,7 @@ module.exports = [
         }
         const { email } = request.payload
         const apiResponse = await apiSignInStartCall(email)
-        const response = {
-          code: apiResponse.code,
-          signinToken: apiResponse.signinToken
-        }
-
-        return h.response(response)
+        return h.response(apiResponse)
       } catch (error) {
         console.error('Error:', error)
         return h.response({ message: 'Internal server error' }).code(500)

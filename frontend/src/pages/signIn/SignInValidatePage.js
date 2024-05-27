@@ -44,11 +44,7 @@ export default function SignInValidatePage() {
       code
     }
     const responseData = await backendCall(data, 'signInValidate')
-
-    if (
-      responseData === undefined ||
-      Object.prototype.hasOwnProperty.call(responseData, 'code')
-    ) {
+    if (responseData === undefined || responseData.code === 101) {
       return false
     }
     dispatch(setAuthToken(responseData.authToken))

@@ -21,8 +21,8 @@ const siginRoutes = [
   { path: '/signin/validate', component: <CheckYourEmailPage /> }
 ]
 
-//register routes
-const registerRoutes = [
+//signup routes
+const signupRoutes = [
   { path: '/signup', component: <SignUpPage /> },
   {
     path: '/signup/validate',
@@ -46,7 +46,7 @@ const routes = [
   ...indexRoutes,
   ...startRoutes,
   ...siginRoutes,
-  ...registerRoutes,
+  ...signupRoutes,
   ...homeRoutes,
   ...contactRoutes
 ]

@@ -1,7 +1,7 @@
 const apiCall = require('../../services/ApiService')
 const emailValidation = require('../../services/Validations/EmailValidation')
 
-const apiRegisterCall = async (email) => {
+const apiSignUpCall = async (email) => {
   let isValid = 400
   console.log('reached api call')
   const raw = JSON.stringify({ email })
@@ -28,7 +28,7 @@ const apiRegisterCall = async (email) => {
 module.exports = [
   {
     method: ['POST', 'PUT'],
-    path: '/registerStart',
+    path: '/signupStart',
     handler: async (request, h) => {
       try {
         if (request.payload === null) {
@@ -36,11 +36,12 @@ module.exports = [
         }
         const { email } = request.payload
         // do some email validation
-        const apiResponse = await apiRegisterCall(email)
+        const apiResponse = await apiSignUpCall(email)
         const response = {
           code: apiResponse.code,
           registerToken: apiResponse.registerToken
         }
+        console.log("responses", response)
         return h.response(response)
       } catch (error) {
         console.error('Error:', error)

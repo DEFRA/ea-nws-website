@@ -25,7 +25,7 @@ lab.experiment('Web test', () => {
   lab.test('POST / route runs with valid payload', async () => {
     const options = {
       method: 'POST',
-      url: '/registerStart',
+      url: '/signupStart',
       payload: {
         email: 'test@test.com'
       }
@@ -40,7 +40,7 @@ lab.experiment('Web test', () => {
   lab.test('POST / route runs with invalid payload', async () => {
     const options = {
       method: 'POST',
-      url: '/registerStart',
+      url: '/signupStart',
       payload: {
         email: 'invalid'
       }
@@ -55,7 +55,7 @@ lab.experiment('Web test', () => {
     async () => {
       const options = {
         method: 'POST',
-        url: '/registerStart',
+        url: '/signupStart',
         payload: {
           email: 'emailAlreadyInUse@email.com'
         }
@@ -69,7 +69,7 @@ lab.experiment('Web test', () => {
   lab.test('POST / route runs with invalid payload as missing @', async () => {
     const options = {
       method: 'POST',
-      url: '/registerStart',
+      url: '/signupStart',
       payload: {
         email: 'invalidemail.com'
       }
@@ -84,7 +84,7 @@ lab.experiment('Web test', () => {
     async () => {
       const options = {
         method: 'POST',
-        url: '/registerStart',
+        url: '/signupStart',
         payload: {
           email: 'invalidemail@'
         }

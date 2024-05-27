@@ -38,7 +38,7 @@ export default function SignUpPage() {
 
   const checkEmail = async (email) => {
     const data = JSON.stringify({ email })
-    const responseData = await backendCall(data, 'registerStart')
+    const responseData = await backendCall(data, 'signupStart')
 
     if (responseData === undefined) {
       return { emailExists: false, registerToken: null }

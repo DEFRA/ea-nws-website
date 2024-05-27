@@ -45,7 +45,7 @@ export default function SignUpValidationPage() {
       registerToken,
       code
     })
-    const responseData = await backendCall(raw, 'registerValidate')
+    const responseData = await backendCall(raw, 'signupValidate')
 
     if (
       responseData === undefined ||

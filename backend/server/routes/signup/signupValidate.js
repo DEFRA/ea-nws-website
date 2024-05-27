@@ -1,7 +1,7 @@
 const apiCall = require('../../services/ApiService')
 const codeValidation = require('../../services/Validations/CodeValidation')
 
-const apiRegisterValidateCall = async (registerToken, code) => {
+const apiSignupValidateCall = async (registerToken, code) => {
   console.log("register tokem", registerToken)
   let isValid = 400
   let desc
@@ -30,7 +30,7 @@ const apiRegisterValidateCall = async (registerToken, code) => {
 module.exports = [
   {
     method: ['POST', 'PUT'],
-    path: '/registerValidate',
+    path: '/signupValidate',
     handler: async (request, h) => {
       try {
         if (request.payload === null) {
@@ -39,7 +39,7 @@ module.exports = [
 
         const { registerToken, code } = request.payload
         console.log("register token payload", request.payload)
-        const apiResponse = await apiRegisterValidateCall(registerToken, code)
+        const apiResponse = await apiSignupValidateCall(registerToken, code)
         console.log(apiResponse)
         let response
         if (!Object.prototype.hasOwnProperty.call(apiResponse, 'authToken')) {

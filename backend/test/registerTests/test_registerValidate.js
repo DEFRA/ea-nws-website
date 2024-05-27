@@ -11,10 +11,10 @@ lab.experiment('Web test', () => {
     server = await createServer()
   })
 
-  lab.test('POST /registerValidate route runs with valid payload', async () => {
+  lab.test('POST /signupValidate route runs with valid payload', async () => {
     const options = {
       method: 'POST',
-      url: '/registerValidate',
+      url: '/signupValidate',
       payload: {
         email: 'test@test.com'
       }
@@ -26,11 +26,11 @@ lab.experiment('Web test', () => {
   })
 
   lab.test(
-    'POST /registerValidate route runs with invalid payload',
+    'POST /signupValidate route runs with invalid payload',
     async () => {
       const options = {
         method: 'POST',
-        url: '/registerValidate',
+        url: '/signupValidate',
         payload: {
           email: 'invalidtest.com'
         }

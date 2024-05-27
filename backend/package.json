@@ -1,10 +1,10 @@
 {
-  "name": "National Warning System",
+  "name": "back-end",
   "version": "0.0.1",
   "description": "National Warning System",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "nodemon index.js | npx pino-pretty",
     "build:css": "bin/build-css",
     "build": "bin/build",
     "lint": "standard",
@@ -34,7 +34,7 @@
     "@hapi/code": "^8.0.6",
     "@hapi/lab": "^24.5.1",
     "codeclimate-test-reporter": "0.5.1",
-    "node-sass": "^9.0.0",
+    "node-sass": "^7.0.3",
     "standard": "16.0.4"
   }
 }

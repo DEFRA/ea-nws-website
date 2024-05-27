@@ -1,6 +1,6 @@
 const backendCall = async (data, path) => {
   let responseData
-  const url = 'http://localhost:3000/' + path
+  const url = 'http://localhost:5000/' + path
   try {
     const response = await fetch(url, {
       method: 'POST',

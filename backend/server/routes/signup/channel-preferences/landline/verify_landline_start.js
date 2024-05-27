@@ -1,13 +1,12 @@
 const apiCall = require('../../../../services/ApiService')
-const phoneValidation = require('../../../../services/Validations/PhoneValidation')
+const numberValidation = require('../../../../services/Validations/PhoneValidation')
 
-const apiRegisterCall = async (email) => {
+const apiLandlineStartCall = async (phone, auth) => {
   let isValid = 400
   console.log('reached api call')
-  let registerToken = ''
-  const raw = JSON.stringify({ email: email })
+  const raw = JSON.stringify({ phone: phone, authToken: auth })
   console.log('Received from front-end: ', raw)
-  if (email !== '' && !emailValidation(email)) {
+  if (email !== '' && !numberValidation(phone, 'mobileAndLandline')) {
     console.log('returning code 101', email)
     return { code: 101, desc: 'Invalid email' }
   }
@@ -35,8 +34,8 @@ module.exports = [
     handler: async (request, h) => {
       try {
         console.log('!!!!!')
-        const { authToken, phoneNumber, code } = request.payload
-
+        const { authToken, phoneNumber } = request.payload
+        apiLandlineStartCall
         console.log('PAYLOAD: ', request.payload)
         const response = {
           text: 'Start!'

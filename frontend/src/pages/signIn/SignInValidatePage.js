@@ -29,12 +29,11 @@ export default function SignInValidatePage() {
     setError(validationError)
     if (validationError !== '') {
       return
-    } else {
-      const backendResponse = await validateCode(code)
-      if (!backendResponse) {
-        setError('Invalid code')
-        return
-      }
+    }
+    const backendResponse = await validateCode(code)
+    if (!backendResponse) {
+      setError('Invalid code')
+      return
     }
     navigate('/')
   }

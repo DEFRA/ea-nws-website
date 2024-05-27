@@ -1,15 +1,15 @@
 const apiCall = require('../../../../services/ApiService')
-const phoneValidation = require('../../../../services/Validations/PhoneValidation')
+const codeValidation = require('../../../../services/Validations/CodeValidation')
 
-const apiLandlineValidateCall = async (email) => {
+const apiLandlineValidateCall = async (code, number, auth) => {
   let isValid = 400
   console.log('reached api call')
   let registerToken = ''
   const raw = JSON.stringify({ email: email })
   console.log('Received from front-end: ', raw)
-  if (email !== '' && !emailValidation(email)) {
+  if (email !== '' && !codeValidation(code, 6)) {
     console.log('returning code 101', email)
-    return { code: 101, desc: 'Invalid email' }
+    return { code: 101, desc: 'Invalid token' }
   }
   return
   /*
@@ -33,9 +33,8 @@ module.exports = [
     path: '/signup/contactpreferences/landline/add',
     handler: async (request, h) => {
       try {
-        console.log('!!!!!')
         const { authToken, phoneNumber, code } = request.payload
-        // do some email validation
+
         const apiResponse = await apiLandlineValidateCall(email)
         console.log('PAYLOAD: ', request.payload)
         const response = {

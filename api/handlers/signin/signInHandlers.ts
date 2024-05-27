@@ -1,25 +1,35 @@
 const responseCodes = require('../responseCodes')
+import Hapi from '@hapi/hapi'
+import type { Context } from 'openapi-backend'
 
-async function getSigninStart(context, req) {
+async function getSigninStart(
+  context: Context,
+  req: Hapi.Request,
+  res: Hapi.ResponseToolkit
+) {
   console.log('Received SignInStart request for: ', req.payload)
-  if (req.payload.email === 'invalid@email.com') {
-    console.log('Unknown email, responding 106')
-    return responseCodes.UNKNOWN_EMAIL
+  const { email } = req.payload as { email: string }
+  console.log(email)
+  if (email === 'invalid@email.com') {
+    return res.response(responseCodes.UNKNOWN_EMAIL).code(500)
   }
   console.log('Valid email, responding 200')
   return { ...responseCodes.SUCCESS, signinToken: '123456' }
 }
 
-async function getSigninValidate(context, req) {
-  console.log(
-    'Received SignInValidate request -- \n Code: ',
-    req.payload.code,
-    ' - SignInToken: ',
-    req.payload.signinToken
-  )
-  if (req.payload.code === '999999' || req.payload.signinToken === undefined) {
+async function getSigninValidate(
+  context: Context,
+  req: Hapi.Request,
+  res: Hapi.ResponseToolkit
+) {
+  console.log('Received SignInValidate request: ', req.payload)
+  const { code, signinToken } = req.payload as {
+    code: string
+    signinToken: string
+  }
+  if (code === '999999' || signinToken === undefined) {
     console.log('Invalid token')
-    return responseCodes.INVALID_TOKEN
+    return res.response(responseCodes.INVALID_TOKEN).code(500)
   }
   console.log('Valid token')
   const profile = {

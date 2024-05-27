@@ -27,6 +27,7 @@ export default function SignInStartPage() {
     }
 
     const { emailExists, signinToken: token } = await checkEmail(email)
+    console.log("response data sign in2", signinToken)
     if (!emailExists) {
       setError('Email address is not recognised - check and try again')
       return
@@ -48,7 +49,9 @@ export default function SignInStartPage() {
     if (code === 101) {
       return { emailExists: false, signinToken: null }
     }
+    
     const signinToken = responseData.signinToken
+    console.log("response data sign in", signinToken)
     return { emailExists: true, signinToken }
   }
 

@@ -4,8 +4,7 @@ const emailValidation = require('../../services/Validations/EmailValidation')
 const apiRegisterCall = async (email) => {
   let isValid = 400
   console.log('reached api call')
-  let registerToken = ''
-  const raw = JSON.stringify({ email: email })
+  const raw = JSON.stringify({ email })
   console.log('Received from front-end: ', raw)
   if (email !== '' && !emailValidation(email)) {
     console.log('returning code 101', email)
@@ -13,17 +12,18 @@ const apiRegisterCall = async (email) => {
   }
 
   const responseData = await apiCall(raw, 'member/registerStart')
+  console.log('not hereReceived from API: ', responseData.registerToken)
+  if (responseData === undefined) return
   if (Object.prototype.hasOwnProperty.call(responseData, 'desc')) {
     isValid = responseData.code
+    const desc = responseData.desc
+    return { code: isValid, desc: desc }
   } else {
     console.log('responseData', responseData)
     isValid = responseData.code
-    registerToken = responseData.registerToken
+    const registerToken = responseData.registerToken
+    return { code: isValid, registerToken }
   }
-  console.log('Received from API: ', responseData)
-
-  console.log({ code: isValid, registerToken: registerToken })
-  return { code: isValid, registerToken: registerToken }
 }
 
 module.exports = [
@@ -32,6 +32,9 @@ module.exports = [
     path: '/registerStart',
     handler: async (request, h) => {
       try {
+        if (request.payload === null) {
+          return h.response({ message: 'Bad request' }).code(400)
+        }
         const { email } = request.payload
         // do some email validation
         const apiResponse = await apiRegisterCall(email)

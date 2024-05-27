@@ -2,6 +2,7 @@ const apiCall = require('../../services/ApiService')
 const codeValidation = require('../../services/Validations/CodeValidation')
 
 const apiRegisterValidateCall = async (registerToken, code) => {
+  console.log("register tokem", registerToken)
   let isValid = 400
   let desc
   let authToken
@@ -12,7 +13,8 @@ const apiRegisterValidateCall = async (registerToken, code) => {
 
   // Parse the JSON response and get the status code
   const responseData = await apiCall(raw, 'member/registerValidate')
-  if (Object.prototype.hasOwnProperty.call(responseData, 'code')) {
+  if (responseData === undefined) return
+  if (Object.prototype.hasOwnProperty.call(responseData, 'code') && responseData.code === 101) {
     isValid = responseData.code
     desc = responseData.desc
   } else {
@@ -21,7 +23,7 @@ const apiRegisterValidateCall = async (registerToken, code) => {
   }
 
   return isValid === 200
-    ? { authToken: authToken }
+    ? { authToken }
     : { code: isValid, desc: desc }
 }
 
@@ -31,11 +33,16 @@ module.exports = [
     path: '/registerValidate',
     handler: async (request, h) => {
       try {
+        if (request.payload === null) {
+          return h.response({ message: 'Bad request' }).code(400)
+        }
+
         const { registerToken, code } = request.payload
+        console.log("register token payload", request.payload)
         const apiResponse = await apiRegisterValidateCall(registerToken, code)
         console.log(apiResponse)
         let response
-        if (Object.prototype.hasOwnProperty.call(apiResponse, 'code')) {
+        if (!Object.prototype.hasOwnProperty.call(apiResponse, 'authToken')) {
           console.log('Invalid')
           response = {
             code: apiResponse.code,

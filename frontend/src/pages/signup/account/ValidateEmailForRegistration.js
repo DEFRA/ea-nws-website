@@ -1,77 +1,96 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import InsetText from '../../../gov-uk-components/InsetText'
 import TextInput from '../../../gov-uk-components/TextInput'
+import Button from '../../../gov-uk-components/Button'
+import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
+import {
+  setAuthToken,
+} from '../../../redux/userSlice'
+import backendCall from '../../../services/BackendService'
+import codeValidation from '../../../services/Validations/CodeValidation'
 
-const backendCall = require('../../../services/BackendService')
-const userEmail = window.sessionStorage.getItem('userEmail')
-const registerToken = window.sessionStorage.getItem('registerToken')
+export default function ValidateEmailForRegistration() {
 
-const validateNumber = (input, digits) => {
-  const numberPattern = new RegExp(`^[0-9]{${digits}}$`)
-  return numberPattern.test(input)
-}
-
-const ValidateEmailForRegistrationForm = (props) => {
-  const [errorMessage, setErrorMessage] = useState('')
+  const location = useLocation()
+  const [error, setError] = useState('')
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [code, setCode] = useState('')
+  const registerToken = location.state.registerToken
 
   const handleSubmit = async (event) => {
+    event.preventDefault()
     if (code === '') {
-      setErrorMessage('Enter code')
+      setError('Enter code')
+      return
+    } else if (!codeValidation(code, 6)) {
+      setError('Code must be 6 numbers')
       return
     }
-    if (!validateNumber(code, 6)) {
-      setErrorMessage('Code must be 6 numbers')
+
+    const backendResponse = await validateCode(code)
+    if (!backendResponse) {
+      setError('Invalid code')
       return
     }
-    const apiReturn = await validateCode(code)
-    if (!apiReturn) {
-      setErrorMessage('Invalid code')
-      return
-    }
-    window.location.replace('Start')
+    navigate('/')
   }
 
   const validateCode = async (code) => {
-    var raw = JSON.stringify({ registerToken: registerToken, code: code })
-
+    const raw = JSON.stringify({
+      registerToken,
+      code
+    })
     const responseData = await backendCall(raw, 'registerValidate')
-    if (responseData.hasOwnProperty('code')) {
+
+    if (
+      responseData === undefined ||
+      Object.prototype.hasOwnProperty.call(responseData, 'code')
+    ) {
       return false
     }
+    dispatch(setAuthToken(responseData.authToken))
 
-    window.sessionStorage.setItem('authToken', responseData['authToken'])
-    window.sessionStorage.setItem('profile', responseData['profile'])
-    window.sessionStorage.setItem('registration', responseData['registration'])
     return true
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <TextInput name="Enter code" onChange={(val) => setCode(val)}></TextInput>
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <button type="submit" className="govuk-button" data-module="govuk-button">
-        Continue
-      </button>
-    </form>
-  )
-}
-
-export default function ValidateEmailForRegistration() {
-  return (
     <>
       <Header />
       <div className="govuk-width-container">
-        <a href="register" className="govuk-back-link">
+      <Link to="/register" className="govuk-back-link">
           Back
-        </a>
+        </Link>
+        <ErrorSummary errorList={error === '' ? [] : [error]} />
         <h2 className="govuk-heading-l">Check your email</h2>
         <div className="govuk-body">
-          We've sent a code to:
-          <InsetText text={userEmail} />
-          <ValidateEmailForRegistrationForm />
+          You need to confirm your email address.
+        <br></br>
+        <br></br>
+          We've sent an email with a code to:
+          <InsetText text={location.state.email} />
+          Enter the code within 4 hours or it will expire.
+          <br></br>
+          <br></br>
+          <TextInput name="Enter code" error={error} onChange={setCode} />
+          <Button
+            className="govuk-button"
+            text="Confirm email address"
+            onClick={handleSubmit}
+          />
+          &nbsp;
+          &nbsp;
+          <Link to="/register" className="govuk-link">
+          Use a different email
+          </Link>
+          <br></br>
+          <Link to="/register" className="govuk-link">
+          Get a new code
+          </Link>
         </div>
       </div>
 

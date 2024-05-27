@@ -1,84 +1,88 @@
+import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+import Button from '../../../gov-uk-components/Button'
+import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import TextInput from '../../../gov-uk-components/TextInput'
-const backendCall = require('../../../services/BackendService')
+import backendCall from '../../../services/BackendService'
+import emailValidation from '../../../services/Validations/EmailValidation'
+import InsetText from '../../../gov-uk-components/InsetText'
 
-const EmailForm = (props) => {
-  const [errorMessage, setErrorMessage] = useState('')
+export default function InitialEmailRegistrationPage() {
+  const navigate = useNavigate()
   const [email, setEmail] = useState('')
+  const [error, setError] = useState('')
 
   const handleSubmit = async (event) => {
+    event.preventDefault()
+    let registerToken = null
+    console.log("here to pass to state1", registerToken)
     if (email === '') {
-      setErrorMessage('Enter your email address')
+      setError('Enter an email address')
       return
-    }
-    if (!validateEmail(email)) {
-      setErrorMessage(
+    } else if (!emailValidation(email)) {
+      setError(
         'Enter an email address in the correct format, like name@example.com'
       )
       return
     }
-    const emailExists = await checkEmail(email)
-    if (emailExists === false) {
-      setErrorMessage('Email address is already in use')
+
+    const { emailExists, registerToken: token } = await checkEmail(email)
+
+    console.log("A", registerToken)
+
+    if (!emailExists) {
+      console.log("B", registerToken)
+      setError('Email address is not recognised - check and try again')
       return
     }
 
-    window.sessionStorage.setItem('userEmail', email)
-    window.location.replace('ValidateEmailForRegistration')
-  }
-
-  const validateEmail = (email) => {
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return emailPattern.test(email)
+     console.log("c", registerToken)
+     navigate('/register/validate', {
+     
+      state: { registerToken, email }
+      
+    })
   }
 
   const checkEmail = async (email) => {
-    let registerToken = ''
-    var raw = JSON.stringify({ email: email })
+    const raw = JSON.stringify({ email })
     const responseData = await backendCall(raw, 'registerStart')
-
-    const code = responseData['code']
-    registerToken = responseData['registerToken']
-    // Assign the status code to isValid
-    if (code === 101) {
-      return false
+    console.log("response data", registerToken)
+    if (responseData === undefined) {
+      return { emailExists: false, registerToken: null }
     }
-
-    window.sessionStorage.setItem('registerToken', registerToken)
-
-    return true
+    const code = responseData.code
+    if (code === 101) {
+      return { emailExists: false, registerToken: null }
+    }
+    const registerToken = responseData.registerToken
+    console.log("response data", registerToken)
+    return { emailExists: true, registerToken: registerToken }
   }
 
-  return (
-    <form onSubmit={handleSubmit}>
-      <TextInput name="Email address" onChange={(val) => setEmail(val)} />
-      {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <button type="submit" className="govuk-button" data-module="govuk-button">
-        Continue
-      </button>
-    </form>
-  )
-}
-
-export default function InitialEmailRegistrationPage() {
   return (
     <>
       <Header />
       <div className="govuk-width-container">
-        <a href="Start" className="govuk-back-link">
+      <Link to="/" className="govuk-back-link">
           Back
-        </a>
+        </Link>
+        <ErrorSummary errorList={error === '' ? [] : [error]} />
         <h2 className="govuk-heading-l">
-          Register for your flood warning account
+          Enter an email address - you'll use this to sign in to your account
         </h2>
         <div className="govuk-body">
-          <p>Enter a valid email address for registration</p>
-          <EmailForm />
-          <a href="SignInPage" className="govuk-link">
-            Sign in if you already have an account
-          </a>
+          <p>You'll be able to use your account to update your locations, flood messages or contact details. </p>
+          <InsetText text='We recommend using an email address you can access 24 hours a day.' />
+          <TextInput name="Email address" error={error} onChange={setEmail} />
+          <Button
+            className="govuk-button"
+            text="Continue"
+            onClick={handleSubmit}
+          />
+          <br></br>
         </div>
       </div>
       <Footer />

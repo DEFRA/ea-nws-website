@@ -1,11 +1,13 @@
+const responseCodes = require('../responseCodes')
+
 async function getRegisterStart(context, req) {
   console.log("Received register start request for: ", req.payload);
   if (req.payload.email === "emailAlreadyInUse@email.com") {
     console.log("Email already in Use, responding 101");
-    return { code: 101, desc: "Email already in Use" };
+    return responseCodes.UNKNOWN_EMAIL
   }
   console.log("Valid email, responding 200");
-  return { code: 200, registerToken: "123456" };
+  return { ...responseCodes.SUCCESS, registerToken: "123456" };
 }
 
 async function getRegisterValidate(context, req) {
@@ -13,11 +15,11 @@ async function getRegisterValidate(context, req) {
     "Received register request -- \n Code: ",
     req.payload.code,
     " - RegisterToken: ",
-    req.payload.registerToken
+    req.payload
   );
-  if (req.payload.code === "999999") {
+  if (req.payload.code === "999999"|| req.payload.registerToken === undefined)  {
     console.log("Invalid token");
-    return { code: 101, desc: "InvalidToken" };
+    return responseCodes.INVALID_TOKEN
   }
   console.log("Valid token");
 

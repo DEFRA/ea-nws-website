@@ -1,4 +1,6 @@
-const backendCall = async (data, path) => {
+import { handleResponse } from './HandleResponse'
+
+export const backendCall = async (data, path, navigate) => {
   let responseData
   const url = 'http://localhost:5000/' + path
   try {
@@ -15,7 +17,6 @@ const backendCall = async (data, path) => {
   } catch (error) {
     console.log('ERROR: ', error)
   }
-  return responseData
+  console.log(responseData)
+  return handleResponse(responseData, navigate)
 }
-
-module.exports = { backendCall }

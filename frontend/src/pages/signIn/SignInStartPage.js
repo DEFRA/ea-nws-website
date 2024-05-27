@@ -1,14 +1,14 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { backendCall } from '../../services/BackendService'
 import Button from '../../gov-uk-components/Button'
 import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import Input from '../../gov-uk-components/Input'
-import backendCall from '../../services/BackendService'
 import emailValidation from '../../services/validations/EmailValidation'
 
-export default function SignInStartPage () {
+export default function SignInStartPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
@@ -45,7 +45,7 @@ export default function SignInStartPage () {
       return { emailExists: false, signinToken: null }
     }
     const code = responseData.code
-    if (code === 101) {
+    if (code === 106) {
       return { emailExists: false, signinToken: null }
     }
     const signinToken = responseData.signinToken
@@ -55,27 +55,27 @@ export default function SignInStartPage () {
   return (
     <>
       <Header />
-      <div class='govuk-width-container'>
-        <Link to='/' className='govuk-back-link'>
+      <div class="govuk-width-container">
+        <Link to="/" className="govuk-back-link">
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 class='govuk-heading-l'>Sign in to your flood warnings account</h2>
-        <div class='govuk-body'>
+        <h2 class="govuk-heading-l">Sign in to your flood warnings account</h2>
+        <div class="govuk-body">
           You can:
-          <ul className='govuk-list govuk-list--bullet'>
+          <ul className="govuk-list govuk-list--bullet">
             <li>update or remove your locations</li>
             <li>change how you get flood messages</li>
             <li>delete your account</li>
           </ul>
-          <Input name='Email address' error={error} onChange={setEmail} />
+          <Input name="Email address" error={error} onChange={setEmail} />
           <Button
-            className='govuk-button'
-            text='Continue'
+            className="govuk-button"
+            text="Continue"
             onClick={handleSubmit}
           />
           <br />
-          <Link to='/' className='govuk-link'>
+          <Link to="/" className="govuk-link">
             Sign up if you do not have an account
           </Link>
         </div>

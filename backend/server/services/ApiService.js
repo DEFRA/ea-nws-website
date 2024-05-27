@@ -1,7 +1,7 @@
 const axios = require('axios')
 
 const apiCall = async (data, path) => {
-  const url = 'http://localhost:9000/' + path
+  const url = 'http://localhost:9001/' + path
 
   try {
     const response = await axios.post(url, data, {
@@ -10,30 +10,25 @@ const apiCall = async (data, path) => {
       },
       withCredentials: true
     })
-
+    console.log('response data', response.data)
     if (response.status === 200) {
-      console.log('response data', response.data)
-      return response.data
+      return { status: response.status, data: response.data }
     }
   } catch (error) {
-    // Handle specific HTTP errors
     if (error.response) {
-      const { status, data } = error.response
+      const { status } = error.response
       if (status === 400) {
-        console.log('Bad Request:', data)
-        return data
+        return { status: status }
       } else if (status === 404) {
-        console.log('Not Found:', data)
+        return { status: status }
       } else if (status === 500) {
-        console.log('Internal Server Error:', data)
+        return { status: status, errorMessage: error.response.data }
       }
     } else if (error.request) {
-      //no response was received
+      // no response was received
       console.log('No response received:', error.request)
     }
   }
-
-  //request failed
   return null
 }
 

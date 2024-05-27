@@ -19,6 +19,7 @@ export default function ValidateMobilePhone() {
   const session = useSelector((state) => state.session)
 
   const handleSubmit = async () => {
+    console.log('clicked')
     const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
@@ -28,8 +29,19 @@ export default function ValidateMobilePhone() {
         msisdn: location.state.mobile,
         code
       }
-      await backendCall(data, 'signup/contactpreferences/mobile/validate')
-      navigate('/signup/contactpreferences')
+      const { responseData, errorMessage } = await backendCall(
+        data,
+        'signup/contactpreferences/mobile/validate',
+        navigate
+      )
+
+      console.log('responseData', responseData)
+      console.log('errorMessage', errorMessage)
+      if (errorMessage !== null) {
+        setError(errorMessage.desc)
+      } else {
+        navigate('/signup/contactpreferences')
+      }
     }
   }
 

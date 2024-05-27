@@ -18,20 +18,20 @@ const apiCall = async (data, path) => {
     if (error.response) {
       const { status, data } = error.response
       if (status === 400) {
-        console.log('Bad Request:', data)
+        console.log('Bad Request:', 400)
         return data
       } else if (status === 404) {
-        console.log('Not Found:', data)
+        console.log('Not Found:', 404)
       } else if (status === 500) {
-        console.log('Internal Server Error:', error.response)
-        return error.response.data
+        console.log('Internal Server Error:', error.response.data)
+        return { status: 500, data: error.response.data }
       }
     } else if (error.request) {
-      //no response was received
+      // no response was received
       console.log('No response received:', error.request)
     }
   }
   return responseData
 }
 
-module.exports = apiCall
+module.exports = { apiCall }

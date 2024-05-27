@@ -16,8 +16,10 @@ export default function InitialEmailRegistrationPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    let registerToken = null
-    console.log("here to pass to state1", registerToken)
+
+   
+    console.log("email token on handle submit", email)
+
     if (email === '') {
       setError('Enter an email address')
       return
@@ -28,28 +30,24 @@ export default function InitialEmailRegistrationPage() {
       return
     }
 
-    const { emailExists, registerToken: token } = await checkEmail(email)
-
-    console.log("A", registerToken)
+    console.log("befor check email", email)
+    const { emailExists, registerToken } = await checkEmail(email)
 
     if (!emailExists) {
-      console.log("B", registerToken)
-      setError('Email address is not recognised - check and try again')
+      setError('Email address is already registered - sign in')
       return
     }
 
-     console.log("c", registerToken)
      navigate('/register/validate', {
-     
       state: { registerToken, email }
-      
     })
   }
 
   const checkEmail = async (email) => {
-    const raw = JSON.stringify({ email })
-    const responseData = await backendCall(raw, 'registerStart')
-    console.log("response data", registerToken)
+    console.log("in check email", email)
+    const data = JSON.stringify({ email })
+    const responseData = await backendCall(data, 'registerStart')
+
     if (responseData === undefined) {
       return { emailExists: false, registerToken: null }
     }
@@ -57,9 +55,14 @@ export default function InitialEmailRegistrationPage() {
     if (code === 101) {
       return { emailExists: false, registerToken: null }
     }
+
+    if(code===106){
+      return { emailExists: false, registerToken: null }
+    }
+    
     const registerToken = responseData.registerToken
-    console.log("response data", registerToken)
-    return { emailExists: true, registerToken: registerToken }
+    console.log("response data sign in", registerToken)
+    return { emailExists: true, registerToken }
   }
 
   return (

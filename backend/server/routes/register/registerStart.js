@@ -22,7 +22,8 @@ const apiRegisterCall = async (email) => {
     console.log('responseData', responseData)
     isValid = responseData.code
     const registerToken = responseData.registerToken
-    return { code: isValid, registerToken }
+    console.log('register token response ', responseData.registerToken)
+    return { code: isValid,  registerToken }
   }
 }
 
@@ -42,7 +43,7 @@ module.exports = [
           code: apiResponse.code,
           registerToken: apiResponse.registerToken
         }
-
+        console.log("response", response)
         return h.response(response)
       } catch (error) {
         console.error('Error:', error)

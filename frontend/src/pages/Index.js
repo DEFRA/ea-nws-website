@@ -84,7 +84,7 @@ export default function IndexPage() {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/register" className="govuk-link">
+                  <Link to="/signup" className="govuk-link">
                     Register page
                   </Link>
                 </li>

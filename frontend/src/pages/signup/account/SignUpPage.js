@@ -9,17 +9,13 @@ import backendCall from '../../../services/BackendService'
 import emailValidation from '../../../services/Validations/EmailValidation'
 import InsetText from '../../../gov-uk-components/InsetText'
 
-export default function InitialEmailRegistrationPage() {
+export default function SignUpPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-
-   
-    console.log("email token on handle submit", email)
-
     if (email === '') {
       setError('Enter an email address')
       return
@@ -29,22 +25,18 @@ export default function InitialEmailRegistrationPage() {
       )
       return
     }
-
-    console.log("befor check email", email)
     const { emailExists, registerToken } = await checkEmail(email)
 
     if (!emailExists) {
       setError('Email address is already registered - sign in')
       return
     }
-
-     navigate('/register/validate', {
+     navigate('/signup/validate', {
       state: { registerToken, email }
     })
   }
 
   const checkEmail = async (email) => {
-    console.log("in check email", email)
     const data = JSON.stringify({ email })
     const responseData = await backendCall(data, 'registerStart')
 
@@ -55,13 +47,11 @@ export default function InitialEmailRegistrationPage() {
     if (code === 101) {
       return { emailExists: false, registerToken: null }
     }
-
     if(code===106){
       return { emailExists: false, registerToken: null }
     }
     
     const registerToken = responseData.registerToken
-    console.log("response data sign in", registerToken)
     return { emailExists: true, registerToken }
   }
 

@@ -13,7 +13,7 @@ import {
 import backendCall from '../../../services/BackendService'
 import codeValidation from '../../../services/Validations/CodeValidation'
 
-export default function ValidateEmailForRegistration() {
+export default function SignUpValidationPage() {
 
   const location = useLocation()
   const [error, setError] = useState('')
@@ -62,7 +62,7 @@ export default function ValidateEmailForRegistration() {
     <>
       <Header />
       <div className="govuk-width-container">
-      <Link to="/register" className="govuk-back-link">
+      <Link to="/signup" className="govuk-back-link">
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
@@ -84,11 +84,11 @@ export default function ValidateEmailForRegistration() {
           />
           &nbsp;
           &nbsp;
-          <Link to="/register" className="govuk-link">
+          <Link to="/signup" className="govuk-link">
           Use a different email
           </Link>
           <br></br>
-          <Link to="/register" className="govuk-link">
+          <Link to="/signup" className="govuk-link">
           Get a new code
           </Link>
         </div>

@@ -16,28 +16,25 @@ export default function SignUpPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    if (email === '') {
-      setError('Enter an email address')
-      return
-    } else if (!emailValidation(email)) {
-      setError(
-        'Enter an email address in the correct format, like name@example.com'
-      )
+    const validationError = emailValidation(email)
+    setError(validationError)
+    if (validationError !== '') {
       return
     }
-    const { emailExists, registerToken } = await checkEmail(email)
+    const { emailExists, registerToken: token } = await checkEmail(email)
 
     if (!emailExists) {
       setError('Email address is already registered - sign in')
       return
     }
+    const registerToken = token
      navigate('/signup/validate', {
       state: { registerToken, email }
     })
   }
 
   const checkEmail = async (email) => {
-    const data = JSON.stringify({ email })
+    const data = { email }
     const responseData = await backendCall(data, 'signupStart')
 
     if (responseData === undefined) {
@@ -51,8 +48,7 @@ export default function SignUpPage() {
       return { emailExists: false, registerToken: null }
     }
     
-    const registerToken = responseData.registerToken
-    return { emailExists: true, registerToken }
+    return { emailExists: true, registerToken: responseData.registerToken }
   }
 
   return (
@@ -69,7 +65,7 @@ export default function SignUpPage() {
         <div className="govuk-body">
           <p>You'll be able to use your account to update your locations, flood messages or contact details. </p>
           <InsetText text='We recommend using an email address you can access 24 hours a day.' />
-          <TextInput name="Email address" error={error} onChange={setEmail} />
+          <TextInput name="Email address" error={error} onChange={(val) => setEmail(val)} />
           <Button
             className="govuk-button"
             text="Continue"

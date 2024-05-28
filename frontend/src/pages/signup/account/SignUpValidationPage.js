@@ -24,13 +24,10 @@ export default function SignUpValidationPage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    if (code === '') {
-      setError('Enter code')
-      return
-    } else if (!codeValidation(code, 6)) {
-      setError('Code must be 6 numbers')
-      return
-    }
+    const validationError = codeValidation(code, 6)
+    setError(validationError)
+    if (validationError !== '') {
+      return}
 
     const backendResponse = await validateCode(code)
     if (!backendResponse) {
@@ -41,15 +38,15 @@ export default function SignUpValidationPage() {
   }
 
   const validateCode = async (code) => {
-    const raw = JSON.stringify({
+    const data = {
       registerToken,
       code
-    })
-    const responseData = await backendCall(raw, 'signupValidate')
+    }
+    const responseData = await backendCall(data, 'signupValidate')
 
     if (
       responseData === undefined ||
-      Object.prototype.hasOwnProperty.call(responseData, 'code')
+      responseData.code === 101
     ) {
       return false
     }
@@ -76,7 +73,7 @@ export default function SignUpValidationPage() {
           Enter the code within 4 hours or it will expire.
           <br></br>
           <br></br>
-          <TextInput name="Enter code" error={error} onChange={setCode} />
+          <TextInput name="Enter code" error={error} onChange={(val) => setCode(val)} />
           <Button
             className="govuk-button"
             text="Confirm email address"

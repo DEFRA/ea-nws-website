@@ -1,35 +1,25 @@
 const apiCall = require('../../services/ApiService')
 const codeValidation = require('../../services/Validations/CodeValidation')
+const apiService = require('../../services/ApiService')
 
 const apiSignupValidateCall = async (registerToken, code) => {
   console.log("register tokem", registerToken)
-  let isValid = 400
-  let desc
-  let authToken
-  const raw = JSON.stringify({ registerToken: registerToken, code: code })
+ 
+  const data = { registerToken, code}
   if (registerToken !== '' && !codeValidation(code, 6)) {
     return { code: 101, desc: 'invalid code' }
   }
 
   // Parse the JSON response and get the status code
-  const responseData = await apiCall(raw, 'member/registerValidate')
+  const responseData = await apiService.apiCall(data, 'member/registerValidate')
   if (responseData === undefined) return
-  if (Object.prototype.hasOwnProperty.call(responseData, 'code') && responseData.code === 101) {
-    isValid = responseData.code
-    desc = responseData.desc
-  } else {
-    isValid = 200
-    authToken = responseData.authToken
-  }
 
-  return isValid === 200
-    ? { authToken }
-    : { code: isValid, desc: desc }
+  return responseData.data
 }
 
 module.exports = [
   {
-    method: ['POST', 'PUT'],
+    method: ['POST'],
     path: '/signupValidate',
     handler: async (request, h) => {
       try {
@@ -38,24 +28,11 @@ module.exports = [
         }
 
         const { registerToken, code } = request.payload
-        console.log("register token payload", request.payload)
+        console.log("register token payload", registerToken, code)
         const apiResponse = await apiSignupValidateCall(registerToken, code)
         console.log(apiResponse)
-        let response
-        if (!Object.prototype.hasOwnProperty.call(apiResponse, 'authToken')) {
-          console.log('Invalid')
-          response = {
-            code: apiResponse.code,
-            desc: apiResponse.desc
-          }
-        } else {
-          console.log('Valid')
-          response = {
-            authToken: apiResponse.authToken
-          }
-        }
 
-        return h.response(response)
+        return h.response(apiResponse)
       } catch (error) {
         console.error('Error:', error)
         return h.response({ message: 'Internal server error' }).code(500)

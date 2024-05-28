@@ -4,7 +4,7 @@ const apiCall = async (data, path) => {
   let responseData
   const url = 'http://localhost:9000/' + path
   try {
-    const response = await axios.post(url, data, {
+    const response = await axios.post(url, JSON.stringify(data), {
       headers: {
         'Content-Type': 'application/json'
       },

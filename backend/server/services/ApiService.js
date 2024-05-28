@@ -18,11 +18,11 @@ const apiCall = async (data, path) => {
     if (error.response) {
       const { status } = error.response
       if (status === 400) {
-        return { status: status }
+        return { status }
       } else if (status === 404) {
-        return { status: status }
+        return { status }
       } else if (status === 500) {
-        return { status: status, errorMessage: error.response.data }
+        return { status, errorMessage: error.response.data }
       }
     } else if (error.request) {
       // no response was received

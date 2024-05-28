@@ -1,6 +1,6 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Link, useLocation } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
@@ -10,8 +10,8 @@ import { backendCall } from '../../services/BackendService'
 
 export default function ConfirmDeleteContactDetailsPage () {
   const location = useLocation()
-  const dispatch = useDispatch()
-  const navigate = useNavigate()
+  // const dispatch = useDispatch()
+  // const navigate = useNavigate()
 
   // [TODO] we need to perform a check if this is null
   // most likely would be null if the user has logged out etc

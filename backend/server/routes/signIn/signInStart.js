@@ -15,7 +15,7 @@ const apiSignInStartCall = async (email) => {
   if (Object.prototype.hasOwnProperty.call(responseData, 'desc')) {
     isValid = responseData.code
     const desc = responseData.desc
-    return { code: isValid, desc: desc }
+    return { code: isValid, desc }
   } else {
     console.log('responseData', responseData)
     isValid = responseData.code

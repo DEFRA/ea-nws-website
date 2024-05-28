@@ -7,7 +7,7 @@ const apiSignInValidateCall = async (signinToken, code) => {
   let profile
   let authToken
   let registration
-  const raw = { signinToken: signinToken, code }
+  const raw = { signinToken, code }
   if (signinToken !== '' && !codeValidation(code, 6)) {
     return { code: 101, desc: 'invalid code' }
   }
@@ -33,7 +33,7 @@ const apiSignInValidateCall = async (signinToken, code) => {
 
   return isValid === 200
     ? { authToken, profile, registration }
-    : { code: isValid, desc: desc }
+    : { code: isValid, desc }
 }
 
 module.exports = [

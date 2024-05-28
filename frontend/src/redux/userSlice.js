@@ -18,7 +18,6 @@ const userSlice = createSlice({
       state.registration = action.payload
     },
     clearAuth: (state) => {
-      console.log('cleared')
       state.authToken = null
       state.profile = null
       state.registration = null

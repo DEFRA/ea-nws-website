@@ -41,9 +41,9 @@ const ValidateEmailForRegistrationForm = (props) => {
 
     const responseData = await backendCall(raw, 'registerValidate')
     console.log('ResponseData', responseData)
-    if (responseData.hasOwnProperty('code')) {
-      return false
-    }
+    // if (responseData.hasOwnProperty('code')) {
+    //   return false
+    // }
 
     window.sessionStorage.setItem('authToken', responseData.authToken)
     window.sessionStorage.setItem('profile', responseData.profile)

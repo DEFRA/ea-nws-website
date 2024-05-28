@@ -5,7 +5,7 @@ const apiRegisterCall = async (email) => {
   let isValid = 400
   console.log('reached api call')
   let registerToken = ''
-  const raw = { email: email }
+  const raw = { email }
   console.log('Received from front-end: ', raw)
   if (email !== '' && !emailValidation(email)) {
     console.log('returning code 101', email)
@@ -22,8 +22,8 @@ const apiRegisterCall = async (email) => {
   }
   console.log('Received from API: ', responseData)
 
-  console.log({ code: isValid, registerToken: registerToken })
-  return { code: isValid, registerToken: registerToken }
+  console.log({ code: isValid, registerToken })
+  return { code: isValid, registerToken }
 }
 
 module.exports = [

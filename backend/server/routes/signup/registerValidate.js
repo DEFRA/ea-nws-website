@@ -5,7 +5,7 @@ const apiRegisterValidateCall = async (registerToken, code) => {
   let isValid = 400
   let desc
   let authToken
-  const raw = { registerToken: registerToken, code: code }
+  const raw = { registerToken, code }
   if (registerToken !== '' && !codeValidation(code, 6)) {
     return { code: 101, desc: 'invalid code' }
   }
@@ -21,8 +21,8 @@ const apiRegisterValidateCall = async (registerToken, code) => {
   }
 
   return isValid === 200
-    ? { authToken: authToken }
-    : { code: isValid, desc: desc }
+    ? { authToken }
+    : { code: isValid, desc }
 }
 
 module.exports = [

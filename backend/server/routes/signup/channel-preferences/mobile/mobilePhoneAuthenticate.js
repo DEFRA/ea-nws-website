@@ -12,10 +12,10 @@ module.exports = [
     path: '/signup/contactpreferences/mobile/add',
     handler: async (request, h) => {
       const { msisdn } = request.payload
-      //progressive enhancement validation
+      // progressive enhancement validation
       let response = phoneValidation(msisdn, 'mobile')
 
-      //request.payload = { authToken, msisdn }
+      // request.payload = { authToken, msisdn }
       response = await apiCall(request.payload, 'member/verifyMobilePhoneStart')
       return response
     }
@@ -25,11 +25,11 @@ module.exports = [
     path: '/signup/contactpreferences/mobile/validate',
     handler: async (request, h) => {
       const { msisdn, code } = request.payload
-      //progressive enhancement validation
+      // progressive enhancement validation
       let response = phoneValidation(msisdn, 'mobile')
       response = authCodeValidation(code)
 
-      //request.payload = { authToken, msisdn, code }
+      // request.payload = { authToken, msisdn, code }
       response = await apiCall(
         request.payload,
         'member/verifyMobilePhoneValidate'

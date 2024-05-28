@@ -11,32 +11,28 @@ import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
 import { backendCall } from '../../../../services/BackendService'
 import { authCodeValidation } from '../../../../services/validations/AuthCodeValidation'
 
-export default function ValidateMobilePhone() {
+export default function ValidateMobilePhone () {
   const navigate = useNavigate()
   const location = useLocation()
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
-  const session = useSelector((state) => state.session)
+  const authToken = useSelector((state) => state.session.authToken)
 
   const handleSubmit = async () => {
-    console.log('clicked')
     const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      // replace with session.authtoken once flow is working
       const data = {
-        authToken: 'authToken',
+        authToken,
         msisdn: location.state.mobile,
         code
       }
-      const { responseData, errorMessage } = await backendCall(
+      const { errorMessage } = await backendCall(
         data,
         'signup/contactpreferences/mobile/validate',
         navigate
       )
 
-      console.log('responseData', responseData)
-      console.log('errorMessage', errorMessage)
       if (errorMessage !== null) {
         setError(errorMessage.desc)
       } else {
@@ -48,61 +44,61 @@ export default function ValidateMobilePhone() {
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
-        <div className="govuk-grid-row">
-          <div className="govuk-grid-column-two-thirds">
+      <div className='govuk-width-container'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
             <PhaseBanner />
             <Link
-              to="/signup/contactpreferences/mobile"
-              className="govuk-back-link"
+              to='/signup/contactpreferences/mobile'
+              className='govuk-back-link'
             >
               Back
             </Link>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className="govuk-heading-l govuk-!-margin-top-6">
+            <h1 className='govuk-heading-l govuk-!-margin-top-6'>
               Check your mobile phone
             </h1>
-            <p className="govuk-body">We've sent a text with a code to:</p>
+            <p className='govuk-body'>We've sent a text with a code to:</p>
             <InsetText text={location.state.mobile} />
-            <p className="govuk-body">
+            <p className='govuk-body'>
               Use the code within 4 hours or it will expire
             </p>
             <Input
-              inputType="text"
+              inputType='text'
               value={code}
-              name="Enter code"
+              name='Enter code'
               onChange={(val) => setCode(val)}
               error={error}
-              className="govuk-input govuk-input--width-10"
+              className='govuk-input govuk-input--width-10'
             />
             <Button
-              text="Continue"
-              className="govuk-button"
+              text='Continue'
+              className='govuk-button'
               onClick={handleSubmit}
             />
             &nbsp; &nbsp;
             <Link
-              to="/signup/contactpreferences/mobile/skipconfirmation"
+              to='/signup/contactpreferences/mobile/skipconfirmation'
               state={{
                 mobile: location.state.mobile
               }}
-              className="govuk-body govuk-link"
+              className='govuk-body govuk-link'
             >
               Skip and confirm later
             </Link>
             <br />
-            <p className="govuk-body">
-              <a href="#" className="govuk-link">
+            <p className='govuk-body'>
+              <a href='#' className='govuk-link'>
                 Get a new code
               </a>
             </p>
             <Link
-              to="/signup/contactpreferences/mobile"
-              className="govuk-body govuk-link"
+              to='/signup/contactpreferences/mobile'
+              className='govuk-body govuk-link'
             >
               Enter a different mobile number
             </Link>
-            <div className=" govuk-!-margin-bottom-9" />
+            <div className=' govuk-!-margin-bottom-9' />
           </div>
         </div>
       </div>

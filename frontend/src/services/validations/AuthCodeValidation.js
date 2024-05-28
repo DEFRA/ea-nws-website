@@ -1,5 +1,5 @@
 const authCodeValidation = (code) => {
-  if (code === '') {
+  if (!code) {
     return 'Enter code'
   }
 

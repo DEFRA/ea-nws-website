@@ -36,40 +36,40 @@ const ValidateEmailForRegistrationForm = (props) => {
   }
 
   const validateCode = async (code) => {
-    var raw = JSON.stringify({ registerToken: registerToken, code: code })
+    const raw = JSON.stringify({ registerToken, code })
 
     const responseData = await backendCall(raw, 'registerValidate')
-    if (responseData.hasOwnProperty('code')) {
+    if (Object.prototype.hasOwnProperty.call(responseData, 'code')) {
       return false
     }
 
-    window.sessionStorage.setItem('authToken', responseData['authToken'])
-    window.sessionStorage.setItem('profile', responseData['profile'])
-    window.sessionStorage.setItem('registration', responseData['registration'])
+    window.sessionStorage.setItem('authToken', responseData.authToken)
+    window.sessionStorage.setItem('profile', responseData.profile)
+    window.sessionStorage.setItem('registration', responseData.registration)
     return true
   }
 
   return (
     <form onSubmit={handleSubmit}>
-      <TextInput name="Enter code" onChange={(val) => setCode(val)}></TextInput>
+      <TextInput name='Enter code' onChange={(val) => setCode(val)} />
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <button type="submit" className="govuk-button" data-module="govuk-button">
+      <button type='submit' className='govuk-button' data-module='govuk-button'>
         Continue
       </button>
     </form>
   )
 }
 
-export default function ValidateEmailForRegistration() {
+export default function ValidateEmailForRegistration () {
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
-        <a href="register" className="govuk-back-link">
+      <div className='govuk-width-container'>
+        <a href='register' className='govuk-back-link'>
           Back
         </a>
-        <h2 className="govuk-heading-l">Check your email</h2>
-        <div className="govuk-body">
+        <h2 className='govuk-heading-l'>Check your email</h2>
+        <div className='govuk-body'>
           We've sent a code to:
           <InsetText text={userEmail} />
           <ValidateEmailForRegistrationForm />

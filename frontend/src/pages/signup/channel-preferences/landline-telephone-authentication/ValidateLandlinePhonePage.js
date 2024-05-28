@@ -10,7 +10,7 @@ import InsetText from '../../../../gov-uk-components/InsetText'
 import backendCall from '../../../../services/BackendService'
 import codeValidation from '../../../../services/Validations/CodeValidation'
 
-export default function ValidateLandlinePhonePage() {
+export default function ValidateLandlinePhonePage () {
   const location = useLocation()
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
@@ -36,33 +36,33 @@ export default function ValidateLandlinePhonePage() {
   return (
     <>
       <Header />
-      <div class="govuk-width-container">
+      <div class='govuk-width-container'>
         <Link
-          to="/signup/contactpreferences/landline"
-          className="govuk-back-link"
+          to='/signup/contactpreferences/landline'
+          className='govuk-back-link'
         >
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 class="govuk-heading-l">Check your email</h2>
-        <div class="govuk-body">
+        <h2 class='govuk-heading-l'>Check your email</h2>
+        <div class='govuk-body'>
           We're calling this number to read out a code:
           <InsetText text={location.state.phoneNumber} />
           <Input
-            name="Enter code"
-            inputType="text"
+            name='Enter code'
+            inputType='text'
             error={error}
             onChange={(val) => setCode(val)}
           />
           <Button
-            className="govuk-button"
-            text="Continue"
+            className='govuk-button'
+            text='Continue'
             onClick={handleSubmit}
           />
           &nbsp; &nbsp;
           <Link
-            className="govuk-link"
-            to="/signup/contactpreferences/landline/skipconfirm"
+            className='govuk-link'
+            to='/signup/contactpreferences/landline/skipconfirm'
             state={{ phoneNumber: location.state.phoneNumber }}
           >
             Skip and confirm later

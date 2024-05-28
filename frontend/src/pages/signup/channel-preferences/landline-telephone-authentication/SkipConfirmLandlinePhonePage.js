@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Button from '../../../../gov-uk-components/Button'
 import Footer from '../../../../gov-uk-components/Footer'
 import Header from '../../../../gov-uk-components/Header'
@@ -7,7 +7,6 @@ import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
 
 export default function SkipConfirmLandlinePhonePage() {
   const location = useLocation()
-  const navigate = useNavigate()
   function handleSubmit() {}
 
   return (
@@ -30,7 +29,7 @@ export default function SkipConfirmLandlinePhonePage() {
             </h1>
             <Button
               text={"I'll confirm this later"}
-              className={'govuk-button'}
+              className="govuk-button"
               onClick={handleSubmit}
             />
             &nbsp; &nbsp;

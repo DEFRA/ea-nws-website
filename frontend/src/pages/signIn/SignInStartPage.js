@@ -20,12 +20,11 @@ export default function SignInStartPage() {
     if (validationError !== '') {
       return
     }
-    const { emailExists, signinToken: token } = await checkEmail(email)
+    const { emailExists, signinToken } = await checkEmail(email)
     if (!emailExists) {
       setError('Email address is not recognised - check and try again')
       return
     }
-    const signinToken = token
     navigate('/signin/validate', {
       state: { signinToken, email }
     })
@@ -72,7 +71,7 @@ export default function SignInStartPage() {
             text="Continue"
             onClick={handleSubmit}
           />
-          <br></br>
+          <br />
           <Link to="/register" className="govuk-link">
             Sign up if you do not have an account
           </Link>

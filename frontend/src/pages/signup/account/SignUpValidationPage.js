@@ -40,7 +40,7 @@ export default function SignUpValidationPage() {
     if (errorMessage !== null) {
       setError(errorMessage.desc)
     }else {
-      navigate('/')
+      navigate('/signup/contactpreferences')
     }
   }
 }
@@ -56,14 +56,14 @@ export default function SignUpValidationPage() {
         <h2 className="govuk-heading-l">Check your email</h2>
         <div className="govuk-body">
           You need to confirm your email address.
-        <br></br>
-        <br></br>
+        <br/>
+        <br/>
           We've sent an email with a code to:
           <InsetText text={location.state.email} />
           Enter the code within 4 hours or it will expire.
-          <br></br>
-          <br></br>
-          <TextInput inputType="text" value={code} name="Enter code" error={error} onChange={(val) => setCode(val)} />
+          <br/>
+          <br/>
+          <TextInput className="govuk-input govuk-input--width-10" inputType="text" value={code} name="Enter code" error={error} onChange={(val) => setCode(val)} />
           <Button
             className="govuk-button"
             text="Confirm email address"
@@ -74,7 +74,7 @@ export default function SignUpValidationPage() {
           <Link to="/signup" className="govuk-link">
           Use a different email
           </Link>
-          <br></br>
+          <br/>
           <Link to="/signup" className="govuk-link">
           Get a new code
           </Link>

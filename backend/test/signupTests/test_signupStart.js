@@ -34,7 +34,7 @@ lab.experiment('Web test', () => {
     const response = await server.inject(options)
     Code.expect(response.statusCode).to.equal(200)
     Code.expect(response.statusMessage).to.equal('OK')
-    Code.expect(response.result.registerToken).to.equal('123456')
+    Code.expect(response.result.data.registerToken).to.equal('123456')
   })
 
   lab.test('POST / route runs with invalid payload', async () => {
@@ -47,6 +47,7 @@ lab.experiment('Web test', () => {
     }
 
     const response = await server.inject(options)
+    console.log("res1233", response)
     Code.expect(response.result.code).to.equal(101)
   })
 

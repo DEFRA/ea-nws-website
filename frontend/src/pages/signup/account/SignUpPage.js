@@ -9,6 +9,7 @@ import {backendCall} from '../../../services/BackendService'
 import emailValidation from '../../../services/Validations/EmailValidation'
 import InsetText from '../../../gov-uk-components/InsetText'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 
 export default function SignUpPage() {
   const navigate = useNavigate()
@@ -20,7 +21,6 @@ export default function SignUpPage() {
     const validationError = emailValidation(email)
     setError(validationError)
     if (validationError === '') {
-      // replace with session.authtoken once flow is working
       const data = { email: email}
       const { responseData, errorMessage } = await backendCall(
         data,
@@ -41,17 +41,18 @@ export default function SignUpPage() {
     <>
       <Header />
       <div className="govuk-width-container">
+      <PhaseBanner />
       <Link to="/" className="govuk-back-link">
           Back
         </Link>
-        <ErrorSummary errorList={error === '' ? [] : [error]} />
+        {error && <ErrorSummary errorList={[error]} />}
         <h2 className="govuk-heading-l">
           Enter an email address - you'll use this to sign in to your account
         </h2>
         <div className="govuk-body">
           <p>You'll be able to use your account to update your locations, flood messages or contact details. </p>
           <InsetText text='We recommend using an email address you can access 24 hours a day.' />
-          <TextInput name="Email address" error={error} onChange={(val) => setEmail(val)} />
+          <TextInput className="govuk-input govuk-input--width-10" name="Email address" error={error} onChange={(val) => setEmail(val)} />
           <Button
             className="govuk-button"
             text="Continue"

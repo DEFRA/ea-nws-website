@@ -1,5 +1,5 @@
 const emailValidation = (email) => {
-  if (!email || email === '') {
+  if (!email) {
     return 'Enter your email address'
   }
 

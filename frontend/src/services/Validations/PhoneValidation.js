@@ -1,6 +1,6 @@
 const phoneValidation = (number, type) => {
   switch (type) {
-    case 'mobile':
+    case 'mobile': {
       if (number === '') {
         return 'Enter a UK mobile telephone number'
       }
@@ -13,8 +13,8 @@ const phoneValidation = (number, type) => {
         return 'Enter a valid UK mobile telephone number'
       }
       return ''
-
-    case 'mobileAndLandline':
+    }
+    case 'mobileAndLandline': {
       if (number === '') {
         return 'Enter a UK landline or mobile telephone number'
       }
@@ -25,6 +25,7 @@ const phoneValidation = (number, type) => {
         return 'Enter a UK landline or mobile telephone number, like 01632 960 001 or 07700 900 982'
       }
       return ''
+    }
   }
 }
 

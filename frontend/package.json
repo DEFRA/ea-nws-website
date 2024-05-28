@@ -63,7 +63,7 @@
   },
   "standard": {
     "ignore": [
-      "tests/**/*.js"
+      "test/**/*.js"
     ]
   }
 }

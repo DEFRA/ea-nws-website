@@ -38,11 +38,11 @@ const EmailForm = (props) => {
 
   const checkEmail = async (email) => {
     let registerToken = ''
-    var raw = JSON.stringify({ email })
+    const raw = JSON.stringify({ email })
     const responseData = await backendCall(raw, 'registerStart')
 
-    const code = responseData['code']
-    registerToken = responseData['registerToken']
+    const code = responseData.code
+    registerToken = responseData.registerToken
     // Assign the status code to isValid
     if (code === 101) {
       return false
@@ -55,30 +55,30 @@ const EmailForm = (props) => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <TextInput name="Email address" onChange={(val) => setEmail(val)} />
+      <TextInput name='Email address' onChange={(val) => setEmail(val)} />
       {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-      <button type="submit" className="govuk-button" data-module="govuk-button">
+      <button type='submit' className='govuk-button' data-module='govuk-button'>
         Continue
       </button>
     </form>
   )
 }
 
-export default function InitialEmailRegistrationPage() {
+export default function InitialEmailRegistrationPage () {
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
-        <a href="Start" className="govuk-back-link">
+      <div className='govuk-width-container'>
+        <a href='Start' className='govuk-back-link'>
           Back
         </a>
-        <h2 className="govuk-heading-l">
+        <h2 className='govuk-heading-l'>
           Register for your flood warning account
         </h2>
-        <div className="govuk-body">
+        <div className='govuk-body'>
           <p>Enter a valid email address for registration</p>
           <EmailForm />
-          <Link to="/signin" className="govuk-link">
+          <Link to='/signin' className='govuk-link'>
             Sign up if you do not have an account
           </Link>
         </div>

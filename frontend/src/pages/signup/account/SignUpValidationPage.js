@@ -10,50 +10,44 @@ import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import {
   setAuthToken,
 } from '../../../redux/userSlice'
-import backendCall from '../../../services/BackendService'
+import {backendCall} from '../../../services/BackendService'
 import codeValidation from '../../../services/Validations/CodeValidation'
+import { useSelector } from 'react-redux'
 
 export default function SignUpValidationPage() {
 
   const location = useLocation()
-  const [error, setError] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [code, setCode] = useState('')
   const registerToken = location.state.registerToken
+ 
+  const [code, setCode] = useState('')
+  const [error, setError] = useState('')
+  const session = useSelector((state) => state.session)
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
+    console.log("here")
+    
     const validationError = codeValidation(code, 6)
     setError(validationError)
-    if (validationError !== '') {
-      return}
+    if (validationError === '') {
+      const data = {
+        registerToken: registerToken,
+        code: code
+      }
 
-    const backendResponse = await validateCode(code)
-    if (!backendResponse) {
-      setError('Invalid code')
-      return
+    const {responseData, errorMessage }= await backendCall(data, 'signupValidate', navigate)
+
+    console.log('responseData', responseData)
+    console.log('errorMessage', errorMessage)
+
+    if (errorMessage !== null) {
+      setError(errorMessage.desc)
+    }else {
+      navigate('/')
     }
-    navigate('/')
   }
-
-  const validateCode = async (code) => {
-    const data = {
-      registerToken,
-      code
-    }
-    const responseData = await backendCall(data, 'signupValidate')
-
-    if (
-      responseData === undefined ||
-      responseData.code === 101
-    ) {
-      return false
-    }
-    dispatch(setAuthToken(responseData.authToken))
-
-    return true
-  }
+}
 
   return (
     <>
@@ -62,7 +56,7 @@ export default function SignUpValidationPage() {
       <Link to="/signup" className="govuk-back-link">
           Back
         </Link>
-        <ErrorSummary errorList={error === '' ? [] : [error]} />
+        {error && <ErrorSummary errorList={[error]} />}
         <h2 className="govuk-heading-l">Check your email</h2>
         <div className="govuk-body">
           You need to confirm your email address.
@@ -73,7 +67,7 @@ export default function SignUpValidationPage() {
           Enter the code within 4 hours or it will expire.
           <br></br>
           <br></br>
-          <TextInput name="Enter code" error={error} onChange={(val) => setCode(val)} />
+          <TextInput inputType="text" value={code} name="Enter code" error={error} onChange={(val) => setCode(val)} />
           <Button
             className="govuk-button"
             text="Confirm email address"
@@ -95,3 +89,4 @@ export default function SignUpValidationPage() {
     </>
   )
 }
+

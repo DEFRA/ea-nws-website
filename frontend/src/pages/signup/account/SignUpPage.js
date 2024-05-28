@@ -1,46 +1,44 @@
-import { Link, useNavigate } from 'react-router-dom'
+
 import { useState } from 'react'
 import Button from '../../../gov-uk-components/Button'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import TextInput from '../../../gov-uk-components/TextInput'
-import backendCall from '../../../services/BackendService'
+import {backendCall} from '../../../services/BackendService'
 import emailValidation from '../../../services/Validations/EmailValidation'
 import InsetText from '../../../gov-uk-components/InsetText'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 
 export default function SignUpPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
+  const location = useLocation()
   const [error, setError] = useState('')
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
+
+  const handleSubmit = async () => {
     const validationError = emailValidation(email)
     setError(validationError)
-    if (validationError !== '') {
-      return
+    if (validationError === '') {
+      // replace with session.authtoken once flow is working
+      const data = { email: email}
+      console.log("data", data)
+      const { responseData, errorMessage } = await backendCall(
+        data,
+        'signupStart',
+        navigate
+      )
+      console.log("RESPOSNE DATAEHRE", responseData)
+      console.log("RESPOSNE message", errorMessage)
+      if (errorMessage !== null) {
+        setError(errorMessage.desc)
+      } else {
+        navigate('/signup/validate', {
+          state: { registerToken: responseData.registerToken, email }
+        })
+      }
     }
-    const { emailExists, registerToken: token } = await checkEmail(email)
-
-    if (!emailExists) {
-      setError('Email address is already registered - sign in')
-      return
-    }
-    const registerToken = token
-     navigate('/signup/validate', {
-      state: { registerToken, email }
-    })
-  }
-
-  const checkEmail = async (email) => {
-    const data = { email }
-    const responseData = await backendCall(data, 'signupStart')
-
-    if (responseData === undefined) {
-      return { emailExists: false, registerToken: null }
-    }
-    return { emailExists: true, registerToken: responseData.registerToken }
   }
 
   return (

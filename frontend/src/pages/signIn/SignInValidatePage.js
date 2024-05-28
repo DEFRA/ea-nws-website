@@ -12,7 +12,7 @@ import {
   setProfile,
   setRegistration
 } from '../../redux/userSlice'
-import backendCall from '../../services/BackendService'
+import {backendCall} from '../../services/BackendService'
 import codeValidation from '../../services/Validations/CodeValidation'
 
 export default function SignInValidatePage() {

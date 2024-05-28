@@ -3,6 +3,10 @@ const codeValidation = (code, length) => {
     return 'Enter code'
   }
 
+  if (code === '999999'){
+    return 'Invalid Code'
+  }
+
   const numberPattern = new RegExp(`^[0-9]{${length}}$`)
   if (!numberPattern.test(code)) {
     return 'Code must be 6 numbers'

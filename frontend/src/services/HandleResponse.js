@@ -1,17 +1,17 @@
 const handleResponse = (response, navigate) => {
-  switch (response.statusCode) {
+  console.log("here at handle response code", response.status)
+  switch (response.status) {
     case 200:
-      return response
+      console.log("here at handle response 200", )
+      return { responseData: response.data, errorMessage: null }
     case 400:
-      navigate('/')
-      return
+      return { responseData: null, errorMessage: 'Bad request, please try again' }
     case 404:
-      navigate('/notfound')
-      return
+      return navigate('/not-found')
     case 500:
-      navigate('/error')
-      return
+      console.log("here at handle response code", response.errorMessage)
+      return { responseData: null, errorMessage: 'Invalid Code'}
   }
 }
 
-export { handleResponse }
+module.exports = { handleResponse }

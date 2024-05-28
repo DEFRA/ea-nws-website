@@ -5,7 +5,7 @@ import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import TextInput from '../../gov-uk-components/TextInput'
-import backendCall from '../../services/BackendService'
+import {backendCall} from '../../services/BackendService'
 import emailValidation from '../../services/Validations/EmailValidation'
 
 export default function SignInStartPage() {

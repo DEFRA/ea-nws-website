@@ -1,8 +1,8 @@
 post:
+  operationId: 'getRegisterValidate'
   tags:
     - Member
   summary: Validate the registration of a new user
-  operationId: 'getRegisterValidate'
   description: >-
     The user registering a new account should have received a code via email
     or SMS. This RPC is then used to finalize the registration. If the

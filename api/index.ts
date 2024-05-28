@@ -5,8 +5,9 @@ const server = new Hapi.Server({ port: 9000 })
 
 // calling handlers
 const signInHandlers = require('./handlers/signin/signinHandlers')
-const registerHandlers = require('./handlers/register/registerHandlers')
+const registerHandlers = require('./handlers/signup/registerHandlers')
 const updateProfileHandler = require('./handlers/updateProfile/updateProfileHandler')
+const homePhoneAuthenticationHandlers = require('./handlers/signup/channel-preferences/homephoneAuthenticationHandlers/homephoneAuthenticationHandlers')
 
 // define api
 const api = new OpenAPIBackend({
@@ -16,7 +17,9 @@ const api = new OpenAPIBackend({
     getRegisterValidate: registerHandlers.getRegisterValidate,
     getSignInStart: signInHandlers.getSigninStart,
     getSignInValidate: signInHandlers.getSigninValidate,
-    getUpdateProfile: updateProfileHandler.getUpdateProfile
+    getUpdateProfile: updateProfileHandler.getUpdateProfile,
+    getHomephoneStart: homePhoneAuthenticationHandlers.getHomephoneStart,
+    getHomephoneValidate: homePhoneAuthenticationHandlers.getHomephoneValidate
   }
 })
 

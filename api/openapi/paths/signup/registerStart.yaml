@@ -1,17 +1,17 @@
 post:
+  operationId: 'getRegisterStart'
   tags:
     - Member
   summary: Start the registration of a new user
-  operationId: 'getRegisterStart'
   description: >-
-        A new user is identified using its email address or mobile phone.  
+    A new user is identified using its email address or mobile phone.  
 
-        Either \\ref email or \\ref mobilePhone should be set. If both are set,
-        \\ref mobilePhone is ignored.
+    Either \\ref email or \\ref mobilePhone should be set. If both are set,
+    \\ref mobilePhone is ignored.
 
 
-        This RPC creates a new registration session and sends an email or SMS
-        containing a verification code to the email address or mobile phone.
+    This RPC creates a new registration session and sends an email or SMS
+    containing a verification code to the email address or mobile phone.
   requestBody:
     content:
       application/json:
@@ -61,7 +61,3 @@ post:
               value:
                 code: 104
                 desc: bad phone number format
-            
-
-            
-        

@@ -1,11 +1,11 @@
 const codeValidation = (code, length) => {
-  if (!code || code === '') {
+  if (code === '') {
     return 'Enter code'
   }
 
-  const numberPattern = new RegExp(`^[0-9]{${length}}$`)
-  if (!numberPattern.test(code)) {
-    return 'Code must be 6 numbers'
+  const checkLengthAndIsNumber = new RegExp(`^[0-9]{${6}}$`)
+  if (!checkLengthAndIsNumber.test(code)) {
+    return 'Enter code'
   }
   return ''
 }

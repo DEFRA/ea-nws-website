@@ -3,6 +3,7 @@ const codeValidation = require('../../services/Validations/CodeValidation')
 
 const apiSignInValidateCall = async (signinToken, code) => {
   const data = { signinToken, code }
+
   if (signinToken !== '' && !codeValidation(code, 6)) {
     return { code: 101, desc: 'invalid code' }
   }
@@ -10,7 +11,7 @@ const apiSignInValidateCall = async (signinToken, code) => {
   // Parse the JSON response and get the status code
   const responseData = await apiService.apiCall(data, 'member/signinValidate')
   if (responseData === undefined) return
-  return responseData.data
+  return responseData
 }
 
 module.exports = [

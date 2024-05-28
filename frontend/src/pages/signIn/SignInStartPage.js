@@ -38,12 +38,11 @@ export default function SignInStartPage() {
     if (responseData === undefined) {
       return { emailExists: false, signinToken: null }
     }
-    const code = responseData.code
-    if (code === 106) {
+    const code = responseData.status
+    if (code !== 200) {
       return { emailExists: false, signinToken: null }
     }
-
-    return { emailExists: true, signinToken: responseData.signinToken }
+    return { emailExists: true, signinToken: responseData.data.signinToken }
   }
 
   return (

@@ -44,12 +44,13 @@ export default function SignInValidatePage() {
       code
     }
     const responseData = await backendCall(data, 'signInValidate')
-    if (responseData === undefined || responseData.code === 101) {
+    if (responseData === undefined || responseData.data.code === 101) {
       return false
     }
-    dispatch(setAuthToken(responseData.authToken))
-    dispatch(setProfile(responseData.profile))
-    dispatch(setRegistration(responseData.registration))
+
+    dispatch(setAuthToken(responseData.data.authToken))
+    dispatch(setProfile(responseData.data.profile))
+    dispatch(setRegistration(responseData.data.registration))
 
     return true
   }

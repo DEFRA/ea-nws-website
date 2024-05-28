@@ -14,7 +14,7 @@ const apiSignInStartCall = async (email) => {
   if (responseData === undefined) return
   console.log('Status:', responseData.status)
 
-  return responseData.data
+  return responseData
 }
 
 module.exports = [

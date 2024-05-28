@@ -21,7 +21,7 @@ export default function AddLandlinePhonePage() {
     if (validationError !== '') {
       return
     }
-    const data = { authToken: 'authToken', phoneNumber: phoneNumber }
+    const data = { authToken: 'authToken', phone: phoneNumber }
     await backendCall(data, 'signup/contactpreferences/landline/add')
     navigate('/signup/contactpreferences/landline/validate', {
       state: { phoneNumber }

@@ -23,7 +23,7 @@ lab.experiment('Integration tests', () => {
         }
       }
       const response = await server.inject(options)
-      Code.expect(response.result.code).to.equal(101)
+      Code.expect(response.result.data.code).to.equal(101)
     }
   )
 
@@ -65,9 +65,9 @@ lab.experiment('Integration tests', () => {
         }
       }
       const response = await server.inject(options)
-      Code.expect(response.result.authToken).to.equal('MockGUIDAuthToken')
-      Code.expect(response.result.profile)
-      Code.expect(response.result.registration)
+      Code.expect(response.result.data.authToken).to.equal('MockGUIDAuthToken')
+      Code.expect(response.result.data.profile)
+      Code.expect(response.result.data.registration)
     }
   )
 })

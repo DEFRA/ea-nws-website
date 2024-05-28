@@ -13,7 +13,7 @@ async function getSigninStart(
     return res.response(responseCodes.UNKNOWN_EMAIL).code(500)
   }
   console.log('Valid email, responding 200')
-  return { code: 200, signinToken: '123456' }
+  return { signinToken: '123456' }
 }
 
 async function getSigninValidate(

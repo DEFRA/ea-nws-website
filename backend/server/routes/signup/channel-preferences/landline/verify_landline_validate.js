@@ -19,7 +19,7 @@ const apiLandlineValidateCall = async (code, phone, auth) => {
   console.log('Received from API: ', responseData)
   if (responseData === undefined) return
   console.log('Status:', responseData.status)
-  return responseData.data
+  return responseData
 }
 module.exports = [
   {

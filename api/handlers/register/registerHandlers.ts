@@ -9,10 +9,7 @@ async function getRegisterStart(
 ) {
   console.log('Received register start request for: ', req.payload)
   const { email } = req.payload as { email: string }
-  if (email === 'emailAlreadyInUse@email.com') {
-    console.log('Email already in Use, responding 101')
-    return res.response(responseCodes.UNKNOWN_EMAIL).code(500)
-  }
+  
   console.log('Valid email, responding 200')
   return { code: 200, registerToken: '123456' }
 }

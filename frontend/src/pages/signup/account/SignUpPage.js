@@ -40,14 +40,6 @@ export default function SignUpPage() {
     if (responseData === undefined) {
       return { emailExists: false, registerToken: null }
     }
-    const code = responseData.code
-    if (code === 101) {
-      return { emailExists: false, registerToken: null }
-    }
-    if(code===106){
-      return { emailExists: false, registerToken: null }
-    }
-    
     return { emailExists: true, registerToken: responseData.registerToken }
   }
 

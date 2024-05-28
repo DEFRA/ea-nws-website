@@ -45,7 +45,7 @@ export default function SignInStartPage() {
       return { emailExists: false, signinToken: null }
     }
     const code = responseData.code
-    if (code === 101) {
+    if (code === 106) {
       return { emailExists: false, signinToken: null }
     }
     

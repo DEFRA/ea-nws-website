@@ -16,21 +16,17 @@ export default function SignUpPage() {
   const location = useLocation()
   const [error, setError] = useState('')
 
-
   const handleSubmit = async () => {
     const validationError = emailValidation(email)
     setError(validationError)
     if (validationError === '') {
       // replace with session.authtoken once flow is working
       const data = { email: email}
-      console.log("data", data)
       const { responseData, errorMessage } = await backendCall(
         data,
         'signupStart',
         navigate
       )
-      console.log("RESPOSNE DATAEHRE", responseData)
-      console.log("RESPOSNE message", errorMessage)
       if (errorMessage !== null) {
         setError(errorMessage.desc)
       } else {

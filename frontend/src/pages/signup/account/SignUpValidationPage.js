@@ -26,7 +26,6 @@ export default function SignUpValidationPage() {
   const session = useSelector((state) => state.session)
 
   const handleSubmit = async (event) => {
-    console.log("here")
     
     const validationError = codeValidation(code, 6)
     setError(validationError)
@@ -37,9 +36,6 @@ export default function SignUpValidationPage() {
       }
 
     const {responseData, errorMessage }= await backendCall(data, 'signupValidate', navigate)
-
-    console.log('responseData', responseData)
-    console.log('errorMessage', errorMessage)
 
     if (errorMessage !== null) {
       setError(errorMessage.desc)

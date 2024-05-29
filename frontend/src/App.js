@@ -4,8 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import SignBackIn from './pages/signOut/SignBackIn'
 import { routes, unAuthRoutes } from './routes/routes'
 
-// add in redux then fix route
-export default function App () {
+export default function App() {
   const session = useSelector((state) => state.session)
 
   const userAuth = () => {
@@ -26,29 +25,25 @@ export default function App () {
     return false
   }
 
-  return userAuth()
-    ? (
-      <BrowserRouter basename='/'>
-        <Routes>
-          {routes.map((route, index) => (
-            <Route key={index} path={route.path} element={route.component} />
-          ))}
-        </Routes>
-      </BrowserRouter>
-      )
-    : validRoute()
-      ? (
-        <BrowserRouter basename='/'>
-          <Routes>
-            {unAuthRoutes.map((route, index) => (
-              <Route key={index} path={route.path} element={route.component} />
-            ))}
-          </Routes>
-        </BrowserRouter>
-        )
-      : (
-        <BrowserRouter>
-          <SignBackIn />
-        </BrowserRouter>
-        )
+  return userAuth() ? (
+    <BrowserRouter basename="/">
+      <Routes>
+        {routes.map((route, index) => (
+          <Route key={index} path={route.path} element={route.component} />
+        ))}
+      </Routes>
+    </BrowserRouter>
+  ) : validRoute() ? (
+    <BrowserRouter basename="/">
+      <Routes>
+        {unAuthRoutes.map((route, index) => (
+          <Route key={index} path={route.path} element={route.component} />
+        ))}
+      </Routes>
+    </BrowserRouter>
+  ) : (
+    <BrowserRouter>
+      <SignBackIn />
+    </BrowserRouter>
+  )
 }

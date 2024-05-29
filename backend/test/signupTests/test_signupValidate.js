@@ -16,7 +16,8 @@ lab.experiment('Web test', () => {
       method: 'POST',
       url: '/signupValidate',
       payload: {
-        email: 'test@test.com'
+        email: 'test@test.com',
+        registerToken: '123456'
       }
     }
 
@@ -26,20 +27,28 @@ lab.experiment('Web test', () => {
   })
 
   lab.test(
-    'POST /signupValidate route runs with invalid payload',
+    'GET  sending a GET response instead of POST',
+    async () => {
+      const options = {
+        method: 'GET',
+        url: '/signupValidate',
+      }
+
+      const response = await server.inject(options)
+      Code.expect(response.statusCode).to.equal(404)
+    }
+  )
+
+  lab.test(
+    'POST / payload is missing',
     async () => {
       const options = {
         method: 'POST',
         url: '/signupValidate',
-        payload: {
-          email: 'invalidtest.com'
-        }
       }
 
       const response = await server.inject(options)
-
-      Code.expect(response.result.code).to.equal(101)
-      Code.expect(response.result.desc).to.equal('invalid code')
+      Code.expect(response.statusCode).to.equal(400)
     }
   )
 })

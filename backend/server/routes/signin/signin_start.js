@@ -6,7 +6,7 @@ const apiSignInStartCall = async (email) => {
   console.log('Received from front-end: ', data)
 
   if (!emailValidation(email)) {
-    return { code: 106, desc: 'Invalid email' }
+    return { status: 500, data: { code: 106, desc: 'Invalid email' } }
   }
 
   const responseData = await apiService.apiCall(data, 'member/signinStart')

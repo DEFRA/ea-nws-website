@@ -13,6 +13,7 @@ import {
 import {backendCall} from '../../../services/BackendService'
 import codeValidation from '../../../services/Validations/CodeValidation'
 import { useSelector } from 'react-redux'
+import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 
 export default function SignUpValidationPage() {
 
@@ -49,6 +50,7 @@ export default function SignUpValidationPage() {
     <>
       <Header />
       <div className="govuk-width-container">
+      <PhaseBanner />
       <Link to="/signup" className="govuk-back-link">
           Back
         </Link>

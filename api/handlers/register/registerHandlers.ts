@@ -11,7 +11,7 @@ async function getRegisterStart(
   const { email } = req.payload as { email: string }
   
   console.log('Valid email, responding 200')
-  return { code: 200, registerToken: '123456' }
+  return { registerToken: '123456' }
 }
 
 async function getRegisterValidate(

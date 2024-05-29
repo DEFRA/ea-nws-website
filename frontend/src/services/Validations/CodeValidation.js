@@ -1,5 +1,5 @@
 const codeValidation = (code, length) => {
-  if (code === '') {
+  if (!code) {
     return 'Enter code'
   }
 

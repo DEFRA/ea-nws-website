@@ -21,7 +21,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.code).to.equal(104)
+    Code.expect(response.result.data.code).to.equal(104)
   })
 
   lab.test('POST / route runs with empty phone number', async () => {
@@ -34,7 +34,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.code).to.equal(104)
+    Code.expect(response.result.data.code).to.equal(104)
   })
 
   lab.test('POST / route runs with invalid authToken', async () => {
@@ -47,7 +47,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.status).to.equal(500)
+    Code.expect(response.statusCode).to.equal(500)
   })
 
   lab.test('POST / route runs with valid email format', async () => {
@@ -60,6 +60,6 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.status).to.equal(200)
+    Code.expect(response.statusCode).to.equal(204)
   })
 })

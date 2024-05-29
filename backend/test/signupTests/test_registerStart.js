@@ -33,10 +33,10 @@ lab.experiment('Web test', () => {
 
     const response = await server.inject(options)
 
-    //Megan's branch fixes that
-    /*Code.expect(response.statusCode).to.equal(200)
+    // Megan's branch fixes that
+    /* Code.expect(response.statusCode).to.equal(200)
     Code.expect(response.statusMessage).to.equal('OK')
-    Code.expect(response.result.registerToken).to.equal('123456')*/
+    Code.expect(response.result.registerToken).to.equal('123456') */
   })
 
   lab.test('POST / route runs with invalid payload', async () => {
@@ -64,8 +64,8 @@ lab.experiment('Web test', () => {
       }
 
       const response = await server.inject(options)
-      //Megan's branch corrects all that
-      //Code.expect(response.result.code).to.equal(101)
+      // Megan's branch corrects all that
+      // Code.expect(response.result.code).to.equal(101)
     }
   )
 

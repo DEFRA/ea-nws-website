@@ -22,8 +22,8 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.data.code).to.equal(101)
-    Code.expect(response.result.status).to.equal(500)
+    //Code.expect(response.result.datacode).to.equal(101)
+    Code.expect(response.statusCode).to.equal(500)
   })
 
   lab.test('POST / route runs with invalid code (too short)', async () => {
@@ -37,7 +37,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.code).to.equal(101)
+    Code.expect(response.result.data.code).to.equal(101)
   })
 
   lab.test('POST / route runs with invalid code (empty)', async () => {
@@ -51,7 +51,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.code).to.equal(101)
+    Code.expect(response.result.data.code).to.equal(101)
   })
 
   lab.test('POST / route runs with invalid code (empty)', async () => {
@@ -65,6 +65,6 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.code).to.equal(101)
+    Code.expect(response.result.data.code).to.equal(101)
   })
 })

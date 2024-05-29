@@ -10,25 +10,25 @@ const apiCall = async (data, path) => {
       withCredentials: true
     })
 
-    if (response.status === 200) {
-      return { status: response.status, data: response.data }
-    }
+    return { status: response.status, data: response.data }
   } catch (error) {
+    console.log('Error')
     if (error.response) {
-      const { status, data } = error.response
+      const { status } = error.response
       if (status === 400) {
         console.log('Bad Request:', 400)
-        return { status: status }
+        return { status }
       } else if (status === 404) {
         console.log('Not Found:', 404)
-        return { status: status }
+        return { status }
       } else if (status === 500) {
         console.log('Internal Server Error:', error.response.data)
-        return { status: status, data: error.response.data }
+        console.log('status: error.response.status, data: error.response.data')
+        return { status, data: error.response.data }
       }
     } else if (error.request) {
       // no response was received
-      console.log('No response received:', error.request)
+      console.log('No response received:') //, error.request)
     }
   }
   return null

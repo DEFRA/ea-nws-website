@@ -5,7 +5,7 @@ const apiLandlineStartCall = async (phone, auth) => {
   const data = { phone: phone, authToken: auth }
   console.log('Received from front-end: ', data)
   if (!numberValidation(phone, 'mobileAndLandline')) {
-    return { code: 104, desc: 'Invalid phone' }
+    return { status: 500, data: { code: 104, desc: 'Invalid phone' } }
   }
 
   const responseData = await apiService.apiCall(
@@ -14,7 +14,7 @@ const apiLandlineStartCall = async (phone, auth) => {
   )
   console.log('Received from API: ', responseData)
   if (responseData === undefined) return
-  console.log('Status:', responseData.status)
+
   return responseData
 }
 

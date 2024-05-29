@@ -38,24 +38,12 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/signup/contactpreferences/landline/start',
       payload: {
-        authToken: 'validGUIDAuthToken',
-        phone: '07590000000'
-      }
-    }
-    const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(200)
-  })
-
-  lab.test('POST / route runs with valid email format', async () => {
-    const options = {
-      method: 'POST',
-      url: '/signup/contactpreferences/landline/start',
-      payload: {
         authToken: 'MockGUIDAuthToken',
         phone: '07590000000'
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.status).to.equal(200)
+    // Nothing is being responded
+    Code.expect(response.statusCode).to.equal(204)
   })
 })

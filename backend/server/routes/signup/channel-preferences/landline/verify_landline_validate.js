@@ -9,7 +9,7 @@ const apiLandlineValidateCall = async (code, phone, auth) => {
     return { code: 104, desc: 'Invalid phone' }
   }
   if (!codeValidation(code, 6)) {
-    return { code: 101, desc: 'Invalid code' }
+    return { status: 500, data: { code: 101, desc: 'Invalid code' } }
   }
 
   const responseData = await apiService.apiCall(
@@ -18,7 +18,7 @@ const apiLandlineValidateCall = async (code, phone, auth) => {
   )
   console.log('Received from API: ', responseData)
   if (responseData === undefined) return
-  console.log('Status:', responseData.status)
+  // console.log('Status:', responseData.statusCode)
   return responseData
 }
 module.exports = [

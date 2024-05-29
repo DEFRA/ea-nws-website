@@ -12,7 +12,6 @@ const apiSignInStartCall = async (email) => {
   const responseData = await apiService.apiCall(data, 'member/signinStart')
   console.log('Received from API: ', responseData)
   if (responseData === undefined) return
-  console.log('Status:', responseData.status)
 
   return responseData
 }

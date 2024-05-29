@@ -8,14 +8,13 @@ import Input from '../../gov-uk-components/Input'
 import backendCall from '../../services/BackendService'
 import emailValidation from '../../services/Validations/EmailValidation'
 
-export default function SignInStartPage () {
+export default function SignInStartPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const signinToken = null
     if (email === '') {
       setError('Enter your email address')
       return
@@ -26,7 +25,7 @@ export default function SignInStartPage () {
       return
     }
 
-    const { emailExists, signinToken: token } = await checkEmail(email)
+    const { emailExists, signinToken } = await checkEmail(email)
     if (!emailExists) {
       setError('Email address is not recognised - check and try again')
       return
@@ -55,29 +54,29 @@ export default function SignInStartPage () {
   return (
     <>
       <Header />
-      <div className='govuk-width-container'>
-        <Link to='/' className='govuk-back-link'>
+      <div className="govuk-width-container">
+        <Link to="/" className="govuk-back-link">
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 className='govuk-heading-l'>
+        <h2 className="govuk-heading-l">
           Sign in to your flood warnings account
         </h2>
-        <div className='govuk-body'>
+        <div className="govuk-body">
           You can:
-          <ul className='govuk-list govuk-list--bullet'>
+          <ul className="govuk-list govuk-list--bullet">
             <li>update or remove your locations</li>
             <li>change how you get flood messages</li>
             <li>delete your account</li>
           </ul>
-          <Input name='Email address' error={error} onChange={setEmail} />
+          <Input name="Email address" error={error} onChange={setEmail} />
           <Button
-            className='govuk-button'
-            text='Continue'
+            className="govuk-button"
+            text="Continue"
             onClick={handleSubmit}
           />
           <br />
-          <Link to='/' className='govuk-link'>
+          <Link to="/" className="govuk-link">
             Sign up if you do not have an account
           </Link>
         </div>

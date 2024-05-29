@@ -61,5 +61,10 @@
       "@babel/preset-env",
       "@babel/preset-react"
     ]
+  },
+  "standard": {
+    "ignore": [
+      "test/**/*.js"
+    ]
   }
 }

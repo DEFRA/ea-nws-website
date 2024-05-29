@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import { clearAuth } from '../../redux/userSlice'
-export default function SignOutManually() {
+export default function SignOutManually () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const session = useSelector((state) => state.session)
 
-  function loggedOut() {
+  function loggedOut () {
     if (session.authToken !== null) {
       dispatch(clearAuth)
       return true
@@ -22,7 +22,7 @@ export default function SignOutManually() {
   } else {
     console.log('no user to remove')
   }
-  function redirect() {
+  function redirect () {
     navigate('/signin')
   }
 

@@ -18,7 +18,7 @@ describe('Button component', () => {
   })
 
   test('calls the onClick handler when clicked', () => {
-    const handleClick = jest.fn()
+    const handleClick = test.fn()
     render(<Button text="Click Me" onClick={handleClick} />)
     const buttonElement = screen.getByText(/click me/i)
     fireEvent.click(buttonElement)

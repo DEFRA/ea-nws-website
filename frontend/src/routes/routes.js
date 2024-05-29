@@ -22,7 +22,7 @@ const siginRoutes = [
   { path: '/signin/validate', component: <CheckYourEmailPage /> }
 ]
 
-//register routes
+// register routes
 const registerRoutes = [
   { path: '/register', component: <InitialEmailRegistrationPage /> },
   {

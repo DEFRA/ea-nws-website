@@ -1,7 +1,7 @@
 const phoneValidation = (phoneNumber, type) => {
   switch (type) {
     case 'mobile': {
-      if (phoneNumber === '') {
+      if (!phoneNumber) {
         return 'Enter a UK mobile telephone number'
       }
       const ukMobileRegex = /^(\+44\s?7\d{3}|\(?07\d{3}\)?)\s?\d{3}\s?\d{3}$/
@@ -15,7 +15,7 @@ const phoneValidation = (phoneNumber, type) => {
       return ''
     }
     case 'mobileAndLandline': {
-      if (phoneNumber === '') {
+      if (!phoneNumber) {
         return 'Enter a UK landline or mobile telephone number'
       }
       const regex =

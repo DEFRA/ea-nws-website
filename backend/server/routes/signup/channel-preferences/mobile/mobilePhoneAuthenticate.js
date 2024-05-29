@@ -11,30 +11,48 @@ module.exports = [
     method: ['POST', 'PUT'],
     path: '/signup/contactpreferences/mobile/add',
     handler: async (request, h) => {
-      const { msisdn } = request.payload
-      // progressive enhancement validation
-      let response = phoneValidation(msisdn, 'mobile')
+      try {
+        const { msisdn } = request.payload
+        // progressive enhancement validation
+        const validationError = phoneValidation(msisdn, 'mobile')
 
-      // request.payload = { authToken, msisdn }
-      response = await apiCall(request.payload, 'member/verifyMobilePhoneStart')
-      return response
+        if (validationError === '') {
+          // request.payload = { authToken, msisdn }
+          const response = await apiCall(
+            request.payload,
+            'member/verifyMobilePhoneStart'
+          )
+          return h.response({ response })
+        } else {
+          return h.response({ status: 500, errorMessage: validationError })
+        }
+      } catch (error) {
+        return h.response({ errorMessage: 'Oops, something happened!' })
+      }
     }
   },
   {
     method: ['POST', 'PUT'],
     path: '/signup/contactpreferences/mobile/validate',
     handler: async (request, h) => {
-      const { msisdn, code } = request.payload
-      // progressive enhancement validation
-      let response = phoneValidation(msisdn, 'mobile')
-      response = authCodeValidation(code)
+      try {
+        const { code } = request.payload
+        // progressive enhancement validation
+        const validationError = authCodeValidation(code)
 
-      // request.payload = { authToken, msisdn, code }
-      response = await apiCall(
-        request.payload,
-        'member/verifyMobilePhoneValidate'
-      )
-      return response
+        if (validationError === '') {
+          // request.payload = { authToken, msisdn, code }
+          const response = await apiCall(
+            request.payload,
+            'member/verifyMobilePhoneValidate'
+          )
+          return h.response({ response })
+        } else {
+          return h.response({ status: 500, errorMessage: validationError })
+        }
+      } catch (error) {
+        return h.response({ errorMessage: 'Oops, something happened!' })
+      }
     }
   }
 ]

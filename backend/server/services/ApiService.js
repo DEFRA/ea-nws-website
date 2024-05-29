@@ -10,7 +10,6 @@ const apiCall = async (data, path) => {
       },
       withCredentials: true
     })
-    console.log('response data', response.data)
     if (response.status === 200) {
       return { status: response.status, data: response.data }
     }

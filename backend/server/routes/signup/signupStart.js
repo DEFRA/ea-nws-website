@@ -7,7 +7,7 @@ const apiSignupStartCall = async (email) => {
   console.log('Received from front-end: ', data)
 
   if (!emailValidation(email)) {
-    return { status: 500, data: { code: 101, desc: 'Invalid code' } }
+    return { status: 500, errorMessage: { code: 101, desc: 'Invalid code' } }
   }
 
   const responseData = await apiService.apiCall(data, 'member/registerStart')
@@ -32,7 +32,7 @@ module.exports = [
         return h.response(apiResponse)
       } catch (error) {
         console.error('Error:', error)
-        return h.response({ message: 'Internal server error' }).code(500)
+        return h.response({ message: ' error' }).code(500)
       }
     }
   }

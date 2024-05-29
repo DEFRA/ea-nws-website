@@ -5,8 +5,8 @@ const apiService = require('../../services/ApiService')
 const apiSignupValidateCall = async (registerToken, code) => {
   const data = { registerToken, code }
 
-  if (registerToken !== '' && !codeValidation(code, 6)) {
-    return { status: 500, data: { code: 101, desc: 'Invalid code' } }
+  if (!codeValidation(code, 6)) {
+    return { status: 500, errorMessage: { code: 101, desc: 'Invalid code' } }
   }
 
   // Parse the JSON response and get the status code
@@ -30,7 +30,7 @@ module.exports = [
         return h.response(apiResponse)
       } catch (error) {
         console.error('Error:', error)
-        return h.response({ message: 'Internal server error' }).code(500)
+        return h.response({ message: 'error' }).code(500)
       }
     }
   }

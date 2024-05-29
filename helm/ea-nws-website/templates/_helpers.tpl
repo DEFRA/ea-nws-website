@@ -1,7 +1,7 @@
 {{/*
 Expand the name of the chart.
 */}}
-{{- define "ea_nws_website.name" -}}
+{{- define "ea-nws-website.name" -}}
 {{- default .Chart.Name .Values.nameOverride | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
@@ -10,7 +10,7 @@ Create a default fully qualified app name.
 We truncate at 63 chars because some Kubernetes name fields are limited to this (by the DNS naming spec).
 If release name contains chart name it will be used as a full name.
 */}}
-{{- define "ea_nws_website.fullname" -}}
+{{- define "ea-nws-website.fullname" -}}
 {{- if .Values.fullnameOverride }}
 {{- .Values.fullnameOverride | trunc 63 | trimSuffix "-" }}
 {{- else }}
@@ -26,16 +26,16 @@ If release name contains chart name it will be used as a full name.
 {{/*
 Create chart name and version as used by the chart label.
 */}}
-{{- define "ea_nws_website.chart" -}}
+{{- define "ea-nws-website.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
 {{/*
 Common labels
 */}}
-{{- define "ea_nws_website.labels" -}}
-helm.sh/chart: {{ include "ea_nws_website.chart" . }}
-{{ include "ea_nws_website.selectorLabels" . }}
+{{- define "ea-nws-website.labels" -}}
+helm.sh/chart: {{ include "ea-nws-website.chart" . }}
+{{ include "ea-nws-website.selectorLabels" . }}
 {{- if .Chart.AppVersion }}
 app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 {{- end }}
@@ -45,17 +45,17 @@ app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{/*
 Selector labels
 */}}
-{{- define "ea_nws_website.selectorLabels" -}}
-app.kubernetes.io/name: {{ include "ea_nws_website.name" . }}
+{{- define "ea-nws-website.selectorLabels" -}}
+app.kubernetes.io/name: {{ include "ea-nws-website.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
 {{/*
 Create the name of the service account to use
 */}}
-{{- define "ea_nws_website.serviceAccountName" -}}
+{{- define "ea-nws-website.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
-{{- default (include "ea_nws_website.fullname" .) .Values.serviceAccount.name }}
+{{- default (include "ea-nws-website.fullname" .) .Values.serviceAccount.name }}
 {{- else }}
 {{- default "default" .Values.serviceAccount.name }}
 {{- end }}

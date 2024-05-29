@@ -10,3 +10,5 @@ frontend/build
 frontend/src/tests/__pycache__
 api/index.js
 api/node_modules
+
+

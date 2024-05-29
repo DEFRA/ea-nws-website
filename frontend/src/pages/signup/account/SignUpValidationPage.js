@@ -35,7 +35,7 @@ export default function SignUpValidationPage() {
         code: code
       }
 
-    const errorMessage = await backendCall(data, 'signupValidate', navigate)
+    const {errorMessage} = await backendCall(data, 'signupValidate', navigate)
 
     if (errorMessage !== null) {
       setError(errorMessage.desc)

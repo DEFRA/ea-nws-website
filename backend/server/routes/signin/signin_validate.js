@@ -4,8 +4,8 @@ const codeValidation = require('../../services/Validations/CodeValidation')
 const apiSignInValidateCall = async (signinToken, code) => {
   const data = { signinToken, code }
 
-  if (signinToken !== '' && !codeValidation(code, 6)) {
-    return { code: 101, desc: 'invalid code' }
+  if (!codeValidation(code, 6)) {
+    return { status: 500, data: { code: 101, desc: 'invalid code' } }
   }
 
   // Parse the JSON response and get the status code

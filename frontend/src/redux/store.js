@@ -7,8 +7,8 @@ const store = configureStore({
   }
 })
 
-//Adding this for selenium tests
-window.store = store;
-window.dispatch = store.dispatch;
+// Adding this for selenium tests
+window.store = store
+window.dispatch = store.dispatch
 
 export default store

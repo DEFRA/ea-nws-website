@@ -25,7 +25,7 @@ async function getHomephoneValidate(
   const { authToken } = req.payload as { authToken: string }
   const { msisdn } = req.payload as { msisdn: string }
   const { code } = req.payload as { code: string }
-
+  console.log('Received LandlineValidate request: ', req.payload)
   // 200 Success
   if (code === '123456') {
     const profile = {

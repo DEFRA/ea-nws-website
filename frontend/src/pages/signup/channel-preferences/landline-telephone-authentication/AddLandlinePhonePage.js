@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../../gov-uk-components/Button'
 import ErrorSummary from '../../../../gov-uk-components/ErrorSummary'
@@ -10,18 +11,20 @@ import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
 import backendCall from '../../../../services/BackendService'
 import phoneValidation from '../../../../services/Validations/PhoneValidation'
 
-export default function AddLandlinePhonePage () {
+export default function AddLandlinePhonePage() {
   const navigate = useNavigate()
   const [phoneNumber, setPhoneNumber] = useState('')
   const [error, setError] = useState('')
+  const authToken = useSelector((state) => state.session.authToken)
 
   const handleSubmit = async () => {
+    console.log('AuthToken: ', authToken)
     const validationError = phoneValidation(phoneNumber, 'mobileAndLandline')
     setError(validationError)
     if (validationError !== '') {
       return
     }
-    const data = { authToken: 'authToken', phone: phoneNumber }
+    const data = { authToken: authToken, phone: phoneNumber }
     await backendCall(data, 'signup/contactpreferences/landline/add')
     navigate('/signup/contactpreferences/landline/validate', {
       state: { phoneNumber }
@@ -31,32 +34,32 @@ export default function AddLandlinePhonePage () {
   return (
     <>
       <Header />
-      <div className='govuk-width-container'>
-        <div class='govuk-grid-row'>
-          <div class='govuk-grid-column-two-thirds'>
+      <div className="govuk-width-container">
+        <div class="govuk-grid-row">
+          <div class="govuk-grid-column-two-thirds">
             <PhaseBanner />
-            <Link to='/signup/contactpreferences' className='govuk-back-link'>
+            <Link to="/signup/contactpreferences" className="govuk-back-link">
               Back
             </Link>
             <ErrorSummary errorList={error === '' ? [] : [error]} />
-            <h1 class='govuk-heading-l govuk-!-margin-top-6'>
+            <h1 class="govuk-heading-l govuk-!-margin-top-6">
               Enter a telephone number to get flood messages by phone call
             </h1>
-            <p class='govuk-body'>
+            <p class="govuk-body">
               We recommend using a landline or mobile number that can be called
               24 hours a day
             </p>
             <Input
-              inputType='text'
+              inputType="text"
               value={phoneNumber}
-              name='UK landline or mobile telephone number'
+              name="UK landline or mobile telephone number"
               onChange={(val) => setPhoneNumber(val)}
-              className='govuk-input govuk-input--width-20'
+              className="govuk-input govuk-input--width-20"
               error={error}
             />
             <Button
-              text='Continue'
-              className='govuk-button'
+              text="Continue"
+              className="govuk-button"
               onClick={handleSubmit}
             />
           </div>

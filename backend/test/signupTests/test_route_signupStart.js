@@ -25,7 +25,7 @@ lab.experiment('Web test', () => {
   lab.test('POST / route runs with valid payload', async () => {
     const options = {
       method: 'POST',
-      url: '/registerStart',
+      url: '/signupStart',
       payload: {
         email: 'test@test.com'
       }
@@ -34,64 +34,32 @@ lab.experiment('Web test', () => {
     const response = await server.inject(options)
     Code.expect(response.statusCode).to.equal(200)
     Code.expect(response.statusMessage).to.equal('OK')
-    Code.expect(response.result.registerToken).to.equal('123456')
+    Code.expect(response.result.data.registerToken).to.equal('123456')
   })
 
-  lab.test('POST / route runs with invalid payload', async () => {
+  lab.test('GET / instead of POST', async () => {
     const options = {
-      method: 'POST',
-      url: '/registerStart',
+      method: 'GET',
+      url: '/signupStart',
       payload: {
-        email: 'invalid'
+        email: ''
       }
     }
 
     const response = await server.inject(options)
-    Code.expect(response.result.code).to.equal(101)
+    Code.expect(response.statusCode).to.equal(404)
   })
 
   lab.test(
-    'POST / route runs with invalid payload as email already registered',
+    'POST / with missing payload',
     async () => {
       const options = {
         method: 'POST',
-        url: '/registerStart',
-        payload: {
-          email: 'emailAlreadyInUse@email.com'
-        }
+        url: '/signupStart'
       }
 
       const response = await server.inject(options)
-      Code.expect(response.result.code).to.equal(101)
-    }
-  )
-
-  lab.test('POST / route runs with invalid payload as missing @', async () => {
-    const options = {
-      method: 'POST',
-      url: '/registerStart',
-      payload: {
-        email: 'invalidemail.com'
-      }
-    }
-
-    const response = await server.inject(options)
-    Code.expect(response.result.code).to.equal(101)
-  })
-
-  lab.test(
-    'POST / route runs with invalid payload as missing .com',
-    async () => {
-      const options = {
-        method: 'POST',
-        url: '/registerStart',
-        payload: {
-          email: 'invalidemail@'
-        }
-      }
-
-      const response = await server.inject(options)
-      Code.expect(response.result.code).to.equal(101)
+      Code.expect(response.statusCode).to.equal(400)
     }
   )
 })

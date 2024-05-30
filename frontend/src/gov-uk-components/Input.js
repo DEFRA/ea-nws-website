@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Input({
+export default function Input ({
   name,
   className,
   value,
@@ -21,16 +21,16 @@ export default function Input({
             : 'govuk-form-group govuk-form-group--error'
         }
       >
-        <label className="govuk-label" htmlFor="govuk-input">
+        <label className='govuk-label' htmlFor='govuk-input'>
           {name}
         </label>
-        {error && <p className="govuk-error-message">{error}</p>}
+        {error && <p className='govuk-error-message'>{error}</p>}
         <input
           className={
             error === '' ? className : className + ' govuk-input--error'
           }
           name={name}
-          id="govuk-input"
+          id='govuk-input'
           type={type}
           value={value}
           onChange={handleChange}

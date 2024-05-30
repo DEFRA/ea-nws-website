@@ -1,5 +1,5 @@
 import React from 'react'
-export default function TextInput({
+export default function TextInput ({
   name,
   className,
   value,
@@ -19,19 +19,19 @@ export default function TextInput({
             : 'govuk-form-group govuk-form-group--error'
         }
       >
-        <label className="govuk-label" htmlFor="govuk-text-input">
+        <label className='govuk-label' htmlFor='govuk-text-input'>
           {name}
         </label>
         {error !== '' && (
-          <p id="{id}-error" className="govuk-error-message">
-            <span className="govuk-visually-hidden">Error:</span> {error}
+          <p id='{id}-error' className='govuk-error-message'>
+            <span className='govuk-visually-hidden'>Error:</span> {error}
           </p>
         )}
         <input
           className={error === '' ? className : 'govuk-input--error'}
           name={name}
-          id="govuk-text-input"
-          type="text"
+          id='govuk-text-input'
+          type='text'
           value={value}
           onChange={handleChange}
         />

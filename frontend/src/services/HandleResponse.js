@@ -10,7 +10,6 @@ const handleResponse = (response, navigate) => {
       return
     case 500:
       navigate('/error')
-      return
   }
 }
 

@@ -5,8 +5,8 @@ import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
 import HomePage from '../pages/home/HomePage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import CheckYourEmailPage from '../pages/signIn/SignInValidatePage'
-import InitialEmailRegistrationPage from '../pages/signup/account/InitialEmailRegistrationPage'
-import ValidateEmailForRegistration from '../pages/signup/account/ValidateEmailForRegistration'
+import SignUpPage from '../pages/signup/account/SignUpPage'
+import SignUpValidationPage from '../pages/signup/account/SignUpValidationPage'
 import WarningContactsPreferencePage from '../pages/signup/channel-preferences/WarningContactsPreferencePage'
 import StartPage from '../pages/start/StartPage'
 
@@ -18,10 +18,10 @@ const startRoutes = [{ path: '/', component: <StartPage /> }]
 
 // sign up routes
 const signupRoutes = [
-  { path: '/signup', component: <InitialEmailRegistrationPage /> },
+  { path: '/signup', component: <SignUpPage /> },
   {
     path: '/signup/validate',
-    component: <ValidateEmailForRegistration />
+    component: <SignUpValidationPage />
   },
   {
     path: '/signup/contactpreferences',
@@ -52,6 +52,7 @@ const routes = [
   ...startRoutes,
   ...signupRoutes,
   ...siginRoutes,
+  ...signupRoutes,
   ...homeRoutes,
   ...contactRoutes
 ]

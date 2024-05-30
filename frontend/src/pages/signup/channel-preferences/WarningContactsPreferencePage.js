@@ -1,31 +1,40 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
+import Checkbox from '../../../gov-uk-components/CheckBox'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import NotificationBanner from '../../../gov-uk-components/NotificationBanner'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 
-export default function WarningContactsPreferencePage() {
+export default function WarningContactsPreferencePage () {
   const navigate = useNavigate()
   const location = useLocation()
+  const dispatch = useDispatch()
   const [contactPreferences, setContactPreferences] = useState([])
   const [error, setError] = useState('')
 
+  const contactOptions = [
+    { label: 'Text', value: 'Text' },
+    { label: 'Email', value: 'Email' },
+    { label: 'Phone call', value: 'PhoneCall' }
+  ]
+
   const handleSubmit = () => {
-    console.log('hello')
     if (contactPreferences.length === 0) {
       setError('Select at least one way to get messages about flooding')
+    } else {
+      dispatch(setContactPreferences(contactPreferences))
+      if (contactPreferences.includes('Text')) {
+        // navigate to text TODO - cameron add this once merged
+      } else if (contactPreferences.includes('Email')) {
+        // navigate to email TODO - cameron add this once merged
+      } else if (contactPreferences.includes('PhoneCall')) {
+        // navigate to phone call TODO - camille add this once merged
+      }
     }
-    // TODO @camillie and cammy - need to decide how we store the users contact preference so we can guide the user through the correct flow
-
-    // this will need updated to reflect what the user has selected
-    // i.e if use hasnt selected text, then they get taken to the email
-    // authentication flow instead - using ternery operator and state
-    // should work fine
-
-    // add a navigate here to the correct page
   }
 
   const handleContactPreferenceChange = (event) => {
@@ -42,25 +51,34 @@ export default function WarningContactsPreferencePage() {
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
+      <div className='govuk-width-container'>
         <PhaseBanner />
-        <div className="govuk-grid-row">
-          <div className="govuk-grid-column-two-thirds">
-            <Link to="/signup/validate" className="govuk-back-link">
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
+            <Link
+              onClick={() =>
+                navigate(-1, {
+                  state: {
+                    email: location.state.email
+                  }
+                })}
+              className='govuk-back-link'
+            >
               Back
             </Link>
-            {error ? (
-              <ErrorSummary errorList={[error]} />
-            ) : (
-              <NotificationBanner
-                className="govuk-notification-banner govuk-notification-banner--success"
-                title="success"
-                heading="Email address confirmed"
-                // get email from  location - pass from megans signup page
-                text="some email is confirmed"
-              />
-            )}
-            <h1 className="govuk-heading-l">
+            {error
+              ? (
+                <ErrorSummary errorList={[error]} />
+                )
+              : (
+                <NotificationBanner
+                  className='govuk-notification-banner govuk-notification-banner--success'
+                  title='success'
+                  heading='Email address confirmed'
+                  text={location.state.email + ' some email is confirmed'}
+                />
+                )}
+            <h1 className='govuk-heading-l'>
               How would you like to get messages about flooding?
             </h1>
             <div
@@ -70,54 +88,27 @@ export default function WarningContactsPreferencePage() {
                   : 'govuk-form-group'
               }
             >
-              <fieldset className="govuk-fieldset">
-                <legend className="govuk-fieldset__legend">
+              <fieldset className='govuk-fieldset'>
+                <legend className='govuk-fieldset__legend'>
                   Select at least one option
                 </legend>
-                {error && <p className="govuk-error-message">{error}</p>}
-                <div className="govuk-radios" data-module="govuk-radios">
-                  <div className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      type="checkbox"
-                      value="Text"
-                      checked={contactPreferences.includes('Text')}
+                {error && <p className='govuk-error-message'>{error}</p>}
+                <div className='govuk-radios' data-module='govuk-radios'>
+                  {contactOptions.map((preference) => (
+                    <Checkbox
+                      key={preference.value}
+                      label={preference.label}
+                      value={preference.value}
+                      checked={contactPreferences.includes(preference.value)}
                       onChange={handleContactPreferenceChange}
                     />
-                    <label className="govuk-label govuk-radios__label">
-                      Text
-                    </label>
-                  </div>
-                  <div className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      type="checkbox"
-                      value="Email"
-                      checked={contactPreferences.includes('Email')}
-                      onChange={handleContactPreferenceChange}
-                    />
-                    <label className="govuk-label govuk-radios__label">
-                      Email
-                    </label>
-                  </div>
-                  <div className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      type="checkbox"
-                      value="PhoneCall"
-                      checked={contactPreferences.includes('PhoneCall')}
-                      onChange={handleContactPreferenceChange}
-                    />
-                    <label className="govuk-label govuk-radios__label">
-                      Phone call
-                    </label>
-                  </div>
+                  ))}
                 </div>
               </fieldset>
             </div>
             <Button
-              text="Continue"
-              className="govuk-button"
+              text='Continue'
+              className='govuk-button'
               onClick={handleSubmit}
             />
           </div>

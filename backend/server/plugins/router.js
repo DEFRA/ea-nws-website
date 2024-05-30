@@ -3,8 +3,8 @@ const routes = [].concat(
   require('../routes/start'),
   require('../routes/signIn/signInStart'),
   require('../routes/signIn/signInValidate'),
-  require('../routes/register/registerStart'),
-  require('../routes/register/registerValidate'),
+  require('../routes/signup/signupStart'),
+  require('../routes/signup/signupValidate'),
   require('../routes/update_profile/update_profile')
 )
 

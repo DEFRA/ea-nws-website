@@ -4,9 +4,9 @@ import Button from '../../gov-uk-components/Button'
 import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
-import TextInput from '../../gov-uk-components/TextInput'
-import backendCall from '../../services/BackendService'
-import emailValidation from '../../services/Validations/EmailValidation'
+import Input from '../../gov-uk-components/Input'
+import { backendCall } from '../../services/BackendService'
+import emailValidation from '../../services/validations/EmailValidation'
 
 export default function SignInStartPage () {
   const navigate = useNavigate()
@@ -15,7 +15,6 @@ export default function SignInStartPage () {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const signinToken = null
     if (email === '') {
       setError('Enter your email address')
       return
@@ -26,7 +25,7 @@ export default function SignInStartPage () {
       return
     }
 
-    const { emailExists, signinToken: token } = await checkEmail(email)
+    const { emailExists, signinToken } = await checkEmail(email)
     if (!emailExists) {
       setError('Email address is not recognised - check and try again')
       return
@@ -48,6 +47,7 @@ export default function SignInStartPage () {
     if (code === 106) {
       return { emailExists: false, signinToken: null }
     }
+
     const signinToken = responseData.signinToken
     return { emailExists: true, signinToken }
   }
@@ -68,14 +68,14 @@ export default function SignInStartPage () {
             <li>change how you get flood messages</li>
             <li>delete your account</li>
           </ul>
-          <TextInput name='Email address' error={error} onChange={setEmail} />
+          <Input name='Email address' error={error} onChange={setEmail} />
           <Button
             className='govuk-button'
             text='Continue'
             onClick={handleSubmit}
           />
           <br />
-          <Link to='/' className='govuk-link'>
+          <Link to='/signup' className='govuk-link'>
             Sign up if you do not have an account
           </Link>
         </div>

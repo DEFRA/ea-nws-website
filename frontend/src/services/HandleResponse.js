@@ -1,16 +1,18 @@
 const handleResponse = (response, navigate) => {
-  switch (response.statusCode) {
+  console.log('status', response.status)
+  switch (response.status) {
     case 200:
-      return response
+      return { responseData: response.data, errorMessage: null }
     case 400:
-      navigate('/')
-      return
+      return {
+        responseData: null,
+        errorMessage: 'Bad request, please try again'
+      }
     case 404:
-      navigate('/notfound')
-      return
+      return navigate('/not-found')
     case 500:
-      navigate('/error')
+      return { responseData: null, errorMessage: response.errorMessage }
   }
 }
 
-export { handleResponse }
+module.exports = { handleResponse }

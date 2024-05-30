@@ -20,7 +20,7 @@ export default function IndexPage () {
       const authToken = 'MockAuthToken'
       const registration = { partner: '4', name: 'NWS England' }
       const profile = {
-        id: '1',
+        id: '',
         enabled: true,
         firstName: 'John',
         lastName: 'Smith',
@@ -84,7 +84,7 @@ export default function IndexPage () {
                   </Link>
                 </li>
                 <li>
-                  <Link to='/register' className='govuk-link'>
+                  <Link to='/signup' className='govuk-link'>
                     Register page
                   </Link>
                 </li>

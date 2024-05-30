@@ -5,15 +5,15 @@ import Button from '../../gov-uk-components/Button'
 import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
+import Input from '../../gov-uk-components/Input'
 import InsetText from '../../gov-uk-components/InsetText'
-import TextInput from '../../gov-uk-components/TextInput'
 import {
   setAuthToken,
   setProfile,
   setRegistration
 } from '../../redux/userSlice'
-import backendCall from '../../services/BackendService'
-import codeValidation from '../../services/Validations/CodeValidation'
+import { backendCall } from '../../services/BackendService'
+import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
 export default function SignInValidatePage () {
   const location = useLocation()
@@ -28,7 +28,7 @@ export default function SignInValidatePage () {
     if (code === '') {
       setError('Enter code')
       return
-    } else if (!codeValidation(code, 6)) {
+    } else if (!authCodeValidation(code)) {
       setError('Code must be 6 numbers')
       return
     }
@@ -73,7 +73,7 @@ export default function SignInValidatePage () {
         <div class='govuk-body'>
           We've sent a code to:
           <InsetText text={location.state.email} />
-          <TextInput name='Enter code' error={error} onChange={setCode} />
+          <Input name='Enter code' error={error} onChange={setCode} />
           <Button
             className='govuk-button'
             text='Continue'

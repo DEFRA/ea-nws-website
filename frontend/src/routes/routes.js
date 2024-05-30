@@ -63,5 +63,6 @@ export const unAuthRoutes = [
   ...startRoutes,
   ...siginRoutes,
   ...registerRoutes,
-  ...signBackRoute
+  ...signBackRoute,
+  ...indexRoutes
 ]

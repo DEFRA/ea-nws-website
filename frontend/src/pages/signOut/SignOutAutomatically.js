@@ -3,12 +3,13 @@ import { useNavigate } from 'react-router'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import { clearAuth } from '../../redux/userSlice'
-export default function SignOutAutomatically () {
+import SignOutLayout from './SignOutPageLayout'
+export default function SignOutAutomatically() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const session = useSelector((state) => state.session)
 
-  function loggedOut () {
+  function loggedOut() {
     if (session.authToken !== null) {
       dispatch(clearAuth)
       return true
@@ -23,14 +24,14 @@ export default function SignOutAutomatically () {
     console.log('no user to remove')
   }
 
-  function redirect () {
+  function redirect() {
     navigate('/signin')
   }
 
   return (
     <>
       <Header />
-      <signOutLayout
+      <SignOutLayout
         text={"You've been signed out for security reasons"}
         redirect={redirect}
       />

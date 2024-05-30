@@ -13,7 +13,7 @@ import {
   setRegistration
 } from '../../redux/userSlice'
 import {backendCall} from '../../services/BackendService'
-import codeValidation from '../../services/Validations/CodeValidation'
+import {authCodeValidation} from '../../services/Validations/AuthCodeValidation'
 
 export default function SignInValidatePage() {
   const location = useLocation()
@@ -28,7 +28,7 @@ export default function SignInValidatePage() {
     if (code === '') {
       setError('Enter code')
       return
-    } else if (!codeValidation(code, 6)) {
+    } else if (!authCodeValidation(code)) {
       setError('Code must be 6 numbers')
       return
     }

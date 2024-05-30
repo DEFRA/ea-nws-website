@@ -14,7 +14,6 @@ import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 export default function SignUpPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
-  const location = useLocation()
   const [error, setError] = useState('')
 
   const handleSubmit = async () => {
@@ -52,7 +51,7 @@ export default function SignUpPage() {
         <div className="govuk-body">
           <p>You'll be able to use your account to update your locations, flood messages or contact details. </p>
           <InsetText text='We recommend using an email address you can access 24 hours a day.' />
-          <TextInput className="govuk-input govuk-input--width-10" name="Email address" error={error} onChange={(val) => setEmail(val)} />
+          <TextInput className="govuk-input govuk-input--width-10" inputType="text" name="Email address" error={error} onChange={(val) => setEmail(val)} />
           <Button
             className="govuk-button"
             text="Continue"

@@ -1,4 +1,4 @@
-const codeValidation = (code, length) => {
+const authCodeValidation = (code) => {
   if (!code) {
     return 'Enter code'
   }
@@ -10,4 +10,4 @@ const codeValidation = (code, length) => {
   return ''
 }
 
-module.exports = codeValidation
+module.exports = { authCodeValidation }

@@ -1,5 +1,4 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
@@ -11,23 +10,21 @@ import {
   setAuthToken,
 } from '../../../redux/userSlice'
 import {backendCall} from '../../../services/BackendService'
-import codeValidation from '../../../services/Validations/CodeValidation'
-import { useSelector } from 'react-redux'
+import {authCodeValidation} from '../../../services/Validations/AuthCodeValidation'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 
 export default function SignUpValidationPage() {
 
   const location = useLocation()
-  const dispatch = useDispatch()
   const navigate = useNavigate()
   const registerToken = location.state.registerToken
  
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async () => {
     
-    const validationError = codeValidation(code, 6)
+    const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
       const data = {

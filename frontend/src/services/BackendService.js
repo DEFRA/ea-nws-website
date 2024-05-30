@@ -20,6 +20,6 @@ export const backendCall = async (data, path, navigate) => {
     // get an error response from requesting to our backend
     // navigate(/error-page)
   }
-  // backend api call successful - handle response/error from geosafe
+
   return handleResponse(responseData, navigate)
 }

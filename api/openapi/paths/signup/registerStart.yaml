@@ -49,15 +49,3 @@ post:
               value:
                 registerToken: >-
                   gAAAAABkN_5Bzw2vd3k7o2EyKp24DinpBiYBgCZ9A_lEbDEEGwhf-2Jr0c-gDeI5R6Lyvx70X8Sbucr3bzYWHwd851E-mJZ9yo_yutG_5s1i9ZH9hc45PTT98OQxr1qdbaxw2XPAcv1KBlsGpGpLX2SDG6Fy8rCVOnr_581_uvzY8xIkCJDTq8Sd2YNxB80ecv1NfmyR8tnV6CQFPG7_g93T5vc3GusUNDTteMdGfa061chK1smEy_JiIh_0CZLDV16Vvzj_70MbHhRg_RauDMAuamU0IFOUEg==
-    '500':
-      description: email address used
-      content:
-        application/json:
-          schema:
-            type: object
-          examples:
-            example-0:
-              summary: Failed start of authentication, bad format (104)
-              value:
-                code: 104
-                desc: bad phone number format

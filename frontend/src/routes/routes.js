@@ -5,8 +5,8 @@ import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
 import HomePage from '../pages/home/HomePage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import CheckYourEmailPage from '../pages/signIn/SignInValidatePage'
-import InitialEmailRegistrationPage from '../pages/signup/account/InitialEmailRegistrationPage'
-import ValidateEmailForRegistration from '../pages/signup/account/ValidateEmailForRegistration'
+import SignUpPage from '../pages/signup/account/SignUpPage'
+import SignUpValidationPage from '../pages/signup/account/SignUpValidationPage'
 import WarningContactsPreferencePage from '../pages/signup/channel-preferences/WarningContactsPreferencePage'
 import AddLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/AddLandlinePhonePage'
 import SkipConfirmLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/SkipConfirmLandlinePhonePage'
@@ -25,12 +25,12 @@ const siginRoutes = [
   { path: '/signin/validate', component: <CheckYourEmailPage /> }
 ]
 
-//register routes
-const registerRoutes = [
-  { path: '/register', component: <InitialEmailRegistrationPage /> },
+// signup routes
+const signupRoutes = [
+  { path: '/signup', component: <SignUpPage /> },
   {
-    path: '/register/validate',
-    component: <ValidateEmailForRegistration />
+    path: '/signup/validate',
+    component: <SignUpValidationPage />
   },
   {
     path: '/signup/contactpreferences',
@@ -66,7 +66,7 @@ const routes = [
   ...indexRoutes,
   ...startRoutes,
   ...siginRoutes,
-  ...registerRoutes,
+  ...signupRoutes,
   ...homeRoutes,
   ...contactRoutes
 ]

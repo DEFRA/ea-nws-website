@@ -28,7 +28,7 @@ export default function ValidateLandlinePhonePage() {
       phoneNumber: location.state.phoneNumber,
       code
     }
-    const { errorMessage, data } = await backendCall(
+    const { errorMessage } = await backendCall(
       dataToSend,
       'signup/contactpreferences/landline/validate'
     )

@@ -1,20 +1,21 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import Footer from '../../../gov-uk-components/Footer'
-import Header from '../../../gov-uk-components/Header'
-import InsetText from '../../../gov-uk-components/InsetText'
-import Input from '../../../gov-uk-components/Input'
 import Button from '../../../gov-uk-components/Button'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
-import { backendCall } from '../../../services/BackendService'
-import { authCodeValidation } from '../../../services/Validations/AuthCodeValidation'
+import Footer from '../../../gov-uk-components/Footer'
+import Header from '../../../gov-uk-components/Header'
+import Input from '../../../gov-uk-components/Input'
+import InsetText from '../../../gov-uk-components/InsetText'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
+import { setProfile } from '../../../redux/userSlice'
+import { backendCall } from '../../../services/BackendService'
+import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
 
 export default function SignUpValidationPage () {
   const location = useLocation()
   const navigate = useNavigate()
-  const registerToken = location.state.registerToken
-
+  const dispatch = useDispatch()
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
 
@@ -23,17 +24,53 @@ export default function SignUpValidationPage () {
     setError(validationError)
     if (validationError === '') {
       const data = {
-        registerToken,
+        registerToken: location.state.registerToken,
         code
       }
 
-      const { errorMessage } = await backendCall(data, 'signupValidate', navigate)
+      const { errorMessage } = await backendCall(
+        data,
+        'signupValidate',
+        navigate
+      )
 
       if (errorMessage !== null) {
         setError(errorMessage.desc)
       } else {
-        navigate('/signup/contactpreferences')
+        // start empty profile for user
+        const profile = {
+          id: '',
+          enabled: true,
+          firstName: '',
+          lastName: '',
+          emails: [location.state.email],
+          mobilePhones: [],
+          homePhones: [],
+          language: 'EN', // [TODO] is this always english?
+          additionals: [],
+          unverified: {
+            emails: [],
+            mobilePhones: [],
+            homePhones: []
+          },
+          pois: []
+        }
+        dispatch(setProfile(profile))
+        navigate('/signup/contactpreferences', {
+          state: {
+            email: location.state.email
+          }
+        })
       }
+    }
+  }
+
+  const getNewCode = async (event) => {
+    event.preventDefault()
+    const data = { email: location.state.email }
+    const { errorMessage } = await backendCall(data, 'signupStart', navigate)
+    if (errorMessage !== null) {
+      setError(errorMessage.desc)
     }
   }
 
@@ -56,19 +93,25 @@ export default function SignUpValidationPage () {
           Enter the code within 4 hours or it will expire.
           <br />
           <br />
-          <Input className='govuk-input govuk-input--width-10' inputType='text' value={code} name='Enter code' error={error} onChange={(val) => setCode(val)} />
+          <Input
+            className='govuk-input govuk-input--width-10'
+            inputType='text'
+            value={code}
+            name='Enter code'
+            error={error}
+            onChange={(val) => setCode(val)}
+          />
           <Button
             className='govuk-button'
             text='Confirm email address'
             onClick={handleSubmit}
           />
-          &nbsp;
-          &nbsp;
+          &nbsp; &nbsp;
           <Link to='/signup' className='govuk-link'>
             Use a different email
           </Link>
           <br />
-          <Link to='/signup' className='govuk-link'>
+          <Link onClick={getNewCode} className='govuk-link'>
             Get a new code
           </Link>
         </div>

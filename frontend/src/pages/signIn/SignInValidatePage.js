@@ -5,15 +5,15 @@ import Button from '../../gov-uk-components/Button'
 import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
-import InsetText from '../../gov-uk-components/InsetText'
 import Input from '../../gov-uk-components/Input'
+import InsetText from '../../gov-uk-components/InsetText'
 import {
   setAuthToken,
   setProfile,
   setRegistration
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
-import { authCodeValidation } from '../../services/Validations/AuthCodeValidation'
+import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
 export default function SignInValidatePage () {
   const location = useLocation()

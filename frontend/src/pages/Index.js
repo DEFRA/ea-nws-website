@@ -20,7 +20,7 @@ export default function IndexPage () {
       const authToken = 'MockAuthToken'
       const registration = { partner: '4', name: 'NWS England' }
       const profile = {
-        id: '1',
+        id: '',
         enabled: true,
         firstName: 'John',
         lastName: 'Smith',

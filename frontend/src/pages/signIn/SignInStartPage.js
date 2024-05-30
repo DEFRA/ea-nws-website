@@ -6,7 +6,7 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import Input from '../../gov-uk-components/Input'
 import { backendCall } from '../../services/BackendService'
-import emailValidation from '../../services/Validations/EmailValidation'
+import emailValidation from '../../services/validations/EmailValidation'
 
 export default function SignInStartPage () {
   const navigate = useNavigate()
@@ -75,7 +75,7 @@ export default function SignInStartPage () {
             onClick={handleSubmit}
           />
           <br />
-          <Link to='/' className='govuk-link'>
+          <Link to='/signup' className='govuk-link'>
             Sign up if you do not have an account
           </Link>
         </div>

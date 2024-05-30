@@ -62,7 +62,7 @@
     ]
   },
   "standard": {
-    "ignore":[
+    "ignore": [
       "test/**/*.js"
     ]
   }

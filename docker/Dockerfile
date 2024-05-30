@@ -116,4 +116,5 @@ RUN chown -R node /usr/src/app/api/node_modules
 
 USER node
 # Run the application.
-CMD npm start --prefix frontend; node backend/index.js; npx -w api ts-node index.ts
+COPY docker/start.sh start.sh
+CMD ./start.sh

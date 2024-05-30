@@ -41,7 +41,19 @@ securityContext: {}
 
 service:
   type: ClusterIP
-  port: 3000
+  ports:
+    - name: frontend
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+    - name: backend
+      port: 5000
+      protocol: TCP
+      targetPort: 5000
+    - name: api
+      port: 9000
+      protocol: TCP
+      targetPort: 9000
 
 ingress:
   enabled: false

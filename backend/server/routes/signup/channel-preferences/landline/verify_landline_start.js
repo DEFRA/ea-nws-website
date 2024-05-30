@@ -1,21 +1,24 @@
-const apiService = require('../../../../services/ApiService')
-const numberValidation = require('../../../../services/Validations/PhoneValidation')
+const { apiCall } = require('../../../../services/ApiService')
+const {
+  numberValidation
+} = require('../../../../services/validations/PhoneValidation')
 
 const apiLandlineStartCall = async (phone, auth) => {
   const data = { phone: phone, authToken: auth }
-  console.log('Received from front-end: ', data)
-  if (!numberValidation(phone, 'mobileAndLandline')) {
-    return { status: 500, data: { code: 104, desc: 'Invalid phone' } }
+  const validationError = numberValidation(phone, 'mobileAndLandline')
+  try {
+    if (validationError === '') {
+      const responseData = await apiCall(data, 'member/verifyHomePhoneStart')
+      return response
+    } else {
+      return { status: 500, errorMessage: validationError }
+    }
+  } catch (error) {
+    return {
+      status: 500,
+      errorMessage: 'Oops, something happened!'
+    }
   }
-
-  const responseData = await apiService.apiCall(
-    data,
-    'member/verifyHomePhoneStart'
-  )
-  console.log('Received from API: ', responseData)
-  if (responseData === undefined) return
-
-  return responseData
 }
 
 module.exports = [

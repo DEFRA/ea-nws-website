@@ -1,5 +1,7 @@
-const apiCall = require('../../services/ApiService')
-const emailValidation = require('../../services/Validations/EmailValidation')
+const { apiCall } = require('../../services/ApiService')
+const {
+  emailValidation
+} = require('../../services/validations/EmailValidation')
 
 const apiRegisterCall = async (email) => {
   let isValid = 400

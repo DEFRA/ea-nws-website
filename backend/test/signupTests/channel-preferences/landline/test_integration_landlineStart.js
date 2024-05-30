@@ -21,7 +21,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.data.code).to.equal(104)
+    Code.expect(response.result).to.equal(104)
   })
 
   lab.test('POST / route runs with empty phone number', async () => {

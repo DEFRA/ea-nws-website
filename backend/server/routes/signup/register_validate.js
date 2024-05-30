@@ -1,12 +1,14 @@
-const apiCall = require('../../services/ApiService')
-const codeValidation = require('../../services/Validations/CodeValidation')
+const { apiCall } = require('../../services/ApiService')
+const {
+  authCodeValidation
+} = require('../../services/validations/AuthCodeValidation')
 
 const apiRegisterValidateCall = async (registerToken, code) => {
   let isValid = 400
   let desc
   let authToken
   const raw = JSON.stringify({ registerToken: registerToken, code: code })
-  if (registerToken !== '' && !codeValidation(code, 6)) {
+  if (registerToken !== '' && !authCodeValidation(code, 6)) {
     return { code: 101, desc: 'invalid code' }
   }
 

@@ -1,19 +1,28 @@
-const apiService = require('../../services/ApiService')
-const emailValidation = require('../../services/Validations/EmailValidation')
+const { apiCall } = require('../../services/ApiService')
+const {
+  emailValidation
+} = require('../../services/validations/EmailValidation')
 
 const apiSignInStartCall = async (email) => {
   const data = { email }
   console.log('Received from front-end: ', data)
-
-  if (!emailValidation(email)) {
-    return { status: 500, data: { code: 106, desc: 'Invalid email' } }
+  const errorValidation = emailValidation(email)
+  try {
+    if (errorValidation === '') {
+      const response = await apiCall(data, 'member/signinStart')
+      return response
+    } else {
+      return {
+        status: 500,
+        errorMessage: errorValidation
+      }
+    }
+  } catch (error) {
+    return {
+      status: 500,
+      errorMessage: 'Oops, something happened!'
+    }
   }
-
-  const responseData = await apiService.apiCall(data, 'member/signinStart')
-  console.log('Received from API: ', responseData)
-  if (responseData === undefined) return
-
-  return responseData
 }
 
 module.exports = [
@@ -26,11 +35,13 @@ module.exports = [
           return h.response({ message: 'Bad request' }).code(400)
         }
         const { email } = request.payload
-        const apiResponse = await apiSignInStartCall(email)
+        const apiResponse = await apiSignInStartCall(email, h)
         return h.response(apiResponse)
       } catch (error) {
-        console.error('Error:', error)
-        return h.response({ message: 'Internal server error' }).code(500)
+        return h.response({
+          status: 500,
+          errorMessage: 'Internal server error'
+        })
       }
     }
   }

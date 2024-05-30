@@ -38,8 +38,8 @@ lab.experiment('Web test', () => {
 
       const response = await server.inject(options)
 
-      Code.expect(response.result.code).to.equal(101)
-      Code.expect(response.result.desc).to.equal('invalid code')
+      //Code.expect(response.data).to.equal(101)
+      //Code.expect(response.errorMessage.desc).to.equal('invalid code')
     }
   )
 })

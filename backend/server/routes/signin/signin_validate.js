@@ -1,17 +1,25 @@
-const apiService = require('../../services/ApiService')
-const codeValidation = require('../../services/Validations/CodeValidation')
+const { apiCall } = require('../../services/ApiService')
+const {
+  authCodeValidation
+} = require('../../services/validations/AuthCodeValidation')
 
 const apiSignInValidateCall = async (signinToken, code) => {
   const data = { signinToken, code }
+  const errorValidation = authCodeValidation(code)
 
-  if (!codeValidation(code, 6)) {
-    return { status: 500, data: { code: 101, desc: 'invalid code' } }
+  try {
+    if (errorValidation === '') {
+      const response = await apiCall(data, 'member/signinValidate')
+      return response
+    } else {
+      return { status: 500, errorMessage: errorValidation }
+    }
+  } catch (error) {
+    return {
+      status: 500,
+      errorMessage: 'Oops, something happened!'
+    }
   }
-
-  // Parse the JSON response and get the status code
-  const responseData = await apiService.apiCall(data, 'member/signinValidate')
-  if (responseData === undefined) return
-  return responseData
 }
 
 module.exports = [
@@ -25,11 +33,12 @@ module.exports = [
         }
         const { signinToken, code } = request.payload
         const apiResponse = await apiSignInValidateCall(signinToken, code)
-
         return h.response(apiResponse)
       } catch (error) {
-        console.error('Error:', error)
-        return h.response({ message: 'Internal server error' }).code(500)
+        return h.response({
+          status: 500,
+          errorMessage: 'Oops, something happened!'
+        })
       }
     }
   }

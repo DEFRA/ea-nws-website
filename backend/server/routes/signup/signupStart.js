@@ -1,4 +1,3 @@
-const apiCall = require('../../services/ApiService')
 const emailValidation = require('../../services/Validations/EmailValidation')
 const apiService = require('../../services/ApiService')
 

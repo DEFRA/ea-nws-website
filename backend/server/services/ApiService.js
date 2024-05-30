@@ -1,7 +1,6 @@
 const axios = require('axios')
 
 const apiCall = async (data, path) => {
-  let responseData
   const url = 'http://localhost:9000/' + path
   try {
     const response = await axios.post(url, JSON.stringify(data), {
@@ -16,7 +15,7 @@ const apiCall = async (data, path) => {
     }
   } catch (error) {
     if (error.response) {
-      const { status, data } = error.response
+      const { status } = error.response
       if (status === 400) {
         console.log('Bad Request:', 400)
         return { status: status }

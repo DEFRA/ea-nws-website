@@ -1,14 +1,14 @@
 import '@testing-library/jest-dom/extend-expect'
 import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
-import TextInput from '../../src/gov-uk-components/TextInput'
+import Input from '../../src/gov-uk-components/Input'
 
 describe('TextInput component', () => {
   const mockOnChange = jest.fn()
 
   test('renders the input with the correct name and className', () => {
     render(
-      <TextInput
+      <Input
         name="Test Name"
         className="test-class"
         value=""
@@ -23,7 +23,7 @@ describe('TextInput component', () => {
 
   test('calls onChange when the input value changes', () => {
     render(
-      <TextInput
+      <Input
         name="Test Name"
         className="test-class"
         value=""
@@ -39,7 +39,7 @@ describe('TextInput component', () => {
 
   test('displays the correct initial value', () => {
     render(
-      <TextInput
+      <Input
         name="Test Name"
         className="test-class"
         value="Initial Value"
@@ -56,7 +56,7 @@ describe('TextInput component', () => {
     const errorMessage = 'This is an error message'
 
     render(
-      <TextInput
+      <Input
         name="Test Name"
         className="test-class"
         value=""

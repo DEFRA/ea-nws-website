@@ -21,7 +21,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    console.log("result code here", response.result)
+    console.log('result code here', response.result)
     Code.expect(response.result.errorMessage.code).to.equal(101)
   })
 
@@ -50,9 +50,8 @@ lab.experiment('Integration tests', () => {
         }
       }
       const response = await server.inject(options)
-      console.log("repsonsetogether", response)
+      console.log('repsonsetogether', response)
       Code.expect(response.result.data.authToken).to.equal('MockGUIDAuthToken')
-   
     }
   )
 })

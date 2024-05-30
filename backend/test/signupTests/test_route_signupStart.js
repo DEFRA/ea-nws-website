@@ -55,7 +55,7 @@ lab.experiment('Web test', () => {
     async () => {
       const options = {
         method: 'POST',
-        url: '/signupStart',
+        url: '/signupStart'
       }
 
       const response = await server.inject(options)

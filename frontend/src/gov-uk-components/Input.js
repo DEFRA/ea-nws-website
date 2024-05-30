@@ -1,9 +1,11 @@
 import React from 'react'
-export default function TextInput({
+
+export default function Input ({
   name,
   className,
   value,
   onChange,
+  type,
   error = ''
 }) {
   const handleChange = (event) => {
@@ -19,19 +21,17 @@ export default function TextInput({
             : 'govuk-form-group govuk-form-group--error'
         }
       >
-        <label className="govuk-label" htmlFor="govuk-text-input">
+        <label className='govuk-label' htmlFor='govuk-input'>
           {name}
         </label>
-        {error !== '' && (
-          <p id="{id}-error" className="govuk-error-message">
-            <span className="govuk-visually-hidden">Error:</span> {error}
-          </p>
-        )}
+        {error && <p className='govuk-error-message'>{error}</p>}
         <input
-          className={error === '' ? className : 'govuk-input--error'}
+          className={
+            error === '' ? className : className + ' govuk-input--error'
+          }
           name={name}
-          id="govuk-text-input"
-          type="text"
+          id='govuk-input'
+          type={type}
           value={value}
           onChange={handleChange}
         />

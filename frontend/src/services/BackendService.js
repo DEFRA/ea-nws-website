@@ -17,7 +17,6 @@ export const backendCall = async (data, path, navigate) => {
   } catch (error) {
     console.log('ERROR: ', error)
   }
-  
+
   return handleResponse(responseData, navigate)
 }
-

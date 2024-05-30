@@ -21,7 +21,7 @@ const siginRoutes = [
   { path: '/signin/validate', component: <CheckYourEmailPage /> }
 ]
 
-//signup routes
+// signup routes
 const signupRoutes = [
   { path: '/signup', component: <SignUpPage /> },
   {

@@ -31,7 +31,7 @@ lab.experiment('Web test', () => {
     async () => {
       const options = {
         method: 'GET',
-        url: '/signupValidate',
+        url: '/signupValidate'
       }
 
       const response = await server.inject(options)
@@ -44,7 +44,7 @@ lab.experiment('Web test', () => {
     async () => {
       const options = {
         method: 'POST',
-        url: '/signupValidate',
+        url: '/signupValidate'
       }
 
       const response = await server.inject(options)

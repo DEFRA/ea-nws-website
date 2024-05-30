@@ -33,7 +33,7 @@ export default function ContactDetailsTable({
                     </Link>
                   </td>
                 ) : (
-                  //empty space in table without this
+                  // empty space in table without this
                   <td className="govuk-table__cell" />
                 )}
               </tr>

@@ -42,7 +42,7 @@ const homeRoutes = [{ path: '/home', component: <HomePage /> }]
 const contactRoutes = [
   { path: '/managecontacts', component: <ContactDetailsPage /> },
   {
-    path: '/managecontacts/confirm',
+    path: '/managecontacts/confirm-delete',
     component: <ConfirmDeleteContactDetailsPage />
   }
 ]

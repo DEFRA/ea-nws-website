@@ -1,22 +1,26 @@
+import axios from 'axios'
 import { handleResponse } from './HandleResponse'
 
 export const backendCall = async (data, path, navigate) => {
-  let responseData = {}
   const url = 'http://localhost:5000/' + path
   try {
-    const response = await fetch(url, {
-      method: 'POST',
-      mode: 'cors',
-      credentials: 'same-origin',
+    const response = await axios.post(url, data, {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(data)
+      withCredentials: false
     })
-    responseData = await response.json()
+    return handleResponse(
+      { data: response.data, status: response.status },
+      navigate
+    )
   } catch (error) {
-    console.log('ERROR: ', error)
+    return handleResponse(
+      {
+        responseData: null,
+        status: error.response ? error.response.status : 500
+      },
+      navigate
+    )
   }
-
-  return handleResponse(responseData, navigate)
 }

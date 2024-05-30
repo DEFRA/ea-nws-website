@@ -1,17 +1,25 @@
 const handleResponse = (response, navigate) => {
-  console.log('status', response.status)
   switch (response.status) {
     case 200:
-      return { responseData: response.data, errorMessage: null }
+      return {
+        successful: true,
+        responseData: response.data,
+        errorMessage: null
+      }
     case 400:
       return {
+        successful: false,
         responseData: null,
-        errorMessage: 'Bad request, please try again'
+        errorMessage: 'Oops something happened, please try again'
       }
     case 404:
       return navigate('/not-found')
     case 500:
-      return { responseData: null, errorMessage: response.errorMessage }
+      return {
+        successful: false,
+        responseData: null,
+        errorMessage: response.errorMessage
+      }
   }
 }
 

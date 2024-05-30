@@ -11,5 +11,5 @@ paths:
     $ref: './paths/register/registerStart.yaml'
   /member/registerValidate:
     $ref: './paths/register/registerValidate.yaml'
-  /member/updateprofile:
+  /member/updateProfile:
     $ref: './paths/update_profile/updateProfile.yaml'

@@ -8,16 +8,11 @@ import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
-import { handleResponse } from '../../services/HandleResponse'
 
-export default function ConfirmDeleteContactDetailsPage () {
+export default function ConfirmDeleteContactDetailsPage() {
   const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
-  // [TODO] we need to perform a check if this is null
-  // most likely would be null if the user has logged out etc
-  // but we should take the user to an error page or something similar
   const session = useSelector((state) => state.session)
 
   const removeContact = async () => {
@@ -25,14 +20,16 @@ export default function ConfirmDeleteContactDetailsPage () {
       session.profile,
       location.state.contact
     )
-    const data = JSON.stringify({
+    console.log(session.authToken)
+    const data = {
       authToken: session.authToken,
       profile: updatedProfile
-    })
-    const response = await backendCall(data, 'profile/update')
-    const responseData = handleResponse(response, navigate)
+    }
 
-    if (responseData) {
+    const { successful } = await backendCall(data, 'profile/update', navigate)
+
+    //200 status recieved
+    if (successful) {
       dispatch(setProfile(updatedProfile))
       navigate('/managecontacts', {
         state: {
@@ -60,25 +57,25 @@ export default function ConfirmDeleteContactDetailsPage () {
   return (
     <>
       <Header />
-      <div className='govuk-width-container'>
+      <div className="govuk-width-container">
         <PhaseBanner />
-        <Link to='/managecontacts' className='govuk-back-link'>
+        <Link to="/managecontacts" className="govuk-back-link">
           Back
         </Link>
-        <main className='govuk-main-wrapper'>
-          <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-two-thirds'>
-              <h2 className='govuk-heading-l'>
+        <main className="govuk-main-wrapper">
+          <div className="govuk-grid-row">
+            <div className="govuk-grid-column-two-thirds">
+              <h2 className="govuk-heading-l">
                 Are you sure you want to remove this {location.state.type}?
               </h2>
               <InsetText text={location.state.contact} />
               <Button
-                className='govuk-button govuk-button--warning'
-                text='Remove'
+                className="govuk-button govuk-button--warning"
+                text="Remove"
                 onClick={removeContact}
               />
               &nbsp; &nbsp;
-              <Link to='/managecontacts' className='govuk-body govuk-link'>
+              <Link to="/managecontacts" className="govuk-body govuk-link">
                 Cancel
               </Link>
             </div>

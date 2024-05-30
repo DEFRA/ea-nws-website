@@ -13,7 +13,7 @@ import {
   setRegistration
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
-import { codeValidation } from '../../services/Validations/AuthCodeValidation'
+import { authCodeValidation } from '../../services/Validations/AuthCodeValidation'
 export default function SignInValidatePage() {
   const location = useLocation()
   const [error, setError] = useState('')
@@ -24,7 +24,7 @@ export default function SignInValidatePage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const validationError = codeValidation(code)
+    const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
       const dataToSend = { signinToken, code: code }

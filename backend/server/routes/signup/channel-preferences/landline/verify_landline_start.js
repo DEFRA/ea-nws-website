@@ -1,14 +1,14 @@
 const { apiCall } = require('../../../../services/ApiService')
 const {
-  numberValidation
+  phoneValidation
 } = require('../../../../services/validations/PhoneValidation')
 
-const apiLandlineStartCall = async (phone, auth) => {
-  const data = { phone: phone, authToken: auth }
-  const validationError = numberValidation(phone, 'mobileAndLandline')
+const apiLandlineStartCall = async (msisdn, auth) => {
+  const data = { msisdn: msisdn, authToken: auth }
+  const validationError = phoneValidation(msisdn, 'mobileAndLandline')
   try {
     if (validationError === '') {
-      const responseData = await apiCall(data, 'member/verifyHomePhoneStart')
+      const response = await apiCall(data, 'member/verifyHomePhoneStart')
       return response
     } else {
       return { status: 500, errorMessage: validationError }
@@ -24,14 +24,14 @@ const apiLandlineStartCall = async (phone, auth) => {
 module.exports = [
   {
     method: ['POST'],
-    path: '/signup/contactpreferences/landline/start',
+    path: '/signup/contactpreferences/landline/add',
     handler: async (request, h) => {
       try {
         if (request.payload === null) {
           return h.response({ message: 'Bad request' }).code(400)
         }
-        const { authToken, phone } = request.payload
-        const apiResponse = await apiLandlineStartCall(phone, authToken)
+        const { authToken, msisdn } = request.payload
+        const apiResponse = await apiLandlineStartCall(msisdn, authToken)
         return h.response(apiResponse)
       } catch (error) {
         console.error('Error:', error)

@@ -20,6 +20,5 @@ export const backendCall = async (data, path, navigate) => {
     // get an error response from requesting to our backend
     // navigate(/error-page)
   }
-
   return handleResponse(responseData, navigate)
 }

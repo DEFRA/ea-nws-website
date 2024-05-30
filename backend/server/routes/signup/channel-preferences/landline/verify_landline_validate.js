@@ -1,27 +1,27 @@
 const { apiCall } = require('../../../../services/ApiService')
 const {
-  codeValidation
+  authCodeValidation
 } = require('../../../../services/validations/AuthCodeValidation')
 const {
   numberValidation
 } = require('../../../../services/validations/PhoneValidation')
 
-const apiLandlineValidateCall = async (code, phone, auth, h) => {
-  const data = { msisdn: phone, authToken: auth, code: code }
+const apiLandlineValidateCall = async (code, msisdn, auth, h) => {
+  const data = { msisdn: msisdn, authToken: auth, code: code }
   console.log('Received from front-end: ', data)
   try {
-    const validationError = codeValidation(code)
+    const validationError = authCodeValidation(code)
     if (validationError === '') {
       const response = await apiCall(data, 'member/verifyHomePhoneValidate')
-      return h.response({ response })
+      return { response }
     } else {
-      return h.response({ status: 500, errorMessage: validationError })
+      return { status: 500, errorMessage: validationError }
     }
   } catch (error) {
-    return h.response({
+    return {
       status: 500,
       errorMessage: 'Oops, something happened!'
-    })
+    }
   }
 }
 module.exports = [
@@ -33,13 +33,12 @@ module.exports = [
         if (request.payload === null) {
           return h.response({ message: 'Bad request' }).code(400)
         }
-        const { authToken, phone, code } = request.payload
+        const { authToken, msisdn, code } = request.payload
 
         const apiResponse = await apiLandlineValidateCall(
           code,
-          phone,
-          authToken,
-          h
+          msisdn,
+          authToken
         )
         return h.response(apiResponse)
       } catch (error) {

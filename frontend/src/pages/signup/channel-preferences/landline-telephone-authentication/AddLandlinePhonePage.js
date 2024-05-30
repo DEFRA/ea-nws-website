@@ -12,15 +12,15 @@ import phoneValidation from '../../../../services/Validations/PhoneValidation'
 
 export default function AddLandlinePhonePage() {
   const navigate = useNavigate()
-  const [phoneNumber, setPhoneNumber] = useState('')
+  const [msisdn, setMsisdn] = useState('')
   const [error, setError] = useState('')
   const authToken = 'MockGUIDAuthToken' //useSelector((state) => state.session.authToken)
 
   const handleSubmit = async () => {
-    const validationError = phoneValidation(phoneNumber, 'mobileAndLandline')
+    const validationError = phoneValidation(msisdn, 'mobileAndLandline')
     setError(validationError)
     if (validationError === '') {
-      const data = { authToken, phone: phoneNumber }
+      const data = { authToken, msisdn: msisdn }
       const { errorMessage } = await backendCall(
         data,
         'signup/contactpreferences/landline/add'
@@ -30,7 +30,7 @@ export default function AddLandlinePhonePage() {
         setError(errorMessage.desc)
       } else {
         navigate('/signup/contactpreferences/landline/validate', {
-          state: { phoneNumber }
+          state: { msisdn }
         })
       }
     }
@@ -56,9 +56,9 @@ export default function AddLandlinePhonePage() {
             </p>
             <Input
               inputType="text"
-              value={phoneNumber}
+              value={msisdn}
               name="UK landline or mobile telephone number"
-              onChange={(val) => setPhoneNumber(val)}
+              onChange={(val) => setMsisdn(val)}
               className="govuk-input govuk-input--width-20"
               error={error}
             />

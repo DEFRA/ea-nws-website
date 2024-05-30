@@ -1,5 +1,7 @@
-const codeValidation = require('../../services/Validations/CodeValidation')
-const apiService = require('../../services/ApiService')
+const {
+  codeValidation
+} = require('../../services/validations/AuthCodeValidation')
+const { apiService } = require('../../services/ApiService')
 
 const apiSignupValidateCall = async (registerToken, code) => {
   const data = { registerToken, code }

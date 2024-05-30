@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../gov-uk-components/Button'
 import ErrorSummary from '../../../../gov-uk-components/ErrorSummary'
@@ -9,23 +8,24 @@ import Header from '../../../../gov-uk-components/Header'
 import Input from '../../../../gov-uk-components/Input'
 import InsetText from '../../../../gov-uk-components/InsetText'
 import { backendCall } from '../../../../services/BackendService'
-import codeValidation from '../../../../services/Validations/AuthCodeValidation'
+import { authCodeValidation } from '../../../../services/Validations/AuthCodeValidation'
 export default function ValidateLandlinePhonePage() {
   const location = useLocation()
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
-  const authToken = useSelector((state) => state.session.authToken)
+  const authToken = 'MockGUIDAuthToken' //useSelector((state) => state.session.authToken)
 
   const handleSubmit = async () => {
-    const validationError = codeValidation(code, 6)
+    const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError !== '') {
       return
     }
+
     const dataToSend = {
       authToken,
-      phoneNumber: location.state.phoneNumber,
+      msisdn: location.state.msisdn,
       code
     }
     const { errorMessage } = await backendCall(
@@ -53,7 +53,7 @@ export default function ValidateLandlinePhonePage() {
         <h2 class="govuk-heading-l">Check your email</h2>
         <div class="govuk-body">
           We're calling this number to read out a code:
-          <InsetText text={location.state.phoneNumber} />
+          <InsetText text={location.state.msisdn} />
           <Input
             name="Enter code"
             inputType="text"

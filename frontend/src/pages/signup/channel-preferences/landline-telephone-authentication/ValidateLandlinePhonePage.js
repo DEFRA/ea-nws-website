@@ -8,7 +8,7 @@ import Footer from '../../../../gov-uk-components/Footer'
 import Header from '../../../../gov-uk-components/Header'
 import Input from '../../../../gov-uk-components/Input'
 import InsetText from '../../../../gov-uk-components/InsetText'
-import backendService from '../../../../services/BackendService'
+import { backendCall } from '../../../../services/BackendService'
 import codeValidation from '../../../../services/Validations/AuthCodeValidation'
 export default function ValidateLandlinePhonePage() {
   const location = useLocation()
@@ -23,31 +23,20 @@ export default function ValidateLandlinePhonePage() {
     if (validationError !== '') {
       return
     }
-
-    const backendResponse = await backendCallResponse(code)
-    if (!backendResponse) {
-      setError('Invalid code')
-      return
-    }
-
-    navigate('/signup/contactpreferences/landline/validate')
-  }
-
-  const backendCallResponse = async (code) => {
-    const data = {
+    const dataToSend = {
       authToken,
       phoneNumber: location.state.phoneNumber,
       code
     }
-    const responseData = await backendService(
-      data,
+    const { errorMessage, data } = await backendCall(
+      dataToSend,
       'signup/contactpreferences/landline/validate'
     )
-    if (responseData === undefined || responseData.data.code === 101) {
-      return false
+    if (errorMessage !== null) {
+      setError(errorMessage.desc)
+    } else {
+      navigate('/signup/contactpreferences')
     }
-
-    return true
   }
 
   return (

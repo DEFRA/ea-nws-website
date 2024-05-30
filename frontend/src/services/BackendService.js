@@ -1,4 +1,6 @@
-const backendCall = async (data, path) => {
+import { handleResponse } from './HandleResponse'
+
+export const backendCall = async (data, path, navigate) => {
   let responseData
   const url = 'http://localhost:5000/' + path
   try {
@@ -14,8 +16,10 @@ const backendCall = async (data, path) => {
     responseData = await response.json()
   } catch (error) {
     console.log('ERROR: ', error)
+    // we need to navigate the user to an error page if we
+    // get an error response from requesting to our backend
+    // navigate(/error-page)
   }
-  return responseData
+  // backend api call successful - handle response/error from geosafe
+  return handleResponse(responseData, navigate)
 }
-
-module.exports = backendCall

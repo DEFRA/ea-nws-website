@@ -57,7 +57,7 @@ def test_SignInValidate_invalidCode(get_browser):
     browser.find_element(By.NAME, 'Enter code').send_keys("999999")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)
-    assert "Invalid code" in browser.page_source
+    assert "Invalid Code" in browser.page_source
     assert browser.current_url == url
 
 def test_SignInValidate_validCode(get_browser):

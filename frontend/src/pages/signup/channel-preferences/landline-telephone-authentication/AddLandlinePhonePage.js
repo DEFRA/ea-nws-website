@@ -1,6 +1,5 @@
 import * as React from 'react'
 import { useState } from 'react'
-import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../../gov-uk-components/Button'
 import ErrorSummary from '../../../../gov-uk-components/ErrorSummary'
@@ -8,26 +7,33 @@ import Footer from '../../../../gov-uk-components/Footer'
 import Header from '../../../../gov-uk-components/Header'
 import Input from '../../../../gov-uk-components/Input'
 import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
-import backendCall from '../../../../services/BackendService'
+import { backendCall } from '../../../../services/BackendService'
 import phoneValidation from '../../../../services/Validations/PhoneValidation'
 
 export default function AddLandlinePhonePage() {
   const navigate = useNavigate()
   const [phoneNumber, setPhoneNumber] = useState('')
   const [error, setError] = useState('')
-  const authToken = useSelector((state) => state.session.authToken)
+  const authToken = 'MockGUIDAuthToken' //useSelector((state) => state.session.authToken)
 
   const handleSubmit = async () => {
     const validationError = phoneValidation(phoneNumber, 'mobileAndLandline')
     setError(validationError)
-    if (validationError !== '') {
-      return
+    if (validationError === '') {
+      const data = { authToken, phone: phoneNumber }
+      const { errorMessage } = await backendCall(
+        data,
+        'signup/contactpreferences/landline/add'
+      )
+
+      if (errorMessage !== null) {
+        setError(errorMessage.desc)
+      } else {
+        navigate('/signup/contactpreferences/landline/validate', {
+          state: { phoneNumber }
+        })
+      }
     }
-    const data = { authToken, phone: phoneNumber }
-    await backendCall(data, 'signup/contactpreferences/landline/add')
-    navigate('/signup/contactpreferences/landline/validate', {
-      state: { phoneNumber }
-    })
   }
 
   return (

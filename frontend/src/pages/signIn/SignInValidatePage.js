@@ -12,10 +12,9 @@ import {
   setProfile,
   setRegistration
 } from '../../redux/userSlice'
-import backendCall from '../../services/BackendService'
-import codeValidation from '../../services/Validations/AuthCodeValidation'
-
-export default function SignInValidatePage () {
+import { backendCall } from '../../services/BackendService'
+import { codeValidation } from '../../services/Validations/AuthCodeValidation'
+export default function SignInValidatePage() {
   const location = useLocation()
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -25,55 +24,46 @@ export default function SignInValidatePage () {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const validationError = codeValidation(code, 6)
+    const validationError = codeValidation(code)
     setError(validationError)
-    if (validationError !== '') return
-    const backendResponse = await backendCallResponse(code)
-    if (!backendResponse) {
-      setError('Invalid code')
-      return
+    if (validationError === '') {
+      const dataToSend = { signinToken, code: code }
+      const { errorMessage, data } = await backendCall(
+        dataToSend,
+        'signInValidate'
+      )
+      if (errorMessage !== null) {
+        setError(errorMessage.desc)
+      } else {
+        dispatch(setAuthToken(data.authToken))
+        dispatch(setProfile(data.profile))
+        dispatch(setRegistration(data.registration))
+        navigate('/')
+      }
     }
-    navigate('/')
-  }
-
-  const backendCallResponse = async (code) => {
-    const data = {
-      signinToken,
-      code
-    }
-    const responseData = await backendCall(data, 'signInValidate')
-    if (responseData === undefined || responseData.data.code === 101) {
-      return false
-    }
-
-    dispatch(setAuthToken(responseData.data.authToken))
-    dispatch(setProfile(responseData.data.profile))
-    dispatch(setRegistration(responseData.data.registration))
-
-    return true
   }
 
   return (
     <>
       <Header />
-      <div class='govuk-width-container'>
-        <Link to='/signin' className='govuk-back-link'>
+      <div class="govuk-width-container">
+        <Link to="/signin" className="govuk-back-link">
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 class='govuk-heading-l'>Check your email</h2>
-        <div class='govuk-body'>
+        <h2 class="govuk-heading-l">Check your email</h2>
+        <div class="govuk-body">
           We've sent a code to:
           <InsetText text={location.state.email} />
           <Input
-            name='Enter code'
-            inputType='text'
+            name="Enter code"
+            inputType="text"
             error={error}
             onChange={(val) => setCode(val)}
           />
           <Button
-            className='govuk-button'
-            text='Continue'
+            className="govuk-button"
+            text="Continue"
             onClick={handleSubmit}
           />
         </div>

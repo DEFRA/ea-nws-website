@@ -28,7 +28,7 @@ async function getSigninValidate(
   }
   if (code === '999999' || signinToken === undefined) {
     console.log('Invalid token')
-    return res.response(responseCodes.INVALID_TOKEN).code(500)
+    return res.response(responseCodes.INVALID_CODE).code(500)
   }
   console.log('Valid token')
   const profile = {

@@ -8,12 +8,15 @@ import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import NotificationBanner from '../../../gov-uk-components/NotificationBanner'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
+import { setContactPreferences } from '../../../redux/userSlice'
 
-export default function WarningContactsPreferencePage() {
+export default function WarningContactsPreferencePage () {
   const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useDispatch()
-  const [contactPreferences, setContactPreferences] = useState([])
+  const [selectedContactPreferences, setSelectedContactPreferences] = useState(
+    []
+  )
   const [error, setError] = useState('')
 
   const contactOptions = [
@@ -23,15 +26,15 @@ export default function WarningContactsPreferencePage() {
   ]
 
   const handleSubmit = () => {
-    if (contactPreferences.length === 0) {
+    if (selectedContactPreferences.length === 0) {
       setError('Select at least one way to get messages about flooding')
     } else {
-      dispatch(setContactPreferences(contactPreferences))
-      if (contactPreferences.includes('Text')) {
-        // navigate to text TODO - cameron add this once merged
-      } else if (contactPreferences.includes('Email')) {
+      dispatch(setContactPreferences(selectedContactPreferences))
+      if (selectedContactPreferences.includes('Text')) {
+        navigate('/signup/contactpreferences/mobile/add')
+      } else if (selectedContactPreferences.includes('Email')) {
         // navigate to email TODO - cameron add this once merged
-      } else if (contactPreferences.includes('PhoneCall')) {
+      } else if (selectedContactPreferences.includes('PhoneCall')) {
         // navigate to phone call TODO - camille add this once merged
       }
     }
@@ -39,7 +42,7 @@ export default function WarningContactsPreferencePage() {
 
   const handleContactPreferenceChange = (event) => {
     const { value } = event.target
-    setContactPreferences((prev) => {
+    setSelectedContactPreferences((prev) => {
       if (prev.includes(value)) {
         return prev.filter((preference) => preference !== value)
       } else {
@@ -51,33 +54,34 @@ export default function WarningContactsPreferencePage() {
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
+      <div className='govuk-width-container'>
         <PhaseBanner />
-        <div className="govuk-grid-row">
-          <div className="govuk-grid-column-two-thirds">
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
             <Link
               onClick={() =>
                 navigate(-1, {
                   state: {
                     email: location.state.email
                   }
-                })
-              }
-              className="govuk-back-link"
+                })}
+              className='govuk-back-link'
             >
               Back
             </Link>
-            {error ? (
-              <ErrorSummary errorList={[error]} />
-            ) : (
-              <NotificationBanner
-                className="govuk-notification-banner govuk-notification-banner--success"
-                title="success"
-                heading="Email address confirmed"
-                text={location.state.email + ' some email is confirmed'}
-              />
-            )}
-            <h1 className="govuk-heading-l">
+            {error
+              ? (
+                <ErrorSummary errorList={[error]} />
+                )
+              : (
+                <NotificationBanner
+                  className='govuk-notification-banner govuk-notification-banner--success'
+                  title='success'
+                  heading='Email address confirmed'
+                  text={location.state.email + ' some email is confirmed'}
+                />
+                )}
+            <h1 className='govuk-heading-l'>
               How would you like to get messages about flooding?
             </h1>
             <div
@@ -87,18 +91,20 @@ export default function WarningContactsPreferencePage() {
                   : 'govuk-form-group'
               }
             >
-              <fieldset className="govuk-fieldset">
-                <legend className="govuk-fieldset__legend">
+              <fieldset className='govuk-fieldset'>
+                <legend className='govuk-fieldset__legend'>
                   Select at least one option
                 </legend>
-                {error && <p className="govuk-error-message">{error}</p>}
-                <div className="govuk-radios" data-module="govuk-radios">
+                {error && <p className='govuk-error-message'>{error}</p>}
+                <div className='govuk-radios' data-module='govuk-radios'>
                   {contactOptions.map((preference) => (
                     <Checkbox
                       key={preference.value}
                       label={preference.label}
                       value={preference.value}
-                      checked={contactPreferences.includes(preference.value)}
+                      checked={selectedContactPreferences.includes(
+                        preference.value
+                      )}
                       onChange={handleContactPreferenceChange}
                     />
                   ))}
@@ -106,8 +112,8 @@ export default function WarningContactsPreferencePage() {
               </fieldset>
             </div>
             <Button
-              text="Continue"
-              className="govuk-button"
+              text='Continue'
+              className='govuk-button'
               onClick={handleSubmit}
             />
           </div>

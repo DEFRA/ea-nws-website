@@ -11,6 +11,9 @@ import WarningContactsPreferencePage from '../pages/signup/channel-preferences/W
 import AddLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/AddLandlinePhonePage'
 import SkipConfirmLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/SkipConfirmLandlinePhonePage'
 import ValidateLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/ValidateLandlinePhonePage'
+import AddMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/AddMobilePhonePage'
+import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/SkipConfirmMobilePhonePage'
+import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
 import StartPage from '../pages/start/StartPage'
 
 // index routes
@@ -36,9 +39,9 @@ const signupRoutes = [
     path: '/signup/contactpreferences',
     component: <WarningContactsPreferencePage />
   },
-  //mobile phone authentication route
+  // mobile phone authentication route
   {
-    path: '/signup/contactpreferences/mobile',
+    path: '/signup/contactpreferences/mobile/add',
     component: <AddMobilePhonePage />
   },
   {
@@ -49,7 +52,7 @@ const signupRoutes = [
     path: '/signup/contactpreferences/mobile/skipconfirmation',
     component: <SkipConfirmMobilePhonePage />
   },
-  //landline authentication route
+  // landline authentication route
   {
     path: '/signup/contactpreferences/landline',
     component: <AddLandlinePhonePage />

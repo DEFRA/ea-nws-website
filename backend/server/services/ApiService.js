@@ -28,7 +28,7 @@ const apiCall = async (data, path) => {
     } else if (error.request) {
       // no response was received
       console.log('No response received:', error.request)
-      //returning an error so frontend can handle
+      // returning an error so frontend can handle
       return {
         status: 400,
         errorMessage: 'Oops something broke, try again'

@@ -8,7 +8,11 @@ import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
 export default function SkipConfirmMobilePhonePage () {
   const location = useLocation()
 
-  function handleSubmit () {}
+  function handleSubmit () {
+    // if user selected email - navigate to email
+    // else if user selected landline - navigate to landline
+    // else navigate to addtional details page
+  }
 
   return (
     <>

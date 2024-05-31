@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../gov-uk-components/Button'
 import ErrorSummary from '../../../../gov-uk-components/ErrorSummary'
@@ -36,8 +35,22 @@ export default function ValidateMobilePhone () {
       if (errorMessage !== null) {
         setError(errorMessage.desc)
       } else {
+        // remove mobile from unverified list and add to verified list
         navigate('/signup/contactpreferences')
       }
+    }
+  }
+
+  const getNewCode = async (event) => {
+    event.preventDefault()
+    const data = { authToken, msisdn: location.state.mobile }
+    const { errorMessage } = await backendCall(
+      data,
+      'signup/contactpreferences/mobile/add',
+      navigate
+    )
+    if (errorMessage !== null) {
+      setError(errorMessage.desc)
     }
   }
 
@@ -92,12 +105,9 @@ export default function ValidateMobilePhone () {
                 Get a new code
               </a>
             </p>
-            <Link
-              to='/signup/contactpreferences/mobile'
-              className='govuk-body govuk-link'
-            >
+            <a onClick={getNewCode} className='govuk-body govuk-link'>
               Enter a different mobile number
-            </Link>
+            </a>
             <div className=' govuk-!-margin-bottom-9' />
           </div>
         </div>

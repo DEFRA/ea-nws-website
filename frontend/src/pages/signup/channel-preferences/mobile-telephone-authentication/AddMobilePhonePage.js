@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../../gov-uk-components/Button'
 import ErrorSummary from '../../../../gov-uk-components/ErrorSummary'
@@ -12,11 +12,13 @@ import { phoneValidation } from '../../../../services/validations/PhoneValidatio
 
 export default function AddMobilePhonePage () {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [mobile, setMobile] = useState('')
   const [error, setError] = useState('')
   const authToken = useSelector((state) => state.session.authToken)
 
   const handleSubmit = async () => {
+    console.log(authToken)
     const validationError = phoneValidation(mobile, 'mobile')
     setError(validationError)
     if (validationError === '') {
@@ -26,10 +28,12 @@ export default function AddMobilePhonePage () {
         'signup/contactpreferences/mobile/add',
         navigate
       )
-      console.log('errorMessage', errorMessage)
       if (errorMessage !== null) {
         setError(errorMessage.desc)
       } else {
+        // we should probably add a call to update profile here
+        // TODO - add to unverified mobile list
+        // dispatch(setProfile(data.profile))
         navigate('/signup/contactpreferences/mobile/validate', {
           state: { mobile }
         })

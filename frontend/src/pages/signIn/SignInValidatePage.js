@@ -10,7 +10,7 @@ import InsetText from '../../gov-uk-components/InsetText'
 import {
   setAuthToken,
   setProfile,
-  setRegistration
+  setRegistrations
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
@@ -37,7 +37,7 @@ export default function SignInValidatePage() {
       } else {
         dispatch(setAuthToken(data.authToken))
         dispatch(setProfile(data.profile))
-        dispatch(setRegistration(data.registration))
+        dispatch(setRegistrations(data.registrations))
         navigate('/')
       }
     }

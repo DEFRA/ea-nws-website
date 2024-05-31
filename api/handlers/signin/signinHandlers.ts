@@ -54,7 +54,7 @@ async function getSigninValidate(
       }
     }
   }
-  const registration = {
+  const registrations = {
     partner: {
       id: '4',
       name: 'NWS England',
@@ -90,7 +90,7 @@ async function getSigninValidate(
   return {
     authToken: 'MockGUIDAuthToken',
     profile: profile,
-    registration: registration
+    registrations: registrations
   }
 }
 module.exports = { getSigninStart, getSigninValidate }

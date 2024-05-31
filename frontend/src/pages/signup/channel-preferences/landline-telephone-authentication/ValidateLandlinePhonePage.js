@@ -22,25 +22,24 @@ export default function ValidateLandlinePhonePage() {
   const handleSubmit = async () => {
     const validationError = authCodeValidation(code)
     setError(validationError)
-    if (validationError !== '') {
-      return
-    }
 
-    const dataToSend = {
-      authToken,
-      msisdn: location.state.msisdn,
-      code
-    }
+    if (validationError === '') {
+      const dataToSend = {
+        authToken,
+        msisdn: location.state.msisdn,
+        code
+      }
 
-    const { errorMessage, data } = await backendCall(
-      dataToSend,
-      'signup/contactpreferences/landline/validate'
-    )
-    if (errorMessage !== null) {
-      setError(errorMessage.desc)
-    } else {
-      dispatch(setProfile(data.profile))
-      navigate('/signup/contactpreferences')
+      const { errorMessage, data } = await backendCall(
+        dataToSend,
+        'signup/contactpreferences/landline/validate'
+      )
+      if (errorMessage !== null) {
+        setError(errorMessage.desc)
+      } else {
+        dispatch(setProfile(data.profile))
+        navigate('/signup/contactpreferences')
+      }
     }
   }
 

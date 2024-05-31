@@ -10,7 +10,7 @@ import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 import { backendCall } from '../../../services/BackendService'
 import { emailValidation } from '../../../services/validations/EmailValidation'
 
-export default function SignUpPage () {
+export default function SignUpPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
@@ -19,9 +19,9 @@ export default function SignUpPage () {
     const validationError = emailValidation(email)
     setError(validationError)
     if (validationError === '') {
-      const data = { email }
-      const { responseData, errorMessage } = await backendCall(
-        data,
+      const dataToSend = { email }
+      const { data, errorMessage } = await backendCall(
+        dataToSend,
         'signupStart',
         navigate
       )
@@ -29,7 +29,7 @@ export default function SignUpPage () {
         setError(errorMessage.desc)
       } else {
         navigate('/signup/validate', {
-          state: { registerToken: responseData.registerToken, email }
+          state: { registerToken: data.registerToken, email }
         })
       }
     }
@@ -38,31 +38,31 @@ export default function SignUpPage () {
   return (
     <>
       <Header />
-      <div className='govuk-width-container'>
+      <div className="govuk-width-container">
         <PhaseBanner />
-        <Link to='/signin' className='govuk-back-link'>
+        <Link to="/signin" className="govuk-back-link">
           Back
         </Link>
         {error && <ErrorSummary errorList={[error]} />}
-        <h2 className='govuk-heading-l'>
+        <h2 className="govuk-heading-l">
           Enter an email address - you'll use this to sign in to your account
         </h2>
-        <div className='govuk-body'>
+        <div className="govuk-body">
           <p>
             You'll be able to use your account to update your locations, flood
             messages or contact details.{' '}
           </p>
-          <InsetText text='We recommend using an email address you can access 24 hours a day.' />
+          <InsetText text="We recommend using an email address you can access 24 hours a day." />
           <Input
-            className='govuk-input govuk-input--width-10'
-            inputType='text'
-            name='Email address'
+            className="govuk-input govuk-input--width-10"
+            inputType="text"
+            name="Email address"
             error={error}
             onChange={(val) => setEmail(val)}
           />
           <Button
-            className='govuk-button'
-            text='Continue'
+            className="govuk-button"
+            text="Continue"
             onClick={handleSubmit}
           />
           <br />

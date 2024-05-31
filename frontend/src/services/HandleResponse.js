@@ -1,17 +1,14 @@
 const handleResponse = (response, navigate) => {
-  console.log('status', response.status)
   switch (response.status) {
     case 200:
-      return { responseData: response.data, errorMessage: null }
+      return { data: response.data, errorMessage: null }
     case 400:
-      return {
-        responseData: null,
-        errorMessage: 'Bad request, please try again'
-      }
+      return { data: null, errorMessage: 'Bad request, please try again' }
     case 404:
+      // need to add a not found page
       return navigate('/not-found')
     case 500:
-      return { responseData: null, errorMessage: response.errorMessage }
+      return { data: null, errorMessage: response.errorMessage }
   }
 }
 

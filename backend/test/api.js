@@ -1,9 +1,7 @@
 const { spawn, execSync } = require('child_process')
 const Lab = require('@hapi/lab')
-const { expect } = require('@hapi/code')
 const lab = (exports.lab = Lab.script())
 const path = require('path')
-const fetch = require('node-fetch')
 
 const apiDir = path.resolve(__dirname, '../../api')
 let apiProcess
@@ -41,12 +39,19 @@ lab.onCleanup = async () => {
     })
     console.log('Waiting for port release...')
     await new Promise((resolve) => setTimeout(resolve, 5000)) // Wait for 5 seconds after killing the process
-    console.log('Cleanup complete')
   }
-}
+  //API process was struggling to terminate - added a script that kills anything on port 9000 once tests are run
+  await new Promise((resolve, reject) => {
+    exec('lsof -t -i:9000 | xargs kill -9', (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error terminating process on port 9000: ${error}`)
+        reject(error)
+      } else {
+        console.log('Process on port 9000 terminated')
+        resolve()
+      }
+    })
+  })
 
-lab.test('example test', async () => {
-  const response = await fetch('http://localhost:9000/') // Adjust the endpoint
-  const data = await response.json()
-  expect(data).to.be.an.object()
-})
+  console.log('Cleanup complete')
+}

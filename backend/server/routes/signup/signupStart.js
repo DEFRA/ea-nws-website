@@ -1,4 +1,6 @@
-const emailValidation = require('../../services/Validations/EmailValidation')
+const {
+  emailValidation
+} = require('../../services/validations/EmailValidation')
 const apiService = require('../../services/ApiService')
 
 const apiSignupStartCall = async (email) => {

@@ -4,10 +4,13 @@ import ConfirmDeleteContactDetailsPage from '../pages/contact-details/ConfirmDel
 import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
 import HomePage from '../pages/home/HomePage'
 import SignInPage from '../pages/signIn/SignInStartPage'
-import CheckYourEmailPage from '../pages/signIn/SignInValidatePage'
+import SignInValidatePage from '../pages/signIn/SignInValidatePage'
 import SignUpPage from '../pages/signup/account/SignUpPage'
 import SignUpValidationPage from '../pages/signup/account/SignUpValidationPage'
 import WarningContactsPreferencePage from '../pages/signup/channel-preferences/WarningContactsPreferencePage'
+import AddLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/AddLandlinePhonePage'
+import SkipConfirmLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/SkipConfirmLandlinePhonePage'
+import ValidateLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/ValidateLandlinePhonePage'
 import StartPage from '../pages/start/StartPage'
 
 // index routes
@@ -15,6 +18,12 @@ const indexRoutes = [{ path: '/index', component: <Index /> }]
 
 // start routes
 const startRoutes = [{ path: '/', component: <StartPage /> }]
+
+// sign in routes
+const siginRoutes = [
+  { path: '/signin', component: <SignInPage /> },
+  { path: '/signin/validate', component: <SignInValidatePage /> }
+]
 
 // sign up routes
 const signupRoutes = [
@@ -26,13 +35,19 @@ const signupRoutes = [
   {
     path: '/signup/contactpreferences',
     component: <WarningContactsPreferencePage />
+  },
+  {
+    path: '/signup/contactpreferences/landline',
+    component: <AddLandlinePhonePage />
+  },
+  {
+    path: '/signup/contactpreferences/landline/validate',
+    component: <ValidateLandlinePhonePage />
+  },
+  {
+    path: '/signup/contactpreferences/landline/skipconfirm',
+    component: <SkipConfirmLandlinePhonePage />
   }
-]
-
-// sign in routes
-const siginRoutes = [
-  { path: '/signin', component: <SignInPage /> },
-  { path: '/signin/validate', component: <CheckYourEmailPage /> }
 ]
 
 // home
@@ -50,7 +65,6 @@ const contactRoutes = [
 const routes = [
   ...indexRoutes,
   ...startRoutes,
-  ...signupRoutes,
   ...siginRoutes,
   ...signupRoutes,
   ...homeRoutes,

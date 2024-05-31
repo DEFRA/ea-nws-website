@@ -26,29 +26,23 @@ lab.experiment('Web test', () => {
     Code.expect(response.statusMessage).to.equal('OK')
   })
 
-  lab.test(
-    'GET  sending a GET response instead of POST',
-    async () => {
-      const options = {
-        method: 'GET',
-        url: '/signupValidate'
-      }
-
-      const response = await server.inject(options)
-      Code.expect(response.statusCode).to.equal(404)
+  lab.test('GET  sending a GET response instead of POST', async () => {
+    const options = {
+      method: 'GET',
+      url: '/signupValidate'
     }
-  )
 
-  lab.test(
-    'POST / payload is missing',
-    async () => {
-      const options = {
-        method: 'POST',
-        url: '/signupValidate'
-      }
+    const response = await server.inject(options)
+    Code.expect(response.statusCode).to.equal(404)
+  })
 
-      const response = await server.inject(options)
-      Code.expect(response.statusCode).to.equal(400)
+  lab.test('POST / payload is missing', async () => {
+    const options = {
+      method: 'POST',
+      url: '/signupValidate'
     }
-  )
+
+    const response = await server.inject(options)
+    Code.expect(response.statusCode).to.equal(400)
+  })
 })

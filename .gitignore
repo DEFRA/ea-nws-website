@@ -1,7 +1,6 @@
 .DS_Store
 .vscode
-api/index.js
-api/**/*.js
+api/dist/
 api/node_modules
 api/node_modules
 backend/node_modules

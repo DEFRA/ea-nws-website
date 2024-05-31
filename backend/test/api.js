@@ -7,18 +7,9 @@ const apiDir = path.resolve(__dirname, '../../api')
 let apiProcess
 
 lab.before(async () => {
-  // Compile TypeScript code to JavaScript
-  console.log('Compiling TypeScript code...')
-  try {
-    execSync('tsc --project tsconfig.json', { cwd: apiDir, stdio: 'inherit' })
-  } catch (error) {
-    console.error('TypeScript compilation failed')
-    process.exit(1)
-  }
-
   // Start the API server
   console.log('Starting API server...')
-  apiProcess = spawn('node', ['index.js'], {
+  apiProcess = spawn('npx node.ts', ['index.ts'], {
     env: { ...process.env, PORT: '9000' },
     cwd: apiDir,
     stdio: 'inherit'

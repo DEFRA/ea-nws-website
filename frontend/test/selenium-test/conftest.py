@@ -29,7 +29,7 @@ def start_api(compile_api):
     port = "9000"
     env = os.environ.copy()
     env["PORT"] = port
-    api_process = subprocess.Popen(["node", "../api/index.js"], env=env, cwd="../api")
+    api_process = subprocess.Popen(["node", "../api/dist/index.js"], env=env, cwd="../api")
     time.sleep(2)
     yield
     api_process.terminate()

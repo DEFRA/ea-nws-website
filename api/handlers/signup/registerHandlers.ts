@@ -9,7 +9,7 @@ async function getRegisterStart(
 ) {
   console.log('Received register start request for: ', req.payload)
   const { email } = req.payload as { email: string }
-  
+
   console.log('Valid email, responding 200')
   return { registerToken: '123456' }
 }
@@ -26,7 +26,7 @@ async function getRegisterValidate(
   }
   if (code === '999999' || registerToken === '') {
     console.log('Invalid token')
-    return res.response(responseCodes.INVALID_TOKEN).code(500)
+    return res.response(responseCodes.INVALID_CODE).code(500)
   }
   console.log('Valid token')
 

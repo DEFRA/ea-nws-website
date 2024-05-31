@@ -5,6 +5,9 @@ import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
 import HomePage from '../pages/home/HomePage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
+import SignBackIn from '../pages/signOut/SignBackIn'
+import SignOutAutomatically from '../pages/signOut/SignOutAutomatically'
+import SignOutManually from '../pages/signOut/SignOutManually'
 import SignUpPage from '../pages/signup/account/SignUpPage'
 import SignUpValidationPage from '../pages/signup/account/SignUpValidationPage'
 import WarningContactsPreferencePage from '../pages/signup/channel-preferences/WarningContactsPreferencePage'
@@ -63,7 +66,7 @@ const contactRoutes = [
 const signBackRoute = [{ path: '/signbackin', component: <SignBackIn /> }]
 const signOutRoutes = [
   { path: 'signout/automatically', component: <SignOutAutomatically /> },
-  { path: '/signout/manually', component: <signOutManually /> }
+  { path: '/signout/manually', component: <SignOutManually /> }
 ]
 
 export const routes = [

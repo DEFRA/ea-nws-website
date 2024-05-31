@@ -1,7 +1,7 @@
 const {
   authCodeValidation
 } = require('../../services/validations/AuthCodeValidation')
-const { apiService } = require('../../services/ApiService')
+const { apiCall } = require('../../services/ApiService')
 
 const apiSignupValidateCall = async (registerToken, code) => {
   const data = { registerToken, code }
@@ -11,7 +11,7 @@ const apiSignupValidateCall = async (registerToken, code) => {
   }
 
   // Parse the JSON response and get the status code
-  const responseData = await apiService.apiCall(data, 'member/registerValidate')
+  const responseData = await apiCall(data, 'member/registerValidate')
   if (responseData === undefined) return
   return responseData
 }

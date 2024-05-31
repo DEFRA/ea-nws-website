@@ -43,7 +43,6 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    // Nothing is being responded
     Code.expect(response.statusCode).to.equal(200)
   })
 })

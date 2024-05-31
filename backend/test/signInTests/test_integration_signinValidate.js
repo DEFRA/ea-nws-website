@@ -23,8 +23,8 @@ lab.experiment('Integration tests', () => {
         }
       }
       const response = await server.inject(options)
-      Code.expect(response.statusCode).to.equal(500)
-      // Code.expect(response.data.code).to.equal(101)
+      Code.expect(response.result.errorMessage.code).to.equal(101)
+      Code.expect(response.result.status).to.equal(500)
     }
   )
 
@@ -67,8 +67,9 @@ lab.experiment('Integration tests', () => {
       }
       const response = await server.inject(options)
       Code.expect(response.statusCode).to.equal(200)
-      //Code.expect(response.data.profile)
-      //Code.expect(response.data.registration)
+      Code.expect(response.result.data.profile).to.exist
+      Code.expect(response.result.data.registrations).to.exist
+      Code.expect(response.result.data.authToken).to.equal('MockGUIDAuthToken')
     }
   )
 })

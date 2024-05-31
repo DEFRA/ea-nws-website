@@ -17,13 +17,12 @@ lab.experiment('Integration tests', () => {
       url: '/signup/contactpreferences/landline/validate',
       payload: {
         authToken: 'MockGUIDAuthToken',
-        phone: '07590000000',
+        msisdn: '07590000000',
         code: '999999'
       }
     }
     const response = await server.inject(options)
-    //Code.expect(response.result.datacode).to.equal(101)
-    Code.expect(response.statusCode).to.equal(500)
+    Code.expect(response.result.errorMessage.desc).to.equal('Invalid Code')
   })
 
   lab.test('POST / route runs with invalid code (too short)', async () => {
@@ -32,12 +31,12 @@ lab.experiment('Integration tests', () => {
       url: '/signup/contactpreferences/landline/validate',
       payload: {
         authToken: 'MockGUIDAuthToken',
-        phone: '07590000000',
+        msisdn: '07590000000',
         code: '123'
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(500)
+    Code.expect(response.result.status).to.equal(500)
   })
 
   lab.test('POST / route runs with invalid code (empty)', async () => {
@@ -51,7 +50,8 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(500)
+    Code.expect(response.result.errorMessage).to.equal('Enter code')
+    Code.expect(response.result.status).to.equal(500)
   })
 
   lab.test('POST / route runs with invalid code (empty)', async () => {
@@ -60,7 +60,7 @@ lab.experiment('Integration tests', () => {
       url: '/signup/contactpreferences/landline/validate',
       payload: {
         authToken: 'MockGUIDAuthToken',
-        phone: '07590000000',
+        msisdn: '07590000000',
         code: ''
       }
     }

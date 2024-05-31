@@ -28,7 +28,7 @@ const apiCall = async (data, path) => {
       }
     } else if (error.request) {
       // no response was received
-      console.log('No response received:', error.request)
+      console.log('No response received')
     }
   }
   return null

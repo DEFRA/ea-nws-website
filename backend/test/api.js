@@ -2,20 +2,31 @@ const { spawn, execSync } = require('child_process')
 const Lab = require('@hapi/lab')
 const lab = (exports.lab = Lab.script())
 const path = require('path')
-
+const axios = require('axios')
 const apiDir = path.resolve(__dirname, '../../api')
 let apiProcess
 
 lab.before(async () => {
+  console.log('Compiling TypeScript code...')
+  try {
+    execSync('tsc --project tsconfig.json', { cwd: apiDir, stdio: 'inherit' })
+  } catch (error) {
+    console.error('TypeScript compilation failed')
+    process.exit(1)
+  }
+
   // Start the API server
   console.log('Starting API server...')
-  apiProcess = spawn('npx node.ts', ['index.ts'], {
+  apiProcess = spawn('node', ['./dist/index.js'], {
     env: { ...process.env, PORT: '9000' },
     cwd: apiDir,
     stdio: 'inherit'
   })
   // Wait until the server is ready
-  await new Promise((resolve) => setTimeout(resolve, 5000))
+  await new Promise((resolve) => {
+    setTimeout(resolve, 5000)
+    console.log('Waiting for the server to start')
+  })
 })
 
 lab.onCleanup = async () => {
@@ -43,6 +54,5 @@ lab.onCleanup = async () => {
       }
     })
   })
-
   console.log('Cleanup complete')
 }

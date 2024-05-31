@@ -48,6 +48,6 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    //Code.expect(response).to.equal('MockGUIDAuthToken')
+    Code.expect(response.result.data.authToken).to.equal('MockGUIDAuthToken')
   })
 })

@@ -36,7 +36,7 @@ lab.experiment('Integration tests', () => {
     const options = {
       method: 'POST',
       url: '/signInValidate',
-      payload: { signinToken: '654321', code: '678901' }
+      payload: { signinToken: '654321', code: '123456' }
     }
     const response = await server.inject(options)
     Code.expect(response.statusCode).to.equal(200)

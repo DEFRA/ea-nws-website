@@ -4,7 +4,12 @@ import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Button from '../gov-uk-components/Button'
 import NotificationBanner from '../gov-uk-components/NotificationBanner'
-import { clearAuth, setAuthToken, setProfile } from '../redux/userSlice'
+import {
+  clearAuth,
+  setAuthToken,
+  setProfile,
+  setRegistrations
+} from '../redux/userSlice'
 
 export default function IndexPage () {
   const dispatch = useDispatch()
@@ -12,7 +17,8 @@ export default function IndexPage () {
 
   function mockSession () {
     if (mockSessionActive === false) {
-      const authToken = 'MockGUIDAuthToke'
+      const authToken = 'MockAuthToken'
+      const registrations = { partner: '4', name: 'NWS England' }
       const profile = {
         id: '',
         enabled: true,
@@ -44,6 +50,7 @@ export default function IndexPage () {
       }
 
       dispatch(setAuthToken(authToken))
+      dispatch(setRegistrations(registrations))
       dispatch(setProfile(profile))
       setmockSessionActive(true)
     } else {

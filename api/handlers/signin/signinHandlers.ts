@@ -9,12 +9,11 @@ async function getSigninStart(
 ) {
   console.log('Received SignInStart request for: ', req.payload)
   const { email } = req.payload as { email: string }
-  console.log(email)
   if (email === 'invalid@email.com') {
     return res.response(responseCodes.UNKNOWN_EMAIL).code(500)
   }
   console.log('Valid email, responding 200')
-  return { ...responseCodes.SUCCESS, signinToken: '123456' }
+  return { signinToken: '123456' }
 }
 
 async function getSigninValidate(
@@ -29,7 +28,7 @@ async function getSigninValidate(
   }
   if (code === '999999' || signinToken === undefined) {
     console.log('Invalid token')
-    return res.response(responseCodes.INVALID_TOKEN).code(500)
+    return res.response(responseCodes.INVALID_CODE).code(500)
   }
   console.log('Valid token')
   const profile = {
@@ -55,7 +54,7 @@ async function getSigninValidate(
       }
     }
   }
-  const registration = {
+  const registrations = {
     partner: {
       id: '4',
       name: 'NWS England',
@@ -91,7 +90,7 @@ async function getSigninValidate(
   return {
     authToken: 'MockGUIDAuthToken',
     profile: profile,
-    registration: registration
+    registrations: registrations
   }
 }
 module.exports = { getSigninStart, getSigninValidate }

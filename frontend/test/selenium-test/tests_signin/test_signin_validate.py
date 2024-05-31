@@ -3,8 +3,9 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 
-url = "http://localhost:3001/signin/validate"
-previous_url = "http://localhost:3001/signin"
+url = "http://localhost:3000/signin/validate"
+previous_url = "http://localhost:3000/signin"
+start_page = "http://localhost:3000/"
 
 def test_SignInValidate_render(get_browser):
     browser = get_browser
@@ -56,7 +57,7 @@ def test_SignInValidate_invalidCode(get_browser):
     browser.find_element(By.NAME, 'Enter code').send_keys("999999")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)
-    assert "Invalid code" in browser.page_source
+    assert "Invalid Code" in browser.page_source
     assert browser.current_url == url
 
 def test_SignInValidate_validCode(get_browser):
@@ -68,7 +69,7 @@ def test_SignInValidate_validCode(get_browser):
     browser.find_element(By.NAME, 'Enter code').send_keys("123456")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)
-    assert browser.current_url == "http://localhost:3001/"
+    assert browser.current_url == start_page
 
 def test_SignInValidate_emailAppears(get_browser):
     browser = get_browser

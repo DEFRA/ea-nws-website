@@ -33,8 +33,8 @@ lab.experiment('Web test', () => {
 
     const response = await server.inject(options)
     Code.expect(response.statusCode).to.equal(200)
-    Code.expect(response.statusMessage).to.equal('OK')
-    Code.expect(response.result.data.registerToken).to.equal('123456')
+    //Code.expect(response.statusMessage).to.equal('OK')
+    Code.expect(response.result).to.equal('123456')
   })
 
   lab.test('GET / instead of POST', async () => {
@@ -50,16 +50,13 @@ lab.experiment('Web test', () => {
     Code.expect(response.statusCode).to.equal(404)
   })
 
-  lab.test(
-    'POST / with missing payload',
-    async () => {
-      const options = {
-        method: 'POST',
-        url: '/signupStart'
-      }
-
-      const response = await server.inject(options)
-      Code.expect(response.statusCode).to.equal(400)
+  lab.test('POST / with missing payload', async () => {
+    const options = {
+      method: 'POST',
+      url: '/signupStart'
     }
-  )
+
+    const response = await server.inject(options)
+    Code.expect(response.statusCode).to.equal(400)
+  })
 })

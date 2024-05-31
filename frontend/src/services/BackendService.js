@@ -1,5 +1,7 @@
-const backendCall = async (data, path) => {
-  let responseData
+import { handleResponse } from './HandleResponse'
+
+export const backendCall = async (data, path, navigate) => {
+  let responseData = {}
   const url = 'http://localhost:5000/' + path
   try {
     const response = await fetch(url, {
@@ -9,13 +11,12 @@ const backendCall = async (data, path) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: data
+      body: JSON.stringify(data)
     })
     responseData = await response.json()
   } catch (error) {
     console.log('ERROR: ', error)
   }
-  return responseData
-}
 
-module.exports = backendCall
+  return handleResponse(responseData, navigate)
+}

@@ -11,12 +11,13 @@ lab.experiment('Web test', () => {
     server = await createServer()
   })
 
-  lab.test('POST /registerValidate route runs with valid payload', async () => {
+  lab.test('POST /signupValidate route runs with valid payload', async () => {
     const options = {
       method: 'POST',
-      url: '/registerValidate',
+      url: '/signupValidate',
       payload: {
-        email: 'test@test.com'
+        email: 'test@test.com',
+        registerToken: '123456'
       }
     }
 
@@ -26,20 +27,28 @@ lab.experiment('Web test', () => {
   })
 
   lab.test(
-    'POST /registerValidate route runs with invalid payload',
+    'GET  sending a GET response instead of POST',
     async () => {
       const options = {
-        method: 'POST',
-        url: '/registerValidate',
-        payload: {
-          email: 'invalidtest.com'
-        }
+        method: 'GET',
+        url: '/signupValidate'
       }
 
       const response = await server.inject(options)
+      Code.expect(response.statusCode).to.equal(404)
+    }
+  )
 
-      Code.expect(response.result.code).to.equal(101)
-      Code.expect(response.result.desc).to.equal('invalid code')
+  lab.test(
+    'POST / payload is missing',
+    async () => {
+      const options = {
+        method: 'POST',
+        url: '/signupValidate'
+      }
+
+      const response = await server.inject(options)
+      Code.expect(response.statusCode).to.equal(400)
     }
   )
 })

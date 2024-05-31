@@ -12,10 +12,10 @@ import {
   setProfile,
   setRegistration
 } from '../../redux/userSlice'
-import backendCall from '../../services/BackendService'
-import codeValidation from '../../services/Validations/CodeValidation'
+import { backendCall } from '../../services/BackendService'
+import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
-export default function SignInValidatePage () {
+export default function SignInValidatePage() {
   const location = useLocation()
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -28,7 +28,7 @@ export default function SignInValidatePage () {
     if (code === '') {
       setError('Enter code')
       return
-    } else if (!codeValidation(code, 6)) {
+    } else if (!authCodeValidation(code)) {
       setError('Code must be 6 numbers')
       return
     }
@@ -64,19 +64,19 @@ export default function SignInValidatePage () {
   return (
     <>
       <Header />
-      <div className='govuk-width-container'>
-        <Link to='/signin' className='govuk-back-link'>
+      <div class="govuk-width-container">
+        <Link to="/signin" className="govuk-back-link">
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 className='govuk-heading-l'>Check your email</h2>
-        <div className='govuk-body'>
+        <h2 class="govuk-heading-l">Check your email</h2>
+        <div class="govuk-body">
           We've sent a code to:
           <InsetText text={location.state.email} />
-          <Input name='Enter code' error={error} onChange={setCode} />
+          <Input name="Enter code" error={error} onChange={setCode} />
           <Button
-            className='govuk-button'
-            text='Continue'
+            className="govuk-button"
+            text="Continue"
             onClick={handleSubmit}
           />
         </div>

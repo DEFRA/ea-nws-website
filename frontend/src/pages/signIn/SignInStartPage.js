@@ -5,8 +5,8 @@ import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import Input from '../../gov-uk-components/Input'
-import backendCall from '../../services/BackendService'
-import emailValidation from '../../services/Validations/EmailValidation'
+import { backendCall } from '../../services/BackendService'
+import emailValidation from '../../services/validations/EmailValidation'
 
 export default function SignInStartPage() {
   const navigate = useNavigate()
@@ -47,6 +47,7 @@ export default function SignInStartPage() {
     if (code === 106) {
       return { emailExists: false, signinToken: null }
     }
+
     const signinToken = responseData.signinToken
     return { emailExists: true, signinToken }
   }
@@ -54,15 +55,13 @@ export default function SignInStartPage() {
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
+      <div class="govuk-width-container">
         <Link to="/" className="govuk-back-link">
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 className="govuk-heading-l">
-          Sign in to your flood warnings account
-        </h2>
-        <div className="govuk-body">
+        <h2 class="govuk-heading-l">Sign in to your flood warnings account</h2>
+        <div class="govuk-body">
           You can:
           <ul className="govuk-list govuk-list--bullet">
             <li>update or remove your locations</li>
@@ -76,7 +75,7 @@ export default function SignInStartPage() {
             onClick={handleSubmit}
           />
           <br />
-          <Link to="/" className="govuk-link">
+          <Link to="/signup" className="govuk-link">
             Sign up if you do not have an account
           </Link>
         </div>

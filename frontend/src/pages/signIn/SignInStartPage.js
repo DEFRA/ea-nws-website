@@ -6,75 +6,63 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import Input from '../../gov-uk-components/Input'
 import { backendCall } from '../../services/BackendService'
-import emailValidation from '../../services/validations/EmailValidation'
+import { emailValidation } from '../../services/validations/EmailValidation'
 
-export default function SignInStartPage () {
+export default function SignInStartPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    if (email === '') {
-      setError('Enter your email address')
-      return
-    } else if (!emailValidation(email)) {
-      setError(
-        'Enter an email address in the correct format, like name@example.com'
+    const validationError = emailValidation(email)
+    setError(validationError)
+    const dataToSend = { email }
+    if (validationError === '') {
+      const { errorMessage, data } = await backendCall(
+        dataToSend,
+        'signInStart',
+        navigate
       )
-      return
+      if (errorMessage !== null) {
+        setError(errorMessage.desc)
+      } else {
+        navigate('/signin/validate', {
+          state: { signinToken: data.signinToken, email }
+        })
+      }
     }
-
-    const { emailExists, signinToken } = await checkEmail(email)
-    if (!emailExists) {
-      setError('Email address is not recognised - check and try again')
-      return
-    }
-
-    navigate('/signin/validate', {
-      state: { signinToken, email }
-    })
-  }
-
-  const checkEmail = async (email) => {
-    const raw = JSON.stringify({ email })
-    const responseData = await backendCall(raw, 'signInStart')
-
-    if (responseData === undefined) {
-      return { emailExists: false, signinToken: null }
-    }
-    const code = responseData.code
-    if (code === 106) {
-      return { emailExists: false, signinToken: null }
-    }
-    const signinToken = responseData.signinToken
-    return { emailExists: true, signinToken }
   }
 
   return (
     <>
       <Header />
-      <div class='govuk-width-container'>
-        <Link to='/' className='govuk-back-link'>
+      <div class="govuk-width-container">
+        <Link to="/" className="govuk-back-link">
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 class='govuk-heading-l'>Sign in to your flood warnings account</h2>
-        <div class='govuk-body'>
+        <h2 class="govuk-heading-l">Sign in to your flood warnings account</h2>
+        <div class="govuk-body">
           You can:
-          <ul className='govuk-list govuk-list--bullet'>
+          <ul className="govuk-list govuk-list--bullet">
             <li>update or remove your locations</li>
             <li>change how you get flood messages</li>
             <li>delete your account</li>
           </ul>
-          <Input name='Email address' error={error} onChange={setEmail} />
+          <Input
+            name="Email address"
+            inputType="text"
+            error={error}
+            onChange={(val) => setEmail(val)}
+          />
           <Button
-            className='govuk-button'
-            text='Continue'
+            className="govuk-button"
+            text="Continue"
             onClick={handleSubmit}
           />
           <br />
-          <Link to='/' className='govuk-link'>
+          <Link to="/signup" className="govuk-link">
             Sign up if you do not have an account
           </Link>
         </div>

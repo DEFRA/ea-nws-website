@@ -8,19 +8,19 @@ import {
   clearAuth,
   setAuthToken,
   setProfile,
-  setRegistration
+  setRegistrations
 } from '../redux/userSlice'
 
-export default function IndexPage () {
+export default function IndexPage() {
   const dispatch = useDispatch()
   const [mockSessionActive, setmockSessionActive] = useState(false)
 
-  function mockSession () {
+  function mockSession() {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
-      const registration = { partner: '4', name: 'NWS England' }
+      const registrations = { partner: '4', name: 'NWS England' }
       const profile = {
-        id: '1',
+        id: '',
         enabled: true,
         firstName: 'John',
         lastName: 'Smith',
@@ -50,7 +50,7 @@ export default function IndexPage () {
       }
 
       dispatch(setAuthToken(authToken))
-      dispatch(setRegistration(registration))
+      dispatch(setRegistrations(registrations))
       dispatch(setProfile(profile))
       setmockSessionActive(true)
     } else {
@@ -61,52 +61,52 @@ export default function IndexPage () {
 
   return (
     <>
-      <div className='govuk-width-container'>
-        <main className='govuk-main-wrapper'>
-          <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-two-thirds'>
-              <h1 className='govuk-heading-xl'>Next Warning Service Index</h1>
+      <div className="govuk-width-container">
+        <main className="govuk-main-wrapper">
+          <div className="govuk-grid-row">
+            <div className="govuk-grid-column-two-thirds">
+              <h1 className="govuk-heading-xl">Next Warning Service Index</h1>
               <NotificationBanner
-                className='govuk-notification-banner govuk-notification-banner--success'
-                title='Mock session'
+                className="govuk-notification-banner govuk-notification-banner--success"
+                title="Mock session"
                 text={mockSessionActive ? 'Active' : 'Not Active'}
               />
-              <p className='govuk-body'>A quick link to each page</p>
-              <ul className='govuk-list'>
+              <p className="govuk-body">A quick link to each page</p>
+              <ul className="govuk-list">
                 <li>
-                  <Link to='/' className='govuk-link'>
+                  <Link to="/" className="govuk-link">
                     Start page
                   </Link>
                 </li>
                 <li>
-                  <Link to='/signin' className='govuk-link'>
+                  <Link to="/signin" className="govuk-link">
                     Sign in page
                   </Link>
                 </li>
                 <li>
-                  <Link to='/signup' className='govuk-link'>
+                  <Link to="/signup" className="govuk-link">
                     Sign up page
                   </Link>
                 </li>
               </ul>
 
-              <p className='govuk-body'>
+              <p className="govuk-body">
                 A session is required to access the below pages - click below to
                 start/kill the mock session
               </p>
               <Button
-                className='govuk-button'
-                text='Activate/Deactivate Mock Session'
+                className="govuk-button"
+                text="Activate/Deactivate Mock Session"
                 onClick={mockSession}
               />
-              <ul className='govuk-list'>
+              <ul className="govuk-list">
                 <li>
-                  <Link to='/home' className='govuk-link'>
+                  <Link to="/home" className="govuk-link">
                     Home page
                   </Link>
                 </li>
                 <li>
-                  <Link to='/managecontacts' className='govuk-link'>
+                  <Link to="/managecontacts" className="govuk-link">
                     Manage Contacts page
                   </Link>
                 </li>

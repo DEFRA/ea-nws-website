@@ -4,13 +4,13 @@ import ConfirmDeleteContactDetailsPage from '../pages/contact-details/ConfirmDel
 import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
 import HomePage from '../pages/home/HomePage'
 import SignInPage from '../pages/signIn/SignInStartPage'
-import CheckYourEmailPage from '../pages/signIn/SignInValidatePage'
-import InitialEmailRegistrationPage from '../pages/signup/account/InitialEmailRegistrationPage'
-import ValidateEmailForRegistration from '../pages/signup/account/ValidateEmailForRegistration'
+import SignInValidatePage from '../pages/signIn/SignInValidatePage'
+import SignUpPage from '../pages/signup/account/SignUpPage'
+import SignUpValidationPage from '../pages/signup/account/SignUpValidationPage'
 import WarningContactsPreferencePage from '../pages/signup/channel-preferences/WarningContactsPreferencePage'
-import AddMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/AddMobilePhonePage'
-import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/SkipConfirmMobilePhonePage'
-import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
+import AddLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/AddLandlinePhonePage'
+import SkipConfirmLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/SkipConfirmLandlinePhonePage'
+import ValidateLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/ValidateLandlinePhonePage'
 import StartPage from '../pages/start/StartPage'
 
 // index routes
@@ -19,17 +19,24 @@ const indexRoutes = [{ path: '/index', component: <Index /> }]
 // start routes
 const startRoutes = [{ path: '/', component: <StartPage /> }]
 
+// sign in routes
+const siginRoutes = [
+  { path: '/signin', component: <SignInPage /> },
+  { path: '/signin/validate', component: <SignInValidatePage /> }
+]
+
 // sign up routes
 const signupRoutes = [
-  { path: '/signup', component: <InitialEmailRegistrationPage /> },
+  { path: '/signup', component: <SignUpPage /> },
   {
     path: '/signup/validate',
-    component: <ValidateEmailForRegistration />
+    component: <SignUpValidationPage />
   },
   {
     path: '/signup/contactpreferences',
     component: <WarningContactsPreferencePage />
   },
+  //mobile phone authentication route
   {
     path: '/signup/contactpreferences/mobile',
     component: <AddMobilePhonePage />
@@ -41,13 +48,20 @@ const signupRoutes = [
   {
     path: '/signup/contactpreferences/mobile/skipconfirmation',
     component: <SkipConfirmMobilePhonePage />
+  },
+  //landline authentication route
+  {
+    path: '/signup/contactpreferences/landline',
+    component: <AddLandlinePhonePage />
+  },
+  {
+    path: '/signup/contactpreferences/landline/validate',
+    component: <ValidateLandlinePhonePage />
+  },
+  {
+    path: '/signup/contactpreferences/landline/skipconfirm',
+    component: <SkipConfirmLandlinePhonePage />
   }
-]
-
-// sign in routes
-const siginRoutes = [
-  { path: '/signin', component: <SignInPage /> },
-  { path: '/signin/validate', component: <CheckYourEmailPage /> }
 ]
 
 // home
@@ -57,7 +71,7 @@ const homeRoutes = [{ path: '/home', component: <HomePage /> }]
 const contactRoutes = [
   { path: '/managecontacts', component: <ContactDetailsPage /> },
   {
-    path: '/managecontacts/confirm',
+    path: '/managecontacts/confirm-delete',
     component: <ConfirmDeleteContactDetailsPage />
   }
 ]
@@ -67,6 +81,7 @@ const routes = [
   ...startRoutes,
   ...signupRoutes,
   ...siginRoutes,
+  ...signupRoutes,
   ...homeRoutes,
   ...contactRoutes
 ]

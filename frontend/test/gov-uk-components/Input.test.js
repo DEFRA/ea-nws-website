@@ -3,49 +3,78 @@ import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
 import Input from '../../src/gov-uk-components/Input'
 
-describe('Input Component', () => {
+describe('TextInput component', () => {
   const mockOnChange = jest.fn()
 
-  const setup = (props = {}) => {
-    return render(
+  test('renders the input with the correct name and className', () => {
+    render(
       <Input
-        name='test-input'
-        className='test-class'
-        value=''
+        name="Test Name"
+        className="test-class"
+        value=""
         onChange={mockOnChange}
-        {...props}
+        inputType="text"
       />
     )
-  }
 
-  it('should render without errors', () => {
-    setup()
-    expect(screen.getByLabelText('test-input')).toBeInTheDocument()
-  })
-
-  it('should render with the correct class when there is no error', () => {
-    setup()
-    const inputElement = screen.getByLabelText('test-input')
+    const inputElement = screen.getByLabelText('Test Name')
+    expect(inputElement).toBeInTheDocument()
     expect(inputElement).toHaveClass('test-class')
   })
 
-  it('should render with error class and message when error is present', () => {
-    setup({ error: 'This is an error message' })
-    const inputElement = screen.getByLabelText('test-input')
+  test('calls onChange when the input value changes', () => {
+    render(
+      <Input
+        name="Test Name"
+        className="test-class"
+        value=""
+        onChange={mockOnChange}
+        inputType="text"
+      />
+    )
+
+    const inputElement = screen.getByLabelText('Test Name')
+    fireEvent.change(inputElement, { target: { value: 'New Value' } })
+
+    expect(mockOnChange).toHaveBeenCalledWith('New Value')
+  })
+
+  test('displays the correct initial value', () => {
+    render(
+      <Input
+        name="Test Name"
+        className="test-class"
+        value="Initial Value"
+        onChange={mockOnChange}
+        inputType="text"
+      />
+    )
+
+    const inputElement = screen.getByLabelText('Test Name')
+    expect(inputElement).toHaveValue('Initial Value')
+  })
+
+  test('renders the input with error message and error class when there is an error', () => {
+    const mockOnChange = jest.fn()
+    const errorMessage = 'This is an error message'
+
+    render(
+      <Input
+        name="Test Name"
+        className="test-class"
+        value=""
+        onChange={mockOnChange}
+        error={errorMessage}
+        inputType="text"
+      />
+    )
+
+    const inputElement = screen.getByLabelText('Test Name')
+    const errorElement = screen.getByText(errorMessage)
+
+    expect(inputElement).toBeInTheDocument()
     expect(inputElement).toHaveClass('govuk-input--error')
-    expect(screen.getByText('This is an error message')).toBeInTheDocument()
-  })
-
-  it('should call onChange when the input value changes', () => {
-    setup()
-    const inputElement = screen.getByLabelText('test-input')
-    fireEvent.change(inputElement, { target: { value: 'new value' } })
-    expect(mockOnChange).toHaveBeenCalledWith('new value')
-  })
-
-  it('should have the correct initial value', () => {
-    setup({ value: 'initial value' })
-    const inputElement = screen.getByLabelText('test-input')
-    expect(inputElement).toHaveValue('initial value')
+    expect(errorElement).toBeInTheDocument()
+    expect(errorElement).toHaveClass('govuk-error-message')
   })
 })

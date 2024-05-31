@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
+import Details from '../../gov-uk-components/Details'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
@@ -10,11 +11,23 @@ import ContactDetailsTable from './ContactDetailsTable'
 
 export default function ContactDetailsPage () {
   const location = useLocation()
-
-  // [TODO] we need to perform a check if this is null
-  // most likely would be null if the user has logged out etc
-  // but we should take the user to an error page or something similar
   const profile = useSelector((state) => state.session.profile)
+  // user is not allowed to remove the primary email
+  const primaryEmail = profile.emails[0]
+
+  const detailsMessage = (
+    <div>
+      You must keep at least one contact on your account.&nbsp;
+      <a href='#' className='govuk-link'>
+        Add a new contact
+      </a>
+      &nbsp; before removing any you do not need. Or you could&nbsp;
+      <a href='#' className='govuk-link'>
+        Delete your account
+      </a>
+      &nbsp; instead.
+    </div>
+  )
 
   return (
     <>
@@ -50,31 +63,27 @@ export default function ContactDetailsPage () {
                 contacts={profile.emails}
                 contactTitle='Emails'
                 contactType='email address'
-                notRemovable={
-                  profile.emails.length === 1 &&
-                  profile.mobilePhones.length === 0 &&
-                  profile.homePhones.length === 0
-                }
+                primaryContact={primaryEmail}
               />
+              {profile.emails.length === 1 &&
+                profile.mobilePhones.length === 0 &&
+                profile.homePhones.length === 0 && (
+                  <Details
+                    title='If you want to remove this contact'
+                    text={detailsMessage}
+                  />
+              )}
               <ContactDetailsTable
                 contacts={profile.mobilePhones}
                 contactTitle='Texts'
                 contactType='mobile telephone number'
-                notRemovable={
-                  profile.emails.length === 0 &&
-                  profile.mobilePhones.length === 1 &&
-                  profile.homePhones.length === 0
-                }
+                primaryContact={null}
               />
               <ContactDetailsTable
                 contacts={profile.homePhones}
                 contactTitle='Phone call warnings'
                 contactType='telephone number'
-                notRemovable={
-                  profile.emails.length === 0 &&
-                  profile.mobilePhones.length === 0 &&
-                  profile.homePhones.length === 1
-                }
+                primaryContact={null}
               />
             </div>
           </div>

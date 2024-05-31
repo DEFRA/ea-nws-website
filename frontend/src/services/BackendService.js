@@ -16,7 +16,9 @@ export const backendCall = async (data, path, navigate) => {
     responseData = await response.json()
   } catch (error) {
     console.log('ERROR: ', error)
+    // we need to navigate the user to an error page if we
+    // get an error response from requesting to our backend
+    // navigate(/error-page)
   }
-
   return handleResponse(responseData, navigate)
 }

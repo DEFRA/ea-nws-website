@@ -11,7 +11,7 @@ lab.experiment('Integration tests', () => {
     server = await createServer()
   })
 
-  lab.test('POST / route runs with invalid email format', async () => {
+  lab.test('POST / route runs with invalid email', async () => {
     const options = {
       method: 'POST',
       url: '/signInStart',
@@ -20,7 +20,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.code).to.equal(101)
+    Code.expect(response.statusCode).to.equal(500)
   })
 
   lab.test('POST / route runs with invalid email format', async () => {
@@ -32,7 +32,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.code).to.equal(101)
+    Code.expect(response.errorMessage.code).to.equal(106)
   })
 
   lab.test('POST / route runs with invalid email format', async () => {
@@ -44,7 +44,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.code).to.equal(101)
+    Code.expect(response.result.errorMessage.code).to.equal(106)
   })
 
   lab.test('POST / route runs with valid email format', async () => {
@@ -52,10 +52,10 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/signInStart',
       payload: {
-        email: 'valid@email.com'
+        email: 'email@email.com'
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.code).to.equal(200)
+    Code.expect(response.statusCode).to.equal(200)
   })
 })

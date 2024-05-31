@@ -10,11 +10,12 @@ import InsetText from '../../gov-uk-components/InsetText'
 import {
   setAuthToken,
   setProfile,
-  setRegistration
+  setRegistrations
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
+export default function SignInValidatePage() {
 export default function SignInValidatePage() {
   const location = useLocation()
   const [error, setError] = useState('')
@@ -25,40 +26,23 @@ export default function SignInValidatePage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    if (code === '') {
-      setError('Enter code')
-      return
-    } else if (!authCodeValidation(code)) {
-      setError('Code must be 6 numbers')
-      return
+    const validationError = authCodeValidation(code)
+    setError(validationError)
+    if (validationError === '') {
+      const dataToSend = { signinToken, code: code }
+      const { errorMessage, data } = await backendCall(
+        dataToSend,
+        'signInValidate'
+      )
+      if (errorMessage !== null) {
+        setError(errorMessage.desc)
+      } else {
+        dispatch(setAuthToken(data.authToken))
+        dispatch(setProfile(data.profile))
+        dispatch(setRegistrations(data.registrations))
+        navigate('/')
+      }
     }
-
-    const backendResponse = await validateCode(code)
-    if (!backendResponse) {
-      setError('Invalid code')
-      return
-    }
-    navigate('/')
-  }
-
-  const validateCode = async (code) => {
-    const raw = JSON.stringify({
-      signinToken,
-      code
-    })
-    const responseData = await backendCall(raw, 'signInValidate')
-
-    if (
-      responseData === undefined ||
-      Object.prototype.hasOwnProperty.call(responseData, 'code')
-    ) {
-      return false
-    }
-    dispatch(setAuthToken(responseData.authToken))
-    dispatch(setProfile(responseData.profile))
-    dispatch(setRegistration(responseData.registration))
-
-    return true
   }
 
   return (
@@ -74,6 +58,12 @@ export default function SignInValidatePage() {
           We've sent a code to:
           <InsetText text={location.state.email} />
           <Input name="Enter code" error={error} onChange={setCode} />
+          <Input
+            name="Enter code"
+            inputType="text"
+            error={error}
+            onChange={(val) => setCode(val)}
+          />
           <Button
             className="govuk-button"
             text="Continue"

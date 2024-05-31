@@ -8,7 +8,7 @@ import {
   clearAuth,
   setAuthToken,
   setProfile,
-  setRegistration
+  setRegistrations
 } from '../redux/userSlice'
 
 export default function IndexPage() {
@@ -18,7 +18,7 @@ export default function IndexPage() {
   function mockSession() {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
-      const registration = { partner: '4', name: 'NWS England' }
+      const registrations = { partner: '4', name: 'NWS England' }
       const profile = {
         id: '',
         enabled: true,
@@ -50,7 +50,7 @@ export default function IndexPage() {
       }
 
       dispatch(setAuthToken(authToken))
-      dispatch(setRegistration(registration))
+      dispatch(setRegistrations(registrations))
       dispatch(setProfile(profile))
       setmockSessionActive(true)
     } else {

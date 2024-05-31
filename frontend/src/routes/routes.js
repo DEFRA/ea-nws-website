@@ -4,20 +4,25 @@ import ConfirmDeleteContactDetailsPage from '../pages/contact-details/ConfirmDel
 import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
 import HomePage from '../pages/home/HomePage'
 import SignInPage from '../pages/signIn/SignInStartPage'
-import CheckYourEmailPage from '../pages/signIn/SignInValidatePage'
-import SignBackIn from '../pages/signOut/SignBackIn'
-import SignOutAutomatically from '../pages/signOut/SignOutAutomatically'
-import InitialEmailRegistrationPage from '../pages/signup/account/InitialEmailRegistrationPage'
+import SignInValidatePage from '../pages/signIn/SignInValidatePage'
 import SignUpPage from '../pages/signup/account/SignUpPage'
 import SignUpValidationPage from '../pages/signup/account/SignUpValidationPage'
-import ValidateEmailForRegistration from '../pages/signup/account/ValidateEmailForRegistration'
 import WarningContactsPreferencePage from '../pages/signup/channel-preferences/WarningContactsPreferencePage'
+import AddLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/AddLandlinePhonePage'
+import SkipConfirmLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/SkipConfirmLandlinePhonePage'
+import ValidateLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/ValidateLandlinePhonePage'
 import StartPage from '../pages/start/StartPage'
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
 
 // start routes
 const startRoutes = [{ path: '/', component: <StartPage /> }]
+
+// sign in routes
+const siginRoutes = [
+  { path: '/signin', component: <SignInPage /> },
+  { path: '/signin/validate', component: <SignInValidatePage /> }
+]
 
 // sign up routes
 const signupRoutes = [
@@ -29,21 +34,18 @@ const signupRoutes = [
   {
     path: '/signup/contactpreferences',
     component: <WarningContactsPreferencePage />
-  }
-]
-
-// sign in routes
-const siginRoutes = [
-  { path: '/signin', component: <SignInPage /> },
-  { path: '/signin/validate', component: <CheckYourEmailPage /> }
-]
-
-// register routes
-const registerRoutes = [
-  { path: '/register', component: <InitialEmailRegistrationPage /> },
+  },
   {
-    path: '/register/validate',
-    component: <ValidateEmailForRegistration />
+    path: '/signup/contactpreferences/landline',
+    component: <AddLandlinePhonePage />
+  },
+  {
+    path: '/signup/contactpreferences/landline/validate',
+    component: <ValidateLandlinePhonePage />
+  },
+  {
+    path: '/signup/contactpreferences/landline/skipconfirm',
+    component: <SkipConfirmLandlinePhonePage />
   }
 ]
 
@@ -67,18 +69,6 @@ const signOutRoutes = [
 export const routes = [
   ...indexRoutes,
   ...startRoutes,
-  ...signupRoutes,
-  ...siginRoutes,
-  ...signupRoutes,
-  ...homeRoutes,
-  ...contactRoutes,
-  ...signOutRoutes,
-  ...signBackRoute
-]
-// export unauth routes
-export const unAuthRoutes = [
-  ...startRoutes,
-  ...signupRoutes,
   ...siginRoutes,
   ...signupRoutes,
   ...homeRoutes,
@@ -90,7 +80,9 @@ export const unAuthRoutes = [
 export const unAuthRoutes = [
   ...startRoutes,
   ...siginRoutes,
-  ...registerRoutes,
-  ...signBackRoute,
-  ...indexRoutes
+  ...signupRoutes,
+  ...homeRoutes,
+  ...contactRoutes
 ]
+
+export default routes

@@ -1,10 +1,12 @@
-const codeValidation = require('../../services/Validations/CodeValidation')
-const apiService = require('../../services/ApiService')
+const {
+  authCodeValidation
+} = require('../../services/validations/AuthCodeValidation')
+const { apiService } = require('../../services/ApiService')
 
 const apiSignupValidateCall = async (registerToken, code) => {
   const data = { registerToken, code }
 
-  if (!codeValidation(code, 6)) {
+  if (authCodeValidation(code) !== '') {
     return { status: 500, errorMessage: { code: 101, desc: 'Invalid code' } }
   }
 

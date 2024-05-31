@@ -37,7 +37,7 @@ def start_api(compile_api):
 
 @pytest.fixture(scope="session", autouse=True)
 def start_backend():
-    port = "3000"
+    port = "5000"
     env = os.environ.copy()
     env["PORT"] = port
     backend_process = subprocess.Popen(["node", "../backend/index.js"], env=env)
@@ -50,7 +50,7 @@ def start_backend():
 
 @pytest.fixture(scope="session", autouse=True)
 def start_frontend():
-    port = "3001"
+    port = "3000"
     env = os.environ.copy()
     env["PORT"] = port
     frontend_process = subprocess.Popen(["npm", "start"], env=env)

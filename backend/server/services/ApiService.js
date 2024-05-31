@@ -9,11 +9,11 @@ const apiCall = async (data, path) => {
       },
       withCredentials: true
     })
-    console.log('response data', response.data)
-    if (response.status === 200) {
-      return { status: response.status, data: response.data }
-    }
+
+    return { status: response.status, data: response.data }
   } catch (error) {
+    console.log('Error')
+
     if (error.response) {
       const { status } = error.response
       if (status === 400) {
@@ -24,7 +24,7 @@ const apiCall = async (data, path) => {
         return { status: status }
       } else if (status === 500) {
         console.log('Internal Server Error:', error.response.data)
-        return { status: status, data: error.response.data }
+        return { status: status, errorMessage: error.response.data }
       }
     } else if (error.request) {
       // no response was received

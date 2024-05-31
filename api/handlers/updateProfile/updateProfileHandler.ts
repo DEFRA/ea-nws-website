@@ -9,11 +9,9 @@ async function getUpdateProfile(
 ) {
   const { authToken } = req.payload as { authToken: string }
   const { profile } = req.payload as { profile: Object }
-  console.log(Object.keys(profile).length != 0)
-  console.log(profile)
 
   //not sure how to validate the profile data without doing hardcoded validation for each scenario
-  if (authToken === 'MockGUIDAuthToken' && Object.keys(profile).length != 0) {
+  if (authToken === 'MockAuthToken' && Object.keys(profile).length != 0) {
     return res.response(responseCodes.SUCCESS)
   } else {
     return res.response(responseCodes.INVALID_TOKEN).code(500)

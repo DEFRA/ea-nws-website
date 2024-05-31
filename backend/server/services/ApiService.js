@@ -13,21 +13,26 @@ const apiCall = async (data, path) => {
 
     return { status: response.status, data: response.data }
   } catch (error) {
-    console.log('Error')
-
     if (error.response) {
       const { status } = error.response
       if (status === 400) {
-        return { status }
+        return {
+          status: status,
+          errorMessage: 'Oops something broke, try again'
+        }
       } else if (status === 404) {
         return { status }
       } else if (status === 500) {
-        console.log('Internal Server Error:', error.response.data)
         return { status: status, errorMessage: error.response.data }
       }
     } else if (error.request) {
-      // no response was received
+      // no response was received - probably need to return
       console.log('No response received:', error.request)
+      //returning an error so frontend can handle
+      return {
+        status: 400,
+        errorMessage: 'Oops something broke, try again'
+      }
     }
   }
   return null

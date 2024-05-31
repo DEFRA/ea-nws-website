@@ -16,7 +16,7 @@ lab.experiment('Integration tests', () => {
     async () => {
       const options = {
         method: 'POST',
-        url: '/signup/contactpreferences/landline/start'
+        url: '/signup/contactpreferences/landline/add'
       }
       const response = await server.inject(options)
       Code.expect(response.statusCode).to.equal(400)
@@ -36,7 +36,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / Response status is 200 if everything is ok', async () => {
     const options = {
       method: 'POST',
-      url: '/signup/contactpreferences/landline/start',
+      url: '/signup/contactpreferences/landline/add',
       payload: {
         authToken: 'MockGUIDAuthToken',
         phone: '07590000000'
@@ -44,6 +44,6 @@ lab.experiment('Integration tests', () => {
     }
     const response = await server.inject(options)
     // Nothing is being responded
-    Code.expect(response.statusCode).to.equal(204)
+    Code.expect(response.statusCode).to.equal(200)
   })
 })

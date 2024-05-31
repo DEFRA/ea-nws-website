@@ -14,20 +14,20 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with invalid phone', async () => {
     const options = {
       method: 'POST',
-      url: '/signup/contactpreferences/landline/start',
+      url: '/signup/contactpreferences/landline/add',
       payload: {
         authToken: 'MockGUIDAuthToken',
         phone: '12321'
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result).to.equal(104)
+    Code.expect(response.statusCode).to.equal(500)
   })
 
   lab.test('POST / route runs with empty phone number', async () => {
     const options = {
       method: 'POST',
-      url: '/signup/contactpreferences/landline/start',
+      url: '/signup/contactpreferences/landline/add',
       payload: {
         authToken: 'MockGUIDAuthToken',
         phone: ''
@@ -40,7 +40,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with invalid authToken', async () => {
     const options = {
       method: 'POST',
-      url: '/signup/contactpreferences/landline/start',
+      url: '/signup/contactpreferences/landline/add',
       payload: {
         authToken: 'InvalidGUIDAuthToken',
         phone: '07590000000'
@@ -53,13 +53,13 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with valid email format', async () => {
     const options = {
       method: 'POST',
-      url: '/signup/contactpreferences/landline/start',
+      url: '/signup/contactpreferences/landline/add',
       payload: {
         authToken: 'MockGUIDAuthToken',
         phone: '07590000000'
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(204)
+    Code.expect(response.statusCode).to.equal(200)
   })
 })

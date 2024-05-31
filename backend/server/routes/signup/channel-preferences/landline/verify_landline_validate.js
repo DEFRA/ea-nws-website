@@ -13,7 +13,7 @@ const apiLandlineValidateCall = async (code, msisdn, auth, h) => {
     const validationError = authCodeValidation(code)
     if (validationError === '') {
       const response = await apiCall(data, 'member/verifyHomePhoneValidate')
-      return { response }
+      return response
     } else {
       return { status: 500, errorMessage: validationError }
     }

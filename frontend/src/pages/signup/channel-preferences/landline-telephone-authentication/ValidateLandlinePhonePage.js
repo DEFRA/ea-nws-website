@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../gov-uk-components/Button'
 import ErrorSummary from '../../../../gov-uk-components/ErrorSummary'
@@ -9,8 +10,10 @@ import Input from '../../../../gov-uk-components/Input'
 import InsetText from '../../../../gov-uk-components/InsetText'
 import { backendCall } from '../../../../services/BackendService'
 import { authCodeValidation } from '../../../../services/Validations/AuthCodeValidation'
+
 export default function ValidateLandlinePhonePage() {
   const location = useLocation()
+  const dispatch = useDispatch()
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
@@ -28,13 +31,15 @@ export default function ValidateLandlinePhonePage() {
       msisdn: location.state.msisdn,
       code
     }
-    const { errorMessage } = await backendCall(
+
+    const { errorMessage, data } = await backendCall(
       dataToSend,
       'signup/contactpreferences/landline/validate'
     )
     if (errorMessage !== null) {
       setError(errorMessage.desc)
     } else {
+      dispatch(setAuthToken(data.profile))
       navigate('/signup/contactpreferences')
     }
   }

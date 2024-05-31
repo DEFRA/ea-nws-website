@@ -8,9 +8,9 @@ import Footer from '../../../../gov-uk-components/Footer'
 import Header from '../../../../gov-uk-components/Header'
 import Input from '../../../../gov-uk-components/Input'
 import InsetText from '../../../../gov-uk-components/InsetText'
+import { setProfile } from '../../../../redux/userSlice'
 import { backendCall } from '../../../../services/BackendService'
-import { authCodeValidation } from '../../../../services/Validations/AuthCodeValidation'
-
+import { authCodeValidation } from '../../../../services/validations/AuthCodeValidation'
 export default function ValidateLandlinePhonePage() {
   const location = useLocation()
   const dispatch = useDispatch()
@@ -39,7 +39,7 @@ export default function ValidateLandlinePhonePage() {
     if (errorMessage !== null) {
       setError(errorMessage.desc)
     } else {
-      dispatch(setAuthToken(data.profile))
+      dispatch(setProfile(data.profile))
       navigate('/signup/contactpreferences')
     }
   }

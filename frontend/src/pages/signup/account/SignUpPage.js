@@ -1,14 +1,14 @@
 import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import Input from '../../../gov-uk-components/Input'
-import { backendCall } from '../../../services/BackendService'
-import emailValidation from '../../../services/Validations/EmailValidation'
 import InsetText from '../../../gov-uk-components/InsetText'
-import { Link, useNavigate } from 'react-router-dom'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
+import { backendCall } from '../../../services/BackendService'
+import { emailValidation } from '../../../services/validations/EmailValidation'
 
 export default function SignUpPage () {
   const navigate = useNavigate()
@@ -40,7 +40,7 @@ export default function SignUpPage () {
       <Header />
       <div className='govuk-width-container'>
         <PhaseBanner />
-        <Link to='/' className='govuk-back-link'>
+        <Link to='/signin' className='govuk-back-link'>
           Back
         </Link>
         {error && <ErrorSummary errorList={[error]} />}
@@ -48,9 +48,18 @@ export default function SignUpPage () {
           Enter an email address - you'll use this to sign in to your account
         </h2>
         <div className='govuk-body'>
-          <p>You'll be able to use your account to update your locations, flood messages or contact details. </p>
+          <p>
+            You'll be able to use your account to update your locations, flood
+            messages or contact details.{' '}
+          </p>
           <InsetText text='We recommend using an email address you can access 24 hours a day.' />
-          <Input className='govuk-input govuk-input--width-10' inputType='text' name='Email address' error={error} onChange={(val) => setEmail(val)} />
+          <Input
+            className='govuk-input govuk-input--width-10'
+            inputType='text'
+            name='Email address'
+            error={error}
+            onChange={(val) => setEmail(val)}
+          />
           <Button
             className='govuk-button'
             text='Continue'

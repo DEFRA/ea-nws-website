@@ -8,7 +8,7 @@ import Header from '../../../../gov-uk-components/Header'
 import Input from '../../../../gov-uk-components/Input'
 import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
 import { backendCall } from '../../../../services/BackendService'
-import phoneValidation from '../../../../services/Validations/PhoneValidation'
+import { phoneValidation } from '../../../../services/validations/PhoneValidation'
 
 export default function AddLandlinePhonePage() {
   const navigate = useNavigate()

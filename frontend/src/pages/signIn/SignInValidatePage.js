@@ -13,7 +13,7 @@ import {
   setRegistration
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
-import { authCodeValidation } from '../../services/Validations/AuthCodeValidation'
+import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 export default function SignInValidatePage() {
   const location = useLocation()
   const [error, setError] = useState('')

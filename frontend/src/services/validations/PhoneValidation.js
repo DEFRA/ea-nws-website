@@ -29,4 +29,4 @@ const phoneValidation = (number, type) => {
   }
 }
 
-module.exports = phoneValidation
+module.exports = { phoneValidation }

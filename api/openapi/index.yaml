@@ -11,7 +11,7 @@ paths:
     $ref: './paths/signup/registerStart.yaml'
   /member/registerValidate:
     $ref: './paths/signup/registerValidate.yaml'
-  /member/updateprofile:
+  /member/updateProfile:
     $ref: './paths/update_profile/updateProfile.yaml'
   /member/verifyHomePhoneStart:
     $ref: './paths/signup/channel-preferences/homePhone/verifyHomePhoneStart.yaml'

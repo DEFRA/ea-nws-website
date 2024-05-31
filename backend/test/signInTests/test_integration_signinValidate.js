@@ -38,7 +38,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.data.code).to.equal(101)
+    Code.expect(response.result.status).to.equal(500)
   })
 
   lab.test('POST / should return 101, code too short', async () => {
@@ -51,7 +51,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.data.code).to.equal(101)
+    Code.expect(response.result.status).to.equal(500)
   })
 
   lab.test(

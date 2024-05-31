@@ -51,7 +51,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.statusCode).to.equal(500)
+    Code.expect(response.statusCode).to.equal(500)
   })
 
   lab.test('POST / route runs with invalid code (empty)', async () => {

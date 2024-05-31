@@ -12,7 +12,7 @@ export default function IndexPage () {
 
   function mockSession () {
     if (mockSessionActive === false) {
-      const authToken = 'MockGUIDAuthToken'
+      const authToken = 'MockGUIDAuthToke'
       const profile = {
         id: '',
         enabled: true,

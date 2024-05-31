@@ -1,26 +1,24 @@
-import axios from 'axios'
 import { handleResponse } from './HandleResponse'
 
 export const backendCall = async (data, path, navigate) => {
+  let responseData
   const url = 'http://localhost:5000/' + path
   try {
-    const response = await axios.post(url, data, {
+    const response = await fetch(url, {
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'same-origin',
       headers: {
         'Content-Type': 'application/json'
       },
-      withCredentials: false
+      body: JSON.stringify(data)
     })
-    return handleResponse(
-      { data: response.data, status: response.status },
-      navigate
-    )
+    responseData = await response.json()
   } catch (error) {
-    return handleResponse(
-      {
-        responseData: null,
-        status: error.response ? error.response.status : 500
-      },
-      navigate
-    )
+    console.log('ERROR: ', error)
+    // we need to navigate the user to an error page if we
+    // get an error response from requesting to our backend
+    // navigate(/error-page)
   }
+  return handleResponse(responseData, navigate)
 }

@@ -11,7 +11,7 @@ export default function SignOutManually() {
 
   function loggedOut() {
     if (session.authToken !== null) {
-      dispatch(clearAuth)
+      dispatch(clearAuth())
       return true
     } else {
       return false

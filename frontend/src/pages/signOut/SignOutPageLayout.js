@@ -2,7 +2,7 @@ import React from 'react'
 import Button from '../../gov-uk-components/Button'
 export default function signOutLayout({ text, redirect }) {
   return (
-    <div>
+    <div className="govuk-width-container">
       <h2 className="govuk-heading-l">{text}</h2>
       <p className="govuk-body">You can sign back in if you need to.</p>
       <Button text="Sign in" className="govuk-button" onClick={redirect} />

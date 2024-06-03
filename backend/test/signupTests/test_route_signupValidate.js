@@ -2,11 +2,16 @@ const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
 const lab = (exports.lab = Lab.script())
 const createServer = require('../../server')
-lab.experiment('Web test', () => {
+const { startApiServer, apiServerStarted } = require('./../test_api_setup')
+
+lab.experiment('Route tests', () => {
   let server
 
   // Create server before the tests
   lab.before(async () => {
+    if (!apiServerStarted) {
+      await startApiServer()
+    }
     server = await createServer()
   })
 

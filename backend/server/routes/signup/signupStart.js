@@ -1,22 +1,29 @@
 const {
   emailValidation
 } = require('../../services/validations/EmailValidation')
-const apiService = require('../../services/ApiService')
+const {apiCall} = require('../../services/ApiService')
 
 const apiSignupStartCall = async (email) => {
   const data = { email }
   console.log('Received from front-end: ', data)
+  const errorValidation = emailValidation(email)
 
-  if (!emailValidation(email)) {
-    return { status: 500, errorMessage: { code: 101, desc: 'Invalid code' } }
+  try {
+    if (errorValidation === '') {
+      const response = await apiCall(data, 'member/registerStart')
+      return response
+    } else {
+      return {
+        status: 500,
+        errorMessage: errorValidation
+      }
+    }
+  } catch (error) {
+    return {
+      status: 500,
+      errorMessage: 'Oops, something happened!'
+    }
   }
-
-  const responseData = await apiService.apiCall(data, 'member/registerStart')
-  console.log('Received from API: ', responseData)
-  if (responseData === undefined) return
-  console.log('Status:', responseData.status)
-
-  return responseData
 }
 
 module.exports = [

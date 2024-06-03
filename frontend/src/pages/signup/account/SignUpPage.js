@@ -25,8 +25,17 @@ export default function SignUpPage () {
         'signupStart',
         navigate
       )
+
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        if(errorMessage.desc === 'Duplicate email'){
+          navigate('/signup/duplicate', {
+            state:{ email }
+          })
+        }
+        else{
+          setError(errorMessage.desc)
+        }
+        
       } else {
         navigate('/signup/validate', {
           state: { registerToken: data.registerToken, email }

@@ -10,6 +10,11 @@ async function getRegisterStart(
   console.log('Received register start request for: ', req.payload)
   const { email } = req.payload as { email: string }
   
+  if(email === 'duplicate@email.com'){
+    console.log("duplicate email, responding 500")
+    return res.response(responseCodes.DUPLICATE_EMAIL).code(500)
+  }
+  
   console.log('Valid email, responding 200')
   return { registerToken: '123456' }
 }

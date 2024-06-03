@@ -6,6 +6,23 @@ const axios = require('axios')
 const apiDir = path.resolve(__dirname, '../../api')
 let apiProcess
 
+const waitForServer = async (url, timeout = 30000) => {
+  const start = Date.now()
+  while (Date.now() - start < timeout) {
+    try {
+      const response = await axios.get(url)
+      if (response.status === 200) {
+        console.log('API server is up and running')
+        return
+      }
+    } catch (error) {
+      // If the request fails, wait for a bit before retrying
+      await new Promise((resolve) => setTimeout(resolve, 1000))
+    }
+  }
+  throw new Error('API server did not start within the timeout period')
+}
+
 lab.before(async () => {
   console.log('Compiling TypeScript code...')
   try {
@@ -23,10 +40,9 @@ lab.before(async () => {
     stdio: 'inherit'
   })
   // Wait until the server is ready
-  await new Promise((resolve) => {
-    setTimeout(resolve, 5000)
-    console.log('Waiting for the server to start')
-  })
+
+  console.log('Waiting for the server to start')
+  await waitForServer('http://localhost:9000/', 3000)
 })
 
 lab.onCleanup = async () => {

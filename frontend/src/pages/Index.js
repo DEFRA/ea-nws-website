@@ -110,6 +110,11 @@ export default function IndexPage() {
                     Manage Contacts page
                   </Link>
                 </li>
+                <li>
+                  <Link to="/signout/manually" className="govuk-link">
+                    signout
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>

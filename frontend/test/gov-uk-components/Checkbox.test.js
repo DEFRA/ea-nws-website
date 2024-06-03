@@ -1,6 +1,7 @@
+import '@testing-library/jest-dom/extend-expect'
 import { fireEvent, render } from '@testing-library/react'
 import React from 'react'
-import Checkbox from './Checkbox'
+import Checkbox from '../../src/gov-uk-components/CheckBox'
 
 describe('Checkbox', () => {
   it('renders checkbox with label', () => {

@@ -14,7 +14,6 @@ import {
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
-
 export default function SignInValidatePage() {
   const location = useLocation()
   const [error, setError] = useState('')
@@ -28,7 +27,7 @@ export default function SignInValidatePage() {
     const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      const dataToSend = { signinToken, code: code }
+      const dataToSend = { signinToken, code }
       const { errorMessage, data } = await backendCall(
         dataToSend,
         'signInValidate'

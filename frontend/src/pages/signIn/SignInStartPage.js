@@ -50,7 +50,12 @@ export default function SignInStartPage() {
             <li>change how you get flood messages</li>
             <li>delete your account</li>
           </ul>
-          <Input name="Email address" error={error} onChange={setEmail} />
+          <Input
+            name="Email address"
+            inputType="text"
+            error={error}
+            onChange={(val) => setEmail(val)}
+          />
           <Button
             className="govuk-button"
             text="Continue"

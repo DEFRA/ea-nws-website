@@ -19,7 +19,7 @@ const apiSignupValidateCall = async (registerToken, code) => {
 module.exports = [
   {
     method: ['POST'],
-    path: '/signupValidate',
+    path: '/api/signupValidate',
     handler: async (request, h) => {
       try {
         if (request.payload === null) {

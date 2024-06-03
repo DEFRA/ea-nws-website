@@ -22,7 +22,7 @@ const apiSignupStartCall = async (email) => {
 module.exports = [
   {
     method: ['POST'],
-    path: '/signupStart',
+    path: '/api/signupStart',
     handler: async (request, h) => {
       try {
         if (request.payload === null) {

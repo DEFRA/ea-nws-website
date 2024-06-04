@@ -46,6 +46,10 @@ export default function FeedbackPage () {
       setTextError(null)
       setFeedbackText(feedbackText)
     }
+
+    const dataToRecord = {feedbackPreference, feedbackText}
+    JSON.stringify(dataToRecord);
+   
   }
 
   const setFeedback = (event) => {
@@ -67,8 +71,9 @@ export default function FeedbackPage () {
         <Link to='/signup' className='govuk-back-link'>
           Back
         </Link>
-        { error && <ErrorSummary errorList={[error, textError]} />}
-        { textError && <ErrorSummary errorList={[error, textError]} />}
+        { (error && textError) && <ErrorSummary errorList={[error, textError]}  />}
+        { ( textError && !error) && <ErrorSummary errorList={[textError]}  />}
+        { ( !textError && error) && <ErrorSummary errorList={[error]}  />}
         <h1 className='govuk-heading-l'>Give feedback about signing up</h1>
         <div className='govuk-body'>
           This helps is to improve this service

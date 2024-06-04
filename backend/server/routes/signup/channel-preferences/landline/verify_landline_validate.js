@@ -1,10 +1,9 @@
-const { number } = require('@hapi/joi')
 const { apiCall } = require('../../../../services/ApiService')
 const {
   authCodeValidation
 } = require('../../../../services/validations/AuthCodeValidation')
 const {
-  numberValidation
+  phoneValidation
 } = require('../../../../services/validations/PhoneValidation')
 
 const apiLandlineValidateCall = async (code, msisdn, auth, h) => {
@@ -12,7 +11,10 @@ const apiLandlineValidateCall = async (code, msisdn, auth, h) => {
   console.log('Received from front-end: ', data)
   try {
     let validationError = authCodeValidation(code)
-    validationError === '' ? numberValidation(msisdn) : validationError
+    validationError =
+      validationError === ''
+        ? phoneValidation(msisdn, 'mobileAndLandline')
+        : validationError
     if (validationError === '') {
       const response = await apiCall(data, 'member/verifyHomePhoneValidate')
       return response

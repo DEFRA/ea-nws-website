@@ -21,6 +21,7 @@ async function createServer() {
   await server.register(require('./plugins/logging'))
   await server.register(require('blipp'))
 
+  server.log(['info'], 'server running')
   return server
 }
 

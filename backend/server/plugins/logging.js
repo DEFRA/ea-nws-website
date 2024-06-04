@@ -2,7 +2,7 @@ const config = require('../config')
 const pino = require('pino')
 const fs = require('fs')
 
-const logdir = '/tmp/logs'
+const logdir = './tmp/logs'
 
 if (!fs.existsSync(logdir)) {
   fs.mkdirSync(logdir, { recursive: true })

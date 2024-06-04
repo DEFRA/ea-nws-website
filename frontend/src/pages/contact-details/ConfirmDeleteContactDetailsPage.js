@@ -8,16 +8,11 @@ import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
-import { handleResponse } from '../../services/HandleResponse'
 
 export default function ConfirmDeleteContactDetailsPage() {
   const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
-  // [TODO] we need to perform a check if this is null
-  // most likely would be null if the user has logged out etc
-  // but we should take the user to an error page or something similar
   const session = useSelector((state) => state.session)
 
   const removeContact = async () => {
@@ -25,14 +20,18 @@ export default function ConfirmDeleteContactDetailsPage() {
       session.profile,
       location.state.contact
     )
-    const data = JSON.stringify({
+    console.log(session.authToken)
+    const data = {
       authToken: session.authToken,
       profile: updatedProfile
-    })
-    const response = await backendCall(data, 'profile/update')
-    const responseData = handleResponse(response, navigate)
+    }
+    console.log('data', data)
 
-    if (responseData) {
+    // profile returned but we just need to make sure no error is returned
+    const { errorMessage } = await backendCall(data, 'profile/update', navigate)
+
+    // we need to make an error page which the user is navigated to if this breaks
+    if (!errorMessage) {
       dispatch(setProfile(updatedProfile))
       navigate('/managecontacts', {
         state: {

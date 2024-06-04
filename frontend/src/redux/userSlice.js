@@ -5,7 +5,8 @@ const userSlice = createSlice({
   initialState: {
     authToken: null,
     profile: null,
-    registration: null
+    contactPreferences: null,
+    registrations: null
   },
   reducers: {
     setAuthToken: (state, action) => {
@@ -14,18 +15,26 @@ const userSlice = createSlice({
     setProfile: (state, action) => {
       state.profile = action.payload
     },
-    setRegistration: (state, action) => {
-      state.registration = action.payload
+    setContactPreferences: (state, action) => {
+      state.contactPreferences = action.payload
+    },
+    setRegistrations: (state, action) => {
+      state.registrations = action.payload
     },
     clearAuth: (state) => {
-      console.log('cleared')
       state.authToken = null
       state.profile = null
-      state.registration = null
+      state.contactPreferences = null
+      state.registrations = null
     }
   }
 })
 
-export const { setAuthToken, setProfile, setRegistration, clearAuth } =
-  userSlice.actions
+export const {
+  setAuthToken,
+  setProfile,
+  setRegistrations,
+  setContactPreferences,
+  clearAuth
+} = userSlice.actions
 export default userSlice.reducer

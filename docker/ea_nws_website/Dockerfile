@@ -19,6 +19,9 @@ WORKDIR /usr/src/app
 # Create a stage for building the application.
 FROM base as frontend_build
 
+ARG REACT_APP_DOMAIN
+ENV REACT_APP_DOMAIN $REACT_APP_DOMAIN
+
 # Download dependencies as a separate step to take advantage of Docker's caching.
 # Leverage a cache mount to /root/.npm to speed up subsequent builds.
 # Leverage a bind mounts to package.json and package-lock.json to avoid having to copy them into
@@ -73,8 +76,8 @@ COPY api api
 # where the necessary files are copied from the build stage.
 FROM base as final
 
-# Use production node environment by default.
-ENV NODE_ENV prod
+ARG NODE_ENV
+ENV NODE_ENV $NODE_ENV
 
 
 # Copy package.json so that package manager commands can be used.

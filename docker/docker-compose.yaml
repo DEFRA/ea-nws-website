@@ -52,7 +52,12 @@ services:
       context: ../
       dockerfile: docker/nginx/Dockerfile
     ports:
-      - '7000:7000'
+      - '${NGINX_PORT}:${NGINX_PORT}'
+    environment:
+      - NGINX_PORT=${NGINX_PORT}
+      - NGINX_SERVER=${NGINX_SERVER}
+      - BACKEND_NAME=${BACKEND_NAME}
+      - FRONTEND_NAME=${FRONTEND_NAME}
     networks:
       main:
         aliases:

@@ -3,5 +3,5 @@ module.exports = {
   UNKNOWN_EMAIL: { code: 106, desc: 'unknown email' },
   INVALID_TOKEN: { code: 101, desc: 'InvalidToken' },
   INVALID_CODE: { code: 101, desc: 'Invalid Code' },
-  DUPLICATE_EMAIL: { code: 101, desc: 'Duplicate email' }
+  DUPLICATE_EMAIL: { code: 107, desc: 'email already registered' }
 }

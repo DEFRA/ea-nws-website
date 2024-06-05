@@ -17,8 +17,6 @@ export default function SignUpPage () {
   const email = location.state.email
 
   const handleSubmit = async () => {
-    
-    console.log(email)
 
     const dataToSend = { email }
     const {errorMessage, data } = await backendCall(dataToSend, 'signInStart', navigate)
@@ -32,10 +30,6 @@ export default function SignUpPage () {
     }
   }
 
-  const goToRegister = async () => {
-    navigate('/signup')
-  }
-
   return (
     <>
       <Header />
@@ -44,7 +38,7 @@ export default function SignUpPage () {
         <Link to='/signin' className='govuk-back-link'>
           Back
         </Link>
-        <ErrorSummary errorList={error === '' ? [] : [error]} />
+        {error && <ErrorSummary errorList={error === '' ? [] : [error]} />}
         <h2 className='govuk-heading-l'>
           The email address you entered is already being used
         </h2>

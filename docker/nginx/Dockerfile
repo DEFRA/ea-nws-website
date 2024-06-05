@@ -1,2 +1,4 @@
 FROM nginx:latest
-COPY docker/nginx/default.conf /etc/nginx/conf.d/default.conf
+
+RUN mkdir /etc/nginx/templates
+COPY docker/nginx/default.conf.template /etc/nginx/templates

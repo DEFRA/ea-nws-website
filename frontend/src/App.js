@@ -16,7 +16,7 @@ export default function App() {
   }
 
   const url = window.location.pathname
-  const validRoute = () => {
+  const canUnauthAccessRoute = () => {
     for (let index = 0; index < unAuthRoutes.length; index++) {
       if (unAuthRoutes[index].path === url) {
         return true
@@ -33,7 +33,7 @@ export default function App() {
         ))}
       </Routes>
     </BrowserRouter>
-  ) : validRoute() ? (
+  ) : canUnauthAccessRoute() ? (
     <BrowserRouter basename="/">
       <Routes>
         {unAuthRoutes.map((route, index) => (

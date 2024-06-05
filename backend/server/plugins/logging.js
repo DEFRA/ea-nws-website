@@ -1,4 +1,3 @@
-const config = require('../config')
 const pino = require('pino')
 const fs = require('fs')
 
@@ -19,10 +18,8 @@ const streams = [
   { level: 'fatal', stream: createSonicBoom(`${logdir}/fatal.log`) }
 ]
 
-const level = config.isDev ? 'debug' : 'info'
-
 const logger = pino(
-  { level: level },
+  { level: 'info' },
   pino.multistream(streams, { dedupe: true })
 )
 

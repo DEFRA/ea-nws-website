@@ -27,11 +27,6 @@ export default function Header() {
             <p className="govuk-header__link govuk-header__service-name">
               Get flood warnings by text, phone or email
             </p>
-            <nav>
-              <a className="govuk-header__menu-button" href="signout/manually">
-                Sign out
-              </a>
-            </nav>
           </div>
         </div>
       </header>

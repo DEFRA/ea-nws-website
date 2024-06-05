@@ -1,6 +1,11 @@
 #!/bin/bash
 
-image_name="ea_nws_website"
+image_names=(
+    "ea_nws_website_frontend" 
+    "ea_nws_website_backend" 
+    "ea_nws_website_api" 
+    "ea_nws_website_nginx"
+    )
 build_version=""
 save_image=false
 
@@ -25,17 +30,25 @@ print_help()
     OPTIONS
         -v [build version] Tags the docker image with the specified version
         -s Saves the docker image locally as a file
+        -d [Domain name] (optional) sets the domain name. Must start with http:// 
+        -a [API url] (optional) sets the url for the api. Must start with http://
         -h Prints out this help message."
 
 }
 
-while getopts "v:sh" opt; do
+while getopts "v:sd:a:h" opt; do
     case $opt in
     v) # build version
         build_version=${OPTARG}
         ;;
     s) # Save docker image
         save_image=true
+        ;;
+    d) # domain name
+        domain_name=${OPTARG}
+        ;;
+    a) # api URL
+        api_url=${OPTARG}
         ;;
     h) # print help
         print_help
@@ -78,12 +91,27 @@ fi
 
 echo "Building docker image as version: "${build_version}
 export BUILD_VERSION=${build_version}
+if [[ ! -z "${domain_name}" ]]; then
+    echo "Domain name set to: "${domain_name}
+    export REACT_APP_DOMAIN=${domain_name}
+else
+    echo "Using domain name set in .env file"
+fi
+if [[ ! -z "${api_url}" ]]; then
+    echo "API url set to: "${api_url}
+    export API_URL=${api_url}
+else
+    echo "Using API url set in .env file"
+fi
+
 docker compose build
 echo "Build Complete!"
 
 if [[ $save_image = true ]]; then
-    image_file=${image_name}-${build_version}.tar
-    echo "Saving docker image as: "${image_file}
-    docker save -o ${image_file} ${image_name}:${build_version}
-    echo "Image file saved"
+    for image_name in ${image_names[@]}; do
+        image_file=${image_name}-${build_version}.tar
+        echo "Saving docker image as: "${image_file}
+        docker save -o ${image_file} ${image_name}:${build_version}
+        echo "Image file saved"
+    done
 fi

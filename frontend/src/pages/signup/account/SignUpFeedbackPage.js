@@ -30,9 +30,6 @@ export default function FeedbackPage () {
   ]
 
   const handleSubmit = async () => {
-    console.log("feedbackoptions", feedbackPreference.length)
-    console.log("feedback txt", feedbackText)
-    
     if (feedbackPreference.length === 0){
       setError('Select an answer to tell us how you feel about this service')
     }
@@ -46,10 +43,13 @@ export default function FeedbackPage () {
       setTextError(null)
       setFeedbackText(feedbackText)
     }
-
+    
     const dataToRecord = {feedbackPreference, feedbackText}
-    JSON.stringify(dataToRecord);
-   
+    console.log("feedback data to record", dataToRecord)
+    
+    await backendCall(dataToRecord, 'signup_feedback', navigate)
+
+    navigate('/signup')
   }
 
   const setFeedback = (event) => {

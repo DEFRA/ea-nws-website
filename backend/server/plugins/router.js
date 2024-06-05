@@ -7,7 +7,8 @@ const routes = [].concat(
   require('../routes/signup/signupValidate'),
   require('../routes/update_profile/update_profile'),
   require('../routes/signup/channel-preferences/landline/verify_landline_start'),
-  require('../routes/signup/channel-preferences/landline/verify_landline_validate')
+  require('../routes/signup/channel-preferences/landline/verify_landline_validate'),
+  require('../routes/signup/signup_feedback')
 )
 
 module.exports = {

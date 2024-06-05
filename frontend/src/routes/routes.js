@@ -66,7 +66,7 @@ const contactRoutes = [
 const signBackRoute = [{ path: '/signbackin', component: <SignBackIn /> }]
 const signOutRoutes = [
   { path: '/signout/automatically', component: <SignOutAutomatically /> },
-  { path: '/signout/manually', component: <SignOutManually /> }
+  { path: '/signout', component: <SignOutManually /> }
 ]
 
 export const routes = [

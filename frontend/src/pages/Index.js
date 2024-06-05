@@ -112,7 +112,7 @@ export default function IndexPage() {
                 </li>
                 <li>
                   <Link to="/signout/manually" className="govuk-link">
-                    signout
+                    sign out
                   </Link>
                 </li>
               </ul>

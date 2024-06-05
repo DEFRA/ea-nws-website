@@ -1,7 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import AppLogout from './custom-components/SignoutWarning'
 import SignBackIn from './pages/signOut/SignBackIn'
 import { routes, unAuthRoutes } from './routes/routes'
 
@@ -36,16 +35,14 @@ export default function App() {
     </BrowserRouter>
   ) : validRoute() ? (
     <BrowserRouter basename="/">
-      <AppLogout>
-        <Routes>
-          {unAuthRoutes.map((route, index) => (
-            <Route key={index} path={route.path} element={route.component} />
-          ))}
-        </Routes>
-      </AppLogout>
+      <Routes>
+        {unAuthRoutes.map((route, index) => (
+          <Route key={index} path={route.path} element={route.component} />
+        ))}
+      </Routes>
     </BrowserRouter>
   ) : (
-    <BrowserRouter>
+    <BrowserRouter basename="/">
       <SignBackIn />
     </BrowserRouter>
   )

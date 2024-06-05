@@ -9,20 +9,16 @@ export default function SignOutManually() {
   const dispatch = useDispatch()
   const session = useSelector((state) => state.session)
 
-  function loggedOut() {
+  const loggedOut = () => {
     if (session.authToken !== null) {
       dispatch(clearAuth())
+      console.log('user removed')
       return true
     } else {
       return false
     }
   }
 
-  if (loggedOut() === true) {
-    console.log('User removed')
-  } else {
-    console.log('no user to remove')
-  }
   function redirect() {
     navigate('/signin')
   }

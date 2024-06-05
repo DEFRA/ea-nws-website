@@ -10,8 +10,7 @@ export default function App() {
 
   useEffect(() => {
     const timeoutId = setTimeout(() => {
-      console.log('A')
-      TimeoutWarning()
+      TimeoutWarning(true)
     }, 2000)
     return () => clearTimeout(timeoutId)
   })

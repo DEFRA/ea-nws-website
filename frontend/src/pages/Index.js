@@ -11,11 +11,11 @@ import {
   setRegistrations
 } from '../redux/userSlice'
 
-export default function IndexPage() {
+export default function IndexPage () {
   const dispatch = useDispatch()
   const [mockSessionActive, setmockSessionActive] = useState(false)
 
-  function mockSession() {
+  function mockSession () {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
       const registrations = { partner: '4', name: 'NWS England' }
@@ -61,52 +61,52 @@ export default function IndexPage() {
 
   return (
     <>
-      <div class="govuk-width-container">
-        <main class="govuk-main-wrapper">
-          <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-              <h1 class="govuk-heading-xl">Next Warning Service Index</h1>
+      <div class='govuk-width-container'>
+        <main class='govuk-main-wrapper'>
+          <div class='govuk-grid-row'>
+            <div class='govuk-grid-column-two-thirds'>
+              <h1 class='govuk-heading-xl'>Next Warning Service Index</h1>
               <NotificationBanner
-                className="govuk-notification-banner govuk-notification-banner--success"
-                title="Mock session"
+                className='govuk-notification-banner govuk-notification-banner--success'
+                title='Mock session'
                 text={mockSessionActive ? 'Active' : 'Not Active'}
               />
-              <p class="govuk-body">A quick link to each page</p>
-              <ul class="govuk-list">
+              <p class='govuk-body'>A quick link to each page</p>
+              <ul class='govuk-list'>
                 <li>
-                  <Link to="/" className="govuk-link">
+                  <Link to='/' className='govuk-link'>
                     Start page
                   </Link>
                 </li>
                 <li>
-                  <Link to="/signin" className="govuk-link">
+                  <Link to='/signin' className='govuk-link'>
                     Sign in page
                   </Link>
                 </li>
                 <li>
-                  <Link to="/signup" className="govuk-link">
+                  <Link to='/signup' className='govuk-link'>
                     Register page
                   </Link>
                 </li>
               </ul>
 
-              <p class="govuk-body">
+              <p class='govuk-body'>
                 A session is required to access the below pages - click below to
                 start/kill the mock session
               </p>
               <Button
-                className="govuk-button"
-                text="Activate/Deactivate Mock Session"
+                className='govuk-button'
+                text='Activate/Deactivate Mock Session'
                 onClick={mockSession}
               />
-              <ul class="govuk-list">
+              <ul class='govuk-list'>
                 <li>
-                  <Link to="/home" className="govuk-link">
+                  <Link to='/home' className='govuk-link'>
                     Home page
                   </Link>
                 </li>
                 <li>
-                  <Link to="/managecontacts" className="govuk-link">
+                  <Link to='/managecontacts' className='govuk-link'>
                     Manage Contacts page
                   </Link>
                 </li>

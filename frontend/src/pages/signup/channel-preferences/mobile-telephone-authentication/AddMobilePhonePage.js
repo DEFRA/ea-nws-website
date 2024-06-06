@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../../gov-uk-components/Button'
 import ErrorSummary from '../../../../gov-uk-components/ErrorSummary'
@@ -7,7 +7,10 @@ import Footer from '../../../../gov-uk-components/Footer'
 import Header from '../../../../gov-uk-components/Header'
 import Input from '../../../../gov-uk-components/Input'
 import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
+import { setProfile } from '../../../../redux/userSlice'
 import { backendCall } from '../../../../services/BackendService'
+import { addUnverifiedContact } from '../../../../services/ProfileServices'
+import { normalisePhoneNumber } from '../../../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../../services/validations/PhoneValidation'
 
 export default function AddMobilePhonePage () {
@@ -15,14 +18,13 @@ export default function AddMobilePhonePage () {
   const dispatch = useDispatch()
   const [mobile, setMobile] = useState('')
   const [error, setError] = useState('')
-  const authToken = useSelector((state) => state.session.authToken)
+  const session = useSelector((state) => state.session)
 
   const handleSubmit = async () => {
-    console.log(authToken)
     const validationError = phoneValidation(mobile, 'mobile')
     setError(validationError)
     if (validationError === '') {
-      const data = { authToken, msisdn: mobile }
+      const data = { authToken: session.authToken, msisdn: mobile }
       const { errorMessage } = await backendCall(
         data,
         'signup/contactpreferences/mobile/add',
@@ -31,11 +33,15 @@ export default function AddMobilePhonePage () {
       if (errorMessage !== null) {
         setError(errorMessage.desc)
       } else {
-        // we should probably add a call to update profile here
-        // TODO - add to unverified mobile list
-        // dispatch(setProfile(data.profile))
+        const normalisedMobile = normalisePhoneNumber(mobile)
+        // add mobile to unverified list
+        dispatch(
+          setProfile(
+            addUnverifiedContact(session.profile, 'mobile', normalisedMobile)
+          )
+        )
         navigate('/signup/contactpreferences/mobile/validate', {
-          state: { mobile }
+          state: { mobile: normalisedMobile }
         })
       }
     }

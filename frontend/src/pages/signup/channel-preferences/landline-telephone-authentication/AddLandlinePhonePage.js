@@ -14,7 +14,7 @@ export default function AddLandlinePhonePage () {
   const navigate = useNavigate()
   const [msisdn, setMsisdn] = useState('')
   const [error, setError] = useState('')
-  const authToken = 'MockGUIDAuthToken' // useSelector((state) => state.session.authToken)
+  const authToken = 'MockAuthToken' // useSelector((state) => state.session.authToken)
 
   const handleSubmit = async () => {
     const validationError = phoneValidation(msisdn, 'mobileAndLandline')

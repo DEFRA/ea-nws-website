@@ -10,7 +10,7 @@ async function getMobileStart(
   const { authToken } = req.payload as { authToken: string }
   const { msisdn } = req.payload as { msisdn: string }
   // 200 Success
-  if (authToken === 'MockAuthToken' && msisdn === '07889668367') {
+  if (authToken === 'MockAuthToken') {
     return res.response(responseCodes.SUCCESS)
   } else {
     return res.response(responseCodes.INVALID_TOKEN).code(500)
@@ -26,7 +26,7 @@ async function getMobileValidate(
   const { msisdn } = req.payload as { msisdn: string }
   const { code } = req.payload as { code: string }
   // 200 Success
-  if (authToken === 'MockAuthToken' && code === '123456') {
+  if (authToken === 'MockAuthToken') {
     return res.response(responseCodes.SUCCESS)
   } else {
     return res.response(responseCodes.INVALID_CODE).code(500)

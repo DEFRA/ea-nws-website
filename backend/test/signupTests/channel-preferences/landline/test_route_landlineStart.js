@@ -38,7 +38,7 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/signup/contactpreferences/landline/add',
       payload: {
-        authToken: 'MockGUIDAuthToken',
+        authToken: 'MockAuthToken',
         phone: '07590000000'
       }
     }

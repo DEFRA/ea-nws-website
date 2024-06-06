@@ -1,5 +1,6 @@
 import * as React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../gov-uk-components/Button'
 import Footer from '../../../../gov-uk-components/Footer'
 import Header from '../../../../gov-uk-components/Header'
@@ -7,11 +8,18 @@ import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
 
 export default function SkipConfirmMobilePhonePage () {
   const location = useLocation()
+  const navigate = useNavigate()
+  const session = useSelector((state) => state.session)
 
   function handleSubmit () {
-    // if user selected email - navigate to email
-    // else if user selected landline - navigate to landline
-    // else navigate to addtional details page
+    // navigate through sign up flow
+    if (session.selectedContactPreferences.includes('Email')) {
+      // navigate to email TODO - cameron add this once merged
+    } else if (session.selectedContactPreferences.includes('PhoneCall')) {
+      navigate('/signup/contactpreferences/landline')
+    } else {
+      // navigate to addtional details flow
+    }
   }
 
   return (

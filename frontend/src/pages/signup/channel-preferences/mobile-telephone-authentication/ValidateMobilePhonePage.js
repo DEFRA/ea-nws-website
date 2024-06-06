@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../gov-uk-components/Button'
 import ErrorSummary from '../../../../gov-uk-components/ErrorSummary'
@@ -7,23 +8,30 @@ import Header from '../../../../gov-uk-components/Header'
 import Input from '../../../../gov-uk-components/Input'
 import InsetText from '../../../../gov-uk-components/InsetText'
 import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
+import { setProfile } from '../../../../redux/userSlice'
 import { backendCall } from '../../../../services/BackendService'
+import {
+  addVerifiedContact,
+  removeUnverifiedContact
+} from '../../../../services/ProfileServices'
 import { authCodeValidation } from '../../../../services/validations/AuthCodeValidation'
 
 export default function ValidateMobilePhone () {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const location = useLocation()
   const [code, setCode] = useState('')
+  const mobile = location.state.mobile
   const [error, setError] = useState('')
-  const authToken = useSelector((state) => state.session.authToken)
+  const session = useSelector((state) => state.session)
 
   const handleSubmit = async () => {
     const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
       const data = {
-        authToken,
-        msisdn: location.state.mobile,
+        authToken: session.authToken,
+        msisdn: mobile,
         code
       }
       const { errorMessage } = await backendCall(
@@ -36,22 +44,41 @@ export default function ValidateMobilePhone () {
         setError(errorMessage.desc)
       } else {
         // remove mobile from unverified list and add to verified list
-        navigate('/signup/contactpreferences')
+        const updatedProfile = removeUnverifiedContact(session.profile, mobile)
+        dispatch(
+          setProfile(addVerifiedContact(updatedProfile, 'mobile', mobile))
+        )
+        // navigate through sign up flow
+        if (session.selectedContactPreferences.includes('Email')) {
+          // navigate to email TODO - cameron add this once merged
+        } else if (session.selectedContactPreferences.includes('PhoneCall')) {
+          navigate('/signup/contactpreferences/landline')
+        } else {
+          // navigate to addtional details flow
+        }
       }
     }
   }
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const data = { authToken, msisdn: location.state.mobile }
+    const data = { authToken: session.authToken, msisdn: mobile }
     const { errorMessage } = await backendCall(
       data,
       'signup/contactpreferences/mobile/add',
       navigate
     )
+    console.log(errorMessage)
     if (errorMessage !== null) {
       setError(errorMessage.desc)
     }
+  }
+
+  const differentMobile = (event) => {
+    event.preventDefault()
+    // remove mobile from users profile
+    dispatch(setProfile(removeUnverifiedContact(session.profile, mobile)))
+    navigate('/signup/contactpreferences/mobile/add')
   }
 
   return (
@@ -62,7 +89,7 @@ export default function ValidateMobilePhone () {
           <div className='govuk-grid-column-two-thirds'>
             <PhaseBanner />
             <Link
-              to='/signup/contactpreferences/mobile'
+              to='/signup/contactpreferences/mobile/add'
               className='govuk-back-link'
             >
               Back
@@ -71,44 +98,45 @@ export default function ValidateMobilePhone () {
             <h1 className='govuk-heading-l govuk-!-margin-top-6'>
               Check your mobile phone
             </h1>
-            <p className='govuk-body'>We've sent a text with a code to:</p>
-            <InsetText text={location.state.mobile} />
-            <p className='govuk-body'>
-              Use the code within 4 hours or it will expire
-            </p>
-            <Input
-              inputType='text'
-              value={code}
-              name='Enter code'
-              onChange={(val) => setCode(val)}
-              error={error}
-              className='govuk-input govuk-input--width-10'
-            />
-            <Button
-              text='Continue'
-              className='govuk-button'
-              onClick={handleSubmit}
-            />
-            &nbsp; &nbsp;
-            <Link
-              to='/signup/contactpreferences/mobile/skipconfirmation'
-              state={{
-                mobile: location.state.mobile
-              }}
-              className='govuk-body govuk-link'
-            >
-              Skip and confirm later
-            </Link>
-            <br />
-            <p className='govuk-body'>
-              <a href='#' className='govuk-link'>
+
+            <div className='govuk-body'>
+              <p>We've sent a text with a code to:</p>
+              <InsetText text={mobile} />
+              <p>Use the code within 4 hours or it will expire</p>
+              <Input
+                inputType='text'
+                value={code}
+                name='Enter code'
+                onChange={(val) => setCode(val)}
+                error={error}
+                className='govuk-input govuk-input--width-10'
+              />
+              <Button
+                text='Continue'
+                className='govuk-button'
+                onClick={handleSubmit}
+              />
+              &nbsp; &nbsp;
+              <Link
+                to='/signup/contactpreferences/mobile/skipconfirmation'
+                state={{
+                  mobile
+                }}
+                className='govuk-link'
+              >
+                Skip and confirm later
+              </Link>
+              <br />
+              <Link onClick={getNewCode} className='govuk-link'>
                 Get a new code
-              </a>
-            </p>
-            <a onClick={getNewCode} className='govuk-body govuk-link'>
-              Enter a different mobile number
-            </a>
-            <div className=' govuk-!-margin-bottom-9' />
+              </Link>
+              <br />
+              <br />
+              <Link onClick={differentMobile} className='govuk-link'>
+                Enter a different mobile number
+              </Link>
+              <div className='govuk-!-margin-bottom-9' />
+            </div>
           </div>
         </div>
       </div>

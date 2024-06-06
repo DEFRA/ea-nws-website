@@ -78,7 +78,7 @@ export default function WarningContactsPreferencePage () {
                   className='govuk-notification-banner govuk-notification-banner--success'
                   title='success'
                   heading='Email address confirmed'
-                  text={location.state.email + ' some email is confirmed'}
+                  text={location.state.email + ' is your sign in email'}
                 />
                 )}
             <h1 className='govuk-heading-l'>

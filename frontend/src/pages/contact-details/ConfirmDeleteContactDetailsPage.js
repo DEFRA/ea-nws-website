@@ -1,11 +1,12 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { Link, useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
+import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 
 export default function ConfirmDeleteContactDetailsPage () {

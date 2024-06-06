@@ -20,7 +20,6 @@ export default function Declaration() {
       navigate('/')
     }
   }
-
   return (
     <>
       <Header />

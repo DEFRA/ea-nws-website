@@ -2,13 +2,7 @@ const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
 const { describe, it } = (exports.lab = Lab.script())
 const { expect } = Code
-<<<<<<< HEAD
 const emailValidation = require('../../server/services/validations/EmailValidation')
-=======
-const {
-  emailValidation
-} = require('../../server/services/validations/EmailValidation')
->>>>>>> 1e64384d6c35820315904863825daf7159829fab
 
 describe('emailValidation', () => {
   it('should return true for a valid email', () => {

@@ -16,6 +16,7 @@ export default function Declaration() {
     if (isChecked === false) {
       setError('Tick to confirm you agree with the terms and conditions')
     } else {
+      //To do - when we have next page
       navigate('/')
     }
   }

@@ -8,7 +8,7 @@ import Header from '../../../gov-uk-components/Header'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 
 export default function Declaration() {
-  const [isChecked, setIsChecked] = useState()
+  const [isChecked, setIsChecked] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()
 
@@ -83,7 +83,10 @@ export default function Declaration() {
 
           <p>
             The Environment Agency manages the flood warning systems. Our
-            <a href="#" class="govuk-link">
+            <a
+              href="https://www.fws.environment-agency.gov.uk/app/olr/privacy"
+              class="govuk-link"
+            >
               {' '}
               privacy notice (open new window)
             </a>
@@ -94,14 +97,30 @@ export default function Declaration() {
             Natural Resources Wales use the same systems and will have access to
             your personal information if you ask for a service in Wales. Read
             how Natural Resources Wales
-            <a href="#" class="govuk-link">
+            <a
+              href="https://www.gov.uk/government/organisations/environment-agency/about/personal-information-charter"
+              class="govuk-link"
+            >
               {' '}
               Treat your personal information (opens new window)
             </a>
           </p>
-          {error && <p className="govuk-error-message">{error}</p>}
-          <Checkbox onChange={() => setIsChecked(!isChecked)} />
 
+          <div
+            className={
+              error
+                ? 'govuk-form-group govuk-form-group--error'
+                : 'govuk-form-group'
+            }
+          >
+            {error && <p className="govuk-error-message">{error}</p>}
+            <Checkbox
+              onChange={() => setIsChecked(!isChecked)}
+              checked={isChecked}
+              label={'I agree to the terms and conditions'}
+              value={'T&C'}
+            />
+          </div>
           <Button
             className={'govuk-button'}
             text={'Continue'}

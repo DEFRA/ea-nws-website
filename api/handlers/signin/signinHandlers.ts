@@ -88,7 +88,7 @@ async function getSigninValidate(
     }
   }
   return {
-    authToken: 'MockGUIDAuthToken',
+    authToken: 'MockAuthToken',
     profile: profile,
     registrations: registrations
   }

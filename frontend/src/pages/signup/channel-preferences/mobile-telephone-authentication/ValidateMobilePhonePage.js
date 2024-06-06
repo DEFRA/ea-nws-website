@@ -88,10 +88,7 @@ export default function ValidateMobilePhone() {
         <div className="govuk-grid-row">
           <div className="govuk-grid-column-two-thirds">
             <PhaseBanner />
-            <Link
-              to="/signup/contactpreferences/mobile/add"
-              className="govuk-back-link"
-            >
+            <Link onClick={differentMobile} className="govuk-back-link">
               Back
             </Link>
             {error && <ErrorSummary errorList={[error]} />}

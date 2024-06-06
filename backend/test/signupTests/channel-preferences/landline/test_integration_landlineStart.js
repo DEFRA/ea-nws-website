@@ -1,72 +1,73 @@
-const Lab = require('@hapi/lab')
-const Code = require('@hapi/code')
-const lab = (exports.lab = Lab.script())
-const createServer = require('../../../../server')
-const {
-  startApiServer,
-  apiServerStarted
-} = require('./../../../test_api_setup')
+const Lab = require("@hapi/lab");
+const Code = require("@hapi/code");
+const lab = (exports.lab = Lab.script());
+const createServer = require("../../../../server");
+const apiServer = require("./../../../test_api_setup");
 
-lab.experiment('Integration tests', () => {
-  let server
+lab.experiment("Integration tests", () => {
+  let server;
 
   // Create server before the tests
   lab.before(async () => {
-    if (!apiServerStarted) {
-      await startApiServer()
+    if (!apiServer.apiServerStarted) {
+      await apiServer.startApiServer();
     }
-    server = await createServer()
-  })
+    server = await createServer();
+  });
 
-  lab.test('POST / route runs with invalid phone', async () => {
-    const options = {
-      method: 'POST',
-      url: '/signup/contactpreferences/landline/add',
-      payload: {
-        authToken: 'MockGUIDAuthToken',
-        phone: '12321'
-      }
-    }
-    const response = await server.inject(options)
-    Code.expect(response.result.status).to.equal(500)
-  })
+  lab.after(async () => {
+    await apiServer.stopApiServer();
+  });
 
-  lab.test('POST / route runs with empty phone number', async () => {
+  lab.test("POST / route runs with invalid phone", async () => {
     const options = {
-      method: 'POST',
-      url: '/signup/contactpreferences/landline/add',
+      method: "POST",
+      url: "/signup/contactpreferences/landline/add",
       payload: {
-        authToken: 'MockGUIDAuthToken',
-        phone: ''
-      }
-    }
-    const response = await server.inject(options)
-    Code.expect(response.result.status).to.equal(500)
-  })
+        authToken: "MockGUIDAuthToken",
+        phone: "12321",
+      },
+    };
+    const response = await server.inject(options);
+    Code.expect(response.result.status).to.equal(500);
+  });
 
-  lab.test('POST / route runs with invalid authToken', async () => {
+  lab.test("POST / route runs with empty phone number", async () => {
     const options = {
-      method: 'POST',
-      url: '/signup/contactpreferences/landline/add',
+      method: "POST",
+      url: "/signup/contactpreferences/landline/add",
       payload: {
-        authToken: 'InvalidGUIDAuthToken',
-        phone: '07590000000'
-      }
-    }
-    const response = await server.inject(options)
-    Code.expect(response.result.status).to.equal(500)
-  })
+        authToken: "MockGUIDAuthToken",
+        phone: "",
+      },
+    };
+    const response = await server.inject(options);
+    Code.expect(response.result.status).to.equal(500);
+  });
 
-  lab.test('POST / route runs with valid email format', async () => {
+  lab.test("POST / route runs with invalid authToken", async () => {
     const options = {
-      method: 'POST',
-      url: '/signup/contactpreferences/landline/add',
+      method: "POST",
+      url: "/signup/contactpreferences/landline/add",
       payload: {
-        authToken: 'MockGUIDAuthToken',
-        phone: '07590000000'
-      }
-    }
-    const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(200)
-  })
-})
+        authToken: "InvalidGUIDAuthToken",
+        phone: "07590000000",
+      },
+    };
+    const response = await server.inject(options);
+    Code.expect(response.result.status).to.equal(500);
+  });
+
+  lab.test("POST / route runs with valid email format", async () => {
+    const options = {
+      method: "POST",
+      url: "/signup/contactpreferences/landline/add",
+      payload: {
+        authToken: "MockGUIDAuthToken",
+        phone: "07590000000",
+      },
+    };
+    const response = await server.inject(options);
+    Code.expect(response.statusCode).to.equal(200);
+  });
+});

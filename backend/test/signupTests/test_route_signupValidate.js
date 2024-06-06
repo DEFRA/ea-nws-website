@@ -1,51 +1,55 @@
-const Lab = require('@hapi/lab')
-const Code = require('@hapi/code')
-const lab = (exports.lab = Lab.script())
-const createServer = require('../../server')
-const { startApiServer, apiServerStarted } = require('./../test_api_setup')
+const Lab = require("@hapi/lab");
+const Code = require("@hapi/code");
+const lab = (exports.lab = Lab.script());
+const createServer = require("../../server");
+const apiServer = require("./../test_api_setup");
 
-lab.experiment('Route tests', () => {
-  let server
+lab.experiment("Route tests", () => {
+  let server;
 
   // Create server before the tests
   lab.before(async () => {
-    if (!apiServerStarted) {
-      await startApiServer()
+    if (!apiServer.apiServerStarted) {
+      await apiServer.startApiServer();
     }
-    server = await createServer()
-  })
+    server = await createServer();
+  });
 
-  lab.test('POST /signupValidate route runs with valid payload', async () => {
+  lab.after(async () => {
+    await apiServer.stopApiServer();
+  });
+
+  lab.test("POST /signupValidate route runs with valid payload", async () => {
     const options = {
-      method: 'POST',
-      url: '/signupValidate',
+      method: "POST",
+      url: "/signupValidate",
       payload: {
-        email: 'test@test.com',
-        registerToken: '123456'
-      }
-    }
+        email: "test@test.com",
+        registerToken: "123456",
+      },
+    };
 
-    const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(200)
-  })
+    const response = await server.inject(options);
+    Code.expect(response.statusCode).to.equal(200);
+  });
 
-  lab.test('GET  sending a GET response instead of POST', async () => {
+  lab.test("GET  sending a GET response instead of POST", async () => {
     const options = {
-      method: 'GET',
-      url: '/signupValidate'
-    }
+      method: "GET",
+      url: "/signupValidate",
+    };
 
-    const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(404)
-  })
+    const response = await server.inject(options);
+    Code.expect(response.statusCode).to.equal(404);
+  });
 
-  lab.test('POST / payload is missing', async () => {
+  lab.test("POST / payload is missing", async () => {
     const options = {
-      method: 'POST',
-      url: '/signupValidate'
-    }
+      method: "POST",
+      url: "/signupValidate",
+    };
 
-    const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(400)
-  })
-})
+    const response = await server.inject(options);
+    Code.expect(response.statusCode).to.equal(400);
+  });
+});

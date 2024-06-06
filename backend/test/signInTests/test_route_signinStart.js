@@ -1,48 +1,52 @@
-const Lab = require('@hapi/lab')
-const Code = require('@hapi/code')
-const lab = (exports.lab = Lab.script())
-const createServer = require('../../server')
-const { startApiServer, apiServerStarted } = require('./../test_api_setup')
+const Lab = require("@hapi/lab");
+const Code = require("@hapi/code");
+const lab = (exports.lab = Lab.script());
+const createServer = require("../../server");
+const apiServer = require("./../test_api_setup");
 
-lab.experiment('Integration tests', () => {
-  let server
+lab.experiment("Integration tests", () => {
+  let server;
 
   // Create server before the tests
   lab.before(async () => {
-    if (!apiServerStarted) {
-      await startApiServer()
+    if (!apiServer.apiServerStarted) {
+      await apiServer.startApiServer();
     }
-    server = await createServer()
-  })
+    server = await createServer();
+  });
+
+  lab.after(async () => {
+    await apiServer.stopApiServer();
+  });
 
   lab.test(
-    'POST / the payload is missing from the POST call, bad request',
+    "POST / the payload is missing from the POST call, bad request",
     async () => {
       const options = {
-        method: 'POST',
-        url: '/signInStart'
-      }
-      const response = await server.inject(options)
-      Code.expect(response.statusCode).to.equal(400)
+        method: "POST",
+        url: "/signInStart",
+      };
+      const response = await server.inject(options);
+      Code.expect(response.statusCode).to.equal(400);
     }
-  )
+  );
 
-  lab.test('GET / sending a GET instead of POST', async () => {
+  lab.test("GET / sending a GET instead of POST", async () => {
     const options = {
-      method: 'GET',
-      url: '/signInStart'
-    }
-    const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(404)
-  })
+      method: "GET",
+      url: "/signInStart",
+    };
+    const response = await server.inject(options);
+    Code.expect(response.statusCode).to.equal(404);
+  });
 
-  lab.test('POST / Response status is 200 if everything is ok', async () => {
+  lab.test("POST / Response status is 200 if everything is ok", async () => {
     const options = {
-      method: 'POST',
-      url: '/signInStart',
-      payload: { email: 'email@email.com' }
-    }
-    const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(200)
-  })
-})
+      method: "POST",
+      url: "/signInStart",
+      payload: { email: "email@email.com" },
+    };
+    const response = await server.inject(options);
+    Code.expect(response.statusCode).to.equal(200);
+  });
+});

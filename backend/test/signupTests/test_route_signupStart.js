@@ -1,65 +1,69 @@
-const Lab = require('@hapi/lab')
-const Code = require('@hapi/code')
-const lab = (exports.lab = Lab.script())
-const createServer = require('../../server')
-const { startApiServer, apiServerStarted } = require('./../test_api_setup')
+const Lab = require("@hapi/lab");
+const Code = require("@hapi/code");
+const lab = (exports.lab = Lab.script());
+const createServer = require("../../server");
+const apiServer = require("./../test_api_setup");
 
-lab.experiment('Route tests', () => {
-  let server
+lab.experiment("Route tests", () => {
+  let server;
 
   // Create server before the tests
   lab.before(async () => {
-    if (!apiServerStarted) {
-      await startApiServer()
+    if (!apiServer.apiServerStarted) {
+      await apiServer.startApiServer();
     }
-    server = await createServer()
-  })
+    server = await createServer();
+  });
 
-  lab.test('GET /startReact route works', async () => {
+  lab.after(async () => {
+    await apiServer.stopApiServer();
+  });
+
+  lab.test("GET /startReact route works", async () => {
     const options = {
-      method: 'GET',
-      url: '/startreact'
-    }
+      method: "GET",
+      url: "/startreact",
+    };
 
-    const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(200)
-    Code.expect(response.headers['content-type']).to.include('text/html')
-  })
+    const response = await server.inject(options);
+    Code.expect(response.statusCode).to.equal(200);
+    Code.expect(response.headers["content-type"]).to.include("text/html");
+  });
 
-  lab.test('POST / route runs with valid payload', async () => {
+  lab.test("POST / route runs with valid payload", async () => {
     const options = {
-      method: 'POST',
-      url: '/signupStart',
+      method: "POST",
+      url: "/signupStart",
       payload: {
-        email: 'test@test.com'
-      }
-    }
+        email: "test@test.com",
+      },
+    };
 
-    const response = await server.inject(options)
-    Code.expect(response.result.status).to.equal(200)
-    Code.expect(response.result.data.registerToken).to.equal('123456')
-  })
+    const response = await server.inject(options);
+    Code.expect(response.result.status).to.equal(200);
+    Code.expect(response.result.data.registerToken).to.equal("123456");
+  });
 
-  lab.test('GET / instead of POST', async () => {
+  lab.test("GET / instead of POST", async () => {
     const options = {
-      method: 'GET',
-      url: '/signupStart',
+      method: "GET",
+      url: "/signupStart",
       payload: {
-        email: ''
-      }
-    }
+        email: "",
+      },
+    };
 
-    const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(404)
-  })
+    const response = await server.inject(options);
+    Code.expect(response.statusCode).to.equal(404);
+  });
 
-  lab.test('POST / with missing payload', async () => {
+  lab.test("POST / with missing payload", async () => {
     const options = {
-      method: 'POST',
-      url: '/signupStart'
-    }
+      method: "POST",
+      url: "/signupStart",
+    };
 
-    const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(400)
-  })
-})
+    const response = await server.inject(options);
+    Code.expect(response.statusCode).to.equal(400);
+  });
+});

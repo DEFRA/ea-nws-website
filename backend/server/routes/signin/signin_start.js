@@ -36,6 +36,8 @@ module.exports = [
         }
         const { email } = request.payload
         const apiResponse = await apiSignInStartCall(email, h)
+
+        request.log(['info'], apiResponse)
         return h.response(apiResponse)
       } catch (error) {
         return h.response({

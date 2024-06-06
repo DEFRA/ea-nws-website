@@ -1,7 +1,7 @@
 import Hapi from '@hapi/hapi'
 import OpenAPIBackend from 'openapi-backend'
 
-const server = new Hapi.Server({ port: 9000 })
+const server = new Hapi.Server({ port: 9001 })
 
 // calling handlers
 const signInHandlers = require('./handlers/signin/signinHandlers')

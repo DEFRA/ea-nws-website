@@ -54,7 +54,7 @@ const signupRoutes = [
   },
   // landline authentication route
   {
-    path: '/signup/contactpreferences/landline',
+    path: '/signup/contactpreferences/landline/add',
     component: <AddLandlinePhonePage />
   },
   {

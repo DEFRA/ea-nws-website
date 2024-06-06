@@ -1,7 +1,7 @@
 const axios = require('axios')
 
 const apiCall = async (data, path) => {
-  const url = 'http://localhost:9000/' + path
+  const url = 'http://localhost:9001/' + path
 
   try {
     const response = await axios.post(url, data, {

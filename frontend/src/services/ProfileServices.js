@@ -8,7 +8,7 @@ const addUnverifiedContact = (profile, type, contact) => {
     case 'mobile':
       unverifiedContactList = profile.unverified.mobilePhones
       break
-    case 'homePhone':
+    case 'homePhones':
       unverifiedContactList = profile.unverified.homePhones
       break
   }
@@ -23,8 +23,8 @@ const addUnverifiedContact = (profile, type, contact) => {
         [type === 'email'
           ? 'emails'
           : type === 'mobile'
-            ? 'mobilePhones'
-            : 'homePhones']: [...unverifiedContactList, contact]
+          ? 'mobilePhones'
+          : 'homePhones']: [...unverifiedContactList, contact]
       }
     }
     return updatedProfile
@@ -74,7 +74,7 @@ const addVerifiedContact = (profile, type, contact) => {
     case 'mobile':
       verifiedContactList = profile.mobilePhones
       break
-    case 'homePhone':
+    case 'homePhones':
       verifiedContactList = profile.homePhones
       break
   }
@@ -87,8 +87,8 @@ const addVerifiedContact = (profile, type, contact) => {
       [type === 'email'
         ? 'emails'
         : type === 'mobile'
-          ? 'mobilePhones'
-          : 'homePhones']: [...verifiedContactList, contact]
+        ? 'mobilePhones'
+        : 'homePhones']: [...verifiedContactList, contact]
     }
     return updatedProfile
   } else {
@@ -97,8 +97,36 @@ const addVerifiedContact = (profile, type, contact) => {
   }
 }
 
+const removeVerifiedContact = (profile, contact) => {
+  let verifiedContactListKey
+
+  if (profile.emails.includes(contact)) {
+    verifiedContactListKey = 'emails'
+  } else if (profile.mobilePhones.includes(contact)) {
+    verifiedContactListKey = 'mobilePhones'
+  } else if (profile.homePhones.includes(contact)) {
+    verifiedContactListKey = 'homePhones'
+  } else {
+    // contact not found in any unverified contacts list
+    return profile
+  }
+
+  // eslint-disable-next-line no-self-compare
+  const newVerifiedContactList = profile[verifiedContactListKey].filter(
+    (c) => c !== contact
+  )
+
+  const updatedProfile = {
+    ...profile,
+    [verifiedContactListKey]: newVerifiedContactList
+  }
+
+  return updatedProfile
+}
+
 module.exports = {
   addUnverifiedContact,
   removeUnverifiedContact,
-  addVerifiedContact
+  addVerifiedContact,
+  removeVerifiedContact
 }

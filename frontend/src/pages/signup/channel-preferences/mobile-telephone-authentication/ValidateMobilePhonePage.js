@@ -12,7 +12,8 @@ import { setProfile } from '../../../../redux/userSlice'
 import { backendCall } from '../../../../services/BackendService'
 import {
   addVerifiedContact,
-  removeUnverifiedContact
+  removeUnverifiedContact,
+  removeVerifiedContact
 } from '../../../../services/ProfileServices'
 import { authCodeValidation } from '../../../../services/validations/AuthCodeValidation'
 
@@ -21,25 +22,25 @@ export default function ValidateMobilePhone() {
   const dispatch = useDispatch()
   const location = useLocation()
   const [code, setCode] = useState('')
-  const mobile = location.state.mobile
   const [error, setError] = useState('')
+  const mobile = location.state.mobile
   const session = useSelector((state) => state.session)
 
   const handleSubmit = async () => {
     const validationError = authCodeValidation(code)
     setError(validationError)
+
     if (validationError === '') {
-      const data = {
+      const dataToSend = {
         authToken: session.authToken,
         msisdn: mobile,
         code
       }
       const { errorMessage } = await backendCall(
-        data,
+        dataToSend,
         'signup/contactpreferences/mobile/validate',
         navigate
       )
-
       if (errorMessage !== null) {
         setError(errorMessage.desc)
       } else {
@@ -49,10 +50,11 @@ export default function ValidateMobilePhone() {
           setProfile(addVerifiedContact(updatedProfile, 'mobile', mobile))
         )
         // navigate through sign up flow
-        if (session.selectedContactPreferences.includes('Email')) {
+        console.log(session)
+        if (session.contactPreferences.includes('Email')) {
           // navigate to email TODO - cameron add this once merged
-        } else if (session.selectedContactPreferences.includes('PhoneCall')) {
-          navigate('/signup/contactpreferences/landline')
+        } else if (session.contactPreferences.includes('PhoneCall')) {
+          navigate('/signup/contactpreferences/landline/add')
         } else {
           // navigate to addtional details flow
         }
@@ -68,7 +70,6 @@ export default function ValidateMobilePhone() {
       'signup/contactpreferences/mobile/add',
       navigate
     )
-    console.log(errorMessage)
     if (errorMessage !== null) {
       setError(errorMessage.desc)
     }
@@ -77,7 +78,11 @@ export default function ValidateMobilePhone() {
   const differentMobile = (event) => {
     event.preventDefault()
     // remove mobile from users profile
-    dispatch(setProfile(removeUnverifiedContact(session.profile, mobile)))
+    const updatedProfile = removeUnverifiedContact(session.profile, mobile)
+    //perform a remove on verified if user has chosen to go back
+    dispatch(
+      setProfile(removeVerifiedContact(updatedProfile, 'mobile', mobile))
+    )
     navigate('/signup/contactpreferences/mobile/add')
   }
 

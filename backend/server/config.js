@@ -3,7 +3,7 @@ const envs = ['dev', 'test', 'prod']
 
 // Define config schema
 const schema = joi.object().keys({
-  port: joi.number().default(5000),
+  port: joi.number().default(5082),
   env: joi
     .string()
     .valid(...envs)

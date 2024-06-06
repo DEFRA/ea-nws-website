@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
+import Checkbox from '../../../gov-uk-components/CheckBox'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
@@ -11,13 +12,11 @@ export default function Declaration() {
   const [error, setError] = useState('')
   const navigate = useNavigate()
 
-  const handleSubmit = async () => {
-    setIsChecked(isChecked)
-    if (isChecked === true) {
-      //this will change to whatever the next page is
-      navigate('/')
-    } else {
+  const handleSubmit = () => {
+    if (isChecked === false) {
       setError('Tick to confirm you agree with the terms and conditions')
+    } else {
+      navigate('/')
     }
   }
 
@@ -100,27 +99,9 @@ export default function Declaration() {
               Treat your personal information (opens new window)
             </a>
           </p>
-          {error}
-          <div class="govuk-form-group">
-            <fieldset class="govuk-fieldset" aria-describedby="waste-hint">
-              <div class="govuk-checkboxes" data-module="govuk-checkboxes">
-                <div class="govuk-checkboxes__item">
-                  <input
-                    class="govuk-checkboxes__input"
-                    type="checkbox"
-                    checked={isChecked}
-                    error={error}
-                  />
-                  <label
-                    class="govuk-label govuk-checkboxes__label"
-                    for="waste"
-                  >
-                    I agree to the terms and conditions
-                  </label>
-                </div>
-              </div>
-            </fieldset>
-          </div>
+          {error && <p className="govuk-error-message">{error}</p>}
+          <Checkbox onChange={() => setIsChecked(!isChecked)} />
+
           <Button
             className={'govuk-button'}
             text={'Continue'}

@@ -45,13 +45,13 @@ const removeUnverifiedContact = (profile, contact) => {
     unverifiedContactListKey = 'homePhones'
   } else {
     // contact not found in any unverified contacts list
-    console.log('contact not found')
     return profile
   }
 
+  // eslint-disable-next-line no-self-compare
   const newUnverifiedContactList = profile.unverified[
     unverifiedContactListKey
-  ].filter((contact) => contact !== contact)
+  ].filter((c) => c !== contact)
 
   const updatedProfile = {
     ...profile,

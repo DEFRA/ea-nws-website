@@ -3,7 +3,7 @@
 name: ea_nws_website
 services:
   frontend:
-    image: ea_nws_website_frontend:${BUILD_VERSION}
+    image: ea_nws_website:frontend-${BUILD_VERSION}
     build:
       context: ../
       dockerfile: docker/ea_nws_website/Dockerfile_frontend
@@ -18,7 +18,7 @@ services:
           - frontend
 
   backend:
-    image: ea_nws_website_backend:${BUILD_VERSION}
+    image: ea_nws_website:backend-${BUILD_VERSION}
     build:
       context: ../
       dockerfile: docker/ea_nws_website/Dockerfile_backend
@@ -33,7 +33,7 @@ services:
           - backend
 
   api:
-    image: ea_nws_website_api:${BUILD_VERSION}
+    image: ea_nws_website:api-${BUILD_VERSION}
     build:
       context: ../
       dockerfile: docker/ea_nws_website/Dockerfile_api
@@ -47,7 +47,7 @@ services:
           - api
 
   nginx:
-    image: ea_nws_website_nginx:${BUILD_VERSION}
+    image: ea_nws_website:nginx-${BUILD_VERSION}
     build:
       context: ../
       dockerfile: docker/nginx/Dockerfile
@@ -56,8 +56,6 @@ services:
     environment:
       - NGINX_PORT=${NGINX_PORT}
       - NGINX_SERVER=${NGINX_SERVER}
-      - BACKEND_NAME=${BACKEND_NAME}
-      - FRONTEND_NAME=${FRONTEND_NAME}
     networks:
       main:
         aliases:

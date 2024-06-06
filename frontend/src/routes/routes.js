@@ -11,7 +11,7 @@ import WarningContactsPreferencePage from '../pages/signup/channel-preferences/W
 import AddLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/AddLandlinePhonePage'
 import SkipConfirmLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/SkipConfirmLandlinePhonePage'
 import ValidateLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/ValidateLandlinePhonePage'
-import Declaration from '../pages/signup/user-agreement/declarationOfAgreementPage'
+import Declaration from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
 
 // index routes
@@ -48,6 +48,10 @@ const signupRoutes = [
   {
     path: '/signup/contactpreferences/landline/skipconfirm',
     component: <SkipConfirmLandlinePhonePage />
+  },
+  {
+    path: '/declaration',
+    component: <Declaration />
   }
 ]
 
@@ -62,7 +66,6 @@ const contactRoutes = [
     component: <ConfirmDeleteContactDetailsPage />
   }
 ]
-const declarationRoutes = [{ path: '/declaration', component: <Declaration /> }]
 
 const routes = [
   ...indexRoutes,
@@ -70,8 +73,7 @@ const routes = [
   ...siginRoutes,
   ...signupRoutes,
   ...homeRoutes,
-  ...contactRoutes,
-  ...declarationRoutes
+  ...contactRoutes
 ]
 
 export default routes

@@ -42,7 +42,7 @@ export default function Declaration() {
           <ul class="govuk-list govuk-list--bullet">
             <li>accept responsibility if you fail to receive a warning</li>
             <li>
-              guarantee that our online or phone services will be availible
+              guarantee that our online or phone services will be available
             </li>
             <li>
               accept responsibility for any loss, damage or costs incurred by

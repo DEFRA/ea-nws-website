@@ -120,7 +120,6 @@ const removeVerifiedContact = (profile, contact) => {
     ...profile,
     [verifiedContactListKey]: newVerifiedContactList
   }
-
   return updatedProfile
 }
 

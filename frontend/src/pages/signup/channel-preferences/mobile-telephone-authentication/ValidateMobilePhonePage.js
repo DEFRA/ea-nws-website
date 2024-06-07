@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../../gov-uk-components/Button'
 import ErrorSummary from '../../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../../gov-uk-components/Footer'
@@ -11,6 +11,7 @@ import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
 import { setProfile } from '../../../../redux/userSlice'
 import { backendCall } from '../../../../services/BackendService'
 import {
+  addUnverifiedContact,
   addVerifiedContact,
   removeUnverifiedContact,
   removeVerifiedContact
@@ -20,10 +21,16 @@ import { authCodeValidation } from '../../../../services/validations/AuthCodeVal
 export default function ValidateMobilePhone() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const location = useLocation()
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
-  const mobile = location.state.mobile
+  //set the mobile based on what direction of flow user has come from
+  //if user is going forward, show them the unverified
+  //if user is going back after validating the number, show them the verified
+  const mobile = useSelector((state) =>
+    state.session.profile.unverified.mobilePhones[0]
+      ? state.session.profile.unverified.mobilePhones[0]
+      : state.session.profile.mobilePhones[0]
+  )
   const session = useSelector((state) => state.session)
 
   const handleSubmit = async () => {
@@ -50,12 +57,12 @@ export default function ValidateMobilePhone() {
           setProfile(addVerifiedContact(updatedProfile, 'mobile', mobile))
         )
         // navigate through sign up flow
-        console.log(session)
         if (session.contactPreferences.includes('Email')) {
           // navigate to email TODO - cameron add this once merged
         } else if (session.contactPreferences.includes('PhoneCall')) {
           navigate('/signup/contactpreferences/landline/add')
         } else {
+          navigate('/')
           // navigate to addtional details flow
         }
       }
@@ -77,13 +84,28 @@ export default function ValidateMobilePhone() {
 
   const differentMobile = (event) => {
     event.preventDefault()
-    // remove mobile from users profile
+    //remove mobile from users profile
     const updatedProfile = removeUnverifiedContact(session.profile, mobile)
-    //perform a remove on verified if user has chosen to go back
-    dispatch(
-      setProfile(removeVerifiedContact(updatedProfile, 'mobile', mobile))
-    )
-    navigate('/signup/contactpreferences/mobile/add')
+    //perform a remove on verified if user has chosen to go back after already validating
+    dispatch(setProfile(removeVerifiedContact(updatedProfile, mobile)))
+    //user is going back - pass the mobile given back
+    //we need this incase they go back again so we can
+    //remove it from the profile
+    navigate('/signup/contactpreferences/mobile/add', {
+      state: {
+        mobile: mobile
+      }
+    })
+  }
+
+  const skipValidation = (event) => {
+    event.preventDefault()
+    //remove mobile from verified list if user is going back after validating
+    const updatedProfile = removeVerifiedContact(session.profile, mobile)
+    //we will need to add the mobile back to the unverified list - if it already exists
+    //nothing will happen and it will remain
+    dispatch(setProfile(addUnverifiedContact(updatedProfile, 'mobile', mobile)))
+    navigate('/signup/contactpreferences/mobile/skipconfirmation')
   }
 
   return (
@@ -119,13 +141,7 @@ export default function ValidateMobilePhone() {
                 onClick={handleSubmit}
               />
               &nbsp; &nbsp;
-              <Link
-                to="/signup/contactpreferences/mobile/skipconfirmation"
-                state={{
-                  mobile
-                }}
-                className="govuk-link"
-              >
+              <Link onClick={skipValidation} className="govuk-link">
                 Skip and confirm later
               </Link>
               <br />

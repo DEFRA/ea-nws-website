@@ -4,6 +4,7 @@ const userSlice = createSlice({
   name: 'session',
   initialState: {
     authToken: null,
+    registerToken: null,
     profile: null,
     contactPreferences: null,
     registrations: null
@@ -12,7 +13,12 @@ const userSlice = createSlice({
     setAuthToken: (state, action) => {
       state.authToken = action.payload
     },
+    setRegisterToken: (state, action) => {
+      state.authToken = action.payload
+    },
     setProfile: (state, action) => {
+      console.log('4')
+      console.log('action payload', action.payload)
       state.profile = action.payload
     },
     setContactPreferences: (state, action) => {
@@ -32,6 +38,7 @@ const userSlice = createSlice({
 
 export const {
   setAuthToken,
+  setRegisterToken,
   setProfile,
   setRegistrations,
   setContactPreferences,

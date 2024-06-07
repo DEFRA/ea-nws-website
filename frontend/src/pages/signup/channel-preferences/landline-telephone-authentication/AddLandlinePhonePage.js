@@ -46,9 +46,7 @@ export default function AddLandlinePhonePage() {
             )
           )
         )
-        navigate('/signup/contactpreferences/landline/validate', {
-          state: { msisdn: normalisedPhoneNumber }
-        })
+        navigate('/signup/contactpreferences/landline/validate')
       }
     }
   }

@@ -10,6 +10,9 @@ export default function SkipConfirmMobilePhonePage() {
   const location = useLocation()
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
+  const mobile = useSelector(
+    (state) => state.session.profile.unverified.mobilePhones[0]
+  )
 
   function handleSubmit() {
     // navigate through sign up flow
@@ -31,16 +34,13 @@ export default function SkipConfirmMobilePhonePage() {
             <PhaseBanner />
             <Link
               to="/signup/contactpreferences/mobile/validate"
-              state={{
-                mobile: location.state.mobile
-              }}
               className="govuk-back-link"
             >
               Back
             </Link>
             <h1 className="govuk-heading-l govuk-!-margin-top-6">
-              We cannot send flood messages to {location.state.mobile} until you
-              confirm this number
+              We cannot send flood messages to {mobile} until you confirm this
+              number
             </h1>
             <Button
               text={"I'll confirm this later"}
@@ -50,9 +50,6 @@ export default function SkipConfirmMobilePhonePage() {
             &nbsp; &nbsp;
             <Link
               to="/signup/contactpreferences/mobile/validate"
-              state={{
-                mobile: location.state.mobile
-              }}
               className="govuk-body govuk-link"
             >
               Confirm now

@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../../gov-uk-components/Button'
 import ErrorSummary from '../../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../../gov-uk-components/Footer'
@@ -18,12 +18,16 @@ import {
 import { authCodeValidation } from '../../../../services/validations/AuthCodeValidation'
 
 export default function ValidateLandlinePhonePage() {
-  const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
-  const msisdn = location.state.msisdn
+  //user has verified mobile but is now going back through sign up flow
+  const homePhone = useSelector((state) =>
+    state.session.profile.unverified.homePhones[0]
+      ? state.session.profile.unverified.homePhones[0]
+      : state.session.profile.homePhones[0]
+  )
   const session = useSelector((state) => state.session)
 
   const handleSubmit = async () => {
@@ -33,7 +37,7 @@ export default function ValidateLandlinePhonePage() {
     if (validationError === '') {
       const dataToSend = {
         authToken: session.authToken,
-        msisdn: msisdn,
+        msisdn: homePhone,
         code
       }
 
@@ -45,9 +49,14 @@ export default function ValidateLandlinePhonePage() {
         setError(errorMessage.desc)
       } else {
         // remove landline from unverified list and add to verified list
-        const updatedProfile = removeUnverifiedContact(session.profile, msisdn)
+        const updatedProfile = removeUnverifiedContact(
+          session.profile,
+          homePhone
+        )
         dispatch(
-          setProfile(addVerifiedContact(updatedProfile, 'homePhones', msisdn))
+          setProfile(
+            addVerifiedContact(updatedProfile, 'homePhones', homePhone)
+          )
         )
         // navigate through sign up flow
         if (session.contactPreferences.includes('Email')) {
@@ -61,7 +70,7 @@ export default function ValidateLandlinePhonePage() {
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const data = { authToken: session.authToken, msisdn: msisdn }
+    const data = { authToken: session.authToken, msisdn: homePhone }
     const { errorMessage } = await backendCall(
       data,
       'signup/contactpreferences/landline/validate',
@@ -75,9 +84,9 @@ export default function ValidateLandlinePhonePage() {
   const differentLandline = (event) => {
     event.preventDefault()
     // remove landline from users profile
-    const updatedProfile = removeUnverifiedContact(session.profile, msisdn)
+    const updatedProfile = removeUnverifiedContact(session.profile, homePhone)
     //perform a remove on verified if user has chosen to go back
-    dispatch(setProfile(removeVerifiedContact(updatedProfile, msisdn)))
+    dispatch(setProfile(removeVerifiedContact(updatedProfile, homePhone)))
     navigate('/signup/contactpreferences/landline/add')
   }
 
@@ -92,7 +101,7 @@ export default function ValidateLandlinePhonePage() {
         <h2 class="govuk-heading-l">Check your email</h2>
         <div class="govuk-body">
           We're calling this number to read out a code:
-          <InsetText text={msisdn} />
+          <InsetText text={homePhone} />
           <Input
             name="Enter code"
             inputType="text"
@@ -109,7 +118,6 @@ export default function ValidateLandlinePhonePage() {
           <Link
             className="govuk-link"
             to="/signup/contactpreferences/landline/skipconfirm"
-            state={{ phoneNumber: msisdn }}
           >
             Skip and confirm later
           </Link>

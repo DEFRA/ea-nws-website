@@ -12,7 +12,7 @@ import { setProfile, setRegisterToken } from '../../../redux/userSlice'
 import { backendCall } from '../../../services/BackendService'
 import { emailValidation } from '../../../services/validations/EmailValidation'
 
-export default function SignUpPage() {
+export default function SignUpPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [email, setEmail] = useState('')
@@ -37,7 +37,7 @@ export default function SignUpPage() {
           enabled: true,
           firstName: '',
           lastName: '',
-          //email required validation to continue so can put in verified list
+          // email required validation to continue so can put in verified list
           emails: [email],
           mobilePhones: [],
           homePhones: [],
@@ -60,31 +60,31 @@ export default function SignUpPage() {
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
+      <div className='govuk-width-container'>
         <PhaseBanner />
-        <Link onClick={() => navigate(-1)} className="govuk-back-link">
+        <Link onClick={() => navigate(-1)} className='govuk-back-link'>
           Back
         </Link>
         {error && <ErrorSummary errorList={[error]} />}
-        <h2 className="govuk-heading-l">
+        <h2 className='govuk-heading-l'>
           Enter an email address - you'll use this to sign in to your account
         </h2>
-        <div className="govuk-body">
+        <div className='govuk-body'>
           <p>
             You'll be able to use your account to update your locations, flood
             messages or contact details.{' '}
           </p>
-          <InsetText text="We recommend using an email address you can access 24 hours a day." />
+          <InsetText text='We recommend using an email address you can access 24 hours a day.' />
           <Input
-            className="govuk-input govuk-input--width-10"
-            inputType="text"
-            name="Email address"
+            className='govuk-input govuk-input--width-10'
+            inputType='text'
+            name='Email address'
             error={error}
             onChange={(val) => setEmail(val)}
           />
           <Button
-            className="govuk-button"
-            text="Continue"
+            className='govuk-button'
+            text='Continue'
             onClick={handleSubmit}
           />
           <br />

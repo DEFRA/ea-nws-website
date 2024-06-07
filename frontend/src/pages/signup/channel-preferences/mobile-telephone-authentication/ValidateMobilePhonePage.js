@@ -18,14 +18,14 @@ import {
 } from '../../../../services/ProfileServices'
 import { authCodeValidation } from '../../../../services/validations/AuthCodeValidation'
 
-export default function ValidateMobilePhone() {
+export default function ValidateMobilePhone () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
-  //set the mobile based on what direction of flow user has come from
-  //if user is going forward, show them the unverified
-  //if user is going back after validating the number, show them the verified
+  // set the mobile based on what direction of flow user has come from
+  // if user is going forward, show them the unverified
+  // if user is going back after validating the number, show them the verified
   const mobile = useSelector((state) =>
     state.session.profile.unverified.mobilePhones[0]
       ? state.session.profile.unverified.mobilePhones[0]
@@ -84,26 +84,26 @@ export default function ValidateMobilePhone() {
 
   const differentMobile = (event) => {
     event.preventDefault()
-    //remove mobile from users profile
+    // remove mobile from users profile
     const updatedProfile = removeUnverifiedContact(session.profile, mobile)
-    //perform a remove on verified if user has chosen to go back after already validating
+    // perform a remove on verified if user has chosen to go back after already validating
     dispatch(setProfile(removeVerifiedContact(updatedProfile, mobile)))
-    //user is going back - pass the mobile given back
-    //we need this incase they go back again so we can
-    //remove it from the profile
+    // user is going back - pass the mobile given back
+    // we need this incase they go back again so we can
+    // remove it from the profile
     navigate('/signup/contactpreferences/mobile/add', {
       state: {
-        mobile: mobile
+        mobile
       }
     })
   }
 
   const skipValidation = (event) => {
     event.preventDefault()
-    //remove mobile from verified list if user is going back after validating
+    // remove mobile from verified list if user is going back after validating
     const updatedProfile = removeVerifiedContact(session.profile, mobile)
-    //we will need to add the mobile back to the unverified list - if it already exists
-    //nothing will happen and it will remain
+    // we will need to add the mobile back to the unverified list - if it already exists
+    // nothing will happen and it will remain
     dispatch(setProfile(addUnverifiedContact(updatedProfile, 'mobile', mobile)))
     navigate('/signup/contactpreferences/mobile/skipconfirmation')
   }
@@ -111,49 +111,49 @@ export default function ValidateMobilePhone() {
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
-        <div className="govuk-grid-row">
-          <div className="govuk-grid-column-two-thirds">
+      <div className='govuk-width-container'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
             <PhaseBanner />
-            <Link onClick={differentMobile} className="govuk-back-link">
+            <Link onClick={differentMobile} className='govuk-back-link'>
               Back
             </Link>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className="govuk-heading-l govuk-!-margin-top-6">
+            <h1 className='govuk-heading-l govuk-!-margin-top-6'>
               Check your mobile phone
             </h1>
 
-            <div className="govuk-body">
+            <div className='govuk-body'>
               <p>We've sent a text with a code to:</p>
               <InsetText text={mobile} />
               <p>Use the code within 4 hours or it will expire</p>
               <Input
-                inputType="text"
+                inputType='text'
                 value={code}
-                name="Enter code"
+                name='Enter code'
                 onChange={(val) => setCode(val)}
                 error={error}
-                className="govuk-input govuk-input--width-10"
+                className='govuk-input govuk-input--width-10'
               />
               <Button
-                text="Continue"
-                className="govuk-button"
+                text='Continue'
+                className='govuk-button'
                 onClick={handleSubmit}
               />
               &nbsp; &nbsp;
-              <Link onClick={skipValidation} className="govuk-link">
+              <Link onClick={skipValidation} className='govuk-link'>
                 Skip and confirm later
               </Link>
               <br />
-              <Link onClick={getNewCode} className="govuk-link">
+              <Link onClick={getNewCode} className='govuk-link'>
                 Get a new code
               </Link>
               <br />
               <br />
-              <Link onClick={differentMobile} className="govuk-link">
+              <Link onClick={differentMobile} className='govuk-link'>
                 Enter a different mobile number
               </Link>
-              <div className="govuk-!-margin-bottom-9" />
+              <div className='govuk-!-margin-bottom-9' />
             </div>
           </div>
         </div>

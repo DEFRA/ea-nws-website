@@ -11,18 +11,19 @@ import InsetText from '../../../../gov-uk-components/InsetText'
 import { setProfile } from '../../../../redux/userSlice'
 import { backendCall } from '../../../../services/BackendService'
 import {
+  addUnverifiedContact,
   addVerifiedContact,
   removeUnverifiedContact,
   removeVerifiedContact
 } from '../../../../services/ProfileServices'
 import { authCodeValidation } from '../../../../services/validations/AuthCodeValidation'
 
-export default function ValidateLandlinePhonePage() {
+export default function ValidateLandlinePhonePage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
-  //user has verified mobile but is now going back through sign up flow
+  // user has verified mobile but is now going back through sign up flow
   const homePhone = useSelector((state) =>
     state.session.profile.unverified.homePhones[0]
       ? state.session.profile.unverified.homePhones[0]
@@ -85,49 +86,65 @@ export default function ValidateLandlinePhonePage() {
     event.preventDefault()
     // remove landline from users profile
     const updatedProfile = removeUnverifiedContact(session.profile, homePhone)
-    //perform a remove on verified if user has chosen to go back
+    // perform a remove on verified if user has chosen to go back
     dispatch(setProfile(removeVerifiedContact(updatedProfile, homePhone)))
-    navigate('/signup/contactpreferences/landline/add')
+    // user is going back - pass the mobile given back
+    // we need this incase they go back again so we can
+    // remove it from the profile
+    navigate('/signup/contactpreferences/landline/add', {
+      state: {
+        mobile: homePhone
+      }
+    })
+  }
+
+  const skipValidation = (event) => {
+    event.preventDefault()
+    // remove home Phone from verified list if user is going back after validating
+    const updatedProfile = removeVerifiedContact(session.profile, homePhone)
+    // we will need to add the home Phone back to the unverified list - if it already exists
+    // nothing will happen and it will remain
+    dispatch(
+      setProfile(addUnverifiedContact(updatedProfile, 'homePhones', homePhone))
+    )
+    navigate('/signup/contactpreferences/landline/skipconfirmation')
   }
 
   return (
     <>
       <Header />
-      <div class="govuk-width-container">
-        <Link onClick={differentLandline} className="govuk-back-link">
+      <div class='govuk-width-container'>
+        <Link onClick={differentLandline} className='govuk-back-link'>
           Back
         </Link>
         {error && <ErrorSummary errorList={[error]} />}
-        <h2 class="govuk-heading-l">Check your email</h2>
-        <div class="govuk-body">
+        <h2 class='govuk-heading-l'>Check your email</h2>
+        <div class='govuk-body'>
           We're calling this number to read out a code:
           <InsetText text={homePhone} />
           <Input
-            name="Enter code"
-            inputType="text"
+            name='Enter code'
+            inputType='text'
             error={error}
-            className="govuk-input govuk-input--width-10"
+            className='govuk-input govuk-input--width-10'
             onChange={(val) => setCode(val)}
           />
           <Button
-            className="govuk-button"
-            text="Continue"
+            className='govuk-button'
+            text='Continue'
             onClick={handleSubmit}
           />
           &nbsp; &nbsp;
-          <Link
-            className="govuk-link"
-            to="/signup/contactpreferences/landline/skipconfirm"
-          >
+          <Link className='govuk-link' onClick={skipValidation}>
             Skip and confirm later
           </Link>
           <br />
-          <Link onClick={getNewCode} className="govuk-link">
+          <Link onClick={getNewCode} className='govuk-link'>
             Get a new code
           </Link>
           <br />
           <br />
-          <Link onClick={differentLandline} className="govuk-link">
+          <Link onClick={differentLandline} className='govuk-link'>
             Enter a different telephone number
           </Link>
         </div>

@@ -17,11 +17,11 @@ import {
 import { normalisePhoneNumber } from '../../../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../../services/validations/PhoneValidation'
 
-export default function AddMobilePhonePage() {
+export default function AddMobilePhonePage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
-  //if user is going back through flow = show them their previously entered mobile
+  // if user is going back through flow = show them their previously entered mobile
   const [mobile, setMobile] = useState(
     location.state ? location.state.mobile : ''
   )
@@ -53,13 +53,13 @@ export default function AddMobilePhonePage() {
     }
   }
 
-  //if user is going back through the signup flow - we want to remove the mobile
-  //from either the verified or unverified list - we need to do both incase
-  //they progressed past the validate mobile path
+  // if user is going back through the signup flow - we want to remove the mobile
+  // from either the verified or unverified list - we need to do both incase
+  // they progressed past the validate mobile path
   const removeMobileFromProfile = async (event) => {
     event.preventDefault()
-    //we need to check if location.state has a value - this will only hold a value
-    //if the user has come from the mobile validate page
+    // we need to check if location.state has a value - this will only hold a value
+    // if the user has come from the mobile validate page
     if (location.state) {
       event.preventDefault()
       const normalisedMobile = normalisePhoneNumber(location.state.mobile)
@@ -78,32 +78,32 @@ export default function AddMobilePhonePage() {
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
-        <div className="govuk-grid-row">
-          <div className="govuk-grid-column-two-thirds">
+      <div className='govuk-width-container'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
             <PhaseBanner />
-            <Link onClick={removeMobileFromProfile} className="govuk-back-link">
+            <Link onClick={removeMobileFromProfile} className='govuk-back-link'>
               Back
             </Link>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className="govuk-heading-l govuk-!-margin-top-6">
+            <h1 className='govuk-heading-l govuk-!-margin-top-6'>
               Enter a mobile number to get flood messages by text
             </h1>
-            <p className="govuk-body">
+            <p className='govuk-body'>
               We recommend using a mobile number where we can reach you 24 hours
               a day
             </p>
             <Input
-              inputType="text"
+              inputType='text'
               value={mobile}
-              name="UK mobile telephone number"
+              name='UK mobile telephone number'
               onChange={(val) => setMobile(val)}
               error={error}
-              className="govuk-input govuk-input--width-20"
+              className='govuk-input govuk-input--width-20'
             />
             <Button
-              text="Continue"
-              className="govuk-button"
+              text='Continue'
+              className='govuk-button'
               onClick={handleSubmit}
             />
           </div>

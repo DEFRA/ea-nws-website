@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../gov-uk-components/Button'
 import ErrorSummary from '../../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../../gov-uk-components/Footer'
@@ -10,22 +10,30 @@ import Input from '../../../../gov-uk-components/Input'
 import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
 import { setProfile } from '../../../../redux/userSlice'
 import { backendCall } from '../../../../services/BackendService'
-import { addUnverifiedContact } from '../../../../services/ProfileServices'
+import {
+  addUnverifiedContact,
+  removeUnverifiedContact,
+  removeVerifiedContact
+} from '../../../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../../services/validations/PhoneValidation'
 
-export default function AddLandlinePhonePage() {
+export default function AddLandlinePhonePage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [msisdn, setMsisdn] = useState('')
+  const location = useLocation()
+  // if user is going back through flow = show them their previously entered homePhone
+  const [homePhone, setHomePhone] = useState(
+    location.state ? location.state.homePhone : ''
+  )
   const [error, setError] = useState('')
   const session = useSelector((state) => state.session)
 
   const handleSubmit = async () => {
-    const validationError = phoneValidation(msisdn, 'mobileAndLandline')
+    const validationError = phoneValidation(homePhone, 'mobileAndLandline')
     setError(validationError)
     if (validationError === '') {
-      const data = { authToken: session.authToken, msisdn }
+      const data = { authToken: session.authToken, homePhone }
       const { errorMessage } = await backendCall(
         data,
         'signup/contactpreferences/landline/add'
@@ -34,7 +42,7 @@ export default function AddLandlinePhonePage() {
       if (errorMessage !== null) {
         setError(errorMessage.desc)
       } else {
-        const normalisedPhoneNumber = normalisePhoneNumber(msisdn)
+        const normalisedPhoneNumber = normalisePhoneNumber(homePhone)
         console.log(normalisedPhoneNumber)
         // add landline to unverified list
         dispatch(
@@ -51,35 +59,60 @@ export default function AddLandlinePhonePage() {
     }
   }
 
+  // if user is going back through the signup flow - we want to remove the home phone
+  // from either the verified or unverified list - we need to do both incase
+  // they progressed past the validate home phone path
+  const removeLandlineFromProfile = async (event) => {
+    event.preventDefault()
+    // we need to check if location.state has a value - this will only hold a value
+    // if the user has come from the home phone validate page
+    if (location.state) {
+      event.preventDefault()
+      const normalisedHomePhone = normalisePhoneNumber(location.state.homePhone)
+      // remove mobile from users profile
+      const updatedProfile = removeUnverifiedContact(
+        session.profile,
+        normalisedHomePhone
+      )
+      dispatch(
+        setProfile(removeVerifiedContact(updatedProfile, normalisedHomePhone))
+      )
+    }
+    navigate('/signup/contactpreferences')
+  }
+
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
-        <div className="govuk-grid-row">
-          <div className="govuk-grid-column-two-thirds">
+      <div className='govuk-width-container'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
             <PhaseBanner />
-            <Link to={''} className="govuk-back-link">
+            <Link
+              onClick={removeLandlineFromProfile}
+              className='govuk-back-link'
+            >
               Back
             </Link>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className="govuk-heading-l govuk-!-margin-top-6">
+            <h1 className='govuk-heading-l govuk-!-margin-top-6'>
               Enter a telephone number to get flood messages by phone call
             </h1>
-            <p className="govuk-body">
+            <p className='govuk-body'>
               We recommend using a landline or mobile number that can be called
               24 hours a day
             </p>
             <Input
-              inputType="text"
-              value={msisdn}
-              name="UK landline or mobile telephone number"
-              onChange={(val) => setMsisdn(val)}
-              className="govuk-input govuk-input--width-20"
+              inputType='text'
+              value={homePhone}
+              name='UK landline or mobile telephone number'
+              onChange={(val) => setHomePhone(val)}
+              className='govuk-input govuk-input--width-20'
               error={error}
             />
             <Button
-              text="Continue"
-              className="govuk-button"
+              text='Continue'
+              className='govuk-button'
               onClick={handleSubmit}
             />
           </div>

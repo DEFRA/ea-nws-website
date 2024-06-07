@@ -67,8 +67,8 @@ lab.experiment('Integration tests', () => {
       }
       const response = await server.inject(options)
       Code.expect(response.statusCode).to.equal(200)
-      //Code.expect(response.data.profile)
-      //Code.expect(response.data.registration)
+      // Code.expect(response.data.profile)
+      // Code.expect(response.data.registration)
     }
   )
 })

@@ -62,6 +62,8 @@ COPY --from=backend_build /usr/src/app/server ./server
 EXPOSE 5000
 
 RUN chown -R node /usr/src/app/node_modules
+RUN mkdir NWS-logs
+RUN chown -R node NWS-logs
 
 USER node
 # Run the application.

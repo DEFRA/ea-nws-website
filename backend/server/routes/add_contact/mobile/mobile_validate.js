@@ -1,22 +1,23 @@
-const { apiCall } = require('../../../../services/ApiService')
+const { apiCall } = require('../../../services/ApiService')
 const {
-  phoneValidation
-} = require('../../../../services/validations/PhoneValidation')
+  authCodeValidation
+} = require('../../../services/validations/AuthCodeValidation')
 
 module.exports = [
   {
     method: ['POST', 'PUT'],
-    path: '/signup/contactpreferences/mobile/add',
+    path: '/add_contact/mobile/validate',
     handler: async (request, h) => {
       try {
-        const { msisdn } = request.payload
-        const validationError = phoneValidation(msisdn, 'mobile')
+        const { code } = request.payload
+        // progressive enhancement validation
+        const validationError = authCodeValidation(code)
 
         if (validationError === '') {
-          // request.payload = { authToken, msisdn }
+          // request.payload = { authToken, msisdn, code }
           const response = await apiCall(
             request.payload,
-            'member/verifyMobilePhoneStart'
+            'member/verifyMobilePhoneValidate'
           )
           return h.response(response)
         } else {

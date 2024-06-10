@@ -1,7 +1,7 @@
-const { apiCall } = require('../../../../services/ApiService')
+const { apiCall } = require('../../../services/ApiService')
 const {
   phoneValidation
-} = require('../../../../services/validations/PhoneValidation')
+} = require('../../../services/validations/PhoneValidation')
 
 const apiLandlineStartCall = async (msisdn, auth) => {
   const data = { msisdn: msisdn, authToken: auth }
@@ -24,7 +24,7 @@ const apiLandlineStartCall = async (msisdn, auth) => {
 module.exports = [
   {
     method: ['POST'],
-    path: '/signup/contactpreferences/landline/add',
+    path: '/add_contact/landline/add',
     handler: async (request, h) => {
       try {
         if (request.payload === null) {

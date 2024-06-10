@@ -6,10 +6,10 @@ const routes = [].concat(
   require('../routes/signup/signupStart'),
   require('../routes/signup/signupValidate'),
   require('../routes/update_profile/update_profile'),
-  require('../routes/signup/channel-preferences/mobile/mobile_start'),
-  require('../routes/signup/channel-preferences/mobile/mobile_validate'),
-  require('../routes/signup/channel-preferences/landline/verify_landline_start'),
-  require('../routes/signup/channel-preferences/landline/verify_landline_validate')
+  require('../routes/add_contact/mobile/mobile_start'),
+  require('../routes/add_contact/mobile/mobile_validate'),
+  require('../routes/add_contact/landline/landline_start'),
+  require('../routes/add_contact/landline/landline_validate')
 )
 
 module.exports = {

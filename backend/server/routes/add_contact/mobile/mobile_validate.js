@@ -5,7 +5,7 @@ const {
 
 module.exports = [
   {
-    method: ['POST', 'PUT'],
+    method: ['POST'],
     path: '/add_contact/mobile/validate',
     handler: async (request, h) => {
       try {

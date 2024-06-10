@@ -18,6 +18,7 @@ export default function FeedbackPage () {
   const dispatch = useDispatch()
   const [feedbackPreference, setFeedbackPreference] = useState('')
   const [feedbackText, setFeedbackText] = useState('')
+  const [optionalFeedbackText, setOptionalFeedbackText] = useState('')
   const [error, setError] = useState('')
   const [textError, setTextError] = useState('')
   
@@ -43,13 +44,16 @@ export default function FeedbackPage () {
       setTextError(null)
       setFeedbackText(feedbackText)
     }
-    
-    const dataToRecord = {feedbackPreference, feedbackText}
-    console.log("feedback data to record", dataToRecord)
-    
-    await backendCall(dataToRecord, 'signup_feedback', navigate)
 
-    navigate('/signup')
+    if(feedbackText !== '' && feedbackPreference.length !== 0){
+      const dataToRecord = {feedbackPreference, feedbackText, optionalFeedbackText}
+      console.log("optional feedbacl text", optionalFeedbackText)
+      console.log("feedback data to record", dataToRecord)
+    
+      await backendCall(dataToRecord, 'signup/feedback', navigate)
+
+      navigate('/signup')
+    }
   }
 
   const setFeedback = (event) => {
@@ -121,7 +125,6 @@ export default function FeedbackPage () {
           <Input
             className='govuk-input govuk-input--width-30'
             inputType='text'
-            
             onChange={(val) => setFeedbackText(val)}
           />
         </div>
@@ -134,8 +137,7 @@ export default function FeedbackPage () {
           <Input
             className='govuk-input govuk-input--width-30 govuk-input--height-100'
             inputType='text'
-            //error={error}
-            //onChange={(val) => setFeedbackText(val)}
+            onChange={(val) => setOptionalFeedbackText(val)}
           />
           <div>
           <Button

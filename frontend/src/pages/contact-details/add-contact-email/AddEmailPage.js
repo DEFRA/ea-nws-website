@@ -6,6 +6,8 @@ import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import Input from '../../../gov-uk-components/Input'
+import { setProfile } from '../../../redux/userSlice'
+import { addUnverifiedContact } from '../../../services/ProfileServices'
 import { emailValidation } from '../../../services/validations/EmailValidation'
 
 export default function AddEmailPage() {
@@ -21,7 +23,7 @@ export default function AddEmailPage() {
     setError(validationError)
     const dataToSend = { email }
     if (validationError === '') {
-      /*const { errorMessage, data } = await backendCall(
+      const { errorMessage, data } = await backendCall(
         dataToSend,
         'signInStart',
         navigate
@@ -29,9 +31,11 @@ export default function AddEmailPage() {
       if (errorMessage !== null) {
         setError(errorMessage.desc)
       } else {
-
-      }*/
-      navigate('/managecontact/validate-email')
+        dispatch(
+          setProfile(addUnverifiedContact(session.profile, 'email', email))
+        )
+        navigate('/managecontacts/validate-email')
+      }
     }
   }
 
@@ -39,7 +43,7 @@ export default function AddEmailPage() {
     <>
       <Header />
       <div class="govuk-width-container">
-        <Link navigate="-1" className="govuk-back-link">
+        <Link to="/managecontacts" className="govuk-back-link">
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
@@ -47,12 +51,15 @@ export default function AddEmailPage() {
           Enter an email address to get flood messages
         </h2>
         <div class="govuk-body">
-          We recommend using an email address you can access 24 hours a day.
+          <p>
+            We recommend using an email address you can access 24 hours a day.
+          </p>
           <Input
             name="Email address"
             inputType="text"
             error={error}
             onChange={(val) => setEmail(val)}
+            className="govuk-input govuk-input--width-20"
           />
           <Button
             className="govuk-button"

@@ -84,8 +84,11 @@ const contactRoutes = [
     path: '/managecontacts/confirm-delete',
     component: <ConfirmDeleteContactDetailsPage />
   },
-  { path: '/managecontact/add-email', component: <AddEmailPage /> },
-  { path: '/managecontact/validate-email', component: <AddEmailValidatePage /> }
+  { path: '/managecontacts/add-email', component: <AddEmailPage /> },
+  {
+    path: '/managecontacts/validate-email',
+    component: <AddEmailValidatePage />
+  }
 ]
 
 const routes = [

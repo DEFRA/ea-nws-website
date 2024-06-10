@@ -32,6 +32,9 @@ export default function AddLandlinePhonePage() {
   const handleSubmit = async () => {
     const validationError = phoneValidation(homePhone, 'mobileAndLandline')
     setError(validationError)
+    //should also do a check here to make sure this number isnt already in the users profile
+    //add this in when working on the pages that allows a user to go back and update their number
+    //at sign up flow - we dont want the number already validated being tried again
     if (validationError === '') {
       const data = { authToken: session.authToken, homePhone }
       const { errorMessage } = await backendCall(

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
@@ -8,14 +8,10 @@ import Input from '../../../gov-uk-components/Input'
 import InsetText from '../../../gov-uk-components/InsetText'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 import { backendCall } from '../../../services/BackendService'
-import { emailValidation } from '../../../services/validations/EmailValidation'
 import Checkbox from '../../../gov-uk-components/CheckBox'
-import { useDispatch } from 'react-redux'
 
 export default function FeedbackPage () {
-  const location = useLocation()
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const [feedbackPreference, setFeedbackPreference] = useState('')
   const [feedbackText, setFeedbackText] = useState('')
   const [optionalFeedbackText, setOptionalFeedbackText] = useState('')
@@ -47,8 +43,6 @@ export default function FeedbackPage () {
 
     if(feedbackText !== '' && feedbackPreference.length !== 0){
       const dataToRecord = {feedbackPreference, feedbackText, optionalFeedbackText}
-      console.log("optional feedbacl text", optionalFeedbackText)
-      console.log("feedback data to record", dataToRecord)
     
       await backendCall(dataToRecord, 'signup/feedback', navigate)
 
@@ -80,10 +74,10 @@ export default function FeedbackPage () {
         { ( !textError && error) && <ErrorSummary errorList={[error]}  />}
         <h1 className='govuk-heading-l'>Give feedback about signing up</h1>
         <div className='govuk-body'>
-          This helps is to improve this service
+          This helps us to improve this service
           <br />
-          <InsetText text='Only tell us about feedback on this page. If you need to check your signed up correctly or have a question about 
-          your flood risk. Contact us' />
+          <InsetText text='Only tell us about feedback on this page. If you need to check you have signed up correctly or have a question about 
+          your flood risk, contact us.'/>
           <br />
           <div className={
                 error
@@ -118,12 +112,14 @@ export default function FeedbackPage () {
             >
               <fieldset className='govuk-fieldset'></fieldset>
           <h3 className='govuk-heading-m'>
-            Is there anything you like or do not like about this service?
+            Is there anything you like or do not like about this
+            <br />
+            service?
           </h3>
           <p className='govuk-hint'> Do not include your personal or financial details</p>
           {textError && <p className='govuk-error-message'>{textError}</p>}
           <Input
-            className='govuk-input govuk-input--width-30'
+            className='govuk-input'
             inputType='text'
             onChange={(val) => setFeedbackText(val)}
           />
@@ -132,10 +128,11 @@ export default function FeedbackPage () {
         <h4 className='govuk-heading-m'>
             Take part in research sessions (optional)
           </h4>
-          <p className='govuk-hint'> Enter email address to take part. We will not use this for any other reason and will 
+          <p className='govuk-hint'> Enter email address to take part. We will not use this for any
+          < br /> other reason and will 
           delete it after 2 years.</p>
           <Input
-            className='govuk-input govuk-input--width-30 govuk-input--height-100'
+            className='govuk-input govuk-input--width-30'
             inputType='text'
             onChange={(val) => setOptionalFeedbackText(val)}
           />
@@ -151,3 +148,7 @@ export default function FeedbackPage () {
     </>
   )
 }
+
+
+
+

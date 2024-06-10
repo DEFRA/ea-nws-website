@@ -1,4 +1,4 @@
-const responseCodes = require('../../../responseCodes')
+const responseCodes = require('../../responseCodes')
 import Hapi from '@hapi/hapi'
 import type { Context } from 'openapi-backend'
 

@@ -43,7 +43,6 @@ export default function AddLandlinePhonePage() {
         setError(errorMessage.desc)
       } else {
         const normalisedPhoneNumber = normalisePhoneNumber(homePhone)
-        console.log(normalisedPhoneNumber)
         // add landline to unverified list
         dispatch(
           setProfile(

@@ -17,8 +17,6 @@ const userSlice = createSlice({
       state.authToken = action.payload
     },
     setProfile: (state, action) => {
-      console.log('4')
-      console.log('action payload', action.payload)
       state.profile = action.payload
     },
     setContactPreferences: (state, action) => {

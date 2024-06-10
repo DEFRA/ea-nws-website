@@ -2,7 +2,7 @@ import { handleResponse } from './HandleResponse'
 
 export const backendCall = async (data, path, navigate) => {
   let responseData
-  const url = 'http://localhost:5082/' + path
+  const url = 'http://localhost:5000/' + path
   try {
     const response = await fetch(url, {
       method: 'POST',

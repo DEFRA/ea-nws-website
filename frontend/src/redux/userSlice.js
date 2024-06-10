@@ -4,12 +4,16 @@ const userSlice = createSlice({
   name: 'session',
   initialState: {
     authToken: null,
+    registerToken: null,
     profile: null,
     contactPreferences: null,
     registrations: null
   },
   reducers: {
     setAuthToken: (state, action) => {
+      state.authToken = action.payload
+    },
+    setRegisterToken: (state, action) => {
       state.authToken = action.payload
     },
     setProfile: (state, action) => {
@@ -32,6 +36,7 @@ const userSlice = createSlice({
 
 export const {
   setAuthToken,
+  setRegisterToken,
   setProfile,
   setRegistrations,
   setContactPreferences,

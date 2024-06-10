@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
 import Checkbox from '../../../gov-uk-components/CheckBox'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
@@ -12,8 +12,8 @@ import { setContactPreferences } from '../../../redux/userSlice'
 
 export default function WarningContactsPreferencePage () {
   const navigate = useNavigate()
-  const location = useLocation()
   const dispatch = useDispatch()
+  const loginEmail = useSelector((state) => state.session.profile.emails[0])
   const [selectedContactPreferences, setSelectedContactPreferences] = useState(
     []
   )
@@ -35,7 +35,7 @@ export default function WarningContactsPreferencePage () {
       } else if (selectedContactPreferences.includes('Email')) {
         // navigate to email TODO - cameron add this once merged
       } else if (selectedContactPreferences.includes('PhoneCall')) {
-        // navigate to phone call TODO - camille add this once merged
+        navigate('/signup/contactpreferences/landline/add')
       }
     }
   }
@@ -58,15 +58,7 @@ export default function WarningContactsPreferencePage () {
         <PhaseBanner />
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <Link
-              onClick={() =>
-                navigate(-1, {
-                  state: {
-                    email: location.state.email
-                  }
-                })}
-              className='govuk-back-link'
-            >
+            <Link to='signup/validate' className='govuk-back-link'>
               Back
             </Link>
             {error
@@ -78,7 +70,7 @@ export default function WarningContactsPreferencePage () {
                   className='govuk-notification-banner govuk-notification-banner--success'
                   title='success'
                   heading='Email address confirmed'
-                  text={location.state.email + ' is your sign in email'}
+                  text={loginEmail + ' is your sign in email'}
                 />
                 )}
             <h1 className='govuk-heading-l'>

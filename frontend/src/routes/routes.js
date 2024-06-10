@@ -4,6 +4,8 @@ import ConfirmDeleteContactDetailsPage from '../pages/contact-details/ConfirmDel
 import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
 import AddEmailPage from '../pages/contact-details/add-contact-email/AddEmailPage'
 import AddEmailValidatePage from '../pages/contact-details/add-contact-email/AddEmailValidatePage'
+import AddMobilePage from '../pages/contact-details/add-contact-mobile/AddMobilePage'
+import AddMobileValidatePage from '../pages/contact-details/add-contact-mobile/AddMobileValidatePage'
 import HomePage from '../pages/home/HomePage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
@@ -88,6 +90,11 @@ const contactRoutes = [
   {
     path: '/managecontacts/validate-email',
     component: <AddEmailValidatePage />
+  },
+  { path: '/managecontacts/add-mobile', component: <AddMobilePage /> },
+  {
+    path: '/managecontacts/validate-mobile',
+    component: <AddMobileValidatePage />
   }
 ]
 

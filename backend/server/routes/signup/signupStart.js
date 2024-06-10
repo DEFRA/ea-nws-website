@@ -6,7 +6,7 @@ const { apiCall } = require('../../services/ApiService')
 module.exports = [
   {
     method: ['POST'],
-    path: '/signupStart',
+    path: '/api/signupStart',
     handler: async (request, h) => {
       try {
         const { email } = request.payload

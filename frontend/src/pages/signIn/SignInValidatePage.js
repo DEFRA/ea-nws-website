@@ -30,7 +30,7 @@ export default function SignInValidatePage() {
       const dataToSend = { signinToken, code }
       const { errorMessage, data } = await backendCall(
         dataToSend,
-        'signInValidate'
+        'api/signInValidate'
       )
       if (errorMessage !== null) {
         setError(errorMessage.desc)

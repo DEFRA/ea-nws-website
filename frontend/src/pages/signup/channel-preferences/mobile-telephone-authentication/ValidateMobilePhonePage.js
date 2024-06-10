@@ -45,7 +45,7 @@ export default function ValidateMobilePhone() {
       }
       const { errorMessage } = await backendCall(
         dataToSend,
-        'signup/contactpreferences/mobile/validate',
+        'add_contact/mobile/validate',
         navigate
       )
       if (errorMessage !== null) {

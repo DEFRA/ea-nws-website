@@ -39,7 +39,7 @@ export default function AddLandlinePhonePage() {
       const data = { authToken: session.authToken, homePhone }
       const { errorMessage } = await backendCall(
         data,
-        'signup/contactpreferences/landline/add'
+        'add_contact/landline/add'
       )
 
       if (errorMessage !== null) {

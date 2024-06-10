@@ -8,7 +8,7 @@ import Header from '../../../gov-uk-components/Header'
 import Input from '../../../gov-uk-components/Input'
 import InsetText from '../../../gov-uk-components/InsetText'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
-import { setProfile } from '../../../redux/userSlice'
+import { setAuthToken, setProfile } from '../../../redux/userSlice'
 import { backendCall } from '../../../services/BackendService'
 import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
 
@@ -23,13 +23,13 @@ export default function SignUpValidationPage() {
     const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      const data = {
+      const dataToSend = {
         registerToken: location.state.registerToken,
         code
       }
 
-      const { errorMessage } = await backendCall(
-        data,
+      const { data, errorMessage } = await backendCall(
+        dataToSend,
         'api/signupValidate',
         navigate
       )
@@ -56,6 +56,7 @@ export default function SignUpValidationPage() {
           pois: []
         }
         dispatch(setProfile(profile))
+        dispatch(setAuthToken(data.authToken))
         navigate('/signup/contactpreferences', {
           state: {
             email: location.state.email

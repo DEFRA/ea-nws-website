@@ -17,7 +17,7 @@ export default function ValidateLandlinePhonePage () {
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
   const navigate = useNavigate()
-  const authToken = 'MockGUIDAuthToken' // useSelector((state) => state.session.authToken)
+  const authToken = 'MockAuthToken' // useSelector((state) => state.session.authToken)
 
   const handleSubmit = async () => {
     const validationError = authCodeValidation(code)

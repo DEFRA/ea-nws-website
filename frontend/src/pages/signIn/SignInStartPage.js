@@ -38,7 +38,7 @@ export default function SignInStartPage() {
     <>
       <Header />
       <div class="govuk-width-container">
-        <Link to="/" className="govuk-back-link">
+        <Link onClick={() => navigate(-1)} className="govuk-back-link">
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />

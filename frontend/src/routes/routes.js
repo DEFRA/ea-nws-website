@@ -14,6 +14,7 @@ import ValidateLandlinePhonePage from '../pages/signup/channel-preferences/landl
 import AddMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/AddMobilePhonePage'
 import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/SkipConfirmMobilePhonePage'
 import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
+import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
 
 // index routes
@@ -64,6 +65,10 @@ const signupRoutes = [
   {
     path: '/signup/contactpreferences/landline/skipconfirm',
     component: <SkipConfirmLandlinePhonePage />
+  },
+  {
+    path: '/declaration',
+    component: <DeclarationOfAgreementPage />
   }
 ]
 

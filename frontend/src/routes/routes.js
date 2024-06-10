@@ -2,6 +2,8 @@ import React from 'react'
 import Index from '../pages/Index'
 import ConfirmDeleteContactDetailsPage from '../pages/contact-details/ConfirmDeleteContactDetailsPage'
 import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
+import AddEmailPage from '../pages/contact-details/add-contact-email/AddEmailPage'
+import AddEmailValidatePage from '../pages/contact-details/add-contact-email/AddEmailValidatePage'
 import HomePage from '../pages/home/HomePage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
@@ -59,7 +61,9 @@ const contactRoutes = [
   {
     path: '/managecontacts/confirm-delete',
     component: <ConfirmDeleteContactDetailsPage />
-  }
+  },
+  { path: '/managecontact/add-email', component: <AddEmailPage /> },
+  { path: '/managecontact/validate-email', component: <AddEmailValidatePage /> }
 ]
 
 const routes = [

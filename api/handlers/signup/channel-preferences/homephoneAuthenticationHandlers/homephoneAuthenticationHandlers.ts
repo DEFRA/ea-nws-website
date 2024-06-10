@@ -11,7 +11,7 @@ async function getHomephoneStart(
   const { authToken } = req.payload as { authToken: string }
   const { msisdn } = req.payload as { msisdn: string }
 
-  if (authToken === 'MockGUIDAuthToken') {
+  if (authToken === 'MockAuthToken') {
     return res.response(responseCodes.SUCCESS)
   }
   return res.response(responseCodes.INVALID_TOKEN).code(500)

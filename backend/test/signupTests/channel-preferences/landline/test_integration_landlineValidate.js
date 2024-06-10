@@ -14,7 +14,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with invalid code', async () => {
     const options = {
       method: 'POST',
-      url: '/signup/contactpreferences/landline/validate',
+      url: '/add_contact/landline/validate',
       payload: {
         authToken: 'MockAuthToken',
         phone: '07590000000',
@@ -29,7 +29,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with invalid code (too short)', async () => {
     const options = {
       method: 'POST',
-      url: '/signup/contactpreferences/landline/validate',
+      url: '/add_contact/landline/validate',
       payload: {
         authToken: 'MockAuthToken',
         phone: '07590000000',
@@ -43,7 +43,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with invalid code (empty)', async () => {
     const options = {
       method: 'POST',
-      url: '/signup/contactpreferences/landline/validate',
+      url: '/add_contact/landline/validate',
       payload: {
         authToken: 'MockAuthToken',
         phone: '07590000000',
@@ -57,7 +57,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with invalid code (empty)', async () => {
     const options = {
       method: 'POST',
-      url: '/signup/contactpreferences/landline/validate',
+      url: '/add_contact/landline/validate',
       payload: {
         authToken: 'MockAuthToken',
         phone: '07590000000',

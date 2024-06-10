@@ -16,7 +16,7 @@ lab.experiment('Integration tests', () => {
     async () => {
       const options = {
         method: 'POST',
-        url: '/signup/contactpreferences/landline/validate'
+        url: '/add_contact/landline/validate'
       }
       const response = await server.inject(options)
       Code.expect(response.statusCode).to.equal(400)
@@ -26,7 +26,7 @@ lab.experiment('Integration tests', () => {
   lab.test('GET / sending a GET instead of POST', async () => {
     const options = {
       method: 'GET',
-      url: '/signup/contactpreferences/landline/validate'
+      url: '/add_contact/landline/validate'
     }
 
     const response = await server.inject(options)
@@ -36,7 +36,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / Response status is 200 if everything is ok', async () => {
     const options = {
       method: 'POST',
-      url: '/signup/contactpreferences/landline/validate',
+      url: '/add_contact/landline/validate',
       payload: {
         authToken: 'MockAuthToken',
         phone: '07590000000',

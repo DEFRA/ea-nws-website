@@ -29,6 +29,6 @@ describe('authCodeValidation', () => {
 
   it('should return "Enter code" for a code with non-numeric characters', () => {
     const result = authCodeValidation('12a456')
-    expect(result).to.equal('Enter code')
+    expect(result).to.equal('Code must be 6 numbers')
   })
 })

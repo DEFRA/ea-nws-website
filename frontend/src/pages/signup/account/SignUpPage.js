@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
@@ -7,11 +8,13 @@ import Header from '../../../gov-uk-components/Header'
 import Input from '../../../gov-uk-components/Input'
 import InsetText from '../../../gov-uk-components/InsetText'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
+import { setProfile, setRegisterToken } from '../../../redux/userSlice'
 import { backendCall } from '../../../services/BackendService'
 import { emailValidation } from '../../../services/validations/EmailValidation'
 
 export default function SignUpPage () {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
 
@@ -28,9 +31,28 @@ export default function SignUpPage () {
       if (errorMessage !== null) {
         setError(errorMessage.desc)
       } else {
-        navigate('/signup/validate', {
-          state: { registerToken: data.registerToken, email }
-        })
+        // start empty profile for user
+        const profile = {
+          id: '',
+          enabled: true,
+          firstName: '',
+          lastName: '',
+          // email required validation to continue so can put in verified list
+          emails: [email],
+          mobilePhones: [],
+          homePhones: [],
+          language: 'EN', // [TODO] is this always english?
+          additionals: [],
+          unverified: {
+            emails: [],
+            mobilePhones: [],
+            homePhones: []
+          },
+          pois: []
+        }
+        dispatch(setProfile(profile))
+        dispatch(setRegisterToken(data.registerToken))
+        navigate('/signup/validate')
       }
     }
   }
@@ -40,7 +62,7 @@ export default function SignUpPage () {
       <Header />
       <div className='govuk-width-container'>
         <PhaseBanner />
-        <Link to='/signin' className='govuk-back-link'>
+        <Link onClick={() => navigate(-1)} className='govuk-back-link'>
           Back
         </Link>
         {error && <ErrorSummary errorList={[error]} />}

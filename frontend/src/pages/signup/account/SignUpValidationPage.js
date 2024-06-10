@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
@@ -8,14 +8,15 @@ import Header from '../../../gov-uk-components/Header'
 import Input from '../../../gov-uk-components/Input'
 import InsetText from '../../../gov-uk-components/InsetText'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
-import { setProfile } from '../../../redux/userSlice'
+import { setAuthToken } from '../../../redux/userSlice'
 import { backendCall } from '../../../services/BackendService'
 import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
 
 export default function SignUpValidationPage () {
-  const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const registerToken = useSelector((state) => state.session.registerToken)
+  const loginEmail = useSelector((state) => state.session.profile.emails[0])
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
 
@@ -23,13 +24,13 @@ export default function SignUpValidationPage () {
     const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      const data = {
-        registerToken: location.state.registerToken,
+      const dataToSend = {
+        registerToken,
         code
       }
 
-      const { errorMessage } = await backendCall(
-        data,
+      const { data, errorMessage } = await backendCall(
+        dataToSend,
         'signupValidate',
         navigate
       )
@@ -37,37 +38,15 @@ export default function SignUpValidationPage () {
       if (errorMessage !== null) {
         setError(errorMessage.desc)
       } else {
-        // start empty profile for user
-        const profile = {
-          id: '',
-          enabled: true,
-          firstName: '',
-          lastName: '',
-          emails: [location.state.email],
-          mobilePhones: [],
-          homePhones: [],
-          language: 'EN', // [TODO] is this always english?
-          additionals: [],
-          unverified: {
-            emails: [],
-            mobilePhones: [],
-            homePhones: []
-          },
-          pois: []
-        }
-        dispatch(setProfile(profile))
-        navigate('/signup/contactpreferences', {
-          state: {
-            email: location.state.email
-          }
-        })
+        dispatch(setAuthToken(data.authToken))
+        navigate('/signup/contactpreferences')
       }
     }
   }
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const data = { email: location.state.email }
+    const data = { email: loginEmail }
     const { errorMessage } = await backendCall(data, 'signupStart', navigate)
     if (errorMessage !== null) {
       setError(errorMessage.desc)
@@ -89,7 +68,7 @@ export default function SignUpValidationPage () {
           <br />
           <br />
           We've sent an email with a code to:
-          <InsetText text={location.state.email} />
+          <InsetText text={loginEmail} />
           Enter the code within 4 hours or it will expire.
           <br />
           <br />

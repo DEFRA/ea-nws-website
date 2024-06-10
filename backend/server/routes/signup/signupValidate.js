@@ -6,7 +6,7 @@ const { apiCall } = require('../../services/ApiService')
 module.exports = [
   {
     method: ['POST'],
-    path: '/signupValidate',
+    path: '/api/signupValidate',
     handler: async (request, h) => {
       try {
         const { registerToken, code } = request.payload

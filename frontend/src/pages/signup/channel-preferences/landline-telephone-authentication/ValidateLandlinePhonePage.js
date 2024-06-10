@@ -45,7 +45,7 @@ export default function ValidateLandlinePhonePage() {
 
       const { errorMessage } = await backendCall(
         dataToSend,
-        'signup/contactpreferences/landline/validate'
+        'api/signup/contactpreferences/landline/validate'
       )
       if (errorMessage !== null) {
         setError(errorMessage.desc)

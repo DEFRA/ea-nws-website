@@ -12,7 +12,7 @@ import { setProfile } from '../../../redux/userSlice'
 import { backendCall } from '../../../services/BackendService'
 import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
 
-export default function SignUpValidationPage () {
+export default function SignUpValidationPage() {
   const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -30,7 +30,7 @@ export default function SignUpValidationPage () {
 
       const { errorMessage } = await backendCall(
         data,
-        'signupValidate',
+        'api/signupValidate',
         navigate
       )
 
@@ -68,7 +68,11 @@ export default function SignUpValidationPage () {
   const getNewCode = async (event) => {
     event.preventDefault()
     const data = { email: location.state.email }
-    const { errorMessage } = await backendCall(data, 'signupStart', navigate)
+    const { errorMessage } = await backendCall(
+      data,
+      'api/signupStart',
+      navigate
+    )
     if (errorMessage !== null) {
       setError(errorMessage.desc)
     }
@@ -77,14 +81,14 @@ export default function SignUpValidationPage () {
   return (
     <>
       <Header />
-      <div className='govuk-width-container'>
+      <div className="govuk-width-container">
         <PhaseBanner />
-        <Link to='/signup' className='govuk-back-link'>
+        <Link to="/signup" className="govuk-back-link">
           Back
         </Link>
         {error && <ErrorSummary errorList={[error]} />}
-        <h2 className='govuk-heading-l'>Check your email</h2>
-        <div className='govuk-body'>
+        <h2 className="govuk-heading-l">Check your email</h2>
+        <div className="govuk-body">
           You need to confirm your email address.
           <br />
           <br />
@@ -94,24 +98,24 @@ export default function SignUpValidationPage () {
           <br />
           <br />
           <Input
-            className='govuk-input govuk-input--width-10'
-            inputType='text'
+            className="govuk-input govuk-input--width-10"
+            inputType="text"
             value={code}
-            name='Enter code'
+            name="Enter code"
             error={error}
             onChange={(val) => setCode(val)}
           />
           <Button
-            className='govuk-button'
-            text='Confirm email address'
+            className="govuk-button"
+            text="Confirm email address"
             onClick={handleSubmit}
           />
           &nbsp; &nbsp;
-          <Link to='/signup' className='govuk-link'>
+          <Link to="/signup" className="govuk-link">
             Use a different email
           </Link>
           <br />
-          <Link onClick={getNewCode} className='govuk-link'>
+          <Link onClick={getNewCode} className="govuk-link">
             Get a new code
           </Link>
         </div>

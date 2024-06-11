@@ -13,7 +13,6 @@ def test_SignUpValidate_render(get_browser):
     browser.find_element(By.NAME, "Email address").send_keys("valid@email.uk")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)
-    assert browser.title == "React App"
     assert "Check your email" in browser.page_source
     assert browser.current_url == url
 

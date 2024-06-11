@@ -11,6 +11,10 @@ import WarningContactsPreferencePage from '../pages/signup/channel-preferences/W
 import AddLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/AddLandlinePhonePage'
 import SkipConfirmLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/SkipConfirmLandlinePhonePage'
 import ValidateLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/ValidateLandlinePhonePage'
+import AddMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/AddMobilePhonePage'
+import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/SkipConfirmMobilePhonePage'
+import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
+import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
 
 // index routes
@@ -36,8 +40,22 @@ const signupRoutes = [
     path: '/signup/contactpreferences',
     component: <WarningContactsPreferencePage />
   },
+  // mobile phone authentication route
   {
-    path: '/signup/contactpreferences/landline',
+    path: '/signup/contactpreferences/mobile/add',
+    component: <AddMobilePhonePage />
+  },
+  {
+    path: '/signup/contactpreferences/mobile/validate',
+    component: <ValidateMobilePhonePage />
+  },
+  {
+    path: '/signup/contactpreferences/mobile/skipconfirmation',
+    component: <SkipConfirmMobilePhonePage />
+  },
+  // landline authentication route
+  {
+    path: '/signup/contactpreferences/landline/add',
     component: <AddLandlinePhonePage />
   },
   {
@@ -47,6 +65,10 @@ const signupRoutes = [
   {
     path: '/signup/contactpreferences/landline/skipconfirm',
     component: <SkipConfirmLandlinePhonePage />
+  },
+  {
+    path: '/declaration',
+    component: <DeclarationOfAgreementPage />
   }
 ]
 
@@ -65,6 +87,7 @@ const contactRoutes = [
 const routes = [
   ...indexRoutes,
   ...startRoutes,
+  ...signupRoutes,
   ...siginRoutes,
   ...signupRoutes,
   ...homeRoutes,

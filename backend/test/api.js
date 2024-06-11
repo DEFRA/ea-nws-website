@@ -40,7 +40,7 @@ lab.onCleanup = async () => {
     console.log('Waiting for port release...')
     await new Promise((resolve) => setTimeout(resolve, 5000)) // Wait for 5 seconds after killing the process
   }
-  //API process was struggling to terminate - added a script that kills anything on port 9000 once tests are run
+  // API process was struggling to terminate - added a script that kills anything on port 9000 once tests are run
   await new Promise((resolve, reject) => {
     exec('lsof -t -i:9000 | xargs kill -9', (error, stdout, stderr) => {
       if (error) {

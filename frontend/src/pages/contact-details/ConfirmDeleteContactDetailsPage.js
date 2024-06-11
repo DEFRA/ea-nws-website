@@ -20,15 +20,17 @@ export default function ConfirmDeleteContactDetailsPage () {
       session.profile,
       location.state.contact
     )
-    console.log(session.authToken)
     const data = {
       authToken: session.authToken,
       profile: updatedProfile
     }
-    console.log('data', data)
 
     // profile returned but we just need to make sure no error is returned
-    const { errorMessage } = await backendCall(data, 'profile/update', navigate)
+    const { errorMessage } = await backendCall(
+      data,
+      'api/profile/update',
+      navigate
+    )
 
     // we need to make an error page which the user is navigated to if this breaks
     if (!errorMessage) {

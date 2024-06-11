@@ -9,7 +9,7 @@ async function getRegisterStart(
 ) {
   console.log('Received register start request for: ', req.payload)
   const { email } = req.payload as { email: string }
-  
+
   console.log('Valid email, responding 200')
   return { registerToken: '123456' }
 }
@@ -30,7 +30,7 @@ async function getRegisterValidate(
   }
   console.log('Valid token')
 
-  return { authToken: 'MockGUIDAuthToken' }
+  return { authToken: 'MockAuthToken' }
 }
 
 module.exports = { getRegisterStart, getRegisterValidate }

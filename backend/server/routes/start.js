@@ -1,7 +1,7 @@
 module.exports = [
   {
     method: ['GET'],
-    path: '/startreact',
+    path: '/api/startreact',
 
     handler: (request, h) => {
       return 'hello'

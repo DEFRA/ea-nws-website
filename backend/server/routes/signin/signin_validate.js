@@ -25,7 +25,7 @@ const apiSignInValidateCall = async (signinToken, code) => {
 module.exports = [
   {
     method: ['POST'],
-    path: '/signInValidate',
+    path: '/api/signInValidate',
     handler: async (request, h) => {
       try {
         if (request.payload === null) {

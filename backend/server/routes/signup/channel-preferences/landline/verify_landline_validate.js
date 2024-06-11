@@ -31,7 +31,7 @@ const apiLandlineValidateCall = async (code, msisdn, auth, h) => {
 module.exports = [
   {
     method: ['POST'],
-    path: '/signup/contactpreferences/landline/validate',
+    path: '/api/signup/contactpreferences/landline/validate',
     handler: async (request, h) => {
       try {
         if (request.payload === null) {

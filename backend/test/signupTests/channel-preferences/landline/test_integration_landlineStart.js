@@ -23,7 +23,7 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/signup/contactpreferences/landline/add',
       payload: {
-        authToken: 'MockGUIDAuthToken',
+        authToken: 'MockAuthToken',
         phone: '12321'
       }
     }
@@ -36,7 +36,7 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/signup/contactpreferences/landline/add',
       payload: {
-        authToken: 'MockGUIDAuthToken',
+        authToken: 'MockAuthToken',
         phone: ''
       }
     }
@@ -62,7 +62,7 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/signup/contactpreferences/landline/add',
       payload: {
-        authToken: 'MockGUIDAuthToken',
+        authToken: 'MockAuthToken',
         phone: '07590000000'
       }
     }

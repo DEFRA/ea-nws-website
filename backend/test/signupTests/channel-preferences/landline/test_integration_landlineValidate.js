@@ -23,8 +23,8 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/signup/contactpreferences/landline/validate',
       payload: {
-        authToken: 'MockGUIDAuthToken',
-        msisdn: '07590000000',
+        authToken: 'MockAuthToken',
+        phone: '07590000000',
         code: '999999'
       }
     }
@@ -38,8 +38,8 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/signup/contactpreferences/landline/validate',
       payload: {
-        authToken: 'MockGUIDAuthToken',
-        msisdn: '07590000000',
+        authToken: 'MockAuthToken',
+        phone: '07590000000',
         code: '123'
       }
     }
@@ -52,7 +52,7 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/signup/contactpreferences/landline/validate',
       payload: {
-        authToken: 'MockGUIDAuthToken',
+        authToken: 'MockAuthToken',
         phone: '07590000000',
         code: ''
       }
@@ -67,8 +67,8 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/signup/contactpreferences/landline/validate',
       payload: {
-        authToken: 'MockGUIDAuthToken',
-        msisdn: '07590000000',
+        authToken: 'MockAuthToken',
+        phone: '07590000000',
         code: ''
       }
     }

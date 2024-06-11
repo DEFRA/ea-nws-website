@@ -45,7 +45,7 @@ lab.experiment('Route tests', () => {
       method: 'POST',
       url: '/signup/contactpreferences/landline/validate',
       payload: {
-        authToken: 'MockGUIDAuthToken',
+        authToken: 'MockAuthToken',
         phone: '07590000000',
         code: '123456'
       }

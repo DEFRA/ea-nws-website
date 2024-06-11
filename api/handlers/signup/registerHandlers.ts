@@ -30,7 +30,7 @@ async function getRegisterValidate(
   }
   console.log('Valid token')
 
-  return { authToken: 'MockGUIDAuthToken' }
+  return { authToken: 'MockAuthToken' }
 }
 
 module.exports = { getRegisterStart, getRegisterValidate }

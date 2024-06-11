@@ -3,7 +3,7 @@ const { apiCall } = require('../../services/ApiService')
 module.exports = [
   {
     method: ['POST'],
-    path: '/profile/update',
+    path: '/api/profile/update',
 
     handler: async (request, h) => {
       try {

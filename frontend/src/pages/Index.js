@@ -16,6 +16,7 @@ export default function IndexPage () {
   const [mockSessionActive, setmockSessionActive] = useState(false)
 
   function mockSession () {
+  function mockSession () {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
       const registrations = { partner: '4', name: 'NWS England' }

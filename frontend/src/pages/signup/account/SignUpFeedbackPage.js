@@ -7,10 +7,8 @@ import Header from '../../../gov-uk-components/Header'
 import CheckboxRadios from '../../../gov-uk-components/CheckBoxRadios'
 import Input from '../../../gov-uk-components/Input'
 import TextArea from '../../../gov-uk-components/TextArea'
-import InsetText from '../../../gov-uk-components/InsetText'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 import { backendCall } from '../../../services/BackendService'
-import Checkbox from '../../../gov-uk-components/CheckBox'
 
 export default function FeedbackPage () {
   const navigate = useNavigate()
@@ -29,7 +27,6 @@ export default function FeedbackPage () {
   ]
 
   const handleSubmit = async () => {
-    console.log("feedback tetx", feedbackText)
     if (feedbackPreference.length === 0){
       setError('Select an answer to tell us how you feel about this service')
     }
@@ -46,7 +43,6 @@ export default function FeedbackPage () {
 
     if(feedbackText !== '' && feedbackPreference.length !== 0){
       const dataToRecord = {feedbackPreference, feedbackText, optionalFeedbackText}
-    
       await backendCall(dataToRecord, 'signup/feedback', navigate)
 
       navigate('/signup')
@@ -162,7 +158,3 @@ export default function FeedbackPage () {
     </>
   )
 }
-
-
-
-

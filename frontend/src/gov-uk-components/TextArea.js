@@ -1,4 +1,5 @@
 import React from 'react'
+
 export default function TextArea ({
   name,
   className,
@@ -7,7 +8,6 @@ export default function TextArea ({
   error = ''
 }) {
   const handleChange = (event) => {
-    console.log("handle", event)
     onChange(event.target.value)
   }
 

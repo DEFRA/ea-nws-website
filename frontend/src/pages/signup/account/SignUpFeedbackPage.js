@@ -5,6 +5,7 @@ import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import Input from '../../../gov-uk-components/Input'
+import TextArea from '../../../gov-uk-components/TextArea'
 import InsetText from '../../../gov-uk-components/InsetText'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 import { backendCall } from '../../../services/BackendService'
@@ -27,6 +28,7 @@ export default function FeedbackPage () {
   ]
 
   const handleSubmit = async () => {
+    console.log("feedback tetx", feedbackText)
     if (feedbackPreference.length === 0){
       setError('Select an answer to tell us how you feel about this service')
     }
@@ -76,8 +78,16 @@ export default function FeedbackPage () {
         <div className='govuk-body'>
           This helps us to improve this service
           <br />
-          <InsetText text='Only tell us about feedback on this page. If you need to check you have signed up correctly or have a question about 
-          your flood risk, contact us.'/>
+          <p className='govuk-inset-text'>
+          Only tell us about feedback on this page. If you need to check you have <br/> signed up correctly or have a question about 
+          your flood risk, {' '}
+            <a
+              href='/'
+              className='govuk-link'
+            >
+              contact us.
+            </a>
+          </p>
           <br />
           <div className={
                 error
@@ -111,19 +121,22 @@ export default function FeedbackPage () {
               }
             >
               <fieldset className='govuk-fieldset'></fieldset>
-          <h3 className='govuk-heading-m'>
+          <h3 className='govuk-label-wrapper'>
+          <label class="govuk-label govuk-label--m" for="more-detail">
             Is there anything you like or do not like about this
             <br />
             service?
+          </label>
           </h3>
-          <p className='govuk-hint'> Do not include your personal or financial details</p>
+          <div id="more-detail-hint" class="govuk-hint">
+            Do not include your personal or financial details
+          </div>
           {textError && <p className='govuk-error-message'>{textError}</p>}
-          <Input
-            className='govuk-input'
-            inputType='text'
-            onChange={(val) => setFeedbackText(val)}
-          />
-        </div>
+          <TextArea className="govuk-textarea" 
+            id="more-detail" 
+            rows="5"
+            onChange={(val) => setFeedbackText(val)} ></TextArea>
+          </div>
         </div>
         <h4 className='govuk-heading-m'>
             Take part in research sessions (optional)

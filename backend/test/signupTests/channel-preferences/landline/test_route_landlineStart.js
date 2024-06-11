@@ -23,7 +23,7 @@ lab.experiment('Route tests', () => {
     async () => {
       const options = {
         method: 'POST',
-        url: '/signup/contactpreferences/landline/add'
+        url: '/api/signup/contactpreferences/landline/add'
       }
       const response = await server.inject(options)
       Code.expect(response.statusCode).to.equal(400)
@@ -33,7 +33,7 @@ lab.experiment('Route tests', () => {
   lab.test('GET / sending a GET instead of POST', async () => {
     const options = {
       method: 'GET',
-      url: '/signup/contactpreferences/landline/start'
+      url: '/api/signup/contactpreferences/landline/start'
     }
 
     const response = await server.inject(options)
@@ -43,7 +43,7 @@ lab.experiment('Route tests', () => {
   lab.test('POST / Response status is 200 if everything is ok', async () => {
     const options = {
       method: 'POST',
-      url: '/signup/contactpreferences/landline/add',
+      url: '/api/signup/contactpreferences/landline/add',
       payload: {
         authToken: 'MockAuthToken',
         phone: '07590000000'

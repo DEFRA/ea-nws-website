@@ -18,7 +18,7 @@ lab.experiment('Route tests', () => {
   lab.test('POST /signupValidate route runs with valid payload', async () => {
     const options = {
       method: 'POST',
-      url: '/signupValidate',
+      url: '/api/signupValidate',
       payload: {
         email: 'test@test.com',
         registerToken: '123456'
@@ -32,7 +32,7 @@ lab.experiment('Route tests', () => {
   lab.test('GET  sending a GET response instead of POST', async () => {
     const options = {
       method: 'GET',
-      url: '/signupValidate'
+      url: '/api/signupValidate'
     }
 
     const response = await server.inject(options)
@@ -42,7 +42,7 @@ lab.experiment('Route tests', () => {
   lab.test('POST / payload is missing', async () => {
     const options = {
       method: 'POST',
-      url: '/signupValidate'
+      url: '/api/signupValidate'
     }
 
     const response = await server.inject(options)

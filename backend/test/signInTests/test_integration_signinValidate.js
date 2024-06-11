@@ -20,7 +20,7 @@ lab.experiment('Integration tests', () => {
     async () => {
       const options = {
         method: 'POST',
-        url: '/signInValidate',
+        url: '/api/signInValidate',
         payload: {
           signinToken: '654321',
           code: '999999'
@@ -35,7 +35,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / should return 101, code empty', async () => {
     const options = {
       method: 'POST',
-      url: '/signInValidate',
+      url: '/api/signInValidate',
       payload: {
         signinToken: '654321',
         code: ''
@@ -48,7 +48,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / should return 101, code too short', async () => {
     const options = {
       method: 'POST',
-      url: '/signInValidate',
+      url: '/api/signInValidate',
       payload: {
         signinToken: '654321',
         code: '1234'
@@ -63,7 +63,7 @@ lab.experiment('Integration tests', () => {
     async () => {
       const options = {
         method: 'POST',
-        url: '/signInValidate',
+        url: '/api/signInValidate',
         payload: {
           signinToken: '654321',
           code: '678901'
@@ -73,7 +73,7 @@ lab.experiment('Integration tests', () => {
       Code.expect(response.statusCode).to.equal(200)
       Code.expect(response.result.data.profile)
       Code.expect(response.result.data.registrations)
-      Code.expect(response.result.data.authToken).to.equal('MockGUIDAuthToken')
+      Code.expect(response.result.data.authToken).to.equal('MockAuthToken')
     }
   )
 })

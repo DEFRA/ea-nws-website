@@ -18,7 +18,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with invalid email', async () => {
     const options = {
       method: 'POST',
-      url: '/signInStart',
+      url: '/api/signInStart',
       payload: {
         email: 'invalid@email.com'
       }
@@ -31,7 +31,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with invalid email format', async () => {
     const options = {
       method: 'POST',
-      url: '/signInStart',
+      url: '/api/signInStart',
       payload: {
         email: 'invalidemail.uk'
       }
@@ -43,7 +43,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with invalid email format', async () => {
     const options = {
       method: 'POST',
-      url: '/signInStart',
+      url: '/api/signInStart',
       payload: {
         email: 'invalidemail@'
       }
@@ -55,7 +55,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with valid email format', async () => {
     const options = {
       method: 'POST',
-      url: '/signInStart',
+      url: '/api/signInStart',
       payload: {
         email: 'email@email.com'
       }

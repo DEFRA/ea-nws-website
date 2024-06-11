@@ -18,7 +18,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / should return 101, code empty', async () => {
     const options = {
       method: 'POST',
-      url: '/signupValidate',
+      url: '/api/signupValidate',
       payload: {
         registerToken: '654321',
         code: ''
@@ -32,7 +32,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / should return 101, code too short', async () => {
     const options = {
       method: 'POST',
-      url: '/signupValidate',
+      url: '/api/signupValidate',
       payload: {
         registerToken: '654321',
         code: '1234'
@@ -45,13 +45,13 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / Should return authToken, - valid code', async () => {
     const options = {
       method: 'POST',
-      url: '/signupValidate',
+      url: '/api/signupValidate',
       payload: {
         registerToken: '654321',
         code: '678901'
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result).to.equal('MockAuthToken')
+    Code.expect(response.result.data.authToken).to.equal('MockAuthToken')
   })
 })

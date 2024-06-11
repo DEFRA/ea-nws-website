@@ -19,16 +19,16 @@ describe('authCodeValidation', () => {
 
   it('should return "Enter code" for a code that is too short', () => {
     const result = authCodeValidation('12345')
-    expect(result).to.equal('Enter code')
+    expect(result).to.equal('Code must be 6 numbers')
   })
 
   it('should return "Enter code" for a code that is too long', () => {
     const result = authCodeValidation('1234567')
-    expect(result).to.equal('Enter code')
+    expect(result).to.equal('Code must be 6 numbers')
   })
 
   it('should return "Enter code" for a code with non-numeric characters', () => {
     const result = authCodeValidation('12a456')
-    expect(result).to.equal('Enter code')
+    expect(result).to.equal('Code must be 6 numbers')
   })
 })

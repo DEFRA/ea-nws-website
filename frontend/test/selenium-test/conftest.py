@@ -53,7 +53,7 @@ def start_frontend():
     port = "3000"
     env = os.environ.copy()
     env["PORT"] = port
-    frontend_process = subprocess.Popen(["npm", "start"], env=env)
+    frontend_process = subprocess.Popen(["npm", "start-dev"], env=env)
     time.sleep(2)
     yield
 

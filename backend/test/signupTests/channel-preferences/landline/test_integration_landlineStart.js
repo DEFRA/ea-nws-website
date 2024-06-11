@@ -21,7 +21,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with invalid phone', async () => {
     const options = {
       method: 'POST',
-      url: '/signup/contactpreferences/landline/add',
+      url: '/api/signup/contactpreferences/landline/add',
       payload: {
         authToken: 'MockAuthToken',
         phone: '12321'
@@ -34,7 +34,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with empty phone number', async () => {
     const options = {
       method: 'POST',
-      url: '/signup/contactpreferences/landline/add',
+      url: '/api/signup/contactpreferences/landline/add',
       payload: {
         authToken: 'MockAuthToken',
         phone: ''
@@ -47,7 +47,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with invalid authToken', async () => {
     const options = {
       method: 'POST',
-      url: '/signup/contactpreferences/landline/add',
+      url: '/api/signup/contactpreferences/landline/add',
       payload: {
         authToken: 'InvalidGUIDAuthToken',
         phone: '07590000000'
@@ -60,7 +60,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with valid email format', async () => {
     const options = {
       method: 'POST',
-      url: '/signup/contactpreferences/landline/add',
+      url: '/api/signup/contactpreferences/landline/add',
       payload: {
         authToken: 'MockAuthToken',
         phone: '07590000000'

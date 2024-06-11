@@ -15,21 +15,10 @@ lab.experiment('Route tests', () => {
     server = await createServer()
   })
 
-  lab.test('GET /startReact route works', async () => {
-    const options = {
-      method: 'GET',
-      url: '/startreact'
-    }
-
-    const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(200)
-    Code.expect(response.headers['content-type']).to.include('text/html')
-  })
-
   lab.test('POST / route runs with valid payload', async () => {
     const options = {
       method: 'POST',
-      url: '/signupStart',
+      url: '/api/signupStart',
       payload: {
         email: 'test@test.com'
       }
@@ -43,7 +32,7 @@ lab.experiment('Route tests', () => {
   lab.test('GET / instead of POST', async () => {
     const options = {
       method: 'GET',
-      url: '/signupStart',
+      url: '/api/signupStart',
       payload: {
         email: ''
       }
@@ -56,7 +45,7 @@ lab.experiment('Route tests', () => {
   lab.test('POST / with missing payload', async () => {
     const options = {
       method: 'POST',
-      url: '/signupStart'
+      url: '/api/signupStart'
     }
 
     const response = await server.inject(options)

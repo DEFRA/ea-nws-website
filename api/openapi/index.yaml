@@ -12,7 +12,11 @@ paths:
   /member/registerValidate:
     $ref: './paths/signup/registerValidate.yaml'
   /member/updateProfile:
-    $ref: './paths/update_profile/updateProfile.yaml'
+    $ref: './paths/update-profile/updateProfile.yaml'
+  /member/verifyMobilePhoneStart:
+    $ref: './paths/signup/channel-preferences/mobile/verifyMobilePhoneStart.yaml'
+  /member/verifyMobilePhoneValidate:
+    $ref: './paths/signup/channel-preferences/mobile/verifyMobilePhoneValidate.yaml'
   /member/verifyHomePhoneStart:
     $ref: './paths/signup/channel-preferences/homePhone/verifyHomePhoneStart.yaml'
   /member/verifyHomePhoneValidate:

@@ -36,7 +36,7 @@ post:
           type: object
           example:
             authToken: >-
-              MockGUIDAuthToken
+              MockAuthToken
             profile:
               id: '1'
               enabled: true
@@ -129,7 +129,7 @@ post:
               summary: Updated the profile of a user (simple)
               value:
             authToken: >-
-              MockGUIDAuthToken
+              MockAuthToken
             profile:
               id: '1'
               enabled: true

@@ -1,5 +1,5 @@
 const authCodeValidation = (code) => {
-  if (!code || code === '') {
+  if (!code) {
     return 'Enter code'
   }
   const numberPattern = new RegExp(`^[0-9]{${6}}$`)

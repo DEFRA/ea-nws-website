@@ -28,7 +28,7 @@ const apiSignInStartCall = async (email) => {
 module.exports = [
   {
     method: ['POST'],
-    path: '/signInStart',
+    path: '/api/signInStart',
     handler: async (request, h) => {
       try {
         if (request.payload === null) {
@@ -36,6 +36,8 @@ module.exports = [
         }
         const { email } = request.payload
         const apiResponse = await apiSignInStartCall(email, h)
+
+        request.log(['info'], apiResponse)
         return h.response(apiResponse)
       } catch (error) {
         return h.response({

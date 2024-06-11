@@ -33,7 +33,7 @@ lab.experiment('Web test', () => {
 
     const response = await server.inject(options)
     Code.expect(response.statusCode).to.equal(200)
-    //Code.expect(response.statusMessage).to.equal('OK')
+    // Code.expect(response.statusMessage).to.equal('OK')
     Code.expect(response.result).to.equal('123456')
   })
 

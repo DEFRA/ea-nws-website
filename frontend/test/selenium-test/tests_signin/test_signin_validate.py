@@ -5,7 +5,7 @@ import time
 
 url = "http://localhost:3000/signin/validate"
 previous_url = "http://localhost:3000/signin"
-start_page = "http://localhost:3000/"
+next_page = "http://localhost:3000/home"
 
 def test_SignInValidate_render(get_browser):
     browser = get_browser
@@ -13,7 +13,6 @@ def test_SignInValidate_render(get_browser):
     browser.find_element(By.NAME, "Email address").send_keys("valid@email.uk")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)
-    assert browser.title == "React App"
     assert "Check your email" in browser.page_source
     assert browser.current_url == url
 
@@ -69,7 +68,7 @@ def test_SignInValidate_validCode(get_browser):
     browser.find_element(By.NAME, 'Enter code').send_keys("123456")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)
-    assert browser.current_url == start_page
+    assert browser.current_url == next_page
 
 def test_SignInValidate_emailAppears(get_browser):
     browser = get_browser

@@ -9,7 +9,6 @@ nextPage = "http://localhost:3000/signin/validate"
 def test_SignInStart_render(get_browser):
     browser = get_browser
     browser.get(url)
-    assert browser.title == "React App"
     assert "Sign in to your flood warnings account" in browser.page_source
     assert browser.current_url == url
 

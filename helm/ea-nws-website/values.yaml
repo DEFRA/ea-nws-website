@@ -39,11 +39,11 @@ containers:
     livenessProbe:
       httpGet:
         path: /
-        port: http
+        port: 3000
     readinessProbe:
       httpGet:
         path: /
-        port: http
+        port: 3000
     resources: {}
     # limits:
     #   cpu: 100m
@@ -69,12 +69,12 @@ containers:
         value: "http://api:9000"
     livenessProbe:
       httpGet:
-        path: /
-        port: http
+        path: /liveness
+        port: 5000
     readinessProbe:
       httpGet:
-        path: /
-        port: http
+        path: /readiness
+        port: 5000
     resources: {}
     # limits:
     #   cpu: 100m
@@ -105,11 +105,11 @@ containers:
     livenessProbe:
       httpGet:
         path: /
-        port: http
+        port: 7000
     readinessProbe:
       httpGet:
         path: /
-        port: http
+        port: 7000
     resources: {}
     # limits:
     #   cpu: 100m

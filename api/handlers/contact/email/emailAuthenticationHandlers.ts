@@ -10,7 +10,7 @@ async function getEmailStart(
   const { authToken } = req.payload as { authToken: string }
   const { email } = req.payload as { email: string }
   // 200 Success
-  if (authToken === 'MockAuthToken') {
+  if (authToken === 'MockAuthToken' && email !== 'invalid@email.com') {
     return res.response(responseCodes.SUCCESS)
   } else {
     return res.response(responseCodes.INVALID_TOKEN).code(500)
@@ -30,7 +30,7 @@ async function getEmailValidate(
     enabled: true,
     firstName: 'John',
     lastName: 'Smith',
-    emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
+    emails: ['updated.matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
     mobilePhones: ['07343454590', '07889668367'],
     homePhones: ['01475721535'],
     language: 'EN',

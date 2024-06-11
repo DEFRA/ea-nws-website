@@ -17,7 +17,7 @@ def test_SignUpStart_backButton(get_browser):
     browser = get_browser
     browser.get(url)
     browser.find_element(By.CLASS_NAME, "govuk-back-link").click()
-    assert browser.current_url == previousPage
+    assert browser.current_url == url
 
 def test_SignUpStart_emptyEmail(get_browser):
     browser = get_browser

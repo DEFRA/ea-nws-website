@@ -28,26 +28,25 @@ export default function AddMobileValidatePage() {
       ? session.profile.unverified.mobilePhones[0]
       : session.profile.mobilePhones[0]
   )
+  const authToken = useSelector((state) => state.session.authToken)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
     const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      /*const dataToSend = { signinToken, code }
+      const dataToSend = { authToken: authToken, code, msisdn: mobile }
       const { errorMessage, data } = await backendCall(
         dataToSend,
-        'signInValidate'
+        'add_contact/mobile/validate'
       )
       if (errorMessage !== null) {
         setError(errorMessage.desc)
       } else {
-        dispatch(setAuthToken(data.authToken))
+        console.log(data.profile)
         dispatch(setProfile(data.profile))
-        dispatch(setRegistrations(data.registrations))
-        navigate('/')
-      }*/
-      navigate('/managecontacts')
+        navigate('/managecontacts')
+      }
     }
   }
 

@@ -8,21 +8,23 @@ import Header from '../../../gov-uk-components/Header'
 import Input from '../../../gov-uk-components/Input'
 import InsetText from '../../../gov-uk-components/InsetText'
 import { setProfile } from '../../../redux/userSlice'
+import { backendCall } from '../../../services/BackendService'
 import {
   addUnverifiedContact,
   removeUnverifiedContact,
   removeVerifiedContact
 } from '../../../services/ProfileServices'
 import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
+
 export default function AddEmailValidatePage() {
   const location = useLocation()
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [code, setCode] = useState('')
-
+  const authToken = useSelector((state) => state.session.authToken)
   const session = useSelector((state) => state.session)
-  const email = useSelector((state) =>
+  let email = useSelector((state) =>
     session.profile.unverified.emails[0]
       ? session.profile.unverified.emails[0]
       : session.profile.emails[0]
@@ -33,41 +35,38 @@ export default function AddEmailValidatePage() {
     const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      /*const dataToSend = { signinToken, code }
+      const dataToSend = { authToken: authToken, email: email, code }
       const { errorMessage, data } = await backendCall(
         dataToSend,
-        'signInValidate'
+        'add_contact/email/validate'
       )
       if (errorMessage !== null) {
         setError(errorMessage.desc)
       } else {
-        dispatch(setAuthToken(data.authToken))
         dispatch(setProfile(data.profile))
-        dispatch(setRegistrations(data.registrations))
-        navigate('/')
-      }*/
-      navigate('/managecontacts')
+        navigate('/managecontacts')
+      }
     }
   }
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    console.log('In get new code function')
-    //const data = { authToken: session.authToken, email: email }
-    /*const { errorMessage } = await backendCall(
+    const data = { authToken: session.authToken, email: email }
+    const { errorMessage } = await backendCall(
       data,
-      'signup/contactpreferences/mobile/add',
+      'add_contact/email/add',
       navigate
     )
     console.log(errorMessage)
     if (errorMessage !== null) {
       setError(errorMessage.desc)
-    }*/
+    }
   }
 
   const skipValidation = (event) => {
     event.preventDefault()
     // remove email from verified list if user is going back after validating
+
     const updatedProfile = removeVerifiedContact(session.profile, email)
     // we will need to add the email back to the unverified list - if it already exists
     // nothing will happen and it will remain
@@ -77,6 +76,7 @@ export default function AddEmailValidatePage() {
 
   const differentEmail = (event) => {
     event.preventDefault()
+    email = null
     // remove email from users profile
     dispatch(setProfile(removeUnverifiedContact(session.profile, email)))
     navigate('/managecontacts/add-email')

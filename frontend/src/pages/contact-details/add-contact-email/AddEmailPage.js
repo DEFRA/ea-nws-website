@@ -16,16 +16,16 @@ export default function AddEmailPage() {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const session = useSelector((state) => state.session)
-
+  const authToken = useSelector((state) => state.session.authToken)
   const handleSubmit = async (event) => {
     event.preventDefault()
     const validationError = emailValidation(email)
     setError(validationError)
-    const dataToSend = { email }
+    const dataToSend = { email, authToken: authToken }
     if (validationError === '') {
       const { errorMessage, data } = await backendCall(
         dataToSend,
-        'signInStart',
+        'add_contact/email/add',
         navigate
       )
       if (errorMessage !== null) {

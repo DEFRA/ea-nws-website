@@ -21,21 +21,25 @@ export default function AddLandlineValidatePage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [code, setCode] = useState('')
-
   const session = useSelector((state) => state.session)
   const homePhone = useSelector((state) =>
     session.profile.unverified.homePhones[0]
       ? session.profile.unverified.homePhones[0]
       : session.profile.homePhones[0]
   )
+  const authToken = useSelector((state) => state.session.authToken)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
     const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      const dataToSend = { msisdn: homePhone, code }
-      const { errorMessage, data } = await backendCall(dataToSend)
+      const dataToSend = { authToken: authToken, msisdn: homePhone, code }
+      const { errorMessage, data } = await backendCall(
+        dataToSend,
+        'add_contact/landline/validate',
+        navigate
+      )
       if (errorMessage !== null) {
         setError(errorMessage.desc)
       } else {
@@ -48,10 +52,10 @@ export default function AddLandlineValidatePage() {
   const getNewCode = async (event) => {
     event.preventDefault()
     console.log('In get new code function')
-    const data = {}
+    const data = { authToken: authToken, msisdn: homePhone }
     const { errorMessage } = await backendCall(
       data,
-      'add_contact/mobile/add',
+      'add_contact/landline/add',
       navigate
     )
     console.log(errorMessage)
@@ -83,14 +87,14 @@ export default function AddLandlineValidatePage() {
     <>
       <Header />
       <div class="govuk-width-container">
-        <Link to="/managecontacts/add-mobile" className="govuk-back-link">
+        <Link to="/managecontacts/add-landline" className="govuk-back-link">
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
         <h2 class="govuk-heading-l">Check your mobile</h2>
         <div class="govuk-body">
           We've sent a code to:
-          <InsetText text={mobile} />
+          <InsetText text={homePhone} />
           <Input
             name="Enter code"
             inputType="text"

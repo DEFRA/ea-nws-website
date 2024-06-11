@@ -7,6 +7,7 @@ import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import Input from '../../../gov-uk-components/Input'
 import { setProfile } from '../../../redux/userSlice'
+import { backendCall } from '../../../services/BackendService'
 import {
   addUnverifiedContact,
   removeUnverifiedContact,
@@ -21,40 +22,44 @@ export default function AddLandlinePage() {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const session = useSelector((state) => state.session)
+  const authToken = useSelector((state) => state.session.authToken)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const validationError = phoneValidation(mobile, 'mobileAndLandline')
+    const validationError = phoneValidation(landline, 'mobileAndLandline')
     setError(validationError)
-    const dataToSend = { landline }
+    const dataToSend = { msisdn: landline, authToken: authToken }
     if (validationError === '') {
-      /*const { errorMessage, data } = await backendCall(
+      const { errorMessage } = await backendCall(
         dataToSend,
-        'signInStart',
+        'add_contact/landline/add',
         navigate
       )
       if (errorMessage !== null) {
         setError(errorMessage.desc)
-      } else {}*/
-      dispatch(
-        setProfile(addUnverifiedContact(session.profile, 'landline', landline))
-      )
-      navigate('/managecontacts/validate-landline')
+      } else {
+        dispatch(
+          setProfile(
+            addUnverifiedContact(session.profile, 'homePhones', landline)
+          )
+        )
+        navigate('/managecontacts/validate-landline')
+      }
     }
   }
 
-  // if user is going back through the signup flow - we want to remove the mobile
+  // if user is going back through the signup flow - we want to remove the landline
   // from either the verified or unverified list - we need to do both incase
-  // they progressed past the validate mobile path
+  // they progressed past the validate landline path
   const removeLandlineFromProfile = async (event) => {
     event.preventDefault()
     // we need to check if location.state has a value - this will only hold a value
-    // if the user has come from the mobile validate page - we will need to remove
+    // if the user has come from the landline validate page - we will need to remove
     //the number from the users profile if so
-    if (session) {
+    if (session.landline) {
       event.preventDefault()
       const normalisedLandline = normalisePhoneNumber(session.landline)
-      // remove mobile from users profile
+      // remove landline from users profile
       const updatedProfile = removeUnverifiedContact(
         session.profile,
         normalisedLandline
@@ -88,7 +93,7 @@ export default function AddLandlinePage() {
             name="UK landline or mobile telephone number"
             inputType="text"
             error={error}
-            onChange={(val) => setMobile(val)}
+            onChange={(val) => setLandline(val)}
             className="govuk-input govuk-input--width-20"
           />
           <Button

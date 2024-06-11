@@ -7,6 +7,7 @@ import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import Input from '../../../gov-uk-components/Input'
 import { setProfile } from '../../../redux/userSlice'
+import { backendCall } from '../../../services/BackendService'
 import {
   addUnverifiedContact,
   removeUnverifiedContact,
@@ -14,31 +15,34 @@ import {
 } from '../../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../services/validations/PhoneValidation'
+
 export default function AddMobilePage() {
   const navigate = useNavigate()
   const [mobile, setMobile] = useState('')
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const session = useSelector((state) => state.session)
+  const authToken = useSelector((state) => state.session.authToken)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
     const validationError = phoneValidation(mobile, 'mobile')
     setError(validationError)
-    const dataToSend = { mobile }
+    const dataToSend = { msisdn: mobile, authToken: authToken }
     if (validationError === '') {
-      /*const { errorMessage, data } = await backendCall(
+      const { errorMessage } = await backendCall(
         dataToSend,
-        'signInStart',
+        'add_contact/mobile/add',
         navigate
       )
       if (errorMessage !== null) {
         setError(errorMessage.desc)
-      } else {}*/
-      dispatch(
-        setProfile(addUnverifiedContact(session.profile, 'mobile', mobile))
-      )
-      navigate('/managecontacts/validate-mobile')
+      } else {
+        dispatch(
+          setProfile(addUnverifiedContact(session.profile, 'mobile', mobile))
+        )
+        navigate('/managecontacts/validate-mobile')
+      }
     }
   }
 

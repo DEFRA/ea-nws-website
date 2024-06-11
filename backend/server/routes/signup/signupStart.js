@@ -22,17 +22,9 @@ module.exports = [
         } else {
           return h.response({ status: 500, errorMessage: errorValidation })
         }
-
-        if (errorValidation === '') {
-          const response = await apiCall(data, 'member/registerStart')
-          return h.response(response)
-        } else{
-          return h.response({status:500, errorMessage: errorValidation})
-        }
       } catch (error) {
         console.error('Error:', error)
         return h.response({ status: 500, errorMessage: 'error' })
-        return h.response({ status:500, errorMessage: 'error'})
       }
     }
   }

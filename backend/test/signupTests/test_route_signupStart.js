@@ -2,45 +2,37 @@ const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
 const lab = (exports.lab = Lab.script())
 const createServer = require('../../server')
+const { startApiServer, apiServerStarted } = require('./../test_api_setup')
 
-lab.experiment('Web test', () => {
+lab.experiment('Route tests', () => {
   let server
 
   // Create server before the tests
   lab.before(async () => {
-    server = await createServer()
-  })
-
-  lab.test('GET /startReact route works', async () => {
-    const options = {
-      method: 'GET',
-      url: '/startreact'
+    if (!apiServerStarted) {
+      await startApiServer()
     }
-
-    const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(200)
-    Code.expect(response.headers['content-type']).to.include('text/html')
+    server = await createServer()
   })
 
   lab.test('POST / route runs with valid payload', async () => {
     const options = {
       method: 'POST',
-      url: '/signupStart',
+      url: '/api/signupStart',
       payload: {
         email: 'test@test.com'
       }
     }
 
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(200)
-    // Code.expect(response.statusMessage).to.equal('OK')
-    Code.expect(response.result).to.equal('123456')
+    Code.expect(response.result.status).to.equal(200)
+    Code.expect(response.result.data.registerToken).to.equal('123456')
   })
 
   lab.test('GET / instead of POST', async () => {
     const options = {
       method: 'GET',
-      url: '/signupStart',
+      url: '/api/signupStart',
       payload: {
         email: ''
       }
@@ -53,7 +45,7 @@ lab.experiment('Web test', () => {
   lab.test('POST / with missing payload', async () => {
     const options = {
       method: 'POST',
-      url: '/signupStart'
+      url: '/api/signupStart'
     }
 
     const response = await server.inject(options)

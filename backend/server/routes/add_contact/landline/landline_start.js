@@ -4,7 +4,7 @@ const {
 } = require('../../../services/validations/PhoneValidation')
 
 const apiLandlineStartCall = async (msisdn, auth) => {
-  const data = { msisdn: msisdn, authToken: auth }
+  const data = { msisdn, authToken: auth }
   const validationError = phoneValidation(msisdn, 'mobileAndLandline')
   try {
     if (validationError === '') {

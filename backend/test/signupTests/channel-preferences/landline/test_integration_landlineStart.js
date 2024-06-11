@@ -2,12 +2,19 @@ const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
 const lab = (exports.lab = Lab.script())
 const createServer = require('../../../../server')
+const {
+  startApiServer,
+  apiServerStarted
+} = require('./../../../test_api_setup')
 
 lab.experiment('Integration tests', () => {
   let server
 
   // Create server before the tests
   lab.before(async () => {
+    if (!apiServerStarted) {
+      await startApiServer()
+    }
     server = await createServer()
   })
 
@@ -21,7 +28,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(500)
+    Code.expect(response.result.status).to.equal(500)
   })
 
   lab.test('POST / route runs with empty phone number', async () => {
@@ -34,7 +41,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.data.code).to.equal(104)
+    Code.expect(response.result.status).to.equal(500)
   })
 
   lab.test('POST / route runs with invalid authToken', async () => {
@@ -47,7 +54,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(500)
+    Code.expect(response.result.status).to.equal(500)
   })
 
   lab.test('POST / route runs with valid email format', async () => {

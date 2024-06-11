@@ -7,7 +7,7 @@ const {
 } = require('../../../../services/validations/PhoneValidation')
 
 const apiLandlineValidateCall = async (code, msisdn, auth, h) => {
-  const data = { msisdn: msisdn, authToken: auth, code: code }
+  const data = { msisdn, authToken: auth, code }
   console.log('Received from front-end: ', data)
   try {
     let validationError = authCodeValidation(code)

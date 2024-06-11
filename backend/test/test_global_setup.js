@@ -1,4 +1,4 @@
-/*const Lab = require('@hapi/lab')
+/* const Lab = require('@hapi/lab')
 const lab = (exports.lab = Lab.script())
 const axios = require('axios')
 const { startApiServer, stopApiServer } = require('./test_api_setup')
@@ -38,4 +38,4 @@ lab.after(async () => {
   }
 })
 
-module.exports = [serverSetupDone]*/
+module.exports = [serverSetupDone] */

@@ -3,6 +3,8 @@
 api/dist/
 api/node_modules
 api/node_modules
+api/**/*.js
+api/package-lock.json
 backend/node_modules
 backend/NWS-logs
 backend/package-lock.json

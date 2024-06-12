@@ -30,7 +30,7 @@ const apiLandlineValidateCall = async (code, email, auth, h) => {
 module.exports = [
   {
     method: ['POST'],
-    path: '/add_contact/email/validate',
+    path: '/api/add_contact/email/validate',
     handler: async (request, h) => {
       try {
         if (request.payload === null) {

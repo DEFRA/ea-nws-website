@@ -6,9 +6,12 @@ const {
 module.exports = [
   {
     method: ['POST'],
-    path: '/add_contact/mobile/add',
+    path: '/api/add_contact/mobile/add',
     handler: async (request, h) => {
       try {
+        if (request.payload === null) {
+          return h.response({ message: 'Bad request' }).code(400)
+        }
         const { msisdn } = request.payload
         const validationError = phoneValidation(msisdn, 'mobile')
 

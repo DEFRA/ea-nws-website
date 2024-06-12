@@ -24,7 +24,7 @@ const apiLandlineStartCall = async (msisdn, auth) => {
 module.exports = [
   {
     method: ['POST'],
-    path: '/add_contact/landline/add',
+    path: '/api/add_contact/landline/add',
     handler: async (request, h) => {
       try {
         if (request.payload === null) {

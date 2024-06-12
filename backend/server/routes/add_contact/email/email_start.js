@@ -24,7 +24,7 @@ const apiEmailStartCall = async (email, auth) => {
 module.exports = [
   {
     method: ['POST'],
-    path: '/add_contact/email/add',
+    path: '/api/add_contact/email/add',
     handler: async (request, h) => {
       try {
         if (request.payload === null) {

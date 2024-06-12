@@ -6,9 +6,12 @@ const {
 module.exports = [
   {
     method: ['POST'],
-    path: '/add_contact/mobile/validate',
+    path: '/api/add_contact/mobile/validate',
     handler: async (request, h) => {
       try {
+        if (request.payload === null) {
+          return h.response({ message: 'Bad request' }).code(400)
+        }
         const { code } = request.payload
         // progressive enhancement validation
         const validationError = authCodeValidation(code)

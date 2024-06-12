@@ -23,8 +23,8 @@ export default function App() {
             //NEED TO KILL SESSION HERE
             window.location.pathname = '/signout-auto'
             //navigate to start page
-          }, 1 * 13 * 1000) //2 minutes
-        }, 1 * 10 * 1000) //10 minutes
+          }, 10 * 13 * 1000) //2 minutes
+        }, 1 * 5 * 1000) //10 minutes
       }
     }
 

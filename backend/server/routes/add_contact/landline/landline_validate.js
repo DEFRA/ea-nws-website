@@ -11,10 +11,6 @@ const apiLandlineValidateCall = async (code, msisdn, auth, h) => {
   console.log('Received from front-end: ', data)
   try {
     let validationError = authCodeValidation(code)
-    validationError =
-      validationError === ''
-        ? phoneValidation(msisdn, 'mobileAndLandline')
-        : validationError
     if (validationError === '') {
       const response = await apiCall(data, 'member/verifyHomePhoneValidate')
       return response

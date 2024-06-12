@@ -21,7 +21,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with invalid phone', async () => {
     const options = {
       method: 'POST',
-      url: '/contact/landline/add',
+      url: '/add_contact/landline/add',
       payload: {
         authToken: 'MockAuthToken',
         phone: '12321'
@@ -29,12 +29,15 @@ lab.experiment('Integration tests', () => {
     }
     const response = await server.inject(options)
     Code.expect(response.result.status).to.equal(500)
+    Code.expect(response.result.errorMessage).to.equal(
+      'Enter a UK landline or mobile telephone number'
+    )
   })
 
   lab.test('POST / route runs with empty phone number', async () => {
     const options = {
       method: 'POST',
-      url: '/contact/landline/add',
+      url: '/add_contact/landline/add',
       payload: {
         authToken: 'MockAuthToken',
         phone: ''

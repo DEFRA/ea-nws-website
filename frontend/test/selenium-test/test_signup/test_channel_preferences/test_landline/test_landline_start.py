@@ -8,6 +8,9 @@ previous_url = "http://localhost:3000/signup/contactpreferences"
 url = "http://localhost:3000/signup/contactpreferences/landline"
 nextPage = "http://localhost:3000/signup/contactpreferences/landline/validate"
 
+'''
+TO DO - WILL WORK ONCE REACT STORE IS MOCKED
+
 def test_landline_start_render(get_browser):
     browser = get_browser
     #helper.mock_session(browser)
@@ -40,8 +43,8 @@ def test_landline_start_incorrect_format_number(get_browser):
     assert 'Enter a UK landline or mobile telephone number, like 01632 960 001 or 07700 900 982' in browser.page_source
     assert browser.current_url == url
 
-'''
-TO DO - WILL WORK ONCE REACT STORE IS MOCKED
+
+
 def test_SignInStart_validEmail(get_browser):
     browser = get_browser
     #helper.mock_session(browser)

@@ -2,12 +2,19 @@ const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
 const lab = (exports.lab = Lab.script())
 const createServer = require('../../../../server')
+const {
+  startApiServer,
+  apiServerStarted
+} = require('./../../../test_api_setup')
 
-lab.experiment('Integration tests', () => {
+lab.experiment('Route tests', () => {
   let server
 
   // Create server before the tests
   lab.before(async () => {
+    if (!apiServerStarted) {
+      await startApiServer()
+    }
     server = await createServer()
   })
 
@@ -16,7 +23,7 @@ lab.experiment('Integration tests', () => {
     async () => {
       const options = {
         method: 'POST',
-        url: '/signup/contactpreferences/landline/validate'
+        url: '/api/signup/contactpreferences/landline/validate'
       }
       const response = await server.inject(options)
       Code.expect(response.statusCode).to.equal(400)
@@ -26,7 +33,7 @@ lab.experiment('Integration tests', () => {
   lab.test('GET / sending a GET instead of POST', async () => {
     const options = {
       method: 'GET',
-      url: '/signup/contactpreferences/landline/validate'
+      url: '/api/signup/contactpreferences/landline/validate'
     }
 
     const response = await server.inject(options)
@@ -36,7 +43,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / Response status is 200 if everything is ok', async () => {
     const options = {
       method: 'POST',
-      url: '/signup/contactpreferences/landline/validate',
+      url: '/api/signup/contactpreferences/landline/validate',
       payload: {
         authToken: 'MockAuthToken',
         phone: '07590000000',
@@ -45,5 +52,6 @@ lab.experiment('Integration tests', () => {
     }
     const response = await server.inject(options)
     Code.expect(response.statusCode).to.equal(200)
+    Code.expect(response.result.registrations)
   })
 })

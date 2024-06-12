@@ -4,22 +4,18 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import { clearAuth } from '../../redux/userSlice'
 import SignOutLayout from './SignOutPageLayout'
-export default function SignOutManually () {
+export default function SignOutManually() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const session = useSelector((state) => state.session)
 
-  const loggedOut = () => {
-    if (session.authToken !== null) {
-      dispatch(clearAuth())
-      console.log('user removed')
-      return true
-    } else {
-      return false
-    }
+  if (session.authToken !== null) {
+    dispatch(clearAuth())
+    console.log('user removed')
+    console.log('the authtoken is' + session.authToken)
   }
 
-  function redirect () {
+  function redirect() {
     navigate('/signin')
   }
 

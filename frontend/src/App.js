@@ -4,7 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import InactivityPopup from './custom-components/InactivityPopup'
 import { authenticatedRoutes, routes } from './routes/routes'
 
-export default function App () {
+export default function App() {
   const auth = useSelector((state) => state.session.authToken)
   const [isInactive, setIsInactive] = useState(false)
   const inactivityTimer = useRef(null)
@@ -20,10 +20,11 @@ export default function App () {
         inactivityTimer.current = setTimeout(() => {
           setIsInactive(true)
           redirectTimer.current = setTimeout(() => {
-            // NEED TO KILL SESSION HERE
-            // navigate to start page
-          }, 2 * 60 * 1000) // 2 minutes
-        }, 1 * 60 * 1000) // 10 minutes
+            //NEED TO KILL SESSION HERE
+            window.location.pathname = '/signout-auto'
+            //navigate to start page
+          }, 1 * 13 * 1000) //2 minutes
+        }, 1 * 10 * 1000) //10 minutes
       }
     }
 
@@ -49,7 +50,7 @@ export default function App () {
     setIsInactive(false)
     clearTimeout(redirectTimer.current)
   }
-
+  console.log('the auth is ' + auth)
   return (
     <BrowserRouter>
       <Routes>
@@ -57,7 +58,7 @@ export default function App () {
           <Route
             key={index}
             path={route.path}
-            element={auth ? route.component : <Navigate to='/sign-back-in' />}
+            element={auth ? route.component : <Navigate to="/sign-back-in" />}
           />
         ))}
         {routes.map((route, index) => (

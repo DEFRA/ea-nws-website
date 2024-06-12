@@ -3,9 +3,11 @@ import Index from '../pages/Index'
 import ConfirmDeleteContactDetailsPage from '../pages/contact-details/ConfirmDeleteContactDetailsPage'
 import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
 import HomePage from '../pages/home/HomePage'
-import SignBackInPage from '../pages/sign-out/SignBackInPage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
+import SignBackIn from '../pages/signOut/SignBackIn'
+import SignOutAutomatically from '../pages/signOut/SignOutAutomatically'
+import SignOutManually from '../pages/signOut/SignOutManually'
 import SignUpPage from '../pages/signup/account/SignUpPage'
 import SignUpValidationPage from '../pages/signup/account/SignUpValidationPage'
 import WarningContactsPreferencePage from '../pages/signup/channel-preferences/WarningContactsPreferencePage'
@@ -31,8 +33,12 @@ const signinRoutes = [
 ]
 
 // sign out routes
-const signOutRoutes = [{ path: '/sign-back-in', component: <SignBackInPage /> }]
+const signOutRoutes = [
+  { path: '/signout', component: <SignOutManually /> },
+  { path: '/signout-auto', component: <SignOutAutomatically /> }
+]
 
+const signBackInRoutes = [{ path: '/sign-back-in', component: <SignBackIn /> }]
 // sign up routes
 const signupRoutes = [
   { path: '/signup', component: <SignUpPage /> },
@@ -94,7 +100,11 @@ export const routes = [
   ...signupRoutes,
   ...signinRoutes,
   ...signupRoutes,
-  ...signOutRoutes
+  ...signBackInRoutes
 ]
 
-export const authenticatedRoutes = [...homeRoutes, ...contactRoutes]
+export const authenticatedRoutes = [
+  ...homeRoutes,
+  ...contactRoutes,
+  ...signOutRoutes
+]

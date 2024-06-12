@@ -19,7 +19,7 @@ export default function SignUpPage () {
   const handleSubmit = async () => {
 
     const dataToSend = { email }
-    const {errorMessage, data } = await backendCall(dataToSend, 'signInStart', navigate)
+    const {errorMessage, data } = await backendCall(dataToSend, 'api/signInStart', navigate)
 
     if(errorMessage !== null){
         setError(errorMessage.desc)
@@ -40,7 +40,7 @@ export default function SignUpPage () {
         </Link>
         {error && <ErrorSummary errorList={error === '' ? [] : [error]} />}
         <h2 className='govuk-heading-l'>
-          The email address you entered is already being used
+          The email address you entered is < br /> already being used
         </h2>
         <InsetText text={email} />
         <div className='govuk-body'>

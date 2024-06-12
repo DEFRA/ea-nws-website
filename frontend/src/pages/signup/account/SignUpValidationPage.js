@@ -90,11 +90,24 @@ export default function SignUpValidationPage() {
             onClick={handleSubmit}
           />
           &nbsp; &nbsp;
-          <Link to="/signup" className="govuk-link">
+          <Link
+            to="/signup"
+            className="govuk-link"
+            style={{
+              display: 'inline-block',
+              padding: '8px 10px 7px'
+            }}
+          >
             Use a different email
           </Link>
           <br />
-          <Link onClick={getNewCode} className="govuk-link">
+          <Link
+            onClick={getNewCode}
+            className="govuk-link"
+            style={{
+              display: 'inline-block'
+            }}
+          >
             Get a new code
           </Link>
         </div>

@@ -141,16 +141,35 @@ export default function ValidateMobilePhone() {
                 onClick={handleSubmit}
               />
               &nbsp; &nbsp;
-              <Link onClick={skipValidation} className="govuk-link">
+              <Link
+                onClick={skipValidation}
+                className="govuk-link"
+                style={{
+                  display: 'inline-block',
+                  padding: '8px 10px 7px'
+                }}
+              >
                 Skip and confirm later
               </Link>
               <br />
-              <Link onClick={getNewCode} className="govuk-link">
+              <Link
+                onClick={getNewCode}
+                className="govuk-link"
+                style={{
+                  display: 'inline-block'
+                }}
+              >
                 Get a new code
               </Link>
               <br />
               <br />
-              <Link onClick={differentMobile} className="govuk-link">
+              <Link
+                onClick={differentMobile}
+                className="govuk-link"
+                style={{
+                  display: 'inline-block'
+                }}
+              >
                 Enter a different mobile number
               </Link>
               <div className="govuk-!-margin-bottom-9" />

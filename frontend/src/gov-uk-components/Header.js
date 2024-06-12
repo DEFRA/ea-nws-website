@@ -1,4 +1,8 @@
+import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
+
 export default function Header() {
+  const session = useSelector((state) => state.session)
   return (
     <>
       <header className="govuk-header" data-module="govuk-header">
@@ -23,10 +27,25 @@ export default function Header() {
               </svg>
             </a>
           </div>
-          <div className="govuk-header__content">
-            <p className="govuk-header__link govuk-header__service-name">
+          <div
+            className="govuk-header__content govuk-grid-row"
+            style={{ display: 'inline-block' }}
+          >
+            <p className="govuk-header__service-name ">
               Get flood warnings by text, phone or email
             </p>
+            {session.authToken && (
+              <Link
+                className="govuk-header__link"
+                style={{
+                  fontWeight: 'bold',
+                  float: 'inline-end'
+                }}
+                to="/signout"
+              >
+                Sign Out
+              </Link>
+            )}
           </div>
         </div>
       </header>

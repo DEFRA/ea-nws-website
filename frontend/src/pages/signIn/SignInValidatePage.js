@@ -38,7 +38,7 @@ export default function SignInValidatePage() {
         dispatch(setAuthToken(data.authToken))
         dispatch(setProfile(data.profile))
         dispatch(setRegistrations(data.registrations))
-        navigate('/')
+        navigate('/home')
       }
     }
   }

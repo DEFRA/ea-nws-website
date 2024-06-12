@@ -1,11 +1,8 @@
 const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
 const lab = (exports.lab = Lab.script())
-const createServer = require('../../../../server')
-const {
-  startApiServer,
-  apiServerStarted
-} = require('./../../../test_api_setup')
+const createServer = require('../../../server')
+const { startApiServer, apiServerStarted } = require('../../test_api_setup')
 
 lab.experiment('Integration tests', () => {
   let server
@@ -18,58 +15,61 @@ lab.experiment('Integration tests', () => {
     server = await createServer()
   })
 
-  lab.test('POST / route runs with invalid phone', async () => {
+  lab.test('POST / route runs with invalid code', async () => {
     const options = {
       method: 'POST',
-      url: '/add_contact/landline/add',
+      url: '/api/add_contact/mobile/validate',
       payload: {
         authToken: 'MockAuthToken',
-        phone: '12321'
+        msisdn: '07590000000',
+        code: '999999'
       }
     }
     const response = await server.inject(options)
     Code.expect(response.result.status).to.equal(500)
-    Code.expect(response.result.errorMessage).to.equal(
-      'Enter a UK landline or mobile telephone number'
-    )
+    Code.expect(response.result.errorMessage.code).to.equal(101)
   })
 
-  lab.test('POST / route runs with empty phone number', async () => {
+  lab.test('POST / route runs with invalid code (too short)', async () => {
     const options = {
       method: 'POST',
-      url: '/add_contact/landline/add',
+      url: '/api/add_contact/mobile/validate',
       payload: {
         authToken: 'MockAuthToken',
-        phone: ''
-      }
-    }
-    const response = await server.inject(options)
-    Code.expect(response.result.status).to.equal(500)
-  })
-
-  lab.test('POST / route runs with invalid authToken', async () => {
-    const options = {
-      method: 'POST',
-      url: '/add_contact/landline/add',
-      payload: {
-        authToken: 'InvalidGUIDAuthToken',
-        phone: '07590000000'
+        msisdn: '07590000000',
+        code: '123'
       }
     }
     const response = await server.inject(options)
     Code.expect(response.result.status).to.equal(500)
   })
 
-  lab.test('POST / route runs with valid email format', async () => {
+  lab.test('POST / route runs with invalid code (empty)', async () => {
     const options = {
       method: 'POST',
-      url: '/add_contact/landline/add',
+      url: '/api/add_contact/mobile/validate',
       payload: {
         authToken: 'MockAuthToken',
-        phone: '07590000000'
+        msisdn: '07590000000',
+        code: ''
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(200)
+    Code.expect(response.result.errorMessage).to.equal('Enter code')
+    Code.expect(response.result.status).to.equal(500)
+  })
+
+  lab.test('POST / route runs with invalid code (empty)', async () => {
+    const options = {
+      method: 'POST',
+      url: '/api/add_contact/mobile/validate',
+      payload: {
+        authToken: 'MockAuthToken',
+        msisdn: '07590000000',
+        code: ''
+      }
+    }
+    const response = await server.inject(options)
+    Code.expect(response.result.status).to.equal(500)
   })
 })

@@ -1,11 +1,8 @@
 const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
 const lab = (exports.lab = Lab.script())
-const createServer = require('../../../../server')
-const {
-  startApiServer,
-  apiServerStarted
-} = require('./../../../test_api_setup')
+const createServer = require('../../../server')
+const { startApiServer, apiServerStarted } = require('../../test_api_setup')
 
 lab.experiment('Integration tests', () => {
   let server
@@ -21,7 +18,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with invalid code', async () => {
     const options = {
       method: 'POST',
-      url: '/add_contact/landline/validate',
+      url: '/api/add_contact/landline/validate',
       payload: {
         authToken: 'MockAuthToken',
         msisdn: '07590000000',
@@ -36,7 +33,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with invalid code (too short)', async () => {
     const options = {
       method: 'POST',
-      url: '/add_contact/landline/validate',
+      url: '/api/add_contact/landline/validate',
       payload: {
         authToken: 'MockAuthToken',
         msisdn: '07590000000',
@@ -50,7 +47,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with invalid code (empty)', async () => {
     const options = {
       method: 'POST',
-      url: '/add_contact/landline/validate',
+      url: '/api/add_contact/landline/validate',
       payload: {
         authToken: 'MockAuthToken',
         msisdn: '07590000000',
@@ -65,7 +62,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with invalid code (empty)', async () => {
     const options = {
       method: 'POST',
-      url: '/add_contact/landline/validate',
+      url: '/api/add_contact/landline/validate',
       payload: {
         authToken: 'MockAuthToken',
         msisdn: '07590000000',

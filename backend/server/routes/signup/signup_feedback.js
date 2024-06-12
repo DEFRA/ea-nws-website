@@ -2,10 +2,10 @@
   module.exports = [
     {
       method: ['POST'],
-      path: '/signup/feedback',
+      path: '/api/signup/feedback',
       handler: async (request, h) => {
         try {
-          if (request.payload === undefined) {
+          if (request.payload === null) {
             return h.response({ message: 'Bad request' }).code(400)
           }
           const {feedbackPreference, feedbackText} = request.payload

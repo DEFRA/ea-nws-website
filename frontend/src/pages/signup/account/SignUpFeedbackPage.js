@@ -43,7 +43,7 @@ export default function FeedbackPage () {
 
     if(feedbackText !== '' && feedbackPreference.length !== 0){
       const dataToRecord = {feedbackPreference, feedbackText, optionalFeedbackText}
-      await backendCall(dataToRecord, 'signup/feedback', navigate)
+      await backendCall(dataToRecord, 'api/signup/feedback', navigate)
 
       navigate('/signup')
     }

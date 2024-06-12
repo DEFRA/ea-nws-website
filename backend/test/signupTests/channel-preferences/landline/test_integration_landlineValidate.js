@@ -16,13 +16,13 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/signup/contactpreferences/landline/validate',
       payload: {
-        authToken: 'MockGUIDAuthToken',
+        authToken: 'MockAuthToken',
         phone: '07590000000',
         code: '999999'
       }
     }
     const response = await server.inject(options)
-    //Code.expect(response.result.datacode).to.equal(101)
+    // Code.expect(response.result.datacode).to.equal(101)
     Code.expect(response.statusCode).to.equal(500)
   })
 
@@ -31,7 +31,7 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/signup/contactpreferences/landline/validate',
       payload: {
-        authToken: 'MockGUIDAuthToken',
+        authToken: 'MockAuthToken',
         phone: '07590000000',
         code: '123'
       }
@@ -45,7 +45,7 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/signup/contactpreferences/landline/validate',
       payload: {
-        authToken: 'MockGUIDAuthToken',
+        authToken: 'MockAuthToken',
         phone: '07590000000',
         code: ''
       }
@@ -59,7 +59,7 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/signup/contactpreferences/landline/validate',
       payload: {
-        authToken: 'MockGUIDAuthToken',
+        authToken: 'MockAuthToken',
         phone: '07590000000',
         code: ''
       }

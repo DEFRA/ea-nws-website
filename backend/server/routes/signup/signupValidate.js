@@ -9,11 +9,11 @@ module.exports = [
     path: '/api/signupValidate',
     handler: async (request, h) => {
       try {
-        const { registerToken, code } = request.payload
-        const data = { registerToken, code }
         if (request.payload === null) {
           return h.response({ message: 'Bad request' }).code(400)
         }
+        const { registerToken, code } = request.payload
+        const data = { registerToken, code }
 
         if (authCodeValidation(code) === '') {
           const responseData = await apiCall(data, 'member/registerValidate')

@@ -4,7 +4,7 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import { clearAuth } from '../../redux/userSlice'
 import SignOutLayout from './SignOutPageLayout'
-export default function SignOutAutomatically() {
+export default function SignOutAutomatically () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const session = useSelector((state) => state.session)
@@ -19,7 +19,7 @@ export default function SignOutAutomatically() {
     }
   }
 
-  function redirect() {
+  function redirect () {
     navigate('/signin')
   }
 

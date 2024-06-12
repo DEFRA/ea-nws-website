@@ -2,12 +2,16 @@ const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
 const lab = (exports.lab = Lab.script())
 const createServer = require('../../server')
+const { startApiServer, apiServerStarted } = require('./../test_api_setup')
 
 lab.experiment('Integration tests', () => {
   let server
 
   // Create server before the tests
   lab.before(async () => {
+    if (!apiServerStarted) {
+      await startApiServer()
+    }
     server = await createServer()
   })
 
@@ -16,7 +20,7 @@ lab.experiment('Integration tests', () => {
     async () => {
       const options = {
         method: 'POST',
-        url: '/signInValidate'
+        url: '/api/signInValidate'
       }
       const response = await server.inject(options)
       Code.expect(response.statusCode).to.equal(400)
@@ -26,7 +30,7 @@ lab.experiment('Integration tests', () => {
   lab.test('GET / sending a GET instead of POST', async () => {
     const options = {
       method: 'GET',
-      url: '/signInValidate'
+      url: '/api/signInValidate'
     }
     const response = await server.inject(options)
     Code.expect(response.statusCode).to.equal(404)
@@ -35,10 +39,11 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / Response status is 200 if everything is ok', async () => {
     const options = {
       method: 'POST',
-      url: '/signInValidate',
+      url: '/api/signInValidate',
       payload: { signinToken: '654321', code: '123456' }
     }
     const response = await server.inject(options)
     Code.expect(response.statusCode).to.equal(200)
+    Code.expect(response.result.data.authToken)
   })
 })

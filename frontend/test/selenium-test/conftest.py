@@ -29,7 +29,7 @@ def start_api(compile_api):
     port = "9000"
     env = os.environ.copy()
     env["PORT"] = port
-    api_process = subprocess.Popen(["node", "../api/index.js"], env=env, cwd="../api")
+    api_process = subprocess.Popen(["node", "../api/dist/index.js"], env=env, cwd="../api")
     time.sleep(2)
     yield
     api_process.terminate()
@@ -53,8 +53,8 @@ def start_frontend():
     port = "3000"
     env = os.environ.copy()
     env["PORT"] = port
-    frontend_process = subprocess.Popen(["npm", "start"], env=env)
-    time.sleep(2)
+    frontend_process = subprocess.Popen(["npm", "run", "start-dev"], env=env)
+    time.sleep(5)
     yield
 
     # Cleanup: stop the frontend server

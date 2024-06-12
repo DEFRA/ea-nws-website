@@ -28,7 +28,7 @@ async function getHomephoneValidate(
   console.log('Received LandlineValidate request: ', req.payload)
 
   // 200 Success
-  if (authToken === 'MockAuthToken') {
+  if (authToken === 'MockAuthToken' && code !== '999999') {
     return res.response(responseCodes.SUCCESS)
   } else {
     return res.response(responseCodes.INVALID_CODE).code(500)

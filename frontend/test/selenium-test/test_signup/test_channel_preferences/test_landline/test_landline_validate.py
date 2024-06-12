@@ -7,6 +7,7 @@ previous_url = "http://localhost:3000/signup/contactpreferences/landline"
 url = "http://localhost:3000/signup/contactpreferences/landline/validate"
 skipPage = "http://localhost:3000/signup/contactpreferences/landline/skipconfirm"
 '''
+TO DO - WILL WORK ONCE REACT STORE IS MOCKED
 def test_landline_validate_render(mock_session):
     phone_number = "07123455567"
     browser = mock_session

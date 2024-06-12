@@ -38,7 +38,7 @@ export default function AddEmailValidatePage() {
       const dataToSend = { authToken: authToken, email: email, code }
       const { errorMessage, data } = await backendCall(
         dataToSend,
-        'add_contact/email/validate'
+        'api/add_contact/email/validate'
       )
       if (errorMessage !== null) {
         setError(errorMessage.desc)
@@ -54,7 +54,7 @@ export default function AddEmailValidatePage() {
     const data = { authToken: session.authToken, email: email }
     const { errorMessage } = await backendCall(
       data,
-      'add_contact/email/add',
+      'api/add_contact/email/add',
       navigate
     )
     console.log(errorMessage)

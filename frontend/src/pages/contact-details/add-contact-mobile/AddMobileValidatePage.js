@@ -38,7 +38,7 @@ export default function AddMobileValidatePage() {
       const dataToSend = { authToken: authToken, code, msisdn: mobile }
       const { errorMessage, data } = await backendCall(
         dataToSend,
-        'add_contact/mobile/validate'
+        'api/add_contact/mobile/validate'
       )
       if (errorMessage !== null) {
         setError(errorMessage.desc)
@@ -56,7 +56,7 @@ export default function AddMobileValidatePage() {
     const data = {}
     const { errorMessage } = await backendCall(
       data,
-      'add_contact/mobile/add',
+      'api/add_contact/mobile/add',
       navigate
     )
     console.log(errorMessage)

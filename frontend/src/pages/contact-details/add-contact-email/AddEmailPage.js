@@ -25,7 +25,7 @@ export default function AddEmailPage() {
     if (validationError === '') {
       const { errorMessage, data } = await backendCall(
         dataToSend,
-        'add_contact/email/add',
+        'api/add_contact/email/add',
         navigate
       )
       if (errorMessage !== null) {

@@ -32,7 +32,7 @@ export default function AddMobilePage() {
     if (validationError === '') {
       const { errorMessage } = await backendCall(
         dataToSend,
-        'add_contact/mobile/add',
+        'api/add_contact/mobile/add',
         navigate
       )
       if (errorMessage !== null) {

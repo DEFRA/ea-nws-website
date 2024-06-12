@@ -3,11 +3,9 @@ import Index from '../pages/Index'
 import ConfirmDeleteContactDetailsPage from '../pages/contact-details/ConfirmDeleteContactDetailsPage'
 import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
 import HomePage from '../pages/home/HomePage'
+import SignBackInPage from '../pages/sign-out/SignBackInPage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
-import SignBackIn from '../pages/signOut/SignBackIn'
-import SignOutAutomatically from '../pages/signOut/SignOutAutomatically'
-import SignOutManually from '../pages/signOut/SignOutManually'
 import SignUpPage from '../pages/signup/account/SignUpPage'
 import SignUpValidationPage from '../pages/signup/account/SignUpValidationPage'
 import WarningContactsPreferencePage from '../pages/signup/channel-preferences/WarningContactsPreferencePage'
@@ -19,6 +17,7 @@ import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobi
 import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
 import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
+
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
 
@@ -26,10 +25,13 @@ const indexRoutes = [{ path: '/index', component: <Index /> }]
 const startRoutes = [{ path: '/', component: <StartPage /> }]
 
 // sign in routes
-const siginRoutes = [
+const signinRoutes = [
   { path: '/signin', component: <SignInPage /> },
   { path: '/signin/validate', component: <SignInValidatePage /> }
 ]
+
+// sign out routes
+const signOutRoutes = [{ path: '/sign-back-in', component: <SignBackInPage /> }]
 
 // sign up routes
 const signupRoutes = [
@@ -85,31 +87,14 @@ const contactRoutes = [
     component: <ConfirmDeleteContactDetailsPage />
   }
 ]
-const signBackRoute = [{ path: '/signbackin', component: <SignBackIn /> }]
-const signOutRoutes = [
-  { path: '/signout/automatically', component: <SignOutAutomatically /> },
-  { path: '/signout', component: <SignOutManually /> }
-]
 
 export const routes = [
   ...indexRoutes,
   ...startRoutes,
   ...signupRoutes,
-  ...siginRoutes,
+  ...signinRoutes,
   ...signupRoutes,
-  ...homeRoutes,
-  ...contactRoutes,
-  ...signOutRoutes,
-  ...signBackRoute
-]
-// export unauth routes
-export const unAuthRoutes = [
-  ...startRoutes,
-  ...siginRoutes,
-  ...signupRoutes,
-  ...homeRoutes,
-  ...contactRoutes,
-  ...indexRoutes
+  ...signOutRoutes
 ]
 
-export default routes
+export const authenticatedRoutes = [...homeRoutes, ...contactRoutes]

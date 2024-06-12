@@ -1,50 +1,70 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import TimeoutWarning from './../src/pages/signOut/TimeoutWarning'
-import SignBackIn from './pages/signOut/SignBackIn'
-import { routes, unAuthRoutes } from './routes/routes'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import InactivityPopup from './custom-components/InactivityPopup'
+import { authenticatedRoutes, routes } from './routes/routes'
+
 export default function App() {
-  const session = useSelector((state) => state.session)
-  const isUserAuth = session.authToken !== null
+  const auth = useSelector((state) => state.session.authToken)
+  const [isInactive, setIsInactive] = useState(false)
+  const inactivityTimer = useRef(null)
+  const redirectTimer = useRef(null)
 
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      TimeoutWarning(true)
-    }, 2000)
-    console.log('hello')
-    return () => clearTimeout(timeoutId)
-  })
-
-  const url = window.location.pathname
-  const validRoute = () => {
-    for (let index = 0; index < unAuthRoutes.length; index++) {
-      if (unAuthRoutes[index].path === url) {
-        return true
+    const resetInactivityTimer = () => {
+      if (auth) {
+        console.log('beginning timer')
+        clearTimeout(inactivityTimer.current)
+        clearTimeout(redirectTimer.current)
+        setIsInactive(false)
+        inactivityTimer.current = setTimeout(() => {
+          setIsInactive(true)
+          redirectTimer.current = setTimeout(() => {
+            //NEED TO KILL SESSION HERE
+            //navigate to start page
+          }, 2 * 60 * 1000) //2 minutes
+        }, 1 * 60 * 1000) //10 minutes
       }
     }
-    return false
+
+    const events = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart']
+
+    if (auth) {
+      events.forEach((event) =>
+        window.addEventListener(event, resetInactivityTimer)
+      )
+      resetInactivityTimer()
+    }
+
+    return () => {
+      events.forEach((event) =>
+        window.removeEventListener(event, resetInactivityTimer)
+      )
+      clearTimeout(inactivityTimer.current)
+      clearTimeout(redirectTimer.current)
+    }
+  }, [auth])
+
+  const handleStayLoggedIn = () => {
+    setIsInactive(false)
+    clearTimeout(redirectTimer.current)
   }
 
-  return isUserAuth ? (
-    <BrowserRouter basename="/">
+  return (
+    <BrowserRouter>
       <Routes>
+        {authenticatedRoutes.map((route, index) => (
+          <Route
+            key={index}
+            path={route.path}
+            element={auth ? route.component : <Navigate to="/sign-back-in" />}
+          />
+        ))}
         {routes.map((route, index) => (
           <Route key={index} path={route.path} element={route.component} />
         ))}
       </Routes>
-    </BrowserRouter>
-  ) : validRoute() ? (
-    <BrowserRouter basename="/">
-      <Routes>
-        {unAuthRoutes.map((route, index) => (
-          <Route key={index} path={route.path} element={route.component} />
-        ))}
-      </Routes>
-    </BrowserRouter>
-  ) : (
-    <BrowserRouter basename="/">
-      <SignBackIn />
+      {isInactive && <InactivityPopup onStayLoggedIn={handleStayLoggedIn} />}
     </BrowserRouter>
   )
 }

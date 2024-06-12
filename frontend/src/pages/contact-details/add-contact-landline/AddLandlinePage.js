@@ -32,7 +32,7 @@ export default function AddLandlinePage() {
     if (validationError === '') {
       const { errorMessage } = await backendCall(
         dataToSend,
-        'add_contact/landline/add',
+        'api/add_contact/landline/add',
         navigate
       )
       if (errorMessage !== null) {

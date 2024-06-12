@@ -38,7 +38,7 @@ export default function AddMobilePhonePage() {
       const data = { authToken: session.authToken, msisdn: mobile }
       const { errorMessage } = await backendCall(
         data,
-        'add_contact/mobile/add',
+        'api/add_contact/mobile/add',
         navigate
       )
       if (errorMessage !== null) {

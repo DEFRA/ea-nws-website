@@ -37,7 +37,7 @@ export default function AddLandlineValidatePage() {
       const dataToSend = { authToken: authToken, msisdn: homePhone, code }
       const { errorMessage, data } = await backendCall(
         dataToSend,
-        'add_contact/landline/validate',
+        'api/add_contact/landline/validate',
         navigate
       )
       if (errorMessage !== null) {
@@ -55,7 +55,7 @@ export default function AddLandlineValidatePage() {
     const data = { authToken: authToken, msisdn: homePhone }
     const { errorMessage } = await backendCall(
       data,
-      'add_contact/landline/add',
+      'api/add_contact/landline/add',
       navigate
     )
     console.log(errorMessage)

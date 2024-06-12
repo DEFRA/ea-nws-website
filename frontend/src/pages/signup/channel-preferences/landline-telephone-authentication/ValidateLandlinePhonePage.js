@@ -31,21 +31,22 @@ export default function ValidateLandlinePhonePage() {
       : state.session.profile.homePhones[0]
   )
   const session = useSelector((state) => state.session)
-
+  const authToken = session.authToken
   const handleSubmit = async () => {
     const validationError = authCodeValidation(code)
     setError(validationError)
 
     if (validationError === '') {
       const dataToSend = {
-        authToken: session.authToken,
+        authToken: authToken,
         msisdn: homePhone,
         code
       }
 
       const { errorMessage } = await backendCall(
         dataToSend,
-        'api/signup/contactpreferences/landline/validate'
+        'api/add_contact/landline/validate',
+        navigate
       )
       if (errorMessage !== null) {
         setError(errorMessage.desc)
@@ -63,8 +64,10 @@ export default function ValidateLandlinePhonePage() {
         // navigate through sign up flow
         if (session.contactPreferences.includes('Email')) {
           // navigate to email TODO - cameron add this once merged
+        } else if (session.contactPreferences.includes('Mobile')) {
+          navigate('/signup/contactpreferences/mobile/add')
         } else {
-          // navigate to addtional details flow
+          navigate('/managecontacts')
         }
       }
     }
@@ -75,7 +78,7 @@ export default function ValidateLandlinePhonePage() {
     const data = { authToken: session.authToken, msisdn: homePhone }
     const { errorMessage } = await backendCall(
       data,
-      'add_contact/landline/validate',
+      'api/add_contact/landline/add',
       navigate
     )
     if (errorMessage !== null) {

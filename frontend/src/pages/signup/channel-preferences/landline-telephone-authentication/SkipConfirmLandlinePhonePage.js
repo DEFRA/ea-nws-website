@@ -48,6 +48,10 @@ export default function SkipConfirmLandlinePhonePage() {
             <Link
               to="/signup/contactpreferences/landline/validate"
               className="govuk-body govuk-link"
+              style={{
+                display: 'inline-block',
+                padding: '8px 10px 7px'
+              }}
             >
               Confirm now
             </Link>

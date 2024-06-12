@@ -30,7 +30,7 @@ containers:
     securityContext: {}
     image:
       repository: 730335517085.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
       tag: "frontend-1.0"
     env:
@@ -59,7 +59,7 @@ containers:
     securityContext: {}
     image:
       repository: 730335517085.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
       tag: "backend-1.0"
     env:
@@ -90,7 +90,7 @@ containers:
     securityContext: {}
     image:
       repository: 730335517085.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
       tag: "nginx-1.0"
     env:

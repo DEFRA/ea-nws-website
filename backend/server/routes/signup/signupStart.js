@@ -6,18 +6,16 @@ const { apiCall } = require('../../services/ApiService')
 module.exports = [
   {
     method: ['POST'],
-    path: '/signupStart',
+    path: '/api/signupStart',
     handler: async (request, h) => {
       try {
-        const { email } = request.payload
-        const errorValidation = emailValidation(email)
-        const data = { email }
         if (request.payload === null) {
           return h.response({ message: 'Bad request' }).code(400)
         }
-
+        const { email } = request.payload
+        const errorValidation = emailValidation(email)
         if (errorValidation === '') {
-          const response = await apiCall(data, 'member/registerStart')
+          const response = await apiCall({ email }, 'member/registerStart')
           return h.response(response)
         } else {
           return h.response({ status: 500, errorMessage: errorValidation })

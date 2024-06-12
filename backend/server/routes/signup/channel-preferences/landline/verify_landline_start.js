@@ -4,7 +4,7 @@ const {
 } = require('../../../../services/validations/PhoneValidation')
 
 const apiLandlineStartCall = async (msisdn, auth) => {
-  const data = { msisdn: msisdn, authToken: auth }
+  const data = { msisdn, authToken: auth }
   const validationError = phoneValidation(msisdn, 'mobileAndLandline')
   try {
     if (validationError === '') {
@@ -24,7 +24,7 @@ const apiLandlineStartCall = async (msisdn, auth) => {
 module.exports = [
   {
     method: ['POST'],
-    path: '/signup/contactpreferences/landline/add',
+    path: '/api/signup/contactpreferences/landline/add',
     handler: async (request, h) => {
       try {
         if (request.payload === null) {

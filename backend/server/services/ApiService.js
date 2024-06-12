@@ -1,7 +1,8 @@
 const axios = require('axios')
 
 const apiCall = async (data, path) => {
-  const url = 'http://localhost:9000/' + path
+  const apiUrl = process.env.API_URL || 'http://localhost:9000'
+  const url = apiUrl + '/' + path
 
   try {
     const response = await axios.post(url, data, {
@@ -26,8 +27,8 @@ const apiCall = async (data, path) => {
         return { status: status, errorMessage: error.response.data }
       }
     } else if (error.request) {
-      // no response was received
-      console.log('No response received:', error.request)
+      // no response was received - probably need to return
+      console.log('No response received')
       // returning an error so frontend can handle
       return {
         status: 400,

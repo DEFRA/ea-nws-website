@@ -3,14 +3,18 @@ const {
   authCodeValidation
 } = require('../../../../services/validations/AuthCodeValidation')
 const {
-  numberValidation
+  phoneValidation
 } = require('../../../../services/validations/PhoneValidation')
 
 const apiLandlineValidateCall = async (code, msisdn, auth, h) => {
-  const data = { msisdn: msisdn, authToken: auth, code: code }
+  const data = { msisdn, authToken: auth, code }
   console.log('Received from front-end: ', data)
   try {
-    const validationError = authCodeValidation(code)
+    let validationError = authCodeValidation(code)
+    validationError =
+      validationError === ''
+        ? phoneValidation(msisdn, 'mobileAndLandline')
+        : validationError
     if (validationError === '') {
       const response = await apiCall(data, 'member/verifyHomePhoneValidate')
       return response
@@ -27,7 +31,7 @@ const apiLandlineValidateCall = async (code, msisdn, auth, h) => {
 module.exports = [
   {
     method: ['POST'],
-    path: '/signup/contactpreferences/landline/validate',
+    path: '/api/signup/contactpreferences/landline/validate',
     handler: async (request, h) => {
       try {
         if (request.payload === null) {

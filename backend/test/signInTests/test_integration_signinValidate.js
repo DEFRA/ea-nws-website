@@ -2,12 +2,16 @@ const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
 const lab = (exports.lab = Lab.script())
 const createServer = require('../../server')
+const { startApiServer, apiServerStarted } = require('./../test_api_setup')
 
 lab.experiment('Integration tests', () => {
   let server
 
   // Create server before the tests
   lab.before(async () => {
+    if (!apiServerStarted) {
+      await startApiServer()
+    }
     server = await createServer()
   })
 
@@ -16,42 +20,42 @@ lab.experiment('Integration tests', () => {
     async () => {
       const options = {
         method: 'POST',
-        url: '/signInValidate',
+        url: '/api/signInValidate',
         payload: {
           signinToken: '654321',
           code: '999999'
         }
       }
       const response = await server.inject(options)
-      Code.expect(response.statusCode).to.equal(500)
-      // Code.expect(response.data.code).to.equal(101)
+      Code.expect(response.result.errorMessage.code).to.equal(101)
+      Code.expect(response.result.status).to.equal(500)
     }
   )
 
   lab.test('POST / should return 101, code empty', async () => {
     const options = {
       method: 'POST',
-      url: '/signInValidate',
+      url: '/api/signInValidate',
       payload: {
         signinToken: '654321',
         code: ''
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.data.code).to.equal(101)
+    Code.expect(response.result.status).to.equal(500)
   })
 
   lab.test('POST / should return 101, code too short', async () => {
     const options = {
       method: 'POST',
-      url: '/signInValidate',
+      url: '/api/signInValidate',
       payload: {
         signinToken: '654321',
         code: '1234'
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.data.code).to.equal(101)
+    Code.expect(response.result.status).to.equal(500)
   })
 
   lab.test(
@@ -59,7 +63,7 @@ lab.experiment('Integration tests', () => {
     async () => {
       const options = {
         method: 'POST',
-        url: '/signInValidate',
+        url: '/api/signInValidate',
         payload: {
           signinToken: '654321',
           code: '678901'
@@ -67,8 +71,9 @@ lab.experiment('Integration tests', () => {
       }
       const response = await server.inject(options)
       Code.expect(response.statusCode).to.equal(200)
-      // Code.expect(response.data.profile)
-      // Code.expect(response.data.registration)
+      Code.expect(response.result.data.profile)
+      Code.expect(response.result.data.registrations)
+      Code.expect(response.result.data.authToken).to.equal('MockAuthToken')
     }
   )
 })

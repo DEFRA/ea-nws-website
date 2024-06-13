@@ -16,7 +16,7 @@ export default function AddEmailPage() {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const session = useSelector((state) => state.session)
-  const authToken = useSelector((state) => state.session.authToken)
+  const authToken = session.authToken
   const handleSubmit = async (event) => {
     event.preventDefault()
     const validationError = emailValidation(email)

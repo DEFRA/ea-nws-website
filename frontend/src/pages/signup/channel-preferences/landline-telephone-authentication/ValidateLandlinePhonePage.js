@@ -19,7 +19,7 @@ import {
 } from '../../../../services/ProfileServices'
 import { authCodeValidation } from '../../../../services/validations/AuthCodeValidation'
 
-export default function ValidateLandlinePhonePage () {
+export default function ValidateLandlinePhonePage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [code, setCode] = useState('')
@@ -114,39 +114,58 @@ export default function ValidateLandlinePhonePage () {
   return (
     <>
       <Header />
-      <div class='govuk-width-container'>
+      <div class="govuk-width-container">
         <PhaseBanner />
-        <Link onClick={differentLandline} className='govuk-back-link'>
+        <Link onClick={differentLandline} className="govuk-back-link">
           Back
         </Link>
         {error && <ErrorSummary errorList={[error]} />}
-        <h2 class='govuk-heading-l'>Check your email</h2>
-        <div class='govuk-body'>
+        <h2 class="govuk-heading-l">Check your email</h2>
+        <div class="govuk-body">
           We're calling this number to read out a code:
           <InsetText text={homePhone} />
           <Input
-            name='Enter code'
-            inputType='text'
+            name="Enter code"
+            inputType="text"
             error={error}
-            className='govuk-input govuk-input--width-10'
+            className="govuk-input govuk-input--width-10"
             onChange={(val) => setCode(val)}
           />
           <Button
-            className='govuk-button'
-            text='Continue'
+            className="govuk-button"
+            text="Continue"
             onClick={handleSubmit}
           />
           &nbsp; &nbsp;
-          <Link className='govuk-link' onClick={skipValidation}>
+          <Link
+            className="govuk-link"
+            onClick={skipValidation}
+            style={{
+              display: 'inline-block',
+              padding: '8px 10px 7px'
+            }}
+          >
             Skip and confirm later
           </Link>
           <br />
-          <Link onClick={getNewCode} className='govuk-link'>
+          <Link
+            onClick={getNewCode}
+            className="govuk-link"
+            style={{
+              display: 'inline-block'
+            }}
+          >
             Get a new code
           </Link>
           <br />
           <br />
-          <Link onClick={differentLandline} className='govuk-link'>
+          <Link
+            onClick={differentLandline}
+            className="govuk-link"
+            style={{
+              display: 'inline-block'
+            }}
+          >
             Enter a different telephone number
           </Link>
         </div>

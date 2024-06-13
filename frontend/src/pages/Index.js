@@ -18,7 +18,7 @@ export default function IndexPage() {
   function mockSession() {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
-      const registration = { partner: '4', name: 'NWS England' }
+      const registrations = { partner: '4', name: 'NWS England' }
       const profile = {
         id: '',
         enabled: true,
@@ -50,7 +50,7 @@ export default function IndexPage() {
       }
 
       dispatch(setAuthToken(authToken))
-      dispatch(setRegistrations(registration))
+      dispatch(setRegistrations(registrations))
       dispatch(setProfile(profile))
       setmockSessionActive(true)
     } else {
@@ -61,18 +61,18 @@ export default function IndexPage() {
 
   return (
     <>
-      <div class="govuk-width-container">
-        <main class="govuk-main-wrapper">
-          <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
-              <h1 class="govuk-heading-xl">Next Warning Service Index</h1>
+      <div className="govuk-width-container">
+        <main className="govuk-main-wrapper">
+          <div className="govuk-grid-row">
+            <div className="govuk-grid-column-two-thirds">
+              <h1 className="govuk-heading-xl">Next Warning Service Index</h1>
               <NotificationBanner
                 className="govuk-notification-banner govuk-notification-banner--success"
                 title="Mock session"
                 text={mockSessionActive ? 'Active' : 'Not Active'}
               />
-              <p class="govuk-body">A quick link to each page</p>
-              <ul class="govuk-list">
+              <p className="govuk-body">A quick link to each page</p>
+              <ul className="govuk-list">
                 <li>
                   <Link to="/" className="govuk-link">
                     Start page
@@ -85,12 +85,12 @@ export default function IndexPage() {
                 </li>
                 <li>
                   <Link to="/signup" className="govuk-link">
-                    Register page
+                    Sign up page
                   </Link>
                 </li>
               </ul>
 
-              <p class="govuk-body">
+              <p className="govuk-body">
                 A session is required to access the below pages - click below to
                 start/kill the mock session
               </p>
@@ -99,7 +99,7 @@ export default function IndexPage() {
                 text="Activate/Deactivate Mock Session"
                 onClick={mockSession}
               />
-              <ul class="govuk-list">
+              <ul className="govuk-list">
                 <li>
                   <Link to="/home" className="govuk-link">
                     Home page
@@ -108,11 +108,6 @@ export default function IndexPage() {
                 <li>
                   <Link to="/managecontacts" className="govuk-link">
                     Manage Contacts page
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/signout" className="govuk-link">
-                    sign out
                   </Link>
                 </li>
               </ul>

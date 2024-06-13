@@ -28,8 +28,9 @@ export default function AddLandlinePage() {
     event.preventDefault()
     const validationError = phoneValidation(landline, 'mobileAndLandline')
     setError(validationError)
-    const dataToSend = { msisdn: landline, authToken: authToken }
     if (validationError === '') {
+      const normalisedPhoneNumber = normalisePhoneNumber(landline)
+      const dataToSend = { msisdn: normalisedPhoneNumber, authToken: authToken }
       const { errorMessage } = await backendCall(
         dataToSend,
         'api/add_contact/landline/add',
@@ -40,7 +41,11 @@ export default function AddLandlinePage() {
       } else {
         dispatch(
           setProfile(
-            addUnverifiedContact(session.profile, 'homePhones', landline)
+            addUnverifiedContact(
+              session.profile,
+              'homePhones',
+              normalisedPhoneNumber
+            )
           )
         )
         navigate('/managecontacts/validate-landline')
@@ -56,7 +61,7 @@ export default function AddLandlinePage() {
     // we need to check if location.state has a value - this will only hold a value
     // if the user has come from the landline validate page - we will need to remove
     //the number from the users profile if so
-    if (session.landline) {
+    if (session && session.landline) {
       event.preventDefault()
       const normalisedLandline = normalisePhoneNumber(session.landline)
       // remove landline from users profile

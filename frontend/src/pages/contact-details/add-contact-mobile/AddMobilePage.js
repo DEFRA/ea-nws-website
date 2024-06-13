@@ -54,7 +54,7 @@ export default function AddMobilePage() {
     // we need to check if location.state has a value - this will only hold a value
     // if the user has come from the mobile validate page - we will need to remove
     //the number from the users profile if so
-    if (session) {
+    if (session && session.mobile) {
       event.preventDefault()
       const normalisedMobile = normalisePhoneNumber(session.mobile)
       // remove mobile from users profile

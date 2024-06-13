@@ -11,8 +11,6 @@ export default function SignOutAutomatically() {
 
   if (session.authToken !== null) {
     dispatch(clearAuth())
-    console.log('user removed')
-    console.log('the authtoken is' + session.authToken)
   }
 
   function redirect() {

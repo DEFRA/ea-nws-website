@@ -10,7 +10,7 @@ export default function InactivityPopup({ onStayLoggedIn }) {
         left: '0',
         width: '100%',
         height: '100%',
-        backgroundColor: '(0, 0, 0, 0.5)' /* Semi-transparent background */,
+        backgroundColor: 'RGBA(0, 0, 0, 0.5)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

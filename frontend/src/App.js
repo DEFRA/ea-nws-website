@@ -22,13 +22,11 @@ export default function App() {
           inactivityTimer.current = setTimeout(() => {
             setIsInactive(true)
             setIsPopUpOnScreen(true)
-            console.log('Pop up on screen')
+
             redirectTimer.current = setTimeout(() => {
-              //NEED TO KILL SESSION HERE
               window.location.pathname = '/signout-auto'
-              //navigate to start page
             }, 2 * 60 * 1000) //2 minutes
-          }, 13 * 60 * 1000) //10 minutes
+          }, 13 * 60 * 1000) //13 minutes
         }
       }
 
@@ -56,7 +54,7 @@ export default function App() {
     setIsPopUpOnScreen(false)
     clearTimeout(redirectTimer.current)
   }
-  console.log('the auth is ' + auth)
+
   return (
     <BrowserRouter>
       <Routes>

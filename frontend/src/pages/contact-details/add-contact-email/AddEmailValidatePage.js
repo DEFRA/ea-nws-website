@@ -24,12 +24,9 @@ export default function AddEmailValidatePage() {
   const [code, setCode] = useState('')
   const authToken = useSelector((state) => state.session.authToken)
   const session = useSelector((state) => state.session)
-  let email = useSelector((state) =>
-    session.profile.unverified.emails[0]
-      ? session.profile.unverified.emails[0]
-      : session.profile.emails[0]
-  )
-
+  let email = session.profile.unverified.emails[0]
+    ? session.profile.unverified.emails[0]
+    : session.profile.emails[0]
   const handleSubmit = async (event) => {
     event.preventDefault()
     const validationError = authCodeValidation(code)
@@ -76,7 +73,6 @@ export default function AddEmailValidatePage() {
 
   const differentEmail = (event) => {
     event.preventDefault()
-    email = null
     // remove email from users profile
     dispatch(setProfile(removeUnverifiedContact(session.profile, email)))
     navigate('/managecontacts/add-email')

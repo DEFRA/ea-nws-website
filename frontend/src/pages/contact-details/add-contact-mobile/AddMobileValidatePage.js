@@ -22,11 +22,10 @@ export default function AddMobileValidatePage() {
   const [code, setCode] = useState('')
 
   const session = useSelector((state) => state.session)
-  const mobile = useSelector((state) =>
-    session.profile.unverified.mobilePhones[0]
-      ? session.profile.unverified.mobilePhones[0]
-      : session.profile.mobilePhones[0]
-  )
+  const mobile = session.profile.unverified.mobilePhones[0]
+    ? session.profile.unverified.mobilePhones[0]
+    : session.profile.mobilePhones[0]
+
   const authToken = useSelector((state) => state.session.authToken)
 
   const handleSubmit = async (event) => {
@@ -70,7 +69,12 @@ export default function AddMobileValidatePage() {
     // we will need to add the email back to the unverified list - if it already exists
     // nothing will happen and it will remain
     dispatch(setProfile(addUnverifiedContact(updatedProfile, 'mobile', mobile)))
-    navigate('/managecontacts')
+    navigate('/managecontacts', {
+      state: {
+        unconfirmedtype: location.state.type,
+        unconfirmedvalue: location.state.contact
+      }
+    })
   }
 
   const differentMobile = (event) => {

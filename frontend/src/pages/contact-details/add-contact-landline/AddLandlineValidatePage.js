@@ -23,11 +23,10 @@ export default function AddLandlineValidatePage() {
   const [code, setCode] = useState('')
   const session = useSelector((state) => state.session)
 
-  const homePhone = useSelector((state) =>
-    session.profile.unverified.homePhones[0]
-      ? session.profile.unverified.homePhones[0]
-      : session.profile.homePhones[0]
-  )
+  const homePhone = session.profile.unverified.homePhones[0]
+    ? session.profile.unverified.homePhones[0]
+    : session.profile.homePhones[0]
+
   const authToken = session.authToken
   const handleSubmit = async (event) => {
     event.preventDefault()

@@ -25,7 +25,7 @@ export default function AddEmailPage() {
     setError(validationError)
     const dataToSend = { email, authToken: authToken }
     if (validationError === '') {
-      const { errorMessage, data } = await backendCall(
+      const { errorMessage } = await backendCall(
         dataToSend,
         'api/add_contact/email/add',
         navigate

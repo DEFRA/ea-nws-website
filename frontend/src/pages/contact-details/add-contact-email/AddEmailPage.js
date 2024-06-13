@@ -10,6 +10,7 @@ import { setProfile } from '../../../redux/userSlice'
 import { backendCall } from '../../../services/BackendService'
 import { addUnverifiedContact } from '../../../services/ProfileServices'
 import { emailValidation } from '../../../services/validations/EmailValidation'
+
 export default function AddEmailPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
@@ -17,6 +18,7 @@ export default function AddEmailPage() {
   const dispatch = useDispatch()
   const session = useSelector((state) => state.session)
   const authToken = session.authToken
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     const validationError = emailValidation(email)

@@ -48,7 +48,7 @@ export default function SignInValidatePage() {
     const data = { email: location.state.email }
     const { errorMessage } = await backendCall(
       data,
-      'api/signupStart',
+      'api/signInStart',
       navigate
     )
     if (errorMessage !== null) {

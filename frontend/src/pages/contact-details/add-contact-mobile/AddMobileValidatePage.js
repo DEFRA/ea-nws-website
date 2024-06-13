@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
@@ -16,7 +16,6 @@ import {
 } from '../../../services/ProfileServices'
 import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
 export default function AddMobileValidatePage() {
-  const location = useLocation()
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -38,12 +37,12 @@ export default function AddMobileValidatePage() {
       const dataToSend = { authToken: authToken, code, msisdn: mobile }
       const { errorMessage, data } = await backendCall(
         dataToSend,
-        'api/add_contact/mobile/validate'
+        'api/add_contact/mobile/validate',
+        navigate
       )
       if (errorMessage !== null) {
         setError(errorMessage.desc)
       } else {
-        console.log(data.profile)
         dispatch(setProfile(data.profile))
         navigate('/managecontacts')
       }
@@ -52,8 +51,7 @@ export default function AddMobileValidatePage() {
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    console.log('In get new code function')
-    const data = {}
+    const data = { authToken: authToken, msisdn: mobile }
     const { errorMessage } = await backendCall(
       data,
       'api/add_contact/mobile/add',
@@ -90,10 +88,12 @@ export default function AddMobileValidatePage() {
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 class="govuk-heading-l">Check your mobile</h2>
+        <h2 class="govuk-heading-l">Check your mobile phone</h2>
         <div class="govuk-body">
-          We've sent a code to:
+          We've sent a text with a code to:
           <InsetText text={mobile} />
+          Use the code within 4 hours or it will expire.
+          <br /> <br />
           <Input
             name="Enter code"
             inputType="text"
@@ -105,14 +105,21 @@ export default function AddMobileValidatePage() {
             text="Continue"
             onClick={handleSubmit}
           />
-          <Link onClick={skipValidation} className="govuk-link">
+          <Link
+            onClick={skipValidation}
+            className="govuk-link"
+            style={{
+              display: 'inline-block',
+              padding: '8px 10px 7px'
+            }}
+          >
             Skip and confirm later
           </Link>
           <br />
           <Link onClick={getNewCode} className="govuk-link">
             Get a new code
           </Link>
-          <br />
+          <br /> <br />
           <Link onClick={differentMobile} className="govuk-link">
             Enter a different mobile
           </Link>

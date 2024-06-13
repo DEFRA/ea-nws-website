@@ -22,16 +22,17 @@ export default function AddLandlineValidatePage() {
   const navigate = useNavigate()
   const [code, setCode] = useState('')
   const session = useSelector((state) => state.session)
+
   const homePhone = useSelector((state) =>
     session.profile.unverified.homePhones[0]
       ? session.profile.unverified.homePhones[0]
       : session.profile.homePhones[0]
   )
-  const authToken = useSelector((state) => state.session.authToken)
-
+  const authToken = session.authToken
   const handleSubmit = async (event) => {
     event.preventDefault()
     const validationError = authCodeValidation(code)
+
     setError(validationError)
     if (validationError === '') {
       const dataToSend = { authToken: authToken, msisdn: homePhone, code }
@@ -51,7 +52,6 @@ export default function AddLandlineValidatePage() {
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    console.log('In get new code function')
     const data = { authToken: authToken, msisdn: homePhone }
     const { errorMessage } = await backendCall(
       data,
@@ -91,10 +91,12 @@ export default function AddLandlineValidatePage() {
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 class="govuk-heading-l">Check your mobile</h2>
+        <h2 class="govuk-heading-l">Confirm telephone number</h2>
         <div class="govuk-body">
-          We've sent a code to:
+          We're calling this number to read out a code:
           <InsetText text={homePhone} />
+          Use the code within 4 hours or it will expire.
+          <br /> <br />
           <Input
             name="Enter code"
             inputType="text"
@@ -106,14 +108,21 @@ export default function AddLandlineValidatePage() {
             text="Continue"
             onClick={handleSubmit}
           />
-          <Link onClick={skipValidation} className="govuk-link">
+          <Link
+            onClick={skipValidation}
+            className="govuk-link"
+            style={{
+              display: 'inline-block',
+              padding: '8px 10px 7px'
+            }}
+          >
             Skip and confirm later
           </Link>
           <br />
           <Link onClick={getNewCode} className="govuk-link">
             Get a new code
           </Link>
-          <br />
+          <br /> <br />
           <Link onClick={differentHomePhone} className="govuk-link">
             Enter a different telephone number
           </Link>

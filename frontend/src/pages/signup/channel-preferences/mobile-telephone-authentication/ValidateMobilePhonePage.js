@@ -141,7 +141,14 @@ export default function ValidateMobilePhone() {
                 onClick={handleSubmit}
               />
               &nbsp; &nbsp;
-              <Link onClick={skipValidation} className="govuk-link">
+              <Link
+                onClick={skipValidation}
+                className="govuk-link"
+                style={{
+                  display: 'inline-block',
+                  padding: '8px 10px 7px'
+                }}
+              >
                 Skip and confirm later
               </Link>
               <br />

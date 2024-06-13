@@ -140,7 +140,14 @@ export default function ValidateLandlinePhonePage() {
             onClick={handleSubmit}
           />
           &nbsp; &nbsp;
-          <Link className="govuk-link" onClick={skipValidation}>
+          <Link
+            className="govuk-link"
+            onClick={skipValidation}
+            style={{
+              display: 'inline-block',
+              padding: '8px 10px 7px'
+            }}
+          >
             Skip and confirm later
           </Link>
           <br />

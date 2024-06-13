@@ -27,7 +27,7 @@ def setup_validatelandline_test(get_browser):
 def test_addlandlinevalidate_render(get_browser):
     browser = setup_validatelandline_test(get_browser) 
     assert browser.current_url == current_url
-    assert "Check your mobile" in browser.page_source
+    assert "Confirm telephone number" in browser.page_source
 
 def test_addlandlinevalidate_backButton(get_browser):
     browser = setup_validatelandline_test(get_browser)   
@@ -72,17 +72,17 @@ def test_addlandlinevalidate_resendCode(get_browser):
 
 def test_addlandlinevalidate_enteradifferentnumber(get_browser):
     browser = setup_validatelandline_test(get_browser)  
-    browser.find_element(By.LINK_TEXT, "Enter a different mobile").click()
+    browser.find_element(By.LINK_TEXT, "Enter a different telephone number").click()
     time.sleep(1)
     assert browser.current_url == previous_page
 
-def test_addlandlinevalidate_enteradifferentMobile_correctMobile(get_browser):
+def test_addlandlinevalidate_enteradifferentLandline_correctLandline(get_browser):
     browser = setup_validatelandline_test(get_browser)  
     assert "01632960001" in browser.page_source
-    browser.find_element(By.LINK_TEXT, "Enter a different mobile").click()
+    browser.find_element(By.LINK_TEXT, "Enter a different telephone number").click()
     time.sleep(1)
     assert browser.current_url == previousPage
-    browser.find_element(By.NAME, "UK mobile telephone number").send_keys("01410000000")
+    browser.find_element(By.NAME, "UK landline or mobile telephone number").send_keys("01410000000")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)
     assert browser.current_url == currenturl

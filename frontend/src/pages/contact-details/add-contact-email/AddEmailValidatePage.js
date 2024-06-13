@@ -94,6 +94,8 @@ export default function AddEmailValidatePage() {
         <div class="govuk-body">
           We've sent a code to:
           <InsetText text={email} />
+          Use the code within 4 hours or it will expire.
+          <br /> <br />
           <Input
             name="Enter code"
             inputType="text"
@@ -105,14 +107,21 @@ export default function AddEmailValidatePage() {
             text="Continue"
             onClick={handleSubmit}
           />
-          <Link onClick={skipValidation} className="govuk-link">
+          <Link
+            onClick={skipValidation}
+            className="govuk-link"
+            style={{
+              display: 'inline-block',
+              padding: '8px 10px 7px'
+            }}
+          >
             Skip and confirm later
           </Link>
           <br />
           <Link onClick={getNewCode} className="govuk-link">
             Get a new code
           </Link>
-          <br />
+          <br /> <br />
           <Link onClick={differentEmail} className="govuk-link">
             Enter a different email
           </Link>

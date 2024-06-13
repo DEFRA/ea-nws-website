@@ -23,10 +23,8 @@ export default function App() {
             setIsInactive(true)
             setIsPopUpOnScreen(true)
 
-            redirectTimer.current = setTimeout(() => {
-              window.location.pathname = '/signout-auto'
-            }, 2 * 60 * 1000) //2 minutes
-          }, 13 * 60 * 1000) //13 minutes
+            console.log('made it here')
+          }, 1 * 5 * 1000) //13 minutes (current values for demo)
         }
       }
 
@@ -48,6 +46,15 @@ export default function App() {
       }
     }
   }, [auth, isPopUpOnScreen])
+
+  useEffect(() => {
+    if (isPopUpOnScreen === true) {
+      redirectTimer.current = setTimeout(() => {
+        console.log('im here')
+        window.location.pathname = '/signout-auto'
+      }, 1 * 6 * 1000) //2 minutes (current values for demo)
+    }
+  }, [isPopUpOnScreen])
 
   const handleStayLoggedIn = () => {
     setIsInactive(false)

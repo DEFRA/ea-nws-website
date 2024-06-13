@@ -20,7 +20,7 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/api/signup/feedback',
       payload: {
-        feedbackPreference: {preference: 'Satisfied'},
+        feedbackPreference: { preference: 'Satisfied' },
         feedbackText: 'test'
       }
     }
@@ -29,11 +29,10 @@ lab.experiment('Integration tests', () => {
     Code.expect(response.statusCode).to.equal(200)
   })
 
-  lab.test('POST / route with feedback returning null', async () => {
+  lab.test('POST / route with no payload', async () => {
     const options = {
       method: 'POST',
-      url: '/api/signup/feedback',
-      
+      url: '/api/signup/feedback'
     }
     const response = await server.inject(options)
     Code.expect(response.statusCode).to.equal(400)

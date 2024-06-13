@@ -152,12 +152,24 @@ export default function ValidateMobilePhone() {
                 Skip and confirm later
               </Link>
               <br />
-              <Link onClick={getNewCode} className="govuk-link">
+              <Link
+                onClick={getNewCode}
+                className="govuk-link"
+                style={{
+                  display: 'inline-block'
+                }}
+              >
                 Get a new code
               </Link>
               <br />
               <br />
-              <Link onClick={differentMobile} className="govuk-link">
+              <Link
+                onClick={differentMobile}
+                className="govuk-link"
+                style={{
+                  display: 'inline-block'
+                }}
+              >
                 Enter a different mobile number
               </Link>
               <div className="govuk-!-margin-bottom-9" />

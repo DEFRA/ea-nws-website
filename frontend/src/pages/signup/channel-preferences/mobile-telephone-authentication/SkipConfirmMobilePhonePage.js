@@ -50,6 +50,10 @@ export default function SkipConfirmMobilePhonePage() {
             <Link
               to="/signup/contactpreferences/mobile/validate"
               className="govuk-body govuk-link"
+              style={{
+                display: 'inline-block',
+                padding: '8px 10px 7px'
+              }}
             >
               Confirm now
             </Link>

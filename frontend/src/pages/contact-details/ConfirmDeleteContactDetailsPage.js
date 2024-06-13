@@ -9,7 +9,7 @@ import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 
-export default function ConfirmDeleteContactDetailsPage () {
+export default function ConfirmDeleteContactDetailsPage() {
   const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -61,25 +61,32 @@ export default function ConfirmDeleteContactDetailsPage () {
   return (
     <>
       <Header />
-      <div className='govuk-width-container'>
+      <div className="govuk-width-container">
         <PhaseBanner />
-        <Link to='/managecontacts' className='govuk-back-link'>
+        <Link to="/managecontacts" className="govuk-back-link">
           Back
         </Link>
-        <main className='govuk-main-wrapper'>
-          <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-two-thirds'>
-              <h2 className='govuk-heading-l'>
+        <main className="govuk-main-wrapper">
+          <div className="govuk-grid-row">
+            <div className="govuk-grid-column-two-thirds">
+              <h2 className="govuk-heading-l">
                 Are you sure you want to remove this {location.state.type}?
               </h2>
               <InsetText text={location.state.contact} />
               <Button
-                className='govuk-button govuk-button--warning'
-                text='Remove'
+                className="govuk-button govuk-button--warning"
+                text="Remove"
                 onClick={removeContact}
               />
               &nbsp; &nbsp;
-              <Link to='/managecontacts' className='govuk-body govuk-link'>
+              <Link
+                to="/managecontacts"
+                className="govuk-body govuk-link"
+                style={{
+                  display: 'inline-block',
+                  padding: '8px 10px 7px'
+                }}
+              >
                 Cancel
               </Link>
             </div>

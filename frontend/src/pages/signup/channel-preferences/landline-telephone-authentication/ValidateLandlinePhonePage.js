@@ -137,16 +137,35 @@ export default function ValidateLandlinePhonePage() {
             onClick={handleSubmit}
           />
           &nbsp; &nbsp;
-          <Link className="govuk-link" onClick={skipValidation}>
+          <Link
+            className="govuk-link"
+            onClick={skipValidation}
+            style={{
+              display: 'inline-block',
+              padding: '8px 10px 7px'
+            }}
+          >
             Skip and confirm later
           </Link>
           <br />
-          <Link onClick={getNewCode} className="govuk-link">
+          <Link
+            onClick={getNewCode}
+            className="govuk-link"
+            style={{
+              display: 'inline-block'
+            }}
+          >
             Get a new code
           </Link>
           <br />
           <br />
-          <Link onClick={differentLandline} className="govuk-link">
+          <Link
+            onClick={differentLandline}
+            className="govuk-link"
+            style={{
+              display: 'inline-block'
+            }}
+          >
             Enter a different telephone number
           </Link>
         </div>

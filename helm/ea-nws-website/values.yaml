@@ -30,7 +30,7 @@ containers:
     securityContext: {}
     image:
       repository: 730335517085.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
       tag: "frontend-1.0"
     env:
@@ -39,11 +39,11 @@ containers:
     livenessProbe:
       httpGet:
         path: /
-        port: http
+        port: 3000
     readinessProbe:
       httpGet:
         path: /
-        port: http
+        port: 3000
     resources: {}
     # limits:
     #   cpu: 100m
@@ -59,7 +59,7 @@ containers:
     securityContext: {}
     image:
       repository: 730335517085.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
       tag: "backend-1.0"
     env:
@@ -69,12 +69,12 @@ containers:
         value: "http://api:9000"
     livenessProbe:
       httpGet:
-        path: /
-        port: http
+        path: /liveness
+        port: 5000
     readinessProbe:
       httpGet:
-        path: /
-        port: http
+        path: /readiness
+        port: 5000
     resources: {}
     # limits:
     #   cpu: 100m
@@ -90,7 +90,7 @@ containers:
     securityContext: {}
     image:
       repository: 730335517085.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
-      pullPolicy: IfNotPresent
+      pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
       tag: "nginx-1.0"
     env:
@@ -105,11 +105,11 @@ containers:
     livenessProbe:
       httpGet:
         path: /
-        port: http
+        port: 7000
     readinessProbe:
       httpGet:
         path: /
-        port: http
+        port: 7000
     resources: {}
     # limits:
     #   cpu: 100m

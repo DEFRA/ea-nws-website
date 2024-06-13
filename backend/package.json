@@ -24,6 +24,7 @@
     "axios": "^1.6.8",
     "blipp": "4.0.2",
     "govuk-frontend": "^4.0.0",
+    "hapi-k8s-health": "^1.1.1",
     "hapi-pino": "9.1.1",
     "node-fetch": "^2.7.0",
     "nunjucks": "^3.2.3",

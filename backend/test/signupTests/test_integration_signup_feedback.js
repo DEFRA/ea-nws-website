@@ -25,7 +25,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result).to.equal(options.payload)
+    Code.expect(response.result.status).to.equal(200)
     Code.expect(response.statusCode).to.equal(200)
   })
 

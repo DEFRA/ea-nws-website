@@ -49,10 +49,9 @@ export default function InactivityPopup({ onStayLoggedIn }) {
               marginTop: '1%'
             }}
           >
-            <a href="/signout" class="govuk-link">
+            <a href="/signout-auto" class="govuk-link">
               Sign out
             </a>
-            .
           </p>
         </div>
       </div>

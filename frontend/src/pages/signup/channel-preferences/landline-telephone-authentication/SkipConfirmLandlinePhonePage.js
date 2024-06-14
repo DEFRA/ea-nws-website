@@ -20,7 +20,7 @@ export default function SkipConfirmLandlinePhonePage() {
     } else if (session.contactPreferences.includes('Text')) {
       navigate('/signup/contactpreferences/mobile/add')
     } else {
-      navigate('/managecontacts')
+      // TO DO -> enter NAME
     }
   }
 

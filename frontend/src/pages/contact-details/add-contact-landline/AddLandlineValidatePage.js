@@ -34,7 +34,7 @@ export default function AddLandlineValidatePage() {
 
     setError(validationError)
     if (validationError === '') {
-      const dataToSend = { authToken: authToken, msisdn: homePhone, code }
+      const dataToSend = { authToken, msisdn: homePhone, code }
       const { errorMessage, data } = await backendCall(
         dataToSend,
         'api/add_contact/landline/validate',
@@ -51,7 +51,7 @@ export default function AddLandlineValidatePage() {
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const data = { authToken: authToken, msisdn: homePhone }
+    const data = { authToken, msisdn: homePhone }
     const { errorMessage } = await backendCall(
       data,
       'api/add_contact/landline/add',
@@ -72,7 +72,12 @@ export default function AddLandlineValidatePage() {
     dispatch(
       setProfile(addUnverifiedContact(updatedProfile, 'homePhones', homePhone))
     )
-    navigate('/managecontacts')
+    navigate('/managecontacts', {
+      state: {
+        unconfirmedtype: 'homePhone',
+        unconfirmedvalue: homePhone
+      }
+    })
   }
 
   const differentHomePhone = (event) => {

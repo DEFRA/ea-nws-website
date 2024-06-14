@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
@@ -17,14 +17,13 @@ import {
 import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
 
 export default function AddEmailValidatePage() {
-  const location = useLocation()
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [code, setCode] = useState('')
   const authToken = useSelector((state) => state.session.authToken)
   const session = useSelector((state) => state.session)
-  let email = session.profile.unverified.emails[0]
+  const email = session.profile.unverified.emails[0]
     ? session.profile.unverified.emails[0]
     : session.profile.emails[0]
   const handleSubmit = async (event) => {
@@ -32,7 +31,7 @@ export default function AddEmailValidatePage() {
     const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      const dataToSend = { authToken: authToken, email: email, code }
+      const dataToSend = { authToken, email, code }
       const { errorMessage, data } = await backendCall(
         dataToSend,
         'api/add_contact/email/validate'
@@ -48,7 +47,7 @@ export default function AddEmailValidatePage() {
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const data = { authToken: session.authToken, email: email }
+    const data = { authToken: session.authToken, email }
     const { errorMessage } = await backendCall(
       data,
       'api/add_contact/email/add',
@@ -68,7 +67,12 @@ export default function AddEmailValidatePage() {
     // we will need to add the email back to the unverified list - if it already exists
     // nothing will happen and it will remain
     dispatch(setProfile(addUnverifiedContact(updatedProfile, 'email', email)))
-    navigate('/managecontacts')
+    navigate('/managecontacts', {
+      state: {
+        unconfirmedtype: 'email',
+        unconfirmedvalue: email
+      }
+    })
   }
 
   const differentEmail = (event) => {

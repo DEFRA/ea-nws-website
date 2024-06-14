@@ -14,10 +14,14 @@ paths:
   /member/updateProfile:
     $ref: './paths/update-profile/updateProfile.yaml'
   /member/verifyMobilePhoneStart:
-    $ref: './paths/signup/channel-preferences/mobile/verifyMobilePhoneStart.yaml'
+    $ref: './paths/contact/mobile/verifyMobilePhoneStart.yaml'
   /member/verifyMobilePhoneValidate:
-    $ref: './paths/signup/channel-preferences/mobile/verifyMobilePhoneValidate.yaml'
+    $ref: './paths/contact/mobile/verifyMobilePhoneValidate.yaml'
   /member/verifyHomePhoneStart:
-    $ref: './paths/signup/channel-preferences/homePhone/verifyHomePhoneStart.yaml'
+    $ref: './paths/contact/homePhone/verifyHomePhoneStart.yaml'
   /member/verifyHomePhoneValidate:
-    $ref: './paths/signup/channel-preferences/homePhone/verifyHomePhoneValidate.yaml'
+    $ref: './paths/contact/homePhone/verifyHomePhoneValidate.yaml'
+  /member/verifyEmailStart:
+    $ref: './paths/contact/email/verifyEmailStart.yaml'
+  /member/verifyEmailValidate:
+    $ref: './paths/contact/email/verifyEmailValidate.yaml'

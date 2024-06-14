@@ -1,11 +1,13 @@
 # National Warning System
+
 National Warning System
 
 # Environment variables
+
 (Be sure to describe any environment variables here by maintaining a list like this)
 
 | name     | description      | required | default |            valid            | notes |
-|----------|------------------|:--------:|---------|:---------------------------:|-------|
+| -------- | ---------------- | :------: | ------- | :-------------------------: | ----- |
 | NODE_ENV | Node environment |    no    |         | development,test,production |       |
 | PORT     | Port number      |    no    | 3000    |                             |       |
 
@@ -25,6 +27,11 @@ Now the application is ready to run:
 
 `$ node index.js`
 
+For ease of dev, you can use:
+
+> npm run start
+
+It runs nodemon, which reloads the build between each change and pino-pretty which ensures the Pino logs are readable.
 
 (You can delete the remainder of this readme once you're up and running)
 
@@ -42,7 +49,6 @@ Based on:
 - [npm-scripts](https://docs.npmjs.com/misc/scripts) - Build tool
 - [pm2](https://github.com/Unitech/pm2) - Process manager
 
-
 ## Getting started
 
 Clone this repo and run through the checklist above.
@@ -53,20 +59,20 @@ Check the server is running by pointing your browser to `http://localhost:3000`
 
 Here's the default structure for your project files.
 
-* **bin** (build tasks)
-* **client** (client js/sass code)
-* **server**
-  * **plugins**
-  * **public**  (This folder is publicly served)
-    * **static** (Put all static assets in here)
-    * **build** (This contains the build output files (js/css etc.) and is not checked-in)
-  * **routes**
-  * **views**
-  * config.js
-  * index.js (Exports a function that creates a server)
-* **test**
-* README.md
-* index.js (startup server)
+- **bin** (build tasks)
+- **client** (client js/sass code)
+- **server**
+  - **plugins**
+  - **public** (This folder is publicly served)
+    - **static** (Put all static assets in here)
+    - **build** (This contains the build output files (js/css etc.) and is not checked-in)
+  - **routes**
+  - **views**
+  - config.js
+  - index.js (Exports a function that creates a server)
+- **test**
+- README.md
+- index.js (startup server)
 
 ## Config
 
@@ -105,7 +111,7 @@ Any build output should write to `server/public/build`. This path is in the `.gi
 
 ## Routes
 
-Incoming requests are handled by the server via routes. 
+Incoming requests are handled by the server via routes.
 Each route describes an HTTP endpoint with a path, method, and other properties.
 
 Routes are found in the `server/routes` directory and loaded using the `server/plugins/router.js` plugin.
@@ -136,7 +142,7 @@ The default ones are found in the `bin` directory.
 
 The task runner is simply `npm` using `npm-scripts`.
 
-We chose to use this for simplicity but there's nothing to stop you adding `gulp`, `grunt` or another task runner if you prefer. 
+We chose to use this for simplicity but there's nothing to stop you adding `gulp`, `grunt` or another task runner if you prefer.
 
 The predefined tasks are:
 
@@ -150,10 +156,10 @@ The predefined tasks are:
 
 For more information around using `npm-scripts` as a build tool:
 
-- http://substack.net/task_automation_with_npm_run
-- http://ponyfoo.com/articles/choose-grunt-gulp-or-npm
-- http://blog.keithcirkel.co.uk/why-we-should-stop-using-grunt/
-- http://blog.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/
+- <http://substack.net/task_automation_with_npm_run>
+- <http://ponyfoo.com/articles/choose-grunt-gulp-or-npm>
+- <http://blog.keithcirkel.co.uk/why-we-should-stop-using-grunt/>
+- <http://blog.keithcirkel.co.uk/how-to-use-npm-as-a-build-tool/>
 
 ## Testing
 

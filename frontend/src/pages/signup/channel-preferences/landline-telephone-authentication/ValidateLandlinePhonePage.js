@@ -67,7 +67,7 @@ export default function ValidateLandlinePhonePage() {
         } else if (session.contactPreferences.includes('Mobile')) {
           navigate('/signup/contactpreferences/mobile/add')
         } else {
-          navigate('/managecontacts')
+          // TODO Enter your name page
         }
       }
     }

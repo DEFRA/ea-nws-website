@@ -6,7 +6,8 @@ export default function ContactDetailsTable({
   contacts,
   contactTitle,
   contactType,
-  primaryContact
+  primaryContact,
+  unregisteredContact
 }) {
   const navigate = useNavigate()
   const handleButton = () => {
@@ -19,10 +20,22 @@ export default function ContactDetailsTable({
     }
   }
 
+  const handleConfirmLink = () => {
+    console.log('A')
+    if (contactType === 'email address') {
+      console.log('B')
+      navigate('/managecontacts/validate-email')
+    } else if (contactType === 'mobile telephone number') {
+      navigate('/managecontacts/validate-mobile')
+    } else if (contactType === 'telephone number') {
+      navigate('/managecontacts/validate-landline')
+    }
+  }
+
   return (
     <>
       <h3 className="govuk-heading-m">{contactTitle}</h3>
-      {contacts.length > 0 ? (
+      {contacts.length > 0 || unregisteredContact.length > 0 ? (
         <table className="govuk-table">
           <tbody className="govuk-table__body">
             {contacts.map((contact, index) => (
@@ -30,6 +43,8 @@ export default function ContactDetailsTable({
                 <td className="govuk-table__cell govuk-!-width-full">
                   {contact}
                 </td>
+                <td className="govuk-table__cell" />
+                <td className="govuk-table__cell" />
                 {contact !== primaryContact ? (
                   <td className="govuk-table__cell">
                     <Link
@@ -47,6 +62,35 @@ export default function ContactDetailsTable({
                   // empty space in table without this
                   <td className="govuk-table__cell" />
                 )}
+              </tr>
+            ))}
+            {unregisteredContact.map((unregisteredContact, index) => (
+              <tr key={index} className="govuk-table__row">
+                <td className="govuk-table__cell govuk-!-width-full">
+                  {unregisteredContact}
+                </td>
+                <td className="govuk-table__cell">
+                  <strong className="govuk-tag govuk-tag--red">
+                    Unconfirmed
+                  </strong>
+                </td>
+                <td className="govuk-table__cell">
+                  <Link onClick={handleConfirmLink} className="govuk-link">
+                    Confirm
+                  </Link>
+                </td>
+                <td className="govuk-table__cell">
+                  <Link
+                    to="/managecontacts/confirm-delete"
+                    state={{
+                      type: contactType,
+                      unregisteredContact
+                    }}
+                    className="govuk-link"
+                  >
+                    Remove
+                  </Link>
+                </td>
               </tr>
             ))}
           </tbody>

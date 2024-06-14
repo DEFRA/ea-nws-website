@@ -38,7 +38,7 @@ export default function ValidateLandlinePhonePage() {
 
     if (validationError === '') {
       const dataToSend = {
-        authToken: authToken,
+        authToken,
         msisdn: homePhone,
         code
       }
@@ -124,10 +124,12 @@ export default function ValidateLandlinePhonePage() {
           Back
         </Link>
         {error && <ErrorSummary errorList={[error]} />}
-        <h2 class="govuk-heading-l">Check your email</h2>
+        <h2 class="govuk-heading-l">Confirm telephone number</h2>
         <div class="govuk-body">
           We're calling this number to read out a code:
           <InsetText text={homePhone} />
+          Use the code within 4 hours or it will expire.
+          <br /> <br />
           <Input
             name="Enter code"
             inputType="text"

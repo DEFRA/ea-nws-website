@@ -15,7 +15,7 @@ import {
   removeVerifiedContact
 } from '../../../services/ProfileServices'
 import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
-export default function AddMobileValidatePage () {
+export default function AddMobileValidatePage() {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -69,12 +69,12 @@ export default function AddMobileValidatePage () {
     // we will need to add the email back to the unverified list - if it already exists
     // nothing will happen and it will remain
     dispatch(setProfile(addUnverifiedContact(updatedProfile, 'mobile', mobile)))
-    navigate('/managecontacts') /*, {
+    navigate('/managecontacts', {
       state: {
-        unconfirmedtype: location.state.type,
-        unconfirmedvalue: location.state.contact
+        unconfirmedtype: 'mobile',
+        unconfirmedvalue: mobile
       }
-    } */
+    })
   }
 
   const differentMobile = (event) => {
@@ -87,31 +87,31 @@ export default function AddMobileValidatePage () {
   return (
     <>
       <Header />
-      <div class='govuk-width-container'>
-        <Link to='/managecontacts/add-mobile' className='govuk-back-link'>
+      <div class="govuk-width-container">
+        <Link to="/managecontacts/add-mobile" className="govuk-back-link">
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 class='govuk-heading-l'>Check your mobile phone</h2>
-        <div class='govuk-body'>
+        <h2 class="govuk-heading-l">Check your mobile phone</h2>
+        <div class="govuk-body">
           We've sent a text with a code to:
           <InsetText text={mobile} />
           Use the code within 4 hours or it will expire.
           <br /> <br />
           <Input
-            name='Enter code'
-            inputType='text'
+            name="Enter code"
+            inputType="text"
             error={error}
             onChange={(val) => setCode(val)}
           />
           <Button
-            className='govuk-button'
-            text='Continue'
+            className="govuk-button"
+            text="Continue"
             onClick={handleSubmit}
           />
           <Link
             onClick={skipValidation}
-            className='govuk-link'
+            className="govuk-link"
             style={{
               display: 'inline-block',
               padding: '8px 10px 7px'
@@ -120,11 +120,11 @@ export default function AddMobileValidatePage () {
             Skip and confirm later
           </Link>
           <br />
-          <Link onClick={getNewCode} className='govuk-link'>
+          <Link onClick={getNewCode} className="govuk-link">
             Get a new code
           </Link>
           <br /> <br />
-          <Link onClick={differentMobile} className='govuk-link'>
+          <Link onClick={differentMobile} className="govuk-link">
             Enter a different mobile
           </Link>
         </div>

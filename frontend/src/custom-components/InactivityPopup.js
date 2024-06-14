@@ -1,9 +1,9 @@
 import React from 'react'
 import Button from '../gov-uk-components/Button'
-export default function InactivityPopup ({ onStayLoggedIn }) {
+export default function InactivityPopup({ onStayLoggedIn }) {
   return (
     <div
-      className='hmrc-timeout-dialog'
+      className="hmrc-timeout-dialog"
       style={{
         position: 'fixed',
         top: '0',
@@ -19,7 +19,7 @@ export default function InactivityPopup ({ onStayLoggedIn }) {
       }}
     >
       <div
-        className='hmrc-timeout-dialog'
+        className="hmrc-timeout-dialog"
         style={{
           backgroundColor: 'white',
           borderStyle: 'solid',
@@ -27,8 +27,8 @@ export default function InactivityPopup ({ onStayLoggedIn }) {
           padding: '20px'
         }}
       >
-        <h3 class='govuk-heading-s'>Youre about to be signed out</h3>
-        <p class='govuk-body'>
+        <h3 class="govuk-heading-s">Youre about to be signed out</h3>
+        <p class="govuk-body">
           For your security we will sign you out in 2 minutes
         </p>
         <div
@@ -38,18 +38,18 @@ export default function InactivityPopup ({ onStayLoggedIn }) {
           }}
         >
           <Button
-            className='govuk-button'
+            className="govuk-button"
             onClick={onStayLoggedIn}
-            text='Stay signed in'
+            text="Stay signed in"
           />
           <p
-            class='govuk-body'
+            class="govuk-body"
             style={{
               marginRight: '40%',
               marginTop: '1%'
             }}
           >
-            <a href='/signout-auto' class='govuk-link'>
+            <a href="/signout" class="govuk-link">
               Sign out
             </a>
           </p>

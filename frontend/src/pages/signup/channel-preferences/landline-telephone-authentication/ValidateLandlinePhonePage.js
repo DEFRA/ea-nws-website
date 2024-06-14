@@ -38,7 +38,7 @@ export default function ValidateLandlinePhonePage () {
 
     if (validationError === '') {
       const dataToSend = {
-        authToken: authToken,
+        authToken,
         msisdn: homePhone,
         code
       }

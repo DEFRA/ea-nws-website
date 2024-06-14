@@ -16,7 +16,7 @@ import {
 } from '../../../services/ProfileServices'
 import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
 
-export default function AddEmailValidatePage() {
+export default function AddEmailValidatePage () {
   const location = useLocation()
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -24,7 +24,7 @@ export default function AddEmailValidatePage() {
   const [code, setCode] = useState('')
   const authToken = useSelector((state) => state.session.authToken)
   const session = useSelector((state) => state.session)
-  let email = session.profile.unverified.emails[0]
+  const email = session.profile.unverified.emails[0]
     ? session.profile.unverified.emails[0]
     : session.profile.emails[0]
   const handleSubmit = async (event) => {
@@ -32,7 +32,7 @@ export default function AddEmailValidatePage() {
     const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      const dataToSend = { authToken: authToken, email: email, code }
+      const dataToSend = { authToken, email, code }
       const { errorMessage, data } = await backendCall(
         dataToSend,
         'api/add_contact/email/validate'
@@ -48,7 +48,7 @@ export default function AddEmailValidatePage() {
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const data = { authToken: session.authToken, email: email }
+    const data = { authToken: session.authToken, email }
     const { errorMessage } = await backendCall(
       data,
       'api/add_contact/email/add',
@@ -81,31 +81,31 @@ export default function AddEmailValidatePage() {
   return (
     <>
       <Header />
-      <div class="govuk-width-container">
-        <Link to="/managecontacts/add-email" className="govuk-back-link">
+      <div class='govuk-width-container'>
+        <Link to='/managecontacts/add-email' className='govuk-back-link'>
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 class="govuk-heading-l">Check your email</h2>
-        <div class="govuk-body">
+        <h2 class='govuk-heading-l'>Check your email</h2>
+        <div class='govuk-body'>
           We've sent a code to:
           <InsetText text={email} />
           Use the code within 4 hours or it will expire.
           <br /> <br />
           <Input
-            name="Enter code"
-            inputType="text"
+            name='Enter code'
+            inputType='text'
             error={error}
             onChange={(val) => setCode(val)}
           />
           <Button
-            className="govuk-button"
-            text="Continue"
+            className='govuk-button'
+            text='Continue'
             onClick={handleSubmit}
           />
           <Link
             onClick={skipValidation}
-            className="govuk-link"
+            className='govuk-link'
             style={{
               display: 'inline-block',
               padding: '8px 10px 7px'
@@ -114,11 +114,11 @@ export default function AddEmailValidatePage() {
             Skip and confirm later
           </Link>
           <br />
-          <Link onClick={getNewCode} className="govuk-link">
+          <Link onClick={getNewCode} className='govuk-link'>
             Get a new code
           </Link>
           <br /> <br />
-          <Link onClick={differentEmail} className="govuk-link">
+          <Link onClick={differentEmail} className='govuk-link'>
             Enter a different email
           </Link>
         </div>

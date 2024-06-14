@@ -37,7 +37,7 @@ export default function AddLandlinePhonePage () {
     // add this in when working on the pages that allows a user to go back and update their number
     // at sign up flow - we dont want the number already validated being tried again
     if (validationError === '') {
-      const dataToSend = { msisdn: homePhone, authToken: authToken }
+      const dataToSend = { msisdn: homePhone, authToken }
       const { errorMessage } = await backendCall(
         dataToSend,
         'api/add_contact/landline/add'

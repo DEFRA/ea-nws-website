@@ -16,7 +16,7 @@ import {
 } from '../../../services/ProfileServices'
 import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
 
-export default function AddLandlineValidatePage() {
+export default function AddLandlineValidatePage () {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -34,7 +34,7 @@ export default function AddLandlineValidatePage() {
 
     setError(validationError)
     if (validationError === '') {
-      const dataToSend = { authToken: authToken, msisdn: homePhone, code }
+      const dataToSend = { authToken, msisdn: homePhone, code }
       const { errorMessage, data } = await backendCall(
         dataToSend,
         'api/add_contact/landline/validate',
@@ -51,7 +51,7 @@ export default function AddLandlineValidatePage() {
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const data = { authToken: authToken, msisdn: homePhone }
+    const data = { authToken, msisdn: homePhone }
     const { errorMessage } = await backendCall(
       data,
       'api/add_contact/landline/add',
@@ -85,31 +85,31 @@ export default function AddLandlineValidatePage() {
   return (
     <>
       <Header />
-      <div class="govuk-width-container">
-        <Link to="/managecontacts/add-landline" className="govuk-back-link">
+      <div class='govuk-width-container'>
+        <Link to='/managecontacts/add-landline' className='govuk-back-link'>
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 class="govuk-heading-l">Confirm telephone number</h2>
-        <div class="govuk-body">
+        <h2 class='govuk-heading-l'>Confirm telephone number</h2>
+        <div class='govuk-body'>
           We're calling this number to read out a code:
           <InsetText text={homePhone} />
           Use the code within 4 hours or it will expire.
           <br /> <br />
           <Input
-            name="Enter code"
-            inputType="text"
+            name='Enter code'
+            inputType='text'
             error={error}
             onChange={(val) => setCode(val)}
           />
           <Button
-            className="govuk-button"
-            text="Continue"
+            className='govuk-button'
+            text='Continue'
             onClick={handleSubmit}
           />
           <Link
             onClick={skipValidation}
-            className="govuk-link"
+            className='govuk-link'
             style={{
               display: 'inline-block',
               padding: '8px 10px 7px'
@@ -118,11 +118,11 @@ export default function AddLandlineValidatePage() {
             Skip and confirm later
           </Link>
           <br />
-          <Link onClick={getNewCode} className="govuk-link">
+          <Link onClick={getNewCode} className='govuk-link'>
             Get a new code
           </Link>
           <br /> <br />
-          <Link onClick={differentHomePhone} className="govuk-link">
+          <Link onClick={differentHomePhone} className='govuk-link'>
             Enter a different telephone number
           </Link>
         </div>

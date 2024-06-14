@@ -1,0 +1,92 @@
+post:
+  operationId: 'getEmailStart'
+  tags:
+    - Member
+  summary: Start verification of an email address
+  description: >-
+    This RPC verifies if the auth token is valid, and if the currently
+    authenticated user has the provided email address as an unverified
+    address. Then a new random code is generated and sent by email.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          example:
+            authToken: >-
+              gAAAAABkOTd_oh-J9BgJ8yvLLgU16Fj8d4MTLjL4dd7ho6crKo10hVJjYJZccThQoA_54YaWTXJ3UkGbEqURemIdkM4bbJepXL-Qo5KZoY2vajHEcioSYibC6pJhj0if9xhcjgjTsiGJAbTs_wL6RJvT2AiSzLhIyXzw2aLreb3ac9AT8-fSbD-1yMuuPVty_KKWvqZBEO1i
+            email: roger.rabbit@gmail.com
+  parameters:
+    - name: Content-Type
+      in: header
+      schema:
+        type: string
+      example: application/json
+    - name: Accept
+      in: header
+      schema:
+        type: string
+      example: application/json
+  responses:
+    '200':
+      description: OK
+      headers:
+        Content-Type:
+          schema:
+            type: string
+            example: application/json
+      content:
+        application/json:
+          schema:
+            type: object
+          example: {}
+    '500':
+      description: Internal Server Error
+      headers:
+        date:
+          schema:
+            type: string
+            example: Mon, 11 Mar 2024 17:30:45 GMT
+        content-type:
+          schema:
+            type: string
+            example: application/json; charset=utf-8
+        content-length:
+          schema:
+            type: integer
+            example: '56'
+        accept-encoding:
+          schema:
+            type: string
+            example: identity, gzip, deflate
+        access-control-allow-origin:
+          schema:
+            type: string
+            example: '*'
+        cache-control:
+          schema:
+            type: string
+            example: no-store, no-cache, must-revalidate
+        pragma:
+          schema:
+            type: string
+            example: no-cache
+        content-encoding:
+          schema:
+            type: string
+            example: gzip
+        x-iplb-request-id:
+          schema:
+            type: string
+            example: 3656328B:414F_05C462FB:01BB_65EF3FC5_CDD74:6C58
+        x-iplb-instance:
+          schema:
+            type: integer
+            example: '53910'
+      content:
+        application/json:
+          schema:
+            type: object
+          example:
+            code: 101
+            desc: invalid token

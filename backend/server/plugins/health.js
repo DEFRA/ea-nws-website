@@ -8,6 +8,7 @@ module.exports = {
     },
     readinessProbes: {
       status: () => Promise.resolve('OK')
-    }
+    },
+    exposeMetrics: false
   }
 }

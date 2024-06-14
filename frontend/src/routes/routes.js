@@ -2,11 +2,15 @@ import React from 'react'
 import Index from '../pages/Index'
 import ConfirmDeleteContactDetailsPage from '../pages/contact-details/ConfirmDeleteContactDetailsPage'
 import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
+import AddEmailPage from '../pages/contact-details/add-contact-email/AddEmailPage'
+import AddEmailValidatePage from '../pages/contact-details/add-contact-email/AddEmailValidatePage'
+import AddLandlinePage from '../pages/contact-details/add-contact-landline/AddLandlinePage'
+import AddLandlineValidatePage from '../pages/contact-details/add-contact-landline/AddLandlineValidatePage'
+import AddMobilePage from '../pages/contact-details/add-contact-mobile/AddMobilePage'
+import AddMobileValidatePage from '../pages/contact-details/add-contact-mobile/AddMobileValidatePage'
 import HomePage from '../pages/home/HomePage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
-import SignBackIn from '../pages/signOut/SignBackIn'
-import SignOutAutomatically from '../pages/signOut/SignOutAutomatically'
 import SignOutManually from '../pages/signOut/SignOutManually'
 import SignUpPage from '../pages/signup/account/SignUpPage'
 import SignUpValidationPage from '../pages/signup/account/SignUpValidationPage'
@@ -19,26 +23,20 @@ import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobi
 import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
 import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
-
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
+
+const signOutRoutes = [{ path: '/signout', component: <SignOutManually /> }]
 
 // start routes
 const startRoutes = [{ path: '/', component: <StartPage /> }]
 
 // sign in routes
-const signinRoutes = [
+const siginRoutes = [
   { path: '/signin', component: <SignInPage /> },
   { path: '/signin/validate', component: <SignInValidatePage /> }
 ]
 
-// sign out routes
-const signOutRoutes = [
-  { path: '/signout', component: <SignOutManually /> },
-  { path: '/signout-auto', component: <SignOutAutomatically /> }
-]
-
-const signBackInRoutes = [{ path: '/sign-back-in', component: <SignBackIn /> }]
 // sign up routes
 const signupRoutes = [
   { path: '/signup', component: <SignUpPage /> },
@@ -73,7 +71,7 @@ const signupRoutes = [
     component: <ValidateLandlinePhonePage />
   },
   {
-    path: '/signup/contactpreferences/landline/skipconfirm',
+    path: '/signup/contactpreferences/landline/skipconfirmation',
     component: <SkipConfirmLandlinePhonePage />
   },
   {
@@ -91,20 +89,33 @@ const contactRoutes = [
   {
     path: '/managecontacts/confirm-delete',
     component: <ConfirmDeleteContactDetailsPage />
+  },
+  { path: '/managecontacts/add-email', component: <AddEmailPage /> },
+  {
+    path: '/managecontacts/validate-email',
+    component: <AddEmailValidatePage />
+  },
+  { path: '/managecontacts/add-mobile', component: <AddMobilePage /> },
+  {
+    path: '/managecontacts/validate-mobile',
+    component: <AddMobileValidatePage />
+  },
+  { path: '/managecontacts/add-landline', component: <AddLandlinePage /> },
+  {
+    path: '/managecontacts/validate-landline',
+    component: <AddLandlineValidatePage />
   }
 ]
 
-export const routes = [
+const routes = [
   ...indexRoutes,
   ...startRoutes,
   ...signupRoutes,
-  ...signinRoutes,
+  ...siginRoutes,
   ...signupRoutes,
-  ...signBackInRoutes
-]
-
-export const authenticatedRoutes = [
   ...homeRoutes,
   ...contactRoutes,
   ...signOutRoutes
 ]
+
+export default routes

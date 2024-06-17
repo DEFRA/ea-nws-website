@@ -37,7 +37,13 @@ export default function AddLandlinePage() {
         navigate
       )
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        if (errorMessage.desc === 'phone already registered') {
+          setError(
+            'You have already registered this number to get flood messages by phone call'
+          )
+        } else {
+          setError(errorMessage.desc)
+        }
       } else {
         dispatch(
           setProfile(
@@ -81,29 +87,35 @@ export default function AddLandlinePage() {
         <Link onClick={removeLandlineFromProfile} className="govuk-back-link">
           Back
         </Link>
-        <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 class="govuk-heading-l">
-          Enter a telephone number to get flood messages by phone call
-        </h2>
-        <div class="govuk-body">
-          <p>
-            We recommend using a landline or mobile number that can be called 24
-            hours a day.
-          </p>
-          <Input
-            name="UK landline or mobile telephone number"
-            inputType="text"
-            error={error}
-            onChange={(val) => setLandline(val)}
-            className="govuk-input govuk-input--width-20"
-          />
-          <Button
-            className="govuk-button"
-            text="Continue"
-            onClick={handleSubmit}
-          />
-          <br />
-        </div>
+        <main className="govuk-main-wrapper">
+          <div className="govuk-grid-row">
+            <div className="govuk-grid-column-two-thirds">
+              <ErrorSummary errorList={error === '' ? [] : [error]} />
+              <h2 class="govuk-heading-l">
+                Enter a telephone number to get flood messages by phone call
+              </h2>
+              <div class="govuk-body">
+                <p>
+                  We recommend using a landline or mobile number that can be
+                  called 24 hours a day.
+                </p>
+                <Input
+                  name="UK landline or mobile telephone number"
+                  inputType="text"
+                  error={error}
+                  onChange={(val) => setLandline(val)}
+                  className="govuk-input govuk-input--width-20"
+                />
+                <Button
+                  className="govuk-button"
+                  text="Continue"
+                  onClick={handleSubmit}
+                />
+                <br />
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
       <Footer />
     </>

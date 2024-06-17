@@ -31,14 +31,14 @@ async function getMobileValidate(
     firstName: 'John',
     lastName: 'Smith',
     emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
-    mobilePhones: ['07343454555', '07889668355'],
+    mobilePhones: ['07343454555', '07889668355', msisdn],
     homePhones: ['01475721535'],
     language: 'EN',
     additionals: [],
     unverified: {
       emails: [],
       mobilePhones: [],
-      homePhones: ['01475721535']
+      homePhones: []
     },
     pois: {
       address: 'Exeter, United Kingdom',

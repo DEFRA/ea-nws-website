@@ -3,9 +3,10 @@
 api/dist/
 api/node_modules
 api/node_modules
+api/**/*.js
 backend/node_modules
 backend/NWS-logs
-backend/package-lock.json
+frontend/NWS-logs
 frontend/build
 frontend/test/selenium-test/**/__pycache__
 frontend/**/*.pyc
@@ -15,3 +16,5 @@ npm-debug.log
 server/public/build
 lcov.info
 
+api/package-lock.json
+backend/package-lock.json

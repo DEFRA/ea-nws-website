@@ -45,7 +45,7 @@ export default function ValidateMobilePhone() {
       }
       const { errorMessage } = await backendCall(
         dataToSend,
-        'api/signup/contactpreferences/mobile/validate',
+        'api/add_contact/mobile/validate',
         navigate
       )
       if (errorMessage !== null) {
@@ -74,7 +74,7 @@ export default function ValidateMobilePhone() {
     const data = { authToken: session.authToken, msisdn: mobile }
     const { errorMessage } = await backendCall(
       data,
-      'api/signup/contactpreferences/mobile/add',
+      'api/add_contact/mobile/add',
       navigate
     )
     if (errorMessage !== null) {

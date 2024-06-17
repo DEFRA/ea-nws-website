@@ -2,6 +2,12 @@ import React from 'react'
 import Index from '../pages/Index'
 import ConfirmDeleteContactDetailsPage from '../pages/contact-details/ConfirmDeleteContactDetailsPage'
 import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
+import AddEmailPage from '../pages/contact-details/add-contact-email/AddEmailPage'
+import AddEmailValidatePage from '../pages/contact-details/add-contact-email/AddEmailValidatePage'
+import AddLandlinePage from '../pages/contact-details/add-contact-landline/AddLandlinePage'
+import AddLandlineValidatePage from '../pages/contact-details/add-contact-landline/AddLandlineValidatePage'
+import AddMobilePage from '../pages/contact-details/add-contact-mobile/AddMobilePage'
+import AddMobileValidatePage from '../pages/contact-details/add-contact-mobile/AddMobileValidatePage'
 import HomePage from '../pages/home/HomePage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
@@ -64,7 +70,7 @@ const signupRoutes = [
     component: <ValidateLandlinePhonePage />
   },
   {
-    path: '/signup/contactpreferences/landline/skipconfirm',
+    path: '/signup/contactpreferences/landline/skipconfirmation',
     component: <SkipConfirmLandlinePhonePage />
   },
   {
@@ -86,6 +92,21 @@ const contactRoutes = [
   {
     path: '/managecontacts/confirm-delete',
     component: <ConfirmDeleteContactDetailsPage />
+  },
+  { path: '/managecontacts/add-email', component: <AddEmailPage /> },
+  {
+    path: '/managecontacts/validate-email',
+    component: <AddEmailValidatePage />
+  },
+  { path: '/managecontacts/add-mobile', component: <AddMobilePage /> },
+  {
+    path: '/managecontacts/validate-mobile',
+    component: <AddMobileValidatePage />
+  },
+  { path: '/managecontacts/add-landline', component: <AddLandlinePage /> },
+  {
+    path: '/managecontacts/validate-landline',
+    component: <AddLandlineValidatePage />
   }
 ]
 

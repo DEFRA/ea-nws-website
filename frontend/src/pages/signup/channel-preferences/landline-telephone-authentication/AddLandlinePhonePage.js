@@ -28,6 +28,7 @@ export default function AddLandlinePhonePage() {
   )
   const [error, setError] = useState('')
   const session = useSelector((state) => state.session)
+  const authToken = useSelector((state) => state.session.authToken)
 
   const handleSubmit = async () => {
     const validationError = phoneValidation(homePhone, 'mobileAndLandline')
@@ -36,12 +37,11 @@ export default function AddLandlinePhonePage() {
     //add this in when working on the pages that allows a user to go back and update their number
     //at sign up flow - we dont want the number already validated being tried again
     if (validationError === '') {
-      const data = { authToken: session.authToken, homePhone }
+      const dataToSend = { msisdn: homePhone, authToken: authToken }
       const { errorMessage } = await backendCall(
-        data,
-        'api/signup/contactpreferences/landline/add'
+        dataToSend,
+        'api/add_contact/landline/add'
       )
-
       if (errorMessage !== null) {
         setError(errorMessage.desc)
       } else {

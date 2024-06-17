@@ -7,9 +7,9 @@ const server = new Hapi.Server({ port: 9000 })
 const signInHandlers = require('./handlers/signin/signinHandlers')
 const registerHandlers = require('./handlers/signup/registerHandlers')
 const updateProfileHandler = require('./handlers/updateProfile/updateProfileHandler')
-const mobileAuthenticationHandler = require('./handlers/signup/channel-preferences/mobile/mobileAuthenticationHandlers')
-const homePhoneAuthenticationHandlers = require('./handlers/signup/channel-preferences/homephoneAuthenticationHandlers/homephoneAuthenticationHandlers')
-
+const mobileAuthenticationHandler = require('./handlers/contact/mobile/mobileAuthenticationHandlers')
+const homePhoneAuthenticationHandlers = require('./handlers/contact/homephone/homephoneAuthenticationHandlers')
+const emailAuthenticationHandlers = require('./handlers/contact/email/emailAuthenticationHandlers')
 // define api
 const api = new OpenAPIBackend({
   definition: './openapi/index.yaml',
@@ -20,13 +20,17 @@ const api = new OpenAPIBackend({
     //mobile authentication
     getMobileStart: mobileAuthenticationHandler.getMobileStart,
     getMobileValidate: mobileAuthenticationHandler.getMobileValidate,
+    //email authentication
+    getEmailStart: emailAuthenticationHandlers.getEmailStart,
+    getEmailValidate: emailAuthenticationHandlers.getEmailValidate,
+    //homephone authentication
+    getHomephoneStart: homePhoneAuthenticationHandlers.getHomephoneStart,
+    getHomephoneValidate: homePhoneAuthenticationHandlers.getHomephoneValidate,
 
     //sign in routes
     getSignInStart: signInHandlers.getSigninStart,
     getSignInValidate: signInHandlers.getSigninValidate,
-    getUpdateProfile: updateProfileHandler.getUpdateProfile,
-    getHomephoneStart: homePhoneAuthenticationHandlers.getHomephoneStart,
-    getHomephoneValidate: homePhoneAuthenticationHandlers.getHomephoneValidate
+    getUpdateProfile: updateProfileHandler.getUpdateProfile
   }
 })
 

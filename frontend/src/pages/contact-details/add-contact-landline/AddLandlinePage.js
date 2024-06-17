@@ -41,7 +41,11 @@ export default function AddLandlinePage () {
       } else {
         dispatch(
           setProfile(
-            addUnverifiedContact(session.profile, 'homePhones', landline)
+            addUnverifiedContact(
+              session.profile,
+              'homePhones',
+              normalisedPhoneNumber
+            )
           )
         )
         navigate('/managecontacts/validate-landline')
@@ -59,7 +63,7 @@ export default function AddLandlinePage () {
     // the number from the users profile if so
     if (session && session.landline) {
       event.preventDefault()
-      const normalisedLandline = normalisePhoneNumber(session.landline)
+      const normalisedLandline = normalisePhoneNumber(landline)
       // remove landline from users profile
       const updatedProfile = removeUnverifiedContact(
         session.profile,

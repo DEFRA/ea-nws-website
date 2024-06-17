@@ -20,16 +20,31 @@ export default function ContactDetailsTable({
     }
   }
 
-  const handleConfirmLink = () => {
-    console.log('A')
-    if (contactType === 'email address') {
-      console.log('B')
-      navigate('/managecontacts/validate-email')
+  const UnconfirmedLink = () => {
+    if (contactType === 'email') {
+      return (
+        <>
+          <Link to="/managecontacts/validate-email" className="govuk-link">
+            Confirm
+          </Link>
+        </>
+      )
     } else if (contactType === 'mobile telephone number') {
-      navigate('/managecontacts/validate-mobile')
-    } else if (contactType === 'telephone number') {
-      navigate('/managecontacts/validate-landline')
+      return (
+        <>
+          <Link to="/managecontacts/validate-mobile" className="govuk-link">
+            Confirm
+          </Link>
+        </>
+      )
     }
+    return (
+      <>
+        <Link to="/managecontacts/validate-landline" className="govuk-link">
+          Confirm
+        </Link>
+      </>
+    )
   }
 
   return (
@@ -75,9 +90,7 @@ export default function ContactDetailsTable({
                   </strong>
                 </td>
                 <td className="govuk-table__cell">
-                  <Link onClick={handleConfirmLink} className="govuk-link">
-                    Confirm
-                  </Link>
+                  <UnconfirmedLink />
                 </td>
                 <td className="govuk-table__cell">
                   <Link

@@ -30,7 +30,11 @@ async function getEmailValidate(
     enabled: true,
     firstName: 'John',
     lastName: 'Smith',
-    emails: ['updated.matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
+    emails: [
+      'updated.matthew.pepper@gmail.com',
+      'perry.pepper@gmail.com',
+      email
+    ],
     mobilePhones: ['07343454590', '07889668367'],
     homePhones: ['01475721535'],
     language: 'EN',
@@ -38,7 +42,7 @@ async function getEmailValidate(
     unverified: {
       emails: [],
       mobilePhones: [],
-      homePhones: ['01475721535']
+      homePhones: []
     },
     pois: {
       address: 'Exeter, United Kingdom',

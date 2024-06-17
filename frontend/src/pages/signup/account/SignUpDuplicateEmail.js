@@ -12,7 +12,6 @@ export default function SignUpPage () {
   
   const navigate = useNavigate()
   const location = useLocation()
-  const [setEmail] = useState('')
   const [error, setError] = useState('')
   const email = location.state.email
 
@@ -54,7 +53,7 @@ export default function SignUpPage () {
             onClick={handleSubmit}
           />
           &nbsp; &nbsp;
-          <Link to='/signup' className='govuk-link'>
+          <Link to='/signup' style={{display: 'inline-block',padding: '8px 10px 7px'}} className='govuk-link'>
             Go back and enter a different email address
           </Link>
         </div>

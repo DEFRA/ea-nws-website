@@ -43,6 +43,19 @@ export default function SignInValidatePage() {
     }
   }
 
+  const getNewCode = async (event) => {
+    event.preventDefault()
+    const data = { email: location.state.email }
+    const { errorMessage } = await backendCall(
+      data,
+      'api/signInStart',
+      navigate
+    )
+    if (errorMessage !== null) {
+      setError(errorMessage.desc)
+    }
+  }
+
   return (
     <>
       <Header />
@@ -66,6 +79,10 @@ export default function SignInValidatePage() {
             text="Continue"
             onClick={handleSubmit}
           />
+          <br />
+          <Link onClick={getNewCode} className="govuk-link">
+            Get a new code
+          </Link>
         </div>
       </div>
       <Footer />

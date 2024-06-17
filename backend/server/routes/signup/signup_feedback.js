@@ -8,8 +8,8 @@ module.exports = [
           return h.response({ message: 'Bad request' }).code(400)
         }
 
-        request.log(['info'], request.payload)
-
+        request.log('info', ['***FEEDBACK***',request.payload])
+      
         return h.response({ status: 200 }).code(200)
       } catch (error) {
         console.error('Error:', error)

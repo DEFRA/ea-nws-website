@@ -19,14 +19,14 @@ export default function FeedbackPage() {
   const [textError, setTextError] = useState('')
 
   const feedbackOptions = [
-    { value: 'Very Satisfied', label: 'Very Satisfied' },
-    { value: 'Satisfied', label: 'Satisfied' },
+    {  value: '1 Very Satisfied', label: 'Very Satisfied' },
+    {  value: '2 Satisfied', label: 'Satisfied' },
     {
-      value: 'Neither satisfied or dissatisfied',
+      value: '3 Neither satisfied or dissatisfied',
       label: 'Neither satisfied or dissatisfied'
     },
-    { value: 'Dissatisfied', label: 'Dissatisfied' },
-    { value: 'Very Dissatisfied', label: 'Very Dissatisfied' }
+    {  value: '4 Dissatisfied', label: 'Dissatisfied' },
+    {  value: '5 Very Dissatisfied', label: 'Very Dissatisfied' }
   ]
 
   const handleSubmit = async () => {
@@ -66,13 +66,8 @@ export default function FeedbackPage() {
 
   const setFeedback = (event) => {
     const { value } = event.target
-    setFeedbackPreference((pref) => {
-      if (pref.includes(value)) {
-        return pref.filter((preference) => preference !== value)
-      } else {
-        return [...pref, value]
-      }
-    })
+    setFeedbackPreference(value) 
+    
   }
 
   return (
@@ -114,7 +109,7 @@ export default function FeedbackPage() {
               <div className="govuk-radios" data-module="govuk-radios">
                 {feedbackOptions.map((option) => (
                   <CheckboxRadios
-                    key={option.value}
+                    id={option.value}
                     label={option.label}
                     value={option.value}
                     checked={feedbackPreference.includes(option.value)}

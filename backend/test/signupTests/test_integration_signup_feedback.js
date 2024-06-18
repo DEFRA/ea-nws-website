@@ -37,4 +37,30 @@ lab.experiment('Integration tests', () => {
     const response = await server.inject(options)
     Code.expect(response.statusCode).to.equal(400)
   })
+
+  lab.test('POST / route with text not entered', async () => {
+    const options = {
+      method: 'POST',
+      url: '/api/signup/feedback',
+      payload: {
+        feedbackPreference: { preference: 'Satisfied' },
+        feedbackText: ''
+      }
+    }
+    const response = await server.inject(options)
+    Code.expect(response.statusCode).to.equal(400)
+  })
+
+  lab.test('POST / route with preference not selected', async () => {
+    const options = {
+      method: 'POST',
+      url: '/api/signup/feedback',
+      payload: {
+        feedbackPreference: null,
+        feedbackText: 'test'
+      }
+    }
+    const response = await server.inject(options)
+    Code.expect(response.statusCode).to.equal(400)
+  })
 })

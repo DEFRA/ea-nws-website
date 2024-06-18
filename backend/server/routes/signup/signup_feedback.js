@@ -8,6 +8,12 @@ module.exports = [
           return h.response({ message: 'Bad request' }).code(400)
         }
 
+        const { feedbackPreference, feedbackText } = request.payload
+
+        if(feedbackPreference === null || feedbackText === ''){
+          return h.response({ message: 'Bad request' }).code(400)
+        }
+
         request.log('info', ['***FEEDBACK***',request.payload])
       
         return h.response({ status: 200 }).code(200)

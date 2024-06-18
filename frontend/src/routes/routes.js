@@ -20,6 +20,7 @@ import ValidateLandlinePhonePage from '../pages/signup/channel-preferences/landl
 import AddMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/AddMobilePhonePage'
 import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/SkipConfirmMobilePhonePage'
 import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
+import CheckYourAnswersPage from '../pages/signup/review/CheckYourAnswersPage'
 import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
 
@@ -75,6 +76,10 @@ const signupRoutes = [
   {
     path: '/declaration',
     component: <DeclarationOfAgreementPage />
+  },
+  {
+    path: '/signup/review',
+    component: <CheckYourAnswersPage />
   }
 ]
 

@@ -11,14 +11,46 @@ import {
   setRegistrations
 } from '../redux/userSlice'
 
-export default function IndexPage () {
+export default function IndexPage() {
   const dispatch = useDispatch()
   const [mockSessionActive, setmockSessionActive] = useState(false)
 
-  function mockSession () {
+  function mockSession() {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
-      const registrations = { partner: '4', name: 'NWS England' }
+      const registrations = {
+        partner: {
+          id: '4',
+          name: 'NWS England',
+          description: 'We work to create better places for people and...',
+          longName: 'Environment Agency - England',
+          logoUrl: 'logo.png',
+          backgroundUrl: 'http://assets.gov.uk',
+          urlSlug: 'england'
+        },
+        registrationDate: '1683741990',
+        params: {
+          channelVoiceEnabled: true,
+          channelSmsEnabled: true,
+          channelEmailEnabled: true,
+          partnerCanView: false,
+          partnerCanEdit: false,
+          categories: [
+            {
+              domain: 'NFWS',
+              code: 'FLOOD_ALERT'
+            },
+            {
+              domain: 'NFWS',
+              code: 'FLOOD_WARNING'
+            },
+            {
+              domain: 'NFWS',
+              code: 'SEVERE_FLOOD_WARNING'
+            }
+          ]
+        }
+      }
       const profile = {
         id: '',
         enabled: true,

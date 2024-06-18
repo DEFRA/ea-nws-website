@@ -14,6 +14,7 @@ import {
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
+import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 export default function SignInValidatePage() {
   const location = useLocation()
   const [error, setError] = useState('')
@@ -21,9 +22,13 @@ export default function SignInValidatePage() {
   const navigate = useNavigate()
   const [code, setCode] = useState('')
   const signinToken = location.state.signinToken
+  var [codeResent, setCodeResent] = useState('')
+  const dateTime = new Date();
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+    codeResent = false
+    setCodeResent(codeResent)
     const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
@@ -45,14 +50,22 @@ export default function SignInValidatePage() {
 
   const getNewCode = async (event) => {
     event.preventDefault()
+    codeResent = false
+    setCodeResent(codeResent)
     const data = { email: location.state.email }
     const { errorMessage } = await backendCall(
       data,
       'api/signInStart',
       navigate
     )
+    codeResent = true
+    setCodeResent(codeResent)
+
     if (errorMessage !== null) {
       setError(errorMessage.desc)
+
+      codeResent = false
+      setCodeResent(codeResent)
     }
   }
 
@@ -60,6 +73,15 @@ export default function SignInValidatePage() {
     <>
       <Header />
       <div class="govuk-width-container">
+      {codeResent
+          ? (
+            <NotificationBanner
+              className='govuk-notification-banner govuk-notification-banner--success'
+              title='Success'
+              text={'New code sent at ' + dateTime.toLocaleTimeString()}
+            />
+            )
+          : null}
         <Link to="/signin" className="govuk-back-link">
           Back
         </Link>

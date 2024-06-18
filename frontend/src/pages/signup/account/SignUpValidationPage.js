@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
@@ -11,6 +11,7 @@ import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 import { setAuthToken } from '../../../redux/userSlice'
 import { backendCall } from '../../../services/BackendService'
 import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
+import NotificationBanner from '../../../gov-uk-components/NotificationBanner'
 
 export default function SignUpValidationPage() {
   const navigate = useNavigate()
@@ -19,9 +20,14 @@ export default function SignUpValidationPage() {
   const loginEmail = useSelector((state) => state.session.profile.emails[0])
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
+  var [codeResent, setCodeResent] = useState('')
+  const dateTime = new Date();
 
   const handleSubmit = async () => {
     const validationError = authCodeValidation(code)
+    codeResent = false
+    setCodeResent(codeResent)
+    console.log("code sent", codeResent)
     setError(validationError)
     if (validationError === '') {
       const dataToSend = {
@@ -46,14 +52,21 @@ export default function SignUpValidationPage() {
 
   const getNewCode = async (event) => {
     event.preventDefault()
+    codeResent = false
+    setCodeResent(codeResent)
     const data = { email: loginEmail }
     const { errorMessage } = await backendCall(
       data,
       'api/signupStart',
       navigate
     )
+    codeResent = true
+    setCodeResent(codeResent)
     if (errorMessage !== null) {
       setError(errorMessage.desc)
+      
+      codeResent = false
+      setCodeResent(codeResent)
     }
   }
 
@@ -62,6 +75,15 @@ export default function SignUpValidationPage() {
       <Header />
       <div className="govuk-width-container">
         <PhaseBanner />
+        {codeResent
+          ? (
+            <NotificationBanner
+              className='govuk-notification-banner govuk-notification-banner--success'
+              title='Success'
+              text={'New code sent at ' + dateTime.toLocaleTimeString()}
+            />
+            )
+          : null}
         <Link to="/signup" className="govuk-back-link">
           Back
         </Link>

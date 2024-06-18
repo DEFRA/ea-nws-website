@@ -31,13 +31,7 @@ export default function AddEmailPage() {
         navigate
       )
       if (errorMessage !== null) {
-        if (errorMessage.desc === 'email already registered') {
-          setError(
-            'You have already registered this email address to get flood messages by email'
-          )
-        } else {
-          setError(errorMessage.desc)
-        }
+        setError(errorMessage.desc)
       } else {
         dispatch(
           setProfile(addUnverifiedContact(session.profile, 'email', email))

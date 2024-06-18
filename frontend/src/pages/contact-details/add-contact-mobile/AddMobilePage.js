@@ -36,13 +36,7 @@ export default function AddMobilePage() {
         navigate
       )
       if (errorMessage !== null) {
-        if (errorMessage.desc === 'mobile already registered') {
-          setError(
-            'You have already registered this mobile number to get flood messages by text'
-          )
-        } else {
-          setError(errorMessage.desc)
-        }
+        setError(errorMessage.desc)
       } else {
         dispatch(
           setProfile(addUnverifiedContact(session.profile, 'mobile', mobile))

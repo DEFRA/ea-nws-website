@@ -37,13 +37,7 @@ export default function AddLandlinePage() {
         navigate
       )
       if (errorMessage !== null) {
-        if (errorMessage.desc === 'phone already registered') {
-          setError(
-            'You have already registered this number to get flood messages by phone call'
-          )
-        } else {
-          setError(errorMessage.desc)
-        }
+        setError(errorMessage.desc)
       } else {
         dispatch(
           setProfile(

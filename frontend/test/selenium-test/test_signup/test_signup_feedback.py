@@ -67,10 +67,6 @@ def test_addFeedback_Valid(get_browser):
     browser.execute_script("arguments[0].click();", continue_button)
     time.sleep(2)
     assert browser.current_url == nextPage
-    
-
-
-    
 
 
 

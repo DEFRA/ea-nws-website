@@ -19,14 +19,14 @@ export default function FeedbackPage() {
   const [textError, setTextError] = useState('')
 
   const feedbackOptions = [
-    {  value: '1 Very Satisfied', label: 'Very Satisfied' },
-    {  value: '2 Satisfied', label: 'Satisfied' },
+    {  value: 'Very Satisfied', label: 'Very Satisfied' },
+    {  value: 'Satisfied', label: 'Satisfied' },
     {
-      value: '3 Neither satisfied or dissatisfied',
+      value: 'Neither satisfied or dissatisfied',
       label: 'Neither satisfied or dissatisfied'
     },
-    {  value: '4 Dissatisfied', label: 'Dissatisfied' },
-    {  value: '5 Very Dissatisfied', label: 'Very Dissatisfied' }
+    {  value: 'Dissatisfied', label: 'Dissatisfied' },
+    {  value: 'Very Dissatisfied', label: 'Very Dissatisfied' }
   ]
 
   const handleSubmit = async () => {
@@ -65,9 +65,7 @@ export default function FeedbackPage() {
   }
 
   const setFeedback = (event) => {
-    const { value } = event.target
-    setFeedbackPreference(value) 
-    
+    setFeedbackPreference(event.target.id) 
   }
 
   return (
@@ -110,9 +108,9 @@ export default function FeedbackPage() {
                 {feedbackOptions.map((option) => (
                   <CheckboxRadios
                     id={option.value}
+                    name="feedbackRadios"
                     label={option.label}
-                    value={option.value}
-                    checked={feedbackPreference.includes(option.value)}
+                    type='radio' 
                     onChange={setFeedback}
                   />
                 ))}

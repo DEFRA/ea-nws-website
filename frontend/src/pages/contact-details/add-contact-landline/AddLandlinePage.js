@@ -41,11 +41,7 @@ export default function AddLandlinePage () {
       } else {
         dispatch(
           setProfile(
-            addUnverifiedContact(
-              session.profile,
-              'homePhones',
-              normalisedPhoneNumber
-            )
+            addUnverifiedContact(session.profile, 'homePhones', landline)
           )
         )
         navigate('/managecontacts/validate-landline')

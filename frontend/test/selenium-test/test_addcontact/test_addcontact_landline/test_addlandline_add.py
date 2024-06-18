@@ -44,6 +44,13 @@ def test_addlandlinestart_incorrectnumber(get_browser):
     assert "Enter a UK landline or mobile telephone number, like 01632 960 001 or 07700 900 982" in browser.page_source
     assert browser.current_url == current_page
 
+def test_addlandlinestart_duplicateNumber(get_browser):
+    browser = setup_addlandline_test(get_browser)   
+    browser.find_element(By.NAME, "UK landline or mobile telephone number").send_keys("00000000000")
+    browser.find_element(By.CLASS_NAME, "govuk-button").click()
+    assert "You have already registered this number to get flood messages by phone call" in browser.page_source
+    assert browser.current_url == current_page
+
 def test_addlandlinestart_validNumber(get_browser):
     browser = setup_addlandline_test(get_browser)  
     browser.find_element(By.NAME, "UK landline or mobile telephone number").send_keys("01632960001")

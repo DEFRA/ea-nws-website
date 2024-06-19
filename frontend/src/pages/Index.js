@@ -32,11 +32,7 @@ export default function IndexPage () {
         unverified: {
           emails: [],
           mobilePhones: [],
-          homePhones: [
-            {
-              address: '+336********'
-            }
-          ]
+          homePhones: []
         },
         pois: [
           {

@@ -2,6 +2,12 @@ import React from 'react'
 import Index from '../pages/Index'
 import ConfirmDeleteContactDetailsPage from '../pages/contact-details/ConfirmDeleteContactDetailsPage'
 import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
+import AddEmailPage from '../pages/contact-details/add-contact-email/AddEmailPage'
+import AddEmailValidatePage from '../pages/contact-details/add-contact-email/AddEmailValidatePage'
+import AddLandlinePage from '../pages/contact-details/add-contact-landline/AddLandlinePage'
+import AddLandlineValidatePage from '../pages/contact-details/add-contact-landline/AddLandlineValidatePage'
+import AddMobilePage from '../pages/contact-details/add-contact-mobile/AddMobilePage'
+import AddMobileValidatePage from '../pages/contact-details/add-contact-mobile/AddMobileValidatePage'
 import HomePage from '../pages/home/HomePage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
@@ -10,6 +16,7 @@ import SignOutAutomatically from '../pages/signOut/SignOutAutomatically'
 import SignOutManually from '../pages/signOut/SignOutManually'
 import SignUpPage from '../pages/signup/account/SignUpPage'
 import SignUpValidationPage from '../pages/signup/account/SignUpValidationPage'
+import SignUpDuplicateEmailPage from '../pages/signup/account/SignUpDuplicateEmail'
 import WarningContactsPreferencePage from '../pages/signup/channel-preferences/WarningContactsPreferencePage'
 import AddLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/AddLandlinePhonePage'
 import SkipConfirmLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/SkipConfirmLandlinePhonePage'
@@ -73,12 +80,16 @@ const signupRoutes = [
     component: <ValidateLandlinePhonePage />
   },
   {
-    path: '/signup/contactpreferences/landline/skipconfirm',
+    path: '/signup/contactpreferences/landline/skipconfirmation',
     component: <SkipConfirmLandlinePhonePage />
   },
   {
     path: '/declaration',
     component: <DeclarationOfAgreementPage />
+  },
+  {
+    path: '/signup/duplicate',
+    component: < SignUpDuplicateEmailPage/>
   }
 ]
 
@@ -91,6 +102,21 @@ const contactRoutes = [
   {
     path: '/managecontacts/confirm-delete',
     component: <ConfirmDeleteContactDetailsPage />
+  },
+  { path: '/managecontacts/add-email', component: <AddEmailPage /> },
+  {
+    path: '/managecontacts/validate-email',
+    component: <AddEmailValidatePage />
+  },
+  { path: '/managecontacts/add-mobile', component: <AddMobilePage /> },
+  {
+    path: '/managecontacts/validate-mobile',
+    component: <AddMobileValidatePage />
+  },
+  { path: '/managecontacts/add-landline', component: <AddLandlinePage /> },
+  {
+    path: '/managecontacts/validate-landline',
+    component: <AddLandlineValidatePage />
   }
 ]
 

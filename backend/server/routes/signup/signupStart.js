@@ -9,13 +9,15 @@ module.exports = [
     path: '/api/signupStart',
     handler: async (request, h) => {
       try {
+        const { email } = request.payload
+        const errorValidation = emailValidation(email)
+        const data = {email}
         if (request.payload === null) {
           return h.response({ message: 'Bad request' }).code(400)
         }
-        const { email } = request.payload
-        const errorValidation = emailValidation(email)
+
         if (errorValidation === '') {
-          const response = await apiCall({ email }, 'member/registerStart')
+          const response = await apiCall(data, 'member/registerStart')
           return h.response(response)
         } else {
           return h.response({ status: 500, errorMessage: errorValidation })

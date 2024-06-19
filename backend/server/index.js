@@ -22,7 +22,7 @@ async function createServer() {
   await server.register(require('./plugins/health'))
   await server.register(require('blipp'))
 
-  server.log(['info'], 'server running')
+  server.log(['debug'], 'server running')
   return server
 }
 

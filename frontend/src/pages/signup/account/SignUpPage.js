@@ -28,8 +28,17 @@ export default function SignUpPage () {
         'api/signupStart',
         navigate
       )
+
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        if(errorMessage.desc === 'email already registered'){
+          navigate('/signup/duplicate', {
+            state:{ email }
+          })
+        }
+        else{
+          setError(errorMessage.desc)
+        }
+        
       } else {
         // start empty profile for user
         const profile = {

@@ -1,11 +1,12 @@
 import React from 'react'
 
-export default function CheckboxRadios ({ label, name, onChange }) {
+export default function CheckboxRadios ({ label, value, name, onChange }) {
   return (
     <div className='govuk-radios__item'>
       <input
         className='govuk-radios__input'
         type='radio'
+        value={value}
         name={name}
         onChange={onChange}
         id={label}

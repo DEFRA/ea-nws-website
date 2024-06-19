@@ -65,7 +65,7 @@ export default function FeedbackPage() {
   }
 
   const setFeedback = (event) => {
-    setFeedbackPreference(event.target.id) 
+    setFeedbackPreference(event.target.value) 
   }
 
   return (
@@ -111,6 +111,7 @@ export default function FeedbackPage() {
                     name="feedbackRadios"
                     label={option.label}
                     type='radio' 
+                    value={option.value}
                     onChange={setFeedback}
                   />
                 ))}

@@ -84,7 +84,7 @@ const signupRoutes = [
   },
   {
     path: '/signup/duplicate',
-    component: < SignUpDuplicateEmailPage/>
+    component: <SignUpDuplicateEmailPage />
   }
 ]
 

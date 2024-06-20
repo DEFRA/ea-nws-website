@@ -10,12 +10,12 @@ module.exports = [
 
         const { feedbackPreference, feedbackText } = request.payload
 
-        if(feedbackPreference === null || feedbackText === ''){
+        if (feedbackPreference === null || feedbackText === '') {
           return h.response({ message: 'Bad request' }).code(400)
         }
 
-        request.log('info', ['***FEEDBACK***',request.payload])
-      
+        request.log('info', ['***FEEDBACK***', request.payload])
+
         return h.response({ status: 200 }).code(200)
       } catch (error) {
         console.error('Error:', error)

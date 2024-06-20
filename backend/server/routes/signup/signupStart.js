@@ -11,7 +11,7 @@ module.exports = [
       try {
         const { email } = request.payload
         const errorValidation = emailValidation(email)
-        const data = {email}
+        const data = { email }
         if (request.payload === null) {
           return h.response({ message: 'Bad request' }).code(400)
         }

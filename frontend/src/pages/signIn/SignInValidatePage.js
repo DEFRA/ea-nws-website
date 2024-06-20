@@ -81,7 +81,7 @@ export default function SignInValidatePage () {
             onClick={handleSubmit}
           />
           <br />
-          <Link onClick={getNewCode} className="govuk-link">
+          <Link onClick={getNewCode} className='govuk-link'>
             Get a new code
           </Link>
         </div>

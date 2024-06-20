@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function AccountDetailsTable({ profile }) {
+export default function AccountDetailsTable ({ profile }) {
   return (
     <>
       <h3 className='govuk-heading-m'>Your Account</h3>

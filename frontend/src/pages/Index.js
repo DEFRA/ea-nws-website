@@ -11,11 +11,11 @@ import {
   setRegistrations
 } from '../redux/userSlice'
 
-export default function IndexPage() {
+export default function IndexPage () {
   const dispatch = useDispatch()
   const [mockSessionActive, setmockSessionActive] = useState(false)
 
-  function mockSession() {
+  function mockSession () {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
       const registrations = {
@@ -136,6 +136,11 @@ export default function IndexPage() {
                 <li>
                   <Link to='/managecontacts' className='govuk-link'>
                     Manage Contacts page
+                  </Link>
+                </li>
+                <li>
+                  <Link to='/signup/review' className='govuk-link'>
+                    Sign up review
                   </Link>
                 </li>
               </ul>

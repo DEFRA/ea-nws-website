@@ -1,21 +1,21 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-export default function ContactReviewTable({ profile }) {
+export default function ContactReviewTable ({ profile }) {
   const navigate = useNavigate()
   const ShowEmailAddress = () => {
     if (profile.emails[0]) {
       return (
         <>
           <tr className='govuk-table__row'>
-            <td scope='row' class='govuk-table__header  govuk-!-width-one-half'>
+            <td className='govuk-table__header  govuk-!-width-one-half'>
               By email
             </td>
             <td className='govuk-table__cell govuk-!-width-full'>
               {profile.emails[0]}
             </td>
-            <td className='govuk-table__cell'></td>
-            <td className='govuk-table__cell'></td>
+            <td className='govuk-table__cell' />
+            <td className='govuk-table__cell' />
             <td className='govuk-table__cell'>
               <Link
                 to='/managecontacts/confirm-delete'
@@ -35,7 +35,7 @@ export default function ContactReviewTable({ profile }) {
       return (
         <>
           <tr className='govuk-table__row'>
-            <td scope='row' class='govuk-table__header  govuk-!-width-one-half'>
+            <td className='govuk-table__header  govuk-!-width-one-half'>
               By email
             </td>
             <td className='govuk-table__cell govuk-!-width-full'>
@@ -68,13 +68,13 @@ export default function ContactReviewTable({ profile }) {
     return (
       <>
         <tr className='govuk-table__row'>
-          <td scope='row' class='govuk-table__header  govuk-!-width-one-half'>
+          <td className='govuk-table__header  govuk-!-width-one-half'>
             By email
           </td>
-          <td className='govuk-table__cell govuk-!-width-full'></td>
-          <td className='govuk-table__cell'></td>
-          <td className='govuk-table__cell'></td>
-          <td className='govuk-table__cell'></td>
+          <td className='govuk-table__cell govuk-!-width-full' />
+          <td className='govuk-table__cell' />
+          <td className='govuk-table__cell' />
+          <td className='govuk-table__cell' />
         </tr>
       </>
     )
@@ -84,14 +84,14 @@ export default function ContactReviewTable({ profile }) {
       return (
         <>
           <tr className='govuk-table__row'>
-            <td scope='row' class='govuk-table__header  govuk-!-width-one-half'>
+            <td className='govuk-table__header  govuk-!-width-one-half'>
               By text
             </td>
             <td className='govuk-table__cell govuk-!-width-full'>
               {profile.mobilePhones[0]}
             </td>
-            <td className='govuk-table__cell'></td>
-            <td className='govuk-table__cell'></td>
+            <td className='govuk-table__cell' />
+            <td className='govuk-table__cell' />
             <td className='govuk-table__cell'>
               <Link
                 to='/managecontacts/confirm-delete'
@@ -111,7 +111,7 @@ export default function ContactReviewTable({ profile }) {
       return (
         <>
           <tr className='govuk-table__row'>
-            <td scope='row' class='govuk-table__header  govuk-!-width-one-half'>
+            <td className='govuk-table__header  govuk-!-width-one-half'>
               By text
             </td>
             <td className='govuk-table__cell govuk-!-width-full'>
@@ -144,13 +144,13 @@ export default function ContactReviewTable({ profile }) {
     return (
       <>
         <tr className='govuk-table__row'>
-          <td scope='row' class='govuk-table__header  govuk-!-width-one-half'>
+          <td className='govuk-table__header  govuk-!-width-one-half'>
             By text
           </td>
-          <td className='govuk-table__cell govuk-!-width-full'></td>
-          <td className='govuk-table__cell'></td>
-          <td className='govuk-table__cell'></td>
-          <td className='govuk-table__cell'></td>
+          <td className='govuk-table__cell govuk-!-width-full' />
+          <td className='govuk-table__cell' />
+          <td className='govuk-table__cell' />
+          <td className='govuk-table__cell' />
         </tr>
       </>
     )
@@ -161,14 +161,14 @@ export default function ContactReviewTable({ profile }) {
       return (
         <>
           <tr className='govuk-table__row'>
-            <td scope='row' class='govuk-table__header  govuk-!-width-one-half'>
+            <td className='govuk-table__header  govuk-!-width-one-half'>
               By phone call
             </td>
             <td className='govuk-table__cell govuk-!-width-full'>
               {profile.homePhones[0]}
             </td>
-            <td className='govuk-table__cell'></td>
-            <td className='govuk-table__cell'></td>
+            <td className='govuk-table__cell' />
+            <td className='govuk-table__cell' />
             <td className='govuk-table__cell'>
               <Link
                 to='/managecontacts/confirm-delete'
@@ -188,7 +188,7 @@ export default function ContactReviewTable({ profile }) {
       return (
         <>
           <tr className='govuk-table__row'>
-            <td scope='row' class='govuk-table__header  govuk-!-width-one-half'>
+            <td className='govuk-table__header  govuk-!-width-one-half'>
               By phone call
             </td>
             <td className='govuk-table__cell govuk-!-width-full'>
@@ -224,13 +224,13 @@ export default function ContactReviewTable({ profile }) {
     return (
       <>
         <tr className='govuk-table__row'>
-          <td scope='row' class='govuk-table__header  govuk-!-width-one-half'>
+          <td className='govuk-table__header  govuk-!-width-one-half'>
             By phone call
           </td>
-          <td className='govuk-table__cell govuk-!-width-full'></td>
-          <td className='govuk-table__cell'></td>
-          <td className='govuk-table__cell'></td>
-          <td className='govuk-table__cell'></td>
+          <td className='govuk-table__cell govuk-!-width-full' />
+          <td className='govuk-table__cell' />
+          <td className='govuk-table__cell' />
+          <td className='govuk-table__cell' />
         </tr>
       </>
     )

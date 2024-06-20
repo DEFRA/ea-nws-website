@@ -8,7 +8,7 @@ import AccountDetailsTable from './AccountDetailsTable'
 import ContactReviewTable from './ContactReviewTable'
 import FloodMessageReviewTable from './FloodMessageReviewTable'
 import LocationReviewTable from './LocationReviewTable'
-export default function CheckYourAnswersPage() {
+export default function CheckYourAnswersPage () {
   const session = useSelector((state) => state.session)
   const profile = session.profile
   const registration = session.registrations
@@ -21,8 +21,8 @@ export default function CheckYourAnswersPage() {
           Back to Home
         </Link>
         <main className='govuk-main-wrapper'>
-          <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-row '>
+            <div className='govuk-grid-column-three-quarters'>
               <h2 className='govuk-heading-l'>Check your answers</h2>
               <LocationReviewTable locations={profile.pois} />
               <FloodMessageReviewTable registration={registration} />

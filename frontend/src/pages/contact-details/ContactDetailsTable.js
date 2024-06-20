@@ -2,7 +2,7 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
 
-export default function ContactDetailsTable({
+export default function ContactDetailsTable ({
   contacts,
   contactTitle,
   contactType,

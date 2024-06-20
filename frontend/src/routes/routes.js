@@ -13,10 +13,9 @@ import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
 import SignBackIn from '../pages/signOut/SignBackIn'
 import SignOutAutomatically from '../pages/signOut/SignOutAutomatically'
-import SignOutManually from '../pages/signOut/SignOutManually'
+import SignUpDuplicateEmailPage from '../pages/signup/account/SignUpDuplicateEmail'
 import SignUpPage from '../pages/signup/account/SignUpPage'
 import SignUpValidationPage from '../pages/signup/account/SignUpValidationPage'
-import SignUpDuplicateEmailPage from '../pages/signup/account/SignUpDuplicateEmail'
 import WarningContactsPreferencePage from '../pages/signup/channel-preferences/WarningContactsPreferencePage'
 import AddLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/AddLandlinePhonePage'
 import SkipConfirmLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/SkipConfirmLandlinePhonePage'
@@ -41,7 +40,6 @@ const signinRoutes = [
 
 // sign out routes
 const signOutRoutes = [
-  { path: '/signout', component: <SignOutManually /> },
   { path: '/signout-auto', component: <SignOutAutomatically /> }
 ]
 
@@ -89,7 +87,7 @@ const signupRoutes = [
   },
   {
     path: '/signup/duplicate',
-    component: < SignUpDuplicateEmailPage/>
+    component: <SignUpDuplicateEmailPage />
   }
 ]
 

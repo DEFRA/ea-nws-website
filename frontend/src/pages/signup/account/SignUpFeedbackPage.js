@@ -51,7 +51,7 @@ export default function FeedbackPage () {
         feedbackText,
         optionalFeedbackText
       }
-      const { data, errorMessage } = await backendCall(
+      const { errorMessage } = await backendCall(
         dataToRecord,
         'api/signup/feedback',
         navigate
@@ -107,6 +107,7 @@ export default function FeedbackPage () {
               <div className='govuk-radios' data-module='govuk-radios'>
                 {feedbackOptions.map((option) => (
                   <CheckboxRadios
+                    key={option.value}
                     id={option.value}
                     name='feedbackRadios'
                     label={option.label}

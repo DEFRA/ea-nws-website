@@ -1,5 +1,6 @@
 const joi = require('@hapi/joi')
 const envs = ['dev', 'test', 'prod']
+const getSecretKeyValue = require('./services/SecretsManager')
 
 // Define config schema
 const schema = joi.object().keys({
@@ -10,10 +11,14 @@ const schema = joi.object().keys({
     .default(envs[0])
 })
 
+// Get variables from AWS
+const port = await getSecretKeyValue("nws/website", "backendPort")
+const env = await getSecretKeyValue("nws/website", "environment")
+
 // Build config
 const config = {
-  port: process.env.PORT,
-  env: process.env.NODE_ENV
+  port: port || process.env.PORT,
+  env: env || process.env.NODE_ENV
 }
 
 // Validate config

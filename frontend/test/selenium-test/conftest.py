@@ -1,5 +1,6 @@
 import pytest
 from selenium import webdriver
+from selenium.webdriver import FirefoxOptions
 from selenium.webdriver.common.by import By
 import subprocess
 import time
@@ -10,7 +11,9 @@ def get_browser():
     # path to geckodriver so you can access firefox
     geckodriver_path = "/snap/bin/geckodriver"
     driver_service = webdriver.FirefoxService(executable_path=geckodriver_path)
-    browser = webdriver.Firefox(service=driver_service)    
+    opts = FirefoxOptions()
+    opts.add_argument("--headless")
+    browser = webdriver.Firefox(service=driver_service, options=opts)    
     yield browser
     browser.quit()
 

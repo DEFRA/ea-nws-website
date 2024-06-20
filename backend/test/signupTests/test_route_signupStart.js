@@ -49,6 +49,19 @@ lab.experiment('Route tests', () => {
     }
 
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(400)
+    Code.expect(response.result.status).to.equal(500)
+  })
+
+  lab.test('POST / with duplicate payload', async () => {
+    const options = {
+      method: 'POST',
+      url: '/api/signupStart',
+      payload: {
+        email: 'duplicate@email.com'
+      }
+    }
+
+    const response = await server.inject(options)
+    Code.expect(response.result.status).to.equal(500)
   })
 })

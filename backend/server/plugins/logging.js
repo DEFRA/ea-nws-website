@@ -15,7 +15,7 @@ const streams = [
   { level: 'info', stream: createSonicBoom(`${logdir}/info.log`) },
   { level: 'warn', stream: createSonicBoom(`${logdir}/warn.log`) },
   { level: 'error', stream: createSonicBoom(`${logdir}/error.log`) },
-  { level: 'fatal', stream: createSonicBoom(`${logdir}/fatal.log`) },
+  { level: 'fatal', stream: createSonicBoom(`${logdir}/fatal.log`) }
 ]
 
 const logger = pino(

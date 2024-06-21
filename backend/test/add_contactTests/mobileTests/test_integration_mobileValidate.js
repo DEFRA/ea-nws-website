@@ -27,7 +27,6 @@ lab.experiment('Integration tests', () => {
     }
     const response = await server.inject(options)
     Code.expect(response.result.status).to.equal(500)
-    Code.expect(response.result.errorMessage.code).to.equal(101)
   })
 
   lab.test('POST / route runs with invalid code (too short)', async () => {

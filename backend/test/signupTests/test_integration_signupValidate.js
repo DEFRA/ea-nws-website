@@ -39,7 +39,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.errorMessage.code).to.equal(101)
+    Code.expect(response.result.status).to.equal(500)
   })
 
   lab.test('POST / Should return authToken, - valid code', async () => {

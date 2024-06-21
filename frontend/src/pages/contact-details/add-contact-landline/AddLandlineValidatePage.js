@@ -1,24 +1,26 @@
-import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ValidateLandlineLayout from '../../../common-layouts/landline/ValidateLandlineLayout'
-export default function AddLandlineValidatePage () {
+export default function AddLandlineValidatePage() {
   const navigate = useNavigate()
-  const NavigateToNextPage = useCallback(() => 
-    navigate('/managecontacts')
-  )
-  const SkipValidation = useCallback((homePhone) => 
+
+  const NavigateToNextPage = () => navigate('/managecontacts')
+  const SkipValidation = (homePhone) => {
     navigate('/managecontacts', {
       state: {
         unconfirmedtype: 'homePhone',
         unconfirmedvalue: homePhone
       }
     })
-  )
-  const DifferentHomePhone = useCallback(() => 
+  }
+  const DifferentHomephone = () => {
     navigate('/managecontacts/add-landline')
-  )
+  }
 
   return (
-    <ValidateLandlineLayout NavigateToNextPage={NavigateToNextPage} SkipValidation={SkipValidation} DifferentHomePhone={DifferentHomePhone} />
+    <ValidateLandlineLayout
+      NavigateToNextPage={NavigateToNextPage}
+      SkipValidation={SkipValidation}
+      DifferentHomePhone={DifferentHomephone}
+    />
   )
 }

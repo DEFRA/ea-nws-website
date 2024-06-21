@@ -5,6 +5,7 @@ const routes = [].concat(
   require('../routes/signin/signin_validate'),
   require('../routes/signup/signupStart'),
   require('../routes/signup/signupValidate'),
+  require('../routes/signup/signup_feedback'),
   require('../routes/update_profile/update_profile'),
   require('../routes/add_contact/mobile/mobile_start'),
   require('../routes/add_contact/mobile/mobile_validate'),

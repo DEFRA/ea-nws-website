@@ -1,6 +1,6 @@
-const responseCodes = require('../responseCodes')
-import Hapi from '@hapi/hapi'
-import type { Context } from 'openapi-backend'
+const responseCodes = require("../responseCodes")
+import Hapi from "@hapi/hapi"
+import type { Context } from "openapi-backend"
 
 async function getUpdateProfile(
   context: Context,
@@ -11,7 +11,7 @@ async function getUpdateProfile(
   const { profile } = req.payload as { profile: Object }
 
   //not sure how to validate the profile data without doing hardcoded validation for each scenario
-  if (authToken === 'MockAuthToken' && Object.keys(profile).length != 0) {
+  if (authToken === "MockAuthToken" && Object.keys(profile).length != 0) {
     return res.response(responseCodes.SUCCESS)
   } else {
     return res.response(responseCodes.INVALID_TOKEN).code(500)

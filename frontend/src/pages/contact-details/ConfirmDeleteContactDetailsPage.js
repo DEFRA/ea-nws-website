@@ -8,18 +8,27 @@ import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
+import {
+  removeUnverifiedContact,
+  removeVerifiedContact
+} from '../../services/ProfileServices'
 
-export default function ConfirmDeleteContactDetailsPage() {
+export default function ConfirmDeleteContactDetailsPage () {
   const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
 
   const removeContact = async () => {
-    const updatedProfile = removeContactFromProfile(
+    let updatedProfile = removeVerifiedContact(
       session.profile,
       location.state.contact
     )
+    updatedProfile = removeUnverifiedContact(
+      updatedProfile,
+      location.state.contact
+    )
+
     const data = {
       authToken: session.authToken,
       profile: updatedProfile
@@ -31,8 +40,6 @@ export default function ConfirmDeleteContactDetailsPage() {
       'api/profile/update',
       navigate
     )
-
-    // we need to make an error page which the user is navigated to if this breaks
     if (!errorMessage) {
       dispatch(setProfile(updatedProfile))
       navigate('/managecontacts', {
@@ -44,44 +51,30 @@ export default function ConfirmDeleteContactDetailsPage() {
     }
   }
 
-  const removeContactFromProfile = (profile, valueToRemove) => {
-    const updatedProfile = { ...profile }
-    const propertiesToCheck = ['emails', 'mobilePhones', 'homePhones']
-
-    propertiesToCheck.forEach((property) => {
-      if (Array.isArray(updatedProfile[property])) {
-        updatedProfile[property] = updatedProfile[property].filter(
-          (item) => item !== valueToRemove
-        )
-      }
-    })
-    return updatedProfile
-  }
-
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
+      <div className='govuk-width-container'>
         <PhaseBanner />
-        <Link to="/managecontacts" className="govuk-back-link">
+        <Link to={() => navigate(-1)} className='govuk-back-link'>
           Back
         </Link>
-        <main className="govuk-main-wrapper">
-          <div className="govuk-grid-row">
-            <div className="govuk-grid-column-two-thirds">
-              <h2 className="govuk-heading-l">
+        <main className='govuk-main-wrapper'>
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-two-thirds'>
+              <h2 className='govuk-heading-l'>
                 Are you sure you want to remove this {location.state.type}?
               </h2>
               <InsetText text={location.state.contact} />
               <Button
-                className="govuk-button govuk-button--warning"
-                text="Remove"
+                className='govuk-button govuk-button--warning'
+                text='Remove'
                 onClick={removeContact}
               />
               &nbsp; &nbsp;
               <Link
-                to="/managecontacts"
-                className="govuk-body govuk-link"
+                to='/managecontacts'
+                className='govuk-body govuk-link'
                 style={{
                   display: 'inline-block',
                   padding: '8px 10px 7px'

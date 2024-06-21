@@ -2,20 +2,13 @@ const { apiCall } = require('../../../services/ApiService')
 const {
   phoneValidation
 } = require('../../../services/validations/PhoneValidation')
-const apiToFrontendError = require('../../../services/ApiToFrontendError')
 
-const apiMobileStartCall = async (msisdn, auth) => {
+const apiMobileStartCall = async (msisdn, auth, origin) => {
   const data = { msisdn, authToken: auth }
   const validationError = phoneValidation(msisdn, 'mobile')
   try {
     if (validationError === '') {
-      const response = await apiCall(data, 'member/verifyMobilePhoneStart')
-      if (response.errorMessage) {
-        if (response.errorMessage.code) {
-          response.errorMessage.desc =
-            apiToFrontendError[response.errorMessage.code].add_contact.mobile || response.errorMessage.desc
-        }
-      }
+      const response = await apiCall(data, 'member/verifyMobilePhoneStart', origin)
       return response
     } else {
       return { status: 500, errorMessage: validationError }
@@ -38,7 +31,8 @@ module.exports = [
           return h.response({ message: 'Bad request' }).code(400)
         }
         const { authToken, msisdn } = request.payload
-        const apiResponse = await apiMobileStartCall(msisdn, authToken)
+        const origin = 'add_mobile'
+        const apiResponse = await apiMobileStartCall(msisdn, authToken, origin)
         return h.response(apiResponse)
       } catch (error) {
         console.error('Error:', error)

@@ -15,7 +15,7 @@ import {
   removeVerifiedContact
 } from '../../../services/ProfileServices'
 import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
-export default function AddMobileValidatePage() {
+export default function AddMobileValidatePage () {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()

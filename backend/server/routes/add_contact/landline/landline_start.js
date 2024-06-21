@@ -2,20 +2,13 @@ const { apiCall } = require('../../../services/ApiService')
 const {
   phoneValidation
 } = require('../../../services/validations/PhoneValidation')
-const apiToFrontendError = require('../../../services/ApiToFrontendError')
 
-const apiLandlineStartCall = async (msisdn, auth) => {
+const apiLandlineStartCall = async (msisdn, auth, origin) => {
   const data = { msisdn, authToken: auth }
   const validationError = phoneValidation(msisdn, 'mobileAndLandline')
   try {
     if (validationError === '') {
-      const response = await apiCall(data, 'member/verifyHomePhoneStart')
-      if (response.errorMessage) {
-        if (response.errorMessage.code) {
-          response.errorMessage.desc =
-            apiToFrontendError[response.errorMessage.code].add_contact.landline || response.errorMessage.desc
-        }
-      }
+      const response = await apiCall(data, 'member/verifyHomePhoneStart', origin)
       return response
     } else {
       return { status: 500, errorMessage: validationError }
@@ -38,7 +31,8 @@ module.exports = [
           return h.response({ message: 'Bad request' }).code(400)
         }
         const { authToken, msisdn } = request.payload
-        const apiResponse = await apiLandlineStartCall(msisdn, authToken)
+        const origin = 'add_landline'
+        const apiResponse = await apiLandlineStartCall(msisdn, authToken, origin)
         return h.response(apiResponse)
       } catch (error) {
         console.error('Error:', error)

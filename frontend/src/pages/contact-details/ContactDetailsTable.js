@@ -24,6 +24,33 @@ export default function ContactDetailsTable ({
     }
   }
 
+  const UnconfirmedLink = () => {
+    if (contactType === 'email') {
+      return (
+        <>
+          <Link to='/managecontacts/validate-email' className='govuk-link'>
+            Confirm
+          </Link>
+        </>
+      )
+    } else if (contactType === 'mobile telephone number') {
+      return (
+        <>
+          <Link to='/managecontacts/validate-mobile' className='govuk-link'>
+            Confirm
+          </Link>
+        </>
+      )
+    }
+    return (
+      <>
+        <Link to='/managecontacts/validate-landline' className='govuk-link'>
+          Confirm
+        </Link>
+      </>
+    )
+  }
+
   return (
     <>
       <h3 className='govuk-heading-m'>{contactTitle}</h3>

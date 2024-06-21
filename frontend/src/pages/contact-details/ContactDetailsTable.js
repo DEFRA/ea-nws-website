@@ -1,8 +1,8 @@
-import React from "react"
-import { Link, useNavigate } from "react-router-dom"
-import Button from "../../gov-uk-components/Button"
+import React from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import Button from '../../gov-uk-components/Button'
 
-export default function ContactDetailsTable({
+export default function ContactDetailsTable ({
   contacts,
   contactTitle,
   contactType,
@@ -11,54 +11,58 @@ export default function ContactDetailsTable({
   const navigate = useNavigate()
   const handleButton = () => {
     switch (contactType) {
-      case "email address":
-        navigate("/managecontacts/add-email")
+      case 'email address':
+        navigate('/managecontacts/add-email')
         break
-      case "mobile telephone number":
-        navigate("/managecontacts/add-mobile")
+      case 'mobile telephone number':
+        navigate('/managecontacts/add-mobile')
         break
-      case "telephone number":
-        navigate("/managecontacts/add-landline")
+      case 'telephone number':
+        navigate('/managecontacts/add-landline')
         break
     }
   }
 
   return (
     <>
-      <h3 className="govuk-heading-m">{contactTitle}</h3>
-      {contacts.length > 0 ? (
-        <table className="govuk-table">
-          <tbody className="govuk-table__body">
-            {contacts.map((contact, index) => (
-              <tr key={index} className="govuk-table__row">
-                <td className="govuk-table__cell govuk-!-width-full">
-                  {contact}
-                </td>
-                {contact !== primaryContact ? (
-                  <td className="govuk-table__cell">
-                    <Link
-                      to="/managecontacts/confirm-delete"
-                      state={{
-                        type: contactType,
-                        contact
-                      }}
-                      className="govuk-link"
-                    >
-                      Remove
-                    </Link>
+      <h3 className='govuk-heading-m'>{contactTitle}</h3>
+      {contacts.length > 0
+        ? (
+          <table className='govuk-table'>
+            <tbody className='govuk-table__body'>
+              {contacts.map((contact, index) => (
+                <tr key={index} className='govuk-table__row'>
+                  <td className='govuk-table__cell govuk-!-width-full'>
+                    {contact}
                   </td>
-                ) : (
-                  // empty space in table without this
-                  <td className="govuk-table__cell" />
-                )}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : null}
+                  {contact !== primaryContact
+                    ? (
+                      <td className='govuk-table__cell'>
+                        <Link
+                          to='/managecontacts/confirm-delete'
+                          state={{
+                            type: contactType,
+                            contact
+                          }}
+                          className='govuk-link'
+                        >
+                          Remove
+                        </Link>
+                      </td>
+                      )
+                    : (
+                      // empty space in table without this
+                      <td className='govuk-table__cell' />
+                      )}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+          )
+        : null}
       <Button
-        className="govuk-button govuk-button--secondary"
-        text={"Add a " + contactType}
+        className='govuk-button govuk-button--secondary'
+        text={'Add a ' + contactType}
         onClick={handleButton}
       />
     </>

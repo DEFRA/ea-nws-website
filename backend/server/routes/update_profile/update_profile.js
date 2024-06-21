@@ -1,9 +1,9 @@
-const { apiCall } = require("../../services/ApiService")
+const { apiCall } = require('../../services/ApiService')
 
 module.exports = [
   {
-    method: ["POST"],
-    path: "/api/profile/update",
+    method: ['POST'],
+    path: '/api/profile/update',
 
     handler: async (request, h) => {
       try {
@@ -13,7 +13,7 @@ module.exports = [
         if (Object.keys(profile).length !== 0) {
           const response = await apiCall(
             request.payload,
-            "member/updateProfile"
+            'member/updateProfile'
           )
           return h.response(response)
         } else {
@@ -22,7 +22,7 @@ module.exports = [
       } catch (error) {
         return h.response({
           status: 500,
-          errorMessage: "Oops, something happened!"
+          errorMessage: 'Oops, something happened!'
         })
       }
     }

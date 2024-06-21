@@ -3,12 +3,12 @@ const {
   phoneValidation
 } = require('../../../services/validations/PhoneValidation')
 
-const apiMobileStartCall = async (msisdn, auth, origin) => {
+const apiMobileStartCall = async (msisdn, auth) => {
   const data = { msisdn, authToken: auth }
   const validationError = phoneValidation(msisdn, 'mobile')
   try {
     if (validationError === '') {
-      const response = await apiCall(data, 'member/verifyMobilePhoneStart', origin)
+      const response = await apiCall(data, 'member/verifyMobilePhoneStart')
       return response
     } else {
       return { status: 500, errorMessage: validationError }
@@ -31,8 +31,7 @@ module.exports = [
           return h.response({ message: 'Bad request' }).code(400)
         }
         const { authToken, msisdn } = request.payload
-        const origin = 'add_mobile'
-        const apiResponse = await apiMobileStartCall(msisdn, authToken, origin)
+        const apiResponse = await apiMobileStartCall(msisdn, authToken)
         return h.response(apiResponse)
       } catch (error) {
         console.error('Error:', error)

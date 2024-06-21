@@ -3,12 +3,12 @@ const {
   emailValidation
 } = require('../../../services/validations/EmailValidation')
 
-const apiEmailStartCall = async (email, auth, origin) => {
+const apiEmailStartCall = async (email, auth) => {
   const data = { email: email, authToken: auth }
   const validationError = emailValidation(email)
   try {
     if (validationError === '') {
-      const response = await apiCall(data, 'member/verifyEmailStart', origin)
+      const response = await apiCall(data, 'member/verifyEmailStart')
       return response
     } else {
       return { status: 500, errorMessage: validationError }
@@ -31,8 +31,7 @@ module.exports = [
           return h.response({ message: 'Bad request' }).code(400)
         }
         const { authToken, email } = request.payload
-        const origin = 'add_email'
-        const apiResponse = await apiEmailStartCall(email, authToken, origin)
+        const apiResponse = await apiEmailStartCall(email, authToken)
         return h.response(apiResponse)
       } catch (error) {
         console.error('Error:', error)

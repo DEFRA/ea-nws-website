@@ -11,6 +11,8 @@ import AddMobileValidatePage from '../pages/contact-details/add-contact-mobile/A
 import HomePage from '../pages/home/HomePage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
+import SignUpDuplicateEmailPage from '../pages/signup/account/SignUpDuplicateEmail'
+import SignUpFeedbackPage from '../pages/signup/account/SignUpFeedbackPage'
 import SignUpPage from '../pages/signup/account/SignUpPage'
 import SignUpValidationPage from '../pages/signup/account/SignUpValidationPage'
 import WarningContactsPreferencePage from '../pages/signup/channel-preferences/WarningContactsPreferencePage'
@@ -74,8 +76,16 @@ const signupRoutes = [
     component: <SkipConfirmLandlinePhonePage />
   },
   {
+    path: '/signup/feedback',
+    component: <SignUpFeedbackPage />
+  },
+  {
     path: '/declaration',
     component: <DeclarationOfAgreementPage />
+  },
+  {
+    path: '/signup/duplicate',
+    component: <SignUpDuplicateEmailPage />
   },
   {
     path: '/signup/review',

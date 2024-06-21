@@ -2,15 +2,12 @@ const { apiCall } = require('../../../services/ApiService')
 const {
   authCodeValidation
 } = require('../../../services/validations/AuthCodeValidation')
-const {
-  numberValidation
-} = require('../../../services/validations/PhoneValidation')
 
 const apiLandlineValidateCall = async (code, msisdn, auth, h) => {
   const data = { msisdn, authToken: auth, code }
   console.log('Received from front-end: ', data)
   try {
-    let validationError = authCodeValidation(code)
+    const validationError = authCodeValidation(code)
     if (validationError === '') {
       const response = await apiCall(data, 'member/verifyHomePhoneValidate')
       return response

@@ -12,49 +12,16 @@ export default function ContactDetailsTable ({
   const navigate = useNavigate()
   const handleButton = () => {
     switch (contactType) {
-      case 'email address': {
+      case 'email address':
         navigate('/managecontacts/add-email')
         break
-      }
-      case 'mobile telephone number': {
+      case 'mobile telephone number':
         navigate('/managecontacts/add-mobile')
         break
-      }
-      case 'telephone number': {
+      case 'telephone number':
         navigate('/managecontacts/add-landline')
         break
-      }
-      default: {
-        navigate('/managecontacts')
-      }
     }
-  }
-
-  const UnconfirmedLink = () => {
-    if (contactType === 'email') {
-      return (
-        <>
-          <Link to='/managecontacts/validate-email' className='govuk-link'>
-            Confirm
-          </Link>
-        </>
-      )
-    } else if (contactType === 'mobile telephone number') {
-      return (
-        <>
-          <Link to='/managecontacts/validate-mobile' className='govuk-link'>
-            Confirm
-          </Link>
-        </>
-      )
-    }
-    return (
-      <>
-        <Link to='/managecontacts/validate-landline' className='govuk-link'>
-          Confirm
-        </Link>
-      </>
-    )
   }
 
   return (

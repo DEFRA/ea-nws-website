@@ -2,9 +2,6 @@ const { apiCall } = require('../../../services/ApiService')
 const {
   authCodeValidation
 } = require('../../../services/validations/AuthCodeValidation')
-const {
-  numberValidation
-} = require('../../../services/validations/PhoneValidation')
 
 const apiLandlineValidateCall = async (code, msisdn, auth, h) => {
   const data = { msisdn, authToken: auth, code }

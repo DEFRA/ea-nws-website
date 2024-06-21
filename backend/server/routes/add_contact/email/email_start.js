@@ -2,6 +2,7 @@ const { apiCall } = require('../../../services/ApiService')
 const {
   emailValidation
 } = require('../../../services/validations/EmailValidation')
+const apiToFrontendError = require('../../../services/ApiToFrontendError')
 
 const apiEmailStartCall = async (email, auth) => {
   const data = { email: email, authToken: auth }
@@ -9,6 +10,12 @@ const apiEmailStartCall = async (email, auth) => {
   try {
     if (validationError === '') {
       const response = await apiCall(data, 'member/verifyEmailStart')
+      if (response.errorMessage) {
+        if (response.errorMessage.code) {
+          response.errorMessage.desc =
+            apiToFrontendError[response.errorMessage.code]["add_contact"]["email"] || response.errorMessage.desc
+        }
+      }
       return response
     } else {
       return { status: 500, errorMessage: validationError }

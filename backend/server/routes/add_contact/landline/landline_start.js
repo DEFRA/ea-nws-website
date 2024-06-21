@@ -2,6 +2,7 @@ const { apiCall } = require('../../../services/ApiService')
 const {
   phoneValidation
 } = require('../../../services/validations/PhoneValidation')
+const apiToFrontendError = require('../../../services/ApiToFrontendError')
 
 const apiLandlineStartCall = async (msisdn, auth) => {
   const data = { msisdn, authToken: auth }
@@ -9,6 +10,12 @@ const apiLandlineStartCall = async (msisdn, auth) => {
   try {
     if (validationError === '') {
       const response = await apiCall(data, 'member/verifyHomePhoneStart')
+      if (response.errorMessage) {
+        if (response.errorMessage.code) {
+          response.errorMessage.desc =
+            apiToFrontendError[response.errorMessage.code]['add_contact']['landline'] || response.errorMessage.desc
+        }
+      }
       return response
     } else {
       return { status: 500, errorMessage: validationError }

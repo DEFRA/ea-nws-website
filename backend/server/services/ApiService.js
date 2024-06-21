@@ -1,5 +1,4 @@
 const axios = require('axios')
-const apiToFrontendError = require('./ApiToFrontendError')
 
 const apiCall = async (data, path) => {
   const apiUrl = process.env.API_URL || 'http://localhost:9000'
@@ -26,10 +25,6 @@ const apiCall = async (data, path) => {
         return { status }
       } else if (status === 500) {
         let errorMessage = error.response.data
-        if (errorMessage.desc) {
-          errorMessage.desc =
-            apiToFrontendError[errorMessage.desc] || errorMessage.desc
-        }
         return { status: status, errorMessage: errorMessage }
       }
     } else if (error.request) {

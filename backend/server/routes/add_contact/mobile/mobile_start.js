@@ -2,6 +2,31 @@ const { apiCall } = require('../../../services/ApiService')
 const {
   phoneValidation
 } = require('../../../services/validations/PhoneValidation')
+const apiToFrontendError = require('../../../services/ApiToFrontendError')
+
+const apiMobileStartCall = async (msisdn, auth) => {
+  const data = { msisdn, authToken: auth }
+  const validationError = phoneValidation(msisdn, 'mobile')
+  try {
+    if (validationError === '') {
+      const response = await apiCall(data, 'member/verifyMobilePhoneStart')
+      if (response.errorMessage) {
+        if (response.errorMessage.code) {
+          response.errorMessage.desc =
+            apiToFrontendError[response.errorMessage.code]['add_contact']['mobile'] || response.errorMessage.desc
+        }
+      }
+      return response
+    } else {
+      return { status: 500, errorMessage: validationError }
+    }
+  } catch (error) {
+    return {
+      status: 500,
+      errorMessage: 'Oops, something happened!'
+    }
+  }      
+}
 
 module.exports = [
   {
@@ -12,24 +37,12 @@ module.exports = [
         if (request.payload === null) {
           return h.response({ message: 'Bad request' }).code(400)
         }
-        const { msisdn } = request.payload
-        const validationError = phoneValidation(msisdn, 'mobile')
-
-        if (validationError === '') {
-          //request.payload = { authToken, msisdn }
-          const response = await apiCall(
-            request.payload,
-            'member/verifyMobilePhoneStart'
-          )
-          return h.response(response)
-        } else {
-          return h.response({ status: 500, errorMessage: validationError })
-        }
+        const { authToken, msisdn } = request.payload
+        const apiResponse = await apiMobileStartCall(msisdn, authToken)
+        return h.response(apiResponse)       
       } catch (error) {
-        return h.response({
-          status: 500,
-          errorMessage: 'Oops, something happened!'
-        })
+        console.error('Error:', error)
+        return h.response({ message: 'Internal server error' }).code(500)
       }
     }
   }

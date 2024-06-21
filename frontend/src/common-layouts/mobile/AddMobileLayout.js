@@ -16,9 +16,9 @@ import {
 import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../services/validations/PhoneValidation'
 
-export default function AddLandlineLayout ({NavigateToNextPage}) {
+export default function AddMobileLayout ({NavigateToNextPage}) {
   const navigate = useNavigate
-  const [landline, setLandline] = useState('')
+  const [mobile, setMobile] = useState('')
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const session = useSelector((state) => state.session)
@@ -26,14 +26,14 @@ export default function AddLandlineLayout ({NavigateToNextPage}) {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const validationError = phoneValidation(landline, 'mobileAndLandline')
+    const validationError = phoneValidation(mobile, 'mobile')
     setError(validationError)
     if (validationError === '') {
-      const normalisedPhoneNumber = normalisePhoneNumber(landline)
+      const normalisedPhoneNumber = normalisePhoneNumber(mobile)
       const dataToSend = { msisdn: normalisedPhoneNumber, authToken }
       const { errorMessage } = await backendCall(
         dataToSend,
-        'api/add_contact/landline/add',
+        'api/add_contact/mobile/add',
         navigate
       )
       if (errorMessage !== null) {
@@ -41,7 +41,7 @@ export default function AddLandlineLayout ({NavigateToNextPage}) {
       } else {
         dispatch(
           setProfile(
-            addUnverifiedContact(session.profile, 'homePhones', landline)
+            addUnverifiedContact(session.profile, 'mobile', mobile)
           )
         )
         NavigateToNextPage()
@@ -52,23 +52,24 @@ export default function AddLandlineLayout ({NavigateToNextPage}) {
   // if user is going back through the signup flow - we want to remove the landline
   // from either the verified or unverified list - we need to do both incase
   // they progressed past the validate landline path
-  const removeLandlineFromProfile = async (event) => {
+  const removeMobileFromProfile = async (event) => {
     event.preventDefault()
     // we need to check if location.state has a value - this will only hold a value
     // if the user has come from the landline validate page - we will need to remove
     // the number from the users profile if so
-    if (session && session.landline) {
+    if (session && session.mobile) {
       event.preventDefault()
-      const normalisedLandline = normalisePhoneNumber(landline)
-      // remove landline from users profile
+      const normalisedMobile = normalisePhoneNumber(session.mobile)
+      // remove mobile from users profile
       const updatedProfile = removeUnverifiedContact(
         session.profile,
-        normalisedLandline
+        normalisedMobile
       )
       dispatch(
-        setProfile(removeVerifiedContact(updatedProfile, normalisedLandline))
+        setProfile(removeVerifiedContact(updatedProfile, normalisedMobile))
       )
     }
+
     // user could have navigated from contact preferences page
     // or user could have come from account change details at the end of sign up flow
     navigate(-1)
@@ -76,25 +77,25 @@ export default function AddLandlineLayout ({NavigateToNextPage}) {
 
   return (
     <>
-      <Header />
+            <Header />
       <div class='govuk-width-container'>
-        <Link onClick={removeLandlineFromProfile} className='govuk-back-link'>
+        <Link onClick={removeMobileFromProfile} className='govuk-back-link'>
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
         <h2 class='govuk-heading-l'>
-          Enter a telephone number to get flood messages by phone call
+          Enter a mobile number to get flood messages by text
         </h2>
         <div class='govuk-body'>
           <p>
-            We recommend using a landline or mobile number that can be called 24
-            hours a day.
+            We recommend using a mobile number where we can reach you 24 hours a
+            day.
           </p>
           <Input
-            name='UK landline or mobile telephone number'
+            name='UK mobile telephone number'
             inputType='text'
             error={error}
-            onChange={(val) => setLandline(val)}
+            onChange={(val) => setMobile(val)}
             className='govuk-input govuk-input--width-20'
           />
           <Button

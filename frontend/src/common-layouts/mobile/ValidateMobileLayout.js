@@ -16,26 +16,28 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
-export default function ValidateLandlineLayout ({NavigateToNextPage, SkipValidation, DifferentHomePhone}) {
+export default function ValidateMobileLayout ({NavigateToNextPage, SkipValidation, DifferentHomePhone}) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [code, setCode] = useState('')
+
   const session = useSelector((state) => state.session)
-  const homePhone = session.profile.unverified.homePhones[0]
-    ? session.profile.unverified.homePhones[0]
-    : session.profile.homePhones[0]
-  const authToken = session.authToken
+  const mobile = session.profile.unverified.mobilePhones[0]
+    ? session.profile.unverified.mobilePhones[0]
+    : session.profile.mobilePhones[0]
+
+  const authToken = useSelector((state) => state.session.authToken)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
     const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      const dataToSend = { authToken, msisdn: homePhone, code }
+      const dataToSend = { authToken, code, msisdn: mobile }
       const { errorMessage, data } = await backendCall(
         dataToSend,
-        'api/add_contact/landline/validate',
+        'api/add_contact/mobile/validate',
         navigate
       )
       if (errorMessage !== null) {
@@ -49,10 +51,10 @@ export default function ValidateLandlineLayout ({NavigateToNextPage, SkipValidat
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const data = { authToken, msisdn: homePhone }
+    const data = { authToken, msisdn: mobile }
     const { errorMessage } = await backendCall(
       data,
-      'api/add_contact/landline/add',
+      'api/add_contact/mobile/add',
       navigate
     )
     if (errorMessage !== null) {
@@ -62,20 +64,18 @@ export default function ValidateLandlineLayout ({NavigateToNextPage, SkipValidat
 
   const skipValidation = (event) => {
     event.preventDefault()
-    // remove homephone from verified list if user is going back after validating
-    const updatedProfile = removeVerifiedContact(session.profile, homePhone)
-    // we will need to add the homephone back to the unverified list - if it already exists
+    // remove email from verified list if user is going back after validating
+    const updatedProfile = removeVerifiedContact(session.profile, mobile)
+    // we will need to add the email back to the unverified list - if it already exists
     // nothing will happen and it will remain
-    dispatch(
-      setProfile(addUnverifiedContact(updatedProfile, 'homePhones', homePhone))
-    )
+    dispatch(setProfile(addUnverifiedContact(updatedProfile, 'mobile', mobile)))
     SkipValidation(homePhone)
   }
 
-  const differentHomePhone = (event) => {
+  const differentMobile = (event) => {
     event.preventDefault()
-    // remove homephone from users profile
-    dispatch(setProfile(removeUnverifiedContact(session.profile, homePhone)))
+    // remove email from users profile
+    dispatch(setProfile(removeUnverifiedContact(session.profile, mobile)))
     DifferentHomePhone(homePhone)
   }
 
@@ -83,14 +83,14 @@ export default function ValidateLandlineLayout ({NavigateToNextPage, SkipValidat
     <>
       <Header />
       <div class='govuk-width-container'>
-        <Link to='/managecontacts/add-landline' className='govuk-back-link'>
+        <Link to='/managecontacts/add-mobile' className='govuk-back-link'>
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 class='govuk-heading-l'>Confirm telephone number</h2>
+        <h2 class='govuk-heading-l'>Check your mobile phone</h2>
         <div class='govuk-body'>
-          We're calling this number to read out a code:
-          <InsetText text={homePhone} />
+          We've sent a text with a code to:
+          <InsetText text={mobile} />
           Use the code within 4 hours or it will expire.
           <br /> <br />
           <Input
@@ -119,8 +119,8 @@ export default function ValidateLandlineLayout ({NavigateToNextPage, SkipValidat
             Get a new code
           </Link>
           <br /> <br />
-          <Link onClick={differentHomePhone} className='govuk-link'>
-            Enter a different telephone number
+          <Link onClick={differentMobile} className='govuk-link'>
+            Enter a different mobile
           </Link>
         </div>
       </div>

@@ -1,6 +1,6 @@
-import { useNavigate, useState } from 'react'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
 import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
@@ -17,7 +17,7 @@ import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNu
 import { phoneValidation } from '../../services/validations/PhoneValidation'
 
 export default function AddMobileLayout ({NavigateToNextPage}) {
-  const navigate = useNavigate
+  const navigate = useNavigate()
   const [mobile, setMobile] = useState('')
   const [error, setError] = useState('')
   const dispatch = useDispatch()

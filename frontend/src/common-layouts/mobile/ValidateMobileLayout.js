@@ -16,7 +16,11 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
-export default function ValidateMobileLayout ({NavigateToNextPage, SkipValidation, DifferentHomePhone}) {
+export default function ValidateMobileLayout({
+  NavigateToNextPage,
+  SkipValidation,
+  DifferentMobile
+}) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -69,14 +73,14 @@ export default function ValidateMobileLayout ({NavigateToNextPage, SkipValidatio
     // we will need to add the email back to the unverified list - if it already exists
     // nothing will happen and it will remain
     dispatch(setProfile(addUnverifiedContact(updatedProfile, 'mobile', mobile)))
-    SkipValidation(homePhone)
+    SkipValidation(mobile)
   }
 
   const differentMobile = (event) => {
     event.preventDefault()
     // remove email from users profile
     dispatch(setProfile(removeUnverifiedContact(session.profile, mobile)))
-    DifferentHomePhone(homePhone)
+    DifferentMobile(mobile)
   }
 
   return (

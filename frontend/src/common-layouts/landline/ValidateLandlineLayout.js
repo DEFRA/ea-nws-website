@@ -16,7 +16,11 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
-export default function ValidateLandlineLayout ({NavigateToNextPage, SkipValidation, DifferentHomePhone}) {
+export default function ValidateLandlineLayout({
+  NavigateToNextPage,
+  SkipValidation,
+  DifferentHomePhone
+}) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()

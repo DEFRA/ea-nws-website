@@ -59,7 +59,7 @@ export default function AddLandlineLayout ({ NavigateToNextPage }) {
     // the number from the users profile if so
     if (session && session.landline) {
       event.preventDefault()
-      const normalisedLandline = normalisePhoneNumber(landline)
+      const normalisedLandline = normalisePhoneNumber(session.landline)
       // remove landline from users profile
       const updatedProfile = removeUnverifiedContact(
         session.profile,

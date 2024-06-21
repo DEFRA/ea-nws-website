@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { useNavigate } from 'react-router-dom'
-import AddLandlineLayout from '../../../../common-layouts/landline copy/AddLandlineLayout'
+import AddLandlineLayout from '../../../../common-layouts/landline/AddLandlineLayout'
 
 export default function AddLandlinePhonePage () {
   const navigate = useNavigate()

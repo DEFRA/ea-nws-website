@@ -24,7 +24,7 @@ const apiCall = async (data, path) => {
       } else if (status === 404) {
         return { status }
       } else if (status === 500) {
-        let errorMessage = error.response.data
+        const errorMessage = error.response.data
         return { status: status, errorMessage: errorMessage }
       }
     } else if (error.request) {

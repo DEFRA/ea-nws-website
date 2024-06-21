@@ -13,7 +13,7 @@ const apiMobileStartCall = async (msisdn, auth) => {
       if (response.errorMessage) {
         if (response.errorMessage.code) {
           response.errorMessage.desc =
-            apiToFrontendError[response.errorMessage.code]['add_contact']['mobile'] || response.errorMessage.desc
+            apiToFrontendError[response.errorMessage.code].add_contact.mobile || response.errorMessage.desc
         }
       }
       return response
@@ -25,7 +25,7 @@ const apiMobileStartCall = async (msisdn, auth) => {
       status: 500,
       errorMessage: 'Oops, something happened!'
     }
-  }      
+  }
 }
 
 module.exports = [
@@ -39,7 +39,7 @@ module.exports = [
         }
         const { authToken, msisdn } = request.payload
         const apiResponse = await apiMobileStartCall(msisdn, authToken)
-        return h.response(apiResponse)       
+        return h.response(apiResponse)
       } catch (error) {
         console.error('Error:', error)
         return h.response({ message: 'Internal server error' }).code(500)

@@ -13,7 +13,7 @@ const apiEmailStartCall = async (email, auth) => {
       if (response.errorMessage) {
         if (response.errorMessage.code) {
           response.errorMessage.desc =
-            apiToFrontendError[response.errorMessage.code]["add_contact"]["email"] || response.errorMessage.desc
+            apiToFrontendError[response.errorMessage.code].add_contact.email || response.errorMessage.desc
         }
       }
       return response

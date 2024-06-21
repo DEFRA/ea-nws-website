@@ -13,7 +13,7 @@ const apiLandlineStartCall = async (msisdn, auth) => {
       if (response.errorMessage) {
         if (response.errorMessage.code) {
           response.errorMessage.desc =
-            apiToFrontendError[response.errorMessage.code]['add_contact']['landline'] || response.errorMessage.desc
+            apiToFrontendError[response.errorMessage.code].add_contact.landline || response.errorMessage.desc
         }
       }
       return response

@@ -1,46 +1,61 @@
-import React, { useState } from "react"
-import { Link, useNavigate } from "react-router-dom"
-import Button from "../../../gov-uk-components/Button"
-import ErrorSummary from "../../../gov-uk-components/ErrorSummary"
-import Footer from "../../../gov-uk-components/Footer"
-import Header from "../../../gov-uk-components/Header"
-import Input from "../../../gov-uk-components/Input"
-import PhaseBanner from "../../../gov-uk-components/PhaseBanner"
-import { postCodeValidation } from "../../../services/validations/PostCodeValidation"
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import Details from '../../../gov-uk-components/Details'
+import Footer from '../../../gov-uk-components/Footer'
+import Header from '../../../gov-uk-components/Header'
+import Pagination from '../../../gov-uk-components/Pagination'
+import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 
 export default function LocationSearchResultsPage() {
   const navigate = useNavigate()
-  const [searchOption, setSearchOption] = useState("")
-  const [postCode, setPostCode] = useState("")
-  const [postCodeError, setPostCodeError] = useState("")
-  const [error, setError] = useState("")
+  const [currentPage, setCurrentPage] = useState(1)
+  const addressesPerPage = 10
 
-  const handleSubmit = () => {
-    if (!searchOption) {
-      setError("Select how you want to search for your location")
-    } else {
-      switch (searchOption) {
-        case "AddressPostCode":
-          const postCodeValidationError = postCodeValidation(postCode)
-          console.log("validation error", postCodeValidationError)
-          if (!postCodeValidationError) {
-            console.log("passes")
-            setPostCodeError("")
-            //make api call to get list of addresses
-            //handle any errors
-            //put list of locations found in redux store
-            //navigate to results page
-            break
-          } else {
-            setPostCodeError(postCodeValidationError)
-            break
-          }
-        case "PlaceNameTownOrKeyword":
-          // code block
-          break
-      }
-    }
-  }
+  const detailsMessage = (
+    <div>
+      You can view flood message areas&nbsp;
+      <a href="#" className="govuk-link">
+        near this postcode
+      </a>
+    </div>
+  )
+
+  const addresses = [
+    '10 Downing Street, London',
+    '221B Baker Street, London',
+    '1 The Crescent, Leeds',
+    '25 The Grove, Manchester',
+    '50 High Street, Edinburgh',
+    '2 Park Lane, Birmingham',
+    '14 Market Street, Bristol',
+    "30 Queen's Road, Belfast",
+    '18 Castle Street, Cardiff',
+    '5 Albert Road, Glasgow',
+    '7 Victoria Road, Oxford',
+    '12 Bridge Street, Cambridge',
+    '3 Windsor Avenue, Liverpool',
+    '9 Station Road, Newcastle',
+    '6 Hilltop Drive, Sheffield',
+    '15 Queensway, Southampton',
+    '4 Elm Street, Nottingham',
+    '8 Green Lane, Plymouth',
+    '11 Riverside, Swansea',
+    '22 Church Street, Coventry',
+    '17 Hillside Avenue, York',
+    '20 Victoria Square, Brighton',
+    '27 Park Road, Norwich',
+    '13 Ivy Lane, Canterbury',
+    '19 Grove Terrace, Aberdeen',
+    '16 King Street, Dundee',
+    '24 The Mall, Reading',
+    '21 Highfield Lane, Portsmouth',
+    '23 Hillcrest, Derby'
+  ]
+
+  const displayedAddresses = addresses.slice(
+    (currentPage - 1) * addressesPerPage,
+    currentPage * addressesPerPage
+  )
 
   return (
     <>
@@ -49,88 +64,47 @@ export default function LocationSearchResultsPage() {
         <PhaseBanner />
         <div className="govuk-grid-row">
           <div className="govuk-grid-column-two-thirds">
-            <Link onClick={() => navigate(-1)} className="govuk-back-link">
-              Back
-            </Link>
-            {error ||
-              (postCodeError && (
-                <ErrorSummary errorList={[error, postCodeError]} />
-              ))}
-            <h1 className="govuk-heading-l govuk-!-margin-top-6">
-              Check if you can get flood messages for your location
-            </h1>
-            <div
-              className={
-                error
-                  ? "govuk-form-group govuk-form-group--error"
-                  : "govuk-form-group"
-              }
-            >
-              <fieldset className="govuk-fieldset">
-                <legend className="govuk-fieldset__legend">
-                  Select how you want to search
-                </legend>
-                {error && <p className="govuk-error-message">{error}</p>}
-                <div className="govuk-radios" data-module="govuk-radios">
-                  <div className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      type="radio"
-                      value="AddressPostCode"
-                      name="searchOptionsRadios"
-                      onChange={(e) => setSearchOption(e.target.value)}
-                      id={"id-address-postcode"}
-                    />
-                    <label
-                      className="govuk-label govuk-radios__label"
-                      htmlFor={"id-address-postcode"}
-                    >
-                      Address with postcode
-                    </label>
-                  </div>
-                  {searchOption === "AddressPostCode" && (
-                    <div className="govuk-radios__conditional">
-                      <div
-                        className={
-                          postCodeError
-                            ? "govuk-form-group govuk-form-group--error"
-                            : "govuk-form-group"
-                        }
-                      >
-                        <Input
-                          name="Postcode in England"
-                          className="govuk-input govuk-!-width-one-half"
-                          inputType="email"
-                          error={postCodeError}
-                          onChange={(val) => setPostCode(val)}
-                        />
-                      </div>
-                    </div>
-                  )}
-                  <div className="govuk-radios__item">
-                    <input
-                      className="govuk-radios__input"
-                      type="radio"
-                      value="PlaceNameTownOrKeyword"
-                      name="searchOptionsRadios"
-                      onChange={(e) => setSearchOption(e.target.value)}
-                      id={"id-place-name"}
-                    />
-                    <label
-                      className="govuk-label govuk-radios__label"
-                      htmlFor={"id-place-name"}
-                    >
-                      Place name, town or keyword
-                    </label>
-                  </div>
-                </div>
-              </fieldset>
+            <div className="govuk-body">
+              <Link onClick={() => navigate(-1)} className="govuk-back-link">
+                Back
+              </Link>
+              <h1 className="govuk-heading-l govuk-!-margin-top-6">
+                Select an address
+              </h1>
+              <p className="govuk-body">
+                Postcode: SL7 2AA{'   '}
+                <Link
+                  to="/signup/register-location/search"
+                  className="govuk-link govuk-!-padding-left-5"
+                >
+                  Change postcode
+                </Link>
+              </p>
+              <table class="govuk-table">
+                <tbody class="govuk-table__body">
+                  <tr class="govuk-table__row">
+                    <td class="govuk-table__cell"></td>
+                  </tr>
+                  {displayedAddresses.map((address, index) => (
+                    <tr key={index} class="govuk-table__row">
+                      <td class="govuk-table__cell">
+                        <Link className="govuk-link" to="/dgfd">
+                          {address}
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <Details
+                title={'I cannot find my address here'}
+                text={detailsMessage}
+              />
+              <Pagination
+                totalPages={Math.ceil(addresses.length / addressesPerPage)}
+                onPageChange={(val) => setCurrentPage(val)}
+              />
             </div>
-            <Button
-              text="Continue"
-              className="govuk-button"
-              onClick={handleSubmit}
-            />
           </div>
         </div>
       </div>

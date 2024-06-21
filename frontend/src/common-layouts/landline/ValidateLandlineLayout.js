@@ -16,7 +16,7 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
-export default function ValidateLandlineLayout({
+export default function ValidateLandlineLayout ({
   NavigateToNextPage,
   SkipValidation,
   DifferentHomePhone

@@ -16,7 +16,7 @@ import {
 import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../services/validations/PhoneValidation'
 
-export default function AddLandlineLayout ({NavigateToNextPage}) {
+export default function AddLandlineLayout ({ NavigateToNextPage }) {
   const navigate = useNavigate()
   const [landline, setLandline] = useState('')
   const [error, setError] = useState('')

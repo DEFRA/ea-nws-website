@@ -15,8 +15,7 @@ import {
 } from '../../services/ProfileServices'
 import { emailValidation } from '../../services/validations/EmailValidation'
 
-
-export default function AddEmailLayout ({NavigateToNextPage}) {
+export default function AddEmailLayout ({ NavigateToNextPage }) {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
@@ -72,35 +71,35 @@ export default function AddEmailLayout ({NavigateToNextPage}) {
 
   return (
     <>
-    <Header />
-    <div class='govuk-width-container'>
-      <Link onClick={removeEmailFromProfile} className='govuk-back-link'>
-        Back
-      </Link>
-      <ErrorSummary errorList={error === '' ? [] : [error]} />
-      <h2 class='govuk-heading-l'>
-        Enter an email address to get flood messages
-      </h2>
-      <div class='govuk-body'>
-        <p>
-          We recommend using an email address you can access 24 hours a day.
-        </p>
-        <Input
-          name='Email address'
-          inputType='text'
-          error={error}
-          onChange={(val) => setEmail(val)}
-          className='govuk-input govuk-input--width-20'
-        />
-        <Button
-          className='govuk-button'
-          text='Continue'
-          onClick={handleSubmit}
-        />
-        <br />
+      <Header />
+      <div class='govuk-width-container'>
+        <Link onClick={removeEmailFromProfile} className='govuk-back-link'>
+          Back
+        </Link>
+        <ErrorSummary errorList={error === '' ? [] : [error]} />
+        <h2 class='govuk-heading-l'>
+          Enter an email address to get flood messages
+        </h2>
+        <div class='govuk-body'>
+          <p>
+            We recommend using an email address you can access 24 hours a day.
+          </p>
+          <Input
+            name='Email address'
+            inputType='text'
+            error={error}
+            onChange={(val) => setEmail(val)}
+            className='govuk-input govuk-input--width-20'
+          />
+          <Button
+            className='govuk-button'
+            text='Continue'
+            onClick={handleSubmit}
+          />
+          <br />
+        </div>
       </div>
-    </div>
-    <Footer />
-  </>
+      <Footer />
+    </>
   )
 }

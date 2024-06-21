@@ -16,7 +16,7 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
-export default function ValidateEmailLayout({
+export default function ValidateEmailLayout ({
   NavigateToNextPage,
   SkipValidation,
   DifferentEmail

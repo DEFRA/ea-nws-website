@@ -16,7 +16,7 @@ import {
 import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../services/validations/PhoneValidation'
 
-export default function AddMobileLayout ({NavigateToNextPage}) {
+export default function AddMobileLayout ({ NavigateToNextPage }) {
   const navigate = useNavigate()
   const [mobile, setMobile] = useState('')
   const [error, setError] = useState('')
@@ -77,7 +77,7 @@ export default function AddMobileLayout ({NavigateToNextPage}) {
 
   return (
     <>
-            <Header />
+      <Header />
       <div class='govuk-width-container'>
         <Link onClick={removeMobileFromProfile} className='govuk-back-link'>
           Back

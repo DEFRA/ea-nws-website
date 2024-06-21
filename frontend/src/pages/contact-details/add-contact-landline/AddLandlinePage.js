@@ -1,5 +1,5 @@
-import { useNavigate } from "react-router";
-import AddLandlineLayout from "../../../common-layouts/landline/AddLandlineLayout";
+import { useNavigate } from 'react-router'
+import AddLandlineLayout from '../../../common-layouts/landline/AddLandlineLayout'
 
 export default function AddLandlinePage () {
   const navigate = useNavigate()
@@ -8,6 +8,6 @@ export default function AddLandlinePage () {
   }
 
   return (
-    <AddLandlineLayout NavigateToNextPage={NavigateToNextPage}/>
+    <AddLandlineLayout NavigateToNextPage={NavigateToNextPage} />
   )
 }

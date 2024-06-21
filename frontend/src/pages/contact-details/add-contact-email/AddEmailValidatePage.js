@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import ValidateEmailLayout from '../../../common-layouts/email/ValidateEmailLayout'
 
-export default function AddEmailValidatePage() {
+export default function AddEmailValidatePage () {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {

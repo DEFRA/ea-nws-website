@@ -3,9 +3,9 @@ module.exports = {
   'Invalid Token': 'Invalid Token',
   'Invalid Code': 'Invalid Code',
   'email already registered':
-    'You have already registered this email address to get flood messages by email',
+    'You have already registered this email address on your account - you cannot enter it again',
   'phone already registered':
-    'You have already registered this number to get flood messages by phone call',
+    'You have already registered this number on your account - you cannot enter it again',
   'mobile already registered':
-    'You have already registered this mobile number to get flood messages by text'
+    'You have already registered this mobile number on your account - you cannot enter it again'
 }

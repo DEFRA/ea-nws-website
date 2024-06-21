@@ -47,7 +47,7 @@ def test_addemailstart_duplicateEmail(get_browser):
     browser = setup_addemail_test(get_browser)   
     browser.find_element(By.NAME, "Email address").send_keys("duplicate@email.com")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
-    assert "You have already registered this email address to get flood messages by email" in browser.page_source
+    assert "You have already registered this email address on your account - you cannot enter it again" in browser.page_source
     assert browser.current_url == url
 
 def test_addemailstart_validEmail(get_browser):

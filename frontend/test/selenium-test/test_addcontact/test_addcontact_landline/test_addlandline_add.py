@@ -48,7 +48,7 @@ def test_addlandlinestart_duplicateNumber(get_browser):
     browser = setup_addlandline_test(get_browser)   
     browser.find_element(By.NAME, "UK landline or mobile telephone number").send_keys("00000000000")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
-    assert "You have already registered this number to get flood messages by phone call" in browser.page_source
+    assert "You have already registered this number on your account - you cannot enter it again" in browser.page_source
     assert browser.current_url == current_page
 
 def test_addlandlinestart_validNumber(get_browser):

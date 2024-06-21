@@ -1,6 +1,6 @@
 import { useCallback } from 'react'
 import { useNavigate } from 'react-router-dom'
-import ValidateLandlineLayout from '../../../common-layouts/Landline/ValidateLandlineLayout'
+import ValidateLandlineLayout from '../../../common-layouts/landline/ValidateLandlineLayout'
 export default function AddLandlineValidatePage () {
   const navigate = useNavigate()
   const NavigateToNextPage = useCallback(() => 

@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router";
-import AddLandlineLayout from "../../../common-layouts/Landline/AddLandlineLayout";
+import AddLandlineLayout from "../../../common-layouts/landline/AddLandlineLayout";
 
 export default function AddLandlinePage () {
   const navigate = useNavigate()

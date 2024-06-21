@@ -40,7 +40,7 @@ export default function AddMobileValidatePage () {
         navigate
       )
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        setError(errorMessage)
       } else {
         dispatch(setProfile(data.profile))
         navigate('/managecontacts')
@@ -58,7 +58,7 @@ export default function AddMobileValidatePage () {
     )
     console.log(errorMessage)
     if (errorMessage !== null) {
-      setError(errorMessage.desc)
+      setError(errorMessage)
     }
   }
 

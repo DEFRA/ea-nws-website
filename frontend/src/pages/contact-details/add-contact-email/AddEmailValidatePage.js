@@ -37,7 +37,7 @@ export default function AddEmailValidatePage () {
         'api/add_contact/email/validate'
       )
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        setError(errorMessage)
       } else {
         dispatch(setProfile(data.profile))
         navigate('/managecontacts')
@@ -55,7 +55,7 @@ export default function AddEmailValidatePage () {
     )
     console.log(errorMessage)
     if (errorMessage !== null) {
-      setError(errorMessage.desc)
+      setError(errorMessage)
     }
   }
 

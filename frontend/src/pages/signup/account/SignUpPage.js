@@ -35,7 +35,7 @@ export default function SignUpPage () {
             state: { email }
           })
         } else {
-          setError(errorMessage.desc)
+          setError(errorMessage)
         }
       } else {
         // start empty profile for user

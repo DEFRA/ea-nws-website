@@ -19,7 +19,7 @@ export default function SignUpPage () {
     const { errorMessage, data } = await backendCall(dataToSend, 'api/signInStart', navigate)
 
     if (errorMessage !== null) {
-      setError(errorMessage.desc)
+      setError(errorMessage)
     } else {
       navigate('/signin/validate', {
         state: { signinToken: data.signinToken, email }

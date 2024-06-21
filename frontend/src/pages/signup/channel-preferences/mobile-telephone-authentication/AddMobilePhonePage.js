@@ -42,7 +42,7 @@ export default function AddMobilePhonePage () {
         navigate
       )
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        setError(errorMessage)
       } else {
         const normalisedMobile = normalisePhoneNumber(mobile)
         // add mobile to unverified list in profile

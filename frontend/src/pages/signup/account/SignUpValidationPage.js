@@ -36,7 +36,7 @@ export default function SignUpValidationPage () {
       )
 
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        setError(errorMessage)
       } else {
         dispatch(setAuthToken(data.authToken))
         navigate('/signup/contactpreferences')
@@ -53,7 +53,7 @@ export default function SignUpValidationPage () {
       navigate
     )
     if (errorMessage !== null) {
-      setError(errorMessage.desc)
+      setError(errorMessage)
     }
   }
 

@@ -49,7 +49,7 @@ export default function ValidateLandlinePhonePage () {
         navigate
       )
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        setError(errorMessage)
       } else {
         // remove landline from unverified list and add to verified list
         const updatedProfile = removeUnverifiedContact(
@@ -83,7 +83,7 @@ export default function ValidateLandlinePhonePage () {
       navigate
     )
     if (errorMessage !== null) {
-      setError(errorMessage.desc)
+      setError(errorMessage)
     }
   }
 

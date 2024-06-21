@@ -41,7 +41,7 @@ export default function AddLandlineValidatePage () {
         navigate
       )
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        setError(errorMessage)
       } else {
         dispatch(setProfile(data.profile))
         navigate('/managecontacts')
@@ -59,7 +59,7 @@ export default function AddLandlineValidatePage () {
     )
     console.log(errorMessage)
     if (errorMessage !== null) {
-      setError(errorMessage.desc)
+      setError(errorMessage)
     }
   }
 

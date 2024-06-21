@@ -6,7 +6,7 @@ import Header from '../../../gov-uk-components/Header'
 import Pagination from '../../../gov-uk-components/Pagination'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 
-export default function LocationSearchResultsPage() {
+export default function LocationSearchResultsPage () {
   const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
   const addressesPerPage = 10
@@ -14,7 +14,7 @@ export default function LocationSearchResultsPage() {
   const detailsMessage = (
     <div>
       You can view flood message areas&nbsp;
-      <a href="#" className="govuk-link">
+      <a href='#' className='govuk-link'>
         near this postcode
       </a>
     </div>
@@ -60,35 +60,35 @@ export default function LocationSearchResultsPage() {
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
+      <div className='govuk-width-container'>
         <PhaseBanner />
-        <div className="govuk-grid-row">
-          <div className="govuk-grid-column-two-thirds">
-            <div className="govuk-body">
-              <Link onClick={() => navigate(-1)} className="govuk-back-link">
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
+            <div className='govuk-body'>
+              <Link onClick={() => navigate(-1)} className='govuk-back-link'>
                 Back
               </Link>
-              <h1 className="govuk-heading-l govuk-!-margin-top-6">
+              <h1 className='govuk-heading-l govuk-!-margin-top-6'>
                 Select an address
               </h1>
-              <p className="govuk-body">
+              <p className='govuk-body'>
                 Postcode: SL7 2AA{'   '}
                 <Link
-                  to="/signup/register-location/search"
-                  className="govuk-link govuk-!-padding-left-5"
+                  to='/signup/register-location/search'
+                  className='govuk-link govuk-!-padding-left-5'
                 >
                   Change postcode
                 </Link>
               </p>
-              <table class="govuk-table">
-                <tbody class="govuk-table__body">
-                  <tr class="govuk-table__row">
-                    <td class="govuk-table__cell"></td>
+              <table class='govuk-table'>
+                <tbody class='govuk-table__body'>
+                  <tr class='govuk-table__row'>
+                    <td class='govuk-table__cell' />
                   </tr>
                   {displayedAddresses.map((address, index) => (
-                    <tr key={index} class="govuk-table__row">
-                      <td class="govuk-table__cell">
-                        <Link className="govuk-link" to="/dgfd">
+                    <tr key={index} class='govuk-table__row'>
+                      <td class='govuk-table__cell'>
+                        <Link className='govuk-link' to='/dgfd'>
                           {address}
                         </Link>
                       </td>
@@ -97,7 +97,7 @@ export default function LocationSearchResultsPage() {
                 </tbody>
               </table>
               <Details
-                title={'I cannot find my address here'}
+                title='I cannot find my address here'
                 text={detailsMessage}
               />
               <Pagination

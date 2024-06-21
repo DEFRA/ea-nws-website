@@ -1,11 +1,11 @@
 const postCodeValidation = (postcode) => {
   if (!postcode) {
-    return "Enter a postcode in England"
+    return 'Enter a postcode in England'
   }
 
   // Normalize input: remove any non-alphanumeric characters and extra spaces
   postcode = postcode
-    .replace(/[\s\-\.\(\)]/g, "")
+    .replace(/[\s\-\.\(\)]/g, '')
     .toUpperCase()
     .trim()
 
@@ -17,11 +17,11 @@ const postCodeValidation = (postcode) => {
     /^[a-z](\d\d?|[a-z]\d[a-z\d]?|[a-z]?\d?\d \d[a-z]{2}|[a-z]\d [a-z] \d[a-z]{2})$/i
 
   if (postcodePattern.test(postcode)) {
-    return ""
+    return ''
   } else if (partialPostcodePattern.test(postcode)) {
-    return "Enter a full postcode in England"
+    return 'Enter a full postcode in England'
   } else {
-    return "Enter a postcode in the correct format , like KT3 3QQ"
+    return 'Enter a postcode in the correct format , like KT3 3QQ'
   }
 }
 

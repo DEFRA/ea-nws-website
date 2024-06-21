@@ -51,7 +51,7 @@ const signupRoutes = [
     path: '/signup/contactpreferences',
     component: <WarningContactsPreferencePage />
   },
-  //register a location
+  // register a location
   {
     path: '/signup/register-location/search',
     component: <LocationSearchPage />

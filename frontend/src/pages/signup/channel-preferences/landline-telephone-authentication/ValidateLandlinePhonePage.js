@@ -1,29 +1,29 @@
-import * as React from "react"
-import { useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { Link, useNavigate } from "react-router-dom"
-import Button from "../../../../gov-uk-components/Button"
-import ErrorSummary from "../../../../gov-uk-components/ErrorSummary"
-import Footer from "../../../../gov-uk-components/Footer"
-import Header from "../../../../gov-uk-components/Header"
-import Input from "../../../../gov-uk-components/Input"
-import InsetText from "../../../../gov-uk-components/InsetText"
-import PhaseBanner from "../../../../gov-uk-components/PhaseBanner"
-import { setProfile } from "../../../../redux/userSlice"
-import { backendCall } from "../../../../services/BackendService"
+import * as React from 'react'
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import Button from '../../../../gov-uk-components/Button'
+import ErrorSummary from '../../../../gov-uk-components/ErrorSummary'
+import Footer from '../../../../gov-uk-components/Footer'
+import Header from '../../../../gov-uk-components/Header'
+import Input from '../../../../gov-uk-components/Input'
+import InsetText from '../../../../gov-uk-components/InsetText'
+import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
+import { setProfile } from '../../../../redux/userSlice'
+import { backendCall } from '../../../../services/BackendService'
 import {
   addUnverifiedContact,
   addVerifiedContact,
   removeUnverifiedContact,
   removeVerifiedContact
-} from "../../../../services/ProfileServices"
-import { authCodeValidation } from "../../../../services/validations/AuthCodeValidation"
+} from '../../../../services/ProfileServices'
+import { authCodeValidation } from '../../../../services/validations/AuthCodeValidation'
 
-export default function ValidateLandlinePhonePage() {
+export default function ValidateLandlinePhonePage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [code, setCode] = useState("")
-  const [error, setError] = useState("")
+  const [code, setCode] = useState('')
+  const [error, setError] = useState('')
   // user has verified mobile but is now going back through sign up flow
   const homePhone = useSelector((state) =>
     state.session.profile.unverified.homePhones[0]
@@ -37,7 +37,7 @@ export default function ValidateLandlinePhonePage() {
     const validationError = authCodeValidation(code)
     setError(validationError)
 
-    if (validationError === "") {
+    if (validationError === '') {
       const dataToSend = {
         authToken,
         msisdn: homePhone,
@@ -46,7 +46,7 @@ export default function ValidateLandlinePhonePage() {
 
       const { errorMessage } = await backendCall(
         dataToSend,
-        "api/add_contact/landline/validate",
+        'api/add_contact/landline/validate',
         navigate
       )
       if (errorMessage !== null) {
@@ -59,17 +59,17 @@ export default function ValidateLandlinePhonePage() {
         )
         dispatch(
           setProfile(
-            addVerifiedContact(updatedProfile, "homePhones", homePhone)
+            addVerifiedContact(updatedProfile, 'homePhones', homePhone)
           )
         )
         // navigate through sign up flow
-        if (session.contactPreferences.includes("Email")) {
+        if (session.contactPreferences.includes('Email')) {
           // navigate to email TODO - cameron add this once merged
-        } else if (session.contactPreferences.includes("Mobile")) {
-          navigate("/signup/contactpreferences/mobile/add")
+        } else if (session.contactPreferences.includes('Mobile')) {
+          navigate('/signup/contactpreferences/mobile/add')
         } else {
           // To change following updated flow
-          navigate("/managecontacts")
+          navigate('/managecontacts')
         }
       }
     }
@@ -80,7 +80,7 @@ export default function ValidateLandlinePhonePage() {
     const data = { authToken: session.authToken, msisdn: homePhone }
     const { errorMessage } = await backendCall(
       data,
-      "api/add_contact/landline/add",
+      'api/add_contact/landline/add',
       navigate
     )
     if (errorMessage !== null) {
@@ -97,7 +97,7 @@ export default function ValidateLandlinePhonePage() {
     // user is going back - pass the mobile given back
     // we need this incase they go back again so we can
     // remove it from the profile
-    navigate("/signup/contactpreferences/landline/add", {
+    navigate('/signup/contactpreferences/landline/add', {
       state: {
         mobile: homePhone
       }
@@ -111,43 +111,43 @@ export default function ValidateLandlinePhonePage() {
     // we will need to add the home Phone back to the unverified list - if it already exists
     // nothing will happen and it will remain
     dispatch(
-      setProfile(addUnverifiedContact(updatedProfile, "homePhones", homePhone))
+      setProfile(addUnverifiedContact(updatedProfile, 'homePhones', homePhone))
     )
-    navigate("/signup/contactpreferences/landline/skipconfirmation")
+    navigate('/signup/contactpreferences/landline/skipconfirmation')
   }
 
   return (
     <>
       <Header />
-      <div class="govuk-width-container">
+      <div class='govuk-width-container'>
         <PhaseBanner />
-        <Link onClick={differentLandline} className="govuk-back-link">
+        <Link onClick={differentLandline} className='govuk-back-link'>
           Back
         </Link>
         {error && <ErrorSummary errorList={[error]} />}
-        <h2 class="govuk-heading-l">Check your email</h2>
-        <div class="govuk-body">
+        <h2 class='govuk-heading-l'>Check your email</h2>
+        <div class='govuk-body'>
           We're calling this number to read out a code:
           <InsetText text={homePhone} />
           <Input
-            name="Enter code"
-            inputType="text"
+            name='Enter code'
+            inputType='text'
             error={error}
-            className="govuk-input govuk-input--width-10"
+            className='govuk-input govuk-input--width-10'
             onChange={(val) => setCode(val)}
           />
           <Button
-            className="govuk-button"
-            text="Continue"
+            className='govuk-button'
+            text='Continue'
             onClick={handleSubmit}
           />
           &nbsp; &nbsp;
           <Link
-            className="govuk-link"
+            className='govuk-link'
             onClick={skipValidation}
             style={{
-              display: "inline-block",
-              padding: "8px 10px 7px"
+              display: 'inline-block',
+              padding: '8px 10px 7px'
             }}
           >
             Skip and confirm later
@@ -155,9 +155,9 @@ export default function ValidateLandlinePhonePage() {
           <br />
           <Link
             onClick={getNewCode}
-            className="govuk-link"
+            className='govuk-link'
             style={{
-              display: "inline-block"
+              display: 'inline-block'
             }}
           >
             Get a new code
@@ -166,9 +166,9 @@ export default function ValidateLandlinePhonePage() {
           <br />
           <Link
             onClick={differentLandline}
-            className="govuk-link"
+            className='govuk-link'
             style={{
-              display: "inline-block"
+              display: 'inline-block'
             }}
           >
             Enter a different telephone number

@@ -49,7 +49,7 @@ export default function App() {
     if (isPopUpOnScreen === true) {
       redirectTimer.current = setTimeout(() => {
         window.location.pathname = '/signout-auto'
-      }, 1 * 6 * 1000) // 2 minutes (current values for demo)
+      }, 1 * 2 * 1000) // 2 minutes (current values for demo)
     }
   }, [isPopUpOnScreen])
 

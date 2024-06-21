@@ -38,7 +38,7 @@ export default function InactivityPopup({ onStayLoggedIn }) {
           }}
         >
           <Button
-            className="govuk-button"
+            className="govuk-button dialog"
             onClick={onStayLoggedIn}
             text="Stay signed in"
           />

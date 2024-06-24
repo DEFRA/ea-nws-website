@@ -10,12 +10,16 @@ export default function ContactDetailsTable ({
 }) {
   const navigate = useNavigate()
   const handleButton = () => {
-    if (contactType === 'email address') {
-      navigate('/managecontacts/add-email')
-    } else if (contactType === 'mobile telephone number') {
-      navigate('/managecontacts/add-mobile')
-    } else if (contactType === 'telephone number') {
-      navigate('/managecontacts/add-landline')
+    switch (contactType) {
+      case 'email address':
+        navigate('/managecontacts/add-email')
+        break
+      case 'mobile telephone number':
+        navigate('/managecontacts/add-mobile')
+        break
+      case 'telephone number':
+        navigate('/managecontacts/add-landline')
+        break
     }
   }
 

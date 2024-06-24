@@ -25,9 +25,3 @@ def test_auto_signout_signin_button(get_browser):
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     assert browser.current_url == signin_url
 
-
-def test_link1(get_browser):
-    pass
-
-def test_link2(get_browser):
-    pass

@@ -8,6 +8,10 @@ import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
+import {
+  removeUnverifiedContact,
+  removeVerifiedContact
+} from '../../services/ProfileServices'
 
 export default function ConfirmDeleteContactDetailsPage () {
   const location = useLocation()
@@ -16,10 +20,15 @@ export default function ConfirmDeleteContactDetailsPage () {
   const session = useSelector((state) => state.session)
 
   const removeContact = async () => {
-    const updatedProfile = removeContactFromProfile(
+    let updatedProfile = removeVerifiedContact(
       session.profile,
       location.state.contact
     )
+    updatedProfile = removeUnverifiedContact(
+      updatedProfile,
+      location.state.contact
+    )
+
     const data = {
       authToken: session.authToken,
       profile: updatedProfile
@@ -31,8 +40,6 @@ export default function ConfirmDeleteContactDetailsPage () {
       'api/profile/update',
       navigate
     )
-
-    // we need to make an error page which the user is navigated to if this breaks
     if (!errorMessage) {
       dispatch(setProfile(updatedProfile))
       navigate('/managecontacts', {
@@ -44,26 +51,12 @@ export default function ConfirmDeleteContactDetailsPage () {
     }
   }
 
-  const removeContactFromProfile = (profile, valueToRemove) => {
-    const updatedProfile = { ...profile }
-    const propertiesToCheck = ['emails', 'mobilePhones', 'homePhones']
-
-    propertiesToCheck.forEach((property) => {
-      if (Array.isArray(updatedProfile[property])) {
-        updatedProfile[property] = updatedProfile[property].filter(
-          (item) => item !== valueToRemove
-        )
-      }
-    })
-    return updatedProfile
-  }
-
   return (
     <>
       <Header />
       <div className='govuk-width-container'>
         <PhaseBanner />
-        <Link to='/managecontacts' className='govuk-back-link'>
+        <Link to={() => navigate(-1)} className='govuk-back-link'>
           Back
         </Link>
         <main className='govuk-main-wrapper'>

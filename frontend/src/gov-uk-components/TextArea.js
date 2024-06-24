@@ -32,7 +32,7 @@ export default function TextArea ({
           className={error === '' ? className : 'govuk-textarea govuk-textarea--error'}
           name={name}
           id='govuk-textarea'
-          rows = {rows}
+          rows={rows}
           onChange={handleChange}
         />
       </div>

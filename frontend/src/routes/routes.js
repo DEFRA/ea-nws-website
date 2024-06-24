@@ -129,8 +129,7 @@ export const routes = [
   ...signupRoutes,
   ...signinRoutes,
   ...signupRoutes,
-  ...signBackInRoutes,
-  ...signOutRoutes
+  ...signBackInRoutes
 ]
 
-export const authenticatedRoutes = [...homeRoutes, ...contactRoutes]
+export const authenticatedRoutes = [...homeRoutes, ...contactRoutes,...signOutRoutes]

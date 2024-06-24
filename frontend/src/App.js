@@ -60,7 +60,15 @@ export default function App () {
     setIsPopUpOnScreen(false)
     clearTimeout(redirectTimer.current)
   }
-
+  const isSignOutRoute = ()=> {
+    let currentRoute = window.location.pathname
+    if((currentRoute === "/signout") || currentRoute === '/signout-auto'){
+      return true
+    }
+    else{
+      return false
+    }
+  }
   return (
     <BrowserRouter>
       <Routes>
@@ -68,7 +76,7 @@ export default function App () {
           <Route
             key={index}
             path={route.path}
-            element={auth ? route.component : <Navigate to='/sign-back-in' />}
+            element={auth || isSignOutRoute() ? route.component : <Navigate to='/sign-back-in' />}
           />
         ))}
         {routes.map((route, index) => (

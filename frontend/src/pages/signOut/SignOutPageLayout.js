@@ -18,7 +18,7 @@ export default function signOutLayout ({ text, redirect }) {
       </p>
 
       <p className='govuk-body'>
-        <a href='#' className='govuk-link'>
+        <a href='/signup/feedback' className='govuk-link'>
           What do you think of this service?
         </a>
         Takes 30 seconds

@@ -28,15 +28,22 @@ def test_sign_out_page_sign_in_button(get_browser):
 
 
 def test_protect_from_flooding_link(get_browser):
-    target_url = ""
+    target_url = "https://www.gov.uk/browse/environment-countryside/flooding-extreme-weather"
     browser = get_browser
     browser.get(url_index)
     browser.find_element(By.CLASS_NAME,"govuk-button").click()
     browser.find_element(By.LINK_TEXT,"Home page").click()
     browser.find_element(By.LINK_TEXT,"Sign Out").click()
     browser.find_element(By.LINK_TEXT, "protect yourself and your property online from flooding").click()
-    # the link of the target URL
+    assert browser.current_url == target_url
 
 
 def test_survey_link(get_browser):
-    pass
+    target_url = "http://localhost:3000/signup/feedback"
+    browser = get_browser
+    browser.get(url_index)
+    browser.find_element(By.CLASS_NAME,"govuk-button").click()
+    browser.find_element(By.LINK_TEXT,"Home page").click()
+    browser.find_element(By.LINK_TEXT,"Sign Out").click()
+    browser.find_element(By.LINK_TEXT, "What do you think of this service?").click()
+    assert browser.current_url == target_url

@@ -4,6 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import InactivityPopup from './custom-components/InactivityPopup'
 import { authenticatedRoutes, routes } from './routes/routes'
 
+
 export default function App () {
   const auth = useSelector((state) => state.session.authToken)
   const [isInactive, setIsInactive] = useState(false)
@@ -11,6 +12,15 @@ export default function App () {
   const redirectTimer = useRef(null)
   const [isPopUpOnScreen, setIsPopUpOnScreen] = useState(false)
 
+  const isLastRouteAuth = () => {
+    const prevUrl = document.referrer
+    for (let index = 0; index < authenticatedRoutes.length; index++) {
+        if(prevUrl === authenticatedRoutes[index].path){
+          return true
+        }
+    }
+    return false
+  }
   useEffect(() => {
     if (isPopUpOnScreen === false) {
       const resetInactivityTimer = () => {
@@ -66,7 +76,7 @@ export default function App () {
           <Route
             key={index}
             path={route.path}
-            element={auth ? route.component : <Navigate to='/sign-back-in' />}
+            element={auth || (!isLastRouteAuth() && auth) ? route.component : <Navigate to='/sign-back-in' />}
           />
         ))}
         {routes.map((route, index) => (

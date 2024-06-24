@@ -11,14 +11,14 @@ export default function signOutLayout ({ text, redirect }) {
 
       <p className='govuk-body'>
         Find out how to{' '}
-        <a href='#' className='govuk-link'>
+        <a href='https://www.gov.uk/flood' className='govuk-link'>
           protect yourself and your property online from flooding
         </a>
         .
       </p>
 
       <p className='govuk-body'>
-        <a href='#' className='govuk-link'>
+        <a href='/signup/feedback' className='govuk-link'>
           What do you think of this service?
         </a>
         Takes 30 seconds

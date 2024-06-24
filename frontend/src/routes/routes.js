@@ -11,7 +11,7 @@ import AddMobileValidatePage from '../pages/contact-details/add-contact-mobile/A
 import HomePage from '../pages/home/HomePage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
-import SignOutManually from '../pages/signOut/SignOutManually'
+import SignOutManuallyPage from '../pages/signOut/SignOutManuallyPage'
 import SignUpDuplicateEmailPage from '../pages/signup/account/SignUpDuplicateEmail'
 import SignUpFeedbackPage from '../pages/signup/account/SignUpFeedbackPage'
 import SignUpPage from '../pages/signup/account/SignUpPage'
@@ -29,7 +29,7 @@ import StartPage from '../pages/start/StartPage'
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
 
-const signOutRoutes = [{ path: '/signout', component: <SignOutManually /> }]
+const signOutRoutes = [{ path: '/signout', component: <SignOutManuallyPage /> }]
 
 // start routes
 const startRoutes = [{ path: '/', component: <StartPage /> }]

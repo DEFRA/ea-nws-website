@@ -1,11 +1,14 @@
 import React from 'react'
 import Button from '../../gov-uk-components/Button'
-export default function signOutLayout ({ text, redirect }) {
+import { useNavigate } from 'react-router'
+
+export default function SignOutLayout ({ text }) {
+  const navigate = useNavigate()
   return (
     <div className='govuk-width-container'>
       <h2 className='govuk-heading-l'>{text}</h2>
       <p className='govuk-body'>You can sign back in if you need to.</p>
-      <Button text='Sign in' className='govuk-button' onClick={redirect} />
+      <Button text='Sign in' className='govuk-button' onClick={navigate('/signin')} />
 
       <h3 className='govuk-heading-s'>More about flooding</h3>
 
@@ -21,7 +24,7 @@ export default function signOutLayout ({ text, redirect }) {
         <a href='/signup/feedback' className='govuk-link'>
           What do you think of this service?
         </a>
-        Takes 30 seconds
+        {' '} Takes 30 seconds
       </p>
     </div>
   )

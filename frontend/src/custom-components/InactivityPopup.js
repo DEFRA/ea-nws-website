@@ -10,12 +10,12 @@ export default function InactivityPopup ({ onStayLoggedIn }) {
         left: '0',
         width: '100%',
         height: '100%',
-        backgroundColor: 'RGBA(0, 0, 0, 0.5)',
+        backgroundColor: 'rgba(0, 0, 0, 0.85)',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        zIndex: '1000',
-        backdropFilter: 'blur(5px)'
+        zIndex: '1000'
+
       }}
     >
       <div

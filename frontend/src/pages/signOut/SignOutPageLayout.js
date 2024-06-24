@@ -11,7 +11,7 @@ export default function signOutLayout ({ text, redirect }) {
 
       <p className='govuk-body'>
         Find out how to{' '}
-        <a href='#' className='govuk-link'>
+        <a href='https://www.gov.uk/flood' className='govuk-link'>
           protect yourself and your property online from flooding
         </a>
         .

@@ -26,7 +26,7 @@ def test_popup_stay_signin_button(get_browser):
     try:
          assert browser.find_element(By.CLASS_NAME,"govuk-heading-s").is_displayed()
     except NoSuchElementException:
-        return True
+        assert True
     
 
 def test_popup_logout_button(get_browser):
@@ -51,7 +51,7 @@ def test_stay_active(get_browser):
     try:
          assert browser.find_element(By.CLASS_NAME,"govuk-heading-s").is_displayed()
     except NoSuchElementException:
-        return True
+        assert True
 
 
 def test_auto_logout(get_browser):

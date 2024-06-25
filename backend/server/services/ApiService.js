@@ -1,7 +1,8 @@
 const axios = require('axios')
+const getSecretKeyValue = require('./SecretsManager')
 
 const apiCall = async (data, path) => {
-  const apiUrl = process.env.API_URL || 'http://localhost:9000'
+  const apiUrl = await getSecretKeyValue("nws/website", "apiUrl")
   const url = apiUrl + '/' + path
 
   try {

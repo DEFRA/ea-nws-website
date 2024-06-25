@@ -44,12 +44,6 @@ while getopts "v:sd:a:h" opt; do
     s) # Save docker image
         save_image=true
         ;;
-    d) # domain name
-        domain_name=${OPTARG}
-        ;;
-    a) # api URL
-        api_url=${OPTARG}
-        ;;
     h) # print help
         print_help
         exit 1
@@ -91,18 +85,6 @@ fi
 
 echo "Building docker image as version: "${build_version}
 export BUILD_VERSION=${build_version}
-if [[ ! -z "${domain_name}" ]]; then
-    echo "Domain name set to: "${domain_name}
-    export REACT_APP_DOMAIN=${domain_name}
-else
-    echo "Using domain name set in .env file"
-fi
-if [[ ! -z "${api_url}" ]]; then
-    echo "API url set to: "${api_url}
-    export API_URL=${api_url}
-else
-    echo "Using API url set in .env file"
-fi
 
 docker compose build
 echo "Build Complete!"

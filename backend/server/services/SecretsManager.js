@@ -28,4 +28,4 @@ const getSecretKeyValue = async (secretName, key) => {
   return null
 }
 
-module.exports = { getSecretKeyValue }
+module.exports = getSecretKeyValue

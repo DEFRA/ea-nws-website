@@ -36,10 +36,6 @@ COPY api .
 # where the necessary files are copied from the build stage.
 FROM base as final
 
-ARG NODE_ENV
-ENV NODE_ENV $NODE_ENV
-
-
 # Copy package.json so that package manager commands can be used.
 COPY api/package.json .
 COPY api/index.ts .

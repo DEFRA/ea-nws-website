@@ -14,8 +14,8 @@ const schema = joi.object().keys({
 const config = async () => {
   // Build config
   const config = {
-    port: await getSecretKeyValue("nws/website", "backendPort"),
-    env: await getSecretKeyValue("nws/website", "environment")
+    port: await getSecretKeyValue('nws/website', 'backendPort'),
+    env: await getSecretKeyValue('nws/website', 'environment')
   }
 
   // Validate config

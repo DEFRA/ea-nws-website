@@ -120,9 +120,7 @@ export default function ValidateLandlinePhonePage () {
     <>
       <Header />
       <div class='govuk-width-container'>
-      <div class='govuk-width-container'>
         <PhaseBanner />
-        <Link onClick={differentLandline} className='govuk-back-link'>
         <Link onClick={differentLandline} className='govuk-back-link'>
           Back
         </Link>

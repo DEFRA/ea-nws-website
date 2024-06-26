@@ -16,7 +16,7 @@ module.exports = [
         const validationError = phoneValidation(msisdn, 'mobile')
 
         if (validationError === '') {
-          //request.payload = { authToken, msisdn }
+          // request.payload = { authToken, msisdn }
           const response = await apiCall(
             request.payload,
             'member/verifyMobilePhoneStart'

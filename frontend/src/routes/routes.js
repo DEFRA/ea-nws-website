@@ -23,6 +23,7 @@ import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobi
 import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
 import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
+import SignUpFeedbackPage from '../pages/signup/account/SignUpFeedbackPage'
 import SignUpCodeExpiredPage from '../pages/signup/account/SignUpCodeExpiredPage'
 
 // index routes
@@ -75,12 +76,16 @@ const signupRoutes = [
     component: <SkipConfirmLandlinePhonePage />
   },
   {
+    path: '/signup/feedback',
+    component: <SignUpFeedbackPage />
+  },
+  {
     path: '/declaration',
     component: <DeclarationOfAgreementPage />
   },
   {
     path: '/signup/duplicate',
-    component: < SignUpDuplicateEmailPage/>
+    component: <SignUpDuplicateEmailPage />
   },
   {
     path: '/signup/expired',

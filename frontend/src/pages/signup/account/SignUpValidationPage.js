@@ -13,7 +13,7 @@ import { backendCall } from '../../../services/BackendService'
 import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
 import NotificationBanner from '../../../gov-uk-components/NotificationBanner'
 
-export default function SignUpValidationPage() {
+export default function SignUpValidationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const registerToken = useSelector((state) => state.session.registerToken)
@@ -77,8 +77,9 @@ export default function SignUpValidationPage() {
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
+      <div className='govuk-width-container'>
         <PhaseBanner />
+        <Link to='/signup' className='govuk-back-link'>
         {codeResent
           ? (
             <NotificationBanner
@@ -88,12 +89,11 @@ export default function SignUpValidationPage() {
             />
             )
           : null}
-        <Link to="/signup" className="govuk-back-link">
           Back
         </Link>
         {error && <ErrorSummary errorList={[error]} />}
-        <h2 className="govuk-heading-l">Check your email</h2>
-        <div className="govuk-body">
+        <h2 className='govuk-heading-l'>Check your email</h2>
+        <div className='govuk-body'>
           You need to confirm your email address.
           <br />
           <br />
@@ -103,22 +103,22 @@ export default function SignUpValidationPage() {
           <br />
           <br />
           <Input
-            className="govuk-input govuk-input--width-10"
-            inputType="text"
+            className='govuk-input govuk-input--width-10'
+            inputType='text'
             value={code}
-            name="Enter code"
+            name='Enter code'
             error={error}
             onChange={(val) => setCode(val)}
           />
           <Button
-            className="govuk-button"
-            text="Confirm email address"
+            className='govuk-button'
+            text='Confirm email address'
             onClick={handleSubmit}
           />
           &nbsp; &nbsp;
           <Link
-            to="/signup"
-            className="govuk-link"
+            to='/signup'
+            className='govuk-link'
             style={{
               display: 'inline-block',
               padding: '8px 10px 7px'
@@ -129,7 +129,7 @@ export default function SignUpValidationPage() {
           <br />
           <Link
             onClick={getNewCode}
-            className="govuk-link"
+            className='govuk-link'
             style={{
               display: 'inline-block'
             }}

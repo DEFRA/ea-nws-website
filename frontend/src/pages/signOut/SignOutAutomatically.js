@@ -1,30 +1,15 @@
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router'
-import Footer from '../../gov-uk-components/Footer'
-import Header from '../../gov-uk-components/Header'
+import { useDispatch } from 'react-redux'
 import { clearAuth } from '../../redux/userSlice'
-import SignOutLayout from './SignOutPageLayout'
-export default function SignOutAutomatically () {
-  const navigate = useNavigate()
+import SignOutLayout from '../../common-layouts/sign-out/SignOutPageLayout'
+
+import { useEffect } from 'react'
+export default function SignOutManuallyPage () {
   const dispatch = useDispatch()
-  const session = useSelector((state) => state.session)
-
-  if (session.authToken !== null) {
+  useEffect(() => {
     dispatch(clearAuth())
-  }
-
-  function redirect () {
-    navigate('/signin')
-  }
+  })
 
   return (
-    <>
-      <Header />
-      <SignOutLayout
-        text={"You've been signed out for security reasons"}
-        redirect={redirect}
-      />
-      <Footer />
-    </>
+    <SignOutLayout text={"You've been signed out for security reasons"} />
   )
 }

@@ -44,9 +44,16 @@ def test_addmobilestart_incorrectnumber(get_browser):
     assert "Enter a valid UK mobile telephone number" in browser.page_source
     assert browser.current_url == url
 
+def test_addlandlinestart_duplicateNumber(get_browser):
+    browser = setup_addmobile_test(get_browser)   
+    browser.find_element(By.NAME, "UK mobile telephone number").send_keys("07000000000")
+    browser.find_element(By.CLASS_NAME, "govuk-button").click()
+    assert "You have already registered this mobile number on your account - you cannot enter it again" in browser.page_source
+    assert browser.current_url == url
+
 def test_addmobilestart_validNumber(get_browser):
     browser = setup_addmobile_test(get_browser)  
-    browser.find_element(By.NAME, "UK mobile telephone number").send_keys("07000000000")
+    browser.find_element(By.NAME, "UK mobile telephone number").send_keys("07700000000")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)
     assert browser.current_url == nextPage

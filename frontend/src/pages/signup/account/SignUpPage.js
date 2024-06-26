@@ -30,12 +30,12 @@ export default function SignUpPage () {
       )
 
       if (errorMessage !== null) {
-        if (errorMessage.desc === 'email already registered') {
+        if (errorMessage.code === 107) {
           navigate('/signup/duplicate', {
             state: { email }
           })
         } else {
-          setError(errorMessage.desc)
+          setError(errorMessage)
         }
       } else {
         // start empty profile for user

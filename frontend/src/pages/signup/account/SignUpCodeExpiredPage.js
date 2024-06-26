@@ -9,14 +9,12 @@ import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 import { backendCall } from '../../../services/BackendService'
 
 export default function SignUpPage () {
-  
   const navigate = useNavigate()
   const location = useLocation()
   const [error, setError] = useState('')
   const email = location.state.email
 
   const handleSubmit = async () => {
-
     const data = { email }
     const { errorMessage } = await backendCall(
       data,

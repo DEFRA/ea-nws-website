@@ -93,7 +93,7 @@ export default function ContactDetailsTable ({
                   </td>
                   <td className='govuk-table__cell'>
                     <strong className='govuk-tag govuk-tag--red'>
-                      Unconfirmed
+                      Unconfirmed - Code sent
                     </strong>
                   </td>
                   <td className='govuk-table__cell'>

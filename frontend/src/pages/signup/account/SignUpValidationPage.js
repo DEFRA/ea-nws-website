@@ -25,10 +25,9 @@ export default function SignUpValidationPage() {
 
   const handleSubmit = async () => {
     const validationError = authCodeValidation(code)
-    codeResent = false
-    setCodeResent(codeResent)
-    console.log("code sent", codeResent)
+    setCodeResent(false)
     setError(validationError)
+    
     if (validationError === '') {
       const dataToSend = {
         registerToken,
@@ -41,9 +40,17 @@ export default function SignUpValidationPage() {
         navigate
       )
 
-      if (errorMessage !== null) {
-        setError(errorMessage.desc)
-      } else {
+      if(errorMessage !== null) {
+        if(errorMessage.desc === 'invalid credentials'){
+          navigate('/signup/expired', {
+            state:{ email: loginEmail }
+          })
+        }
+        else{
+          setError(errorMessage.desc)
+        }
+      }
+      else {
         dispatch(setAuthToken(data.authToken))
         navigate('/signup/contactpreferences')
       }
@@ -52,21 +59,18 @@ export default function SignUpValidationPage() {
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    codeResent = false
-    setCodeResent(codeResent)
+    setCodeResent(false)
+
     const data = { email: loginEmail }
     const { errorMessage } = await backendCall(
       data,
       'api/signupStart',
       navigate
     )
-    codeResent = true
-    setCodeResent(codeResent)
+    setCodeResent(true)
     if (errorMessage !== null) {
       setError(errorMessage.desc)
-      
-      codeResent = false
-      setCodeResent(codeResent)
+      setCodeResent(false)
     }
   }
 

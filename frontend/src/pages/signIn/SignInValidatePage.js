@@ -27,8 +27,8 @@ export default function SignInValidatePage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    codeResent = false
-    setCodeResent(codeResent)
+    setCodeResent(false)
+
     const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
@@ -50,22 +50,18 @@ export default function SignInValidatePage() {
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    codeResent = false
-    setCodeResent(codeResent)
+    setCodeResent(false)
     const data = { email: location.state.email }
     const { errorMessage } = await backendCall(
       data,
       'api/signInStart',
       navigate
     )
-    codeResent = true
-    setCodeResent(codeResent)
+    setCodeResent(true)
 
     if (errorMessage !== null) {
       setError(errorMessage.desc)
-
-      codeResent = false
-      setCodeResent(codeResent)
+      setCodeResent(false)
     }
   }
 

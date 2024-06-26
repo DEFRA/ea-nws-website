@@ -23,6 +23,7 @@ import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobi
 import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
 import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
+import SignUpCodeExpiredPage from '../pages/signup/account/SignUpCodeExpiredPage'
 
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
@@ -80,6 +81,10 @@ const signupRoutes = [
   {
     path: '/signup/duplicate',
     component: < SignUpDuplicateEmailPage/>
+  },
+  {
+    path: '/signup/expired',
+    component: < SignUpCodeExpiredPage/>
   }
 ]
 

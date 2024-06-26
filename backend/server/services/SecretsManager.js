@@ -22,8 +22,7 @@ const getSecretValue = async (secretName) => {
 const getSecretKeyValue = async (secretName, key) => {
   const secretValue = JSON.parse(await getSecretValue(secretName)) || null
   if (secretValue != null && secretValue[key] != null) {
-    console.log(secretValue[key])
-    return secretValue[key]
+    return String(secretValue[key])
   }
   return null
 }

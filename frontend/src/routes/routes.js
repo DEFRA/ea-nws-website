@@ -132,4 +132,4 @@ export const routes = [
   ...signBackInRoutes
 ]
 
-export const authenticatedRoutes = [...homeRoutes, ...contactRoutes,...signOutRoutes]
+export const authenticatedRoutes = [...homeRoutes, ...contactRoutes, ...signOutRoutes]

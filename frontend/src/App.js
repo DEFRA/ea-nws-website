@@ -4,7 +4,6 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import InactivityPopup from './custom-components/InactivityPopup'
 import { authenticatedRoutes, routes } from './routes/routes'
 
-
 export default function App () {
   const auth = useSelector((state) => state.session.authToken)
   const [isInactive, setIsInactive] = useState(false)
@@ -12,7 +11,6 @@ export default function App () {
   const redirectTimer = useRef(null)
   const [isPopUpOnScreen, setIsPopUpOnScreen] = useState(false)
 
-  
   useEffect(() => {
     if (isPopUpOnScreen === false) {
       const resetInactivityTimer = () => {
@@ -60,12 +58,11 @@ export default function App () {
     setIsPopUpOnScreen(false)
     clearTimeout(redirectTimer.current)
   }
-  const isSignOutRoute = ()=> {
-    let currentRoute = window.location.pathname
-    if((currentRoute === "/signout") || currentRoute === '/signout-auto'){
+  const isSignOutRoute = () => {
+    const currentRoute = window.location.pathname
+    if ((currentRoute === '/signout') || currentRoute === '/signout-auto') {
       return true
-    }
-    else{
+    } else {
       return false
     }
   }

@@ -13,7 +13,7 @@ export default function SignOutLayout ({ text }) {
         <PhaseBanner />
         <h2 className='govuk-heading-l'>{text}</h2>
         <p className='govuk-body'>You can sign back in if you need to.</p>
-        <Button text='Sign in' className='govuk-button' onClick={()=>navigate('/signin')} />
+        <Button text='Sign in' className='govuk-button' onClick={() => navigate('/signin')} />
 
         <h3 className='govuk-heading-s'>More about flooding</h3>
 

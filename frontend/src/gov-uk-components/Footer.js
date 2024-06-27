@@ -33,7 +33,7 @@ export default function Footer () {
                   </a>
                 </li>
                 <li className='govuk-footer__inline-list-item'>
-                  <a className='govuk-footer__link' href='/declaration'>
+                  <a className='govuk-footer__link' href='#'>
                     Terms and conditions
                   </a>
                 </li>

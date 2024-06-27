@@ -11,6 +11,10 @@ async function getEmailStart(
   const { email } = req.payload as { email: string }
   // 200 Success
   if (authToken === 'MockAuthToken' && email !== 'invalid@email.com') {
+    if (email === 'duplicate@email.com') {
+      console.log('duplicate email, responding 500')
+      return res.response(responseCodes.DUPLICATE_EMAIL).code(500)
+    }
     return res.response(responseCodes.SUCCESS)
   } else {
     return res.response(responseCodes.INVALID_TOKEN).code(500)

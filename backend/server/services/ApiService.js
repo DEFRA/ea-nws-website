@@ -2,7 +2,7 @@ const axios = require('axios')
 const getSecretKeyValue = require('./SecretsManager')
 
 const apiCall = async (data, path) => {
-  const apiUrl = await getSecretKeyValue('nws/website', 'apiUrl')
+  const apiUrl = await getSecretKeyValue('nws/geosafe', 'apiUrl')
   const url = apiUrl + '/' + path
 
   try {

@@ -1,19 +1,19 @@
-import Hapi from "@hapi/hapi";
-import OpenAPIBackend from "openapi-backend";
+import Hapi from '@hapi/hapi'
+import OpenAPIBackend from 'openapi-backend'
 
-const server = new Hapi.Server({ port: 9000 });
+const server = new Hapi.Server({ port: 9000 })
 
 // calling handlers
-const signInHandlers = require("./handlers/signin/signinHandlers");
-const registerHandlers = require("./handlers/signup/registerHandlers");
-const updateProfileHandler = require("./handlers/updateProfile/updateProfileHandler");
-const mobileAuthenticationHandler = require("./handlers/contact/mobile/mobileAuthenticationHandlers");
-const homePhoneAuthenticationHandlers = require("./handlers/contact/homephone/homephoneAuthenticationHandlers");
-const emailAuthenticationHandlers = require("./handlers/contact/email/emailAuthenticationHandlers");
-const fullNameAuthenticationHandler = require("./handlers/contact/fullname/fullNameAuthenticationHandlers");
+const signInHandlers = require('./handlers/signin/signinHandlers')
+const registerHandlers = require('./handlers/signup/registerHandlers')
+const updateProfileHandler = require('./handlers/updateProfile/updateProfileHandler')
+const mobileAuthenticationHandler = require('./handlers/contact/mobile/mobileAuthenticationHandlers')
+const homePhoneAuthenticationHandlers = require('./handlers/contact/homephone/homephoneAuthenticationHandlers')
+const emailAuthenticationHandlers = require('./handlers/contact/email/emailAuthenticationHandlers')
+const fullNameAuthenticationHandler = require('./handlers/contact/fullname/fullNameAuthenticationHandlers')
 // define api
 const api = new OpenAPIBackend({
-  definition: "./openapi/index.yaml",
+  definition: './openapi/index.yaml',
   handlers: {
     //sign up routes
     getRegisterStart: registerHandlers.getRegisterStart,
@@ -33,16 +33,16 @@ const api = new OpenAPIBackend({
     //sign in routes
     getSignInStart: signInHandlers.getSigninStart,
     getSignInValidate: signInHandlers.getSigninValidate,
-    getUpdateProfile: updateProfileHandler.getUpdateProfile,
-  },
-});
+    getUpdateProfile: updateProfileHandler.getUpdateProfile
+  }
+})
 
-api.init();
+api.init()
 
 // use as a catch-all handler
 server.route({
-  method: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
-  path: "/{path*}",
+  method: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+  path: '/{path*}',
   handler: (req, h) =>
     api.handleRequest(
       {
@@ -50,12 +50,12 @@ server.route({
         path: req.path,
         body: req.payload,
         query: req.query,
-        headers: req.headers,
+        headers: req.headers
       },
       req,
       h
-    ),
-});
+    )
+})
 
 // start server
-server.start().then(() => console.info(`listening on ${server.info.uri}`));
+server.start().then(() => console.info(`listening on ${server.info.uri}`))

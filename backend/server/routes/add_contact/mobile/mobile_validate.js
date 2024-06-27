@@ -3,6 +3,23 @@ const {
   authCodeValidation
 } = require('../../../services/validations/AuthCodeValidation')
 
+const apiMobileValidateCall = async (code, msisdn, auth) => {
+  const data = { msisdn, authToken: auth, code }
+  try {
+    const validationError = authCodeValidation(code)
+    if (validationError === '') {
+      const response = await apiCall(data, 'member/verifyMobilePhoneValidate')
+      return response
+    } else {
+      return { status: 500, errorMessage: validationError }
+    }
+  } catch (error) {
+    return {
+      status: 500,
+      errorMessage: 'Oops, something happened!'
+    }
+  }
+}
 module.exports = [
   {
     method: ['POST'],
@@ -12,25 +29,16 @@ module.exports = [
         if (request.payload === null) {
           return h.response({ message: 'Bad request' }).code(400)
         }
-        const { code } = request.payload
-        // progressive enhancement validation
-        const validationError = authCodeValidation(code)
+        const { authToken, msisdn, code } = request.payload
 
-        if (validationError === '') {
-          // request.payload = { authToken, msisdn, code }
-          const response = await apiCall(
-            request.payload,
-            'member/verifyMobilePhoneValidate'
-          )
-          return h.response(response)
-        } else {
-          return h.response({ status: 500, errorMessage: validationError })
-        }
+        const apiResponse = await apiMobileValidateCall(
+          code,
+          msisdn,
+          authToken
+        )
+        return h.response(apiResponse)
       } catch (error) {
-        return h.response({
-          status: 500,
-          errorMessage: 'Oops, something happened!'
-        })
+        return h.response({ message: 'Internal server error' }).code(500)
       }
     }
   }

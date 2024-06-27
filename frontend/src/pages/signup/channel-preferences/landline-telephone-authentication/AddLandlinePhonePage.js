@@ -43,7 +43,7 @@ export default function AddLandlinePhonePage () {
         'api/add_contact/landline/add'
       )
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        setError(errorMessage)
       } else {
         const normalisedPhoneNumber = normalisePhoneNumber(homePhone)
         // add landline to unverified list

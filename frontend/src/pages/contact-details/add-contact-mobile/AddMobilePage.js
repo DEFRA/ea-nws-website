@@ -36,7 +36,7 @@ export default function AddMobilePage () {
         navigate
       )
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        setError(errorMessage)
       } else {
         dispatch(
           setProfile(addUnverifiedContact(session.profile, 'mobile', mobile))
@@ -78,29 +78,35 @@ export default function AddMobilePage () {
         <Link onClick={removeMobileFromProfile} className='govuk-back-link'>
           Back
         </Link>
-        <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 class='govuk-heading-l'>
-          Enter a mobile number to get flood messages by text
-        </h2>
-        <div class='govuk-body'>
-          <p>
-            We recommend using a mobile number where we can reach you 24 hours a
-            day.
-          </p>
-          <Input
-            name='UK mobile telephone number'
-            inputType='text'
-            error={error}
-            onChange={(val) => setMobile(val)}
-            className='govuk-input govuk-input--width-20'
-          />
-          <Button
-            className='govuk-button'
-            text='Continue'
-            onClick={handleSubmit}
-          />
-          <br />
-        </div>
+        <main className='govuk-main-wrapper'>
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-two-thirds'>
+              <ErrorSummary errorList={error === '' ? [] : [error]} />
+              <h2 class='govuk-heading-l'>
+                Enter a mobile number to get flood messages by text
+              </h2>
+              <div class='govuk-body'>
+                <p>
+                  We recommend using a mobile number where we can reach you 24
+                  hours a day.
+                </p>
+                <Input
+                  name='UK mobile telephone number'
+                  inputType='text'
+                  error={error}
+                  onChange={(val) => setMobile(val)}
+                  className='govuk-input govuk-input--width-20'
+                />
+                <Button
+                  className='govuk-button'
+                  text='Continue'
+                  onClick={handleSubmit}
+                />
+                <br />
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
       <Footer />
     </>

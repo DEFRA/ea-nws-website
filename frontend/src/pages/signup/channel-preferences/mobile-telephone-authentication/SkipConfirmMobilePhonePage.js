@@ -1,26 +1,26 @@
-import * as React from 'react'
-import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
-import Button from '../../../../gov-uk-components/Button'
-import Footer from '../../../../gov-uk-components/Footer'
-import Header from '../../../../gov-uk-components/Header'
-import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
+import * as React from "react";
+import { useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import Button from "../../../../gov-uk-components/Button";
+import Footer from "../../../../gov-uk-components/Footer";
+import Header from "../../../../gov-uk-components/Header";
+import PhaseBanner from "../../../../gov-uk-components/PhaseBanner";
 
 export default function SkipConfirmMobilePhonePage() {
-  const navigate = useNavigate()
-  const session = useSelector((state) => state.session)
+  const navigate = useNavigate();
+  const session = useSelector((state) => state.session);
   const mobile = useSelector(
     (state) => state.session.profile.unverified.mobilePhones[0]
-  )
+  );
 
   function handleSubmit() {
     // navigate through sign up flow
-    if (session.contactPreferences.includes('Email')) {
+    if (session.contactPreferences.includes("Email")) {
       // navigate to email TODO - cameron add this once merged
-    } else if (session.contactPreferences.includes('PhoneCall')) {
-      navigate('/signup/contactpreferences/landline/add')
+    } else if (session.contactPreferences.includes("PhoneCall")) {
+      navigate("/signup/contactpreferences/landline/add");
     } else {
-      // navigate to addtional details flow
+      navigate("/signup/accountname/add");
     }
   }
 
@@ -51,8 +51,8 @@ export default function SkipConfirmMobilePhonePage() {
               to="/signup/contactpreferences/mobile/validate"
               className="govuk-body govuk-link"
               style={{
-                display: 'inline-block',
-                padding: '8px 10px 7px'
+                display: "inline-block",
+                padding: "8px 10px 7px",
               }}
             >
               Confirm now
@@ -62,5 +62,5 @@ export default function SkipConfirmMobilePhonePage() {
       </div>
       <Footer />
     </>
-  )
+  );
 }

@@ -1,16 +1,16 @@
 const addUnverifiedContact = (profile, type, contact) => {
-  let unverifiedContactList
+  let unverifiedContactList;
 
   switch (type) {
-    case 'email':
-      unverifiedContactList = profile.unverified.emails
-      break
-    case 'mobile':
-      unverifiedContactList = profile.unverified.mobilePhones
-      break
-    case 'homePhones':
-      unverifiedContactList = profile.unverified.homePhones
-      break
+    case "email":
+      unverifiedContactList = profile.unverified.emails;
+      break;
+    case "mobile":
+      unverifiedContactList = profile.unverified.mobilePhones;
+      break;
+    case "homePhones":
+      unverifiedContactList = profile.unverified.homePhones;
+      break;
   }
 
   // Check for duplicates
@@ -20,63 +20,66 @@ const addUnverifiedContact = (profile, type, contact) => {
       unverified: {
         ...profile.unverified,
         // update the correct unverified contacts list based on users input
-        [type === 'email'
-          ? 'emails'
-          : type === 'mobile'
-            ? 'mobilePhones'
-            : 'homePhones']: [...unverifiedContactList, contact]
-      }
-    }
-    return updatedProfile
+        [type === "email"
+          ? "emails"
+          : type === "mobile"
+          ? "mobilePhones"
+          : "homePhones"]: [...unverifiedContactList, contact],
+      },
+    };
+    return updatedProfile;
   } else {
     // contact exists already, so do nothing
-    return profile
+    return profile;
   }
-}
+};
 
 const removeUnverifiedContact = (profile, contact) => {
-  let unverifiedContactListKey
+  let unverifiedContactListKey;
 
   if (profile.unverified.emails.includes(contact)) {
-    unverifiedContactListKey = 'emails'
+    unverifiedContactListKey = "emails";
   } else if (profile.unverified.mobilePhones.includes(contact)) {
-    unverifiedContactListKey = 'mobilePhones'
+    unverifiedContactListKey = "mobilePhones";
   } else if (profile.unverified.homePhones.includes(contact)) {
-    unverifiedContactListKey = 'homePhones'
+    unverifiedContactListKey = "homePhones";
   } else {
     // contact not found in any unverified contacts list
-    return profile
+    return profile;
   }
 
   // eslint-disable-next-line no-self-compare
   const newUnverifiedContactList = profile.unverified[
     unverifiedContactListKey
-  ].filter((c) => c !== contact)
+  ].filter((c) => c !== contact);
 
   const updatedProfile = {
     ...profile,
     unverified: {
       ...profile.unverified,
-      [unverifiedContactListKey]: newUnverifiedContactList
-    }
-  }
+      [unverifiedContactListKey]: newUnverifiedContactList,
+    },
+  };
 
-  return updatedProfile
-}
+  return updatedProfile;
+};
 
 const addVerifiedContact = (profile, type, contact) => {
-  let verifiedContactList
+  let verifiedContactList;
 
   switch (type) {
-    case 'email':
-      verifiedContactList = profile.emails
-      break
-    case 'mobile':
-      verifiedContactList = profile.mobilePhones
-      break
-    case 'homePhones':
-      verifiedContactList = profile.homePhones
-      break
+    case "email":
+      verifiedContactList = profile.emails;
+      break;
+    case "mobile":
+      verifiedContactList = profile.mobilePhones;
+      break;
+    case "homePhones":
+      verifiedContactList = profile.homePhones;
+      break;
+    case "fullName":
+      verifiedContactList = profile.fullName;
+      break;
   }
 
   // Check for duplicates
@@ -84,48 +87,48 @@ const addVerifiedContact = (profile, type, contact) => {
     const updatedProfile = {
       ...profile,
       // update the correct unverified contacts list based on users input
-      [type === 'email'
-        ? 'emails'
-        : type === 'mobile'
-          ? 'mobilePhones'
-          : 'homePhones']: [...verifiedContactList, contact]
-    }
-    return updatedProfile
+      [type === "email"
+        ? "emails"
+        : type === "mobile"
+        ? "mobilePhones"
+        : "homePhones"]: [...verifiedContactList, contact],
+    };
+    return updatedProfile;
   } else {
     // contact exists already, so do nothing
-    return profile
+    return profile;
   }
-}
+};
 
 const removeVerifiedContact = (profile, contact) => {
-  let verifiedContactListKey
+  let verifiedContactListKey;
 
   if (profile.emails.includes(contact)) {
-    verifiedContactListKey = 'emails'
+    verifiedContactListKey = "emails";
   } else if (profile.mobilePhones.includes(contact)) {
-    verifiedContactListKey = 'mobilePhones'
+    verifiedContactListKey = "mobilePhones";
   } else if (profile.homePhones.includes(contact)) {
-    verifiedContactListKey = 'homePhones'
+    verifiedContactListKey = "homePhones";
   } else {
     // contact not found in any unverified contacts list
-    return profile
+    return profile;
   }
 
   // eslint-disable-next-line no-self-compare
   const newVerifiedContactList = profile[verifiedContactListKey].filter(
     (c) => c !== contact
-  )
+  );
 
   const updatedProfile = {
     ...profile,
-    [verifiedContactListKey]: newVerifiedContactList
-  }
-  return updatedProfile
-}
+    [verifiedContactListKey]: newVerifiedContactList,
+  };
+  return updatedProfile;
+};
 
 module.exports = {
   addUnverifiedContact,
   removeUnverifiedContact,
   addVerifiedContact,
-  removeVerifiedContact
-}
+  removeVerifiedContact,
+};

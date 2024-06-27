@@ -9,6 +9,7 @@ import AddLandlineValidatePage from '../pages/contact-details/add-contact-landli
 import AddMobilePage from '../pages/contact-details/add-contact-mobile/AddMobilePage'
 import AddMobileValidatePage from '../pages/contact-details/add-contact-mobile/AddMobileValidatePage'
 import HomePage from '../pages/home/HomePage'
+import SignOutManuallyPage from '../pages/signOut/SignOutManuallyPage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
 import SignUpPage from '../pages/signup/account/SignUpPage'
@@ -123,7 +124,8 @@ const routes = [
   ...siginRoutes,
   ...signupRoutes,
   ...homeRoutes,
-  ...contactRoutes
+  ...contactRoutes,
+  ...signOutRoutes
 ]
 
 export default routes

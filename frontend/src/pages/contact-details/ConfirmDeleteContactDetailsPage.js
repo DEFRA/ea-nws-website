@@ -13,12 +13,12 @@ import {
   removeVerifiedContact
 } from '../../services/ProfileServices'
 
+
 export default function ConfirmDeleteContactDetailsPage () {
   const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
-
   const removeContact = async () => {
     let updatedProfile = removeVerifiedContact(
       session.profile,
@@ -42,7 +42,7 @@ export default function ConfirmDeleteContactDetailsPage () {
     )
     if (!errorMessage) {
       dispatch(setProfile(updatedProfile))
-      navigate('/managecontacts', {
+      navigate(location.state.navigateTo, {
         state: {
           removedType: location.state.type,
           removedContact: location.state.contact
@@ -50,6 +50,7 @@ export default function ConfirmDeleteContactDetailsPage () {
       })
     }
   }
+
 
   return (
     <>

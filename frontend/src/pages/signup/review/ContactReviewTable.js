@@ -26,7 +26,8 @@ export default function ContactReviewTable ({ profile }) {
                           to='/managecontacts/confirm-delete'
                           state={{
                             type: 'email',
-                            email
+                            contact: email,
+                            navigateTo: '/signup/review'
                           }}
                           className='govuk-link'
                         >
@@ -59,7 +60,8 @@ export default function ContactReviewTable ({ profile }) {
                       to='/managecontacts/confirm-delete'
                       state={{
                         type: 'email',
-                        unregisteredEmail
+                        contact: unregisteredEmail,
+                        navigateTo: '/signup/review'
                       }}
                       className='govuk-link'
                     >
@@ -96,8 +98,9 @@ export default function ContactReviewTable ({ profile }) {
                     <Link
                       to='/managecontacts/confirm-delete'
                       state={{
-                        type: 'mobilePhone',
-                        mobilePhone
+                        type: 'mobile telephone number',
+                        contact: mobilePhone,
+                        navigateTo: '/signup/review'
                       }}
                       className='govuk-link'
                     >
@@ -125,8 +128,9 @@ export default function ContactReviewTable ({ profile }) {
                       <Link
                         to='/managecontacts/confirm-delete'
                         state={{
-                          type: 'mobilePhone',
-                          unregisteredMobilePhone
+                          type: 'mobile telephone number',
+                          contact: unregisteredMobilePhone,
+                          navigateTo: '/signup/review'
                         }}
                         className='govuk-link'
                       >
@@ -164,8 +168,9 @@ export default function ContactReviewTable ({ profile }) {
                     <Link
                       to='/managecontacts/confirm-delete'
                       state={{
-                        type: 'homePhone',
-                        homePhone
+                        type: 'telephone number',
+                        contact: homePhone,
+                        navigateTo: '/signup/review'
                       }}
                       className='govuk-link'
                     >
@@ -193,8 +198,9 @@ export default function ContactReviewTable ({ profile }) {
                       <Link
                         to='/managecontacts/confirm-delete'
                         state={{
-                          type: 'homePhones',
-                          unregisteredHomePhones
+                          type: 'telephone number',
+                          contact: unregisteredHomePhones,
+                          navigateTo: '/signup/review'
                         }}
                         className='govuk-link'
                       >

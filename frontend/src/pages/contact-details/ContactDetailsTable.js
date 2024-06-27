@@ -74,7 +74,8 @@ export default function ContactDetailsTable ({
                           to='/managecontacts/confirm-delete'
                           state={{
                             type: contactType,
-                            contact
+                            contact,
+                            navigateTo: '/managecontacts' 
                           }}
                           className='govuk-link'
                         >
@@ -106,7 +107,8 @@ export default function ContactDetailsTable ({
                       to='/managecontacts/confirm-delete'
                       state={{
                         type: contactType,
-                        unregisteredContact
+                        unregisteredContact,
+                        navigateTo: '/managecontacts' 
                       }}
                       className='govuk-link'
                     >

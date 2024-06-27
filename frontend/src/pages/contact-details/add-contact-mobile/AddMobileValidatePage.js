@@ -56,7 +56,6 @@ export default function AddMobileValidatePage () {
       'api/add_contact/mobile/add',
       navigate
     )
-    console.log(errorMessage)
     if (errorMessage !== null) {
       setError(errorMessage)
     }
@@ -69,12 +68,12 @@ export default function AddMobileValidatePage () {
     // we will need to add the email back to the unverified list - if it already exists
     // nothing will happen and it will remain
     dispatch(setProfile(addUnverifiedContact(updatedProfile, 'mobile', mobile)))
-    navigate('/managecontacts') /*, {
+    navigate('/managecontacts', {
       state: {
-        unconfirmedtype: location.state.type,
-        unconfirmedvalue: location.state.contact
+        unconfirmedtype: 'mobile',
+        unconfirmedvalue: mobile
       }
-    } */
+    })
   }
 
   const differentMobile = (event) => {

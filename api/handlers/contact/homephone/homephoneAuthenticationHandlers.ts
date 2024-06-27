@@ -7,7 +7,6 @@ async function getHomephoneStart(
   req: Hapi.Request,
   res: Hapi.ResponseToolkit
 ) {
-  console.log('Received LandlineStart request: ', req.payload)
   const { authToken } = req.payload as { authToken: string }
   const { msisdn } = req.payload as { msisdn: string }
 
@@ -37,13 +36,13 @@ async function getHomephoneValidate(
     lastName: 'Smith',
     emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
     mobilePhones: ['07343454590', '07889668367'],
-    homePhones: ['01475721555'],
+    homePhones: ['01475721555', msisdn],
     language: 'EN',
     additionals: [],
     unverified: {
       emails: [],
       mobilePhones: [],
-      homePhones: ['01475721555']
+      homePhones: []
     },
     pois: {
       address: 'Exeter, United Kingdom',

@@ -1,32 +1,31 @@
-import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Button from "../../../gov-uk-components/Button";
-import Checkbox from "../../../gov-uk-components/CheckBox";
-import ErrorSummary from "../../../gov-uk-components/ErrorSummary";
-import Footer from "../../../gov-uk-components/Footer";
-import Header from "../../../gov-uk-components/Header";
-import PhaseBanner from "../../../gov-uk-components/PhaseBanner";
+import React, { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import Button from '../../../gov-uk-components/Button'
+import Checkbox from '../../../gov-uk-components/CheckBox'
+import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
+import Footer from '../../../gov-uk-components/Footer'
+import Header from '../../../gov-uk-components/Header'
+import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 
 export default function DeclarationOfAgreementPage() {
-  const [isChecked, setIsChecked] = useState(false);
-  const [error, setError] = useState("");
-  const navigate = useNavigate();
-
+  const [isChecked, setIsChecked] = useState(false)
+  const [error, setError] = useState('')
+  const navigate = useNavigate()
   const handleSubmit = () => {
     if (isChecked === false) {
-      setError("Tick to confirm you agree with the terms and conditions");
+      setError('Tick to confirm you agree with the terms and conditions')
     } else {
       // New user home page after T&C agreement signed
-      navigate("/managecontacts");
+      navigate('/managecontacts')
     }
-  };
+  }
   return (
     <>
       <Header />
       <div className="govuk-width-container">
         <PhaseBanner />
         <div className="govuk-body">
-          <Link to="/" className="govuk-back-link">
+          <Link onClick={() => navigate(-1)} className="govuk-back-link">
             Back
           </Link>
           {error && <ErrorSummary errorList={[error]} />}
@@ -87,7 +86,7 @@ export default function DeclarationOfAgreementPage() {
               href="https://www.fws.environment-agency.gov.uk/app/olr/privacy"
               class="govuk-link"
             >
-              {" "}
+              {' '}
               privacy notice (open new window)
             </a>
             explains how we treat your personal information.
@@ -101,7 +100,7 @@ export default function DeclarationOfAgreementPage() {
               href="https://www.gov.uk/government/organisations/environment-agency/about/personal-information-charter"
               class="govuk-link"
             >
-              {" "}
+              {' '}
               Treat your personal information (opens new window)
             </a>
           </p>
@@ -109,8 +108,8 @@ export default function DeclarationOfAgreementPage() {
           <div
             className={
               error
-                ? "govuk-form-group govuk-form-group--error"
-                : "govuk-form-group"
+                ? 'govuk-form-group govuk-form-group--error'
+                : 'govuk-form-group'
             }
           >
             {error && <p className="govuk-error-message">{error}</p>}
@@ -130,5 +129,5 @@ export default function DeclarationOfAgreementPage() {
       </div>
       <Footer />
     </>
-  );
+  )
 }

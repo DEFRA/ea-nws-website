@@ -1,83 +1,63 @@
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import Button from "../../../gov-uk-components/Button";
-import ErrorSummary from "../../../gov-uk-components/ErrorSummary";
-import Footer from "../../../gov-uk-components/Footer";
-import Header from "../../../gov-uk-components/Header";
-import Input from "../../../gov-uk-components/Input";
-import PhaseBanner from "../../../gov-uk-components/PhaseBanner";
-import { backendCall } from "../../../services/BackendService";
-import { fullNameValidation } from "../../../services/validations/FullNameValidation";
-import { setProfile } from "../../../redux/userSlice";
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
+import Button from '../../../gov-uk-components/Button'
+import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
+import Footer from '../../../gov-uk-components/Footer'
+import Header from '../../../gov-uk-components/Header'
+import Input from '../../../gov-uk-components/Input'
+import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
+import { setProfile } from '../../../redux/userSlice'
+import { backendCall } from '../../../services/BackendService'
+import { addAccountName } from '../../../services/ProfileServices'
+import { fullNameValidation } from '../../../services/validations/FullNameValidation'
 export default function AddNamePage() {
-  const navigate = useNavigate();
-  const dispatch = useDispatch();
-  const location = useLocation();
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const location = useLocation()
 
   const [fullName, setFullName] = useState(
-    location.state ? location.state.fullName : ""
-  );
-  const [error, setError] = useState("");
-  const session = useSelector((state) => state.session);
+    location.state ? location.state.fullName : ''
+  )
+  const [error, setError] = useState('')
+  const session = useSelector((state) => state.session)
 
   const handleSubmit = async () => {
-    const validationError = fullNameValidation(fullName, "fullName");
-    setError(validationError);
+    const validationError = fullNameValidation(fullName, 'fullName')
+    setError(validationError)
 
-    console.log(
-      "LP: frontend Function AddNamePage handleSubmit, session profile:"
-    );
-    console.log(session);
-
-    if (validationError === "") {
+    if (validationError === '') {
       // Split the full name into first name and last name assuming they are separeted by a space.
       // if the string cannot be split then only the first name is set and the last name remains blank
-      var firstName = fullName;
-      var lastName = "";
-      if (fullName.split(" ").length > 1) {
-        firstName = fullName.substring(0, fullName.indexOf(" "));
-        lastName = fullName.substring(fullName.indexOf(" ") + 1);
+      var firstName = fullName
+      var lastName = ''
+      if (fullName.split(' ').length > 1) {
+        firstName = fullName.substring(0, fullName.indexOf(' '))
+        lastName = fullName.substring(fullName.indexOf(' ') + 1)
       }
-      console.log(
-        `LP - frontend Function AddNamePage, first name is: ${firstName}, last name is: ${lastName}, session: !`
-      );
-      console.log(session);
+
       const dataToSend = {
         authToken: session.authToken,
         firstName: firstName,
-        lastName: lastName,
-      };
+        lastName: lastName
+      }
 
-      const { errorMessage, data } = await backendCall(
+      const { errorMessage } = await backendCall(
         dataToSend,
-        "api/add_contact/name/add",
+        'api/add_contact/name/add',
         navigate
-      );
+      )
       if (errorMessage !== null) {
-        console.log("LP - frontend Function AddNamePage, Error from backend!");
-        console.log(errorMessage);
-        setError(errorMessage.desc);
+        setError(errorMessage)
       } else {
-        console.log(
-          "LP - frontend Function AddNamePage, NO Error from backender !"
-        );
+        dispatch(
+          setProfile(addAccountName(session.profile, firstName, lastName))
+        )
 
-        console.log("LP - frontend Function AddNamePage, LP dispatch profile:");
-        dispatch(setProfile(data.profile));
-
-        console.log(
-          "LP - frontend Function AddNamePage END, LP TESTING profile:"
-        );
-        console.log(data);
-        console.log(
-          "LP - frontend Function AddNamePage END, LP TESTING session:"
-        );
-        console.log(session);
-        navigate("/declaration");
+        navigate('/declaration')
       }
     }
-  };
+  }
 
   return (
     <>
@@ -86,7 +66,9 @@ export default function AddNamePage() {
         <PhaseBanner />
         <div className="govuk-grid-row">
           <div className="govuk-grid-column-two-thirds">
-            <Link className="govuk-back-link">Back</Link>
+            <Link onClick={() => navigate(-1)} className="govuk-back-link">
+              Back
+            </Link>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className="govuk-heading-l govuk-!-margin-top-6">
               Enter your name
@@ -112,5 +94,5 @@ export default function AddNamePage() {
       </div>
       <Footer />
     </>
-  );
+  )
 }

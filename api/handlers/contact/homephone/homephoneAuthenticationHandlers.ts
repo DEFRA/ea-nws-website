@@ -11,6 +11,10 @@ async function getHomephoneStart(
   const { msisdn } = req.payload as { msisdn: string }
 
   if (authToken === 'MockAuthToken') {
+    if (msisdn === '+440000000000') {
+      console.log('duplicate phone, responding 500')
+      return res.response(responseCodes.DUPLICATE_PHONE).code(500)
+    }
     return res.response(responseCodes.SUCCESS)
   }
   return res.response(responseCodes.INVALID_TOKEN).code(500)

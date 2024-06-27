@@ -27,7 +27,7 @@ export default function ContactDetailsTable ({
   }
 
   const UnconfirmedLink = () => {
-    if (contactType === 'email') {
+    if (contactType === 'email address') {
       return (
         <>
           <Link to='/managecontacts/validate-email' className='govuk-link'>
@@ -51,6 +51,20 @@ export default function ContactDetailsTable ({
         </Link>
       </>
     )
+  }
+
+  const MaximumReached = () => {
+    if(contactType === 'email address'){
+      return (
+        <div>You've reached maximum of 5 {contactType.toLowerCase()}es.<br/><br/></div>
+      )
+    }
+    else{
+      return (
+        <div>You've reached maximum of 5 {contactType.toLowerCase()}s for {contactTitle.toLowerCase()}.<br/><br/></div>
+
+      )
+    }
   }
 
   return (
@@ -107,8 +121,7 @@ export default function ContactDetailsTable ({
                       to='/managecontacts/confirm-delete'
                       state={{
                         type: contactType,
-                        unregisteredContact,
-                        navigateTo: '/managecontacts' 
+                        unregisteredContact
                       }}
                       className='govuk-link'
                     >
@@ -121,11 +134,15 @@ export default function ContactDetailsTable ({
           </table>
           )
         : null}
-      <Button
+        { contacts.length + unregisteredContact.length < 5 
+        ? ( <Button
         className='govuk-button govuk-button--secondary'
         text={'Add a ' + contactType}
         onClick={handleButton}
-      />
+      />)
+      : <MaximumReached/>
+    }
+
     </>
   )
 }

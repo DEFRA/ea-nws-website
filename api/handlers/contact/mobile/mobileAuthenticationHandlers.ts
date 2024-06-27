@@ -11,7 +11,7 @@ async function getMobileStart(
   const { msisdn } = req.payload as { msisdn: string }
   // 200 Success
   if (authToken === 'MockAuthToken') {
-    if (msisdn === '07000000000') {
+    if (msisdn === '+447000000000') {
       console.log('duplicate mobile, responding 500')
       return res.response(responseCodes.DUPLICATE_MOBILE).code(500)
     }

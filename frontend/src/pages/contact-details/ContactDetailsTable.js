@@ -21,6 +21,8 @@ export default function ContactDetailsTable ({
       case 'telephone number':
         navigate('/managecontacts/add-landline')
         break
+      default:
+        break
     }
   }
 

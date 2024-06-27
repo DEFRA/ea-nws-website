@@ -11,10 +11,7 @@ export default function LocationReviewTable ({ locations }) {
             <tbody className='govuk-table__body' />
             {locations.map((location, index) => (
               <tr key={index} className='govuk-table__row'>
-                <td
-                  scope='row'
-                  class='govuk-table__header  govuk-!-width-one-half'
-                >
+                <td class='govuk-table__header  govuk-!-width-one-half'>
                   Address
                 </td>
                 <td className='govuk-table__cell  govuk-!-width-full'>

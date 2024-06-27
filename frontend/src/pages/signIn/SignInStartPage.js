@@ -25,7 +25,7 @@ export default function SignInStartPage () {
         navigate
       )
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        setError(errorMessage)
       } else {
         navigate('/signin/validate', {
           state: { signinToken: data.signinToken, email }

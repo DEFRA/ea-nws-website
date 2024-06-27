@@ -37,7 +37,7 @@ export default function AddLandlineLayout ({ NavigateToNextPage }) {
         navigate
       )
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        setError(errorMessage)
       } else {
         dispatch(
           setProfile(

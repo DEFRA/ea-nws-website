@@ -35,7 +35,7 @@ export default function AddEmailLayout ({ NavigateToNextPage }) {
         navigate
       )
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        setError(errorMessage)
       } else {
         dispatch(
           setProfile(addUnverifiedContact(session.profile, 'email', email))

@@ -42,7 +42,7 @@ export default function ValidateEmailLayout ({
         'api/add_contact/email/validate'
       )
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        setError(errorMessage)
       } else {
         dispatch(setProfile(data.profile))
         NavigateToNextPage()

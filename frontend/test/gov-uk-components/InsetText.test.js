@@ -4,7 +4,7 @@ import React from 'react'
 import InsetText from '../../src/gov-uk-components/InsetText'
 
 describe('InsetText component', () => {
-  test.skip('renders with the correct text', () => {
+  test('renders with the correct text', () => {
     const text = 'This is some inset text.'
     render(<InsetText text={text} />)
 
@@ -12,7 +12,7 @@ describe('InsetText component', () => {
     expect(insetTextElement).toBeInTheDocument()
   })
 
-  test.skip('applies the correct class name', () => {
+  test('applies the correct class name', () => {
     const text = 'This is some inset text.'
     render(<InsetText text={text} />)
 
@@ -20,5 +20,3 @@ describe('InsetText component', () => {
     expect(insetTextElement).toHaveClass('govuk-inset-text')
   })
 })
-
-// error here for build

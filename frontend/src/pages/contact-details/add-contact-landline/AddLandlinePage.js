@@ -16,7 +16,7 @@ import {
 import { normalisePhoneNumber } from '../../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../services/validations/PhoneValidation'
 
-export default function AddLandlinePage() {
+export default function AddLandlinePage () {
   const navigate = useNavigate()
   const [landline, setLandline] = useState('')
   const [error, setError] = useState('')
@@ -30,14 +30,14 @@ export default function AddLandlinePage() {
     setError(validationError)
     if (validationError === '') {
       const normalisedPhoneNumber = normalisePhoneNumber(landline)
-      const dataToSend = { msisdn: normalisedPhoneNumber, authToken: authToken }
+      const dataToSend = { msisdn: normalisedPhoneNumber, authToken }
       const { errorMessage } = await backendCall(
         dataToSend,
         'api/add_contact/landline/add',
         navigate
       )
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        setError(errorMessage)
       } else {
         dispatch(
           setProfile(
@@ -56,7 +56,7 @@ export default function AddLandlinePage() {
     event.preventDefault()
     // we need to check if location.state has a value - this will only hold a value
     // if the user has come from the landline validate page - we will need to remove
-    //the number from the users profile if so
+    // the number from the users profile if so
     if (session && session.landline) {
       event.preventDefault()
       const normalisedLandline = normalisePhoneNumber(session.landline)
@@ -69,41 +69,47 @@ export default function AddLandlinePage() {
         setProfile(removeVerifiedContact(updatedProfile, normalisedLandline))
       )
     }
-    //user could have navigated from contact preferences page
-    //or user could have come from account change details at the end of sign up flow
+    // user could have navigated from contact preferences page
+    // or user could have come from account change details at the end of sign up flow
     navigate(-1)
   }
 
   return (
     <>
       <Header />
-      <div class="govuk-width-container">
-        <Link onClick={removeLandlineFromProfile} className="govuk-back-link">
+      <div class='govuk-width-container'>
+        <Link onClick={removeLandlineFromProfile} className='govuk-back-link'>
           Back
         </Link>
-        <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 class="govuk-heading-l">
-          Enter a telephone number to get flood messages by phone call
-        </h2>
-        <div class="govuk-body">
-          <p>
-            We recommend using a landline or mobile number that can be called 24
-            hours a day.
-          </p>
-          <Input
-            name="UK landline or mobile telephone number"
-            inputType="text"
-            error={error}
-            onChange={(val) => setLandline(val)}
-            className="govuk-input govuk-input--width-20"
-          />
-          <Button
-            className="govuk-button"
-            text="Continue"
-            onClick={handleSubmit}
-          />
-          <br />
-        </div>
+        <main className='govuk-main-wrapper'>
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-two-thirds'>
+              <ErrorSummary errorList={error === '' ? [] : [error]} />
+              <h2 class='govuk-heading-l'>
+                Enter a telephone number to get flood messages by phone call
+              </h2>
+              <div class='govuk-body'>
+                <p>
+                  We recommend using a landline or mobile number that can be
+                  called 24 hours a day.
+                </p>
+                <Input
+                  name='UK landline or mobile telephone number'
+                  inputType='text'
+                  error={error}
+                  onChange={(val) => setLandline(val)}
+                  className='govuk-input govuk-input--width-20'
+                />
+                <Button
+                  className='govuk-button'
+                  text='Continue'
+                  onClick={handleSubmit}
+                />
+                <br />
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
       <Footer />
     </>

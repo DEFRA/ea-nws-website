@@ -13,6 +13,7 @@ import SignInPage from "../pages/signIn/SignInStartPage";
 import SignInValidatePage from "../pages/signIn/SignInValidatePage";
 import SignUpPage from "../pages/signup/account/SignUpPage";
 import SignUpValidationPage from "../pages/signup/account/SignUpValidationPage";
+import SignUpDuplicateEmailPage from "../pages/signup/account/SignUpDuplicateEmail";
 import WarningContactsPreferencePage from "../pages/signup/channel-preferences/WarningContactsPreferencePage";
 import AddLandlinePhonePage from "../pages/signup/channel-preferences/landline-telephone-authentication/AddLandlinePhonePage";
 import SkipConfirmLandlinePhonePage from "../pages/signup/channel-preferences/landline-telephone-authentication/SkipConfirmLandlinePhonePage";
@@ -23,6 +24,7 @@ import ValidateMobilePhonePage from "../pages/signup/channel-preferences/mobile-
 import AddNamePage from "../pages/signup/account-name/AddFullNamePage";
 import DeclarationOfAgreementPage from "../pages/signup/user-agreement/DeclarationOfAgreementPage";
 import StartPage from "../pages/start/StartPage";
+import SignUpFeedbackPage from "../pages/signup/account/SignUpFeedbackPage";
 
 // index routes
 const indexRoutes = [{ path: "/index", component: <Index /> }];
@@ -75,8 +77,16 @@ const signupRoutes = [
   },
   { path: "/signup/accountname/add", component: <AddNamePage /> },
   {
+    path: "/signup/feedback",
+    component: <SignUpFeedbackPage />,
+  },
+  {
     path: "/declaration",
     component: <DeclarationOfAgreementPage />,
+  },
+  {
+    path: "/signup/duplicate",
+    component: <SignUpDuplicateEmailPage />,
   },
 ];
 

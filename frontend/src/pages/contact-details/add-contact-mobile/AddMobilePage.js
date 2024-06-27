@@ -16,7 +16,7 @@ import {
 import { normalisePhoneNumber } from '../../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../services/validations/PhoneValidation'
 
-export default function AddMobilePage() {
+export default function AddMobilePage () {
   const navigate = useNavigate()
   const [mobile, setMobile] = useState('')
   const [error, setError] = useState('')
@@ -28,7 +28,7 @@ export default function AddMobilePage() {
     event.preventDefault()
     const validationError = phoneValidation(mobile, 'mobile')
     setError(validationError)
-    const dataToSend = { msisdn: mobile, authToken: authToken }
+    const dataToSend = { msisdn: mobile, authToken }
     if (validationError === '') {
       const { errorMessage } = await backendCall(
         dataToSend,
@@ -36,7 +36,7 @@ export default function AddMobilePage() {
         navigate
       )
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        setError(errorMessage)
       } else {
         dispatch(
           setProfile(addUnverifiedContact(session.profile, 'mobile', mobile))
@@ -53,7 +53,7 @@ export default function AddMobilePage() {
     event.preventDefault()
     // we need to check if location.state has a value - this will only hold a value
     // if the user has come from the mobile validate page - we will need to remove
-    //the number from the users profile if so
+    // the number from the users profile if so
     if (session && session.mobile) {
       event.preventDefault()
       const normalisedMobile = normalisePhoneNumber(session.mobile)
@@ -66,41 +66,47 @@ export default function AddMobilePage() {
         setProfile(removeVerifiedContact(updatedProfile, normalisedMobile))
       )
     }
-    //user could have navigated from contact preferences page
-    //or user could have come from account change details at the end of sign up flow
+    // user could have navigated from contact preferences page
+    // or user could have come from account change details at the end of sign up flow
     navigate(-1)
   }
 
   return (
     <>
       <Header />
-      <div class="govuk-width-container">
-        <Link onClick={removeMobileFromProfile} className="govuk-back-link">
+      <div class='govuk-width-container'>
+        <Link onClick={removeMobileFromProfile} className='govuk-back-link'>
           Back
         </Link>
-        <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 class="govuk-heading-l">
-          Enter a mobile number to get flood messages by text
-        </h2>
-        <div class="govuk-body">
-          <p>
-            We recommend using a mobile number where we can reach you 24 hours a
-            day.
-          </p>
-          <Input
-            name="UK mobile telephone number"
-            inputType="text"
-            error={error}
-            onChange={(val) => setMobile(val)}
-            className="govuk-input govuk-input--width-20"
-          />
-          <Button
-            className="govuk-button"
-            text="Continue"
-            onClick={handleSubmit}
-          />
-          <br />
-        </div>
+        <main className='govuk-main-wrapper'>
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-two-thirds'>
+              <ErrorSummary errorList={error === '' ? [] : [error]} />
+              <h2 class='govuk-heading-l'>
+                Enter a mobile number to get flood messages by text
+              </h2>
+              <div class='govuk-body'>
+                <p>
+                  We recommend using a mobile number where we can reach you 24
+                  hours a day.
+                </p>
+                <Input
+                  name='UK mobile telephone number'
+                  inputType='text'
+                  error={error}
+                  onChange={(val) => setMobile(val)}
+                  className='govuk-input govuk-input--width-20'
+                />
+                <Button
+                  className='govuk-button'
+                  text='Continue'
+                  onClick={handleSubmit}
+                />
+                <br />
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
       <Footer />
     </>

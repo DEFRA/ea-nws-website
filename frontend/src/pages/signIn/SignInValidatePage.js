@@ -14,7 +14,7 @@ import {
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
-export default function SignInValidatePage() {
+export default function SignInValidatePage () {
   const location = useLocation()
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -33,7 +33,7 @@ export default function SignInValidatePage() {
         'api/signInValidate'
       )
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        setError(errorMessage)
       } else {
         dispatch(setAuthToken(data.authToken))
         dispatch(setProfile(data.profile))
@@ -43,29 +43,46 @@ export default function SignInValidatePage() {
     }
   }
 
+  const getNewCode = async (event) => {
+    event.preventDefault()
+    const data = { email: location.state.email }
+    const { errorMessage } = await backendCall(
+      data,
+      'api/signInStart',
+      navigate
+    )
+    if (errorMessage !== null) {
+      setError(errorMessage)
+    }
+  }
+
   return (
     <>
       <Header />
-      <div class="govuk-width-container">
-        <Link to="/signin" className="govuk-back-link">
+      <div class='govuk-width-container'>
+        <Link to='/signin' className='govuk-back-link'>
           Back
         </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 class="govuk-heading-l">Check your email</h2>
-        <div class="govuk-body">
+        <h2 class='govuk-heading-l'>Check your email</h2>
+        <div class='govuk-body'>
           We've sent a code to:
           <InsetText text={location.state.email} />
           <Input
-            name="Enter code"
-            inputType="text"
+            name='Enter code'
+            inputType='text'
             error={error}
             onChange={(val) => setCode(val)}
           />
           <Button
-            className="govuk-button"
-            text="Continue"
+            className='govuk-button'
+            text='Continue'
             onClick={handleSubmit}
           />
+          <br />
+          <Link onClick={getNewCode} className='govuk-link'>
+            Get a new code
+          </Link>
         </div>
       </div>
       <Footer />

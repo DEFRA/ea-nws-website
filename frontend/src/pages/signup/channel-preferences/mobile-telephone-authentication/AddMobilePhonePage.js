@@ -31,9 +31,9 @@ export default function AddMobilePhonePage() {
   const handleSubmit = async () => {
     const validationError = phoneValidation(mobile, "mobile");
     setError(validationError);
-    //should also do a check here to make sure this mobile isnt already in the users profile
-    //add this in when working on the pages that allows a user to go back and update their mobile
-    //at sign up flow - we dont want the mobile already validated being tried again
+    // should also do a check here to make sure this mobile isnt already in the users profile
+    // add this in when working on the pages that allows a user to go back and update their mobile
+    // at sign up flow - we dont want the mobile already validated being tried again
     if (validationError === "") {
       const data = { authToken: session.authToken, msisdn: mobile };
       const { errorMessage } = await backendCall(
@@ -42,7 +42,7 @@ export default function AddMobilePhonePage() {
         navigate
       );
       if (errorMessage !== null) {
-        setError(errorMessage.desc);
+        setError(errorMessage);
       } else {
         const normalisedMobile = normalisePhoneNumber(mobile);
         // add mobile to unverified list in profile
@@ -65,7 +65,7 @@ export default function AddMobilePhonePage() {
     event.preventDefault();
     // we need to check if location.state has a value - this will only hold a value
     // if the user has come from the mobile validate page - we will need to remove
-    //the number from the users profile if so
+    // the number from the users profile if so
     if (location.state) {
       event.preventDefault();
       const normalisedMobile = normalisePhoneNumber(location.state.mobile);
@@ -78,8 +78,8 @@ export default function AddMobilePhonePage() {
         setProfile(removeVerifiedContact(updatedProfile, normalisedMobile))
       );
     }
-    //user could have navigated from contact preferences page
-    //or user could have come from account change details at the end of sign up flow
+    // user could have navigated from contact preferences page
+    // or user could have come from account change details at the end of sign up flow
     navigate(-1);
   };
 

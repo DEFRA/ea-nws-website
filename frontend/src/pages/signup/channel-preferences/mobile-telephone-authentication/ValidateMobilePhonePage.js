@@ -51,7 +51,7 @@ export default function ValidateMobilePhone() {
         navigate
       );
       if (errorMessage !== null) {
-        setError(errorMessage.desc);
+        setError(errorMessage);
       } else {
         // remove mobile from unverified list and add to verified list
         const updatedProfile = removeUnverifiedContact(session.profile, mobile);
@@ -79,7 +79,7 @@ export default function ValidateMobilePhone() {
       navigate
     );
     if (errorMessage !== null) {
-      setError(errorMessage.desc);
+      setError(errorMessage);
     }
   };
 

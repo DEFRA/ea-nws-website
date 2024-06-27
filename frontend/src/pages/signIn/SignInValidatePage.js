@@ -68,7 +68,6 @@ export default function SignInValidatePage () {
         <div class='govuk-body'>
           We've sent a code to:
           <InsetText text={location.state.email} />
-          <Input name='Enter code' error={error} onChange={setCode} />
           <Input
             name='Enter code'
             inputType='text'

@@ -22,7 +22,7 @@ export default function App () {
           inactivityTimer.current = setTimeout(() => {
             setIsInactive(true)
             setIsPopUpOnScreen(true)
-          }, 13 * 60 * 1000)
+          }, process.env.REACT_APP_INACTIVITY_POPUP*1000)
         }
       }
 
@@ -49,7 +49,7 @@ export default function App () {
     if (isPopUpOnScreen === true) {
       redirectTimer.current = setTimeout(() => {
         window.location.pathname = '/signout-auto'
-      }, 2 * 60 * 1000)
+      }, process.env.REACT_APP_TIMEOUT_POPUP*1000)
     }
   }, [isPopUpOnScreen])
 

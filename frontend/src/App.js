@@ -1,15 +1,86 @@
-import React from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
-import routes from './routes/routes'
+import React, { useEffect, useRef, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
+import InactivityPopup from './custom-components/InactivityPopup'
+import { authenticatedRoutes, routes } from './routes/routes'
 
 export default function App () {
+  const auth = useSelector((state) => state.session.authToken)
+  const [isInactive, setIsInactive] = useState(false)
+  const inactivityTimer = useRef(null)
+  const redirectTimer = useRef(null)
+  const [isPopUpOnScreen, setIsPopUpOnScreen] = useState(false)
+
+  useEffect(() => {
+    if (isPopUpOnScreen === false) {
+      const resetInactivityTimer = () => {
+        if (auth) {
+          console.log('beginning timer')
+          clearTimeout(inactivityTimer.current)
+          clearTimeout(redirectTimer.current)
+          setIsInactive(false)
+          inactivityTimer.current = setTimeout(() => {
+            setIsInactive(true)
+            setIsPopUpOnScreen(true)
+          }, process.env.REACT_APP_INACTIVITY_POPUP * 1000)
+        }
+      }
+
+      const events = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart']
+
+      if (auth) {
+        events.forEach((event) =>
+          window.addEventListener(event, resetInactivityTimer)
+        )
+        resetInactivityTimer()
+      }
+
+      return () => {
+        events.forEach((event) =>
+          window.removeEventListener(event, resetInactivityTimer)
+        )
+        clearTimeout(inactivityTimer.current)
+        clearTimeout(redirectTimer.current)
+      }
+    }
+  }, [auth, isPopUpOnScreen])
+
+  useEffect(() => {
+    if (isPopUpOnScreen === true) {
+      redirectTimer.current = setTimeout(() => {
+        window.location.pathname = '/signout-auto'
+      }, process.env.REACT_APP_TIMEOUT_POPUP * 1000)
+    }
+  }, [isPopUpOnScreen])
+
+  const handleStayLoggedIn = () => {
+    setIsInactive(false)
+    setIsPopUpOnScreen(false)
+    clearTimeout(redirectTimer.current)
+  }
+  const isSignOutRoute = () => {
+    const currentRoute = window.location.pathname
+    if ((currentRoute === '/signout') || currentRoute === '/signout-auto') {
+      return true
+    } else {
+      return false
+    }
+  }
   return (
-    <BrowserRouter basename='/'>
+    <BrowserRouter>
       <Routes>
+        {authenticatedRoutes.map((route, index) => (
+          <Route
+            key={index}
+            path={route.path}
+            element={auth || isSignOutRoute() ? route.component : <Navigate to='/sign-back-in' />}
+          />
+        ))}
         {routes.map((route, index) => (
           <Route key={index} path={route.path} element={route.component} />
         ))}
       </Routes>
+      {isInactive && <InactivityPopup onStayLoggedIn={handleStayLoggedIn} />}
     </BrowserRouter>
   )
 }

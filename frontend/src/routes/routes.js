@@ -11,9 +11,11 @@ import AddMobileValidatePage from '../pages/contact-details/add-contact-mobile/A
 import HomePage from '../pages/home/HomePage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
+import SignBackIn from '../pages/signOut/SignBackIn'
+import SignOutAutomatically from '../pages/signOut/SignOutAutomatically'
+import SignUpDuplicateEmailPage from '../pages/signup/account/SignUpDuplicateEmail'
 import SignUpPage from '../pages/signup/account/SignUpPage'
 import SignUpValidationPage from '../pages/signup/account/SignUpValidationPage'
-import SignUpDuplicateEmailPage from '../pages/signup/account/SignUpDuplicateEmail'
 import WarningContactsPreferencePage from '../pages/signup/channel-preferences/WarningContactsPreferencePage'
 import AddLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/AddLandlinePhonePage'
 import SkipConfirmLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/SkipConfirmLandlinePhonePage'
@@ -32,11 +34,17 @@ const indexRoutes = [{ path: '/index', component: <Index /> }]
 const startRoutes = [{ path: '/', component: <StartPage /> }]
 
 // sign in routes
-const siginRoutes = [
+const signinRoutes = [
   { path: '/signin', component: <SignInPage /> },
   { path: '/signin/validate', component: <SignInValidatePage /> }
 ]
 
+// sign out routes
+const signOutRoutes = [
+  { path: '/signout-auto', component: <SignOutAutomatically /> }
+]
+
+const signBackInRoutes = [{ path: '/sign-back-in', component: <SignBackIn /> }]
 // sign up routes
 const signupRoutes = [
   { path: '/signup', component: <SignUpPage /> },
@@ -115,14 +123,13 @@ const contactRoutes = [
   }
 ]
 
-const routes = [
+export const routes = [
   ...indexRoutes,
   ...startRoutes,
   ...signupRoutes,
-  ...siginRoutes,
+  ...signinRoutes,
   ...signupRoutes,
-  ...homeRoutes,
-  ...contactRoutes
+  ...signBackInRoutes
 ]
 
-export default routes
+export const authenticatedRoutes = [...homeRoutes, ...contactRoutes, ...signOutRoutes]

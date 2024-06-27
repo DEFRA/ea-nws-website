@@ -63,4 +63,3 @@ def start_frontend():
     # Cleanup: stop the frontend server
     frontend_process.terminate()
     frontend_process.wait()
-

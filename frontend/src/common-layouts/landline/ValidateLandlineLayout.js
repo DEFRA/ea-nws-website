@@ -1,59 +1,62 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import Button from '../../../gov-uk-components/Button'
-import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
-import Footer from '../../../gov-uk-components/Footer'
-import Header from '../../../gov-uk-components/Header'
-import Input from '../../../gov-uk-components/Input'
-import InsetText from '../../../gov-uk-components/InsetText'
-import { setProfile } from '../../../redux/userSlice'
-import { backendCall } from '../../../services/BackendService'
+import Button from '../../gov-uk-components/Button'
+import ErrorSummary from '../../gov-uk-components/ErrorSummary'
+import Footer from '../../gov-uk-components/Footer'
+import Header from '../../gov-uk-components/Header'
+import Input from '../../gov-uk-components/Input'
+import InsetText from '../../gov-uk-components/InsetText'
+import { setProfile } from '../../redux/userSlice'
+import { backendCall } from '../../services/BackendService'
 import {
   addUnverifiedContact,
   removeUnverifiedContact,
   removeVerifiedContact
-} from '../../../services/ProfileServices'
-import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
-export default function AddMobileValidatePage () {
+} from '../../services/ProfileServices'
+import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
+
+export default function ValidateLandlineLayout ({
+  NavigateToNextPage,
+  SkipValidation,
+  DifferentHomePhone
+}) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [code, setCode] = useState('')
-
   const session = useSelector((state) => state.session)
-  const mobile = session.profile.unverified.mobilePhones[0]
-    ? session.profile.unverified.mobilePhones[0]
-    : session.profile.mobilePhones[0]
-
-  const authToken = useSelector((state) => state.session.authToken)
+  const homePhone = session.profile.unverified.homePhones[0]
+    ? session.profile.unverified.homePhones[0]
+    : session.profile.homePhones[0]
+  const authToken = session.authToken
 
   const handleSubmit = async (event) => {
     event.preventDefault()
     const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      const dataToSend = { authToken, code, msisdn: mobile }
+      const dataToSend = { authToken, msisdn: homePhone, code }
       const { errorMessage, data } = await backendCall(
         dataToSend,
-        'api/add_contact/mobile/validate',
+        'api/add_contact/landline/validate',
         navigate
       )
       if (errorMessage !== null) {
-        setError(errorMessage)
+        setError(errorMessage.desc)
       } else {
         dispatch(setProfile(data.profile))
-        navigate('/managecontacts')
+        NavigateToNextPage()
       }
     }
   }
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const data = { authToken, msisdn: mobile }
+    const data = { authToken, msisdn: homePhone }
     const { errorMessage } = await backendCall(
       data,
-      'api/add_contact/mobile/add',
+      'api/add_contact/landline/add',
       navigate
     )
     if (errorMessage !== null) {
@@ -63,41 +66,38 @@ export default function AddMobileValidatePage () {
 
   const skipValidation = (event) => {
     event.preventDefault()
-    // remove email from verified list if user is going back after validating
-    const updatedProfile = removeVerifiedContact(session.profile, mobile)
-    // we will need to add the email back to the unverified list - if it already exists
+    // remove homephone from verified list if user is going back after validating
+    const updatedProfile = removeVerifiedContact(session.profile, homePhone)
+    // we will need to add the homephone back to the unverified list - if it already exists
     // nothing will happen and it will remain
-    dispatch(setProfile(addUnverifiedContact(updatedProfile, 'mobile', mobile)))
-    navigate('/managecontacts', {
-      state: {
-        unconfirmedtype: 'mobile',
-        unconfirmedvalue: mobile
-      }
-    })
+    dispatch(
+      setProfile(addUnverifiedContact(updatedProfile, 'homePhones', homePhone))
+    )
+    SkipValidation(homePhone)
   }
 
-  const differentMobile = (event) => {
+  const differentHomePhone = (event) => {
     event.preventDefault()
-    // remove email from users profile
-    dispatch(setProfile(removeUnverifiedContact(session.profile, mobile)))
-    navigate('/managecontacts/add-mobile')
+    // remove homephone from users profile
+    dispatch(setProfile(removeUnverifiedContact(session.profile, homePhone)))
+    DifferentHomePhone(homePhone)
   }
 
   return (
     <>
       <Header />
       <div class='govuk-width-container'>
-        <Link to='/managecontacts/add-mobile' className='govuk-back-link'>
+        <Link to='/managecontacts/add-landline' className='govuk-back-link'>
           Back
         </Link>
         <main className='govuk-main-wrapper'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
               <ErrorSummary errorList={error === '' ? [] : [error]} />
-              <h2 class='govuk-heading-l'>Check your mobile phone</h2>
+              <h2 class='govuk-heading-l'>Confirm telephone number</h2>
               <div class='govuk-body'>
-                We've sent a text with a code to:
-                <InsetText text={mobile} />
+                We're calling this number to read out a code:
+                <InsetText text={homePhone} />
                 Use the code within 4 hours or it will expire.
                 <br /> <br />
                 <Input
@@ -126,8 +126,8 @@ export default function AddMobileValidatePage () {
                   Get a new code
                 </Link>
                 <br /> <br />
-                <Link onClick={differentMobile} className='govuk-link'>
-                  Enter a different mobile
+                <Link onClick={differentHomePhone} className='govuk-link'>
+                  Enter a different telephone number
                 </Link>
               </div>
             </div>

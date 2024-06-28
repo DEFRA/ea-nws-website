@@ -11,7 +11,7 @@ async function getMobileStart(
   const { msisdn } = req.payload as { msisdn: string }
   // 200 Success
   if (authToken === 'MockAuthToken') {
-    if (msisdn === '07000000000') {
+    if (msisdn === '+447000000000') {
       console.log('duplicate mobile, responding 500')
       return res.response(responseCodes.DUPLICATE_MOBILE).code(500)
     }
@@ -35,14 +35,14 @@ async function getMobileValidate(
     firstName: 'John',
     lastName: 'Smith',
     emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
-    mobilePhones: ['07343454555', '07889668355'],
+    mobilePhones: ['07343454555', '07889668355', msisdn],
     homePhones: ['01475721535'],
     language: 'EN',
     additionals: [],
     unverified: {
       emails: [],
       mobilePhones: [],
-      homePhones: ['01475721535']
+      homePhones: []
     },
     pois: {
       address: 'Exeter, United Kingdom',

@@ -59,7 +59,7 @@ export default function ValidateEmailLayout ({
       navigate
     )
     if (errorMessage !== null) {
-      setError(errorMessage.desc)
+      setError(errorMessage)
     }
   }
 

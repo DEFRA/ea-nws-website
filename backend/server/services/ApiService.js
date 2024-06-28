@@ -1,5 +1,12 @@
 const axios = require('axios')
 const getSecretKeyValue = require('./SecretsManager')
+const apiToFrontendError = require('./ApiToFrontendError')
+
+const getErrorMessage = (path, errorMessage) => {
+  const apiPath = path.split('/').pop()
+  const apiPathCode = apiPath.concat('_', errorMessage.code)
+  return apiToFrontendError[apiPathCode] || errorMessage.desc
+}
 
 const apiCall = async (data, path) => {
   const apiUrl = await getSecretKeyValue('nws/geosafe', 'apiUrl')
@@ -25,7 +32,7 @@ const apiCall = async (data, path) => {
       } else if (status === 404) {
         return { status }
       } else if (status === 500) {
-        return { status: status, errorMessage: error.response.data }
+        return { status: status, errorMessage: getErrorMessage(path, error.response.data) }
       }
     } else if (error.request) {
       // no response was received - probably need to return

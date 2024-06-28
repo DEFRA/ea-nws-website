@@ -11,6 +11,10 @@ async function getEmailStart(
   const { email } = req.payload as { email: string }
   // 200 Success
   if (authToken === 'MockAuthToken' && email !== 'invalid@email.com') {
+    if (email === 'duplicate@email.com') {
+      console.log('duplicate email, responding 500')
+      return res.response(responseCodes.DUPLICATE_EMAIL).code(500)
+    }
     return res.response(responseCodes.SUCCESS)
   } else {
     return res.response(responseCodes.INVALID_TOKEN).code(500)
@@ -30,7 +34,11 @@ async function getEmailValidate(
     enabled: true,
     firstName: 'John',
     lastName: 'Smith',
-    emails: ['updated.matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
+    emails: [
+      'updated.matthew.pepper@gmail.com',
+      'perry.pepper@gmail.com',
+      email
+    ],
     mobilePhones: ['07343454590', '07889668367'],
     homePhones: ['01475721535'],
     language: 'EN',
@@ -38,7 +46,7 @@ async function getEmailValidate(
     unverified: {
       emails: [],
       mobilePhones: [],
-      homePhones: ['01475721535']
+      homePhones: []
     },
     pois: {
       address: 'Exeter, United Kingdom',

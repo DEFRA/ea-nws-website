@@ -45,7 +45,7 @@ export default function ValidateMobileLayout ({
         navigate
       )
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        setError(errorMessage)
       } else {
         dispatch(setProfile(data.profile))
         NavigateToNextPage()

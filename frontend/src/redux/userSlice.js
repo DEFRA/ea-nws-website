@@ -25,11 +25,24 @@ const userSlice = createSlice({
     setRegistrations: (state, action) => {
       state.registrations = action.payload
     },
+    //location data
+    setLocationPostCode: (state, action) => {
+      state.locationPostCode = action.payload
+    },
+    setLocationSearchResults: (state, action) => {
+      state.locationSearchResults = action.payload
+    },
+    setSelectedLocation: (state, action) => {
+      state.selectedLocation = action.payload
+    },
     clearAuth: (state) => {
       state.authToken = null
       state.profile = null
       state.contactPreferences = null
       state.registrations = null
+      state.setLocationPostCode = null
+      state.locationSearchResults = null
+      state.selectedLocation = null
     }
   }
 })
@@ -40,6 +53,9 @@ export const {
   setProfile,
   setRegistrations,
   setContactPreferences,
+  setLocationPostCode,
+  setLocationSearchResults,
+  setSelectedLocation,
   clearAuth
 } = userSlice.actions
 export default userSlice.reducer

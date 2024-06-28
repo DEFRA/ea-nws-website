@@ -24,7 +24,7 @@ export default function InactivityPopup ({ onStayLoggedIn }) {
           backgroundColor: 'white',
           borderStyle: 'solid',
           borderWidth: 'medium',
-          padding: '20px'
+          padding: '1.5rem'
         }}
       >
         <h3 class='govuk-heading-s'>Youre about to be signed out</h3>
@@ -34,7 +34,8 @@ export default function InactivityPopup ({ onStayLoggedIn }) {
         <div
           style={{
             display: 'flex',
-            justifyContent: 'space-between'
+            justifyContent: 'space-between',
+            gap:'2rem'
           }}
         >
           <Button
@@ -45,8 +46,9 @@ export default function InactivityPopup ({ onStayLoggedIn }) {
           <p
             class='govuk-body'
             style={{
-              marginRight: '40%',
-              marginTop: '1%'
+              paddingRight:'9rem',
+              marginTop: '0.3rem',
+              
             }}
           >
             <a href='/signout' class='govuk-link'>

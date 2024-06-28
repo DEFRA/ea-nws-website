@@ -16,7 +16,7 @@ import {
 import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../services/validations/PhoneValidation'
 
-export default function AddLandlineLayout ({ NavigateToNextPage }) {
+export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPreviousPage }) {
   const navigate = useNavigate()
   const [landline, setLandline] = useState('')
   const [error, setError] = useState('')
@@ -41,7 +41,7 @@ export default function AddLandlineLayout ({ NavigateToNextPage }) {
       } else {
         dispatch(
           setProfile(
-            addUnverifiedContact(session.profile, 'homePhones', landline)
+            addUnverifiedContact(session.profile, 'homePhones', normalisedPhoneNumber)
           )
         )
         NavigateToNextPage()
@@ -71,7 +71,7 @@ export default function AddLandlineLayout ({ NavigateToNextPage }) {
     }
     // user could have navigated from contact preferences page
     // or user could have come from account change details at the end of sign up flow
-    navigate(-1)
+    NavigateToPreviousPage()
   }
 
   return (

@@ -11,7 +11,7 @@ import {
   setLocationPostCode,
   setLocationSearchResults
 } from '../../redux/userSlice'
-import { osApiCall } from '../../services/OrdnanceSurveyService'
+import { osPostCodeApiCall } from '../../services/OrdnanceSurveyService'
 import { postCodeValidation } from '../../services/validations/PostCodeValidation'
 
 export default function LocationSearchLayout() {
@@ -30,8 +30,10 @@ export default function LocationSearchLayout() {
         case 'AddressPostCode':
           const postCodeValidationError = postCodeValidation(postCode)
           if (!postCodeValidationError) {
-            const { responseData, errrorMessage } = await osApiCall(postCode)
-            if (!errrorMessage) {
+            const { responseData, errorMessage } = await osPostCodeApiCall(
+              postCode
+            )
+            if (!errorMessage) {
               //normalise postcode format
               dispatch(
                 setLocationPostCode(
@@ -42,7 +44,7 @@ export default function LocationSearchLayout() {
               setPostCodeError('')
               navigate('/signup/register-location/search-results')
             } else {
-              setError(errrorMessage)
+              setError(errorMessage)
             }
             break
           } else {

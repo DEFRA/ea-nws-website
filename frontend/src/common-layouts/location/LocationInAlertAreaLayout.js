@@ -1,5 +1,6 @@
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api'
 import React from 'react'
+
+import { MapContainer, TileLayer } from 'react-leaflet'
 import { Link, useNavigate } from 'react-router-dom'
 import FloodWarningKey from '../../custom-components/FloodWarningKey'
 import Button from '../../gov-uk-components/Button'
@@ -8,24 +9,19 @@ import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-export default function LocationInAlertAreaLayout({ submit, locationData }) {
+export default function LocationInAlertAreaLayout({ submit }) {
   const navigate = useNavigate()
-  //locationData must be an object
 
   const handleSubmit = () => {
     //do we need any logic here?
     submit()
   }
 
-  const containerStyle = {
-    width: '800px',
-    height: '300px'
-  }
+  const apiKey = 'tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a' // Replace with your Ordnance Survey API key
+  const zoom = 15
+  const center = [53.5, -2.25] // Latitude and longitude of the center point
 
-  const center = {
-    lat: 40.7128,
-    lng: -74.006
-  }
+  const tileUrl = `https://api.os.uk/maps/raster/v1/zxy/Outdoor_3857/{z}/{x}/{y}.png?key=${apiKey}`
 
   return (
     <>
@@ -47,17 +43,13 @@ export default function LocationInAlertAreaLayout({ submit, locationData }) {
                 //pass address here
               />
               <div>
-                <LoadScript
-                  googleMapsApiKey="AIzaSyB7eZQFB_57ixg_5yhS-np5RC2vrBnw25s" // Replace with your Google Maps API key
+                <MapContainer
+                  center={center}
+                  zoom={zoom}
+                  style={{ height: '100vh', width: '100%' }}
                 >
-                  <GoogleMap
-                    mapContainerStyle={containerStyle}
-                    center={center}
-                    zoom={10}
-                  >
-                    <Marker position={center} />
-                  </GoogleMap>
-                </LoadScript>
+                  <TileLayer url={tileUrl} />
+                </MapContainer>
               </div>
               <FloodWarningKey severe={true} />
               <p className="govuk-!-margin-top-6">

@@ -26,6 +26,7 @@ export default function LocationSearchResultsLayout() {
     event.preventDefault()
     dispatch(setSelectedLocation(address))
 
+    //need to dertermine in here if location is in danger area or not
     navigate('/signup/register-location/no-danger')
   }
 

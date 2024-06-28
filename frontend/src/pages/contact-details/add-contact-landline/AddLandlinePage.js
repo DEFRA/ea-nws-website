@@ -7,7 +7,11 @@ export default function AddLandlinePage () {
     navigate('/managecontacts/validate-landline')
   }
 
+  const NavigateToPreviousPage = () => {
+    navigate('/managecontacts')
+  }
+
   return (
-    <AddLandlineLayout NavigateToNextPage={NavigateToNextPage} />
+    <AddLandlineLayout NavigateToNextPage={NavigateToNextPage} NavigateToPreviousPage={NavigateToPreviousPage} />
   )
 }

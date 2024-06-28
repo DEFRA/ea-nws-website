@@ -1,6 +1,6 @@
 import { useDispatch } from 'react-redux'
 import { clearAuth } from '../../redux/userSlice'
-import SignOutLayout from '../../common-layouts/signOut/signOutPageLayout'
+import SignOutLayout from '../../common-layouts/sign-out/signOutPageLayout'
 
 import { useEffect } from 'react'
 export default function SignOutManuallyPage () {

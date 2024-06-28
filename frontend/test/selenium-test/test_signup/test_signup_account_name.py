@@ -43,5 +43,13 @@ def test_SignUpAccountName_validFullName(get_browser):
     time.sleep(1)
     assert browser.current_url == nextPage
 
+def test_SignInStart_validEmail(get_browser):
+    browser = get_browser
+    browser.get(url)
+    browser.find_element(By.NAME, "Email address").send_keys("valid@email.uk")
+    browser.find_element(By.CLASS_NAME, "govuk-button").click()
+    time.sleep(2)
+    assert browser.current_url == nextPage
+
 
 

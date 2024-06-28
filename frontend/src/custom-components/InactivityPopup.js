@@ -34,7 +34,8 @@ export default function InactivityPopup ({ onStayLoggedIn }) {
         <div
           style={{
             display: 'flex',
-            justifyContent: 'space-between',
+            justifyContent: 'start',
+            justifyItems: 'start',
             gap:'2rem'
           }}
         >
@@ -46,8 +47,9 @@ export default function InactivityPopup ({ onStayLoggedIn }) {
           <p
             class='govuk-body'
             style={{
-              paddingRight:'9rem',
+              
               marginTop: '0.3rem',
+              
               
             }}
           >

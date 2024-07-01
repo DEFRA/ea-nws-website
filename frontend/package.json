@@ -29,8 +29,9 @@
   },
   "scripts": {
     "start": "serve -s build",
-    "start-dev": "cross-env REACT_APP_API_URL=http://localhost:5000 react-scripts start",
-    "build": "cross-env react-scripts build",
+    "start-dev": "cross-env REACT_APP_INACTIVITY_POPUP=1200 REACT_APP_TIMEOUT_POPUP=300 REACT_APP_API_URL=http://localhost:5000 react-scripts start",
+    "build": "cross-env REACT_APP_INACTIVITY_POPUP=780 REACT_APP_TIMEOUT_POPUP=120 react-scripts build",
+    "start-test": "cross-env REACT_APP_INACTIVITY_POPUP=10 REACT_APP_TIMEOUT_POPUP=5 REACT_APP_API_URL=http://localhost:5000 react-scripts start",
     "eject": "react-scripts eject",
     "uitest": "python3 -m pytest test/selenium-test",
     "test": "jest",

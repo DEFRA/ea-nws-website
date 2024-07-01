@@ -37,11 +37,13 @@ spec:
             {{- toYaml .securityContext | nindent 12 }}
           image: "{{ .image.repository }}:{{ .image.tag }}"
           imagePullPolicy: {{ .image.pullPolicy }}
+          {{- if .env }}
           env:
             {{- range .env }}
             - name: {{ .name }}
               value: "{{ .value }}"
             {{- end }}
+          {{- end }}
           {{- if .ports }}
           ports:
             {{- range .ports }}

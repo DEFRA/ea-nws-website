@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { Fragment, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
@@ -12,6 +12,7 @@ import { setAuthToken } from '../../../redux/userSlice'
 import { backendCall } from '../../../services/BackendService'
 import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
 import NotificationBanner from '../../../gov-uk-components/NotificationBanner'
+import ExpiredCodeLayout from '../../../common-layouts/sign-up/ExpiredCodeLayout'
 
 export default function SignUpValidationPage () {
   const navigate = useNavigate()
@@ -20,8 +21,9 @@ export default function SignUpValidationPage () {
   const loginEmail = useSelector((state) => state.session.profile.emails[0])
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
-  var [codeResent, setCodeResent] = useState('')
+  var [codeResent, setCodeResent] = useState(false)
   const dateTime = new Date();
+  var [codeExpired, setCodeExpired] = useState(false)
 
   const handleSubmit = async () => {
     const validationError = authCodeValidation(code)
@@ -42,18 +44,18 @@ export default function SignUpValidationPage () {
 
       if(errorMessage !== null) {
         if(errorMessage === 'invalid credentials'){
-          navigate('/signup/expired', {
-            state:{ email: loginEmail }
-          })
+          setCodeExpired(true)
         }
         else{
           setError(errorMessage)
         }
       }
       else {
+        setCodeExpired(false)
         dispatch(setAuthToken(data.authToken))
         navigate('/signup/contactpreferences')
       }
+      console.log("code should be true", codeExpired)
     }
   }
 
@@ -61,6 +63,7 @@ export default function SignUpValidationPage () {
     event.preventDefault()
     setCodeResent(false)
 
+    console.log("sending new code")
     const data = { email: loginEmail }
     const { errorMessage } = await backendCall(
       data,
@@ -68,6 +71,7 @@ export default function SignUpValidationPage () {
       navigate
     )
     setCodeResent(true)
+    setCodeExpired(false)
     if (errorMessage !== null) {
       setError(errorMessage)
       setCodeResent(false)
@@ -77,6 +81,7 @@ export default function SignUpValidationPage () {
   return (
     <>
       <Header />
+      {codeExpired ? (<ExpiredCodeLayout getNewCode={getNewCode} />) : (
       <div className='govuk-width-container'>
         <PhaseBanner />
         <Link to='/signup' className='govuk-back-link'>Back</Link>
@@ -136,8 +141,9 @@ export default function SignUpValidationPage () {
           </Link>
         </div>
       </div>
-
-      <Footer />
+          )}
+      <Footer /> 
     </>
   )
 }
+

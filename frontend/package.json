@@ -28,9 +28,9 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "start": "serve -s build",
     "start-dev": "cross-env REACT_APP_INACTIVITY_POPUP=10 REACT_APP_TIMEOUT_POPUP=5 react-scripts start",
-    "build": "cross-env REACT_APP_INACTIVITY_POPUP=10 REACT_APP_TIMEOUT_POPUP=5 react-scripts build",
-    
+    "build": "cross-env REACT_APP_INACTIVITY_POPUP=780 REACT_APP_TIMEOUT_POPUP=120 react-scripts build",
     "eject": "react-scripts eject",
     "uitest": "python3 -m pytest test/selenium-test",
     "test": "jest",

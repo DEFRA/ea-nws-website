@@ -14,7 +14,7 @@ export default function SignBackIn () {
     <>
       <Header />
       <div className='govuk-width-container'>
-        <PhaseBanner/>
+        <PhaseBanner />
         <h1 className='govuk-heading-l'>
           You need to sign back in to view this page
         </h1>

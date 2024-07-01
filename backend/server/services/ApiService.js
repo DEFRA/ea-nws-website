@@ -1,4 +1,5 @@
 const axios = require('axios')
+const getSecretKeyValue = require('./SecretsManager')
 const apiToFrontendError = require('./ApiToFrontendError')
 
 const getErrorMessage = (path, errorMessage) => {
@@ -8,7 +9,7 @@ const getErrorMessage = (path, errorMessage) => {
 }
 
 const apiCall = async (data, path) => {
-  const apiUrl = process.env.API_URL || 'http://localhost:9000'
+  const apiUrl = await getSecretKeyValue('nws/geosafe', 'apiUrl')
   const url = apiUrl + '/' + path
 
   try {

@@ -7,9 +7,6 @@ services:
     build:
       context: ../
       dockerfile: docker/ea_nws_website/Dockerfile_frontend
-      args:
-        - NODE_ENV=${NODE_ENV}
-        - REACT_APP_DOMAIN=${REACT_APP_DOMAIN}
     ports:
       - '3000:3000'
     networks:
@@ -22,9 +19,6 @@ services:
     build:
       context: ../
       dockerfile: docker/ea_nws_website/Dockerfile_backend
-      args:
-        - NODE_ENV=${NODE_ENV}
-        - API_URL=${API_URL}
     ports:
       - '5000:5000'
     networks:
@@ -37,8 +31,6 @@ services:
     build:
       context: ../
       dockerfile: docker/ea_nws_website/Dockerfile_api
-      args:
-        - NODE_ENV=${NODE_ENV}
     ports:
       - '9000:9000'
     networks:

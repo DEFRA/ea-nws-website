@@ -57,7 +57,7 @@ export default function FeedbackPage () {
         navigate
       )
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        setError(errorMessage)
       } else {
         navigate('/signup')
       }

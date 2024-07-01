@@ -1,2 +1,3 @@
 helm
 .dockerignore
+frontend/src/pages/contact-details/ContactDetailsTable.js

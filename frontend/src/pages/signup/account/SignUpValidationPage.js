@@ -47,7 +47,7 @@ export default function SignUpValidationPage () {
           })
         }
         else{
-          setError(errorMessage.desc)
+          setError(errorMessage)
         }
       }
       else {
@@ -69,7 +69,7 @@ export default function SignUpValidationPage () {
     )
     setCodeResent(true)
     if (errorMessage !== null) {
-      setError(errorMessage.desc)
+      setError(errorMessage)
       setCodeResent(false)
     }
   }

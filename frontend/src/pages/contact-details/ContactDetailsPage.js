@@ -15,6 +15,39 @@ export default function ContactDetailsPage () {
   // user is not allowed to remove the primary email
   const primaryEmail = profile.emails[0]
 
+  const unconfirmedMessage = (unconfirmedtype) => {
+    if (unconfirmedtype === 'email') {
+      return (
+        <>
+          You need to{' '}
+          <Link to='/managecontacts/validate-email' className='govuk-link'>
+            confirm the email address
+          </Link>{' '}
+          first
+        </>
+      )
+    } else if (unconfirmedtype === 'mobile telephone number') {
+      return (
+        <>
+          You need to{' '}
+          <Link to='/managecontacts/validate-mobile' className='govuk-link'>
+            confirm the number
+          </Link>{' '}
+          first
+        </>
+      )
+    }
+    return (
+      <>
+        You need to{' '}
+        <Link to='/managecontacts/validate-landline' className='govuk-link'>
+          confirm the number
+        </Link>{' '}
+        first
+      </>
+    )
+  }
+
   const detailsMessage = (
     <div>
       You must keep at least one contact on your account.&nbsp;
@@ -34,13 +67,27 @@ export default function ContactDetailsPage () {
       <Header />
       <div className='govuk-width-container'>
         <PhaseBanner />
-        {location.state !== null
+        {location.state !== null && location.state.removedContact
           ? (
             <NotificationBanner
               className='govuk-notification-banner govuk-notification-banner--success'
               title='Success'
               heading={location.state.removedType + ' removed'}
               text={location.state.removedContact}
+            />
+            )
+          : null}
+        {location.state !== null && location.state.unconfirmedtype
+          ? (
+            <NotificationBanner
+              className='govuk-notification-banner'
+              title='Important'
+              heading={
+              'We cannot send flood messages to ' +
+              location.state.unconfirmedvalue +
+              ' yet'
+            }
+              text={unconfirmedMessage(location.state.unconfirmedtype)}
             />
             )
           : null}
@@ -61,6 +108,7 @@ export default function ContactDetailsPage () {
               <InsetText text='You must confirm each address and number before we can send flood messages to them.' />
               <ContactDetailsTable
                 contacts={profile.emails}
+                unregisteredContact={profile.unverified.emails}
                 contactTitle='Emails'
                 contactType='email address'
                 primaryContact={primaryEmail}
@@ -75,12 +123,14 @@ export default function ContactDetailsPage () {
               )}
               <ContactDetailsTable
                 contacts={profile.mobilePhones}
+                unregisteredContact={profile.unverified.mobilePhones}
                 contactTitle='Texts'
                 contactType='mobile telephone number'
                 primaryContact={null}
               />
               <ContactDetailsTable
                 contacts={profile.homePhones}
+                unregisteredContact={profile.unverified.homePhones}
                 contactTitle='Phone call warnings'
                 contactType='telephone number'
                 primaryContact={null}

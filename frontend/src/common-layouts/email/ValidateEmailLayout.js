@@ -1,59 +1,61 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import Button from '../../../gov-uk-components/Button'
-import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
-import Footer from '../../../gov-uk-components/Footer'
-import Header from '../../../gov-uk-components/Header'
-import Input from '../../../gov-uk-components/Input'
-import InsetText from '../../../gov-uk-components/InsetText'
-import { setProfile } from '../../../redux/userSlice'
-import { backendCall } from '../../../services/BackendService'
+import Button from '../../gov-uk-components/Button'
+import ErrorSummary from '../../gov-uk-components/ErrorSummary'
+import Footer from '../../gov-uk-components/Footer'
+import Header from '../../gov-uk-components/Header'
+import Input from '../../gov-uk-components/Input'
+import InsetText from '../../gov-uk-components/InsetText'
+import { setProfile } from '../../redux/userSlice'
+import { backendCall } from '../../services/BackendService'
 import {
   addUnverifiedContact,
   removeUnverifiedContact,
   removeVerifiedContact
-} from '../../../services/ProfileServices'
-import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
-export default function AddMobileValidatePage () {
+} from '../../services/ProfileServices'
+import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
+
+export default function ValidateEmailLayout ({
+  NavigateToNextPage,
+  SkipValidation,
+  DifferentEmail
+}) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [code, setCode] = useState('')
-
-  const session = useSelector((state) => state.session)
-  const mobile = session.profile.unverified.mobilePhones[0]
-    ? session.profile.unverified.mobilePhones[0]
-    : session.profile.mobilePhones[0]
-
   const authToken = useSelector((state) => state.session.authToken)
+  const session = useSelector((state) => state.session)
+  const email = session.profile.unverified.emails[0]
+    ? session.profile.unverified.emails[0]
+    : session.profile.emails[0]
 
   const handleSubmit = async (event) => {
     event.preventDefault()
     const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      const dataToSend = { authToken, code, msisdn: mobile }
+      const dataToSend = { authToken, email, code }
       const { errorMessage, data } = await backendCall(
         dataToSend,
-        'api/add_contact/mobile/validate',
-        navigate
+        'api/add_contact/email/validate'
       )
       if (errorMessage !== null) {
         setError(errorMessage)
       } else {
         dispatch(setProfile(data.profile))
-        navigate('/managecontacts')
+        NavigateToNextPage()
       }
     }
   }
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const data = { authToken, msisdn: mobile }
+    const data = { authToken: session.authToken, email }
     const { errorMessage } = await backendCall(
       data,
-      'api/add_contact/mobile/add',
+      'api/add_contact/email/add',
       navigate
     )
     if (errorMessage !== null) {
@@ -64,40 +66,36 @@ export default function AddMobileValidatePage () {
   const skipValidation = (event) => {
     event.preventDefault()
     // remove email from verified list if user is going back after validating
-    const updatedProfile = removeVerifiedContact(session.profile, mobile)
+
+    const updatedProfile = removeVerifiedContact(session.profile, email)
     // we will need to add the email back to the unverified list - if it already exists
     // nothing will happen and it will remain
-    dispatch(setProfile(addUnverifiedContact(updatedProfile, 'mobile', mobile)))
-    navigate('/managecontacts', {
-      state: {
-        unconfirmedtype: 'mobile',
-        unconfirmedvalue: mobile
-      }
-    })
+    dispatch(setProfile(addUnverifiedContact(updatedProfile, 'email', email)))
+    SkipValidation(email)
   }
 
-  const differentMobile = (event) => {
+  const differentEmail = (event) => {
     event.preventDefault()
     // remove email from users profile
-    dispatch(setProfile(removeUnverifiedContact(session.profile, mobile)))
-    navigate('/managecontacts/add-mobile')
+    dispatch(setProfile(removeUnverifiedContact(session.profile, email)))
+    DifferentEmail(email)
   }
 
   return (
     <>
       <Header />
       <div class='govuk-width-container'>
-        <Link to='/managecontacts/add-mobile' className='govuk-back-link'>
+        <Link to='/managecontacts/add-email' className='govuk-back-link'>
           Back
         </Link>
         <main className='govuk-main-wrapper'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
               <ErrorSummary errorList={error === '' ? [] : [error]} />
-              <h2 class='govuk-heading-l'>Check your mobile phone</h2>
+              <h2 class='govuk-heading-l'>Check your email</h2>
               <div class='govuk-body'>
-                We've sent a text with a code to:
-                <InsetText text={mobile} />
+                We've sent a code to:
+                <InsetText text={email} />
                 Use the code within 4 hours or it will expire.
                 <br /> <br />
                 <Input
@@ -126,8 +124,8 @@ export default function AddMobileValidatePage () {
                   Get a new code
                 </Link>
                 <br /> <br />
-                <Link onClick={differentMobile} className='govuk-link'>
-                  Enter a different mobile
+                <Link onClick={differentEmail} className='govuk-link'>
+                  Enter a different email
                 </Link>
               </div>
             </div>

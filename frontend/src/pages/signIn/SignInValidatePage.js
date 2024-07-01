@@ -39,7 +39,7 @@ export default function SignInValidatePage() {
         'api/signInValidate'
       )
       if (errorMessage !== null) {
-        setError(errorMessage.desc)
+        setError(errorMessage)
       } else {
         dispatch(setAuthToken(data.authToken))
         dispatch(setProfile(data.profile))
@@ -61,7 +61,7 @@ export default function SignInValidatePage() {
     setCodeResent(true)
 
     if (errorMessage !== null) {
-      setError(errorMessage.desc)
+      setError(errorMessage)
       setCodeResent(false)
     }
   }

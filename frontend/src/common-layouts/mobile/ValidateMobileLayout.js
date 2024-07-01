@@ -1,21 +1,26 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import Button from '../../../gov-uk-components/Button'
-import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
-import Footer from '../../../gov-uk-components/Footer'
-import Header from '../../../gov-uk-components/Header'
-import Input from '../../../gov-uk-components/Input'
-import InsetText from '../../../gov-uk-components/InsetText'
-import { setProfile } from '../../../redux/userSlice'
-import { backendCall } from '../../../services/BackendService'
+import Button from '../../gov-uk-components/Button'
+import ErrorSummary from '../../gov-uk-components/ErrorSummary'
+import Footer from '../../gov-uk-components/Footer'
+import Header from '../../gov-uk-components/Header'
+import Input from '../../gov-uk-components/Input'
+import InsetText from '../../gov-uk-components/InsetText'
+import { setProfile } from '../../redux/userSlice'
+import { backendCall } from '../../services/BackendService'
 import {
   addUnverifiedContact,
   removeUnverifiedContact,
   removeVerifiedContact
-} from '../../../services/ProfileServices'
-import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
-export default function AddMobileValidatePage () {
+} from '../../services/ProfileServices'
+import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
+
+export default function ValidateMobileLayout ({
+  NavigateToNextPage,
+  SkipValidation,
+  DifferentMobile
+}) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -43,7 +48,7 @@ export default function AddMobileValidatePage () {
         setError(errorMessage)
       } else {
         dispatch(setProfile(data.profile))
-        navigate('/managecontacts')
+        NavigateToNextPage()
       }
     }
   }
@@ -68,19 +73,14 @@ export default function AddMobileValidatePage () {
     // we will need to add the email back to the unverified list - if it already exists
     // nothing will happen and it will remain
     dispatch(setProfile(addUnverifiedContact(updatedProfile, 'mobile', mobile)))
-    navigate('/managecontacts', {
-      state: {
-        unconfirmedtype: 'mobile',
-        unconfirmedvalue: mobile
-      }
-    })
+    SkipValidation(mobile)
   }
 
   const differentMobile = (event) => {
     event.preventDefault()
     // remove email from users profile
     dispatch(setProfile(removeUnverifiedContact(session.profile, mobile)))
-    navigate('/managecontacts/add-mobile')
+    DifferentMobile(mobile)
   }
 
   return (

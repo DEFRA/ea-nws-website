@@ -1,0 +1,14 @@
+.sign-out-popup-link {
+    width: 100%;
+}
+
+.inline-link {
+    display: inline-block;
+    padding: 0.5rem 0.625rem 0.4375rem
+}
+
+@media (min-width: 40.0625em){
+    .sign-out-popup-link {
+        width:auto;
+    }
+}

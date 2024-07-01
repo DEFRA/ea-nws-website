@@ -1,4 +1,5 @@
 import React from 'react'
+import '../custom.css'
 import Button from '../gov-uk-components/Button'
 export default function InactivityPopup ({ onStayLoggedIn }) {
   return (
@@ -45,13 +46,7 @@ export default function InactivityPopup ({ onStayLoggedIn }) {
             text='Stay signed in'
           />
           <p
-            class='govuk-body'
-            style={{
-              
-              marginTop: '0.3rem',
-              
-              
-            }}
+            className='govuk-body sign-out-popup-link inline-link'
           >
             <a href='/signout' class='govuk-link'>
               Sign out

@@ -30,7 +30,7 @@ async function getRegisterValidate(
     code: string
     registerToken: string
   }
-  if(code === '999999'){
+  if(code === '111111'){
     console.log("invalid credentials, responding 101")
     return res.response(responseCodes.UNAUTHORIZED).code(500)
   }

@@ -41,7 +41,7 @@ export default function SignUpValidationPage () {
       )
 
       if(errorMessage !== null) {
-        if(errorMessage.desc === 'invalid credentials'){
+        if(errorMessage === 'invalid credentials'){
           navigate('/signup/expired', {
             state:{ email: loginEmail }
           })

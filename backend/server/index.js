@@ -3,8 +3,10 @@ const config = require('./config')
 
 async function createServer () {
   // Create the hapi server
+  const conf = await config()
+
   const server = hapi.server({
-    port: config.port,
+    port: conf.port,
     routes: {
       cors: true,
       validate: {

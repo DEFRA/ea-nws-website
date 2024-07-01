@@ -54,14 +54,13 @@ export default function ContactDetailsTable ({
   }
 
   const MaximumReached = () => {
-    if(contactType === 'email address'){
+    if (contactType === 'email address') {
       return (
-        <div>You've reached maximum of 5 {contactType.toLowerCase()}es.<br/><br/></div>
+        <div>You've reached maximum of 5 {contactType.toLowerCase()}es.<br /><br /></div>
       )
-    }
-    else{
+    } else {
       return (
-        <div>You've reached maximum of 5 {contactType.toLowerCase()}s for {contactTitle.toLowerCase()}.<br/><br/></div>
+        <div>You've reached maximum of 5 {contactType.toLowerCase()}s for {contactTitle.toLowerCase()}.<br /><br /></div>
 
       )
     }
@@ -134,14 +133,13 @@ export default function ContactDetailsTable ({
           </table>
           )
         : null}
-        { contacts.length + unregisteredContact.length < 5 
-        ? ( <Button
-        className='govuk-button govuk-button--secondary'
-        text={'Add a ' + contactType}
-        onClick={handleButton}
-      />)
-      : <MaximumReached/>
-    }
+      {contacts.length + unregisteredContact.length < 5
+        ? (<Button
+            className='govuk-button govuk-button--secondary'
+            text={'Add a ' + contactType}
+            onClick={handleButton}
+           />)
+        : <MaximumReached />}
 
     </>
   )

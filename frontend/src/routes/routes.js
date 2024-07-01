@@ -9,6 +9,7 @@ import AddLandlineValidatePage from '../pages/contact-details/add-contact-landli
 import AddMobilePage from '../pages/contact-details/add-contact-mobile/AddMobilePage'
 import AddMobileValidatePage from '../pages/contact-details/add-contact-mobile/AddMobileValidatePage'
 import HomePage from '../pages/home/HomePage'
+import SignOutManuallyPage from '../pages/sign-out/SignOutManuallyPage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
 import SignUpDuplicateEmailPage from '../pages/signup/account/SignUpDuplicateEmail'
@@ -28,6 +29,8 @@ import StartPage from '../pages/start/StartPage'
 
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
+
+const signOutRoutes = [{ path: '/signout', component: <SignOutManuallyPage /> }]
 
 // start routes
 const startRoutes = [{ path: '/', component: <StartPage /> }]
@@ -127,7 +130,8 @@ const routes = [
   ...siginRoutes,
   ...signupRoutes,
   ...homeRoutes,
-  ...contactRoutes
+  ...contactRoutes,
+  ...signOutRoutes
 ]
 
 export default routes

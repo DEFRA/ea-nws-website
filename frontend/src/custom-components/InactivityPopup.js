@@ -3,51 +3,19 @@ import '../custom.css'
 import Button from '../gov-uk-components/Button'
 export default function InactivityPopup ({ onStayLoggedIn }) {
   return (
-    <div
-      className='hmrc-timeout-dialog'
-      style={{
-        position: 'fixed',
-        top: '0',
-        left: '0',
-        width: '100%',
-        height: '100%',
-        backgroundColor: '#0B0C0C99',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        zIndex: '1000'
-
-      }}
-    >
-      <div
-        className='hmrc-timeout-dialog'
-        style={{
-          backgroundColor: 'white',
-          borderStyle: 'solid',
-          borderWidth: 'medium',
-          padding: '1.5rem'
-        }}
-      >
-        <h3 class='govuk-heading-s'>Youre about to be signed out</h3>
-        <p class='govuk-body'>
+    <div className='timeout-dialog'>
+      <div className='timeout-dialog-container'>
+        <h3 className='govuk-heading-s'>Youre about to be signed out</h3>
+        <p className='govuk-body'>
           For your security we will sign you out in 2 minutes
         </p>
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'start',
-            justifyItems: 'start',
-            gap:'2rem'
-          }}
-        >
+        <div className='timeout-dialog-flex'>
           <Button
             className='govuk-button dialog'
             onClick={onStayLoggedIn}
             text='Stay signed in'
           />
-          <p
-            className='govuk-body sign-out-popup-link inline-link'
-          >
+          <p className='govuk-body timeout-dialog-link inline-link'>
             <a href='/signout' class='govuk-link'>
               Sign out
             </a>

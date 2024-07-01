@@ -80,8 +80,9 @@ export default function SignUpValidationPage () {
 
   return (
     <>
-      <Header />
+      
       {codeExpired ? (<ExpiredCodeLayout getNewCode={getNewCode} />) : (
+      <div> <Header/>
       <div className='govuk-width-container'>
         <PhaseBanner />
         <Link to='/signup' className='govuk-back-link'>Back</Link>
@@ -141,8 +142,9 @@ export default function SignUpValidationPage () {
           </Link>
         </div>
       </div>
-          )}
-      <Footer /> 
+        <Footer/>
+      </div>
+    )}
     </>
   )
 }

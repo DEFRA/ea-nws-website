@@ -10,11 +10,12 @@ import AddMobilePage from '../pages/contact-details/add-contact-mobile/AddMobile
 import AddMobileValidatePage from '../pages/contact-details/add-contact-mobile/AddMobileValidatePage'
 import HomePage from '../pages/home/HomePage'
 import SignOutManuallyPage from '../pages/sign-out/SignOutManuallyPage'
+import SignBackInPage from '../pages/sign-out/signBackInPage'
+import SignOutAutomaticallyPage from '../pages/sign-out/signOutAutomaticallyPage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
 import AddNamePage from '../pages/signup/account-name/AddFullNamePage'
 import SignUpDuplicateEmailPage from '../pages/signup/account/SignUpDuplicateEmail'
-import SignUpFeedbackPage from '../pages/signup/account/SignUpFeedbackPage'
 import SignUpPage from '../pages/signup/account/SignUpPage'
 import SignUpValidationPage from '../pages/signup/account/SignUpValidationPage'
 import WarningContactsPreferencePage from '../pages/signup/channel-preferences/WarningContactsPreferencePage'
@@ -30,17 +31,24 @@ import StartPage from '../pages/start/StartPage'
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
 
-const signOutRoutes = [{ path: '/signout', component: <SignOutManuallyPage /> }]
-
 // start routes
 const startRoutes = [{ path: '/', component: <StartPage /> }]
 
 // sign in routes
-const siginRoutes = [
+const signinRoutes = [
   { path: '/signin', component: <SignInPage /> },
   { path: '/signin/validate', component: <SignInValidatePage /> }
 ]
 
+// sign out routes
+const signOutRoutes = [
+  { path: '/signout-auto', component: <SignOutAutomaticallyPage /> },
+  { path: '/signout', component: <SignOutManuallyPage /> }
+]
+
+const signBackInRoutes = [
+  { path: '/sign-back-in', component: <SignBackInPage /> }
+]
 // sign up routes
 const signupRoutes = [
   { path: '/signup', component: <SignUpPage /> },
@@ -120,15 +128,17 @@ const contactRoutes = [
   }
 ]
 
-const routes = [
+export const routes = [
   ...indexRoutes,
   ...startRoutes,
   ...signupRoutes,
-  ...siginRoutes,
+  ...signinRoutes,
   ...signupRoutes,
+  ...signBackInRoutes
+]
+
+export const authenticatedRoutes = [
   ...homeRoutes,
   ...contactRoutes,
   ...signOutRoutes
 ]
-
-export default routes

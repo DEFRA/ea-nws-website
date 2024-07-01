@@ -88,7 +88,7 @@ export default function ContactDetailsTable ({
                           state={{
                             type: contactType,
                             contact,
-                            navigateTo: '/managecontacts' 
+                            navigateTo: '/managecontacts'
                           }}
                           className='govuk-link'
                         >

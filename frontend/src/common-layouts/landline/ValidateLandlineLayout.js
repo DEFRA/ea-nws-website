@@ -93,7 +93,7 @@ export default function ValidateLandlineLayout ({
         <main className='govuk-main-wrapper'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
-              <ErrorSummary errorList={error === '' ? [] : [error]} />
+              {error !== '' ? <ErrorSummary errorList={[error]} /> : <></>}
               <h2 class='govuk-heading-l'>Confirm telephone number</h2>
               <div class='govuk-body'>
                 We're calling this number to read out a code:

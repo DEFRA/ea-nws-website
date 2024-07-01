@@ -56,13 +56,8 @@ export default function AddEmailLayout ({ NavigateToNextPage }) {
     if (session && session.email) {
       event.preventDefault()
       // remove landline from users profile
-      const updatedProfile = removeUnverifiedContact(
-        session.profile,
-        email
-      )
-      dispatch(
-        setProfile(removeVerifiedContact(updatedProfile, email))
-      )
+      const updatedProfile = removeUnverifiedContact(session.profile, email)
+      dispatch(setProfile(removeVerifiedContact(updatedProfile, email)))
     }
     // user could have navigated from contact preferences page
     // or user could have come from account change details at the end of sign up flow
@@ -79,13 +74,14 @@ export default function AddEmailLayout ({ NavigateToNextPage }) {
         <main className='govuk-main-wrapper'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
-              <ErrorSummary errorList={error === '' ? [] : [error]} />
+              {error !== '' ? <ErrorSummary errorList={[error]} /> : <></>}
               <h2 class='govuk-heading-l'>
                 Enter an email address to get flood messages
               </h2>
               <div class='govuk-body'>
                 <p>
-                  We recommend using an email address you can access 24 hours a day.
+                  We recommend using an email address you can access 24 hours a
+                  day.
                 </p>
                 <Input
                   name='Email address'

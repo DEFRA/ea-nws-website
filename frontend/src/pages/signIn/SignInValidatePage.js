@@ -63,7 +63,7 @@ export default function SignInValidatePage () {
         <Link to='/signin' className='govuk-back-link'>
           Back
         </Link>
-        <ErrorSummary errorList={error === '' ? [] : [error]} />
+        {error !== '' ? <ErrorSummary errorList={[error]} /> : <></>}
         <h2 class='govuk-heading-l'>Check your email</h2>
         <div class='govuk-body'>
           We've sent a code to:

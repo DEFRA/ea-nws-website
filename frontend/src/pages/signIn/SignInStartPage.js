@@ -41,7 +41,7 @@ export default function SignInStartPage () {
         <Link onClick={() => navigate(-1)} className='govuk-back-link'>
           Back
         </Link>
-        <ErrorSummary errorList={error === '' ? [] : [error]} />
+        {error !== '' ? <ErrorSummary errorList={[error]} /> : <></>}
         <h2 class='govuk-heading-l'>Sign in to your flood warnings account</h2>
         <div class='govuk-body'>
           You can:

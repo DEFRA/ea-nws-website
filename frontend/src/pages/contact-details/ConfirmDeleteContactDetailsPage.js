@@ -13,7 +13,6 @@ import {
   removeVerifiedContact
 } from '../../services/ProfileServices'
 
-
 export default function ConfirmDeleteContactDetailsPage () {
   const location = useLocation()
   const dispatch = useDispatch()
@@ -50,7 +49,6 @@ export default function ConfirmDeleteContactDetailsPage () {
       })
     }
   }
-
 
   return (
     <>

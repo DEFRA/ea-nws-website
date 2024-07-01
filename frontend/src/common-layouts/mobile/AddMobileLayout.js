@@ -40,9 +40,7 @@ export default function AddMobileLayout ({ NavigateToNextPage }) {
         setError(errorMessage)
       } else {
         dispatch(
-          setProfile(
-            addUnverifiedContact(session.profile, 'mobile', mobile)
-          )
+          setProfile(addUnverifiedContact(session.profile, 'mobile', mobile))
         )
         NavigateToNextPage()
       }
@@ -85,14 +83,14 @@ export default function AddMobileLayout ({ NavigateToNextPage }) {
         <main className='govuk-main-wrapper'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
-              <ErrorSummary errorList={error === '' ? [] : [error]} />
+              {error !== '' ? <ErrorSummary errorList={[error]} /> : <></>}
               <h2 class='govuk-heading-l'>
                 Enter a mobile number to get flood messages by text
               </h2>
               <div class='govuk-body'>
                 <p>
-                  We recommend using a mobile number where we can reach you 24 hours a
-                  day.
+                  We recommend using a mobile number where we can reach you 24
+                  hours a day.
                 </p>
                 <Input
                   name='UK mobile telephone number'

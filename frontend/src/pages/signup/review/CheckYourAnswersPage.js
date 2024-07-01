@@ -12,6 +12,7 @@ export default function CheckYourAnswersPage () {
   const session = useSelector((state) => state.session)
   const profile = session.profile
   const registration = session.registrations
+  const contactPreferences = session.contactPreferences
   return (
     <>
       <Header />
@@ -26,7 +27,10 @@ export default function CheckYourAnswersPage () {
               <h2 className='govuk-heading-l'>Check your answers</h2>
               <LocationReviewTable locations={profile.pois} />
               <FloodMessageReviewTable registration={registration} />
-              <ContactReviewTable profile={profile} />
+              <ContactReviewTable
+                profile={profile}
+                contactPreferences={contactPreferences}
+              />
               <AccountDetailsTable profile={profile} />
             </div>
           </div>

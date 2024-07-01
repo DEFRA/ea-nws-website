@@ -7,6 +7,7 @@ import NotificationBanner from '../gov-uk-components/NotificationBanner'
 import {
   clearAuth,
   setAuthToken,
+  setContactPreferences,
   setProfile,
   setRegistrations
 } from '../redux/userSlice'
@@ -18,6 +19,7 @@ export default function IndexPage () {
   function mockSession () {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
+      const contactPreferences = ['Text']
       const registrations = {
         partner: {
           id: '4',
@@ -79,6 +81,7 @@ export default function IndexPage () {
 
       dispatch(setAuthToken(authToken))
       dispatch(setRegistrations(registrations))
+      dispatch(setContactPreferences(contactPreferences))
       dispatch(setProfile(profile))
       setmockSessionActive(true)
     } else {

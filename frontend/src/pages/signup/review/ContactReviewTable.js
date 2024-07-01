@@ -1,9 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function ContactReviewTable ({ profile }) {
+export default function ContactReviewTable ({ profile, contactPreferences }) {
   const ShowEmailAddress = () => {
-    console.log(profile)
     return (
       <>
         {profile.emails.length > 0 || profile.unverified.emails.length > 0
@@ -224,8 +223,8 @@ export default function ContactReviewTable ({ profile }) {
       <table className='govuk-table'>
         <tbody className='govuk-table__body'>
           <ShowEmailAddress />
-          <ShowMobileNumber />
-          <ShowHomePhone />
+          {contactPreferences.includes('Text') ? <ShowMobileNumber /> : null}
+          {contactPreferences.includes('PhoneCall') ? <ShowHomePhone /> : null}
         </tbody>
       </table>
     </>

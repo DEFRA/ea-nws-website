@@ -25,7 +25,7 @@ export default function CheckYourAnswersPage () {
       <div className='govuk-width-container'>
         <PhaseBanner />
         <Link to='/home' className='govuk-link'>
-          Back to Home
+          Back
         </Link>
         <main className='govuk-main-wrapper'>
           <div className='govuk-grid-row '>

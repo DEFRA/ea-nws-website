@@ -14,7 +14,7 @@ export default function FloodMessageReviewTable ({ registration }) {
 
   return (
     <>
-      <h3 className='govuk-heading-m'>Location you selected</h3>
+      <h3 className='govuk-heading-m'>Flood messages you'll get</h3>
       {registration.params.categories.length > 0
         ? (
           <table className='govuk-table'>

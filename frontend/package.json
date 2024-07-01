@@ -30,7 +30,7 @@
   "scripts": {
     "start": "serve -s build",
     "start-dev": "cross-env REACT_APP_API_URL=http://localhost:5000 react-scripts start",
-    "build": "cross-env REACT_APP_API_URL=http://localhost:5000 react-scripts build",
+    "build": "cross-env react-scripts build",
     "eject": "react-scripts eject",
     "uitest": "python3 -m pytest test/selenium-test",
     "test": "jest",

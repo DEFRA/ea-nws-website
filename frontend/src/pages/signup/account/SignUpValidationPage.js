@@ -79,7 +79,7 @@ export default function SignUpValidationPage () {
       <Header />
       <div className='govuk-width-container'>
         <PhaseBanner />
-        <Link to='/signup' className='govuk-back-link'>
+        <Link to='/signup' className='govuk-back-link'>Back</Link>
         {codeResent
           ? (
             <NotificationBanner
@@ -89,8 +89,6 @@ export default function SignUpValidationPage () {
             />
             )
           : null}
-          Back
-        </Link>
         {error && <ErrorSummary errorList={[error]} />}
         <h2 className='govuk-heading-l'>Check your email</h2>
         <div className='govuk-body'>

@@ -70,7 +70,7 @@ export default function SignInValidatePage() {
     <>
       <Header />
       <div class='govuk-width-container'>
-        <Link to='/signin' className='govuk-back-link'>
+        <Link to='/signin' className='govuk-back-link'>Back</Link>
       {codeResent
           ? (
             <NotificationBanner
@@ -80,8 +80,6 @@ export default function SignInValidatePage() {
             />
             )
           : null}
-          Back
-        </Link>
         <ErrorSummary errorList={error === '' ? [] : [error]} />
         <h2 class='govuk-heading-l'>Check your email</h2>
         <div class='govuk-body'>

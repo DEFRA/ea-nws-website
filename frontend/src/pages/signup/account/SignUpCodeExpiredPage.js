@@ -32,13 +32,13 @@ export default function SignUpPage () {
       <Header />
       <div className='govuk-width-container'>
         <PhaseBanner />
-        <Link to='/signup' className='govuk-back-link'>
+        <Link to='/signup/validate' className='govuk-back-link'>
           Back
         </Link>
         {error && <ErrorSummary errorList={error === '' ? [] : [error]} />}
-        <h2 className='govuk-heading-l'>
+        <h1 className='govuk-heading-l'>
           Your code has expired
-        </h2>
+        </h1>
           <Button
             className='govuk-button'
             text='Get new code'

@@ -15,7 +15,6 @@ export default function App () {
     if (isPopUpOnScreen === false) {
       const resetInactivityTimer = () => {
         if (auth) {
-          console.log('beginning timer')
           clearTimeout(inactivityTimer.current)
           clearTimeout(redirectTimer.current)
           setIsInactive(false)

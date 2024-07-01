@@ -93,7 +93,7 @@ export default function ValidateMobileLayout ({
         <main className='govuk-main-wrapper'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
-              {error !== '' ? <ErrorSummary errorList={[error]} /> : <></>}
+              {error ? <ErrorSummary errorList={[error]} /> : <></>}
               <h2 class='govuk-heading-l'>Check your mobile phone</h2>
               <div class='govuk-body'>
                 We've sent a text with a code to:

@@ -91,7 +91,7 @@ export default function ValidateEmailLayout ({
         <main className='govuk-main-wrapper'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
-              {error !== '' ? <ErrorSummary errorList={[error]} /> : <></>}
+              {error ? <ErrorSummary errorList={[error]} /> : <></>}
               <h2 class='govuk-heading-l'>Check your email</h2>
               <div class='govuk-body'>
                 We've sent a code to:

@@ -1,6 +1,7 @@
 import { React } from 'react'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import Button from '../../../gov-uk-components/Button'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
@@ -13,6 +14,11 @@ export default function CheckYourAnswersPage () {
   const profile = session.profile
   const registration = session.registrations
   const contactPreferences = session.contactPreferences
+  
+  const handleButton = () => {
+    console.log('Button clicked, functionality to implement')
+  }
+
   return (
     <>
       <Header />
@@ -34,6 +40,7 @@ export default function CheckYourAnswersPage () {
               <AccountDetailsTable profile={profile} />
             </div>
           </div>
+          <Button onClick={handleButton} className='govuk-button' text='Finish sign up'/>
         </main>
       </div>
       <Footer />

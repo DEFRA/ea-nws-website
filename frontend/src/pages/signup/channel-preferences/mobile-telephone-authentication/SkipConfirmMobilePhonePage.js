@@ -27,29 +27,29 @@ export default function SkipConfirmMobilePhonePage() {
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
+      <div className='govuk-width-container'>
         <PhaseBanner />
-        <div className="govuk-grid-row">
-          <div className="govuk-grid-column-two-thirds">
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
             <Link
-              to="/signup/contactpreferences/mobile/validate"
-              className="govuk-back-link"
+              to='/signup/contactpreferences/mobile/validate'
+              className='govuk-back-link'
             >
               Back
             </Link>
-            <h1 className="govuk-heading-l govuk-!-margin-top-6">
+            <h1 className='govuk-heading-l govuk-!-margin-top-6'>
               We cannot send flood messages to {mobile} until you confirm this
               number
             </h1>
             <Button
               text={"I'll confirm this later"}
-              className="govuk-button"
+              className='govuk-button'
               onClick={handleSubmit}
             />
             &nbsp; &nbsp;
             <Link
-              to="/signup/contactpreferences/mobile/validate"
-              className="govuk-body govuk-link"
+              to='/signup/contactpreferences/mobile/validate'
+              className='govuk-body govuk-link'
               style={{
                 display: 'inline-block',
                 padding: '8px 10px 7px'

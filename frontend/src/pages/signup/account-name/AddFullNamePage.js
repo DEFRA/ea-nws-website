@@ -62,34 +62,34 @@ export default function AddNamePage() {
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
+      <div className='govuk-width-container'>
         <PhaseBanner />
-        <div className="govuk-grid-row">
-          <div className="govuk-grid-column-two-thirds">
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
             <Link
               onClick={() => navigate('/signup/contactpreferences')}
-              className="govuk-back-link"
+              className='govuk-back-link'
             >
               Back
             </Link>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className="govuk-heading-l govuk-!-margin-top-6">
+            <h1 className='govuk-heading-l govuk-!-margin-top-6'>
               Enter your name
             </h1>
-            <p className="govuk-body">
+            <p className='govuk-body'>
               We'll use this if we need to contact you about your account.
             </p>
             <Input
-              inputType="text"
+              inputType='text'
               value={fullName}
-              name="Full name"
+              name='Full name'
               onChange={(val) => setFullName(val)}
               error={error}
-              className="govuk-input govuk-input--width-20"
+              className='govuk-input govuk-input--width-20'
             />
             <Button
-              text="Continue"
-              className="govuk-button"
+              text='Continue'
+              className='govuk-button'
               onClick={handleSubmit}
             />
           </div>

@@ -66,7 +66,10 @@ export default function AddNamePage() {
         <PhaseBanner />
         <div className="govuk-grid-row">
           <div className="govuk-grid-column-two-thirds">
-            <Link onClick={() => navigate(-1)} className="govuk-back-link">
+            <Link
+              onClick={() => navigate('/signup/contactpreferences')}
+              className="govuk-back-link"
+            >
               Back
             </Link>
             {error && <ErrorSummary errorList={[error]} />}

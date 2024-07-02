@@ -18,10 +18,8 @@ export default function Pagination ({ totalPages, onPageChange }) {
             <a
               class='govuk-link govuk-pagination__link'
               onClick={(e) => {
-                {
-                  e.preventDefault()
-                  setCurrentPage(currentPage - 1)
-                }
+                e.preventDefault()
+                setCurrentPage(currentPage - 1)
               }}
               rel='prev'
             >
@@ -52,10 +50,8 @@ export default function Pagination ({ totalPages, onPageChange }) {
               class='govuk-link govuk-pagination__link'
               rel='next'
               onClick={(e) => {
-                {
-                  e.preventDefault()
-                  setCurrentPage(currentPage + 1)
-                }
+                e.preventDefault()
+                setCurrentPage(currentPage + 1)
               }}
             >
               <svg

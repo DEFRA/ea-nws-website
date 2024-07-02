@@ -57,7 +57,7 @@ export default function SignInValidatePage () {
   const getNewCode = async (event) => {
     event.preventDefault()
     setCodeResent(false)
-    
+
     const data = { email: location.state.email }
     const { errorMessage } = await backendCall(
       data,
@@ -75,46 +75,47 @@ export default function SignInValidatePage () {
 
   return (
     <>
-    {codeExpired
-        ? (<ExpiredCodeLayout getNewCode={getNewCode} />): (
-      <div>
-      <Header />
-      <div class='govuk-width-container'>
-        <Link to='/signin' className='govuk-back-link'>Back</Link>
-        {codeResent
-          ? (
-            <NotificationBanner
-              className='govuk-notification-banner govuk-notification-banner--success'
-              title='Success'
-              text={'New code sent at ' + dateTime.toLocaleTimeString()}
-            />
-            )
-          : null}
-        <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 class='govuk-heading-l'>Check your email</h2>
-        <div class='govuk-body'>
-          We've sent a code to:
-          <InsetText text={location.state.email} />
-          <Input
-            name='Enter code'
-            inputType='text'
-            error={error}
-            onChange={(val) => setCode(val)}
-          />
-          <Button
-            className='govuk-button'
-            text='Continue'
-            onClick={handleSubmit}
-          />
-          <br />
-          <Link onClick={getNewCode} className='govuk-link'>
-            Get a new code
-          </Link>
-        </div>
-      </div>
-      <Footer />
-      </div>
-        )}
+      {codeExpired
+        ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
+        : (
+          <div>
+            <Header />
+            <div class='govuk-width-container'>
+              <Link to='/signin' className='govuk-back-link'>Back</Link>
+              {codeResent
+                ? (
+                  <NotificationBanner
+                    className='govuk-notification-banner govuk-notification-banner--success'
+                    title='Success'
+                    text={'New code sent at ' + dateTime.toLocaleTimeString()}
+                  />
+                  )
+                : null}
+              <ErrorSummary errorList={error === '' ? [] : [error]} />
+              <h2 class='govuk-heading-l'>Check your email</h2>
+              <div class='govuk-body'>
+                We've sent a code to:
+                <InsetText text={location.state.email} />
+                <Input
+                  name='Enter code'
+                  inputType='text'
+                  error={error}
+                  onChange={(val) => setCode(val)}
+                />
+                <Button
+                  className='govuk-button'
+                  text='Continue'
+                  onClick={handleSubmit}
+                />
+                <br />
+                <Link onClick={getNewCode} className='govuk-link'>
+                  Get a new code
+                </Link>
+              </div>
+            </div>
+            <Footer />
+          </div>
+          )}
     </>
   )
 }

@@ -3,7 +3,7 @@ import '../custom.css'
 
 export default function SubNavigation ({ pages, currentPage }) {
   return (
-    <nav className="sub-navigation" aria-label="Sub navigation">
+    <nav aria-label="Sub navigation">
       <ul className="sub-navigation__list">
       {pages.map((page, index) => (
         <li key={index} className="sub-navigation__item">

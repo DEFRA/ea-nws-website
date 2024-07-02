@@ -142,27 +142,33 @@ export default function HomePage () {
       <div className='govuk-width-container'>
         <PhaseBanner />
         <AccountNavigation currentPage={useLocation().pathname} />
-        <div className="govuk-body">
-          <h1 className='govuk-heading-l'>Home</h1>
-          {locations.length > 0 && (
-            locationTable()
-          )}
-          <Pagination
-            totalPages={Math.ceil(locations.length / locationsPerPage)}
-            onPageChange={(val) => setCurrentPage(val)}
-          />
-          <Button
-            text='Add new location'
-            className='govuk-button govuk-button--secondary'
-            onClick={handleButton}
-          />
-          {locations.length === 1 && (
-            <Details
-              title='If you want to remove this location'
-              text={detailsMessage}
-            />
-          )}
-        </div>
+        <main className='govuk-main-wrapper'>
+          <div class="govuk-grid-row">
+            <div class="govuk-grid-column-two-thirds">
+              <h1 className='govuk-heading-l'>Home</h1>
+              <div className="govuk-body">
+                {locations.length > 0 && (
+                  locationTable()
+                )}
+                <Pagination
+                  totalPages={Math.ceil(locations.length / locationsPerPage)}
+                  onPageChange={(val) => setCurrentPage(val)}
+                />
+                <Button
+                  text='Add new location'
+                  className='govuk-button govuk-button--secondary'
+                  onClick={handleButton}
+                />
+                {locations.length === 1 && (
+                  <Details
+                    title='If you want to remove this location'
+                    text={detailsMessage}
+                  />
+                )}
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
       <Footer />
     </>

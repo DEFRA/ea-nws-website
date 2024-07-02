@@ -15,7 +15,7 @@ import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 export default function HomePage () {
 
   const [currentPage, setCurrentPage] = useState(1)
-  const locationsPerPage = 20
+  const locationsPerPage = 10
 
   const profile = useSelector((state) => state.session.profile)
   const locations = profile.pois
@@ -26,6 +26,9 @@ export default function HomePage () {
   )
 
   const navigate = useNavigate()
+  const handleButton = () => {
+    navigate('/managelocations/add')
+  }
 
   const detailsMessage = (
     <div>
@@ -151,7 +154,7 @@ export default function HomePage () {
           <Button
             text='Add new location'
             className='govuk-button govuk-button--secondary'
-            onClick={navigate('/managelocations/add')}
+            onClick={handleButton}
           />
           {locations.length === 1 && (
             <Details

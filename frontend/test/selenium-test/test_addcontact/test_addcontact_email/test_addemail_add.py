@@ -14,8 +14,9 @@ def setup_addemail_test(get_browser):
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     browser.find_element(By.LINK_TEXT, "Manage Contacts page").click()
     time.sleep(1)
-    button_xpath = f"//button[contains(@class, 'govuk-button') and text()='Add a email address']"
-    browser.find_element(By.XPATH, button_xpath).click()
+    button_xpath = f"//button[text()='Add a email address']"
+    add_email_link = browser.find_element(By.XPATH, button_xpath)
+    browser.execute_script("arguments[0].click();", add_email_link)
     return browser
 
 def test_addemailstart_render(get_browser):

@@ -6,6 +6,7 @@ import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
 export default function ExpiredCodeLayout ({ getNewCode}) {
   const navigate = useNavigate()
+
   return (
     <>
       <Header />

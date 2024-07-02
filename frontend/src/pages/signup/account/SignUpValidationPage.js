@@ -1,4 +1,4 @@
-import { Fragment, useState } from 'react'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
@@ -12,7 +12,7 @@ import { setAuthToken } from '../../../redux/userSlice'
 import { backendCall } from '../../../services/BackendService'
 import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
 import NotificationBanner from '../../../gov-uk-components/NotificationBanner'
-import ExpiredCodeLayout from '../../../common-layouts/sign-up/ExpiredCodeLayout'
+import ExpiredCodeLayout from '../../../common-layouts/expired-code/ExpiredCodeLayout'
 
 export default function SignUpValidationPage () {
   const navigate = useNavigate()
@@ -55,7 +55,6 @@ export default function SignUpValidationPage () {
         dispatch(setAuthToken(data.authToken))
         navigate('/signup/contactpreferences')
       }
-      console.log("code should be true", codeExpired)
     }
   }
 
@@ -63,26 +62,27 @@ export default function SignUpValidationPage () {
     event.preventDefault()
     setCodeResent(false)
 
-    console.log("sending new code")
     const data = { email: loginEmail }
     const { errorMessage } = await backendCall(
       data,
       'api/signupStart',
       navigate
     )
-    setCodeResent(true)
-    setCodeExpired(false)
+    
     if (errorMessage !== null) {
       setError(errorMessage)
       setCodeResent(false)
     }
+
+    setCodeResent(true)
+    setCodeExpired(false)
   }
 
   return (
     <>
-      
-      {codeExpired ? (<ExpiredCodeLayout getNewCode={getNewCode} />) : (
-      <div> <Header/>
+    {codeExpired ? (<ExpiredCodeLayout getNewCode={getNewCode} />) : (
+      <div> 
+        <Header/>
       <div className='govuk-width-container'>
         <PhaseBanner />
         <Link to='/signup' className='govuk-back-link'>Back</Link>
@@ -148,4 +148,3 @@ export default function SignUpValidationPage () {
     </>
   )
 }
-

@@ -23,7 +23,7 @@ export default function SignInValidatePage() {
   const navigate = useNavigate()
   const [code, setCode] = useState('')
   const signinToken = location.state.signinToken
-  var [codeResent, setCodeResent] = useState('')
+  var [codeResent, setCodeResent] = useState(false)
   const dateTime = new Date();
 
   const handleSubmit = async (event) => {
@@ -58,12 +58,13 @@ export default function SignInValidatePage() {
       'api/signInStart',
       navigate
     )
-    setCodeResent(true)
 
     if (errorMessage !== null) {
       setError(errorMessage)
       setCodeResent(false)
     }
+
+    setCodeResent(true)
   }
 
   return (

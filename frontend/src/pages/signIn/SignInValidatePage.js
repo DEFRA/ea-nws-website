@@ -16,19 +16,18 @@ import { backendCall } from '../../services/BackendService'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 
-export default function SignInValidatePage() {
+export default function SignInValidatePage () {
   const location = useLocation()
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [code, setCode] = useState('')
   const signinToken = location.state.signinToken
-  var [codeResent, setCodeResent] = useState(false)
-  const dateTime = new Date();
+  const [codeResent, setCodeResent] = useState(false)
+  const dateTime = new Date()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    setCodeResent(false)
 
     const validationError = authCodeValidation(code)
     setError(validationError)
@@ -52,6 +51,7 @@ export default function SignInValidatePage() {
   const getNewCode = async (event) => {
     event.preventDefault()
     setCodeResent(false)
+    
     const data = { email: location.state.email }
     const { errorMessage } = await backendCall(
       data,
@@ -61,7 +61,6 @@ export default function SignInValidatePage() {
 
     if (errorMessage !== null) {
       setError(errorMessage)
-      setCodeResent(false)
     }
 
     setCodeResent(true)
@@ -72,7 +71,7 @@ export default function SignInValidatePage() {
       <Header />
       <div class='govuk-width-container'>
         <Link to='/signin' className='govuk-back-link'>Back</Link>
-      {codeResent
+        {codeResent
           ? (
             <NotificationBanner
               className='govuk-notification-banner govuk-notification-banner--success'

@@ -4,7 +4,7 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-export default function ExpiredCodeLayout ({ getNewCode}) {
+export default function ExpiredCodeLayout ({ getNewCode }) {
   const navigate = useNavigate()
 
   return (
@@ -16,7 +16,7 @@ export default function ExpiredCodeLayout ({ getNewCode}) {
           Back
         </Link>
         <h2 className='govuk-heading-l'>Your code has expired</h2>
-       <Button text='Get a new code' className='govuk-button' onClick={getNewCode} />
+        <Button text='Get a new code' className='govuk-button' onClick={getNewCode} />
        &nbsp; &nbsp;
       </div>
       <Footer />

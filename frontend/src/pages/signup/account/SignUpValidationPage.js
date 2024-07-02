@@ -21,15 +21,14 @@ export default function SignUpValidationPage () {
   const loginEmail = useSelector((state) => state.session.profile.emails[0])
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
-  var [codeResent, setCodeResent] = useState(false)
-  const dateTime = new Date();
-  var [codeExpired, setCodeExpired] = useState(false)
+  const [codeResent, setCodeResent] = useState(false)
+  const dateTime = new Date()
+  const [codeExpired, setCodeExpired] = useState(false)
 
   const handleSubmit = async () => {
     const validationError = authCodeValidation(code)
-    setCodeResent(false)
     setError(validationError)
-    
+
     if (validationError === '') {
       const dataToSend = {
         registerToken,
@@ -42,16 +41,13 @@ export default function SignUpValidationPage () {
         navigate
       )
 
-      if(errorMessage !== null) {
-        if(errorMessage === 'invalid credentials'){
+      if (errorMessage !== null) {
+        if (errorMessage === 'invalid credentials') {
           setCodeExpired(true)
-        }
-        else{
+        } else {
           setError(errorMessage)
         }
-      }
-      else {
-        setCodeExpired(false)
+      } else {
         dispatch(setAuthToken(data.authToken))
         navigate('/signup/contactpreferences')
       }
@@ -68,10 +64,9 @@ export default function SignUpValidationPage () {
       'api/signupStart',
       navigate
     )
-    
+
     if (errorMessage !== null) {
       setError(errorMessage)
-      setCodeResent(false)
     }
 
     setCodeResent(true)
@@ -80,71 +75,73 @@ export default function SignUpValidationPage () {
 
   return (
     <>
-    {codeExpired ? (<ExpiredCodeLayout getNewCode={getNewCode} />) : (
-      <div> 
-        <Header/>
-      <div className='govuk-width-container'>
-        <PhaseBanner />
-        <Link to='/signup' className='govuk-back-link'>Back</Link>
-        {codeResent
-          ? (
-            <NotificationBanner
-              className='govuk-notification-banner govuk-notification-banner--success'
-              title='Success'
-              text={'New code sent at ' + dateTime.toLocaleTimeString()}
-            />
-            )
-          : null}
-        {error && <ErrorSummary errorList={[error]} />}
-        <h2 className='govuk-heading-l'>Check your email</h2>
-        <div className='govuk-body'>
-          You need to confirm your email address.
-          <br />
-          <br />
-          We've sent an email with a code to:
-          <InsetText text={loginEmail} />
-          Enter the code within 4 hours or it will expire.
-          <br />
-          <br />
-          <Input
-            className='govuk-input govuk-input--width-10'
-            inputType='text'
-            value={code}
-            name='Enter code'
-            error={error}
-            onChange={(val) => setCode(val)}
-          />
-          <Button
-            className='govuk-button'
-            text='Confirm email address'
-            onClick={handleSubmit}
-          />
+      {codeExpired
+        ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
+        : (
+          <div>
+            <Header />
+            <div className='govuk-width-container'>
+              <PhaseBanner />
+              <Link to='/signup' className='govuk-back-link'>Back</Link>
+              {codeResent
+                ? (
+                  <NotificationBanner
+                    className='govuk-notification-banner govuk-notification-banner--success'
+                    title='Success'
+                    text={'New code sent at ' + dateTime.toLocaleTimeString()}
+                  />
+                  )
+                : null}
+              {error && <ErrorSummary errorList={[error]} />}
+              <h2 className='govuk-heading-l'>Check your email</h2>
+              <div className='govuk-body'>
+                You need to confirm your email address.
+                <br />
+                <br />
+                We've sent an email with a code to:
+                <InsetText text={loginEmail} />
+                Enter the code within 4 hours or it will expire.
+                <br />
+                <br />
+                <Input
+                  className='govuk-input govuk-input--width-10'
+                  inputType='text'
+                  value={code}
+                  name='Enter code'
+                  error={error}
+                  onChange={(val) => setCode(val)}
+                />
+                <Button
+                  className='govuk-button'
+                  text='Confirm email address'
+                  onClick={handleSubmit}
+                />
           &nbsp; &nbsp;
-          <Link
-            to='/signup'
-            className='govuk-link'
-            style={{
-              display: 'inline-block',
-              padding: '8px 10px 7px'
-            }}
-          >
-            Use a different email
-          </Link>
-          <br />
-          <Link
-            onClick={getNewCode}
-            className='govuk-link'
-            style={{
-              display: 'inline-block'
-            }}
-          >
-            Get a new code
-          </Link>
-        </div>
-      </div>
-        <Footer/>
-      </div>
-    )}
+                <Link
+                  to='/signup'
+                  className='govuk-link'
+                  style={{
+                    display: 'inline-block',
+                    padding: '8px 10px 7px'
+                  }}
+                >
+                  Use a different email
+                </Link>
+                <br />
+                <Link
+                  onClick={getNewCode}
+                  className='govuk-link'
+                  style={{
+                    display: 'inline-block'
+                  }}
+                >
+                  Get a new code
+                </Link>
+              </div>
+            </div>
+            <Footer />
+          </div>
+          )}
     </>
   )
 }

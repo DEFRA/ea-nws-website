@@ -20,7 +20,7 @@ export default function HomePage () {
   const profile = useSelector((state) => state.session.profile)
   const locations = profile.pois
 
-  const displayedLocations = locations.slice(
+  const displayedLocations = locations.toString().slice(
     (currentPage - 1) * locationsPerPage,
     currentPage * locationsPerPage
   )

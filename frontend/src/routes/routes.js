@@ -26,6 +26,13 @@ import AddMobilePhonePage from '../pages/signup/channel-preferences/mobile-telep
 import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/SkipConfirmMobilePhonePage'
 import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
 import CheckYourAnswersPage from '../pages/signup/review/CheckYourAnswersPage'
+import SelectContactTypeToAddPage from '../pages/signup/review/add-contact/SelectContactTypeToAddPage'
+import AddEmailContactStartPage from '../pages/signup/review/add-contact/add-email-contact/AddContactEmailStartPage'
+import ValidateEmailContactPage from '../pages/signup/review/add-contact/add-email-contact/AddContactEmailValidatePage'
+import AddLandlineContactPage from '../pages/signup/review/add-contact/add-landline-contact/AddContactLandlineStartPage'
+import ValidateLandlineContactPage from '../pages/signup/review/add-contact/add-landline-contact/AddContactLandlineValidatePage'
+import AddMobileContactStartPage from '../pages/signup/review/add-contact/add-mobile-contact/AddContactMobileStartPage'
+import ValidateMobileContactPage from '../pages/signup/review/add-contact/add-mobile-contact/AddContactMobileValidatePage'
 import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
 
@@ -100,7 +107,35 @@ const signupRoutes = [
   {
     path: '/signup/review',
     component: <CheckYourAnswersPage />
-  }
+  },
+  {
+    path: '/signup/review/addcontact',
+    component: <SelectContactTypeToAddPage />
+  },
+  {
+    path: '/signup/review/add-landline',
+    component: <AddLandlineContactPage />
+  },
+  {
+    path: '/signup/review/validate-landline',
+    component: <ValidateLandlineContactPage />
+  },
+  {
+    path: '/signup/review/add-mobile',
+    component: <AddMobileContactStartPage />
+  },
+  {
+    path: '/signup/review/validate-mobile',
+    component: <ValidateMobileContactPage />
+  },
+  {
+    path: '/signup/review/add-email',
+    component: <AddEmailContactStartPage />
+  },
+  {
+    path: '/signup/review/validate-email',
+    component: <ValidateEmailContactPage />
+  },
 ]
 
 // home

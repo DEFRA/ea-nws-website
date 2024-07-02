@@ -28,6 +28,7 @@ export default function SelectContactTypeToAddPage () {
         if(!contactPreferences.includes('Text')){
             dispatch(addContactPreference(selectedContactType))
         }
+        navigate('/signup/review/add-mobile')
       } else if (selectedContactType === 'Email') {
         if(!contactPreferences.includes('Email')){
             dispatch(addContactPreference(selectedContactType))
@@ -37,6 +38,7 @@ export default function SelectContactTypeToAddPage () {
         if(!contactPreferences.includes('PhoneCall')){
             dispatch(addContactPreference(selectedContactType))
         }
+        navigate('/signup/review/add-landline')
       }
     }
   }

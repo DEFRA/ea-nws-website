@@ -26,6 +26,10 @@ async function getSigninValidate(
     code: string
     signinToken: string
   }
+  if(code === '111111'){
+    console.log("invalid credentials, responding 101")
+    return res.response(responseCodes.UNAUTHORIZED).code(500)
+  }
   if (code === '999999' || signinToken === undefined) {
     console.log('Invalid token')
     return res.response(responseCodes.INVALID_CODE).code(500)

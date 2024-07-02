@@ -15,6 +15,7 @@ import {
 import { backendCall } from '../../services/BackendService'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 import NotificationBanner from '../../gov-uk-components/NotificationBanner'
+import ExpiredCodeLayout from '../../common-layouts/expired-code/ExpiredCodeLayout'
 
 export default function SignInValidatePage () {
   const location = useLocation()
@@ -25,6 +26,7 @@ export default function SignInValidatePage () {
   const signinToken = location.state.signinToken
   const [codeResent, setCodeResent] = useState(false)
   const dateTime = new Date()
+  const [codeExpired, setCodeExpired] = useState(false)
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -38,7 +40,11 @@ export default function SignInValidatePage () {
         'api/signInValidate'
       )
       if (errorMessage !== null) {
-        setError(errorMessage)
+        if (errorMessage === 'invalid credentials') {
+          setCodeExpired(true)
+        } else {
+          setError(errorMessage)
+        }
       } else {
         dispatch(setAuthToken(data.authToken))
         dispatch(setProfile(data.profile))
@@ -64,10 +70,14 @@ export default function SignInValidatePage () {
     }
 
     setCodeResent(true)
+    setCodeExpired(false)
   }
 
   return (
     <>
+    {codeExpired
+        ? (<ExpiredCodeLayout getNewCode={getNewCode} />): (
+      <div>
       <Header />
       <div class='govuk-width-container'>
         <Link to='/signin' className='govuk-back-link'>Back</Link>
@@ -103,6 +113,8 @@ export default function SignInValidatePage () {
         </div>
       </div>
       <Footer />
+      </div>
+        )}
     </>
   )
 }

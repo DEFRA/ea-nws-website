@@ -1,7 +1,10 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import Button from '../../../gov-uk-components/Button'
 
 export default function ContactReviewTable ({ profile, contactPreferences }) {
+  const navigate = useNavigate()
+
   const ShowEmailAddress = () => {
     return (
       <>
@@ -53,7 +56,11 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
                       Unconfirmed
                     </strong>
                   </td>
-                  <td className='govuk-table__cell' />
+                  <td className='govuk-table__cell'>
+                    <Link to='/managecontacts/validate-email' className='govuk-link'>
+                      Confirm
+                    </Link>
+                  </td>
                   <td className='govuk-table__cell'>
                     <Link
                       to='/managecontacts/confirm-delete'
@@ -122,7 +129,11 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
                         Unconfirmed
                       </strong>
                     </td>
-                    <td className='govuk-table__cell' />
+                    <td className='govuk-table__cell'>
+                      <Link to='/managecontacts/validate-mobile' className='govuk-link'>
+                        Confirm
+                      </Link>
+                    </td>                    
                     <td className='govuk-table__cell'>
                       <Link
                         to='/managecontacts/confirm-delete'
@@ -192,7 +203,9 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
                         Unconfirmed
                       </strong>
                     </td>
-                    <td className='govuk-table__cell' />
+                    <td className='govuk-table__cell'>                      
+                      <Link to='/managecontacts/validate-landline' className='govuk-link'>Confirm</Link>
+                    </td>
                     <td className='govuk-table__cell'>
                       <Link
                         to='/managecontacts/confirm-delete'
@@ -216,6 +229,10 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
     )
   }
 
+  const handleButton = () => {
+    navigate('/signup/review/addcontact')
+  }
+
   return (
     <>
       <h3 className='govuk-heading-m'>How you'll get flood messages</h3>
@@ -227,6 +244,8 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
           {contactPreferences.includes('PhoneCall') ? <ShowHomePhone /> : null}
         </tbody>
       </table>
+      <Button className='govuk-button--secondary' onClick={handleButton} text='Add another email or phone number'/>
+      <br/><br/>
     </>
   )
 }

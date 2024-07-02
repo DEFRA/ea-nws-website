@@ -25,6 +25,9 @@ const userSlice = createSlice({
     setRegistrations: (state, action) => {
       state.registrations = action.payload
     },
+    addContactPreference: (state, action) => {
+      state.contactPreferences.push(action.payload)
+    },
     clearAuth: (state) => {
       state.authToken = null
       state.profile = null
@@ -40,6 +43,7 @@ export const {
   setProfile,
   setRegistrations,
   setContactPreferences,
+  addContactPreference,
   clearAuth
 } = userSlice.actions
 export default userSlice.reducer

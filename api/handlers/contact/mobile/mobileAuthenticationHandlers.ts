@@ -44,13 +44,15 @@ async function getMobileValidate(
       mobilePhones: [],
       homePhones: []
     },
-    pois: {
-      address: 'Exeter, United Kingdom',
-      coordinates: {
-        latitude: '50726037',
-        longitude: '-3527489'
+    pois: [
+      {
+        address: 'Exeter, United Kingdom',
+        coordinates: {
+          latitude: '50726037',
+          longitude: '-3527489'
+        }
       }
-    }
+    ]
   }
   // 200 Success
   if (authToken === 'MockAuthToken' && code !== '999999') {

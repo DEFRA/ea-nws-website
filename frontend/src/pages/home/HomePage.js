@@ -144,7 +144,7 @@ export default function HomePage () {
         <AccountNavigation currentPage={useLocation().pathname} />
         <main className='govuk-main-wrapper'>
           <div class="govuk-grid-row">
-            <div class="govuk-grid-column-two-thirds">
+            <div class="govuk-grid-column-full">
               <h1 className='govuk-heading-l'>Home</h1>
               <div className="govuk-body">
                 {locations.length > 0 && (

@@ -16,7 +16,7 @@ export default function DeclarationOfAgreementPage() {
       setError('Tick to confirm you agree with the terms and conditions')
     } else {
       // New user home page after T&C agreement signed
-      navigate('/managecontacts')
+      navigate('/home')
     }
   }
   return (

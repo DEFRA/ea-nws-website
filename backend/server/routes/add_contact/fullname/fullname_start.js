@@ -1,4 +1,25 @@
 const { apiCall } = require('../../../services/ApiService')
+const {
+  fullNameValidation
+} = require('../../../services/validations/FullNameValidation')
+
+const apiFullNameCall = async (auth, firstName, lastName) => {
+  const data = { firstName, lastName, authToken: auth }
+  const validationError = fullNameValidation(firstName, lastName)
+  try {
+    if (validationError === '') {
+      const response = await apiCall(data, 'member/verifyFullNameStart')
+      return response
+    } else {
+      return { status: 500, errorMessage: validationError }
+    }
+  } catch (error) {
+    return {
+      status: 500,
+      errorMessage: 'Oops, something happened!'
+    }
+  }
+}
 
 module.exports = [
   {
@@ -11,16 +32,15 @@ module.exports = [
           return h.response({ message: 'Bad request' }).code(400)
         }
 
-        const response = await apiCall(
-          request.payload,
-          'member/verifyFullNameStart'
+        const { authToken, firstName, lastName } = request.payload
+        const apiResponse = await apiFullNameCall(
+          authToken,
+          firstName,
+          lastName
         )
-        return h.response(response)
+        return h.response(apiResponse)
       } catch (error) {
-        return h.response({
-          status: 500,
-          errorMessage: 'Oops, something happened!'
-        })
+        return h.response({ message: 'Internal server error' }).code(500)
       }
     }
   }

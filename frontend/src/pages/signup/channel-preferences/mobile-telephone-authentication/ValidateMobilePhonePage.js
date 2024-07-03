@@ -110,39 +110,39 @@ export default function ValidateMobilePhone() {
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
+      <div className='govuk-width-container'>
         <PhaseBanner />
-        <div className="govuk-grid-row">
-          <div className="govuk-grid-column-two-thirds">
-            <Link onClick={differentMobile} className="govuk-back-link">
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
+            <Link onClick={differentMobile} className='govuk-back-link'>
               Back
             </Link>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className="govuk-heading-l govuk-!-margin-top-6">
+            <h1 className='govuk-heading-l govuk-!-margin-top-6'>
               Check your mobile phone
             </h1>
 
-            <div className="govuk-body">
+            <div className='govuk-body'>
               <p>We've sent a text with a code to:</p>
               <InsetText text={mobile} />
               <p>Use the code within 4 hours or it will expire</p>
               <Input
-                inputType="text"
+                inputType='text'
                 value={code}
-                name="Enter code"
+                name='Enter code'
                 onChange={(val) => setCode(val)}
                 error={error}
-                className="govuk-input govuk-input--width-10"
+                className='govuk-input govuk-input--width-10'
               />
               <Button
-                text="Continue"
-                className="govuk-button"
+                text='Continue'
+                className='govuk-button'
                 onClick={handleSubmit}
               />
               &nbsp; &nbsp;
               <Link
                 onClick={skipValidation}
-                className="govuk-link"
+                className='govuk-link'
                 style={{
                   display: 'inline-block',
                   padding: '8px 10px 7px'
@@ -153,7 +153,7 @@ export default function ValidateMobilePhone() {
               <br />
               <Link
                 onClick={getNewCode}
-                className="govuk-link"
+                className='govuk-link'
                 style={{
                   display: 'inline-block'
                 }}
@@ -164,14 +164,14 @@ export default function ValidateMobilePhone() {
               <br />
               <Link
                 onClick={differentMobile}
-                className="govuk-link"
+                className='govuk-link'
                 style={{
                   display: 'inline-block'
                 }}
               >
                 Enter a different mobile number
               </Link>
-              <div className="govuk-!-margin-bottom-9" />
+              <div className='govuk-!-margin-bottom-9' />
             </div>
           </div>
         </div>

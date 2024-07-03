@@ -30,19 +30,20 @@ def test_SignUpAccountName_FullNameTooLong(get_browser):
     assert "Full name must be 50 characters or fewer" in browser.page_source
     assert browser.current_url == url
 
-'''
-TO DO - WILL WORK ONCE REACT STORE IS MOCKED
 def test_SignUpAccountName_backButton(get_browser):
     browser = get_browser
     browser.get(url)
     browser.find_element(By.CLASS_NAME, "govuk-back-link").click()
+    browser.implicitly_wait(1)
     assert browser.current_url == url
 
+'''
+TO DO - WILL WORK ONCE REACT STORE IS MOCKED
 def test_SignUpAccountName_validFullName(get_browser):
     browser = get_browser
     browser.get(url)
     browser.find_element(By.NAME, "Full name").send_keys("Valid Full Name")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
-    time.sleep(10)
+    browser.implicitly_wait(10)
     assert browser.current_url == nextPage
 '''

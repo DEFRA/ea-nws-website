@@ -15,7 +15,8 @@ import {
 } from '../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../services/validations/PhoneValidation'
-
+import RadioWithInput from '../../gov-uk-components/RadioWithInput'
+import CheckboxRadios from '../../gov-uk-components/CheckBoxRadios'
 export default function AddLandlineLayout ({ NavigateToNextPage }) {
   const navigate = useNavigate()
   const [landline, setLandline] = useState('')
@@ -73,7 +74,29 @@ export default function AddLandlineLayout ({ NavigateToNextPage }) {
     // or user could have come from account change details at the end of sign up flow
     navigate(-1)
   }
+  const hasAddedLandlineAlready = ()=> {
+    console.log("THe landline is " + session.landline)
+    if (session.landline !== undefined){
+      //console.log(true)
+      //return true
+      return false
+    }else{
+      //console.log(false)
+      //return false
+      return true
+    }
+  }
+  //placeholder for now until its implimented
+  const mobileNumbers = [{
+    number: "07897645546"},
+  {number: '01269081694'}
+]
 
+  const setLandlineprefernce = (event) => {
+    setLandline(event.target.value)
+  }
+
+  
   return (
     <>
       <Header />
@@ -93,6 +116,42 @@ export default function AddLandlineLayout ({ NavigateToNextPage }) {
                   We recommend using a landline or mobile number that can be called 24
                   hours a day.
                 </p>
+                {hasAddedLandlineAlready() ? <>
+                <fieldset className='govuk-fieldset'>
+              {error && <p className='govuk-error-message'>{error}</p>}
+              <div className='govuk-radios' data-module='govuk-radios'>
+                {mobileNumbers.map((landline) => (
+                  <CheckboxRadios
+                    key={landline.number}
+                    id={landline.number}
+                    name='feedbackRadios'
+                    label={landline.number}
+                    type='radio'
+                    value={landline.number}
+                    onChange={setLandlineprefernce}
+                  />
+                ))}
+                <CheckboxRadios
+                key="number"
+                id="different number"
+                name='feedbackRadios'
+                label="A different number"
+                type="radio"
+                value="A different number"
+                onChange={setLandlineprefernce}
+                /> 
+               <div className='govuk-radios__conditional govuk-radios__conditional--hidden'>
+               <Input
+                  name='UK landline or mobile telephone number'
+                  inputType='text'
+                  error={error}
+                  onChange={(val) => setLandline(val)}
+                  className='govuk-input govuk-input--width-20'
+                />
+               </div>
+              </div>
+            </fieldset>
+</>: <>
                 <Input
                   name='UK landline or mobile telephone number'
                   inputType='text'
@@ -105,6 +164,7 @@ export default function AddLandlineLayout ({ NavigateToNextPage }) {
                   text='Continue'
                   onClick={handleSubmit}
                 />
+                </>}
                 <br />
               </div>
             </div>

@@ -93,9 +93,6 @@ export default function ContactDetailsPage () {
             />
             )
           : null}
-        <Link to='/home' className='govuk-link'>
-          Back to Home
-        </Link>
         <main className='govuk-main-wrapper'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>

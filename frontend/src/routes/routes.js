@@ -1,5 +1,6 @@
 import React from 'react'
 import Index from '../pages/Index'
+import AccountPage from '../pages/account/AccountPage'
 import ConfirmDeleteContactDetailsPage from '../pages/contact-details/ConfirmDeleteContactDetailsPage'
 import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
 import AddEmailPage from '../pages/contact-details/add-contact-email/AddEmailPage'
@@ -12,9 +13,10 @@ import HomePage from '../pages/home/HomePage'
 import SignOutManuallyPage from '../pages/sign-out/SignOutManuallyPage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
+import SignUpDuplicateEmailPage from '../pages/signup/account/SignUpDuplicateEmail'
+import SignUpFeedbackPage from '../pages/signup/account/SignUpFeedbackPage'
 import SignUpPage from '../pages/signup/account/SignUpPage'
 import SignUpValidationPage from '../pages/signup/account/SignUpValidationPage'
-import SignUpDuplicateEmailPage from '../pages/signup/account/SignUpDuplicateEmail'
 import WarningContactsPreferencePage from '../pages/signup/channel-preferences/WarningContactsPreferencePage'
 import AddLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/AddLandlinePhonePage'
 import SkipConfirmLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/SkipConfirmLandlinePhonePage'
@@ -24,7 +26,6 @@ import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobi
 import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
 import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
-import SignUpFeedbackPage from '../pages/signup/account/SignUpFeedbackPage'
 
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
@@ -94,6 +95,9 @@ const signupRoutes = [
 // home
 const homeRoutes = [{ path: '/home', component: <HomePage /> }]
 
+// account
+const accountRoutes = [{ path: '/account', component: <AccountPage /> }]
+
 // contact routes
 const contactRoutes = [
   { path: '/managecontacts', component: <ContactDetailsPage /> },
@@ -126,7 +130,8 @@ const routes = [
   ...signupRoutes,
   ...homeRoutes,
   ...contactRoutes,
-  ...signOutRoutes
+  ...signOutRoutes,
+  ...accountRoutes
 ]
 
 export default routes

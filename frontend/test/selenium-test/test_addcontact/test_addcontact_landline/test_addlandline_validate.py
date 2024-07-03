@@ -78,7 +78,7 @@ def test_addlandlinevalidate_enteradifferentnumber(get_browser):
 
 def test_addlandlinevalidate_enteradifferentLandline_correctLandline(get_browser):
     browser = setup_validatelandline_test(get_browser)  
-    assert "01632960001" in browser.page_source
+    assert "+441632960001" in browser.page_source
     browser.find_element(By.LINK_TEXT, "Enter a different telephone number").click()
     time.sleep(1)
     assert browser.current_url == previous_page
@@ -86,4 +86,4 @@ def test_addlandlinevalidate_enteradifferentLandline_correctLandline(get_browser
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)
     assert browser.current_url == current_url
-    assert "01410000000" in browser.page_source
+    assert "+441410000000" in browser.page_source

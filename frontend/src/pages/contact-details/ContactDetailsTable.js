@@ -117,7 +117,7 @@ export default function ContactDetailsTable ({
                       to='/managecontacts/confirm-delete'
                       state={{
                         type: contactType,
-                        unregisteredContact
+                        contact: unregisteredContact
                       }}
                       className='govuk-link'
                     >

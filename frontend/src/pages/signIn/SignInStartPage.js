@@ -51,6 +51,7 @@ export default function SignInStartPage () {
             <li>delete your account</li>
           </ul>
           <Input
+            className='govuk-input govuk-input--width-10'
             name='Email address'
             inputType='text'
             error={error}

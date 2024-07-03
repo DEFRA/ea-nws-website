@@ -15,35 +15,172 @@ export default function IndexPage () {
   const dispatch = useDispatch()
   const [mockSessionActive, setmockSessionActive] = useState(false)
 
-  function mockSession () {
+  const mockOne = {
+    id: '',
+    enabled: true,
+    firstName: 'John',
+    lastName: 'Smith',
+    emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
+    mobilePhones: ['07343 454590', '07889 668367'],
+    homePhones: ['01475 721535'],
+    language: 'EN',
+    additionals: [],
+    unverified: {
+      emails: [],
+      mobilePhones: [],
+      homePhones: []
+    },
+    pois: [
+      {
+        address: 'Exeter, Royaume-Uni',
+        coordinates: {
+          latitude: 50726037,
+          longitude: -3527489
+        }
+      },
+    ]
+  }
+
+  const mockTwo = {
+    id: '',
+    enabled: true,
+    firstName: 'John',
+    lastName: 'Smith',
+    emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
+    mobilePhones: ['07343 454590', '07889 668367'],
+    homePhones: ['01475 721535'],
+    language: 'EN',
+    additionals: [],
+    unverified: {
+      emails: [],
+      mobilePhones: [],
+      homePhones: []
+    },
+    pois: [
+      {
+        address: 'Exeter, Royaume-Uni',
+        coordinates: {
+          latitude: 50726037,
+          longitude: -3527489
+        }
+      },
+      {
+        address: 'Exeter, Royaume-Uni',
+        coordinates: {
+          latitude: 50726037,
+          longitude: -3527489
+        }
+      },
+    ]
+  }
+  
+  const mockThree = {
+    id: '',
+    enabled: true,
+    firstName: 'John',
+    lastName: 'Smith',
+    emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
+    mobilePhones: ['07343 454590', '07889 668367'],
+    homePhones: ['01475 721535'],
+    language: 'EN',
+    additionals: [],
+    unverified: {
+      emails: [],
+      mobilePhones: [],
+      homePhones: []
+    },
+    pois: [
+      {
+        address: 'Exeter, Royaume-Uni',
+        coordinates: {
+          latitude: 50726037,
+          longitude: -3527489
+        }
+      },
+      {
+        address: 'Exeter, Royaume-Uni',
+        coordinates: {
+          latitude: 50726037,
+          longitude: -3527489
+        }
+      },
+      {
+        address: 'Exeter, Royaume-Uni',
+        coordinates: {
+          latitude: 50726037,
+          longitude: -3527489
+        }
+      },
+      {
+        address: 'Exeter, Royaume-Uni',
+        coordinates: {
+          latitude: 50726037,
+          longitude: -3527489
+        }
+      },
+      {
+        address: 'Exeter, Royaume-Uni',
+        coordinates: {
+          latitude: 50726037,
+          longitude: -3527489
+        }
+      },
+      {
+        address: 'Exeter, Royaume-Uni',
+        coordinates: {
+          latitude: 50726037,
+          longitude: -3527489
+        }
+      },
+      {
+        address: 'Exeter, Royaume-Uni',
+        coordinates: {
+          latitude: 50726037,
+          longitude: -3527489
+        }
+      },
+      {
+        address: 'Exeter, Royaume-Uni',
+        coordinates: {
+          latitude: 50726037,
+          longitude: -3527489
+        }
+      },
+      {
+        address: 'Exeter, Royaume-Uni',
+        coordinates: {
+          latitude: 50726037,
+          longitude: -3527489
+        }
+      },
+      {
+        address: 'Exeter, Royaume-Uni',
+        coordinates: {
+          latitude: 50726037,
+          longitude: -3527489
+        }
+      },
+      {
+        address: 'Exeter, Royaume-Uni',
+        coordinates: {
+          latitude: 50726037,
+          longitude: -3527489
+        }
+      },
+      {
+        address: 'Exeter, Royaume-Uni',
+        coordinates: {
+          latitude: 50726037,
+          longitude: -3527489
+        }
+      },
+    ]
+  }
+
+  function mockSession (profile) {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
       const registrations = { partner: '4', name: 'NWS England' }
-      const profile = {
-        id: '',
-        enabled: true,
-        firstName: 'John',
-        lastName: 'Smith',
-        emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
-        mobilePhones: ['07343 454590', '07889 668367'],
-        homePhones: ['01475 721535'],
-        language: 'EN',
-        additionals: [],
-        unverified: {
-          emails: [],
-          mobilePhones: [],
-          homePhones: []
-        },
-        pois: [
-          {
-            address: 'Exeter, Royaume-Uni',
-            coordinates: {
-              latitude: 50726037,
-              longitude: -3527489
-            }
-          }
-        ]
-      }
 
       dispatch(setAuthToken(authToken))
       dispatch(setRegistrations(registrations))
@@ -92,8 +229,18 @@ export default function IndexPage () {
               </p>
               <Button
                 className='govuk-button'
-                text='Activate/Deactivate Mock Session'
-                onClick={mockSession}
+                text='Activate/Deactivate Mock Session 1'
+                onClick={() => mockSession(mockOne)}
+              />
+              <Button
+                className='govuk-button'
+                text='Activate/Deactivate Mock Session 2'
+                onClick={() => mockSession(mockTwo)}
+              />
+              <Button
+                className='govuk-button'
+                text='Activate/Deactivate Mock Session 3'
+                onClick={() => mockSession(mockThree)}
               />
               <ul className='govuk-list'>
                 <li>

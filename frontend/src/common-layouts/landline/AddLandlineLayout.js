@@ -15,12 +15,12 @@ import {
 } from '../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../services/validations/PhoneValidation'
-import RadioWithInput from '../../gov-uk-components/RadioWithInput'
 import CheckboxRadios from '../../gov-uk-components/CheckBoxRadios'
 export default function AddLandlineLayout ({ NavigateToNextPage }) {
   const navigate = useNavigate()
   const [landline, setLandline] = useState('')
   const [error, setError] = useState('')
+  const [isOpen, setIsOpen] = useState(false)
   const dispatch = useDispatch()
   const session = useSelector((state) => state.session)
   const authToken = useSelector((state) => state.session.authToken)
@@ -94,8 +94,13 @@ export default function AddLandlineLayout ({ NavigateToNextPage }) {
 
   const setLandlineprefernce = (event) => {
     setLandline(event.target.value)
+    setIsOpen(false)
   }
-
+  const setLandLineAndToggle = (event) =>{
+    setLandline(event.target.value)
+    setIsOpen((isOpen) => !isOpen)
+  }
+  
   
   return (
     <>
@@ -131,6 +136,7 @@ export default function AddLandlineLayout ({ NavigateToNextPage }) {
                     onChange={setLandlineprefernce}
                   />
                 ))}
+                 
                 <CheckboxRadios
                 key="number"
                 id="different number"
@@ -138,16 +144,19 @@ export default function AddLandlineLayout ({ NavigateToNextPage }) {
                 label="A different number"
                 type="radio"
                 value="A different number"
-                onChange={setLandlineprefernce}
+                onChange={setLandLineAndToggle}
+                
                 /> 
+
                <div className='govuk-radios__conditional govuk-radios__conditional--hidden'>
+               {isOpen &&
                <Input
                   name='UK landline or mobile telephone number'
                   inputType='text'
                   error={error}
                   onChange={(val) => setLandline(val)}
                   className='govuk-input govuk-input--width-20'
-                />
+                />}
                </div>
               </div>
             </fieldset>

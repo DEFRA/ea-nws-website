@@ -151,6 +151,11 @@ export default function AddLandlineLayout ({ NavigateToNextPage }) {
                </div>
               </div>
             </fieldset>
+            <Button
+                  className='govuk-button'
+                  text='Continue'
+                  onClick={handleSubmit}
+                />
 </>: <>
                 <Input
                   name='UK landline or mobile telephone number'

@@ -10,6 +10,6 @@ export default function AddMobilePhonePage () {
     navigate('/signup/contactpreferences')
 
   return (
-    <AddMobileLayout NavigateToNextPage={NavigateToNextPage} NavigateToPreviousPage={NavigateToPreviousPage}/>
+    <AddMobileLayout NavigateToNextPage={NavigateToNextPage} NavigateToPreviousPage={NavigateToPreviousPage} />
   )
 }

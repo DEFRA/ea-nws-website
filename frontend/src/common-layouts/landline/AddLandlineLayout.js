@@ -78,32 +78,28 @@ export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPrevi
   const homePhone = session.profile.unverified.homePhones[0]
     ? session.profile.unverified.homePhones[0]
     : session.profile.homePhones[0]
-  
+
   const hasAddedLandLineAlready = () => {
-    if(homePhone === undefined){
+    if (homePhone === undefined) {
       return false
-    } else{
+    } else {
       return true
     }
-  }  
-  
-  //placeholder for now until its implimented
-  const mobileNumbers = [{
-    number: "07897645546"},
-  {number: '01269081694'}
-]
+  }
+
+  // placeholder for now until its implimented
+  const mobileNumbers = [{ number: '07897645546' },
+    { number: '01269081694' }
+  ]
 
   const setLandlineprefernce = (event) => {
     setLandline(event.target.value)
     setIsOpen(false)
-    
   }
-  const toggle = () =>{
+  const toggle = () => {
     setIsOpen((isOpen) => !isOpen)
-    
   }
-  
-  
+
   return (
     <>
       <Header />
@@ -123,64 +119,65 @@ export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPrevi
                   We recommend using a landline or mobile number that can be called 24
                   hours a day.
                 </p>
-                {hasAddedLandLineAlready() ? <>
-                <fieldset className='govuk-fieldset'>
-              {error && <p className='govuk-error-message'>{error}</p>}
-              <div className='govuk-radios' data-module='govuk-radios'>
-                {mobileNumbers.map((landline) => (
-                  <CheckboxRadios
-                    key={landline.number}
-                    id={landline.number}
-                    name='feedbackRadios'
-                    label={landline.number}
-                    type='radio'
-                    value={landline.number}
-                    onChange={setLandlineprefernce}
-                  />
-                ))}
-                 
-                <CheckboxRadios
-                key="number"
-                id="different number"
-                name='feedbackRadios'
-                label="A different number"
-                type="radio"
-                value="A different number"
-                onChange={toggle}
-                
-                /> 
+                {hasAddedLandLineAlready()
+                  ? <>
+                    <fieldset className='govuk-fieldset'>
+                      {error && <p className='govuk-error-message'>{error}</p>}
+                      <div className='govuk-radios' data-module='govuk-radios'>
+                        {mobileNumbers.map((landline) => (
+                          <CheckboxRadios
+                            key={landline.number}
+                            id={landline.number}
+                            name='feedbackRadios'
+                            label={landline.number}
+                            type='radio'
+                            value={landline.number}
+                            onChange={setLandlineprefernce}
+                          />
+                        ))}
 
-               <div className='govuk-radios__conditional govuk-radios__conditional--hidden'>
-               {isOpen &&
-               <Input
-                  name='UK landline or mobile telephone number'
-                  inputType='text'
-                  error={error}
-                  onChange={(val) => setLandline(val)}
-                  className='govuk-input govuk-input--width-20'
-                />}
-               </div>
-              </div>
-            </fieldset>
-            <Button
-                  className='govuk-button'
-                  text='Continue'
-                  onClick={handleSubmit}
-                />
-</>: <>
-                <Input
-                  name='UK landline or mobile telephone number'
-                  inputType='text'
-                  error={error}
-                  onChange={(val) => setLandline(val)}
-                  className='govuk-input govuk-input--width-20'
-                />
-                <Button
-                  className='govuk-button'
-                  text='Continue'
-                  onClick={handleSubmit}
-                />
-                </>}
+                        <CheckboxRadios
+                          key='number'
+                          id='different number'
+                          name='feedbackRadios'
+                          label='A different number'
+                          type='radio'
+                          value='A different number'
+                          onChange={toggle}
+                        />
+
+                        <div className='govuk-radios__conditional govuk-radios__conditional--hidden'>
+                          {isOpen &&
+                            <Input
+                              name='UK landline or mobile telephone number'
+                              inputType='text'
+                              error={error}
+                              onChange={(val) => setLandline(val)}
+                              className='govuk-input govuk-input--width-20'
+                            />}
+                        </div>
+                      </div>
+                    </fieldset>
+                    <Button
+                      className='govuk-button'
+                      text='Continue'
+                      onClick={handleSubmit}
+                    />
+                  </>
+                  : <>
+                    <Input
+                      name='UK landline or mobile telephone number'
+                      inputType='text'
+                      error={error}
+                      onChange={(val) => setLandline(val)}
+                      className='govuk-input govuk-input--width-20'
+                    />
+                    <Button
+                      className='govuk-button'
+                      text='Continue'
+                      onClick={handleSubmit}
+                    />
+                  </>}
                 <br />
               </div>
             </div>

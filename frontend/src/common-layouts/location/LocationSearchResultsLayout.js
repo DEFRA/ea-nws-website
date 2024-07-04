@@ -12,22 +12,29 @@ export default function LocationSearchResultsLayout() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(1)
-  const addresses = useSelector((state) => state.session.locationSearchResults)
+  const locations = useSelector((state) => state.session.locationSearchResults)
   const locationPostCode = useSelector(
     (state) => state.session.locationPostCode
   )
-  const addressesPerPage = 20
-  const displayedAddresses = addresses.slice(
-    (currentPage - 1) * addressesPerPage,
-    currentPage * addressesPerPage
+  const locationsPerPage = 20
+  const displayedLocations = locations.slice(
+    (currentPage - 1) * locationsPerPage,
+    currentPage * locationsPerPage
   )
 
-  const handleSelectedLocation = (event, address) => {
+  console.log(locations)
+
+  const handleSelectedLocation = (event, location) => {
     event.preventDefault()
-    dispatch(setSelectedLocation(address))
+    console.log(location)
+
+    //need to do some validation here to stop the user from selecting
+    //an address they already have
+
+    dispatch(setSelectedLocation(location))
 
     //need to dertermine in here if location is in danger area or not
-    navigate('/signup/register-location/no-danger')
+    //navigate('/signup/register-location/no-danger')
   }
 
   const detailsMessage = (
@@ -63,21 +70,21 @@ export default function LocationSearchResultsLayout() {
                   Change postcode
                 </Link>
               </p>
-              <table class="govuk-table">
-                <tbody class="govuk-table__body">
-                  <tr class="govuk-table__row">
-                    <td class="govuk-table__cell" />
+              <table className="govuk-table">
+                <tbody className="govuk-table__body">
+                  <tr className="govuk-table__row">
+                    <td className="govuk-table__cell" />
                   </tr>
-                  {displayedAddresses.map((address, index) => (
-                    <tr key={index} class="govuk-table__row">
-                      <td class="govuk-table__cell">
+                  {displayedLocations.map((location, index) => (
+                    <tr key={index} className="govuk-table__row">
+                      <td className="govuk-table__cell">
                         <Link
                           className="govuk-link"
                           onClick={(event) =>
-                            handleSelectedLocation(event, address)
+                            handleSelectedLocation(event, location)
                           }
                         >
-                          {address}
+                          {location.address}
                         </Link>
                       </td>
                     </tr>
@@ -89,7 +96,7 @@ export default function LocationSearchResultsLayout() {
                 text={detailsMessage}
               />
               <Pagination
-                totalPages={Math.ceil(addresses.length / addressesPerPage)}
+                totalPages={Math.ceil(locations.length / locationsPerPage)}
                 onPageChange={(val) => setCurrentPage(val)}
               />
             </div>

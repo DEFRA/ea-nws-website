@@ -28,7 +28,7 @@ export default function LocationNotNearDangerLayout() {
               </h1>
               <InsetText text={selectedLocation} />
               <p className="govuk-!-margin-top-5">Possible reasons are that:</p>
-              <ul class="govuk-list govuk-list--bullet">
+              <ul className="govuk-list govuk-list--bullet">
                 <li>the risk of flooding is very low</li>
                 <li>
                   it may flood due to flash flooding but we cannot send warnings
@@ -37,10 +37,10 @@ export default function LocationNotNearDangerLayout() {
                 <li>our forecasting does not cover this location</li>
               </ul>
               <p>You may still be at risk of flooding. You can:</p>
-              <ul class="govuk-list govuk-list--bullet govuk-!-margin-bottom-9">
+              <ul className="govuk-list govuk-list--bullet govuk-!-margin-bottom-9">
                 <li>
                   <Link
-                    class="govuk-link"
+                    className="govuk-link"
                     to="/signup/register-location/search"
                   >
                     try another postcode
@@ -48,7 +48,7 @@ export default function LocationNotNearDangerLayout() {
                 </li>
                 <li>
                   <a
-                    class="govuk-link"
+                    className="govuk-link"
                     href="https://www.gov.uk/check-long-term-flood-risk"
                   >
                     check the long term risk for this location

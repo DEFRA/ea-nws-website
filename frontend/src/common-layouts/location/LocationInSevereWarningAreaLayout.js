@@ -1,21 +1,17 @@
-import React, { useState } from 'react'
+import 'leaflet/dist/leaflet.css'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import FloodWarningKey from '../../custom-components/FloodWarningKey'
 import Map from '../../custom-components/Map'
 import Button from '../../gov-uk-components/Button'
-import CheckBox from '../../gov-uk-components/CheckBox'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-export default function LocationInAlertAreaLayout({
-  submit,
-  additionalAlerts
-}) {
+export default function LocationInSevereWarningAreaLayout({ submit }) {
   const navigate = useNavigate()
-  const [isChecked, setIsChecked] = useState(false)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
@@ -37,52 +33,58 @@ export default function LocationInAlertAreaLayout({
                 Back
               </Link>
               <h1 className="govuk-heading-l govuk-!-margin-top-6">
-                {additionalAlerts
-                  ? 'You can also get flood alerts (optional)'
-                  : 'You can get flood alerts for this location'}
+                You can get severe flood warnings and flood warnings for this
+                location
               </h1>
               <InsetText text={selectedLocation.address} />
             </div>
             <div className="govuk-grid-column-three-quarters">
               <Map />
-              <FloodWarningKey severe={additionalAlerts} />
+              <FloodWarningKey severe={false} />
             </div>
+
             <div className="govuk-grid-column-two-thirds">
               <p className="govuk-!-margin-top-6">
-                These are early alerts of possible flooding to help you be
-                prepared.
+                These warnings tell you when flooding:
               </p>
-              <p>The following may be at risk:</p>
               <ul className="govuk-list govuk-list--bullet">
-                <li>fields, recreational land and car parks</li>
-                <li>minor roads</li>
-                <li>farmland</li>
+                <li>is expected</li>
+                <li>could be a danger to life or property</li>
+              </ul>
+              <p>You'll need to act immediately.</p>
+              <p>The following may be affected:</p>
+              <ul className="govuk-list govuk-list--bullet">
+                <li>life and communities</li>
+                <li>homes and business</li>
+                <li>roads, railway lines and infrastructure</li>
                 <li>coastal areas affected by spray or waves overtopping</li>
+                <li>flood plains, including caravan parks and campsites</li>
+                <li>major tourist and leisure attractions</li>
               </ul>
-              <p>We usually send these:</p>
-              <ul className="govuk-list govuk-list--bullet">
-                <li>2 to 12 hours before flooding</li>
-                <li>during waking hours when possible</li>
-              </ul>
-              {additionalAlerts && (
-                <>
-                  <CheckBox
-                    onChange={() => setIsChecked(!isChecked)}
-                    checked={isChecked}
-                    label="Yes, I want these"
-                  />
-                  <br />
-                </>
-              )}
+              <p>
+                Flood warnings are usually sent 30 minutes to 2 hours before
+                flooding
+              </p>
+              <p>
+                Severe flood wanrings will be sent at any time when life is at
+                risk.
+              </p>
               <Button
-                text={
-                  additionalAlerts
-                    ? 'Continue'
-                    : 'Confirm you want this location'
-                }
+                text="Confirm you want this location"
                 className="govuk-button"
                 onClick={handleSubmit}
               />
+              &nbsp; &nbsp;
+              <Link
+                onClick={() => navigate(-1)}
+                className="govuk-link"
+                style={{
+                  display: 'inline-block',
+                  padding: '8px 10px 7px'
+                }}
+              >
+                Choose different location
+              </Link>
             </div>
           </div>
         </div>

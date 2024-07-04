@@ -5,11 +5,9 @@ const postCodeValidation = (postcode) => {
 
   // Normalize input: remove any non-alphanumeric characters and extra spaces
   postcode = postcode
-    .replace(/[\s\-\.\(\)]/g, '')
+    .replace(/[^a-zA-Z0-9]/g, '')
     .toUpperCase()
     .trim()
-
-  console.log(postcode)
 
   // UK postcode regex pattern
   const postcodePattern = /^[A-Z]{1,2}\d[A-Z\d]? ?\d[A-Z]{2}$/i

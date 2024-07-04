@@ -10,13 +10,13 @@ export default function Pagination ({ totalPages, onPageChange }) {
   return (
     <>
       <nav
-        class='govuk-pagination govuk-pagination--block'
+        className='govuk-pagination govuk-pagination--block'
         aria-label='Pagination'
       >
         {currentPage > 1 && (
-          <div class='govuk-pagination__prev'>
+          <div className='govuk-pagination__prev'>
             <a
-              class='govuk-link govuk-pagination__link'
+              className='govuk-link govuk-pagination__link'
               onClick={(e) => {
                 {
                   e.preventDefault()
@@ -26,7 +26,7 @@ export default function Pagination ({ totalPages, onPageChange }) {
               rel='prev'
             >
               <svg
-                class='govuk-pagination__icon govuk-pagination__icon--prev'
+                className='govuk-pagination__icon govuk-pagination__icon--prev'
                 xmlns='http://www.w3.org/2000/svg'
                 height='13'
                 width='15'
@@ -36,20 +36,20 @@ export default function Pagination ({ totalPages, onPageChange }) {
               >
                 <path d='m6.5938-0.0078125-6.7266 6.7266 6.7441 6.4062 1.377-1.449-4.1856-3.9768h12.896v-2h-12.984l4.2931-4.293-1.414-1.414z' />
               </svg>
-              <span class='govuk-pagination__link-title'>
-                Previous<span class='govuk-visually-hidden'> page</span>
+              <span className='govuk-pagination__link-title'>
+                Previous<span className='govuk-visually-hidden'> page</span>
               </span>
-              <span class='govuk-visually-hidden'>:</span>
-              <span class='govuk-pagination__link-label'>
+              <span className='govuk-visually-hidden'>:</span>
+              <span className='govuk-pagination__link-label'>
                 {currentPage - 1} of {totalPages}
               </span>
             </a>
           </div>
         )}
         {currentPage < totalPages && (
-          <div class='govuk-pagination__next'>
+          <div className='govuk-pagination__next'>
             <a
-              class='govuk-link govuk-pagination__link'
+              className='govuk-link govuk-pagination__link'
               rel='next'
               onClick={(e) => {
                 {
@@ -59,7 +59,7 @@ export default function Pagination ({ totalPages, onPageChange }) {
               }}
             >
               <svg
-                class='govuk-pagination__icon govuk-pagination__icon--next'
+                className='govuk-pagination__icon govuk-pagination__icon--next'
                 xmlns='http://www.w3.org/2000/svg'
                 height='13'
                 width='15'
@@ -69,11 +69,11 @@ export default function Pagination ({ totalPages, onPageChange }) {
               >
                 <path d='m8.107-0.0078125-1.4136 1.414 4.2926 4.293h-12.986v2h12.896l-4.1855 3.9766 1.377 1.4492 6.7441-6.4062-6.7246-6.7266z' />
               </svg>
-              <span class='govuk-pagination__link-title'>
-                Next<span class='govuk-visually-hidden'> page</span>
+              <span className='govuk-pagination__link-title'>
+                Next<span className='govuk-visually-hidden'> page</span>
               </span>
-              <span class='govuk-visually-hidden'>:</span>
-              <span class='govuk-pagination__link-label'>
+              <span className='govuk-visually-hidden'>:</span>
+              <span className='govuk-pagination__link-label'>
                 {currentPage + 1} of {totalPages}
               </span>
             </a>

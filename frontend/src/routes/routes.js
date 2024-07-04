@@ -23,8 +23,8 @@ import ValidateLandlinePhonePage from '../pages/signup/channel-preferences/landl
 import AddMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/AddMobilePhonePage'
 import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/SkipConfirmMobilePhonePage'
 import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
+import LocationInSevereWarningAreaPage from '../pages/signup/register-location/LocationInSevereWarningAreaPage'
 import LocationInAlertAreaPage from '../pages/signup/register-location/LocationInAlertAreaPage'
-import LocationInWarningAreaPage from '../pages/signup/register-location/LocationInWarningAreaPage'
 import LocationNotNearDangerPage from '../pages/signup/register-location/LocationNotNearDangerPage'
 import LocationSearchPage from '../pages/signup/register-location/LocationSearchPage'
 import LocationSearchResultsPage from '../pages/signup/register-location/LocationSearchResultsPage'
@@ -66,12 +66,12 @@ const signupRoutes = [
     component: <LocationSearchResultsPage />
   },
   {
-    path: '/signup/register-location/location-in-alert-area',
-    component: <LocationInAlertAreaPage />
+    path: '/signup/register-location/location-in-severe-warning-area',
+    component: <LocationInSevereWarningAreaPage />
   },
   {
-    path: '/signup/register-location/location-in-warning-area',
-    component: <LocationInWarningAreaPage />
+    path: '/signup/register-location/location-in-alert-area',
+    component: <LocationInAlertAreaPage />
   },
   {
     path: '/signup/register-location/no-danger',

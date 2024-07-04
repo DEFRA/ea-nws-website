@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
@@ -22,6 +22,12 @@ export default function LocationSearchLayout() {
   const [postCodeError, setPostCodeError] = useState('')
   const [error, setError] = useState('')
 
+  //remove any errors if user changes search option
+  useEffect(() => {
+    setPostCodeError('')
+    setError('')
+  }, [searchOption])
+
   const handleSubmit = async () => {
     if (!searchOption) {
       setError('Select how you want to search for your location')
@@ -31,20 +37,17 @@ export default function LocationSearchLayout() {
           const postCodeValidationError = postCodeValidation(postCode)
           if (!postCodeValidationError) {
             const { responseData, errorMessage } = await osPostCodeApiCall(
-              postCode
+              //normalise the postcode
+              postCode.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
             )
             if (!errorMessage) {
-              //normalise postcode format
-              dispatch(
-                setLocationPostCode(
-                  postCode.replace(/[^a-zA-Z0-9\s]/g, '').toUpperCase()
-                )
-              )
+              dispatch(setLocationPostCode(responseData[0].postcode))
               dispatch(setLocationSearchResults(responseData))
-              setPostCodeError('')
               navigate('/signup/register-location/search-results')
             } else {
-              setError(errorMessage)
+              //show error message from OS Api postcode search
+              setPostCodeError(errorMessage)
+              setError('')
             }
             break
           } else {
@@ -53,6 +56,8 @@ export default function LocationSearchLayout() {
           }
         case 'PlaceNameTownOrKeyword':
           // code block
+          break
+        default:
           break
       }
     }
@@ -68,10 +73,9 @@ export default function LocationSearchLayout() {
             <Link onClick={() => navigate(-1)} className="govuk-back-link">
               Back
             </Link>
-            {error ||
-              (postCodeError && (
-                <ErrorSummary errorList={[error, postCodeError]} />
-              ))}
+            {(error || postCodeError) && (
+              <ErrorSummary errorList={[error, postCodeError]} />
+            )}
             <h1 className="govuk-heading-l govuk-!-margin-top-6">
               Check if you can get flood messages for your location
             </h1>

@@ -9,14 +9,22 @@ export default function FloodWarningKey({ severe }) {
       {severe ? (
         <div className="flood-warning-key govuk-!-margin-top-6">
           <b>Key</b>{' '}
-          <FontAwesomeIcon icon={faCircle} style={{ color: '#f70202' }} />{' '}
+          <FontAwesomeIcon
+            icon={faCircle}
+            className="govuk-!-padding-left-1 govuk-!-padding-right-1"
+            style={{ color: '#f70202' }}
+          />{' '}
           Severe flood warnings and flood warnings area
         </div>
       ) : (
         <div className="flood-warning-key govuk-!-margin-top-6">
           <b>Key</b>{' '}
-          <FontAwesomeIcon icon={faCircle} style={{ color: '#ffa200' }} /> Flood
-          alert area
+          <FontAwesomeIcon
+            icon={faCircle}
+            className="govuk-!-padding-left-1 govuk-!-padding-right-1"
+            style={{ color: '#ffa200' }}
+          />{' '}
+          Flood alert area
         </div>
       )}
     </>

@@ -1,14 +1,16 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
+import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
 
-
 export default function AccountPage () {
+
+  const location = useLocation()
 
   const navigate = useNavigate()
   const handleButton = () => {
@@ -21,11 +23,25 @@ export default function AccountPage () {
   const businessName = profile.additionals[0]?.businessName || '-'
   const jobTitle = profile.additionals[0]?.jobTitle || '-'
 
+  const bannerText = [
+    'Business name: '+((location.state.businessName) ? location.state.businessName : '-'), 
+    'Job title: '+((location.state.jobTitle) ? location.state.jobTitle : '-')]
+
   return (
     <>
       <Header />
       <div className='govuk-width-container'>
         <PhaseBanner />
+        {location.state !== null && location.state.changeBusinessDetails
+          ? (
+            <NotificationBanner
+              className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0'
+              title='Success'
+              heading='Business details updated'
+              text={bannerText}
+            />
+            )
+          : null}
         <main className='govuk-main-wrapper'>
           <div className="govuk-grid-row">
             <div className="govuk-grid-column-full">
@@ -63,7 +79,7 @@ export default function AccountPage () {
                       <td className="govuk-table__cell">{businessName}</td>
                       <td className='govuk-table__cell govuk-!-text-align-right'>
                         <Link
-                          to='/'
+                          to='/account/change-business-details'
                           className='govuk-link'
                         >
                           Change
@@ -75,7 +91,7 @@ export default function AccountPage () {
                       <td className="govuk-table__cell">{jobTitle}</td>
                       <td className='govuk-table__cell govuk-!-text-align-right'>
                         <Link
-                          to='/'
+                          to='/account/change-business-details'
                           className='govuk-link'
                         >
                           Change

@@ -1,6 +1,7 @@
 import React from 'react'
 import Index from '../pages/Index'
 import AccountPage from '../pages/account/AccountPage'
+import ChangeBusinessDetailsPage from '../pages/account/ChangeBusinessDetailsPage'
 import ConfirmDeleteContactDetailsPage from '../pages/contact-details/ConfirmDeleteContactDetailsPage'
 import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
 import AddEmailPage from '../pages/contact-details/add-contact-email/AddEmailPage'
@@ -96,7 +97,9 @@ const signupRoutes = [
 const homeRoutes = [{ path: '/home', component: <HomePage /> }]
 
 // account
-const accountRoutes = [{ path: '/account', component: <AccountPage /> }]
+const accountRoutes = [
+  { path: '/account', component: <AccountPage /> },
+  { path: '/account/change-business-details', component: <ChangeBusinessDetailsPage />}]
 
 // contact routes
 const contactRoutes = [

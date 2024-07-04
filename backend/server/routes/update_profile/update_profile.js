@@ -7,12 +7,12 @@ module.exports = [
 
     handler: async (request, h) => {
       try {
-        const { profile } = request.payload
+        const { authToken, profile } = request.payload
         // check profile is not empty - this should never happen
         // as a profile should always be passed to this route
         if (Object.keys(profile).length !== 0) {
           const response = await apiCall(
-            request.payload,
+            { authToken, profile },
             'member/updateProfile'
           )
           return h.response(response)

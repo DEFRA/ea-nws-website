@@ -26,11 +26,12 @@ export default function ValidateLandlineLayout ({
   const navigate = useNavigate()
   const [code, setCode] = useState('')
   const session = useSelector((state) => state.session)
-  const homePhone = session.profile.unverified.homePhones[0]
-    ? session.profile.unverified.homePhones[0]
-    : session.profile.homePhones[0]
+  const homePhoneLength =  session.profile.unverified.homePhones.length
+  const homePhone = session.profile.unverified.homePhones[homePhoneLength-1]
+    ? session.profile.unverified.homePhones[homePhoneLength-1]
+    : session.profile.homePhones[homePhoneLength-1]
   const authToken = session.authToken
-
+  
   const handleSubmit = async (event) => {
     event.preventDefault()
     const validationError = authCodeValidation(code)
@@ -79,9 +80,11 @@ export default function ValidateLandlineLayout ({
   const differentHomePhone = (event) => {
     event.preventDefault()
     // remove homephone from users profile
-    dispatch(setProfile(removeUnverifiedContact(session.profile, homePhone)))
+    //dispatch(setProfile(removeUnverifiedContact(session.profile, homePhone)))
     DifferentHomePhone(homePhone)
   }
+
+  
 
   return (
     <>

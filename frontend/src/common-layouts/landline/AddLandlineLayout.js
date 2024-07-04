@@ -74,18 +74,19 @@ export default function AddLandlineLayout ({ NavigateToNextPage }) {
     // or user could have come from account change details at the end of sign up flow
     navigate(-1)
   }
-  const hasAddedLandlineAlready = ()=> {
-    console.log("THe landline is " + session.landline)
-    if (session.landline !== undefined){
-      //console.log(true)
-      //return true
+
+  const homePhone = session.profile.unverified.homePhones[0]
+    ? session.profile.unverified.homePhones[0]
+    : session.profile.homePhones[0]
+  
+  const hasAddedLandLineAlready = () => {
+    if(homePhone === undefined){
       return false
-    }else{
-      //console.log(false)
-      //return false
+    } else{
       return true
     }
-  }
+  }  
+  
   //placeholder for now until its implimented
   const mobileNumbers = [{
     number: "07897645546"},
@@ -95,10 +96,11 @@ export default function AddLandlineLayout ({ NavigateToNextPage }) {
   const setLandlineprefernce = (event) => {
     setLandline(event.target.value)
     setIsOpen(false)
+    
   }
-  const setLandLineAndToggle = (event) =>{
-    setLandline(event.target.value)
+  const toggle = () =>{
     setIsOpen((isOpen) => !isOpen)
+    
   }
   
   
@@ -121,7 +123,7 @@ export default function AddLandlineLayout ({ NavigateToNextPage }) {
                   We recommend using a landline or mobile number that can be called 24
                   hours a day.
                 </p>
-                {hasAddedLandlineAlready() ? <>
+                {hasAddedLandLineAlready() ? <>
                 <fieldset className='govuk-fieldset'>
               {error && <p className='govuk-error-message'>{error}</p>}
               <div className='govuk-radios' data-module='govuk-radios'>
@@ -144,7 +146,7 @@ export default function AddLandlineLayout ({ NavigateToNextPage }) {
                 label="A different number"
                 type="radio"
                 value="A different number"
-                onChange={setLandLineAndToggle}
+                onChange={toggle}
                 
                 /> 
 

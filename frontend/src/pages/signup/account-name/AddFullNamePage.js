@@ -8,7 +8,6 @@ import Header from '../../../gov-uk-components/Header'
 import Input from '../../../gov-uk-components/Input'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 import { setProfile } from '../../../redux/userSlice'
-import { backendCall } from '../../../services/BackendService'
 import { addAccountName } from '../../../services/ProfileServices'
 import { fullNameValidation } from '../../../services/validations/FullNameValidation'
 export default function AddNamePage() {
@@ -42,20 +41,9 @@ export default function AddNamePage() {
         lastName: lastName
       }
 
-      const { errorMessage } = await backendCall(
-        dataToSend,
-        'api/add_contact/name/add',
-        navigate
-      )
-      if (errorMessage !== null) {
-        setError(errorMessage)
-      } else {
-        dispatch(
-          setProfile(addAccountName(session.profile, firstName, lastName))
-        )
+      dispatch(setProfile(addAccountName(session.profile, firstName, lastName)))
 
-        navigate('/declaration')
-      }
+      navigate('/declaration')
     }
   }
 

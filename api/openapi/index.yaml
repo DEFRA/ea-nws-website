@@ -25,5 +25,3 @@ paths:
     $ref: './paths/contact/email/verifyEmailStart.yaml'
   /member/verifyEmailValidate:
     $ref: './paths/contact/email/verifyEmailValidate.yaml'
-  /member/verifyFullNameStart:
-    $ref: './paths/contact/fullName/verifyFullNameStart.yaml'

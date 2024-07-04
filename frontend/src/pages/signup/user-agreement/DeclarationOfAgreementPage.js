@@ -15,7 +15,7 @@ export default function DeclarationOfAgreementPage() {
     if (isChecked === false) {
       setError('Tick to confirm you agree with the terms and conditions')
     } else {
-      // New user home page after T&C agreement signed
+      // TODO New user home page currently, will need to be modified to direct to the signup review page after T&C agreement signed
       navigate('/home')
     }
   }

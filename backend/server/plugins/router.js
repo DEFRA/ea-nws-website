@@ -12,8 +12,7 @@ const routes = [].concat(
   require('../routes/add_contact/landline/landline_start'),
   require('../routes/add_contact/landline/landline_validate'),
   require('../routes/add_contact/email/email_start'),
-  require('../routes/add_contact/email/email_validate'),
-  require('../routes/add_contact/fullname/fullname_start')
+  require('../routes/add_contact/email/email_validate')
 )
 
 module.exports = {

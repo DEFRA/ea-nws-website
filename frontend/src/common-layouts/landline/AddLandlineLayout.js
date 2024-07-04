@@ -15,7 +15,7 @@ import {
 } from '../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../services/validations/PhoneValidation'
-
+import CheckboxRadios from '../../gov-uk-components/CheckBoxRadios'
 export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPreviousPage }) {
   const navigate = useNavigate()
   const [landline, setLandline] = useState('')
@@ -75,6 +75,35 @@ export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPrevi
     NavigateToPreviousPage()
   }
 
+  const homePhone = session.profile.unverified.homePhones[0]
+    ? session.profile.unverified.homePhones[0]
+    : session.profile.homePhones[0]
+  
+  const hasAddedLandLineAlready = () => {
+    if(homePhone === undefined){
+      return false
+    } else{
+      return true
+    }
+  }  
+  
+  //placeholder for now until its implimented
+  const mobileNumbers = [{
+    number: "07897645546"},
+  {number: '01269081694'}
+]
+
+  const setLandlineprefernce = (event) => {
+    setLandline(event.target.value)
+    setIsOpen(false)
+    
+  }
+  const toggle = () =>{
+    setIsOpen((isOpen) => !isOpen)
+    
+  }
+  
+  
   return (
     <>
       <Header />

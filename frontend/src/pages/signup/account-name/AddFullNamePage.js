@@ -35,14 +35,7 @@ export default function AddNamePage() {
         lastName = fullName.substring(fullName.indexOf(' ') + 1)
       }
 
-      const dataToSend = {
-        authToken: session.authToken,
-        firstName: firstName,
-        lastName: lastName
-      }
-
       dispatch(setProfile(addAccountName(session.profile, firstName, lastName)))
-
       navigate('/declaration')
     }
   }

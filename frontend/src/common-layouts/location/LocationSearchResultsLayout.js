@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Details from '../../gov-uk-components/Details'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import Pagination from '../../gov-uk-components/Pagination'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { setSelectedLocation } from '../../redux/userSlice'
+import { getFloodTargetArea } from '../../services/GetFloodTargetAreas'
 
-export default function LocationSearchResultsLayout() {
-  const navigate = useNavigate()
+export default function LocationSearchResultsLayout({ continueToNextPage }) {
   const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(1)
   const locations = useSelector((state) => state.session.locationSearchResults)
@@ -22,19 +22,18 @@ export default function LocationSearchResultsLayout() {
     currentPage * locationsPerPage
   )
 
-  console.log(locations)
-
-  const handleSelectedLocation = (event, location) => {
+  const handleSelectedLocation = async (event, location) => {
     event.preventDefault()
-    console.log(location)
-
-    //need to do some validation here to stop the user from selecting
-    //an address they already have
+    //still to add validation to check that lat and lng exist in profile
 
     dispatch(setSelectedLocation(location))
 
-    //need to dertermine in here if location is in danger area or not
-    //navigate('/signup/register-location/no-danger')
+    const { isInWarningArea, isInAlertArea } = await getFloodTargetArea(
+      location.latitude,
+      location.longitude
+    )
+
+    continueToNextPage(isInWarningArea, isInAlertArea)
   }
 
   const detailsMessage = (
@@ -54,7 +53,10 @@ export default function LocationSearchResultsLayout() {
         <div className="govuk-grid-row">
           <div className="govuk-grid-column-two-thirds">
             <div className="govuk-body">
-              <Link onClick={() => navigate(-1)} className="govuk-back-link">
+              <Link
+                to="/signup/register-location/search"
+                className="govuk-back-link"
+              >
                 Back
               </Link>
               <h1 className="govuk-heading-l govuk-!-margin-top-6">

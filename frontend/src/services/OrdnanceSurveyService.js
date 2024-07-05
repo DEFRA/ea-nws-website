@@ -3,7 +3,7 @@ import { addressFormatter } from './formatters/AddressFormatter'
 export const osPostCodeApiCall = async (postCode) => {
   let responseData
   let errorMessage
-  const url = `https://api.os.uk/search/places/v1/postcode?postcode=${postCode}&key=tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a&output_srs=WGS84`
+  const url = `https://api.os.uk/search/places/v1/postcode?postcode=${postCode}&key=tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a&output_srs=EPSG:4326`
 
   try {
     const response = await fetch(url)
@@ -12,6 +12,7 @@ export const osPostCodeApiCall = async (postCode) => {
     }
     const data = await response.json()
     //Check that postcode is in England
+    console.log(data.results)
     if (data.results?.[0].DPA.COUNTRY_CODE === 'E') {
       responseData = data.results.map((result) => {
         //remove postcode from result

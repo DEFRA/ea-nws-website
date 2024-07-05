@@ -35,6 +35,9 @@ const userSlice = createSlice({
     setSelectedLocation: (state, action) => {
       state.selectedLocation = action.payload
     },
+    setAdditionalAlerts: (state, action) => {
+      state.additionalAlerts = action.payload
+    },
     clearAuth: (state) => {
       state.authToken = null
       state.profile = null
@@ -43,6 +46,7 @@ const userSlice = createSlice({
       state.setLocationPostCode = null
       state.locationSearchResults = null
       state.selectedLocation = null
+      state.additionalAlerts = null
     }
   }
 })
@@ -56,6 +60,7 @@ export const {
   setLocationPostCode,
   setLocationSearchResults,
   setSelectedLocation,
+  setAdditionalAlerts,
   clearAuth
 } = userSlice.actions
 export default userSlice.reducer

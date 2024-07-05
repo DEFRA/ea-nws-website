@@ -5,14 +5,13 @@ import LocationInAlertAreaLayout from '../../../common-layouts/location/Location
 export default function LocationInAlertAreaPage() {
   const navigate = useNavigate()
 
-  const handleSubmit = () => {}
+  const continueToNextPage = () => {
+    navigate('/signup')
+  }
 
   return (
     <>
-      <LocationInAlertAreaLayout
-        submit={handleSubmit}
-        additionalAlerts={false}
-      />
+      <LocationInAlertAreaLayout continueToNextPage={continueToNextPage} />
     </>
   )
 }

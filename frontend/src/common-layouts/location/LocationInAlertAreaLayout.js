@@ -10,19 +10,19 @@ import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-export default function LocationInAlertAreaLayout({
-  submit,
-  additionalAlerts
-}) {
+export default function LocationInAlertAreaLayout({ continueToNextPage }) {
   const navigate = useNavigate()
   const [isChecked, setIsChecked] = useState(false)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+  const additionalAlerts = useSelector(
+    (state) => state.session.additionalAlerts
+  )
 
   const handleSubmit = () => {
-    //do we need any logic here?
-    submit()
+    //we need to add this to the profile
+    continueToNextPage()
   }
 
   return (
@@ -44,8 +44,8 @@ export default function LocationInAlertAreaLayout({
               <InsetText text={selectedLocation.address} />
             </div>
             <div className="govuk-grid-column-three-quarters">
-              <Map />
-              <FloodWarningKey severe={additionalAlerts} />
+              <Map type="alert" />
+              <FloodWarningKey severe={false} />
             </div>
             <div className="govuk-grid-column-two-thirds">
               <p className="govuk-!-margin-top-6">

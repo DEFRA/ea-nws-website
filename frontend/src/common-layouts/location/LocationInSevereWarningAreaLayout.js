@@ -10,15 +10,17 @@ import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-export default function LocationInSevereWarningAreaLayout({ submit }) {
+export default function LocationInSevereWarningAreaLayout({
+  continueToNextPage
+}) {
   const navigate = useNavigate()
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
 
   const handleSubmit = () => {
-    //do we need any logic here?
-    submit()
+    //add location to users profile
+    continueToNextPage()
   }
 
   return (
@@ -39,8 +41,8 @@ export default function LocationInSevereWarningAreaLayout({ submit }) {
               <InsetText text={selectedLocation.address} />
             </div>
             <div className="govuk-grid-column-three-quarters">
-              <Map />
-              <FloodWarningKey severe={false} />
+              <Map type={'warning'} />
+              <FloodWarningKey severe={true} />
             </div>
 
             <div className="govuk-grid-column-two-thirds">

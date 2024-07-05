@@ -14,7 +14,7 @@ import {
 import { osPostCodeApiCall } from '../../services/OrdnanceSurveyService'
 import { postCodeValidation } from '../../services/validations/PostCodeValidation'
 
-export default function LocationSearchLayout() {
+export default function LocationSearchLayout({ continueToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [searchOption, setSearchOption] = useState('')
@@ -43,7 +43,7 @@ export default function LocationSearchLayout() {
             if (!errorMessage) {
               dispatch(setLocationPostCode(responseData[0].postcode))
               dispatch(setLocationSearchResults(responseData))
-              navigate('/signup/register-location/search-results')
+              continueToNextPage()
             } else {
               //show error message from OS Api postcode search
               setPostCodeError(errorMessage)

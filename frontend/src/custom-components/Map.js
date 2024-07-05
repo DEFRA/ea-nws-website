@@ -9,7 +9,7 @@ import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
-export default function Map() {
+export default function Map({ type }) {
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
   const selectedLocation = useSelector(
@@ -17,15 +17,14 @@ export default function Map() {
   )
 
   useEffect(() => {
-    if (selectedLocation) {
-      getFloodTargetArea(
+    ;(async () => {
+      const { alertArea, warningArea } = await getFloodTargetArea(
         selectedLocation.latitude,
         selectedLocation.longitude
-      ).then(({ alertArea, warningArea }) => {
-        setAlertArea(alertArea)
-        setWarningArea(warningArea)
-      })
-    }
+      )
+      setAlertArea(alertArea)
+      setWarningArea(warningArea)
+    })()
   }, [selectedLocation])
 
   //Leaflet Marker Icon fix
@@ -53,9 +52,11 @@ export default function Map() {
         >
           <Popup></Popup>
         </Marker>
-        {alertArea && <GeoJSON data={alertArea} style={{ color: '#ffa200' }} />}
-        {warningArea && (
+        {warningArea && type === 'warning' && (
           <GeoJSON data={warningArea} style={{ color: '#f70202' }} />
+        )}
+        {alertArea && type === 'alert' && (
+          <GeoJSON data={alertArea} style={{ color: '#ffa200' }} />
         )}
       </MapContainer>
     </>

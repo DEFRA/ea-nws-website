@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import AccountNavigation from '../../custom-components/AccountNavigation'
 import Button from '../../gov-uk-components/Button'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
@@ -47,6 +48,7 @@ export default function AccountPage () {
       <Header />
       <div className='govuk-width-container'>
         <PhaseBanner />
+        <AccountNavigation currentPage={useLocation().pathname} />
         {location.state !== null
           ? (
             <NotificationBanner

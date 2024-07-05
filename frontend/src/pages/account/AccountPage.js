@@ -32,21 +32,27 @@ export default function AccountPage () {
   const businessName = getAdditionals(profile, 'businessName')
   const jobTitle = getAdditionals(profile, 'jobTitle')
 
-  const bannerText = [
+  const bannerText = (location.state?.changeBusinessDetails) ? 
+  [
     'Business name: '+((location.state?.businessName) ? location.state?.businessName : ''), 
-    'Job title: '+((location.state?.jobTitle) ? location.state?.jobTitle : '')]
+    'Job title: '+((location.state?.jobTitle) ? location.state?.jobTitle : '')
+  ]
+  : (location.state?.changeEmail) && location.state?.email+' is your new email address to sign in with'
+
+  const bannerHeading = (location.state?.changeBusinessDetails) ? 'Business details updated' : (location.state?.changeEmail) && 'Email address updated'
+
 
   return (
     <>
       <Header />
       <div className='govuk-width-container'>
         <PhaseBanner />
-        {location.state !== null && location.state.changeBusinessDetails
+        {location.state !== null
           ? (
             <NotificationBanner
               className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0'
               title='Success'
-              heading='Business details updated'
+              heading={bannerHeading}
               text={bannerText}
             />
             )
@@ -76,7 +82,7 @@ export default function AccountPage () {
                       <td className="govuk-table__cell">{email}</td>
                       <td className='govuk-table__cell govuk-!-text-align-right'>
                         <Link
-                          to='/'
+                          to='/account/change-email'
                           className='govuk-link'
                         >
                           Change

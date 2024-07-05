@@ -16,26 +16,44 @@ export default function ChangeBusinessDetailsPage () {
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
   let profile = JSON.parse(JSON.stringify(session.profile))
-  const [businessName, setBusinessName] = useState(profile.additionals[0]?.businessName)
-  const [jobTitle, setJobTitle] = useState(profile.additionals[0]?.jobTitle)
   const [businessNameError, setBusinessNameError] = useState('')
   const [jobTitleError, setJobTitleError] = useState('')
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const authToken = session.authToken
 
+  const updateAdditionals = (profile, id, value) => {
+    let idFound = false
+    for (let i = 0; i < profile.additionals.length; i++) {
+      if (profile.additionals[i].id === id) {
+        profile.additionals[i].value = value
+        idFound = true
+      }
+    }
+    if (!idFound) {
+      profile.additionals.push({'id': id, 'value': value})
+    }
+  }
+
+  const getAdditionals = (profile, id) => {
+    for (let i = 0; i < profile.additionals.length; i++) {
+      if (profile.additionals[i].id === id) {
+        return profile.additionals[i].value
+      }
+    }
+    return ''
+  }
+
+  const [businessName, setBusinessName] = useState(getAdditionals(profile, 'businessName'))
+  const [jobTitle, setJobTitle] = useState(getAdditionals(profile, 'jobTitle'))
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     const {validationErrorBusiness, validationErrorJob} = businessDetailsValidation(businessName, jobTitle)
     setBusinessNameError(validationErrorBusiness)
     setJobTitleError(validationErrorJob)
-
-    if (profile.additionals.length === 0) {
-        profile.additionals[0] = {businessName: businessName, jobTitle: jobTitle}
-      } else {
-        profile.additionals[0].businessName = businessName
-        profile.additionals[0].jobTitle = jobTitle
-      } 
+    updateAdditionals(profile, 'businessName', businessName)
+    updateAdditionals(profile, 'jobTitle', jobTitle)
 
     const dataToSend = { profile, authToken }
     if (validationErrorBusiness === '' && validationErrorJob === '') {
@@ -53,8 +71,8 @@ export default function ChangeBusinessDetailsPage () {
         navigate('/account', {
             state: {
               changeBusinessDetails: true,
-              businessName: profile.additionals[0].businessName,
-              jobTitle: profile.additionals[0].jobTitle
+              businessName: getAdditionals(profile, 'businessName'),
+              jobTitle: getAdditionals(profile, 'jobTitle')
             }
           })
       }
@@ -89,7 +107,7 @@ export default function ChangeBusinessDetailsPage () {
                   error={businessNameError}
                   onChange={(val) => setBusinessName(val)}
                   className='govuk-input'
-                  defaultValue={profile.additionals[0]?.businessName}
+                  defaultValue={getAdditionals(profile, 'businessName')}
                 />
                 <Input
                   name='Job title (optional)'
@@ -97,7 +115,7 @@ export default function ChangeBusinessDetailsPage () {
                   error={jobTitleError}
                   onChange={(val) => setJobTitle(val)}
                   className='govuk-input'
-                  defaultValue={profile.additionals[0]?.jobTitle}
+                  defaultValue={getAdditionals(profile, 'jobTitle')}
                 />
                 <Button
                   className='govuk-button'

@@ -17,11 +17,20 @@ export default function AccountPage () {
     navigate('/account/delete')
   }
 
+  const getAdditionals = (profile, id) => {
+    for (let i = 0; i < profile.additionals.length; i++) {
+      if (profile.additionals[i].id === id) {
+        return profile.additionals[i].value
+      }
+    }
+    return ''
+  }
+
   const profile = useSelector((state) => state.session.profile)
   const name = profile.firstName+' '+profile.lastName || ''
   const email = profile.emails[0] || ''
-  const businessName = profile.additionals[0]?.businessName || ''
-  const jobTitle = profile.additionals[0]?.jobTitle || ''
+  const businessName = getAdditionals(profile, 'businessName')
+  const jobTitle = getAdditionals(profile, 'jobTitle')
 
   const bannerText = [
     'Business name: '+((location.state?.businessName) ? location.state?.businessName : ''), 

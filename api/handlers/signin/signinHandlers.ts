@@ -46,13 +46,15 @@ async function getSigninValidate(
       mobilePhones: [],
       homePhones: ['01475721535']
     },
-    pois: {
-      address: 'Exeter, United Kingdom',
-      coordinates: {
-        latitude: '50726037',
-        longitude: '-3527489'
+    pois: [
+      {
+        address: 'Exeter, United Kingdom',
+        coordinates: {
+          latitude: '50726037',
+          longitude: '-3527489'
+        }
       }
-    }
+    ]
   }
   const registrations = {
     partner: {

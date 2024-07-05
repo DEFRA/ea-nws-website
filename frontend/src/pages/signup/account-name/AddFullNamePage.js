@@ -28,8 +28,8 @@ export default function AddNamePage() {
     if (validationError === '') {
       // Split the full name into first name and last name assuming they are separeted by a space.
       // if the string cannot be split then only the first name is set and the last name remains blank
-      var firstName = fullName
-      var lastName = ''
+      let firstName = fullName
+      let lastName = ''
       if (fullName.split(' ').length > 1) {
         firstName = fullName.substring(0, fullName.indexOf(' '))
         lastName = fullName.substring(fullName.indexOf(' ') + 1)

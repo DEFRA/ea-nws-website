@@ -18,14 +18,14 @@ export default function AccountPage () {
   }
 
   const profile = useSelector((state) => state.session.profile)
-  const name = profile.firstName+' '+profile.lastName || '-'
-  const email = profile.emails[0] || '-'
-  const businessName = profile.additionals[0]?.businessName || '-'
-  const jobTitle = profile.additionals[0]?.jobTitle || '-'
+  const name = profile.firstName+' '+profile.lastName || ''
+  const email = profile.emails[0] || ''
+  const businessName = profile.additionals[0]?.businessName || ''
+  const jobTitle = profile.additionals[0]?.jobTitle || ''
 
   const bannerText = [
-    'Business name: '+((location.state.businessName) ? location.state.businessName : '-'), 
-    'Job title: '+((location.state.jobTitle) ? location.state.jobTitle : '-')]
+    'Business name: '+((location.state?.businessName) ? location.state?.businessName : ''), 
+    'Job title: '+((location.state?.jobTitle) ? location.state?.jobTitle : '')]
 
   return (
     <>
@@ -82,7 +82,7 @@ export default function AccountPage () {
                           to='/account/change-business-details'
                           className='govuk-link'
                         >
-                          Change
+                          {(businessName === '') ? 'Add' : 'Change'}
                         </Link>
                       </td>
                     </tr>
@@ -94,7 +94,7 @@ export default function AccountPage () {
                           to='/account/change-business-details'
                           className='govuk-link'
                         >
-                          Change
+                        {(jobTitle === '') ? 'Add' : 'Change'}
                         </Link>
                       </td>
                     </tr>     

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import '../../custom.css'
 import Button from '../../gov-uk-components/Button'
 import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
@@ -103,6 +104,12 @@ export default function ChangeBusinessDetailsPage () {
                   text='Save changes'
                   onClick={handleSubmit}
                 />
+                <Link
+                  to='/account'
+                  className='govuk-body govuk-link inline-link'
+                >
+                  Cancel
+                </Link>
                 <br />
               </div>
             </div>

@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
+import AccountNavigation from '../../custom-components/AccountNavigation'
 import Details from '../../gov-uk-components/Details'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
@@ -67,6 +68,7 @@ export default function ContactDetailsPage () {
       <Header />
       <div className='govuk-width-container'>
         <PhaseBanner />
+        <AccountNavigation currentPage={useLocation().pathname} />
         {location.state !== null && location.state.removedContact
           ? (
             <NotificationBanner
@@ -91,9 +93,6 @@ export default function ContactDetailsPage () {
             />
             )
           : null}
-        <Link to='/home' className='govuk-link'>
-          Back to Home
-        </Link>
         <main className='govuk-main-wrapper'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>

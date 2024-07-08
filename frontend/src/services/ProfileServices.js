@@ -23,8 +23,8 @@ const addUnverifiedContact = (profile, type, contact) => {
         [type === 'email'
           ? 'emails'
           : type === 'mobile'
-            ? 'mobilePhones'
-            : 'homePhones']: [...unverifiedContactList, contact]
+          ? 'mobilePhones'
+          : 'homePhones']: [...unverifiedContactList, contact]
       }
     }
     return updatedProfile
@@ -87,8 +87,8 @@ const addVerifiedContact = (profile, type, contact) => {
       [type === 'email'
         ? 'emails'
         : type === 'mobile'
-          ? 'mobilePhones'
-          : 'homePhones']: [...verifiedContactList, contact]
+        ? 'mobilePhones'
+        : 'homePhones']: [...verifiedContactList, contact]
     }
     return updatedProfile
   } else {
@@ -123,9 +123,23 @@ const removeVerifiedContact = (profile, contact) => {
   return updatedProfile
 }
 
+const addAccountName = (profile, firstName, lastName) => {
+  profile.firstName = firstName
+  profile.lastName = lastName
+
+  const updatedProfile = {
+    ...profile,
+    firstName: firstName,
+    lastName: lastName
+  }
+
+  return updatedProfile
+}
+
 module.exports = {
   addUnverifiedContact,
   removeUnverifiedContact,
   addVerifiedContact,
-  removeVerifiedContact
+  removeVerifiedContact,
+  addAccountName
 }

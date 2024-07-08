@@ -88,10 +88,11 @@ export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPrevi
   }
 
   // placeholder for now until its implimented
-  const mobileNumbers = [{ number: '07897645546' },
-    { number: '01269081694' }
-  ]
-
+  // const mobileNumbers = [{ number: '07897645546' },
+  //   { number: '01269081694' }
+  // ]
+  const mobileNumbers = session.profile.unverified.homePhones
+  
   const setLandlineprefernce = (event) => {
     setLandline(event.target.value)
     setIsOpen(false)
@@ -124,14 +125,14 @@ export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPrevi
                     <fieldset className='govuk-fieldset'>
                       {error && <p className='govuk-error-message'>{error}</p>}
                       <div className='govuk-radios' data-module='govuk-radios'>
-                        {mobileNumbers.map((landline) => (
+                        {mobileNumbers.map((mobileNumbers) => (
                           <CheckboxRadios
-                            key={landline.number}
-                            id={landline.number}
+                            key={mobileNumbers}
+                            id={mobileNumbers}
                             name='feedbackRadios'
-                            label={landline.number}
+                            label={mobileNumbers}
                             type='radio'
-                            value={landline.number}
+                            value={mobileNumbers}
                             onChange={setLandlineprefernce}
                           />
                         ))}
@@ -177,7 +178,7 @@ export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPrevi
                       text='Continue'
                       onClick={handleSubmit}
                     />
-                  </>}
+                    </>}
                 <br />
               </div>
             </div>

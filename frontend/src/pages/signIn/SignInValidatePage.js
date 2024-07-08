@@ -91,7 +91,7 @@ export default function SignInValidatePage () {
                     text={'New code sent at ' + dateTime.toLocaleTimeString()}
                   />
                   }
-              <ErrorSummary errorList={error === '' ? [] : [error]} />
+              {error  && <ErrorSummary errorList={[error]} />}
               <h2 class='govuk-heading-l'>Check your email</h2>
               <div class='govuk-body'>
                 We've sent a code to:

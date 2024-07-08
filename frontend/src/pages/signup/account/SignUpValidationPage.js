@@ -84,12 +84,12 @@ export default function SignUpValidationPage () {
               <PhaseBanner />
               <Link to='/signup' className='govuk-back-link'>Back</Link>
               {codeResent &&
-                  <NotificationBanner
-                    className='govuk-notification-banner govuk-notification-banner--success'
-                    title='Success'
-                    text={'New code sent at ' + dateTime.toLocaleTimeString()}
-                  />}
-              <ErrorSummary errorList={error === '' ? [] : [error]} />
+                <NotificationBanner
+                  className='govuk-notification-banner govuk-notification-banner--success'
+                  title='Success'
+                  text={'New code sent at ' + dateTime.toLocaleTimeString()}
+            />}
+              {error && <ErrorSummary errorList={[error]} />}
               <h2 className='govuk-heading-l'>Check your email</h2>
               <div className='govuk-body'>
                 You need to confirm your email address.

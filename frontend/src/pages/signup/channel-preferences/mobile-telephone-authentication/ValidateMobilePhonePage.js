@@ -12,8 +12,7 @@ export default function ValidateMobilePhone () {
     } else if (session.contactPreferences.includes('Landline')) {
       navigate('/signup/contactpreferences/landline/add')
     } else {
-      // To change following updated flow
-      navigate('/signup/contactpreferences')
+      navigate('/signup/accountname/add')
     }
   }
   const SkipValidation = () => {

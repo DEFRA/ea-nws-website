@@ -15,7 +15,7 @@ import { businessDetailsValidation } from '../../services/validations/BusinessDe
 export default function ChangeBusinessDetailsPage () {
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
-  let profile = JSON.parse(JSON.stringify(session.profile))
+  const profile = JSON.parse(JSON.stringify(session.profile))
   const [businessNameError, setBusinessNameError] = useState('')
   const [jobTitleError, setJobTitleError] = useState('')
   const [error, setError] = useState('')
@@ -31,7 +31,7 @@ export default function ChangeBusinessDetailsPage () {
       }
     }
     if (!idFound) {
-      profile.additionals.push({'id': id, 'value': value})
+      profile.additionals.push({ id, value })
     }
   }
 
@@ -49,7 +49,7 @@ export default function ChangeBusinessDetailsPage () {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const {validationErrorBusiness, validationErrorJob} = businessDetailsValidation(businessName, jobTitle)
+    const { validationErrorBusiness, validationErrorJob } = businessDetailsValidation(businessName, jobTitle)
     setBusinessNameError(validationErrorBusiness)
     setJobTitleError(validationErrorJob)
     updateAdditionals(profile, 'businessName', businessName)
@@ -69,34 +69,34 @@ export default function ChangeBusinessDetailsPage () {
           setProfile(data.profile)
         )
         navigate('/account', {
-            state: {
-              changeBusinessDetails: true,
-              businessName: getAdditionals(profile, 'businessName'),
-              jobTitle: getAdditionals(profile, 'jobTitle')
-            }
-          })
+          state: {
+            changeBusinessDetails: true,
+            businessName: getAdditionals(profile, 'businessName'),
+            jobTitle: getAdditionals(profile, 'jobTitle')
+          }
+        })
       }
     }
   }
 
   const possibleErrors = [businessNameError, jobTitleError, error]
   const errorList = []
-    for (let i = 0; i < possibleErrors.length; i++) {
-        (possibleErrors[i] !== '') && errorList.push(possibleErrors[i])
-    }
+  for (let i = 0; i < possibleErrors.length; i++) {
+    (possibleErrors[i] !== '') && errorList.push(possibleErrors[i])
+  }
 
   return (
     <>
       <Header />
       <div class='govuk-width-container'>
-      <PhaseBanner />
-        <Link onClick={() =>  navigate(-1)} className='govuk-back-link'>
+        <PhaseBanner />
+        <Link onClick={() => navigate(-1)} className='govuk-back-link'>
           Back
         </Link>
         <main className='govuk-main-wrapper'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
-            {errorList.length > 0 && (<ErrorSummary errorList={errorList} />)}
+              {errorList.length > 0 && (<ErrorSummary errorList={errorList} />)}
               <h2 class='govuk-heading-l'>
                 Additional details for business registrations
               </h2>

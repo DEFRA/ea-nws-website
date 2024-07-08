@@ -26,34 +26,32 @@ export default function ChangeEmailValidationPage () {
     ? session.profile.unverified.emails[0]
     : session.profile.emails[0]
 
+  const updateProfile = async (profile, authToken) => {
+    const profileEmails = profile.emails
+    const emailsLength = profileEmails.length
+    profileEmails[0] = profileEmails[emailsLength - 1]
+    profileEmails.pop()
+    profile.emails = profileEmails
 
-    const updateProfile = async (profile, authToken) => {
-        let profileEmails = profile.emails
-        const emailsLength = profileEmails.length
-        profileEmails[0] = profileEmails[emailsLength -1]
-        profileEmails.pop()
-        profile.emails = profileEmails
+    const dataToSend = { profile, authToken }
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/profile/update',
+      navigate
+    )
 
-        const dataToSend = { profile, authToken }
-        const { errorMessage, data } = await backendCall(
-            dataToSend,
-            'api/profile/update',
-            navigate
-        )
-
-        if (errorMessage !== null) {
-            setError(errorMessage)
-        } else {
-            dispatch(setProfile(profile))
-            navigate('/account', {
-                state: {
-                  changeEmail: true,
-                  email: profile.emails[0]
-                }
-              })
+    if (errorMessage !== null) {
+      setError(errorMessage)
+    } else {
+      dispatch(setProfile(profile))
+      navigate('/account', {
+        state: {
+          changeEmail: true,
+          email: profile.emails[0]
         }
+      })
     }
-  
+  }
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -72,7 +70,6 @@ export default function ChangeEmailValidationPage () {
       }
     }
   }
-
 
   const getNewCode = async (event) => {
     event.preventDefault()

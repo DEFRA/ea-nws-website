@@ -6,7 +6,6 @@ export default function NotificationBanner ({
   heading,
   text
 }) {
-
   if (!Array.isArray(text)) {
     text = [text]
   }
@@ -34,9 +33,9 @@ export default function NotificationBanner ({
               )
             : null}
           <p className='govuk-body'>
-          {text.map((line, index) => (
-            <p key={index} className='govuk-!-margin-bottom-1'>{line}</p>
-          ))}
+            {text.map((line, index) => (
+              <p key={index} className='govuk-!-margin-bottom-1'>{line}</p>
+            ))}
           </p>
         </div>
       </div>

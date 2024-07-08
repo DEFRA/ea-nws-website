@@ -108,9 +108,9 @@ const homeRoutes = [{ path: '/home', component: <HomePage /> }]
 // account
 const accountRoutes = [
   { path: '/account', component: <AccountPage /> },
-  { path: '/account/change-business-details', component: <ChangeBusinessDetailsPage />},
-  { path: '/account/change-email', component: <ChangeEmailPage />},
-  { path: '/account/change-email/validate', component: <ChangeEmailValidationPage />},]
+  { path: '/account/change-business-details', component: <ChangeBusinessDetailsPage /> },
+  { path: '/account/change-email', component: <ChangeEmailPage /> },
+  { path: '/account/change-email/validate', component: <ChangeEmailValidationPage /> }]
 
 // contact routes
 const contactRoutes = [

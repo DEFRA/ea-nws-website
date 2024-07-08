@@ -16,7 +16,7 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
-export default function ValidateMobileLayout({
+export default function ValidateMobileLayout ({
   NavigateToNextPage,
   SkipValidation,
   DifferentMobile

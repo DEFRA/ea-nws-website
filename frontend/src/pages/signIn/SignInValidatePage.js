@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
 import ErrorSummary from '../../gov-uk-components/ErrorSummary'
@@ -27,6 +27,7 @@ export default function SignInValidatePage () {
   const [codeResent, setCodeResent] = useState(false)
   const dateTime = new Date()
   const [codeExpired, setCodeExpired] = useState(false)
+  const loginEmail = useSelector((state) => state.session.profile.emails[0])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -40,7 +41,7 @@ export default function SignInValidatePage () {
         'api/signInValidate'
       )
       if (errorMessage !== null) {
-        if (errorMessage === 'the code you entered has expired - please request a new code') {
+        if (errorMessage === 'The code you have entered has expired - please request a new code') {
           setCodeExpired(true)
         } else {
           setError(errorMessage)
@@ -58,7 +59,7 @@ export default function SignInValidatePage () {
     event.preventDefault()
     setCodeResent(false)
 
-    const data = { email: location.state.email }
+    const data = { email: loginEmail}
     const { errorMessage } = await backendCall(
       data,
       'api/signInStart',
@@ -83,19 +84,18 @@ export default function SignInValidatePage () {
             <div class='govuk-width-container'>
               <Link to='/signin' className='govuk-back-link'>Back</Link>
               {codeResent
-                ? (
+                &&
                   <NotificationBanner
                     className='govuk-notification-banner govuk-notification-banner--success'
                     title='Success'
                     text={'New code sent at ' + dateTime.toLocaleTimeString()}
                   />
-                  )
-                : null}
+                  }
               <ErrorSummary errorList={error === '' ? [] : [error]} />
               <h2 class='govuk-heading-l'>Check your email</h2>
               <div class='govuk-body'>
                 We've sent a code to:
-                <InsetText text={location.state.email} />
+                <InsetText text={loginEmail} />
                 <Input
                   name='Enter code'
                   inputType='text'

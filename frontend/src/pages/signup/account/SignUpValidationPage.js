@@ -42,7 +42,7 @@ export default function SignUpValidationPage () {
       )
 
       if (errorMessage !== null) {
-        if (errorMessage === 'the code you entered has expired - please request a new code') {
+        if (errorMessage === 'The code you have entered has expired - please request a new code') {
           setCodeExpired(true)
         } else {
           setError(errorMessage)
@@ -83,16 +83,13 @@ export default function SignUpValidationPage () {
             <div className='govuk-width-container'>
               <PhaseBanner />
               <Link to='/signup' className='govuk-back-link'>Back</Link>
-              {codeResent
-                ? (
+              {codeResent &&
                   <NotificationBanner
                     className='govuk-notification-banner govuk-notification-banner--success'
                     title='Success'
                     text={'New code sent at ' + dateTime.toLocaleTimeString()}
-                  />
-                  )
-                : null}
-              {error && <ErrorSummary errorList={[error]} />}
+                  />}
+              <ErrorSummary errorList={error === '' ? [] : [error]} />
               <h2 className='govuk-heading-l'>Check your email</h2>
               <div className='govuk-body'>
                 You need to confirm your email address.

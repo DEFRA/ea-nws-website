@@ -11,11 +11,17 @@ manageContact_url = "http://localhost:3000/managecontacts"
 def setup_validateemail_test(get_browser):
     browser = get_browser
     browser.get(index)
-    browser.find_element(By.CLASS_NAME, "govuk-button").click()
-    browser.find_element(By.LINK_TEXT, "Manage Contacts page").click()
+    button_xpath = f"//button[text()='Activate/Deactivate Mock Session 1']"
+    mock_session_link = browser.find_element(By.XPATH, button_xpath)
+    browser.execute_script("arguments[0].click();", mock_session_link)
+    link_xpath = f"//a[text()='Manage Contacts page']"
+    link_link = browser.find_element(By.XPATH, link_xpath)
+    browser.execute_script("arguments[0].click();", link_link)
     time.sleep(1)
-    button_xpath = f"//button[contains(@class, 'govuk-button') and text()='Add a email address']"
-    browser.find_element(By.XPATH, button_xpath).click()
+    button_xpath = f"//button[text()='Add a email address']"
+    add_email_link = browser.find_element(By.XPATH, button_xpath)
+    browser.execute_script("arguments[0].click();", add_email_link)
+    time.sleep(1)
     browser.find_element(By.NAME, "Email address").send_keys("valid@email.uk")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)

@@ -16,7 +16,7 @@ import {
 import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../services/validations/PhoneValidation'
 
-export default function AddMobileLayout ({ NavigateToNextPage }) {
+export default function AddMobileLayout ({ NavigateToNextPage, NavigateToPreviousPage }) {
   const navigate = useNavigate()
   const [mobile, setMobile] = useState('')
   const [error, setError] = useState('')
@@ -70,7 +70,7 @@ export default function AddMobileLayout ({ NavigateToNextPage }) {
 
     // user could have navigated from contact preferences page
     // or user could have come from account change details at the end of sign up flow
-    navigate(-1)
+    NavigateToPreviousPage()
   }
 
   return (

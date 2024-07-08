@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router'
 import AddAccountNameLayout from '../../../common-layouts/account-name/AddAccountNameLayout'
 
-export default function AddMobilePhonePage() {
+export default function AddFullNamePage() {
   const navigate = useNavigate()
   const NavigateToNextPage = () => navigate('/declaration')
 

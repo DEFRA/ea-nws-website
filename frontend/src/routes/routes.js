@@ -14,7 +14,7 @@ import SignBackInPage from '../pages/sign-out/signBackInPage'
 import SignOutAutomaticallyPage from '../pages/sign-out/signOutAutomaticallyPage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
-import AddNamePage from '../pages/signup/account-name/AddFullNamePage'
+import AddFullNamePage from '../pages/signup/account-name/AddFullNamePage'
 import SignUpDuplicateEmailPage from '../pages/signup/account/SignUpDuplicateEmail'
 import SignUpFeedbackPage from '../pages/signup/account/SignUpFeedbackPage'
 import SignUpPage from '../pages/signup/account/SignUpPage'
@@ -87,7 +87,7 @@ const signupRoutes = [
     path: '/signup/contactpreferences/landline/skipconfirmation',
     component: <SkipConfirmLandlinePhonePage />
   },
-  { path: '/signup/accountname/add', component: <AddNamePage /> },
+  { path: '/signup/accountname/add', component: <AddFullNamePage /> },
   {
     path: '/signup/feedback',
     component: <SignUpFeedbackPage />

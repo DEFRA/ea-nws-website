@@ -10,7 +10,7 @@ import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { setProfile } from '../../redux/userSlice'
 import { addAccountName } from '../../services/ProfileServices'
 import { fullNameValidation } from '../../services/validations/FullNameValidation'
-export default function AddNamePage({
+export default function AddAccountNameLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -41,7 +41,6 @@ export default function AddNamePage({
 
   const navigateBack = async (event) => {
     event.preventDefault()
-    console.log('LP - Full name page back link pressed.')
     NavigateToPreviousPage()
   }
 

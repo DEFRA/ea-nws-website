@@ -25,7 +25,7 @@ const userSlice = createSlice({
     setRegistrations: (state, action) => {
       state.registrations = action.payload
     },
-    //location data
+    // location data
     setLocationPostCode: (state, action) => {
       state.locationPostCode = action.payload
     },

@@ -14,11 +14,11 @@ const osPostCodeApiCall = async (postCode) => {
       }
     }
     const data = await response.json()
-    //Check that postcode is in England
+    // Check that postcode is in England
     console.log('results', data.results)
     if (data.results?.[0].DPA.COUNTRY_CODE === 'E') {
       responseData = data.results.map((result) => {
-        let formattedAddress = addressFormatter(result.DPA.ADDRESS)
+        const formattedAddress = addressFormatter(result.DPA.ADDRESS)
         return {
           address: formattedAddress,
           postcode: result.DPA.POSTCODE,

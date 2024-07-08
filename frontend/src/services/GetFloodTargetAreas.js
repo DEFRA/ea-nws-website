@@ -2,9 +2,9 @@ import L from 'leaflet'
 import leafletPip from 'leaflet-pip'
 
 export const getFloodTargetArea = async (lat, lng) => {
-  const bboxKM = 1 //size of bounding box from centre in KM
+  const bboxKM = 1 // size of bounding box from centre in KM
 
-  //warning areas
+  // warning areas
   let baseWFSURL =
     'https://environment.data.gov.uk/spatialdata/flood-warning-areas/wfs'
   let WFSParams = {
@@ -19,7 +19,7 @@ export const getFloodTargetArea = async (lat, lng) => {
   let wfsURL = `${baseWFSURL}?${new URLSearchParams(WFSParams).toString()}`
   const wfsWarningData = await fetch(wfsURL).then((response) => response.json())
 
-  //alert area
+  // alert area
   baseWFSURL =
     'https://environment.data.gov.uk/spatialdata/flood-alert-areas/wfs'
   WFSParams = {
@@ -34,10 +34,7 @@ export const getFloodTargetArea = async (lat, lng) => {
   wfsURL = `${baseWFSURL}?${new URLSearchParams(WFSParams).toString()}`
   const wfsAlertData = await fetch(wfsURL).then((response) => response.json())
 
-  console.log('alert data', wfsAlertData)
-  console.log('warning data', wfsWarningData)
-
-  //check if location entered is in target area
+  // check if location entered is in target area
   const isInWarningArea = checkPointInPolygon(lat, lng, wfsWarningData)
   const isInAlertArea = checkPointInPolygon(lat, lng, wfsAlertData)
 
@@ -49,7 +46,7 @@ export const getFloodTargetArea = async (lat, lng) => {
   }
 }
 
-function calculateBoundingBox(centerLat, centerLng, distanceKm) {
+function calculateBoundingBox (centerLat, centerLng, distanceKm) {
   const EARTH_RADIUS_KM = 6371 // Earth radius in kilometers
 
   // Convert center latitude and longitude to radians
@@ -70,7 +67,7 @@ function calculateBoundingBox(centerLat, centerLng, distanceKm) {
   return result
 }
 
-function checkPointInPolygon(lat, lng, geojson) {
+function checkPointInPolygon (lat, lng, geojson) {
   const point = L.latLng(lat, lng)
 
   // Check each area in the GeoJSON data

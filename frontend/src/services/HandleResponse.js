@@ -2,7 +2,6 @@ const handleResponse = (response, navigate) => {
   console.log('response status', response.status)
   switch (response.status) {
     case 200:
-      console.log('response data', response.data)
       return { data: response.data, errorMessage: null }
     case 400:
       return { data: null, errorMessage: 'Bad request, please try again' }

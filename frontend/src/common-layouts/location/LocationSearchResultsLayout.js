@@ -10,7 +10,7 @@ import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { setSelectedLocation } from '../../redux/userSlice'
 import { getFloodTargetArea } from '../../services/GetFloodTargetAreas'
 
-export default function LocationSearchResultsLayout({ continueToNextPage }) {
+export default function LocationSearchResultsLayout ({ continueToNextPage }) {
   const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
@@ -26,7 +26,7 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
 
   const handleSelectedLocation = async (event, location) => {
     event.preventDefault()
-    //still to add validation to check that lat and lng exist in profile
+    // still to add validation to check that lat and lng exist in profile
     setLoading(true)
     try {
       dispatch(setSelectedLocation(location))
@@ -45,7 +45,7 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
   const detailsMessage = (
     <div>
       You can view flood message areas&nbsp;
-      <a href="#" className="govuk-link">
+      <a href='#' className='govuk-link'>
         near this postcode
       </a>
     </div>
@@ -54,66 +54,67 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
   return (
     <>
       <Header />
-      <div className="govuk-width-container">
+      <div className='govuk-width-container'>
         <PhaseBanner />
-        <div className="govuk-body">
-          <div className="govuk-grid-row">
-            {loading ? (
-              <LoadingSpinner />
-            ) : (
-              <div className="govuk-grid-column-two-thirds">
-                <div className="govuk-body">
-                  <Link
-                    to="/signup/register-location/search"
-                    className="govuk-back-link"
-                  >
-                    Back
-                  </Link>
-                  <h1 className="govuk-heading-l govuk-!-margin-top-6">
-                    Select an address
-                  </h1>
-                  <p className="govuk-body">
-                    Postcode: {locationPostCode}
-                    {'   '}
+        <div className='govuk-body'>
+          <div className='govuk-grid-row'>
+            {loading
+              ? (
+                <LoadingSpinner />
+                )
+              : (
+                <div className='govuk-grid-column-two-thirds'>
+                  <div className='govuk-body'>
                     <Link
-                      to="/signup/register-location/search"
-                      className="govuk-link govuk-!-padding-left-5"
+                      to='/signup/register-location/search'
+                      className='govuk-back-link'
                     >
-                      Change postcode
+                      Back
                     </Link>
-                  </p>
-                  <table className="govuk-table">
-                    <tbody className="govuk-table__body">
-                      <tr className="govuk-table__row">
-                        <td className="govuk-table__cell" />
-                      </tr>
-                      {displayedLocations.map((location, index) => (
-                        <tr key={index} className="govuk-table__row">
-                          <td className="govuk-table__cell">
-                            <Link
-                              className="govuk-link"
-                              onClick={(event) =>
-                                handleSelectedLocation(event, location)
-                              }
-                            >
-                              {location.address}
-                            </Link>
-                          </td>
+                    <h1 className='govuk-heading-l govuk-!-margin-top-6'>
+                      Select an address
+                    </h1>
+                    <p className='govuk-body'>
+                      Postcode: {locationPostCode}
+                      {'   '}
+                      <Link
+                        to='/signup/register-location/search'
+                        className='govuk-link govuk-!-padding-left-5'
+                      >
+                        Change postcode
+                      </Link>
+                    </p>
+                    <table className='govuk-table'>
+                      <tbody className='govuk-table__body'>
+                        <tr className='govuk-table__row'>
+                          <td className='govuk-table__cell' />
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  <Details
-                    title="I cannot find my address here"
-                    text={detailsMessage}
-                  />
-                  <Pagination
-                    totalPages={Math.ceil(locations.length / locationsPerPage)}
-                    onPageChange={(val) => setCurrentPage(val)}
-                  />
+                        {displayedLocations.map((location, index) => (
+                          <tr key={index} className='govuk-table__row'>
+                            <td className='govuk-table__cell'>
+                              <Link
+                  className='govuk-link'
+                  onClick={(event) =>
+                                handleSelectedLocation(event, location)}
+                >
+                  {location.address}
+                </Link>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    <Details
+                      title='I cannot find my address here'
+                      text={detailsMessage}
+                    />
+                    <Pagination
+                      totalPages={Math.ceil(locations.length / locationsPerPage)}
+                      onPageChange={(val) => setCurrentPage(val)}
+                    />
+                  </div>
                 </div>
-              </div>
-            )}
+                )}
           </div>
         </div>
       </div>

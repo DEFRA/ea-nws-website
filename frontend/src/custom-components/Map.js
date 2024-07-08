@@ -3,13 +3,13 @@ import React, { useEffect, useState } from 'react'
 import { GeoJSON, MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
 import { useSelector } from 'react-redux'
 import { getFloodTargetArea } from '../services/GetFloodTargetAreas'
-//Leaflet Marker Icon fix
+// Leaflet Marker Icon fix
 import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
-export default function Map({ type }) {
+export default function Map ({ type }) {
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
   const selectedLocation = useSelector(
@@ -27,8 +27,8 @@ export default function Map({ type }) {
     })()
   }, [selectedLocation])
 
-  //Leaflet Marker Icon fix
-  let DefaultIcon = L.icon({
+  // Leaflet Marker Icon fix
+  const DefaultIcon = L.icon({
     iconUrl,
     iconRetinaUrl,
     shadowUrl,
@@ -44,13 +44,13 @@ export default function Map({ type }) {
         center={[selectedLocation.latitude, selectedLocation.longitude]}
         zoom={14}
         style={{ height: '40vh', width: '100%' }}
-        scrollWheelZoom={true}
+        scrollWheelZoom
       >
-        <TileLayer url="https://api.os.uk/maps/raster/v1/zxy/Outdoor_3857/{z}/{x}/{y}.png?key=tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a" />
+        <TileLayer url='https://api.os.uk/maps/raster/v1/zxy/Outdoor_3857/{z}/{x}/{y}.png?key=tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a' />
         <Marker
           position={[selectedLocation.latitude, selectedLocation.longitude]}
         >
-          <Popup></Popup>
+          <Popup />
         </Marker>
         {warningArea && type === 'warning' && (
           <GeoJSON data={warningArea} style={{ color: '#f70202' }} />

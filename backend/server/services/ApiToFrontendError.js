@@ -5,5 +5,6 @@ module.exports = {
   verifyMobilePhoneStart_107: 'You have already registered this mobile number on your account - you cannot enter it again',
 
   // Errors for expired code
-  invalidCredentials_101: 'the code you entered has expired - please get a new code'
+  registerValidate_101: 'the code you entered has expired - please request a new code',
+  signinValidate_101: 'the code you entered has expired - please request a new code'
 }

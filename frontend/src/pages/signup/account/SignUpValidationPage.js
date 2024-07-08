@@ -42,7 +42,7 @@ export default function SignUpValidationPage () {
       )
 
       if (errorMessage !== null) {
-        if (errorMessage === 'invalid credentials') {
+        if (errorMessage === 'the code you entered has expired - please request a new code') {
           setCodeExpired(true)
         } else {
           setError(errorMessage)

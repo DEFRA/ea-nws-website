@@ -1,14 +1,13 @@
 import React from 'react'
 
 export default function ConfirmationPanel ({
-  className,
   title,
   body
 }) {
   return (
     <>
       <div
-        className={className}
+        className='govuk-panel govuk-panel--confirmation'
         role='alert'
         aria-labelledby='govuk-panel__title'
         data-module='govuk-panel'
@@ -22,11 +21,9 @@ export default function ConfirmationPanel ({
           </h2>
         </div>
         <div className='govuk-panel__body'>
-          {body
-            ? (
-              <h3 className='govuk-panel__body'>{body}</h3>
-              )
-            : null}
+          {body &&
+            <h3 className='govuk-panel__body'>{body}</h3>
+          }
         </div>
       </div>
     </>

@@ -1,6 +1,5 @@
 const routes = [].concat(
   require('../routes/public'),
-  require('../routes/start'),
   require('../routes/signin/signin_start'),
   require('../routes/signin/signin_validate'),
   require('../routes/signup/signupStart'),
@@ -12,7 +11,8 @@ const routes = [].concat(
   require('../routes/add_contact/landline/landline_start'),
   require('../routes/add_contact/landline/landline_validate'),
   require('../routes/add_contact/email/email_start'),
-  require('../routes/add_contact/email/email_validate')
+  require('../routes/add_contact/email/email_validate'),
+  require('../routes/ordnance_survey/post_code_search')
 )
 
 module.exports = {

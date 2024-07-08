@@ -14,6 +14,7 @@ export const backendCall = async (data, path, navigate) => {
       },
       body: JSON.stringify(data)
     })
+
     responseData = await response.json()
   } catch (error) {
     console.log('ERROR: ', error)

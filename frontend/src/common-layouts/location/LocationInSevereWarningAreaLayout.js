@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css'
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import FloodWarningKey from '../../custom-components/FloodWarningKey'
@@ -14,6 +14,7 @@ export default function LocationInSevereWarningAreaLayout({
   continueToNextPage
 }) {
   const navigate = useNavigate()
+  const [loading, setLoading] = useState(true)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )

@@ -34,6 +34,9 @@ export const getFloodTargetArea = async (lat, lng) => {
   wfsURL = `${baseWFSURL}?${new URLSearchParams(WFSParams).toString()}`
   const wfsAlertData = await fetch(wfsURL).then((response) => response.json())
 
+  console.log('alert data', wfsAlertData)
+  console.log('warning data', wfsWarningData)
+
   //check if location entered is in target area
   const isInWarningArea = checkPointInPolygon(lat, lng, wfsWarningData)
   const isInAlertArea = checkPointInPolygon(lat, lng, wfsAlertData)

@@ -4,7 +4,7 @@ import Header from '../../../gov-uk-components/Header'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 import ConfirmationPanel from '../../../gov-uk-components/ConfirmationPanel'
 
-export default function SignUpPage () {
+export default function SuccessPage () {
   const navigate = useNavigate()
   return (
     <>
@@ -31,20 +31,20 @@ export default function SignUpPage () {
           <h2 class='govuk-heading-m'>If you want to add more locations or contacts</h2>
           <p className='govuk-body'>
             You can now use your account to add more{' '}
-            <a href='/' className='govuk-link'>
+            <a href='/home' className='govuk-link'>
               locations.
             </a>
           </p><br />
           <p>
             You can also add more {' '}
-            <a href='/' className='govuk-link'>
+            <a href='/managecontacts' className='govuk-link'>
               email addresses or phone numbers
             </a>
             to receive flood <br /> messages.
           </p><br />
           <p>
             {' '}
-            <a href='/' className='govuk-link'>
+            <a href='/signup/feedback' className='govuk-link'>
               What do you think of the service?
             </a>
             (takes 30 seconds)

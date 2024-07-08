@@ -32,8 +32,8 @@ async function getHomephoneValidate(
   const profile = {
     id: '1',
     enabled: true,
-    firstName: 'John',
-    lastName: 'Smith',
+    firstname: 'John',
+    lastname: 'Smith',
     emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
     mobilePhones: ['07343454590', '07889668367'],
     homePhones: ['01475721555', msisdn],

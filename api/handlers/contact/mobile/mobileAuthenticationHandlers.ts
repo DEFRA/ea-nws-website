@@ -32,8 +32,8 @@ async function getMobileValidate(
   const profile = {
     id: '1',
     enabled: true,
-    firstName: 'John',
-    lastName: 'Smith',
+    firstname: 'John',
+    lastname: 'Smith',
     emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
     mobilePhones: ['07343454555', '07889668355', msisdn],
     homePhones: ['01475721535'],

@@ -18,8 +18,8 @@ export default function IndexPage () {
   const mockOne = {
     id: '',
     enabled: true,
-    firstName: 'John',
-    lastName: 'Smith',
+    firstname: 'John',
+    lastname: 'Smith',
     emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
@@ -44,8 +44,8 @@ export default function IndexPage () {
   const mockTwo = {
     id: '',
     enabled: true,
-    firstName: 'John',
-    lastName: 'Smith',
+    firstname: 'John',
+    lastname: 'Smith',
     emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
@@ -77,8 +77,8 @@ export default function IndexPage () {
   const mockThree = {
     id: '',
     enabled: true,
-    firstName: 'John',
-    lastName: 'Smith',
+    firstname: 'John',
+    lastname: 'Smith',
     emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],

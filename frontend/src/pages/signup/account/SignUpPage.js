@@ -42,8 +42,8 @@ export default function SignUpPage () {
         const profile = {
           id: '',
           enabled: true,
-          firstName: '',
-          lastName: '',
+          firstname: '',
+          lastname: '',
           // email required validation to continue so can put in verified list
           emails: [email],
           mobilePhones: [],

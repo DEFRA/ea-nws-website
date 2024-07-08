@@ -132,3 +132,7 @@
         width:auto;
     }
 }
+
+.row__header {
+    width: 12.75em
+}

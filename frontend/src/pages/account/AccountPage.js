@@ -2,6 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import AccountNavigation from '../../custom-components/AccountNavigation'
+import '../../custom.css'
 import Button from '../../gov-uk-components/Button'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
@@ -26,7 +27,7 @@ export default function AccountPage () {
   }
 
   const profile = useSelector((state) => state.session.profile)
-  const name = profile.firstName + ' ' + profile.lastName || ''
+  const name = profile.firstname + ' ' + profile.lastname || ''
   const email = profile.emails[0] || ''
   const businessName = getAdditionals(profile, 'businessName')
   const jobTitle = getAdditionals(profile, 'jobTitle')
@@ -36,9 +37,15 @@ export default function AccountPage () {
         'Business name: ' + ((location.state?.businessName) ? location.state?.businessName : ''),
         'Job title: ' + ((location.state?.jobTitle) ? location.state?.jobTitle : '')
       ]
-    : (location.state?.changeEmail) && location.state?.email + ' is your new email address to sign in with'
+    : (location.state?.changeEmail)
+    ? location.state?.email + ' is your new email address to sign in with'
+    : (location.state?.changeName) && location.state?.name
 
-  const bannerHeading = (location.state?.changeBusinessDetails) ? 'Business details updated' : (location.state?.changeEmail) && 'Email address updated'
+  const bannerHeading = (location.state?.changeBusinessDetails) 
+    ? 'Business details updated' 
+    : (location.state?.changeEmail)
+    ? 'Email address updated'
+    : (location.state?.changeName) && 'Name updated'
 
   return (
     <>
@@ -49,7 +56,7 @@ export default function AccountPage () {
         {location.state !== null
           ? (
             <NotificationBanner
-              className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0'
+              className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
               title='Success'
               heading={bannerHeading}
               text={bannerText}
@@ -65,11 +72,11 @@ export default function AccountPage () {
                 <table className='govuk-table'>
                   <tbody className='govuk-table__body'>
                     <tr className='govuk-table__row'>
-                      <th scope='row' className='govuk-table__header' style={{ width: '12.75em' }}>Name</th>
+                      <th scope='row' className='govuk-table__header row__header'>Name</th>
                       <td className='govuk-table__cell'>{name}</td>
                       <td className='govuk-table__cell govuk-!-text-align-right'>
                         <Link
-                          to='/'
+                          to='/account/change-name'
                           className='govuk-link'
                         >
                           Change
@@ -77,7 +84,7 @@ export default function AccountPage () {
                       </td>
                     </tr>
                     <tr className='govuk-table__row'>
-                      <th scope='row' className='govuk-table__header'>Sign in email</th>
+                      <th scope='row' className='govuk-table__header row__header'>Sign in email</th>
                       <td className='govuk-table__cell'>{email}</td>
                       <td className='govuk-table__cell govuk-!-text-align-right'>
                         <Link
@@ -89,7 +96,7 @@ export default function AccountPage () {
                       </td>
                     </tr>
                     <tr className='govuk-table__row'>
-                      <th scope='row' className='govuk-table__header'>Business name (optional)</th>
+                      <th scope='row' className='govuk-table__header row__header'>Business name (optional)</th>
                       <td className='govuk-table__cell'>{businessName}</td>
                       <td className='govuk-table__cell govuk-!-text-align-right'>
                         <Link
@@ -101,7 +108,7 @@ export default function AccountPage () {
                       </td>
                     </tr>
                     <tr className='govuk-table__row'>
-                      <th scope='row' className='govuk-table__header'>Job title (optional)</th>
+                      <th scope='row' className='govuk-table__header row__header'>Job title (optional)</th>
                       <td className='govuk-table__cell'>{jobTitle}</td>
                       <td className='govuk-table__cell govuk-!-text-align-right'>
                         <Link

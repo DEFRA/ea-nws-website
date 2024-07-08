@@ -47,25 +47,28 @@ export default function ChangeEmailPage () {
       <Header />
       <div className='govuk-width-container'>
         <PhaseBanner />
-        <Link onClick={() => navigate(-1)} className='govuk-back-link'>
+        <Link to='/account' className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
           Back
         </Link>
+        <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-full'>
         {error && <ErrorSummary errorList={[error]} />}
         <h2 className='govuk-heading-l'>
           Change your email address for signing in
         </h2>
         <div className='govuk-body'>
-          <p>
+          <p className='govuk-body'>
             We'll use this email if we need to contact you about your account.
           </p>
-          <p>
+          <p className='govuk-body'>
             This email is also your sign-in name for this service
           </p>
-          <p>
+          <p className='govuk-body govuk-!-margin-bottom-8'>
             If you change it here, use your new email when you next sign in
           </p>
           <Input
-            className='govuk-input govuk-input--width-10'
+            className='govuk-input govuk-!-width-one-half'
             inputType='text'
             name='New email address'
             error={error}
@@ -84,6 +87,9 @@ export default function ChangeEmailPage () {
           </Link>
           <br />
         </div>
+        </div>
+        </div>
+        </main>
       </div>
       <Footer />
     </>

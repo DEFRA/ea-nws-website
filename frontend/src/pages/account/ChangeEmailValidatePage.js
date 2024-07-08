@@ -7,10 +7,11 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import Input from '../../gov-uk-components/Input'
 import InsetText from '../../gov-uk-components/InsetText'
+import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import {
-    removeUnverifiedContact
+  removeUnverifiedContact
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
@@ -97,7 +98,8 @@ export default function ChangeEmailValidationPage () {
     <>
       <Header />
       <div class='govuk-width-container'>
-        <Link to='/managecontacts/add-email' className='govuk-back-link'>
+        <PhaseBanner />
+        <Link to='/account/change-email' className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
           Back
         </Link>
         <main className='govuk-main-wrapper'>
@@ -105,16 +107,17 @@ export default function ChangeEmailValidationPage () {
             <div className='govuk-grid-column-two-thirds'>
               <ErrorSummary errorList={error === '' ? [] : [error]} />
               <h2 class='govuk-heading-l'>Check your email</h2>
-              <div class='govuk-body'>
-                <p>
+              <div className='govuk-body'>
+                <p className='govuk-body'>
                   You need to confirm your email address.
                 </p>
-                <p>
+                <p className='govuk-body govuk-!-margin-bottom-5'>
                   We've sent an email with a code to:
                   <InsetText text={email} />
                   Use the code within 4 hours or it will expire.
                 </p>
                 <Input
+                  className='govuk-input govuk-input--width-10'
                   name='Enter code'
                   inputType='text'
                   error={error}

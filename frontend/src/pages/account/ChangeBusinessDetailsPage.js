@@ -88,19 +88,19 @@ export default function ChangeBusinessDetailsPage () {
   return (
     <>
       <Header />
-      <div class='govuk-width-container'>
+      <div className='govuk-width-container'>
         <PhaseBanner />
-        <Link onClick={() => navigate(-1)} className='govuk-back-link'>
+        <Link to='/account' className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
           Back
         </Link>
-        <main className='govuk-main-wrapper'>
+        <main className='govuk-main-wrapper govuk-!-padding-top-4'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
               {errorList.length > 0 && (<ErrorSummary errorList={errorList} />)}
-              <h2 class='govuk-heading-l'>
+              <h2 className='govuk-heading-l'>
                 Additional details for business registrations
               </h2>
-              <div class='govuk-body'>
+              <div className='govuk-body'>
                 <Input
                   name='Business name (optional)'
                   inputType='text'

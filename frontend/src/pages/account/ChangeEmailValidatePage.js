@@ -94,7 +94,7 @@ export default function ChangeEmailValidationPage () {
   return (
     <>
       <Header />
-      <div class='govuk-width-container'>
+      <div className='govuk-width-container'>
         <PhaseBanner />
         <Link to='/account/change-email' className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
           Back
@@ -103,7 +103,7 @@ export default function ChangeEmailValidationPage () {
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
               <ErrorSummary errorList={error === '' ? [] : [error]} />
-              <h2 class='govuk-heading-l'>Check your email</h2>
+              <h2 className='govuk-heading-l'>Check your email</h2>
               <div className='govuk-body'>
                 <p className='govuk-body'>
                   You need to confirm your email address.

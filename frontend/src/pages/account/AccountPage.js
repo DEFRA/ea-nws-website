@@ -61,7 +61,7 @@ export default function AccountPage () {
             <div className='govuk-grid-column-full'>
               <h1 className='govuk-heading-l'>Manage your account</h1>
               <div className='govuk-body'>
-                <h2 class='govuk-heading-m'>Your account details</h2>
+                <h2 className='govuk-heading-m'>Your account details</h2>
                 <table className='govuk-table'>
                   <tbody className='govuk-table__body'>
                     <tr className='govuk-table__row'>
@@ -114,7 +114,7 @@ export default function AccountPage () {
                     </tr>
                   </tbody>
                 </table>
-                <h2 class='govuk-heading-m govuk-!-margin-bottom-6'>Delete your account</h2>
+                <h2 className='govuk-heading-m govuk-!-margin-bottom-6'>Delete your account</h2>
                 <p className='govuk-body govuk-!-margin-bottom-6'>If you no longer want to receive any flood messages, you can delete your account.</p>
                 <Button
                   text='Delete your account'

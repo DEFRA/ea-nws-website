@@ -14,7 +14,7 @@ const userSlice = createSlice({
       state.authToken = action.payload
     },
     setRegisterToken: (state, action) => {
-      state.authToken = action.payload
+      state.registerToken = action.payload
     },
     setProfile: (state, action) => {
       state.profile = action.payload

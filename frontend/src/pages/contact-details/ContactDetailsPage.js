@@ -72,7 +72,7 @@ export default function ContactDetailsPage () {
         {location.state !== null && location.state.removedContact
           ? (
             <NotificationBanner
-              className='govuk-notification-banner govuk-notification-banner--success'
+              className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
               title='Success'
               heading={location.state.removedType + ' removed'}
               text={location.state.removedContact}
@@ -82,7 +82,7 @@ export default function ContactDetailsPage () {
         {location.state !== null && location.state.unconfirmedtype
           ? (
             <NotificationBanner
-              className='govuk-notification-banner'
+              className='govuk-notification-banner govuk-!-margin-bottom-0 govuk-!-margin-top-4'
               title='Important'
               heading={
               'We cannot send flood messages to ' +

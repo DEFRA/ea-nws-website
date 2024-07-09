@@ -10,6 +10,7 @@ import Input from '../../gov-uk-components/Input'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
+import { fullNameValidation } from '../../services/validations/FullNameValidation'
 
 export default function ChangeNamePage () {
   const navigate = useNavigate()
@@ -34,7 +35,7 @@ export default function ChangeNamePage () {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const validationError = ''
+    const validationError = fullNameValidation(fullName)
     setName(profile, fullName)
 
     const dataToSend = { profile, authToken }
@@ -73,7 +74,7 @@ export default function ChangeNamePage () {
         <main className='govuk-main-wrapper govuk-!-padding-top-4'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-full'>
-              <ErrorSummary errorList={error === '' ? [] : [error]} />
+              {error && <ErrorSummary errorList={[error]} />}
               <h2 className='govuk-heading-l'>
                 Change your name
               </h2>

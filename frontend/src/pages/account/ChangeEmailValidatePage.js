@@ -102,7 +102,7 @@ export default function ChangeEmailValidationPage () {
         <main className='govuk-main-wrapper'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
-              <ErrorSummary errorList={error === '' ? [] : [error]} />
+              {error && <ErrorSummary errorList={[error]} />}
               <h2 className='govuk-heading-l'>Check your email</h2>
               <div className='govuk-body'>
                 <p className='govuk-body'>

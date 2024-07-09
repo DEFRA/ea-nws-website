@@ -9,7 +9,7 @@ import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
-export default function Map ({ type }) {
+export default function Map({ types }) {
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
   const selectedLocation = useSelector(
@@ -46,16 +46,16 @@ export default function Map ({ type }) {
         style={{ height: '40vh', width: '100%' }}
         scrollWheelZoom
       >
-        <TileLayer url='https://api.os.uk/maps/raster/v1/zxy/Outdoor_3857/{z}/{x}/{y}.png?key=tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a' />
+        <TileLayer url="https://api.os.uk/maps/raster/v1/zxy/Outdoor_3857/{z}/{x}/{y}.png?key=tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a" />
         <Marker
           position={[selectedLocation.latitude, selectedLocation.longitude]}
         >
           <Popup />
         </Marker>
-        {warningArea && type === 'warning' && (
+        {warningArea && types.includes('warning') && (
           <GeoJSON data={warningArea} style={{ color: '#f70202' }} />
         )}
-        {alertArea && type === 'alert' && (
+        {alertArea && types.includes('alert') && (
           <GeoJSON data={alertArea} style={{ color: '#ffa200' }} />
         )}
       </MapContainer>

@@ -3,32 +3,48 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import '../custom.css'
 
-export default function FloodWarningKey ({ severe }) {
+export default function FloodWarningKey({ type }) {
   return (
     <>
-      {severe
-        ? (
-          <div className='flood-warning-key govuk-!-margin-top-6'>
-            <b>Key</b>{' '}
+      <div className="flood-warning-key govuk-!-margin-top-6">
+        <b>Key</b>{' '}
+        {type === 'both' && (
+          <>
             <FontAwesomeIcon
               icon={faCircle}
-              className='govuk-!-padding-left-1 govuk-!-padding-right-1'
+              className="govuk-!-padding-left-1 govuk-!-padding-right-1"
               style={{ color: '#f70202' }}
             />{' '}
             Severe flood warnings and flood warnings area
-          </div>
-          )
-        : (
-          <div className='flood-warning-key govuk-!-margin-top-6'>
-            <b>Key</b>{' '}
             <FontAwesomeIcon
               icon={faCircle}
-              className='govuk-!-padding-left-1 govuk-!-padding-right-1'
+              className="govuk-!-padding-left-7 govuk-!-padding-right-1"
               style={{ color: '#ffa200' }}
             />{' '}
             Flood alert area
-          </div>
-          )}
+          </>
+        )}
+        {type === 'severe' && (
+          <>
+            <FontAwesomeIcon
+              icon={faCircle}
+              className="govuk-!-padding-left-1 govuk-!-padding-right-1"
+              style={{ color: '#f70202' }}
+            />{' '}
+            Severe flood warnings and flood warnings area
+          </>
+        )}
+        {type === 'alert' && (
+          <>
+            <FontAwesomeIcon
+              icon={faCircle}
+              className="govuk-!-padding-left-1 govuk-!-padding-right-1"
+              style={{ color: '#ffa200' }}
+            />{' '}
+            Flood alert area
+          </>
+        )}
+      </div>
     </>
   )
 }

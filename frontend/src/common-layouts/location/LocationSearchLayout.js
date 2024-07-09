@@ -14,7 +14,7 @@ import {
 import { backendCall } from '../../services/BackendService'
 import { postCodeValidation } from '../../services/validations/PostCodeValidation'
 
-export default function LocationSearchLayout ({ continueToNextPage }) {
+export default function LocationSearchLayout({ continueToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [searchOption, setSearchOption] = useState('')
@@ -36,7 +36,10 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
         case 'AddressPostCode':
           const postCodeValidationError = postCodeValidation(postCode)
           if (!postCodeValidationError) {
-            const dataToSend = { postCode }
+            //normalise postcode
+            const dataToSend = {
+              postCode: postCode.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
+            }
             const { data, errorMessage } = await backendCall(
               dataToSend,
               'api/os-api/postcode-search',
@@ -69,17 +72,17 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
   return (
     <>
       <Header />
-      <div className='govuk-width-container'>
+      <div className="govuk-width-container">
         <PhaseBanner />
-        <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
-            <Link onClick={() => navigate(-1)} className='govuk-back-link'>
+        <div className="govuk-grid-row">
+          <div className="govuk-grid-column-two-thirds">
+            <Link onClick={() => navigate(-1)} className="govuk-back-link">
               Back
             </Link>
             {(error || postCodeError) && (
               <ErrorSummary errorList={[error, postCodeError]} />
             )}
-            <h1 className='govuk-heading-l govuk-!-margin-top-6'>
+            <h1 className="govuk-heading-l govuk-!-margin-top-6">
               Check if you can get flood messages for your location
             </h1>
             <div
@@ -89,30 +92,30 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
                   : 'govuk-form-group'
               }
             >
-              <fieldset className='govuk-fieldset'>
-                <legend className='govuk-fieldset__legend'>
+              <fieldset className="govuk-fieldset">
+                <legend className="govuk-fieldset__legend">
                   Select how you want to search
                 </legend>
-                {error && <p className='govuk-error-message'>{error}</p>}
-                <div className='govuk-radios' data-module='govuk-radios'>
-                  <div className='govuk-radios__item'>
+                {error && <p className="govuk-error-message">{error}</p>}
+                <div className="govuk-radios" data-module="govuk-radios">
+                  <div className="govuk-radios__item">
                     <input
-                      className='govuk-radios__input'
-                      type='radio'
-                      value='AddressPostCode'
-                      name='searchOptionsRadios'
+                      className="govuk-radios__input"
+                      type="radio"
+                      value="AddressPostCode"
+                      name="searchOptionsRadios"
                       onChange={(e) => setSearchOption(e.target.value)}
-                      id='id-address-postcode'
+                      id="id-address-postcode"
                     />
                     <label
-                      className='govuk-label govuk-radios__label'
-                      htmlFor='id-address-postcode'
+                      className="govuk-label govuk-radios__label"
+                      htmlFor="id-address-postcode"
                     >
                       Address with postcode
                     </label>
                   </div>
                   {searchOption === 'AddressPostCode' && (
-                    <div className='govuk-radios__conditional'>
+                    <div className="govuk-radios__conditional">
                       <div
                         className={
                           postCodeError
@@ -121,27 +124,27 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
                         }
                       >
                         <Input
-                          name='Postcode in England'
-                          className='govuk-input govuk-!-width-one-half'
-                          inputType='text'
+                          name="Postcode in England"
+                          className="govuk-input govuk-!-width-one-half"
+                          inputType="text"
                           error={postCodeError}
                           onChange={(val) => setPostCode(val)}
                         />
                       </div>
                     </div>
                   )}
-                  <div className='govuk-radios__item'>
+                  <div className="govuk-radios__item">
                     <input
-                      className='govuk-radios__input'
-                      type='radio'
-                      value='PlaceNameTownOrKeyword'
-                      name='searchOptionsRadios'
+                      className="govuk-radios__input"
+                      type="radio"
+                      value="PlaceNameTownOrKeyword"
+                      name="searchOptionsRadios"
                       onChange={(e) => setSearchOption(e.target.value)}
-                      id='id-place-name'
+                      id="id-place-name"
                     />
                     <label
-                      className='govuk-label govuk-radios__label'
-                      htmlFor='id-place-name'
+                      className="govuk-label govuk-radios__label"
+                      htmlFor="id-place-name"
                     >
                       Place name, town or keyword
                     </label>
@@ -150,8 +153,8 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
               </fieldset>
             </div>
             <Button
-              text='Continue'
-              className='govuk-button'
+              text="Continue"
+              className="govuk-button"
               onClick={handleSubmit}
             />
           </div>

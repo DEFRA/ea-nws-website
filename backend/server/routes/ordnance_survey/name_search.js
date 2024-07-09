@@ -3,7 +3,7 @@ const { osPostCodeApiCall } = require('../../services/OrdnanceSurveyApiService')
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/os-api/postcode-search',
+    path: '/api/os-api/name-search',
     handler: async (request, h) => {
       try {
         const { postCode } = request.payload

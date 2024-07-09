@@ -7,17 +7,16 @@ import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 
-export default function DeclarationOfAgreementPage () {
+export default function DeclarationOfAgreementPage() {
   const [isChecked, setIsChecked] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()
-
   const handleSubmit = () => {
     if (isChecked === false) {
       setError('Tick to confirm you agree with the terms and conditions')
     } else {
-      // To do - when we have next page
-      navigate('/')
+      // TODO New user home page currently, will need to be modified to direct to the signup review page after T&C agreement signed
+      navigate('/home')
     }
   }
   return (
@@ -26,7 +25,7 @@ export default function DeclarationOfAgreementPage () {
       <div className='govuk-width-container'>
         <PhaseBanner />
         <div className='govuk-body'>
-          <Link to='/' className='govuk-back-link'>
+          <Link onClick={() => navigate(-1)} className='govuk-back-link'>
             Back
           </Link>
           {error && <ErrorSummary errorList={[error]} />}

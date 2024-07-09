@@ -12,6 +12,7 @@ import HomePage from '../pages/home/HomePage'
 import SignOutManuallyPage from '../pages/sign-out/SignOutManuallyPage'
 import SignBackInPage from '../pages/sign-out/signBackInPage'
 import SignOutAutomaticallyPage from '../pages/sign-out/signOutAutomaticallyPage'
+import AddFullNamePage from '../pages/signup/account-name/AddFullNamePage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
 import SignUpDuplicateEmailPage from '../pages/signup/account/SignUpDuplicateEmail'
@@ -54,7 +55,9 @@ const signOutRoutes = [
   { path: '/signout', component: <SignOutManuallyPage /> }
 ]
 
-const signBackInRoutes = [{ path: '/sign-back-in', component: <SignBackInPage /> }]
+const signBackInRoutes = [
+  { path: '/sign-back-in', component: <SignBackInPage /> }
+]
 // sign up routes
 const signupRoutes = [
   { path: '/signup', component: <SignUpPage /> },
@@ -92,6 +95,7 @@ const signupRoutes = [
     path: '/signup/contactpreferences/landline/skipconfirmation',
     component: <SkipConfirmLandlinePhonePage />
   },
+  { path: '/signup/accountname/add', component: <AddFullNamePage /> },
   {
     path: '/signup/feedback',
     component: <SignUpFeedbackPage />
@@ -174,4 +178,8 @@ export const routes = [
   ...signBackInRoutes
 ]
 
-export const authenticatedRoutes = [...homeRoutes, ...contactRoutes, ...signOutRoutes]
+export const authenticatedRoutes = [
+  ...homeRoutes,
+  ...contactRoutes,
+  ...signOutRoutes
+]

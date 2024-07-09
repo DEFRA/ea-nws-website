@@ -26,18 +26,22 @@ export default function ChangeEmailPage () {
     setError(validationError)
     const dataToSend = { email, authToken }
     if (validationError === '') {
-      const { errorMessage } = await backendCall(
-        dataToSend,
-        'api/add_contact/email/add',
-        navigate
-      )
-      if (errorMessage !== null) {
-        setError(errorMessage)
+      if (session.profile.emails[0] === email) {
+        setError('Enter a different email address to the one you currently sign in with')
       } else {
-        dispatch(
-          setProfile(addUnverifiedContact(session.profile, 'email', email))
+        const { errorMessage } = await backendCall(
+          dataToSend,
+          'api/add_contact/email/add',
+          navigate
         )
-        navigate('/account/change-email/validate')
+        if (errorMessage !== null) {
+          setError(errorMessage)
+        } else {
+          dispatch(
+            setProfile(addUnverifiedContact(session.profile, 'email', email))
+          )
+          navigate('/account/change-email/validate')
+        }
       }
     }
   }

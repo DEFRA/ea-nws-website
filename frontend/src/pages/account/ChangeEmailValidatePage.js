@@ -111,7 +111,7 @@ export default function ChangeEmailValidationPage () {
                 <p className='govuk-body govuk-!-margin-bottom-5'>
                   We've sent an email with a code to:
                   <InsetText text={email} />
-                  Use the code within 4 hours or it will expire.
+                  Enter the code within 4 hours or it will expire.
                 </p>
                 <Input
                   className='govuk-input govuk-input--width-10'

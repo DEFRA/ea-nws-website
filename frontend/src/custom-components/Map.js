@@ -17,15 +17,16 @@ export default function Map({ types }) {
   )
 
   useEffect(() => {
-    ;(async () => {
+    async function fetchFloodAreaData() {
       const { alertArea, warningArea } = await getFloodTargetArea(
         selectedLocation.latitude,
         selectedLocation.longitude
       )
       setAlertArea(alertArea)
       setWarningArea(warningArea)
-    })()
-  }, [selectedLocation])
+    }
+    fetchFloodAreaData()
+  }, [])
 
   // Leaflet Marker Icon fix
   const DefaultIcon = L.icon({

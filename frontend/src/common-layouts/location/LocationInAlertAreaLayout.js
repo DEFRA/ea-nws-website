@@ -71,7 +71,6 @@ export default function LocationInAlertAreaLayout({ continueToNextPage }) {
                     checked={isChecked}
                     label="Yes, I want these"
                   />
-                  <br />
                 </>
               )}
               <Button
@@ -80,7 +79,7 @@ export default function LocationInAlertAreaLayout({ continueToNextPage }) {
                     ? 'Continue'
                     : 'Confirm you want this location'
                 }
-                className="govuk-button"
+                className="govuk-button govuk-!-margin-top-5"
                 onClick={handleSubmit}
               />
             </div>

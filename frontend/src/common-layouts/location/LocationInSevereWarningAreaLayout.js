@@ -42,7 +42,7 @@ export default function LocationInSevereWarningAreaLayout({
             </div>
             <div className="govuk-grid-column-three-quarters">
               <Map types={['warning']} />
-              <FloodWarningKey type="both" />
+              <FloodWarningKey type="severe" />
             </div>
 
             <div className="govuk-grid-column-two-thirds">

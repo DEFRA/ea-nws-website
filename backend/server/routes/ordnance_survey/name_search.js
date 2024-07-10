@@ -1,4 +1,4 @@
-const { osPostCodeApiCall } = require('../../services/OrdnanceSurveyApiService')
+const { osFindNameApiCall } = require('../../services/OrdnanceSurveyApiService')
 
 module.exports = [
   {
@@ -7,7 +7,7 @@ module.exports = [
     handler: async (request, h) => {
       try {
         const { postCode } = request.payload
-        const response = await osPostCodeApiCall(postCode)
+        const response = await osFindNameApiCall(postCode)
         return h.response(response)
       } catch (error) {
         return h.response({

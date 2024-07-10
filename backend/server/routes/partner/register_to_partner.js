@@ -9,7 +9,7 @@ module.exports = [
       try {
         const { authToken, partnerId, params } = request.payload
 
-        if (authToken || partnerId || Object.keys(params).length !== 0) {
+        if (authToken && partnerId && Object.keys(params).length !== 0) {
           const response = await apiCall(
             request.payload,
             'member/registerToPartner'

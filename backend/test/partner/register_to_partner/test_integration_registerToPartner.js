@@ -1,7 +1,7 @@
 const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
 const lab = (exports.lab = Lab.script())
-const createServer = require('../../server')
+const createServer = require('../../../server')
 const { startApiServer, apiServerStarted } = require('./../test_api_setup')
 
 lab.experiment('Integration tests', () => {

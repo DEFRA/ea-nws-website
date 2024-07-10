@@ -14,7 +14,7 @@ export default function SuccessPage () {
             <div className="govuk-grid-column-two-thirds">
               <ConfirmationPanel
                 title='Your flood messages are set up'
-                body='you have also created your account.'
+                body="You've also created your account."
               />
             <div className='govuk-body govuk-!-margin-top-6'>
             <p>
@@ -39,6 +39,7 @@ export default function SuccessPage () {
               <Link to='/managecontacts' className='govuk-link'>
                 email addresses or phone numbers 
               </Link>
+              &nbsp;
               to receive flood messages.
             </p>
             <p className='govuk-!-margin-top-6'>
@@ -46,6 +47,7 @@ export default function SuccessPage () {
               <Link to='/signup/feedback' className='govuk-link'>
                 What do you think of the service?
               </Link>
+              &nbsp;
               (takes 30 seconds)
             </p>
             </div>

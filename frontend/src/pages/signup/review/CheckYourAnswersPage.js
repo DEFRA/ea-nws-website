@@ -1,6 +1,6 @@
 import { React } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
@@ -14,9 +14,11 @@ export default function CheckYourAnswersPage () {
   const profile = session.profile
   const registration = session.registrations
   const contactPreferences = session.contactPreferences
+  const navigate = useNavigate()
   
   const handleButton = () => {
     console.log('Button clicked, functionality to implement')
+    navigate('/signup/success')
   }
 
   return (

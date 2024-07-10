@@ -5,7 +5,6 @@ const {
 
 const apiSignInStartCall = async (email) => {
   const data = { email }
-  console.log('Received from front-end: ', data)
   const errorValidation = emailValidation(email)
   try {
     if (errorValidation === '') {

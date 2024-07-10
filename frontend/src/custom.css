@@ -1,0 +1,134 @@
+.sub-navigation {
+    margin-bottom: 2rem
+}
+
+.sub-navigation__list {
+    font-size: 0;
+    list-style: none;
+    margin: 0;
+    padding: 0
+}
+
+@media (min-width: 40.0625em) {
+    .sub-navigation__list {
+        box-shadow: inset 0 -0.0625rem 0 #b1b4b6;
+        width: 100%
+    }
+}
+
+.sub-navigation__item {
+    font-family: "GDS Transport", arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.25;
+    box-shadow: inset 0 -1px 0 #b1b4b6;
+    display: block;
+    margin-top: -1px;
+}
+
+@media (min-width: 40.0625em) {
+    .sub-navigation__item {
+        font-size: 1.1875rem;
+        box-shadow: none;
+        display: inline-block;
+        margin-right: 20px;
+        margin-top: 0;
+    }
+}
+
+.sub-navigation__link {
+    font-family: "GDS Transport", arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: underline;
+    text-decoration-thickness: max(1px, .0625rem);
+    text-underline-offset: .1578em;
+    display: block;
+    padding-top: 12px;
+    padding-bottom: 12px;
+    padding-left: 15px;
+    text-decoration: none;
+    position: relative
+}
+
+@media (min-width: 40.0625em) {
+    .sub-navigation__link {
+        padding-left: 0
+    }
+}
+
+.sub-navigation__link:visited {
+    color: #4c2c92
+}
+
+.sub-navigation__link:link, .sub-navigation__link:visited {
+    color: #1d70b8
+}
+
+.sub-navigation__link[aria-current=page] {
+    color: #0b0c0c;
+    position: relative;
+    text-decoration: none
+}
+
+.sub-navigation__link[aria-current=page]:before {
+    background-color: #1d70b8;
+    content: "";
+    display: block;
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 5px;
+}
+
+@media (min-width: 40.0625em) {
+    .sub-navigation__link[aria-current=page]:before {
+        height: 5px;
+        width: 100%;
+    }
+}
+
+.inline-link {
+    display: inline-block;
+    padding: 0.5rem 0.625rem 0.4375rem
+}
+
+.timeout-dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #0B0C0C99;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000
+}
+
+.timeout-dialog-container {
+    background-color: white;
+    border-style: solid;
+    border-width: medium;
+    padding: 1.5rem
+}
+
+.timeout-dialog-flex {
+    display: flex;
+    justify-content: start;
+    justify-items: start;
+    gap: 2rem
+}
+
+.timeout-dialog-link {
+    width: 100%;
+}
+
+@media (min-width: 40.0625em){
+    .timeout-dialog-link {
+        width:auto;
+    }
+}

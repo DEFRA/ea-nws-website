@@ -11,7 +11,7 @@ async function getHomephoneStart(
   const { msisdn } = req.payload as { msisdn: string }
 
   if (authToken === 'MockAuthToken') {
-    if (msisdn === '+440000000000') {
+    if (msisdn === '+441000000000') {
       console.log('duplicate phone, responding 500')
       return res.response(responseCodes.DUPLICATE_PHONE).code(500)
     }
@@ -44,13 +44,15 @@ async function getHomephoneValidate(
       mobilePhones: [],
       homePhones: []
     },
-    pois: {
-      address: 'Exeter, United Kingdom',
-      coordinates: {
-        latitude: '50726037',
-        longitude: '-3527489'
+    pois: [
+      {
+        address: 'Exeter, United Kingdom',
+        coordinates: {
+          latitude: '50726037',
+          longitude: '-3527489'
+        }
       }
-    }
+    ]
   }
   // 200 Success
   if (authToken === 'MockAuthToken' && code !== '999999') {

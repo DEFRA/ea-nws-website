@@ -7,5 +7,8 @@ export default function AddLandlinePhonePage () {
   const NavigateToNextPage = () =>
     navigate('/signup/contactpreferences/landline/validate')
 
-  return <AddLandlineLayout NavigateToNextPage={NavigateToNextPage} />
+  const NavigateToPreviousPage = () =>
+    navigate('/signup/contactpreferences')
+
+  return <AddLandlineLayout NavigateToNextPage={NavigateToNextPage} NavigateToPreviousPage={NavigateToPreviousPage} />
 }

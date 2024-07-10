@@ -96,7 +96,7 @@ export default function ChangeEmailValidationPage () {
       <Header />
       <div className='govuk-width-container'>
         <PhaseBanner />
-        <Link to='/account/change-email' className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
+        <Link onClick={differentEmail} className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
           Back
         </Link>
         <main className='govuk-main-wrapper'>

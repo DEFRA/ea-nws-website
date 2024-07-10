@@ -4,22 +4,26 @@ module.exports = [
     path: '/api/signup/feedback',
     handler: async (request, h) => {
       try {
-        if (request.payload === null) {
-          return h.response({ message: 'Bad request' }).code(400)
+        if (!request.payload) {
+          return h
+            .response({ errorMessage: 'Oops, something happened!' })
+            .code(400)
         }
 
         const { feedbackPreference, feedbackText } = request.payload
 
-        if (feedbackPreference === null || feedbackText === '') {
-          return h.response({ message: 'Bad request' }).code(400)
+        if (!feedbackPreference || !feedbackText) {
+          return h.response().code(400)
         }
 
         request.log('info', ['***FEEDBACK***', request.payload])
 
-        return h.response({ status: 200 }).code(200)
+        return h.response()
       } catch (error) {
         console.error('Error:', error)
-        return h.response({ message: 'Internal server error' }).code(500)
+        return h
+          .response({ errorMessage: 'Oops, something happened!' })
+          .code(500)
       }
     }
   }

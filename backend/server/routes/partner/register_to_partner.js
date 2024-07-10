@@ -16,13 +16,14 @@ module.exports = [
           )
           return h.response(response)
         } else {
-          return h.response({ status: 400 })
+          return h.response().code(400)
         }
       } catch (error) {
-        return h.response({
-          status: 500,
-          errorMessage: 'Oops, something happened!'
-        })
+        return h
+          .response({
+            errorMessage: 'Oops, something happened!'
+          })
+          .code(500)
       }
     }
   }

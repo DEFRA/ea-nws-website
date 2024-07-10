@@ -5,7 +5,6 @@ const {
 
 const apiLandlineValidateCall = async (code, email, auth, h) => {
   const data = { email: email, authToken: auth, code: code }
-  console.log('Received from front-end: ', data)
   try {
     const validationError = authCodeValidation(code)
     if (validationError === '') {
@@ -27,20 +26,33 @@ module.exports = [
     path: '/api/add_contact/email/validate',
     handler: async (request, h) => {
       try {
-        if (request.payload === null) {
-          return h.response({ message: 'Bad request' }).code(400)
+        if (!request.payload) {
+          return h
+            .response({ errorMessage: 'Oops, something happened!' })
+            .code(400)
         }
-        const { authToken, email, code } = request.payload
 
-        const apiResponse = await apiLandlineValidateCall(
-          code,
-          email,
-          authToken
-        )
-        return h.response(apiResponse)
+        const { authToken, email, code } = request.payload
+        const errorValidation = authCodeValidation(code)
+
+        if (!errorValidation && authToken && email) {
+          const response = await apiCall(email, 'member/signinValidate')
+          return h.response(response)
+        } else {
+          return h
+            .response({
+              errorMessage: errorValidation
+                ? errorValidation
+                : 'Oops, something happened!'
+            })
+            .code(500)
+        }
       } catch (error) {
-        console.error('Error:', error)
-        return h.response({ message: 'Internal server error' }).code(500)
+        return h
+          .response({
+            errorMessage: 'Oops, something happened!'
+          })
+          .code(500)
       }
     }
   }

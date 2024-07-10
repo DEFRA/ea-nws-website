@@ -26,7 +26,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.status).to.equal(400)
+    Code.expect(response.statusCode).to.equal(400)
   })
 
   lab.test('POST / route runs with missing partnerId', async () => {
@@ -34,13 +34,13 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/api/partner/register',
       payload: {
-        authToken: 'authToken',
+        authToken: 'MockAuthToken',
         partnerId: '',
         params: { someParam: '1' }
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.status).to.equal(400)
+    Code.expect(response.statusCode).to.equal(400)
   })
 
   lab.test('POST / route runs with missing params', async () => {
@@ -48,13 +48,13 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/api/partner/register',
       payload: {
-        authToken: 'authToken',
+        authToken: 'MockAuthToken',
         partnerId: '1',
         params: {}
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.status).to.equal(400)
+    Code.expect(response.statusCode).to.equal(400)
   })
 
   lab.test('POST / route runs with all parameters', async () => {
@@ -62,12 +62,12 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/api/partner/register',
       payload: {
-        authToken: 'authToken',
+        authToken: 'MockAuthToken',
         partnerId: '1',
         params: { someParam: '1' }
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.status).to.equal(200)
+    Code.expect(response.statusCode).to.equal(200)
   })
 })

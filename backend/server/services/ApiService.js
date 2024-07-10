@@ -20,26 +20,24 @@ const apiCall = async (data, path) => {
       withCredentials: true
     })
 
-    return { status: response.status, data: response.data }
+    return { data: response.data }
   } catch (error) {
     if (error.response) {
       const { status } = error.response
       if (status === 400) {
         return {
-          status: status,
           errorMessage: 'Oops something broke, try again'
         }
       } else if (status === 404) {
-        return { status }
+        return
       } else if (status === 500) {
-        return { status: status, errorMessage: getErrorMessage(path, error.response.data) }
+        return { errorMessage: getErrorMessage(path, error.response.data) }
       }
     } else if (error.request) {
       // no response was received - probably need to return
       console.log('No response received')
       // returning an error so frontend can handle
       return {
-        status: 400,
         errorMessage: 'Oops something broke, try again'
       }
     }

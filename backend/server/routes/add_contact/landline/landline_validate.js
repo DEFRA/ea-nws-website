@@ -3,44 +3,40 @@ const {
   authCodeValidation
 } = require('../../../services/validations/AuthCodeValidation')
 
-const apiLandlineValidateCall = async (code, msisdn, auth, h) => {
-  const data = { msisdn, authToken: auth, code }
-  console.log('Received from front-end: ', data)
-  try {
-    const validationError = authCodeValidation(code)
-    if (validationError === '') {
-      const response = await apiCall(data, 'member/verifyHomePhoneValidate')
-      return response
-    } else {
-      return { status: 500, errorMessage: validationError }
-    }
-  } catch (error) {
-    return {
-      status: 500,
-      errorMessage: 'Oops, something happened!'
-    }
-  }
-}
 module.exports = [
   {
     method: ['POST'],
     path: '/api/add_contact/landline/validate',
     handler: async (request, h) => {
       try {
-        if (request.payload === null) {
-          return h.response({ message: 'Bad request' }).code(400)
+        if (!request.payload) {
+          return h
+            .response({ errorMessage: 'Oops, something happened!' })
+            .code(400)
         }
-        const { authToken, msisdn, code } = request.payload
 
-        const apiResponse = await apiLandlineValidateCall(
-          code,
-          msisdn,
-          authToken
-        )
-        return h.response(apiResponse)
+        const { authToken, msisdn, code } = request.payload
+        const errorValidation = authCodeValidation(code)
+
+        if (!errorValidation && authToken && msisdn) {
+          const response = await apiCall(
+            msisdn,
+            'member/verifyHomePhoneValidate'
+          )
+          return h.response(response)
+        } else {
+          return h
+            .response({
+              errorMessage: errorValidation
+                ? errorValidation
+                : 'Oops, something happened!'
+            })
+            .code(500)
+        }
       } catch (error) {
-        console.error('Error:', error)
-        return h.response({ message: 'Internal server error' }).code(500)
+        return h
+          .response({ errorMessage: 'Oops, something happened!' })
+          .code(500)
       }
     }
   }

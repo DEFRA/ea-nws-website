@@ -7,9 +7,14 @@ module.exports = [
 
     handler: async (request, h) => {
       try {
+        if (!request.payload) {
+          return h
+            .response({ errorMessage: 'Oops, something happened!' })
+            .code(400)
+        }
+
         const { profile } = request.payload
-        // check profile is not empty - this should never happen
-        // as a profile should always be passed to this route
+
         if (Object.keys(profile).length !== 0) {
           const response = await apiCall(
             request.payload,
@@ -17,13 +22,14 @@ module.exports = [
           )
           return h.response(response)
         } else {
-          return h.response({ status: 400 })
+          return h.response().code(400)
         }
       } catch (error) {
-        return h.response({
-          status: 500,
-          errorMessage: 'Oops, something happened!'
-        })
+        return h
+          .response({
+            errorMessage: 'Oops, something happened!'
+          })
+          .code(500)
       }
     }
   }

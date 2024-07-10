@@ -3,39 +3,39 @@ const {
   emailValidation
 } = require('../../../services/validations/EmailValidation')
 
-const apiEmailStartCall = async (email, auth) => {
-  const data = { email: email, authToken: auth }
-  const validationError = emailValidation(email)
-  try {
-    if (validationError === '') {
-      const response = await apiCall(data, 'member/verifyEmailStart')
-      return response
-    } else {
-      return { status: 500, errorMessage: validationError }
-    }
-  } catch (error) {
-    return {
-      status: 500,
-      errorMessage: 'Oops, something happened!'
-    }
-  }
-}
-
 module.exports = [
   {
     method: ['POST'],
     path: '/api/add_contact/email/add',
     handler: async (request, h) => {
       try {
-        if (request.payload === null) {
-          return h.response({ message: 'Bad request' }).code(400)
+        if (!request.payload) {
+          return h
+            .response({ errorMessage: 'Oops, something happened!' })
+            .code(400)
         }
+
         const { authToken, email } = request.payload
-        const apiResponse = await apiEmailStartCall(email, authToken)
-        return h.response(apiResponse)
+        const errorValidation = emailValidation(email)
+
+        if (!errorValidation && authToken) {
+          const response = await apiCall(email, 'member/verifyEmailStart')
+          return h.response(response)
+        } else {
+          return h
+            .response({
+              errorMessage: errorValidation
+                ? errorValidation
+                : 'Oops, something happened!'
+            })
+            .code(500)
+        }
       } catch (error) {
-        console.error('Error:', error)
-        return h.response({ message: 'Internal server error' }).code(500)
+        return h
+          .response({
+            errorMessage: 'Oops, something happened!'
+          })
+          .code(500)
       }
     }
   }

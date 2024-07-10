@@ -27,15 +27,36 @@ module.exports = [
     path: '/api/add_contact/mobile/add',
     handler: async (request, h) => {
       try {
-        if (request.payload === null) {
-          return h.response({ message: 'Bad request' }).code(400)
+        if (!request.payload) {
+          return h
+            .response({ errorMessage: 'Oops, something happened!' })
+            .code(400)
         }
+
         const { authToken, msisdn } = request.payload
-        const apiResponse = await apiMobileStartCall(msisdn, authToken)
-        return h.response(apiResponse)
+        const errorValidation = phoneValidation(msisdn, 'mobile')
+
+        if (!errorValidation && authToken) {
+          const response = await apiCall(
+            msisdn,
+            'member/verifyMobilePhoneStart'
+          )
+          return h.response(response)
+        } else {
+          return h
+            .response({
+              errorMessage: errorValidation
+                ? errorValidation
+                : 'Oops, something happened!'
+            })
+            .code(500)
+        }
       } catch (error) {
-        console.error('Error:', error)
-        return h.response({ message: 'Internal server error' }).code(500)
+        return h
+          .response({
+            errorMessage: 'Oops, something happened!'
+          })
+          .code(500)
       }
     }
   }

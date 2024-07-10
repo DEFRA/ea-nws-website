@@ -1,4 +1,6 @@
 const handleResponse = (response, navigate) => {
+  console.log('re', response)
+  console.log(response.status)
   switch (response.status) {
     case 200:
       return { data: response.data, errorMessage: null }

@@ -18,7 +18,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with missing authtoken', async () => {
     const options = {
       method: 'POST',
-      url: '/api/register/partner',
+      url: '/api/partner/register',
       payload: {
         authToken: '',
         partnerId: '1',
@@ -32,7 +32,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with missing partnerId', async () => {
     const options = {
       method: 'POST',
-      url: '/api/register/partner',
+      url: '/api/partner/register',
       payload: {
         authToken: 'authToken',
         partnerId: '',
@@ -46,7 +46,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with missing params', async () => {
     const options = {
       method: 'POST',
-      url: '/api/register/partner',
+      url: '/api/partner/register',
       payload: {
         authToken: 'authToken',
         partnerId: '1',
@@ -60,7 +60,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with all parameters', async () => {
     const options = {
       method: 'POST',
-      url: '/api/register/partner',
+      url: '/api/partner/register',
       payload: {
         authToken: 'authToken',
         partnerId: '1',

@@ -16,7 +16,10 @@ import {
 import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../services/validations/PhoneValidation'
 
-export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPreviousPage }) {
+export default function AddLandlineLayout({
+  NavigateToNextPage,
+  NavigateToPreviousPage
+}) {
   const navigate = useNavigate()
   const [landline, setLandline] = useState('')
   const [error, setError] = useState('')
@@ -41,7 +44,11 @@ export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPrevi
       } else {
         dispatch(
           setProfile(
-            addUnverifiedContact(session.profile, 'homePhones', normalisedPhoneNumber)
+            addUnverifiedContact(
+              session.profile,
+              'homePhones',
+              normalisedPhoneNumber
+            )
           )
         )
         NavigateToNextPage()
@@ -76,42 +83,44 @@ export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPrevi
 
   return (
     <>
-      <Header />
-      <div class='govuk-width-container'>
-        <Link onClick={removeLandlineFromProfile} className='govuk-back-link'>
-          Back
-        </Link>
-        <main className='govuk-main-wrapper'>
-          <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-two-thirds'>
-              <ErrorSummary errorList={error === '' ? [] : [error]} />
-              <h2 class='govuk-heading-l'>
-                Enter a telephone number to get flood messages by phone call
-              </h2>
-              <div class='govuk-body'>
-                <p>
-                  We recommend using a landline or mobile number that can be called 24
-                  hours a day.
-                </p>
-                <Input
-                  name='UK landline or mobile telephone number'
-                  inputType='text'
-                  error={error}
-                  onChange={(val) => setLandline(val)}
-                  className='govuk-input govuk-input--width-20'
-                />
-                <Button
-                  className='govuk-button'
-                  text='Continue'
-                  onClick={handleSubmit}
-                />
-                <br />
+      <div className="page-container">
+        <Header />
+        <div class="govuk-width-container body-container">
+          <Link onClick={removeLandlineFromProfile} className="govuk-back-link">
+            Back
+          </Link>
+          <main className="govuk-main-wrapper">
+            <div className="govuk-grid-row">
+              <div className="govuk-grid-column-two-thirds">
+                <ErrorSummary errorList={error === '' ? [] : [error]} />
+                <h2 class="govuk-heading-l">
+                  Enter a telephone number to get flood messages by phone call
+                </h2>
+                <div class="govuk-body">
+                  <p>
+                    We recommend using a landline or mobile number that can be
+                    called 24 hours a day.
+                  </p>
+                  <Input
+                    name="UK landline or mobile telephone number"
+                    inputType="text"
+                    error={error}
+                    onChange={(val) => setLandline(val)}
+                    className="govuk-input govuk-input--width-20"
+                  />
+                  <Button
+                    className="govuk-button"
+                    text="Continue"
+                    onClick={handleSubmit}
+                  />
+                  <br />
+                </div>
               </div>
             </div>
-          </div>
-        </main>
+          </main>
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   )
 }

@@ -102,6 +102,15 @@ const signupRoutes = [
   }
 ]
 
+// footer routes
+const footerRoutes = [
+  { path: '/contact', component: <HomePage /> },
+  { path: '/privacy', component: <HomePage /> },
+  { path: '/cookies', component: <HomePage /> },
+  { path: '/accessibility-statement', component: <HomePage /> },
+  { path: '/terms-and-conditions', component: <HomePage /> }
+]
+
 // home
 const homeRoutes = [{ path: '/home', component: <HomePage /> }]
 

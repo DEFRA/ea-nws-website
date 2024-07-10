@@ -17,10 +17,10 @@ export default function SuccessPage () {
               <ConfirmationPanel
                 title='Your flood messages are set up'
                 body='you have also created your account.'
-              /><br />
+              />
             <div className='govuk-body'>
             <p>
-              We have sent you an email confirmation. If you have not received this within 2 <br /> hours, check your spam.
+              We have sent you an email confirmation. If you have not received this within 2 hours, check your spam.
             </p>
             <h1 class='govuk-heading-m'>Next Steps</h1>
             <p>
@@ -41,7 +41,7 @@ export default function SuccessPage () {
               <Link to='/managecontacts' className='govuk-link'>
                 email addresses or phone numbers 
               </Link>
-              to receive flood <br /> messages.
+              to receive flood messages.
             </p>
             <p>
               {' '}

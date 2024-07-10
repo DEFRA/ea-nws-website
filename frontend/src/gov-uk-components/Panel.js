@@ -20,11 +20,10 @@ export default function ConfirmationPanel ({
             {title}
           </h2>
         </div>
+        {body &&
         <div className='govuk-panel__body'>
-          {body &&
             <h3 className='govuk-panel__body'>{body}</h3>
-          }
-        </div>
+        </div>}
       </div>
     </>
   )

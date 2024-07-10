@@ -1,11 +1,10 @@
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 import ConfirmationPanel from '../../../gov-uk-components/Panel'
 
 export default function SuccessPage () {
-  const navigate = useNavigate()
   return (
     <>
       <Header />

@@ -9,14 +9,16 @@ import AddLandlineValidatePage from '../pages/contact-details/add-contact-landli
 import AddMobilePage from '../pages/contact-details/add-contact-mobile/AddMobilePage'
 import AddMobileValidatePage from '../pages/contact-details/add-contact-mobile/AddMobileValidatePage'
 import HomePage from '../pages/home/HomePage'
-import SignInPage from '../pages/signIn/SignInStartPage'
-import SignInValidatePage from '../pages/signIn/SignInValidatePage'
+import SignOutManuallyPage from '../pages/sign-out/SignOutManuallyPage'
 import SignBackInPage from '../pages/sign-out/signBackInPage'
 import SignOutAutomaticallyPage from '../pages/sign-out/signOutAutomaticallyPage'
+import SignInPage from '../pages/signIn/SignInStartPage'
+import SignInValidatePage from '../pages/signIn/SignInValidatePage'
+import AddFullNamePage from '../pages/signup/account-name/AddFullNamePage'
 import SignUpDuplicateEmailPage from '../pages/signup/account/SignUpDuplicateEmail'
+import SignUpFeedbackPage from '../pages/signup/account/SignUpFeedbackPage'
 import SignUpPage from '../pages/signup/account/SignUpPage'
 import SignUpValidationPage from '../pages/signup/account/SignUpValidationPage'
-import SignOutManuallyPage from '../pages/sign-out/SignOutManuallyPage'
 import WarningContactsPreferencePage from '../pages/signup/channel-preferences/WarningContactsPreferencePage'
 import AddLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/AddLandlinePhonePage'
 import SkipConfirmLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/SkipConfirmLandlinePhonePage'
@@ -26,7 +28,6 @@ import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobi
 import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
 import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
-import SignUpFeedbackPage from '../pages/signup/account/SignUpFeedbackPage'
 
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
@@ -46,7 +47,9 @@ const signOutRoutes = [
   { path: '/signout', component: <SignOutManuallyPage /> }
 ]
 
-const signBackInRoutes = [{ path: '/sign-back-in', component: <SignBackInPage /> }]
+const signBackInRoutes = [
+  { path: '/sign-back-in', component: <SignBackInPage /> }
+]
 // sign up routes
 const signupRoutes = [
   { path: '/signup', component: <SignUpPage /> },
@@ -84,6 +87,7 @@ const signupRoutes = [
     path: '/signup/contactpreferences/landline/skipconfirmation',
     component: <SkipConfirmLandlinePhonePage />
   },
+  { path: '/signup/accountname/add', component: <AddFullNamePage /> },
   {
     path: '/signup/feedback',
     component: <SignUpFeedbackPage />
@@ -134,4 +138,8 @@ export const routes = [
   ...signBackInRoutes
 ]
 
-export const authenticatedRoutes = [...homeRoutes, ...contactRoutes, ...signOutRoutes]
+export const authenticatedRoutes = [
+  ...homeRoutes,
+  ...contactRoutes,
+  ...signOutRoutes
+]

@@ -1,4 +1,4 @@
-export default function Footer () {
+export default function Footer() {
   return (
     <>
       <footer className='govuk-footer'>
@@ -8,27 +8,27 @@ export default function Footer () {
               <h2 className='govuk-visually-hidden'>Support links</h2>
               <ul className='govuk-footer__inline-list'>
                 <li className='govuk-footer__inline-list-item'>
-                  <a className='govuk-footer__link' href='#'>
+                  <a className='govuk-footer__link' href='/#'>
                     Help
                   </a>
                 </li>
                 <li className='govuk-footer__inline-list-item'>
-                  <a className='govuk-footer__link' href='#'>
+                  <a className='govuk-footer__link' href='/#'>
                     Privacy
                   </a>
                 </li>
                 <li className='govuk-footer__inline-list-item'>
-                  <a className='govuk-footer__link' href='#'>
+                  <a className='govuk-footer__link' href='/#'>
                     Cookies
                   </a>
                 </li>
                 <li className='govuk-footer__inline-list-item'>
-                  <a className='govuk-footer__link' href='#'>
+                  <a className='govuk-footer__link' href='/#'>
                     Accessibility statement
                   </a>
                 </li>
                 <li className='govuk-footer__inline-list-item'>
-                  <a className='govuk-footer__link' href='#'>
+                  <a className='govuk-footer__link' href='/#'>
                     Contact
                   </a>
                 </li>
@@ -40,9 +40,9 @@ export default function Footer () {
                 <li className='govuk-footer__inline-list-item'>
                   <a
                     className='govuk-footer__link'
-                    href='#'
+                    href='/#'
                     lang='cy'
-                    hreflang='cy'
+                    hrefLang='cy'
                   >
                     Rhestr o Wasanaethau Cymraeg
                   </a>
@@ -50,9 +50,9 @@ export default function Footer () {
                 <li className='govuk-footer__inline-list-item'>
                   <a
                     className='govuk-footer__link'
-                    href='#'
+                    href='/#'
                     lang='cy'
-                    hreflang='cy'
+                    hrefLang='cy'
                   >
                     Government Digital Service
                   </a>

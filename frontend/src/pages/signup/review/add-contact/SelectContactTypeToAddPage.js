@@ -15,27 +15,27 @@ export default function SelectContactTypeToAddPage () {
   const [error, setError] = useState('')
   const contactPreferences = useSelector((state) => state.session.contactPreferences)
   const contactOptions = [
-    { label: 'Text', value: 'Text' },
-    { label: 'Email', value: 'Email' },
-    { label: 'Phone call', value: 'PhoneCall' }
+    { label: 'Mobile Number (texts)', value: 'Mobile Number (texts)' },
+    { label: 'Email Address', value: 'Email Address' },
+    { label: 'Telephone Number (phone calls)', value: 'Telephone Number (phone calls)' }
   ]
 
   const handleSubmit = () => {
     if (selectedContactType === '') {
       setError('Select at least one way to get messages about flooding')
     } else {      
-      if (selectedContactType === 'Text') {
-        if(!contactPreferences.includes('Text')){
+      if (selectedContactType === 'Mobile Number (texts)') {
+        if(!contactPreferences.includes('Mobile Number (texts)')){
             dispatch(addContactPreference(selectedContactType))
         }
         navigate('/signup/review/add-mobile')
-      } else if (selectedContactType === 'Email') {
-        if(!contactPreferences.includes('Email')){
+      } else if (selectedContactType === 'Email Address') {
+        if(!contactPreferences.includes('Email Address')){
             dispatch(addContactPreference(selectedContactType))
         }
         navigate('/signup/review/add-email')
-      } else if (selectedContactType === 'PhoneCall') {
-        if(!contactPreferences.includes('PhoneCall')){
+      } else if (selectedContactType === 'Telephone Number (phone calls)') {
+        if(!contactPreferences.includes('Telephone Number (phone calls)')){
             dispatch(addContactPreference(selectedContactType))
         }
         navigate('/signup/review/add-landline')

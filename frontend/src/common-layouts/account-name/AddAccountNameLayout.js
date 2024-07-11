@@ -10,7 +10,7 @@ import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { setProfile } from '../../redux/userSlice'
 import { addAccountName } from '../../services/ProfileServices'
 import { fullNameValidation } from '../../services/validations/FullNameValidation'
-export default function AddAccountNameLayout({
+export default function AddAccountNameLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {

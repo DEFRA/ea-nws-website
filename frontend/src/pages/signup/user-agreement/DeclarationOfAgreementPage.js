@@ -7,7 +7,7 @@ import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 
-export default function DeclarationOfAgreementPage() {
+export default function DeclarationOfAgreementPage () {
   const [isChecked, setIsChecked] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()

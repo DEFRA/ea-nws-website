@@ -46,7 +46,7 @@ export default function LocationInAlertAreaLayout({ continueToNextPage }) {
               </div>
               <div className="govuk-grid-column-three-quarters">
                 <Map types={['alert']} />
-                <FloodWarningKey severe="alert" />
+                <FloodWarningKey type="alert" />
               </div>
               <div className="govuk-grid-column-two-thirds">
                 <p className="govuk-!-margin-top-6">

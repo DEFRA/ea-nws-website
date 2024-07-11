@@ -11,14 +11,14 @@ module.exports = [
     handler: async (request, h) => {
       try {
         if (!request.payload) {
-          createGenericErrorResponse(h)
+          return createGenericErrorResponse(h)
         }
 
-        const { profile } = request.payload
+        const { authToken, profile } = request.payload
 
         if (Object.keys(profile).length !== 0) {
           const response = await apiCall(
-            request.payload,
+            { authToken: authToken, profile: profile },
             'member/updateProfile'
           )
           return h.response(response)
@@ -26,7 +26,7 @@ module.exports = [
           createGenericErrorResponse(h)
         }
       } catch (error) {
-        createGenericErrorResponse(h)
+        return createGenericErrorResponse(h)
       }
     }
   }

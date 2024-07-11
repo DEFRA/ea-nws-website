@@ -13,7 +13,7 @@ module.exports = [
     handler: async (request, h) => {
       try {
         if (!request.payload) {
-          createGenericErrorResponse(h)
+          return createGenericErrorResponse(h)
         }
 
         const { registerToken, code } = request.payload
@@ -32,7 +32,7 @@ module.exports = [
           })
         }
       } catch (error) {
-        createGenericErrorResponse(h)
+        return createGenericErrorResponse(h)
       }
     }
   }

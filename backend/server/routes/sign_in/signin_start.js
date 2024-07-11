@@ -13,14 +13,14 @@ module.exports = [
     handler: async (request, h) => {
       try {
         if (!request.payload) {
-          createGenericErrorResponse(h)
+          return createGenericErrorResponse(h)
         }
 
         const { email } = request.payload
         const error = emailValidation(email)
 
         if (!error) {
-          const response = await apiCall(email, 'member/signinStart')
+          const response = await apiCall({ email: email }, 'member/signinStart')
           return h.response(response)
         } else {
           return h.response({
@@ -29,7 +29,7 @@ module.exports = [
           })
         }
       } catch (error) {
-        createGenericErrorResponse(h)
+        return createGenericErrorResponse(h)
       }
     }
   }

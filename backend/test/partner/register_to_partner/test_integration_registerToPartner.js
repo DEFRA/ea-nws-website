@@ -26,7 +26,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(400)
+    Code.expect(response.result.status).to.equal(500)
   })
 
   lab.test('POST / route runs with missing partnerId', async () => {
@@ -40,7 +40,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(400)
+    Code.expect(response.result.status).to.equal(500)
   })
 
   lab.test('POST / route runs with missing params', async () => {
@@ -54,7 +54,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(400)
+    Code.expect(response.result.status).to.equal(500)
   })
 
   lab.test('POST / route runs with all parameters', async () => {
@@ -68,6 +68,6 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(200)
+    Code.expect(response.result.status).to.equal(200)
   })
 })

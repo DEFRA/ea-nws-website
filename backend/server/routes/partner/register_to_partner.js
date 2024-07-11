@@ -11,22 +11,22 @@ module.exports = [
     handler: async (request, h) => {
       try {
         if (!request.payload) {
-          createGenericErrorResponse(h)
+          return createGenericErrorResponse(h)
         }
 
         const { authToken, partnerId, params } = request.payload
 
-        if (authToken && partnerId && Object.keys(params).length !== 0) {
+        if (authToken && partnerId && Object.keys(params).length > 0) {
           const response = await apiCall(
             { authToken: authToken, partnerId: partnerId, params: params },
             'member/registerToPartner'
           )
           return h.response(response)
         } else {
-          createGenericErrorResponse(h)
+          return createGenericErrorResponse(h)
         }
       } catch (error) {
-        createGenericErrorResponse(h)
+        return createGenericErrorResponse(h)
       }
     }
   }

@@ -9,7 +9,7 @@ module.exports = [
     handler: async (request, h) => {
       try {
         if (!request.payload) {
-          createGenericErrorResponse(h)
+          return createGenericErrorResponse(h)
         }
 
         const { feedbackPreference, feedbackText } = request.payload
@@ -25,7 +25,7 @@ module.exports = [
 
         return h.response()
       } catch (error) {
-        createGenericErrorResponse(h)
+        return createGenericErrorResponse(h)
       }
     }
   }

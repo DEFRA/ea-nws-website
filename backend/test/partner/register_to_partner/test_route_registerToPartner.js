@@ -23,7 +23,7 @@ lab.experiment('Integration tests', () => {
         url: '/api/partner/register'
       }
       const response = await server.inject(options)
-      Code.expect(response.statusCode).to.equal(400)
+      Code.expect(response.result.status).to.equal(500)
     }
   )
 
@@ -41,12 +41,12 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/api/partner/register',
       payload: {
-        authToken: 'authToken',
+        authToken: 'MockAuthToken',
         partnerId: '1',
         params: { someParam: '1' }
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(200)
+    Code.expect(response.result.status).to.equal(200)
   })
 })

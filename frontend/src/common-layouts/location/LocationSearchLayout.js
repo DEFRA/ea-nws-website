@@ -76,11 +76,9 @@ export default function LocationSearchLayout({ continueToNextPage }) {
 
   return (
     <>
-      <div
-        style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}
-      >
+      <div className="page-container">
         <Header />
-        <div className="govuk-width-container" style={{ flex: '1' }}>
+        <div className="govuk-width-container body-container">
           <PhaseBanner />
           <div className="govuk-grid-row">
             <div className="govuk-grid-column-two-thirds">

@@ -30,7 +30,7 @@ export default function SignInValidatePage () {
       const dataToSend = { signinToken, code }
       const { errorMessage, data } = await backendCall(
         dataToSend,
-        'api/signInValidate'
+        'api/sign_in_validate'
       )
       if (errorMessage !== null) {
         setError(errorMessage)
@@ -46,11 +46,7 @@ export default function SignInValidatePage () {
   const getNewCode = async (event) => {
     event.preventDefault()
     const data = { email: location.state.email }
-    const { errorMessage } = await backendCall(
-      data,
-      'api/signInStart',
-      navigate
-    )
+    const { errorMessage } = await backendCall(data, 'api/sign_in', navigate)
     if (errorMessage !== null) {
       setError(errorMessage)
     }
@@ -58,34 +54,36 @@ export default function SignInValidatePage () {
 
   return (
     <>
-      <Header />
-      <div class='govuk-width-container'>
-        <Link to='/signin' className='govuk-back-link'>
-          Back
-        </Link>
-        <ErrorSummary errorList={error === '' ? [] : [error]} />
-        <h2 class='govuk-heading-l'>Check your email</h2>
-        <div class='govuk-body'>
-          We've sent a code to:
-          <InsetText text={location.state.email} />
-          <Input
-            name='Enter code'
-            inputType='text'
-            error={error}
-            onChange={(val) => setCode(val)}
-          />
-          <Button
-            className='govuk-button'
-            text='Continue'
-            onClick={handleSubmit}
-          />
-          <br />
-          <Link onClick={getNewCode} className='govuk-link'>
-            Get a new code
+      <div className='page-container'>
+        <Header />
+        <div class='govuk-width-container body-container'>
+          <Link to='/signin' className='govuk-back-link'>
+            Back
           </Link>
+          <ErrorSummary errorList={error === '' ? [] : [error]} />
+          <h2 class='govuk-heading-l'>Check your email</h2>
+          <div class='govuk-body'>
+            We've sent a code to:
+            <InsetText text={location.state.email} />
+            <Input
+              name='Enter code'
+              inputType='text'
+              error={error}
+              onChange={(val) => setCode(val)}
+            />
+            <Button
+              className='govuk-button'
+              text='Continue'
+              onClick={handleSubmit}
+            />
+            <br />
+            <Link onClick={getNewCode} className='govuk-link'>
+              Get a new code
+            </Link>
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   )
 }

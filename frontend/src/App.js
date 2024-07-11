@@ -57,6 +57,7 @@ export default function App () {
     setIsPopUpOnScreen(false)
     clearTimeout(redirectTimer.current)
   }
+
   const isSignOutRoute = () => {
     const currentRoute = window.location.pathname
     if (currentRoute === '/signout' || currentRoute === '/signout-auto') {
@@ -65,6 +66,7 @@ export default function App () {
       return false
     }
   }
+
   return (
     <BrowserRouter>
       <Routes>

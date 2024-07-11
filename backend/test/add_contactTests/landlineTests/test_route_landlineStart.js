@@ -23,7 +23,7 @@ lab.experiment('Route tests', () => {
         url: '/api/add_contact/landline/add'
       }
       const response = await server.inject(options)
-      Code.expect(response.statusCode).to.equal(400)
+      Code.expect(response.result.status).to.equal(500)
     }
   )
 
@@ -43,10 +43,10 @@ lab.experiment('Route tests', () => {
       url: '/api/add_contact/landline/add',
       payload: {
         authToken: 'MockAuthToken',
-        phone: '07590000000'
+        msisdn: '07590000000'
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(200)
+    Code.expect(response.result.status).to.equal(200)
   })
 })

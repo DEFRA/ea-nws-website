@@ -12,19 +12,17 @@ export default function SignBackIn () {
 
   return (
     <>
-      <Header />
-      <div className='govuk-width-container'>
-        <PhaseBanner />
-        <h1 className='govuk-heading-l'>
-          You need to sign back in to view this page
-        </h1>
-        <Button
-          text='Sign in'
-          className='govuk-button'
-          onClick={redirect}
-        />
+      <div className='page-container'>
+        <Header />
+        <div className='govuk-width-container body-container'>
+          <PhaseBanner />
+          <h1 className='govuk-heading-l'>
+            You need to sign back in to view this page
+          </h1>
+          <Button text='Sign in' className='govuk-button' onClick={redirect} />
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   )
 }

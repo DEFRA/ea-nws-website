@@ -66,38 +66,40 @@ export default function SignUpPage() {
 
   return (
     <>
-      <Header />
-      <div className="govuk-width-container">
-        <PhaseBanner />
-        <Link onClick={() => navigate(-1)} className="govuk-back-link">
-          Back
-        </Link>
-        {error && <ErrorSummary errorList={[error]} />}
-        <h2 className="govuk-heading-l">
-          Enter an email address - you'll use this to sign in to your account
-        </h2>
-        <div className="govuk-body">
-          <p>
-            You'll be able to use your account to update your locations, flood
-            messages or contact details.{' '}
-          </p>
-          <InsetText text="We recommend using an email address you can access 24 hours a day." />
-          <Input
-            className="govuk-input govuk-input--width-10"
-            inputType="text"
-            name="Email address"
-            error={error}
-            onChange={(val) => setEmail(val)}
-          />
-          <Button
-            className="govuk-button"
-            text="Continue"
-            onClick={handleSubmit}
-          />
-          <br />
+      <div className="page-container">
+        <Header />
+        <div className="govuk-width-container body-container">
+          <PhaseBanner />
+          <Link onClick={() => navigate(-1)} className="govuk-back-link">
+            Back
+          </Link>
+          {error && <ErrorSummary errorList={[error]} />}
+          <h2 className="govuk-heading-l">
+            Enter an email address - you'll use this to sign in to your account
+          </h2>
+          <div className="govuk-body">
+            <p>
+              You'll be able to use your account to update your locations, flood
+              messages or contact details.{' '}
+            </p>
+            <InsetText text="We recommend using an email address you can access 24 hours a day." />
+            <Input
+              className="govuk-input govuk-input--width-10"
+              inputType="text"
+              name="Email address"
+              error={error}
+              onChange={(val) => setEmail(val)}
+            />
+            <Button
+              className="govuk-button"
+              text="Continue"
+              onClick={handleSubmit}
+            />
+            <br />
+          </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   )
 }

@@ -16,17 +16,18 @@ module.exports = [
         }
 
         const { signinToken, code } = request.payload
-        const errorValidation = authCodeValidation(code)
+        const error = authCodeValidation(code)
 
-        if (!errorValidation && signinToken) {
-          const response = await apiCall(email, 'member/signinValidate')
+        if (!error && signinToken) {
+          const response = await apiCall(
+            { signinToken: signinToken, code: code },
+            'member/signinValidate'
+          )
           return h.response(response)
         } else {
           return h
             .response({
-              errorMessage: errorValidation
-                ? errorValidation
-                : 'Oops, something happened!'
+              errorMessage: !error ? 'Oops, something happened!' : error
             })
             .code(500)
         }

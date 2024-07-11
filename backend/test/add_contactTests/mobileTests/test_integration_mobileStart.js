@@ -57,7 +57,7 @@ lab.experiment('Integration tests', () => {
     Code.expect(response.result.status).to.equal(500)
   })
 
-  lab.test('POST / route runs with valid email format', async () => {
+  lab.test('POST / route runs with valid mobile format', async () => {
     const options = {
       method: 'POST',
       url: '/api/add_contact/mobile/add',

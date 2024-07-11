@@ -16,19 +16,17 @@ module.exports = [
         }
 
         const { email } = request.payload
-        const errorValidation = emailValidation(email)
+        const error = emailValidation(email)
 
-        if (!errorValidation) {
+        if (!error) {
           const response = await apiCall(email, 'member/signinStart')
           return h.response(response)
         } else {
-          return h.response({ errorMessage: errorValidation }).code(500)
+          return h.response({ errorMessage: error }).code(500)
         }
       } catch (error) {
         return h
-          .response({
-            errorMessage: 'Internal server error'
-          })
+          .response({ errorMessage: 'Oops, something happened!' })
           .code(500)
       }
     }

@@ -3,24 +3,6 @@ const {
   phoneValidation
 } = require('../../../services/validations/PhoneValidation')
 
-const apiMobileStartCall = async (msisdn, auth) => {
-  const data = { msisdn, authToken: auth }
-  const validationError = phoneValidation(msisdn, 'mobile')
-  try {
-    if (validationError === '') {
-      const response = await apiCall(data, 'member/verifyMobilePhoneStart')
-      return response
-    } else {
-      return { status: 500, errorMessage: validationError }
-    }
-  } catch (error) {
-    return {
-      status: 500,
-      errorMessage: 'Oops, something happened!'
-    }
-  }
-}
-
 module.exports = [
   {
     method: ['POST'],
@@ -34,9 +16,9 @@ module.exports = [
         }
 
         const { authToken, msisdn } = request.payload
-        const errorValidation = phoneValidation(msisdn, 'mobile')
+        const error = phoneValidation(msisdn, 'mobile')
 
-        if (!errorValidation && authToken) {
+        if (!error && authToken) {
           const response = await apiCall(
             msisdn,
             'member/verifyMobilePhoneStart'
@@ -45,9 +27,7 @@ module.exports = [
         } else {
           return h
             .response({
-              errorMessage: errorValidation
-                ? errorValidation
-                : 'Oops, something happened!'
+              errorMessage: !error ? 'Oops, something happened!' : error
             })
             .code(500)
         }

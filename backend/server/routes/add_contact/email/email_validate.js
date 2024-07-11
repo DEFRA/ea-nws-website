@@ -3,23 +3,6 @@ const {
   authCodeValidation
 } = require('../../../services/validations/AuthCodeValidation')
 
-const apiLandlineValidateCall = async (code, email, auth, h) => {
-  const data = { email: email, authToken: auth, code: code }
-  try {
-    const validationError = authCodeValidation(code)
-    if (validationError === '') {
-      const response = await apiCall(data, 'member/verifyEmailValidate')
-      return response
-    } else {
-      return { status: 500, errorMessage: validationError }
-    }
-  } catch (error) {
-    return {
-      status: 500,
-      errorMessage: 'Oops, something happened!'
-    }
-  }
-}
 module.exports = [
   {
     method: ['POST'],
@@ -33,17 +16,15 @@ module.exports = [
         }
 
         const { authToken, email, code } = request.payload
-        const errorValidation = authCodeValidation(code)
+        const error = authCodeValidation(code)
 
-        if (!errorValidation && authToken && email) {
+        if (!error && authToken && email) {
           const response = await apiCall(email, 'member/signinValidate')
           return h.response(response)
         } else {
           return h
             .response({
-              errorMessage: errorValidation
-                ? errorValidation
-                : 'Oops, something happened!'
+              errorMessage: !error ? 'Oops, something happened!' : error
             })
             .code(500)
         }

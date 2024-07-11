@@ -3,24 +3,6 @@ const {
   phoneValidation
 } = require('../../../services/validations/PhoneValidation')
 
-const apiLandlineStartCall = async (msisdn, auth) => {
-  const data = { msisdn, authToken: auth }
-  const validationError = phoneValidation(msisdn, 'mobileAndLandline')
-  try {
-    if (validationError === '') {
-      const response = await apiCall(data, 'member/verifyHomePhoneStart')
-      return response
-    } else {
-      return { status: 500, errorMessage: validationError }
-    }
-  } catch (error) {
-    return {
-      status: 500,
-      errorMessage: 'Oops, something happened!'
-    }
-  }
-}
-
 module.exports = [
   {
     method: ['POST'],
@@ -33,17 +15,15 @@ module.exports = [
             .code(400)
         }
         const { authToken, msisdn } = request.payload
-        const errorValidation = phoneValidation(msisdn, 'mobileAndLandline')
+        const error = phoneValidation(msisdn, 'mobileAndLandline')
 
-        if (!errorValidation && authToken) {
+        if (!error && authToken) {
           const response = await apiCall(msisdn, 'member/verifyHomePhoneStart')
           return h.response(response)
         } else {
           return h
             .response({
-              errorMessage: errorValidation
-                ? errorValidation
-                : 'Oops, something happened!'
+              errorMessage: !error ? 'Oops, something happened!' : error
             })
             .code(500)
         }

@@ -16,17 +16,18 @@ module.exports = [
         }
 
         const { registerToken, code } = request.payload
-        const codeValidation = authCodeValidation(code)
+        const error = authCodeValidation(code)
 
-        if (!codeValidation && registerToken) {
-          const response = await apiCall(data, 'member/registerValidate')
+        if (!error && registerToken) {
+          const response = await apiCall(
+            { registerToken: registerToken, code: code },
+            'member/registerValidate'
+          )
           return h.response(response)
         } else {
           return h
             .response({
-              errorMessage: codeValidation
-                ? codeValidation
-                : 'Oops, something happened!'
+              errorMessage: !error ? 'Oops, something happened!' : error
             })
             .code(500)
         }

@@ -16,17 +16,15 @@ module.exports = [
         }
 
         const { authToken, email } = request.payload
-        const errorValidation = emailValidation(email)
+        const error = emailValidation(email)
 
-        if (!errorValidation && authToken) {
+        if (!error && authToken) {
           const response = await apiCall(email, 'member/verifyEmailStart')
           return h.response(response)
         } else {
           return h
             .response({
-              errorMessage: errorValidation
-                ? errorValidation
-                : 'Oops, something happened!'
+              errorMessage: !error ? 'Oops, something happened!' : error
             })
             .code(500)
         }

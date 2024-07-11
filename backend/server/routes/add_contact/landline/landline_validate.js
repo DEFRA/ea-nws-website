@@ -16,9 +16,9 @@ module.exports = [
         }
 
         const { authToken, msisdn, code } = request.payload
-        const errorValidation = authCodeValidation(code)
+        const error = authCodeValidation(code)
 
-        if (!errorValidation && authToken && msisdn) {
+        if (!error && authToken && msisdn) {
           const response = await apiCall(
             msisdn,
             'member/verifyHomePhoneValidate'
@@ -27,9 +27,7 @@ module.exports = [
         } else {
           return h
             .response({
-              errorMessage: errorValidation
-                ? errorValidation
-                : 'Oops, something happened!'
+              errorMessage: !error ? 'Oops, something happened!' : error
             })
             .code(500)
         }

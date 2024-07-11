@@ -25,7 +25,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(204)
+    Code.expect(response.statusCode).to.equal(200)
   })
 
   lab.test('POST / route with no payload', async () => {

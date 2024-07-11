@@ -1,4 +1,7 @@
 const { apiCall } = require('../../services/ApiService')
+const {
+  createGenericErrorResponse
+} = require('../../services/GenericErrorResponse')
 
 module.exports = [
   {
@@ -8,9 +11,7 @@ module.exports = [
     handler: async (request, h) => {
       try {
         if (!request.payload) {
-          return h
-            .response({ errorMessage: 'Oops, something happened!' })
-            .code(400)
+          createGenericErrorResponse(h)
         }
 
         const { profile } = request.payload
@@ -22,14 +23,10 @@ module.exports = [
           )
           return h.response(response)
         } else {
-          return h.response().code(400)
+          createGenericErrorResponse(h)
         }
       } catch (error) {
-        return h
-          .response({
-            errorMessage: 'Oops, something happened!'
-          })
-          .code(500)
+        createGenericErrorResponse(h)
       }
     }
   }

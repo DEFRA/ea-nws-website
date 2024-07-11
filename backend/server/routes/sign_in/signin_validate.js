@@ -1,18 +1,19 @@
 const { apiCall } = require('../../services/ApiService')
 const {
+  createGenericErrorResponse
+} = require('../../services/GenericErrorResponse')
+const {
   authCodeValidation
 } = require('../../services/validations/AuthCodeValidation')
 
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/signInValidate',
+    path: '/api/sign_in_validate',
     handler: async (request, h) => {
       try {
         if (!request.payload) {
-          return h
-            .response({ errorMessage: 'Oops, something happened!' })
-            .code(400)
+          createGenericErrorResponse(h)
         }
 
         const { signinToken, code } = request.payload
@@ -25,18 +26,13 @@ module.exports = [
           )
           return h.response(response)
         } else {
-          return h
-            .response({
-              errorMessage: !error ? 'Oops, something happened!' : error
-            })
-            .code(500)
+          return h.response({
+            status: 500,
+            errorMessage: !error ? 'Oops, something happened!' : error
+          })
         }
       } catch (error) {
-        return h
-          .response({
-            errorMessage: 'Oops, something happened!'
-          })
-          .code(500)
+        createGenericErrorResponse(h)
       }
     }
   }

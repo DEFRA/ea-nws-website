@@ -2,17 +2,18 @@ const {
   emailValidation
 } = require('../../services/validations/EmailValidation')
 const { apiCall } = require('../../services/ApiService')
+const {
+  createGenericErrorResponse
+} = require('../../services/GenericErrorResponse')
 
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/signupStart',
+    path: '/api/sign_up_start',
     handler: async (request, h) => {
       try {
         if (!request.payload) {
-          return h
-            .response({ errorMessage: 'Oops, something happened!' })
-            .code(400)
+          createGenericErrorResponse(h)
         }
 
         const { email } = request.payload
@@ -20,15 +21,12 @@ module.exports = [
 
         if (!errorValidation) {
           const response = await apiCall(email, 'member/registerStart')
-          console.log(response)
           return h.response(response)
         } else {
-          return h.response({ errorMessage: errorValidation }).code(500)
+          return h.response({ status: 500, errorMessage: errorValidation })
         }
       } catch (error) {
-        return h
-          .response({ errorMessage: 'Oops, something happened!' })
-          .code(500)
+        createGenericErrorResponse(h)
       }
     }
   }

@@ -1,5 +1,8 @@
 const { apiCall } = require('../../../services/ApiService')
 const {
+  createGenericErrorResponse
+} = require('../../../services/GenericErrorResponse')
+const {
   phoneValidation
 } = require('../../../services/validations/PhoneValidation')
 
@@ -10,9 +13,7 @@ module.exports = [
     handler: async (request, h) => {
       try {
         if (!request.payload) {
-          return h
-            .response({ errorMessage: 'Oops, something happened!' })
-            .code(400)
+          createGenericErrorResponse(h)
         }
 
         const { authToken, msisdn } = request.payload
@@ -20,23 +21,18 @@ module.exports = [
 
         if (!error && authToken) {
           const response = await apiCall(
-            msisdn,
+            { authToken: authToken, msisdn: msisdn },
             'member/verifyMobilePhoneStart'
           )
           return h.response(response)
         } else {
-          return h
-            .response({
-              errorMessage: !error ? 'Oops, something happened!' : error
-            })
-            .code(500)
+          return h.response({
+            status: 500,
+            errorMessage: !error ? 'Oops, something happened!' : error
+          })
         }
       } catch (error) {
-        return h
-          .response({
-            errorMessage: 'Oops, something happened!'
-          })
-          .code(500)
+        createGenericErrorResponse(h)
       }
     }
   }

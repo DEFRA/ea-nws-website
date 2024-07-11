@@ -1,4 +1,7 @@
 const { apiCall } = require('../../services/ApiService')
+const {
+  createGenericErrorResponse
+} = require('../../services/GenericErrorResponse')
 
 module.exports = [
   {
@@ -7,23 +10,23 @@ module.exports = [
 
     handler: async (request, h) => {
       try {
+        if (!request.payload) {
+          createGenericErrorResponse(h)
+        }
+
         const { authToken, partnerId, params } = request.payload
 
         if (authToken && partnerId && Object.keys(params).length !== 0) {
           const response = await apiCall(
-            request.payload,
+            { authToken: authToken, partnerId: partnerId, params: params },
             'member/registerToPartner'
           )
           return h.response(response)
         } else {
-          return h.response().code(400)
+          createGenericErrorResponse(h)
         }
       } catch (error) {
-        return h
-          .response({
-            errorMessage: 'Oops, something happened!'
-          })
-          .code(500)
+        createGenericErrorResponse(h)
       }
     }
   }

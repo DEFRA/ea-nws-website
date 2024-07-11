@@ -1,3 +1,7 @@
+const {
+  createGenericErrorResponse
+} = require('../../services/GenericErrorResponse')
+
 module.exports = [
   {
     method: ['POST'],
@@ -5,25 +9,23 @@ module.exports = [
     handler: async (request, h) => {
       try {
         if (!request.payload) {
-          return h
-            .response({ errorMessage: 'Oops, something happened!' })
-            .code(400)
+          createGenericErrorResponse(h)
         }
 
         const { feedbackPreference, feedbackText } = request.payload
 
         if (!feedbackPreference || !feedbackText) {
-          return h.response().code(400)
+          return h.response({
+            status: 500,
+            errorMessage: 'Please leave some feedback'
+          })
         }
 
         request.log('info', ['***FEEDBACK***', request.payload])
 
         return h.response()
       } catch (error) {
-        console.error('Error:', error)
-        return h
-          .response({ errorMessage: 'Oops, something happened!' })
-          .code(500)
+        createGenericErrorResponse(h)
       }
     }
   }

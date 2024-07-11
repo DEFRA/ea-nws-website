@@ -16,7 +16,7 @@ import {
 import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../services/validations/PhoneValidation'
 
-export default function AddMobileLayout({
+export default function AddMobileLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -84,34 +84,34 @@ export default function AddMobileLayout({
 
   return (
     <>
-      <div className="page-container">
+      <div className='page-container'>
         <Header />
-        <div class="govuk-width-container body-container">
-          <Link onClick={removeMobileFromProfile} className="govuk-back-link">
+        <div class='govuk-width-container body-container'>
+          <Link onClick={removeMobileFromProfile} className='govuk-back-link'>
             Back
           </Link>
-          <main className="govuk-main-wrapper">
-            <div className="govuk-grid-row">
-              <div className="govuk-grid-column-two-thirds">
+          <main className='govuk-main-wrapper'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-two-thirds'>
                 <ErrorSummary errorList={error === '' ? [] : [error]} />
-                <h2 class="govuk-heading-l">
+                <h2 class='govuk-heading-l'>
                   Enter a mobile number to get flood messages by text
                 </h2>
-                <div class="govuk-body">
+                <div class='govuk-body'>
                   <p>
                     We recommend using a mobile number where we can reach you 24
                     hours a day.
                   </p>
                   <Input
-                    name="UK mobile telephone number"
-                    inputType="text"
+                    name='UK mobile telephone number'
+                    inputType='text'
                     error={error}
                     onChange={(val) => setMobile(val)}
-                    className="govuk-input govuk-input--width-20"
+                    className='govuk-input govuk-input--width-20'
                   />
                   <Button
-                    className="govuk-button"
-                    text="Continue"
+                    className='govuk-button'
+                    text='Continue'
                     onClick={handleSubmit}
                   />
                   <br />

@@ -4,22 +4,22 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-export default function AccessibilityStatementPage() {
+export default function AccessibilityStatementPage () {
   const navigate = useNavigate()
 
   return (
     <>
-      <div className="page-container">
+      <div className='page-container'>
         <Header />
-        <div className="govuk-width-container body-container">
+        <div className='govuk-width-container body-container'>
           <PhaseBanner />
-          <div className="govuk-grid-row">
-            <div className="govuk-grid-column-two-thirds">
-              <Link onClick={() => navigate(-1)} className="govuk-back-link">
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-two-thirds'>
+              <Link onClick={() => navigate(-1)} className='govuk-back-link'>
                 Back
               </Link>
-              <div className="govuk-body">
-                <h1 className="govuk-heading-l">Accessibility statement</h1>
+              <div className='govuk-body'>
+                <h1 className='govuk-heading-l'>Accessibility statement</h1>
                 <p>coming soon</p>
               </div>
             </div>

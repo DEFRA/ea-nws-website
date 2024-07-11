@@ -4,27 +4,27 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-export default function PrivacyNoticePage() {
+export default function PrivacyNoticePage () {
   const navigate = useNavigate()
 
   return (
     <>
-      <div className="page-container">
+      <div className='page-container'>
         <Header />
-        <div className="govuk-width-container body-container">
+        <div className='govuk-width-container body-container'>
           <PhaseBanner />
-          <div className="govuk-grid-row">
-            <div className="govuk-grid-column-two-thirds">
-              <Link onClick={() => navigate(-1)} className="govuk-back-link">
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-two-thirds'>
+              <Link onClick={() => navigate(-1)} className='govuk-back-link'>
                 Back
               </Link>
-              <div className="govuk-body">
-                <h1 className="govuk-heading-l">Privacy notice</h1>
-                <h2 class="govuk-heading-m">Who we are</h2>
+              <div className='govuk-body'>
+                <h1 className='govuk-heading-l'>Privacy notice</h1>
+                <h2 class='govuk-heading-m'>Who we are</h2>
                 <p>
                   The Environment Agency is the data controller for the Flood
                   Warning System in England. Our{' '}
-                  <a className="govuk-link">personal information charter</a>{' '}
+                  <a className='govuk-link'>personal information charter</a>{' '}
                   explains your rights and how we deal with your personal
                   information.
                 </p>
@@ -33,14 +33,14 @@ export default function PrivacyNoticePage() {
                   controller if you ask for a service in Wales. To read about
                   how Natural Resources Wales uses your personal information go
                   to{' '}
-                  <a className="govuk-link">naturalresources.wales/privacy</a>.
+                  <a className='govuk-link'>naturalresources.wales/privacy</a>.
                 </p>
-                <h2 class="govuk-heading-m">What data we collect</h2>
+                <h2 class='govuk-heading-m'>What data we collect</h2>
                 <p>
                   If you register with us, the personal data we collect about
                   you includes:
                 </p>
-                <ul class="govuk-list govuk-list--bullet">
+                <ul class='govuk-list govuk-list--bullet'>
                   <li>name</li>
                   <li>contact details</li>
                   <li>
@@ -48,19 +48,19 @@ export default function PrivacyNoticePage() {
                     receive warnings
                   </li>
                 </ul>
-                <h3 class="govuk-heading-s">Cookies and analytics</h3>
+                <h3 class='govuk-heading-s'>Cookies and analytics</h3>
                 <p>
                   Read our full{' '}
-                  <Link to="cookies" className="govuk-link">
+                  <Link to='cookies' className='govuk-link'>
                     cookie notice
                   </Link>{' '}
                   to find out how we use cookies.
                 </p>
-                <h2 class="govuk-heading-m">
+                <h2 class='govuk-heading-m'>
                   What we do with your personal data
                 </h2>
                 <p>We may use your personal information to:</p>
-                <ul class="govuk-list govuk-list--bullet">
+                <ul class='govuk-list govuk-list--bullet'>
                   <li>send you the warnings you have signed up for</li>
                   <li>
                     send you a small number of service announcements or
@@ -75,12 +75,12 @@ export default function PrivacyNoticePage() {
                     management
                   </li>
                 </ul>
-                <h3 class="govuk-heading-s">
+                <h3 class='govuk-heading-s'>
                   How we work with phone companies
                 </h3>
                 <p>
                   We have a legal duty under the{' '}
-                  <a className="govuk-link">Civil Contingencies Act</a> to
+                  <a className='govuk-link'>Civil Contingencies Act</a> to
                   maintain arrangements to warn people who may be at risk of
                   flooding. The lawful basis for processing your personal data
                   is to perform a task in the public interest that is set out in
@@ -99,12 +99,12 @@ export default function PrivacyNoticePage() {
                   phone companies no longer provide us with the phone number.
                   This might happen if:
                 </p>
-                <ul class="govuk-list govuk-list--bullet">
+                <ul class='govuk-list govuk-list--bullet'>
                   <li>you change or cancel your phone number</li>
                   <li>you move house</li>
                   <li>we change the areas that we provide warnings to</li>
                 </ul>
-                <h2 class="govuk-heading-m">
+                <h2 class='govuk-heading-m'>
                   Where your data is processed and stored
                 </h2>
                 <p>
@@ -116,10 +116,10 @@ export default function PrivacyNoticePage() {
                   Your personal information is stored and processed securely on
                   servers in the UK and Ireland.
                 </p>
-                <h2 class="govuk-heading-m">
+                <h2 class='govuk-heading-m'>
                   Who your data might be shared with
                 </h2>
-                <h3 class="govuk-heading-s">Third party service providers</h3>
+                <h3 class='govuk-heading-s'>Third party service providers</h3>
                 <p>
                   We may share your information with our agents or
                   representatives, so they can manage your account. Our agents
@@ -127,19 +127,19 @@ export default function PrivacyNoticePage() {
                   with what we have set out in this privacy notice.
                 </p>
                 <p>We will not:</p>
-                <ul class="govuk-list govuk-list--bullet">
+                <ul class='govuk-list govuk-list--bullet'>
                   <li>sell or rent your data to third parties</li>
                   <li>
                     share your data with third parties for marketing purposes
                   </li>
                 </ul>
-                <h3 class="govuk-heading-s">Legal obligations</h3>
+                <h3 class='govuk-heading-s'>Legal obligations</h3>
                 <p>
                   We may share your data or disclose information because of a
                   law, regulation or court order and to protect our interests
                   and legal rights.
                 </p>
-                <h2 class="govuk-heading-m">How long we keep your data</h2>
+                <h2 class='govuk-heading-m'>How long we keep your data</h2>
                 <p>
                   We will keep your personal data for as long as your account is
                   active, and for 6 years from the date that your flood warnings
@@ -153,7 +153,7 @@ export default function PrivacyNoticePage() {
                   longer have a record that you cancelled your account and your
                   phone number could be automatically added again.
                 </p>
-                <h2 class="govuk-heading-m">Changes to this policy</h2>
+                <h2 class='govuk-heading-m'>Changes to this policy</h2>
                 <p>
                   We may change this privacy notice. In that case, the ‘last
                   updated’ date at the bottom of this page will also change. Any

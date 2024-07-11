@@ -4,29 +4,29 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-export default function TermsAndConditionsPage() {
+export default function TermsAndConditionsPage () {
   const navigate = useNavigate()
 
   return (
     <>
-      <div className="page-container">
+      <div className='page-container'>
         <Header />
-        <div className="govuk-width-container body-container">
+        <div className='govuk-width-container body-container'>
           <PhaseBanner />
-          <div className="govuk-grid-row">
-            <div className="govuk-grid-column-two-thirds">
-              <Link onClick={() => navigate(-1)} className="govuk-back-link">
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-two-thirds'>
+              <Link onClick={() => navigate(-1)} className='govuk-back-link'>
                 Back
               </Link>
-              <div className="govuk-body">
-                <h2 className="govuk-heading-m">What we will do</h2>
+              <div className='govuk-body'>
+                <h2 className='govuk-heading-m'>What we will do</h2>
                 <p>
                   We make all reasonable efforts to send the flood warnings you
                   have asked for, but we cannot guarantee they will be sent or
                   arrive. Warnings may be sent at any time of day or night.
                 </p>
-                <h2 className="govuk-heading-m">We do not:</h2>
-                <ul class="govuk-list govuk-list--bullet">
+                <h2 className='govuk-heading-m'>We do not:</h2>
+                <ul class='govuk-list govuk-list--bullet'>
                   <li>
                     accept responsibility if you fail to receive a warning
                   </li>
@@ -40,18 +40,18 @@ export default function TermsAndConditionsPage() {
                     warnings, except where the law says we must
                   </li>
                 </ul>
-                <h2 className="govuk-heading-m">You are responsible for:</h2>
-                <ul class="govuk-list govuk-list--bullet">
+                <h2 className='govuk-heading-m'>You are responsible for:</h2>
+                <ul class='govuk-list govuk-list--bullet'>
                   <li>providing us with accurate contact details</li>
                   <li>
                     telling us about any changes to your contact information
                   </li>
                 </ul>
-                <h2 className="govuk-heading-m">
+                <h2 className='govuk-heading-m'>
                   How we will use your personal information
                 </h2>
                 <p>We may use the personal information you provide to:</p>
-                <ul class="govuk-list govuk-list--bullet">
+                <ul class='govuk-list govuk-list--bullet'>
                   <li>send you warnings you’ve asked for</li>
                   <li>
                     send you a small number of services or administrative
@@ -74,14 +74,14 @@ export default function TermsAndConditionsPage() {
                 </p>
                 <p>
                   The Environment Agency manages the flood warning systems. Our{' '}
-                  <Link to={'privacy'}>privacy notice </Link> explains how we
+                  <Link to='privacy'>privacy notice </Link> explains how we
                   treat your personal information.
                 </p>
                 <p>
                   Natural Resources Wales use the same systems and will have
                   access to your personal information if you ask for a service
                   in Wales. Read how Natural Resources Wales{' '}
-                  <Link to={'privacy'}> treats your personal information </Link>
+                  <Link to='privacy'> treats your personal information </Link>
                   .
                 </p>
               </div>

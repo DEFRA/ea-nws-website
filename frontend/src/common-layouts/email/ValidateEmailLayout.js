@@ -16,7 +16,7 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
-export default function ValidateEmailLayout({
+export default function ValidateEmailLayout ({
   NavigateToNextPage,
   SkipValidation,
   DifferentEmail
@@ -83,36 +83,36 @@ export default function ValidateEmailLayout({
 
   return (
     <>
-      <div className="page-container">
+      <div className='page-container'>
         <Header />
-        <div class="govuk-width-container body-container">
-          <Link to="/managecontacts/add-email" className="govuk-back-link">
+        <div class='govuk-width-container body-container'>
+          <Link to='/managecontacts/add-email' className='govuk-back-link'>
             Back
           </Link>
-          <main className="govuk-main-wrapper">
-            <div className="govuk-grid-row">
-              <div className="govuk-grid-column-two-thirds">
+          <main className='govuk-main-wrapper'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-two-thirds'>
                 <ErrorSummary errorList={error === '' ? [] : [error]} />
-                <h2 class="govuk-heading-l">Check your email</h2>
-                <div class="govuk-body">
+                <h2 class='govuk-heading-l'>Check your email</h2>
+                <div class='govuk-body'>
                   We've sent a code to:
                   <InsetText text={email} />
                   Use the code within 4 hours or it will expire.
                   <br /> <br />
                   <Input
-                    name="Enter code"
-                    inputType="text"
+                    name='Enter code'
+                    inputType='text'
                     error={error}
                     onChange={(val) => setCode(val)}
                   />
                   <Button
-                    className="govuk-button"
-                    text="Continue"
+                    className='govuk-button'
+                    text='Continue'
                     onClick={handleSubmit}
                   />
                   <Link
                     onClick={skipValidation}
-                    className="govuk-link"
+                    className='govuk-link'
                     style={{
                       display: 'inline-block',
                       padding: '8px 10px 7px'
@@ -121,11 +121,11 @@ export default function ValidateEmailLayout({
                     Skip and confirm later
                   </Link>
                   <br />
-                  <Link onClick={getNewCode} className="govuk-link">
+                  <Link onClick={getNewCode} className='govuk-link'>
                     Get a new code
                   </Link>
                   <br /> <br />
-                  <Link onClick={differentEmail} className="govuk-link">
+                  <Link onClick={differentEmail} className='govuk-link'>
                     Enter a different email
                   </Link>
                 </div>

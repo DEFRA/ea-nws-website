@@ -10,7 +10,7 @@ import NotificationBanner from '../../../gov-uk-components/NotificationBanner'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 import { setContactPreferences } from '../../../redux/userSlice'
 
-export default function WarningContactsPreferencePage() {
+export default function WarningContactsPreferencePage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const loginEmail = useSelector((state) => state.session.profile.emails[0])
@@ -53,26 +53,28 @@ export default function WarningContactsPreferencePage() {
 
   return (
     <>
-      <div className="page-container">
+      <div className='page-container'>
         <Header />
-        <div className="govuk-width-container body-container">
+        <div className='govuk-width-container body-container'>
           <PhaseBanner />
-          <div className="govuk-grid-row">
-            <div className="govuk-grid-column-two-thirds">
-              <Link to="signup/validate" className="govuk-back-link">
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-two-thirds'>
+              <Link to='signup/validate' className='govuk-back-link'>
                 Back
               </Link>
-              {error ? (
-                <ErrorSummary errorList={[error]} />
-              ) : (
-                <NotificationBanner
-                  className="govuk-notification-banner govuk-notification-banner--success"
-                  title="success"
-                  heading="Email address confirmed"
-                  text={loginEmail + ' is your sign in email'}
-                />
-              )}
-              <h1 className="govuk-heading-l">
+              {error
+                ? (
+                  <ErrorSummary errorList={[error]} />
+                  )
+                : (
+                  <NotificationBanner
+                    className='govuk-notification-banner govuk-notification-banner--success'
+                    title='success'
+                    heading='Email address confirmed'
+                    text={loginEmail + ' is your sign in email'}
+                  />
+                  )}
+              <h1 className='govuk-heading-l'>
                 How would you like to get messages about flooding?
               </h1>
               <div
@@ -82,12 +84,12 @@ export default function WarningContactsPreferencePage() {
                     : 'govuk-form-group'
                 }
               >
-                <fieldset className="govuk-fieldset">
-                  <legend className="govuk-fieldset__legend">
+                <fieldset className='govuk-fieldset'>
+                  <legend className='govuk-fieldset__legend'>
                     Select at least one option
                   </legend>
-                  {error && <p className="govuk-error-message">{error}</p>}
-                  <div className="govuk-radios" data-module="govuk-radios">
+                  {error && <p className='govuk-error-message'>{error}</p>}
+                  <div className='govuk-radios' data-module='govuk-radios'>
                     {contactOptions.map((preference) => (
                       <Checkbox
                         key={preference.value}
@@ -103,8 +105,8 @@ export default function WarningContactsPreferencePage() {
                 </fieldset>
               </div>
               <Button
-                text="Continue"
-                className="govuk-button"
+                text='Continue'
+                className='govuk-button'
                 onClick={handleSubmit}
               />
             </div>

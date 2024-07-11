@@ -37,7 +37,7 @@ export default function IndexPage () {
           latitude: 50726037,
           longitude: -3527489
         }
-      },
+      }
     ]
   }
 
@@ -70,10 +70,10 @@ export default function IndexPage () {
           latitude: 50726037,
           longitude: -3527489
         }
-      },
+      }
     ]
   }
-  
+
   const mockThree = {
     id: '',
     enabled: true,
@@ -173,7 +173,7 @@ export default function IndexPage () {
           latitude: 50726037,
           longitude: -3527489
         }
-      },
+      }
     ]
   }
 

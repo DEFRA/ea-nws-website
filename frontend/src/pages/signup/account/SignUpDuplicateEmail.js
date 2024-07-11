@@ -8,7 +8,7 @@ import InsetText from '../../../gov-uk-components/InsetText'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 import { backendCall } from '../../../services/BackendService'
 
-export default function SignUpPage() {
+export default function SignUpPage () {
   const navigate = useNavigate()
   const location = useLocation()
   const [error, setError] = useState('')
@@ -33,31 +33,31 @@ export default function SignUpPage() {
 
   return (
     <>
-      <div className="page-container">
+      <div className='page-container'>
         <Header />
-        <div className="govuk-width-container body-container">
+        <div className='govuk-width-container body-container'>
           <PhaseBanner />
-          <Link to="/signin" className="govuk-back-link">
+          <Link to='/signin' className='govuk-back-link'>
             Back
           </Link>
           {error && <ErrorSummary errorList={error === '' ? [] : [error]} />}
-          <h2 className="govuk-heading-l">
+          <h2 className='govuk-heading-l'>
             The email address you entered is <br /> already being used
           </h2>
           <InsetText text={email} />
-          <div className="govuk-body">
+          <div className='govuk-body'>
             <p>If this is your account, you can sign in by getting a code</p>
             <br />
             <Button
-              className="govuk-button"
-              text="Get code to sign in"
+              className='govuk-button'
+              text='Get code to sign in'
               onClick={handleSubmit}
             />
             &nbsp; &nbsp;
             <Link
-              to="/signup"
+              to='/signup'
               style={{ display: 'inline-block', padding: '8px 10px 7px' }}
-              className="govuk-link"
+              className='govuk-link'
             >
               Go back and enter a different email address
             </Link>

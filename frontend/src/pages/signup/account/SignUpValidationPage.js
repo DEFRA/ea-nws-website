@@ -59,61 +59,62 @@ export default function SignUpValidationPage () {
 
   return (
     <>
-      <Header />
-      <div className='govuk-width-container'>
-        <PhaseBanner />
-        <Link to='/signup' className='govuk-back-link'>
-          Back
-        </Link>
-        {error && <ErrorSummary errorList={[error]} />}
-        <h2 className='govuk-heading-l'>Check your email</h2>
-        <div className='govuk-body'>
-          You need to confirm your email address.
-          <br />
-          <br />
-          We've sent an email with a code to:
-          <InsetText text={loginEmail} />
-          Enter the code within 4 hours or it will expire.
-          <br />
-          <br />
-          <Input
-            className='govuk-input govuk-input--width-10'
-            inputType='text'
-            value={code}
-            name='Enter code'
-            error={error}
-            onChange={(val) => setCode(val)}
-          />
-          <Button
-            className='govuk-button'
-            text='Confirm email address'
-            onClick={handleSubmit}
-          />
-          &nbsp; &nbsp;
-          <Link
-            to='/signup'
-            className='govuk-link'
-            style={{
-              display: 'inline-block',
-              padding: '8px 10px 7px'
-            }}
-          >
-            Use a different email
+      <div className='page-container'>
+        <Header />
+        <div className='govuk-width-container body-container'>
+          <PhaseBanner />
+          <Link to='/signup' className='govuk-back-link'>
+            Back
           </Link>
-          <br />
-          <Link
-            onClick={getNewCode}
-            className='govuk-link'
-            style={{
-              display: 'inline-block'
-            }}
-          >
-            Get a new code
-          </Link>
+          {error && <ErrorSummary errorList={[error]} />}
+          <h2 className='govuk-heading-l'>Check your email</h2>
+          <div className='govuk-body'>
+            You need to confirm your email address.
+            <br />
+            <br />
+            We've sent an email with a code to:
+            <InsetText text={loginEmail} />
+            Enter the code within 4 hours or it will expire.
+            <br />
+            <br />
+            <Input
+              className='govuk-input govuk-input--width-10'
+              inputType='text'
+              value={code}
+              name='Enter code'
+              error={error}
+              onChange={(val) => setCode(val)}
+            />
+            <Button
+              className='govuk-button'
+              text='Confirm email address'
+              onClick={handleSubmit}
+            />
+            &nbsp; &nbsp;
+            <Link
+              to='/signup'
+              className='govuk-link'
+              style={{
+                display: 'inline-block',
+                padding: '8px 10px 7px'
+              }}
+            >
+              Use a different email
+            </Link>
+            <br />
+            <Link
+              onClick={getNewCode}
+              className='govuk-link'
+              style={{
+                display: 'inline-block'
+              }}
+            >
+              Get a new code
+            </Link>
+          </div>
         </div>
+        <Footer />
       </div>
-
-      <Footer />
     </>
   )
 }

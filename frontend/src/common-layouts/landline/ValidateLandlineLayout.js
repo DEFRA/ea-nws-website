@@ -92,56 +92,58 @@ export default function ValidateLandlineLayout ({
 
   return (
     <>
-      <Header />
-      <div class='govuk-width-container'>
-        <Link to='/managecontacts/add-landline' className='govuk-back-link'>
-          Back
-        </Link>
-        <main className='govuk-main-wrapper'>
-          <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-two-thirds'>
-              <ErrorSummary errorList={error === '' ? [] : [error]} />
-              <h2 class='govuk-heading-l'>Confirm telephone number</h2>
-              <div class='govuk-body'>
-                We're calling this number to read out a code:
-                <InsetText text={homePhone} />
-                Use the code within 4 hours or it will expire.
-                <br /> <br />
-                <Input
-                  name='Enter code'
-                  inputType='text'
-                  error={error}
-                  onChange={(val) => setCode(val)}
-                />
-                <Button
-                  className='govuk-button'
-                  text='Continue'
-                  onClick={handleSubmit}
-                />
-                <Link
-                  onClick={skipValidation}
-                  className='govuk-link'
-                  style={{
-                    display: 'inline-block',
-                    padding: '8px 10px 7px'
-                  }}
-                >
-                  Skip and confirm later
-                </Link>
-                <br />
-                <Link onClick={getNewCode} className='govuk-link'>
-                  Get a new code
-                </Link>
-                <br /> <br />
-                <Link onClick={differentHomePhone} className='govuk-link'>
-                  Enter a different telephone number
-                </Link>
+      <div className='page-container'>
+        <Header />
+        <div class='govuk-width-container body-container'>
+          <Link to='/managecontacts/add-landline' className='govuk-back-link'>
+            Back
+          </Link>
+          <main className='govuk-main-wrapper'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-two-thirds'>
+                <ErrorSummary errorList={error === '' ? [] : [error]} />
+                <h2 class='govuk-heading-l'>Confirm telephone number</h2>
+                <div class='govuk-body'>
+                  We're calling this number to read out a code:
+                  <InsetText text={homePhone} />
+                  Use the code within 4 hours or it will expire.
+                  <br /> <br />
+                  <Input
+                    name='Enter code'
+                    inputType='text'
+                    error={error}
+                    onChange={(val) => setCode(val)}
+                  />
+                  <Button
+                    className='govuk-button'
+                    text='Continue'
+                    onClick={handleSubmit}
+                  />
+                  <Link
+                    onClick={skipValidation}
+                    className='govuk-link'
+                    style={{
+                      display: 'inline-block',
+                      padding: '8px 10px 7px'
+                    }}
+                  >
+                    Skip and confirm later
+                  </Link>
+                  <br />
+                  <Link onClick={getNewCode} className='govuk-link'>
+                    Get a new code
+                  </Link>
+                  <br /> <br />
+                  <Link onClick={differentHomePhone} className='govuk-link'>
+                    Enter a different telephone number
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
-        </main>
+          </main>
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   )
 }

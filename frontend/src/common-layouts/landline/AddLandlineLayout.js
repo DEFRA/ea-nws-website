@@ -56,7 +56,11 @@ export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPrevi
       } else {
         dispatch(
           setProfile(
-            addUnverifiedContact(session.profile, 'homePhones', normalisedPhoneNumber)
+            addUnverifiedContact(
+              session.profile,
+              'homePhones',
+              normalisedPhoneNumber
+            )
           )
         )
         NavigateToNextPage()

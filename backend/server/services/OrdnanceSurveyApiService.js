@@ -1,8 +1,10 @@
 const { addressFormatter } = require('./formatters/AddressFormatter')
+const getSecretKeyValue = require('../services/SecretsManager')
 
 const osPostCodeApiCall = async (postCode) => {
   let responseData
-  const url = `https://api.os.uk/search/places/v1/postcode?postcode=${postCode}&key=tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a&output_srs=EPSG:4326`
+  const osApiKey = await getSecretKeyValue('nws/geosafe/osApiKey', 'osApiKey')
+  const url = `https://api.os.uk/search/places/v1/postcode?postcode=${postCode}&key=${osApiKey}&output_srs=EPSG:4326`
 
   try {
     const response = await fetch(url)
@@ -43,8 +45,8 @@ const osPostCodeApiCall = async (postCode) => {
 //The work below is still a WIP - it can probs be refactored as well to work with the above method
 const osFindNameApiCall = async (keyword) => {
   let responseData
-
-  const url = `https://api.os.uk/search/places/v1/postcode?postcode=${postCode}&key=tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a&output_srs=EPSG:4326`
+  const osApiKey = await getSecretKeyValue('nws/geosafe/osApiKey', 'osApiKey')
+  const url = `https://api.os.uk/search/names/v1/find?query=${keyword}&key=${osApiKey}output_srs=EPSG:4326`
 
   try {
     const response = await fetch(url)
@@ -71,13 +73,13 @@ const osFindNameApiCall = async (keyword) => {
     } else {
       return {
         status: 500,
-        errorMessage: 'Enter a full postcode in England'
+        errorMessage: 'Enter a location in England'
       }
     }
   } catch (error) {
     return {
       status: 500,
-      errorMessage: 'Enter a real postcode'
+      errorMessage: 'Oops, something happened!'
     }
   }
 }

@@ -7,6 +7,7 @@ module.exports = [
     handler: async (request, h) => {
       try {
         const { postCode } = request.payload
+        console.log('postcode', postCode)
         const response = await osPostCodeApiCall(postCode)
         return h.response(response)
       } catch (error) {

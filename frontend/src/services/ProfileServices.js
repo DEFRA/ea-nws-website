@@ -23,8 +23,8 @@ const addUnverifiedContact = (profile, type, contact) => {
         [type === 'email'
           ? 'emails'
           : type === 'mobile'
-          ? 'mobilePhones'
-          : 'homePhones']: [...unverifiedContactList, contact]
+            ? 'mobilePhones'
+            : 'homePhones']: [...unverifiedContactList, contact]
       }
     }
     return updatedProfile
@@ -87,8 +87,8 @@ const addVerifiedContact = (profile, type, contact) => {
       [type === 'email'
         ? 'emails'
         : type === 'mobile'
-        ? 'mobilePhones'
-        : 'homePhones']: [...verifiedContactList, contact]
+          ? 'mobilePhones'
+          : 'homePhones']: [...verifiedContactList, contact]
     }
     return updatedProfile
   } else {
@@ -129,8 +129,8 @@ const addAccountName = (profile, firstName, lastName) => {
 
   const updatedProfile = {
     ...profile,
-    firstName: firstName,
-    lastName: lastName
+    firstName,
+    lastName
   }
 
   return updatedProfile

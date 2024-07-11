@@ -5,8 +5,8 @@ import Button from '../../gov-uk-components/Button'
 import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
-import Input from '../../gov-uk-components/Input'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
+import Radio from '../../gov-uk-components/Radio'
 import {
   setLocationPostCode,
   setLocationSearchResults
@@ -19,6 +19,7 @@ export default function LocationSearchLayout({ continueToNextPage }) {
   const dispatch = useDispatch()
   const [searchOption, setSearchOption] = useState('')
   const [postCode, setPostCode] = useState('')
+  const [placeName, setPlaceName] = useState('')
   const [postCodeError, setPostCodeError] = useState('')
   const [placeNameError, setPlaceNameError] = useState('')
   const [error, setError] = useState('')
@@ -26,10 +27,9 @@ export default function LocationSearchLayout({ continueToNextPage }) {
   // remove any errors if user changes search option
   useEffect(() => {
     setPostCodeError('')
+    setPlaceNameError('')
     setError('')
   }, [searchOption])
-
-  console.log(searchOption)
 
   const handleSubmit = async () => {
     if (!searchOption) {
@@ -64,7 +64,9 @@ export default function LocationSearchLayout({ continueToNextPage }) {
             break
           }
         case 'PlaceNameTownOrKeyword':
-          // code block
+          if (!placeName) {
+            setPlaceNameError('Please enter a place name or keyword')
+          }
           break
         default:
           break
@@ -105,78 +107,26 @@ export default function LocationSearchLayout({ continueToNextPage }) {
                     Select how you want to search
                   </legend>
                   {error && <p className="govuk-error-message">{error}</p>}
-                  <div className="govuk-radios" data-module="govuk-radios">
-                    <div className="govuk-radios__item">
-                      <input
-                        className="govuk-radios__input"
-                        type="radio"
-                        value="AddressPostCode"
-                        name="searchOptionsRadios"
-                        onChange={(e) => setSearchOption(e.target.value)}
-                        id="id-address-postcode"
-                      />
-                      <label
-                        className="govuk-label govuk-radios__label"
-                        htmlFor="id-address-postcode"
-                      >
-                        Address with postcode
-                      </label>
-                    </div>
-                    {searchOption === 'AddressPostCode' && (
-                      <div className="govuk-radios__conditional">
-                        <div
-                          className={
-                            postCodeError
-                              ? 'govuk-form-group govuk-form-group--error'
-                              : 'govuk-form-group'
-                          }
-                        >
-                          <Input
-                            name="Postcode in England"
-                            className="govuk-input govuk-!-width-one-half"
-                            inputType="text"
-                            error={postCodeError}
-                            onChange={(val) => setPostCode(val)}
-                          />
-                        </div>
-                      </div>
-                    )}
-                    <div className="govuk-radios__item">
-                      <input
-                        className="govuk-radios__input"
-                        type="radio"
-                        value="PlaceNameTownOrKeyword"
-                        name="searchOptionsRadios"
-                        onChange={(e) => setSearchOption(e.target.value)}
-                        id="id-place-name"
-                      />
-                      <label
-                        className="govuk-label govuk-radios__label"
-                        htmlFor="id-place-name"
-                      >
-                        Place name, town or keyword
-                      </label>
-                    </div>
-                    {searchOption === 'PlaceNameTownOrKeyword' && (
-                      <div className="govuk-radios__conditional">
-                        <div
-                          className={
-                            placeNameError
-                              ? 'govuk-form-group govuk-form-group--error'
-                              : 'govuk-form-group'
-                          }
-                        >
-                          <Input
-                            name="Enter a place name, town or keyword"
-                            className="govuk-input govuk-!-width-one-half"
-                            inputType="text"
-                            error={placeNameError}
-                            onChange={(val) => setPostCode(val)}
-                          />
-                        </div>
-                      </div>
-                    )}
-                  </div>
+                  <Radio
+                    label={'Address with postcode'}
+                    value={'AddressPostCode'}
+                    name={'searchOptionsRadios'}
+                    onChange={(e) => setSearchOption(e.target.value)}
+                    conditional={searchOption === 'AddressPostCode'}
+                    conditionalQuestion={'Postcode in England'}
+                    conditionalInput={(val) => setPostCode(val)}
+                    conditionalError={postCodeError}
+                  />
+                  <Radio
+                    label={'Place name, town or keyword'}
+                    value={'PlaceNameTownOrKeyword'}
+                    name={'searchOptionsRadios'}
+                    onChange={(e) => setSearchOption(e.target.value)}
+                    conditional={searchOption === 'PlaceNameTownOrKeyword'}
+                    conditionalQuestion={'Enter a place name, town or keyword'}
+                    conditionalInput={(val) => setPlaceName(val)}
+                    conditionalError={placeNameError}
+                  />
                 </fieldset>
               </div>
               <Button

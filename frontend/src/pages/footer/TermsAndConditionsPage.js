@@ -4,7 +4,7 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-export default function TermsAndConditionsLayout() {
+export default function TermsAndConditionsPage() {
   const navigate = useNavigate()
 
   return (
@@ -73,14 +73,14 @@ export default function TermsAndConditionsLayout() {
                   must.
                 </p>
                 <p>
-                  The Environment Agency manages the flood warning systems. Our
+                  The Environment Agency manages the flood warning systems. Our{' '}
                   <Link to={'privacy'}>privacy notice </Link> explains how we
                   treat your personal information.
                 </p>
                 <p>
                   Natural Resources Wales use the same systems and will have
                   access to your personal information if you ask for a service
-                  in Wales. Read how Natural Resources Wales
+                  in Wales. Read how Natural Resources Wales{' '}
                   <Link to={'privacy'}> treats your personal information </Link>
                   .
                 </p>

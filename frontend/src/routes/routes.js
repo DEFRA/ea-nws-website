@@ -8,6 +8,11 @@ import AddLandlinePage from '../pages/contact-details/add-contact-landline/AddLa
 import AddLandlineValidatePage from '../pages/contact-details/add-contact-landline/AddLandlineValidatePage'
 import AddMobilePage from '../pages/contact-details/add-contact-mobile/AddMobilePage'
 import AddMobileValidatePage from '../pages/contact-details/add-contact-mobile/AddMobileValidatePage'
+import AccessibilityStatementPage from '../pages/footer/AccessibilityStatementPage'
+import ContactUsPage from '../pages/footer/ContactUsPage'
+import CookiesPage from '../pages/footer/CookiesPage'
+import PrivacyNoticePage from '../pages/footer/PrivacyNoticePage'
+import TermsAndConditionsPage from '../pages/footer/TermsAndConditionsPage'
 import HomePage from '../pages/home/HomePage'
 import SignOutManuallyPage from '../pages/sign-out/SignOutManuallyPage'
 import SignBackInPage from '../pages/sign-out/signBackInPage'
@@ -104,11 +109,14 @@ const signupRoutes = [
 
 // footer routes
 const footerRoutes = [
-  { path: '/contact', component: <HomePage /> },
-  { path: '/privacy', component: <HomePage /> },
-  { path: '/cookies', component: <HomePage /> },
-  { path: '/accessibility-statement', component: <HomePage /> },
-  { path: '/terms-and-conditions', component: <HomePage /> }
+  { path: '/contact', component: <ContactUsPage /> },
+  { path: '/privacy', component: <PrivacyNoticePage /> },
+  { path: '/cookies', component: <CookiesPage /> },
+  {
+    path: '/accessibility-statement',
+    component: <AccessibilityStatementPage />
+  },
+  { path: '/terms-and-conditions', component: <TermsAndConditionsPage /> }
 ]
 
 // home
@@ -144,7 +152,8 @@ export const routes = [
   ...signupRoutes,
   ...signinRoutes,
   ...signupRoutes,
-  ...signBackInRoutes
+  ...signBackInRoutes,
+  ...footerRoutes
 ]
 
 export const authenticatedRoutes = [

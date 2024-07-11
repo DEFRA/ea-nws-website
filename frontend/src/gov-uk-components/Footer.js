@@ -1,3 +1,5 @@
+import { Link } from 'react-router-dom'
+
 export default function Footer() {
   return (
     <>
@@ -8,29 +10,35 @@ export default function Footer() {
               <h2 className="govuk-visually-hidden">Support links</h2>
               <ul className="govuk-footer__inline-list">
                 <li className="govuk-footer__inline-list-item">
-                  <a className="govuk-footer__link" href="/#">
+                  <Link className="govuk-footer__link" to="/contact">
                     Contact
-                  </a>
+                  </Link>
                 </li>
                 <li className="govuk-footer__inline-list-item">
-                  <a className="govuk-footer__link" href="/#">
+                  <Link className="govuk-footer__link" to="/privacy">
                     Privacy
-                  </a>
+                  </Link>
                 </li>
                 <li className="govuk-footer__inline-list-item">
-                  <a className="govuk-footer__link" href="/#">
+                  <Link className="govuk-footer__link" to="/cookies">
                     Cookies
-                  </a>
+                  </Link>
                 </li>
                 <li className="govuk-footer__inline-list-item">
-                  <a className="govuk-footer__link" href="/#">
+                  <Link
+                    className="govuk-footer__link"
+                    to="/accessibility-statement"
+                  >
                     Accessibility statement
-                  </a>
+                  </Link>
                 </li>
                 <li className="govuk-footer__inline-list-item">
-                  <a className="govuk-footer__link" href="/#">
+                  <Link
+                    className="govuk-footer__link"
+                    to="/terms-and-conditions"
+                  >
                     Terms and conditions
-                  </a>
+                  </Link>
                 </li>
               </ul>
               <svg

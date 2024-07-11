@@ -4,7 +4,7 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-export default function AccessibilityStatementLayout() {
+export default function AccessibilityStatementPage() {
   const navigate = useNavigate()
 
   return (

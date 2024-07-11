@@ -4,7 +4,7 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-export default function CookiesLayout() {
+export default function CookiesPage() {
   const navigate = useNavigate()
 
   return (

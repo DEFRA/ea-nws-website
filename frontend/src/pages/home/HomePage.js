@@ -10,10 +10,7 @@ import Header from '../../gov-uk-components/Header'
 import Pagination from '../../gov-uk-components/Pagination'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-
-
 export default function HomePage () {
-
   const [currentPage, setCurrentPage] = useState(1)
   const locationsPerPage = 10
 
@@ -58,14 +55,13 @@ export default function HomePage () {
   )
 
   const locationTable = () => {
-
     const viewColumn = (location) => {
       return (
         <td className='govuk-table__cell'>
           <Link
             to='/managelocations/view'
             state={{
-              address: location.address,
+              address: location.address
             }}
             className='govuk-link'
           >
@@ -81,7 +77,7 @@ export default function HomePage () {
           <Link
             to='/managelocations/remove'
             state={{
-              address: location.address,
+              address: location.address
             }}
             className='govuk-link'
           >
@@ -106,10 +102,10 @@ export default function HomePage () {
             <tr key={index} className='govuk-table__row'>
               {addressColumn(location)}
               {locations.length === 1 && (
-                <td className='govuk-table__cell'></td>
+                <td className='govuk-table__cell' />
               )}
               {viewColumn(location)}
-              {locations.length > 1 && ( 
+              {locations.length > 1 && (
                 removeColumn(location)
               )}
             </tr>
@@ -122,7 +118,7 @@ export default function HomePage () {
       return (
         <thead class='govuk-table__head'>
           <tr class='govuk-table__row'>
-            <th colspan='3' scope='colspan' className='govuk-table__header'>{'Your locations ('+locations.length+')'}</th>
+            <th colspan='3' scope='colspan' className='govuk-table__header'>{'Your locations (' + locations.length + ')'}</th>
           </tr>
         </thead>
       )
@@ -143,10 +139,10 @@ export default function HomePage () {
         <PhaseBanner />
         <AccountNavigation currentPage={useLocation().pathname} />
         <main className='govuk-main-wrapper'>
-          <div class="govuk-grid-row">
-            <div class="govuk-grid-column-full">
+          <div class='govuk-grid-row'>
+            <div class='govuk-grid-column-full'>
               <h1 className='govuk-heading-l'>Home</h1>
-              <div className="govuk-body">
+              <div className='govuk-body'>
                 {locations.length > 0 && (
                   locationTable()
                 )}

@@ -23,7 +23,7 @@ module.exports = [
 
         request.log('info', ['***FEEDBACK***', request.payload])
 
-        return h.response()
+        return h.response({ status: 200 })
       } catch (error) {
         return createGenericErrorResponse(h)
       }

@@ -14,7 +14,7 @@ const userSlice = createSlice({
       state.authToken = action.payload
     },
     setRegisterToken: (state, action) => {
-      state.authToken = action.payload
+      state.registerToken = action.payload
     },
     setProfile: (state, action) => {
       state.profile = action.payload
@@ -27,6 +27,7 @@ const userSlice = createSlice({
     },
     clearAuth: (state) => {
       state.authToken = null
+      state.registerToken = null
       state.profile = null
       state.contactPreferences = null
       state.registrations = null

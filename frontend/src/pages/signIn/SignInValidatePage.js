@@ -30,7 +30,7 @@ export default function SignInValidatePage () {
       const dataToSend = { signinToken, code }
       const { errorMessage, data } = await backendCall(
         dataToSend,
-        'api/signInValidate'
+        'api/sign_in_validate'
       )
       if (errorMessage !== null) {
         setError(errorMessage)
@@ -46,11 +46,7 @@ export default function SignInValidatePage () {
   const getNewCode = async (event) => {
     event.preventDefault()
     const data = { email: location.state.email }
-    const { errorMessage } = await backendCall(
-      data,
-      'api/signInStart',
-      navigate
-    )
+    const { errorMessage } = await backendCall(data, 'api/sign_in', navigate)
     if (errorMessage !== null) {
       setError(errorMessage)
     }

@@ -1,28 +1,28 @@
-const { apiCall } = require('../../../services/ApiService')
+const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse
-} = require('../../../services/GenericErrorResponse')
+} = require('../../services/GenericErrorResponse')
 const {
   authCodeValidation
-} = require('../../../services/validations/AuthCodeValidation')
+} = require('../../services/validations/AuthCodeValidation')
 
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/add_contact/email/validate',
+    path: '/api/sign_in_validate',
     handler: async (request, h) => {
       try {
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
 
-        const { authToken, code } = request.payload
+        const { signinToken, code } = request.payload
         const error = authCodeValidation(code)
 
-        if (!error && authToken) {
+        if (!error && signinToken) {
           const response = await apiCall(
-            { authToken: authToken, code: code },
-            'member/verifyEmailValidate'
+            { signinToken: signinToken, code: code },
+            'member/signinValidate'
           )
           return h.response(response)
         } else {

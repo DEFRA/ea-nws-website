@@ -1,8 +1,8 @@
 const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
 const lab = (exports.lab = Lab.script())
-const createServer = require('../../server')
-const { startApiServer, apiServerStarted } = require('./../test_api_setup')
+const createServer = require('../../../server')
+const { startApiServer, apiServerStarted } = require('./../../test_api_setup')
 
 lab.experiment('Integration tests', () => {
   let server
@@ -15,48 +15,56 @@ lab.experiment('Integration tests', () => {
     server = await createServer()
   })
 
-  lab.test('POST / route runs with invalid email', async () => {
+  lab.test('POST / route runs with missing authtoken', async () => {
     const options = {
       method: 'POST',
-      url: '/api/sign_in',
+      url: '/api/partner/register',
       payload: {
-        email: 'invalid@email.com'
+        authToken: '',
+        partnerId: '1',
+        params: { someParam: '1' }
       }
     }
     const response = await server.inject(options)
     Code.expect(response.result.status).to.equal(500)
   })
 
-  lab.test('POST / route runs with invalid email format', async () => {
+  lab.test('POST / route runs with missing partnerId', async () => {
     const options = {
       method: 'POST',
-      url: '/api/sign_in',
+      url: '/api/partner/register',
       payload: {
-        email: 'invalidemail.uk'
+        authToken: 'MockAuthToken',
+        partnerId: '',
+        params: { someParam: '1' }
       }
     }
     const response = await server.inject(options)
     Code.expect(response.result.status).to.equal(500)
   })
 
-  lab.test('POST / route runs with invalid email format', async () => {
+  lab.test('POST / route runs with missing params', async () => {
     const options = {
       method: 'POST',
-      url: '/api/sign_in',
+      url: '/api/partner/register',
       payload: {
-        email: 'invalidemail@'
+        authToken: 'MockAuthToken',
+        partnerId: '1',
+        params: {}
       }
     }
     const response = await server.inject(options)
     Code.expect(response.result.status).to.equal(500)
   })
 
-  lab.test('POST / route runs with valid email format', async () => {
+  lab.test('POST / route runs with all parameters', async () => {
     const options = {
       method: 'POST',
-      url: '/api/sign_in',
+      url: '/api/partner/register',
       payload: {
-        email: 'email@email.com'
+        authToken: 'MockAuthToken',
+        partnerId: '1',
+        params: { someParam: '1' }
       }
     }
     const response = await server.inject(options)

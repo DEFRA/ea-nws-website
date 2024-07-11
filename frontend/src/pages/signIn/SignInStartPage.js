@@ -22,7 +22,7 @@ export default function SignInStartPage () {
     if (validationError === '') {
       const { errorMessage, data } = await backendCall(
         dataToSend,
-        'api/signInStart',
+        'api/sign_in',
         navigate
       )
       if (errorMessage !== null) {

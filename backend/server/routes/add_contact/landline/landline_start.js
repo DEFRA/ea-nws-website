@@ -5,6 +5,9 @@ const {
 const {
   createGenericErrorResponse
 } = require('../../../services/GenericErrorResponse')
+const {
+  normalisePhoneNumber
+} = require('../../../services/formatters/NormalisePhoneNumber')
 
 module.exports = [
   {
@@ -20,8 +23,10 @@ module.exports = [
         const error = phoneValidation(msisdn, 'mobileAndLandline')
 
         if (!error && authToken) {
+          // ensure all phone numbers are formatted the same
+          const normalisedPhoneNumber = normalisePhoneNumber(msisdn)
           const response = await apiCall(
-            { authToken: authToken, msisdn: msisdn },
+            { authToken: authToken, msisdn: normalisedPhoneNumber },
             'member/verifyHomePhoneStart'
           )
           return h.response(response)

@@ -82,4 +82,17 @@ lab.experiment('Integration tests', () => {
     const response = await server.inject(options)
     Code.expect(response.result.status).to.equal(500)
   })
+
+  lab.test('POST / with duplicate payload in different format', async () => {
+    const options = {
+      method: 'POST',
+      url: '/api/add_contact/landline/add',
+      payload: {
+        authToken: 'MockAuthToken',
+        msisdn: '01000000000'
+      }
+    }
+    const response = await server.inject(options)
+    Code.expect(response.result.status).to.equal(500)
+  })
 })

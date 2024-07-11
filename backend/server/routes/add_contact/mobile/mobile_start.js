@@ -5,6 +5,9 @@ const {
 const {
   phoneValidation
 } = require('../../../services/validations/PhoneValidation')
+const {
+  normalisePhoneNumber
+} = require('../../../services/formatters/NormalisePhoneNumber')
 
 module.exports = [
   {
@@ -20,8 +23,10 @@ module.exports = [
         const error = phoneValidation(msisdn, 'mobile')
 
         if (!error && authToken) {
+          // ensure all phone numbers are formatted the same
+          const normalisedPhoneNumber = normalisePhoneNumber(msisdn)
           const response = await apiCall(
-            { authToken: authToken, msisdn: msisdn },
+            { authToken: authToken, msisdn: normalisedPhoneNumber },
             'member/verifyMobilePhoneStart'
           )
           return h.response(response)

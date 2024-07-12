@@ -25,18 +25,19 @@ export default function Map({ types }) {
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+  const { latitude, longitude } = selectedLocation.coordinates
 
   useEffect(() => {
     async function fetchFloodAreaData() {
       const { alertArea, warningArea } = await getFloodTargetArea(
-        selectedLocation.latitude,
-        selectedLocation.longitude
+        latitude,
+        longitude
       )
       setAlertArea(alertArea)
       setWarningArea(warningArea)
     }
     fetchFloodAreaData()
-  }, [])
+  }, [latitude, longitude])
 
   // Leaflet Marker Icon fix
   const DefaultIcon = L.icon({
@@ -53,7 +54,7 @@ export default function Map({ types }) {
     const map = useMap()
 
     const handleClick = () => {
-      map.setView([selectedLocation.latitude, selectedLocation.longitude], 14)
+      map.setView([latitude, longitude], 14)
     }
 
     return (
@@ -78,7 +79,7 @@ export default function Map({ types }) {
   return (
     <>
       <MapContainer
-        center={[selectedLocation.latitude, selectedLocation.longitude]}
+        center={[latitude, longitude]}
         zoom={14}
         zoomControl={false}
         attributionControl={false}
@@ -86,9 +87,7 @@ export default function Map({ types }) {
       >
         <TileLayer url="https://api.os.uk/maps/raster/v1/zxy/Outdoor_3857/{z}/{x}/{y}.png?key=tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a" />
         <ZoomControl position="bottomright" />
-        <Marker
-          position={[selectedLocation.latitude, selectedLocation.longitude]}
-        >
+        <Marker position={[latitude, longitude]}>
           <Popup />
         </Marker>
         {warningArea && types.includes('warning') && (

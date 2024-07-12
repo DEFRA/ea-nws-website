@@ -48,7 +48,6 @@ export default function LocationSearchLayout({ continueToNextPage }) {
               'api/os-api/postcode-search',
               navigate
             )
-
             if (!errorMessage) {
               dispatch(setLocationPostCode(data[0].postcode))
               dispatch(setLocationSearchResults(data))

@@ -1,6 +1,6 @@
 import 'leaflet/dist/leaflet.css'
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import FloodWarningKey from '../../custom-components/FloodWarningKey'
 import Map from '../../custom-components/Map'
@@ -9,17 +9,23 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
+import { setProfile } from '../../redux/userSlice'
+import { addLocation } from '../../services/ProfileServices'
 
 export default function LocationInSevereWarningAreaLayout({
   continueToNextPage
 }) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const profile = useSelector((state) => state.session.profile)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
 
   const handleSubmit = () => {
-    // add location to users profile
+    //geosafe doesnt accept locations with postcodes - need to remove this from the object
+    const { postcode, ...locationWithoutPostcode } = locationWithoutPostcode
+    dispatch(setProfile(addLocation(profile, locationWithoutPostcode)))
     continueToNextPage()
   }
 
@@ -39,7 +45,7 @@ export default function LocationInSevereWarningAreaLayout({
                   You can get severe flood warnings and flood warnings for this
                   location
                 </h1>
-                <InsetText text={selectedLocation.address} />
+                <InsetText text={selectedLocation.name} />
               </div>
               <div className="govuk-grid-column-three-quarters">
                 <Map types={['warning']} />

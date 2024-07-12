@@ -23,8 +23,8 @@ const addUnverifiedContact = (profile, type, contact) => {
         [type === 'email'
           ? 'emails'
           : type === 'mobile'
-            ? 'mobilePhones'
-            : 'homePhones']: [...unverifiedContactList, contact]
+          ? 'mobilePhones'
+          : 'homePhones']: [...unverifiedContactList, contact]
       }
     }
     return updatedProfile
@@ -87,8 +87,8 @@ const addVerifiedContact = (profile, type, contact) => {
       [type === 'email'
         ? 'emails'
         : type === 'mobile'
-          ? 'mobilePhones'
-          : 'homePhones']: [...verifiedContactList, contact]
+        ? 'mobilePhones'
+        : 'homePhones']: [...verifiedContactList, contact]
     }
     return updatedProfile
   } else {
@@ -136,10 +136,35 @@ const addAccountName = (profile, firstName, lastName) => {
   return updatedProfile
 }
 
+const addLocation = (profile, location) => {
+  const currentLocations = profile.pois
+
+  const updatedProfile = {
+    ...profile,
+    pois: [...currentLocations, location]
+  }
+
+  return updatedProfile
+}
+
+const checkIfSelectedLocationExistsAlready = (profile, selectedLocation) => {
+  for (const position of profile.pois) {
+    const { latitude, longitude } = position.coordinates
+    if (
+      latitude == selectedLocation.coordinates.latitude &&
+      longitude == selectedLocation.coordinates.longitude
+    ) {
+      return true
+    }
+  }
+}
+
 module.exports = {
   addUnverifiedContact,
   removeUnverifiedContact,
   addVerifiedContact,
   removeVerifiedContact,
-  addAccountName
+  addAccountName,
+  addLocation,
+  checkIfSelectedLocationExistsAlready
 }

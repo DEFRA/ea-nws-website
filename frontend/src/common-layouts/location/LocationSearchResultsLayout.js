@@ -3,18 +3,22 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import LoadingSpinner from '../../custom-components/LoadingSpinner'
 import Details from '../../gov-uk-components/Details'
+import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import Pagination from '../../gov-uk-components/Pagination'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { setSelectedLocation } from '../../redux/userSlice'
 import { getFloodTargetArea } from '../../services/GetFloodTargetAreas'
+import { checkIfSelectedLocationExistsAlready } from '../../services/ProfileServices'
 
 export default function LocationSearchResultsLayout({ continueToNextPage }) {
   const dispatch = useDispatch()
+  const [error, setError] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const locations = useSelector((state) => state.session.locationSearchResults)
+  const profile = useSelector((state) => state.session.profile)
   const locationPostCode = useSelector(
     (state) => state.session.locationPostCode
   )
@@ -24,19 +28,29 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
     currentPage * locationsPerPage
   )
 
-  const handleSelectedLocation = async (event, location) => {
+  const handleSelectedLocation = async (event, selectedLocation) => {
     event.preventDefault()
-    // still to add validation to check that lat and lng exist in profile
+
     setLoading(true)
     try {
-      dispatch(setSelectedLocation(location))
-
-      const { isInWarningArea, isInAlertArea } = await getFloodTargetArea(
-        location.latitude,
-        location.longitude
+      const existsInProfile = checkIfSelectedLocationExistsAlready(
+        profile,
+        selectedLocation
       )
+      if (existsInProfile) {
+        setError(
+          'This location is saved already, please select a different location'
+        )
+      } else {
+        dispatch(setSelectedLocation(selectedLocation))
 
-      continueToNextPage(isInWarningArea, isInAlertArea)
+        const { isInWarningArea, isInAlertArea } = await getFloodTargetArea(
+          selectedLocation.coordinates.latitude,
+          selectedLocation.coordinates.longitude
+        )
+
+        continueToNextPage(isInWarningArea, isInAlertArea)
+      }
     } finally {
       setLoading(false)
     }
@@ -70,6 +84,7 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
                     >
                       Back
                     </Link>
+                    {error && <ErrorSummary errorList={[error]} />}
                     <h1 className="govuk-heading-l govuk-!-margin-top-6">
                       Select an address
                     </h1>
@@ -97,7 +112,7 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
                                   handleSelectedLocation(event, location)
                                 }
                               >
-                                {location.address}
+                                {location.name}
                               </Link>
                             </td>
                           </tr>

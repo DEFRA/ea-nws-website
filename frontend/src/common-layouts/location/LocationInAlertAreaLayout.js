@@ -42,7 +42,7 @@ export default function LocationInAlertAreaLayout({ continueToNextPage }) {
                     ? 'You can also get flood alerts (optional)'
                     : 'You can get flood alerts for this location'}
                 </h1>
-                <InsetText text={selectedLocation.address} />
+                <InsetText text={selectedLocation.name} />
               </div>
               <div className="govuk-grid-column-three-quarters">
                 <Map types={['alert']} />

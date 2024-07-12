@@ -27,7 +27,7 @@ export default function LocationNotNearDangerLayout() {
                 <h1 className="govuk-heading-l govuk-!-margin-top-6">
                   You cannot get flood messages for this location
                 </h1>
-                <InsetText text={selectedLocation.address} />
+                <InsetText text={selectedLocation.name} />
                 <p className="govuk-!-margin-top-5">
                   Possible reasons are that:
                 </p>

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import LocationSearchResultsLayout from '../../../common-layouts/location/LocationSearchResultsLayout'
 import { setAdditionalAlerts } from '../../../redux/userSlice'
 
-export default function LocationSearchResultsPage () {
+export default function LocationSearchResultsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -16,6 +16,7 @@ export default function LocationSearchResultsPage () {
       navigate('/signup/register-location/location-in-severe-warning-area')
     } else if (isInAlertArea) {
       // take user to non option flood alerts scren
+      dispatch(setAdditionalAlerts(false))
       navigate('/signup/register-location/location-in-alert-area')
     } else {
       // location isnt in danger area

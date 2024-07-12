@@ -151,3 +151,21 @@
   padding: 10px;
   border-radius: 5px;
 }
+
+@media (max-width: 768px) {
+  .map-container {
+    height: 50vh;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .map-container {
+    height: 40vh;
+  }
+}
+
+@media (min-width: 1025px) {
+  .map-container {
+    height: 45vh;
+  }
+}

@@ -1,6 +1,6 @@
 const postCodeValidation = (postcode) => {
   if (!postcode) {
-    return 'Enter a postcode in England'
+    return 'Enter a postcode in England, in the correct format, like KT3 3QQ'
   }
 
   // Normalize input: remove any non-alphanumeric characters and extra spaces
@@ -17,9 +17,9 @@ const postCodeValidation = (postcode) => {
   if (postcodePattern.test(postcode)) {
     return ''
   } else if (partialPostcodePattern.test(postcode)) {
-    return 'Enter a full postcode in England'
+    return 'Enter a full postcode in England, in the correct format, like KT3 3QQ'
   } else {
-    return 'Enter a postcode in the correct format , like KT3 3QQ'
+    return 'Enter a postcode in the correct format, like KT3 3QQ'
   }
 }
 

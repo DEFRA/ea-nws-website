@@ -1,6 +1,13 @@
 import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useState } from 'react'
-import { GeoJSON, MapContainer, Marker, Popup, TileLayer } from 'react-leaflet'
+import {
+  GeoJSON,
+  MapContainer,
+  Marker,
+  Popup,
+  TileLayer,
+  ZoomControl
+} from 'react-leaflet'
 import { useSelector } from 'react-redux'
 import { getFloodTargetArea } from '../services/GetFloodTargetAreas'
 // Leaflet Marker Icon fix
@@ -44,10 +51,13 @@ export default function Map({ types }) {
       <MapContainer
         center={[selectedLocation.latitude, selectedLocation.longitude]}
         zoom={14}
-        style={{ height: '40vh', width: '100%' }}
-        scrollWheelZoom
+        //style={{ height: '40vh', width: '100%' }}
+        zoomControl={false}
+        attributionControl={false}
+        className="map-container"
       >
         <TileLayer url="https://api.os.uk/maps/raster/v1/zxy/Outdoor_3857/{z}/{x}/{y}.png?key=tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a" />
+        <ZoomControl position="bottomright" />
         <Marker
           position={[selectedLocation.latitude, selectedLocation.longitude]}
         >

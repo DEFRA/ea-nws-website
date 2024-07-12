@@ -25,6 +25,7 @@ export default function SignInValidatePage () {
   const [code, setCode] = useState('')
   const signinToken = location.state.signinToken
   const [codeResent, setCodeResent] = useState(false)
+  const [codeResentTime, setCodeResentTime] = useState(new Date())
   const dateTime = new Date()
   const [codeExpired, setCodeExpired] = useState(false)
   const loginEmail = useSelector((state) => state.session.profile.emails[0])
@@ -71,6 +72,7 @@ export default function SignInValidatePage () {
     }
 
     setCodeResent(true)
+    setCodeResentTime(new Date().toLocaleTimeString())
     setCodeExpired(false)
   }
 
@@ -88,7 +90,7 @@ export default function SignInValidatePage () {
                   <NotificationBanner
                     className='govuk-notification-banner govuk-notification-banner--success'
                     title='Success'
-                    text={'New code sent at ' + dateTime.toLocaleTimeString()}
+                    text={'New code sent at ' + codeResentTime}
                   />
                   }
               {error  && <ErrorSummary errorList={[error]} />}

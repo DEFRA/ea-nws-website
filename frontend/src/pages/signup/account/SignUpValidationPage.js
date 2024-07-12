@@ -22,7 +22,7 @@ export default function SignUpValidationPage () {
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
   const [codeResent, setCodeResent] = useState(false)
-  const dateTime = new Date()
+  const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
 
   const handleSubmit = async () => {
@@ -56,7 +56,6 @@ export default function SignUpValidationPage () {
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    setCodeResent(false)
 
     const data = { email: loginEmail }
     const { errorMessage } = await backendCall(
@@ -70,6 +69,7 @@ export default function SignUpValidationPage () {
     }
 
     setCodeResent(true)
+    setCodeResentTime(new Date().toLocaleTimeString())
     setCodeExpired(false)
   }
 
@@ -89,7 +89,7 @@ export default function SignUpValidationPage () {
                     <NotificationBanner
                       className='govuk-notification-banner govuk-notification-banner--success'
                       title='Success'
-                      text={'New code sent at ' + dateTime.toLocaleTimeString()}
+                      text={'New code sent at ' + codeResentTime}
                     />}
                     {error && <ErrorSummary errorList={[error]} />}
                     <h2 className='govuk-heading-l'>Check your email</h2>

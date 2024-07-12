@@ -76,9 +76,7 @@ export default function FeedbackPage () {
         <Link to='/signup' className='govuk-back-link'>
           Back
         </Link>
-        {error && textError && <ErrorSummary errorList={[error, textError]} />}
-        {textError && !error && <ErrorSummary errorList={[textError]} />}
-        {!textError && error && <ErrorSummary errorList={[error]} />}
+        {(error || textError) && (<ErrorSummary errorList={[error, textError]} />)}
         <h1 className='govuk-heading-l'>Give feedback about signing up</h1>
         <div className='govuk-body'>
           This helps us to improve this service

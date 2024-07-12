@@ -1,6 +1,8 @@
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import ValidateLandlineLayout from '../../../../common-layouts/landline/ValidateLandlineLayout'
+import SkipConfirmLayout from '../../../../common-layouts/skip-confirm/SkipConfirmLayout'
+
 export default function ValidateLandlinePhonePage() {
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
@@ -15,8 +17,10 @@ export default function ValidateLandlinePhonePage() {
     }
   }
 
-  const SkipValidation = () => {
-    navigate('/signup/contactpreferences/landline/skipconfirmation')
+  const SkipValidation = (homePhone) => {
+    <SkipConfirmLayout
+      contactPreference={homePhone}
+    />
   }
   const DifferentHomePhone = (homePhone) => {
     navigate('/signup/contactpreferences/landline/add', {

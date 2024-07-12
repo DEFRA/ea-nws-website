@@ -1,3 +1,5 @@
+import { faRotateLeft } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useState } from 'react'
 import {
@@ -6,7 +8,8 @@ import {
   Marker,
   Popup,
   TileLayer,
-  ZoomControl
+  ZoomControl,
+  useMap
 } from 'react-leaflet'
 import { useSelector } from 'react-redux'
 import { getFloodTargetArea } from '../services/GetFloodTargetAreas'
@@ -46,12 +49,37 @@ export default function Map({ types }) {
 
   L.Marker.prototype.options.icon = DefaultIcon
 
+  const ResetMapButton = () => {
+    const map = useMap()
+
+    const handleClick = () => {
+      map.setView([selectedLocation.latitude, selectedLocation.longitude], 14)
+    }
+
+    return (
+      <div
+        style={{
+          position: 'absolute',
+          bottom: '80px',
+          right: '12px',
+          zIndex: 1000,
+          background: 'white',
+          padding: '3px',
+          borderRadius: '5px',
+          cursor: 'pointer'
+        }}
+        onClick={handleClick}
+      >
+        <FontAwesomeIcon icon={faRotateLeft} size="2x" />
+      </div>
+    )
+  }
+
   return (
     <>
       <MapContainer
         center={[selectedLocation.latitude, selectedLocation.longitude]}
         zoom={14}
-        //style={{ height: '40vh', width: '100%' }}
         zoomControl={false}
         attributionControl={false}
         className="map-container"
@@ -69,6 +97,7 @@ export default function Map({ types }) {
         {alertArea && types.includes('alert') && (
           <GeoJSON data={alertArea} style={{ color: '#ffa200' }} />
         )}
+        <ResetMapButton />
       </MapContainer>
     </>
   )

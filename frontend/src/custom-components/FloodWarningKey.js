@@ -1,7 +1,6 @@
 import { faCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
-import '../custom.css'
 
 export default function FloodWarningKey({ type }) {
   return (

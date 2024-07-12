@@ -53,6 +53,13 @@ async function getSigninValidate(
           latitude: '50726037',
           longitude: '-3527489'
         }
+      },
+      {
+        address: 'Exmouth, United Kingdom',
+        coordinates: {
+          latitude: '50726037',
+          longitude: '-3527489'
+        }
       }
     ]
   }

@@ -2,6 +2,7 @@ import React from 'react'
 import Index from '../pages/Index'
 import ConfirmDeleteContactDetailsPage from '../pages/contact-details/ConfirmDeleteContactDetailsPage'
 import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
+import ConfirmDeleteSingleLocationPage from '../pages/contact-details/Locations/ConfirmDeleteSingleLocationPage'
 import AddEmailPage from '../pages/contact-details/add-contact-email/AddEmailPage'
 import AddEmailValidatePage from '../pages/contact-details/add-contact-email/AddEmailValidatePage'
 import AddLandlinePage from '../pages/contact-details/add-contact-landline/AddLandlinePage'
@@ -129,6 +130,14 @@ const contactRoutes = [
   }
 ]
 
+// contact routes
+const contactLocationRoutes = [
+  {
+    path: '/managelocations/remove',
+    component: <ConfirmDeleteSingleLocationPage />
+  }
+]
+
 export const routes = [
   ...indexRoutes,
   ...startRoutes,
@@ -141,5 +150,6 @@ export const routes = [
 export const authenticatedRoutes = [
   ...homeRoutes,
   ...contactRoutes,
-  ...signOutRoutes
+  ...signOutRoutes,
+  ...contactLocationRoutes
 ]

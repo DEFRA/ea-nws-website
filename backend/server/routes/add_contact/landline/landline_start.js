@@ -2,24 +2,12 @@ const { apiCall } = require('../../../services/ApiService')
 const {
   phoneValidation
 } = require('../../../services/validations/PhoneValidation')
-
-const apiLandlineStartCall = async (msisdn, auth) => {
-  const data = { msisdn, authToken: auth }
-  const validationError = phoneValidation(msisdn, 'mobileAndLandline')
-  try {
-    if (validationError === '') {
-      const response = await apiCall(data, 'member/verifyHomePhoneStart')
-      return response
-    } else {
-      return { status: 500, errorMessage: validationError }
-    }
-  } catch (error) {
-    return {
-      status: 500,
-      errorMessage: 'Oops, something happened!'
-    }
-  }
-}
+const {
+  createGenericErrorResponse
+} = require('../../../services/GenericErrorResponse')
+const {
+  normalisePhoneNumber
+} = require('../../../services/formatters/NormalisePhoneNumber')
 
 module.exports = [
   {
@@ -27,15 +15,29 @@ module.exports = [
     path: '/api/add_contact/landline/add',
     handler: async (request, h) => {
       try {
-        if (request.payload === null) {
-          return h.response({ message: 'Bad request' }).code(400)
+        if (!request.payload) {
+          return createGenericErrorResponse(h)
         }
+
         const { authToken, msisdn } = request.payload
-        const apiResponse = await apiLandlineStartCall(msisdn, authToken)
-        return h.response(apiResponse)
+        const error = phoneValidation(msisdn, 'mobileAndLandline')
+
+        if (!error && authToken) {
+          // ensure all phone numbers are formatted the same
+          const normalisedPhoneNumber = normalisePhoneNumber(msisdn)
+          const response = await apiCall(
+            { authToken: authToken, msisdn: normalisedPhoneNumber },
+            'member/verifyHomePhoneStart'
+          )
+          return h.response(response)
+        } else {
+          return h.response({
+            status: 500,
+            errorMessage: !error ? 'Oops, something happened!' : error
+          })
+        }
       } catch (error) {
-        console.error('Error:', error)
-        return h.response({ message: 'Internal server error' }).code(500)
+        return createGenericErrorResponse(h)
       }
     }
   }

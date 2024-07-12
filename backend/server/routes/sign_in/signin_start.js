@@ -1,29 +1,32 @@
 const { apiCall } = require('../../services/ApiService')
 const {
+  emailValidation
+} = require('../../services/validations/EmailValidation')
+const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/profile/update',
-
+    path: '/api/sign_in',
     handler: async (request, h) => {
       try {
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
 
-        const { authToken, profile } = request.payload
+        const { email } = request.payload
+        const error = emailValidation(email)
 
-        if (Object.keys(profile).length !== 0) {
-          const response = await apiCall(
-            { authToken: authToken, profile: profile },
-            'member/updateProfile'
-          )
+        if (!error) {
+          const response = await apiCall({ email: email }, 'member/signinStart')
           return h.response(response)
         } else {
-          createGenericErrorResponse(h)
+          return h.response({
+            status: 500,
+            errorMessage: error
+          })
         }
       } catch (error) {
         return createGenericErrorResponse(h)

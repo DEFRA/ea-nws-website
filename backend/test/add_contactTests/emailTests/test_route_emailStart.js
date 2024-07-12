@@ -23,7 +23,7 @@ lab.experiment('Route tests', () => {
         url: '/api/add_contact/email/add'
       }
       const response = await server.inject(options)
-      Code.expect(response.statusCode).to.equal(400)
+      Code.expect(response.result.status).to.equal(500)
     }
   )
 
@@ -47,6 +47,6 @@ lab.experiment('Route tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(200)
+    Code.expect(response.result.status).to.equal(200)
   })
 })

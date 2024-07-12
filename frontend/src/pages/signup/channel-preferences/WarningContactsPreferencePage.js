@@ -53,65 +53,67 @@ export default function WarningContactsPreferencePage () {
 
   return (
     <>
-      <Header />
-      <div className='govuk-width-container'>
-        <PhaseBanner />
-        <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
-            <Link to='signup/validate' className='govuk-back-link'>
-              Back
-            </Link>
-            {error
-              ? (
-                <ErrorSummary errorList={[error]} />
-                )
-              : (
-                <NotificationBanner
-                  className='govuk-notification-banner govuk-notification-banner--success'
-                  title='success'
-                  heading='Email address confirmed'
-                  text={loginEmail + ' is your sign in email'}
-                />
-                )}
-            <h1 className='govuk-heading-l'>
-              How would you like to get messages about flooding?
-            </h1>
-            <div
-              className={
-                error
-                  ? 'govuk-form-group govuk-form-group--error'
-                  : 'govuk-form-group'
-              }
-            >
-              <fieldset className='govuk-fieldset'>
-                <legend className='govuk-fieldset__legend'>
-                  Select at least one option
-                </legend>
-                {error && <p className='govuk-error-message'>{error}</p>}
-                <div className='govuk-radios' data-module='govuk-radios'>
-                  {contactOptions.map((preference) => (
-                    <Checkbox
-                      key={preference.value}
-                      label={preference.label}
-                      value={preference.value}
-                      checked={selectedContactPreferences.includes(
-                        preference.value
-                      )}
-                      onChange={handleContactPreferenceChange}
-                    />
-                  ))}
-                </div>
-              </fieldset>
+      <div className='page-container'>
+        <Header />
+        <div className='govuk-width-container body-container'>
+          <PhaseBanner />
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-two-thirds'>
+              <Link to='signup/validate' className='govuk-back-link'>
+                Back
+              </Link>
+              {error
+                ? (
+                  <ErrorSummary errorList={[error]} />
+                  )
+                : (
+                  <NotificationBanner
+                    className='govuk-notification-banner govuk-notification-banner--success'
+                    title='success'
+                    heading='Email address confirmed'
+                    text={loginEmail + ' is your sign in email'}
+                  />
+                  )}
+              <h1 className='govuk-heading-l'>
+                How would you like to get messages about flooding?
+              </h1>
+              <div
+                className={
+                  error
+                    ? 'govuk-form-group govuk-form-group--error'
+                    : 'govuk-form-group'
+                }
+              >
+                <fieldset className='govuk-fieldset'>
+                  <legend className='govuk-fieldset__legend'>
+                    Select at least one option
+                  </legend>
+                  {error && <p className='govuk-error-message'>{error}</p>}
+                  <div className='govuk-radios' data-module='govuk-radios'>
+                    {contactOptions.map((preference) => (
+                      <Checkbox
+                        key={preference.value}
+                        label={preference.label}
+                        value={preference.value}
+                        checked={selectedContactPreferences.includes(
+                          preference.value
+                        )}
+                        onChange={handleContactPreferenceChange}
+                      />
+                    ))}
+                  </div>
+                </fieldset>
+              </div>
+              <Button
+                text='Continue'
+                className='govuk-button'
+                onClick={handleSubmit}
+              />
             </div>
-            <Button
-              text='Continue'
-              className='govuk-button'
-              onClick={handleSubmit}
-            />
           </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   )
 }

@@ -59,7 +59,7 @@ async function getEmailValidate(
     ]
   }
   // 200 Success
-  if (authToken === 'MockAuthToken' && code !== '999999') {
+  if (authToken === 'MockAuthToken' && code != '999999') {
     return {
       profile: profile
     }

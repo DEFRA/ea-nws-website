@@ -13,6 +13,11 @@ import AddLandlinePage from '../pages/contact-details/add-contact-landline/AddLa
 import AddLandlineValidatePage from '../pages/contact-details/add-contact-landline/AddLandlineValidatePage'
 import AddMobilePage from '../pages/contact-details/add-contact-mobile/AddMobilePage'
 import AddMobileValidatePage from '../pages/contact-details/add-contact-mobile/AddMobileValidatePage'
+import AccessibilityStatementPage from '../pages/footer/AccessibilityStatementPage'
+import ContactUsPage from '../pages/footer/ContactUsPage'
+import CookiesPage from '../pages/footer/CookiesPage'
+import PrivacyNoticePage from '../pages/footer/PrivacyNoticePage'
+import TermsAndConditionsPage from '../pages/footer/TermsAndConditionsPage'
 import HomePage from '../pages/home/HomePage'
 import SignOutManuallyPage from '../pages/sign-out/SignOutManuallyPage'
 import SignBackInPage from '../pages/sign-out/signBackInPage'
@@ -107,6 +112,18 @@ const signupRoutes = [
   }
 ]
 
+// footer routes
+const footerRoutes = [
+  { path: '/contact', component: <ContactUsPage /> },
+  { path: '/privacy', component: <PrivacyNoticePage /> },
+  { path: '/cookies', component: <CookiesPage /> },
+  {
+    path: '/accessibility-statement',
+    component: <AccessibilityStatementPage />
+  },
+  { path: '/terms-and-conditions', component: <TermsAndConditionsPage /> }
+]
+
 // home
 const homeRoutes = [{ path: '/home', component: <HomePage /> }]
 
@@ -148,15 +165,13 @@ export const routes = [
   ...signupRoutes,
   ...signinRoutes,
   ...signupRoutes,
-  ...homeRoutes,
-  ...contactRoutes,
-  ...signOutRoutes,
-  ...accountRoutes,
-  ...signBackInRoutes
+  ...signBackInRoutes,
+  ...footerRoutes
 ]
 
 export const authenticatedRoutes = [
   ...homeRoutes,
   ...contactRoutes,
-  ...signOutRoutes
+  ...signOutRoutes,
+  ...accountRoutes,
 ]

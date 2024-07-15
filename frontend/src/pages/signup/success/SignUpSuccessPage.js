@@ -8,8 +8,9 @@ export default function SuccessPage () {
   //need to check for authToken
   return (
     <>
+    <div className='page-container'>
       <Header />
-      <div className='govuk-width-container'>
+      <div className='govuk-width-container body-container'>
         <PhaseBanner />
           <div className="govuk-grid-row">
             <div className="govuk-grid-column-two-thirds">
@@ -56,6 +57,7 @@ export default function SuccessPage () {
         </div>
       </div>
       <Footer />
+    </div>
     </>
   )
 }

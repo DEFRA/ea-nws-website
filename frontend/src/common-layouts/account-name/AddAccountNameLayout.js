@@ -11,18 +11,19 @@ import { setProfile } from '../../redux/userSlice'
 import { addAccountName } from '../../services/ProfileServices'
 import { fullNameValidation } from '../../services/validations/FullNameValidation'
 
-export default function AddAccountNameLayout({
+export default function AddAccountNameLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage,
   buttonText,
   changeName,
-  updateProfile
+  updateProfile,
+  profileError
 }) {
   const dispatch = useDispatch()
   const [error, setError] = useState('')
   const session = useSelector((state) => state.session)
   const authToken = session.authToken
-  const [fullName, setFullName] = useState(session.profile?.firstname+' '+session.profile?.lastname)
+  const [fullName, setFullName] = useState(session.profile?.firstname + ' ' + session.profile?.lastname)
 
   const handleSubmit = async () => {
     const validationError = fullNameValidation(fullName, 'fullName')
@@ -42,6 +43,7 @@ export default function AddAccountNameLayout({
 
       if (changeName) {
         updateProfile(profile, authToken)
+        setError(profileError)
       } else {
         NavigateToNextPage()
       }
@@ -55,49 +57,49 @@ export default function AddAccountNameLayout({
 
   return (
     <>
-      <div className="page-container">
+      <div className='page-container'>
         <Header />
-        <div className="govuk-width-container body-container">
+        <div className='govuk-width-container body-container'>
           <PhaseBanner />
           <Link onClick={navigateBack} className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
             Back
           </Link>
           <main className='govuk-main-wrapper govuk-!-padding-top-4'>
             <div className='govuk-grid-row'>
-            <div className="govuk-grid-column-two-thirds">
-              {error && <ErrorSummary errorList={[error]} />}
-              <h2 className="govuk-heading-l">
-                {changeName ? 'Change your name' : 'Enter your name'}
-              </h2>
-              <div className='govuk-body'>
+              <div className='govuk-grid-column-two-thirds'>
+                {error && <ErrorSummary errorList={[error]} />}
+                <h2 className='govuk-heading-l'>
+                  {changeName ? 'Change your name' : 'Enter your name'}
+                </h2>
+                <div className='govuk-body'>
                   <p className='govuk-body govuk-!-margin-bottom-5'>
                     We'll use this name if we need to contact you about your account.
                   </p>
-              <Input
-                inputType="text"
-                value={fullName}
-                name="Full name"
-                onChange={(val) => setFullName(val)}
-                error={error}
-                className="govuk-input govuk-input--width-20"
-                defaultValue={fullName}
-              />
-              <Button
-                text={buttonText}
-                className="govuk-button"
-                onClick={handleSubmit}
-              />
-              {changeName && (
-                <Link
-                to='/account'
-                className='govuk-body govuk-link inline-link'
-              >
-                Cancel
-              </Link>
-              )}
+                  <Input
+                    inputType='text'
+                    value={fullName}
+                    name='Full name'
+                    onChange={(val) => setFullName(val)}
+                    error={error}
+                    className='govuk-input govuk-input--width-20'
+                    defaultValue={fullName}
+                  />
+                  <Button
+                    text={buttonText}
+                    className='govuk-button'
+                    onClick={handleSubmit}
+                  />
+                  {changeName && (
+                    <Link
+                      to='/account'
+                      className='govuk-body govuk-link inline-link'
+                    >
+                      Cancel
+                    </Link>
+                  )}
+                </div>
+              </div>
             </div>
-          </div>
-          </div>
           </main>
         </div>
         <Footer />

@@ -30,7 +30,7 @@ export default function ChangeNamePage () {
       navigate('/account', {
         state: {
           changeName: true,
-          name: profile?.firstname+' '+profile?.lastname
+          name: profile?.firstname + ' ' + profile?.lastname
         }
       })
     }
@@ -40,8 +40,9 @@ export default function ChangeNamePage () {
     <AddAccountNameLayout
       NavigateToPreviousPage={NavigateToPreviousPage}
       buttonText='Save changes'
-      changeName={true}
+      changeName
       updateProfile={updateProfile}
+      profileError={error}
     />
   )
 }

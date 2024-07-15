@@ -25,7 +25,6 @@ export default function ChangeBusinessDetailsPage () {
   const [jobTitle, setJobTitle] = useState(getAdditionals(profile, 'jobTitle'))
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
     const { validationErrorBusiness, validationErrorJob } = businessDetailsValidation(businessName, jobTitle)
     setBusinessNameError(validationErrorBusiness)
     setJobTitleError(validationErrorJob)
@@ -56,7 +55,6 @@ export default function ChangeBusinessDetailsPage () {
     }
   }
 
-
   return (
     <>
       <div className='page-container'>
@@ -70,7 +68,7 @@ export default function ChangeBusinessDetailsPage () {
             <div className='govuk-grid-row'>
               <div className='govuk-grid-column-two-thirds'>
                 {(businessNameError || jobTitleError || error) && (
-                  <ErrorSummary 
+                  <ErrorSummary
                     errorList={[businessNameError, jobTitleError, error]}
                   />
                 )}

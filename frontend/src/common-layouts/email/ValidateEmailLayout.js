@@ -24,7 +24,8 @@ export default function ValidateEmailLayout ({
   NavigateToPreviousPage,
   buttonText,
   changeSignIn,
-  updateProfile
+  updateProfile,
+  profileError
 }) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -51,6 +52,7 @@ export default function ValidateEmailLayout ({
       } else {
         if (changeSignIn) {
           updateProfile(data.profile, authToken)
+          setError(profileError)
         } else {
           dispatch(setProfile(data.profile))
           NavigateToNextPage()
@@ -105,11 +107,11 @@ export default function ValidateEmailLayout ({
                 {error && <ErrorSummary errorList={[error]} />}
                 <h2 className='govuk-heading-l'>Check your email</h2>
                 <div className='govuk-body'>
-                {changeSignIn && (
-                  <p className='govuk-body'>
-                    You need to confirm your email address.
-                  </p>
-                )}
+                  {changeSignIn && (
+                    <p className='govuk-body'>
+                      You need to confirm your email address.
+                    </p>
+                  )}
                   <p className='govuk-body govuk-!-margin-bottom-5'>
                     We've sent an email with a code to:
                     <InsetText text={email} />
@@ -127,39 +129,39 @@ export default function ValidateEmailLayout ({
                     text={buttonText}
                     onClick={handleSubmit}
                   />
-                  {changeSignIn ? (
-                    <>
-                      <Link
-                        onClick={differentEmail}
-                        className='govuk-link inline-link'
-                      >
-                        Use a different email
-                      </Link>
-                      <br />
-                      <Link onClick={getNewCode} className='govuk-link'>
-                        Get a new code
-                      </Link>
-                    </>
-                  )
-                  :
-                  (
-                    <>
-                      <Link
-                        onClick={skipValidation}
-                        className='govuk-link inline-link'
-                      >
-                        Skip and confirm later
-                      </Link>
-                      <br />
-                      <Link onClick={getNewCode} className='govuk-link'>
-                        Get a new code
-                      </Link>
-                      <br /> <br />
-                      <Link onClick={differentEmail} className='govuk-link'>
-                        Enter a different email
-                      </Link>
-                    </>
-                  )}
+                  {changeSignIn
+                    ? (
+                      <>
+                        <Link
+                          onClick={differentEmail}
+                          className='govuk-link inline-link'
+                        >
+                          Use a different email
+                        </Link>
+                        <br />
+                        <Link onClick={getNewCode} className='govuk-link'>
+                          Get a new code
+                        </Link>
+                      </>
+                      )
+                    : (
+                      <>
+                        <Link
+                          onClick={skipValidation}
+                          className='govuk-link inline-link'
+                        >
+                          Skip and confirm later
+                        </Link>
+                        <br />
+                        <Link onClick={getNewCode} className='govuk-link'>
+                          Get a new code
+                        </Link>
+                        <br /> <br />
+                        <Link onClick={differentEmail} className='govuk-link'>
+                          Enter a different email
+                        </Link>
+                      </>
+                      )}
                 </div>
               </div>
             </div>

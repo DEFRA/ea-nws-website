@@ -29,14 +29,14 @@ export default function AccountPage () {
         'Job title: ' + ((location.state?.jobTitle) ? location.state?.jobTitle : '')
       ]
     : (location.state?.changeEmail)
-    ? location.state?.email + ' is your new email address to sign in with'
-    : (location.state?.changeName) && location.state?.name
+        ? location.state?.email + ' is your new email address to sign in with'
+        : (location.state?.changeName) && location.state?.name
 
-  const bannerHeading = (location.state?.changeBusinessDetails) 
-    ? 'Business details updated' 
+  const bannerHeading = (location.state?.changeBusinessDetails)
+    ? 'Business details updated'
     : (location.state?.changeEmail)
-    ? 'Email address updated'
-    : (location.state?.changeName) && 'Name updated'
+        ? 'Email address updated'
+        : (location.state?.changeName) && 'Name updated'
 
   return (
     <>

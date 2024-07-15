@@ -21,7 +21,6 @@ export default function ChangeEmailPage () {
   const authToken = session.authToken
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
     const validationError = emailValidation(email)
     setError(validationError)
     const dataToSend = { email, authToken }

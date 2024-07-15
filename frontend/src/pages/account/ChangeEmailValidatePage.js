@@ -46,7 +46,8 @@ export default function ChangeEmailValidationPage () {
       DifferentEmail={DifferentEmail}
       NavigateToPreviousPage={DifferentEmail}
       buttonText='Confirm email address'
-      changeSignIn={true}
+      changeSignIn
+      profileError={error}
       updateProfile={updateProfile}
     />
   )

@@ -133,7 +133,7 @@ const accountRoutes = [
   { path: '/account/change-business-details', component: <ChangeBusinessDetailsPage /> },
   { path: '/account/change-email', component: <ChangeEmailPage /> },
   { path: '/account/change-email/validate', component: <ChangeEmailValidationPage /> },
-  { path: '/account/change-name', component: <ChangeNamePage />}]
+  { path: '/account/change-name', component: <ChangeNamePage /> }]
 
 // contact routes
 const contactRoutes = [
@@ -173,5 +173,5 @@ export const authenticatedRoutes = [
   ...homeRoutes,
   ...contactRoutes,
   ...signOutRoutes,
-  ...accountRoutes,
+  ...accountRoutes
 ]

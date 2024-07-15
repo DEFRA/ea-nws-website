@@ -15,14 +15,14 @@ export default function SelectContactTypeToAddPage () {
   const [error, setError] = useState('')
   const contactPreferences = useSelector((state) => state.session.contactPreferences)
   const contactOptions = [
-    { label: 'Mobile Number (texts)', value: 'Mobile Number (texts)' },
     { label: 'Email Address', value: 'Email Address' },
+    { label: 'Mobile Number (texts)', value: 'Mobile Number (texts)' },
     { label: 'Telephone Number (phone calls)', value: 'Telephone Number (phone calls)' }
   ]
 
   const handleSubmit = () => {
     if (selectedContactType === '') {
-      setError('Select at least one way to get messages about flooding')
+      setError('Select type of contact you want to add')
     } else {      
       if (selectedContactType === 'Mobile Number (texts)') {
         if(!contactPreferences.includes('Mobile Number (texts)')){

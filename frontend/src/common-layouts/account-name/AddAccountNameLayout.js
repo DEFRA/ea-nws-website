@@ -23,7 +23,7 @@ export default function AddAccountNameLayout ({
   const [error, setError] = useState('')
   const session = useSelector((state) => state.session)
   const authToken = session.authToken
-  const [fullName, setFullName] = useState(session.profile?.firstname + ' ' + session.profile?.lastname)
+  const [fullName, setFullName] = useState(session.profile ? session.profile?.firstname + ' ' + session.profile?.lastname : '')
 
   const handleSubmit = async () => {
     const validationError = fullNameValidation(fullName, 'fullName')

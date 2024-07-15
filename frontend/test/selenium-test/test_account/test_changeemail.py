@@ -163,7 +163,7 @@ def test_changeemail_valid_valid_code(get_browser):
 
 def test_changeemail_valid_different_email(get_browser):
     browser = setup_changeemail_valid(get_browser)
-    different_xpath = f"//a[text()='Use a different email']"
+    different_xpath = f"//a[text()='Enter a different email']"
     different_element = browser.find_element(By.XPATH, different_xpath)
     browser.execute_script("arguments[0].click();", different_element)
     time.sleep(1)

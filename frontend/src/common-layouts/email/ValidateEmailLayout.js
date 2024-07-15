@@ -136,7 +136,7 @@ export default function ValidateEmailLayout ({
                           onClick={differentEmail}
                           className='govuk-link inline-link'
                         >
-                          Use a different email
+                          Enter a different email
                         </Link>
                         <br />
                         <Link onClick={getNewCode} className='govuk-link'>

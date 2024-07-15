@@ -10,7 +10,8 @@ export default function ChangeEmailValidationPage () {
   const dispatch = useDispatch()
   const [error, setError] = useState('')
 
-  const DifferentEmail = () => {
+  const DifferentEmail = (event) => {
+    event.preventDefault()
     navigate('/account/change-email')
   }
 

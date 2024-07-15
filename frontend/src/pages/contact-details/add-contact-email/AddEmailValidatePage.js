@@ -23,6 +23,7 @@ export default function AddEmailValidatePage () {
       NavigateToNextPage={NavigateToNextPage}
       SkipValidation={SkipValidation}
       DifferentEmail={DifferentEmail}
+      buttonText='Continue'
     />
   )
 }

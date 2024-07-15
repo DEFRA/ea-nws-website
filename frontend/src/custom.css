@@ -140,8 +140,12 @@
   width: 100%;
 }
 
-@media (min-width: 40.0625em) {
-  .timeout-dialog-link {
-    width: auto;
-  }
+@media (min-width: 40.0625em){
+    .timeout-dialog-link {
+        width:auto;
+    }
+}
+
+.row__header {
+    width: 12.75em
 }

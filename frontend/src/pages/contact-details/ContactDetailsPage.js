@@ -73,7 +73,7 @@ export default function ContactDetailsPage () {
           {location.state !== null && location.state.removedContact
             ? (
               <NotificationBanner
-                className='govuk-notification-banner govuk-notification-banner--success'
+                className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
                 title='Success'
                 heading={location.state.removedType + ' removed'}
                 text={location.state.removedContact}
@@ -83,7 +83,7 @@ export default function ContactDetailsPage () {
           {location.state !== null && location.state.unconfirmedtype
             ? (
               <NotificationBanner
-                className='govuk-notification-banner'
+                className='govuk-notification-banner govuk-!-margin-bottom-0 govuk-!-margin-top-4'
                 title='Important'
                 heading={
                 'We cannot send flood messages to ' +
@@ -102,8 +102,8 @@ export default function ContactDetailsPage () {
                 </h2>
                 <p className='govuk-body'>
                   We'll send flood messages for all your location to all these
-                  emails and numbers. You can add more for friends and family,
-                  if you wish.
+                  emails and numbers. You can add more for friends and family, if
+                  you wish.
                 </p>
                 <InsetText text='You must confirm each address and number before we can send flood messages to them.' />
                 <ContactDetailsTable

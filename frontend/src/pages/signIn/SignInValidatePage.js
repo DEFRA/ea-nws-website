@@ -27,7 +27,6 @@ export default function SignInValidatePage () {
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
-  const loginEmail = useSelector((state) => state.session.profile.emails[0])
 
   //if error remove code sent notification
   useEffect(() => {
@@ -63,7 +62,7 @@ export default function SignInValidatePage () {
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const data = { email: loginEmail}
+    const data = { email: location.state.email}
     const { errorMessage } = await backendCall(data, 'api/sign_in', navigate)
 
     if (errorMessage !== null) {
@@ -96,7 +95,7 @@ export default function SignInValidatePage () {
               <h2 class='govuk-heading-l'>Check your email</h2>
               <div class='govuk-body'>
                 We've sent a code to:
-                <InsetText text={loginEmail} />
+                <InsetText text={location.state.email} />
                 <Input
                   name='Enter code'
                   inputType='text'

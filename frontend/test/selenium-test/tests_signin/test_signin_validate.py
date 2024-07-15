@@ -48,6 +48,7 @@ def test_SignInValidate_incorrectFormatCode(get_browser):
     assert browser.current_url == url
 
 def test_SignInValidate_invalidCode(get_browser):
+    #this will fail until expored code gets its own response code
     browser = get_browser
     browser.get(previous_url)
     browser.find_element(By.NAME, "Email address").send_keys("valid@email.uk")

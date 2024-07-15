@@ -38,6 +38,7 @@ import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobi
 import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
 import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
+import SignUpSuccessPage from '../pages/signup/success/SignUpSuccessPage'
 
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
@@ -109,6 +110,10 @@ const signupRoutes = [
   {
     path: '/signup/duplicate',
     component: <SignUpDuplicateEmailPage />
+  },
+  {
+    path: '/signup/success',
+    component: <SignUpSuccessPage />
   }
 ]
 

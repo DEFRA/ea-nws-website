@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
@@ -26,9 +26,13 @@ export default function SignInValidatePage () {
   const signinToken = location.state.signinToken
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
-  const dateTime = new Date()
   const [codeExpired, setCodeExpired] = useState(false)
   const loginEmail = useSelector((state) => state.session.profile.emails[0])
+
+  //if error remove code sent notification
+  useEffect(() => {
+    setCodeResent(false)
+  }, [error])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -41,6 +45,7 @@ export default function SignInValidatePage () {
         dataToSend,
         'api/sign_in_validate'
       )
+
       if (errorMessage !== null) {
         if (errorMessage === 'The code you have entered has expired - please request a new code') {
           setCodeExpired(true)
@@ -60,7 +65,6 @@ export default function SignInValidatePage () {
     event.preventDefault()
     const data = { email: loginEmail}
     const { errorMessage } = await backendCall(data, 'api/sign_in', navigate)
-    setCodeResent(false)
 
     if (errorMessage !== null) {
       setError(errorMessage)
@@ -87,7 +91,7 @@ export default function SignInValidatePage () {
                     title='Success'
                     text={'New code sent at ' + codeResentTime}
                   />
-                  }
+              }
               {error  && <ErrorSummary errorList={[error]} />}
               <h2 class='govuk-heading-l'>Check your email</h2>
               <div class='govuk-body'>
@@ -96,6 +100,7 @@ export default function SignInValidatePage () {
                 <Input
                   name='Enter code'
                   inputType='text'
+                  value={code}
                   error={error}
                   onChange={(val) => setCode(val)}
                 />
@@ -112,7 +117,7 @@ export default function SignInValidatePage () {
             </div>
             <Footer />
           </div>
-          )}
+        )}
     </>
   )
 }

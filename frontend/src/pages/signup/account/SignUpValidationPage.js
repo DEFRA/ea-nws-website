@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
@@ -24,6 +24,11 @@ export default function SignUpValidationPage() {
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
+
+  //if error remove code sent notification
+  useEffect(() => {
+    setCodeResent(false)
+  }, [error])
 
   const handleSubmit = async () => {
     const validationError = authCodeValidation(code)
@@ -56,7 +61,6 @@ export default function SignUpValidationPage() {
 
   const getNewCode = async (event) => {
     event.preventDefault()
-
     const data = { email: loginEmail }
     const { errorMessage } = await backendCall(
       data,

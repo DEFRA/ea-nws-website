@@ -5,6 +5,7 @@ import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 import ConfirmationPanel from '../../../gov-uk-components/Panel'
 
 export default function SuccessPage () {
+  //need to check for authToken
   return (
     <>
       <Header />

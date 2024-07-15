@@ -93,54 +93,56 @@ export default function ChangeEmailValidationPage () {
 
   return (
     <>
-      <Header />
-      <div className='govuk-width-container'>
-        <PhaseBanner />
-        <Link onClick={differentEmail} className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
-          Back
-        </Link>
-        <main className='govuk-main-wrapper'>
-          <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-two-thirds'>
-              {error && <ErrorSummary errorList={[error]} />}
-              <h2 className='govuk-heading-l'>Check your email</h2>
-              <div className='govuk-body'>
-                <p className='govuk-body'>
-                  You need to confirm your email address.
-                </p>
-                <p className='govuk-body govuk-!-margin-bottom-5'>
-                  We've sent an email with a code to:
-                  <InsetText text={email} />
-                  Enter the code within 4 hours or it will expire.
-                </p>
-                <Input
-                  className='govuk-input govuk-input--width-10'
-                  name='Enter code'
-                  inputType='text'
-                  error={error}
-                  onChange={(val) => setCode(val)}
-                />
-                <Button
-                  className='govuk-button'
-                  text='Confirm email address'
-                  onClick={handleSubmit}
-                />
-                <Link
-                  onClick={differentEmail}
-                  className='govuk-link inline-link'
-                >
-                  Use a different email
-                </Link>
-                <br />
-                <Link onClick={getNewCode} className='govuk-link'>
-                  Get a new code
-                </Link>
+      <div className='page-container'>
+        <Header />
+        <div className='govuk-width-container body-container'>
+          <PhaseBanner />
+          <Link onClick={differentEmail} className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
+            Back
+          </Link>
+          <main className='govuk-main-wrapper'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-two-thirds'>
+                {error && <ErrorSummary errorList={[error]} />}
+                <h2 className='govuk-heading-l'>Check your email</h2>
+                <div className='govuk-body'>
+                  <p className='govuk-body'>
+                    You need to confirm your email address.
+                  </p>
+                  <p className='govuk-body govuk-!-margin-bottom-5'>
+                    We've sent an email with a code to:
+                    <InsetText text={email} />
+                    Enter the code within 4 hours or it will expire.
+                  </p>
+                  <Input
+                    className='govuk-input govuk-input--width-10'
+                    name='Enter code'
+                    inputType='text'
+                    error={error}
+                    onChange={(val) => setCode(val)}
+                  />
+                  <Button
+                    className='govuk-button'
+                    text='Confirm email address'
+                    onClick={handleSubmit}
+                  />
+                  <Link
+                    onClick={differentEmail}
+                    className='govuk-link inline-link'
+                  >
+                    Use a different email
+                  </Link>
+                  <br />
+                  <Link onClick={getNewCode} className='govuk-link'>
+                    Get a new code
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
-        </main>
+          </main>
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   )
 }

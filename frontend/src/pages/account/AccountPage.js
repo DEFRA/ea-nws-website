@@ -2,12 +2,12 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import AccountNavigation from '../../custom-components/AccountNavigation'
-import '../../custom.css'
 import Button from '../../gov-uk-components/Button'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
+import { getAdditionals } from '../../services/ProfileServices'
 
 export default function AccountPage () {
   const location = useLocation()
@@ -15,15 +15,6 @@ export default function AccountPage () {
   const navigate = useNavigate()
   const handleButton = () => {
     navigate('/account/delete')
-  }
-
-  const getAdditionals = (profile, id) => {
-    for (let i = 0; i < profile.additionals.length; i++) {
-      if (profile.additionals[i].id === id) {
-        return profile.additionals[i].value
-      }
-    }
-    return ''
   }
 
   const profile = useSelector((state) => state.session.profile)
@@ -49,91 +40,93 @@ export default function AccountPage () {
 
   return (
     <>
-      <Header />
-      <div className='govuk-width-container'>
-        <PhaseBanner />
-        <AccountNavigation currentPage={useLocation().pathname} />
-        {location.state !== null
-          ? (
-            <NotificationBanner
-              className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
-              title='Success'
-              heading={bannerHeading}
-              text={bannerText}
-            />
-            )
-          : null}
-        <main className='govuk-main-wrapper'>
-          <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-full'>
-              <h1 className='govuk-heading-l'>Manage your account</h1>
-              <div className='govuk-body'>
-                <h2 className='govuk-heading-m'>Your account details</h2>
-                <table className='govuk-table'>
-                  <tbody className='govuk-table__body'>
-                    <tr className='govuk-table__row'>
-                      <th scope='row' className='govuk-table__header row__header'>Name</th>
-                      <td className='govuk-table__cell'>{name}</td>
-                      <td className='govuk-table__cell govuk-!-text-align-right'>
-                        <Link
-                          to='/account/change-name'
-                          className='govuk-link'
-                        >
-                          Change
-                        </Link>
-                      </td>
-                    </tr>
-                    <tr className='govuk-table__row'>
-                      <th scope='row' className='govuk-table__header row__header'>Sign in email</th>
-                      <td className='govuk-table__cell'>{email}</td>
-                      <td className='govuk-table__cell govuk-!-text-align-right'>
-                        <Link
-                          to='/account/change-email'
-                          className='govuk-link'
-                        >
-                          Change
-                        </Link>
-                      </td>
-                    </tr>
-                    <tr className='govuk-table__row'>
-                      <th scope='row' className='govuk-table__header row__header'>Business name (optional)</th>
-                      <td className='govuk-table__cell'>{businessName}</td>
-                      <td className='govuk-table__cell govuk-!-text-align-right'>
-                        <Link
-                          to='/account/change-business-details'
-                          className='govuk-link'
-                        >
-                          {(businessName === '') ? 'Add' : 'Change'}
-                        </Link>
-                      </td>
-                    </tr>
-                    <tr className='govuk-table__row'>
-                      <th scope='row' className='govuk-table__header row__header'>Job title (optional)</th>
-                      <td className='govuk-table__cell'>{jobTitle}</td>
-                      <td className='govuk-table__cell govuk-!-text-align-right'>
-                        <Link
-                          to='/account/change-business-details'
-                          className='govuk-link'
-                        >
-                          {(jobTitle === '') ? 'Add' : 'Change'}
-                        </Link>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <h2 className='govuk-heading-m govuk-!-margin-bottom-6'>Delete your account</h2>
-                <p className='govuk-body govuk-!-margin-bottom-6'>If you no longer want to receive any flood messages, you can delete your account.</p>
-                <Button
-                  text='Delete your account'
-                  className='govuk-button govuk-button--warning'
-                  onClick={handleButton}
-                />
+      <div className='page-container'>
+        <Header />
+        <div className='govuk-width-container body-container'>
+          <PhaseBanner />
+          <AccountNavigation currentPage={useLocation().pathname} />
+          {location.state !== null
+            ? (
+              <NotificationBanner
+                className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
+                title='Success'
+                heading={bannerHeading}
+                text={bannerText}
+              />
+              )
+            : null}
+          <main className='govuk-main-wrapper'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-full'>
+                <h1 className='govuk-heading-l'>Manage your account</h1>
+                <div className='govuk-body'>
+                  <h2 className='govuk-heading-m'>Your account details</h2>
+                  <table className='govuk-table'>
+                    <tbody className='govuk-table__body'>
+                      <tr className='govuk-table__row'>
+                        <th scope='row' className='govuk-table__header row__header'>Name</th>
+                        <td className='govuk-table__cell'>{name}</td>
+                        <td className='govuk-table__cell govuk-!-text-align-right'>
+                          <Link
+                            to='/account/change-name'
+                            className='govuk-link'
+                          >
+                            Change
+                          </Link>
+                        </td>
+                      </tr>
+                      <tr className='govuk-table__row'>
+                        <th scope='row' className='govuk-table__header row__header'>Sign in email</th>
+                        <td className='govuk-table__cell'>{email}</td>
+                        <td className='govuk-table__cell govuk-!-text-align-right'>
+                          <Link
+                            to='/account/change-email'
+                            className='govuk-link'
+                          >
+                            Change
+                          </Link>
+                        </td>
+                      </tr>
+                      <tr className='govuk-table__row'>
+                        <th scope='row' className='govuk-table__header row__header'>Business name (optional)</th>
+                        <td className='govuk-table__cell'>{businessName}</td>
+                        <td className='govuk-table__cell govuk-!-text-align-right'>
+                          <Link
+                            to='/account/change-business-details'
+                            className='govuk-link'
+                          >
+                            {(businessName === '') ? 'Add' : 'Change'}
+                          </Link>
+                        </td>
+                      </tr>
+                      <tr className='govuk-table__row'>
+                        <th scope='row' className='govuk-table__header row__header'>Job title (optional)</th>
+                        <td className='govuk-table__cell'>{jobTitle}</td>
+                        <td className='govuk-table__cell govuk-!-text-align-right'>
+                          <Link
+                            to='/account/change-business-details'
+                            className='govuk-link'
+                          >
+                            {(jobTitle === '') ? 'Add' : 'Change'}
+                          </Link>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                  <h2 className='govuk-heading-m govuk-!-margin-bottom-6'>Delete your account</h2>
+                  <p className='govuk-body govuk-!-margin-bottom-6'>If you no longer want to receive any flood messages, you can delete your account.</p>
+                  <Button
+                    text='Delete your account'
+                    className='govuk-button govuk-button--warning'
+                    onClick={handleButton}
+                  />
+                </div>
               </div>
             </div>
-          </div>
-        </main>
+          </main>
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   )
 }

@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import '../../custom.css'
 import Button from '../../gov-uk-components/Button'
 import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
@@ -65,49 +64,51 @@ export default function ChangeNamePage () {
 
   return (
     <>
-      <Header />
-      <div className='govuk-width-container'>
-        <PhaseBanner />
-        <Link to='/account' className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
-          Back
-        </Link>
-        <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-          <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-full'>
-              {error && <ErrorSummary errorList={[error]} />}
-              <h2 className='govuk-heading-l'>
-                Change your name
-              </h2>
-              <div className='govuk-body'>
-                <p className='govuk-body govuk-!-margin-bottom-5'>
-                  We'll use this name if we need to contact you about your account.
-                </p>
-                <Input
-                  className='govuk-input govuk-!-width-one-half'
-                  inputType='text'
-                  name='Full name'
-                  error={error}
-                  onChange={(val) => setFullName(val)}
-                  defaultValue={fullName}
-                />
-                <Button
-                  className='govuk-button'
-                  text='Save changes'
-                  onClick={handleSubmit}
-                />
-                <Link
-                  to='/account'
-                  className='govuk-body govuk-link inline-link'
-                >
-                  Cancel
-                </Link>
-                <br />
+      <div className='page-container'>
+        <Header />
+        <div className='govuk-width-container body-container'>
+          <PhaseBanner />
+          <Link to='/account' className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
+            Back
+          </Link>
+          <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-full'>
+                {error && <ErrorSummary errorList={[error]} />}
+                <h2 className='govuk-heading-l'>
+                  Change your name
+                </h2>
+                <div className='govuk-body'>
+                  <p className='govuk-body govuk-!-margin-bottom-5'>
+                    We'll use this name if we need to contact you about your account.
+                  </p>
+                  <Input
+                    className='govuk-input govuk-!-width-one-half'
+                    inputType='text'
+                    name='Full name'
+                    error={error}
+                    onChange={(val) => setFullName(val)}
+                    defaultValue={fullName}
+                  />
+                  <Button
+                    className='govuk-button'
+                    text='Save changes'
+                    onClick={handleSubmit}
+                  />
+                  <Link
+                    to='/account'
+                    className='govuk-body govuk-link inline-link'
+                  >
+                    Cancel
+                  </Link>
+                  <br />
+                </div>
               </div>
             </div>
-          </div>
-        </main>
+          </main>
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   )
 }

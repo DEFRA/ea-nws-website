@@ -136,10 +136,34 @@ const addAccountName = (profile, firstName, lastName) => {
   return updatedProfile
 }
 
+const getAdditionals = (profile, id) => {
+  for (let i = 0; i < profile.additionals.length; i++) {
+    if (profile.additionals[i].id === id) {
+      return profile.additionals[i].value
+    }
+  }
+  return ''
+}
+
+const updateAdditionals = (profile, id, value) => {
+  let idFound = false
+  for (let i = 0; i < profile.additionals.length; i++) {
+    if (profile.additionals[i].id === id) {
+      profile.additionals[i].value = value
+      idFound = true
+    }
+  }
+  if (!idFound) {
+    profile.additionals.push({ id, value })
+  }
+}
+
 module.exports = {
   addUnverifiedContact,
   removeUnverifiedContact,
   addVerifiedContact,
   removeVerifiedContact,
-  addAccountName
+  addAccountName,
+  getAdditionals,
+  updateAdditionals
 }

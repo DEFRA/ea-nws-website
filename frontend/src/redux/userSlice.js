@@ -27,6 +27,7 @@ const userSlice = createSlice({
     },
     clearAuth: (state) => {
       state.authToken = null
+      state.registerToken = null
       state.profile = null
       state.contactPreferences = null
       state.registrations = null

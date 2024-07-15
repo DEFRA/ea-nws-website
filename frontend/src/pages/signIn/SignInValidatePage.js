@@ -39,7 +39,7 @@ export default function SignInValidatePage () {
       const dataToSend = { signinToken, code }
       const { errorMessage, data } = await backendCall(
         dataToSend,
-        'api/signInValidate'
+        'api/sign_in_validate'
       )
       if (errorMessage !== null) {
         if (errorMessage === 'The code you have entered has expired - please request a new code') {
@@ -58,14 +58,9 @@ export default function SignInValidatePage () {
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    setCodeResent(false)
-
     const data = { email: loginEmail}
-    const { errorMessage } = await backendCall(
-      data,
-      'api/signInStart',
-      navigate
-    )
+    const { errorMessage } = await backendCall(data, 'api/sign_in', navigate)
+    setCodeResent(false)
 
     if (errorMessage !== null) {
       setError(errorMessage)
@@ -81,9 +76,9 @@ export default function SignInValidatePage () {
       {codeExpired
         ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
         : (
-          <div>
+          <div className='page-container'>
             <Header />
-            <div class='govuk-width-container'>
+            <div class='govuk-width-container body-container'>
               <Link to='/signin' className='govuk-back-link'>Back</Link>
               {codeResent
                 &&

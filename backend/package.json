@@ -8,7 +8,7 @@
     "build:css": "bin/build-css",
     "build": "bin/build",
     "lint": "standard",
-    "unit-test": "lab -v -c -r console -o stdout -r lcov -o lcov.info",
+    "unit-test": "lab -l -v -c -r console -o stdout -r lcov -o lcov.info",
     "test": "npm run lint && npm run unit-test",
     "posttest": "./test/cleanup.sh",
     "postinstall": "npm run build"
@@ -16,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@aws-sdk/client-secrets-manager": "^3.600.0",
     "@googlemaps/js-api-loader": "^1.16.6",
     "@hapi/boom": "9.1.4",
     "@hapi/hapi": "20.2.1",

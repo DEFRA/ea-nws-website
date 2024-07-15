@@ -10,6 +10,7 @@ const updateProfileHandler = require('./handlers/updateProfile/updateProfileHand
 const mobileAuthenticationHandler = require('./handlers/contact/mobile/mobileAuthenticationHandlers')
 const homePhoneAuthenticationHandlers = require('./handlers/contact/homephone/homephoneAuthenticationHandlers')
 const emailAuthenticationHandlers = require('./handlers/contact/email/emailAuthenticationHandlers')
+const registerToPartnerHandler = require('./handlers/partner/registerToPartnerHandler')
 // define api
 const api = new OpenAPIBackend({
   definition: './openapi/index.yaml',
@@ -26,11 +27,13 @@ const api = new OpenAPIBackend({
     //homephone authentication
     getHomephoneStart: homePhoneAuthenticationHandlers.getHomephoneStart,
     getHomephoneValidate: homePhoneAuthenticationHandlers.getHomephoneValidate,
-
     //sign in routes
     getSignInStart: signInHandlers.getSigninStart,
     getSignInValidate: signInHandlers.getSigninValidate,
-    getUpdateProfile: updateProfileHandler.getUpdateProfile
+    //update profile routes
+    getUpdateProfile: updateProfileHandler.getUpdateProfile,
+    //partner routes
+    getRegisterToPartner: registerToPartnerHandler.getRegisterToPartner
   }
 })
 

@@ -14,7 +14,7 @@ import { authCodeValidation } from '../../../services/validations/AuthCodeValida
 import NotificationBanner from '../../../gov-uk-components/NotificationBanner'
 import ExpiredCodeLayout from '../../../common-layouts/expired-code/ExpiredCodeLayout'
 
-export default function SignUpValidationPage () {
+export default function SignUpValidationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const registerToken = useSelector((state) => state.session.registerToken)
@@ -37,7 +37,7 @@ export default function SignUpValidationPage () {
 
       const { data, errorMessage } = await backendCall(
         dataToSend,
-        'api/signupValidate',
+        'api/sign_up_validate',
         navigate
       )
 
@@ -60,7 +60,7 @@ export default function SignUpValidationPage () {
     const data = { email: loginEmail }
     const { errorMessage } = await backendCall(
       data,
-      'api/signupStart',
+      'api/sign_up_start',
       navigate
     )
 
@@ -78,9 +78,9 @@ export default function SignUpValidationPage () {
       {codeExpired
         ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
         : (
-          <div>
+          <div className="page-container">
             <Header />
-            <div className='govuk-width-container'>
+            <div className='govuk-width-container body-container'>
               <PhaseBanner />
                 <div className="govuk-grid-row">
                   <div className="govuk-grid-column-two-thirds">

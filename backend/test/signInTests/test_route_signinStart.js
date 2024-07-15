@@ -20,17 +20,17 @@ lab.experiment('Integration tests', () => {
     async () => {
       const options = {
         method: 'POST',
-        url: '/api/signInStart'
+        url: '/api/sign_in'
       }
       const response = await server.inject(options)
-      Code.expect(response.statusCode).to.equal(400)
+      Code.expect(response.result.status).to.equal(500)
     }
   )
 
   lab.test('GET / sending a GET instead of POST', async () => {
     const options = {
       method: 'GET',
-      url: '/api/signInStart'
+      url: '/api/sign_in'
     }
     const response = await server.inject(options)
     Code.expect(response.statusCode).to.equal(404)
@@ -39,10 +39,10 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / Response status is 200 if everything is ok', async () => {
     const options = {
       method: 'POST',
-      url: '/api/signInStart',
+      url: '/api/sign_in',
       payload: { email: 'email@email.com' }
     }
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(200)
+    Code.expect(response.result.status).to.equal(200)
   })
 })

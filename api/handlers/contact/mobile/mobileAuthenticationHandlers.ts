@@ -9,6 +9,7 @@ async function getMobileStart(
 ) {
   const { authToken } = req.payload as { authToken: string }
   const { msisdn } = req.payload as { msisdn: string }
+  console.log(msisdn)
   // 200 Success
   if (authToken === 'MockAuthToken') {
     if (msisdn === '+447000000000') {
@@ -44,13 +45,15 @@ async function getMobileValidate(
       mobilePhones: [],
       homePhones: []
     },
-    pois: {
-      address: 'Exeter, United Kingdom',
-      coordinates: {
-        latitude: '50726037',
-        longitude: '-3527489'
+    pois: [
+      {
+        address: 'Exeter, United Kingdom',
+        coordinates: {
+          latitude: '50726037',
+          longitude: '-3527489'
+        }
       }
-    }
+    ]
   }
   // 200 Success
   if (authToken === 'MockAuthToken' && code !== '999999') {

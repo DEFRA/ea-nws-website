@@ -1,5 +1,6 @@
 const joi = require('@hapi/joi')
 const envs = ['dev', 'test', 'prod']
+const getSecretKeyValue = require('./services/SecretsManager')
 
 // Define config schema
 const schema = joi.object().keys({
@@ -10,21 +11,25 @@ const schema = joi.object().keys({
     .default(envs[0])
 })
 
-// Build config
-const config = {
-  port: process.env.PORT,
-  env: process.env.NODE_ENV
+const config = async () => {
+  // Build config
+  const config = {
+    port: await getSecretKeyValue('nws/website', 'backendPort'),
+    env: await getSecretKeyValue('nws/website', 'environment')
+  }
+
+  // Validate config
+  const { error, value } = schema.validate(config)
+
+  // Throw if config is invalid
+  if (error) {
+    throw new Error(`The server config is invalid. ${error.message}`)
+  }
+
+  // Add some helper props
+  value.isDev = value.env === 'dev'
+
+  return value
 }
 
-// Validate config
-const { error, value } = schema.validate(config)
-
-// Throw if config is invalid
-if (error) {
-  throw new Error(`The server config is invalid. ${error.message}`)
-}
-
-// Add some helper props
-value.isDev = value.env === 'dev'
-
-module.exports = value
+module.exports = config

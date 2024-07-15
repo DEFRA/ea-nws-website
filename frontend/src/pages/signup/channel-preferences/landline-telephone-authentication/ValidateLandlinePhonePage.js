@@ -11,8 +11,7 @@ export default function ValidateLandlinePhonePage () {
     } else if (session.contactPreferences.includes('Mobile')) {
       navigate('/signup/contactpreferences/mobile/add')
     } else {
-      // To change following updated flow
-      navigate('/managecontacts')
+      navigate('/signup/accountname/add')
     }
   }
 
@@ -28,6 +27,10 @@ export default function ValidateLandlinePhonePage () {
   }
 
   return (
-    <ValidateLandlineLayout NavigateToNextPage={NavigateToNextPage} SkipValidation={SkipValidation} DifferentHomePhone={DifferentHomePhone} />
+    <ValidateLandlineLayout
+      NavigateToNextPage={NavigateToNextPage}
+      SkipValidation={SkipValidation}
+      DifferentHomePhone={DifferentHomePhone}
+    />
   )
 }

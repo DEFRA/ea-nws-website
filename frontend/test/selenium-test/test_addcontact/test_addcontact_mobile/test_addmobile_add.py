@@ -12,8 +12,12 @@ nextPage = "http://localhost:3000/managecontacts/validate-mobile"
 def setup_addmobile_test(get_browser):
     browser = get_browser
     browser.get(index)
-    browser.find_element(By.CLASS_NAME, "govuk-button").click()
-    browser.find_element(By.LINK_TEXT, "Manage Contacts page").click()
+    button_xpath = f"//button[text()='Activate/Deactivate Mock Session 1']"
+    mock_session_link = browser.find_element(By.XPATH, button_xpath)
+    browser.execute_script("arguments[0].click();", mock_session_link)
+    link_xpath = f"//a[text()='Manage Contacts page']"
+    link_link = browser.find_element(By.XPATH, link_xpath)
+    browser.execute_script("arguments[0].click();", link_link)
     time.sleep(1)
     button_xpath = f"//button[text()='Add a mobile telephone number']"
     add_mobile_link = browser.find_element(By.XPATH, button_xpath)

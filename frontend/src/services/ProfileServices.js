@@ -123,9 +123,23 @@ const removeVerifiedContact = (profile, contact) => {
   return updatedProfile
 }
 
+const addAccountName = (profile, firstName, lastName) => {
+  profile.firstName = firstName
+  profile.lastName = lastName
+
+  const updatedProfile = {
+    ...profile,
+    firstName,
+    lastName
+  }
+
+  return updatedProfile
+}
+
 module.exports = {
   addUnverifiedContact,
   removeUnverifiedContact,
   addVerifiedContact,
-  removeVerifiedContact
+  removeVerifiedContact,
+  addAccountName
 }

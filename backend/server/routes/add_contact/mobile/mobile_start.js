@@ -1,25 +1,13 @@
 const { apiCall } = require('../../../services/ApiService')
 const {
+  createGenericErrorResponse
+} = require('../../../services/GenericErrorResponse')
+const {
   phoneValidation
 } = require('../../../services/validations/PhoneValidation')
-
-const apiMobileStartCall = async (msisdn, auth) => {
-  const data = { msisdn, authToken: auth }
-  const validationError = phoneValidation(msisdn, 'mobile')
-  try {
-    if (validationError === '') {
-      const response = await apiCall(data, 'member/verifyMobilePhoneStart')
-      return response
-    } else {
-      return { status: 500, errorMessage: validationError }
-    }
-  } catch (error) {
-    return {
-      status: 500,
-      errorMessage: 'Oops, something happened!'
-    }
-  }
-}
+const {
+  normalisePhoneNumber
+} = require('../../../services/formatters/NormalisePhoneNumber')
 
 module.exports = [
   {
@@ -27,15 +15,29 @@ module.exports = [
     path: '/api/add_contact/mobile/add',
     handler: async (request, h) => {
       try {
-        if (request.payload === null) {
-          return h.response({ message: 'Bad request' }).code(400)
+        if (!request.payload) {
+          return createGenericErrorResponse(h)
         }
+
         const { authToken, msisdn } = request.payload
-        const apiResponse = await apiMobileStartCall(msisdn, authToken)
-        return h.response(apiResponse)
+        const error = phoneValidation(msisdn, 'mobile')
+
+        if (!error && authToken) {
+          // ensure all phone numbers are formatted the same
+          const normalisedPhoneNumber = normalisePhoneNumber(msisdn)
+          const response = await apiCall(
+            { authToken: authToken, msisdn: normalisedPhoneNumber },
+            'member/verifyMobilePhoneStart'
+          )
+          return h.response(response)
+        } else {
+          return h.response({
+            status: 500,
+            errorMessage: !error ? 'Oops, something happened!' : error
+          })
+        }
       } catch (error) {
-        console.error('Error:', error)
-        return h.response({ message: 'Internal server error' }).code(500)
+        return createGenericErrorResponse(h)
       }
     }
   }

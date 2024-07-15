@@ -7,7 +7,11 @@ export default function AddMobilePage () {
     navigate('/managecontacts/validate-mobile')
   }
 
+  const NavigateToPreviousPage = () => {
+    navigate('/managecontacts')
+  }
+
   return (
-    <AddMobileLayout NavigateToNextPage={NavigateToNextPage} />
+    <AddMobileLayout NavigateToNextPage={NavigateToNextPage} NavigateToPreviousPage={NavigateToPreviousPage} />
   )
 }

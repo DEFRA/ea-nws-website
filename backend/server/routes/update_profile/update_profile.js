@@ -1,4 +1,7 @@
 const { apiCall } = require('../../services/ApiService')
+const {
+  createGenericErrorResponse
+} = require('../../services/GenericErrorResponse')
 
 module.exports = [
   {
@@ -7,23 +10,23 @@ module.exports = [
 
     handler: async (request, h) => {
       try {
-        const { profile } = request.payload
-        // check profile is not empty - this should never happen
-        // as a profile should always be passed to this route
+        if (!request.payload) {
+          return createGenericErrorResponse(h)
+        }
+
+        const { authToken, profile } = request.payload
+
         if (Object.keys(profile).length !== 0) {
           const response = await apiCall(
-            request.payload,
+            { authToken: authToken, profile: profile },
             'member/updateProfile'
           )
           return h.response(response)
         } else {
-          return h.response({ status: 400 })
+          createGenericErrorResponse(h)
         }
       } catch (error) {
-        return h.response({
-          status: 500,
-          errorMessage: 'Oops, something happened!'
-        })
+        return createGenericErrorResponse(h)
       }
     }
   }

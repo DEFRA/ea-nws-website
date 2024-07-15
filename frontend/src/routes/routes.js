@@ -8,13 +8,22 @@ import AddLandlinePage from '../pages/contact-details/add-contact-landline/AddLa
 import AddLandlineValidatePage from '../pages/contact-details/add-contact-landline/AddLandlineValidatePage'
 import AddMobilePage from '../pages/contact-details/add-contact-mobile/AddMobilePage'
 import AddMobileValidatePage from '../pages/contact-details/add-contact-mobile/AddMobileValidatePage'
+import AccessibilityStatementPage from '../pages/footer/AccessibilityStatementPage'
+import ContactUsPage from '../pages/footer/ContactUsPage'
+import CookiesPage from '../pages/footer/CookiesPage'
+import PrivacyNoticePage from '../pages/footer/PrivacyNoticePage'
+import TermsAndConditionsPage from '../pages/footer/TermsAndConditionsPage'
 import HomePage from '../pages/home/HomePage'
 import SignOutManuallyPage from '../pages/sign-out/SignOutManuallyPage'
+import SignBackInPage from '../pages/sign-out/signBackInPage'
+import SignOutAutomaticallyPage from '../pages/sign-out/signOutAutomaticallyPage'
 import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
+import AddFullNamePage from '../pages/signup/account-name/AddFullNamePage'
+import SignUpDuplicateEmailPage from '../pages/signup/account/SignUpDuplicateEmail'
+import SignUpFeedbackPage from '../pages/signup/account/SignUpFeedbackPage'
 import SignUpPage from '../pages/signup/account/SignUpPage'
 import SignUpValidationPage from '../pages/signup/account/SignUpValidationPage'
-import SignUpDuplicateEmailPage from '../pages/signup/account/SignUpDuplicateEmail'
 import WarningContactsPreferencePage from '../pages/signup/channel-preferences/WarningContactsPreferencePage'
 import AddLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/AddLandlinePhonePage'
 import SkipConfirmLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/SkipConfirmLandlinePhonePage'
@@ -24,22 +33,28 @@ import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobi
 import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
 import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
-import SignUpFeedbackPage from '../pages/signup/account/SignUpFeedbackPage'
 
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
-
-const signOutRoutes = [{ path: '/signout', component: <SignOutManuallyPage /> }]
 
 // start routes
 const startRoutes = [{ path: '/', component: <StartPage /> }]
 
 // sign in routes
-const siginRoutes = [
+const signinRoutes = [
   { path: '/signin', component: <SignInPage /> },
   { path: '/signin/validate', component: <SignInValidatePage /> }
 ]
 
+// sign out routes
+const signOutRoutes = [
+  { path: '/signout-auto', component: <SignOutAutomaticallyPage /> },
+  { path: '/signout', component: <SignOutManuallyPage /> }
+]
+
+const signBackInRoutes = [
+  { path: '/sign-back-in', component: <SignBackInPage /> }
+]
 // sign up routes
 const signupRoutes = [
   { path: '/signup', component: <SignUpPage /> },
@@ -77,6 +92,7 @@ const signupRoutes = [
     path: '/signup/contactpreferences/landline/skipconfirmation',
     component: <SkipConfirmLandlinePhonePage />
   },
+  { path: '/signup/accountname/add', component: <AddFullNamePage /> },
   {
     path: '/signup/feedback',
     component: <SignUpFeedbackPage />
@@ -89,6 +105,18 @@ const signupRoutes = [
     path: '/signup/duplicate',
     component: <SignUpDuplicateEmailPage />
   }
+]
+
+// footer routes
+const footerRoutes = [
+  { path: '/contact', component: <ContactUsPage /> },
+  { path: '/privacy', component: <PrivacyNoticePage /> },
+  { path: '/cookies', component: <CookiesPage /> },
+  {
+    path: '/accessibility-statement',
+    component: <AccessibilityStatementPage />
+  },
+  { path: '/terms-and-conditions', component: <TermsAndConditionsPage /> }
 ]
 
 // home
@@ -118,15 +146,18 @@ const contactRoutes = [
   }
 ]
 
-const routes = [
+export const routes = [
   ...indexRoutes,
   ...startRoutes,
   ...signupRoutes,
-  ...siginRoutes,
+  ...signinRoutes,
   ...signupRoutes,
+  ...signBackInRoutes,
+  ...footerRoutes
+]
+
+export const authenticatedRoutes = [
   ...homeRoutes,
   ...contactRoutes,
   ...signOutRoutes
 ]
-
-export default routes

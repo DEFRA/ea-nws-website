@@ -3,6 +3,7 @@ export default function TextInput ({
   name,
   className,
   value,
+  defaultValue = '',
   inputType,
   onChange,
   error = ''
@@ -29,11 +30,12 @@ export default function TextInput ({
           </p>
         )}
         <input
-          className={error === '' ? className : 'govuk-input--error'}
+          className={error === '' ? className : className + ' govuk-input--error'}
           name={name}
           id='govuk-text-input'
           type={inputType}
           value={value}
+          defaultValue={defaultValue}
           onChange={handleChange}
         />
       </div>

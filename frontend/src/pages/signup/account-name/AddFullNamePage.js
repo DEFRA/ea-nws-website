@@ -13,6 +13,7 @@ export default function AddFullNamePage () {
     <AddAccountNameLayout
       NavigateToNextPage={NavigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
+      buttonText='Continue'
     />
   )
 }

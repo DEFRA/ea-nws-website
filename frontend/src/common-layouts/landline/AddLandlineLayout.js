@@ -16,7 +16,10 @@ import {
 import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../services/validations/PhoneValidation'
 
-export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPreviousPage }) {
+export default function AddLandlineLayout ({
+  NavigateToNextPage,
+  NavigateToPreviousPage
+}) {
   const navigate = useNavigate()
   const [landline, setLandline] = useState('')
   const [error, setError] = useState('')
@@ -41,7 +44,11 @@ export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPrevi
       } else {
         dispatch(
           setProfile(
-            addUnverifiedContact(session.profile, 'homePhones', normalisedPhoneNumber)
+            addUnverifiedContact(
+              session.profile,
+              'homePhones',
+              normalisedPhoneNumber
+            )
           )
         )
         NavigateToNextPage()
@@ -76,8 +83,9 @@ export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPrevi
 
   return (
     <>
+      <div className='page-container'>
       <Header />
-      <div class='govuk-width-container'>
+      <div class='govuk-width-container body-container'>
         <Link onClick={removeLandlineFromProfile} className='govuk-back-link'>
           Back
         </Link>
@@ -112,6 +120,7 @@ export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPrevi
         </main>
       </div>
       <Footer />
+      </div>
     </>
   )
 }

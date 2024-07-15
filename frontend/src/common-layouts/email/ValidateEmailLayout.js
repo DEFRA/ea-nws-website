@@ -83,8 +83,9 @@ export default function ValidateEmailLayout ({
 
   return (
     <>
+      <div className='page-container'>
       <Header />
-      <div class='govuk-width-container'>
+      <div class='govuk-width-container body-container'>
         <Link to='/managecontacts/add-email' className='govuk-back-link'>
           Back
         </Link>
@@ -133,6 +134,7 @@ export default function ValidateEmailLayout ({
         </main>
       </div>
       <Footer />
+      </div>
     </>
   )
 }

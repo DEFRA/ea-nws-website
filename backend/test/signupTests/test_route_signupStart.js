@@ -18,7 +18,7 @@ lab.experiment('Route tests', () => {
   lab.test('POST / route runs with valid payload', async () => {
     const options = {
       method: 'POST',
-      url: '/api/signupStart',
+      url: '/api/sign_up_start',
       payload: {
         email: 'test@test.com'
       }
@@ -32,7 +32,7 @@ lab.experiment('Route tests', () => {
   lab.test('GET / instead of POST', async () => {
     const options = {
       method: 'GET',
-      url: '/api/signupStart',
+      url: '/api/sign_up_start',
       payload: {
         email: ''
       }
@@ -45,7 +45,7 @@ lab.experiment('Route tests', () => {
   lab.test('POST / with missing payload', async () => {
     const options = {
       method: 'POST',
-      url: '/api/signupStart'
+      url: '/api/sign_up_start'
     }
 
     const response = await server.inject(options)
@@ -55,7 +55,7 @@ lab.experiment('Route tests', () => {
   lab.test('POST / with duplicate payload', async () => {
     const options = {
       method: 'POST',
-      url: '/api/signupStart',
+      url: '/api/sign_up_start',
       payload: {
         email: 'duplicate@email.com'
       }

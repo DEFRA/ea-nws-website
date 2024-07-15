@@ -1,46 +1,38 @@
 const { apiCall } = require('../../../services/ApiService')
 const {
+  createGenericErrorResponse
+} = require('../../../services/GenericErrorResponse')
+const {
   authCodeValidation
 } = require('../../../services/validations/AuthCodeValidation')
 
-const apiLandlineValidateCall = async (code, email, auth, h) => {
-  const data = { email: email, authToken: auth, code: code }
-  console.log('Received from front-end: ', data)
-  try {
-    const validationError = authCodeValidation(code)
-    if (validationError === '') {
-      const response = await apiCall(data, 'member/verifyEmailValidate')
-      return response
-    } else {
-      return { status: 500, errorMessage: validationError }
-    }
-  } catch (error) {
-    return {
-      status: 500,
-      errorMessage: 'Oops, something happened!'
-    }
-  }
-}
 module.exports = [
   {
     method: ['POST'],
     path: '/api/add_contact/email/validate',
     handler: async (request, h) => {
       try {
-        if (request.payload === null) {
-          return h.response({ message: 'Bad request' }).code(400)
+        if (!request.payload) {
+          return createGenericErrorResponse(h)
         }
-        const { authToken, email, code } = request.payload
 
-        const apiResponse = await apiLandlineValidateCall(
-          code,
-          email,
-          authToken
-        )
-        return h.response(apiResponse)
+        const { authToken, code } = request.payload
+        const error = authCodeValidation(code)
+
+        if (!error && authToken) {
+          const response = await apiCall(
+            { authToken: authToken, code: code },
+            'member/verifyEmailValidate'
+          )
+          return h.response(response)
+        } else {
+          return h.response({
+            status: 500,
+            errorMessage: !error ? 'Oops, something happened!' : error
+          })
+        }
       } catch (error) {
-        console.error('Error:', error)
-        return h.response({ message: 'Internal server error' }).code(500)
+        return createGenericErrorResponse(h)
       }
     }
   }

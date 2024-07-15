@@ -66,8 +66,9 @@ export default function AddEmailLayout ({ NavigateToNextPage }) {
 
   return (
     <>
+      <div className='page-container'>
       <Header />
-      <div class='govuk-width-container'>
+      <div class='govuk-width-container body-container'>
         <Link onClick={removeEmailFromProfile} className='govuk-back-link'>
           Back
         </Link>
@@ -102,6 +103,7 @@ export default function AddEmailLayout ({ NavigateToNextPage }) {
         </main>
       </div>
       <Footer />
+      </div>
     </>
   )
 }

@@ -5,6 +5,7 @@ import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import Input from '../../gov-uk-components/Input'
+import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { backendCall } from '../../services/BackendService'
 import { emailValidation } from '../../services/validations/EmailValidation'
 
@@ -21,7 +22,7 @@ export default function SignInStartPage () {
     if (validationError === '') {
       const { errorMessage, data } = await backendCall(
         dataToSend,
-        'api/signInStart',
+        'api/sign_in',
         navigate
       )
       if (errorMessage !== null) {
@@ -36,8 +37,10 @@ export default function SignInStartPage () {
 
   return (
     <>
+      <div className='page-container'>
       <Header />
-      <div class='govuk-width-container'>
+      <div class='govuk-width-container body-container'>
+        <PhaseBanner />
         <Link onClick={() => navigate(-1)} className='govuk-back-link'>
           Back
         </Link>
@@ -69,6 +72,7 @@ export default function SignInStartPage () {
         </div>
       </div>
       <Footer />
+      </div>
     </>
   )
 }

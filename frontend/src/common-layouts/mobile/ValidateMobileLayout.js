@@ -16,7 +16,7 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
-export default function ValidateMobileLayout({
+export default function ValidateMobileLayout ({
   NavigateToNextPage,
   SkipValidation,
   DifferentMobile
@@ -92,8 +92,9 @@ export default function ValidateMobileLayout({
 
   return (
     <>
+      <div className='page-container'>
       <Header />
-      <div class='govuk-width-container'>
+      <div class='govuk-width-container body-container'>
         <Link to='/managecontacts/add-mobile' className='govuk-back-link'>
           Back
         </Link>
@@ -142,6 +143,7 @@ export default function ValidateMobileLayout({
         </main>
       </div>
       <Footer />
+      </div>
     </>
   )
 }

@@ -16,7 +16,7 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
-export default function ValidateLandlineLayout({
+export default function ValidateLandlineLayout ({
   NavigateToNextPage,
   SkipValidation,
   DifferentHomePhone
@@ -30,7 +30,7 @@ export default function ValidateLandlineLayout({
   const indexLastUnverifiedHomePhone =
     session.profile.unverified.homePhones.length - 1
   const indexLastHomePhone = session.profile.homePhones.length - 1
-  
+
   const homePhone = session.profile.unverified.homePhones[
     indexLastUnverifiedHomePhone
   ]
@@ -92,8 +92,9 @@ export default function ValidateLandlineLayout({
 
   return (
     <>
+    <div className='page-container'>
       <Header />
-      <div class='govuk-width-container'>
+      <div class='govuk-width-container body-container'>
         <Link to='/managecontacts/add-landline' className='govuk-back-link'>
           Back
         </Link>
@@ -142,6 +143,7 @@ export default function ValidateLandlineLayout({
         </main>
       </div>
       <Footer />
+      </div>
     </>
   )
 }

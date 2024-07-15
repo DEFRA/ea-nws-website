@@ -70,8 +70,9 @@ export default function FeedbackPage () {
 
   return (
     <>
+      <div className='page-container'>
       <Header />
-      <div className='govuk-width-container'>
+      <div className='govuk-width-container body-container'>
         <PhaseBanner />
         <Link to='/signup' className='govuk-back-link'>
           Back
@@ -167,6 +168,7 @@ export default function FeedbackPage () {
         </div>
       </div>
       <Footer />
+      </div>
     </>
   )
 }

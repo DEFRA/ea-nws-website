@@ -123,14 +123,14 @@ const removeVerifiedContact = (profile, contact) => {
   return updatedProfile
 }
 
-const addAccountName = (profile, firstName, lastName) => {
-  profile.firstName = firstName
-  profile.lastName = lastName
+const addAccountName = (profile, firstname, lastname) => {
+  profile.firstname = firstname
+  profile.lastname = lastname
 
   const updatedProfile = {
     ...profile,
-    firstName,
-    lastName
+    firstname,
+    lastname
   }
 
   return updatedProfile

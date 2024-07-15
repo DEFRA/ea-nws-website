@@ -32,8 +32,8 @@ async function getEmailValidate(
   const profile = {
     id: '1',
     enabled: true,
-    firstname: 'John',
-    lastname: 'Smith',
+    firstname: '',
+    lastname: '',
     emails: [
       'updated.matthew.pepper@gmail.com',
       'perry.pepper@gmail.com',

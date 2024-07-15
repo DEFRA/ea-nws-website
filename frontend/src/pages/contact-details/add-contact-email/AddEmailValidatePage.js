@@ -18,9 +18,11 @@ export default function AddEmailValidatePage () {
   const DifferentEmail = () => {
     navigate('/managecontacts/add-email')
   }
+
   return (
     <ValidateEmailLayout
       NavigateToNextPage={NavigateToNextPage}
+      NavigateToPreviousPage={DifferentEmail}
       SkipValidation={SkipValidation}
       DifferentEmail={DifferentEmail}
       buttonText='Continue'

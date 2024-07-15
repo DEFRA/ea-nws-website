@@ -92,13 +92,18 @@ export default function ValidateEmailLayout ({
     DifferentEmail(email)
   }
 
+  const backLink = (event) => {
+    event.preventDefault()
+    NavigateToPreviousPage()
+  }
+
   return (
     <>
       <div className='page-container'>
         <Header />
         <div className='govuk-width-container body-container'>
           <PhaseBanner />
-          <Link onClick={NavigateToPreviousPage} className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
+          <Link onClick={backLink} className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
             Back
           </Link>
           <main className='govuk-main-wrapper'>

@@ -15,8 +15,7 @@ export default function AddEmailValidatePage () {
       }
     })
   }
-  const DifferentEmail = (event) => {
-    event.preventDefault()
+  const DifferentEmail = () => {
     navigate('/managecontacts/add-email')
   }
 

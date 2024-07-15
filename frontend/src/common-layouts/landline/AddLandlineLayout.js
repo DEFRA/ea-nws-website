@@ -16,6 +16,7 @@ import {
 import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../services/validations/PhoneValidation'
 import CheckboxRadios from '../../gov-uk-components/CheckBoxRadios'
+import { useEffect } from 'react'
 export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPreviousPage }) {
   const navigate = useNavigate()
   const [landline, setLandline] = useState('')
@@ -24,7 +25,8 @@ export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPrevi
   const dispatch = useDispatch()
   const session = useSelector((state) => state.session)
   const authToken = useSelector((state) => state.session.authToken)
-
+  
+  
   const handleSubmit = async (event) => {
     event.preventDefault()
 
@@ -32,7 +34,7 @@ export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPrevi
       const validationError = phoneValidation(landline, 'mobileAndLandline')
       setError(validationError)
       setLandlineProfile(validationError)
-    } else if (isOpen === false && landline === '' && error === '') {
+    } else if (isOpen === false && landline === '') {
       const validationError = setError('Which telephone number do you want to use?')
       setLandlineProfile(validationError)
     } else {
@@ -113,10 +115,15 @@ export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPrevi
   const setLandlineprefernce = (event) => {
     setLandline(event.target.value)
     setIsOpen(false)
+    setError('')
+
   }
   const toggle = () => {
     setIsOpen((isOpen) => !isOpen)
+    setLandline('')
+    setError('')
   }
+  
 
   return (
     <>
@@ -141,7 +148,7 @@ export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPrevi
                   ? <>
                     <div
                       className={
-                  error && isOpen === true
+                  error && isOpen !== true
                     ? 'govuk-form-group govuk-form-group--error'
                     : 'govuk-form-group'
                 }

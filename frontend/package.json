@@ -1,0 +1,80 @@
+{
+  "name": "front-end",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@babel/core": "^7.24.7",
+    "@babel/preset-env": "^7.24.7",
+    "@babel/preset-react": "^7.24.7",
+    "@fortawesome/fontawesome-svg-core": "^6.5.2",
+    "@fortawesome/free-regular-svg-icons": "^6.5.2",
+    "@fortawesome/free-solid-svg-icons": "^6.5.2",
+    "@fortawesome/react-fontawesome": "^0.2.2",
+    "@reduxjs/toolkit": "^2.2.6",
+    "@testing-library/jest-dom": "^5.17.0",
+    "@testing-library/react": "^13.4.0",
+    "@testing-library/user-event": "^13.5.0",
+    "axios": "^1.7.2",
+    "bootstrap": "^5.3.3",
+    "cross-env": "^7.0.3",
+    "govuk-frontend": "^5.4.0",
+    "leaflet": "^1.9.4",
+    "leaflet-pip": "^1.1.0",
+    "node-fetch": "^2.7.0",
+    "react": "^18.3.1",
+    "react-bootstrap": "^2.10.4",
+    "react-dom": "^18.3.1",
+    "react-leaflet": "^4.2.1",
+    "react-redux": "^9.1.2",
+    "react-router": "^6.23.0",
+    "react-router-dom": "^6.24.1",
+    "react-scripts": "^5.0.1",
+    "redux": "^5.0.1",
+    "sass": "^1.77.7",
+    "serve": "^14.2.3",
+    "web-vitals": "^2.1.4"
+  },
+  "scripts": {
+    "start": "serve -s build",
+    "start-dev": "cross-env REACT_APP_INACTIVITY_POPUP=1200 REACT_APP_TIMEOUT_POPUP=300 REACT_APP_API_URL=http://localhost:5000 react-scripts start",
+    "build": "cross-env REACT_APP_INACTIVITY_POPUP=780 REACT_APP_TIMEOUT_POPUP=120 react-scripts build",
+    "start-test": "cross-env REACT_APP_INACTIVITY_POPUP=10 REACT_APP_TIMEOUT_POPUP=5 REACT_APP_API_URL=http://localhost:5000 react-scripts start",
+    "eject": "react-scripts eject",
+    "uitest": "python3 -m pytest test/selenium-test",
+    "test": "jest",
+    "lint": "standard --fix"
+  },
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "standard": "^17.1.0"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-react"
+    ]
+  },
+  "standard": {
+    "ignore": [
+      "test/**/*.js",
+      "build/**/*.js"
+    ]
+  }
+}

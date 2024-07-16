@@ -16,12 +16,12 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { authToken, code } = request.payload
+        const { authToken, msisdn, code } = request.payload
         const error = authCodeValidation(code)
 
         if (!error && authToken) {
           const response = await apiCall(
-            { authToken: authToken, code: code },
+            { authToken: authToken, msisdn: msisdn, code: code },
             'member/verifyMobilePhoneValidate'
           )
           return h.response(response)

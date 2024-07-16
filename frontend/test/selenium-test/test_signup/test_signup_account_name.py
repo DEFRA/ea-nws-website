@@ -11,7 +11,7 @@ def test_SignUpAccountName_render(get_browser):
     browser = get_browser
     browser.get(url)
     assert "Enter your name" in browser.page_source
-    assert "We'll use this if we need to contact you about your account." in browser.page_source
+    assert "We'll use this name if we need to contact you about your account." in browser.page_source
     assert browser.current_url == url
 
 def test_SignUpAccountName_emptyFullName(get_browser):

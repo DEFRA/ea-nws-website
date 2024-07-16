@@ -2,45 +2,37 @@ const { apiCall } = require('../../../services/ApiService')
 const {
   authCodeValidation
 } = require('../../../services/validations/AuthCodeValidation')
+const {
+  createGenericErrorResponse
+} = require('../../../services/GenericErrorResponse')
 
-const apiLandlineValidateCall = async (code, msisdn, auth, h) => {
-  const data = { msisdn, authToken: auth, code }
-  console.log('Received from front-end: ', data)
-  try {
-    const validationError = authCodeValidation(code)
-    if (validationError === '') {
-      const response = await apiCall(data, 'member/verifyHomePhoneValidate')
-      return response
-    } else {
-      return { status: 500, errorMessage: validationError }
-    }
-  } catch (error) {
-    return {
-      status: 500,
-      errorMessage: 'Oops, something happened!'
-    }
-  }
-}
 module.exports = [
   {
     method: ['POST'],
     path: '/api/add_contact/landline/validate',
     handler: async (request, h) => {
       try {
-        if (request.payload === null) {
-          return h.response({ message: 'Bad request' }).code(400)
+        if (!request.payload) {
+          return createGenericErrorResponse(h)
         }
-        const { authToken, msisdn, code } = request.payload
 
-        const apiResponse = await apiLandlineValidateCall(
-          code,
-          msisdn,
-          authToken
-        )
-        return h.response(apiResponse)
+        const { authToken, msisdn, code } = request.payload
+        const error = authCodeValidation(code)
+
+        if (!error && authToken) {
+          const response = await apiCall(
+            { authToken: authToken, msisdn: msisdn, code: code },
+            'member/verifyHomePhoneValidate'
+          )
+          return h.response(response)
+        } else {
+          return h.response({
+            status: 500,
+            errorMessage: !error ? 'Oops, something happened!' : error
+          })
+        }
       } catch (error) {
-        console.error('Error:', error)
-        return h.response({ message: 'Internal server error' }).code(500)
+        return createGenericErrorResponse(h)
       }
     }
   }

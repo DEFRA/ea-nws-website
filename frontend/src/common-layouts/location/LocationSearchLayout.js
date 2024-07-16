@@ -36,7 +36,7 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
       setError('Select how you want to search for your location')
     } else {
       switch (searchOption) {
-        case 'AddressPostCode':
+        case 'AddressPostCode': {
           const postCodeValidationError = postCodeValidation(postCode)
           if (!postCodeValidationError) {
             // normalise postcode
@@ -62,6 +62,7 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
             setPostCodeError(postCodeValidationError)
             break
           }
+        }
         case 'PlaceNameTownOrKeyword':
           if (!placeName) {
             setPlaceNameError('Please enter a place name or keyword')

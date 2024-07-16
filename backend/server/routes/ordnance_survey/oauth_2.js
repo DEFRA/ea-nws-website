@@ -1,4 +1,7 @@
-const { oAuth2ApiCall } = require('../../services/OrdnanceSurveyApiService')
+const { osOAuth2ApiCall } = require('../../services/OrdnanceSurveyApiService')
+const {
+  createGenericErrorResponse
+} = require('../../services/GenericErrorResponse')
 
 module.exports = [
   {
@@ -6,13 +9,10 @@ module.exports = [
     path: '/api/os-api/oauth2',
     handler: async (request, h) => {
       try {
-        const response = await oAuth2ApiCall()
+        const response = await osOAuth2ApiCall()
         return h.response(response)
-      } catch (error) {
-        return h.response({
-          status: 500,
-          errorMessage: 'Oops, something happened!'
-        })
+      } catch {
+        createGenericErrorResponse(h)
       }
     }
   }

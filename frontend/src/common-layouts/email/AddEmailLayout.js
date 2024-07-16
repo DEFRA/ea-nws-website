@@ -15,7 +15,7 @@ import {
 } from '../../services/ProfileServices'
 import { emailValidation } from '../../services/validations/EmailValidation'
 
-export default function AddEmailLayout({ NavigateToNextPage }) {
+export default function AddEmailLayout ({ NavigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [email, setEmail] = useState('')
@@ -66,34 +66,34 @@ export default function AddEmailLayout({ NavigateToNextPage }) {
 
   return (
     <>
-      <div className="page-container">
+      <div className='page-container'>
         <Header />
-        <div class="govuk-width-container body-container">
-          <Link onClick={removeEmailFromProfile} className="govuk-back-link">
+        <div class='govuk-width-container body-container'>
+          <Link onClick={removeEmailFromProfile} className='govuk-back-link'>
             Back
           </Link>
-          <main className="govuk-main-wrapper">
-            <div className="govuk-grid-row">
-              <div className="govuk-grid-column-two-thirds">
+          <main className='govuk-main-wrapper'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-two-thirds'>
                 <ErrorSummary errorList={error === '' ? [] : [error]} />
-                <h2 class="govuk-heading-l">
+                <h2 class='govuk-heading-l'>
                   Enter an email address to get flood messages
                 </h2>
-                <div class="govuk-body">
+                <div class='govuk-body'>
                   <p>
                     We recommend using an email address you can access 24 hours
                     a day.
                   </p>
                   <Input
-                    name="Email address"
-                    inputType="text"
+                    name='Email address'
+                    inputType='text'
                     error={error}
                     onChange={(val) => setEmail(val)}
-                    className="govuk-input govuk-input--width-20"
+                    className='govuk-input govuk-input--width-20'
                   />
                   <Button
-                    className="govuk-button"
-                    text="Continue"
+                    className='govuk-button'
+                    text='Continue'
                     onClick={handleSubmit}
                   />
                   <br />

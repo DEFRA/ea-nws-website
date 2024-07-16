@@ -148,14 +148,18 @@ const addLocation = (profile, location) => {
 }
 
 const checkIfSelectedLocationExistsAlready = (profile, selectedLocation) => {
-  for (const position of profile.pois) {
-    const { latitude, longitude } = position.coordinates
-    if (
-      latitude == selectedLocation.coordinates.latitude &&
-      longitude == selectedLocation.coordinates.longitude
-    ) {
-      return true
+  if (profile) {
+    for (const position of profile.pois) {
+      const { latitude, longitude } = position.coordinates
+      if (
+        latitude === selectedLocation.coordinates.latitude &&
+        longitude === selectedLocation.coordinates.longitude
+      ) {
+        return true
+      }
     }
+  } else {
+    return false
   }
 }
 

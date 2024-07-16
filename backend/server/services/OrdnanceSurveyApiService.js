@@ -2,25 +2,17 @@ const { addressFormatter } = require('./formatters/AddressFormatter')
 const getSecretKeyValue = require('../services/SecretsManager')
 const axios = require('axios')
 
-//update these calls to use axios
-
 const osPostCodeApiCall = async (postCode) => {
   let responseData
   const osApiKey = await getSecretKeyValue('nws/geosafe/osApiKey', 'osApiKey')
   const url = `https://api.os.uk/search/places/v1/postcode?postcode=${postCode}&key=${osApiKey}&output_srs=EPSG:4326`
 
   try {
-    const response = await fetch(url)
-    if (!response.ok) {
-      return {
-        status: 500,
-        errorMessage: 'Enter a real postcode'
-      }
-    }
-    const data = await response.json()
+    const response = await axios.get(url)
+
     // Check that postcode is in England
-    if (data.results?.[0].DPA.COUNTRY_CODE === 'E') {
-      responseData = data.results.map((result) => {
+    if (response.data.results?.[0].DPA.COUNTRY_CODE === 'E') {
+      responseData = response.data.results.map((result) => {
         const formattedAddress = addressFormatter(result.DPA.ADDRESS)
         return {
           name: formattedAddress,
@@ -40,35 +32,28 @@ const osPostCodeApiCall = async (postCode) => {
   } catch {
     return {
       status: 500,
-      errorMessage: 'Enter a real postcode'
+      errorMessage: 'Oops, something happened!'
     }
   }
 }
 
-//The work below is still a WIP - it can probs be refactored as well to work with the above method
 const osFindNameApiCall = async (keyword) => {
   let responseData
   const osApiKey = await getSecretKeyValue('nws/geosafe/osApiKey', 'osApiKey')
   const url = `https://api.os.uk/search/names/v1/find?query=${keyword}&key=${osApiKey}output_srs=EPSG:4326`
 
   try {
-    const response = await fetch(url)
-    if (!response.ok) {
-      return {
-        status: 500,
-        errorMessage: 'some error'
-      }
-    }
-    const data = await response.json()
-    // Check that postcode is in England
-    if (data.results?.[0].DPA.COUNTRY_CODE === 'E') {
-      responseData = data.results.map((result) => {
+    const response = await axios.get(url)
+
+    // Check that location is in England
+    if (response.data.results?.[0].DPA.COUNTRY_CODE === 'E') {
+      responseData = response.data.results.map((result) => {
         const formattedAddress = addressFormatter(result.DPA.ADDRESS)
         return {
-          address: formattedAddress,
-          postcode: result.DPA.POSTCODE,
-          latitude: result.DPA.LAT,
-          longitude: result.DPA.LNG
+          name: formattedAddress,
+          address: result.DPA.UPRN,
+          coordinates: { latitude: result.DPA.LAT, longitude: result.DPA.LNG },
+          postcode: result.DPA.POSTCODE
         }
       })
 
@@ -87,14 +72,16 @@ const osFindNameApiCall = async (keyword) => {
   }
 }
 
-const oAuth2ApiCall = async () => {
+const osOAuth2ApiCall = async () => {
   const osApiKey = await getSecretKeyValue('nws/geosafe/osApiKey', 'osApiKey')
-  //update to use aws secrets
-  const projectApiSecret = 'TZ0XOWBB4wVaVRYC'
-  const url = `https://api.os.uk/oauth2/token/v1`
+  const osApiSecret = await getSecretKeyValue(
+    'nws/geosafe/osApiSecret',
+    'osApiSecret'
+  )
+  const url = 'https://api.os.uk/oauth2/token/v1'
 
   const btoa = (str) => Buffer.from(str).toString('base64')
-  const encodedCredentials = btoa(`${osApiKey}:${projectApiSecret}`)
+  const encodedCredentials = btoa(`${osApiKey}:${osApiSecret}`)
 
   try {
     const response = await axios.post(
@@ -110,7 +97,7 @@ const oAuth2ApiCall = async () => {
       }
     )
 
-    return response.data.access_token
+    return { status: 200, data: response.data.access_token }
   } catch {
     return {
       status: 500,
@@ -119,4 +106,8 @@ const oAuth2ApiCall = async () => {
   }
 }
 
-module.exports = { osPostCodeApiCall, osFindNameApiCall, oAuth2ApiCall }
+module.exports = {
+  osPostCodeApiCall,
+  osFindNameApiCall,
+  osOAuth2ApiCall
+}

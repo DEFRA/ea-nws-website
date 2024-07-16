@@ -1,4 +1,7 @@
 const { osFindNameApiCall } = require('../../services/OrdnanceSurveyApiService')
+const {
+  createGenericErrorResponse
+} = require('../../services/GenericErrorResponse')
 
 module.exports = [
   {
@@ -6,14 +9,15 @@ module.exports = [
     path: '/api/os-api/name-search',
     handler: async (request, h) => {
       try {
+        if (!request.payload) {
+          return createGenericErrorResponse(h)
+        }
+
         const { postCode } = request.payload
         const response = await osFindNameApiCall(postCode)
         return h.response(response)
-      } catch (error) {
-        return h.response({
-          status: 500,
-          errorMessage: 'Oops, something happened!'
-        })
+      } catch {
+        return createGenericErrorResponse(h)
       }
     }
   }

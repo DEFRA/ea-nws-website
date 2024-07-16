@@ -65,80 +65,82 @@ export default function ContactDetailsPage () {
 
   return (
     <>
-      <Header />
-      <div className='govuk-width-container'>
-        <PhaseBanner />
-        <AccountNavigation currentPage={useLocation().pathname} />
-        {location.state !== null && location.state.removedContact
-          ? (
-            <NotificationBanner
-              className='govuk-notification-banner govuk-notification-banner--success'
-              title='Success'
-              heading={location.state.removedType + ' removed'}
-              text={location.state.removedContact}
-            />
-            )
-          : null}
-        {location.state !== null && location.state.unconfirmedtype
-          ? (
-            <NotificationBanner
-              className='govuk-notification-banner'
-              title='Important'
-              heading={
-              'We cannot send flood messages to ' +
-              location.state.unconfirmedvalue +
-              ' yet'
-            }
-              text={unconfirmedMessage(location.state.unconfirmedtype)}
-            />
-            )
-          : null}
-        <main className='govuk-main-wrapper'>
-          <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-two-thirds'>
-              <h2 className='govuk-heading-l'>
-                Your email addresses and telephone numbers
-              </h2>
-              <p className='govuk-body'>
-                We'll send flood messages for all your location to all these
-                emails and numbers. You can add more for friends and family, if
-                you wish.
-              </p>
-              <InsetText text='You must confirm each address and number before we can send flood messages to them.' />
-              <ContactDetailsTable
-                contacts={profile.emails}
-                unregisteredContact={profile.unverified.emails}
-                contactTitle='Emails'
-                contactType='email address'
-                primaryContact={primaryEmail}
+      <div className='page-container'>
+        <Header />
+        <div className='govuk-width-container body-container'>
+          <PhaseBanner />
+          <AccountNavigation currentPage={useLocation().pathname} />
+          {location.state !== null && location.state.removedContact
+            ? (
+              <NotificationBanner
+                className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
+                title='Success'
+                heading={location.state.removedType + ' removed'}
+                text={location.state.removedContact}
               />
-              {profile.emails.length === 1 &&
-                profile.mobilePhones.length === 0 &&
-                profile.homePhones.length === 0 && (
-                  <Details
-                    title='If you want to remove this contact'
-                    text={detailsMessage}
-                  />
-              )}
-              <ContactDetailsTable
-                contacts={profile.mobilePhones}
-                unregisteredContact={profile.unverified.mobilePhones}
-                contactTitle='Texts'
-                contactType='mobile telephone number'
-                primaryContact={null}
+              )
+            : null}
+          {location.state !== null && location.state.unconfirmedtype
+            ? (
+              <NotificationBanner
+                className='govuk-notification-banner govuk-!-margin-bottom-0 govuk-!-margin-top-4'
+                title='Important'
+                heading={
+                'We cannot send flood messages to ' +
+                location.state.unconfirmedvalue +
+                ' yet'
+              }
+                text={unconfirmedMessage(location.state.unconfirmedtype)}
               />
-              <ContactDetailsTable
-                contacts={profile.homePhones}
-                unregisteredContact={profile.unverified.homePhones}
-                contactTitle='Phone call warnings'
-                contactType='telephone number'
-                primaryContact={null}
-              />
+              )
+            : null}
+          <main className='govuk-main-wrapper'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-two-thirds'>
+                <h2 className='govuk-heading-l'>
+                  Your email addresses and telephone numbers
+                </h2>
+                <p className='govuk-body'>
+                  We'll send flood messages for all your location to all these
+                  emails and numbers. You can add more for friends and family, if
+                  you wish.
+                </p>
+                <InsetText text='You must confirm each address and number before we can send flood messages to them.' />
+                <ContactDetailsTable
+                  contacts={profile.emails}
+                  unregisteredContact={profile.unverified.emails}
+                  contactTitle='Emails'
+                  contactType='email address'
+                  primaryContact={primaryEmail}
+                />
+                {profile.emails.length === 1 &&
+                  profile.mobilePhones.length === 0 &&
+                  profile.homePhones.length === 0 && (
+                    <Details
+                      title='If you want to remove this contact'
+                      text={detailsMessage}
+                    />
+                )}
+                <ContactDetailsTable
+                  contacts={profile.mobilePhones}
+                  unregisteredContact={profile.unverified.mobilePhones}
+                  contactTitle='Texts'
+                  contactType='mobile telephone number'
+                  primaryContact={null}
+                />
+                <ContactDetailsTable
+                  contacts={profile.homePhones}
+                  unregisteredContact={profile.unverified.homePhones}
+                  contactTitle='Phone call warnings'
+                  contactType='telephone number'
+                  primaryContact={null}
+                />
+              </div>
             </div>
-          </div>
-        </main>
+          </main>
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   )
 }

@@ -9,6 +9,7 @@ async function getMobileStart(
 ) {
   const { authToken } = req.payload as { authToken: string }
   const { msisdn } = req.payload as { msisdn: string }
+  console.log(msisdn)
   // 200 Success
   if (authToken === 'MockAuthToken') {
     if (msisdn === '+447000000000') {
@@ -32,8 +33,8 @@ async function getMobileValidate(
   const profile = {
     id: '1',
     enabled: true,
-    firstName: 'John',
-    lastName: 'Smith',
+    firstname: '',
+    lastname: '',
     emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
     mobilePhones: ['07343454555', '07889668355', msisdn],
     homePhones: ['01475721535'],

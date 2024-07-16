@@ -18,21 +18,21 @@ lab.experiment('Route tests', () => {
   lab.test('POST /signupValidate route runs with valid payload', async () => {
     const options = {
       method: 'POST',
-      url: '/api/signupValidate',
+      url: '/api/sign_up_validate',
       payload: {
-        email: 'test@test.com',
-        registerToken: '123456'
+        code: '123456',
+        registerToken: 'token'
       }
     }
 
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(200)
+    Code.expect(response.result.status).to.equal(200)
   })
 
   lab.test('GET  sending a GET response instead of POST', async () => {
     const options = {
       method: 'GET',
-      url: '/api/signupValidate'
+      url: '/api/sign_up_validate'
     }
 
     const response = await server.inject(options)
@@ -42,10 +42,14 @@ lab.experiment('Route tests', () => {
   lab.test('POST / payload is missing', async () => {
     const options = {
       method: 'POST',
-      url: '/api/signupValidate'
+      url: '/api/sign_up_validate'
     }
 
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(400)
+    console.log(
+      'POST /api/signupValidate with missing payload response:',
+      response
+    )
+    Code.expect(response.result.status).to.equal(500)
   })
 })

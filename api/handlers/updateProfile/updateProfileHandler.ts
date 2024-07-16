@@ -12,7 +12,10 @@ async function getUpdateProfile(
 
   //not sure how to validate the profile data without doing hardcoded validation for each scenario
   if (authToken === "MockAuthToken" && Object.keys(profile).length != 0) {
-    return res.response(responseCodes.SUCCESS)
+    return {
+      authToken: 'MockAuthToken',
+      profile: profile
+    }
   } else {
     return res.response(responseCodes.INVALID_TOKEN).code(500)
   }

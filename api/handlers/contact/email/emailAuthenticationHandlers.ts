@@ -32,8 +32,8 @@ async function getEmailValidate(
   const profile = {
     id: '1',
     enabled: true,
-    firstName: 'John',
-    lastName: 'Smith',
+    firstname: '',
+    lastname: '',
     emails: [
       'updated.matthew.pepper@gmail.com',
       'perry.pepper@gmail.com',
@@ -66,7 +66,7 @@ async function getEmailValidate(
     ]
   }
   // 200 Success
-  if (authToken === 'MockAuthToken' && code !== '999999') {
+  if (authToken === 'MockAuthToken' && code != '999999') {
     return {
       profile: profile
     }

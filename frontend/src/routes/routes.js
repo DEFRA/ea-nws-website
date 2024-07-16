@@ -1,5 +1,10 @@
 import React from 'react'
 import Index from '../pages/Index'
+import AccountPage from '../pages/account/AccountPage'
+import ChangeBusinessDetailsPage from '../pages/account/ChangeBusinessDetailsPage'
+import ChangeEmailPage from '../pages/account/ChangeEmailPage'
+import ChangeEmailValidationPage from '../pages/account/ChangeEmailValidatePage'
+import ChangeNamePage from '../pages/account/ChangeNamePage'
 import ConfirmDeleteContactDetailsPage from '../pages/contact-details/ConfirmDeleteContactDetailsPage'
 import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
 import ConfirmDeleteSingleLocationPage from '../pages/contact-details/Locations/ConfirmDeleteSingleLocationPage'
@@ -9,6 +14,11 @@ import AddLandlinePage from '../pages/contact-details/add-contact-landline/AddLa
 import AddLandlineValidatePage from '../pages/contact-details/add-contact-landline/AddLandlineValidatePage'
 import AddMobilePage from '../pages/contact-details/add-contact-mobile/AddMobilePage'
 import AddMobileValidatePage from '../pages/contact-details/add-contact-mobile/AddMobileValidatePage'
+import AccessibilityStatementPage from '../pages/footer/AccessibilityStatementPage'
+import ContactUsPage from '../pages/footer/ContactUsPage'
+import CookiesPage from '../pages/footer/CookiesPage'
+import PrivacyNoticePage from '../pages/footer/PrivacyNoticePage'
+import TermsAndConditionsPage from '../pages/footer/TermsAndConditionsPage'
 import HomePage from '../pages/home/HomePage'
 import SignOutManuallyPage from '../pages/sign-out/SignOutManuallyPage'
 import SignBackInPage from '../pages/sign-out/signBackInPage'
@@ -27,6 +37,7 @@ import ValidateLandlinePhonePage from '../pages/signup/channel-preferences/landl
 import AddMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/AddMobilePhonePage'
 import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/SkipConfirmMobilePhonePage'
 import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
+import SignUpSuccessPage from '../pages/signup/success/SignUpSuccessPage'
 import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
 
@@ -100,11 +111,42 @@ const signupRoutes = [
   {
     path: '/signup/duplicate',
     component: <SignUpDuplicateEmailPage />
+  },
+  {
+    path: '/signup/success',
+    component: <SignUpSuccessPage />
   }
+]
+
+// footer routes
+const footerRoutes = [
+  { path: '/contact', component: <ContactUsPage /> },
+  { path: '/privacy', component: <PrivacyNoticePage /> },
+  { path: '/cookies', component: <CookiesPage /> },
+  {
+    path: '/accessibility-statement',
+    component: <AccessibilityStatementPage />
+  },
+  { path: '/terms-and-conditions', component: <TermsAndConditionsPage /> }
 ]
 
 // home
 const homeRoutes = [{ path: '/home', component: <HomePage /> }]
+
+// account
+const accountRoutes = [
+  { path: '/account', component: <AccountPage /> },
+  {
+    path: '/account/change-business-details',
+    component: <ChangeBusinessDetailsPage />
+  },
+  { path: '/account/change-email', component: <ChangeEmailPage /> },
+  {
+    path: '/account/change-email/validate',
+    component: <ChangeEmailValidationPage />
+  },
+  { path: '/account/change-name', component: <ChangeNamePage /> }
+]
 
 // contact routes
 const contactRoutes = [
@@ -144,12 +186,14 @@ export const routes = [
   ...signupRoutes,
   ...signinRoutes,
   ...signupRoutes,
-  ...signBackInRoutes
+  ...signBackInRoutes,
+  ...footerRoutes
 ]
 
 export const authenticatedRoutes = [
   ...homeRoutes,
   ...contactRoutes,
   ...signOutRoutes,
+  ...accountRoutes,
   ...contactLocationRoutes
 ]

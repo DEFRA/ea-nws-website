@@ -1,4 +1,6 @@
-export default function Footer() {
+import { Link } from 'react-router-dom'
+
+export default function Footer () {
   return (
     <>
       <footer className='govuk-footer'>
@@ -8,54 +10,35 @@ export default function Footer() {
               <h2 className='govuk-visually-hidden'>Support links</h2>
               <ul className='govuk-footer__inline-list'>
                 <li className='govuk-footer__inline-list-item'>
-                  <a className='govuk-footer__link' href='/#'>
-                    Help
-                  </a>
-                </li>
-                <li className='govuk-footer__inline-list-item'>
-                  <a className='govuk-footer__link' href='/#'>
-                    Privacy
-                  </a>
-                </li>
-                <li className='govuk-footer__inline-list-item'>
-                  <a className='govuk-footer__link' href='/#'>
-                    Cookies
-                  </a>
-                </li>
-                <li className='govuk-footer__inline-list-item'>
-                  <a className='govuk-footer__link' href='/#'>
-                    Accessibility statement
-                  </a>
-                </li>
-                <li className='govuk-footer__inline-list-item'>
-                  <a className='govuk-footer__link' href='/#'>
+                  <Link className='govuk-footer__link' to='/contact'>
                     Contact
-                  </a>
+                  </Link>
                 </li>
                 <li className='govuk-footer__inline-list-item'>
-                  <a className='govuk-footer__link' href='/#'>
+                  <Link className='govuk-footer__link' to='/privacy'>
+                    Privacy
+                  </Link>
+                </li>
+                <li className='govuk-footer__inline-list-item'>
+                  <Link className='govuk-footer__link' to='/cookies'>
+                    Cookies
+                  </Link>
+                </li>
+                <li className='govuk-footer__inline-list-item'>
+                  <Link
+                    className='govuk-footer__link'
+                    to='/accessibility-statement'
+                  >
+                    Accessibility statement
+                  </Link>
+                </li>
+                <li className='govuk-footer__inline-list-item'>
+                  <Link
+                    className='govuk-footer__link'
+                    to='/terms-and-conditions'
+                  >
                     Terms and conditions
-                  </a>
-                </li>
-                <li className='govuk-footer__inline-list-item'>
-                  <a
-                    className='govuk-footer__link'
-                    href='/#'
-                    lang='cy'
-                    hrefLang='cy'
-                  >
-                    Rhestr o Wasanaethau Cymraeg
-                  </a>
-                </li>
-                <li className='govuk-footer__inline-list-item'>
-                  <a
-                    className='govuk-footer__link'
-                    href='/#'
-                    lang='cy'
-                    hrefLang='cy'
-                  >
-                    Government Digital Service
-                  </a>
+                  </Link>
                 </li>
               </ul>
               <svg

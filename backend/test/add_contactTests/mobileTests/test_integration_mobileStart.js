@@ -21,13 +21,13 @@ lab.experiment('Integration tests', () => {
       url: '/api/add_contact/mobile/add',
       payload: {
         authToken: 'MockAuthToken',
-        phone: '12321'
+        msisdn: '12321'
       }
     }
     const response = await server.inject(options)
     Code.expect(response.result.status).to.equal(500)
     Code.expect(response.result.errorMessage).to.equal(
-      'Enter a UK mobile telephone number'
+      'Enter a valid UK mobile telephone number'
     )
   })
 
@@ -37,7 +37,7 @@ lab.experiment('Integration tests', () => {
       url: '/api/add_contact/mobile/add',
       payload: {
         authToken: 'MockAuthToken',
-        phone: ''
+        msisdn: ''
       }
     }
     const response = await server.inject(options)
@@ -50,33 +50,46 @@ lab.experiment('Integration tests', () => {
       url: '/api/add_contact/mobile/add',
       payload: {
         authToken: 'InvalidGUIDAuthToken',
-        phone: '07590000000'
+        msisdn: '07590000000'
       }
     }
     const response = await server.inject(options)
     Code.expect(response.result.status).to.equal(500)
   })
 
-  lab.test('POST / route runs with valid email format', async () => {
+  lab.test('POST / route runs with valid mobile format', async () => {
     const options = {
       method: 'POST',
       url: '/api/add_contact/mobile/add',
       payload: {
         authToken: 'MockAuthToken',
-        phone: '07590000000'
+        msisdn: '07590000000'
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(200)
+    Code.expect(response.result.status).to.equal(200)
   })
 
   lab.test('POST / with duplicate payload', async () => {
     const options = {
       method: 'POST',
-      url: '/api/add_contact/landline/add',
+      url: '/api/add_contact/mobile/add',
       payload: {
         authToken: 'MockAuthToken',
-        phone: '07000000000'
+        msisdn: '+447000000000'
+      }
+    }
+    const response = await server.inject(options)
+    Code.expect(response.result.status).to.equal(500)
+  })
+
+  lab.test('POST / with duplicate payload in different format', async () => {
+    const options = {
+      method: 'POST',
+      url: '/api/add_contact/mobile/add',
+      payload: {
+        authToken: 'MockAuthToken',
+        msisdn: '07000000000'
       }
     }
     const response = await server.inject(options)

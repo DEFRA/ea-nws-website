@@ -32,11 +32,13 @@ const apiCall = async (data, path) => {
       } else if (status === 404) {
         return { status }
       } else if (status === 500) {
-        return { status: status, errorMessage: getErrorMessage(path, error.response.data) }
+        return {
+          status: status,
+          errorMessage: getErrorMessage(path, error.response.data)
+        }
       }
     } else if (error.request) {
       // no response was received - probably need to return
-      console.log('No response received')
       // returning an error so frontend can handle
       return {
         status: 400,

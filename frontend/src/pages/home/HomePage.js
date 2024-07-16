@@ -128,20 +128,18 @@ export default function HomePage() {
 
     const tableBody = () => {
       return (
-        <div>
-          <tbody className='govuk-table__body'>
-            {displayedLocations.map((location, index) => (
-              <tr key={index} className='govuk-table__row'>
-                {addressColumn(location)}
-                {locations.length === 1 && (
-                  <td className='govuk-table__cell'></td>
-                )}
-                {viewColumn(location)}
-                {locations.length > 1 && removeColumn(location)}
-              </tr>
-            ))}
-          </tbody>
-        </div>
+        <tbody className='govuk-table__body'>
+          {displayedLocations.map((location, index) => (
+            <tr key={index} className='govuk-table__row'>
+              {addressColumn(location)}
+              {locations.length === 1 && (
+                <td className='govuk-table__cell'></td>
+              )}
+              {viewColumn(location)}
+              {locations.length > 1 && removeColumn(location)}
+            </tr>
+          ))}
+        </tbody>
       )
     }
 
@@ -167,57 +165,39 @@ export default function HomePage() {
 
   return (
     <>
-      <Header />
-      <div className='govuk-width-container'>
-        <PhaseBanner />
-        <AccountNavigation currentPage={useLocation().pathname} />
-        <br></br>
-        {location.state !== null &&
-        !location.state.removedAddressFail &&
-        location.state.removedAddress ? (
-          <NotificationBanner
-            className='govuk-notification-banner govuk-notification-banner--success'
-            title='Success'
-            heading='Location removed'
-            text={location.state.removedAddress}
-          />
-        ) : null}
-        {location.state !== null && location.state.removedAddressFail ? (
-          <ErrorSummary
-            errorList={[
-              'An error occured trying to remove a location.  ' +
-                location.state.removedAddress +
-                ' has not been removed.'
-            ]}
-          />
-        ) : null}
-        <main className='govuk-main-wrapper'>
-          <div class='govuk-grid-row'>
-            <div class='govuk-grid-column-full'>
-              <h1 className='govuk-heading-l'>Home</h1>
-              <div className='govuk-body'>
-                {locations.length > 0 && locationTable()}
-                <Pagination
-                  totalPages={Math.ceil(locations.length / locationsPerPage)}
-                  onPageChange={(val) => setCurrentPage(val)}
-                />
-                <Button
-                  text='Add new location'
-                  className='govuk-button govuk-button--secondary'
-                  onClick={handleButton}
-                />
-                {locations.length === 1 && (
-                  <Details
-                    title='If you want to remove this location'
-                    text={detailsMessage}
+      <div className='page-container'>
+        <Header />
+        <div className='govuk-width-container body-container'>
+          <PhaseBanner />
+          <AccountNavigation currentPage={useLocation().pathname} />
+          <main className='govuk-main-wrapper'>
+            <div class='govuk-grid-row'>
+              <div class='govuk-grid-column-full'>
+                <h1 className='govuk-heading-l'>Home</h1>
+                <div className='govuk-body'>
+                  {locations.length > 0 && locationTable()}
+                  <Pagination
+                    totalPages={Math.ceil(locations.length / locationsPerPage)}
+                    onPageChange={(val) => setCurrentPage(val)}
                   />
-                )}
+                  <Button
+                    text='Add new location'
+                    className='govuk-button govuk-button--secondary'
+                    onClick={handleButton}
+                  />
+                  {locations.length === 1 && (
+                    <Details
+                      title='If you want to remove this location'
+                      text={detailsMessage}
+                    />
+                  )}
+                </div>
               </div>
             </div>
-          </div>
-        </main>
+          </main>
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   )
 }

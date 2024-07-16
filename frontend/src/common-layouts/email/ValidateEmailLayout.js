@@ -7,6 +7,7 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import Input from '../../gov-uk-components/Input'
 import InsetText from '../../gov-uk-components/InsetText'
+import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import {
@@ -19,7 +20,12 @@ import { authCodeValidation } from '../../services/validations/AuthCodeValidatio
 export default function ValidateEmailLayout ({
   NavigateToNextPage,
   SkipValidation,
-  DifferentEmail
+  DifferentEmail,
+  NavigateToPreviousPage,
+  buttonText,
+  changeSignIn,
+  updateProfile,
+  profileError
 }) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -44,8 +50,13 @@ export default function ValidateEmailLayout ({
       if (errorMessage !== null) {
         setError(errorMessage)
       } else {
-        dispatch(setProfile(data.profile))
-        NavigateToNextPage()
+        if (changeSignIn) {
+          updateProfile(data.profile, authToken)
+          setError(profileError)
+        } else {
+          dispatch(setProfile(data.profile))
+          NavigateToNextPage()
+        }
       }
     }
   }
@@ -81,58 +92,88 @@ export default function ValidateEmailLayout ({
     DifferentEmail(email)
   }
 
+  const backLink = (event) => {
+    event.preventDefault()
+    NavigateToPreviousPage()
+  }
+
   return (
     <>
-      <Header />
-      <div class='govuk-width-container'>
-        <Link to='/managecontacts/add-email' className='govuk-back-link'>
-          Back
-        </Link>
-        <main className='govuk-main-wrapper'>
-          <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-two-thirds'>
-              <ErrorSummary errorList={error === '' ? [] : [error]} />
-              <h2 class='govuk-heading-l'>Check your email</h2>
-              <div class='govuk-body'>
-                We've sent a code to:
-                <InsetText text={email} />
-                Use the code within 4 hours or it will expire.
-                <br /> <br />
-                <Input
-                  name='Enter code'
-                  inputType='text'
-                  error={error}
-                  onChange={(val) => setCode(val)}
-                />
-                <Button
-                  className='govuk-button'
-                  text='Continue'
-                  onClick={handleSubmit}
-                />
-                <Link
-                  onClick={skipValidation}
-                  className='govuk-link'
-                  style={{
-                    display: 'inline-block',
-                    padding: '8px 10px 7px'
-                  }}
-                >
-                  Skip and confirm later
-                </Link>
-                <br />
-                <Link onClick={getNewCode} className='govuk-link'>
-                  Get a new code
-                </Link>
-                <br /> <br />
-                <Link onClick={differentEmail} className='govuk-link'>
-                  Enter a different email
-                </Link>
+      <div className='page-container'>
+        <Header />
+        <div className='govuk-width-container body-container'>
+          <PhaseBanner />
+          <Link onClick={backLink} className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
+            Back
+          </Link>
+          <main className='govuk-main-wrapper'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-two-thirds'>
+                {error && <ErrorSummary errorList={[error]} />}
+                <h2 className='govuk-heading-l'>Check your email</h2>
+                <div className='govuk-body'>
+                  {changeSignIn && (
+                    <p className='govuk-body'>
+                      You need to confirm your email address.
+                    </p>
+                  )}
+                  <p className='govuk-body govuk-!-margin-bottom-5'>
+                    We've sent an email with a code to:
+                    <InsetText text={email} />
+                    {changeSignIn ? 'Enter' : 'Use'} the code within 4 hours or it will expire.
+                  </p>
+                  <Input
+                    className='govuk-input govuk-input--width-10'
+                    name='Enter code'
+                    inputType='text'
+                    error={error}
+                    onChange={(val) => setCode(val)}
+                  />
+                  <Button
+                    className='govuk-button'
+                    text={buttonText}
+                    onClick={handleSubmit}
+                  />
+                  {changeSignIn
+                    ? (
+                      <>
+                        <Link
+                          onClick={differentEmail}
+                          className='govuk-link inline-link'
+                        >
+                          Enter a different email
+                        </Link>
+                        <br />
+                        <Link onClick={getNewCode} className='govuk-link'>
+                          Get a new code
+                        </Link>
+                      </>
+                      )
+                    : (
+                      <>
+                        <Link
+                          onClick={skipValidation}
+                          className='govuk-link inline-link'
+                        >
+                          Skip and confirm later
+                        </Link>
+                        <br />
+                        <Link onClick={getNewCode} className='govuk-link'>
+                          Get a new code
+                        </Link>
+                        <br /> <br />
+                        <Link onClick={differentEmail} className='govuk-link'>
+                          Enter a different email
+                        </Link>
+                      </>
+                      )}
+                </div>
               </div>
             </div>
-          </div>
-        </main>
+          </main>
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   )
 }

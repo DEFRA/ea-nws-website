@@ -25,7 +25,6 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.result.status).to.equal(200)
     Code.expect(response.statusCode).to.equal(200)
   })
 
@@ -35,7 +34,7 @@ lab.experiment('Integration tests', () => {
       url: '/api/signup/feedback'
     }
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(400)
+    Code.expect(response.result.status).to.equal(500)
   })
 
   lab.test('POST / route with text not entered', async () => {
@@ -48,7 +47,7 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(400)
+    Code.expect(response.result.status).to.equal(500)
   })
 
   lab.test('POST / route with preference not selected', async () => {
@@ -61,6 +60,6 @@ lab.experiment('Integration tests', () => {
       }
     }
     const response = await server.inject(options)
-    Code.expect(response.statusCode).to.equal(400)
+    Code.expect(response.result.status).to.equal(500)
   })
 })

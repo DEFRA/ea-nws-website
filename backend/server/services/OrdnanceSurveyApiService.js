@@ -73,9 +73,9 @@ const osFindNameApiCall = async (keyword) => {
 }
 
 const osOAuth2ApiCall = async () => {
-  const osApiKey = await getSecretKeyValue('nws/geosafe/osApiKey', 'osApiKey')
+  const osApiKey = await getSecretKeyValue('nws/website/osApiKey', 'osApiKey')
   const osApiSecret = await getSecretKeyValue(
-    'nws/geosafe/osApiSecret',
+    'nws/website/osApiSecret',
     'osApiSecret'
   )
   const url = 'https://api.os.uk/oauth2/token/v1'

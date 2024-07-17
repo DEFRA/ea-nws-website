@@ -4,7 +4,7 @@ const axios = require('axios')
 
 const osPostCodeApiCall = async (postCode) => {
   let responseData
-  const osApiKey = await getSecretKeyValue('nws/geosafe/osApiKey', 'osApiKey')
+  const osApiKey = await getSecretKeyValue('nws/website/osApiKey', 'osApiKey')
   const url = `https://api.os.uk/search/places/v1/postcode?postcode=${postCode}&key=${osApiKey}&output_srs=EPSG:4326`
 
   try {
@@ -39,7 +39,7 @@ const osPostCodeApiCall = async (postCode) => {
 
 const osFindNameApiCall = async (keyword) => {
   let responseData
-  const osApiKey = await getSecretKeyValue('nws/geosafe/osApiKey', 'osApiKey')
+  const osApiKey = await getSecretKeyValue('nws/website/osApiKey', 'osApiKey')
   const url = `https://api.os.uk/search/names/v1/find?query=${keyword}&key=${osApiKey}output_srs=EPSG:4326`
 
   try {

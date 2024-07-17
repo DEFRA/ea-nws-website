@@ -56,6 +56,15 @@ export default function AddLandlineLayout ({ NavigateToNextPage, NavigateToPrevi
       if (errorMessage !== null) {
         setError(errorMessage)
       } else {
+        // remove number so when the dispatch bellow is called it addsthe number back to array (should be at the back)
+        dispatch(
+          setProfile(
+            removeUnverifiedContact(session.profile,
+              normalisedPhoneNumber)
+          )
+        )
+        // when adding a new number in input box it adds to the back of array as it should and works
+        // however when radio button is pressed it adds the number back to the place it was originally in
         dispatch(
           setProfile(
             addUnverifiedContact(

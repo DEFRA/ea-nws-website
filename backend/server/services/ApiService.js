@@ -17,7 +17,7 @@ const apiCall = async (data, path) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      withCredentials: true
+      withCredentials: false
     })
 
     return { status: response.status, data: response.data }

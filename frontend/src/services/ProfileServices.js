@@ -158,6 +158,33 @@ const updateAdditionals = (profile, id, value) => {
   }
 }
 
+const addLocation = (profile, location) => {
+  const currentLocations = profile.pois
+
+  const updatedProfile = {
+    ...profile,
+    pois: [...currentLocations, location]
+  }
+
+  return updatedProfile
+}
+
+const checkIfSelectedLocationExistsAlready = (profile, selectedLocation) => {
+  if (profile) {
+    for (const position of profile.pois) {
+      const { latitude, longitude } = position.coordinates
+      if (
+        latitude === selectedLocation.coordinates.latitude &&
+        longitude === selectedLocation.coordinates.longitude
+      ) {
+        return true
+      }
+    }
+  } else {
+    return false
+  }
+}
+
 module.exports = {
   addUnverifiedContact,
   removeUnverifiedContact,
@@ -165,5 +192,7 @@ module.exports = {
   removeVerifiedContact,
   addAccountName,
   getAdditionals,
-  updateAdditionals
+  updateAdditionals,
+  addLocation,
+  checkIfSelectedLocationExistsAlready
 }

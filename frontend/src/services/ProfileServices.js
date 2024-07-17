@@ -185,7 +185,6 @@ const checkIfSelectedLocationExistsAlready = (profile, selectedLocation) => {
   }
 }
 
-
 module.exports = {
   addUnverifiedContact,
   removeUnverifiedContact,

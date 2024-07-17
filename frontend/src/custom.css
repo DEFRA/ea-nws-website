@@ -149,3 +149,27 @@
 .row__header {
     width: 12.75em
 }
+
+.flood-warning-key {
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+@media (max-width: 1099px) {
+  .map-container {
+    height: 45vh;
+  }
+}
+
+@media (min-width: 1100px) and (max-width: 1700px) {
+  .map-container {
+    height: 60vh;
+  }
+}
+
+@media (min-width: 1700px) {
+  .map-container {
+    height: 40vh;
+  }
+}

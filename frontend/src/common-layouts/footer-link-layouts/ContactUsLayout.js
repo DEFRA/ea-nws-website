@@ -8,6 +8,7 @@ import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
 export default function ContactUsLayout () {
   const navigate = useNavigate()
+  const location = useLocation()
   const authToken = useSelector((state) => state.session.authToken)
 
   return (
@@ -16,7 +17,7 @@ export default function ContactUsLayout () {
         <Header />
         <div className='govuk-width-container body-container'>
           <PhaseBanner />
-          <AccountNavigation currentPage={useLocation().pathname} />
+          {authToken && <AccountNavigation currentPage={location.pathname} />}
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
               {!authToken && (

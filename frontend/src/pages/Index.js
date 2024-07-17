@@ -34,8 +34,8 @@ export default function IndexPage () {
       {
         address: 'Exeter, Royaume-Uni',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.4998415,
+          longitude: -0.1246377
         }
       }
     ]

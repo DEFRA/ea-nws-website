@@ -1,6 +1,7 @@
 const axios = require('axios')
 const getSecretKeyValue = require('./SecretsManager')
 const apiToFrontendError = require('./ApiToFrontendError')
+const https = require('node:https')
 
 const getErrorMessage = (path, errorMessage) => {
   const apiPath = path.split('/').pop()
@@ -17,6 +18,7 @@ const apiCall = async (data, path) => {
       headers: {
         'Content-Type': 'application/json'
       },
+      httpsAgent: new https.Agent({ rejectUnauthorized: false }),
       withCredentials: false
     })
 

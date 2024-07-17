@@ -1,13 +1,14 @@
 #!/bin/bash
 
-image_names=(
-    "ea_nws_website_frontend" 
-    "ea_nws_website_backend" 
-    "ea_nws_website_api" 
-    "ea_nws_website_nginx"
+image_tags=(
+    "frontend" 
+    "backend" 
+    "nginx"
     )
+image_name="ea_nws_website"
 build_version=""
 save_image=false
+upload=false
 
 print_help()
 {
@@ -26,23 +27,30 @@ print_help()
         Outline of steps:
         1. Builds the container by calling docker compose build
         2. Saves the container image locally
+        3. Uploads images to ECR
+
+        NOTE: To upload to ECR you must first export your AWS access keys in the same
+              terminal tab that you run this script from.
 
     OPTIONS
         -v [build version] Tags the docker image with the specified version
         -s Saves the docker image locally as a file
-        -d [Domain name] (optional) sets the domain name. Must start with http:// 
-        -a [API url] (optional) sets the url for the api. Must start with http://
+        -u Uploads to ECR
+
         -h Prints out this help message."
 
 }
 
-while getopts "v:sd:a:h" opt; do
+while getopts "v:suh" opt; do
     case $opt in
     v) # build version
         build_version=${OPTARG}
         ;;
     s) # Save docker image
         save_image=true
+        ;;
+    u) # Upload docker image to ECR
+        upload=true
         ;;
     h) # print help
         print_help
@@ -83,17 +91,69 @@ if [[ $save_image = false ]]; then
     done
 fi
 
+if [[ $upload = false ]]; then
+    while true; do
+        read -p "Do you want to upload the image to ECR (y/n)? " yn
+        case $yn in
+            Y|y ) 
+                upload=true 
+                break 1 
+                ;;
+            N|n ) break 1 ;;
+            * ) echo "Please answer y or n.";;
+        esac
+    done
+fi
+
+if [[ $upload = true ]]; then
+    echo "To upload to ECR you must export your AWS credentials before running this script."
+    echo "On the AWS start screen click \"Access Keys\" to find them and export using the"
+    echo "below commands:"
+    echo "    export AWS_ACCESS_KEY_ID=\"****************\""
+    echo "    export AWS_SECRET_ACCESS_KEY=\"*************************\""
+    echo "    export AWS_SESSION_TOKEN=\"*************************************************\""
+    echo ""
+    while true; do
+        read -p "Can you confirm this has been done (y/n)? " yn
+        case $yn in
+            Y|y ) 
+                break 1 
+                ;;
+            N|n ) 
+                echo "Exiting. keys must be exported before running this script"
+                exit 1 ;;
+            * ) echo "Please answer y or n.";;
+        esac
+    done
+fi
+
 echo "Building docker image as version: "${build_version}
 export BUILD_VERSION=${build_version}
 
-docker compose build
+docker compose build --no-cache
 echo "Build Complete!"
 
 if [[ $save_image = true ]]; then
-    for image_name in ${image_names[@]}; do
-        image_file=${image_name}-${build_version}.tar
+    for image_tag in ${image_tags[@]}; do
+        image_file=${image_name}-${image_tag}-${build_version}.tar
         echo "Saving docker image as: "${image_file}
-        docker save -o ${image_file} ${image_name}:${build_version}
+        docker save -o ${image_file} ${image_name}:${image_tag}-${build_version}
         echo "Image file saved"
+    done
+fi
+
+if [[ $upload = true ]]; then
+    ecr_location=891376991609.dkr.ecr.eu-west-2.amazonaws.com
+    ecr_repo_name=ea_nws_docker_registry
+    ecr_repo=${ecr_location}/${ecr_repo_name}
+
+    echo "logging in to ECR repo"
+    aws ecr get-login-password --region eu-west-2 | docker login --username AWS --password-stdin ${ecr_location}
+
+    for image_tag in ${image_tags[@]}; do
+        echo "Tagging image $image_name:$image_tag-$build_version"
+        docker tag ${image_name}:${image_tag}-${build_version} ${ecr_repo}:${image_tag}-${build_version}
+        echo "Pushing image $ecr_repo:$image_tag-$build_version to ECR"
+        docker push ${ecr_repo}:${image_tag}-${build_version}
     done
 fi

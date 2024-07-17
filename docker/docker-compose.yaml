@@ -26,18 +26,6 @@ services:
         aliases:
           - backend
 
-  api:
-    image: ea_nws_website:api-${BUILD_VERSION}
-    build:
-      context: ../
-      dockerfile: docker/ea_nws_website/Dockerfile_api
-    ports:
-      - '9000:9000'
-    networks:
-      main:
-        aliases:
-          - api
-
   nginx:
     image: ea_nws_website:nginx-${BUILD_VERSION}
     build:

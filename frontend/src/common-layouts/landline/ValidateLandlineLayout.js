@@ -86,8 +86,16 @@ export default function ValidateLandlineLayout ({
   const differentHomePhone = (event) => {
     event.preventDefault()
     // remove homephone from users profile
-    // dispatch(setProfile(removeUnverifiedContact(session.profile, homePhone)))
-    DifferentHomePhone(homePhone)
+    const mobile = session.profile.unverified.mobilePhones[0]
+    ? session.profile.unverified.mobilePhones[0]
+    : session.profile.mobilePhones[0]
+
+    if (mobile === undefined) {
+      dispatch(setProfile(removeUnverifiedContact(session.profile, homePhone)))
+      DifferentHomePhone(homePhone)
+    } else {
+      navigate('/signup/contactpreferences/landline/choosenumber')
+    }
   }
 
   return (

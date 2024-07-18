@@ -44,7 +44,7 @@ import LocationSearchResultsPage from '../pages/signup/register-location/Locatio
 import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
 import SignUpSuccessPage from '../pages/signup/success/SignUpSuccessPage'
-
+import ChooseNumberToVarifyPage from '../pages/signup/channel-preferences/landline-telephone-authentication/ChooseNumberToVarifyPage'
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
 
@@ -115,6 +115,10 @@ const signupRoutes = [
   {
     path: '/signup/contactpreferences/landline/add',
     component: <AddLandlinePhonePage />
+  },
+  {
+    path: '/signup/contactpreferences/landline/choosenumber',
+    component: <ChooseNumberToVarifyPage/>
   },
   {
     path: '/signup/contactpreferences/landline/validate',

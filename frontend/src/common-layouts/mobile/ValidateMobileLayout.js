@@ -55,7 +55,11 @@ export default function ValidateMobileLayout ({
         setError(errorMessage)
       } else {
         dispatch(setProfile(data.profile))
-        NavigateToNextPage()
+        if (session.contactPreferences.includes('phoneCall') && session.profile.unverified.mobilePhones[0] !== undefined ) {
+          navigate('/signup/contactpreferences/landline/add')
+        } else {
+          navigate('/signup/accountname/add')
+        }
       }
     }
   }

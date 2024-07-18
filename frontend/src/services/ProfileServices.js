@@ -123,17 +123,66 @@ const removeVerifiedContact = (profile, contact) => {
   return updatedProfile
 }
 
-const addAccountName = (profile, firstName, lastName) => {
-  profile.firstName = firstName
-  profile.lastName = lastName
+const addAccountName = (profile, firstname, lastname) => {
+  profile.firstname = firstname
+  profile.lastname = lastname
 
   const updatedProfile = {
     ...profile,
-    firstName,
-    lastName
+    firstname,
+    lastname
   }
 
   return updatedProfile
+}
+
+const getAdditionals = (profile, id) => {
+  for (let i = 0; i < profile.additionals.length; i++) {
+    if (profile.additionals[i].id === id) {
+      return profile.additionals[i].value
+    }
+  }
+  return ''
+}
+
+const updateAdditionals = (profile, id, value) => {
+  let idFound = false
+  for (let i = 0; i < profile.additionals.length; i++) {
+    if (profile.additionals[i].id === id) {
+      profile.additionals[i].value = value
+      idFound = true
+    }
+  }
+  if (!idFound) {
+    profile.additionals.push({ id, value })
+  }
+}
+
+const addLocation = (profile, location) => {
+  const currentLocations = profile.pois
+
+  const updatedProfile = {
+    ...profile,
+    pois: [...currentLocations, location]
+  }
+
+  return updatedProfile
+}
+
+const checkIfSelectedLocationExistsAlready = (profile, selectedLocation) => {
+  if (profile) {
+    for (const position of profile.pois) {
+      const { latitude, longitude } = position.coordinates
+      if (
+        latitude === selectedLocation.coordinates.latitude &&
+        longitude === selectedLocation.coordinates.longitude
+      ) {
+        return true
+      }
+    }
+  } else {
+    return false
+  }
 }
 
 module.exports = {
@@ -141,5 +190,9 @@ module.exports = {
   removeUnverifiedContact,
   addVerifiedContact,
   removeVerifiedContact,
-  addAccountName
+  addAccountName,
+  getAdditionals,
+  updateAdditionals,
+  addLocation,
+  checkIfSelectedLocationExistsAlready
 }

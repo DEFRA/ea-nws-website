@@ -16,7 +16,7 @@ import {
 import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../services/validations/PhoneValidation'
 
-export default function AddLandlineLayout ({
+export default function AddLandlineLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {

@@ -17,9 +17,9 @@ import { emailValidation } from '../../services/validations/EmailValidation'
 
 export default function AddEmailLayout ({ NavigateToNextPage }) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
-  const dispatch = useDispatch()
   const session = useSelector((state) => state.session)
   const authToken = session.authToken
 

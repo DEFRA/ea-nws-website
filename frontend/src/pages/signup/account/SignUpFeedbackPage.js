@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
-import CheckboxRadios from '../../../gov-uk-components/CheckBoxRadios'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'

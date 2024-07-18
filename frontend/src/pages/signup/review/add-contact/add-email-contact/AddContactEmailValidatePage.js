@@ -8,7 +8,7 @@ export default function ValidateEmailContactPage () {
   const SkipValidation = () => {
     navigate('/signup/review')
   }
-  const DifferentMobile = () => {
+  const DifferentEmail = () => {
     navigate('/signup/review/add-email')
   }
 
@@ -16,7 +16,8 @@ export default function ValidateEmailContactPage () {
     <ValidateEmailLayout
       NavigateToNextPage={NavigateToNextPage}
       SkipValidation={SkipValidation}
-      DifferentMobile={DifferentMobile}
+      DifferentEmail={DifferentEmail}
+      NavigateToPreviousPage={DifferentEmail}
       buttonText='Continue'
     />
   )

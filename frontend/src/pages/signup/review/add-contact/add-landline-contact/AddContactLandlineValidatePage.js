@@ -14,6 +14,10 @@ export default function ValidateLandlineContactPage () {
   }
 
   return (
-    <ValidateLandlineLayout NavigateToNextPage={NavigateToNextPage} SkipValidation={SkipValidation} DifferentHomePhone={DifferentHomePhone} />
+    <ValidateLandlineLayout 
+    NavigateToNextPage={NavigateToNextPage} 
+    NavigateToPreviousPage={DifferentHomePhone}
+    SkipValidation={SkipValidation} 
+    DifferentHomePhone={DifferentHomePhone} />
   )
 }

@@ -14,6 +14,7 @@ export default function ValidateMobileContactPage () {
   return (
     <ValidateMobileLayout
       NavigateToNextPage={NavigateToNextPage}
+      NavigateToPreviousPage={DifferentMobile}
       SkipValidation={SkipValidation}
       DifferentMobile={DifferentMobile}
     />

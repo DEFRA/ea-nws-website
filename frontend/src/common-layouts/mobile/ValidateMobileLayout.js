@@ -19,7 +19,8 @@ import { authCodeValidation } from '../../services/validations/AuthCodeValidatio
 export default function ValidateMobileLayout ({
   NavigateToNextPage,
   SkipValidation,
-  DifferentMobile
+  DifferentMobile,
+  NavigateToPreviousPage
 }) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -90,14 +91,19 @@ export default function ValidateMobileLayout ({
     DifferentMobile(mobile)
   }
 
+  const backLink = (event) => {
+    event.preventDefault()
+    NavigateToPreviousPage()
+  }
+
   return (
     <>
       <div className='page-container'>
       <Header />
       <div class='govuk-width-container body-container'>
-        <Link to='/managecontacts/add-mobile' className='govuk-back-link'>
-          Back
-        </Link>
+      <Link onClick={backLink} className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
+            Back
+          </Link>
         <main className='govuk-main-wrapper'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>

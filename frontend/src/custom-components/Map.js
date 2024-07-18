@@ -12,14 +12,14 @@ import {
   useMap
 } from 'react-leaflet'
 import { useSelector } from 'react-redux'
-import { getFloodTargetArea } from '../services/GetFloodTargetAreas'
+import { getFloodTargetArea } from '../services/WfsFloodDataService'
 // Leaflet Marker Icon fix
 import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
-export default function Map ({ types }) {
+export default function Map({ types }) {
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
   const selectedLocation = useSelector(
@@ -28,7 +28,7 @@ export default function Map ({ types }) {
   const { latitude, longitude } = selectedLocation.coordinates
 
   useEffect(() => {
-    async function fetchFloodAreaData () {
+    async function fetchFloodAreaData() {
       const { alertArea, warningArea } = await getFloodTargetArea(
         latitude,
         longitude
@@ -71,7 +71,7 @@ export default function Map ({ types }) {
         }}
         onClick={handleClick}
       >
-        <FontAwesomeIcon icon={faRotateLeft} size='2x' />
+        <FontAwesomeIcon icon={faRotateLeft} size="2x" />
       </div>
     )
   }
@@ -83,10 +83,10 @@ export default function Map ({ types }) {
         zoom={14}
         zoomControl={false}
         attributionControl={false}
-        className='map-container'
+        className="map-container"
       >
-        <TileLayer url='https://api.os.uk/maps/raster/v1/zxy/Outdoor_3857/{z}/{x}/{y}.png?key=tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a' />
-        <ZoomControl position='bottomright' />
+        <TileLayer url="https://api.os.uk/maps/raster/v1/zxy/Outdoor_3857/{z}/{x}/{y}.png?key=tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a" />
+        <ZoomControl position="bottomright" />
         <Marker position={[latitude, longitude]}>
           <Popup />
         </Marker>

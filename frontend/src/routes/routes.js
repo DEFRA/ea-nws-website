@@ -38,12 +38,13 @@ import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobi
 import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
 import LocationInAlertAreaPage from '../pages/signup/register-location/LocationInAlertAreaPage'
 import LocationInSevereWarningAreaPage from '../pages/signup/register-location/LocationInSevereWarningAreaPage'
+import LocationInWarningAreaProximityPage from '../pages/signup/register-location/LocationInWarningAreaProximityPage'
 import LocationNotNearDangerPage from '../pages/signup/register-location/LocationNotNearDangerPage'
 import LocationSearchPage from '../pages/signup/register-location/LocationSearchPage'
 import LocationSearchResultsPage from '../pages/signup/register-location/LocationSearchResultsPage'
+import SignUpSuccessPage from '../pages/signup/success/SignUpSuccessPage'
 import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
-import SignUpSuccessPage from '../pages/signup/success/SignUpSuccessPage'
 
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
@@ -85,6 +86,10 @@ const signupRoutes = [
   {
     path: '/signup/register-location/search-results',
     component: <LocationSearchResultsPage />
+  },
+  {
+    path: '/signup/register-location/location-in-proximity-area',
+    component: <LocationInWarningAreaProximityPage />
   },
   {
     path: '/signup/register-location/location-in-severe-warning-area',
@@ -161,10 +166,17 @@ const homeRoutes = [{ path: '/home', component: <HomePage /> }]
 // account
 const accountRoutes = [
   { path: '/account', component: <AccountPage /> },
-  { path: '/account/change-business-details', component: <ChangeBusinessDetailsPage /> },
+  {
+    path: '/account/change-business-details',
+    component: <ChangeBusinessDetailsPage />
+  },
   { path: '/account/change-email', component: <ChangeEmailPage /> },
-  { path: '/account/change-email/validate', component: <ChangeEmailValidationPage /> },
-  { path: '/account/change-name', component: <ChangeNamePage /> }]
+  {
+    path: '/account/change-email/validate',
+    component: <ChangeEmailValidationPage />
+  },
+  { path: '/account/change-name', component: <ChangeNamePage /> }
+]
 
 // contact routes
 const contactRoutes = [

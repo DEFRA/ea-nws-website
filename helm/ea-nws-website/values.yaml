@@ -145,3 +145,5 @@ nodeSelector: {}
 tolerations: []
 
 affinity: {}
+
+dnsPolicy: Default

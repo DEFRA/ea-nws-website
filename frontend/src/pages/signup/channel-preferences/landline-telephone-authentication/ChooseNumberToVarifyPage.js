@@ -15,34 +15,32 @@ import {
   removeVerifiedContact
 } from '../../../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../../../services/formatters/NormalisePhoneNumber'
-import { phoneValidation } from '../../../../services/validations/PhoneValidation'
 import Radio from '../../../../gov-uk-components/Radio'
 
-export default function ChooseNumberToVarifyPage ({ NavigateToNextPage, NavigateToPreviousPage }) {
+export default function ChooseNumberToVarifyPage ({ NavigateToNextPage }) {
   const navigate = useNavigate()
   const [landline, setLandline] = useState('')
   const [error, setError] = useState('')
   const [isOpen, setIsOpen] = useState(false)
+  const [isChecked, setIsChecked] = useState(false)
   const dispatch = useDispatch()
   const session = useSelector((state) => state.session)
   const authToken = useSelector((state) => state.session.authToken)
-  
+  //const mobileNumbers = session.profile.unverified.homePhones
+  const unverifiedMobileNumbers = session.profile.unverified.mobilePhones
+  const verifiedMobileNumbers = session.profile.mobilePhones
+  const mobileNumbers = [...unverifiedMobileNumbers,...verifiedMobileNumbers]
+
+
   const handleSubmit = async (event) => {
     event.preventDefault()
-    // ToDo Fix these
-   
-    if (isOpen === false && landline === '') {
-      const validationError = setError('Which telephone number do you want to use?')
-      setLandlineProfile(validationError)
-    } else {
-      const validationError = phoneValidation(landline, 'mobileAndLandline')
-      setError(validationError)
-      // eslint-disable-next-line no-use-before-define
-      setLandlineProfile(validationError)
-    }
-  
 
-  const setLandlineProfile = async (validationError) => {
+    let validationError = ""
+    //const validationError = phoneValidation(landline, 'mobileAndLandline')
+    if(isChecked === false){
+      validationError = "Which telephone number do you want to use?"
+    }
+    setError(validationError)
     if (validationError === '') {
       const normalisedPhoneNumber = normalisePhoneNumber(landline)
       const dataToSend = { msisdn: normalisedPhoneNumber, authToken }
@@ -63,13 +61,20 @@ export default function ChooseNumberToVarifyPage ({ NavigateToNextPage, Navigate
             )
           )
         )
-        NavigateToNextPage()
+        if (isOpen === true) {
+          navigate('/signup/contactpreferences/landline/validate')
+        }else{
+          console.log(normalisedPhoneNumber)
+          if (verifiedMobileNumbers.includes(normalisedPhoneNumber)) {
+            navigate('/signup/accountname/add')
+          }else{
+            navigate('/signup/contactpreferences/landline/validate')
+          }
+        }
       }
     }
   }
-}
 
-  
   // if user is going back through the signup flow - we want to remove the landline
   // from either the verified or unverified list - we need to do both incase
   // they progressed past the validate landline path
@@ -92,14 +97,11 @@ export default function ChooseNumberToVarifyPage ({ NavigateToNextPage, Navigate
     }
     // user could have navigated from contact preferences page
     // or user could have come from account change details at the end of sign up flow
-    NavigateToPreviousPage()
+    navigate('/signup/contactpreferences/landline/validate')
   }
   
 
-  //const mobileNumbers = session.profile.unverified.homePhones
-  const unverifiedMobileNumbers = session.profile.unverified.mobilePhones
-  const verifiedMobileNumbers = session.profile.mobilePhones
-  const mobileNumbers = [...unverifiedMobileNumbers,...verifiedMobileNumbers]
+  
   
   const hasAddedMobileAlready = () => {
     const phone = session.profile.unverified.mobilePhones
@@ -111,11 +113,13 @@ export default function ChooseNumberToVarifyPage ({ NavigateToNextPage, Navigate
   const setLandlineprefernce = (event) => {
     setLandline(event.target.value)
     setIsOpen(false)
+    setIsChecked(true)
     setError('')
 
   }
   const toggle = () => {
     setIsOpen((isOpen) => !isOpen)
+    setIsChecked(true)
     setLandline('')
     setError('')
   }

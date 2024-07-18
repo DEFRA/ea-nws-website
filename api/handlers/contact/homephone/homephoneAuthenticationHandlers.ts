@@ -29,11 +29,12 @@ async function getHomephoneValidate(
   const { msisdn } = req.payload as { msisdn: string }
   const { code } = req.payload as { code: string }
   console.log('Received LandlineValidate request: ', req.payload)
+  console.log(msisdn)
   const profile = {
     id: '1',
     enabled: true,
-    firstname: '',
-    lastname: '',
+    firstname: 'John',
+    lastname: 'Smith',
     emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
     mobilePhones: ['07343454590', '07889668367'],
     homePhones: ['01475721555', msisdn],

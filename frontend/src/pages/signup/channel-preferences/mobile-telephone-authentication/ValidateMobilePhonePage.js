@@ -7,9 +7,7 @@ export default function ValidateMobilePhone () {
   const session = useSelector((state) => state.session)
 
   const NavigateToNextPage = () => {
-    if (session.contactPreferences.includes('Email')) {
-      // navigate to email TODO - cameron add this once merged
-    } else if (session.contactPreferences.includes('Landline')) {
+    if (session.contactPreferences.includes('Landline')) {
       navigate('/signup/contactpreferences/landline/add')
     } else {
       navigate('/signup/accountname/add')

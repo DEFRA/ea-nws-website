@@ -14,10 +14,7 @@ export default function SkipConfirmLandlinePhonePage () {
   )
 
   function handleSubmit () {
-    // navigate through sign up flow
-    if (session.contactPreferences.includes('Email')) {
-      // navigate to email TODO - cameron add this once merged
-    } else if (session.contactPreferences.includes('Text')) {
+    if (session.contactPreferences.includes('Text')) {
       navigate('/signup/contactpreferences/mobile/add')
     } else {
       navigate('/signup/accountname/add')

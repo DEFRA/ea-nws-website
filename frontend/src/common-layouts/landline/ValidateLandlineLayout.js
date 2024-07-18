@@ -53,8 +53,13 @@ export default function ValidateLandlineLayout ({
         setError(errorMessage)
       } else {
         dispatch(setProfile(data.profile))
-        NavigateToNextPage()
+        if (session.contactPreferences.includes('PhoneCall') && (session.profile.unverified.homePhones === undefined && session.profile.homePhones === undefined)) {
+          navigate('/signup/contactpreferences/landline/add')
+        } else {
+          navigate('/signup/accountname/add')
+        }
       }
+        
     }
   }
 

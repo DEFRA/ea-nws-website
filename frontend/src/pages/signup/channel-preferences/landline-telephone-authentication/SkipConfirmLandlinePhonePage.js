@@ -14,8 +14,8 @@ export default function SkipConfirmLandlinePhonePage () {
   )
 
   function handleSubmit () {
-    if (session.contactPreferences.includes('Text')) {
-      navigate('/signup/contactpreferences/mobile/add')
+    if (session.contactPreferences.includes('PhoneCall') && session.profile.homePhones === undefined && session.profile.unverified.homePhones === undefined) {
+      navigate('/signup/contactpreferences/landline/add')
     } else {
       navigate('/signup/accountname/add')
     }

@@ -6,6 +6,7 @@ import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import Input from '../../../gov-uk-components/Input'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
+import Radio from '../../../gov-uk-components/Radio'
 import TextArea from '../../../gov-uk-components/TextArea'
 import { backendCall } from '../../../services/BackendService'
 
@@ -104,7 +105,7 @@ export default function FeedbackPage () {
               {error && <p className='govuk-error-message'>{error}</p>}
               <div className='govuk-radios' data-module='govuk-radios'>
                 {feedbackOptions.map((option) => (
-                  <CheckboxRadios
+                  <Radio
                     key={option.value}
                     id={option.value}
                     name='feedbackRadios'

@@ -2,11 +2,11 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../../gov-uk-components/Button'
-import CheckboxRadios from '../../../../gov-uk-components/CheckBoxRadios'
 import ErrorSummary from '../../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../../gov-uk-components/Footer'
 import Header from '../../../../gov-uk-components/Header'
 import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
+import Radio from '../../../../gov-uk-components/Radio'
 import { addContactPreference } from '../../../../redux/userSlice'
 export default function SelectContactTypeToAddPage () {
   const navigate = useNavigate()
@@ -25,19 +25,20 @@ export default function SelectContactTypeToAddPage () {
       setError('Select type of contact you want to add')
     } else {      
       if (selectedContactType === 'Mobile Number (texts)') {
-        if(!contactPreferences.includes('Mobile Number (texts)')){
-            dispatch(addContactPreference(selectedContactType))
+        if(!contactPreferences.includes('Text')){
+            dispatch(addContactPreference('Text'))
         }
         navigate('/signup/review/add-mobile')
       } else if (selectedContactType === 'Email Address') {
         if(!contactPreferences.includes('Email Address')){
-            dispatch(addContactPreference(selectedContactType))
+            dispatch(addContactPreference('Email Address'))
         }
         navigate('/signup/review/add-email')
       } else if (selectedContactType === 'Telephone Number (phone calls)') {
-        if(!contactPreferences.includes('Telephone Number (phone calls)')){
-            dispatch(addContactPreference(selectedContactType))
+        if(!contactPreferences.includes('PhoneCall')){
+            dispatch(addContactPreference('PhoneCall'))
         }
+        console.log(contactPreferences)
         navigate('/signup/review/add-landline')
       }
     }
@@ -75,7 +76,7 @@ export default function SelectContactTypeToAddPage () {
                 {error && <p className='govuk-error-message'>{error}</p>}
                 <div className='govuk-radios' data-module='govuk-radios'>
                 {contactOptions.map((contact) => (
-                  <CheckboxRadios
+                  <Radio
                     key={contact.value}
                     id={contact.value}
                     name='contactTypeRadios'

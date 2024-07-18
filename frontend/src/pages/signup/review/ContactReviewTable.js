@@ -57,7 +57,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
                     </strong>
                   </td>
                   <td className='govuk-table__cell'>
-                    <Link to='/managecontacts/validate-email' className='govuk-link'>
+                    <Link to='/review/validate-email' className='govuk-link'>
                       Confirm
                     </Link>
                   </td>
@@ -130,7 +130,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
                       </strong>
                     </td>
                     <td className='govuk-table__cell'>
-                      <Link to='/managecontacts/validate-mobile' className='govuk-link'>
+                      <Link to='/signup/review/validate-mobile' className='govuk-link'>
                         Confirm
                       </Link>
                     </td>                    
@@ -204,7 +204,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
                       </strong>
                     </td>
                     <td className='govuk-table__cell'>                      
-                      <Link to='/managecontacts/validate-landline' className='govuk-link'>Confirm</Link>
+                      <Link to='/signup/review/validate-landline' className='govuk-link'>Confirm</Link>
                     </td>
                     <td className='govuk-table__cell'>
                       <Link

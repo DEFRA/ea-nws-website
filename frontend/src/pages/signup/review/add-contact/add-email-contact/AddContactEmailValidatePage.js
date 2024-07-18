@@ -17,6 +17,7 @@ export default function ValidateEmailContactPage () {
       NavigateToNextPage={NavigateToNextPage}
       SkipValidation={SkipValidation}
       DifferentMobile={DifferentMobile}
+      buttonText='Continue'
     />
   )
 }

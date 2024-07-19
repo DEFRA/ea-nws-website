@@ -105,7 +105,8 @@ export default function ChooseNumberToVarifyPage ({ NavigateToNextPage }) {
   
   const hasAddedMobileAlready = () => {
     const phone = session.profile.unverified.mobilePhones
-    if (phone[0] !== undefined){
+    const verifiedPhone = session.profile.mobilePhones
+    if (phone[0] !== undefined||verifiedPhone[0] !== undefined){
         return true
     }
     else{return false}

@@ -1,20 +1,21 @@
 import React from 'react'
 import Input from '../gov-uk-components/Input'
 
+const ConditionalWrapper = ({ condition, wrapper, children }) =>
+  condition ? wrapper(children) : children
+
 export default function Radio({
   label,
   value,
   name,
   onChange,
+  checked,
   small,
   conditional,
   conditionalQuestion,
   conditionalInput,
   conditionalError
 }) {
-  const ConditionalWrapper = ({ condition, wrapper, children }) =>
-    condition ? wrapper(children) : children
-
   return (
     <>
       <ConditionalWrapper
@@ -31,6 +32,7 @@ export default function Radio({
             name={name}
             onChange={onChange}
             id={'id' + label}
+            checked={checked}
           />
           <label
             className="govuk-label govuk-radios__label"

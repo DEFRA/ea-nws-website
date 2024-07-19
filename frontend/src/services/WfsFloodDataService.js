@@ -57,10 +57,14 @@ export const isLocationWithinFloodAreaProximity = (
   const point = turf.point([lng, lat])
   const maxDistance = distanceMetres
 
+  //load polygons and loop through each area until true is returned
   const isWithinFloodAreaProximity = floodAreaData.features.some((feature) => {
     const polygon = turf.multiPolygon(feature.geometry.coordinates)
+
+    //return all positions in area
     var polygonEdges = turf.explode(polygon)
 
+    //loop through every position and check location is not within proximity of flood area
     return polygonEdges.features.some((edge) => {
       const floodAreaEdge = turf.point(edge.geometry.coordinates)
       const distance = turf.distance(point, floodAreaEdge, { units: 'meters' })

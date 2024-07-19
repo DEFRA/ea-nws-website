@@ -88,7 +88,7 @@ const signupRoutes = [
     component: <LocationSearchResultsPage />
   },
   {
-    path: '/signup/register-location/location-in-proximity-area',
+    path: '/signup/register-location/location-in-proximity-area/:type',
     component: <LocationInWarningAreaProximityPage />
   },
   {

@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import FloodWarningKey from '../../custom-components/FloodWarningKey'
+import LoadingSpinner from '../../custom-components/LoadingSpinner'
 import Map from '../../custom-components/Map'
 import Button from '../../gov-uk-components/Button'
 import Footer from '../../gov-uk-components/Footer'
@@ -12,26 +13,16 @@ import Radio from '../../gov-uk-components/Radio'
 
 export default function LocationWithinWarningAreaProximityLayout() {
   const navigate = useNavigate()
-  const [selectedFloodArea, setSelectedFloodArea] = useState('')
+  const { type } = useParams()
+  const [floodAreas, setFloodAreas] = useState(null)
+  const [selectedFloodArea, setSelectedFloodArea] = useState(null)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
 
-  const results = [
-    {
-      label:
-        'a. River thames at bisham village and marlow town. 500 metres from pin',
-      value: 'this will need to be the geojson data?',
-      name: 'floodAreas'
-    },
-
-    {
-      label:
-        'b. Properties closest to the river thames from all ssaints church, bishan to little marlow. 1250 metres from pin',
-      value: 'this will need to be the geojson data?',
-      name: 'floodAreas'
-    }
-  ]
+  useEffect(() => {
+    setSelectedFloodArea(null)
+  }, [type])
 
   return (
     <>
@@ -49,35 +40,59 @@ export default function LocationWithinWarningAreaProximityLayout() {
                   You can get flood messages near this location
                 </h1>
                 <InsetText text={selectedLocation.name} />
+                <p>
+                  Flood message areas nearby are highlight in{' '}
+                  {type === 'severe' ? 'red' : 'orange'} on the map.
+                </p>
+                <p>
+                  If you choose one of these, you'll get early alerts about
+                  possible flooding.
+                </p>
               </div>
             </div>
             <div class="govuk-grid-row">
               <div class="govuk-grid-column-one-third">
                 <h3 class="govuk-heading-s">Select a nearby target area</h3>
-                {/* need to update this to loop over flood area results map */}
-                {results.map((result) => (
-                  <Radio
-                    small={true}
-                    label={result.label}
-                    value={result.value}
-                    name={result.name}
-                    onChange={() => setSelectedFloodArea(result.label)}
-                  />
-                ))}
+                {floodAreas ? (
+                  floodAreas.map((area, index) => (
+                    <Radio
+                      key={index}
+                      small={true}
+                      label={index + 1 + '. ' + area.properties.ta_name}
+                      name={'floodAreas'}
+                      onChange={() => setSelectedFloodArea(area)}
+                      checked={selectedFloodArea === area}
+                    />
+                  ))
+                ) : (
+                  <LoadingSpinner />
+                )}
                 <Button
                   text={'Confirm'}
                   className={'govuk-button govuk-!-margin-top-5'}
+                  onClick={() => navigate('/')}
                 />
-                <Button
-                  text={'Skip to other areas nearby'}
-                  className={'govuk-button govuk-button--secondary'}
-                />
+                {type === 'severe' && (
+                  <Button
+                    text={'Skip to other areas nearby'}
+                    className={'govuk-button govuk-button--secondary'}
+                    onClick={() => {
+                      navigate(
+                        `/signup/register-location/location-in-proximity-area/${'alert'}`
+                      )
+                    }}
+                  />
+                )}
                 <br />
                 <Link to={() => navigate(-1)}>Choose different location</Link>
               </div>
               <div class="govuk-grid-column-two-thirds">
-                <Map types={['warning']} />
-                <FloodWarningKey type="severe" />
+                <Map
+                  types={[type]}
+                  setFloodAreas={(areas) => setFloodAreas(areas)}
+                  selectedFloodArea={selectedFloodArea}
+                />
+                <FloodWarningKey type={type} />
               </div>
             </div>
           </div>

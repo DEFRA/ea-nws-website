@@ -178,7 +178,7 @@ export default function IndexPage () {
     ]
   }
   
-  function mockSession () {
+  function mockSession (profile) {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
       const contactPreferences = ['Text']
@@ -214,32 +214,7 @@ export default function IndexPage () {
             }
           ]
         }
-      }
-      const profile = {
-        id: '',
-        enabled: true,
-        firstName: 'John',
-        lastName: 'Smith',
-        emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
-        mobilePhones: ['07343 454590', '07889 668367'],
-        homePhones: ['01475 721535'],
-        language: 'EN',
-        additionals: [],
-        unverified: {
-          emails: [],
-          mobilePhones: [],
-          homePhones: []
-        },
-        pois: [
-          {
-            address: 'Exeter, Royaume-Uni',
-            coordinates: {
-              latitude: 50726037,
-              longitude: -3527489
-            }
-          }
-        ]
-      }
+      }   
 
       dispatch(setAuthToken(authToken))
       dispatch(setRegistrations(registrations))

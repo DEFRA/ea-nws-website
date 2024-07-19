@@ -5,14 +5,32 @@ import LocationWithinWarningAreaProximityLayout from '../../../common-layouts/lo
 export default function LocationInWarningAreaProximityPage() {
   const navigate = useNavigate()
 
-  const continueToNextPage = () => {
-    navigate('/signup')
+  const continueToNearbyFloodAlertsPage = () => {
+    navigate(`/signup/register-location/location-in-proximity-area/${'alert'}`)
+  }
+
+  const continueToSelectedFloodWarningsPage = (type) => {
+    switch (type) {
+      case 'severe':
+        navigate('/signup/register-location/location-in-severe-warning-area')
+        break
+      case 'alert':
+        navigate('/signup/register-location/location-in-alert-area')
+    }
+  }
+
+  const continueToSearchResultsPage = () => {
+    navigate('/signup/register-location/search-results')
   }
 
   return (
     <>
       <LocationWithinWarningAreaProximityLayout
-        continueToNextPage={continueToNextPage}
+        continueToSelectedFloodWarningsPage={
+          continueToSelectedFloodWarningsPage
+        }
+        continueToNearbyFloodAlertsPage={continueToNearbyFloodAlertsPage}
+        continueToSearchResultsPage={continueToSearchResultsPage}
       />
     </>
   )

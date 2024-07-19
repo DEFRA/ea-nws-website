@@ -19,7 +19,7 @@ import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
-export default function Map({ types, setFloodAreas, selectedFloodArea }) {
+export default function Map({ types, setFloodAreas }) {
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
   const alertAreaRef = useRef(null)
@@ -27,8 +27,16 @@ export default function Map({ types, setFloodAreas, selectedFloodArea }) {
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+  // used when user selects flood area when location is within proximity
+  const selectedFloodArea = useSelector(
+    (state) => state.session.selectedFloodArea
+  )
+  const showOnlySelectedFloodArea = useSelector(
+    (state) => state.session.showOnlySelectedFloodArea
+  )
   const { latitude, longitude } = selectedLocation.coordinates
 
+  // get flood area data
   useEffect(() => {
     async function fetchFloodAreaData() {
       const { alertArea, warningArea } = await getFloodTargetArea(
@@ -41,8 +49,9 @@ export default function Map({ types, setFloodAreas, selectedFloodArea }) {
     fetchFloodAreaData()
   }, [])
 
+  // pass flood area options to parent component
   useEffect(() => {
-    if (alertArea && warningArea) {
+    if (alertArea && warningArea && setFloodAreas) {
       if (types.includes('severe')) {
         setFloodAreas(warningArea.features)
       } else if (types.includes('alert')) {
@@ -53,11 +62,21 @@ export default function Map({ types, setFloodAreas, selectedFloodArea }) {
     }
   }, [types, alertArea, warningArea])
 
+  // outline the selected flood area - used when user has chosen flood area from proximity
   useEffect(() => {
     if (selectedFloodArea) {
       HighlightSelectedArea(selectedFloodArea)
     }
   }, [selectedFloodArea])
+
+  // show only the selected flood area - used when user has chosen flood area from proximity
+  useEffect(() => {
+    if ((selectedFloodArea, showOnlySelectedFloodArea)) {
+      console.log('yeah this runs')
+      console.log('selectedFloodArea', selectedFloodArea)
+      showSelectedArea(selectedFloodArea)
+    }
+  }, [])
 
   const HighlightSelectedArea = (selectedArea) => {
     if (warningAreaRef.current) {
@@ -97,17 +116,39 @@ export default function Map({ types, setFloodAreas, selectedFloodArea }) {
     }
   }
 
-  // Leaflet Marker Icon fix
-  const DefaultIcon = L.icon({
-    iconUrl,
-    iconRetinaUrl,
-    shadowUrl,
-    iconSize: [25, 41],
-    iconAnchor: [12, 41]
-  })
+  const showSelectedArea = (selectedArea) => {
+    console.log('warningAreaRef.current', warningAreaRef.current)
 
-  L.Marker.prototype.options.icon = DefaultIcon
+    if (warningAreaRef.current) {
+      warningAreaRef.current.eachLayer((layer) => {
+        if (
+          layer.feature.properties.gml_id === selectedArea.properties.gml_id
+        ) {
+          layer.setStyle({
+            fillColor: '#f70202'
+          })
+        } else {
+          layer.remove()
+        }
+      })
+    }
 
+    if (alertAreaRef.current) {
+      alertAreaRef.current.eachLayer((layer) => {
+        if (
+          layer.feature.properties.gml_id === selectedArea.properties.gml_id
+        ) {
+          layer.setStyle({
+            fillColor: '#ffa200'
+          })
+        } else {
+          layer.remove()
+        }
+      })
+    }
+  }
+
+  // reset the map to selected location
   const ResetMapButton = () => {
     const map = useMap()
 
@@ -121,6 +162,17 @@ export default function Map({ types, setFloodAreas, selectedFloodArea }) {
       </div>
     )
   }
+
+  // Leaflet Marker Icon fix
+  const DefaultIcon = L.icon({
+    iconUrl,
+    iconRetinaUrl,
+    shadowUrl,
+    iconSize: [25, 41],
+    iconAnchor: [12, 41]
+  })
+
+  L.Marker.prototype.options.icon = DefaultIcon
 
   return (
     <>

@@ -26,14 +26,17 @@ const userSlice = createSlice({
       state.registrations = action.payload
     },
     // location data
-    setLocationPostCode: (state, action) => {
-      state.locationPostCode = action.payload
-    },
     setLocationSearchResults: (state, action) => {
       state.locationSearchResults = action.payload
     },
     setSelectedLocation: (state, action) => {
       state.selectedLocation = action.payload
+    },
+    setSelectedFloodArea: (state, action) => {
+      state.selectedFloodArea = action.payload
+    },
+    setShowOnlySelectedFloodArea: (state, action) => {
+      state.showOnlySelectedFloodArea = action.payload
     },
     setAdditionalAlerts: (state, action) => {
       state.additionalAlerts = action.payload
@@ -44,9 +47,11 @@ const userSlice = createSlice({
       state.profile = null
       state.contactPreferences = null
       state.registrations = null
-      state.setLocationPostCode = null
+      // location data
       state.locationSearchResults = null
       state.selectedLocation = null
+      state.selectedFloodArea = null
+      state.showOnlySelectedFloodArea = null
       state.additionalAlerts = null
     }
   }
@@ -58,10 +63,12 @@ export const {
   setProfile,
   setRegistrations,
   setContactPreferences,
-  setLocationPostCode,
   setLocationSearchResults,
   setSelectedLocation,
+  setSelectedFloodArea,
+  setShowOnlySelectedFloodArea,
   setAdditionalAlerts,
   clearAuth
 } = userSlice.actions
+
 export default userSlice.reducer

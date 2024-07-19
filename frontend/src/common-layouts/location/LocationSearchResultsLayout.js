@@ -8,7 +8,11 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import Pagination from '../../gov-uk-components/Pagination'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
-import { setSelectedLocation } from '../../redux/userSlice'
+import {
+  setSelectedFloodArea,
+  setSelectedLocation,
+  setShowOnlySelectedFloodArea
+} from '../../redux/userSlice'
 import { checkIfSelectedLocationExistsAlready } from '../../services/ProfileServices'
 import {
   getFloodTargetArea,
@@ -46,7 +50,13 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
           'This location is saved already, please select a different location'
         )
       } else {
+        // users entered location
         dispatch(setSelectedLocation(selectedLocation))
+
+        // reset map display - these are only required when user is taken through location in proximity to flood areas
+        // they are updated with data only in proximity flow
+        dispatch(setSelectedFloodArea(null))
+        dispatch(setShowOnlySelectedFloodArea(false))
 
         const { warningArea, alertArea } = await getFloodTargetArea(
           selectedLocation.coordinates.latitude,

@@ -3,7 +3,7 @@ import L from 'leaflet'
 import leafletPip from 'leaflet-pip'
 
 export const getFloodTargetArea = async (lat, lng) => {
-  const bboxKM = 1 // size of bounding box from centre in KM
+  const bboxKM = 0.3 // size of bounding box from centre in KM
 
   // warning areas
   let baseWFSURL =
@@ -59,13 +59,13 @@ export const isLocationWithinFloodAreaProximity = (
 
   //load polygons and loop through each area until true is returned
   const isWithinFloodAreaProximity = floodAreaData.features.some((feature) => {
-    const polygon = turf.multiPolygon(feature.geometry.coordinates)
+    const floodArea = turf.multiPolygon(feature.geometry.coordinates)
 
     //return all positions in area
-    var polygonEdges = turf.explode(polygon)
+    var floodAreaEdges = turf.explode(floodArea)
 
     //loop through every position and check location is not within proximity of flood area
-    return polygonEdges.features.some((edge) => {
+    return floodAreaEdges.features.some((edge) => {
       const floodAreaEdge = turf.point(edge.geometry.coordinates)
       const distance = turf.distance(point, floodAreaEdge, { units: 'meters' })
       return distance <= maxDistance

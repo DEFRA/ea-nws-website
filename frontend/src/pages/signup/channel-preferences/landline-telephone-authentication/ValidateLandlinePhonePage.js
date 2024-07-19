@@ -33,6 +33,7 @@ export default function ValidateLandlinePhonePage() {
   return (
     <ValidateLandlineLayout
       NavigateToNextPage={NavigateToNextPage}
+      NavigateToPreviousPage={DifferentHomePhone}
       SkipValidation={SkipValidation}
       DifferentHomePhone={DifferentHomePhone}
     />

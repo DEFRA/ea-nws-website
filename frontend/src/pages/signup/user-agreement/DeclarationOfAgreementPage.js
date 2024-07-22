@@ -16,12 +16,12 @@ export default function DeclarationOfAgreementPage () {
   const profile = session.profile
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  
   const handleSubmit = () => {
     if (isChecked === false) {
       setError('Tick to confirm you agree with the terms and conditions')
     } else {
       updateAdditionals(profile, 'lastAccessedUrl', location.pathname)
-      console.log("profile tc", profile)
       // TODO New user home page currently, will need to be modified to direct to the signup review page after T&C agreement signed
       navigate('/home')
     }

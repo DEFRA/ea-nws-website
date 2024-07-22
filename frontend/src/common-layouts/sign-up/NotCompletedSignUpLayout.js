@@ -7,8 +7,7 @@ import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 export default function NotCompletedSignUpLayout ({nextPage}) {
   const navigate = useNavigate()
   
-  const handleSubmit = async (event) => {
-    console.log("next page", nextPage)
+  const handleSubmit = async () => {
     navigate(nextPage)
   }
   return (

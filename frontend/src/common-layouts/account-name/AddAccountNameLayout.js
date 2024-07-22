@@ -42,7 +42,6 @@ export default function AddAccountNameLayout ({
 
       const profile = addAccountName(session.profile, firstname, lastname)
       updateAdditionals(profile, 'lastAccessedUrl', location.pathname)
-      console.log("profile name", profile)
       dispatch(setProfile(profile))
 
       if (changeName) {

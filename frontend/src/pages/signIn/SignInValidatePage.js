@@ -46,14 +46,11 @@ export default function SignInValidatePage () {
         const isSignUpComplete = data.profile.additionals.filter(c => c.id === 'signUpComplete')[0].value
         const lastAccessedUrl = data.profile.additionals.filter(c => c.id === 'lastAccessedUrl')[0].value
         setLastAccessedUrl(lastAccessedUrl)
-        console.log("last acessed", lastAccessedUrl)
-        console.log("sign up complete", isSignUpComplete)
 
         if(!isSignUpComplete){
           setSignUpNotComplete(true)
         }
         else{
-          console.log("going home")
           navigate('/home')
         }
       }

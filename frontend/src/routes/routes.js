@@ -26,6 +26,7 @@ import SignInPage from '../pages/signIn/SignInStartPage'
 import SignInValidatePage from '../pages/signIn/SignInValidatePage'
 import AddFullNamePage from '../pages/signup/account-name/AddFullNamePage'
 import SignUpDuplicateEmailPage from '../pages/signup/account/SignUpDuplicateEmail'
+import SignUpFeedbackConfirmationPage from '../pages/signup/account/SignUpFeedbackConfirmationPage'
 import SignUpFeedbackPage from '../pages/signup/account/SignUpFeedbackPage'
 import SignUpPage from '../pages/signup/account/SignUpPage'
 import SignUpValidationPage from '../pages/signup/account/SignUpValidationPage'
@@ -41,9 +42,9 @@ import LocationInSevereWarningAreaPage from '../pages/signup/register-location/L
 import LocationNotNearDangerPage from '../pages/signup/register-location/LocationNotNearDangerPage'
 import LocationSearchPage from '../pages/signup/register-location/LocationSearchPage'
 import LocationSearchResultsPage from '../pages/signup/register-location/LocationSearchResultsPage'
+import SignUpSuccessPage from '../pages/signup/success/SignUpSuccessPage'
 import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
-import SignUpSuccessPage from '../pages/signup/success/SignUpSuccessPage'
 
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
@@ -130,6 +131,10 @@ const signupRoutes = [
     component: <SignUpFeedbackPage />
   },
   {
+    path: '/signup/feedback/confirmation',
+    component: <SignUpFeedbackConfirmationPage />
+  },
+  {
     path: '/declaration',
     component: <DeclarationOfAgreementPage />
   },
@@ -161,10 +166,17 @@ const homeRoutes = [{ path: '/home', component: <HomePage /> }]
 // account
 const accountRoutes = [
   { path: '/account', component: <AccountPage /> },
-  { path: '/account/change-business-details', component: <ChangeBusinessDetailsPage /> },
+  {
+    path: '/account/change-business-details',
+    component: <ChangeBusinessDetailsPage />
+  },
   { path: '/account/change-email', component: <ChangeEmailPage /> },
-  { path: '/account/change-email/validate', component: <ChangeEmailValidationPage /> },
-  { path: '/account/change-name', component: <ChangeNamePage /> }]
+  {
+    path: '/account/change-email/validate',
+    component: <ChangeEmailValidationPage />
+  },
+  { path: '/account/change-name', component: <ChangeNamePage /> }
+]
 
 // contact routes
 const contactRoutes = [

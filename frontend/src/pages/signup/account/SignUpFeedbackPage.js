@@ -66,7 +66,7 @@ export default function FeedbackPage() {
       if (errorMessage !== null) {
         setError(errorMessage)
       } else {
-        navigate('/signup')
+        navigate('/signup/feedback/confirmation')
       }
     }
   }
@@ -168,7 +168,7 @@ export default function FeedbackPage() {
           />
           <div>
             <Button
-              text='Continue'
+              text='Send feedback'
               className='govuk-button'
               onClick={handleSubmit}
             />

@@ -138,7 +138,8 @@ export default function ChooseNumberToVarifyPage () {
                 </p>
 
                 {hasAddedMobileAlready()
-                  ? <>
+                  ? 
+                  <>
                     <div
                       className={
                   error && isOpen !== true

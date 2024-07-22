@@ -138,61 +138,61 @@ export default function ChooseNumberToVarifyPage () {
                 </p>
 
                 {hasAddedMobileAlready()
-                  ? 
-                  <>
-                    <div
-                      className={
-                  error && isOpen !== true
-                    ? 'govuk-form-group govuk-form-group--error'
-                    : 'govuk-form-group'
-                }
-                    >
+                  ? (
+                    <>
+                      <div
+                        className={
+                            error && isOpen !== true
+                              ? 'govuk-form-group govuk-form-group--error'
+                              : 'govuk-form-group'
+                          }
+                      >
+                        <fieldset className='govuk-fieldset'>
+                          {error && isOpen === false && <p className='govuk-error-message'>{error}</p>}
+                          <div className='govuk-radios' data-module='govuk-radios'>
+                            {mobileNumbers.map((mobileNumbers) => (
+                              <Radio
+                                key={mobileNumbers}
+                                id={mobileNumbers}
+                                name='feedbackRadios'
+                                label={mobileNumbers}
+                                type='radio'
+                                value={mobileNumbers}
+                                onChange={setLandlineprefernce}
+                              />
+                            ))}
 
-                      <fieldset className='govuk-fieldset'>
-                        {error && isOpen === false && <p className='govuk-error-message'>{error}</p>}
-                        <div className='govuk-radios' data-module='govuk-radios'>
-                          {mobileNumbers.map((mobileNumbers) => (
                             <Radio
-                              key={mobileNumbers}
-                              id={mobileNumbers}
+                              key='number'
+                              id='different number'
                               name='feedbackRadios'
-                              label={mobileNumbers}
+                              label='A different number'
                               type='radio'
-                              value={mobileNumbers}
-                              onChange={setLandlineprefernce}
+                              value='A different number'
+                              onChange={toggle}
                             />
-                          ))}
 
-                          <Radio
-                            key='number'
-                            id='different number'
-                            name='feedbackRadios'
-                            label='A different number'
-                            type='radio'
-                            value='A different number'
-                            onChange={toggle}
-                          />
-
-                          <div className='govuk-radios__conditional govuk-radios__conditional--hidden'>
-                            {isOpen &&
-                              <Input
-                                name='UK landline or mobile telephone number'
-                                inputType='text'
-                                error={error}
-                                onChange={(val) => setLandline(val)}
-                                className='govuk-input govuk-input--width-20'
-                              />}
+                            <div className='govuk-radios__conditional govuk-radios__conditional--hidden'>
+                              {isOpen &&
+                                <Input
+                                  name='UK landline or mobile telephone number'
+                                  inputType='text'
+                                  error={error}
+                                  onChange={(val) => setLandline(val)}
+                                  className='govuk-input govuk-input--width-20'
+                                />}
+                            </div>
                           </div>
-                        </div>
-                      </fieldset>
-                    </div>
-                    <Button
-                      className='govuk-button'
-                      text='Continue'
-                      onClick={handleSubmit}
-                    />
-                    <br />
-                  </>
+                        </fieldset>
+                      </div>
+                      <Button
+                        className='govuk-button'
+                        text='Continue'
+                        onClick={handleSubmit}
+                      />
+                      <br />
+                    </>
+                    )
                   : navigate('/signup/contactpreferences/landline/add')}
               </div>
             </div>

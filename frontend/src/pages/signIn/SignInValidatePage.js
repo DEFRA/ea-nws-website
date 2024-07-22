@@ -14,12 +14,16 @@ import {
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
+import NotCompletedSigningUpLayout from '../../common-layouts/sign-up/NotCompletedSignUpLayout'
+
 export default function SignInValidatePage () {
   const location = useLocation()
   const [error, setError] = useState('')
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [code, setCode] = useState('')
+  const [signUpNotComplete, setSignUpNotComplete] = useState(false)
+  const [lastAccessedUrl, setLastAccessedUrl] = useState('')
   const signinToken = location.state.signinToken
 
   const handleSubmit = async (event) => {
@@ -38,7 +42,20 @@ export default function SignInValidatePage () {
         dispatch(setAuthToken(data.authToken))
         dispatch(setProfile(data.profile))
         dispatch(setRegistrations(data.registrations))
-        navigate('/home')
+
+        const isSignUpComplete = data.profile.additionals.filter(c => c.id === 'signUpComplete')[0].value
+        const lastAccessedUrl = data.profile.additionals.filter(c => c.id === 'lastAccessedUrl')[0].value
+        setLastAccessedUrl(lastAccessedUrl)
+        console.log("last acessed", lastAccessedUrl)
+        console.log("sign up complete", isSignUpComplete)
+
+        if(!isSignUpComplete){
+          setSignUpNotComplete(true)
+        }
+        else{
+          console.log("going home")
+          navigate('/home')
+        }
       }
     }
   }
@@ -54,6 +71,9 @@ export default function SignInValidatePage () {
 
   return (
     <>
+    {signUpNotComplete
+        ? (<NotCompletedSigningUpLayout nextPage={lastAccessedUrl}  />)
+        : (
       <div className='page-container'>
         <Header />
         <div class='govuk-width-container body-container'>
@@ -84,6 +104,7 @@ export default function SignInValidatePage () {
         </div>
         <Footer />
       </div>
+    )}
     </>
   )
 }

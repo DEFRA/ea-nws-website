@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
 import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
@@ -8,7 +8,7 @@ import Header from '../../gov-uk-components/Header'
 import Input from '../../gov-uk-components/Input'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { setProfile } from '../../redux/userSlice'
-import { addAccountName } from '../../services/ProfileServices'
+import { addAccountName, updateAdditionals } from '../../services/ProfileServices'
 import { fullNameValidation } from '../../services/validations/FullNameValidation'
 
 export default function AddAccountNameLayout ({
@@ -21,6 +21,7 @@ export default function AddAccountNameLayout ({
 }) {
   const dispatch = useDispatch()
   const [error, setError] = useState('')
+  const location = useLocation()
   const session = useSelector((state) => state.session)
   const authToken = session.authToken
   const [fullName, setFullName] = useState(session.profile ? session.profile?.firstname + ' ' + session.profile?.lastname : '')
@@ -38,7 +39,10 @@ export default function AddAccountNameLayout ({
         firstname = fullName.substring(0, fullName.indexOf(' '))
         lastname = fullName.substring(fullName.indexOf(' ') + 1)
       }
+
       const profile = addAccountName(session.profile, firstname, lastname)
+      updateAdditionals(profile, 'lastAccessedUrl', location.pathname)
+      console.log("profile name", profile)
       dispatch(setProfile(profile))
 
       if (changeName) {

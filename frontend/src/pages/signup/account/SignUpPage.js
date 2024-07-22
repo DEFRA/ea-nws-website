@@ -11,6 +11,7 @@ import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 import { setProfile, setRegisterToken } from '../../../redux/userSlice'
 import { backendCall } from '../../../services/BackendService'
 import { emailValidation } from '../../../services/validations/EmailValidation'
+import { updateAdditionals } from '../../../services/ProfileServices'
 
 export default function SignUpPage () {
   const navigate = useNavigate()
@@ -57,6 +58,7 @@ export default function SignUpPage () {
           },
           pois: []
         }
+        updateAdditionals(profile, 'signUpComplete', false)
         dispatch(setProfile(profile))
         dispatch(setRegisterToken(data.registerToken))
         navigate('/signup/validate')

@@ -21,7 +21,7 @@ export default function NotCompletedSignUpLayout ({nextPage}) {
           Back
         </Link>
         <div className='govuk-body govuk-!-margin-top-6'>
-          <h1 className='govuk-heading-l govuk-!-margin-top-9'>You need to finish signing up before we <br /> can send you flood messages</h1>
+          <h1 className='govuk-heading-l govuk-!-margin-top-7'>You need to finish signing up before we <br /> can send you flood messages</h1>
           <Button text='Continue' className='govuk-button govuk-!-margin-top-2' onClick={handleSubmit} />
           &nbsp; &nbsp;
         </div>

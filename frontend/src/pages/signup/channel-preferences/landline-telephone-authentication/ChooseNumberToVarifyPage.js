@@ -190,8 +190,7 @@ export default function ChooseNumberToVarifyPage () {
                       text='Continue'
                       onClick={handleSubmit}
                     />
-                    <br />
-                  </>
+                    </>
                   : navigate('/signup/contactpreferences/landline/add')}
               </div>
             </div>

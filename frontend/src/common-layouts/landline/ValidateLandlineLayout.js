@@ -19,7 +19,8 @@ import { authCodeValidation } from '../../services/validations/AuthCodeValidatio
 export default function ValidateLandlineLayout ({
   NavigateToNextPage,
   SkipValidation,
-  DifferentHomePhone
+  DifferentHomePhone,
+  ChooseLandLine
 }) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -95,7 +96,8 @@ export default function ValidateLandlineLayout ({
       dispatch(setProfile(removeUnverifiedContact(session.profile, homePhone)))
       DifferentHomePhone(homePhone)
     } else {
-      navigate('/signup/contactpreferences/landline/choosenumber')
+      ChooseLandLine()
+      //navigate('/signup/contactpreferences/landline/choosenumber')
     }
   }
 

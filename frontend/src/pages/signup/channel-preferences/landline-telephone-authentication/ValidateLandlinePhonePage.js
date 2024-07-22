@@ -21,11 +21,15 @@ export default function ValidateLandlinePhonePage () {
     })
   }
 
+  const ChooseLandLine = () => {
+    navigate('/signup/contactpreferences/landline/choosenumber')
+  }
   return (
     <ValidateLandlineLayout
       NavigateToNextPage={NavigateToNextPage}
       SkipValidation={SkipValidation}
       DifferentHomePhone={DifferentHomePhone}
+      ChooseLandLine={ChooseLandLine}
     />
   )
 }

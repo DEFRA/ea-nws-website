@@ -10,13 +10,14 @@ import Radio from '../../../gov-uk-components/Radio'
 import TextArea from '../../../gov-uk-components/TextArea'
 import { backendCall } from '../../../services/BackendService'
 
-export default function FeedbackPage () {
+export default function FeedbackPage() {
   const navigate = useNavigate()
   const [feedbackPreference, setFeedbackPreference] = useState('')
   const [feedbackText, setFeedbackText] = useState('')
   const [optionalFeedbackText, setOptionalFeedbackText] = useState('')
   const [error, setError] = useState('')
   const [textError, setTextError] = useState('')
+  const charLimit = 1000
 
   const feedbackOptions = [
     { value: 'Very Satisfied', label: 'Very Satisfied' },
@@ -40,12 +41,18 @@ export default function FeedbackPage () {
       setTextError(
         'Tell us anything you like or do not like about this service'
       )
+    } else if (feedbackText.length > charLimit) {
+      setTextError('Character limit exceeded (max ' + charLimit + ')')
     } else {
       setTextError(null)
       setFeedbackText(feedbackText)
     }
 
-    if (feedbackText !== '' && feedbackPreference.length !== 0) {
+    if (
+      feedbackText !== '' &&
+      feedbackText.length <= charLimit &&
+      feedbackPreference.length !== 0
+    ) {
       const dataToRecord = {
         feedbackPreference,
         feedbackText,

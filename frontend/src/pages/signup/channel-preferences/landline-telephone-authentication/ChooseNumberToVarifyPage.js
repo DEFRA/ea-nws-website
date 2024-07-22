@@ -138,7 +138,8 @@ export default function ChooseNumberToVarifyPage () {
                 </p>
 
                 {hasAddedMobileAlready()
-                  ? <>
+                  ? 
+                  <>
                     <div
                       className={
                   error && isOpen !== true
@@ -190,7 +191,8 @@ export default function ChooseNumberToVarifyPage () {
                       text='Continue'
                       onClick={handleSubmit}
                     />
-                    </>
+                    <br />
+                  </>
                   : navigate('/signup/contactpreferences/landline/add')}
               </div>
             </div>

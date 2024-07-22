@@ -10,19 +10,24 @@ export default function NotCompletedSignUpLayout ({nextPage}) {
   const handleSubmit = async () => {
     navigate(nextPage)
   }
+
   return (
     <>
+    <div className='page-container'>
       <Header />
-      <div className='govuk-width-container'>
+      <div className='govuk-width-container body-container'>
         <PhaseBanner />
         <Link onClick={() => navigate(-1)} className='govuk-back-link'>
           Back
         </Link>
-        <h2 className='govuk-heading-l'>Your need to finish signing up before we can send you flood messages.</h2>
-        <Button text='Continue' className='govuk-button' onClick={handleSubmit} />
-       &nbsp; &nbsp;
+        <div className='govuk-body govuk-!-margin-top-6'>
+          <h1 className='govuk-heading-l govuk-!-margin-top-9'>You need to finish signing up before we <br /> can send you flood messages</h1>
+          <Button text='Continue' className='govuk-button govuk-!-margin-top-2' onClick={handleSubmit} />
+          &nbsp; &nbsp;
+        </div>
       </div>
       <Footer />
+    </div>
     </>
   )
 }

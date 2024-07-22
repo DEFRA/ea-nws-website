@@ -56,7 +56,6 @@ export default function ValidateLandlineLayout ({
         dispatch(setProfile(data.profile))
         NavigateToNextPage()
       }
-        
     }
   }
 
@@ -89,15 +88,15 @@ export default function ValidateLandlineLayout ({
     event.preventDefault()
     // remove homephone from users profile
     const mobile = session.profile.unverified.mobilePhones[0]
-    ? session.profile.unverified.mobilePhones[0]
-    : session.profile.mobilePhones[0]
+      ? session.profile.unverified.mobilePhones[0]
+      : session.profile.mobilePhones[0]
 
     if (mobile === undefined) {
       dispatch(setProfile(removeUnverifiedContact(session.profile, homePhone)))
       DifferentHomePhone(homePhone)
     } else {
       ChooseLandLine()
-      //navigate('/signup/contactpreferences/landline/choosenumber')
+      // navigate('/signup/contactpreferences/landline/choosenumber')
     }
   }
 

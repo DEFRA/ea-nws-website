@@ -56,7 +56,6 @@ export default function ValidateMobileLayout ({
       } else {
         dispatch(setProfile(data.profile))
         NavigateToNextPage()
-        
       }
     }
   }

@@ -118,7 +118,7 @@ const signupRoutes = [
   },
   {
     path: '/signup/contactpreferences/landline/choosenumber',
-    component: <ChooseNumberToVarifyPage/>
+    component: <ChooseNumberToVarifyPage />
   },
   {
     path: '/signup/contactpreferences/landline/validate',

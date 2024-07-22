@@ -17,7 +17,7 @@ import {
 import { normalisePhoneNumber } from '../../../../services/formatters/NormalisePhoneNumber'
 import Radio from '../../../../gov-uk-components/Radio'
 
-export default function ChooseNumberToVarifyPage ({ NavigateToNextPage }) {
+export default function ChooseNumberToVarifyPage () {
   const navigate = useNavigate()
   const [landline, setLandline] = useState('')
   const [error, setError] = useState('')
@@ -26,19 +26,16 @@ export default function ChooseNumberToVarifyPage ({ NavigateToNextPage }) {
   const dispatch = useDispatch()
   const session = useSelector((state) => state.session)
   const authToken = useSelector((state) => state.session.authToken)
-  //const mobileNumbers = session.profile.unverified.homePhones
   const unverifiedMobileNumbers = session.profile.unverified.mobilePhones
   const verifiedMobileNumbers = session.profile.mobilePhones
-  const mobileNumbers = [...unverifiedMobileNumbers,...verifiedMobileNumbers]
-
+  const mobileNumbers = [...unverifiedMobileNumbers, ...verifiedMobileNumbers]
 
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    let validationError = ""
-    //const validationError = phoneValidation(landline, 'mobileAndLandline')
-    if(isChecked === false){
-      validationError = "Which telephone number do you want to use?"
+    let validationError = ''
+    if (isChecked === false) {
+      validationError = 'Which telephone number do you want to use?'
     }
     setError(validationError)
     if (validationError === '') {
@@ -63,11 +60,11 @@ export default function ChooseNumberToVarifyPage ({ NavigateToNextPage }) {
         )
         if (isOpen === true) {
           navigate('/signup/contactpreferences/landline/validate')
-        }else{
+        } else {
           console.log(normalisedPhoneNumber)
           if (verifiedMobileNumbers.includes(normalisedPhoneNumber)) {
             navigate('/signup/accountname/add')
-          }else{
+          } else {
             navigate('/signup/contactpreferences/landline/validate')
           }
         }
@@ -99,24 +96,19 @@ export default function ChooseNumberToVarifyPage ({ NavigateToNextPage }) {
     // or user could have come from account change details at the end of sign up flow
     navigate('/signup/contactpreferences/landline/validate')
   }
-  
 
-  
-  
   const hasAddedMobileAlready = () => {
     const phone = session.profile.unverified.mobilePhones
     const verifiedPhone = session.profile.mobilePhones
-    if (phone[0] !== undefined||verifiedPhone[0] !== undefined){
-        return true
-    }
-    else{return false}
+    if (phone[0] !== undefined || verifiedPhone[0] !== undefined) {
+      return true
+    } else { return false }
   }
   const setLandlineprefernce = (event) => {
     setLandline(event.target.value)
     setIsOpen(false)
     setIsChecked(true)
     setError('')
-
   }
   const toggle = () => {
     setIsOpen((isOpen) => !isOpen)
@@ -124,8 +116,6 @@ export default function ChooseNumberToVarifyPage ({ NavigateToNextPage }) {
     setLandline('')
     setError('')
   }
-  
-
 
   return (
     <>
@@ -146,9 +136,9 @@ export default function ChooseNumberToVarifyPage ({ NavigateToNextPage }) {
                   We recommend using a landline or mobile number that can be called 24
                   hours a day.
                 </p>
-                
-                {hasAddedMobileAlready()?
-                <>
+
+                {hasAddedMobileAlready()
+                  ? <>
                     <div
                       className={
                   error && isOpen !== true
@@ -156,7 +146,7 @@ export default function ChooseNumberToVarifyPage ({ NavigateToNextPage }) {
                     : 'govuk-form-group'
                 }
                     >
-                    
+
                       <fieldset className='govuk-fieldset'>
                         {error && isOpen === false && <p className='govuk-error-message'>{error}</p>}
                         <div className='govuk-radios' data-module='govuk-radios'>
@@ -200,11 +190,9 @@ export default function ChooseNumberToVarifyPage ({ NavigateToNextPage }) {
                       text='Continue'
                       onClick={handleSubmit}
                     />
-                <br />
-                </>
-                :
-                  navigate('/signup/contactpreferences/landline/add') 
-                }        
+                    <br />
+                  </>
+                  : navigate('/signup/contactpreferences/landline/add')}
               </div>
             </div>
           </div>
@@ -213,4 +201,4 @@ export default function ChooseNumberToVarifyPage ({ NavigateToNextPage }) {
       <Footer />
     </>
   )
-  }
+}

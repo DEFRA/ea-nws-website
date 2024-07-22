@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 import time
 
 url = "http://localhost:3000/signup/feedback"
-nextPage = "http://localhost:3000/signup"
+nextPage = "http://localhost:3000/signup/feedback/confirmation"
 previousPage = "http://localhost:3000/signup"
 
 def test_FeedbackStart_render(get_browser):
@@ -55,6 +55,21 @@ def test_addFeedback_NoTextEntered(get_browser):
     browser.execute_script("arguments[0].click();", continue_button)
     assert browser.current_url == url
     assert "Tell us anything you like or do not like about this service" in browser.page_source
+
+def test_addFeedback_CharacterLimitExceeded(get_browser):
+    browser = get_browser
+    browser.get(url)
+    browser.find_element(By.CLASS_NAME, "govuk-radios__input").click()
+    time.sleep(1)
+    sampleFeedback = "A" * 1001
+    text_area = browser.find_element(By.CLASS_NAME, "govuk-textarea")
+    text_area.send_keys(sampleFeedback)
+    button_xpath = f"//button[contains(@class, 'govuk-button')]"
+    continue_button = browser.find_element(By.XPATH, button_xpath)
+    browser.execute_script("arguments[0].click();", continue_button)
+    time.sleep(2)
+    assert browser.current_url == url
+    assert "Character limit exceeded (max 1000)" in browser.page_source
 
 def test_addFeedback_Valid(get_browser):
     browser = get_browser

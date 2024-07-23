@@ -40,8 +40,9 @@ export default function AddAccountNameLayout ({
         lastname = fullName.substring(fullName.indexOf(' ') + 1)
       }
 
-      const profile = addAccountName(session.profile, firstname, lastname)
-      updateAdditionals(profile, 'lastAccessedUrl', location.pathname)
+      const updatedProfile = updateAdditionals(session.profile, [{id: 'lastAccessedUrl', value: location.pathname}])
+      const profile = addAccountName(updatedProfile, firstname, lastname)
+      
       dispatch(setProfile(profile))
 
       if (changeName) {

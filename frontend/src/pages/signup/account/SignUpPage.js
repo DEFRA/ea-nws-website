@@ -50,7 +50,7 @@ export default function SignUpPage () {
           mobilePhones: [],
           homePhones: [],
           language: 'EN', // [TODO] is this always english?
-          additionals: [],
+          additionals: [{id: "lastAccessedUrl", value: ""}, {id: "signUpComplete", value: false}],
           unverified: {
             emails: [],
             mobilePhones: [],
@@ -58,7 +58,6 @@ export default function SignUpPage () {
           },
           pois: []
         }
-        updateAdditionals(profile, 'signUpComplete', false)
         dispatch(setProfile(profile))
         dispatch(setRegisterToken(data.registerToken))
         navigate('/signup/validate')

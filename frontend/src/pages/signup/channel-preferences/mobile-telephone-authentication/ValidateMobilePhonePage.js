@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import ValidateMobileLayout from '../../../../common-layouts/mobile/ValidateMobileLayout'
 import SkipConfirmLayout from '../../../../common-layouts/skip-confirm/SkipConfirmLayout'
 
-export default function ValidateMobilePhone() {
+export default function ValidateMobilePhone () {
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
 
@@ -19,7 +19,7 @@ export default function ValidateMobilePhone() {
   }
   const SkipValidation = (mobile) => {
     <SkipConfirmLayout
-      contactPreference ={mobile}
+      contactPreference={mobile}
     />
   }
   const DifferentMobile = (mobile) => {

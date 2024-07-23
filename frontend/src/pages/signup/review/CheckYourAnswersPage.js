@@ -15,7 +15,7 @@ export default function CheckYourAnswersPage () {
   const registration = session.registrations
   const contactPreferences = session.contactPreferences
   const navigate = useNavigate()
-  
+
   const handleButton = () => {
     console.log('Button clicked, functionality to implement')
     navigate('/signup/success')
@@ -42,7 +42,7 @@ export default function CheckYourAnswersPage () {
               <AccountDetailsTable profile={profile} />
             </div>
           </div>
-          <Button onClick={handleButton} className='govuk-button' text='Finish sign up'/>
+          <Button onClick={handleButton} className='govuk-button' text='Finish sign up' />
         </main>
       </div>
       <Footer />

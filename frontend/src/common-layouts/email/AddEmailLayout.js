@@ -67,42 +67,42 @@ export default function AddEmailLayout ({ NavigateToNextPage }) {
   return (
     <>
       <div className='page-container'>
-      <Header />
-      <div class='govuk-width-container body-container'>
-        <Link onClick={removeEmailFromProfile} className='govuk-back-link'>
-          Back
-        </Link>
-        <main className='govuk-main-wrapper'>
-          <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-two-thirds'>
-              {error && <ErrorSummary errorList={[error]} />}
-              <h2 class='govuk-heading-l'>
-                Enter an email address to get flood messages
-              </h2>
-              <div class='govuk-body'>
-                <p>
-                  We recommend using an email address you can access 24 hours a
-                  day.
-                </p>
-                <Input
-                  name='Email address'
-                  inputType='text'
-                  error={error}
-                  onChange={(val) => setEmail(val)}
-                  className='govuk-input govuk-input--width-20'
-                />
-                <Button
-                  className='govuk-button'
-                  text='Continue'
-                  onClick={handleSubmit}
-                />
-                <br />
+        <Header />
+        <div class='govuk-width-container body-container'>
+          <Link onClick={removeEmailFromProfile} className='govuk-back-link'>
+            Back
+          </Link>
+          <main className='govuk-main-wrapper'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-two-thirds'>
+                {error && <ErrorSummary errorList={[error]} />}
+                <h2 class='govuk-heading-l'>
+                  Enter an email address to get flood messages
+                </h2>
+                <div class='govuk-body'>
+                  <p>
+                    We recommend using an email address you can access 24 hours a
+                    day.
+                  </p>
+                  <Input
+                    name='Email address'
+                    inputType='text'
+                    error={error}
+                    onChange={(val) => setEmail(val)}
+                    className='govuk-input govuk-input--width-20'
+                  />
+                  <Button
+                    className='govuk-button'
+                    text='Continue'
+                    onClick={handleSubmit}
+                  />
+                  <br />
+                </div>
               </div>
             </div>
-          </div>
-        </main>
-      </div>
-      <Footer />
+          </main>
+        </div>
+        <Footer />
       </div>
     </>
   )

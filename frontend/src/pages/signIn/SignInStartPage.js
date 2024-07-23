@@ -38,40 +38,40 @@ export default function SignInStartPage () {
   return (
     <>
       <div className='page-container'>
-      <Header />
-      <div class='govuk-width-container body-container'>
-        <PhaseBanner />
-        <Link onClick={() => navigate(-1)} className='govuk-back-link'>
-          Back
-        </Link>
-        {error ? <ErrorSummary errorList={[error]} /> : <></>}
-        <h2 class='govuk-heading-l'>Sign in to your flood warnings account</h2>
-        <div class='govuk-body'>
-          You can:
-          <ul className='govuk-list govuk-list--bullet'>
-            <li>update or remove your locations</li>
-            <li>change how you get flood messages</li>
-            <li>delete your account</li>
-          </ul>
-          <Input
-            className='govuk-input govuk-input--width-10'
-            name='Email address'
-            inputType='text'
-            error={error}
-            onChange={(val) => setEmail(val)}
-          />
-          <Button
-            className='govuk-button'
-            text='Continue'
-            onClick={handleSubmit}
-          />
-          <br />
-          <Link to='/signup' className='govuk-link'>
-            Sign up if you do not have an account
+        <Header />
+        <div class='govuk-width-container body-container'>
+          <PhaseBanner />
+          <Link onClick={() => navigate(-1)} className='govuk-back-link'>
+            Back
           </Link>
+          {error ? <ErrorSummary errorList={[error]} /> : <></>}
+          <h2 class='govuk-heading-l'>Sign in to your flood warnings account</h2>
+          <div class='govuk-body'>
+            You can:
+            <ul className='govuk-list govuk-list--bullet'>
+              <li>update or remove your locations</li>
+              <li>change how you get flood messages</li>
+              <li>delete your account</li>
+            </ul>
+            <Input
+              className='govuk-input govuk-input--width-10'
+              name='Email address'
+              inputType='text'
+              error={error}
+              onChange={(val) => setEmail(val)}
+            />
+            <Button
+              className='govuk-button'
+              text='Continue'
+              onClick={handleSubmit}
+            />
+            <br />
+            <Link to='/signup' className='govuk-link'>
+              Sign up if you do not have an account
+            </Link>
+          </div>
         </div>
-      </div>
-      <Footer />
+        <Footer />
       </div>
     </>
   )

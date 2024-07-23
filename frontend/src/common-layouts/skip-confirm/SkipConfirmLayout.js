@@ -6,11 +6,11 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-export default function SkipConfirmLayout(contactPreference) {
+export default function SkipConfirmLayout (contactPreference) {
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
 
-  function handleSubmit() {
+  function handleSubmit () {
     // navigate through sign up flow
     if (session.contactPreferences.includes('Email')) {
       // navigate to email TODO - cameron add this once merged
@@ -36,7 +36,7 @@ export default function SkipConfirmLayout(contactPreference) {
             </Link>
             <h1 className='govuk-heading-l govuk-!-margin-top-6'>
               We cannot send flood messages to {contactPreference} until you confirm this
-              
+
             </h1>
             <Button
               text={"I'll confirm this later"}

@@ -23,20 +23,20 @@ export default function SelectContactTypeToAddPage () {
   const handleSubmit = () => {
     if (selectedContactType === '') {
       setError('Select type of contact you want to add')
-    } else {      
+    } else {
       if (selectedContactType === 'Mobile Number (texts)') {
-        if(!contactPreferences.includes('Text')){
-            dispatch(addContactPreference('Text'))
+        if (!contactPreferences.includes('Text')) {
+          dispatch(addContactPreference('Text'))
         }
         navigate('/signup/review/add-mobile')
       } else if (selectedContactType === 'Email Address') {
-        if(!contactPreferences.includes('Email Address')){
-            dispatch(addContactPreference('Email Address'))
+        if (!contactPreferences.includes('Email Address')) {
+          dispatch(addContactPreference('Email Address'))
         }
         navigate('/signup/review/add-email')
       } else if (selectedContactType === 'Telephone Number (phone calls)') {
-        if(!contactPreferences.includes('PhoneCall')){
-            dispatch(addContactPreference('PhoneCall'))
+        if (!contactPreferences.includes('PhoneCall')) {
+          dispatch(addContactPreference('PhoneCall'))
         }
         console.log(contactPreferences)
         navigate('/signup/review/add-landline')
@@ -75,17 +75,17 @@ export default function SelectContactTypeToAddPage () {
                 </legend>
                 {error && <p className='govuk-error-message'>{error}</p>}
                 <div className='govuk-radios' data-module='govuk-radios'>
-                {contactOptions.map((contact) => (
-                  <Radio
-                    key={contact.value}
-                    id={contact.value}
-                    name='contactTypeRadios'
-                    label={contact.label}
-                    type='radio'
-                    value={contact.value}
-                    onChange={setContactType}
-                  />
-                ))}
+                  {contactOptions.map((contact) => (
+                    <Radio
+                      key={contact.value}
+                      id={contact.value}
+                      name='contactTypeRadios'
+                      label={contact.label}
+                      type='radio'
+                      value={contact.value}
+                      onChange={setContactType}
+                    />
+                  ))}
                 </div>
               </fieldset>
             </div>

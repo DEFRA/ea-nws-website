@@ -99,56 +99,56 @@ export default function ValidateMobileLayout ({
   return (
     <>
       <div className='page-container'>
-      <Header />
-      <div class='govuk-width-container body-container'>
-      <Link onClick={backLink} className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
+        <Header />
+        <div class='govuk-width-container body-container'>
+          <Link onClick={backLink} className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
             Back
           </Link>
-        <main className='govuk-main-wrapper'>
-          <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-two-thirds'>
-              {error ? <ErrorSummary errorList={[error]} /> : <></>}
-              <h2 class='govuk-heading-l'>Check your mobile phone</h2>
-              <div class='govuk-body'>
-                We've sent a text with a code to:
-                <InsetText text={mobile} />
-                Use the code within 4 hours or it will expire.
-                <br /> <br />
-                <Input
-                  name='Enter code'
-                  inputType='text'
-                  error={error}
-                  onChange={(val) => setCode(val)}
-                />
-                <Button
-                  className='govuk-button'
-                  text='Continue'
-                  onClick={handleSubmit}
-                />
-                <Link
-                  onClick={skipValidation}
-                  className='govuk-link'
-                  style={{
-                    display: 'inline-block',
-                    padding: '8px 10px 7px'
-                  }}
-                >
-                  Skip and confirm later
-                </Link>
-                <br />
-                <Link onClick={getNewCode} className='govuk-link'>
-                  Get a new code
-                </Link>
-                <br /> <br />
-                <Link onClick={differentMobile} className='govuk-link'>
-                  Enter a different mobile
-                </Link>
+          <main className='govuk-main-wrapper'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-two-thirds'>
+                {error ? <ErrorSummary errorList={[error]} /> : <></>}
+                <h2 class='govuk-heading-l'>Check your mobile phone</h2>
+                <div class='govuk-body'>
+                  We've sent a text with a code to:
+                  <InsetText text={mobile} />
+                  Use the code within 4 hours or it will expire.
+                  <br /> <br />
+                  <Input
+                    name='Enter code'
+                    inputType='text'
+                    error={error}
+                    onChange={(val) => setCode(val)}
+                  />
+                  <Button
+                    className='govuk-button'
+                    text='Continue'
+                    onClick={handleSubmit}
+                  />
+                  <Link
+                    onClick={skipValidation}
+                    className='govuk-link'
+                    style={{
+                      display: 'inline-block',
+                      padding: '8px 10px 7px'
+                    }}
+                  >
+                    Skip and confirm later
+                  </Link>
+                  <br />
+                  <Link onClick={getNewCode} className='govuk-link'>
+                    Get a new code
+                  </Link>
+                  <br /> <br />
+                  <Link onClick={differentMobile} className='govuk-link'>
+                    Enter a different mobile
+                  </Link>
+                </div>
               </div>
             </div>
-          </div>
-        </main>
-      </div>
-      <Footer />
+          </main>
+        </div>
+        <Footer />
       </div>
     </>
   )

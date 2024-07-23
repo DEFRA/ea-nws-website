@@ -177,7 +177,7 @@ export default function IndexPage () {
       }
     ]
   }
-  
+
   function mockSession (profile) {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
@@ -214,7 +214,7 @@ export default function IndexPage () {
             }
           ]
         }
-      }   
+      }
 
       dispatch(setAuthToken(authToken))
       dispatch(setRegistrations(registrations))

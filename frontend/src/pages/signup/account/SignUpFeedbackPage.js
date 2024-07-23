@@ -42,7 +42,7 @@ export default function FeedbackPage() {
         'Tell us anything you like or do not like about this service'
       )
     } else if (feedbackText.length > charLimit) {
-      setTextError('Character limit exceeded (max ' + charLimit + ')')
+      setTextError('Your answer must be 2000 characters or fewer')
     } else {
       setTextError(null)
       setFeedbackText(feedbackText)

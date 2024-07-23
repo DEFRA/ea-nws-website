@@ -17,7 +17,7 @@ export default function FeedbackPage() {
   const [optionalFeedbackText, setOptionalFeedbackText] = useState('')
   const [error, setError] = useState('')
   const [textError, setTextError] = useState('')
-  const charLimit = 1000
+  const charLimit = 2000
 
   const feedbackOptions = [
     { value: 'Very Satisfied', label: 'Very Satisfied' },

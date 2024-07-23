@@ -6,7 +6,7 @@ import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-export default function LocationNotNearDangerLayout () {
+export default function LocationNotNearDangerLayout({ tryAnotherPostCode }) {
   const navigate = useNavigate()
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
@@ -42,10 +42,7 @@ export default function LocationNotNearDangerLayout () {
                 <p>You may still be at risk of flooding. You can:</p>
                 <ul className='govuk-list govuk-list--bullet govuk-!-margin-bottom-9'>
                   <li>
-                    <Link
-                      className='govuk-link'
-                      to='/signup/register-location/search'
-                    >
+                    <Link className='govuk-link' to={tryAnotherPostCode()}>
                       try another postcode
                     </Link>
                   </li>

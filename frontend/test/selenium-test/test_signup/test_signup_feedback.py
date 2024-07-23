@@ -61,7 +61,7 @@ def test_addFeedback_CharacterLimitExceeded(get_browser):
     browser.get(url)
     browser.find_element(By.CLASS_NAME, "govuk-radios__input").click()
     time.sleep(1)
-    sampleFeedback = "A" * 1001
+    sampleFeedback = "A" * 2001
     text_area = browser.find_element(By.CLASS_NAME, "govuk-textarea")
     text_area.send_keys(sampleFeedback)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"

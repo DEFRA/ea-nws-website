@@ -14,7 +14,7 @@ import { authCodeValidation } from '../../../services/validations/AuthCodeValida
 import NotificationBanner from '../../../gov-uk-components/NotificationBanner'
 import ExpiredCodeLayout from '../../../common-layouts/expired-code/ExpiredCodeLayout'
 
-export default function SignUpValidationPage() {
+export default function SignUpValidationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const registerToken = useSelector((state) => state.session.registerToken)

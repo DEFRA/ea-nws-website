@@ -1,6 +1,5 @@
 const routes = [].concat(
   require('../routes/public'),
-  require('../routes/start'),
   require('../routes/sign_in/signin_start'),
   require('../routes/sign_in/signin_validate'),
   require('../routes/sign_up/signup_start'),
@@ -13,7 +12,9 @@ const routes = [].concat(
   require('../routes/add_contact/landline/landline_validate'),
   require('../routes/add_contact/email/email_start'),
   require('../routes/add_contact/email/email_validate'),
-  require('../routes/partner/register_to_partner')
+  require('../routes/partner/register_to_partner'),
+  require('../routes/ordnance_survey/post_code_search'),
+  require('../routes/ordnance_survey/oauth_2')
 )
 
 module.exports = {

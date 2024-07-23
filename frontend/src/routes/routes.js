@@ -1,5 +1,10 @@
 import React from 'react'
 import Index from '../pages/Index'
+import AccountPage from '../pages/account/AccountPage'
+import ChangeBusinessDetailsPage from '../pages/account/ChangeBusinessDetailsPage'
+import ChangeEmailPage from '../pages/account/ChangeEmailPage'
+import ChangeEmailValidationPage from '../pages/account/ChangeEmailValidatePage'
+import ChangeNamePage from '../pages/account/ChangeNamePage'
 import ConfirmDeleteContactDetailsPage from '../pages/contact-details/ConfirmDeleteContactDetailsPage'
 import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
 import AddEmailPage from '../pages/contact-details/add-contact-email/AddEmailPage'
@@ -31,8 +36,14 @@ import ValidateLandlinePhonePage from '../pages/signup/channel-preferences/landl
 import AddMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/AddMobilePhonePage'
 import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/SkipConfirmMobilePhonePage'
 import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
+import LocationInAlertAreaPage from '../pages/signup/register-location/LocationInAlertAreaPage'
+import LocationInSevereWarningAreaPage from '../pages/signup/register-location/LocationInSevereWarningAreaPage'
+import LocationNotNearDangerPage from '../pages/signup/register-location/LocationNotNearDangerPage'
+import LocationSearchPage from '../pages/signup/register-location/LocationSearchPage'
+import LocationSearchResultsPage from '../pages/signup/register-location/LocationSearchResultsPage'
 import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
+import SignUpSuccessPage from '../pages/signup/success/SignUpSuccessPage'
 
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
@@ -65,6 +76,27 @@ const signupRoutes = [
   {
     path: '/signup/contactpreferences',
     component: <WarningContactsPreferencePage />
+  },
+  // register a location
+  {
+    path: '/signup/register-location/search',
+    component: <LocationSearchPage />
+  },
+  {
+    path: '/signup/register-location/search-results',
+    component: <LocationSearchResultsPage />
+  },
+  {
+    path: '/signup/register-location/location-in-severe-warning-area',
+    component: <LocationInSevereWarningAreaPage />
+  },
+  {
+    path: '/signup/register-location/location-in-alert-area',
+    component: <LocationInAlertAreaPage />
+  },
+  {
+    path: '/signup/register-location/no-danger',
+    component: <LocationNotNearDangerPage />
   },
   // mobile phone authentication route
   {
@@ -104,6 +136,10 @@ const signupRoutes = [
   {
     path: '/signup/duplicate',
     component: <SignUpDuplicateEmailPage />
+  },
+  {
+    path: '/signup/success',
+    component: <SignUpSuccessPage />
   }
 ]
 
@@ -121,6 +157,14 @@ const footerRoutes = [
 
 // home
 const homeRoutes = [{ path: '/home', component: <HomePage /> }]
+
+// account
+const accountRoutes = [
+  { path: '/account', component: <AccountPage /> },
+  { path: '/account/change-business-details', component: <ChangeBusinessDetailsPage /> },
+  { path: '/account/change-email', component: <ChangeEmailPage /> },
+  { path: '/account/change-email/validate', component: <ChangeEmailValidationPage /> },
+  { path: '/account/change-name', component: <ChangeNamePage /> }]
 
 // contact routes
 const contactRoutes = [
@@ -159,5 +203,6 @@ export const routes = [
 export const authenticatedRoutes = [
   ...homeRoutes,
   ...contactRoutes,
-  ...signOutRoutes
+  ...signOutRoutes,
+  ...accountRoutes
 ]

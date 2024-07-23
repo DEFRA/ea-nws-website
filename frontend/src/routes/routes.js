@@ -1,5 +1,5 @@
 import React from 'react'
-import Index from '../pages/Index'
+import IndexPage from '../pages/Index'
 import AccountPage from '../pages/account/AccountPage'
 import ChangeBusinessDetailsPage from '../pages/account/ChangeBusinessDetailsPage'
 import ChangeEmailPage from '../pages/account/ChangeEmailPage'
@@ -54,7 +54,7 @@ import DeclarationOfAgreementPage from '../pages/signup/user-agreement/Declarati
 import StartPage from '../pages/start/StartPage'
 
 // index routes
-const indexRoutes = [{ path: '/index', component: <Index /> }]
+const indexRoutes = [{ path: '/index', component: <IndexPage /> }]
 
 // start routes
 const startRoutes = [{ path: '/', component: <StartPage /> }]
@@ -180,7 +180,7 @@ const signupRoutes = [
   {
     path: '/signup/review/validate-email',
     component: <ValidateEmailContactPage />
-  },
+  }
 ]
 
 // footer routes

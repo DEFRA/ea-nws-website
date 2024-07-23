@@ -13,10 +13,9 @@ export default function FeedbackConfirmationPage() {
           <Link to='/signup' className='govuk-back-link'>
             Back
           </Link>
-          <h1 className='govuk-heading-l'>Thank you for your feedback!</h1>
+          <h1 className='govuk-heading-l'>Thank you for your feedback</h1>
           <div className='govuk-body'>
-            Your feedback has been received. We appreciate you taking the time
-            to give us your thoughts.
+            We'll use your answers to help improve this service.
           </div>
         </div>
         <Footer />

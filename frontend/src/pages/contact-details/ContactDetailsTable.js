@@ -1,6 +1,8 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
+import { setCurrentContact } from '../../redux/userSlice'
 
 export default function ContactDetailsTable ({
   contacts,
@@ -10,6 +12,8 @@ export default function ContactDetailsTable ({
   unregisteredContact
 }) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
   const handleButton = () => {
     switch (contactType) {
       case 'email address':
@@ -24,6 +28,10 @@ export default function ContactDetailsTable ({
     }
   }
 
+  const handleLinkClick = () => {
+    dispatch(setCurrentContact(unregisteredContact))
+  }
+
   const UnconfirmedLink = () => {
     if (contactType === 'email address') {
       return (
@@ -36,7 +44,7 @@ export default function ContactDetailsTable ({
     } else if (contactType === 'mobile telephone number') {
       return (
         <>
-          <Link to='/managecontacts/validate-mobile' className='govuk-link'>
+          <Link to='/managecontacts/validate-mobile' className='govuk-link' onClick={handleLinkClick}>
             Confirm
           </Link>
         </>

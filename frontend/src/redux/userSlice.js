@@ -62,6 +62,7 @@ export const {
   setProfile,
   setRegistrations,
   setContactPreferences,
+  setCurrentContact,
   setLocationPostCode,
   setLocationSearchResults,
   setSelectedLocation,

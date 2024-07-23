@@ -21,26 +21,28 @@ export default function SelectContactTypeToAddPage () {
   ]
 
   const handleSubmit = () => {
-    if (selectedContactType === '') {
-      setError('Select type of contact you want to add')
-    } else {
-      if (selectedContactType === 'Mobile Number (texts)') {
+    switch(selectedContactType){
+      case 'Mobile Number (texts)':
         if (!contactPreferences.includes('Text')) {
           dispatch(addContactPreference('Text'))
         }
         navigate('/signup/review/add-mobile')
-      } else if (selectedContactType === 'Email Address') {
+        break
+      case 'Email Address':
         if (!contactPreferences.includes('Email Address')) {
           dispatch(addContactPreference('Email Address'))
         }
         navigate('/signup/review/add-email')
-      } else if (selectedContactType === 'Telephone Number (phone calls)') {
+        break
+      case 'Telephone Number (phone calls)':
         if (!contactPreferences.includes('PhoneCall')) {
           dispatch(addContactPreference('PhoneCall'))
         }
-        console.log(contactPreferences)
         navigate('/signup/review/add-landline')
-      }
+        break
+      default:
+        setError('Select type of contact you want to add')
+        break
     }
   }
 

@@ -6,7 +6,7 @@ import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-export default function LocationNotNearDangerLayout({ tryAnotherPostCode }) {
+export default function LocationNotNearDangerLayout ({ tryAnotherPostCode }) {
   const navigate = useNavigate()
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation

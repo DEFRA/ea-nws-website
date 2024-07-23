@@ -21,7 +21,7 @@ export default function SelectContactTypeToAddPage () {
   ]
 
   const handleSubmit = () => {
-    switch(selectedContactType){
+    switch (selectedContactType) {
       case 'Mobile Number (texts)':
         if (!contactPreferences.includes('Text')) {
           dispatch(addContactPreference('Text'))

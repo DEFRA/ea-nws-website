@@ -55,22 +55,21 @@ export default function ContactReviewRow ({ contact, contactType, isConfirmed, i
             </>
             )}
         <td className='govuk-table__cell'>
-          {rowDetails().showDelete ? 
-            (
-            <Link
-              to='/managecontacts/confirm-delete'
-              state={{
-                type: contactType,
-                contact,
-                navigateTo: '/signup/review'
-              }}
-              className='govuk-link'
-            >
-              Remove
-            </Link>
-            )
-            : null
-          }
+          {rowDetails().showDelete
+            ? (
+              <Link
+                to='/managecontacts/confirm-delete'
+                state={{
+                  type: contactType,
+                  contact,
+                  navigateTo: '/signup/review'
+                }}
+                className='govuk-link'
+              >
+                Remove
+              </Link>
+              )
+            : null}
         </td>
       </tr>
     </>

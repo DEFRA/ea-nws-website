@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import LocationInSevereWarningAreaLayout from '../../../../common-layouts/location/LocationInSevereWarningAreaLayout'
 
-export default function ChangeLocationInSevereWarningAreaPage() {
+export default function ChangeLocationInSevereWarningAreaPage () {
   const navigate = useNavigate()
   const additionalAlerts = useSelector(
     (state) => state.session.additionalAlerts

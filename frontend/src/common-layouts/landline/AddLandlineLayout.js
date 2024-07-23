@@ -64,9 +64,10 @@ export default function AddLandlineLayout ({
     // we need to check if location.state has a value - this will only hold a value
     // if the user has come from the landline validate page - we will need to remove
     // the number from the users profile if so
-    if (session && session.landline) {
+    const lastLandlineAdded = session.profile.mobilePhones[session.profile.mobilePhones.length - 1]
+    if (session && lastLandlineAdded) {
       event.preventDefault()
-      const normalisedLandline = normalisePhoneNumber(session.landline)
+      const normalisedLandline = normalisePhoneNumber(lastLandlineAdded)
       // remove landline from users profile
       const updatedProfile = removeUnverifiedContact(
         session.profile,

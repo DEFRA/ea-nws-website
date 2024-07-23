@@ -53,11 +53,12 @@ export default function AddEmailLayout ({ NavigateToNextPage }) {
     // we need to check if location.state has a value - this will only hold a value
     // if the user has come from the landline validate page - we will need to remove
     // the number from the users profile if so
-    if (session && session.email) {
+    const lastEmailAdded = session.profile.emails[session.profile.emails.length - 1]
+    if (session && lastEmailAdded) {
       event.preventDefault()
       // remove landline from users profile
-      const updatedProfile = removeUnverifiedContact(session.profile, email)
-      dispatch(setProfile(removeVerifiedContact(updatedProfile, email)))
+      const updatedProfile = removeUnverifiedContact(session.profile, lastEmailAdded)
+      dispatch(setProfile(removeVerifiedContact(updatedProfile, lastEmailAdded)))
     }
     // user could have navigated from contact preferences page
     // or user could have come from account change details at the end of sign up flow

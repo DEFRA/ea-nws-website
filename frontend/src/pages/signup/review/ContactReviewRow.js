@@ -5,6 +5,7 @@ export default function ContactReviewRow ({ contact, contactType, isConfirmed, i
   const rowDetails = () => {
     let titleRow
     let confirmLink
+    let showDelete = true
     switch (contactType) {
       case 'homePhone':
         titleRow = 'By phone call'
@@ -17,16 +18,17 @@ export default function ContactReviewRow ({ contact, contactType, isConfirmed, i
       case 'email':
         titleRow = 'By email'
         confirmLink = isConfirmed ? '' : '/signup/review/validate-email'
+        showDelete = index !== 0
         break
       default:
         break
     }
-    return { titleRow, confirmLink }    
+    return { titleRow, confirmLink, showDelete }
   }
 
   return (
     <>
-      <tr key={index} className='govuk-table__row' >
+      <tr key={index} className='govuk-table__row'>
         <td className='govuk-table__header govuk-!-width-one-half'>
           {rowDetails().titleRow}
         </td>
@@ -53,17 +55,22 @@ export default function ContactReviewRow ({ contact, contactType, isConfirmed, i
             </>
             )}
         <td className='govuk-table__cell'>
-          <Link
-            to='/managecontacts/confirm-delete'
-            state={{
-              type: contactType,
-              contact,
-              navigateTo: '/signup/review'
-            }}
-            className='govuk-link'
-          >
-            Remove
-          </Link>
+          {rowDetails().showDelete ? 
+            (
+            <Link
+              to='/managecontacts/confirm-delete'
+              state={{
+                type: contactType,
+                contact,
+                navigateTo: '/signup/review'
+              }}
+              className='govuk-link'
+            >
+              Remove
+            </Link>
+            )
+            : null
+          }
         </td>
       </tr>
     </>

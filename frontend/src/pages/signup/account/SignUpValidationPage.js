@@ -71,10 +71,11 @@ export default function SignUpValidationPage () {
     if (errorMessage !== null) {
       setError(errorMessage)
     }
-
-    setCodeResent(true)
-    setCodeResentTime(new Date().toLocaleTimeString())
-    setCodeExpired(false)
+    else{
+      setCodeResent(true)
+      setCodeResentTime(new Date().toLocaleTimeString())
+      setCodeExpired(false)
+    }
   }
 
   return (

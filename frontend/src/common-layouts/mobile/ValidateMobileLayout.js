@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
@@ -15,6 +15,7 @@ import {
   removeVerifiedContact
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
+import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
 
 export default function ValidateMobileLayout ({
   NavigateToNextPage,
@@ -25,6 +26,14 @@ export default function ValidateMobileLayout ({
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [code, setCode] = useState('')
+  const [codeResent, setCodeResent] = useState(false)
+  const [codeResentTime, setCodeResentTime] = useState(new Date())
+  const [codeExpired, setCodeExpired] = useState(false)
+
+  //if error remove code sent notification
+  useEffect(() => {
+    setCodeResent(false)
+  }, [error])
 
   const session = useSelector((state) => state.session)
 
@@ -71,6 +80,11 @@ export default function ValidateMobileLayout ({
     if (errorMessage !== null) {
       setError(errorMessage)
     }
+    else{
+      setCodeResent(true)
+      setCodeResentTime(new Date().toLocaleTimeString())
+      setCodeExpired(false)
+    }
   }
 
   const skipValidation = (event) => {
@@ -92,6 +106,7 @@ export default function ValidateMobileLayout ({
 
   return (
     <>
+    {codeExpired ? (<ExpiredCodeLayout getNewCode={getNewCode} />) : (
       <div className='page-container'>
         <Header />
         <div class='govuk-width-container body-container'>
@@ -144,6 +159,7 @@ export default function ValidateMobileLayout ({
         </div>
         <Footer />
       </div>
+    )}
     </>
   )
 }

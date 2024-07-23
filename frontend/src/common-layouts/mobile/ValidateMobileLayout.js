@@ -16,7 +16,7 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
-export default function ValidateMobileLayout ({
+export default function ValidateMobileLayout({
   NavigateToNextPage,
   SkipValidation,
   DifferentMobile
@@ -28,15 +28,17 @@ export default function ValidateMobileLayout ({
 
   const session = useSelector((state) => state.session)
 
-  const indexLastUnverifiedMobile =
-    session.profile.unverified.mobilePhones.length - 1
-  const indexLastMobile = session.profile.mobilePhones.length - 1
+  const mobile = useSelector((state) => state.currentContact)
 
-  const mobile = session.profile.unverified.mobilePhones[
-    indexLastUnverifiedMobile
-  ]
-    ? session.profile.unverified.mobilePhones[indexLastUnverifiedMobile]
-    : session.profile.mobilePhones[indexLastMobile]
+  // const indexLastUnverifiedMobile =
+  //   session.profile.unverified.mobilePhones.length - 1
+  // const indexLastMobile = session.profile.mobilePhones.length - 1
+
+  // const mobile = session.profile.unverified.mobilePhones[
+  //   indexLastUnverifiedMobile
+  // ]
+  //   ? session.profile.unverified.mobilePhones[indexLastUnverifiedMobile]
+  //   : session.profile.mobilePhones[indexLastMobile]
 
   const authToken = useSelector((state) => state.session.authToken)
 

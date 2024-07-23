@@ -17,7 +17,7 @@ export default function AccountDetailsTable ({ profile }) {
             </td>
 
             <td className='govuk-table__cell'>
-              <Link to='/' className='govuk-link'>
+              <Link to='/account/change-name' className='govuk-link'>
                 Change
               </Link>
             </td>
@@ -31,7 +31,7 @@ export default function AccountDetailsTable ({ profile }) {
             </td>
 
             <td className='govuk-table__cell'>
-              <Link to='/' className='govuk-link'>
+              <Link to='/account/change-email' className='govuk-link'>
                 Change
               </Link>
             </td>

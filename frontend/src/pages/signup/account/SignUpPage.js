@@ -50,7 +50,7 @@ export default function SignUpPage () {
           mobilePhones: [],
           homePhones: [],
           language: 'EN', // [TODO] is this always english?
-          additionals: [{id: "lastAccessedUrl", value: ""}, {id: "signUpComplete", value: false}],
+          additionals: [{id: "signUpComplete", value: false}],
           unverified: {
             emails: [],
             mobilePhones: [],

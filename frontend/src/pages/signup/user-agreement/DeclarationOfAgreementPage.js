@@ -15,7 +15,6 @@ export default function DeclarationOfAgreementPage () {
   const [isChecked, setIsChecked] = useState(false)
   const location = useLocation()
   const session = useSelector((state) => state.session)
-  const profile = session.profile
   const [error, setError] = useState('')
   const navigate = useNavigate()
   

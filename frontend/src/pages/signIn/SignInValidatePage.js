@@ -47,7 +47,7 @@ export default function SignInValidatePage () {
         const lastAccessedUrl = data.profile.additionals.filter(c => c.id === 'lastAccessedUrl')[0].value
         setLastAccessedUrl(lastAccessedUrl)
 
-        if(!isSignUpComplete){
+        if(!isSignUpComplete && lastAccessedUrl !== ''){
           setSignUpNotComplete(true)
         }
         else{

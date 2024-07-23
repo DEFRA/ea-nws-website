@@ -49,10 +49,14 @@ import AddLandlineContactPage from '../pages/signup/review/add-contact/add-landl
 import ValidateLandlineContactPage from '../pages/signup/review/add-contact/add-landline-contact/AddContactLandlineValidatePage'
 import AddMobileContactStartPage from '../pages/signup/review/add-contact/add-mobile-contact/AddContactMobileStartPage'
 import ValidateMobileContactPage from '../pages/signup/review/add-contact/add-mobile-contact/AddContactMobileValidatePage'
+import ChangeLocationInAlertAreaPage from '../pages/signup/review/change-location/ChangeLocationInAlertAreaPage'
+import ChangeLocationInSevereWarningAreaPage from '../pages/signup/review/change-location/ChangeLocationInSevereWarningAreaPage'
+import ChangeLocationNotNearDangerPage from '../pages/signup/review/change-location/ChangeLocationNotNearDangerPage'
+import ChangeLocationSearchPage from '../pages/signup/review/change-location/ChangeLocationSearchPage'
+import ChangeLocationSearchResultPage from '../pages/signup/review/change-location/ChangeLocationSearchResultPage'
 import SignUpSuccessPage from '../pages/signup/success/SignUpSuccessPage'
 import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
-
 // index routes
 const indexRoutes = [{ path: '/index', component: <IndexPage /> }]
 
@@ -180,6 +184,27 @@ const signupRoutes = [
   {
     path: '/signup/review/validate-email',
     component: <ValidateEmailContactPage />
+  },
+  {
+    path: '/signup/review/change-location-search',
+    component: <ChangeLocationSearchPage />
+  },
+  {
+    path: '/signup/review/change-location-results',
+    component: <ChangeLocationSearchResultPage />
+  },
+
+  {
+    path: '/signup/review/location-in-severe-warning-area',
+    component: <ChangeLocationInSevereWarningAreaPage />
+  },
+  {
+    path: '/signup/review/location-in-alert-area',
+    component: <ChangeLocationInAlertAreaPage />
+  },
+  {
+    path: '/signup/review/no-danger',
+    component: <ChangeLocationNotNearDangerPage />
   }
 ]
 
@@ -201,10 +226,17 @@ const homeRoutes = [{ path: '/home', component: <HomePage /> }]
 // account
 const accountRoutes = [
   { path: '/account', component: <AccountPage /> },
-  { path: '/account/change-business-details', component: <ChangeBusinessDetailsPage /> },
+  {
+    path: '/account/change-business-details',
+    component: <ChangeBusinessDetailsPage />
+  },
   { path: '/account/change-email', component: <ChangeEmailPage /> },
-  { path: '/account/change-email/validate', component: <ChangeEmailValidationPage /> },
-  { path: '/account/change-name', component: <ChangeNamePage /> }]
+  {
+    path: '/account/change-email/validate',
+    component: <ChangeEmailValidationPage />
+  },
+  { path: '/account/change-name', component: <ChangeNamePage /> }
+]
 
 // contact routes
 const contactRoutes = [

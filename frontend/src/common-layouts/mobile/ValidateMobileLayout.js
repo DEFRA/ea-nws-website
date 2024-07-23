@@ -16,6 +16,7 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
+import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 
 export default function ValidateMobileLayout ({
   NavigateToNextPage,
@@ -61,7 +62,12 @@ export default function ValidateMobileLayout ({
         navigate
       )
       if (errorMessage !== null) {
-        setError(errorMessage)
+        if (errorMessage === 'The code you have entered has expired - please request a new code'){
+          setCodeExpired(true)
+        }
+        else{
+          setError(errorMessage)
+        }
       } else {
         dispatch(setProfile(data.profile))
         NavigateToNextPage()
@@ -116,6 +122,11 @@ export default function ValidateMobileLayout ({
           <main className='govuk-main-wrapper'>
             <div className='govuk-grid-row'>
               <div className='govuk-grid-column-two-thirds'>
+                {codeResent && <NotificationBanner 
+                  className='govuk-notification-banner govuk-notification-banner--success'
+                  title='Success'
+                  text={'New code sent at ' + codeResentTime}
+                />}
                 <ErrorSummary errorList={error === '' ? [] : [error]} />
                 <h2 class='govuk-heading-l'>Check your mobile phone</h2>
                 <div class='govuk-body'>

@@ -6,5 +6,8 @@ module.exports = {
 
   // Errors for expired code
   registerValidate_101: 'The code you have entered has expired - please request a new code',
-  signinValidate_101: 'The code you have entered has expired - please request a new code'
+  signinValidate_101: 'The code you have entered has expired - please request a new code',
+  verifyMobilePhoneValidate_101: 'The code you have entered has expired - please request a new code',
+  verifyEmailValidate_101: 'The code you have entered has expired - please request a new code',
+  verifyHomePhoneValidate_101: 'The code you have entered has expired - please request a new code'
 }

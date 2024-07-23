@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
@@ -16,6 +16,8 @@ import {
   removeVerifiedContact
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
+import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
+import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 
 export default function ValidateEmailLayout ({
   NavigateToNextPage,
@@ -36,6 +38,14 @@ export default function ValidateEmailLayout ({
   const email = session.profile.unverified.emails[0]
     ? session.profile.unverified.emails[0]
     : session.profile.emails[0]
+  const [codeResent, setCodeResent] = useState(false)
+  const [codeResentTime, setCodeResentTime] = useState(new Date())
+  const [codeExpired, setCodeExpired] = useState(false)
+
+  //if error remove code sent notification
+  useEffect(() => {
+    setCodeResent(false)
+  }, [error])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -48,7 +58,11 @@ export default function ValidateEmailLayout ({
         'api/add_contact/email/validate'
       )
       if (errorMessage !== null) {
-        setError(errorMessage)
+        if(errorMessage === 'The code you have entered has expired - please request a new code'){
+          setCodeExpired(true)
+        }else{
+          setError(errorMessage)
+        }
       } else {
         if (changeSignIn) {
           updateProfile(data.profile, authToken)
@@ -71,6 +85,11 @@ export default function ValidateEmailLayout ({
     )
     if (errorMessage !== null) {
       setError(errorMessage)
+    }
+    else{
+      setCodeResent(true)
+      setCodeResentTime(new Date().toLocaleTimeString())
+      setCodeExpired(false)
     }
   }
 
@@ -99,6 +118,7 @@ export default function ValidateEmailLayout ({
 
   return (
     <>
+    {codeExpired ? (<ExpiredCodeLayout getNewCode={getNewCode} />) : (
       <div className='page-container'>
         <Header />
         <div className='govuk-width-container body-container'>
@@ -109,6 +129,11 @@ export default function ValidateEmailLayout ({
           <main className='govuk-main-wrapper'>
             <div className='govuk-grid-row'>
               <div className='govuk-grid-column-two-thirds'>
+                {codeResent && <NotificationBanner 
+                  className='govuk-notification-banner govuk-notification-banner--success'
+                  title='Success'
+                  text={'New code sent at ' + codeResentTime}
+                />}
                 {error && <ErrorSummary errorList={[error]} />}
                 <h2 className='govuk-heading-l'>Check your email</h2>
                 <div className='govuk-body'>
@@ -174,6 +199,7 @@ export default function ValidateEmailLayout ({
         </div>
         <Footer />
       </div>
+    )}
     </>
   )
 }

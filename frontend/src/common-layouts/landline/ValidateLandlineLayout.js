@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
@@ -15,6 +15,8 @@ import {
   removeVerifiedContact
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
+import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
+import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 
 export default function ValidateLandlineLayout ({
   NavigateToNextPage,
@@ -26,6 +28,14 @@ export default function ValidateLandlineLayout ({
   const navigate = useNavigate()
   const [code, setCode] = useState('')
   const session = useSelector((state) => state.session)
+  const [codeResent, setCodeResent] = useState(false)
+  const [codeResentTime, setCodeResentTime] = useState(new Date())
+  const [codeExpired, setCodeExpired] = useState(false)
+
+  //if error remove code sent notification
+  useEffect(() => {
+    setCodeResent(false)
+  }, [error])
 
   const indexLastUnverifiedHomePhone =
     session.profile.unverified.homePhones.length - 1
@@ -50,7 +60,11 @@ export default function ValidateLandlineLayout ({
         navigate
       )
       if (errorMessage !== null) {
-        setError(errorMessage)
+        if (errorMessage === 'The code you have entered has expired - please request a new code'){
+          setCodeExpired(true)
+        } else{
+          setError(errorMessage)
+        }
       } else {
         dispatch(setProfile(data.profile))
         NavigateToNextPage()
@@ -68,6 +82,10 @@ export default function ValidateLandlineLayout ({
     )
     if (errorMessage !== null) {
       setError(errorMessage)
+    }else{
+      setCodeResent(true)
+      setCodeResentTime(new Date().toLocaleTimeString())
+      setCodeExpired(false)
     }
   }
 
@@ -92,6 +110,7 @@ export default function ValidateLandlineLayout ({
 
   return (
     <>
+    {codeExpired ? (<ExpiredCodeLayout getNewCode={getNewCode} />) : (
       <div className='page-container'>
         <Header />
         <div class='govuk-width-container body-container'>
@@ -101,6 +120,11 @@ export default function ValidateLandlineLayout ({
           <main className='govuk-main-wrapper'>
             <div className='govuk-grid-row'>
               <div className='govuk-grid-column-two-thirds'>
+                {codeResent && <NotificationBanner 
+                  className='govuk-notification-banner govuk-notification-banner--success'
+                  title='Success'
+                  text={'New code sent at ' + codeResentTime}
+                />}
                 <ErrorSummary errorList={error === '' ? [] : [error]} />
                 <h2 class='govuk-heading-l'>Confirm telephone number</h2>
                 <div class='govuk-body'>
@@ -144,6 +168,7 @@ export default function ValidateLandlineLayout ({
         </div>
         <Footer />
       </div>
+    )}
     </>
   )
 }

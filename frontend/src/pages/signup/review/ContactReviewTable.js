@@ -1,80 +1,22 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
+import ContactReviewRow from './ContactReviewRow'
 
 export default function ContactReviewTable ({ profile, contactPreferences }) {
   const navigate = useNavigate()
 
-  const ShowEmailAddress = () => {
+  const EmailAddressesSection = () => {
     return (
       <>
         {profile.emails.length > 0 || profile.unverified.emails.length > 0
           ? (
             <tbody className='govuk-table__body'>
               {profile.emails.map((email, index) => (
-                <tr key={index} className='govuk-table__row'>
-                  <td className='govuk-table__header govuk-!-width-one-half'>
-                    By Email
-                  </td>
-                  <td className='govuk-table__cell govuk-!-width-full'>
-                    {email}
-                  </td>
-                  <td className='govuk-table__cell' />
-                  <td className='govuk-table__cell' />
-                  {email !== profile.emails[0]
-                    ? (
-                      <td className='govuk-table__cell'>
-                        <Link
-                          to='/managecontacts/confirm-delete'
-                          state={{
-                            type: 'email',
-                            contact: email,
-                            navigateTo: '/signup/review'
-                          }}
-                          className='govuk-link'
-                        >
-                          Remove
-                        </Link>
-                      </td>
-                      )
-                    : (
-                  // empty space in table without this
-                      <td className='govuk-table__cell' />
-                      )}
-                </tr>
+                <ContactReviewRow contact={email} contactType='email' isConfirmed index={index} />
               ))}
               {profile.unverified.emails.map((unregisteredEmail, index) => (
-                <tr key={index} className='govuk-table__row'>
-                  <td className='govuk-table__header govuk-!-width-one-half'>
-                    By Email
-                  </td>
-                  <td className='govuk-table__cell govuk-!-width-full'>
-                    {unregisteredEmail}
-                  </td>
-                  <td className='govuk-table__cell'>
-                    <strong className='govuk-tag govuk-tag--red'>
-                      Unconfirmed
-                    </strong>
-                  </td>
-                  <td className='govuk-table__cell'>
-                    <Link to='/signup/review/validate-email' className='govuk-link'>
-                      Confirm
-                    </Link>
-                  </td>
-                  <td className='govuk-table__cell'>
-                    <Link
-                      to='/managecontacts/confirm-delete'
-                      state={{
-                        type: 'email',
-                        contact: unregisteredEmail,
-                        navigateTo: '/signup/review'
-                      }}
-                      className='govuk-link'
-                    >
-                      Remove
-                    </Link>
-                  </td>
-                </tr>
+                <ContactReviewRow contact={unregisteredEmail} contactType='email' isConfirmed={false} index={index} />
               ))}
             </tbody>
             )
@@ -83,7 +25,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
     )
   }
 
-  const ShowMobileNumber = () => {
+  const MobileNumbersSection = () => {
     return (
       <>
         {profile.mobilePhones.length > 0 ||
@@ -91,65 +33,11 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
           ? (
             <tbody className='govuk-table__body'>
               {profile.mobilePhones.map((mobilePhone, index) => (
-                <tr key={index} className='govuk-table__row'>
-                  <td className='govuk-table__header govuk-!-width-one-half'>
-                    By text
-                  </td>
-                  <td className='govuk-table__cell govuk-!-width-full'>
-                    {mobilePhone}
-                  </td>
-                  <td className='govuk-table__cell' />
-                  <td className='govuk-table__cell' />
-                  <td className='govuk-table__cell'>
-                    <Link
-                      to='/managecontacts/confirm-delete'
-                      state={{
-                        type: 'mobile telephone number',
-                        contact: mobilePhone,
-                        navigateTo: '/signup/review'
-                      }}
-                      className='govuk-link'
-                    >
-                      Remove
-                    </Link>
-                  </td>
-                </tr>
+                <ContactReviewRow contact={mobilePhone} contactType='mobilePhone' isConfirmed index={index} />
               ))}
-              {profile.unverified.mobilePhones.map(
-                (unregisteredMobilePhone, index) => (
-                  <tr key={index} className='govuk-table__row'>
-                    <td className='govuk-table__header govuk-!-width-one-half'>
-                      By text
-                    </td>
-                    <td className='govuk-table__cell govuk-!-width-full'>
-                      {unregisteredMobilePhone}
-                    </td>
-                    <td className='govuk-table__cell'>
-                      <strong className='govuk-tag govuk-tag--red'>
-                        Unconfirmed
-                      </strong>
-                    </td>
-                    <td className='govuk-table__cell'>
-                      <Link to='/signup/review/validate-mobile' className='govuk-link'>
-                        Confirm
-                      </Link>
-                    </td>                    
-                    <td className='govuk-table__cell'>
-                      <Link
-                        to='/managecontacts/confirm-delete'
-                        state={{
-                          type: 'mobile telephone number',
-                          contact: unregisteredMobilePhone,
-                          navigateTo: '/signup/review'
-                        }}
-                        className='govuk-link'
-                      >
-                        Remove
-                      </Link>
-                    </td>
-                  </tr>
-                )
-              )}
+              {profile.unverified.mobilePhones.map((unregisteredMobilePhone, index) => (
+                <ContactReviewRow contact={unregisteredMobilePhone} contactType='mobilePhone' isConfirmed={false} index={index} />
+              ))}
             </tbody>
             )
           : null}
@@ -157,7 +45,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
     )
   }
 
-  const ShowHomePhone = () => {
+  const HomePhonesSection = () => {
     return (
       <>
         {profile.homePhones.length > 0 ||
@@ -165,63 +53,11 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
           ? (
             <tbody className='govuk-table__body'>
               {profile.homePhones.map((homePhone, index) => (
-                <tr key={index} className='govuk-table__row'>
-                  <td className='govuk-table__header govuk-!-width-one-half'>
-                    By phone call
-                  </td>
-                  <td className='govuk-table__cell govuk-!-width-full'>
-                    {homePhone}
-                  </td>
-                  <td className='govuk-table__cell' />
-                  <td className='govuk-table__cell' />
-                  <td className='govuk-table__cell'>
-                    <Link
-                      to='/managecontacts/confirm-delete'
-                      state={{
-                        type: 'telephone number',
-                        contact: homePhone,
-                        navigateTo: '/signup/review'
-                      }}
-                      className='govuk-link'
-                    >
-                      Remove
-                    </Link>
-                  </td>
-                </tr>
+                <ContactReviewRow contact={homePhone} contactType='homePhone' isConfirmed index={index} />
               ))}
-              {profile.unverified.homePhones.map(
-                (unregisteredHomePhones, index) => (
-                  <tr key={index} className='govuk-table__row'>
-                    <td className='govuk-table__header govuk-!-width-one-half'>
-                      By phone call
-                    </td>
-                    <td className='govuk-table__cell govuk-!-width-full'>
-                      {unregisteredHomePhones}
-                    </td>
-                    <td className='govuk-table__cell'>
-                      <strong className='govuk-tag govuk-tag--red'>
-                        Unconfirmed
-                      </strong>
-                    </td>
-                    <td className='govuk-table__cell'>                      
-                      <Link to='/signup/review/validate-landline' className='govuk-link'>Confirm</Link>
-                    </td>
-                    <td className='govuk-table__cell'>
-                      <Link
-                        to='/managecontacts/confirm-delete'
-                        state={{
-                          type: 'telephone number',
-                          contact: unregisteredHomePhones,
-                          navigateTo: '/signup/review'
-                        }}
-                        className='govuk-link'
-                      >
-                        Remove
-                      </Link>
-                    </td>
-                  </tr>
-                )
-              )}
+              {profile.unverified.homePhones.map((unregisteredHomePhone, index) => (
+                <ContactReviewRow contact={unregisteredHomePhone} contactType='homePhone' isConfirmed={false} index={index} />
+              ))}
             </tbody>
             )
           : null}
@@ -239,13 +75,13 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
 
       <table className='govuk-table'>
         <tbody className='govuk-table__body'>
-          <ShowEmailAddress />
-          {contactPreferences.includes('Text') ? <ShowMobileNumber /> : null}
-          {contactPreferences.includes('PhoneCall') ? <ShowHomePhone /> : null}
+          <EmailAddressesSection />
+          {contactPreferences.includes('Text') ? <MobileNumbersSection /> : null}
+          {contactPreferences.includes('PhoneCall') ? <HomePhonesSection /> : null}
         </tbody>
       </table>
-      <Button className='govuk-button--secondary' onClick={handleButton} text='Add another email or phone number'/>
-      <br/><br/>
+      <Button className='govuk-button--secondary' onClick={handleButton} text='Add another email or phone number' />
+      <br /><br />
     </>
   )
 }

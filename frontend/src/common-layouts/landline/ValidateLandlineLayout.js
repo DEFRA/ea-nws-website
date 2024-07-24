@@ -96,7 +96,7 @@ export default function ValidateLandlineLayout ({
       DifferentHomePhone(homePhone)
     } else {
       ChooseLandLine()
-      // navigate('/signup/contactpreferences/landline/choosenumber')
+      
     }
   }
 

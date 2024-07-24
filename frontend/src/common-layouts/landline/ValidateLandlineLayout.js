@@ -96,7 +96,6 @@ export default function ValidateLandlineLayout ({
       DifferentHomePhone(homePhone)
     } else {
       ChooseLandLine()
-      
     }
   }
 

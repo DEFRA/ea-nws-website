@@ -30,7 +30,6 @@ export default function ContactDetailsTable ({
 
   const handleLinkClick = (contactID) => {
     dispatch(setCurrentContact(unregisteredContact[contactID]))
-    console.log(`Row ${contactID} clicked - ${unregisteredContact[contactID]}`)
   }
 
   const UnconfirmedLink = ({contactID}) => {
@@ -110,7 +109,6 @@ export default function ContactDetailsTable ({
               ))}
               {unregisteredContact.map((unregisteredContact, index) => (
                 <>
-                {console.log(index + ": " + unregisteredContact)}
                 <tr key={index} className='govuk-table__row'>
                   <td className='govuk-table__cell govuk-!-width-full'>
                     {unregisteredContact}

@@ -29,7 +29,6 @@ export default function ValidateMobileLayout({
   const session = useSelector((state) => state.session)
 
   const mobile = session.currentContact
-  console.log(mobile)
 
   const authToken = useSelector((state) => state.session.authToken)
 

@@ -14,6 +14,8 @@ export default function ContactDetailsTable ({
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  console.log(unregisteredContact)
+
   const handleButton = () => {
     switch (contactType) {
       case 'email address':
@@ -28,11 +30,12 @@ export default function ContactDetailsTable ({
     }
   }
 
-  const handleLinkClick = () => {
-    dispatch(setCurrentContact(unregisteredContact))
+  const handleLinkClick = (contactID) => {
+    dispatch(setCurrentContact(unregisteredContact[contactID]))
+    console.log(`Row ${contactID} clicked - ${unregisteredContact[contactID]}`)
   }
 
-  const UnconfirmedLink = () => {
+  const UnconfirmedLink = ({contactID}) => {
     if (contactType === 'email address') {
       return (
         <>
@@ -44,7 +47,7 @@ export default function ContactDetailsTable ({
     } else if (contactType === 'mobile telephone number') {
       return (
         <>
-          <Link to='/managecontacts/validate-mobile' className='govuk-link' onClick={handleLinkClick}>
+          <Link to='/managecontacts/validate-mobile' className='govuk-link' onClick={() => handleLinkClick(contactID)}>
             Confirm
           </Link>
         </>
@@ -108,6 +111,8 @@ export default function ContactDetailsTable ({
                 </tr>
               ))}
               {unregisteredContact.map((unregisteredContact, index) => (
+                <>
+                {console.log(index + ": " + unregisteredContact)}
                 <tr key={index} className='govuk-table__row'>
                   <td className='govuk-table__cell govuk-!-width-full'>
                     {unregisteredContact}
@@ -118,7 +123,7 @@ export default function ContactDetailsTable ({
                     </strong>
                   </td>
                   <td className='govuk-table__cell'>
-                    <UnconfirmedLink />
+                    <UnconfirmedLink contactID={index}/>
                   </td>
                   <td className='govuk-table__cell'>
                     <Link
@@ -133,6 +138,7 @@ export default function ContactDetailsTable ({
                     </Link>
                   </td>
                 </tr>
+                </>
               ))}
             </tbody>
           </table>

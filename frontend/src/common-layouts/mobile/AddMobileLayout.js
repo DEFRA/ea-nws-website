@@ -8,15 +8,11 @@ import Header from '../../gov-uk-components/Header'
 import Input from '../../gov-uk-components/Input'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
-import {
-  addUnverifiedContact,
-  removeUnverifiedContact,
-  removeVerifiedContact
-} from '../../services/ProfileServices'
+import { addUnverifiedContact } from '../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../services/validations/PhoneValidation'
 
-export default function AddMobileLayout ({
+export default function AddMobileLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -50,30 +46,8 @@ export default function AddMobileLayout ({
     }
   }
 
-  // if user is going back through the signup flow - we want to remove the landline
-  // from either the verified or unverified list - we need to do both incase
-  // they progressed past the validate landline path
-  const removeMobileFromProfile = async (event) => {
+  const handleBackLink = (event) => {
     event.preventDefault()
-    // we need to check if location.state has a value - this will only hold a value
-    // if the user has come from the landline validate page - we will need to remove
-    // the number from the users profile if so
-    const lastMobileAdded = session.profile.mobilePhones[session.profile.mobilePhones.length - 1]
-    if (session && lastMobileAdded) {
-      event.preventDefault()
-      const normalisedMobile = normalisePhoneNumber(lastMobileAdded)
-      // remove mobile from users profile
-      const updatedProfile = removeUnverifiedContact(
-        session.profile,
-        normalisedMobile
-      )
-      dispatch(
-        setProfile(removeVerifiedContact(updatedProfile, normalisedMobile))
-      )
-    }
-
-    // user could have navigated from contact preferences page
-    // or user could have come from account change details at the end of sign up flow
     NavigateToPreviousPage()
   }
 
@@ -82,7 +56,7 @@ export default function AddMobileLayout ({
       <div className='page-container'>
         <Header />
         <div class='govuk-width-container body-container'>
-          <Link onClick={removeMobileFromProfile} className='govuk-back-link'>
+          <Link onClick={handleBackLink} className='govuk-back-link'>
             Back
           </Link>
           <main className='govuk-main-wrapper'>

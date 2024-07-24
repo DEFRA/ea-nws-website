@@ -8,15 +8,11 @@ import Header from '../../gov-uk-components/Header'
 import Input from '../../gov-uk-components/Input'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
-import {
-  addUnverifiedContact,
-  removeUnverifiedContact,
-  removeVerifiedContact
-} from '../../services/ProfileServices'
+import { addUnverifiedContact } from '../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../services/validations/PhoneValidation'
 
-export default function AddLandlineLayout ({
+export default function AddLandlineLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -59,26 +55,8 @@ export default function AddLandlineLayout ({
   // if user is going back through the signup flow - we want to remove the landline
   // from either the verified or unverified list - we need to do both incase
   // they progressed past the validate landline path
-  const removeLandlineFromProfile = async (event) => {
+  const HandleBackLink = (event) => {
     event.preventDefault()
-    // we need to check if location.state has a value - this will only hold a value
-    // if the user has come from the landline validate page - we will need to remove
-    // the number from the users profile if so
-    const lastLandlineAdded = session.profile.mobilePhones[session.profile.mobilePhones.length - 1]
-    if (session && lastLandlineAdded) {
-      event.preventDefault()
-      const normalisedLandline = normalisePhoneNumber(lastLandlineAdded)
-      // remove landline from users profile
-      const updatedProfile = removeUnverifiedContact(
-        session.profile,
-        normalisedLandline
-      )
-      dispatch(
-        setProfile(removeVerifiedContact(updatedProfile, normalisedLandline))
-      )
-    }
-    // user could have navigated from contact preferences page
-    // or user could have come from account change details at the end of sign up flow
     NavigateToPreviousPage()
   }
 
@@ -87,7 +65,7 @@ export default function AddLandlineLayout ({
       <div className='page-container'>
         <Header />
         <div class='govuk-width-container body-container'>
-          <Link onClick={removeLandlineFromProfile} className='govuk-back-link'>
+          <Link onClick={HandleBackLink} className='govuk-back-link'>
             Back
           </Link>
           <main className='govuk-main-wrapper'>

@@ -8,14 +8,10 @@ import Header from '../../gov-uk-components/Header'
 import Input from '../../gov-uk-components/Input'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
-import {
-  addUnverifiedContact,
-  removeUnverifiedContact,
-  removeVerifiedContact
-} from '../../services/ProfileServices'
+import { addUnverifiedContact } from '../../services/ProfileServices'
 import { emailValidation } from '../../services/validations/EmailValidation'
 
-export default function AddEmailLayout ({ NavigateToNextPage }) {
+export default function AddEmailLayout({ NavigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [email, setEmail] = useState('')
@@ -48,20 +44,8 @@ export default function AddEmailLayout ({ NavigateToNextPage }) {
   // if user is going back through the signup flow - we want to remove the landline
   // from either the verified or unverified list - we need to do both incase
   // they progressed past the validate landline path
-  const removeEmailFromProfile = async (event) => {
+  const handleBackLink = (event) => {
     event.preventDefault()
-    // we need to check if location.state has a value - this will only hold a value
-    // if the user has come from the landline validate page - we will need to remove
-    // the number from the users profile if so
-    const lastEmailAdded = session.profile.emails[session.profile.emails.length - 1]
-    if (session && lastEmailAdded) {
-      event.preventDefault()
-      // remove landline from users profile
-      const updatedProfile = removeUnverifiedContact(session.profile, lastEmailAdded)
-      dispatch(setProfile(removeVerifiedContact(updatedProfile, lastEmailAdded)))
-    }
-    // user could have navigated from contact preferences page
-    // or user could have come from account change details at the end of sign up flow
     navigate(-1)
   }
 
@@ -70,7 +54,7 @@ export default function AddEmailLayout ({ NavigateToNextPage }) {
       <div className='page-container'>
         <Header />
         <div class='govuk-width-container body-container'>
-          <Link onClick={removeEmailFromProfile} className='govuk-back-link'>
+          <Link onClick={handleBackLink} className='govuk-back-link'>
             Back
           </Link>
           <main className='govuk-main-wrapper'>
@@ -82,8 +66,8 @@ export default function AddEmailLayout ({ NavigateToNextPage }) {
                 </h2>
                 <div class='govuk-body'>
                   <p>
-                    We recommend using an email address you can access 24 hours a
-                    day.
+                    We recommend using an email address you can access 24 hours
+                    a day.
                   </p>
                   <Input
                     name='Email address'

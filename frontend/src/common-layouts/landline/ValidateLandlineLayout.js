@@ -16,7 +16,7 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
-export default function ValidateLandlineLayout ({
+export default function ValidateLandlineLayout({
   NavigateToNextPage,
   SkipValidation,
   DifferentHomePhone,
@@ -84,16 +84,38 @@ export default function ValidateLandlineLayout ({
     SkipValidation(homePhone)
   }
 
-  const differentHomePhone = (event) => {
+  const differentHomePhone = async (event) => {
     event.preventDefault()
-    // remove homephone from users profile
-    dispatch(setProfile(removeUnverifiedContact(session.profile, homePhone)))
+    removeLandlineFromProfile()
     DifferentHomePhone(homePhone)
   }
 
-  const backLink = (event) => {
+  const backLink = async (event) => {
     event.preventDefault()
+    removeLandlineFromProfile()
     NavigateToPreviousPage()
+  }
+
+  const removeLandlineFromProfile = async () => {
+    let updatedProfile
+    if (session.profile.unverified.homePhones.contains(homePhone)) {
+      updatedProfile = removeUnverifiedContact(session.profile, homePhone)
+      dispatch(setProfile(removeUnverifiedContact(session.profile, homePhone)))
+    }
+    if (session.profile.homePhones.contains(homePhone)) {
+      updatedProfile = removeVerifiedContact(session.profile, homePhone)
+      dispatch(setProfile(removeVerifiedContact(session.profile, homePhone)))
+    }
+    const dataToSend = { profile: updatedProfile, authToken: session.authToken }
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      '/api/profile/update',
+      navigate
+    )
+    if (errorMessage !== null) {
+      setError(errorMessage)
+      return
+    }
   }
 
   return (
@@ -101,7 +123,10 @@ export default function ValidateLandlineLayout ({
       <div className='page-container'>
         <Header />
         <div class='govuk-width-container body-container'>
-          <Link onClick={backLink} className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
+          <Link
+            onClick={backLink}
+            className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'
+          >
             Back
           </Link>
           <main className='govuk-main-wrapper'>

@@ -16,7 +16,7 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
-export default function ValidateMobileLayout ({
+export default function ValidateMobileLayout({
   NavigateToNextPage,
   SkipValidation,
   DifferentMobile,
@@ -86,14 +86,37 @@ export default function ValidateMobileLayout ({
 
   const differentMobile = (event) => {
     event.preventDefault()
-    // remove email from users profile
-    dispatch(setProfile(removeUnverifiedContact(session.profile, mobile)))
+    removeMobileFromProfile()
     DifferentMobile(mobile)
   }
 
   const backLink = (event) => {
     event.preventDefault()
+    removeMobileFromProfile()
     NavigateToPreviousPage()
+  }
+
+  const removeMobileFromProfile = async () => {
+    let updatedProfile
+    if (session.profile.unverified.mobilePhones.contains(mobile)) {
+      updatedProfile = removeUnverifiedContact(session.profile, mobile)
+      dispatch(setProfile(removeUnverifiedContact(session.profile, mobile)))
+    }
+    if (session.profile.mobilePhones.contains(mobile)) {
+      updatedProfile = removeVerifiedContact(session.profile, mobile)
+      dispatch(setProfile(removeVerifiedContact(session.profile, mobile)))
+    }
+
+    const dataToSend = { profile: updatedProfile, authToken: session.authToken }
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      '/api/profile/update',
+      navigate
+    )
+    if (errorMessage !== null) {
+      setError(errorMessage)
+      return
+    }
   }
 
   return (
@@ -101,7 +124,10 @@ export default function ValidateMobileLayout ({
       <div className='page-container'>
         <Header />
         <div class='govuk-width-container body-container'>
-          <Link onClick={backLink} className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
+          <Link
+            onClick={backLink}
+            className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'
+          >
             Back
           </Link>
           <main className='govuk-main-wrapper'>

@@ -99,11 +99,11 @@ export default function ValidateEmailLayout({
 
   const removeEmailFromProfile = async () => {
     let updatedProfile
-    if (session.profile.unverified.emails.contains(email)) {
+    if (session.profile.unverified.emails.includes(email)) {
       updatedProfile = removeUnverifiedContact(session.profile, email)
       dispatch(setProfile(removeUnverifiedContact(session.profile, email)))
     }
-    if (session.profile.emails.contains(email)) {
+    if (session.profile.emails.includes(email)) {
       updatedProfile = removeVerifiedContact(session.profile, email)
       dispatch(setProfile(removeVerifiedContact(session.profile, email)))
     }
@@ -112,13 +112,14 @@ export default function ValidateEmailLayout({
 
     const { errorMessage } = await backendCall(
       dataToSend,
-      '/api/profile/update',
+      'api/profile/update',
       navigate
     )
     if (errorMessage !== null) {
       setError(errorMessage)
       return
     }
+    console.log('Updated profile:', updatedProfile)
   }
 
   return (

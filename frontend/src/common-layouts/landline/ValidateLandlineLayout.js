@@ -98,18 +98,18 @@ export default function ValidateLandlineLayout({
 
   const removeLandlineFromProfile = async () => {
     let updatedProfile
-    if (session.profile.unverified.homePhones.contains(homePhone)) {
+    if (session.profile.unverified.homePhones.includes(homePhone)) {
       updatedProfile = removeUnverifiedContact(session.profile, homePhone)
       dispatch(setProfile(removeUnverifiedContact(session.profile, homePhone)))
     }
-    if (session.profile.homePhones.contains(homePhone)) {
+    if (session.profile.homePhones.includes(homePhone)) {
       updatedProfile = removeVerifiedContact(session.profile, homePhone)
       dispatch(setProfile(removeVerifiedContact(session.profile, homePhone)))
     }
     const dataToSend = { profile: updatedProfile, authToken: session.authToken }
     const { errorMessage } = await backendCall(
       dataToSend,
-      '/api/profile/update',
+      'api/profile/update',
       navigate
     )
     if (errorMessage !== null) {

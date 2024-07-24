@@ -98,11 +98,11 @@ export default function ValidateMobileLayout({
 
   const removeMobileFromProfile = async () => {
     let updatedProfile
-    if (session.profile.unverified.mobilePhones.contains(mobile)) {
+    if (session.profile.unverified.mobilePhones.includes(mobile)) {
       updatedProfile = removeUnverifiedContact(session.profile, mobile)
       dispatch(setProfile(removeUnverifiedContact(session.profile, mobile)))
     }
-    if (session.profile.mobilePhones.contains(mobile)) {
+    if (session.profile.mobilePhones.includes(mobile)) {
       updatedProfile = removeVerifiedContact(session.profile, mobile)
       dispatch(setProfile(removeVerifiedContact(session.profile, mobile)))
     }
@@ -110,7 +110,7 @@ export default function ValidateMobileLayout({
     const dataToSend = { profile: updatedProfile, authToken: session.authToken }
     const { errorMessage } = await backendCall(
       dataToSend,
-      '/api/profile/update',
+      'api/profile/update',
       navigate
     )
     if (errorMessage !== null) {

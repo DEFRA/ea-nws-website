@@ -63,7 +63,7 @@ export default function StartPage () {
                   <Button
                     text='Sign up for the first time'
                     className='govuk-button'
-                    onClick={() => navigate('/signup')}
+                    onClick={() => navigate('/signup/register-location/search')}
                   />
                   <br />
                   <h2 className='govuk-heading-m'>

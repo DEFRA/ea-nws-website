@@ -37,6 +37,11 @@ import ValidateLandlinePhonePage from '../pages/signup/channel-preferences/landl
 import AddMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/AddMobilePhonePage'
 import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/SkipConfirmMobilePhonePage'
 import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
+import LocationInAlertAreaPage from '../pages/signup/register-location/LocationInAlertAreaPage'
+import LocationInSevereWarningAreaPage from '../pages/signup/register-location/LocationInSevereWarningAreaPage'
+import LocationNotNearDangerPage from '../pages/signup/register-location/LocationNotNearDangerPage'
+import LocationSearchPage from '../pages/signup/register-location/LocationSearchPage'
+import LocationSearchResultsPage from '../pages/signup/register-location/LocationSearchResultsPage'
 import SignUpSuccessPage from '../pages/signup/success/SignUpSuccessPage'
 import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
@@ -72,6 +77,27 @@ const signupRoutes = [
   {
     path: '/signup/contactpreferences',
     component: <WarningContactsPreferencePage />
+  },
+  // register a location
+  {
+    path: '/signup/register-location/search',
+    component: <LocationSearchPage />
+  },
+  {
+    path: '/signup/register-location/search-results',
+    component: <LocationSearchResultsPage />
+  },
+  {
+    path: '/signup/register-location/location-in-severe-warning-area',
+    component: <LocationInSevereWarningAreaPage />
+  },
+  {
+    path: '/signup/register-location/location-in-alert-area',
+    component: <LocationInAlertAreaPage />
+  },
+  {
+    path: '/signup/register-location/no-danger',
+    component: <LocationNotNearDangerPage />
   },
   // mobile phone authentication route
   {

@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
-import CheckboxRadios from '../../../gov-uk-components/CheckBoxRadios'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import Input from '../../../gov-uk-components/Input'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
+import Radio from '../../../gov-uk-components/Radio'
 import TextArea from '../../../gov-uk-components/TextArea'
 import { backendCall } from '../../../services/BackendService'
 
@@ -107,12 +107,10 @@ export default function FeedbackPage () {
                 {error && <p className='govuk-error-message'>{error}</p>}
                 <div className='govuk-radios' data-module='govuk-radios'>
                   {feedbackOptions.map((option) => (
-                    <CheckboxRadios
+                    <Radio
                       key={option.value}
-                      id={option.value}
                       name='feedbackRadios'
                       label={option.label}
-                      type='radio'
                       value={option.value}
                       onChange={setFeedback}
                     />

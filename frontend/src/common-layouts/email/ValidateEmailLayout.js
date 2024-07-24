@@ -119,7 +119,6 @@ export default function ValidateEmailLayout({
       setError(errorMessage)
       return
     }
-    console.log('Updated profile:', updatedProfile)
   }
 
   return (

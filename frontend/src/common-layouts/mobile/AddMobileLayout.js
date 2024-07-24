@@ -51,7 +51,7 @@ export default function AddMobileLayout({
             )
           )
         )
-        dispatch(setCurrentContact(normalisePhoneNumber))
+        dispatch(setCurrentContact(normalisedPhoneNumber))
         NavigateToNextPage()
       }
     }

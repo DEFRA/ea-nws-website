@@ -51,7 +51,7 @@ export default function AddLandlineLayout({
             )
           )
         )
-        dispatch(setCurrentContact(normalisePhoneNumber))
+        dispatch(setCurrentContact(normalisedPhoneNumber))
         NavigateToNextPage()
       }
     }

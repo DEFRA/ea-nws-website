@@ -13,8 +13,10 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { postCode } = request.payload
-        const response = await osFindNameApiCall(postCode)
+        const { name } = request.payload
+
+        console.log('name', name)
+        const response = await osFindNameApiCall(name)
         return h.response(response)
       } catch {
         return createGenericErrorResponse(h)

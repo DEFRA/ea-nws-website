@@ -37,13 +37,19 @@ const osPostCodeApiCall = async (postCode) => {
   }
 }
 
-const osFindNameApiCall = async (keyword) => {
+const osFindNameApiCall = async (name) => {
   let responseData
   const osApiKey = await getSecretKeyValue('nws/website/osApiKey', 'osApiKey')
-  const url = `https://api.os.uk/search/names/v1/find?query=${keyword}&key=${osApiKey}output_srs=EPSG:4326`
+  const url = `https://api.os.uk/search/names/v1/find?query=${name}&key=${osApiKey}`
+
+  console.log('url', url)
 
   try {
     const response = await axios.get(url)
+
+    console.log('response', response)
+
+    //check if there are any results - if none, then return error
 
     // Check that location is in England
     if (response.data.results?.[0].DPA.COUNTRY_CODE === 'E') {
@@ -61,7 +67,7 @@ const osFindNameApiCall = async (keyword) => {
     } else {
       return {
         status: 500,
-        errorMessage: 'Enter a location in England'
+        errorMessage: 'Enter a place name, town or keyword in England'
       }
     }
   } catch {

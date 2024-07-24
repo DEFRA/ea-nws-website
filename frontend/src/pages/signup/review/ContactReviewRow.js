@@ -1,7 +1,12 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function ContactReviewRow ({ contact, contactType, isConfirmed, index }) {
+export default function ContactReviewRow ({
+  contact,
+  contactType,
+  isConfirmed,
+  key
+}) {
   const rowDetails = () => {
     let titleRow
     let confirmLink
@@ -18,7 +23,7 @@ export default function ContactReviewRow ({ contact, contactType, isConfirmed, i
       case 'email':
         titleRow = 'By email'
         confirmLink = isConfirmed ? '' : '/signup/review/validate-email'
-        showDelete = index !== 0
+        showDelete = key !== 0
         break
       default:
         break
@@ -28,13 +33,11 @@ export default function ContactReviewRow ({ contact, contactType, isConfirmed, i
 
   return (
     <>
-      <tr key={index} className='govuk-table__row'>
+      <tr key={key} className='govuk-table__row'>
         <td className='govuk-table__header govuk-!-width-one-half'>
           {rowDetails().titleRow}
         </td>
-        <td className='govuk-table__cell'>
-          {contact}
-        </td>
+        <td className='govuk-table__cell'>{contact}</td>
         {isConfirmed
           ? (
             <>
@@ -45,12 +48,12 @@ export default function ContactReviewRow ({ contact, contactType, isConfirmed, i
           : (
             <>
               <td className='govuk-table__cell'>
-                <strong className='govuk-tag govuk-tag--red'>
-                  Unconfirmed
-                </strong>
+                <strong className='govuk-tag govuk-tag--red'>Unconfirmed</strong>
               </td>
               <td className='govuk-table__cell'>
-                <Link to={rowDetails().confirmLink} className='govuk-link'>Confirm</Link>
+                <Link to={rowDetails().confirmLink} className='govuk-link'>
+                  Confirm
+                </Link>
               </td>
             </>
             )}

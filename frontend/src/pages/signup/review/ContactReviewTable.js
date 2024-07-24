@@ -13,10 +13,20 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
           ? (
             <tbody className='govuk-table__body'>
               {profile.emails.map((email, index) => (
-                <ContactReviewRow contact={email} contactType='email' isConfirmed index={index} />
+                <ContactReviewRow
+                  contact={email}
+                  contactType='email'
+                  isConfirmed
+                  key={index}
+                />
               ))}
               {profile.unverified.emails.map((unregisteredEmail, index) => (
-                <ContactReviewRow contact={unregisteredEmail} contactType='email' isConfirmed={false} index={index} />
+                <ContactReviewRow
+                  contact={unregisteredEmail}
+                  contactType='email'
+                  isConfirmed={false}
+                  key={index}
+                />
               ))}
             </tbody>
             )
@@ -33,11 +43,23 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
           ? (
             <tbody className='govuk-table__body'>
               {profile.mobilePhones.map((mobilePhone, index) => (
-                <ContactReviewRow contact={mobilePhone} contactType='mobilePhone' isConfirmed index={index} />
+                <ContactReviewRow
+                  contact={mobilePhone}
+                  contactType='mobilePhone'
+                  isConfirmed
+                  key={index}
+                />
               ))}
-              {profile.unverified.mobilePhones.map((unregisteredMobilePhone, index) => (
-                <ContactReviewRow contact={unregisteredMobilePhone} contactType='mobilePhone' isConfirmed={false} index={index} />
-              ))}
+              {profile.unverified.mobilePhones.map(
+                (unregisteredMobilePhone, index) => (
+                  <ContactReviewRow
+                    contact={unregisteredMobilePhone}
+                    contactType='mobilePhone'
+                    isConfirmed={false}
+                    key={index}
+                  />
+                )
+              )}
             </tbody>
             )
           : null}
@@ -53,11 +75,23 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
           ? (
             <tbody className='govuk-table__body'>
               {profile.homePhones.map((homePhone, index) => (
-                <ContactReviewRow contact={homePhone} contactType='homePhone' isConfirmed index={index} />
+                <ContactReviewRow
+                  contact={homePhone}
+                  contactType='homePhone'
+                  isConfirmed
+                  key={index}
+                />
               ))}
-              {profile.unverified.homePhones.map((unregisteredHomePhone, index) => (
-                <ContactReviewRow contact={unregisteredHomePhone} contactType='homePhone' isConfirmed={false} index={index} />
-              ))}
+              {profile.unverified.homePhones.map(
+                (unregisteredHomePhone, index) => (
+                  <ContactReviewRow
+                    contact={unregisteredHomePhone}
+                    contactType='homePhone'
+                    isConfirmed={false}
+                    key={index}
+                  />
+                )
+              )}
             </tbody>
             )
           : null}
@@ -76,12 +110,25 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
       <table className='govuk-table'>
         <tbody className='govuk-table__body'>
           <EmailAddressesSection />
-          {contactPreferences.includes('Text') ? <MobileNumbersSection /> : null}
-          {contactPreferences.includes('PhoneCall') ? <HomePhonesSection /> : null}
+          {contactPreferences.includes('Text')
+            ? (
+              <MobileNumbersSection />
+              )
+            : null}
+          {contactPreferences.includes('PhoneCall')
+            ? (
+              <HomePhonesSection />
+              )
+            : null}
         </tbody>
       </table>
-      <Button className='govuk-button--secondary' onClick={handleButton} text='Add another email or phone number' />
-      <br /><br />
+      <Button
+        className='govuk-button--secondary'
+        onClick={handleButton}
+        text='Add another email or phone number'
+      />
+      <br />
+      <br />
     </>
   )
 }

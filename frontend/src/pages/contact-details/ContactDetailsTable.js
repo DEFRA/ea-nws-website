@@ -28,15 +28,15 @@ export default function ContactDetailsTable ({
     }
   }
 
-  const handleLinkClick = (contactID) => {
-    dispatch(setCurrentContact(unregisteredContact[contactID]))
+  const handleContactSelection = (contact) => {
+    dispatch(setCurrentContact(contact))
   }
 
-  const UnconfirmedLink = ({contactID}) => {
+  const UnconfirmedLink = ({contact}) => {
     if (contactType === 'email address') {
       return (
         <>
-          <Link to='/managecontacts/validate-email' className='govuk-link' onClick={() => handleLinkClick(contactID)}>
+          <Link to='/managecontacts/validate-email' className='govuk-link' onClick={() => handleContactSelection(contact)}>
             Confirm
           </Link>
         </>
@@ -44,7 +44,7 @@ export default function ContactDetailsTable ({
     } else if (contactType === 'mobile telephone number') {
       return (
         <>
-          <Link to='/managecontacts/validate-mobile' className='govuk-link' onClick={() => handleLinkClick(contactID)}>
+          <Link to='/managecontacts/validate-mobile' className='govuk-link' onClick={() => handleContactSelection(contact)}>
             Confirm
           </Link>
         </>
@@ -52,7 +52,7 @@ export default function ContactDetailsTable ({
     }
     return (
       <>
-        <Link to='/managecontacts/validate-landline' className='govuk-link' onClick={() => handleLinkClick(contactID)}>
+        <Link to='/managecontacts/validate-landline' className='govuk-link' onClick={() => handleContactSelection(contact)}>
           Confirm
         </Link>
       </>
@@ -119,7 +119,7 @@ export default function ContactDetailsTable ({
                     </strong>
                   </td>
                   <td className='govuk-table__cell'>
-                    <UnconfirmedLink contactID={index}/>
+                    <UnconfirmedLink contact={unregisteredContact}/>
                   </td>
                   <td className='govuk-table__cell'>
                     <Link

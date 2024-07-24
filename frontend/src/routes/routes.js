@@ -44,7 +44,7 @@ import LocationSearchResultsPage from '../pages/signup/register-location/Locatio
 import SignUpSuccessPage from '../pages/signup/success/SignUpSuccessPage'
 import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
-import manageLocationRoutes from './manage-locations/MangeLocationsRoutes'
+import manageLocationRoutes from './manage-locations/ManageLocationsRoutes'
 
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]

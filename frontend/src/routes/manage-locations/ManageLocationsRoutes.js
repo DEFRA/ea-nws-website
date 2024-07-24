@@ -6,7 +6,7 @@ import LocationSearchResultsPage from '../../pages/manage-locations/add-location
 
 // manage location routes
 const manageLocationRoutes = [
-  //add a location
+  // add a location
   {
     path: '/manage-locations/add/search',
     component: <LocationSearchPage />

@@ -60,7 +60,7 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
   const detailsMessage = (
     <div>
       You can view flood message areas&nbsp;
-      <a href="#" className="govuk-link">
+      <a href='#' className='govuk-link'>
         near this postcode
       </a>
     </div>
@@ -68,47 +68,47 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
 
   return (
     <>
-      <div className="page-container">
+      <div className='page-container'>
         <Header />
-        <div className="govuk-width-container body-container">
+        <div className='govuk-width-container body-container'>
           <PhaseBanner />
-          <div className="govuk-body">
-            <div className="govuk-grid-row">
+          <div className='govuk-body'>
+            <div className='govuk-grid-row'>
               {loading ? (
                 <LoadingSpinner />
               ) : (
-                <div className="govuk-grid-column-two-thirds">
-                  <div className="govuk-body">
+                <div className='govuk-grid-column-two-thirds'>
+                  <div className='govuk-body'>
                     <Link
                       onClick={() => navigate(-1)}
-                      className="govuk-back-link"
+                      className='govuk-back-link'
                     >
                       Back
                     </Link>
                     {error && <ErrorSummary errorList={[error]} />}
-                    <h1 className="govuk-heading-l govuk-!-margin-top-6">
+                    <h1 className='govuk-heading-l govuk-!-margin-top-6'>
                       Select an address
                     </h1>
-                    <p className="govuk-body">
+                    <p className='govuk-body'>
                       Postcode: {locationPostCode}
                       {'   '}
                       <Link
                         onClick={() => navigate(-1)}
-                        className="govuk-link govuk-!-padding-left-5"
+                        className='govuk-link govuk-!-padding-left-5'
                       >
                         Change postcode
                       </Link>
                     </p>
-                    <table className="govuk-table">
-                      <tbody className="govuk-table__body">
-                        <tr className="govuk-table__row">
-                          <td className="govuk-table__cell" />
+                    <table className='govuk-table'>
+                      <tbody className='govuk-table__body'>
+                        <tr className='govuk-table__row'>
+                          <td className='govuk-table__cell' />
                         </tr>
                         {displayedLocations.map((location, index) => (
-                          <tr key={index} className="govuk-table__row">
-                            <td className="govuk-table__cell">
+                          <tr key={index} className='govuk-table__row'>
+                            <td className='govuk-table__cell'>
                               <Link
-                                className="govuk-link"
+                                className='govuk-link'
                                 onClick={(event) =>
                                   handleSelectedLocation(event, location)
                                 }
@@ -121,7 +121,7 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
                       </tbody>
                     </table>
                     <Details
-                      title="I cannot find my address here"
+                      title='I cannot find my address here'
                       text={detailsMessage}
                     />
                     <Pagination

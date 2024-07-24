@@ -16,11 +16,14 @@ export default function AddLandlineValidatePage () {
     navigate('/managecontacts/add-landline')
   }
 
+  
+
   return (
     <ValidateLandlineLayout
       NavigateToNextPage={NavigateToNextPage}
       SkipValidation={SkipValidation}
       DifferentHomePhone={DifferentHomephone}
+      ChooseLandLine={DifferentHomephone}
     />
   )
 }

@@ -169,6 +169,26 @@ export default function HomePage() {
         <Header />
         <div className='govuk-width-container body-container'>
           <PhaseBanner />
+          <br></br>
+          {location.state !== null &&
+          !location.state.removedAddressFail &&
+          location.state.removedAddress ? (
+            <NotificationBanner
+              className='govuk-notification-banner govuk-notification-banner--success'
+              title='Success'
+              heading='Location removed'
+              text={location.state.removedAddress}
+            />
+          ) : null}
+          {location.state !== null && location.state.removedAddressFail ? (
+            <ErrorSummary
+              errorList={[
+                'An error occured trying to remove a location.  ' +
+                  location.state.removedAddress +
+                  ' has not been removed.'
+              ]}
+            />
+          ) : null}
           <AccountNavigation currentPage={useLocation().pathname} />
           <main className='govuk-main-wrapper'>
             <div class='govuk-grid-row'>

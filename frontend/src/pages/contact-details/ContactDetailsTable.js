@@ -14,8 +14,6 @@ export default function ContactDetailsTable ({
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  console.log(unregisteredContact)
-
   const handleButton = () => {
     switch (contactType) {
       case 'email address':

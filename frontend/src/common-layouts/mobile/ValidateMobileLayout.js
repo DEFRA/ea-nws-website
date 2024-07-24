@@ -28,17 +28,8 @@ export default function ValidateMobileLayout({
 
   const session = useSelector((state) => state.session)
 
-  const mobile = useSelector((state) => state.currentContact)
-
-  // const indexLastUnverifiedMobile =
-  //   session.profile.unverified.mobilePhones.length - 1
-  // const indexLastMobile = session.profile.mobilePhones.length - 1
-
-  // const mobile = session.profile.unverified.mobilePhones[
-  //   indexLastUnverifiedMobile
-  // ]
-  //   ? session.profile.unverified.mobilePhones[indexLastUnverifiedMobile]
-  //   : session.profile.mobilePhones[indexLastMobile]
+  const mobile = session.currentContact
+  console.log(mobile)
 
   const authToken = useSelector((state) => state.session.authToken)
 

@@ -41,9 +41,10 @@ import LocationInSevereWarningAreaPage from '../pages/signup/register-location/L
 import LocationNotNearDangerPage from '../pages/signup/register-location/LocationNotNearDangerPage'
 import LocationSearchPage from '../pages/signup/register-location/LocationSearchPage'
 import LocationSearchResultsPage from '../pages/signup/register-location/LocationSearchResultsPage'
+import SignUpSuccessPage from '../pages/signup/success/SignUpSuccessPage'
 import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
 import StartPage from '../pages/start/StartPage'
-import SignUpSuccessPage from '../pages/signup/success/SignUpSuccessPage'
+import manageLocationRoutes from './manage-locations/MangeLocationsRoutes'
 
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
@@ -66,6 +67,7 @@ const signOutRoutes = [
 const signBackInRoutes = [
   { path: '/sign-back-in', component: <SignBackInPage /> }
 ]
+
 // sign up routes
 const signupRoutes = [
   { path: '/signup', component: <SignUpPage /> },
@@ -161,10 +163,17 @@ const homeRoutes = [{ path: '/home', component: <HomePage /> }]
 // account
 const accountRoutes = [
   { path: '/account', component: <AccountPage /> },
-  { path: '/account/change-business-details', component: <ChangeBusinessDetailsPage /> },
+  {
+    path: '/account/change-business-details',
+    component: <ChangeBusinessDetailsPage />
+  },
   { path: '/account/change-email', component: <ChangeEmailPage /> },
-  { path: '/account/change-email/validate', component: <ChangeEmailValidationPage /> },
-  { path: '/account/change-name', component: <ChangeNamePage /> }]
+  {
+    path: '/account/change-email/validate',
+    component: <ChangeEmailValidationPage />
+  },
+  { path: '/account/change-name', component: <ChangeNamePage /> }
+]
 
 // contact routes
 const contactRoutes = [
@@ -204,5 +213,6 @@ export const authenticatedRoutes = [
   ...homeRoutes,
   ...contactRoutes,
   ...signOutRoutes,
-  ...accountRoutes
+  ...accountRoutes,
+  ...manageLocationRoutes
 ]

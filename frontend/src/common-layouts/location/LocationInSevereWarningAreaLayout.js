@@ -12,7 +12,7 @@ import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { setProfile } from '../../redux/userSlice'
 import { addLocation } from '../../services/ProfileServices'
 
-export default function LocationInSevereWarningAreaLayout ({
+export default function LocationInSevereWarningAreaLayout({
   continueToNextPage
 }) {
   const navigate = useNavigate()
@@ -25,45 +25,46 @@ export default function LocationInSevereWarningAreaLayout ({
   const handleSubmit = () => {
     // geosafe doesnt accept locations with postcodes - need to remove this from the object
     // eslint-disable-next-line no-use-before-define
-    const { postcode, ...locationWithoutPostcode } = locationWithoutPostcode
+    const { postcode, ...locationWithoutPostcode } = selectedLocation
+    console.log('location', locationWithoutPostcode)
     dispatch(setProfile(addLocation(profile, locationWithoutPostcode)))
     continueToNextPage()
   }
 
   return (
     <>
-      <div className='page-container'>
+      <div className="page-container">
         <Header />
-        <div className='govuk-width-container body-container'>
+        <div className="govuk-width-container body-container">
           <PhaseBanner />
-          <div className='govuk-body'>
-            <div className='govuk-grid-row'>
-              <div className='govuk-grid-column-two-thirds'>
-                <Link onClick={() => navigate(-1)} className='govuk-back-link'>
+          <div className="govuk-body">
+            <div className="govuk-grid-row">
+              <div className="govuk-grid-column-two-thirds">
+                <Link onClick={() => navigate(-1)} className="govuk-back-link">
                   Back
                 </Link>
-                <h1 className='govuk-heading-l govuk-!-margin-top-6'>
+                <h1 className="govuk-heading-l govuk-!-margin-top-6">
                   You can get severe flood warnings and flood warnings for this
                   location
                 </h1>
                 <InsetText text={selectedLocation.name} />
               </div>
-              <div className='govuk-grid-column-three-quarters'>
+              <div className="govuk-grid-column-three-quarters">
                 <Map types={['warning']} />
-                <FloodWarningKey type='severe' />
+                <FloodWarningKey type="severe" />
               </div>
 
-              <div className='govuk-grid-column-two-thirds'>
-                <p className='govuk-!-margin-top-6'>
+              <div className="govuk-grid-column-two-thirds">
+                <p className="govuk-!-margin-top-6">
                   These warnings tell you when flooding:
                 </p>
-                <ul className='govuk-list govuk-list--bullet'>
+                <ul className="govuk-list govuk-list--bullet">
                   <li>is expected</li>
                   <li>could be a danger to life or property</li>
                 </ul>
                 <p>You'll need to act immediately.</p>
                 <p>The following may be affected:</p>
-                <ul className='govuk-list govuk-list--bullet'>
+                <ul className="govuk-list govuk-list--bullet">
                   <li>life and communities</li>
                   <li>homes and business</li>
                   <li>roads, railway lines and infrastructure</li>
@@ -80,14 +81,14 @@ export default function LocationInSevereWarningAreaLayout ({
                   risk.
                 </p>
                 <Button
-                  text='Confirm you want this location'
-                  className='govuk-button'
+                  text="Confirm you want this location"
+                  className="govuk-button"
                   onClick={handleSubmit}
                 />
                 &nbsp; &nbsp;
                 <Link
                   onClick={() => navigate(-1)}
-                  className='govuk-link'
+                  className="govuk-link"
                   style={{
                     display: 'inline-block',
                     padding: '8px 10px 7px'

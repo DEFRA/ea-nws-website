@@ -37,7 +37,7 @@ export default function ContactDetailsTable ({
     if (contactType === 'email address') {
       return (
         <>
-          <Link to='/managecontacts/validate-email' className='govuk-link'>
+          <Link to='/managecontacts/validate-email' className='govuk-link' onClick={() => handleLinkClick(contactID)}>
             Confirm
           </Link>
         </>
@@ -53,7 +53,7 @@ export default function ContactDetailsTable ({
     }
     return (
       <>
-        <Link to='/managecontacts/validate-landline' className='govuk-link'>
+        <Link to='/managecontacts/validate-landline' className='govuk-link' onClick={() => handleLinkClick(contactID)}>
           Confirm
         </Link>
       </>

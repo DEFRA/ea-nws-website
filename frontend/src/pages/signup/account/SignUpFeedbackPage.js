@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
@@ -76,9 +76,6 @@ export default function FeedbackPage() {
         <Header />
         <div className='govuk-width-container body-container'>
           <PhaseBanner />
-          <Link onClick={() => navigate(-1)} className='govuk-back-link'>
-            Back
-          </Link>
           {(error || textError) && (
             <ErrorSummary errorList={[error, textError]} />
           )}

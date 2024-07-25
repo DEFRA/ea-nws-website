@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
 import Checkbox from '../../../gov-uk-components/CheckBox'
@@ -6,15 +7,51 @@ import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
+import { setRegistrations } from '../../../redux/userSlice'
 
 export default function DeclarationOfAgreementPage() {
   const [isChecked, setIsChecked] = useState(false)
   const [error, setError] = useState('')
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const handleSubmit = () => {
     if (isChecked === false) {
       setError('Tick to confirm you agree with the terms and conditions')
     } else {
+      const registrations = {
+        partner: {
+          id: '4',
+          name: 'NWS England',
+          description: 'We work to create better places for people and...',
+          longName: 'Environment Agency - England',
+          logoUrl: 'logo.png',
+          backgroundUrl: 'http://assets.gov.uk',
+          urlSlug: 'england'
+        },
+        registrationDate: '1683741990',
+        params: {
+          channelVoiceEnabled: true,
+          channelSmsEnabled: true,
+          channelEmailEnabled: true,
+          partnerCanView: false,
+          partnerCanEdit: false,
+          categories: [
+            {
+              domain: 'NFWS',
+              code: 'FLOOD_ALERT'
+            },
+            {
+              domain: 'NFWS',
+              code: 'FLOOD_WARNING'
+            },
+            {
+              domain: 'NFWS',
+              code: 'SEVERE_FLOOD_WARNING'
+            }
+          ]
+        }
+      }
+      dispatch(setRegistrations(registrations))
       navigate('/signup/review')
     }
   }

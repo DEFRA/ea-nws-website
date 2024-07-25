@@ -10,7 +10,11 @@ import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-export default function LocationInAlertAreaLayout ({ continueToNextPage }) {
+export default function LocationInAlertAreaLayout({
+  continueToNextPage,
+  canCancel,
+  navigateToPreviousPage
+}) {
   const navigate = useNavigate()
   const [isChecked, setIsChecked] = useState(false)
   const selectedLocation = useSelector(
@@ -23,6 +27,11 @@ export default function LocationInAlertAreaLayout ({ continueToNextPage }) {
   const handleSubmit = () => {
     // we need to add this to the profile
     continueToNextPage()
+  }
+
+  const handleCancel = (event) => {
+    event.preventDefault()
+    navigateToPreviousPage()
   }
 
   return (
@@ -42,7 +51,13 @@ export default function LocationInAlertAreaLayout ({ continueToNextPage }) {
                     ? 'You can also get flood alerts (optional)'
                     : 'You can get flood alerts for this location'}
                 </h1>
-                <InsetText text={selectedLocation.name} />
+                <InsetText
+                  text={
+                    selectedLocation.name
+                      ? selectedLocation.name
+                      : selectedLocation.address
+                  }
+                />
               </div>
               <div className='govuk-grid-column-three-quarters'>
                 <Map types={['alert']} />
@@ -65,15 +80,16 @@ export default function LocationInAlertAreaLayout ({ continueToNextPage }) {
                   <li>2 to 12 hours before flooding</li>
                   <li>during waking hours when possible</li>
                 </ul>
-                {additionalAlerts && (
-                  <>
-                    <CheckBox
-                      onChange={() => setIsChecked(!isChecked)}
-                      checked={isChecked}
-                      label='Yes, I want these'
-                    />
-                  </>
-                )}
+                {additionalAlerts ||
+                  (canCancel && (
+                    <>
+                      <CheckBox
+                        onChange={() => setIsChecked(!isChecked)}
+                        checked={isChecked}
+                        label='Yes, I want these'
+                      />
+                    </>
+                  ))}
                 <Button
                   text={
                     additionalAlerts
@@ -83,6 +99,11 @@ export default function LocationInAlertAreaLayout ({ continueToNextPage }) {
                   className='govuk-button govuk-!-margin-top-5'
                   onClick={handleSubmit}
                 />
+                {canCancel ? (
+                  <Link className='govuk-link' onClick={handleCancel}>
+                    Cancel
+                  </Link>
+                ) : null}
               </div>
             </div>
           </div>

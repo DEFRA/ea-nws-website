@@ -1,5 +1,6 @@
 import AddFullNamePage from '../../pages/sign-up/account-name/AddFullNamePage'
 import SignUpDuplicateEmailPage from '../../pages/sign-up/account/SignUpDuplicateEmail'
+import SignUpFeedbackConfirmationPage from '../../pages/sign-up/account/SignUpFeedbackConfirmationPage'
 import SignUpFeedbackPage from '../../pages/sign-up/account/SignUpFeedbackPage'
 import SignUpPage from '../../pages/sign-up/account/SignUpPage'
 import SignUpValidationPage from '../../pages/sign-up/account/SignUpValidationPage'
@@ -96,6 +97,10 @@ const signupRoutes = [
   {
     path: '/signup/feedback',
     component: <SignUpFeedbackPage />
+  },
+  {
+    path: '/signup/feedback/confirmation',
+    component: <SignUpFeedbackConfirmationPage />
   },
   {
     path: '/declaration',

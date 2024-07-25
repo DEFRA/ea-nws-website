@@ -7,7 +7,13 @@ const userSlice = createSlice({
     registerToken: null,
     profile: null,
     contactPreferences: null,
-    registrations: null
+    registrations: null,
+    locationPostCode: null,
+    locationSearchResults: null,
+    selectedLocation: null,
+    selectedFloodArea: null,
+    showOnlySelectedFloodArea: null,
+    additionalAlerts: null
   },
   reducers: {
     setAuthToken: (state, action) => {
@@ -26,6 +32,9 @@ const userSlice = createSlice({
       state.registrations = action.payload
     },
     // location data
+    setLocationPostCode: (state, action) => {
+      state.locationPostCode = action.payload
+    },
     setLocationSearchResults: (state, action) => {
       state.locationSearchResults = action.payload
     },
@@ -48,6 +57,7 @@ const userSlice = createSlice({
       state.contactPreferences = null
       state.registrations = null
       // location data
+      state.locationPostCode = null
       state.locationSearchResults = null
       state.selectedLocation = null
       state.selectedFloodArea = null
@@ -68,6 +78,7 @@ export const {
   setSelectedFloodArea,
   setShowOnlySelectedFloodArea,
   setAdditionalAlerts,
+  setLocationPostCode,
   clearAuth
 } = userSlice.actions
 

@@ -10,7 +10,10 @@ import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-export default function LocationInAlertAreaLayout ({ continueToNextPage }) {
+export default function LocationInAlertAreaLayout({
+  continueToNextPage,
+  continueToSearchResultsPage
+}) {
   const navigate = useNavigate()
   const [isChecked, setIsChecked] = useState(false)
   const selectedLocation = useSelector(
@@ -19,6 +22,8 @@ export default function LocationInAlertAreaLayout ({ continueToNextPage }) {
   const additionalAlerts = useSelector(
     (state) => state.session.additionalAlerts
   )
+
+  console.log('additional alerts', additionalAlerts)
 
   const handleSubmit = () => {
     // we need to add this to the profile
@@ -83,6 +88,16 @@ export default function LocationInAlertAreaLayout ({ continueToNextPage }) {
                   className='govuk-button govuk-!-margin-top-5'
                   onClick={handleSubmit}
                 />
+                {additionalAlerts && (
+                  <Link
+                    onClick={(e) => {
+                      e.preventDefault()
+                      continueToSearchResultsPage()
+                    }}
+                  >
+                    Choose different location
+                  </Link>
+                )}
               </div>
             </div>
           </div>

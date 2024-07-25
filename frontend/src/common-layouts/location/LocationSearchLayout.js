@@ -49,7 +49,7 @@ export default function LocationSearchLayout({ continueToNextPage }) {
               navigate
             )
             if (!errorMessage) {
-              //dispatch(setLocationPostCode(data[0].postcode))
+              dispatch(setLocationPostCode(data[0].postcode))
               dispatch(setLocationSearchResults(data))
               continueToNextPage()
             } else {
@@ -76,13 +76,13 @@ export default function LocationSearchLayout({ continueToNextPage }) {
 
   return (
     <>
-      <div className="page-container">
+      <div className='page-container'>
         <Header />
-        <div className="govuk-width-container body-container">
+        <div className='govuk-width-container body-container'>
           <PhaseBanner />
-          <div className="govuk-grid-row">
-            <div className="govuk-grid-column-two-thirds">
-              <Link onClick={() => navigate(-1)} className="govuk-back-link">
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-two-thirds'>
+              <Link onClick={() => navigate(-1)} className='govuk-back-link'>
                 Back
               </Link>
               {(error || postCodeError || placeNameError) && (
@@ -90,7 +90,7 @@ export default function LocationSearchLayout({ continueToNextPage }) {
                   errorList={[error, postCodeError, placeNameError]}
                 />
               )}
-              <h1 className="govuk-heading-l govuk-!-margin-top-6">
+              <h1 className='govuk-heading-l govuk-!-margin-top-6'>
                 Check if you can get flood messages for your location
               </h1>
               <div
@@ -100,36 +100,36 @@ export default function LocationSearchLayout({ continueToNextPage }) {
                     : 'govuk-form-group'
                 }
               >
-                <fieldset className="govuk-fieldset">
-                  <legend className="govuk-fieldset__legend">
+                <fieldset className='govuk-fieldset'>
+                  <legend className='govuk-fieldset__legend'>
                     Select how you want to search
                   </legend>
-                  {error && <p className="govuk-error-message">{error}</p>}
+                  {error && <p className='govuk-error-message'>{error}</p>}
                   <Radio
-                    label="Address with postcode"
-                    value="AddressPostCode"
-                    name="searchOptionsRadios"
+                    label='Address with postcode'
+                    value='AddressPostCode'
+                    name='searchOptionsRadios'
                     onChange={(e) => setSearchOption(e.target.value)}
                     conditional={searchOption === 'AddressPostCode'}
-                    conditionalQuestion="Postcode in England"
+                    conditionalQuestion='Postcode in England'
                     conditionalInput={(val) => setPostCode(val)}
                     conditionalError={postCodeError}
                   />
                   <Radio
-                    label="Place name, town or keyword"
-                    value="PlaceNameTownOrKeyword"
-                    name="searchOptionsRadios"
+                    label='Place name, town or keyword'
+                    value='PlaceNameTownOrKeyword'
+                    name='searchOptionsRadios'
                     onChange={(e) => setSearchOption(e.target.value)}
                     conditional={searchOption === 'PlaceNameTownOrKeyword'}
-                    conditionalQuestion="Enter a place name, town or keyword"
+                    conditionalQuestion='Enter a place name, town or keyword'
                     conditionalInput={(val) => setPlaceName(val)}
                     conditionalError={placeNameError}
                   />
                 </fieldset>
               </div>
               <Button
-                text="Continue"
-                className="govuk-button"
+                text='Continue'
+                className='govuk-button'
                 onClick={handleSubmit}
               />
             </div>

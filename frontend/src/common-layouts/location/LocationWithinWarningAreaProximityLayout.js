@@ -12,6 +12,7 @@ import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import Radio from '../../gov-uk-components/Radio'
 import {
+  setAdditionalAlerts,
   setSelectedFloodArea,
   setShowOnlySelectedFloodArea
 } from '../../redux/userSlice'
@@ -44,6 +45,9 @@ export default function LocationWithinWarningAreaProximityLayout({
     if (selectedFloodArea) {
       //only show the selected flood area on the map
       dispatch(setShowOnlySelectedFloodArea(true))
+      //user only has option to select one flood area at a time
+
+      dispatch(setAdditionalAlerts(false))
       continueToSelectedFloodWarningsPage(type)
     } else {
       setError('Select a nearby area')
@@ -56,18 +60,18 @@ export default function LocationWithinWarningAreaProximityLayout({
 
   return (
     <>
-      <div className="page-container">
+      <div className='page-container'>
         <Header />
-        <div className="govuk-width-container body-container">
+        <div className='govuk-width-container body-container'>
           <PhaseBanner />
-          <div className="govuk-body">
-            <div className="govuk-grid-row">
-              <div className="govuk-grid-column-two-thirds">
-                <Link onClick={() => navigate(-1)} className="govuk-back-link">
+          <div className='govuk-body'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-two-thirds'>
+                <Link onClick={() => navigate(-1)} className='govuk-back-link'>
                   Back
                 </Link>
                 {error && <ErrorSummary errorList={[error]} />}
-                <h1 className="govuk-heading-l govuk-!-margin-top-6">
+                <h1 className='govuk-heading-l govuk-!-margin-top-6'>
                   You can get flood messages near this location
                 </h1>
                 <InsetText text={selectedLocation.name} />
@@ -81,8 +85,8 @@ export default function LocationWithinWarningAreaProximityLayout({
                 </p>
               </div>
             </div>
-            <div class="govuk-grid-row">
-              <div class="govuk-grid-column-one-third">
+            <div class='govuk-grid-row'>
+              <div class='govuk-grid-column-one-third'>
                 <div
                   className={
                     error
@@ -90,9 +94,9 @@ export default function LocationWithinWarningAreaProximityLayout({
                       : 'govuk-form-group'
                   }
                 >
-                  <fieldset className="govuk-fieldset">
-                    <h3 class="govuk-heading-s">Select a nearby area</h3>
-                    {error && <p className="govuk-error-message">{error}</p>}
+                  <fieldset className='govuk-fieldset'>
+                    <h3 class='govuk-heading-s'>Select a nearby area</h3>
+                    {error && <p className='govuk-error-message'>{error}</p>}
                     {floodAreas ? (
                       floodAreas.map((area, index) => (
                         <Radio
@@ -131,7 +135,7 @@ export default function LocationWithinWarningAreaProximityLayout({
                   Choose different location
                 </Link>
               </div>
-              <div class="govuk-grid-column-two-thirds">
+              <div class='govuk-grid-column-two-thirds'>
                 <Map
                   types={[type]}
                   setFloodAreas={(areas) => setFloodAreas(areas)}

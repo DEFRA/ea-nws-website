@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import LocationInSevereWarningAreaLayout from '../../../common-layouts/location/LocationInSevereWarningAreaLayout'
 
-export default function LocationInSevereWarningAreaPage () {
+export default function LocationInSevereWarningAreaPage() {
   const navigate = useNavigate()
   const additionalAlerts = useSelector(
     (state) => state.session.additionalAlerts
@@ -19,10 +19,15 @@ export default function LocationInSevereWarningAreaPage () {
     }
   }
 
+  const continueToSearchResultsPage = () => {
+    navigate('/signup/register-location/search-results')
+  }
+
   return (
     <>
       <LocationInSevereWarningAreaLayout
         continueToNextPage={continueToNextPage}
+        continueToSearchResultsPage={continueToSearchResultsPage}
       />
     </>
   )

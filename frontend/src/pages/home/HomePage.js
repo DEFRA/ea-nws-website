@@ -7,10 +7,13 @@ import Button from '../../gov-uk-components/Button'
 import Details from '../../gov-uk-components/Details'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
+import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 import Pagination from '../../gov-uk-components/Pagination'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
 export default function HomePage () {
+  const location = useLocation()
+  const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
   const locationsPerPage = 10
 
@@ -22,16 +25,11 @@ export default function HomePage () {
     currentPage * locationsPerPage
   )
 
-  const navigate = useNavigate()
-  const handleButton = () => {
-    navigate('/managelocations/add')
-  }
-
   const detailsMessage = (
     <div>
       <p>You must keep at least one location on your account.</p>
       <p>
-        <Link to='/managelocations/add' className='govuk-link'>
+        <Link to='/managelocations/add/search' className='govuk-link'>
           Add a new location
         </Link>
         &nbsp;before removing any you do not need.
@@ -132,6 +130,14 @@ export default function HomePage () {
           <main className='govuk-main-wrapper'>
             <div class='govuk-grid-row'>
               <div class='govuk-grid-column-full'>
+                {location.state && location.state.locationName && (
+                  <NotificationBanner
+                    className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-5 govuk-!-margin-top-4'
+                    title='Success'
+                    heading='New location added'
+                    text={location.state.locationName}
+                  />
+                )}
                 <h1 className='govuk-heading-l'>Home</h1>
                 <div className='govuk-body'>
                   {locations.length > 0 && locationTable()}
@@ -142,7 +148,7 @@ export default function HomePage () {
                   <Button
                     text='Add new location'
                     className='govuk-button govuk-button--secondary'
-                    onClick={handleButton}
+                    onClick={() => navigate('/manage-locations/add/search')}
                   />
                   {locations.length === 1 && (
                     <Details

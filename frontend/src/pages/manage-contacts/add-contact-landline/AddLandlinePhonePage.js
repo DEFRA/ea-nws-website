@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router'
 import AddLandlineLayout from '../../../common-layouts/landline/AddLandlineLayout'
 
-export default function AddLandlinePage () {
+export default function AddLandlinePhonePage () {
   const navigate = useNavigate()
   const NavigateToNextPage = () => {
     navigate('/managecontacts/validate-landline')
@@ -12,6 +12,9 @@ export default function AddLandlinePage () {
   }
 
   return (
-    <AddLandlineLayout NavigateToNextPage={NavigateToNextPage} NavigateToPreviousPage={NavigateToPreviousPage} />
+    <AddLandlineLayout
+      NavigateToNextPage={NavigateToNextPage}
+      NavigateToPreviousPage={NavigateToPreviousPage}
+    />
   )
 }

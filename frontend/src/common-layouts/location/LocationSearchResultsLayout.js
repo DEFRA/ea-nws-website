@@ -12,7 +12,7 @@ import { setSelectedLocation } from '../../redux/userSlice'
 import { getFloodTargetArea } from '../../services/GetFloodTargetAreas'
 import { checkIfSelectedLocationExistsAlready } from '../../services/ProfileServices'
 
-export default function LocationSearchResultsLayout({ continueToNextPage }) {
+export default function LocationSearchResultsLayout ({ continueToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [error, setError] = useState('')
@@ -74,65 +74,68 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
           <PhaseBanner />
           <div className='govuk-body'>
             <div className='govuk-grid-row'>
-              {loading ? (
-                <LoadingSpinner />
-              ) : (
-                <div className='govuk-grid-column-two-thirds'>
-                  <div className='govuk-body'>
-                    <Link
-                      onClick={() => navigate(-1)}
-                      className='govuk-back-link'
-                    >
-                      Back
-                    </Link>
-                    {error && <ErrorSummary errorList={[error]} />}
-                    <h1 className='govuk-heading-l govuk-!-margin-top-6'>
-                      Select an address
-                    </h1>
-                    <p className='govuk-body'>
-                      Postcode: {locationPostCode}
-                      {'   '}
+              {loading
+                ? (
+                  <LoadingSpinner />
+                  )
+                : (
+                  <div className='govuk-grid-column-two-thirds'>
+                    <div className='govuk-body'>
                       <Link
                         onClick={() => navigate(-1)}
-                        className='govuk-link govuk-!-padding-left-5'
+                        className='govuk-back-link'
                       >
-                        Change postcode
+                        Back
                       </Link>
-                    </p>
-                    <table className='govuk-table'>
-                      <tbody className='govuk-table__body'>
-                        <tr className='govuk-table__row'>
-                          <td className='govuk-table__cell' />
-                        </tr>
-                        {displayedLocations.map((location, index) => (
-                          <tr key={index} className='govuk-table__row'>
-                            <td className='govuk-table__cell'>
-                              <Link
-                                className='govuk-link'
-                                onClick={(event) =>
-                                  handleSelectedLocation(event, location)
-                                }
-                              >
-                                {location.name}
-                              </Link>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
-                    <Details
-                      title='I cannot find my address here'
-                      text={detailsMessage}
-                    />
-                    <Pagination
-                      totalPages={Math.ceil(
-                        locations.length / locationsPerPage
+                      {error && <ErrorSummary errorList={[error]} />}
+                      <h1 className='govuk-heading-l govuk-!-margin-top-6'>
+                        Select an address
+                      </h1>
+                      {locationPostCode && (
+                        <p className='govuk-body'>
+                          Postcode: {locationPostCode}
+                          {'   '}
+                          <Link
+                            onClick={() => navigate(-1)}
+                            className='govuk-link govuk-!-padding-left-5'
+                          >
+                            Change postcode
+                          </Link>
+                        </p>
                       )}
-                      onPageChange={(val) => setCurrentPage(val)}
-                    />
+                      <table className='govuk-table'>
+                        <tbody className='govuk-table__body'>
+                          <tr className='govuk-table__row'>
+                            <td className='govuk-table__cell' />
+                          </tr>
+                          {displayedLocations.map((location, index) => (
+                            <tr key={index} className='govuk-table__row'>
+                              <td className='govuk-table__cell'>
+                                <Link
+                                  className='govuk-link'
+                                  onClick={(event) =>
+                                    handleSelectedLocation(event, location)}
+                                >
+                                  {location.name}
+                                </Link>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                      <Details
+                        title='I cannot find my address here'
+                        text={detailsMessage}
+                      />
+                      <Pagination
+                        totalPages={Math.ceil(
+                          locations.length / locationsPerPage
+                        )}
+                        onPageChange={(val) => setCurrentPage(val)}
+                      />
+                    </div>
                   </div>
-                </div>
-              )}
+                  )}
             </div>
           </div>
         </div>

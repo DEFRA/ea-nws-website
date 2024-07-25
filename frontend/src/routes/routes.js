@@ -49,6 +49,9 @@ import AddLandlineContactPage from '../pages/signup/review/add-contact/add-landl
 import ValidateLandlineContactPage from '../pages/signup/review/add-contact/add-landline-contact/AddContactLandlineValidatePage'
 import AddMobileContactStartPage from '../pages/signup/review/add-contact/add-mobile-contact/AddContactMobileStartPage'
 import ValidateMobileContactPage from '../pages/signup/review/add-contact/add-mobile-contact/AddContactMobileValidatePage'
+import ChangeAccountEmailPage from '../pages/signup/review/change-account/ChangeAccountEmailPage'
+import ChangeAccountEmailValidationPage from '../pages/signup/review/change-account/ChangeAccountEmailValidatePage'
+import ChangeAccountNamePage from '../pages/signup/review/change-account/ChangeAccountNamePage'
 import ChangeLocationInAlertAreaPage from '../pages/signup/review/change-location/ChangeLocationInAlertAreaPage'
 import ChangeLocationInSevereWarningAreaPage from '../pages/signup/review/change-location/ChangeLocationInSevereWarningAreaPage'
 import ChangeLocationNotNearDangerPage from '../pages/signup/review/change-location/ChangeLocationNotNearDangerPage'
@@ -205,6 +208,18 @@ const signupRoutes = [
   {
     path: '/signup/review/no-danger',
     component: <ChangeLocationNotNearDangerPage />
+  },
+  {
+    path: '/signup/review/change-account-name',
+    component: <ChangeAccountNamePage />
+  },
+  {
+    path: '/signup/review/change-account-email',
+    component: <ChangeAccountEmailPage />
+  },
+  {
+    path: '/signup/review/change-email-validate',
+    component: <ChangeAccountEmailValidationPage />
   }
 ]
 

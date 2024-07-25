@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router'
 import AddMobileLayout from '../../../common-layouts/mobile/AddMobileLayout'
 
-export default function AddMobilePage () {
+export default function AddMobilePhonePage () {
   const navigate = useNavigate()
   const NavigateToNextPage = () => {
     navigate('/managecontacts/validate-mobile')
@@ -12,6 +12,9 @@ export default function AddMobilePage () {
   }
 
   return (
-    <AddMobileLayout NavigateToNextPage={NavigateToNextPage} NavigateToPreviousPage={NavigateToPreviousPage} />
+    <AddMobileLayout
+      NavigateToNextPage={NavigateToNextPage}
+      NavigateToPreviousPage={NavigateToPreviousPage}
+    />
   )
 }

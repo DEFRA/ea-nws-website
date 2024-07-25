@@ -1,50 +1,13 @@
 import React from 'react'
 import Index from '../pages/Index'
-import AccountPage from '../pages/account/AccountPage'
-import ChangeBusinessDetailsPage from '../pages/account/ChangeBusinessDetailsPage'
-import ChangeEmailPage from '../pages/account/ChangeEmailPage'
-import ChangeEmailValidationPage from '../pages/account/ChangeEmailValidatePage'
-import ChangeNamePage from '../pages/account/ChangeNamePage'
-import ConfirmDeleteContactDetailsPage from '../pages/contact-details/ConfirmDeleteContactDetailsPage'
-import ContactDetailsPage from '../pages/contact-details/ContactDetailsPage'
-import AddEmailPage from '../pages/contact-details/add-contact-email/AddEmailPage'
-import AddEmailValidatePage from '../pages/contact-details/add-contact-email/AddEmailValidatePage'
-import AddLandlinePage from '../pages/contact-details/add-contact-landline/AddLandlinePage'
-import AddLandlineValidatePage from '../pages/contact-details/add-contact-landline/AddLandlineValidatePage'
-import AddMobilePage from '../pages/contact-details/add-contact-mobile/AddMobilePage'
-import AddMobileValidatePage from '../pages/contact-details/add-contact-mobile/AddMobileValidatePage'
-import AccessibilityStatementPage from '../pages/footer/AccessibilityStatementPage'
-import ContactUsPage from '../pages/footer/ContactUsPage'
-import CookiesPage from '../pages/footer/CookiesPage'
-import PrivacyNoticePage from '../pages/footer/PrivacyNoticePage'
-import TermsAndConditionsPage from '../pages/footer/TermsAndConditionsPage'
-import HomePage from '../pages/home/HomePage'
-import SignOutManuallyPage from '../pages/sign-out/SignOutManuallyPage'
-import SignBackInPage from '../pages/sign-out/signBackInPage'
-import SignOutAutomaticallyPage from '../pages/sign-out/signOutAutomaticallyPage'
-import SignInPage from '../pages/signIn/SignInStartPage'
-import SignInValidatePage from '../pages/signIn/SignInValidatePage'
-import AddFullNamePage from '../pages/signup/account-name/AddFullNamePage'
-import SignUpDuplicateEmailPage from '../pages/signup/account/SignUpDuplicateEmail'
-import SignUpFeedbackConfirmationPage from '../pages/signup/account/SignUpFeedbackConfirmationPage'
-import SignUpFeedbackPage from '../pages/signup/account/SignUpFeedbackPage'
-import SignUpPage from '../pages/signup/account/SignUpPage'
-import SignUpValidationPage from '../pages/signup/account/SignUpValidationPage'
-import WarningContactsPreferencePage from '../pages/signup/channel-preferences/WarningContactsPreferencePage'
-import AddLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/AddLandlinePhonePage'
-import SkipConfirmLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/SkipConfirmLandlinePhonePage'
-import ValidateLandlinePhonePage from '../pages/signup/channel-preferences/landline-telephone-authentication/ValidateLandlinePhonePage'
-import AddMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/AddMobilePhonePage'
-import SkipConfirmMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/SkipConfirmMobilePhonePage'
-import ValidateMobilePhonePage from '../pages/signup/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
-import LocationInAlertAreaPage from '../pages/signup/register-location/LocationInAlertAreaPage'
-import LocationInSevereWarningAreaPage from '../pages/signup/register-location/LocationInSevereWarningAreaPage'
-import LocationNotNearDangerPage from '../pages/signup/register-location/LocationNotNearDangerPage'
-import LocationSearchPage from '../pages/signup/register-location/LocationSearchPage'
-import LocationSearchResultsPage from '../pages/signup/register-location/LocationSearchResultsPage'
-import SignUpSuccessPage from '../pages/signup/success/SignUpSuccessPage'
-import DeclarationOfAgreementPage from '../pages/signup/user-agreement/DeclarationOfAgreementPage'
-import StartPage from '../pages/start/StartPage'
+import accountRoutes from './account/AccountRoutes'
+import footerRoutes from './footer/FooterRoutes'
+import homeRoutes from './home/HomeRoutes'
+import manageContactRoutes from './manage-contacts/manageContactRoutes'
+import signinRoutes from './sign-in/SignInRoutes'
+import signOutRoutes from './sign-out/SignOutRoutes'
+import signupRoutes from './sign-up/SignUpRoutes'
+import startRoutes from './start/StartRoutes'
 
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
@@ -131,10 +94,6 @@ const signupRoutes = [
     component: <SignUpFeedbackPage />
   },
   {
-    path: '/signup/feedback/confirmation',
-    component: <SignUpFeedbackConfirmationPage />
-  },
-  {
     path: '/declaration',
     component: <DeclarationOfAgreementPage />
   },
@@ -208,13 +167,12 @@ export const routes = [
   ...signupRoutes,
   ...signinRoutes,
   ...signupRoutes,
-  ...signBackInRoutes,
   ...footerRoutes
 ]
 
 export const authenticatedRoutes = [
   ...homeRoutes,
-  ...contactRoutes,
+  ...manageContactRoutes,
   ...signOutRoutes,
   ...accountRoutes
 ]

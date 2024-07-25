@@ -17,7 +17,7 @@ import LocationSearchPage from '../../pages/sign-up/register-location/LocationSe
 import LocationSearchResultsPage from '../../pages/sign-up/register-location/LocationSearchResultsPage'
 import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
 import DeclarationOfAgreementPage from '../../pages/sign-up/user-agreement/DeclarationOfAgreementPage'
-
+import ChooseNumberToVarifyPage from '../../pages/sign-up/channel-preferences/landline-telephone-authentication/ChooseNumberToVarifyPage'
 // sign up routes
 const signupRoutes = [
   { path: '/signup', component: <SignUpPage /> },
@@ -75,6 +75,10 @@ const signupRoutes = [
   {
     path: '/signup/contactpreferences/landline/skipconfirmation',
     component: <SkipConfirmLandlinePhonePage />
+  },
+  {
+    path: '/signup/contactpreferences/landline/choosenumber',
+    component: <ChooseNumberToVarifyPage/>
   },
   { path: '/signup/accountname/add', component: <AddFullNamePage /> },
   {

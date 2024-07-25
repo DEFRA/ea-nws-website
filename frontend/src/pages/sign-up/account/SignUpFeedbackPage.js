@@ -1,5 +1,5 @@
-import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useEffect, useRef, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
@@ -10,13 +10,14 @@ import Radio from '../../../gov-uk-components/Radio'
 import TextArea from '../../../gov-uk-components/TextArea'
 import { backendCall } from '../../../services/BackendService'
 
-export default function FeedbackPage () {
+export default function FeedbackPage() {
   const navigate = useNavigate()
   const [feedbackPreference, setFeedbackPreference] = useState('')
   const [feedbackText, setFeedbackText] = useState('')
   const [optionalFeedbackText, setOptionalFeedbackText] = useState('')
   const [error, setError] = useState('')
   const [textError, setTextError] = useState('')
+  const charLimit = 2000
 
   const feedbackOptions = [
     { value: 'Very Satisfied', label: 'Very Satisfied' },
@@ -29,23 +30,24 @@ export default function FeedbackPage () {
     { value: 'Very Dissatisfied', label: 'Very Dissatisfied' }
   ]
 
+  useEffect(() => {
+    setError('')
+  }, [feedbackPreference])
+
+  useEffect(() => {
+    setTextError('')
+  }, [feedbackText])
+
   const handleSubmit = async () => {
-    if (feedbackPreference.length === 0) {
+    if (!feedbackPreference) {
       setError('Select an answer to tell us how you feel about this service')
-    } else {
-      setError(null)
-      setFeedbackPreference(feedbackPreference)
-    }
-    if (feedbackText === '') {
+    } else if (!feedbackText) {
       setTextError(
         'Tell us anything you like or do not like about this service'
       )
+    } else if (feedbackText.length > charLimit) {
+      setTextError('Your answer must be 2000 characters or fewer')
     } else {
-      setTextError(null)
-      setFeedbackText(feedbackText)
-    }
-
-    if (feedbackText !== '' && feedbackPreference.length !== 0) {
       const dataToRecord = {
         feedbackPreference,
         feedbackText,
@@ -56,16 +58,12 @@ export default function FeedbackPage () {
         'api/signup/feedback',
         navigate
       )
-      if (errorMessage !== null) {
+      if (errorMessage) {
         setError(errorMessage)
       } else {
-        navigate('/signup')
+        navigate('/signup/feedback/confirmation')
       }
     }
-  }
-
-  const setFeedback = (event) => {
-    setFeedbackPreference(event.target.value)
   }
 
   return (
@@ -74,9 +72,6 @@ export default function FeedbackPage () {
         <Header />
         <div className='govuk-width-container body-container'>
           <PhaseBanner />
-          <Link to='/signup' className='govuk-back-link'>
-            Back
-          </Link>
           {(error || textError) && (
             <ErrorSummary errorList={[error, textError]} />
           )}
@@ -88,7 +83,7 @@ export default function FeedbackPage () {
               Only tell us about feedback on this page. If you need to check you
               have <br /> signed up correctly or have a question about your
               flood risk,{' '}
-              <a href='/' className='govuk-link'>
+              <a href='/contact' className='govuk-link'>
                 contact us.
               </a>
             </p>
@@ -112,7 +107,7 @@ export default function FeedbackPage () {
                       name='feedbackRadios'
                       label={option.label}
                       value={option.value}
-                      onChange={setFeedback}
+                      onChange={() => setFeedbackPreference(option.value)}
                     />
                   ))}
                 </div>
@@ -129,9 +124,7 @@ export default function FeedbackPage () {
               <fieldset className='govuk-fieldset' />
               <h3 className='govuk-label-wrapper'>
                 <label class='govuk-label govuk-label--m' for='more-detail'>
-                  Is there anything you like or do not like about this
-                  <br />
-                  service?
+                  Is there anything you like or do not like about this service?
                 </label>
               </h3>
               <div id='more-detail-hint' class='govuk-hint'>
@@ -161,7 +154,7 @@ export default function FeedbackPage () {
           />
           <div>
             <Button
-              text='Continue'
+              text='Send feedback'
               className='govuk-button'
               onClick={handleSubmit}
             />

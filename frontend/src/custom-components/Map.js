@@ -22,11 +22,10 @@ import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 export default function Map({ types, setFloodAreas }) {
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
-  const alertAreaRef = useRef(null)
-  const warningAreaRef = useRef(null)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+  const { latitude, longitude } = selectedLocation.coordinates
   // used when user selects flood area when location is within proximity
   const selectedFloodArea = useSelector(
     (state) => state.session.selectedFloodArea
@@ -34,7 +33,12 @@ export default function Map({ types, setFloodAreas }) {
   const showOnlySelectedFloodArea = useSelector(
     (state) => state.session.showOnlySelectedFloodArea
   )
-  const { latitude, longitude } = selectedLocation.coordinates
+  // the below is used to interact with the map to highlight selected flood areas
+  // or only show selected flood areas
+  const alertAreaRef = useRef(null)
+  const warningAreaRef = useRef(null)
+  const [alertAreaRefVisible, setAlertAreaRefVisible] = useState(false)
+  const [warningAreaRefVisible, setWarningAreaRefVisible] = useState(false)
 
   // get flood area data
   useEffect(() => {
@@ -64,22 +68,20 @@ export default function Map({ types, setFloodAreas }) {
 
   // outline the selected flood area - used when user has chosen flood area from proximity
   useEffect(() => {
-    if (selectedFloodArea) {
+    if (selectedFloodArea && showOnlySelectedFloodArea) {
+      showSelectedArea(selectedFloodArea)
+    } else if (selectedFloodArea && !showOnlySelectedFloodArea) {
       HighlightSelectedArea(selectedFloodArea)
     }
-  }, [selectedFloodArea])
-
-  // show only the selected flood area - used when user has chosen flood area from proximity
-  useEffect(() => {
-    if ((selectedFloodArea, showOnlySelectedFloodArea)) {
-      console.log('yeah this runs')
-      console.log('selectedFloodArea', selectedFloodArea)
-      showSelectedArea(selectedFloodArea)
-    }
-  }, [])
+  }, [
+    selectedFloodArea,
+    showOnlySelectedFloodArea,
+    warningAreaRefVisible,
+    alertAreaRefVisible
+  ])
 
   const HighlightSelectedArea = (selectedArea) => {
-    if (warningAreaRef.current) {
+    if (warningAreaRefVisible && types.includes('severe')) {
       warningAreaRef.current.eachLayer((layer) => {
         if (
           layer.feature.properties.gml_id === selectedArea.properties.gml_id
@@ -97,7 +99,7 @@ export default function Map({ types, setFloodAreas }) {
       })
     }
 
-    if (alertAreaRef.current) {
+    if (alertAreaRefVisible && types.includes('alert')) {
       alertAreaRef.current.eachLayer((layer) => {
         if (
           layer.feature.properties.gml_id === selectedArea.properties.gml_id
@@ -117,9 +119,7 @@ export default function Map({ types, setFloodAreas }) {
   }
 
   const showSelectedArea = (selectedArea) => {
-    console.log('warningAreaRef.current', warningAreaRef.current)
-
-    if (warningAreaRef.current) {
+    if (warningAreaRefVisible && types.includes('severe')) {
       warningAreaRef.current.eachLayer((layer) => {
         if (
           layer.feature.properties.gml_id === selectedArea.properties.gml_id
@@ -133,7 +133,7 @@ export default function Map({ types, setFloodAreas }) {
       })
     }
 
-    if (alertAreaRef.current) {
+    if (alertAreaRefVisible && types.includes('alert')) {
       alertAreaRef.current.eachLayer((layer) => {
         if (
           layer.feature.properties.gml_id === selectedArea.properties.gml_id
@@ -157,8 +157,8 @@ export default function Map({ types, setFloodAreas }) {
     }
 
     return (
-      <div className="reset-map-button" onClick={handleClick}>
-        <FontAwesomeIcon icon={faRotateLeft} size="2x" />
+      <div className='reset-map-button' onClick={handleClick}>
+        <FontAwesomeIcon icon={faRotateLeft} size='2x' />
       </div>
     )
   }
@@ -181,10 +181,10 @@ export default function Map({ types, setFloodAreas }) {
         zoom={14}
         zoomControl={false}
         attributionControl={false}
-        className="map-container"
+        className='map-container'
       >
-        <TileLayer url="https://api.os.uk/maps/raster/v1/zxy/Outdoor_3857/{z}/{x}/{y}.png?key=tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a" />
-        <ZoomControl position="bottomright" />
+        <TileLayer url='https://api.os.uk/maps/raster/v1/zxy/Outdoor_3857/{z}/{x}/{y}.png?key=tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a' />
+        <ZoomControl position='bottomright' />
         <Marker position={[latitude, longitude]}>
           <Popup />
         </Marker>
@@ -192,14 +192,20 @@ export default function Map({ types, setFloodAreas }) {
           <GeoJSON
             data={warningArea}
             style={{ color: '#f70202' }}
-            ref={warningAreaRef}
+            ref={(el) => {
+              warningAreaRef.current = el
+              setWarningAreaRefVisible(true)
+            }}
           />
         )}
         {alertArea && types.includes('alert') && (
           <GeoJSON
             data={alertArea}
             style={{ color: '#ffa200' }}
-            ref={alertAreaRef}
+            ref={(el) => {
+              alertAreaRef.current = el
+              setAlertAreaRefVisible(true)
+            }}
           />
         )}
         <ResetMapButton />

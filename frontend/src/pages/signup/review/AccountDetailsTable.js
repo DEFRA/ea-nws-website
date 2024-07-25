@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function AccountDetailsTable ({ profile }) {
+export default function AccountDetailsTable({ profile }) {
   return (
     <>
       <h3 className='govuk-heading-m'>Your Account</h3>
@@ -13,11 +13,14 @@ export default function AccountDetailsTable ({ profile }) {
               Full name
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
-              {profile.firstName + ' ' + profile.lastName}
+              {profile.firstname + ' ' + profile.lastname}
             </td>
 
             <td className='govuk-table__cell'>
-              <Link to='/account/change-name' className='govuk-link'>
+              <Link
+                to='/signup/review/change-account-name'
+                className='govuk-link'
+              >
                 Change
               </Link>
             </td>
@@ -31,7 +34,10 @@ export default function AccountDetailsTable ({ profile }) {
             </td>
 
             <td className='govuk-table__cell'>
-              <Link to='/account/change-email' className='govuk-link'>
+              <Link
+                to='/signup/review/change-account-email'
+                className='govuk-link'
+              >
                 Change
               </Link>
             </td>

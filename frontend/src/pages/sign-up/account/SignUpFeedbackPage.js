@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
@@ -30,28 +30,24 @@ export default function FeedbackPage() {
     { value: 'Very Dissatisfied', label: 'Very Dissatisfied' }
   ]
 
-  const handleSubmit = async () => {
-    let valid = true
+  useEffect(() => {
+    setError('')
+  }, [feedbackPreference])
 
+  useEffect(() => {
+    setTextError('')
+  }, [feedbackText])
+
+  const handleSubmit = async () => {
     if (!feedbackPreference) {
       setError('Select an answer to tell us how you feel about this service')
-      valid = false
-    } else {
-      setError(null)
-    }
-    if (!feedbackText) {
+    } else if (!feedbackText) {
       setTextError(
         'Tell us anything you like or do not like about this service'
       )
-      valid = false
     } else if (feedbackText.length > charLimit) {
       setTextError('Your answer must be 2000 characters or fewer')
-      valid = false
     } else {
-      setTextError(null)
-    }
-
-    if (valid) {
       const dataToRecord = {
         feedbackPreference,
         feedbackText,

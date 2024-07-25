@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import ValidateLandlineLayout from '../../../../common-layouts/landline/ValidateLandlineLayout'
 export default function ValidateLandlinePhonePage () {
   const navigate = useNavigate()
-  // const session = useSelector((state) => state.session)
+  
 
   const NavigateToNextPage = () => {
     navigate('/signup/accountname/add')

@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
+import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import InsetText from '../../../gov-uk-components/InsetText'
@@ -59,6 +60,15 @@ export default function ConfirmDeleteSingleLocationPage() {
           <Link to={() => navigate(-1)} className='govuk-back-link'>
             Back
           </Link>
+          {location.state !== null && location.state.removedAddressFail ? (
+            <ErrorSummary
+              errorList={[
+                'An error occured trying to remove a location.  ' +
+                  location.state.removedAddress +
+                  ' has not been removed.'
+              ]}
+            />
+          ) : null}
           <main className='govuk-main-wrapper'>
             <div className='govuk-grid-row'>
               <div className='govuk-grid-column-two-thirds'>

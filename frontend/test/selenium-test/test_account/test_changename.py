@@ -22,15 +22,15 @@ def setup_changename_test(get_browser, session):
     link_xpath = f"//a[text()='Home page']"
     link_link = browser.find_element(By.XPATH, link_xpath)
     browser.execute_script("arguments[0].click();", link_link)
-    time.sleep(1)
+    time.sleep(3)
     account_xpath = f"//a[text()='Your account']"
     account_link = browser.find_element(By.XPATH, account_xpath)
     browser.execute_script("arguments[0].click();", account_link)
-    time.sleep(1)
+    time.sleep(3)
     changename_xpath = f"//a[@href='/account/change-name']"
     changename_link = browser.find_element(By.XPATH, changename_xpath)
     browser.execute_script("arguments[0].click();", changename_link)
-    time.sleep(1)
+    time.sleep(3)
     return browser
 
 def test_changename_render(get_browser):
@@ -43,11 +43,11 @@ def test_changename_empty(get_browser):
     input_xpath = f"//input[@name='Full name']"
     input_element = browser.find_element(By.XPATH, input_xpath)
     input_element.clear()
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     button_element = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", button_element)
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == url
     assert "Enter your full name" in browser.page_source
     error_xpath = f"//div[contains(@class, 'govuk-error-summary')]"
@@ -58,11 +58,11 @@ def test_changename_too_long(get_browser):
     input_xpath = f"//input[@name='Full name']"
     input_element = browser.find_element(By.XPATH, input_xpath)
     input_element.send_keys("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     button_element = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", button_element)
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == url
     assert "Full name must be 50 characters or fewer" in browser.page_source
     error_xpath = f"//div[contains(@class, 'govuk-error-summary')]"
@@ -73,11 +73,11 @@ def test_changename_valid(get_browser):
     input_xpath = f"//input[@name='Full name']"
     input_element = browser.find_element(By.XPATH, input_xpath)
     input_element.send_keys("John Smith")
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     button_element = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", button_element)
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == previousPage
     assert "Name updated" in browser.page_source
     success_xpath = f"//div[contains(@class, 'govuk-notification-banner--success')]"
@@ -88,7 +88,7 @@ def test_changename_cancel(get_browser):
     cancel_xpath = f"//a[text()='Cancel']"
     cancel_element = browser.find_element(By.XPATH, cancel_xpath)
     browser.execute_script("arguments[0].click();", cancel_element)
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == previousPage
 
 def test_changename_back(get_browser):
@@ -96,5 +96,5 @@ def test_changename_back(get_browser):
     back_xpath = f"//a[contains(@class, 'govuk-back-link')]"
     back_element = browser.find_element(By.XPATH, back_xpath)
     browser.execute_script("arguments[0].click();", back_element)
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == previousPage

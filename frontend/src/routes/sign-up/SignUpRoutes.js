@@ -15,8 +15,6 @@ import LocationInSevereWarningAreaPage from '../../pages/sign-up/register-locati
 import LocationNotNearDangerPage from '../../pages/sign-up/register-location/LocationNotNearDangerPage'
 import LocationSearchPage from '../../pages/sign-up/register-location/LocationSearchPage'
 import LocationSearchResultsPage from '../../pages/sign-up/register-location/LocationSearchResultsPage'
-import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
-import DeclarationOfAgreementPage from '../../pages/sign-up/user-agreement/DeclarationOfAgreementPage'
 import CheckYourAnswersPage from '../../pages/sign-up/review/CheckYourAnswersPage'
 import SelectContactTypeToAddPage from '../../pages/sign-up/review/add-contact/SelectContactTypeToAddPage'
 import AddEmailContactStartPage from '../../pages/sign-up/review/add-contact/add-email-contact/AddContactEmailStartPage'
@@ -28,11 +26,14 @@ import ValidateMobileContactPage from '../../pages/sign-up/review/add-contact/ad
 import ChangeAccountEmailPage from '../../pages/sign-up/review/change-account/ChangeAccountEmailPage'
 import ChangeAccountEmailValidationPage from '../../pages/sign-up/review/change-account/ChangeAccountEmailValidatePage'
 import ChangeAccountNamePage from '../../pages/sign-up/review/change-account/ChangeAccountNamePage'
+import ChangeFloodAlertPage from '../../pages/sign-up/review/change-flood-alerts/ChangeFloodAlertsPage'
 import ChangeLocationInAlertAreaPage from '../../pages/sign-up/review/change-location/ChangeLocationInAlertAreaPage'
 import ChangeLocationInSevereWarningAreaPage from '../../pages/sign-up/review/change-location/ChangeLocationInSevereWarningAreaPage'
 import ChangeLocationNotNearDangerPage from '../../pages/sign-up/review/change-location/ChangeLocationNotNearDangerPage'
 import ChangeLocationSearchPage from '../../pages/sign-up/review/change-location/ChangeLocationSearchPage'
 import ChangeLocationSearchResultPage from '../../pages/sign-up/review/change-location/ChangeLocationSearchResultPage'
+import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
+import DeclarationOfAgreementPage from '../../pages/sign-up/user-agreement/DeclarationOfAgreementPage'
 // sign up routes
 const signupRoutes = [
   { path: '/signup', component: <SignUpPage /> },
@@ -172,6 +173,10 @@ const signupRoutes = [
   {
     path: '/signup/review/change-email-validate',
     component: <ChangeAccountEmailValidationPage />
+  },
+  {
+    path: '/signup/review/change-flood-alert',
+    component: <ChangeFloodAlertPage />
   }
 ]
 

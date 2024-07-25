@@ -9,7 +9,7 @@ import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { backendCall } from '../../services/BackendService'
 import { emailValidation } from '../../services/validations/EmailValidation'
 
-export default function SignInStartPage () {
+export default function SignInPage () {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')

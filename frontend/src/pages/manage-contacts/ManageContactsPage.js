@@ -10,7 +10,7 @@ import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import ContactDetailsTable from './ContactDetailsTable'
 
-export default function ContactDetailsPage() {
+export default function ManageContactsPage() {
   const location = useLocation()
   const profile = useSelector((state) => state.session.profile)
   // user is not allowed to remove the primary email

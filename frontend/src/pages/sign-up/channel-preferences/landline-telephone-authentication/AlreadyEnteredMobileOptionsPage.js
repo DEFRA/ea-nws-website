@@ -11,13 +11,11 @@ import { setProfile } from '../../../../redux/userSlice'
 import { backendCall } from '../../../../services/BackendService'
 import {
   addUnverifiedContact,
-  removeUnverifiedContact,
-  removeVerifiedContact
 } from '../../../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../../../services/formatters/NormalisePhoneNumber'
 import Radio from '../../../../gov-uk-components/Radio'
 
-export default function ChooseNumberToVarifyPage () {
+export default function AlreadyEnteredMobileOptions () {
   const navigate = useNavigate()
   const [landline, setLandline] = useState('')
   const [error, setError] = useState('')
@@ -72,38 +70,8 @@ export default function ChooseNumberToVarifyPage () {
     }
   }
 
-  // if user is going back through the signup flow - we want to remove the landline
-  // from either the verified or unverified list - we need to do both incase
-  // they progressed past the validate landline path
-  const removeLandlineFromProfile = async (event) => {
-    event.preventDefault()
-    // we need to check if location.state has a value - this will only hold a value
-    // if the user has come from the landline validate page - we will need to remove
-    // the number from the users profile if so
-    if (session && session.landline) {
-      event.preventDefault()
-      const normalisedLandline = normalisePhoneNumber(session.landline)
-      // remove landline from users profile
-      const updatedProfile = removeUnverifiedContact(
-        session.profile,
-        normalisedLandline
-      )
-      dispatch(
-        setProfile(removeVerifiedContact(updatedProfile, normalisedLandline))
-      )
-    }
-    // user could have navigated from contact preferences page
-    // or user could have come from account change details at the end of sign up flow
-    navigate('/signup/contactpreferences/landline/validate')
-  }
 
-  const hasAddedMobileAlready = () => {
-    const phone = session.profile.unverified.mobilePhones
-    const verifiedPhone = session.profile.mobilePhones
-    if (phone[0] !== undefined || verifiedPhone[0] !== undefined) {
-      return true
-    } else { return false }
-  }
+  
   const setLandlineprefernce = (event) => {
     setLandline(event.target.value)
     setIsOpen(false)
@@ -121,25 +89,30 @@ export default function ChooseNumberToVarifyPage () {
     <>
       <Header />
       <div class='govuk-width-container'>
-        <Link onClick={removeLandlineFromProfile} className='govuk-back-link'>
+        <Link className='govuk-back-link'>
           Back
         </Link>
         <main className='govuk-main-wrapper'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
+              {error? 
               <ErrorSummary errorList={error === '' ? [] : [error]} />
+              :
+              <></>
+              }
+              
               <h2 class='govuk-heading-l'>
-                Enter a telephone number to get flood messages by phone call
+                Which telephone number do you want to use to get
+                flood messages by phone call?
               </h2>
               <div class='govuk-body'>
                 <p>
                   We recommend using a landline or mobile number that can be called 24
-                  hours a day.
+                  hours a day
                 </p>
 
-                {hasAddedMobileAlready()
-                  ? (
-                    <>
+                
+                   
                       <div
                         className={
                             error && isOpen !== true
@@ -191,9 +164,7 @@ export default function ChooseNumberToVarifyPage () {
                         onClick={handleSubmit}
                       />
                       <br />
-                    </>
-                    )
-                  : navigate('/signup/contactpreferences/landline/add')}
+                  
               </div>
             </div>
           </div>

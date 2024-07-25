@@ -20,7 +20,7 @@ export default function ValidateLandlineLayout ({
   NavigateToNextPage,
   SkipValidation,
   DifferentHomePhone,
-  ChooseLandLine
+  ContinueToAlreadyEnteredMobileOptions
 }) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -86,16 +86,20 @@ export default function ValidateLandlineLayout ({
 
   const differentHomePhone = (event) => {
     event.preventDefault()
-    // remove homephone from users profile
-    const mobile = session.profile.unverified.mobilePhones[0]
-      ? session.profile.unverified.mobilePhones[0]
-      : session.profile.mobilePhones[0]
+    
+    const unverifiedMobile = session.profile.unverified.mobilePhones[0]
+    const verifiedMobile = session.profile.mobilePhones[0]  
 
-    if (mobile === undefined) {
+    if (unverifiedMobile === undefined && verifiedMobile === undefined) {
       dispatch(setProfile(removeUnverifiedContact(session.profile, homePhone)))
       DifferentHomePhone(homePhone)
     } else {
-      ChooseLandLine()
+      const updatedProfile = removeUnverifiedContact(
+        session.profile,
+        homePhone
+      )
+      dispatch(setProfile(removeUnverifiedContact(updatedProfile,homePhone)))
+      ContinueToAlreadyEnteredMobileOptions()
     }
   }
 

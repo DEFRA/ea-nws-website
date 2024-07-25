@@ -18,7 +18,7 @@ export default function ValidateLandlinePhonePage () {
     })
   }
 
-  const ChooseLandLine = () => {
+  const ContinueToAlreadyEnteredMobileOptions = () => {
     navigate('/signup/contactpreferences/landline/choosenumber')
   }
   return (
@@ -26,7 +26,7 @@ export default function ValidateLandlinePhonePage () {
       NavigateToNextPage={NavigateToNextPage}
       SkipValidation={SkipValidation}
       DifferentHomePhone={DifferentHomePhone}
-      ChooseLandLine={ChooseLandLine}
+      ContinueToAlreadyEnteredMobileOptions={ContinueToAlreadyEnteredMobileOptions}
     />
   )
 }

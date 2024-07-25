@@ -22,7 +22,7 @@ def test_FeedbackStart_backButton(get_browser):
 def setup_addFeedback_empty_test(get_browser):
     browser = get_browser
     browser.get(url)
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     continue_button = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", continue_button)
@@ -38,7 +38,7 @@ def test_addFeedback_NoCheckboxSelected(get_browser):
     browser = get_browser
     browser.get(url)
     browser.find_element(By.CLASS_NAME, "govuk-textarea").send_keys("test")
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     continue_button = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", continue_button)
@@ -49,7 +49,7 @@ def test_addFeedback_NoTextEntered(get_browser):
     browser = get_browser
     browser.get(url)
     browser.find_element(By.CLASS_NAME, "govuk-radios__input").click()
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     continue_button = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", continue_button)
@@ -61,7 +61,7 @@ def test_addFeedback_Valid(get_browser):
     browser.get(url)
     browser.find_element(By.CLASS_NAME, "govuk-radios__input").click()
     browser.find_element(By.CLASS_NAME, "govuk-textarea").send_keys("test")
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     continue_button = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", continue_button)

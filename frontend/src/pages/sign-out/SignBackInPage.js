@@ -3,11 +3,10 @@ import Button from '../../gov-uk-components/Button'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
-
-export default function SignBackIn () {
+export default function SignBackInPage() {
   const navigate = useNavigate()
 
-  function redirect () {
+  function redirect() {
     navigate('/signin')
   }
 

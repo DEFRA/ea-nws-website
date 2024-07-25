@@ -10,7 +10,7 @@ import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import ContactDetailsTable from './ContactDetailsTable'
 
-export default function ContactDetailsPage () {
+export default function ManageContactsPage () {
   const location = useLocation()
   const profile = useSelector((state) => state.session.profile)
   // user is not allowed to remove the primary email
@@ -102,8 +102,8 @@ export default function ContactDetailsPage () {
                 </h2>
                 <p className='govuk-body'>
                   We'll send flood messages for all your location to all these
-                  emails and numbers. You can add more for friends and family, if
-                  you wish.
+                  emails and numbers. You can add more for friends and family,
+                  if you wish.
                 </p>
                 <InsetText text='You must confirm each address and number before we can send flood messages to them.' />
                 <ContactDetailsTable

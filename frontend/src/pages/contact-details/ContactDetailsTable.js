@@ -33,28 +33,25 @@ export default function ContactDetailsTable ({
   }
 
   const UnconfirmedLink = ({contact}) => {
-    if (contactType === 'email address') {
-      return (
-        <>
-          <Link to='/managecontacts/validate-email' className='govuk-link' onClick={() => handleContactSelection(contact)}>
-            Confirm
-          </Link>
-        </>
-      )
-    } else if (contactType === 'mobile telephone number') {
-      return (
-        <>
-          <Link to='/managecontacts/validate-mobile' className='govuk-link' onClick={() => handleContactSelection(contact)}>
-            Confirm
-          </Link>
-        </>
-      )
+    let nextPage = undefined
+
+    switch (contactType) {
+      case 'email address':
+        nextPage = '/managecontacts/validate-email'
+        break
+      case 'mobile telephone number':
+        nextPage = '/managecontacts/validate-mobile'
+        break
+      default:
+        nextPage = '/managecontacts/validate-landline'
+        break
     }
+
     return (
       <>
-        <Link to='/managecontacts/validate-landline' className='govuk-link' onClick={() => handleContactSelection(contact)}>
-          Confirm
-        </Link>
+      <Link to={nextPage} className='govuk-link' onClick={() => handleContactSelection(contact)}>
+        Confirm
+      </Link>
       </>
     )
   }

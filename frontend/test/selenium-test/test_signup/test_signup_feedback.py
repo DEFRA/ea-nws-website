@@ -69,7 +69,7 @@ def test_addFeedback_CharacterLimitExceeded(get_browser):
     browser.execute_script("arguments[0].click();", continue_button)
     time.sleep(2)
     assert browser.current_url == url
-    assert "Character limit exceeded (max 1000)" in browser.page_source
+    assert "Your answer must be 2000 characters or fewer" in browser.page_source
 
 def test_addFeedback_Valid(get_browser):
     browser = get_browser

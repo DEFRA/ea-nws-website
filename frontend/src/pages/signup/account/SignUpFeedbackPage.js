@@ -31,28 +31,27 @@ export default function FeedbackPage() {
   ]
 
   const handleSubmit = async () => {
-    if (feedbackPreference.length === 0) {
+    let valid = true
+
+    if (!feedbackPreference) {
       setError('Select an answer to tell us how you feel about this service')
+      valid = false
     } else {
       setError(null)
-      setFeedbackPreference(feedbackPreference)
     }
-    if (feedbackText === '') {
+    if (!feedbackText) {
       setTextError(
         'Tell us anything you like or do not like about this service'
       )
+      valid = false
     } else if (feedbackText.length > charLimit) {
       setTextError('Your answer must be 2000 characters or fewer')
+      valid = false
     } else {
       setTextError(null)
-      setFeedbackText(feedbackText)
     }
 
-    if (
-      feedbackText !== '' &&
-      feedbackText.length <= charLimit &&
-      feedbackPreference.length !== 0
-    ) {
+    if (valid) {
       const dataToRecord = {
         feedbackPreference,
         feedbackText,
@@ -63,16 +62,12 @@ export default function FeedbackPage() {
         'api/signup/feedback',
         navigate
       )
-      if (errorMessage !== null) {
+      if (errorMessage) {
         setError(errorMessage)
       } else {
         navigate('/signup/feedback/confirmation')
       }
     }
-  }
-
-  const setFeedback = (event) => {
-    setFeedbackPreference(event.target.value)
   }
 
   return (
@@ -81,7 +76,7 @@ export default function FeedbackPage() {
         <Header />
         <div className='govuk-width-container body-container'>
           <PhaseBanner />
-          <Link to='/signup' className='govuk-back-link'>
+          <Link onClick={() => navigate(-1)} className='govuk-back-link'>
             Back
           </Link>
           {(error || textError) && (
@@ -95,7 +90,7 @@ export default function FeedbackPage() {
               Only tell us about feedback on this page. If you need to check you
               have <br /> signed up correctly or have a question about your
               flood risk,{' '}
-              <a href='/' className='govuk-link'>
+              <a href='/contact' className='govuk-link'>
                 contact us.
               </a>
             </p>
@@ -119,7 +114,7 @@ export default function FeedbackPage() {
                       name='feedbackRadios'
                       label={option.label}
                       value={option.value}
-                      onChange={setFeedback}
+                      onChange={() => setFeedbackPreference(option.value)}
                     />
                   ))}
                 </div>
@@ -136,9 +131,7 @@ export default function FeedbackPage() {
               <fieldset className='govuk-fieldset' />
               <h3 className='govuk-label-wrapper'>
                 <label class='govuk-label govuk-label--m' for='more-detail'>
-                  Is there anything you like or do not like about this
-                  <br />
-                  service?
+                  Is there anything you like or do not like about this service?
                 </label>
               </h3>
               <div id='more-detail-hint' class='govuk-hint'>

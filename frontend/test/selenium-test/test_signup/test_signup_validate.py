@@ -65,7 +65,7 @@ def test_SignUpValidate_validCode(get_browser):
     browser.find_element(By.NAME, "Email address").send_keys("valid@email.uk")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(3)
-    browser.find_element(By.ID, 'Enter code').send_keys("123456")
+    browser.find_element(By.NAME, 'Enter code').send_keys("123456")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(3)
     assert browser.current_url == end_page

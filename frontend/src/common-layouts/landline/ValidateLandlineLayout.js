@@ -16,7 +16,7 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
-export default function ValidateLandlineLayout ({
+export default function ValidateLandlineLayout({
   NavigateToNextPage,
   SkipValidation,
   DifferentHomePhone
@@ -27,15 +27,8 @@ export default function ValidateLandlineLayout ({
   const [code, setCode] = useState('')
   const session = useSelector((state) => state.session)
 
-  const indexLastUnverifiedHomePhone =
-    session.profile.unverified.homePhones.length - 1
-  const indexLastHomePhone = session.profile.homePhones.length - 1
+  const homePhone = session.currentContact
 
-  const homePhone = session.profile.unverified.homePhones[
-    indexLastUnverifiedHomePhone
-  ]
-    ? session.profile.unverified.homePhones[indexLastUnverifiedHomePhone]
-    : session.profile.homePhones[indexLastHomePhone]
   const authToken = session.authToken
 
   const handleSubmit = async (event) => {

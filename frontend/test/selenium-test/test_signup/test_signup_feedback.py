@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 import time
 
 url = "http://localhost:3000/signup/feedback"
-nextPage = "http://localhost:3000/signup"
+nextPage = "http://localhost:3000/signup/feedback/confirmation"
 previousPage = "http://localhost:3000/signup"
 
 def test_FeedbackStart_render(get_browser):
@@ -22,7 +22,7 @@ def test_FeedbackStart_backButton(get_browser):
 def setup_addFeedback_empty_test(get_browser):
     browser = get_browser
     browser.get(url)
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     continue_button = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", continue_button)
@@ -38,7 +38,7 @@ def test_addFeedback_NoCheckboxSelected(get_browser):
     browser = get_browser
     browser.get(url)
     browser.find_element(By.CLASS_NAME, "govuk-textarea").send_keys("test")
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     continue_button = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", continue_button)
@@ -49,19 +49,34 @@ def test_addFeedback_NoTextEntered(get_browser):
     browser = get_browser
     browser.get(url)
     browser.find_element(By.CLASS_NAME, "govuk-radios__input").click()
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     continue_button = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", continue_button)
     assert browser.current_url == url
     assert "Tell us anything you like or do not like about this service" in browser.page_source
 
+def test_addFeedback_CharacterLimitExceeded(get_browser):
+    browser = get_browser
+    browser.get(url)
+    browser.find_element(By.CLASS_NAME, "govuk-radios__input").click()
+    time.sleep(1)
+    sampleFeedback = "A" * 2001
+    text_area = browser.find_element(By.CLASS_NAME, "govuk-textarea")
+    text_area.send_keys(sampleFeedback)
+    button_xpath = f"//button[contains(@class, 'govuk-button')]"
+    continue_button = browser.find_element(By.XPATH, button_xpath)
+    browser.execute_script("arguments[0].click();", continue_button)
+    time.sleep(2)
+    assert browser.current_url == url
+    assert "Your answer must be 2000 characters or fewer" in browser.page_source
+
 def test_addFeedback_Valid(get_browser):
     browser = get_browser
     browser.get(url)
     browser.find_element(By.CLASS_NAME, "govuk-radios__input").click()
     browser.find_element(By.CLASS_NAME, "govuk-textarea").send_keys("test")
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     continue_button = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", continue_button)

@@ -18,7 +18,7 @@ def setup_addmobile_test(get_browser):
     link_xpath = f"//a[text()='Manage Contacts page']"
     link_link = browser.find_element(By.XPATH, link_xpath)
     browser.execute_script("arguments[0].click();", link_link)
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[text()='Add a mobile telephone number']"
     add_mobile_link = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", add_mobile_link)
@@ -59,7 +59,7 @@ def test_addmobilestart_validNumber(get_browser):
     browser = setup_addmobile_test(get_browser)  
     browser.find_element(By.NAME, "UK mobile telephone number").send_keys("07700000000")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == nextPage
 
 

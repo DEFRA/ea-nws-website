@@ -21,7 +21,7 @@ export default function LocationInAlertAreaLayout ({ continueToNextPage }) {
   )
 
   const handleSubmit = () => {
-    // we need to add this to the profile
+    // we need to add this to the profile - TODO
     continueToNextPage()
   }
 

@@ -4,7 +4,7 @@ import accountRoutes from './account/AccountRoutes'
 import footerRoutes from './footer/FooterRoutes'
 import homeRoutes from './home/HomeRoutes'
 import manageContactRoutes from './manage-contacts/manageContactRoutes'
-import manageLocations from './manage-locations/manageLocationsRoutes'
+import manageLocationRoutes from './manage-locations/ManageLocationsRoutes'
 import signinRoutes from './sign-in/SignInRoutes'
 import signOutRoutes from './sign-out/SignOutRoutes'
 import signupRoutes from './sign-up/SignUpRoutes'
@@ -27,5 +27,5 @@ export const authenticatedRoutes = [
   ...manageContactRoutes,
   ...signOutRoutes,
   ...accountRoutes,
-  ...manageLocations
+  ...manageLocationRoutes
 ]

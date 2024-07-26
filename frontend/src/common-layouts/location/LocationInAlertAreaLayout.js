@@ -88,7 +88,7 @@ export default function LocationInAlertAreaLayout({
                   className='govuk-button govuk-!-margin-top-5'
                   onClick={handleSubmit}
                 />
-                {additionalAlerts && (
+                {!additionalAlerts && (
                   <Link
                     onClick={(e) => {
                       e.preventDefault()

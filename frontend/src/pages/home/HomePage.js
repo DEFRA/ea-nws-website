@@ -1,6 +1,6 @@
 import React from 'react'
 import { useLocation } from 'react-router'
-import SubscribedLocationTableLayout from '../../common-layouts/location/SubscribedLocationTableLayout'
+import SubscribedLocationTableLayout from '../manage-location/SubscribedLocationTable'
 import AccountNavigation from '../../custom-components/AccountNavigation'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'

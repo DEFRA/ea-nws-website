@@ -1,54 +1,16 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
 import Details from '../../gov-uk-components/Details'
 import Pagination from '../../gov-uk-components/Pagination'
 
-export default function SubscribedLocationTableLayout() {
+export default function SubscribedLocationTable() {
   const [currentPage, setCurrentPage] = useState(1)
   const locationsPerPage = 10
 
   const profile = useSelector((state) => state.session.profile)
   let locations = profile.pois
-  const location = useLocation()
-
-  if (
-    location.state !== null &&
-    !location.state.removedAddressFail &&
-    location.state.removedAddress
-  ) {
-    console.log(locations)
-    console.log(
-      `Removing location from array: ${location.state.removedAddress}`
-    )
-    const add1 = locations.indexOf(0)
-    //locations.splice(add1, 1)
-    if (location.state.removedAddress === 'Exeter, United Kingdom') {
-      locations = [
-        {
-          address: 'Exmouth, United Kingdom',
-          coordinates: {
-            latitude: '50726037',
-            longitude: '-3527489'
-          }
-        }
-      ]
-    }
-    if (location.state.removedAddress === 'Exmouth, United Kingdom') {
-      locations = [
-        {
-          address: 'Exeter, United Kingdom',
-          coordinates: {
-            latitude: '50726037',
-            longitude: '-3527489'
-          }
-        }
-      ]
-    }
-    console.log(`Found location from array at: ${locations}`)
-  }
 
   const displayedLocations = locations.slice(
     (currentPage - 1) * locationsPerPage,
@@ -102,7 +64,8 @@ export default function SubscribedLocationTableLayout() {
           <Link
             to='/managelocations/remove'
             state={{
-              address: location.address
+              address: location.address,
+              coordinates: location.coordinates
             }}
             className='govuk-link'
           >

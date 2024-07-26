@@ -1,32 +1,26 @@
-import React from 'react'
+import { React, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import Button from '../../../gov-uk-components/Button'
-import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
-import Footer from '../../../gov-uk-components/Footer'
-import Header from '../../../gov-uk-components/Header'
-import InsetText from '../../../gov-uk-components/InsetText'
-import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
-import { setProfile } from '../../../redux/userSlice'
-import {
-  removeUnverifiedContact,
-  removeVerifiedContact
-} from '../../../services/ProfileServices'
+import Button from '../../gov-uk-components/Button'
+import ErrorSummary from '../../gov-uk-components/ErrorSummary'
+import Footer from '../../gov-uk-components/Footer'
+import Header from '../../gov-uk-components/Header'
+import InsetText from '../../gov-uk-components/InsetText'
+import PhaseBanner from '../../gov-uk-components/PhaseBanner'
+import { setProfile } from '../../redux/userSlice'
+import { removeLocationFromCoordinates } from '../../services/ProfileServices'
 
 export default function ConfirmDeleteSingleLocationPage() {
   const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
+  const [error, setError] = useState('')
 
-  const removeLocation = async () => {
-    let updatedProfile = removeVerifiedContact(
+  const handleSubmit = async () => {
+    let updatedProfile = removeLocationFromCoordinates(
       session.profile,
-      location.state.contact
-    )
-    updatedProfile = removeUnverifiedContact(
-      updatedProfile,
-      location.state.contact
+      location.state.coordinates
     )
 
     const data = {
@@ -39,16 +33,21 @@ export default function ConfirmDeleteSingleLocationPage() {
       data,
       'api/profile/update',
       navigate
-    )
-    if (!errorMessage) {*/
+    )*/
+    /*if (!errorMessage) {*/
     dispatch(setProfile(updatedProfile))
     navigate('/home', {
       state: {
-        removedAddress: location.state.address,
-        removedAddressFail: false
+        removedAddress: location.state.address
       }
     })
-    //}
+    /*} else {
+      setError(
+        'An error occured trying to remove a location.  ' +
+          location.state.address +
+          ' has not been removed. Please try again later.'
+      )
+    }*/
   }
 
   return (
@@ -60,15 +59,7 @@ export default function ConfirmDeleteSingleLocationPage() {
           <Link to={() => navigate(-1)} className='govuk-back-link'>
             Back
           </Link>
-          {location.state !== null && location.state.removedAddressFail ? (
-            <ErrorSummary
-              errorList={[
-                'An error occured trying to remove a location.  ' +
-                  location.state.removedAddress +
-                  ' has not been removed.'
-              ]}
-            />
-          ) : null}
+          <ErrorSummary errorList={error === '' ? [] : [error]} />
           <main className='govuk-main-wrapper'>
             <div className='govuk-grid-row'>
               <div className='govuk-grid-column-two-thirds'>
@@ -83,7 +74,7 @@ export default function ConfirmDeleteSingleLocationPage() {
                 <Button
                   className='govuk-button govuk-button--warning'
                   text='Remove this location'
-                  onClick={removeLocation}
+                  onClick={handleSubmit}
                 />
                 &nbsp; &nbsp;
                 <Link

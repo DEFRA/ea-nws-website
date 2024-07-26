@@ -18,15 +18,12 @@ export default function SubscribedLocationTable() {
   )
 
   const navigate = useNavigate()
-  const handleButton = () => {
-    navigate('/managelocations/add')
-  }
 
   const detailsMessage = (
     <div>
       <p>You must keep at least one location on your account.</p>
       <p>
-        <Link to='/managelocations/add' className='govuk-link'>
+        <Link to='/managelocations/add/search' className='govuk-link'>
           Add a new location
         </Link>
         &nbsp;before removing any you do not need.
@@ -131,7 +128,7 @@ export default function SubscribedLocationTable() {
         <Button
           text='Add new location'
           className='govuk-button govuk-button--secondary'
-          onClick={handleButton}
+          onClick={() => navigate('/manage-locations/add/search')}
         />
         {locations.length === 1 && (
           <Details

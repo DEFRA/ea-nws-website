@@ -30,7 +30,7 @@ const manageLocationRoutes = [
   },
   // remove a location
   {
-    path: '/managelocations/remove',
+    path: '/manage-locations/remove',
     component: <ConfirmDeleteContactDetailsPage />
   }
 ]

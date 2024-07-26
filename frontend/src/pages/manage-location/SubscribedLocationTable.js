@@ -23,7 +23,7 @@ export default function SubscribedLocationTable() {
     <div>
       <p>You must keep at least one location on your account.</p>
       <p>
-        <Link to='/managelocations/add/search' className='govuk-link'>
+        <Link to='/manage-locations/add/search' className='govuk-link'>
           Add a new location
         </Link>
         &nbsp;before removing any you do not need.
@@ -43,7 +43,7 @@ export default function SubscribedLocationTable() {
       return (
         <td className='govuk-table__cell'>
           <Link
-            to='/managelocations/view'
+            to='/manage-locations/view'
             state={{
               address: location.address
             }}
@@ -59,7 +59,7 @@ export default function SubscribedLocationTable() {
       return (
         <td className='govuk-table__cell'>
           <Link
-            to='/managelocations/remove'
+            to='/manage-locations/remove'
             state={{
               address: location.address,
               coordinates: location.coordinates

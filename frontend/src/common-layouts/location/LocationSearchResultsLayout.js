@@ -44,15 +44,7 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
       // otherwise they wouldnt be allowed to enter the same location which could be nearby
       // 3 flood areas for example - they might want to register to all 3 with the same coords
       // which would require them to register the same location 3 times
-      const existsInProfile = checkIfSelectedLocationExistsAlready(
-        profile,
-        selectedLocation
-      )
-      if (existsInProfile) {
-        setError(
-          'This location is saved already, please select a different location'
-        )
-      } else {
+
         // users entered location
         dispatch(setSelectedLocation(selectedLocation))
         // reset map display - these are only required when user is taken through location in proximity to flood areas
@@ -92,7 +84,6 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
           isWithinWarningAreaProximity,
           isWithinAlertAreaProximity
         )
-      }
     } finally {
       setLoading(false)
     }

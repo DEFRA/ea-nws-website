@@ -1,4 +1,4 @@
-import { React, useState } from 'react'
+import { React } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
@@ -15,7 +15,7 @@ export default function ConfirmDeleteSingleLocationPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
-  const [error, setError] = useState('')
+  //const [error, setError] = useState('')
 
   const handleSubmit = async () => {
     let updatedProfile = removeLocationFromCoordinates(
@@ -23,10 +23,10 @@ export default function ConfirmDeleteSingleLocationPage() {
       location.state.coordinates
     )
 
-    const data = {
+    /*const data = {
       authToken: session.authToken,
       profile: updatedProfile
-    }
+    }*/
 
     // profile returned but we just need to make sure no error is returned
     /*const { errorMessage } = await backendCall(

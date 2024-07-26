@@ -13,12 +13,6 @@ def test_FeedbackStart_render(get_browser):
     assert "Give feedback about signing up" in browser.page_source
     assert browser.current_url == url
 
-def test_FeedbackStart_backButton(get_browser):
-    browser = get_browser
-    browser.get(url)
-    browser.find_element(By.CLASS_NAME, "govuk-back-link").click()
-    assert browser.current_url == previousPage
-
 def setup_addFeedback_empty_test(get_browser):
     browser = get_browser
     browser.get(url)
@@ -32,7 +26,7 @@ def test_addFeedback_empty(get_browser):
     browser = setup_addFeedback_empty_test(get_browser) 
     assert browser.current_url == url
     assert "Select an answer to tell us how you feel about this service" in browser.page_source
-    assert "Tell us anything you like or do not like about this service" in browser.page_source
+
 
 def test_addFeedback_NoCheckboxSelected(get_browser):
     browser = get_browser

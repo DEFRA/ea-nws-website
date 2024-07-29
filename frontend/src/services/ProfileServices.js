@@ -23,8 +23,8 @@ const addUnverifiedContact = (profile, type, contact) => {
         [type === 'email'
           ? 'emails'
           : type === 'mobile'
-          ? 'mobilePhones'
-          : 'homePhones']: [...unverifiedContactList, contact]
+            ? 'mobilePhones'
+            : 'homePhones']: [...unverifiedContactList, contact]
       }
     }
     return updatedProfile
@@ -87,8 +87,8 @@ const addVerifiedContact = (profile, type, contact) => {
       [type === 'email'
         ? 'emails'
         : type === 'mobile'
-        ? 'mobilePhones'
-        : 'homePhones']: [...verifiedContactList, contact]
+          ? 'mobilePhones'
+          : 'homePhones']: [...verifiedContactList, contact]
     }
     return updatedProfile
   } else {
@@ -170,7 +170,7 @@ const addLocation = (profile, location) => {
 }
 
 const removeLocationFromCoordinates = (profile, coordinates) => {
-  let updatedLocations = profile.pois.filter(
+  const updatedLocations = profile.pois.filter(
     (pois) =>
       pois.coordinates.longitude !== coordinates.longitude &&
       pois.coordinates.latitude !== coordinates.latitude

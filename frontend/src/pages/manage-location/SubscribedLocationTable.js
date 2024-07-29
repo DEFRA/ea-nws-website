@@ -5,12 +5,12 @@ import Button from '../../gov-uk-components/Button'
 import Details from '../../gov-uk-components/Details'
 import Pagination from '../../gov-uk-components/Pagination'
 
-export default function SubscribedLocationTable() {
+export default function SubscribedLocationTable () {
   const [currentPage, setCurrentPage] = useState(1)
   const locationsPerPage = 10
 
   const profile = useSelector((state) => state.session.profile)
-  let locations = profile.pois
+  const locations = profile.pois
 
   const displayedLocations = locations.slice(
     (currentPage - 1) * locationsPerPage,
@@ -87,7 +87,7 @@ export default function SubscribedLocationTable() {
             <tr key={index} className='govuk-table__row'>
               {addressColumn(location)}
               {locations.length === 1 && (
-                <td className='govuk-table__cell'></td>
+                <td className='govuk-table__cell' />
               )}
               {viewColumn(location)}
               {locations.length > 1 && removeColumn(location)}

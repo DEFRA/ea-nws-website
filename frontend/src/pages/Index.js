@@ -33,10 +33,10 @@ export default function IndexPage () {
     },
     pois: [
       {
-        address: 'Exeter, Royaume-Uni',
+        address: 'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth, NR30 1AA',
         coordinates: {
-          latitude: 51.4998415,
-          longitude: -0.1246377
+          latitude: 52.6124445,
+          longitude: 1.7246405
         }
       }
     ]
@@ -59,17 +59,17 @@ export default function IndexPage () {
     },
     pois: [
       {
-        address: 'Exeter, Royaume-Uni',
+        address: 'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth, NR30 1AA',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 52.6124445,
+          longitude: 1.7246405
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        address: '60, Kingfisher Way, London, NW10 8TZ',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.5510932,
+          longitude: -0.2577994
         }
       }
     ]
@@ -92,17 +92,17 @@ export default function IndexPage () {
     },
     pois: [
       {
-        address: 'Exeter, Royaume-Uni',
+        address: 'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth, NR30 1AA',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 52.6124445,
+          longitude: 1.7246405
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        address: '60, Kingfisher Way, London, NW10 8TZ',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.5510932,
+          longitude: -0.2577994
         }
       },
       {

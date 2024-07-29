@@ -59,7 +59,6 @@ export default function AlreadyEnteredMobileOptions () {
         if (isOpen === true) {
           navigate('/signup/contactpreferences/landline/validate')
         } else {
-          console.log(normalisedPhoneNumber)
           if (verifiedMobileNumbers.includes(normalisedPhoneNumber)) {
             navigate('/signup/accountname/add')
           } else {

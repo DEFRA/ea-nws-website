@@ -15,17 +15,16 @@ export default function HomePage() {
         <Header />
         <div className='govuk-width-container body-container'>
           <PhaseBanner />
+          <AccountNavigation currentPage={useLocation().pathname} />
           {location.state !== null &&
-          !location.state.removedAddressFail &&
           location.state.removedAddress ? (
             <NotificationBanner
-              className='govuk-notification-banner govuk-notification-banner--success'
+              className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
               title='Success'
               heading='Location removed'
               text={location.state.removedAddress}
             />
           ) : null}
-          <AccountNavigation currentPage={useLocation().pathname} />
           <main className='govuk-main-wrapper'>
             <div class='govuk-grid-row'>
               <div class='govuk-grid-column-full'>

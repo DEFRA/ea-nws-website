@@ -39,30 +39,41 @@ export default function FeedbackPage() {
   }, [feedbackText])
 
   const handleSubmit = async () => {
+    let valid = true
+
     if (!feedbackPreference) {
       setError('Select an answer to tell us how you feel about this service')
-    } else if (!feedbackText) {
+      valid = false
+    }
+    if (!feedbackText) {
       setTextError(
         'Tell us anything you like or do not like about this service'
       )
-    } else if (feedbackText.length > charLimit) {
+      valid = false
+    }
+    if (feedbackText.length > charLimit) {
       setTextError('Your answer must be 2000 characters or fewer')
+      valid = false
+    }
+
+    if (!valid) {
+      return
+    }
+
+    const dataToRecord = {
+      feedbackPreference,
+      feedbackText,
+      optionalFeedbackText
+    }
+    const { errorMessage } = await backendCall(
+      dataToRecord,
+      'api/signup/feedback',
+      navigate
+    )
+    if (errorMessage) {
+      setError(errorMessage)
     } else {
-      const dataToRecord = {
-        feedbackPreference,
-        feedbackText,
-        optionalFeedbackText
-      }
-      const { errorMessage } = await backendCall(
-        dataToRecord,
-        'api/signup/feedback',
-        navigate
-      )
-      if (errorMessage) {
-        setError(errorMessage)
-      } else {
-        navigate('/signup/feedback/confirmation')
-      }
+      navigate('/signup/feedback/confirmation')
     }
   }
 

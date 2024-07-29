@@ -7,7 +7,8 @@ const userSlice = createSlice({
     registerToken: null,
     profile: null,
     contactPreferences: null,
-    registrations: null
+    registrations: null,
+    currentContact: null
   },
   reducers: {
     setAuthToken: (state, action) => {
@@ -25,8 +26,11 @@ const userSlice = createSlice({
     setRegistrations: (state, action) => {
       state.registrations = action.payload
     },
+    setCurrentContact: (state, action) => {
+      state.currentContact = action.payload
+    },
     addContactPreference: (state, action) => {
-      state.contactPreferences.push(action.payload)
+      state.contactPreferences = action.payload
     },
     // location data
     setLocationPostCode: (state, action) => {
@@ -61,6 +65,7 @@ export const {
   setProfile,
   setRegistrations,
   setContactPreferences,
+  setCurrentContact,
   addContactPreference,
   setLocationPostCode,
   setLocationSearchResults,

@@ -6,13 +6,13 @@ import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import Input from '../../gov-uk-components/Input'
-import { setProfile } from '../../redux/userSlice'
+import { setCurrentContact, setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { addUnverifiedContact } from '../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../services/validations/PhoneValidation'
 
-export default function AddMobileLayout ({
+export default function AddMobileLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -41,6 +41,7 @@ export default function AddMobileLayout ({
         dispatch(
           setProfile(addUnverifiedContact(session.profile, 'mobile', mobile))
         )
+        dispatch(setCurrentContact(normalisedPhoneNumber))
         NavigateToNextPage()
       }
     }

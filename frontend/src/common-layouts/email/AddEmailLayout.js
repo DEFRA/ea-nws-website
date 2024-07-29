@@ -6,12 +6,12 @@ import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import Input from '../../gov-uk-components/Input'
-import { setProfile } from '../../redux/userSlice'
+import { setCurrentContact, setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { addUnverifiedContact } from '../../services/ProfileServices'
 import { emailValidation } from '../../services/validations/EmailValidation'
 
-export default function AddEmailLayout ({ NavigateToNextPage }) {
+export default function AddEmailLayout({ NavigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [email, setEmail] = useState('')
@@ -36,6 +36,7 @@ export default function AddEmailLayout ({ NavigateToNextPage }) {
         dispatch(
           setProfile(addUnverifiedContact(session.profile, 'email', email))
         )
+        dispatch(setCurrentContact(email))
         NavigateToNextPage()
       }
     }

@@ -1,8 +1,10 @@
 import React from 'react'
+import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
+import { setCurrentContact } from '../../redux/userSlice'
 
-export default function ContactDetailsTable ({
+export default function ContactDetailsTable({
   contacts,
   contactTitle,
   contactType,
@@ -10,6 +12,8 @@ export default function ContactDetailsTable ({
   unregisteredContact
 }) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
   const handleButton = () => {
     switch (contactType) {
       case 'email address':
@@ -21,32 +25,38 @@ export default function ContactDetailsTable ({
       case 'telephone number':
         navigate('/managecontacts/add-landline')
         break
-      default:
-        break
     }
   }
 
-  const UnconfirmedLink = () => {
-    if (contactType === 'email address') {
-      return (
-        <>
-          <Link to='/managecontacts/validate-email' className='govuk-link'>
-            Confirm
-          </Link>
-        </>
-      )
-    } else if (contactType === 'mobile telephone number') {
-      return (
-        <>
-          <Link to='/managecontacts/validate-mobile' className='govuk-link'>
-            Confirm
-          </Link>
-        </>
-      )
+  const handleContactSelection = (contact, nextPage) => {
+    dispatch(setCurrentContact(contact))
+    navigate(nextPage)
+  }
+
+  const UnconfirmedLink = ({ contact }) => {
+    let nextPage = undefined
+
+    switch (contactType) {
+      case 'email address':
+        nextPage = '/managecontacts/validate-email'
+        break
+      case 'mobile telephone number':
+        nextPage = '/managecontacts/validate-mobile'
+        break
+      case 'telephone number':
+        nextPage = '/managecontacts/validate-landline'
+        break
     }
+
     return (
       <>
-        <Link to='/managecontacts/validate-landline' className='govuk-link'>
+        <Link
+          className='govuk-link'
+          onClick={(e) => {
+            e.preventDefault()
+            handleContactSelection(contact, nextPage)
+          }}
+        >
           Confirm
         </Link>
       </>
@@ -56,12 +66,19 @@ export default function ContactDetailsTable ({
   const MaximumReached = () => {
     if (contactType === 'email address') {
       return (
-        <div>You've reached maximum of 5 {contactType.toLowerCase()}es.<br /><br /></div>
+        <div>
+          You've reached maximum of 5 {contactType.toLowerCase()}es.
+          <br />
+          <br />
+        </div>
       )
     } else {
       return (
-        <div>You've reached maximum of 5 {contactType.toLowerCase()}s for {contactTitle.toLowerCase()}.<br /><br /></div>
-
+        <div>
+          You've reached maximum of 5 {contactType.toLowerCase()}s for{' '}
+          {contactTitle.toLowerCase()}.<br />
+          <br />
+        </div>
       )
     }
   }
@@ -69,40 +86,37 @@ export default function ContactDetailsTable ({
   return (
     <>
       <h3 className='govuk-heading-m'>{contactTitle}</h3>
-      {contacts.length > 0 || unregisteredContact.length > 0
-        ? (
-          <table className='govuk-table'>
-            <tbody className='govuk-table__body'>
-              {contacts.map((contact, index) => (
-                <tr key={index} className='govuk-table__row'>
-                  <td className='govuk-table__cell govuk-!-width-full'>
-                    {contact}
+      {contacts.length > 0 || unregisteredContact.length > 0 ? (
+        <table className='govuk-table'>
+          <tbody className='govuk-table__body'>
+            {contacts.map((contact, index) => (
+              <tr key={index} className='govuk-table__row'>
+                <td className='govuk-table__cell govuk-!-width-full'>
+                  {contact}
+                </td>
+                <td className='govuk-table__cell' />
+                <td className='govuk-table__cell' />
+                {contact !== primaryContact ? (
+                  <td className='govuk-table__cell'>
+                    <Link
+                      to='/managecontacts/confirm-delete'
+                      state={{
+                        type: contactType,
+                        contact
+                      }}
+                      className='govuk-link'
+                    >
+                      Remove
+                    </Link>
                   </td>
-                  <td className='govuk-table__cell' />
-                  <td className='govuk-table__cell' />
-                  {contact !== primaryContact
-                    ? (
-                      <td className='govuk-table__cell'>
-                        <Link
-                          to='/managecontacts/confirm-delete'
-                          state={{
-                            type: contactType,
-                            contact,
-                            navigateTo: '/managecontacts'
-                          }}
-                          className='govuk-link'
-                        >
-                          Remove
-                        </Link>
-                      </td>
-                      )
-                    : (
+                ) : (
                   // empty space in table without this
-                      <td className='govuk-table__cell' />
-                      )}
-                </tr>
-              ))}
-              {unregisteredContact.map((unregisteredContact, index) => (
+                  <td className='govuk-table__cell' />
+                )}
+              </tr>
+            ))}
+            {unregisteredContact.map((unregisteredContact, index) => (
+              <>
                 <tr key={index} className='govuk-table__row'>
                   <td className='govuk-table__cell govuk-!-width-full'>
                     {unregisteredContact}
@@ -113,7 +127,7 @@ export default function ContactDetailsTable ({
                     </strong>
                   </td>
                   <td className='govuk-table__cell'>
-                    <UnconfirmedLink />
+                    <UnconfirmedLink contact={unregisteredContact} />
                   </td>
                   <td className='govuk-table__cell'>
                     <Link
@@ -128,19 +142,20 @@ export default function ContactDetailsTable ({
                     </Link>
                   </td>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-          )
-        : null}
-      {contacts.length + unregisteredContact.length < 5
-        ? (<Button
-            className='govuk-button govuk-button--secondary'
-            text={'Add a ' + contactType}
-            onClick={handleButton}
-           />)
-        : <MaximumReached />}
-
+              </>
+            ))}
+          </tbody>
+        </table>
+      ) : null}
+      {contacts.length + unregisteredContact.length < 5 ? (
+        <Button
+          className='govuk-button govuk-button--secondary'
+          text={'Add a ' + contactType}
+          onClick={handleButton}
+        />
+      ) : (
+        <MaximumReached />
+      )}
     </>
   )
 }

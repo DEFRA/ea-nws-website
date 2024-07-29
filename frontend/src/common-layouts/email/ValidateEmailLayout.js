@@ -17,7 +17,7 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
-export default function ValidateEmailLayout ({
+export default function ValidateEmailLayout({
   NavigateToNextPage,
   SkipValidation,
   DifferentEmail,
@@ -33,9 +33,7 @@ export default function ValidateEmailLayout ({
   const [code, setCode] = useState('')
   const authToken = useSelector((state) => state.session.authToken)
   const session = useSelector((state) => state.session)
-  const email = session.profile.unverified.emails[0]
-    ? session.profile.unverified.emails[0]
-    : session.profile.emails[0]
+  const email = session.currentContact
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -161,39 +159,37 @@ export default function ValidateEmailLayout ({
                     text={buttonText}
                     onClick={handleSubmit}
                   />
-                  {changeSignIn
-                    ? (
-                      <>
-                        <Link
-                          onClick={differentEmail}
-                          className='govuk-link inline-link'
-                        >
-                          Enter a different email
-                        </Link>
-                        <br />
-                        <Link onClick={getNewCode} className='govuk-link'>
-                          Get a new code
-                        </Link>
-                      </>
-                      )
-                    : (
-                      <>
-                        <Link
-                          onClick={skipValidation}
-                          className='govuk-link inline-link'
-                        >
-                          Skip and confirm later
-                        </Link>
-                        <br />
-                        <Link onClick={getNewCode} className='govuk-link'>
-                          Get a new code
-                        </Link>
-                        <br /> <br />
-                        <Link onClick={differentEmail} className='govuk-link'>
-                          Enter a different email
-                        </Link>
-                      </>
-                      )}
+                  {changeSignIn ? (
+                    <>
+                      <Link
+                        onClick={differentEmail}
+                        className='govuk-link inline-link'
+                      >
+                        Enter a different email
+                      </Link>
+                      <br />
+                      <Link onClick={getNewCode} className='govuk-link'>
+                        Get a new code
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        onClick={skipValidation}
+                        className='govuk-link inline-link'
+                      >
+                        Skip and confirm later
+                      </Link>
+                      <br />
+                      <Link onClick={getNewCode} className='govuk-link'>
+                        Get a new code
+                      </Link>
+                      <br /> <br />
+                      <Link onClick={differentEmail} className='govuk-link'>
+                        Enter a different email
+                      </Link>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

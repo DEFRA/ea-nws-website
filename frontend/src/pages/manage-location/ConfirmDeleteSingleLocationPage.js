@@ -22,32 +22,12 @@ export default function ConfirmDeleteSingleLocationPage() {
       session.profile,
       location.state.coordinates
     )
-
-    /*const data = {
-      authToken: session.authToken,
-      profile: updatedProfile
-    }*/
-
-    // profile returned but we just need to make sure no error is returned
-    /*const { errorMessage } = await backendCall(
-      data,
-      'api/profile/update',
-      navigate
-    )*/
-    /*if (!errorMessage) {*/
     dispatch(setProfile(updatedProfile))
     navigate('/home', {
       state: {
         removedAddress: location.state.address
       }
     })
-    /*} else {
-      setError(
-        'An error occured trying to remove a location.  ' +
-          location.state.address +
-          ' has not been removed. Please try again later.'
-      )
-    }*/
   }
 
   return (

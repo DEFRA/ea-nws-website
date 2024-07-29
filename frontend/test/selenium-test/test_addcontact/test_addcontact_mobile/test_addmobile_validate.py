@@ -82,7 +82,7 @@ def test_addmobilevalidate_enteradifferentmobile(get_browser):
 
 def test_addMobilevalidate_enteradifferentMobile_correctMobile(get_browser):
     browser = setup_validatemobile_test(get_browser)  
-    assert "07700000000" in browser.page_source
+    assert "+447700000000" in browser.page_source
     browser.find_element(By.LINK_TEXT, "Enter a different mobile").click()
     time.sleep(3)
     assert browser.current_url == previous_page
@@ -90,6 +90,6 @@ def test_addMobilevalidate_enteradifferentMobile_correctMobile(get_browser):
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(3)
     assert browser.current_url == current_url
-    assert "07111111111" in browser.page_source
+    assert "+447111111111" in browser.page_source
 
 

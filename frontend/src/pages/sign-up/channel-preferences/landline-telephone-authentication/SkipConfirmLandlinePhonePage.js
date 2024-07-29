@@ -8,13 +8,13 @@ import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
 
 export default function SkipConfirmLandlinePhonePage () {
   const navigate = useNavigate()
-  
+
   const homePhone = useSelector(
     (state) => state.session.profile.unverified.homePhones[0]
   )
 
   function skipConfirm () {
-      navigate('/signup/accountname/add')
+    navigate('/signup/accountname/add')
   }
 
   return (

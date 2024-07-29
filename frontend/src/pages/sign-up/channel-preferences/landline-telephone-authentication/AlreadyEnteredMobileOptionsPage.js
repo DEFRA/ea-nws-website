@@ -10,7 +10,7 @@ import Input from '../../../../gov-uk-components/Input'
 import { setProfile } from '../../../../redux/userSlice'
 import { backendCall } from '../../../../services/BackendService'
 import {
-  addUnverifiedContact,
+  addUnverifiedContact
 } from '../../../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../../../services/formatters/NormalisePhoneNumber'
 import Radio from '../../../../gov-uk-components/Radio'
@@ -69,8 +69,6 @@ export default function AlreadyEnteredMobileOptions () {
     }
   }
 
-
-  
   const setLandlineprefernce = (event) => {
     setLandline(event.target.value)
     setIsOpen(false)
@@ -94,12 +92,10 @@ export default function AlreadyEnteredMobileOptions () {
         <main className='govuk-main-wrapper'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
-              {error? 
-              <ErrorSummary errorList={error === '' ? [] : [error]} />
-              :
-              <></>
-              }
-              
+              {error
+                ? <ErrorSummary errorList={error === '' ? [] : [error]} />
+                : <></>}
+
               <h2 class='govuk-heading-l'>
                 Which telephone number do you want to use to get
                 flood messages by phone call?
@@ -110,60 +106,58 @@ export default function AlreadyEnteredMobileOptions () {
                   hours a day
                 </p>
 
-                
-                   
-                      <div
-                        className={
+                <div
+                  className={
                             error && isOpen !== true
                               ? 'govuk-form-group govuk-form-group--error'
                               : 'govuk-form-group'
                           }
-                      >
-                        <fieldset className='govuk-fieldset'>
-                          {error && isOpen === false && <p className='govuk-error-message'>{error}</p>}
-                          <div className='govuk-radios' data-module='govuk-radios'>
-                            {mobileNumbers.map((mobileNumbers) => (
-                              <Radio
-                                key={mobileNumbers}
-                                id={mobileNumbers}
-                                name='feedbackRadios'
-                                label={mobileNumbers}
-                                type='radio'
-                                value={mobileNumbers}
-                                onChange={setLandlineprefernce}
-                              />
-                            ))}
+                >
+                  <fieldset className='govuk-fieldset'>
+                    {error && isOpen === false && <p className='govuk-error-message'>{error}</p>}
+                    <div className='govuk-radios' data-module='govuk-radios'>
+                      {mobileNumbers.map((mobileNumbers) => (
+                        <Radio
+                          key={mobileNumbers}
+                          id={mobileNumbers}
+                          name='feedbackRadios'
+                          label={mobileNumbers}
+                          type='radio'
+                          value={mobileNumbers}
+                          onChange={setLandlineprefernce}
+                        />
+                      ))}
 
-                            <Radio
-                              key='number'
-                              id='different number'
-                              name='feedbackRadios'
-                              label='A different number'
-                              type='radio'
-                              value='A different number'
-                              onChange={toggle}
-                            />
-
-                            <div className='govuk-radios__conditional govuk-radios__conditional--hidden'>
-                              {isOpen &&
-                                <Input
-                                  name='UK landline or mobile telephone number'
-                                  inputType='text'
-                                  error={error}
-                                  onChange={(val) => setLandline(val)}
-                                  className='govuk-input govuk-input--width-20'
-                                />}
-                            </div>
-                          </div>
-                        </fieldset>
-                      </div>
-                      <Button
-                        className='govuk-button'
-                        text='Continue'
-                        onClick={handleSubmit}
+                      <Radio
+                        key='number'
+                        id='different number'
+                        name='feedbackRadios'
+                        label='A different number'
+                        type='radio'
+                        value='A different number'
+                        onChange={toggle}
                       />
-                      <br />
-                  
+
+                      <div className='govuk-radios__conditional govuk-radios__conditional--hidden'>
+                        {isOpen &&
+                          <Input
+                            name='UK landline or mobile telephone number'
+                            inputType='text'
+                            error={error}
+                            onChange={(val) => setLandline(val)}
+                            className='govuk-input govuk-input--width-20'
+                          />}
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+                <Button
+                  className='govuk-button'
+                  text='Continue'
+                  onClick={handleSubmit}
+                />
+                <br />
+
               </div>
             </div>
           </div>

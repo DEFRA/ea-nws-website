@@ -10,7 +10,7 @@ import Radio from '../../../gov-uk-components/Radio'
 import TextArea from '../../../gov-uk-components/TextArea'
 import { backendCall } from '../../../services/BackendService'
 
-export default function FeedbackPage() {
+export default function FeedbackPage () {
   const navigate = useNavigate()
   const [feedbackPreference, setFeedbackPreference] = useState('')
   const [feedbackText, setFeedbackText] = useState('')

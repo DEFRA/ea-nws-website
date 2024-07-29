@@ -12,7 +12,7 @@ import { addUnverifiedContact } from '../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../services/validations/PhoneValidation'
 
-export default function AddMobileLayout({
+export default function AddMobileLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {

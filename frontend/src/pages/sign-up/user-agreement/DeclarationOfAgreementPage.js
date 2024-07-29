@@ -9,7 +9,7 @@ import Header from '../../../gov-uk-components/Header'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 import { setRegistrations } from '../../../redux/userSlice'
 
-export default function DeclarationOfAgreementPage() {
+export default function DeclarationOfAgreementPage () {
   const [isChecked, setIsChecked] = useState(false)
   const [error, setError] = useState('')
   const dispatch = useDispatch()

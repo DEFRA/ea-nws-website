@@ -10,7 +10,7 @@ import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import ContactDetailsTable from './ContactDetailsTable'
 
-export default function ManageContactsPage() {
+export default function ManageContactsPage () {
   const location = useLocation()
   const profile = useSelector((state) => state.session.profile)
   // user is not allowed to remove the primary email
@@ -70,26 +70,30 @@ export default function ManageContactsPage() {
         <div className='govuk-width-container body-container'>
           <PhaseBanner />
           <AccountNavigation currentPage={useLocation().pathname} />
-          {location.state !== null && location.state.removedContact ? (
-            <NotificationBanner
-              className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
-              title='Success'
-              heading={location.state.removedType + ' removed'}
-              text={location.state.removedContact}
-            />
-          ) : null}
-          {location.state !== null && location.state.unconfirmedtype ? (
-            <NotificationBanner
-              className='govuk-notification-banner govuk-!-margin-bottom-0 govuk-!-margin-top-4'
-              title='Important'
-              heading={
+          {location.state !== null && location.state.removedContact
+            ? (
+              <NotificationBanner
+                className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
+                title='Success'
+                heading={location.state.removedType + ' removed'}
+                text={location.state.removedContact}
+              />
+              )
+            : null}
+          {location.state !== null && location.state.unconfirmedtype
+            ? (
+              <NotificationBanner
+                className='govuk-notification-banner govuk-!-margin-bottom-0 govuk-!-margin-top-4'
+                title='Important'
+                heading={
                 'We cannot send flood messages to ' +
                 location.state.unconfirmedvalue +
                 ' yet'
               }
-              text={unconfirmedMessage(location.state.unconfirmedtype)}
-            />
-          ) : null}
+                text={unconfirmedMessage(location.state.unconfirmedtype)}
+              />
+              )
+            : null}
           <main className='govuk-main-wrapper'>
             <div className='govuk-grid-row'>
               <div className='govuk-grid-column-two-thirds'>
@@ -116,7 +120,7 @@ export default function ManageContactsPage() {
                       title='If you want to remove this contact'
                       text={detailsMessage}
                     />
-                  )}
+                )}
                 <ContactDetailsTable
                   contacts={profile.mobilePhones}
                   unregisteredContact={profile.unverified.mobilePhones}

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import LoadingSpinner from '../../custom-components/LoadingSpinner'
 import Details from '../../gov-uk-components/Details'
 import ErrorSummary from '../../gov-uk-components/ErrorSummary'
@@ -13,6 +13,7 @@ import { getFloodTargetArea } from '../../services/GetFloodTargetAreas'
 import { checkIfSelectedLocationExistsAlready } from '../../services/ProfileServices'
 
 export default function LocationSearchResultsLayout ({ continueToNextPage }) {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [error, setError] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
@@ -81,7 +82,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
                   <div className='govuk-grid-column-two-thirds'>
                     <div className='govuk-body'>
                       <Link
-                        to='/signup/register-location/search'
+                        onClick={() => navigate(-1)}
                         className='govuk-back-link'
                       >
                         Back
@@ -90,16 +91,18 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
                       <h1 className='govuk-heading-l govuk-!-margin-top-6'>
                         Select an address
                       </h1>
-                      <p className='govuk-body'>
-                        Postcode: {locationPostCode}
-                        {'   '}
-                        <Link
-                          to='/signup/register-location/search'
-                          className='govuk-link govuk-!-padding-left-5'
-                        >
-                          Change postcode
-                        </Link>
-                      </p>
+                      {locationPostCode && (
+                        <p className='govuk-body'>
+                          Postcode: {locationPostCode}
+                          {'   '}
+                          <Link
+                            onClick={() => navigate(-1)}
+                            className='govuk-link govuk-!-padding-left-5'
+                          >
+                            Change postcode
+                          </Link>
+                        </p>
+                      )}
                       <table className='govuk-table'>
                         <tbody className='govuk-table__body'>
                           <tr className='govuk-table__row'>

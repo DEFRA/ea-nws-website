@@ -21,11 +21,11 @@ def setup_accountpage_test(get_browser, session):
     link_xpath = f"//a[text()='Home page']"
     link_link = browser.find_element(By.XPATH, link_xpath)
     browser.execute_script("arguments[0].click();", link_link)
-    time.sleep(1)
+    time.sleep(3)
     account_xpath = f"//a[text()='Your account']"
     account_link = browser.find_element(By.XPATH, account_xpath)
     browser.execute_script("arguments[0].click();", account_link)
-    time.sleep(1)
+    time.sleep(3)
     return browser
 
 def test_accountpage_render(get_browser):

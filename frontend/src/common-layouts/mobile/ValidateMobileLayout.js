@@ -18,7 +18,7 @@ import { authCodeValidation } from '../../services/validations/AuthCodeValidatio
 import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
 import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 
-export default function ValidateMobileLayout ({
+export default function ValidateMobileLayout({
   NavigateToNextPage,
   SkipValidation,
   DifferentMobile
@@ -38,15 +38,7 @@ export default function ValidateMobileLayout ({
 
   const session = useSelector((state) => state.session)
 
-  const indexLastUnverifiedMobile =
-    session.profile.unverified.mobilePhones.length - 1
-  const indexLastMobile = session.profile.mobilePhones.length - 1
-
-  const mobile = session.profile.unverified.mobilePhones[
-    indexLastUnverifiedMobile
-  ]
-    ? session.profile.unverified.mobilePhones[indexLastUnverifiedMobile]
-    : session.profile.mobilePhones[indexLastMobile]
+  const mobile = session.currentContact
 
   const authToken = useSelector((state) => state.session.authToken)
 

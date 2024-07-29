@@ -18,7 +18,7 @@ import { authCodeValidation } from '../../services/validations/AuthCodeValidatio
 import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
 import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 
-export default function ValidateLandlineLayout ({
+export default function ValidateLandlineLayout({
   NavigateToNextPage,
   SkipValidation,
   DifferentHomePhone
@@ -37,15 +37,8 @@ export default function ValidateLandlineLayout ({
     setCodeResent(false)
   }, [error])
 
-  const indexLastUnverifiedHomePhone =
-    session.profile.unverified.homePhones.length - 1
-  const indexLastHomePhone = session.profile.homePhones.length - 1
+  const homePhone = session.currentContact
 
-  const homePhone = session.profile.unverified.homePhones[
-    indexLastUnverifiedHomePhone
-  ]
-    ? session.profile.unverified.homePhones[indexLastUnverifiedHomePhone]
-    : session.profile.homePhones[indexLastHomePhone]
   const authToken = session.authToken
 
   const handleSubmit = async (event) => {

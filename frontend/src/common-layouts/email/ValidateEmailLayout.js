@@ -19,7 +19,7 @@ import { authCodeValidation } from '../../services/validations/AuthCodeValidatio
 import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
 import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 
-export default function ValidateEmailLayout ({
+export default function ValidateEmailLayout({
   NavigateToNextPage,
   SkipValidation,
   DifferentEmail,
@@ -35,9 +35,7 @@ export default function ValidateEmailLayout ({
   const [code, setCode] = useState('')
   const authToken = useSelector((state) => state.session.authToken)
   const session = useSelector((state) => state.session)
-  const email = session.profile.unverified.emails[0]
-    ? session.profile.unverified.emails[0]
-    : session.profile.emails[0]
+  const email = session.currentContact
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
@@ -123,7 +121,10 @@ export default function ValidateEmailLayout ({
         <Header />
         <div className='govuk-width-container body-container'>
           <PhaseBanner />
-          <Link onClick={backLink} className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
+          <Link
+            onClick={backLink}
+            className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'
+          >
             Back
           </Link>
           <main className='govuk-main-wrapper'>
@@ -145,7 +146,8 @@ export default function ValidateEmailLayout ({
                   <p className='govuk-body govuk-!-margin-bottom-5'>
                     We've sent an email with a code to:
                     <InsetText text={email} />
-                    {changeSignIn ? 'Enter' : 'Use'} the code within 4 hours or it will expire.
+                    {changeSignIn ? 'Enter' : 'Use'} the code within 4 hours or
+                    it will expire.
                   </p>
                   <Input
                     className='govuk-input govuk-input--width-10'
@@ -159,39 +161,37 @@ export default function ValidateEmailLayout ({
                     text={buttonText}
                     onClick={handleSubmit}
                   />
-                  {changeSignIn
-                    ? (
-                      <>
-                        <Link
-                          onClick={differentEmail}
-                          className='govuk-link inline-link'
-                        >
-                          Enter a different email
-                        </Link>
-                        <br />
-                        <Link onClick={getNewCode} className='govuk-link'>
-                          Get a new code
-                        </Link>
-                      </>
-                      )
-                    : (
-                      <>
-                        <Link
-                          onClick={skipValidation}
-                          className='govuk-link inline-link'
-                        >
-                          Skip and confirm later
-                        </Link>
-                        <br />
-                        <Link onClick={getNewCode} className='govuk-link'>
-                          Get a new code
-                        </Link>
-                        <br /> <br />
-                        <Link onClick={differentEmail} className='govuk-link'>
-                          Enter a different email
-                        </Link>
-                      </>
-                      )}
+                  {changeSignIn ? (
+                    <>
+                      <Link
+                        onClick={differentEmail}
+                        className='govuk-link inline-link'
+                      >
+                        Enter a different email
+                      </Link>
+                      <br />
+                      <Link onClick={getNewCode} className='govuk-link'>
+                        Get a new code
+                      </Link>
+                    </>
+                  ) : (
+                    <>
+                      <Link
+                        onClick={skipValidation}
+                        className='govuk-link inline-link'
+                      >
+                        Skip and confirm later
+                      </Link>
+                      <br />
+                      <Link onClick={getNewCode} className='govuk-link'>
+                        Get a new code
+                      </Link>
+                      <br /> <br />
+                      <Link onClick={differentEmail} className='govuk-link'>
+                        Enter a different email
+                      </Link>
+                    </>
+                  )}
                 </div>
               </div>
             </div>

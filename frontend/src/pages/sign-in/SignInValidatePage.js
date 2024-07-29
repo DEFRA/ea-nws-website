@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
 import ErrorSummary from '../../gov-uk-components/ErrorSummary'
@@ -28,7 +28,7 @@ export default function SignInValidatePage () {
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
 
-  //if error remove code sent notification
+  // if error remove code sent notification
   useEffect(() => {
     setCodeResent(false)
   }, [error])
@@ -62,7 +62,7 @@ export default function SignInValidatePage () {
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const data = { email: location.state.email}
+    const data = { email: location.state.email }
     const { errorMessage } = await backendCall(data, 'api/sign_in', navigate)
 
     if (errorMessage !== null) {
@@ -83,15 +83,13 @@ export default function SignInValidatePage () {
             <Header />
             <div class='govuk-width-container body-container'>
               <Link to='/signin' className='govuk-back-link'>Back</Link>
-              {codeResent
-                &&
-                  <NotificationBanner
-                    className='govuk-notification-banner govuk-notification-banner--success'
-                    title='Success'
-                    text={'New code sent at ' + codeResentTime}
-                  />
-              }
-              {error  && <ErrorSummary errorList={[error]} />}
+              {codeResent &&
+                <NotificationBanner
+                  className='govuk-notification-banner govuk-notification-banner--success'
+                  title='Success'
+                  text={'New code sent at ' + codeResentTime}
+                />}
+              {error && <ErrorSummary errorList={[error]} />}
               <h2 class='govuk-heading-l'>Check your email</h2>
               <div class='govuk-body'>
                 We've sent a code to:
@@ -116,7 +114,7 @@ export default function SignInValidatePage () {
             </div>
             <Footer />
           </div>
-        )}
+          )}
     </>
   )
 }

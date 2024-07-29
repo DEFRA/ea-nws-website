@@ -25,7 +25,7 @@ export default function SignUpValidationPage () {
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
 
-  //if error remove code sent notification
+  // if error remove code sent notification
   useEffect(() => {
     setCodeResent(false)
   }, [error])
@@ -70,8 +70,7 @@ export default function SignUpValidationPage () {
 
     if (errorMessage !== null) {
       setError(errorMessage)
-    }
-    else{
+    } else {
       setCodeResent(true)
       setCodeResentTime(new Date().toLocaleTimeString())
       setCodeExpired(false)
@@ -83,26 +82,26 @@ export default function SignUpValidationPage () {
       {codeExpired
         ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
         : (
-          <div className="page-container">
+          <div className='page-container'>
             <Header />
             <div className='govuk-width-container body-container'>
               <PhaseBanner />
-                <div className="govuk-grid-row">
-                  <div className="govuk-grid-column-two-thirds">
-                    <Link to='/signup' className='govuk-back-link'>Back</Link>
-                      {codeResent &&
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-two-thirds'>
+                  <Link to='/signup' className='govuk-back-link'>Back</Link>
+                  {codeResent &&
                     <NotificationBanner
                       className='govuk-notification-banner govuk-notification-banner--success'
                       title='Success'
                       text={'New code sent at ' + codeResentTime}
                     />}
-                    {error && <ErrorSummary errorList={[error]} />}
-                    <h2 className='govuk-heading-l'>Check your email</h2>
-                    <div className='govuk-body'>
-                      <p>You need to confirm your email address.</p>
-                      <p className='govuk-!-margin-top-6'>We've sent an email with a code to:</p>
+                  {error && <ErrorSummary errorList={[error]} />}
+                  <h2 className='govuk-heading-l'>Check your email</h2>
+                  <div className='govuk-body'>
+                    <p>You need to confirm your email address.</p>
+                    <p className='govuk-!-margin-top-6'>We've sent an email with a code to:</p>
                     <InsetText text={loginEmail} />
-                      Enter the code within 4 hours or it will expire.
+                    Enter the code within 4 hours or it will expire.
                     <div className='govuk-!-margin-top-6'>
                       <Input
                         className='govuk-input govuk-input--width-10'
@@ -146,7 +145,7 @@ export default function SignUpValidationPage () {
             </div>
             <Footer />
           </div>
-        )}
+          )}
     </>
   )
 }

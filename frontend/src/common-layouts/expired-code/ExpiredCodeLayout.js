@@ -9,17 +9,19 @@ export default function ExpiredCodeLayout ({ getNewCode }) {
 
   return (
     <>
-      <Header />
-      <div className='govuk-width-container'>
-        <PhaseBanner />
-        <Link onClick={() => navigate(-1)} className='govuk-back-link'>
-          Back
-        </Link>
-        <h2 className='govuk-heading-l'>Your code has expired</h2>
-        <Button text='Get a new code' className='govuk-button' onClick={getNewCode} />
+      <div className='page-container'>
+        <Header />
+        <div className='govuk-width-container body-container'>
+          <PhaseBanner />
+          <Link onClick={() => navigate(-1)} className='govuk-back-link'>
+            Back
+          </Link>
+          <h2 className='govuk-heading-l'>Your code has expired</h2>
+          <Button text='Get a new code' className='govuk-button' onClick={getNewCode} />
        &nbsp; &nbsp;
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   )
 }

@@ -11,7 +11,7 @@ import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { removeLocationFromCoordinates } from '../../services/ProfileServices'
 
-export default function ConfirmDeleteSingleLocationPage() {
+export default function ConfirmDeleteSingleLocationPage () {
   const location = useLocation()
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -19,7 +19,7 @@ export default function ConfirmDeleteSingleLocationPage() {
   const [error, setError] = useState('')
 
   const handleSubmit = async () => {
-    let updatedProfile = removeLocationFromCoordinates(
+    const updatedProfile = removeLocationFromCoordinates(
       session.profile,
       location.state.coordinates
     )

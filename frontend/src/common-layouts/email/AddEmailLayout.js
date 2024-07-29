@@ -15,7 +15,7 @@ import {
 } from '../../services/ProfileServices'
 import { emailValidation } from '../../services/validations/EmailValidation'
 
-export default function AddEmailLayout({ NavigateToNextPage }) {
+export default function AddEmailLayout ({ NavigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [email, setEmail] = useState('')

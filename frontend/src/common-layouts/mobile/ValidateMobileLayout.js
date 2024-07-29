@@ -18,7 +18,7 @@ import { authCodeValidation } from '../../services/validations/AuthCodeValidatio
 import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
 import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 
-export default function ValidateMobileLayout({
+export default function ValidateMobileLayout ({
   NavigateToNextPage,
   SkipValidation,
   DifferentMobile
@@ -31,7 +31,7 @@ export default function ValidateMobileLayout({
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
 
-  //if error remove code sent notification
+  // if error remove code sent notification
   useEffect(() => {
     setCodeResent(false)
   }, [error])
@@ -54,10 +54,9 @@ export default function ValidateMobileLayout({
         navigate
       )
       if (errorMessage !== null) {
-        if (errorMessage === 'The code you have entered has expired - please request a new code'){
+        if (errorMessage === 'The code you have entered has expired - please request a new code') {
           setCodeExpired(true)
-        }
-        else{
+        } else {
           setError(errorMessage)
         }
       } else {
@@ -77,8 +76,7 @@ export default function ValidateMobileLayout({
     )
     if (errorMessage !== null) {
       setError(errorMessage)
-    }
-    else{
+    } else {
       setCodeResent(true)
       setCodeResentTime(new Date().toLocaleTimeString())
       setCodeExpired(false)
@@ -104,65 +102,67 @@ export default function ValidateMobileLayout({
 
   return (
     <>
-    {codeExpired ? (<ExpiredCodeLayout getNewCode={getNewCode} />) : (
-      <div className='page-container'>
-        <Header />
-        <div class='govuk-width-container body-container'>
-          <Link to='/managecontacts/add-mobile' className='govuk-back-link'>
-            Back
-          </Link>
-          <main className='govuk-main-wrapper'>
-            <div className='govuk-grid-row'>
-              <div className='govuk-grid-column-two-thirds'>
-                {codeResent && <NotificationBanner 
-                  className='govuk-notification-banner govuk-notification-banner--success'
-                  title='Success'
-                  text={'New code sent at ' + codeResentTime}
-                />}
-                <ErrorSummary errorList={error === '' ? [] : [error]} />
-                <h2 class='govuk-heading-l'>Check your mobile phone</h2>
-                <div class='govuk-body'>
-                  We've sent a text with a code to:
-                  <InsetText text={mobile} />
-                  Use the code within 4 hours or it will expire.
-                  <br /> <br />
-                  <Input
-                    name='Enter code'
-                    inputType='text'
-                    error={error}
-                    onChange={(val) => setCode(val)}
-                  />
-                  <Button
-                    className='govuk-button'
-                    text='Continue'
-                    onClick={handleSubmit}
-                  />
-                  <Link
-                    onClick={skipValidation}
-                    className='govuk-link'
-                    style={{
-                      display: 'inline-block',
-                      padding: '8px 10px 7px'
-                    }}
-                  >
-                    Skip and confirm later
-                  </Link>
-                  <br />
-                  <Link onClick={getNewCode} className='govuk-link'>
-                    Get a new code
-                  </Link>
-                  <br /> <br />
-                  <Link onClick={differentMobile} className='govuk-link'>
-                    Enter a different mobile
-                  </Link>
+      {codeExpired
+        ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
+        : (
+          <div className='page-container'>
+            <Header />
+            <div class='govuk-width-container body-container'>
+              <Link to='/managecontacts/add-mobile' className='govuk-back-link'>
+                Back
+              </Link>
+              <main className='govuk-main-wrapper'>
+                <div className='govuk-grid-row'>
+                  <div className='govuk-grid-column-two-thirds'>
+                    {codeResent && <NotificationBanner
+                      className='govuk-notification-banner govuk-notification-banner--success'
+                      title='Success'
+                      text={'New code sent at ' + codeResentTime}
+                                   />}
+                    <ErrorSummary errorList={error === '' ? [] : [error]} />
+                    <h2 class='govuk-heading-l'>Check your mobile phone</h2>
+                    <div class='govuk-body'>
+                      We've sent a text with a code to:
+                      <InsetText text={mobile} />
+                      Use the code within 4 hours or it will expire.
+                      <br /> <br />
+                      <Input
+                        name='Enter code'
+                        inputType='text'
+                        error={error}
+                        onChange={(val) => setCode(val)}
+                      />
+                      <Button
+                        className='govuk-button'
+                        text='Continue'
+                        onClick={handleSubmit}
+                      />
+                      <Link
+                        onClick={skipValidation}
+                        className='govuk-link'
+                        style={{
+                          display: 'inline-block',
+                          padding: '8px 10px 7px'
+                        }}
+                      >
+                        Skip and confirm later
+                      </Link>
+                      <br />
+                      <Link onClick={getNewCode} className='govuk-link'>
+                        Get a new code
+                      </Link>
+                      <br /> <br />
+                      <Link onClick={differentMobile} className='govuk-link'>
+                        Enter a different mobile
+                      </Link>
+                    </div>
+                  </div>
                 </div>
-              </div>
+              </main>
             </div>
-          </main>
-        </div>
-        <Footer />
-      </div>
-    )}
+            <Footer />
+          </div>
+          )}
     </>
   )
 }

@@ -23,33 +23,38 @@ export default function CheckYourAnswersPage() {
 
   return (
     <>
-      <Header />
-      <div className='govuk-width-container'>
-        <PhaseBanner />
-        <Link to='/declaration' className='govuk-back-link'>
-          Back
-        </Link>
-        <main className='govuk-main-wrapper'>
-          <div className='govuk-grid-row '>
-            <div className='govuk-grid-column-three-quarters'>
-              <h2 className='govuk-heading-l'>Check your answers</h2>
-              <LocationReviewTable locations={profile.pois} />
-              <FloodMessageReviewTable registration={registration} />
-              <ContactReviewTable
-                profile={profile}
-                contactPreferences={contactPreferences}
-              />
-              <AccountDetailsTable profile={profile} />
+      <div className='page-container'>
+        <Header />
+        <div className='govuk-width-container body-container'>
+          <PhaseBanner />
+          <Link
+            to='/declaration'
+            className='govuk-back-link govuk-!-padding-top-0'
+          >
+            Back
+          </Link>
+          <main className='govuk-main-wrapper'>
+            <div className='govuk-grid-row '>
+              <div className='govuk-grid-column-three-quarters'>
+                <h2 className='govuk-heading-l'>Check your answers</h2>
+                <LocationReviewTable locations={profile.pois} />
+                <FloodMessageReviewTable registration={registration} />
+                <ContactReviewTable
+                  profile={profile}
+                  contactPreferences={contactPreferences}
+                />
+                <AccountDetailsTable profile={profile} />
+              </div>
             </div>
-          </div>
-          <Button
-            onClick={handleButton}
-            className='govuk-button'
-            text='Finish sign up'
-          />
-        </main>
+            <Button
+              onClick={handleButton}
+              className='govuk-button'
+              text='Finish sign up'
+            />
+          </main>
+        </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   )
 }

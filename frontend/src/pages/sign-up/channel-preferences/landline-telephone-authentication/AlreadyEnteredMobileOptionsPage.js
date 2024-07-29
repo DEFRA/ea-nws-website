@@ -111,6 +111,7 @@ export default function AlreadyEnteredMobileOptions () {
                     {validationError && <p className='govuk-error-message'>{validationError}</p>}
                     {mobileNumbers.map((mobileNumbers) => (
                       <Radio
+                        key={mobileNumbers}
                         label={mobileNumbers}
                         value={mobileNumbers}
                         id={mobileNumbers}

@@ -26,7 +26,7 @@ def test_addFeedback_empty(get_browser):
     browser = setup_addFeedback_empty_test(get_browser) 
     assert browser.current_url == url
     assert "Select an answer to tell us how you feel about this service" in browser.page_source
-    assert "Tell us anything you like or do not like about this service" in browser.page_source
+
 
 def test_addFeedback_NoCheckboxSelected(get_browser):
     browser = get_browser

@@ -1,3 +1,4 @@
+import ConfirmDeleteContactDetailsPage from '../../pages/manage-location/ConfirmDeleteSingleLocationPage'
 import LocationInAlertAreaPage from '../../pages/manage-locations/add-location/LocationInAlertAreaPage'
 import LocationInSevereWarningAreaPage from '../../pages/manage-locations/add-location/LocationInSevereWarningAreaPage'
 import LocationNotNearDangerPage from '../../pages/manage-locations/add-location/LocationNotNearDangerPage'
@@ -26,6 +27,11 @@ const manageLocationRoutes = [
   {
     path: '/manage-locations/add/no-danger',
     component: <LocationNotNearDangerPage />
+  },
+  // remove a location
+  {
+    path: '/manage-locations/remove',
+    component: <ConfirmDeleteContactDetailsPage />
   }
 ]
 

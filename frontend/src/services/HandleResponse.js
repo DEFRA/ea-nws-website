@@ -9,6 +9,8 @@ const handleResponse = (response, navigate) => {
       return navigate('/not-found')
     case 500:
       return { data: null, errorMessage: response.errorMessage }
+    case 999:
+      return { data: null, errorMessage: 'Something went wrong, please try again' }
   }
 }
 

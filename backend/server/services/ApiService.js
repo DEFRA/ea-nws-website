@@ -1,4 +1,5 @@
 const axios = require('axios')
+const https = require('https')
 const getSecretKeyValue = require('./SecretsManager')
 const apiToFrontendError = require('./ApiToFrontendError')
 
@@ -17,6 +18,9 @@ const apiCall = async (data, path) => {
       headers: {
         'Content-Type': 'application/json'
       },
+      httpsAgent: new https.Agent({
+        rejectUnauthorized: false
+      }),
       withCredentials: false
     })
 
@@ -36,13 +40,16 @@ const apiCall = async (data, path) => {
           status: status,
           errorMessage: getErrorMessage(path, error.response.data)
         }
+      } else {
+        return {
+          status: 999
+        }
       }
     } else if (error.request) {
       // no response was received - probably need to return
       // returning an error so frontend can handle
       return {
-        status: error.request,
-        errorMessage: 'Request: '+error.request.data
+        status: 999
       }
     }
   }

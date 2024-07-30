@@ -28,6 +28,7 @@
     "govuk-frontend": "^4.8.0",
     "hapi-k8s-health": "^1.1.1",
     "hapi-pino": "9.4.0",
+    "https": "^1.0.0",
     "node-fetch": "^2.7.0",
     "node-sass": "^9.0.0",
     "nodemon": "^3.1.4",

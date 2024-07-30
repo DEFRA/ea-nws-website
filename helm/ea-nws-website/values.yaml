@@ -146,4 +146,4 @@ tolerations: []
 
 affinity: {}
 
-dnsPolicy: Default
+dnsPolicy: ClusterFirst

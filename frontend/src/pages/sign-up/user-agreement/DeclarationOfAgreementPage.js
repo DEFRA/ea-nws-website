@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
 import Checkbox from '../../../gov-uk-components/CheckBox'
@@ -12,6 +12,8 @@ import { setRegistrations } from '../../../redux/userSlice'
 export default function DeclarationOfAgreementPage () {
   const [isChecked, setIsChecked] = useState(false)
   const [error, setError] = useState('')
+  const session = useSelector((state) => state.session)
+  const profile = session.profile
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const handleSubmit = () => {
@@ -19,22 +21,14 @@ export default function DeclarationOfAgreementPage () {
       setError('Tick to confirm you agree with the terms and conditions')
     } else {
       const registrations = {
-        partner: {
-          id: '4',
-          name: 'NWS England',
-          description: 'We work to create better places for people and...',
-          longName: 'Environment Agency - England',
-          logoUrl: 'logo.png',
-          backgroundUrl: 'http://assets.gov.uk',
-          urlSlug: 'england'
-        },
-        registrationDate: '1683741990',
         params: {
-          channelVoiceEnabled: true,
-          channelSmsEnabled: true,
-          channelEmailEnabled: true,
+          channelVoiceEnabled: profile.homePhones.length !== 0 ,
+          channelSmsEnabled: profile.mobilePhones.length !== 0,
+          channelEmailEnabled: profile.emails.length !== 0,
+          // What is that?
           partnerCanView: false,
           partnerCanEdit: false,
+          // TODO
           categories: [
             {
               domain: 'NFWS',

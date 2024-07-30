@@ -23,15 +23,15 @@ def setup_changeemail_test(get_browser, session):
     link_xpath = f"//a[text()='Home page']"
     link_link = browser.find_element(By.XPATH, link_xpath)
     browser.execute_script("arguments[0].click();", link_link)
-    time.sleep(1)
+    time.sleep(3)
     account_xpath = f"//a[text()='Your account']"
     account_link = browser.find_element(By.XPATH, account_xpath)
     browser.execute_script("arguments[0].click();", account_link)
-    time.sleep(1)
+    time.sleep(3)
     changeemail_xpath = f"//a[@href='/account/change-email']"
     changeemail_link = browser.find_element(By.XPATH, changeemail_xpath)
     browser.execute_script("arguments[0].click();", changeemail_link)
-    time.sleep(1)
+    time.sleep(3)
     return browser
 
 def test_changeemail_render(get_browser):
@@ -44,11 +44,11 @@ def test_changeemail_empty(get_browser):
     input_xpath = f"//input[@name='New email address']"
     input_element = browser.find_element(By.XPATH, input_xpath)
     input_element.clear()
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     button_element = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", button_element)
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == url
     assert " Enter your email address" in browser.page_source
     error_xpath = f"//div[contains(@class, 'govuk-error-summary')]"
@@ -59,11 +59,11 @@ def test_changeemail_invalid_email(get_browser):
     input_xpath = f"//input[@name='New email address']"
     input_element = browser.find_element(By.XPATH, input_xpath)
     input_element.send_keys("invalid")
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     button_element = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", button_element)
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == url
     assert "Enter an email address in the correct format, like name@example.com" in browser.page_source
     error_xpath = f"//div[contains(@class, 'govuk-error-summary')]"
@@ -74,11 +74,11 @@ def test_changeemail_same_email(get_browser):
     input_xpath = f"//input[@name='New email address']"
     input_element = browser.find_element(By.XPATH, input_xpath)
     input_element.send_keys("matthew.pepper@gmail.com")
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     button_element = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", button_element)
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == url
     assert "Enter a different email address to the one you currently sign in with" in browser.page_source
     error_xpath = f"//div[contains(@class, 'govuk-error-summary')]"
@@ -89,11 +89,11 @@ def test_changeemail_duplicate_email(get_browser):
     input_xpath = f"//input[@name='New email address']"
     input_element = browser.find_element(By.XPATH, input_xpath)
     input_element.send_keys("duplicate@email.com")
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     button_element = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", button_element)
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == url
     assert "You have already registered this email address on your account - you cannot enter it again" in browser.page_source
     error_xpath = f"//div[contains(@class, 'govuk-error-summary')]"
@@ -104,11 +104,11 @@ def setup_changeemail_valid(get_browser):
     input_xpath = f"//input[@name='New email address']"
     input_element = browser.find_element(By.XPATH, input_xpath)
     input_element.send_keys("John.Smith@gmail.com")
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     button_element = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", button_element)
-    time.sleep(1)
+    time.sleep(3)
     return browser
 
 def test_changeemail_valid_validate_render(get_browser):
@@ -121,11 +121,11 @@ def test_changeemail_valid_short_code(get_browser):
     input_xpath = f"//input[@name='Enter code']"
     input_element = browser.find_element(By.XPATH, input_xpath)
     input_element.send_keys("123")
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     button_element = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", button_element)
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == nextPage
     assert "Code must be 6 numbers" in browser.page_source
     error_xpath = f"//div[contains(@class, 'govuk-error-summary')]"
@@ -136,11 +136,11 @@ def test_changeemail_valid_empty_code(get_browser):
     input_xpath = f"//input[@name='Enter code']"
     input_element = browser.find_element(By.XPATH, input_xpath)
     input_element.send_keys("")
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     button_element = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", button_element)
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == nextPage
     assert "Enter code" in browser.page_source
     error_xpath = f"//div[contains(@class, 'govuk-error-summary')]"
@@ -151,11 +151,11 @@ def test_changeemail_valid_valid_code(get_browser):
     input_xpath = f"//input[@name='Enter code']"
     input_element = browser.find_element(By.XPATH, input_xpath)
     input_element.send_keys("123456")
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     button_element = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", button_element)
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == previousPage
     assert "Email address updated" in browser.page_source
     success_xpath = f"//div[contains(@class, 'govuk-notification-banner--success')]"
@@ -166,7 +166,7 @@ def test_changeemail_valid_different_email(get_browser):
     different_xpath = f"//a[text()='Enter a different email']"
     different_element = browser.find_element(By.XPATH, different_xpath)
     browser.execute_script("arguments[0].click();", different_element)
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == url
 
 def test_changeemail_valid_back(get_browser):
@@ -174,7 +174,7 @@ def test_changeemail_valid_back(get_browser):
     back_xpath = f"//a[contains(@class, 'govuk-back-link')]"
     back_element = browser.find_element(By.XPATH, back_xpath)
     browser.execute_script("arguments[0].click();", back_element)
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == url
 
 def test_changeemail_cancel(get_browser):
@@ -182,7 +182,7 @@ def test_changeemail_cancel(get_browser):
     cancel_xpath = f"//a[text()='Cancel']"
     cancel_element = browser.find_element(By.XPATH, cancel_xpath)
     browser.execute_script("arguments[0].click();", cancel_element)
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == previousPage
 
 def test_changeemail_back(get_browser):
@@ -190,5 +190,5 @@ def test_changeemail_back(get_browser):
     back_xpath = f"//a[contains(@class, 'govuk-back-link')]"
     back_element = browser.find_element(By.XPATH, back_xpath)
     browser.execute_script("arguments[0].click();", back_element)
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == previousPage

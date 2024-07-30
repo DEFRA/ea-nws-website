@@ -4,6 +4,7 @@ export const backendCall = async (data, path, navigate) => {
   let responseData
   const domain = process.env.REACT_APP_API_URL
   const url = domain ? domain + '/' + path : '/' + path
+
   try {
     const response = await fetch(url, {
       method: 'POST',
@@ -14,6 +15,7 @@ export const backendCall = async (data, path, navigate) => {
       },
       body: JSON.stringify(data)
     })
+
     responseData = await response.json()
   } catch (error) {
     console.log('ERROR: ', error)

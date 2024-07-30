@@ -1,9 +1,20 @@
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import ValidateLandlineLayout from '../../../../../common-layouts/landline/ValidateLandlineLayout'
-export default function ValidateLandlineContactPage () {
+import { addContactPreference } from '../../../../../redux/userSlice'
+
+export default function ValidateLandlineContactPage() {
+  const dispatch = useDispatch()
+
+  const contactPreferences = useSelector(
+    (state) => state.session.contactPreferences
+  )
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {
+    if (!contactPreferences.includes('PhoneCall')) {
+      dispatch(addContactPreference('PhoneCall'))
+    }
     navigate('/signup/review')
   }
   const SkipValidation = () => {

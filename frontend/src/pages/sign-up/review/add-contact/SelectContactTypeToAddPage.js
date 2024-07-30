@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../../gov-uk-components/Button'
 import ErrorSummary from '../../../../gov-uk-components/ErrorSummary'
@@ -7,37 +6,28 @@ import Footer from '../../../../gov-uk-components/Footer'
 import Header from '../../../../gov-uk-components/Header'
 import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
 import Radio from '../../../../gov-uk-components/Radio'
-import { addContactPreference } from '../../../../redux/userSlice'
-export default function SelectContactTypeToAddPage () {
+export default function SelectContactTypeToAddPage() {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const [selectedContactType, setSelectedContactType] = useState('')
   const [error, setError] = useState('')
-  const contactPreferences = useSelector((state) => state.session.contactPreferences)
   const contactOptions = [
     { label: 'Email Address', value: 'Email Address' },
     { label: 'Mobile Number (texts)', value: 'Mobile Number (texts)' },
-    { label: 'Telephone Number (phone calls)', value: 'Telephone Number (phone calls)' }
+    {
+      label: 'Telephone Number (phone calls)',
+      value: 'Telephone Number (phone calls)'
+    }
   ]
 
   const handleSubmit = () => {
     switch (selectedContactType) {
       case 'Mobile Number (texts)':
-        if (!contactPreferences.includes('Text')) {
-          dispatch(addContactPreference('Text'))
-        }
         navigate('/signup/review/add-mobile')
         break
       case 'Email Address':
-        if (!contactPreferences.includes('Email Address')) {
-          dispatch(addContactPreference('Email Address'))
-        }
         navigate('/signup/review/add-email')
         break
       case 'Telephone Number (phone calls)':
-        if (!contactPreferences.includes('PhoneCall')) {
-          dispatch(addContactPreference('PhoneCall'))
-        }
         navigate('/signup/review/add-landline')
         break
       default:

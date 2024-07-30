@@ -19,7 +19,6 @@ import { authCodeValidation } from '../../services/validations/AuthCodeValidatio
 import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
 
 export default function ValidateMobileLayout ({
-export default function ValidateMobileLayout ({
   NavigateToNextPage,
   SkipValidation,
   DifferentMobile,
@@ -148,7 +147,7 @@ export default function ValidateMobileLayout ({
                       title='Success'
                       text={'New code sent at ' + codeResentTime}
                                    />}
-                    {error && <ErrorSummary errorList={[error]} />}
+                    {error && <ErrorSummary errorList={[error]} />} 
                     <h2 class='govuk-heading-l'>Check your mobile phone</h2>
                     <div class='govuk-body'>
                       We've sent a text with a code to:

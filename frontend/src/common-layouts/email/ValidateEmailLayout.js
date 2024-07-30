@@ -7,6 +7,7 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import Input from '../../gov-uk-components/Input'
 import InsetText from '../../gov-uk-components/InsetText'
+import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
@@ -17,9 +18,7 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
-import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 
-export default function ValidateEmailLayout ({
 export default function ValidateEmailLayout ({
   NavigateToNextPage,
   SkipValidation,

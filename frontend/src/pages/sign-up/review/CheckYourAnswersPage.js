@@ -17,7 +17,6 @@ export default function CheckYourAnswersPage () {
   const navigate = useNavigate()
 
   const handleButton = () => {
-    console.log('Button clicked, functionality to implement')
     navigate('/signup/success')
   }
 

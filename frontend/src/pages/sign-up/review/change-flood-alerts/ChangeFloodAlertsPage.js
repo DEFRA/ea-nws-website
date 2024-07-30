@@ -8,7 +8,6 @@ export default function ChangeFloodAlertPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const pois = useSelector((state) => state.session.profile.pois)
-  console.log(pois)
   dispatch(setSelectedLocation(pois[0]))
   const continueToNextPage = () => {
     navigate('/signup/review')

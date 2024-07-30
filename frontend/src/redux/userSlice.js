@@ -11,9 +11,11 @@ const userSlice = createSlice({
     locationPostCode: null,
     locationSearchResults: null,
     selectedLocation: null,
-    selectedFloodArea: null,
+    selectedFloodWarningArea: null,
+    selectedFloodAlertArea: null,
     showOnlySelectedFloodArea: null,
-    additionalAlerts: null
+    additionalAlerts: null,
+    nearbyTargetAreaFlow: null
   },
   reducers: {
     setAuthToken: (state, action) => {
@@ -41,14 +43,20 @@ const userSlice = createSlice({
     setSelectedLocation: (state, action) => {
       state.selectedLocation = action.payload
     },
-    setSelectedFloodArea: (state, action) => {
-      state.selectedFloodArea = action.payload
+    setSelectedFloodWarningArea: (state, action) => {
+      state.selectedFloodWarningArea = action.payload
+    },
+    setSelectedFloodAlertArea: (state, action) => {
+      state.selectedFloodAlertArea = action.payload
     },
     setShowOnlySelectedFloodArea: (state, action) => {
       state.showOnlySelectedFloodArea = action.payload
     },
     setAdditionalAlerts: (state, action) => {
       state.additionalAlerts = action.payload
+    },
+    setNearbyTargetAreaFlow: (state, action) => {
+      state.nearbyTargetAreaFlow = action.payload
     },
     clearAuth: (state) => {
       state.authToken = null
@@ -60,9 +68,10 @@ const userSlice = createSlice({
       state.locationPostCode = null
       state.locationSearchResults = null
       state.selectedLocation = null
-      state.selectedFloodArea = null
-      state.showOnlySelectedFloodArea = null
+      state.selectedFloodWarningArea = null
+      state.selectedFloodAlertArea = null
       state.additionalAlerts = null
+      state.nearbyTargetAreaFlow = null
     }
   }
 })
@@ -75,10 +84,12 @@ export const {
   setContactPreferences,
   setLocationSearchResults,
   setSelectedLocation,
-  setSelectedFloodArea,
+  setSelectedFloodWarningArea,
+  setSelectedFloodAlertArea,
   setShowOnlySelectedFloodArea,
   setAdditionalAlerts,
   setLocationPostCode,
+  setNearbyTargetAreaFlow,
   clearAuth
 } = userSlice.actions
 

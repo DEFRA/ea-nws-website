@@ -2,7 +2,7 @@ import * as turf from '@turf/turf'
 import L from 'leaflet'
 import leafletPip from 'leaflet-pip'
 
-export const getFloodTargetArea = async (lat, lng) => {
+export const getSurroundingFloodAreas = async (lat, lng) => {
   const bboxKM = 0.5 // size of bounding box from centre in KM
 
   // warning areas
@@ -41,6 +41,38 @@ export const getFloodTargetArea = async (lat, lng) => {
   }
 }
 
+export const getAssociatedAlertArea = async (lat, lng, code) => {
+  const bboxKM = 0.5 // size of bounding box from centre in KM
+
+  // alert area
+  let baseWFSURL =
+    'https://environment.data.gov.uk/spatialdata/flood-alert-areas/wfs'
+  let WFSParams = {
+    service: 'WFS',
+    version: '2.0.0',
+    request: 'GetFeature',
+    typename: 'Flood_Alert_Areas',
+    srsname: 'EPSG:4326',
+    bbox: calculateBoundingBox(lat, lng, bboxKM),
+    outputFormat: 'GEOJSON'
+  }
+  let wfsURL = `${baseWFSURL}?${new URLSearchParams(WFSParams).toString()}`
+  let wfsAlertData = await fetch(wfsURL).then((response) => response.json())
+
+  const filteredOutOtherAlertAreas = wfsAlertData.features.filter(
+    (floodArea) => floodArea.properties.fws_tacode === code
+  )
+
+  const updatedAlertData = {
+    ...wfsAlertData,
+    features: filteredOutOtherAlertAreas
+  }
+
+  return {
+    alertArea: updatedAlertData
+  }
+}
+
 export const isLocationInFloodArea = (lat, lng, areaData) => {
   // check if location entered is in target area
   const isInFloodArea = checkPointInPolygon(lat, lng, areaData)
@@ -58,15 +90,9 @@ export const isLocationWithinFloodAreaProximity = (
   const point = turf.point([lng, lat])
   const maxDistance = distanceMetres
 
-  console.log('features', floodAreaData.features.length)
-
   //load polygons and loop through each area until true is returned
   const isWithinFloodAreaProximity = floodAreaData.features.some((feature) => {
-    console.log('coords', feature.geometry.coordinates)
-
     const floodArea = turf.multiPolygon(feature.geometry.coordinates)
-
-    console.log('flood area', floodArea)
 
     //return all positions in area
     var floodAreaEdges = turf.explode(floodArea)

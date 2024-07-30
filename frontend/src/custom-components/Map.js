@@ -12,7 +12,7 @@ import {
   useMap
 } from 'react-leaflet'
 import { useSelector } from 'react-redux'
-import { getFloodTargetArea } from '../services/WfsFloodDataService'
+import { getSurroundingFloodAreas } from '../services/WfsFloodDataService'
 // Leaflet Marker Icon fix
 import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
@@ -27,8 +27,11 @@ export default function Map({ types, setFloodAreas }) {
   )
   const { latitude, longitude } = selectedLocation.coordinates
   // used when user selects flood area when location is within proximity
-  const selectedFloodArea = useSelector(
-    (state) => state.session.selectedFloodArea
+  const selectedFloodWarningArea = useSelector(
+    (state) => state.session.selectedFloodWarningArea
+  )
+  const selectedFloodAlertArea = useSelector(
+    (state) => state.session.selectedFloodAlertArea
   )
   const showOnlySelectedFloodArea = useSelector(
     (state) => state.session.showOnlySelectedFloodArea
@@ -43,7 +46,7 @@ export default function Map({ types, setFloodAreas }) {
   // get flood area data
   useEffect(() => {
     async function fetchFloodAreaData() {
-      const { alertArea, warningArea } = await getFloodTargetArea(
+      const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude
       )
@@ -68,30 +71,43 @@ export default function Map({ types, setFloodAreas }) {
 
   // outline the selected flood area - used when user has chosen flood area from proximity
   useEffect(() => {
-    if (selectedFloodArea && showOnlySelectedFloodArea) {
-      showSelectedArea(selectedFloodArea)
-    } else if (selectedFloodArea && !showOnlySelectedFloodArea) {
-      HighlightSelectedArea(selectedFloodArea)
+    if (
+      (selectedFloodWarningArea || selectedFloodAlertArea) &&
+      showOnlySelectedFloodArea
+    ) {
+      showSelectedArea(selectedFloodWarningArea, selectedFloodAlertArea)
+    } else if (
+      (selectedFloodWarningArea || selectedFloodAlertArea) &&
+      !showOnlySelectedFloodArea
+    ) {
+      HighlightSelectedArea(selectedFloodWarningArea, selectedFloodAlertArea)
     }
   }, [
-    selectedFloodArea,
+    selectedFloodWarningArea,
+    selectedFloodAlertArea,
     showOnlySelectedFloodArea,
     warningAreaRefVisible,
     alertAreaRefVisible
   ])
 
-  const HighlightSelectedArea = (selectedArea) => {
+  const HighlightSelectedArea = (
+    selectedFloodWarningArea,
+    selectedFloodAlertArea
+  ) => {
     if (warningAreaRefVisible && types.includes('severe')) {
       warningAreaRef.current.eachLayer((layer) => {
         if (
-          layer.feature.properties.gml_id === selectedArea.properties.gml_id
+          layer.feature.properties.gml_id ===
+          selectedFloodWarningArea.properties.gml_id
         ) {
+          layer.bringToFront()
           layer.setStyle({
             color: 'black',
             weight: 3,
             fillColor: '#f70202'
           })
         } else {
+          layer.bringToBack()
           layer.setStyle({
             fillColor: '#f70202'
           })
@@ -102,14 +118,17 @@ export default function Map({ types, setFloodAreas }) {
     if (alertAreaRefVisible && types.includes('alert')) {
       alertAreaRef.current.eachLayer((layer) => {
         if (
-          layer.feature.properties.gml_id === selectedArea.properties.gml_id
+          layer.feature.properties.gml_id ===
+          selectedFloodAlertArea.properties.gml_id
         ) {
+          layer.bringToFront()
           layer.setStyle({
             color: 'black',
             weight: 3,
             fillColor: '#ffa200'
           })
         } else {
+          layer.bringToBack()
           layer.setStyle({
             fillColor: '#ffa200'
           })
@@ -118,11 +137,15 @@ export default function Map({ types, setFloodAreas }) {
     }
   }
 
-  const showSelectedArea = (selectedArea) => {
+  const showSelectedArea = (
+    selectedFloodWarningArea,
+    selectedFloodAlertArea
+  ) => {
     if (warningAreaRefVisible && types.includes('severe')) {
       warningAreaRef.current.eachLayer((layer) => {
         if (
-          layer.feature.properties.gml_id === selectedArea.properties.gml_id
+          layer.feature.properties.gml_id ===
+          selectedFloodWarningArea.properties.gml_id
         ) {
           layer.setStyle({
             fillColor: '#f70202'
@@ -136,7 +159,8 @@ export default function Map({ types, setFloodAreas }) {
     if (alertAreaRefVisible && types.includes('alert')) {
       alertAreaRef.current.eachLayer((layer) => {
         if (
-          layer.feature.properties.gml_id === selectedArea.properties.gml_id
+          layer.feature.properties.gml_id ===
+          selectedFloodAlertArea.properties.gml_id
         ) {
           layer.setStyle({
             fillColor: '#ffa200'

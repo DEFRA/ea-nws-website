@@ -23,8 +23,8 @@ const addUnverifiedContact = (profile, type, contact) => {
         [type === 'email'
           ? 'emails'
           : type === 'mobile'
-            ? 'mobilePhones'
-            : 'homePhones']: [...unverifiedContactList, contact]
+          ? 'mobilePhones'
+          : 'homePhones']: [...unverifiedContactList, contact]
       }
     }
     return updatedProfile
@@ -87,8 +87,8 @@ const addVerifiedContact = (profile, type, contact) => {
       [type === 'email'
         ? 'emails'
         : type === 'mobile'
-          ? 'mobilePhones'
-          : 'homePhones']: [...verifiedContactList, contact]
+        ? 'mobilePhones'
+        : 'homePhones']: [...verifiedContactList, contact]
     }
     return updatedProfile
   } else {
@@ -158,17 +158,31 @@ const updateAdditionals = (profile, id, value) => {
   }
 }
 
-const addLocation = (profile, location) => {
+const addLocation = (profile, newLocation) => {
   const currentLocations = profile.pois
 
   const updatedProfile = {
     ...profile,
-    pois: [...currentLocations, location]
+    pois: [...currentLocations, newLocation]
   }
 
   return updatedProfile
 }
 
+//TODO i have no idea how to fix this
+const updateLocationsFloodCategory = (profile, location, updatedCategories) => {
+  // const locationIndex = profile.pois.findIndex(
+  //   (poi) => poi.name === location.name
+  // )
+
+  // if (locationIndex !== -1) {
+  //   profile.pois[locationIndex].categories = updatedCategories
+  // }
+
+  return profile
+}
+
+//this is under review - checking by lat and lng coords might be innacurate
 const checkIfSelectedLocationExistsAlready = (profile, selectedLocation) => {
   if (profile) {
     for (const position of profile.pois) {
@@ -194,5 +208,6 @@ module.exports = {
   getAdditionals,
   updateAdditionals,
   addLocation,
-  checkIfSelectedLocationExistsAlready
+  checkIfSelectedLocationExistsAlready,
+  updateLocationsFloodCategory
 }

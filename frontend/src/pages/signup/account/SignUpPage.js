@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
@@ -10,13 +10,15 @@ import InsetText from '../../../gov-uk-components/InsetText'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 import { setProfile, setRegisterToken } from '../../../redux/userSlice'
 import { backendCall } from '../../../services/BackendService'
+import { addVerifiedContact } from '../../../services/ProfileServices'
 import { emailValidation } from '../../../services/validations/EmailValidation'
 
-export default function SignUpPage () {
+export default function SignUpPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
+  const profile = useSelector((state) => state.session.profile)
 
   const handleSubmit = async () => {
     const validationError = emailValidation(email)
@@ -38,26 +40,9 @@ export default function SignUpPage () {
           setError(errorMessage)
         }
       } else {
-        // start empty profile for user
-        const profile = {
-          id: '',
-          enabled: true,
-          firstname: '',
-          lastname: '',
-          // email required validation to continue so can put in verified list
-          emails: [email],
-          mobilePhones: [],
-          homePhones: [],
-          language: 'EN', // [TODO] is this always english?
-          additionals: [],
-          unverified: {
-            emails: [],
-            mobilePhones: [],
-            homePhones: []
-          },
-          pois: []
-        }
-        dispatch(setProfile(profile))
+        //add email to  emails list
+        const updatedProfile = addVerifiedContact(profile, 'email', email)
+        dispatch(setProfile(updatedProfile))
         dispatch(setRegisterToken(data.registerToken))
         navigate('/signup/validate')
       }

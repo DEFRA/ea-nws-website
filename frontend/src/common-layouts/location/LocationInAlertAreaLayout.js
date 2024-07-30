@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import FloodWarningKey from '../../custom-components/FloodWarningKey'
 import Map from '../../custom-components/Map'
@@ -9,13 +9,20 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
+import { setProfile } from '../../redux/userSlice'
+import {
+  addLocation,
+  updateLocationsFloodCategory
+} from '../../services/ProfileServices'
 
 export default function LocationInAlertAreaLayout({
   continueToNextPage,
   continueToSearchResultsPage
 }) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [isChecked, setIsChecked] = useState(false)
+  const profile = useSelector((state) => state.session.profile)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
@@ -23,9 +30,39 @@ export default function LocationInAlertAreaLayout({
     (state) => state.session.additionalAlerts
   )
 
-  console.log('additional alerts', additionalAlerts)
-
   const handleSubmit = () => {
+    if (additionalAlerts && isChecked) {
+      // location can also receieve alert areas as well as warning, user has checked to get notifications
+      // for alert areas too
+
+      //TODO - FIX THIS FUNCTION BELOW
+      const updatedProfile = updateLocationsFloodCategory(
+        profile,
+        selectedLocation,
+        ['severe', 'alert']
+      )
+      dispatch(setProfile(updatedProfile))
+    } else if (additionalAlerts && !isChecked) {
+      // scenario where user has pressed back and un-checked to get notifications for alert areas
+      const updatedProfile = updateLocationsFloodCategory(
+        profile,
+        selectedLocation,
+        ['severe']
+      )
+      dispatch(setProfile(updatedProfile))
+    } else {
+      // location can only receieve flood alerts
+      const { postcode, ...locationWithoutPostcode } = selectedLocation
+
+      const locationWithAlertType = {
+        ...locationWithoutPostcode,
+        categories: ['alert']
+      }
+
+      const updatedProfile = addLocation(profile, locationWithAlertType)
+      dispatch(setProfile(updatedProfile))
+    }
+
     // we need to add this to the profile
     continueToNextPage()
   }

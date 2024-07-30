@@ -2,7 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import LocationSearchResultsLayout from '../../../common-layouts/location/LocationSearchResultsLayout'
-import { setAdditionalAlerts } from '../../../redux/userSlice'
+import { setAdditionalAlerts, setProfile } from '../../../redux/userSlice'
 
 export default function LocationSearchResultsPage() {
   const navigate = useNavigate()
@@ -14,9 +14,29 @@ export default function LocationSearchResultsPage() {
     isWithinWarningAreaProximity,
     isWithinAlertAreaProximity
   ) => {
+    // start an empty profile - if user chooses another location from results page
+    // any previous picked locations are reset
+    const profile = {
+      id: '',
+      enabled: true,
+      firstname: '',
+      lastname: '',
+      emails: [],
+      mobilePhones: [],
+      homePhones: [],
+      language: 'EN', // [TODO] is this always english?
+      additionals: [],
+      unverified: {
+        emails: [],
+        mobilePhones: [],
+        homePhones: []
+      },
+      pois: []
+    }
+    dispatch(setProfile(profile))
+
     if (isInWarningArea) {
-      // take user to severe screen and then to alerts screen for
-      // optional additional alerts
+      // take user to warning screen and then to alerts screen for optional alerts
       dispatch(setAdditionalAlerts(true))
       navigate('/signup/register-location/location-in-severe-warning-area')
     } else if (isInAlertArea) {

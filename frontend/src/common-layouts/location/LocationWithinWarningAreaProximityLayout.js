@@ -13,7 +13,8 @@ import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import Radio from '../../gov-uk-components/Radio'
 import {
   setAdditionalAlerts,
-  setSelectedFloodArea,
+  setSelectedFloodAlertArea,
+  setSelectedFloodWarningArea,
   setShowOnlySelectedFloodArea
 } from '../../redux/userSlice'
 
@@ -30,32 +31,46 @@ export default function LocationWithinWarningAreaProximityLayout({
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
-  const selectedFloodArea = useSelector(
-    (state) => state.session.selectedFloodArea
+  const selectedFloodWarningArea = useSelector(
+    (state) => state.session.selectedFloodWarningArea
+  )
+  const selectedFloodAlertArea = useSelector(
+    (state) => state.session.selectedFloodAlertArea
   )
 
   // reset to show all flood areas within proximity and remove selected location
   useEffect(() => {
-    dispatch(setSelectedFloodArea(null))
+    dispatch(setSelectedFloodAlertArea(null))
+    dispatch(setSelectedFloodWarningArea(null))
     dispatch(setShowOnlySelectedFloodArea(false))
     setError(null)
   }, [type])
 
   const handleConfirm = () => {
-    if (selectedFloodArea) {
-      //only show the selected flood area on the map
-      dispatch(setShowOnlySelectedFloodArea(true))
-      //user only has option to select one flood area at a time
+    if (selectedFloodWarningArea || selectedFloodAlertArea) {
+      // if user selected warning area, we need to show them optional associated alert area
+      switch (type) {
+        case 'severe':
+          dispatch(setAdditionalAlerts(true))
+        case 'alert':
+          dispatch(setAdditionalAlerts(false))
+      }
 
-      dispatch(setAdditionalAlerts(false))
+      // only show the selected flood area on the map on next page
+      dispatch(setShowOnlySelectedFloodArea(true))
       continueToSelectedFloodWarningsPage(type)
     } else {
       setError('Select a nearby area')
     }
   }
 
-  const setFloodArea = (area) => {
-    dispatch(setSelectedFloodArea(area))
+  const setFloodArea = async (area) => {
+    switch (type) {
+      case 'severe':
+        dispatch(setSelectedFloodWarningArea(area))
+      case 'alert':
+        dispatch(setSelectedFloodAlertArea(area))
+    }
   }
 
   return (
@@ -105,7 +120,10 @@ export default function LocationWithinWarningAreaProximityLayout({
                           label={index + 1 + '. ' + area.properties.ta_name}
                           name={'floodAreas'}
                           onChange={() => setFloodArea(area)}
-                          checked={selectedFloodArea === area}
+                          checked={
+                            (selectedFloodWarningArea ||
+                              selectedFloodAlertArea) === area
+                          }
                         />
                       ))
                     ) : (
@@ -139,7 +157,6 @@ export default function LocationWithinWarningAreaProximityLayout({
                 <Map
                   types={[type]}
                   setFloodAreas={(areas) => setFloodAreas(areas)}
-                  selectedFloodArea={selectedFloodArea}
                 />
                 <FloodWarningKey type={type} />
               </div>

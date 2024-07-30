@@ -5,7 +5,7 @@ import ValidateEmailLayout from '../../../../common-layouts/email/ValidateEmailL
 import { setProfile } from '../../../../redux/userSlice'
 import { backendCall } from '../../../../services/BackendService'
 
-export default function ChangeAccountEmailValidationPage () {
+export default function ChangeAccountEmailValidationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [error, setError] = useState('')
@@ -15,10 +15,10 @@ export default function ChangeAccountEmailValidationPage () {
   }
 
   const updateProfile = async (profile, authToken) => {
+    // The sign in email is always the first one in the array
+    // Pop out the last email added and put it in first position
     const profileEmails = profile.emails
-    const emailsLength = profileEmails.length
-    profileEmails[0] = profileEmails[emailsLength - 1]
-    profileEmails.pop()
+    profileEmails[0] = profileEmails.pop()
     profile.emails = profileEmails
 
     const dataToSend = { profile, authToken }

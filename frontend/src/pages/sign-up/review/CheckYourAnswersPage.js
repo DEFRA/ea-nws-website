@@ -9,7 +9,7 @@ import AccountDetailsTable from './AccountDetailsTable'
 import ContactReviewTable from './ContactReviewTable'
 import FloodMessageReviewTable from './FloodMessageReviewTable'
 import LocationReviewTable from './LocationReviewTable'
-export default function CheckYourAnswersPage () {
+export default function CheckYourAnswersPage() {
   const session = useSelector((state) => state.session)
   const profile = session.profile
   const registration = session.registrations
@@ -17,7 +17,18 @@ export default function CheckYourAnswersPage () {
   const navigate = useNavigate()
 
   const handleButton = () => {
-    navigate('/signup/success')
+    if (signUpAccountValidation) {
+      navigate('/signup/success')
+    }
+  }
+
+  const signUpAccountValidation = () => {
+    return (
+      profile.emails[0] &&
+      profile.firstname &&
+      profile.lastname &&
+      profile.pois.length !== 0
+    )
   }
 
   return (

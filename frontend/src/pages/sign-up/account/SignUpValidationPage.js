@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
@@ -11,6 +11,8 @@ import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 import { setAuthToken } from '../../../redux/userSlice'
 import { backendCall } from '../../../services/BackendService'
 import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
+import NotificationBanner from '../../../gov-uk-components/NotificationBanner'
+import ExpiredCodeLayout from '../../../common-layouts/expired-code/ExpiredCodeLayout'
 
 export default function SignUpValidationPage () {
   const navigate = useNavigate()
@@ -19,10 +21,19 @@ export default function SignUpValidationPage () {
   const loginEmail = useSelector((state) => state.session.profile.emails[0])
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
+  const [codeResent, setCodeResent] = useState(false)
+  const [codeResentTime, setCodeResentTime] = useState(new Date())
+  const [codeExpired, setCodeExpired] = useState(false)
+
+  // if error remove code sent notification
+  useEffect(() => {
+    setCodeResent(false)
+  }, [error])
 
   const handleSubmit = async () => {
     const validationError = authCodeValidation(code)
     setError(validationError)
+
     if (validationError === '') {
       const dataToSend = {
         registerToken,
@@ -36,7 +47,11 @@ export default function SignUpValidationPage () {
       )
 
       if (errorMessage !== null) {
-        setError(errorMessage)
+        if (errorMessage === 'The code you have entered has expired - please request a new code') {
+          setCodeExpired(true)
+        } else {
+          setError(errorMessage)
+        }
       } else {
         dispatch(setAuthToken(data.authToken))
         navigate('/signup/contactpreferences')
@@ -52,69 +67,85 @@ export default function SignUpValidationPage () {
       'api/sign_up_start',
       navigate
     )
+
     if (errorMessage !== null) {
       setError(errorMessage)
+    } else {
+      setCodeResent(true)
+      setCodeResentTime(new Date().toLocaleTimeString())
+      setCodeExpired(false)
     }
   }
 
   return (
     <>
-      <div className='page-container'>
-        <Header />
-        <div className='govuk-width-container body-container'>
-          <PhaseBanner />
-          <Link to='/signup' className='govuk-back-link'>
-            Back
-          </Link>
-          {error && <ErrorSummary errorList={[error]} />}
-          <h2 className='govuk-heading-l'>Check your email</h2>
-          <div className='govuk-body'>
-            You need to confirm your email address.
-            <br />
-            <br />
-            We've sent an email with a code to:
-            <InsetText text={loginEmail} />
-            Enter the code within 4 hours or it will expire.
-            <br />
-            <br />
-            <Input
-              className='govuk-input govuk-input--width-10'
-              inputType='text'
-              value={code}
-              name='Enter code'
-              error={error}
-              onChange={(val) => setCode(val)}
-            />
-            <Button
-              className='govuk-button'
-              text='Confirm email address'
-              onClick={handleSubmit}
-            />
-            &nbsp; &nbsp;
-            <Link
-              to='/signup'
-              className='govuk-link'
-              style={{
-                display: 'inline-block',
-                padding: '8px 10px 7px'
-              }}
-            >
-              Use a different email
-            </Link>
-            <br />
-            <Link
-              onClick={getNewCode}
-              className='govuk-link'
-              style={{
-                display: 'inline-block'
-              }}
-            >
-              Get a new code
-            </Link>
+      {codeExpired
+        ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
+        : (
+          <div className='page-container'>
+            <Header />
+            <div className='govuk-width-container body-container'>
+              <PhaseBanner />
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-two-thirds'>
+                  <Link to='/signup' className='govuk-back-link'>Back</Link>
+                  {codeResent &&
+                    <NotificationBanner
+                      className='govuk-notification-banner govuk-notification-banner--success'
+                      title='Success'
+                      text={'New code sent at ' + codeResentTime}
+                    />}
+                  {error && <ErrorSummary errorList={[error]} />}
+                  <h2 className='govuk-heading-l'>Check your email</h2>
+                  <div className='govuk-body'>
+                    <p>You need to confirm your email address.</p>
+                    <p className='govuk-!-margin-top-6'>We've sent an email with a code to:</p>
+                    <InsetText text={loginEmail} />
+                    Enter the code within 4 hours or it will expire.
+                    <div className='govuk-!-margin-top-6'>
+                      <Input
+                        className='govuk-input govuk-input--width-10'
+                        inputType='text'
+                        value={code}
+                        name='Enter code'
+                        error={error}
+                        onChange={(val) => setCode(val)}
+                      />
+                    </div>
+                    <Button
+                      className='govuk-button'
+                      text='Confirm email address'
+                      onClick={handleSubmit}
+                    />
+                    &nbsp; &nbsp;
+                    <Link
+                      to='/signup'
+                      className='govuk-link'
+                      style={{
+                        display: 'inline-block',
+                        padding: '8px 10px 7px'
+                      }}
+                    >
+                      Use a different email
+                    </Link>
+                    <div className='govuk-!-margin-top-1'>
+                      <Link
+                        onClick={getNewCode}
+                        className='govuk-link'
+                        style={{
+                          display: 'inline-block'
+                        }}
+                      >
+                        Get a new code
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <Footer />
           </div>
-        </div>
-        <Footer />
-      </div>
+          )}
     </>
   )
 }

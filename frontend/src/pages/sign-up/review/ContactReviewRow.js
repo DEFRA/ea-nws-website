@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function ContactReviewRow ({
+export default function ContactReviewRow({
   contact,
   contactType,
   isConfirmed,
@@ -39,41 +39,37 @@ export default function ContactReviewRow ({
           {rowDetails().titleRow}
         </td>
         <td className='govuk-table__cell'>{contact}</td>
-        {isConfirmed
-          ? (
-            <>
-              <td className='govuk-table__cell' />
-              <td className='govuk-table__cell' />
-            </>
-            )
-          : (
-            <>
-              <td className='govuk-table__cell'>
-                <strong className='govuk-tag govuk-tag--red'>Unconfirmed</strong>
-              </td>
-              <td className='govuk-table__cell'>
-                <Link to={rowDetails().confirmLink} className='govuk-link'>
-                  Confirm
-                </Link>
-              </td>
-            </>
-            )}
-        <td className='govuk-table__cell'>
-          {rowDetails().showDelete
-            ? (
-              <Link
-                to='/managecontacts/confirm-delete'
-                state={{
-                  type: contactType,
-                  contact,
-                  navigateTo: '/signup/review'
-                }}
-                className='govuk-link'
-              >
-                Remove
+        {isConfirmed ? (
+          <>
+            <td className='govuk-table__cell' />
+            <td className='govuk-table__cell' />
+          </>
+        ) : (
+          <>
+            <td className='govuk-table__cell'>
+              <strong className='govuk-tag govuk-tag--red'>Unconfirmed</strong>
+            </td>
+            <td className='govuk-table__cell'>
+              <Link to={rowDetails().confirmLink} className='govuk-link'>
+                Confirm
               </Link>
-              )
-            : null}
+            </td>
+          </>
+        )}
+        <td className='govuk-table__cell'>
+          {rowDetails().showDelete && (
+            <Link
+              to='/managecontacts/confirm-delete'
+              state={{
+                type: contactType,
+                contact,
+                navigateTo: '/signup/review'
+              }}
+              className='govuk-link'
+            >
+              Remove
+            </Link>
+          )}
         </td>
       </tr>
     </>

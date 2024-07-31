@@ -97,7 +97,7 @@ const osOAuth2ApiCall = async () => {
       }
     )
 
-    return { status: 200, data: response.data.access_token }
+    return { status: 200, data: response.data }
   } catch {
     return {
       status: 500,

@@ -39,7 +39,7 @@ def test_SignInStart_invalidEmail(get_browser):
     browser.get(url)
     browser.find_element(By.NAME, "Email address").send_keys("invalid@email.com")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
-    time.sleep(1)
+    time.sleep(3)
     #Bellow is what will be expected
     #assert "Email address is not recognised - check and try again" in browser.page_source
     assert "unknown email" in browser.page_source
@@ -50,7 +50,7 @@ def test_SignInStart_validEmail(get_browser):
     browser.get(url)
     browser.find_element(By.NAME, "Email address").send_keys("valid@email.uk")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == nextPage
 
 

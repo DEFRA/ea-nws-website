@@ -8,7 +8,7 @@ export default function Header () {
           </strong>
           <span className='govuk-phase-banner__text'>
             This is a new service – your{' '}
-            <a className='govuk-link' href='#'>
+            <a className='govuk-link' href='/signup/feedback' target='_blank'>
               feedback
             </a>{' '}
             will help us to improve it.

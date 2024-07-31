@@ -147,7 +147,7 @@ const getAdditionals = (profile, id) => {
 
 const updateAdditionals = (profile, updatedAdditionals) => {
   let idFound = false
-  let additionals = JSON.parse(JSON.stringify(profile.additionals))
+  const additionals = JSON.parse(JSON.stringify(profile.additionals))
 
   for (let i = 0; i < updatedAdditionals.length; i++) {
     const id = updatedAdditionals[i].id

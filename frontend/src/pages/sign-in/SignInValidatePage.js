@@ -64,15 +64,13 @@ export default function SignInValidatePage () {
         const lastAccessedUrl = data.profile.additionals.filter(c => c.id === 'lastAccessedUrl')[0]?.value
         setLastAccessedUrl(lastAccessedUrl)
 
-        if(!isSignUpComplete && (lastAccessedUrl !== undefined)){
+        if (!isSignUpComplete && (lastAccessedUrl !== undefined)) {
           setSignUpNotComplete(true)
-        }
-        else{
-          const updatedProfile = updateAdditionals(data.profile, [{id: 'lastAccessedUrl', value: '/signup/accountname/add'}])
+        } else {
+          const updatedProfile = updateAdditionals(data.profile, [{ id: 'lastAccessedUrl', value: '/signup/accountname/add' }])
           dispatch(setProfile(updatedProfile))
           navigate('/home')
         }
-       
       }
     }
   }
@@ -94,7 +92,7 @@ export default function SignInValidatePage () {
   return (
     <>
       {codeExpired || signUpNotComplete
-        ? (codeExpired && <ExpiredCodeLayout getNewCode={getNewCode} />) || (signUpNotComplete && <NotCompletedSigningUpLayout nextPage={lastAccessedUrl}  />)
+        ? (codeExpired && <ExpiredCodeLayout getNewCode={getNewCode} />) || (signUpNotComplete && <NotCompletedSigningUpLayout nextPage={lastAccessedUrl} />)
         : (
           <div className='page-container'>
             <Header />

@@ -11,7 +11,6 @@ import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 import { setProfile, setRegisterToken } from '../../../redux/userSlice'
 import { backendCall } from '../../../services/BackendService'
 import { emailValidation } from '../../../services/validations/EmailValidation'
-import { updateAdditionals } from '../../../services/ProfileServices'
 
 export default function SignUpPage () {
   const navigate = useNavigate()
@@ -50,7 +49,7 @@ export default function SignUpPage () {
           mobilePhones: [],
           homePhones: [],
           language: 'EN', // [TODO] is this always english?
-          additionals: [{id: "signUpComplete", value: false}],
+          additionals: [{ id: 'signUpComplete', value: false }],
           unverified: {
             emails: [],
             mobilePhones: [],

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
 import Checkbox from '../../../gov-uk-components/CheckBox'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
@@ -13,17 +13,16 @@ import { setProfile } from '../../../redux/userSlice'
 export default function DeclarationOfAgreementPage () {
   const dispatch = useDispatch()
   const [isChecked, setIsChecked] = useState(false)
-  const location = useLocation()
   const session = useSelector((state) => state.session)
   const [error, setError] = useState('')
   const navigate = useNavigate()
-  
+
   const handleSubmit = () => {
     if (isChecked === false) {
       setError('Tick to confirm you agree with the terms and conditions')
     } else {
-      //needs to be updated to review as below
-      const updatedProfile = updateAdditionals(session.profile, [{id: 'lastAccessedUrl', value: '/home'}])
+      // needs to be updated to review as below
+      const updatedProfile = updateAdditionals(session.profile, [{ id: 'lastAccessedUrl', value: '/home' }])
       dispatch(setProfile(updatedProfile))
 
       // TODO New user home page currently, will need to be modified to direct to the signup review page after T&C agreement signed

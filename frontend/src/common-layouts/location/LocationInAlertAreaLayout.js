@@ -18,7 +18,7 @@ import {
 } from '../../services/ProfileServices'
 import { getCoordsOfFloodArea } from '../../services/WfsFloodDataService'
 
-export default function LocationInAlertAreaLayout ({
+export default function LocationInAlertAreaLayout({
   continueToNextPage,
   continueToSearchResultsPage
 }) {
@@ -40,8 +40,6 @@ export default function LocationInAlertAreaLayout ({
   const selectedFloodAlertArea = useSelector(
     (state) => state.session.selectedFloodAlertArea
   )
-
-  console.log('profile', profile)
 
   const handleSubmit = async () => {
     if (additionalAlerts && isChecked) {

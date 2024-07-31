@@ -16,6 +16,7 @@ import { backendCall } from '../../services/BackendService'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 import ExpiredCodeLayout from '../../common-layouts/expired-code/ExpiredCodeLayout'
+import NotCompletedSigningUpLayout from '../../common-layouts/sign-up/NotCompletedSignUpLayout'
 
 export default function SignInValidatePage () {
   const location = useLocation()
@@ -89,8 +90,8 @@ export default function SignInValidatePage () {
 
   return (
     <>
-      {codeExpired
-        ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
+      {codeExpired || signUpNotComplete
+        ? (codeExpired && <ExpiredCodeLayout getNewCode={getNewCode} />) || (signUpNotComplete && <NotCompletedSigningUpLayout nextPage={lastAccessedUrl}  />)
         : (
           <div className='page-container'>
             <Header />

@@ -1,10 +1,10 @@
 import { useNavigate } from 'react-router-dom'
-import ConfirmDeleteContactDetailsLayout from '../../common-layouts/contact-management/ConfirmDeleteContactDetailsLayout'
+import ConfirmDeleteContactDetailsLayout from '../../../../common-layouts/contact-management/ConfirmDeleteContactDetailsLayout'
 export default function RemoveContactFromReviewConfirmationPage() {
   const navigate = useNavigate()
 
   const NavigateToNextPage = (type, contact) => {
-    navigate('/managecontacts', {
+    navigate('/signup/review', {
       state: {
         removedType: type,
         removedContact: contact
@@ -13,12 +13,12 @@ export default function RemoveContactFromReviewConfirmationPage() {
   }
 
   const NavigateToPreviousPage = () => {
-    navigate('/managecontacts')
+    navigate('/signup/review')
   }
 
   return (
     <ConfirmDeleteContactDetailsLayout
-      NavigateToNextPage={NavigateToNextPage}
+      NavigateToNextPage={() => NavigateToNextPage()}
       NavigateToPreviousPage={NavigateToPreviousPage}
     />
   )

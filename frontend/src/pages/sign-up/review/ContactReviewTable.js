@@ -106,14 +106,13 @@ export default function ContactReviewTable({ profile, contactPreferences }) {
         <EmailAddressesSection />
         {contactPreferences.includes('Text') && <MobileNumbersSection />}
         {contactPreferences.includes('PhoneCall') && <HomePhonesSection />}
+        <br />
+        <Button
+          className='govuk-button--secondary'
+          onClick={handleButton}
+          text='Add another email or phone number'
+        />{' '}
       </table>
-      <Button
-        className='govuk-button--secondary'
-        onClick={handleButton}
-        text='Add another email or phone number'
-      />
-      <br />
-      <br />
     </>
   )
 }

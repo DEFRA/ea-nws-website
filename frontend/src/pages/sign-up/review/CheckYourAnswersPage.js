@@ -48,11 +48,14 @@ export default function CheckYourAnswersPage() {
               <div className='govuk-grid-column-three-quarters'>
                 <h2 className='govuk-heading-l'>Check your answers</h2>
                 <LocationReviewTable locations={profile.pois} />
+                <br />
                 <FloodMessageReviewTable registration={registration} />
+                <br />
                 <ContactReviewTable
                   profile={profile}
                   contactPreferences={contactPreferences}
                 />
+                <br />
                 <AccountDetailsTable profile={profile} />
               </div>
             </div>

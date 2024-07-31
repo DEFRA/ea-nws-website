@@ -12,7 +12,7 @@ import { addUnverifiedContact } from '../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../services/validations/PhoneValidation'
 
-export default function AddMobileLayout ({
+export default function AddMobileLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -39,7 +39,13 @@ export default function AddMobileLayout ({
         setError(errorMessage)
       } else {
         dispatch(
-          setProfile(addUnverifiedContact(session.profile, 'mobile', mobile))
+          setProfile(
+            addUnverifiedContact(
+              session.profile,
+              'mobile',
+              normalisedPhoneNumber
+            )
+          )
         )
         dispatch(setCurrentContact(normalisedPhoneNumber))
         NavigateToNextPage()

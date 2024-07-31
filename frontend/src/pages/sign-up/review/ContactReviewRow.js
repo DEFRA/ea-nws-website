@@ -59,11 +59,10 @@ export default function ContactReviewRow({
         <td className='govuk-table__cell'>
           {rowDetails().showDelete && (
             <Link
-              to='/managecontacts/confirm-delete'
+              to='/signup/review/remove-contact'
               state={{
                 type: contactType,
-                contact,
-                navigateTo: '/signup/review'
+                contact
               }}
               className='govuk-link'
             >

@@ -17,7 +17,7 @@ def setup_addemail_test(get_browser):
     link_xpath = f"//a[text()='Manage Contacts page']"
     link_link = browser.find_element(By.XPATH, link_xpath)
     browser.execute_script("arguments[0].click();", link_link)
-    time.sleep(1)
+    time.sleep(3)
     button_xpath = f"//button[text()='Add a email address']"
     add_email_link = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", add_email_link)
@@ -59,7 +59,7 @@ def test_addemailstart_validEmail(get_browser):
     browser = setup_addemail_test(get_browser)  
     browser.find_element(By.NAME, "Email address").send_keys("valid@email.uk")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == nextPage
 
 

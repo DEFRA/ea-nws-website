@@ -21,7 +21,7 @@ def setup_homepage_test(get_browser, session):
     link_xpath = f"//a[text()='Home page']"
     link_link = browser.find_element(By.XPATH, link_xpath)
     browser.execute_script("arguments[0].click();", link_link)
-    time.sleep(1)
+    time.sleep(3)
     return browser
 
 def test_homepage_render(get_browser):
@@ -49,7 +49,7 @@ def test_homepage_expand_details(get_browser):
     details_xpath = f"//summary[@class='govuk-details__summary']"
     details_link = browser.find_element(By.XPATH, details_xpath)
     browser.execute_script("arguments[0].click();", details_link)
-    time.sleep(1)
+    time.sleep(3)
     assert "You must keep at least one location on your account" in browser.page_source
 
 def test_homepage_no_remove(get_browser):
@@ -77,7 +77,7 @@ def test_homepage_click_pagination(get_browser):
     pagination_xpath = f"//a[@class='govuk-link govuk-pagination__link']"
     pagination_link = browser.find_element(By.XPATH, pagination_xpath)
     browser.execute_script("arguments[0].click();", pagination_link)
-    time.sleep(1)
+    time.sleep(3)
     pagination_xpath = f"//a[@rel='prev']"
     assert check_exists_by_xpath(browser, pagination_xpath)
 

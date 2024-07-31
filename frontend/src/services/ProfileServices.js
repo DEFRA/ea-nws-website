@@ -197,23 +197,6 @@ const updateLocationsFloodCategory = (profile, location, updatedCategories) => {
   return profile
 }
 
-//this is under review - checking by lat and lng coords might be innacurate
-const checkIfSelectedLocationExistsAlready = (profile, selectedLocation) => {
-  if (profile) {
-    for (const position of profile.pois) {
-      const { latitude, longitude } = position.coordinates
-      if (
-        latitude === selectedLocation.coordinates.latitude &&
-        longitude === selectedLocation.coordinates.longitude
-      ) {
-        return true
-      }
-    }
-  } else {
-    return false
-  }
-}
-
 module.exports = {
   addUnverifiedContact,
   removeUnverifiedContact,
@@ -224,6 +207,5 @@ module.exports = {
   updateAdditionals,
   addLocation,
   removeLocation,
-  checkIfSelectedLocationExistsAlready,
   updateLocationsFloodCategory
 }

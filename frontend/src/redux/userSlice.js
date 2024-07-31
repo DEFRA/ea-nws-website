@@ -8,6 +8,7 @@ const userSlice = createSlice({
     profile: null,
     contactPreferences: null,
     registrations: null,
+    currentContact: null,
     // location data
     locationPostCode: null,
     locationSearchResults: null,
@@ -34,6 +35,9 @@ const userSlice = createSlice({
     },
     setRegistrations: (state, action) => {
       state.registrations = action.payload
+    },
+    setCurrentContact: (state, action) => {
+      state.currentContact = action.payload
     },
     // location data
     setLocationPostCode: (state, action) => {
@@ -87,6 +91,7 @@ export const {
   setProfile,
   setRegistrations,
   setContactPreferences,
+  setCurrentContact,
   // location data
   setLocationPostCode,
   setLocationSearchResults,

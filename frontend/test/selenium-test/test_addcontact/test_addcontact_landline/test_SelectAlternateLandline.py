@@ -38,17 +38,14 @@ def test_page_load(get_browser):
     browser = setup_validate_test(get_browser)
     assert browser.current_url == choose_number_url
 
-
 def test_errors_render(get_browser):
     browser = setup_validate_test(get_browser)
     browser.find_element(By.CLASS_NAME,"govuk-button").click()
     assert browser.find_element(By.CLASS_NAME,"govuk-error-message").is_displayed()
 
-
 def test_check_mobile_entered_is_option(get_browser):
     browser = setup_validate_test(get_browser)
     assert "+447000000001" in browser.page_source
-
 
 def test_enter_new_number(get_browser):
     browser = setup_validate_test(get_browser)

@@ -19,7 +19,7 @@ export default function ValidateLandlinePhonePage () {
   }
 
   const ContinueToAlreadyEnteredMobileOptions = () => {
-    navigate('/signup/contactpreferences/landline/already-entered-landline')
+    navigate('/signup/contactpreferences/landline/alternate-landline')
   }
   return (
     <ValidateLandlineLayout

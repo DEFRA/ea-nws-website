@@ -79,7 +79,7 @@ const signupRoutes = [
     component: <SkipConfirmLandlinePhonePage />
   },
   {
-    path: '/signup/contactpreferences/landline/already-entered-landline',
+    path: '/signup/contactpreferences/landline/alternate-landline',
     component: <SelectAlternateLandlinePage />
   },
   { path: '/signup/accountname/add', component: <AddFullNamePage /> },

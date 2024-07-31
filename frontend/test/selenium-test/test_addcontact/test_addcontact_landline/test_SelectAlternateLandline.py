@@ -5,7 +5,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 import time
 
 signup_url = "http://localhost:3000/signup/"
-choose_number_url = "http://localhost:3000/signup/contactpreferences/landline/choosenumber"
+alternate_landline_url = "http://localhost:3000/signup/contactpreferences/landline/alternate-landline"
 next_url = "http://localhost:3000/signup/contactpreferences/landline/validate"
 def setup_validate_test(get_browser):
     browser = get_browser
@@ -33,10 +33,9 @@ def setup_validate_test(get_browser):
     time.sleep(1)
     return browser
 
-
 def test_page_load(get_browser):
     browser = setup_validate_test(get_browser)
-    assert browser.current_url == choose_number_url
+    assert browser.current_url == alternate_landline_url
 
 def test_errors_render(get_browser):
     browser = setup_validate_test(get_browser)
@@ -51,14 +50,20 @@ def test_enter_new_number(get_browser):
     browser = setup_validate_test(get_browser)
     browser.find_element(By.ID,"idA different number").click()
     browser.find_element(By.ID,"govuk-text-input").send_keys("+441411111111")
-    browser.find_element(By.CLASS_NAME,"govuk-button").click()
+    button_xpath = f"//button[text()='Continue']"
+    button_button =browser.find_element(By.XPATH,button_xpath)
+    browser.execute_script("arguments[0].click();",button_button)
+    time.sleep(3)
     assert browser.current_url == next_url
 
 def test_new_number_validate_page(get_browser):
     browser = setup_validate_test(get_browser)
     browser.find_element(By.ID,"idA different number").click()
     browser.find_element(By.ID,"govuk-text-input").send_keys("+441411111111")
-    browser.find_element(By.CLASS_NAME,"govuk-button").click()
+    button_xpath = f"//button[text()='Continue']"
+    button_button =browser.find_element(By.XPATH,button_xpath)
+    browser.execute_script("arguments[0].click();",button_button)
+    time.sleep(3)
     assert "+441411111111" in browser.page_source
 
   

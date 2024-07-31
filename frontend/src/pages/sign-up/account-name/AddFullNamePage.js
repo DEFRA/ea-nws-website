@@ -11,7 +11,7 @@ export default function AddFullNamePage () {
   const session = useSelector((state) => state.session)
 
   const NavigateToNextPage = () => {
-    const updatedProfile = updateAdditionals(session.profile, [{id: 'lastAccessedUrl', value: location.pathname}])
+    const updatedProfile = updateAdditionals(session.profile, [{id: 'lastAccessedUrl', value: '/declaration'}])
     dispatch(setProfile(updatedProfile))
     navigate('/declaration')
   }

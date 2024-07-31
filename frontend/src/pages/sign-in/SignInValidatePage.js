@@ -17,6 +17,7 @@ import { authCodeValidation } from '../../services/validations/AuthCodeValidatio
 import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 import ExpiredCodeLayout from '../../common-layouts/expired-code/ExpiredCodeLayout'
 import NotCompletedSigningUpLayout from '../../common-layouts/sign-up/NotCompletedSignUpLayout'
+import { updateAdditionals } from '../../services/ProfileServices'
 
 export default function SignInValidatePage () {
   const location = useLocation()
@@ -59,14 +60,16 @@ export default function SignInValidatePage () {
         dispatch(setProfile(data.profile))
         dispatch(setRegistrations(data.registrations))
 
-        const isSignUpComplete = data.profile.additionals.filter(c => c.id === 'signUpComplete')[0].value
-        const lastAccessedUrl = data.profile.additionals.filter(c => c.id === 'lastAccessedUrl')[0].value
+        const isSignUpComplete = data.profile.additionals.filter(c => c.id === 'signUpComplete')[0]?.value
+        const lastAccessedUrl = data.profile.additionals.filter(c => c.id === 'lastAccessedUrl')[0]?.value
         setLastAccessedUrl(lastAccessedUrl)
 
-        if(!isSignUpComplete && lastAccessedUrl !== ''){
+        if(!isSignUpComplete && (lastAccessedUrl !== undefined)){
           setSignUpNotComplete(true)
         }
         else{
+          const updatedProfile = updateAdditionals(data.profile, [{id: 'lastAccessedUrl', value: '/signup/accountname/add'}])
+          dispatch(setProfile(updatedProfile))
           navigate('/home')
         }
        

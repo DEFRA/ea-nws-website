@@ -22,7 +22,8 @@ export default function DeclarationOfAgreementPage () {
     if (isChecked === false) {
       setError('Tick to confirm you agree with the terms and conditions')
     } else {
-      const updatedProfile = updateAdditionals(session.profile, [{id: 'lastAccessedUrl', value: location.pathname}])
+      //needs to be updated to review as below
+      const updatedProfile = updateAdditionals(session.profile, [{id: 'lastAccessedUrl', value: '/home'}])
       dispatch(setProfile(updatedProfile))
 
       // TODO New user home page currently, will need to be modified to direct to the signup review page after T&C agreement signed

@@ -62,14 +62,8 @@ export const getAssociatedAlertArea = async (lat, lng, code) => {
   const filteredOutOtherAlertAreas = wfsAlertData.features.filter(
     (floodArea) => floodArea.properties.fws_tacode === code
   )
-
-  const updatedAlertData = {
-    ...wfsAlertData,
-    features: filteredOutOtherAlertAreas
-  }
-
-  return {
-    alertArea: updatedAlertData
+  if (filteredOutOtherAlertAreas.length > 0) {
+    return filteredOutOtherAlertAreas[0]
   }
 }
 
@@ -108,6 +102,20 @@ export const isLocationWithinFloodAreaProximity = (
   return {
     isWithinFloodAreaProximity
   }
+}
+
+export const getCoordsOfFloodArea = (area) => {
+  const firstLatLngCoords = getFirstCoordinates(area.geometry.coordinates)
+
+  return firstLatLngCoords
+}
+
+function getFirstCoordinates(nestedArray) {
+  let current = nestedArray
+  while (Array.isArray(current[0])) {
+    current = current[0]
+  }
+  return { latitude: current[1], longitude: current[0] }
 }
 
 function checkPointInPolygon(lat, lng, geojson) {

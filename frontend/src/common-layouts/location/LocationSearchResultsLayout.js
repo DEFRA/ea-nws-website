@@ -8,7 +8,7 @@ import Header from '../../gov-uk-components/Header'
 import Pagination from '../../gov-uk-components/Pagination'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import {
-  setNearbyTargetAreaFlow,
+  setNearbyTargetAreasFlow,
   setSelectedFloodAlertArea,
   setSelectedFloodWarningArea,
   setSelectedLocation,
@@ -45,7 +45,7 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
       dispatch(setSelectedFloodAlertArea(null))
       dispatch(setSelectedFloodWarningArea(null))
       dispatch(setShowOnlySelectedFloodArea(false))
-      dispatch(setNearbyTargetAreaFlow(false))
+      dispatch(setNearbyTargetAreasFlow(false))
 
       const { warningArea, alertArea } = await getSurroundingFloodAreas(
         selectedLocation.coordinates.latitude,

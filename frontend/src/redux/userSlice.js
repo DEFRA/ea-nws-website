@@ -8,13 +8,15 @@ const userSlice = createSlice({
     profile: null,
     contactPreferences: null,
     registrations: null,
+    // location data
     locationPostCode: null,
     locationSearchResults: null,
     selectedLocation: null,
+    additionalAlerts: null,
+    // required for nearby flood areas flow
     selectedFloodWarningArea: null,
     selectedFloodAlertArea: null,
     showOnlySelectedFloodArea: null,
-    additionalAlerts: null,
     nearbyTargetAreaFlow: null
   },
   reducers: {
@@ -43,6 +45,10 @@ const userSlice = createSlice({
     setSelectedLocation: (state, action) => {
       state.selectedLocation = action.payload
     },
+    setAdditionalAlerts: (state, action) => {
+      state.additionalAlerts = action.payload
+    },
+    // required for nearby flood areas flow
     setSelectedFloodWarningArea: (state, action) => {
       state.selectedFloodWarningArea = action.payload
     },
@@ -52,10 +58,7 @@ const userSlice = createSlice({
     setShowOnlySelectedFloodArea: (state, action) => {
       state.showOnlySelectedFloodArea = action.payload
     },
-    setAdditionalAlerts: (state, action) => {
-      state.additionalAlerts = action.payload
-    },
-    setNearbyTargetAreaFlow: (state, action) => {
+    setNearbyTargetAreasFlow: (state, action) => {
       state.nearbyTargetAreaFlow = action.payload
     },
     clearAuth: (state) => {
@@ -68,9 +71,11 @@ const userSlice = createSlice({
       state.locationPostCode = null
       state.locationSearchResults = null
       state.selectedLocation = null
+      state.additionalAlerts = null
+      // required for nearby flood areas flow
       state.selectedFloodWarningArea = null
       state.selectedFloodAlertArea = null
-      state.additionalAlerts = null
+      state.showOnlySelectedFloodArea = null
       state.nearbyTargetAreaFlow = null
     }
   }
@@ -82,14 +87,16 @@ export const {
   setProfile,
   setRegistrations,
   setContactPreferences,
+  // location data
+  setLocationPostCode,
   setLocationSearchResults,
   setSelectedLocation,
+  setAdditionalAlerts,
+  // required for nearby flood areas flow
   setSelectedFloodWarningArea,
   setSelectedFloodAlertArea,
   setShowOnlySelectedFloodArea,
-  setAdditionalAlerts,
-  setLocationPostCode,
-  setNearbyTargetAreaFlow,
+  setNearbyTargetAreasFlow,
   clearAuth
 } = userSlice.actions
 

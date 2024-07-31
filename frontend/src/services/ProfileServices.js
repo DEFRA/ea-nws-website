@@ -169,6 +169,21 @@ const addLocation = (profile, newLocation) => {
   return updatedProfile
 }
 
+const removeLocation = (profile, name) => {
+  const newLocationList = profile.pois.filter(
+    (location) => location.name !== name
+  )
+
+  const updatedProfile = {
+    ...profile,
+    pois: newLocationList
+  }
+
+  console.log(updatedProfile)
+
+  return updatedProfile
+}
+
 //TODO i have no idea how to fix this
 const updateLocationsFloodCategory = (profile, location, updatedCategories) => {
   // const locationIndex = profile.pois.findIndex(
@@ -208,6 +223,7 @@ module.exports = {
   getAdditionals,
   updateAdditionals,
   addLocation,
+  removeLocation,
   checkIfSelectedLocationExistsAlready,
   updateLocationsFloodCategory
 }

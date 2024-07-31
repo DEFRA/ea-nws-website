@@ -13,6 +13,7 @@ import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import Radio from '../../gov-uk-components/Radio'
 import {
   setAdditionalAlerts,
+  setNearbyTargetAreasFlow,
   setSelectedFloodAlertArea,
   setSelectedFloodWarningArea,
   setShowOnlySelectedFloodArea
@@ -38,11 +39,12 @@ export default function LocationWithinWarningAreaProximityLayout({
     (state) => state.session.selectedFloodAlertArea
   )
 
-  // reset to show all flood areas within proximity and remove selected location
+  // reset all target area variables to default values on page load
   useEffect(() => {
     dispatch(setSelectedFloodAlertArea(null))
     dispatch(setSelectedFloodWarningArea(null))
     dispatch(setShowOnlySelectedFloodArea(false))
+    dispatch(setNearbyTargetAreasFlow(false))
     setError(null)
   }, [type])
 
@@ -58,6 +60,9 @@ export default function LocationWithinWarningAreaProximityLayout({
 
       // only show the selected flood area on the map on next page
       dispatch(setShowOnlySelectedFloodArea(true))
+      // need to let the severe or alert pages know that nearby flood areas flow is taking place
+      // so that correct data is added
+      dispatch(setNearbyTargetAreasFlow(true))
       continueToSelectedFloodWarningsPage(type)
     } else {
       setError('Select a nearby area')
@@ -69,6 +74,9 @@ export default function LocationWithinWarningAreaProximityLayout({
       case 'severe':
         dispatch(setSelectedFloodWarningArea(area))
       case 'alert':
+        console.log('hit')
+
+        console.log(area)
         dispatch(setSelectedFloodAlertArea(area))
     }
   }

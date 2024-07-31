@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import FloodWarningKey from '../../custom-components/FloodWarningKey'
@@ -10,10 +10,13 @@ import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { setProfile } from '../../redux/userSlice'
+import { backendCall } from '../../services/BackendService'
 import {
   addLocation,
+  removeLocation,
   updateLocationsFloodCategory
 } from '../../services/ProfileServices'
+import { getCoordsOfFloodArea } from '../../services/WfsFloodDataService'
 
 export default function LocationInAlertAreaLayout({
   continueToNextPage,
@@ -22,49 +25,100 @@ export default function LocationInAlertAreaLayout({
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [isChecked, setIsChecked] = useState(false)
+  const authToken = useSelector((state) => state.session.authToken)
   const profile = useSelector((state) => state.session.profile)
+  const [localProfile, setLocalProfile] = useState(profile)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
   const additionalAlerts = useSelector(
     (state) => state.session.additionalAlerts
   )
+  // only used when user is going through nearby target areas flow
+  const isUserInNearbyTargetFlowpath = useSelector(
+    (state) => state.session.nearbyTargetAreaFlow
+  )
+  const selectedFloodAlertArea = useSelector(
+    (state) => state.session.selectedFloodAlertArea
+  )
 
-  const handleSubmit = () => {
+  useEffect(() => {
+    setLocalProfile(profile)
+  }, [profile])
+
+  const handleSubmit = async () => {
+    console.log('1')
     if (additionalAlerts && isChecked) {
-      // location can also receieve alert areas as well as warning, user has checked to get notifications
-      // for alert areas too
-
-      //TODO - FIX THIS FUNCTION BELOW
-      const updatedProfile = updateLocationsFloodCategory(
-        profile,
-        selectedLocation,
-        ['severe', 'alert']
-      )
-      dispatch(setProfile(updatedProfile))
+      console.log('2', additionalAlerts, isChecked)
+      if (isUserInNearbyTargetFlowpath) {
+        console.log('3', isUserInNearbyTargetFlowpath)
+        console.log('profile 1', localProfile)
+        addFloodAlertArea()
+        console.log('profile 2', localProfile)
+      } else {
+        updateExistingLocationCategories(['severe', 'alert'])
+      }
     } else if (additionalAlerts && !isChecked) {
       // scenario where user has pressed back and un-checked to get notifications for alert areas
-      const updatedProfile = updateLocationsFloodCategory(
-        profile,
-        selectedLocation,
-        ['severe']
-      )
-      dispatch(setProfile(updatedProfile))
-    } else {
-      // location can only receieve flood alerts
-      const { postcode, ...locationWithoutPostcode } = selectedLocation
-
-      const locationWithAlertType = {
-        ...locationWithoutPostcode,
-        categories: ['alert']
+      if (isUserInNearbyTargetFlowpath) {
+        removeFloodAlertArea()
+      } else {
+        updateExistingLocationCategories(['severe'])
       }
-
-      const updatedProfile = addLocation(profile, locationWithAlertType)
-      dispatch(setProfile(updatedProfile))
+    } else {
+      // location only has flood alerts availble or user has selected a nearby flood alert area
+      if (isUserInNearbyTargetFlowpath) {
+        addFloodAlertArea()
+      } else {
+        addLocationWithOnlyFloodAlerts()
+      }
     }
 
-    // we need to add this to the profile
+    console.log('profile last', localProfile)
+    await updateGeosafeProfile()
     continueToNextPage()
+  }
+
+  const updateGeosafeProfile = async () => {
+    const dataToSend = { authToken: authToken, profile: localProfile }
+    await backendCall(dataToSend, 'api/profile/update', navigate)
+  }
+
+  const addFloodAlertArea = () => {
+    const alertArea = {
+      name: selectedFloodAlertArea.properties.ta_name,
+      address: '',
+      coordinates: getCoordsOfFloodArea(selectedFloodAlertArea)
+    }
+    dispatch(setProfile(addLocation(localProfile, alertArea)))
+  }
+
+  const removeFloodAlertArea = () => {
+    dispatch(
+      setProfile(
+        removeLocation(localProfile, selectedFloodAlertArea.properties.ta_name)
+      )
+    )
+  }
+
+  const addLocationWithOnlyFloodAlerts = () => {
+    const { postcode, ...locationWithoutPostcode } = selectedLocation
+
+    const locationWithAlertType = {
+      ...locationWithoutPostcode,
+      categories: ['alert']
+    }
+
+    dispatch(setProfile(addLocation(localProfile, locationWithAlertType)))
+  }
+
+  const updateExistingLocationCategories = (categories) => {
+    const updatedProfile = updateLocationsFloodCategory(
+      localProfile,
+      selectedLocation,
+      categories
+    )
+    dispatch(setProfile(updatedProfile))
   }
 
   return (
@@ -131,6 +185,7 @@ export default function LocationInAlertAreaLayout({
                       e.preventDefault()
                       continueToSearchResultsPage()
                     }}
+                    className='govuk-body govuk-link inline-link'
                   >
                     Choose different location
                   </Link>

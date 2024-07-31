@@ -55,6 +55,11 @@ async function getMobileValidate(
       }
     ]
   }
+
+  if(code === '111111'){
+    console.log("invalid credentials, responding 101")
+    return res.response(responseCodes.UNAUTHORIZED).code(500)
+  }
   // 200 Success
   if (authToken === 'MockAuthToken' && code !== '999999') {
     return {

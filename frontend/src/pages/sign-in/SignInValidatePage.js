@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
@@ -14,6 +14,9 @@ import {
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
+import NotificationBanner from '../../gov-uk-components/NotificationBanner'
+import ExpiredCodeLayout from '../../common-layouts/expired-code/ExpiredCodeLayout'
+
 export default function SignInValidatePage () {
   const location = useLocation()
   const [error, setError] = useState('')
@@ -21,9 +24,18 @@ export default function SignInValidatePage () {
   const navigate = useNavigate()
   const [code, setCode] = useState('')
   const signinToken = location.state.signinToken
+  const [codeResent, setCodeResent] = useState(false)
+  const [codeResentTime, setCodeResentTime] = useState(new Date())
+  const [codeExpired, setCodeExpired] = useState(false)
+
+  // if error remove code sent notification
+  useEffect(() => {
+    setCodeResent(false)
+  }, [error])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+
     const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
@@ -32,8 +44,13 @@ export default function SignInValidatePage () {
         dataToSend,
         'api/sign_in_validate'
       )
+
       if (errorMessage !== null) {
-        setError(errorMessage)
+        if (errorMessage === 'The code you have entered has expired - please request a new code') {
+          setCodeExpired(true)
+        } else {
+          setError(errorMessage)
+        }
       } else {
         dispatch(setAuthToken(data.authToken))
         dispatch(setProfile(data.profile))
@@ -47,43 +64,57 @@ export default function SignInValidatePage () {
     event.preventDefault()
     const data = { email: location.state.email }
     const { errorMessage } = await backendCall(data, 'api/sign_in', navigate)
+
     if (errorMessage !== null) {
       setError(errorMessage)
     }
+
+    setCodeResent(true)
+    setCodeResentTime(new Date().toLocaleTimeString())
+    setCodeExpired(false)
   }
 
   return (
     <>
-      <div className='page-container'>
-        <Header />
-        <div class='govuk-width-container body-container'>
-          <Link to='/signin' className='govuk-back-link'>
-            Back
-          </Link>
-          <ErrorSummary errorList={error === '' ? [] : [error]} />
-          <h2 class='govuk-heading-l'>Check your email</h2>
-          <div class='govuk-body'>
-            We've sent a code to:
-            <InsetText text={location.state.email} />
-            <Input
-              name='Enter code'
-              inputType='text'
-              error={error}
-              onChange={(val) => setCode(val)}
-            />
-            <Button
-              className='govuk-button'
-              text='Continue'
-              onClick={handleSubmit}
-            />
-            <br />
-            <Link onClick={getNewCode} className='govuk-link'>
-              Get a new code
-            </Link>
+      {codeExpired
+        ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
+        : (
+          <div className='page-container'>
+            <Header />
+            <div class='govuk-width-container body-container'>
+              <Link to='/signin' className='govuk-back-link'>Back</Link>
+              {codeResent &&
+                <NotificationBanner
+                  className='govuk-notification-banner govuk-notification-banner--success'
+                  title='Success'
+                  text={'New code sent at ' + codeResentTime}
+                />}
+              {error && <ErrorSummary errorList={[error]} />}
+              <h2 class='govuk-heading-l'>Check your email</h2>
+              <div class='govuk-body'>
+                We've sent a code to:
+                <InsetText text={location.state.email} />
+                <Input
+                  name='Enter code'
+                  inputType='text'
+                  value={code}
+                  error={error}
+                  onChange={(val) => setCode(val)}
+                />
+                <Button
+                  className='govuk-button'
+                  text='Continue'
+                  onClick={handleSubmit}
+                />
+                <br />
+                <Link onClick={getNewCode} className='govuk-link'>
+                  Get a new code
+                </Link>
+              </div>
+            </div>
+            <Footer />
           </div>
-        </div>
-        <Footer />
-      </div>
+          )}
     </>
   )
 }

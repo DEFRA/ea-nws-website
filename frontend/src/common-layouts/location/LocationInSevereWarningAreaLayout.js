@@ -21,7 +21,7 @@ import {
   getCoordsOfFloodArea
 } from '../../services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout({
+export default function LocationInSevereWarningAreaLayout ({
   continueToNextPage
 }) {
   const navigate = useNavigate()
@@ -41,32 +41,12 @@ export default function LocationInSevereWarningAreaLayout({
 
   const handleSubmit = async () => {
     if (isUserInNearbyTargetFlowpath) {
-      const warningArea = {
-        name: selectedFloodWarningArea.properties.ta_name,
-        address: '',
-        coordinates: getCoordsOfFloodArea(selectedFloodWarningArea)
-      }
-      dispatch(setProfile(addLocation(profile, warningArea)))
+      await addFloodWarningArea()
 
       // load associated flood alert area
-      const associatedAlertArea = await getAssociatedAlertArea(
-        selectedLocation.coordinates.latitude,
-        selectedLocation.coordinates.longitude,
-        selectedFloodWarningArea.properties.parent
-      )
-
-      if (associatedAlertArea) {
-        dispatch(setSelectedFloodAlertArea(associatedAlertArea))
-      }
+      await findAssociatedFloodAlertArea()
     } else {
-      // geosafe doesnt accept locations with postcodes - need to remove this from the object
-      const { postcode, ...locationWithoutPostcode } = selectedLocation
-      // update location to recieve severe alert warnings
-      const locationWithAlertType = {
-        ...locationWithoutPostcode,
-        categories: ['severe']
-      }
-      dispatch(setProfile(addLocation(profile, locationWithAlertType)))
+      await addLocationWithFloodWarningAlerts()
     }
 
     // we must always show user the optional flood alert areas
@@ -75,8 +55,40 @@ export default function LocationInSevereWarningAreaLayout({
     continueToNextPage()
   }
 
+  const addFloodWarningArea = async () => {
+    const warningArea = {
+      name: selectedFloodWarningArea.properties.ta_name,
+      address: '',
+      coordinates: getCoordsOfFloodArea(selectedFloodWarningArea)
+    }
+    await dispatch(setProfile(addLocation(profile, warningArea)))
+  }
+
+  const findAssociatedFloodAlertArea = async () => {
+    const associatedAlertArea = await getAssociatedAlertArea(
+      selectedLocation.coordinates.latitude,
+      selectedLocation.coordinates.longitude,
+      selectedFloodWarningArea.properties.parent
+    )
+
+    if (associatedAlertArea) {
+      await dispatch(setSelectedFloodAlertArea(associatedAlertArea))
+    }
+  }
+
+  const addLocationWithFloodWarningAlerts = async () => {
+    // geosafe doesnt accept locations with postcodes - need to remove this from the object
+    const { postcode, ...locationWithoutPostcode } = selectedLocation
+    // update location to recieve severe alert warnings
+    const locationWithAlertType = {
+      ...locationWithoutPostcode,
+      categories: ['severe']
+    }
+    await dispatch(setProfile(addLocation(profile, locationWithAlertType)))
+  }
+
   const updateGeosafeProfile = async () => {
-    const dataToSend = { authToken: authToken, profile: profile }
+    const dataToSend = { authToken, profile }
     await backendCall(dataToSend, 'api/profile/update', navigate)
   }
 

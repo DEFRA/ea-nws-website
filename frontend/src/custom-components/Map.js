@@ -19,7 +19,7 @@ import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
-export default function Map({ types, setFloodAreas }) {
+export default function Map ({ types, setFloodAreas }) {
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
   const selectedLocation = useSelector(
@@ -45,7 +45,7 @@ export default function Map({ types, setFloodAreas }) {
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData() {
+    async function fetchFloodAreaData () {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude
@@ -56,7 +56,7 @@ export default function Map({ types, setFloodAreas }) {
     fetchFloodAreaData()
   }, [])
 
-  // pass flood area options to parent component
+  // pass flood area options to parent component - used to show nearby flood areas
   useEffect(() => {
     if (alertArea && warningArea && setFloodAreas) {
       if (types.includes('severe')) {

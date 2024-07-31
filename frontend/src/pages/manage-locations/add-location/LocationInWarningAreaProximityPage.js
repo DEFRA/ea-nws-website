@@ -6,21 +6,21 @@ export default function LocationInWarningAreaProximityPage () {
   const navigate = useNavigate()
 
   const continueToNearbyFloodAlertsPage = () => {
-    navigate(`/signup/register-location/location-in-proximity-area/${'alert'}`)
+    navigate(`/manage-locations/add/location-in-proximity-area/${'alert'}`)
   }
 
   const continueToSelectedFloodWarningsPage = (type) => {
     switch (type) {
       case 'severe':
-        navigate('/signup/register-location/location-in-severe-warning-area')
+        navigate('/manage-locations/add/location-in-severe-warning-area')
         break
       case 'alert':
-        navigate('/signup/register-location/location-in-alert-area')
+        navigate('/manage-locations/add/location-in-alert-area')
     }
   }
 
   const continueToSearchResultsPage = () => {
-    navigate('/signup/register-location/search-results')
+    navigate('/manage-locations/add/search-results')
   }
 
   return (

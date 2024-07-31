@@ -4,7 +4,7 @@ import Input from '../gov-uk-components/Input'
 const ConditionalWrapper = ({ condition, wrapper, children }) =>
   condition ? wrapper(children) : children
 
-export default function Radio({
+export default function Radio ({
   label,
   value,
   name,
@@ -21,13 +21,13 @@ export default function Radio({
       <ConditionalWrapper
         condition={small}
         wrapper={(children) => (
-          <div className="govuk-radios govuk-radios--small">{children}</div>
+          <div className='govuk-radios govuk-radios--small'>{children}</div>
         )}
       >
-        <div className="govuk-radios__item">
+        <div className='govuk-radios__item'>
           <input
-            className="govuk-radios__input"
-            type="radio"
+            className='govuk-radios__input'
+            type='radio'
             value={value}
             name={name}
             onChange={onChange}
@@ -35,14 +35,14 @@ export default function Radio({
             checked={checked}
           />
           <label
-            className="govuk-label govuk-radios__label"
+            className='govuk-label govuk-radios__label'
             htmlFor={'id' + label}
           >
             {label}
           </label>
         </div>
         {conditional && (
-          <div className="govuk-radios__conditional">
+          <div className='govuk-radios__conditional'>
             <div
               className={
                 conditionalError
@@ -52,8 +52,8 @@ export default function Radio({
             >
               <Input
                 name={conditionalQuestion}
-                className="govuk-input govuk-!-width-one-half"
-                inputType="text"
+                className='govuk-input govuk-!-width-one-half'
+                inputType='text'
                 error={conditionalError}
                 onChange={conditionalInput}
               />

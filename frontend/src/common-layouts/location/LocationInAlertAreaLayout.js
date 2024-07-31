@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import FloodWarningKey from '../../custom-components/FloodWarningKey'
@@ -18,7 +18,7 @@ import {
 } from '../../services/ProfileServices'
 import { getCoordsOfFloodArea } from '../../services/WfsFloodDataService'
 
-export default function LocationInAlertAreaLayout({
+export default function LocationInAlertAreaLayout ({
   continueToNextPage,
   continueToSearchResultsPage
 }) {
@@ -27,7 +27,6 @@ export default function LocationInAlertAreaLayout({
   const [isChecked, setIsChecked] = useState(false)
   const authToken = useSelector((state) => state.session.authToken)
   const profile = useSelector((state) => state.session.profile)
-  const [localProfile, setLocalProfile] = useState(profile)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
@@ -42,66 +41,59 @@ export default function LocationInAlertAreaLayout({
     (state) => state.session.selectedFloodAlertArea
   )
 
-  useEffect(() => {
-    setLocalProfile(profile)
-  }, [profile])
+  console.log('profile', profile)
 
   const handleSubmit = async () => {
-    console.log('1')
     if (additionalAlerts && isChecked) {
-      console.log('2', additionalAlerts, isChecked)
       if (isUserInNearbyTargetFlowpath) {
-        console.log('3', isUserInNearbyTargetFlowpath)
-        console.log('profile 1', localProfile)
-        addFloodAlertArea()
-        console.log('profile 2', localProfile)
+        await addFloodAlertArea()
       } else {
-        updateExistingLocationCategories(['severe', 'alert'])
+        // TODO this doesnt work?
+        await updateExistingLocationCategories(['severe', 'alert'])
       }
     } else if (additionalAlerts && !isChecked) {
       // scenario where user has pressed back and un-checked to get notifications for alert areas
       if (isUserInNearbyTargetFlowpath) {
-        removeFloodAlertArea()
+        await removeFloodAlertArea()
       } else {
-        updateExistingLocationCategories(['severe'])
+        await updateExistingLocationCategories(['severe'])
       }
     } else {
       // location only has flood alerts availble or user has selected a nearby flood alert area
       if (isUserInNearbyTargetFlowpath) {
-        addFloodAlertArea()
+        await addFloodAlertArea()
       } else {
-        addLocationWithOnlyFloodAlerts()
+        await addLocationWithOnlyFloodAlerts()
       }
     }
 
-    console.log('profile last', localProfile)
     await updateGeosafeProfile()
     continueToNextPage()
   }
 
   const updateGeosafeProfile = async () => {
-    const dataToSend = { authToken: authToken, profile: localProfile }
+    const dataToSend = { authToken, profile }
     await backendCall(dataToSend, 'api/profile/update', navigate)
   }
 
-  const addFloodAlertArea = () => {
+  const addFloodAlertArea = async () => {
     const alertArea = {
       name: selectedFloodAlertArea.properties.ta_name,
       address: '',
       coordinates: getCoordsOfFloodArea(selectedFloodAlertArea)
     }
-    dispatch(setProfile(addLocation(localProfile, alertArea)))
+    await dispatch(setProfile(addLocation(profile, alertArea)))
   }
 
-  const removeFloodAlertArea = () => {
-    dispatch(
+  const removeFloodAlertArea = async () => {
+    await dispatch(
       setProfile(
-        removeLocation(localProfile, selectedFloodAlertArea.properties.ta_name)
+        removeLocation(profile, selectedFloodAlertArea.properties.ta_name)
       )
     )
   }
 
-  const addLocationWithOnlyFloodAlerts = () => {
+  const addLocationWithOnlyFloodAlerts = async () => {
     const { postcode, ...locationWithoutPostcode } = selectedLocation
 
     const locationWithAlertType = {
@@ -109,16 +101,16 @@ export default function LocationInAlertAreaLayout({
       categories: ['alert']
     }
 
-    dispatch(setProfile(addLocation(localProfile, locationWithAlertType)))
+    await dispatch(setProfile(addLocation(profile, locationWithAlertType)))
   }
 
-  const updateExistingLocationCategories = (categories) => {
+  const updateExistingLocationCategories = async (categories) => {
     const updatedProfile = updateLocationsFloodCategory(
-      localProfile,
+      profile,
       selectedLocation,
       categories
     )
-    dispatch(setProfile(updatedProfile))
+    await dispatch(setProfile(updatedProfile))
   }
 
   return (

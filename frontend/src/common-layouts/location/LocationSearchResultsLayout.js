@@ -19,13 +19,9 @@ import {
   isLocationInFloodArea
 } from '../../services/WfsFloodDataService'
 
-<<<<<<< HEAD
 export default function LocationSearchResultsLayout({ continueToNextPage }) {
-=======
-export default function LocationSearchResultsLayout ({ continueToNextPage }) {
-  const navigate = useNavigate()
->>>>>>> e08dd406a493f1e541326cd3d1952c2cf850904d
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const locations = useSelector((state) => state.session.locationSearchResults)
@@ -73,7 +69,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
       let isWithinAlertAreaProximity = false
 
       if (!isInAlertArea || !isInWarningArea) {
-        //check that there are flood areas within boundary box around location
+        // check that there are flood areas within boundary box around location
         isWithinWarningAreaProximity = warningArea.features.length > 0
         isWithinAlertAreaProximity = alertArea.features.length > 0
       }
@@ -124,17 +120,11 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
                       Postcode: {locationPostCode}
                       {'   '}
                       <Link
-<<<<<<< HEAD
-                        to='/signup/register-location/search'
-                        className='govuk-link govuk-!-padding-left-5'
-=======
                         onClick={() => navigate(-1)}
-                        className='govuk-back-link'
->>>>>>> e08dd406a493f1e541326cd3d1952c2cf850904d
+                        className='govuk-link govuk-!-padding-left-5'
                       >
                         Change postcode
                       </Link>
-<<<<<<< HEAD
                     </p>
                     <table className='govuk-table'>
                       <tbody className='govuk-table__body'>
@@ -153,28 +143,6 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
                                 {location.name}
                               </Link>
                             </td>
-=======
-                      {error && <ErrorSummary errorList={[error]} />}
-                      <h1 className='govuk-heading-l govuk-!-margin-top-6'>
-                        Select an address
-                      </h1>
-                      {locationPostCode && (
-                        <p className='govuk-body'>
-                          Postcode: {locationPostCode}
-                          {'   '}
-                          <Link
-                            onClick={() => navigate(-1)}
-                            className='govuk-link govuk-!-padding-left-5'
-                          >
-                            Change postcode
-                          </Link>
-                        </p>
-                      )}
-                      <table className='govuk-table'>
-                        <tbody className='govuk-table__body'>
-                          <tr className='govuk-table__row'>
-                            <td className='govuk-table__cell' />
->>>>>>> e08dd406a493f1e541326cd3d1952c2cf850904d
                           </tr>
                         ))}
                       </tbody>

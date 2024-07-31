@@ -19,7 +19,7 @@ import {
   setShowOnlySelectedFloodArea
 } from '../../redux/userSlice'
 
-export default function LocationWithinWarningAreaProximityLayout({
+export default function LocationWithinWarningAreaProximityLayout ({
   continueToSelectedFloodWarningsPage,
   continueToNearbyFloodAlertsPage,
   continueToSearchResultsPage
@@ -74,9 +74,6 @@ export default function LocationWithinWarningAreaProximityLayout({
       case 'severe':
         dispatch(setSelectedFloodWarningArea(area))
       case 'alert':
-        console.log('hit')
-
-        console.log(area)
         dispatch(setSelectedFloodAlertArea(area))
     }
   }
@@ -120,34 +117,36 @@ export default function LocationWithinWarningAreaProximityLayout({
                   <fieldset className='govuk-fieldset'>
                     <h3 class='govuk-heading-s'>Select a nearby area</h3>
                     {error && <p className='govuk-error-message'>{error}</p>}
-                    {floodAreas ? (
-                      floodAreas.map((area, index) => (
-                        <Radio
-                          key={index}
-                          small={true}
-                          label={index + 1 + '. ' + area.properties.ta_name}
-                          name={'floodAreas'}
-                          onChange={() => setFloodArea(area)}
-                          checked={
+                    {floodAreas
+                      ? (
+                          floodAreas.map((area, index) => (
+                            <Radio
+                              key={index}
+                              small
+                              label={index + 1 + '. ' + area.properties.ta_name}
+                              name='floodAreas'
+                              onChange={() => setFloodArea(area)}
+                              checked={
                             (selectedFloodWarningArea ||
                               selectedFloodAlertArea) === area
                           }
-                        />
-                      ))
-                    ) : (
-                      <LoadingSpinner />
-                    )}
+                            />
+                          ))
+                        )
+                      : (
+                        <LoadingSpinner />
+                        )}
                   </fieldset>
                 </div>
                 <Button
-                  text={'Confirm'}
-                  className={'govuk-button govuk-!-margin-top-5'}
+                  text='Confirm'
+                  className='govuk-button govuk-!-margin-top-5'
                   onClick={() => handleConfirm()}
                 />
                 {type === 'severe' && (
                   <Button
-                    text={'Skip to other areas nearby'}
-                    className={'govuk-button govuk-button--secondary'}
+                    text='Skip to other areas nearby'
+                    className='govuk-button govuk-button--secondary'
                     onClick={() => continueToNearbyFloodAlertsPage()}
                   />
                 )}

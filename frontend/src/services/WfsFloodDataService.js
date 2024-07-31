@@ -45,9 +45,9 @@ export const getAssociatedAlertArea = async (lat, lng, code) => {
   const bboxKM = 0.5 // size of bounding box from centre in KM
 
   // alert area
-  let baseWFSURL =
+  const baseWFSURL =
     'https://environment.data.gov.uk/spatialdata/flood-alert-areas/wfs'
-  let WFSParams = {
+  const WFSParams = {
     service: 'WFS',
     version: '2.0.0',
     request: 'GetFeature',
@@ -56,8 +56,8 @@ export const getAssociatedAlertArea = async (lat, lng, code) => {
     bbox: calculateBoundingBox(lat, lng, bboxKM),
     outputFormat: 'GEOJSON'
   }
-  let wfsURL = `${baseWFSURL}?${new URLSearchParams(WFSParams).toString()}`
-  let wfsAlertData = await fetch(wfsURL).then((response) => response.json())
+  const wfsURL = `${baseWFSURL}?${new URLSearchParams(WFSParams).toString()}`
+  const wfsAlertData = await fetch(wfsURL).then((response) => response.json())
 
   const filteredOutOtherAlertAreas = wfsAlertData.features.filter(
     (floodArea) => floodArea.properties.fws_tacode === code
@@ -84,14 +84,14 @@ export const isLocationWithinFloodAreaProximity = (
   const point = turf.point([lng, lat])
   const maxDistance = distanceMetres
 
-  //load polygons and loop through each area until true is returned
+  // load polygons and loop through each area until true is returned
   const isWithinFloodAreaProximity = floodAreaData.features.some((feature) => {
     const floodArea = turf.multiPolygon(feature.geometry.coordinates)
 
-    //return all positions in area
-    var floodAreaEdges = turf.explode(floodArea)
+    // return all positions in area
+    const floodAreaEdges = turf.explode(floodArea)
 
-    //loop through every position and check location is not within proximity of flood area
+    // loop through every position and check location is not within proximity of flood area
     return floodAreaEdges.features.some((edge) => {
       const floodAreaEdge = turf.point(edge.geometry.coordinates)
       const distance = turf.distance(point, floodAreaEdge, { units: 'meters' })
@@ -110,7 +110,7 @@ export const getCoordsOfFloodArea = (area) => {
   return firstLatLngCoords
 }
 
-function getFirstCoordinates(nestedArray) {
+function getFirstCoordinates (nestedArray) {
   let current = nestedArray
   while (Array.isArray(current[0])) {
     current = current[0]
@@ -118,7 +118,7 @@ function getFirstCoordinates(nestedArray) {
   return { latitude: current[1], longitude: current[0] }
 }
 
-function checkPointInPolygon(lat, lng, geojson) {
+function checkPointInPolygon (lat, lng, geojson) {
   const point = L.latLng(lat, lng)
 
   // Check each area in the GeoJSON data
@@ -135,7 +135,7 @@ function checkPointInPolygon(lat, lng, geojson) {
   return false
 }
 
-function calculateBoundingBox(centerLat, centerLng, distanceKm) {
+function calculateBoundingBox (centerLat, centerLng, distanceKm) {
   const EARTH_RADIUS_KM = 6371 // Earth radius in kilometers
 
   // Convert center latitude and longitude to radians

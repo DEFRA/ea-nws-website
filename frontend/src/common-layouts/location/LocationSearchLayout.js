@@ -14,7 +14,7 @@ import {
 import { backendCall } from '../../services/BackendService'
 import { postCodeValidation } from '../../services/validations/PostCodeValidation'
 
-export default function LocationSearchLayout({ continueToNextPage }) {
+export default function LocationSearchLayout ({ continueToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [searchOption, setSearchOption] = useState('')

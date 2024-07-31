@@ -23,8 +23,8 @@ const addUnverifiedContact = (profile, type, contact) => {
         [type === 'email'
           ? 'emails'
           : type === 'mobile'
-          ? 'mobilePhones'
-          : 'homePhones']: [...unverifiedContactList, contact]
+            ? 'mobilePhones'
+            : 'homePhones']: [...unverifiedContactList, contact]
       }
     }
     return updatedProfile
@@ -87,8 +87,8 @@ const addVerifiedContact = (profile, type, contact) => {
       [type === 'email'
         ? 'emails'
         : type === 'mobile'
-        ? 'mobilePhones'
-        : 'homePhones']: [...verifiedContactList, contact]
+          ? 'mobilePhones'
+          : 'homePhones']: [...verifiedContactList, contact]
     }
     return updatedProfile
   } else {
@@ -161,12 +161,19 @@ const updateAdditionals = (profile, id, value) => {
 const addLocation = (profile, newLocation) => {
   const currentLocations = profile.pois
 
-  const updatedProfile = {
-    ...profile,
-    pois: [...currentLocations, newLocation]
-  }
+  const exists = currentLocations.some(
+    (existingLocation) => existingLocation.name === newLocation.name
+  )
 
-  return updatedProfile
+  if (!exists) {
+    const updatedProfile = {
+      ...profile,
+      pois: [...currentLocations, newLocation]
+    }
+    return updatedProfile
+  } else {
+    return profile
+  }
 }
 
 const removeLocation = (profile, name) => {
@@ -184,7 +191,7 @@ const removeLocation = (profile, name) => {
   return updatedProfile
 }
 
-//TODO i have no idea how to fix this
+// TODO i have no idea how to fix this
 const updateLocationsFloodCategory = (profile, location, updatedCategories) => {
   // const locationIndex = profile.pois.findIndex(
   //   (poi) => poi.name === location.name

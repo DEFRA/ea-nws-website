@@ -40,10 +40,6 @@ const apiCall = async (data, path) => {
           status: status,
           errorMessage: getErrorMessage(path, error.response.data)
         }
-      } else {
-        return {
-          status: 999
-        }
       }
     } else if (error.request) {
       // no response was received - probably need to return

@@ -74,16 +74,15 @@ export default function LocationInAlertAreaLayout({
                   <li>2 to 12 hours before flooding</li>
                   <li>during waking hours when possible</li>
                 </ul>
-                {additionalAlerts ||
-                  (canCancel && (
-                    <>
-                      <CheckBox
-                        onChange={() => setIsChecked(!isChecked)}
-                        checked={isChecked}
-                        label='Yes, I want these'
-                      />
-                    </>
-                  ))}
+                {additionalAlerts && (
+                  <>
+                    <CheckBox
+                      onChange={() => setIsChecked(!isChecked)}
+                      checked={isChecked}
+                      label='Yes, I want these'
+                    />
+                  </>
+                )}
                 <Button
                   text={
                     additionalAlerts

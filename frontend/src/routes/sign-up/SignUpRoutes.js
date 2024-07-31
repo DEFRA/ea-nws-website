@@ -18,7 +18,7 @@ import LocationSearchPage from '../../pages/sign-up/register-location/LocationSe
 import LocationSearchResultsPage from '../../pages/sign-up/register-location/LocationSearchResultsPage'
 import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
 import DeclarationOfAgreementPage from '../../pages/sign-up/user-agreement/DeclarationOfAgreementPage'
-import AlreadyEnteredMobileOptions from '../../pages/sign-up/channel-preferences/landline-telephone-authentication/AlreadyEnteredMobileOptionsPage'
+import SelectAlternateLandlinePage from '../../pages/sign-up/channel-preferences/landline-telephone-authentication/SelectAlternateLandlinePage'
 
 // sign up routes
 const signupRoutes = [
@@ -80,7 +80,7 @@ const signupRoutes = [
   },
   {
     path: '/signup/contactpreferences/landline/already-entered-landline',
-    component: <AlreadyEnteredMobileOptions />
+    component: <SelectAlternateLandlinePage />
   },
   { path: '/signup/accountname/add', component: <AddFullNamePage /> },
   {

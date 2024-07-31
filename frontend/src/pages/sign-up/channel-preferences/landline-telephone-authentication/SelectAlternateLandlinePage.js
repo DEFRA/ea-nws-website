@@ -14,7 +14,7 @@ import {
 import { normalisePhoneNumber } from '../../../../services/formatters/NormalisePhoneNumber'
 import Radio from '../../../../gov-uk-components/Radio'
 
-export default function AlreadyEnteredMobileOptions () {
+export default function SelectAlternateLandlinePage () {
   const navigate = useNavigate()
   const [landline, setLandline] = useState('')
   const [alternateLandline, setAlternateLandline] = useState('')

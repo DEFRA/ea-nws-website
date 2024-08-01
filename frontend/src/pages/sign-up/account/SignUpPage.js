@@ -13,7 +13,7 @@ import { backendCall } from '../../../services/BackendService'
 import { addVerifiedContact } from '../../../services/ProfileServices'
 import { emailValidation } from '../../../services/validations/EmailValidation'
 
-export default function SignUpPage() {
+export default function SignUpPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [email, setEmail] = useState('')

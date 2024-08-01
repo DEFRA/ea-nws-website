@@ -72,7 +72,7 @@ export default function LocationInSevereWarningAreaLayout ({
     )
 
     if (associatedAlertArea) {
-      await dispatch(setSelectedFloodAlertArea(associatedAlertArea))
+      dispatch(setSelectedFloodAlertArea(associatedAlertArea))
     }
   }
 

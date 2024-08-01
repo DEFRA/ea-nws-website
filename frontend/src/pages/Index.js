@@ -11,9 +11,10 @@ import {
   setRegistrations
 } from '../redux/userSlice'
 
-export default function IndexPage () {
+export default function IndexPage() {
   const dispatch = useDispatch()
   const [mockSessionActive, setmockSessionActive] = useState(false)
+  const [emptyProfileActive, setEmptyProfileActive] = useState(false)
 
   const mockOne = {
     id: '',
@@ -32,7 +33,8 @@ export default function IndexPage () {
     },
     pois: [
       {
-        address: 'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth, NR30 1AA',
+        address:
+          'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth, NR30 1AA',
         coordinates: {
           latitude: 52.6124445,
           longitude: 1.7246405
@@ -58,7 +60,8 @@ export default function IndexPage () {
     },
     pois: [
       {
-        address: 'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth, NR30 1AA',
+        address:
+          'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth, NR30 1AA',
         coordinates: {
           latitude: 52.6124445,
           longitude: 1.7246405
@@ -91,7 +94,8 @@ export default function IndexPage () {
     },
     pois: [
       {
-        address: 'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth, NR30 1AA',
+        address:
+          'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth, NR30 1AA',
         coordinates: {
           latitude: 52.6124445,
           longitude: 1.7246405
@@ -177,7 +181,7 @@ export default function IndexPage () {
     ]
   }
 
-  function mockSession (profile) {
+  function mockSession(profile) {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
       const registrations = { partner: '4', name: 'NWS England' }
@@ -192,6 +196,32 @@ export default function IndexPage () {
     }
   }
 
+  function mockEmptyProfileWithNoAuthentication() {
+    if (!emptyProfileActive) {
+      const emptyProfile = {
+        id: '',
+        enabled: true,
+        firstname: '',
+        lastname: '',
+        emails: [],
+        mobilePhones: [],
+        homePhones: [],
+        language: 'EN', // [TODO] is this always english?
+        additionals: [],
+        unverified: {
+          emails: [],
+          mobilePhones: [],
+          homePhones: []
+        },
+        pois: []
+      }
+
+      dispatch(setProfile(emptyProfile))
+    } else {
+      dispatch(clearAuth())
+    }
+  }
+
   return (
     <>
       <div className='govuk-width-container'>
@@ -201,9 +231,19 @@ export default function IndexPage () {
               <h1 className='govuk-heading-xl'>Next Warning Service Index</h1>
               <NotificationBanner
                 className='govuk-notification-banner govuk-notification-banner--success'
-                title='Mock session'
-                text={mockSessionActive ? 'Active' : 'Not Active'}
+                title='Empty profile'
+                text={emptyProfileActive ? 'Active' : 'Not Active'}
               />
+              <Button
+                className='govuk-button'
+                text='Activate/Deactivate Empty profile - Used for sign up tests'
+                onClick={() => {
+                  setEmptyProfileActive(!emptyProfileActive)
+                  mockEmptyProfileWithNoAuthentication()
+                }}
+              />
+              <br />
+
               <p className='govuk-body'>A quick link to each page</p>
               <ul className='govuk-list'>
                 <li>
@@ -227,6 +267,12 @@ export default function IndexPage () {
                 A session is required to access the below pages - click below to
                 start/kill the mock session
               </p>
+              <br />
+              <NotificationBanner
+                className='govuk-notification-banner govuk-notification-banner--success'
+                title='Mock session'
+                text={mockSessionActive ? 'Active' : 'Not Active'}
+              />
               <Button
                 className='govuk-button'
                 text='Activate/Deactivate Mock Session 1'

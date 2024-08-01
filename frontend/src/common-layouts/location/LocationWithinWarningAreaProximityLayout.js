@@ -54,8 +54,12 @@ export default function LocationWithinWarningAreaProximityLayout ({
       switch (type) {
         case 'severe':
           dispatch(setAdditionalAlerts(true))
+          break
         case 'alert':
           dispatch(setAdditionalAlerts(false))
+          break
+        default:
+          break
       }
 
       // only show the selected flood area on the map on next page
@@ -73,8 +77,12 @@ export default function LocationWithinWarningAreaProximityLayout ({
     switch (type) {
       case 'severe':
         dispatch(setSelectedFloodWarningArea(area))
+        break
       case 'alert':
         dispatch(setSelectedFloodAlertArea(area))
+        break
+      default:
+        break
     }
   }
 

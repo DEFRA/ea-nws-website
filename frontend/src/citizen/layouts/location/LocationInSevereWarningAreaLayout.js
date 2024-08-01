@@ -2,6 +2,7 @@ import 'leaflet/dist/leaflet.css'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import BackLink from '../../../common/components/custom/BackLink'
 import FloodWarningKey from '../../../common/components/custom/FloodWarningKey'
 import Map from '../../../common/components/custom/Map'
 import Button from '../../../common/components/gov-uk/Button'
@@ -30,13 +31,11 @@ export default function LocationInSevereWarningAreaLayout ({
 
   return (
     <>
-      <div className='govuk-body'>
+      <BackLink onClick={() => navigate(-1)} />
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <Link onClick={() => navigate(-1)} className='govuk-back-link'>
-              Back
-            </Link>
-            <h1 className='govuk-heading-l govuk-!-margin-top-6'>
+            <h1 className='govuk-heading-l'>
               You can get severe flood warnings and flood warnings for this
               location
             </h1>
@@ -91,7 +90,7 @@ export default function LocationInSevereWarningAreaLayout ({
             </Link>
           </div>
         </div>
-      </div>
+      </main>
     </>
   )
 }

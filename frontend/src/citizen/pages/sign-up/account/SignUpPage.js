@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
@@ -63,33 +64,36 @@ export default function SignUpPage () {
 
   return (
     <>
-      <Link onClick={() => navigate(-1)} className='govuk-back-link'>
-        Back
-      </Link>
-      {error && <ErrorSummary errorList={[error]} />}
-      <h2 className='govuk-heading-l'>
-        Enter an email address - you'll use this to sign in to your account
-      </h2>
-      <div className='govuk-body'>
-        <p>
-          You'll be able to use your account to update your locations, flood
-          messages or contact details.{' '}
-        </p>
-        <InsetText text='We recommend using an email address you can access 24 hours a day.' />
-        <Input
-          className='govuk-input govuk-input--width-10'
-          inputType='text'
-          name='Email address'
-          error={error}
-          onChange={(val) => setEmail(val)}
-        />
-        <Button
-          className='govuk-button'
-          text='Continue'
-          onClick={handleSubmit}
-        />
-        <br />
-      </div>
+      <BackLink onClick={() => navigate(-1)} />
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
+            {error && <ErrorSummary errorList={[error]} />}
+            <h2 className='govuk-heading-l'>
+              Enter an email address - you'll use this to sign in to your account
+            </h2>
+            <div className='govuk-body'>
+              <p>
+                You'll be able to use your account to update your locations, flood
+                messages or contact details.{' '}
+              </p>
+              <InsetText text='We recommend using an email address you can access 24 hours a day.' />
+              <Input
+                className='govuk-input govuk-input--width-10'
+                inputType='text'
+                name='Email address'
+                error={error}
+                onChange={(val) => setEmail(val)}
+              />
+              <Button
+                className='govuk-button'
+                text='Continue'
+                onClick={handleSubmit}
+              />
+            </div>
+          </div>
+        </div>
+      </main>
     </>
   )
 }

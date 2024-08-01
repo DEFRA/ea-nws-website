@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import BackLink from '../../../common/components/custom/BackLink'
 import FloodWarningKey from '../../../common/components/custom/FloodWarningKey'
 import Map from '../../../common/components/custom/Map'
 import Button from '../../../common/components/gov-uk/Button'
@@ -24,13 +25,11 @@ export default function LocationInAlertAreaLayout ({ continueToNextPage }) {
 
   return (
     <>
-      <div className='govuk-body'>
+      <BackLink onClick={() => navigate(-1)} />
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <Link onClick={() => navigate(-1)} className='govuk-back-link'>
-              Back
-            </Link>
-            <h1 className='govuk-heading-l govuk-!-margin-top-6'>
+            <h1 className='govuk-heading-l'>
               {additionalAlerts
                 ? 'You can also get flood alerts (optional)'
                 : 'You can get flood alerts for this location'}
@@ -78,7 +77,7 @@ export default function LocationInAlertAreaLayout ({ continueToNextPage }) {
             />
           </div>
         </div>
-      </div>
+      </main>
     </>
   )
 }

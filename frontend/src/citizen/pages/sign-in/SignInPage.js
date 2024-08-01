@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
@@ -34,37 +35,42 @@ export default function SignInPage () {
 
   return (
     <>
-      <Link onClick={() => navigate(-1)} className='govuk-back-link'>
-        Back
-      </Link>
-      <ErrorSummary errorList={error === '' ? [] : [error]} />
-      <h2 class='govuk-heading-l'>
-        Sign in to your flood warnings account
-      </h2>
-      <div class='govuk-body'>
-        You can:
-        <ul className='govuk-list govuk-list--bullet'>
-          <li>update or remove your locations</li>
-          <li>change how you get flood messages</li>
-          <li>delete your account</li>
-        </ul>
-        <Input
-          className='govuk-input govuk-input--width-10'
-          name='Email address'
-          inputType='text'
-          error={error}
-          onChange={(val) => setEmail(val)}
-        />
-        <Button
-          className='govuk-button'
-          text='Continue'
-          onClick={handleSubmit}
-        />
-        <br />
-        <Link to='/signup' className='govuk-link'>
-          Sign up if you do not have an account
-        </Link>
-      </div>
+      <BackLink onClick={() => navigate(-1)} />
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
+            <ErrorSummary errorList={error === '' ? [] : [error]} />
+            <h2 class='govuk-heading-l'>
+              Sign in to your flood warnings account
+            </h2>
+            <div class='govuk-body'>
+              <p>You can:</p>
+              <ul className='govuk-list govuk-list--bullet'>
+                <li>update or remove your locations</li>
+                <li>change how you get flood messages</li>
+                <li>delete your account</li>
+              </ul>
+              <br />
+              <Input
+                className='govuk-input govuk-input--width-10'
+                name='Email address'
+                inputType='text'
+                error={error}
+                onChange={(val) => setEmail(val)}
+              />
+              <Button
+                className='govuk-button'
+                text='Continue'
+                onClick={handleSubmit}
+              />
+              <br />
+              <Link to='/signup' className='govuk-link'>
+                Sign up if you do not have an account
+              </Link>
+            </div>
+          </div>
+        </div>
+      </main>
     </>
   )
 }

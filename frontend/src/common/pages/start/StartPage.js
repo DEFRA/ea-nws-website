@@ -7,7 +7,7 @@ export default function StartPage () {
 
   return (
     <>
-      <main className='govuk-main-wrapper'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>

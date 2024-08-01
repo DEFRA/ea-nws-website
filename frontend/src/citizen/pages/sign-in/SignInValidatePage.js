@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
@@ -78,35 +79,42 @@ export default function SignInValidatePage () {
         ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
         : (
           <>
-            <Link to='/signin' className='govuk-back-link'>Back</Link>
+            <BackLink to='/signin' />
             {codeResent &&
               <NotificationBanner
                 className='govuk-notification-banner govuk-notification-banner--success'
                 title='Success'
                 text={'New code sent at ' + codeResentTime}
               />}
-            {error && <ErrorSummary errorList={[error]} />}
-            <h2 class='govuk-heading-l'>Check your email</h2>
-            <div class='govuk-body'>
-              We've sent a code to:
-              <InsetText text={location.state.email} />
-              <Input
-                name='Enter code'
-                inputType='text'
-                value={code}
-                error={error}
-                onChange={(val) => setCode(val)}
-              />
-              <Button
-                className='govuk-button'
-                text='Continue'
-                onClick={handleSubmit}
-              />
-              <br />
-              <Link onClick={getNewCode} className='govuk-link'>
-                Get a new code
-              </Link>
-            </div>
+            <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-two-thirds'>
+                  {error && <ErrorSummary errorList={[error]} />}
+                  <h2 class='govuk-heading-l'>Check your email</h2>
+                  <div class='govuk-body'>
+                    We've sent a code to:
+                    <InsetText text={location.state.email} />
+                    <Input
+                      className='govuk-input govuk-input--width-10'
+                      name='Enter code'
+                      inputType='text'
+                      value={code}
+                      error={error}
+                      onChange={(val) => setCode(val)}
+                    />
+                    <Button
+                      className='govuk-button'
+                      text='Continue'
+                      onClick={handleSubmit}
+                    />
+                    <br />
+                    <Link onClick={getNewCode} className='govuk-link'>
+                      Get a new code
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            </main>
           </>
           )}
     </>

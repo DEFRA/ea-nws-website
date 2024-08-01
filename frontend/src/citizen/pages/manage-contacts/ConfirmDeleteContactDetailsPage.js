@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import InsetText from '../../../common/components/gov-uk/InsetText'
 import { setProfile } from '../../../common/redux/userSlice'
@@ -50,10 +51,8 @@ export default function ConfirmDeleteContactDetailsPage () {
 
   return (
     <>
-      <Link to={() => navigate(-1)} className='govuk-back-link'>
-        Back
-      </Link>
-      <main className='govuk-main-wrapper'>
+      <BackLink to={() => navigate(-1)} />
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <h2 className='govuk-heading-l'>

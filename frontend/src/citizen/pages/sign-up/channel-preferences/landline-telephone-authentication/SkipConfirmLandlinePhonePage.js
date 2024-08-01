@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 
 export default function SkipConfirmLandlinePhonePage () {
@@ -23,36 +24,29 @@ export default function SkipConfirmLandlinePhonePage () {
 
   return (
     <>
-      <div class='govuk-grid-row'>
-        <div class='govuk-grid-column-two-thirds'>
-          <Link
-            to='/signup/contactpreferences/landline/validate'
-            className='govuk-back-link'
-          >
-            Back
-          </Link>
-          <h1 class='govuk-heading-l govuk-!-margin-top-6'>
-            We cannot send flood messages to {homePhone} until you confirm
-            this number
-          </h1>
-          <Button
-            text={"I'll confirm this later"}
-            className='govuk-button'
-            onClick={handleSubmit}
-          />
+      <BackLink to='/signup/contactpreferences/landline/validate' />
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+        <div class='govuk-grid-row'>
+          <div class='govuk-grid-column-two-thirds'>
+            <h1 class='govuk-heading-l'>
+              We cannot send flood messages to {homePhone} until you confirm
+              this number
+            </h1>
+            <Button
+              text={"I'll confirm this later"}
+              className='govuk-button'
+              onClick={handleSubmit}
+            />
               &nbsp; &nbsp;
-          <Link
-            to='/signup/contactpreferences/landline/validate'
-            className='govuk-body govuk-link'
-            style={{
-              display: 'inline-block',
-              padding: '8px 10px 7px'
-            }}
-          >
-            Confirm now
-          </Link>
+            <Link
+              to='/signup/contactpreferences/landline/validate'
+              className='govuk-body govuk-link inline-link'
+            >
+              Confirm now
+            </Link>
+          </div>
         </div>
-      </div>
+      </main>
     </>
   )
 }

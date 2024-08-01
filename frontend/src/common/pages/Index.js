@@ -195,7 +195,7 @@ export default function IndexPage () {
   return (
     <>
       <div className='govuk-width-container'>
-        <main className='govuk-main-wrapper'>
+        <main className='govuk-main-wrapper govuk-!-padding-top-4'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
               <h1 className='govuk-heading-xl'>Next Warning Service Index</h1>

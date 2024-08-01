@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
@@ -65,10 +66,8 @@ export default function AddEmailLayout ({ NavigateToNextPage }) {
 
   return (
     <>
-      <Link onClick={removeEmailFromProfile} className='govuk-back-link'>
-        Back
-      </Link>
-      <main className='govuk-main-wrapper'>
+      <BackLink onClick={removeEmailFromProfile} />
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <ErrorSummary errorList={error === '' ? [] : [error]} />

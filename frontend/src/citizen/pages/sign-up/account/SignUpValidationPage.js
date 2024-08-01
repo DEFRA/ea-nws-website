@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
@@ -79,62 +80,66 @@ export default function SignUpValidationPage () {
       {codeExpired
         ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
         : (
-          <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-two-thirds'>
-              <Link to='/signup' className='govuk-back-link'>Back</Link>
-              {codeResent &&
-                <NotificationBanner
-                  className='govuk-notification-banner govuk-notification-banner--success'
-                  title='Success'
-                  text={'New code sent at ' + codeResentTime}
-                />}
-              {error && <ErrorSummary errorList={[error]} />}
-              <h2 className='govuk-heading-l'>Check your email</h2>
-              <div className='govuk-body'>
-                <p>You need to confirm your email address.</p>
-                <p className='govuk-!-margin-top-6'>We've sent an email with a code to:</p>
-                <InsetText text={loginEmail} />
-                Enter the code within 4 hours or it will expire.
-                <div className='govuk-!-margin-top-6'>
-                  <Input
-                    className='govuk-input govuk-input--width-10'
-                    inputType='text'
-                    value={code}
-                    name='Enter code'
-                    error={error}
-                    onChange={(val) => setCode(val)}
-                  />
-                </div>
-                <Button
-                  className='govuk-button'
-                  text='Confirm email address'
-                  onClick={handleSubmit}
-                />
+          <>
+            <BackLink to='/signup' />
+            <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-two-thirds'>
+                  {codeResent &&
+                    <NotificationBanner
+                      className='govuk-notification-banner govuk-notification-banner--success'
+                      title='Success'
+                      text={'New code sent at ' + codeResentTime}
+                    />}
+                  {error && <ErrorSummary errorList={[error]} />}
+                  <h2 className='govuk-heading-l'>Check your email</h2>
+                  <div className='govuk-body'>
+                    <p>You need to confirm your email address.</p>
+                    <p className='govuk-!-margin-top-6'>We've sent an email with a code to:</p>
+                    <InsetText text={loginEmail} />
+                    Enter the code within 4 hours or it will expire.
+                    <div className='govuk-!-margin-top-6'>
+                      <Input
+                        className='govuk-input govuk-input--width-10'
+                        inputType='text'
+                        value={code}
+                        name='Enter code'
+                        error={error}
+                        onChange={(val) => setCode(val)}
+                      />
+                    </div>
+                    <Button
+                      className='govuk-button'
+                      text='Confirm email address'
+                      onClick={handleSubmit}
+                    />
                     &nbsp; &nbsp;
-                <Link
-                  to='/signup'
-                  className='govuk-link'
-                  style={{
-                    display: 'inline-block',
-                    padding: '8px 10px 7px'
-                  }}
-                >
-                  Use a different email
-                </Link>
-                <div className='govuk-!-margin-top-1'>
-                  <Link
-                    onClick={getNewCode}
-                    className='govuk-link'
-                    style={{
-                      display: 'inline-block'
-                    }}
-                  >
-                    Get a new code
-                  </Link>
+                    <Link
+                      to='/signup'
+                      className='govuk-link'
+                      style={{
+                        display: 'inline-block',
+                        padding: '8px 10px 7px'
+                      }}
+                    >
+                      Use a different email
+                    </Link>
+                    <div className='govuk-!-margin-top-1'>
+                      <Link
+                        onClick={getNewCode}
+                        className='govuk-link'
+                        style={{
+                          display: 'inline-block'
+                        }}
+                      >
+                        Get a new code
+                      </Link>
+                    </div>
+                  </div>
                 </div>
               </div>
-            </div>
-          </div>
+            </main>
+          </>
           )}
     </>
   )

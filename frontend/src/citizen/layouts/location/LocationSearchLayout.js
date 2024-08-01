@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../common/components/gov-uk/Radio'
@@ -73,60 +74,60 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
 
   return (
     <>
-      <div className='govuk-grid-row'>
-        <div className='govuk-grid-column-two-thirds'>
-          <Link onClick={() => navigate(-1)} className='govuk-back-link'>
-            Back
-          </Link>
-          {(error || postCodeError || placeNameError) && (
-            <ErrorSummary
-              errorList={[error, postCodeError, placeNameError]}
-            />
-          )}
-          <h1 className='govuk-heading-l govuk-!-margin-top-6'>
-            Check if you can get flood messages for your location
-          </h1>
-          <div
-            className={
+      <BackLink onClick={() => navigate(-1)} />
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
+            {(error || postCodeError || placeNameError) && (
+              <ErrorSummary
+                errorList={[error, postCodeError, placeNameError]}
+              />
+            )}
+            <h1 className='govuk-heading-l'>
+              Check if you can get flood messages for your location
+            </h1>
+            <div
+              className={
                   error
                     ? 'govuk-form-group govuk-form-group--error'
                     : 'govuk-form-group'
                 }
-          >
-            <fieldset className='govuk-fieldset'>
-              <legend className='govuk-fieldset__legend'>
-                Select how you want to search
-              </legend>
-              {error && <p className='govuk-error-message'>{error}</p>}
-              <Radio
-                label='Address with postcode'
-                value='AddressPostCode'
-                name='searchOptionsRadios'
-                onChange={(e) => setSearchOption(e.target.value)}
-                conditional={searchOption === 'AddressPostCode'}
-                conditionalQuestion='Postcode in England'
-                conditionalInput={(val) => setPostCode(val)}
-                conditionalError={postCodeError}
-              />
-              <Radio
-                label='Place name, town or keyword'
-                value='PlaceNameTownOrKeyword'
-                name='searchOptionsRadios'
-                onChange={(e) => setSearchOption(e.target.value)}
-                conditional={searchOption === 'PlaceNameTownOrKeyword'}
-                conditionalQuestion='Enter a place name, town or keyword'
-                conditionalInput={(val) => setPlaceName(val)}
-                conditionalError={placeNameError}
-              />
-            </fieldset>
+            >
+              <fieldset className='govuk-fieldset'>
+                <legend className='govuk-fieldset__legend'>
+                  Select how you want to search
+                </legend>
+                {error && <p className='govuk-error-message'>{error}</p>}
+                <Radio
+                  label='Address with postcode'
+                  value='AddressPostCode'
+                  name='searchOptionsRadios'
+                  onChange={(e) => setSearchOption(e.target.value)}
+                  conditional={searchOption === 'AddressPostCode'}
+                  conditionalQuestion='Postcode in England'
+                  conditionalInput={(val) => setPostCode(val)}
+                  conditionalError={postCodeError}
+                />
+                <Radio
+                  label='Place name, town or keyword'
+                  value='PlaceNameTownOrKeyword'
+                  name='searchOptionsRadios'
+                  onChange={(e) => setSearchOption(e.target.value)}
+                  conditional={searchOption === 'PlaceNameTownOrKeyword'}
+                  conditionalQuestion='Enter a place name, town or keyword'
+                  conditionalInput={(val) => setPlaceName(val)}
+                  conditionalError={placeNameError}
+                />
+              </fieldset>
+            </div>
+            <Button
+              text='Continue'
+              className='govuk-button'
+              onClick={handleSubmit}
+            />
           </div>
-          <Button
-            text='Continue'
-            className='govuk-button'
-            onClick={handleSubmit}
-          />
         </div>
-      </div>
+      </main>
     </>
   )
 }

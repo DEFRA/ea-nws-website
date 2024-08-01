@@ -1,6 +1,7 @@
 import { React, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import InsetText from '../../../common/components/gov-uk/InsetText'
@@ -51,9 +52,7 @@ export default function ConfirmDeleteSingleLocationPage () {
 
   return (
     <>
-      <Link to={() => navigate(-1)} className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
-        Back
-      </Link>
+      <BackLink to={() => navigate(-1)} />
       <ErrorSummary errorList={error === '' ? [] : [error]} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

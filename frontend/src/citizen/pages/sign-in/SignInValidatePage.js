@@ -78,36 +78,36 @@ export default function SignInValidatePage () {
         ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
         : (
           <>
-              <Link to='/signin' className='govuk-back-link'>Back</Link>
-              {codeResent &&
-                <NotificationBanner
-                  className='govuk-notification-banner govuk-notification-banner--success'
-                  title='Success'
-                  text={'New code sent at ' + codeResentTime}
-                />}
-              {error && <ErrorSummary errorList={[error]} />}
-              <h2 class='govuk-heading-l'>Check your email</h2>
-              <div class='govuk-body'>
-                We've sent a code to:
-                <InsetText text={location.state.email} />
-                <Input
-                  name='Enter code'
-                  inputType='text'
-                  value={code}
-                  error={error}
-                  onChange={(val) => setCode(val)}
-                />
-                <Button
-                  className='govuk-button'
-                  text='Continue'
-                  onClick={handleSubmit}
-                />
-                <br />
-                <Link onClick={getNewCode} className='govuk-link'>
-                  Get a new code
-                </Link>
-              </div>
-            </>
+            <Link to='/signin' className='govuk-back-link'>Back</Link>
+            {codeResent &&
+              <NotificationBanner
+                className='govuk-notification-banner govuk-notification-banner--success'
+                title='Success'
+                text={'New code sent at ' + codeResentTime}
+              />}
+            {error && <ErrorSummary errorList={[error]} />}
+            <h2 class='govuk-heading-l'>Check your email</h2>
+            <div class='govuk-body'>
+              We've sent a code to:
+              <InsetText text={location.state.email} />
+              <Input
+                name='Enter code'
+                inputType='text'
+                value={code}
+                error={error}
+                onChange={(val) => setCode(val)}
+              />
+              <Button
+                className='govuk-button'
+                text='Continue'
+                onClick={handleSubmit}
+              />
+              <br />
+              <Link onClick={getNewCode} className='govuk-link'>
+                Get a new code
+              </Link>
+            </div>
+          </>
           )}
     </>
   )

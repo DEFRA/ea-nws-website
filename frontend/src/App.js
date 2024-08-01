@@ -73,12 +73,12 @@ export default function App () {
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
-        <Route path="/" element={<Layout />}>
-        {authenticatedRoutes.map((route, index) => (
-          <Route
-            key={index}
-            path={route.path}
-            element={
+        <Route path='/' element={<Layout />}>
+          {authenticatedRoutes.map((route, index) => (
+            <Route
+              key={index}
+              path={route.path}
+              element={
               auth || isSignOutRoute()
                 ? (
                     route.component
@@ -87,11 +87,11 @@ export default function App () {
                   <Navigate to='/sign-back-in' />
                   )
             }
-          />
-        ))}
-        {routes.map((route, index) => (
-          <Route key={index} path={route.path} element={route.component} />
-        ))}
+            />
+          ))}
+          {routes.map((route, index) => (
+            <Route key={index} path={route.path} element={route.component} />
+          ))}
         </Route>
       </Routes>
       {isInactive && <InactivityPopup onStayLoggedIn={handleStayLoggedIn} />}

@@ -104,58 +104,58 @@ export default function ValidateMobileLayout ({
         ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
         : (
           <>
-              <Link to='/managecontacts/add-mobile' className='govuk-back-link'>
-                Back
-              </Link>
-              <main className='govuk-main-wrapper'>
-                <div className='govuk-grid-row'>
-                  <div className='govuk-grid-column-two-thirds'>
-                    {codeResent && <NotificationBanner
-                      className='govuk-notification-banner govuk-notification-banner--success'
-                      title='Success'
-                      text={'New code sent at ' + codeResentTime}
-                                   />}
-                    <ErrorSummary errorList={error === '' ? [] : [error]} />
-                    <h2 class='govuk-heading-l'>Check your mobile phone</h2>
-                    <div class='govuk-body'>
-                      We've sent a text with a code to:
-                      <InsetText text={mobile} />
-                      Use the code within 4 hours or it will expire.
-                      <br /> <br />
-                      <Input
-                        name='Enter code'
-                        inputType='text'
-                        error={error}
-                        onChange={(val) => setCode(val)}
-                      />
-                      <Button
-                        className='govuk-button'
-                        text='Continue'
-                        onClick={handleSubmit}
-                      />
-                      <Link
-                        onClick={skipValidation}
-                        className='govuk-link'
-                        style={{
-                          display: 'inline-block',
-                          padding: '8px 10px 7px'
-                        }}
-                      >
-                        Skip and confirm later
-                      </Link>
-                      <br />
-                      <Link onClick={getNewCode} className='govuk-link'>
-                        Get a new code
-                      </Link>
-                      <br /> <br />
-                      <Link onClick={differentMobile} className='govuk-link'>
-                        Enter a different mobile
-                      </Link>
-                    </div>
+            <Link to='/managecontacts/add-mobile' className='govuk-back-link'>
+              Back
+            </Link>
+            <main className='govuk-main-wrapper'>
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-two-thirds'>
+                  {codeResent && <NotificationBanner
+                    className='govuk-notification-banner govuk-notification-banner--success'
+                    title='Success'
+                    text={'New code sent at ' + codeResentTime}
+                                 />}
+                  <ErrorSummary errorList={error === '' ? [] : [error]} />
+                  <h2 class='govuk-heading-l'>Check your mobile phone</h2>
+                  <div class='govuk-body'>
+                    We've sent a text with a code to:
+                    <InsetText text={mobile} />
+                    Use the code within 4 hours or it will expire.
+                    <br /> <br />
+                    <Input
+                      name='Enter code'
+                      inputType='text'
+                      error={error}
+                      onChange={(val) => setCode(val)}
+                    />
+                    <Button
+                      className='govuk-button'
+                      text='Continue'
+                      onClick={handleSubmit}
+                    />
+                    <Link
+                      onClick={skipValidation}
+                      className='govuk-link'
+                      style={{
+                        display: 'inline-block',
+                        padding: '8px 10px 7px'
+                      }}
+                    >
+                      Skip and confirm later
+                    </Link>
+                    <br />
+                    <Link onClick={getNewCode} className='govuk-link'>
+                      Get a new code
+                    </Link>
+                    <br /> <br />
+                    <Link onClick={differentMobile} className='govuk-link'>
+                      Enter a different mobile
+                    </Link>
                   </div>
                 </div>
-              </main>
-            </>
+              </div>
+            </main>
+          </>
           )}
     </>
   )

@@ -54,46 +54,46 @@ export default function AddAccountNameLayout ({
 
   return (
     <>
-          <Link onClick={navigateBack} className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
-            Back
-          </Link>
-          <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-            <div className='govuk-grid-row'>
-              <div className='govuk-grid-column-two-thirds'>
-                {error && <ErrorSummary errorList={[error]} />}
-                <h2 className='govuk-heading-l'>
-                  {changeName ? 'Change your name' : 'Enter your name'}
-                </h2>
-                <div className='govuk-body'>
-                  <p className='govuk-body govuk-!-margin-bottom-5'>
-                    We'll use this name if we need to contact you about your account.
-                  </p>
-                  <Input
-                    inputType='text'
-                    value={fullName}
-                    name='Full name'
-                    onChange={(val) => setFullName(val)}
-                    error={error}
-                    className='govuk-input govuk-input--width-20'
-                    defaultValue={fullName}
-                  />
-                  <Button
-                    text={buttonText}
-                    className='govuk-button'
-                    onClick={handleSubmit}
-                  />
-                  {changeName && (
-                    <Link
-                      to='/account'
-                      className='govuk-body govuk-link inline-link'
-                    >
-                      Cancel
-                    </Link>
-                  )}
-                </div>
-              </div>
+      <Link onClick={navigateBack} className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
+        Back
+      </Link>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
+            {error && <ErrorSummary errorList={[error]} />}
+            <h2 className='govuk-heading-l'>
+              {changeName ? 'Change your name' : 'Enter your name'}
+            </h2>
+            <div className='govuk-body'>
+              <p className='govuk-body govuk-!-margin-bottom-5'>
+                We'll use this name if we need to contact you about your account.
+              </p>
+              <Input
+                inputType='text'
+                value={fullName}
+                name='Full name'
+                onChange={(val) => setFullName(val)}
+                error={error}
+                className='govuk-input govuk-input--width-20'
+                defaultValue={fullName}
+              />
+              <Button
+                text={buttonText}
+                className='govuk-button'
+                onClick={handleSubmit}
+              />
+              {changeName && (
+                <Link
+                  to='/account'
+                  className='govuk-body govuk-link inline-link'
+                >
+                  Cancel
+                </Link>
+              )}
             </div>
-          </main>
+          </div>
+        </div>
+      </main>
     </>
   )
 }

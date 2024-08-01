@@ -8,34 +8,34 @@ export default function HomePage () {
   const location = useLocation()
   return (
     <>
-          <AccountNavigation currentPage={useLocation().pathname} />
-          {location.state !== null &&
+      <AccountNavigation currentPage={useLocation().pathname} />
+      {location.state !== null &&
           location.state.removedAddress
-            ? (
+        ? (
+          <NotificationBanner
+            className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
+            title='Success'
+            heading='Location removed'
+            text={location.state.removedAddress}
+          />
+          )
+        : null}
+      <main className='govuk-main-wrapper'>
+        <div class='govuk-grid-row'>
+          <div class='govuk-grid-column-full'>
+            {location.state && location.state.locationName && (
               <NotificationBanner
-                className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
+                className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-5 govuk-!-margin-top-4'
                 title='Success'
-                heading='Location removed'
-                text={location.state.removedAddress}
+                heading='New location added'
+                text={location.state.locationName}
               />
-              )
-            : null}
-          <main className='govuk-main-wrapper'>
-            <div class='govuk-grid-row'>
-              <div class='govuk-grid-column-full'>
-                {location.state && location.state.locationName && (
-                  <NotificationBanner
-                    className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-5 govuk-!-margin-top-4'
-                    title='Success'
-                    heading='New location added'
-                    text={location.state.locationName}
-                  />
-                )}
-                <h1 className='govuk-heading-l'>Home</h1>
-                <SubscribedLocationTableLayout />
-              </div>
-            </div>
-          </main>
+            )}
+            <h1 className='govuk-heading-l'>Home</h1>
+            <SubscribedLocationTableLayout />
+          </div>
+        </div>
+      </main>
     </>
   )
 }

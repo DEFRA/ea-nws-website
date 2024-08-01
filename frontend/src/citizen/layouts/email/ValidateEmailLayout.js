@@ -115,85 +115,85 @@ export default function ValidateEmailLayout ({
       {codeExpired
         ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
         : (
-              <>
-              <Link
-                onClick={backLink}
-                className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'
-              >
-                Back
-              </Link>
-              <main className='govuk-main-wrapper'>
-                <div className='govuk-grid-row'>
-                  <div className='govuk-grid-column-two-thirds'>
-                    {codeResent && <NotificationBanner
-                      className='govuk-notification-banner govuk-notification-banner--success'
-                      title='Success'
-                      text={'New code sent at ' + codeResentTime}
-                                   />}
-                    {error && <ErrorSummary errorList={[error]} />}
-                    <h2 className='govuk-heading-l'>Check your email</h2>
-                    <div className='govuk-body'>
-                      {changeSignIn && (
-                        <p className='govuk-body'>
-                          You need to confirm your email address.
-                        </p>
-                      )}
-                      <p className='govuk-body govuk-!-margin-bottom-5'>
-                        We've sent an email with a code to:
-                        <InsetText text={email} />
-                        {changeSignIn ? 'Enter' : 'Use'} the code within 4 hours or
-                        it will expire.
+          <>
+            <Link
+              onClick={backLink}
+              className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'
+            >
+              Back
+            </Link>
+            <main className='govuk-main-wrapper'>
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-two-thirds'>
+                  {codeResent && <NotificationBanner
+                    className='govuk-notification-banner govuk-notification-banner--success'
+                    title='Success'
+                    text={'New code sent at ' + codeResentTime}
+                                 />}
+                  {error && <ErrorSummary errorList={[error]} />}
+                  <h2 className='govuk-heading-l'>Check your email</h2>
+                  <div className='govuk-body'>
+                    {changeSignIn && (
+                      <p className='govuk-body'>
+                        You need to confirm your email address.
                       </p>
-                      <Input
-                        className='govuk-input govuk-input--width-10'
-                        name='Enter code'
-                        inputType='text'
-                        error={error}
-                        onChange={(val) => setCode(val)}
-                      />
-                      <Button
-                        className='govuk-button'
-                        text={buttonText}
-                        onClick={handleSubmit}
-                      />
-                      {changeSignIn
-                        ? (
-                          <>
-                            <Link
-                              onClick={differentEmail}
-                              className='govuk-link inline-link'
-                            >
-                              Enter a different email
-                            </Link>
-                            <br />
-                            <Link onClick={getNewCode} className='govuk-link'>
-                              Get a new code
-                            </Link>
-                          </>
-                          )
-                        : (
-                          <>
-                            <Link
-                              onClick={skipValidation}
-                              className='govuk-link inline-link'
-                            >
-                              Skip and confirm later
-                            </Link>
-                            <br />
-                            <Link onClick={getNewCode} className='govuk-link'>
-                              Get a new code
-                            </Link>
-                            <br /> <br />
-                            <Link onClick={differentEmail} className='govuk-link'>
-                              Enter a different email
-                            </Link>
-                          </>
-                          )}
-                    </div>
+                    )}
+                    <p className='govuk-body govuk-!-margin-bottom-5'>
+                      We've sent an email with a code to:
+                      <InsetText text={email} />
+                      {changeSignIn ? 'Enter' : 'Use'} the code within 4 hours or
+                      it will expire.
+                    </p>
+                    <Input
+                      className='govuk-input govuk-input--width-10'
+                      name='Enter code'
+                      inputType='text'
+                      error={error}
+                      onChange={(val) => setCode(val)}
+                    />
+                    <Button
+                      className='govuk-button'
+                      text={buttonText}
+                      onClick={handleSubmit}
+                    />
+                    {changeSignIn
+                      ? (
+                        <>
+                          <Link
+                            onClick={differentEmail}
+                            className='govuk-link inline-link'
+                          >
+                            Enter a different email
+                          </Link>
+                          <br />
+                          <Link onClick={getNewCode} className='govuk-link'>
+                            Get a new code
+                          </Link>
+                        </>
+                        )
+                      : (
+                        <>
+                          <Link
+                            onClick={skipValidation}
+                            className='govuk-link inline-link'
+                          >
+                            Skip and confirm later
+                          </Link>
+                          <br />
+                          <Link onClick={getNewCode} className='govuk-link'>
+                            Get a new code
+                          </Link>
+                          <br /> <br />
+                          <Link onClick={differentEmail} className='govuk-link'>
+                            Enter a different email
+                          </Link>
+                        </>
+                        )}
                   </div>
                 </div>
-              </main>
-              </>
+              </div>
+            </main>
+          </>
           )}
     </>
   )

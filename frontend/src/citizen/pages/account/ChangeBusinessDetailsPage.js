@@ -54,53 +54,53 @@ export default function ChangeBusinessDetailsPage () {
 
   return (
     <>
-          <Link to='/account' className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
-            Back
-          </Link>
-          <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-            <div className='govuk-grid-row'>
-              <div className='govuk-grid-column-two-thirds'>
-                {(businessNameError || jobTitleError || error) && (
-                  <ErrorSummary
-                    errorList={[businessNameError, jobTitleError, error]}
-                  />
-                )}
-                <h2 className='govuk-heading-l'>
-                  Additional details for business registrations
-                </h2>
-                <div className='govuk-body'>
-                  <Input
-                    name='Business name (optional)'
-                    inputType='text'
-                    error={businessNameError}
-                    onChange={(val) => setBusinessName(val)}
-                    className='govuk-input'
-                    defaultValue={getAdditionals(profile, 'businessName')}
-                  />
-                  <Input
-                    name='Job title (optional)'
-                    inputType='text'
-                    error={jobTitleError}
-                    onChange={(val) => setJobTitle(val)}
-                    className='govuk-input'
-                    defaultValue={getAdditionals(profile, 'jobTitle')}
-                  />
-                  <Button
-                    className='govuk-button'
-                    text='Save changes'
-                    onClick={handleSubmit}
-                  />
-                  <Link
-                    to='/account'
-                    className='govuk-body govuk-link inline-link'
-                  >
-                    Cancel
-                  </Link>
-                  <br />
-                </div>
-              </div>
+      <Link to='/account' className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
+        Back
+      </Link>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
+            {(businessNameError || jobTitleError || error) && (
+              <ErrorSummary
+                errorList={[businessNameError, jobTitleError, error]}
+              />
+            )}
+            <h2 className='govuk-heading-l'>
+              Additional details for business registrations
+            </h2>
+            <div className='govuk-body'>
+              <Input
+                name='Business name (optional)'
+                inputType='text'
+                error={businessNameError}
+                onChange={(val) => setBusinessName(val)}
+                className='govuk-input'
+                defaultValue={getAdditionals(profile, 'businessName')}
+              />
+              <Input
+                name='Job title (optional)'
+                inputType='text'
+                error={jobTitleError}
+                onChange={(val) => setJobTitle(val)}
+                className='govuk-input'
+                defaultValue={getAdditionals(profile, 'jobTitle')}
+              />
+              <Button
+                className='govuk-button'
+                text='Save changes'
+                onClick={handleSubmit}
+              />
+              <Link
+                to='/account'
+                className='govuk-body govuk-link inline-link'
+              >
+                Cancel
+              </Link>
+              <br />
             </div>
-          </main>
+          </div>
+        </div>
+      </main>
     </>
   )
 }

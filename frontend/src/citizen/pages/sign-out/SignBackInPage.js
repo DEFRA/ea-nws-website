@@ -9,10 +9,10 @@ export default function SignBackInPage () {
 
   return (
     <>
-          <h1 className='govuk-heading-l'>
-            You need to sign back in to view this page
-          </h1>
-          <Button text='Sign in' className='govuk-button' onClick={redirect} />
+      <h1 className='govuk-heading-l'>
+        You need to sign back in to view this page
+      </h1>
+      <Button text='Sign in' className='govuk-button' onClick={redirect} />
     </>
   )
 }

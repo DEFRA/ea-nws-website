@@ -76,93 +76,93 @@ export default function FeedbackPage () {
 
   return (
     <>
-          {(error || textError) && (
-            <ErrorSummary errorList={[error, textError]} />
-          )}
-          <h1 className='govuk-heading-l'>Give feedback about signing up</h1>
-          <div className='govuk-body'>
-            This helps us to improve this service
-            <br />
-            <p className='govuk-inset-text'>
-              Only tell us about feedback on this page. If you need to check you
-              have <br /> signed up correctly or have a question about your
-              flood risk,{' '}
-              <a href='/contact' className='govuk-link'>
-                contact us.
-              </a>
-            </p>
-            <br />
-            <div
-              className={
+      {(error || textError) && (
+        <ErrorSummary errorList={[error, textError]} />
+      )}
+      <h1 className='govuk-heading-l'>Give feedback about signing up</h1>
+      <div className='govuk-body'>
+        This helps us to improve this service
+        <br />
+        <p className='govuk-inset-text'>
+          Only tell us about feedback on this page. If you need to check you
+          have <br /> signed up correctly or have a question about your
+          flood risk,{' '}
+          <a href='/contact' className='govuk-link'>
+            contact us.
+          </a>
+        </p>
+        <br />
+        <div
+          className={
                 error
                   ? 'govuk-form-group govuk-form-group--error'
                   : 'govuk-form-group'
               }
-            >
-              <fieldset className='govuk-fieldset'>
-                <h2 className='govuk-heading-m'>
-                  Overall, how do you feel about this service?
-                </h2>
-                {error && <p className='govuk-error-message'>{error}</p>}
-                <div className='govuk-radios' data-module='govuk-radios'>
-                  {feedbackOptions.map((option) => (
-                    <Radio
-                      key={option.value}
-                      name='feedbackRadios'
-                      label={option.label}
-                      value={option.value}
-                      onChange={() => setFeedbackPreference(option.value)}
-                    />
-                  ))}
-                </div>
-              </fieldset>
+        >
+          <fieldset className='govuk-fieldset'>
+            <h2 className='govuk-heading-m'>
+              Overall, how do you feel about this service?
+            </h2>
+            {error && <p className='govuk-error-message'>{error}</p>}
+            <div className='govuk-radios' data-module='govuk-radios'>
+              {feedbackOptions.map((option) => (
+                <Radio
+                  key={option.value}
+                  name='feedbackRadios'
+                  label={option.label}
+                  value={option.value}
+                  onChange={() => setFeedbackPreference(option.value)}
+                />
+              ))}
             </div>
-            <br />
-            <div
-              className={
+          </fieldset>
+        </div>
+        <br />
+        <div
+          className={
                 textError
                   ? 'govuk-form-group govuk-form-group--error'
                   : 'govuk-form-group'
               }
-            >
-              <fieldset className='govuk-fieldset' />
-              <h3 className='govuk-label-wrapper'>
-                <label class='govuk-label govuk-label--m' for='more-detail'>
-                  Is there anything you like or do not like about this service?
-                </label>
-              </h3>
-              <div id='more-detail-hint' class='govuk-hint'>
-                Do not include your personal or financial details
-              </div>
-              {textError && <p className='govuk-error-message'>{textError}</p>}
-              <TextArea
-                className='govuk-textarea'
-                id='more-detail'
-                rows='5'
-                onChange={(val) => setFeedbackText(val)}
-              />
-            </div>
+        >
+          <fieldset className='govuk-fieldset' />
+          <h3 className='govuk-label-wrapper'>
+            <label class='govuk-label govuk-label--m' for='more-detail'>
+              Is there anything you like or do not like about this service?
+            </label>
+          </h3>
+          <div id='more-detail-hint' class='govuk-hint'>
+            Do not include your personal or financial details
           </div>
-          <h4 className='govuk-heading-m'>
-            Take part in research sessions (optional)
-          </h4>
-          <p className='govuk-hint'>
-            {' '}
-            Enter email address to take part. We will not use this for any
-            <br /> other reason and will delete it after 2 years.
-          </p>
-          <Input
-            className='govuk-input govuk-input--width-30'
-            inputType='text'
-            onChange={(val) => setOptionalFeedbackText(val)}
+          {textError && <p className='govuk-error-message'>{textError}</p>}
+          <TextArea
+            className='govuk-textarea'
+            id='more-detail'
+            rows='5'
+            onChange={(val) => setFeedbackText(val)}
           />
-          <div>
-            <Button
-              text='Send feedback'
-              className='govuk-button'
-              onClick={handleSubmit}
-            />
-          </div>
+        </div>
+      </div>
+      <h4 className='govuk-heading-m'>
+        Take part in research sessions (optional)
+      </h4>
+      <p className='govuk-hint'>
+        {' '}
+        Enter email address to take part. We will not use this for any
+        <br /> other reason and will delete it after 2 years.
+      </p>
+      <Input
+        className='govuk-input govuk-input--width-30'
+        inputType='text'
+        onChange={(val) => setOptionalFeedbackText(val)}
+      />
+      <div>
+        <Button
+          text='Send feedback'
+          className='govuk-button'
+          onClick={handleSubmit}
+        />
+      </div>
     </>
   )
 }

@@ -23,36 +23,36 @@ export default function SkipConfirmMobilePhonePage () {
 
   return (
     <>
-          <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-two-thirds'>
-              <Link
-                to='/signup/contactpreferences/mobile/validate'
-                className='govuk-back-link'
-              >
-                Back
-              </Link>
-              <h1 className='govuk-heading-l govuk-!-margin-top-6'>
-                We cannot send flood messages to {mobile} until you confirm this
-                number
-              </h1>
-              <Button
-                text={"I'll confirm this later"}
-                className='govuk-button'
-                onClick={handleSubmit}
-              />
+      <div className='govuk-grid-row'>
+        <div className='govuk-grid-column-two-thirds'>
+          <Link
+            to='/signup/contactpreferences/mobile/validate'
+            className='govuk-back-link'
+          >
+            Back
+          </Link>
+          <h1 className='govuk-heading-l govuk-!-margin-top-6'>
+            We cannot send flood messages to {mobile} until you confirm this
+            number
+          </h1>
+          <Button
+            text={"I'll confirm this later"}
+            className='govuk-button'
+            onClick={handleSubmit}
+          />
               &nbsp; &nbsp;
-              <Link
-                to='/signup/contactpreferences/mobile/validate'
-                className='govuk-body govuk-link'
-                style={{
-                  display: 'inline-block',
-                  padding: '8px 10px 7px'
-                }}
-              >
-                Confirm now
-              </Link>
-            </div>
-          </div>
+          <Link
+            to='/signup/contactpreferences/mobile/validate'
+            className='govuk-body govuk-link'
+            style={{
+              display: 'inline-block',
+              padding: '8px 10px 7px'
+            }}
+          >
+            Confirm now
+          </Link>
+        </div>
+      </div>
     </>
   )
 }

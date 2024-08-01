@@ -51,40 +51,40 @@ export default function ConfirmDeleteSingleLocationPage () {
 
   return (
     <>
-          <Link to={() => navigate(-1)} className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
-            Back
-          </Link>
-          <ErrorSummary errorList={error === '' ? [] : [error]} />
-          <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-            <div className='govuk-grid-row'>
-              <div className='govuk-grid-column-two-thirds'>
-                <h2 className='govuk-heading-l'>
-                  Are you sure you want to remove this location?
-                </h2>
-                <InsetText text={location.state.address} />
-                <p className='govuk-!-margin-bottom-6'>
-                  You'll no longer get any flood warnings or alerts for this
-                  location.
-                </p>
-                <Button
-                  className='govuk-button govuk-button--warning'
-                  text='Remove this location'
-                  onClick={handleSubmit}
-                />
+      <Link to={() => navigate(-1)} className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'>
+        Back
+      </Link>
+      <ErrorSummary errorList={error === '' ? [] : [error]} />
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
+            <h2 className='govuk-heading-l'>
+              Are you sure you want to remove this location?
+            </h2>
+            <InsetText text={location.state.address} />
+            <p className='govuk-!-margin-bottom-6'>
+              You'll no longer get any flood warnings or alerts for this
+              location.
+            </p>
+            <Button
+              className='govuk-button govuk-button--warning'
+              text='Remove this location'
+              onClick={handleSubmit}
+            />
                 &nbsp; &nbsp;
-                <Link
-                  to='/home'
-                  className='govuk-body govuk-link'
-                  style={{
-                    display: 'inline-block',
-                    padding: '8px 10px 7px'
-                  }}
-                >
-                  Cancel
-                </Link>
-              </div>
-            </div>
-          </main>
+            <Link
+              to='/home'
+              className='govuk-body govuk-link'
+              style={{
+                display: 'inline-block',
+                padding: '8px 10px 7px'
+              }}
+            >
+              Cancel
+            </Link>
+          </div>
+        </div>
+      </main>
     </>
   )
 }

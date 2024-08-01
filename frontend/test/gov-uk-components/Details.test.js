@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
 import React from 'react'
-import Details from '../../src/gov-uk-components/Details'
+import Details from '../../src/common/components/gov-uk/Details'
 
 describe('Details component', () => {
   test('renders with the correct title and text', () => {

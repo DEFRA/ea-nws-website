@@ -169,6 +169,21 @@ const addLocation = (profile, location) => {
   return updatedProfile
 }
 
+const removeLocationFromCoordinates = (profile, coordinates) => {
+  const updatedLocations = profile.pois.filter(
+    (pois) =>
+      pois.coordinates.longitude !== coordinates.longitude &&
+      pois.coordinates.latitude !== coordinates.latitude
+  )
+
+  const updatedProfile = {
+    ...profile,
+    pois: updatedLocations
+  }
+
+  return updatedProfile
+}
+
 const checkIfSelectedLocationExistsAlready = (profile, selectedLocation) => {
   if (profile) {
     for (const position of profile.pois) {
@@ -194,5 +209,6 @@ module.exports = {
   getAdditionals,
   updateAdditionals,
   addLocation,
+  removeLocationFromCoordinates,
   checkIfSelectedLocationExistsAlready
 }

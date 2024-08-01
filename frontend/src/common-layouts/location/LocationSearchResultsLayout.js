@@ -13,8 +13,8 @@ import { getFloodTargetArea } from '../../services/GetFloodTargetAreas'
 import { checkIfSelectedLocationExistsAlready } from '../../services/ProfileServices'
 
 export default function LocationSearchResultsLayout({ continueToNextPage }) {
-  const dispatch = useDispatch()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [error, setError] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
@@ -80,7 +80,7 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
                 <div className='govuk-grid-column-two-thirds'>
                   <div className='govuk-body'>
                     <Link
-                      to='/signup/register-location/search'
+                      onClick={() => navigate(-1)}
                       className='govuk-back-link'
                     >
                       Back
@@ -94,7 +94,7 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
                         Postcode: {locationPostCode}
                         {'   '}
                         <Link
-                          to='/signup/register-location/search'
+                          onClick={() => navigate(-1)}
                           className='govuk-link govuk-!-padding-left-5'
                         >
                           Change postcode

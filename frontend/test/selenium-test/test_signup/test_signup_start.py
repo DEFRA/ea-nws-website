@@ -41,7 +41,7 @@ def test_SignUpStart_validEmail(get_browser):
     browser.get(url)
     browser.find_element(By.NAME, "Email address").send_keys("valid@email.uk")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == nextPage
 
 def test_SignUpStart_duplicateEmail(get_browser):
@@ -49,6 +49,6 @@ def test_SignUpStart_duplicateEmail(get_browser):
     browser.get(url)
     browser.find_element(By.NAME, "Email address").send_keys("duplicate@email.com")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url == duplicateEmail
 

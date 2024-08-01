@@ -25,7 +25,8 @@ export default function LocationInSevereWarningAreaLayout ({
   const handleSubmit = () => {
     // geosafe doesnt accept locations with postcodes - need to remove this from the object
     // eslint-disable-next-line no-use-before-define
-    const { postcode, ...locationWithoutPostcode } = locationWithoutPostcode
+    const { postcode, ...locationWithoutPostcode } = selectedLocation
+    console.log('location', locationWithoutPostcode)
     dispatch(setProfile(addLocation(profile, locationWithoutPostcode)))
     continueToNextPage()
   }

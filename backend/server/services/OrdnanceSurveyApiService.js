@@ -72,9 +72,7 @@ const osFindNameApiCall = async (name) => {
         return {
           name: formattedLocationName,
           address: '',
-          coordinates: coordinates,
-          // maybe we can remove this?
-          postcode: ''
+          coordinates: coordinates
         }
       })
 

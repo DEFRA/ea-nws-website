@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function LocationReviewTable({ locations }) {
+export default function LocationReviewTable ({ locations }) {
   return (
     <>
       <h3 className='govuk-heading-m'>Location you selected</h3>

@@ -6,7 +6,7 @@ import Footer from '../../../../gov-uk-components/Footer'
 import Header from '../../../../gov-uk-components/Header'
 import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
 import Radio from '../../../../gov-uk-components/Radio'
-export default function SelectContactTypeToAddPage() {
+export default function SelectContactTypeToAddPage () {
   const navigate = useNavigate()
   const [selectedContactType, setSelectedContactType] = useState('')
   const [error, setError] = useState('')

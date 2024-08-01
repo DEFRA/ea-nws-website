@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import ValidateLandlineLayout from '../../../../../common-layouts/landline/ValidateLandlineLayout'
 import { addContactPreference } from '../../../../../redux/userSlice'
 
-export default function ValidateLandlineContactPage() {
+export default function ValidateLandlineContactPage () {
   const dispatch = useDispatch()
 
   const contactPreferences = useSelector(

@@ -22,7 +22,7 @@ export default function DeclarationOfAgreementPage () {
     } else {
       const registrations = {
         params: {
-          channelVoiceEnabled: profile.homePhones.length !== 0 ,
+          channelVoiceEnabled: profile.homePhones.length !== 0,
           channelSmsEnabled: profile.mobilePhones.length !== 0,
           channelEmailEnabled: profile.emails.length !== 0,
           // What is that?

@@ -10,7 +10,7 @@ import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-export default function LocationInAlertAreaLayout({
+export default function LocationInAlertAreaLayout ({
   continueToNextPage,
   canCancel,
   navigateToPreviousPage
@@ -92,14 +92,16 @@ export default function LocationInAlertAreaLayout({
                   className='govuk-button govuk-!-margin-top-5'
                   onClick={handleSubmit}
                 />
-                {canCancel ? (
-                  <Link
-                    className='govuk-link inline-link'
-                    onClick={handleCancel}
-                  >
-                    Cancel
-                  </Link>
-                ) : null}
+                {canCancel
+                  ? (
+                    <Link
+                      className='govuk-link inline-link'
+                      onClick={handleCancel}
+                    >
+                      Cancel
+                    </Link>
+                    )
+                  : null}
               </div>
             </div>
           </div>

@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import ValidateMobileLayout from '../../../../../common-layouts/mobile/ValidateMobileLayout'
 import { addContactPreference } from '../../../../../redux/userSlice'
-export default function ValidateMobileContactPage() {
+export default function ValidateMobileContactPage () {
   const dispatch = useDispatch()
 
   const contactPreferences = useSelector(

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import ValidateEmailLayout from '../../../../../common-layouts/email/ValidateEmailLayout'
 import { addContactPreference } from '../../../../../redux/userSlice'
 
-export default function ValidateEmailContactPage() {
+export default function ValidateEmailContactPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const contactPreferences = useSelector(

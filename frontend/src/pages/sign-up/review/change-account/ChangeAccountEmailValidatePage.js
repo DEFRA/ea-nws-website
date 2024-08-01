@@ -5,7 +5,7 @@ import ValidateEmailLayout from '../../../../common-layouts/email/ValidateEmailL
 import { setProfile } from '../../../../redux/userSlice'
 import { backendCall } from '../../../../services/BackendService'
 
-export default function ChangeAccountEmailValidationPage() {
+export default function ChangeAccountEmailValidationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [error, setError] = useState('')

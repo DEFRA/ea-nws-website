@@ -14,7 +14,7 @@ export default function ChangeEmailValidationPage () {
     navigate('/account/change-email')
   }
 
-  const updateProfile = async (profile, authToken) => {    
+  const updateProfile = async (profile, authToken) => {
     // The sign in email is always the first one in the array
     // Pop out the last email added and put it in first position
     const profileEmails = profile.emails

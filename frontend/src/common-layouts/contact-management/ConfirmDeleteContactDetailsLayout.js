@@ -13,7 +13,7 @@ import {
   removeVerifiedContact
 } from '../../services/ProfileServices'
 
-export default function ConfirmDeleteContactDetailsLayout({
+export default function ConfirmDeleteContactDetailsLayout ({
   NavigateToPreviousPage,
   NavigateToNextPage
 }) {

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import ConfirmDeleteContactDetailsLayout from '../../../../common-layouts/contact-management/ConfirmDeleteContactDetailsLayout'
-export default function RemoveContactFromReviewConfirmationPage() {
+export default function RemoveContactFromReviewConfirmationPage () {
   const navigate = useNavigate()
 
   const NavigateToNextPage = (type, contact) => {

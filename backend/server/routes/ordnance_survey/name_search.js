@@ -15,7 +15,6 @@ module.exports = [
 
         const { name } = request.payload
 
-        console.log('name', name)
         const response = await osFindNameApiCall(name)
         return h.response(response)
       } catch {

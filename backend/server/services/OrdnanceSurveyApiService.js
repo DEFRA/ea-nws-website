@@ -1,5 +1,7 @@
 const { addressFormatter } = require('./formatters/AddressFormatter')
+const { locationNameFormatter } = require('./formatters/LocationNameFormatter')
 const getSecretKeyValue = require('../services/SecretsManager')
+const proj4 = require('proj4')
 const axios = require('axios')
 
 const osPostCodeApiCall = async (postCode) => {
@@ -41,25 +43,38 @@ const osFindNameApiCall = async (name) => {
   let responseData
   const osApiKey = await getSecretKeyValue('nws/website/osApiKey', 'osApiKey')
   const url = `https://api.os.uk/search/names/v1/find?query=${name}&key=${osApiKey}`
+  proj4.defs(
+    'EPSG:27700',
+    '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs'
+  )
+  proj4.defs('EPSG:4326', '+proj=longlat +datum=WGS84 +no_defs')
 
-  console.log('url', url)
+  const convertCoordinates = (x, y) => {
+    const [longitude, latitude] = proj4('EPSG:27700', 'EPSG:4326', [x, y])
+    return { latitude, longitude }
+  }
 
   try {
     const response = await axios.get(url)
-
-    console.log('response', response)
-
-    //check if there are any results - if none, then return error
+    // check if there are any results - if none, then return error
 
     // Check that location is in England
-    if (response.data.results?.[0].DPA.COUNTRY_CODE === 'E') {
+    if (response.data.results?.[0].GAZETTEER_ENTRY.COUNTRY === 'England') {
       responseData = response.data.results.map((result) => {
-        const formattedAddress = addressFormatter(result.DPA.ADDRESS)
+        const formattedLocationName = locationNameFormatter(
+          result.GAZETTEER_ENTRY
+        )
+        const coordinates = convertCoordinates(
+          result.GAZETTEER_ENTRY.GEOMETRY_X,
+          result.GAZETTEER_ENTRY.GEOMETRY_Y
+        )
+
         return {
-          name: formattedAddress,
-          address: result.DPA.UPRN,
-          coordinates: { latitude: result.DPA.LAT, longitude: result.DPA.LNG },
-          postcode: result.DPA.POSTCODE
+          name: formattedLocationName,
+          address: '',
+          coordinates: coordinates,
+          // maybe we can remove this?
+          postcode: ''
         }
       })
 

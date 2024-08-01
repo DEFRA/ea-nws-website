@@ -7,7 +7,7 @@ index_page = "http://localhost:3000/index"
 home_page = "http://localhost:3000/home"
 review_page = "http://localhost:3000/signup/review"
 addcontact_page = "http://localhost:3000/signup/review/addcontact"
-removecontact_page = "http://localhost:3000/managecontacts/confirm-delete"
+removecontact_page = "http://localhost:3000/signup/review/remove-contact"
 finish_page = "http://localhost:3000/signup/success"
 confirm_page = "http://localhost:3000/signup/review/validate-email"
 

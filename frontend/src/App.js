@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
-import InactivityPopup from './custom-components/InactivityPopup'
-import ScrollToTop from './custom-components/ScrollToTop'
-import { authenticatedRoutes, routes } from './routes/routes'
+import Layout from './Layout'
+import InactivityPopup from './common/components/custom/InactivityPopup'
+import ScrollToTop from './common/components/custom/ScrollToTop'
+import { authenticatedRoutes, routes } from './routes'
 
 export default function App () {
   const auth = useSelector((state) => state.session.authToken)
@@ -72,6 +73,7 @@ export default function App () {
     <BrowserRouter>
       <ScrollToTop />
       <Routes>
+        <Route path="/" element={<Layout />}>
         {authenticatedRoutes.map((route, index) => (
           <Route
             key={index}
@@ -90,6 +92,7 @@ export default function App () {
         {routes.map((route, index) => (
           <Route key={index} path={route.path} element={route.component} />
         ))}
+        </Route>
       </Routes>
       {isInactive && <InactivityPopup onStayLoggedIn={handleStayLoggedIn} />}
     </BrowserRouter>

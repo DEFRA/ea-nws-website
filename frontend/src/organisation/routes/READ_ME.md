@@ -1,0 +1,1 @@
+Routes go here. Once created this readme can be removed. This is here so the directory structure can be committed.

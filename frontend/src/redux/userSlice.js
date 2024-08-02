@@ -42,9 +42,6 @@ const userSlice = createSlice({
     addContactPreference: (state, action) => {
       state.contactPreferences = action.payload
     },
-    addContactPreference: (state, action) => {
-      state.contactPreferences = action.payload
-    },
     // location data
     setLocationPostCode: (state, action) => {
       state.locationPostCode = action.payload

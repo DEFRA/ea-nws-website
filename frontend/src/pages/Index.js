@@ -143,7 +143,6 @@ export default function IndexPage() {
           longitude: -0.257635
         }
       },
-      ,
       {
         name: 'Big Ben, London, SW1A 0AA',
         address: 'UPRN',

@@ -115,8 +115,10 @@ export default function FeedbackPage () {
                   {feedbackOptions.map((option) => (
                     <Radio
                       key={option.value}
+                      id={option.value}
                       name='feedbackRadios'
                       label={option.label}
+                      type='radio'
                       value={option.value}
                       onChange={() => setFeedbackPreference(option.value)}
                     />

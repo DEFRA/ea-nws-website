@@ -7,6 +7,7 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import Input from '../../gov-uk-components/Input'
 import InsetText from '../../gov-uk-components/InsetText'
+import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import {
@@ -16,12 +17,12 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
-import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 
 export default function ValidateMobileLayout ({
   NavigateToNextPage,
   SkipValidation,
-  DifferentMobile
+  DifferentMobile,
+  NavigateToPreviousPage
 }) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -95,9 +96,36 @@ export default function ValidateMobileLayout ({
 
   const differentMobile = (event) => {
     event.preventDefault()
-    // remove email from users profile
-    dispatch(setProfile(removeUnverifiedContact(session.profile, mobile)))
+    removeMobileFromProfile()
     DifferentMobile(mobile)
+  }
+
+  const backLink = (event) => {
+    event.preventDefault()
+    removeMobileFromProfile()
+    NavigateToPreviousPage()
+  }
+
+  const removeMobileFromProfile = async () => {
+    let updatedProfile
+    if (session.profile.unverified.mobilePhones.includes(mobile)) {
+      updatedProfile = removeUnverifiedContact(session.profile, mobile)
+      dispatch(setProfile(removeUnverifiedContact(session.profile, mobile)))
+    }
+    if (session.profile.mobilePhones.includes(mobile)) {
+      updatedProfile = removeVerifiedContact(session.profile, mobile)
+      dispatch(setProfile(removeVerifiedContact(session.profile, mobile)))
+    }
+
+    const dataToSend = { profile: updatedProfile, authToken: session.authToken }
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/profile/update',
+      navigate
+    )
+    if (errorMessage !== null) {
+      setError(errorMessage)
+    }
   }
 
   return (
@@ -108,7 +136,7 @@ export default function ValidateMobileLayout ({
           <div className='page-container'>
             <Header />
             <div class='govuk-width-container body-container'>
-              <Link to='/managecontacts/add-mobile' className='govuk-back-link'>
+              <Link onClick={backLink} className='govuk-back-link'>
                 Back
               </Link>
               <main className='govuk-main-wrapper'>
@@ -119,7 +147,7 @@ export default function ValidateMobileLayout ({
                       title='Success'
                       text={'New code sent at ' + codeResentTime}
                                    />}
-                    <ErrorSummary errorList={error === '' ? [] : [error]} />
+                    {error && <ErrorSummary errorList={[error]} />}
                     <h2 class='govuk-heading-l'>Check your mobile phone</h2>
                     <div class='govuk-body'>
                       We've sent a text with a code to:

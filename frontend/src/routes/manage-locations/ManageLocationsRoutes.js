@@ -1,6 +1,7 @@
 import ConfirmDeleteContactDetailsPage from '../../pages/manage-location/ConfirmDeleteSingleLocationPage'
 import LocationInAlertAreaPage from '../../pages/manage-locations/add-location/LocationInAlertAreaPage'
 import LocationInSevereWarningAreaPage from '../../pages/manage-locations/add-location/LocationInSevereWarningAreaPage'
+import LocationInWarningAreaProximityPage from '../../pages/manage-locations/add-location/LocationInWarningAreaProximityPage'
 import LocationNotNearDangerPage from '../../pages/manage-locations/add-location/LocationNotNearDangerPage'
 import LocationSearchPage from '../../pages/manage-locations/add-location/LocationSearchPage'
 import LocationSearchResultsPage from '../../pages/manage-locations/add-location/LocationSearchResultsPage'
@@ -15,6 +16,10 @@ const manageLocationRoutes = [
   {
     path: '/manage-locations/add/search-results',
     component: <LocationSearchResultsPage />
+  },
+  {
+    path: '/manage-locations/add/location-in-proximity-area/:type',
+    component: <LocationInWarningAreaProximityPage />
   },
   {
     path: '/manage-locations/add/location-in-severe-warning-area',

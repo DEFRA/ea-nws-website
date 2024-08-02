@@ -1,7 +1,7 @@
 import { createElementObject, createTileLayerComponent, updateGridLayer, withPane } from '@react-leaflet/core';
 import L from 'leaflet';
   
-export default function TitleLayerWithHeader({url, token}) {
+export default function TileLayerWithHeader({url, token}) {
 
   function CreateTileLayerWithHeader({ url , ...options }, context) {
     L.TileLayer.WithHeader = L.TileLayer.extend({
@@ -29,10 +29,10 @@ export default function TitleLayerWithHeader({url, token}) {
     }
   }
 
-  const TitleLayerWithHeader = createTileLayerComponent(CreateTileLayerWithHeader, updateTileLayerWithHeader)
+  const TileLayerWithHeader = createTileLayerComponent(CreateTileLayerWithHeader, updateTileLayerWithHeader)
 
   return (
-    <TitleLayerWithHeader url={url} token={token} />
+    <TileLayerWithHeader url={url} token={token} />
   )
 }
 

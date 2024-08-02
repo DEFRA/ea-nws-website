@@ -6,16 +6,26 @@ import time
 url = "http://localhost:3000/signup/accountname/add"
 nextPage = "http://localhost:3000/declaration"
 previousPage = "http://localhost:3000/signup/contactpreferences"
+index = "http://localhost:3000/index"
+
+def setup_empty_profile(get_browser):
+    browser = get_browser
+    browser.get(index)
+    button_xpath = f"//button[text()='Activate/Deactivate Empty profile - Used for sign up tests']"
+    mock_empty_profile_link = browser.find_element(By.XPATH, button_xpath)
+    browser.execute_script("arguments[0].click();", mock_empty_profile_link)
+    time.sleep(3)
+    return browser
 
 def test_SignUpAccountName_render(get_browser):
-    browser = get_browser
+    browser = setup_empty_profile(get_browser) 
     browser.get(url)
     assert "Enter your name" in browser.page_source
     assert "We'll use this name if we need to contact you about your account." in browser.page_source
     assert browser.current_url == url
 
 def test_SignUpAccountName_emptyFullName(get_browser):
-    browser = get_browser
+    browser = setup_empty_profile(get_browser) 
     browser.get(url)
     browser.find_element(By.NAME, "Full name").send_keys("")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
@@ -23,7 +33,7 @@ def test_SignUpAccountName_emptyFullName(get_browser):
     assert browser.current_url == url
 
 def test_SignUpAccountName_FullNameTooLong(get_browser):
-    browser = get_browser
+    browser = setup_empty_profile(get_browser) 
     browser.get(url)
     browser.find_element(By.NAME, "Full name").send_keys("AbcdefghijAbcdefghijAbcdefghijAbcdefghijAbcdefghijA")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()

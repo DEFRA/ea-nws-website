@@ -7,6 +7,7 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import Input from '../../gov-uk-components/Input'
 import InsetText from '../../gov-uk-components/InsetText'
+import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
@@ -17,7 +18,6 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
-import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 
 export default function ValidateEmailLayout ({
   NavigateToNextPage,
@@ -103,14 +103,37 @@ export default function ValidateEmailLayout ({
 
   const differentEmail = (event) => {
     event.preventDefault()
-    // remove email from users profile
-    dispatch(setProfile(removeUnverifiedContact(session.profile, email)))
+    removeEmailFromProfile()
     DifferentEmail(email)
   }
 
   const backLink = (event) => {
     event.preventDefault()
+    removeEmailFromProfile()
     NavigateToPreviousPage()
+  }
+
+  const removeEmailFromProfile = async () => {
+    let updatedProfile
+    if (session.profile.unverified.emails.includes(email)) {
+      updatedProfile = removeUnverifiedContact(session.profile, email)
+      dispatch(setProfile(removeUnverifiedContact(session.profile, email)))
+    }
+    if (session.profile.emails.includes(email)) {
+      updatedProfile = removeVerifiedContact(session.profile, email)
+      dispatch(setProfile(removeVerifiedContact(session.profile, email)))
+    }
+
+    const dataToSend = { profile: updatedProfile, authToken: session.authToken }
+
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/profile/update',
+      navigate
+    )
+    if (errorMessage !== null) {
+      setError(errorMessage)
+    }
   }
 
   return (

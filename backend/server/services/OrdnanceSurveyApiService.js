@@ -56,8 +56,6 @@ const osFindNameApiCall = async (name) => {
 
   try {
     const response = await axios.get(url)
-    // check if there are any results - if none, then return error
-
     // Check that location is in England
     if (response.data.results?.[0].GAZETTEER_ENTRY.COUNTRY === 'England') {
       responseData = response.data.results.map((result) => {

@@ -21,7 +21,7 @@ import {
   getCoordsOfFloodArea
 } from '../../services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout ({
+export default function LocationInSevereWarningAreaLayout({
   continueToNextPage
 }) {
   const navigate = useNavigate()
@@ -55,6 +55,18 @@ export default function LocationInSevereWarningAreaLayout ({
     continueToNextPage()
   }
 
+  const handleUserNavigatingBack = async () => {
+    if (isUserInNearbyTargetFlowpath) {
+      await removeFloodWarningArea()
+    } else {
+      await removeLocation()
+    }
+
+    dispatch(setAdditionalAlerts(false))
+    await updateGeosafeProfile()
+    navigate(-1)
+  }
+
   const addFloodWarningArea = async () => {
     const warningArea = {
       name: selectedFloodWarningArea.properties.ta_name,
@@ -62,6 +74,14 @@ export default function LocationInSevereWarningAreaLayout ({
       coordinates: getCoordsOfFloodArea(selectedFloodWarningArea)
     }
     await dispatch(setProfile(addLocation(profile, warningArea)))
+  }
+
+  const removeFloodWarningArea = async () => {
+    await dispatch(
+      setProfile(
+        removeLocation(profile, selectedFloodWarningArea.properties.ta_name)
+      )
+    )
   }
 
   const findAssociatedFloodAlertArea = async () => {
@@ -87,6 +107,10 @@ export default function LocationInSevereWarningAreaLayout ({
     await dispatch(setProfile(addLocation(profile, locationWithAlertType)))
   }
 
+  const removeLocation = async () => {
+    await dispatch(setProfile(removeLocation(profile, selectedLocation.name)))
+  }
+
   const updateGeosafeProfile = async () => {
     const dataToSend = { authToken, profile }
     await backendCall(dataToSend, 'api/profile/update', navigate)
@@ -101,7 +125,10 @@ export default function LocationInSevereWarningAreaLayout ({
           <div className='govuk-body'>
             <div className='govuk-grid-row'>
               <div className='govuk-grid-column-two-thirds'>
-                <Link onClick={() => navigate(-1)} className='govuk-back-link'>
+                <Link
+                  onClick={() => handleUserNavigatingBack()}
+                  className='govuk-back-link'
+                >
                   Back
                 </Link>
                 <h1 className='govuk-heading-l govuk-!-margin-top-6'>

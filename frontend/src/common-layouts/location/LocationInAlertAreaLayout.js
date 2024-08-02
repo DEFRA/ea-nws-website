@@ -20,7 +20,8 @@ import { getCoordsOfFloodArea } from '../../services/WfsFloodDataService'
 
 export default function LocationInAlertAreaLayout({
   continueToNextPage,
-  continueToSearchResultsPage
+  continueToSearchResultsPage,
+  canCancel
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -46,7 +47,6 @@ export default function LocationInAlertAreaLayout({
       if (isUserInNearbyTargetFlowpath) {
         await addFloodAlertArea()
       } else {
-        // TODO this doesnt work?
         await updateExistingLocationCategories(['severe', 'alert'])
       }
     } else if (additionalAlerts && !isChecked) {
@@ -67,6 +67,27 @@ export default function LocationInAlertAreaLayout({
 
     await updateGeosafeProfile()
     continueToNextPage()
+  }
+
+  // remove newly added location/location updates
+  const handleUserNavigatingBack = async () => {
+    if (additionalAlerts) {
+      if (isUserInNearbyTargetFlowpath) {
+        await removeFloodAlertArea()
+      } else {
+        await updateExistingLocationCategories(['severe'])
+      }
+    } else {
+      // location only has flood alerts availble or user has selected a nearby flood alert area
+      if (isUserInNearbyTargetFlowpath) {
+        await removeFloodAlertArea()
+      } else {
+        await removeLocationWithOnlyFloodAlerts()
+      }
+    }
+
+    await updateGeosafeProfile()
+    navigate(-1)
   }
 
   const updateGeosafeProfile = async () => {
@@ -102,6 +123,10 @@ export default function LocationInAlertAreaLayout({
     await dispatch(setProfile(addLocation(profile, locationWithAlertType)))
   }
 
+  const removeLocationWithOnlyFloodAlerts = async () => {
+    await dispatch(setProfile(removeLocation(profile, selectedLocation.name)))
+  }
+
   const updateExistingLocationCategories = async (categories) => {
     const updatedProfile = updateLocationsFloodCategory(
       profile,
@@ -120,7 +145,10 @@ export default function LocationInAlertAreaLayout({
           <div className='govuk-body'>
             <div className='govuk-grid-row'>
               <div className='govuk-grid-column-two-thirds'>
-                <Link onClick={() => navigate(-1)} className='govuk-back-link'>
+                <Link
+                  onClick={() => handleUserNavigatingBack()}
+                  className='govuk-back-link'
+                >
                   Back
                 </Link>
                 <h1 className='govuk-heading-l govuk-!-margin-top-6'>
@@ -175,9 +203,17 @@ export default function LocationInAlertAreaLayout({
                       e.preventDefault()
                       continueToSearchResultsPage()
                     }}
-                    className='govuk-body govuk-link inline-link'
+                    className='govuk-link inline-link'
                   >
                     Choose different location
+                  </Link>
+                )}
+                {canCancel && (
+                  <Link
+                    className='govuk-link inline-link'
+                    onClick={() => navigate(-1)}
+                  >
+                    Cancel
                   </Link>
                 )}
               </div>

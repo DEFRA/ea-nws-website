@@ -39,6 +39,12 @@ const userSlice = createSlice({
     setCurrentContact: (state, action) => {
       state.currentContact = action.payload
     },
+    addContactPreference: (state, action) => {
+      state.contactPreferences = action.payload
+    },
+    addContactPreference: (state, action) => {
+      state.contactPreferences = action.payload
+    },
     // location data
     setLocationPostCode: (state, action) => {
       state.locationPostCode = action.payload
@@ -92,6 +98,7 @@ export const {
   setRegistrations,
   setContactPreferences,
   setCurrentContact,
+  addContactPreference,
   // location data
   setLocationPostCode,
   setLocationSearchResults,
@@ -102,6 +109,7 @@ export const {
   setSelectedFloodAlertArea,
   setShowOnlySelectedFloodArea,
   setNearbyTargetAreasFlow,
+  // clear state
   clearAuth
 } = userSlice.actions
 

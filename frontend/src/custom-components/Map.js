@@ -1,6 +1,5 @@
 import { faRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { createElementObject, createTileLayerComponent, updateGridLayer, withPane } from '@react-leaflet/core'
 import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useState } from 'react'
 import {
@@ -18,6 +17,7 @@ import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { backendCall } from '../services/BackendService'
+import TitleLayerWithHeader from './TitleLayerWithHeader'
 
 export default function Map ({ types }) {
   const [alertArea, setAlertArea] = useState(null)
@@ -27,38 +27,6 @@ export default function Map ({ types }) {
   )
   const { latitude, longitude } = selectedLocation.coordinates
   const [apiKey, setApiKey] = useState(null)
-
-
-    function createTileLayerWithHeader({ url , ...options }, context) {
-      L.TileLayer.WithHeader = L.TileLayer.extend({
-        createTile(coords, done) {
-          const url = this.getTileUrl(coords);
-          const img = document.createElement("img");
-    
-          fetch(url, { headers: { Authorization: `Bearer ${options.token}`}, mode: 'cors' })
-            .then((val) => val.blob())
-            .then((blob) => {
-              img.src = URL.createObjectURL(blob);
-              done(null, img);
-            });
-          return img;
-        },
-      })
-        const layer = new L.TileLayer.WithHeader(url, withPane(options, context));
-        return createElementObject(layer, context);
-    }
-
-    function updateTileLayerWithHeader(layer, props, prevProps) {
-        updateGridLayer(layer, props, prevProps);
-        const { url } = props;
-        if (url != null && url !== prevProps.url) {
-            layer.setUrl(url);
-        }
-    }
-
-
-const TileLayerWithHeader = createTileLayerComponent(createTileLayerWithHeader, updateTileLayerWithHeader)
-
 
   useEffect(() => {
     async function fetchFloodAreaData () {
@@ -116,6 +84,7 @@ const TileLayerWithHeader = createTileLayerComponent(createTileLayerWithHeader, 
     )
     console.log(data)
     setApiKey(data.access_token)
+    console.log('api key set')
     return data.expires_in
   }
 
@@ -123,10 +92,10 @@ const TileLayerWithHeader = createTileLayerComponent(createTileLayerWithHeader, 
     return () => {getApiKey()}
   }, [])
 
- useEffect(() => {
-  const interval = setInterval(() => {getApiKey()}, 270000)
-  return () => {clearInterval(interval)}
-}, [])
+  useEffect(() => {
+    const interval = setInterval(() => {getApiKey()}, 270000)
+    return () => {clearInterval(interval)}
+  }, [])
 
   const url = 'https://api.os.uk/maps/raster/v1/wmts'
   const parameters = {
@@ -154,7 +123,7 @@ const TileLayerWithHeader = createTileLayerComponent(createTileLayerWithHeader, 
         attributionControl={false}
         className='map-container'
       >
-        <TileLayerWithHeader url={url + '?' + parameterString} token={apiKey} />
+        <TitleLayerWithHeader url={url + '?' + parameterString} token={apiKey} />
         <ZoomControl position='bottomright' />
         <Marker position={[latitude, longitude]}>
           <Popup />

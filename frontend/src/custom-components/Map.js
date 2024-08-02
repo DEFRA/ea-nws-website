@@ -11,7 +11,11 @@ import {
   ZoomControl,
   useMap
 } from 'react-leaflet'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  setSelectedFloodAlertArea,
+  setSelectedFloodWarningArea
+} from '../redux/userSlice'
 import { getSurroundingFloodAreas } from '../services/WfsFloodDataService'
 // Leaflet Marker Icon fix
 import L from 'leaflet'
@@ -19,7 +23,8 @@ import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
-export default function Map ({ types, setFloodAreas }) {
+export default function Map({ types, setFloodAreas, mobileView }) {
+  const dispatch = useDispatch()
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
   const selectedLocation = useSelector(
@@ -45,7 +50,7 @@ export default function Map ({ types, setFloodAreas }) {
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData () {
+    async function fetchFloodAreaData() {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude
@@ -205,7 +210,7 @@ export default function Map ({ types, setFloodAreas }) {
         zoom={14}
         zoomControl={false}
         attributionControl={false}
-        className='map-container'
+        className={mobileView ? 'map-mobile-view' : 'map-container'}
       >
         <TileLayer url='https://api.os.uk/maps/raster/v1/zxy/Outdoor_3857/{z}/{x}/{y}.png?key=tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a' />
         <ZoomControl position='bottomright' />
@@ -216,6 +221,11 @@ export default function Map ({ types, setFloodAreas }) {
           <GeoJSON
             data={warningArea}
             style={{ color: '#f70202' }}
+            onEachFeature={function (feature, layer) {
+              layer.on({
+                click: () => dispatch(setSelectedFloodWarningArea(feature))
+              })
+            }}
             ref={(el) => {
               warningAreaRef.current = el
               setWarningAreaRefVisible(true)
@@ -226,6 +236,11 @@ export default function Map ({ types, setFloodAreas }) {
           <GeoJSON
             data={alertArea}
             style={{ color: '#ffa200' }}
+            onEachFeature={function (feature, layer) {
+              layer.on({
+                click: () => dispatch(setSelectedFloodAlertArea(feature))
+              })
+            }}
             ref={(el) => {
               alertAreaRef.current = el
               setAlertAreaRefVisible(true)

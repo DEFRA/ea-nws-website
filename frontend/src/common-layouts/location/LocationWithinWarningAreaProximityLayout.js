@@ -30,6 +30,7 @@ export default function LocationWithinWarningAreaProximityLayout({
   const { type } = useParams()
   const [floodAreas, setFloodAreas] = useState(null)
   const [error, setError] = useState(null)
+  const [showMobileMap, setShowMobileMap] = useState(isMobile)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
@@ -89,112 +90,145 @@ export default function LocationWithinWarningAreaProximityLayout({
 
   return (
     <>
-      <div className='page-container'>
-        <Header />
-        <div className='govuk-width-container body-container'>
-          <PhaseBanner />
-          <div className='govuk-body'>
-            <div className='govuk-grid-row'>
-              <div className='govuk-grid-column-two-thirds'>
-                <Link onClick={() => navigate(-1)} className='govuk-back-link'>
-                  Back
-                </Link>
-                {error && <ErrorSummary errorList={[error]} />}
-                <h1 className='govuk-heading-l govuk-!-margin-top-6'>
-                  You can get flood messages near this location
-                </h1>
-                <InsetText text={selectedLocation.name} />
-                <p>
-                  Flood message areas nearby are highlight in{' '}
-                  {type === 'severe' ? 'red' : 'orange'} on the map.
-                </p>
-                <p>
-                  If you choose one of these, you'll get early alerts about
-                  possible flooding.
-                </p>
-              </div>
-            </div>
-            <div class='govuk-grid-row'>
-              <div class='govuk-grid-column-one-third'>
-                <div
-                  className={
-                    error
-                      ? 'govuk-form-group govuk-form-group--error'
-                      : 'govuk-form-group'
-                  }
-                >
-                  <fieldset className='govuk-fieldset'>
-                    <h3 class='govuk-heading-s'>Select a nearby area</h3>
-                    {error && <p className='govuk-error-message'>{error}</p>}
-                    {floodAreas ? (
-                      floodAreas.map((area, index) => (
-                        <Radio
-                          key={index}
-                          small
-                          label={index + 1 + '. ' + area.properties.ta_name}
-                          name='floodAreas'
-                          onChange={() => setFloodArea(area)}
-                          checked={
-                            (selectedFloodWarningArea ||
-                              selectedFloodAlertArea) === area
-                          }
-                        />
-                      ))
-                    ) : (
-                      <LoadingSpinner />
-                    )}
-                  </fieldset>
-                </div>
+      {showMobileMap ? (
+        <>
+          <Map types={[type]} mobileView={true} />
 
+          {selectedFloodWarningArea || selectedFloodAlertArea ? (
+            <>
+              <div className='govuk-body map-confirm-location-button'>
+                {selectedFloodWarningArea
+                  ? selectedFloodWarningArea.properties.ta_name
+                  : selectedFloodAlertArea.properties.ta_name}
                 <Button
-                  text='Confirm'
-                  className={
-                    isMobile
-                      ? 'govuk-button govuk-!-margin-top-5 govuk-!-width-one-quarter'
-                      : 'govuk-button govuk-!-margin-top-5'
-                  }
+                  style={{ width: 'auto', padding: '10px' }}
+                  text='Confirm this location'
+                  className='govuk-button '
                   onClick={() => handleConfirm()}
                 />
-
-                {isMobile && (
-                  <Link
-                    onClick={(e) => {
-                      e.preventDefault()
-                      continueToSearchResultsPage()
-                    }}
-                  >
-                    View and select on map
-                  </Link>
-                )}
-                {type === 'severe' && (
-                  <Button
-                    text='Skip to other areas nearby'
-                    className='govuk-button govuk-button--secondary'
-                    onClick={() => continueToNearbyFloodAlertsPage()}
-                  />
-                )}
-                <br />
-                <Link
-                  onClick={(e) => {
-                    e.preventDefault()
-                    continueToSearchResultsPage()
-                  }}
-                >
-                  Choose different location
-                </Link>
               </div>
-              <div class='govuk-grid-column-two-thirds govuk-visually-hidden'>
-                <Map
-                  types={[type]}
-                  setFloodAreas={(areas) => setFloodAreas(areas)}
-                />
-                <FloodWarningKey type={type} />
+            </>
+          ) : (
+            <div className='flood-warning-key-mobile-view'>
+              <FloodWarningKey type={type} />
+            </div>
+          )}
+        </>
+      ) : (
+        <>
+          <div className='page-container'>
+            <Header />
+            <div className='govuk-width-container body-container'>
+              <PhaseBanner />
+              <div className='govuk-body'>
+                <div className='govuk-grid-row'>
+                  <div className='govuk-grid-column-two-thirds'>
+                    <Link
+                      onClick={() => navigate(-1)}
+                      className='govuk-back-link'
+                    >
+                      Back
+                    </Link>
+                    {error && <ErrorSummary errorList={[error]} />}
+                    <h1 className='govuk-heading-l govuk-!-margin-top-6'>
+                      You can get flood messages near this location
+                    </h1>
+                    <InsetText text={selectedLocation.name} />
+                    <p>
+                      Flood message areas nearby are highlight in{' '}
+                      {type === 'severe' ? 'red' : 'orange'} on the map.
+                    </p>
+                    <p>
+                      If you choose one of these, you'll get early alerts about
+                      possible flooding.
+                    </p>
+                  </div>
+                </div>
+                <div class='govuk-grid-row'>
+                  <div class='govuk-grid-column-one-third'>
+                    <div
+                      className={
+                        error
+                          ? 'govuk-form-group govuk-form-group--error'
+                          : 'govuk-form-group'
+                      }
+                    >
+                      <fieldset className='govuk-fieldset'>
+                        <h3 class='govuk-heading-s'>Select a nearby area</h3>
+                        {error && (
+                          <p className='govuk-error-message'>{error}</p>
+                        )}
+                        {floodAreas ? (
+                          floodAreas.map((area, index) => (
+                            <Radio
+                              key={index}
+                              small
+                              label={index + 1 + '. ' + area.properties.ta_name}
+                              name='floodAreas'
+                              onChange={() => setFloodArea(area)}
+                              checked={
+                                (selectedFloodWarningArea ||
+                                  selectedFloodAlertArea) === area
+                              }
+                            />
+                          ))
+                        ) : (
+                          <LoadingSpinner />
+                        )}
+                      </fieldset>
+                    </div>
+
+                    <Button
+                      text='Confirm'
+                      className={
+                        isMobile
+                          ? 'govuk-button govuk-!-margin-top-5 govuk-!-width-one-quarter'
+                          : 'govuk-button govuk-!-margin-top-5'
+                      }
+                      onClick={() => handleConfirm()}
+                    />
+
+                    {isMobile && (
+                      <Link
+                        onClick={(e) => {
+                          e.preventDefault()
+                          continueToSearchResultsPage()
+                        }}
+                      >
+                        View and select on map
+                      </Link>
+                    )}
+                    {type === 'severe' && (
+                      <Button
+                        text='Skip to other areas nearby'
+                        className='govuk-button govuk-button--secondary'
+                        onClick={() => continueToNearbyFloodAlertsPage()}
+                      />
+                    )}
+                    <br />
+                    <Link
+                      onClick={(e) => {
+                        e.preventDefault()
+                        continueToSearchResultsPage()
+                      }}
+                    >
+                      Choose different location
+                    </Link>
+                  </div>
+                  <div class='govuk-grid-column-two-thirds'>
+                    <Map
+                      types={[type]}
+                      setFloodAreas={(areas) => setFloodAreas(areas)}
+                    />
+                    <FloodWarningKey type={type} />
+                  </div>
+                </div>
               </div>
             </div>
+            <Footer />
           </div>
-        </div>
-        <Footer />
-      </div>
+        </>
+      )}
     </>
   )
 }

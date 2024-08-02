@@ -87,7 +87,9 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
                     </Link>
                     {error && <ErrorSummary errorList={[error]} />}
                     <h1 className='govuk-heading-l govuk-!-margin-top-6'>
-                      Select an address
+                      {locationPostCode
+                        ? 'Select an address'
+                        : 'Select a location'}
                     </h1>
                     {locationPostCode && (
                       <p className='govuk-body'>

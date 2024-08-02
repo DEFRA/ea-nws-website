@@ -19,7 +19,7 @@ import {
   setShowOnlySelectedFloodArea
 } from '../../redux/userSlice'
 
-export default function LocationWithinWarningAreaProximityLayout({
+export default function LocationWithinWarningAreaProximityLayout ({
   continueToSelectedFloodWarningsPage,
   continueToNearbyFloodAlertsPage,
   continueToSearchResultsPage
@@ -125,23 +125,25 @@ export default function LocationWithinWarningAreaProximityLayout({
                   <fieldset className='govuk-fieldset'>
                     <h3 class='govuk-heading-s'>Select a nearby area</h3>
                     {error && <p className='govuk-error-message'>{error}</p>}
-                    {floodAreas ? (
-                      floodAreas.map((area, index) => (
-                        <Radio
-                          key={index}
-                          small
-                          label={index + 1 + '. ' + area.properties.ta_name}
-                          name='floodAreas'
-                          onChange={() => setFloodArea(area)}
-                          checked={
+                    {floodAreas
+                      ? (
+                          floodAreas.map((area, index) => (
+                            <Radio
+                              key={index}
+                              small
+                              label={index + 1 + '. ' + area.properties.ta_name}
+                              name='floodAreas'
+                              onChange={() => setFloodArea(area)}
+                              checked={
                             (selectedFloodWarningArea ||
                               selectedFloodAlertArea) === area
                           }
-                        />
-                      ))
-                    ) : (
-                      <LoadingSpinner />
-                    )}
+                            />
+                          ))
+                        )
+                      : (
+                        <LoadingSpinner />
+                        )}
                   </fieldset>
                 </div>
                 <Button

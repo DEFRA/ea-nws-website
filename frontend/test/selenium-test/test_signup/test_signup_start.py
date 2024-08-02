@@ -20,7 +20,7 @@ def setup_empty_profile(get_browser):
 
 
 def test_SignUpStart_render(get_browser):
-    browser = get_browser
+    browser = setup_empty_profile(get_browser) 
     browser.get(url)
     assert "Enter an email address - you'll use this to sign in to your account" in browser.page_source
     assert browser.current_url == url

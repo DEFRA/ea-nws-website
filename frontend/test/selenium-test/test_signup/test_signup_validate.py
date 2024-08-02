@@ -72,7 +72,7 @@ def test_SignUpValidate_incorrectFormatCode(get_browser):
     #assert browser.current_url == url
 
 def test_SignUpValidate_validCode(get_browser):
-    browser = get_browser
+    browser = setup_empty_profile(get_browser) 
     browser.get(previous_url)
     browser.find_element(By.NAME, "Email address").send_keys("valid@email.uk")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
@@ -83,7 +83,7 @@ def test_SignUpValidate_validCode(get_browser):
     assert browser.current_url == end_page
 
 def test_SignUpValidate_emailAppears(get_browser):
-    browser = get_browser
+    browser = setup_empty_profile(get_browser) 
     browser.get(previous_url)
     browser.find_element(By.NAME, "Email address").send_keys("valid@email.uk")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()

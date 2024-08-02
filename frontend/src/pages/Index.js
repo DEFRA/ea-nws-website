@@ -7,6 +7,7 @@ import NotificationBanner from '../gov-uk-components/NotificationBanner'
 import {
   clearAuth,
   setAuthToken,
+  setContactPreferences,
   setProfile,
   setRegistrations
 } from '../redux/userSlice'
@@ -180,10 +181,44 @@ export default function IndexPage () {
   function mockSession (profile) {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
-      const registrations = { partner: '4', name: 'NWS England' }
+      const contactPreferences = ['Text']
+      const registrations = {
+        partner: {
+          id: '4',
+          name: 'NWS England',
+          description: 'We work to create better places for people and...',
+          longName: 'Environment Agency - England',
+          logoUrl: 'logo.png',
+          backgroundUrl: 'http://assets.gov.uk',
+          urlSlug: 'england'
+        },
+        registrationDate: '1683741990',
+        params: {
+          channelVoiceEnabled: true,
+          channelSmsEnabled: true,
+          channelEmailEnabled: true,
+          partnerCanView: false,
+          partnerCanEdit: false,
+          categories: [
+            {
+              domain: 'NFWS',
+              code: 'FLOOD_ALERT'
+            },
+            {
+              domain: 'NFWS',
+              code: 'FLOOD_WARNING'
+            },
+            {
+              domain: 'NFWS',
+              code: 'SEVERE_FLOOD_WARNING'
+            }
+          ]
+        }
+      }
 
       dispatch(setAuthToken(authToken))
       dispatch(setRegistrations(registrations))
+      dispatch(setContactPreferences(contactPreferences))
       dispatch(setProfile(profile))
       setmockSessionActive(true)
     } else {
@@ -251,6 +286,11 @@ export default function IndexPage () {
                 <li>
                   <Link to='/managecontacts' className='govuk-link'>
                     Manage Contacts page
+                  </Link>
+                </li>
+                <li>
+                  <Link to='/signup/review' className='govuk-link'>
+                    Sign up review
                   </Link>
                 </li>
               </ul>

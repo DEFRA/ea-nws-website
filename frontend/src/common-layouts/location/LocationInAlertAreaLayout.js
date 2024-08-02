@@ -10,7 +10,11 @@ import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-export default function LocationInAlertAreaLayout ({ continueToNextPage }) {
+export default function LocationInAlertAreaLayout ({
+  continueToNextPage,
+  canCancel,
+  navigateToPreviousPage
+}) {
   const navigate = useNavigate()
   const [isChecked, setIsChecked] = useState(false)
   const selectedLocation = useSelector(
@@ -23,6 +27,11 @@ export default function LocationInAlertAreaLayout ({ continueToNextPage }) {
   const handleSubmit = () => {
     // we need to add this to the profile - TODO
     continueToNextPage()
+  }
+
+  const handleCancel = (event) => {
+    event.preventDefault()
+    navigateToPreviousPage()
   }
 
   return (
@@ -83,6 +92,16 @@ export default function LocationInAlertAreaLayout ({ continueToNextPage }) {
                   className='govuk-button govuk-!-margin-top-5'
                   onClick={handleSubmit}
                 />
+                {canCancel
+                  ? (
+                    <Link
+                      className='govuk-link inline-link'
+                      onClick={handleCancel}
+                    >
+                      Cancel
+                    </Link>
+                    )
+                  : null}
               </div>
             </div>
           </div>

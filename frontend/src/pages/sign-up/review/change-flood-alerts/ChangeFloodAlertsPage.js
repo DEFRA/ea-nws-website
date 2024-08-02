@@ -4,16 +4,13 @@ import { useNavigate } from 'react-router-dom'
 import LocationInAlertAreaLayout from '../../../../common-layouts/location/LocationInAlertAreaLayout'
 import { setSelectedLocation } from '../../../../redux/userSlice'
 
-export default function ChangeFloodAlertPage () {
+export default function ChangeFloodAlertPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const pois = useSelector((state) => state.session.profile.pois)
   dispatch(setSelectedLocation(pois[0]))
-  const continueToNextPage = () => {
-    navigate('/signup/review')
-  }
 
-  const NavigateToPreviousPage = () => {
+  const continueToNextPage = () => {
     navigate('/signup/review')
   }
 
@@ -21,8 +18,7 @@ export default function ChangeFloodAlertPage () {
     <>
       <LocationInAlertAreaLayout
         continueToNextPage={continueToNextPage}
-        canCancel
-        navigateToPreviousPage={NavigateToPreviousPage}
+        canCancel={true}
       />
     </>
   )

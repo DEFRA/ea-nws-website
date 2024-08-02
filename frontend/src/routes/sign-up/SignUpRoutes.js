@@ -13,6 +13,7 @@ import SkipConfirmMobilePhonePage from '../../pages/sign-up/channel-preferences/
 import ValidateMobilePhonePage from '../../pages/sign-up/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
 import LocationInAlertAreaPage from '../../pages/sign-up/register-location/LocationInAlertAreaPage'
 import LocationInSevereWarningAreaPage from '../../pages/sign-up/register-location/LocationInSevereWarningAreaPage'
+import LocationInWarningAreaProximityPage from '../../pages/sign-up/register-location/LocationInWarningAreaProximityPage'
 import LocationNotNearDangerPage from '../../pages/sign-up/register-location/LocationNotNearDangerPage'
 import LocationSearchPage from '../../pages/sign-up/register-location/LocationSearchPage'
 import LocationSearchResultsPage from '../../pages/sign-up/register-location/LocationSearchResultsPage'
@@ -55,6 +56,10 @@ const signupRoutes = [
   {
     path: '/signup/register-location/search-results',
     component: <LocationSearchResultsPage />
+  },
+  {
+    path: '/signup/register-location/location-in-proximity-area/:type',
+    component: <LocationInWarningAreaProximityPage />
   },
   {
     path: '/signup/register-location/location-in-severe-warning-area',

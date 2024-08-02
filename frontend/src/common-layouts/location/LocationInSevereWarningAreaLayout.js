@@ -9,26 +9,111 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
-import { setProfile } from '../../redux/userSlice'
+import {
+  setAdditionalAlerts,
+  setProfile,
+  setSelectedFloodAlertArea
+} from '../../redux/userSlice'
+import { backendCall } from '../../services/BackendService'
 import { addLocation } from '../../services/ProfileServices'
+import {
+  getAssociatedAlertArea,
+  getCoordsOfFloodArea
+} from '../../services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout ({
+export default function LocationInSevereWarningAreaLayout({
   continueToNextPage
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const authToken = useSelector((state) => state.session.authToken)
   const profile = useSelector((state) => state.session.profile)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+  // only used when user is going through nearby target areas flow
+  const isUserInNearbyTargetFlowpath = useSelector(
+    (state) => state.session.nearbyTargetAreaFlow
+  )
+  const selectedFloodWarningArea = useSelector(
+    (state) => state.session.selectedFloodWarningArea
+  )
 
-  const handleSubmit = () => {
-    // geosafe doesnt accept locations with postcodes - need to remove this from the object
-    // eslint-disable-next-line no-use-before-define
-    const { postcode, ...locationWithoutPostcode } = selectedLocation
-    console.log('location', locationWithoutPostcode)
-    dispatch(setProfile(addLocation(profile, locationWithoutPostcode)))
+  const handleSubmit = async () => {
+    if (isUserInNearbyTargetFlowpath) {
+      await addFloodWarningArea()
+
+      // load associated flood alert area
+      await findAssociatedFloodAlertArea()
+    } else {
+      await addLocationWithFloodWarningAlerts()
+    }
+
+    // we must always show user the optional flood alert areas
+    dispatch(setAdditionalAlerts(true))
+    await updateGeosafeProfile()
     continueToNextPage()
+  }
+
+  const handleUserNavigatingBack = async () => {
+    if (isUserInNearbyTargetFlowpath) {
+      await removeFloodWarningArea()
+    } else {
+      await removeLocation()
+    }
+
+    dispatch(setAdditionalAlerts(false))
+    await updateGeosafeProfile()
+    navigate(-1)
+  }
+
+  const addFloodWarningArea = async () => {
+    const warningArea = {
+      name: selectedFloodWarningArea.properties.ta_name,
+      address: '',
+      coordinates: getCoordsOfFloodArea(selectedFloodWarningArea)
+    }
+    await dispatch(setProfile(addLocation(profile, warningArea)))
+  }
+
+  const removeFloodWarningArea = async () => {
+    await dispatch(
+      setProfile(
+        removeLocation(profile, selectedFloodWarningArea.properties.ta_name)
+      )
+    )
+  }
+
+  const findAssociatedFloodAlertArea = async () => {
+    const associatedAlertArea = await getAssociatedAlertArea(
+      selectedLocation.coordinates.latitude,
+      selectedLocation.coordinates.longitude,
+      selectedFloodWarningArea.properties.parent
+    )
+
+    if (associatedAlertArea) {
+      dispatch(setSelectedFloodAlertArea(associatedAlertArea))
+    }
+  }
+
+  const addLocationWithFloodWarningAlerts = async () => {
+    // geosafe doesnt accept locations with postcodes - need to remove this from the object
+    const { postcode, ...locationWithoutPostcode } = selectedLocation
+    // update location to recieve severe alert warnings
+    const locationWithAlertType = {
+      ...locationWithoutPostcode,
+      categories: ['severe']
+    }
+    await dispatch(setProfile(addLocation(profile, locationWithAlertType)))
+  }
+
+  const removeLocation = async () => {
+    await dispatch(setProfile(removeLocation(profile, selectedLocation.name)))
+  }
+
+  const updateGeosafeProfile = async () => {
+    const dataToSend = { authToken, profile }
+    await backendCall(dataToSend, 'api/profile/update', navigate)
   }
 
   return (
@@ -40,7 +125,10 @@ export default function LocationInSevereWarningAreaLayout ({
           <div className='govuk-body'>
             <div className='govuk-grid-row'>
               <div className='govuk-grid-column-two-thirds'>
-                <Link onClick={() => navigate(-1)} className='govuk-back-link'>
+                <Link
+                  onClick={() => handleUserNavigatingBack()}
+                  className='govuk-back-link'
+                >
                   Back
                 </Link>
                 <h1 className='govuk-heading-l govuk-!-margin-top-6'>
@@ -50,7 +138,7 @@ export default function LocationInSevereWarningAreaLayout ({
                 <InsetText text={selectedLocation.name} />
               </div>
               <div className='govuk-grid-column-three-quarters'>
-                <Map types={['warning']} />
+                <Map types={['severe']} />
                 <FloodWarningKey type='severe' />
               </div>
 

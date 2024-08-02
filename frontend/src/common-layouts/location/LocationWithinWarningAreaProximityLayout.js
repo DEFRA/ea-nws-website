@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { isMobile } from 'react-device-detect'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import FloodWarningKey from '../../custom-components/FloodWarningKey'
@@ -19,7 +20,7 @@ import {
   setShowOnlySelectedFloodArea
 } from '../../redux/userSlice'
 
-export default function LocationWithinWarningAreaProximityLayout ({
+export default function LocationWithinWarningAreaProximityLayout({
   continueToSelectedFloodWarningsPage,
   continueToNearbyFloodAlertsPage,
   continueToSearchResultsPage
@@ -125,32 +126,46 @@ export default function LocationWithinWarningAreaProximityLayout ({
                   <fieldset className='govuk-fieldset'>
                     <h3 class='govuk-heading-s'>Select a nearby area</h3>
                     {error && <p className='govuk-error-message'>{error}</p>}
-                    {floodAreas
-                      ? (
-                          floodAreas.map((area, index) => (
-                            <Radio
-                              key={index}
-                              small
-                              label={index + 1 + '. ' + area.properties.ta_name}
-                              name='floodAreas'
-                              onChange={() => setFloodArea(area)}
-                              checked={
+                    {floodAreas ? (
+                      floodAreas.map((area, index) => (
+                        <Radio
+                          key={index}
+                          small
+                          label={index + 1 + '. ' + area.properties.ta_name}
+                          name='floodAreas'
+                          onChange={() => setFloodArea(area)}
+                          checked={
                             (selectedFloodWarningArea ||
                               selectedFloodAlertArea) === area
                           }
-                            />
-                          ))
-                        )
-                      : (
-                        <LoadingSpinner />
-                        )}
+                        />
+                      ))
+                    ) : (
+                      <LoadingSpinner />
+                    )}
                   </fieldset>
                 </div>
+
                 <Button
                   text='Confirm'
-                  className='govuk-button govuk-!-margin-top-5'
+                  className={
+                    isMobile
+                      ? 'govuk-button govuk-!-margin-top-5 govuk-!-width-one-quarter'
+                      : 'govuk-button govuk-!-margin-top-5'
+                  }
                   onClick={() => handleConfirm()}
                 />
+
+                {isMobile && (
+                  <Link
+                    onClick={(e) => {
+                      e.preventDefault()
+                      continueToSearchResultsPage()
+                    }}
+                  >
+                    View and select on map
+                  </Link>
+                )}
                 {type === 'severe' && (
                   <Button
                     text='Skip to other areas nearby'
@@ -168,7 +183,7 @@ export default function LocationWithinWarningAreaProximityLayout ({
                   Choose different location
                 </Link>
               </div>
-              <div class='govuk-grid-column-two-thirds'>
+              <div class='govuk-grid-column-two-thirds govuk-visually-hidden'>
                 <Map
                   types={[type]}
                   setFloodAreas={(areas) => setFloodAreas(areas)}

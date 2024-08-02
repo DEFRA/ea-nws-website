@@ -110,24 +110,28 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
                   <div className='govuk-grid-column-two-thirds'>
                     <div className='govuk-body'>
                       <Link
-                        to='/signup/register-location/search'
+                        onClick={() => navigate(-1)}
                         className='govuk-back-link'
                       >
                         Back
                       </Link>
                       <h1 className='govuk-heading-l govuk-!-margin-top-6'>
-                        Select an address
+                        {locationPostCode
+                          ? 'Select an address'
+                          : 'Select a location'}
                       </h1>
-                      <p className='govuk-body'>
-                        Postcode: {locationPostCode}
-                        {'   '}
-                        <Link
-                          onClick={() => navigate(-1)}
-                          className='govuk-link govuk-!-padding-left-5'
-                        >
-                          Change postcode
-                        </Link>
-                      </p>
+                      {locationPostCode && (
+                        <p className='govuk-body'>
+                          Postcode: {locationPostCode}
+                          {'   '}
+                          <Link
+                            onClick={() => navigate(-1)}
+                            className='govuk-link govuk-!-padding-left-5'
+                          >
+                            Change postcode
+                          </Link>
+                        </p>
+                      )}
                       <table className='govuk-table'>
                         <tbody className='govuk-table__body'>
                           <tr className='govuk-table__row'>
@@ -148,10 +152,18 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
                           ))}
                         </tbody>
                       </table>
-                      <Details
-                        title='I cannot find my address here'
-                        text={detailsMessage}
-                      />
+                      {locationPostCode
+                        ? (
+                          <Details
+                            title='I cannot find my address here'
+                            text={detailsMessage}
+                          />
+                          )
+                        : (
+                          <Link onClick={() => navigate(-1)} className='govuk-link'>
+                            Search using a different location
+                          </Link>
+                          )}
                       <Pagination
                         totalPages={Math.ceil(
                           locations.length / locationsPerPage

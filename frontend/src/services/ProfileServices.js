@@ -23,8 +23,8 @@ const addUnverifiedContact = (profile, type, contact) => {
         [type === 'email'
           ? 'emails'
           : type === 'mobile'
-            ? 'mobilePhones'
-            : 'homePhones']: [...unverifiedContactList, contact]
+          ? 'mobilePhones'
+          : 'homePhones']: [...unverifiedContactList, contact]
       }
     }
     return updatedProfile
@@ -87,8 +87,8 @@ const addVerifiedContact = (profile, type, contact) => {
       [type === 'email'
         ? 'emails'
         : type === 'mobile'
-          ? 'mobilePhones'
-          : 'homePhones']: [...verifiedContactList, contact]
+        ? 'mobilePhones'
+        : 'homePhones']: [...verifiedContactList, contact]
     }
     return updatedProfile
   } else {
@@ -189,17 +189,17 @@ const removeLocation = (profile, name) => {
   return updatedProfile
 }
 
-// TODO i have no idea how to fix this
 const updateLocationsFloodCategory = (profile, location, updatedCategories) => {
-  // const locationIndex = profile.pois.findIndex(
-  //   (poi) => poi.name === location.name
-  // )
+  const parsedProfile = JSON.parse(JSON.stringify(profile))
 
-  // if (locationIndex !== -1) {
-  //   profile.pois[locationIndex].categories = updatedCategories
-  // }
+  const locationIndex = parsedProfile.pois.findIndex(
+    (poi) => poi.name === location.name
+  )
+  if (locationIndex !== -1) {
+    parsedProfile.pois[locationIndex].categories = updatedCategories
+  }
 
-  return profile
+  return parsedProfile
 }
 
 module.exports = {

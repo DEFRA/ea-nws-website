@@ -33,11 +33,11 @@ export default function IndexPage() {
     },
     pois: [
       {
-        address:
-          'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth, NR30 1AA',
+        name: 'Big Ben, London SW1A 0AA',
+        address: 'UPRN',
         coordinates: {
-          latitude: 52.6124445,
-          longitude: 1.7246405
+          latitude: 51.5007,
+          longitude: 0.1246
         }
       }
     ]
@@ -60,18 +60,19 @@ export default function IndexPage() {
     },
     pois: [
       {
-        address:
-          'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth, NR30 1AA',
+        name: 'Big Ben, London, SW1A 0AA',
+        address: 'UPRN',
         coordinates: {
-          latitude: 52.6124445,
-          longitude: 1.7246405
+          latitude: 51.5007,
+          longitude: 0.1246
         }
       },
       {
-        address: '60, Kingfisher Way, London, NW10 8TZ',
+        name: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'UPRN',
         coordinates: {
-          latitude: 51.5510932,
-          longitude: -0.2577994
+          latitude: 51.550738,
+          longitude: -0.257635
         }
       }
     ]
@@ -94,88 +95,132 @@ export default function IndexPage() {
     },
     pois: [
       {
-        address:
-          'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth, NR30 1AA',
+        name: 'Big Ben, London, SW1A 0AA',
+        address: 'UPRN',
         coordinates: {
-          latitude: 52.6124445,
-          longitude: 1.7246405
+          latitude: 51.5007,
+          longitude: 0.1246
         }
       },
       {
-        address: '60, Kingfisher Way, London, NW10 8TZ',
+        name: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'UPRN',
         coordinates: {
-          latitude: 51.5510932,
-          longitude: -0.2577994
+          latitude: 51.550738,
+          longitude: -0.257635
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Big Ben, London, SW1A 0AA',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.5007,
+          longitude: 0.1246
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.550738,
+          longitude: -0.257635
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Big Ben, London, SW1A 0AA',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.5007,
+          longitude: 0.1246
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.550738,
+          longitude: -0.257635
+        }
+      },
+      ,
+      {
+        name: 'Big Ben, London, SW1A 0AA',
+        address: 'UPRN',
+        coordinates: {
+          latitude: 51.5007,
+          longitude: 0.1246
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.550738,
+          longitude: -0.257635
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Big Ben, London, SW1A 0AA',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.5007,
+          longitude: 0.1246
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.550738,
+          longitude: -0.257635
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Big Ben, London, SW1A 0AA',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.5007,
+          longitude: 0.1246
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.550738,
+          longitude: -0.257635
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Big Ben, London, SW1A 0AA',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.5007,
+          longitude: 0.1246
+        }
+      },
+      {
+        name: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'UPRN',
+        coordinates: {
+          latitude: 51.550738,
+          longitude: -0.257635
+        }
+      },
+      {
+        name: 'Big Ben, London, SW1A 0AA',
+        address: 'UPRN',
+        coordinates: {
+          latitude: 51.5007,
+          longitude: 0.1246
+        }
+      },
+      {
+        name: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'UPRN',
+        coordinates: {
+          latitude: 51.550738,
+          longitude: -0.257635
         }
       }
     ]

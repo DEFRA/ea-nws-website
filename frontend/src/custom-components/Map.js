@@ -214,7 +214,7 @@ export default function Map({ types, setFloodAreas, mobileView }) {
       >
         <TileLayer url='https://api.os.uk/maps/raster/v1/zxy/Outdoor_3857/{z}/{x}/{y}.png?key=tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a' />
         <ZoomControl position='bottomright' />
-        <Marker position={[latitude, longitude]}>
+        <Marker position={[latitude, longitude]} interactive={false}>
           <Popup />
         </Marker>
         {warningArea && types.includes('severe') && (

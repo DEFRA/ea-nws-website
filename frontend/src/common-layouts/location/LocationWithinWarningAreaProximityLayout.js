@@ -96,14 +96,15 @@ export default function LocationWithinWarningAreaProximityLayout({
 
           {selectedFloodWarningArea || selectedFloodAlertArea ? (
             <>
-              <div className='govuk-body map-confirm-location-button'>
-                {selectedFloodWarningArea
-                  ? selectedFloodWarningArea.properties.ta_name
-                  : selectedFloodAlertArea.properties.ta_name}
+              <div className='govuk-body map-confirm-location-box-mobile-view'>
+                <p>
+                  {selectedFloodWarningArea
+                    ? selectedFloodWarningArea.properties.ta_name
+                    : selectedFloodAlertArea.properties.ta_name}
+                </p>
                 <Button
-                  style={{ width: 'auto', padding: '10px' }}
                   text='Confirm this location'
-                  className='govuk-button '
+                  className='govuk-button custom-width-button'
                   onClick={() => handleConfirm()}
                 />
               </div>

@@ -187,14 +187,16 @@
   transform: translateX(-50%);
 }
 
-.map-confirm-location-button {
+.map-confirm-location-box-mobile-view {
   position: absolute;
-  bottom: 1px;
+  bottom: 0px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1001;
   background-color: white;
   width: 95%;
+  padding: 5px;
+  box-sizing: border-box;
 }
 
 .reset-map-button {
@@ -206,4 +208,8 @@
   padding: 3px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.custom-width-button {
+  width: auto !important;
 }

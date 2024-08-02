@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import FloodWarningKey from '../../custom-components/FloodWarningKey'
 import Map from '../../custom-components/Map'
@@ -9,20 +9,133 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
+import { setProfile } from '../../redux/userSlice'
+import { backendCall } from '../../services/BackendService'
+import {
+  addLocation,
+  removeLocation,
+  updateLocationsFloodCategory
+} from '../../services/ProfileServices'
+import { getCoordsOfFloodArea } from '../../services/WfsFloodDataService'
 
-export default function LocationInAlertAreaLayout ({ continueToNextPage }) {
+export default function LocationInAlertAreaLayout({
+  continueToNextPage,
+  continueToSearchResultsPage,
+  canCancel
+}) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [isChecked, setIsChecked] = useState(false)
+  const authToken = useSelector((state) => state.session.authToken)
+  const profile = useSelector((state) => state.session.profile)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
   const additionalAlerts = useSelector(
     (state) => state.session.additionalAlerts
   )
+  // only used when user is going through nearby target areas flow
+  const isUserInNearbyTargetFlowpath = useSelector(
+    (state) => state.session.nearbyTargetAreaFlow
+  )
+  const selectedFloodAlertArea = useSelector(
+    (state) => state.session.selectedFloodAlertArea
+  )
 
-  const handleSubmit = () => {
-    // we need to add this to the profile - TODO
+  const handleSubmit = async () => {
+    if (additionalAlerts && isChecked) {
+      if (isUserInNearbyTargetFlowpath) {
+        await addFloodAlertArea()
+      } else {
+        await updateExistingLocationCategories(['severe', 'alert'])
+      }
+    } else if (additionalAlerts && !isChecked) {
+      // scenario where user has pressed back and un-checked to get notifications for alert areas
+      if (isUserInNearbyTargetFlowpath) {
+        await removeFloodAlertArea()
+      } else {
+        await updateExistingLocationCategories(['severe'])
+      }
+    } else {
+      // location only has flood alerts availble or user has selected a nearby flood alert area
+      if (isUserInNearbyTargetFlowpath) {
+        await addFloodAlertArea()
+      } else {
+        await addLocationWithOnlyFloodAlerts()
+      }
+    }
+
+    await updateGeosafeProfile()
     continueToNextPage()
+  }
+
+  // remove newly added location/location updates
+  const handleUserNavigatingBack = async () => {
+    if (additionalAlerts) {
+      if (isUserInNearbyTargetFlowpath) {
+        await removeFloodAlertArea()
+      } else {
+        await updateExistingLocationCategories(['severe'])
+      }
+    } else {
+      // location only has flood alerts availble or user has selected a nearby flood alert area
+      if (isUserInNearbyTargetFlowpath) {
+        await removeFloodAlertArea()
+      } else {
+        await removeLocationWithOnlyFloodAlerts()
+      }
+    }
+
+    await updateGeosafeProfile()
+    navigate(-1)
+  }
+
+  const addFloodAlertArea = async () => {
+    const alertArea = {
+      name: selectedFloodAlertArea.properties.ta_name,
+      address: '',
+      coordinates: getCoordsOfFloodArea(selectedFloodAlertArea)
+    }
+    const updatedProfile = await addLocation(profile, alertArea)
+    dispatch(setProfile(updatedProfile))
+  }
+
+  const removeFloodAlertArea = async () => {
+    const updatedProfile = await removeLocation(
+      profile,
+      selectedFloodAlertArea.properties.ta_name
+    )
+    dispatch(setProfile(updatedProfile))
+  }
+
+  const addLocationWithOnlyFloodAlerts = async () => {
+    const { postcode, ...locationWithoutPostcode } = selectedLocation
+
+    const locationWithAlertType = {
+      ...locationWithoutPostcode,
+      categories: ['alert']
+    }
+    const updatedProfile = await addLocation(profile, locationWithAlertType)
+    dispatch(setProfile(updatedProfile))
+  }
+
+  const removeLocationWithOnlyFloodAlerts = async () => {
+    const updatedProfile = await removeLocation(profile, selectedLocation.name)
+    dispatch(setProfile(updatedProfile))
+  }
+
+  const updateExistingLocationCategories = async (categories) => {
+    const updatedProfile = await updateLocationsFloodCategory(
+      profile,
+      selectedLocation,
+      categories
+    )
+    dispatch(setProfile(updatedProfile))
+  }
+
+  const updateGeosafeProfile = async () => {
+    const dataToSend = { authToken, profile }
+    await backendCall(dataToSend, 'api/profile/update', navigate)
   }
 
   return (
@@ -34,7 +147,10 @@ export default function LocationInAlertAreaLayout ({ continueToNextPage }) {
           <div className='govuk-body'>
             <div className='govuk-grid-row'>
               <div className='govuk-grid-column-two-thirds'>
-                <Link onClick={() => navigate(-1)} className='govuk-back-link'>
+                <Link
+                  onClick={() => handleUserNavigatingBack()}
+                  className='govuk-back-link'
+                >
                   Back
                 </Link>
                 <h1 className='govuk-heading-l govuk-!-margin-top-6'>
@@ -74,15 +190,36 @@ export default function LocationInAlertAreaLayout ({ continueToNextPage }) {
                     />
                   </>
                 )}
-                <Button
-                  text={
-                    additionalAlerts
-                      ? 'Continue'
-                      : 'Confirm you want this location'
-                  }
-                  className='govuk-button govuk-!-margin-top-5'
-                  onClick={handleSubmit}
-                />
+                <div className='govuk-!-margin-top-5'>
+                  <Button
+                    text={
+                      additionalAlerts
+                        ? 'Continue'
+                        : 'Confirm you want this location'
+                    }
+                    className='govuk-button'
+                    onClick={handleSubmit}
+                  />
+                  {!additionalAlerts && (
+                    <Link
+                      onClick={(e) => {
+                        e.preventDefault()
+                        continueToSearchResultsPage()
+                      }}
+                      className='govuk-link inline-link'
+                    >
+                      Choose different location
+                    </Link>
+                  )}
+                  {canCancel && (
+                    <Link
+                      className='govuk-link inline-link'
+                      onClick={() => navigate(-1)}
+                    >
+                      Cancel
+                    </Link>
+                  )}
+                </div>
               </div>
             </div>
           </div>

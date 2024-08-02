@@ -44,10 +44,8 @@ export default function SignInPage () {
           <Link onClick={() => navigate(-1)} className='govuk-back-link'>
             Back
           </Link>
-          <ErrorSummary errorList={error === '' ? [] : [error]} />
-          <h2 class='govuk-heading-l'>
-            Sign in to your flood warnings account
-          </h2>
+          {error ? <ErrorSummary errorList={[error]} /> : <></>}
+          <h2 class='govuk-heading-l'>Sign in to your flood warnings account</h2>
           <div class='govuk-body'>
             You can:
             <ul className='govuk-list govuk-list--bullet'>

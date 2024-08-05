@@ -43,26 +43,6 @@ export default function SignUpPage () {
         // add email to  emails list
         const updatedProfile = addVerifiedContact(profile, 'email', email)
         dispatch(setProfile(updatedProfile))
-        // start empty profile for user
-        const profile = {
-          id: '',
-          enabled: true,
-          firstname: '',
-          lastname: '',
-          // email required validation to continue so can put in verified list
-          emails: [email],
-          mobilePhones: [],
-          homePhones: [],
-          language: 'EN', // [TODO] is this always english?
-          additionals: [{ id: 'signUpComplete', value: false }],
-          unverified: {
-            emails: [],
-            mobilePhones: [],
-            homePhones: []
-          },
-          pois: []
-        }
-        dispatch(setProfile(profile))
         dispatch(setRegisterToken(data.registerToken))
         navigate('/signup/validate')
       }

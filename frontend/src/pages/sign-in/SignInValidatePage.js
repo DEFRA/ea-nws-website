@@ -16,8 +16,6 @@ import {
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
-import NotificationBanner from '../../gov-uk-components/NotificationBanner'
-import ExpiredCodeLayout from '../../common-layouts/expired-code/ExpiredCodeLayout'
 import NotCompletedSigningUpLayout from '../../common-layouts/sign-up/NotCompletedSignUpLayout'
 import { updateAdditionals } from '../../services/ProfileServices'
 

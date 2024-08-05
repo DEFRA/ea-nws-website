@@ -1,5 +1,5 @@
 import { React } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
 import Footer from '../../../gov-uk-components/Footer'
@@ -9,15 +9,21 @@ import AccountDetailsTable from './AccountDetailsTable'
 import ContactReviewTable from './ContactReviewTable'
 import FloodMessageReviewTable from './FloodMessageReviewTable'
 import LocationReviewTable from './LocationReviewTable'
+import { updateAdditionals } from '../../../services/ProfileServices'
+import { setProfile } from '../../../redux/userSlice'
+
 export default function CheckYourAnswersPage () {
   const session = useSelector((state) => state.session)
   const profile = session.profile
   const registration = session.registrations
   const contactPreferences = session.contactPreferences
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const handleButton = () => {
     if (signUpAccountValidation) {
+      const updatedProfile = updateAdditionals(profile, [{ id: "signUpComplete", value: true }, { id: 'lastAccessedUrl', value: '/signup/review' }])
+      dispatch(setProfile(updatedProfile))
       navigate('/signup/success')
     }
   }

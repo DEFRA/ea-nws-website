@@ -7,7 +7,6 @@ import {
   MapContainer,
   Marker,
   Popup,
-  TileLayer,
   ZoomControl,
   useMap
 } from 'react-leaflet'
@@ -22,8 +21,10 @@ import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
+import { backendCall } from '../services/BackendService'
+import TileLayerWithHeader from './TileLayerWithHeader'
 
-export default function Map({ types, setFloodAreas, mobileView }) {
+export default function Map ({ types, setFloodAreas, mobileView }) {
   const dispatch = useDispatch()
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
@@ -31,6 +32,7 @@ export default function Map({ types, setFloodAreas, mobileView }) {
     (state) => state.session.selectedLocation
   )
   const { latitude, longitude } = selectedLocation.coordinates
+  const [apiKey, setApiKey] = useState(null)
   // used when user selects flood area when location is within proximity
   const selectedFloodWarningArea = useSelector(
     (state) => state.session.selectedFloodWarningArea
@@ -50,7 +52,7 @@ export default function Map({ types, setFloodAreas, mobileView }) {
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData() {
+    async function fetchFloodAreaData () {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude
@@ -203,6 +205,48 @@ export default function Map({ types, setFloodAreas, mobileView }) {
 
   L.Marker.prototype.options.icon = DefaultIcon
 
+  async function getApiKey () {
+    const { data } = await backendCall('data', 'api/os-api/oauth2')
+    console.log(data)
+    setApiKey(data.access_token)
+    console.log('api key set')
+    return data.expires_in
+  }
+
+  useEffect(() => {
+    return () => {
+      getApiKey()
+    }
+  }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getApiKey()
+    }, 270000)
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
+
+  const url = 'https://api.os.uk/maps/raster/v1/wmts'
+  const parameters = {
+    tileMatrixSet: encodeURI('EPSG:3857'),
+    version: '1.0.0',
+    style: 'default',
+    layer: encodeURI('Outdoor_3857'),
+    service: 'WMTS',
+    request: 'GetTile',
+    tileCol: '{x}',
+    tileRow: '{y}',
+    tileMatrix: '{z}'
+  }
+
+  const parameterString = Object.keys(parameters)
+    .map(function (key) {
+      return key + '=' + parameters[key]
+    })
+    .join('&')
+
   return (
     <>
       <MapContainer
@@ -212,7 +256,7 @@ export default function Map({ types, setFloodAreas, mobileView }) {
         attributionControl={false}
         className={mobileView ? 'map-mobile-view' : 'map-container'}
       >
-        <TileLayer url='https://api.os.uk/maps/raster/v1/zxy/Outdoor_3857/{z}/{x}/{y}.png?key=tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a' />
+        <TileLayerWithHeader url={url + '?' + parameterString} token={apiKey} />
         {!mobileView && <ZoomControl position='bottomright' />}
         <Marker position={[latitude, longitude]} interactive={false}>
           <Popup />

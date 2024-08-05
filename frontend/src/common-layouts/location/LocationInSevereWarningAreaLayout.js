@@ -15,13 +15,13 @@ import {
   setSelectedFloodAlertArea
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
-import { addLocation } from '../../services/ProfileServices'
+import { addLocation, removeLocation } from '../../services/ProfileServices'
 import {
   getAssociatedAlertArea,
   getCoordsOfFloodArea
 } from '../../services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout({
+export default function LocationInSevereWarningAreaLayout ({
   continueToNextPage
 }) {
   const navigate = useNavigate()
@@ -59,7 +59,7 @@ export default function LocationInSevereWarningAreaLayout({
     if (isUserInNearbyTargetFlowpath) {
       await removeFloodWarningArea()
     } else {
-      await removeLocation()
+      await removeLocationWithFloodWarningAlerts()
     }
 
     dispatch(setAdditionalAlerts(false))
@@ -73,15 +73,16 @@ export default function LocationInSevereWarningAreaLayout({
       address: '',
       coordinates: getCoordsOfFloodArea(selectedFloodWarningArea)
     }
-    await dispatch(setProfile(addLocation(profile, warningArea)))
+    const updatedProfile = await addLocation(profile, warningArea)
+    dispatch(setProfile(updatedProfile))
   }
 
   const removeFloodWarningArea = async () => {
-    await dispatch(
-      setProfile(
-        removeLocation(profile, selectedFloodWarningArea.properties.ta_name)
-      )
+    const updatedProfile = await removeLocation(
+      profile,
+      selectedFloodWarningArea.properties.ta_name
     )
+    dispatch(setProfile(updatedProfile))
   }
 
   const findAssociatedFloodAlertArea = async () => {
@@ -104,11 +105,14 @@ export default function LocationInSevereWarningAreaLayout({
       ...locationWithoutPostcode,
       categories: ['severe']
     }
-    await dispatch(setProfile(addLocation(profile, locationWithAlertType)))
+
+    const updatedProfile = await addLocation(profile, locationWithAlertType)
+    dispatch(setProfile(updatedProfile))
   }
 
-  const removeLocation = async () => {
-    await dispatch(setProfile(removeLocation(profile, selectedLocation.name)))
+  const removeLocationWithFloodWarningAlerts = async () => {
+    const updatedProfile = await removeLocation(profile, selectedLocation.name)
+    dispatch(setProfile(updatedProfile))
   }
 
   const updateGeosafeProfile = async () => {

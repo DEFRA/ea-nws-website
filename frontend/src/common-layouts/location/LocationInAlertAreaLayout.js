@@ -18,7 +18,7 @@ import {
 } from '../../services/ProfileServices'
 import { getCoordsOfFloodArea } from '../../services/WfsFloodDataService'
 
-export default function LocationInAlertAreaLayout({
+export default function LocationInAlertAreaLayout ({
   continueToNextPage,
   continueToSearchResultsPage,
   canCancel
@@ -90,26 +90,22 @@ export default function LocationInAlertAreaLayout({
     navigate(-1)
   }
 
-  const updateGeosafeProfile = async () => {
-    const dataToSend = { authToken, profile }
-    await backendCall(dataToSend, 'api/profile/update', navigate)
-  }
-
   const addFloodAlertArea = async () => {
     const alertArea = {
       name: selectedFloodAlertArea.properties.ta_name,
       address: '',
       coordinates: getCoordsOfFloodArea(selectedFloodAlertArea)
     }
-    await dispatch(setProfile(addLocation(profile, alertArea)))
+    const updatedProfile = await addLocation(profile, alertArea)
+    dispatch(setProfile(updatedProfile))
   }
 
   const removeFloodAlertArea = async () => {
-    await dispatch(
-      setProfile(
-        removeLocation(profile, selectedFloodAlertArea.properties.ta_name)
-      )
+    const updatedProfile = await removeLocation(
+      profile,
+      selectedFloodAlertArea.properties.ta_name
     )
+    dispatch(setProfile(updatedProfile))
   }
 
   const addLocationWithOnlyFloodAlerts = async () => {
@@ -119,21 +115,27 @@ export default function LocationInAlertAreaLayout({
       ...locationWithoutPostcode,
       categories: ['alert']
     }
-
-    await dispatch(setProfile(addLocation(profile, locationWithAlertType)))
+    const updatedProfile = await addLocation(profile, locationWithAlertType)
+    dispatch(setProfile(updatedProfile))
   }
 
   const removeLocationWithOnlyFloodAlerts = async () => {
-    await dispatch(setProfile(removeLocation(profile, selectedLocation.name)))
+    const updatedProfile = await removeLocation(profile, selectedLocation.name)
+    dispatch(setProfile(updatedProfile))
   }
 
   const updateExistingLocationCategories = async (categories) => {
-    const updatedProfile = updateLocationsFloodCategory(
+    const updatedProfile = await updateLocationsFloodCategory(
       profile,
       selectedLocation,
       categories
     )
-    await dispatch(setProfile(updatedProfile))
+    dispatch(setProfile(updatedProfile))
+  }
+
+  const updateGeosafeProfile = async () => {
+    const dataToSend = { authToken, profile }
+    await backendCall(dataToSend, 'api/profile/update', navigate)
   }
 
   return (
@@ -188,34 +190,36 @@ export default function LocationInAlertAreaLayout({
                     />
                   </>
                 )}
-                <Button
-                  text={
-                    additionalAlerts
-                      ? 'Continue'
-                      : 'Confirm you want this location'
-                  }
-                  className='govuk-button govuk-!-margin-top-5'
-                  onClick={handleSubmit}
-                />
-                {!additionalAlerts && (
-                  <Link
-                    onClick={(e) => {
-                      e.preventDefault()
-                      continueToSearchResultsPage()
-                    }}
-                    className='govuk-link inline-link'
-                  >
-                    Choose different location
-                  </Link>
-                )}
-                {canCancel && (
-                  <Link
-                    className='govuk-link inline-link'
-                    onClick={() => navigate(-1)}
-                  >
-                    Cancel
-                  </Link>
-                )}
+                <div className='govuk-!-margin-top-5'>
+                  <Button
+                    text={
+                      additionalAlerts
+                        ? 'Continue'
+                        : 'Confirm you want this location'
+                    }
+                    className='govuk-button'
+                    onClick={handleSubmit}
+                  />
+                  {!additionalAlerts && (
+                    <Link
+                      onClick={(e) => {
+                        e.preventDefault()
+                        continueToSearchResultsPage()
+                      }}
+                      className='govuk-link inline-link'
+                    >
+                      Choose different location
+                    </Link>
+                  )}
+                  {canCancel && (
+                    <Link
+                      className='govuk-link inline-link'
+                      onClick={() => navigate(-1)}
+                    >
+                      Cancel
+                    </Link>
+                  )}
+                </div>
               </div>
             </div>
           </div>

@@ -7,11 +7,7 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import { setCurrentContact, setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import {
-  addUnverifiedContact,
-  removeUnverifiedContact,
-  removeVerifiedContact
-} from '../../../common/services/ProfileServices'
+import { addUnverifiedContact } from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 
 export default function AddEmailLayout ({ NavigateToNextPage }) {
@@ -48,29 +44,18 @@ export default function AddEmailLayout ({ NavigateToNextPage }) {
   // if user is going back through the signup flow - we want to remove the landline
   // from either the verified or unverified list - we need to do both incase
   // they progressed past the validate landline path
-  const removeEmailFromProfile = async (event) => {
+  const handleBackLink = (event) => {
     event.preventDefault()
-    // we need to check if location.state has a value - this will only hold a value
-    // if the user has come from the landline validate page - we will need to remove
-    // the number from the users profile if so
-    if (session && session.email) {
-      event.preventDefault()
-      // remove landline from users profile
-      const updatedProfile = removeUnverifiedContact(session.profile, email)
-      dispatch(setProfile(removeVerifiedContact(updatedProfile, email)))
-    }
-    // user could have navigated from contact preferences page
-    // or user could have come from account change details at the end of sign up flow
     navigate(-1)
   }
 
   return (
     <>
-      <BackLink onClick={removeEmailFromProfile} />
+      <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <ErrorSummary errorList={error === '' ? [] : [error]} />
+          {error && <ErrorSummary errorList={[error]} />}
             <h2 class='govuk-heading-l'>
               Enter an email address to get flood messages
             </h2>

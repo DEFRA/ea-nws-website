@@ -1,23 +1,58 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { setAdditionalAlerts } from '../../../../common/redux/userSlice'
+import { setAdditionalAlerts, setProfile } from '../../../../common/redux/userSlice'
 import LocationSearchResultsLayout from '../../../layouts/location/LocationSearchResultsLayout'
 
 export default function LocationSearchResultsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const continueToNextPage = (isInWarningArea, isInAlertArea) => {
+  const continueToNextPage = (
+    isInWarningArea,
+    isInAlertArea,
+    isWithinWarningAreaProximity,
+    isWithinAlertAreaProximity
+  ) => {
+    // start an empty profile - if user chooses another location from results page
+    // any previous picked locations are reset
+    const profile = {
+      id: '',
+      enabled: true,
+      firstname: '',
+      lastname: '',
+      emails: [],
+      mobilePhones: [],
+      homePhones: [],
+      language: 'EN', // [TODO] is this always english?
+      additionals: [],
+      unverified: {
+        emails: [],
+        mobilePhones: [],
+        homePhones: []
+      },
+      pois: []
+    }
+    dispatch(setProfile(profile))
+
     if (isInWarningArea) {
-      // take user to severe warning screen and then to alerts screen for
-      // optional additional alerts
+      // take user to warning screen and then to alerts screen for optional alerts
       dispatch(setAdditionalAlerts(true))
       navigate('/signup/register-location/location-in-severe-warning-area')
     } else if (isInAlertArea) {
-      // take user to non option flood alerts scren
+      // take user to non optional flood alerts screen
       dispatch(setAdditionalAlerts(false))
       navigate('/signup/register-location/location-in-alert-area')
+    } else if (isWithinWarningAreaProximity) {
+      // users location is within distance to severe flood area
+      navigate(
+        `/signup/register-location/location-in-proximity-area/${'severe'}`
+      )
+    } else if (isWithinAlertAreaProximity) {
+      // users location is within distance to alert flood area
+      navigate(
+        `/signup/register-location/location-in-proximity-area/${'alert'}`
+      )
     } else {
       // location isnt in danger area
       navigate('/signup/register-location/no-danger')

@@ -4,20 +4,25 @@ import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import LoadingSpinner from '../../../common/components/custom/LoadingSpinner'
 import Details from '../../../common/components/gov-uk/Details'
-import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Pagination from '../../../common/components/gov-uk/Pagination'
-import { setSelectedLocation } from '../../../common/redux/userSlice'
-import { getFloodTargetArea } from '../../../common/services/GetFloodTargetAreas'
-import { checkIfSelectedLocationExistsAlready } from '../../../common/services/ProfileServices'
+import {
+  setNearbyTargetAreasFlow,
+  setSelectedFloodAlertArea,
+  setSelectedFloodWarningArea,
+  setSelectedLocation,
+  setShowOnlySelectedFloodArea
+} from '../../../common/redux/userSlice'
+import {
+  getSurroundingFloodAreas,
+  isLocationInFloodArea
+} from '../../../common/services/WfsFloodDataService'
 
 export default function LocationSearchResultsLayout ({ continueToNextPage }) {
-  const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [error, setError] = useState('')
+  const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const locations = useSelector((state) => state.session.locationSearchResults)
-  const profile = useSelector((state) => state.session.profile)
   const locationPostCode = useSelector(
     (state) => state.session.locationPostCode
   )
@@ -32,24 +37,47 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
 
     setLoading(true)
     try {
-      const existsInProfile = checkIfSelectedLocationExistsAlready(
-        profile,
-        selectedLocation
+      dispatch(setSelectedLocation(selectedLocation))
+
+      // reset map display - these are only required when user is taken through location in proximity to flood areas
+      // they are updated with data only in proximity flow
+      dispatch(setSelectedFloodAlertArea(null))
+      dispatch(setSelectedFloodWarningArea(null))
+      dispatch(setShowOnlySelectedFloodArea(false))
+      dispatch(setNearbyTargetAreasFlow(false))
+
+      const { warningArea, alertArea } = await getSurroundingFloodAreas(
+        selectedLocation.coordinates.latitude,
+        selectedLocation.coordinates.longitude
       )
-      if (existsInProfile) {
-        setError(
-          'This location is saved already, please select a different location'
-        )
-      } else {
-        dispatch(setSelectedLocation(selectedLocation))
 
-        const { isInWarningArea, isInAlertArea } = await getFloodTargetArea(
-          selectedLocation.coordinates.latitude,
-          selectedLocation.coordinates.longitude
-        )
+      const isInAlertArea = isLocationInFloodArea(
+        selectedLocation.coordinates.latitude,
+        selectedLocation.coordinates.longitude,
+        alertArea
+      )
 
-        continueToNextPage(isInWarningArea, isInAlertArea)
+      const isInWarningArea = isLocationInFloodArea(
+        selectedLocation.coordinates.latitude,
+        selectedLocation.coordinates.longitude,
+        warningArea
+      )
+
+      let isWithinWarningAreaProximity = false
+      let isWithinAlertAreaProximity = false
+
+      if (!isInAlertArea || !isInWarningArea) {
+        // check that there are flood areas within boundary box around location
+        isWithinWarningAreaProximity = warningArea.features.length > 0
+        isWithinAlertAreaProximity = alertArea.features.length > 0
       }
+
+      continueToNextPage(
+        isInWarningArea,
+        isInAlertArea,
+        isWithinWarningAreaProximity,
+        isWithinAlertAreaProximity
+      )
     } finally {
       setLoading(false)
     }
@@ -77,9 +105,10 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
               : (
                 <div className='govuk-grid-column-two-thirds'>
                   <div className='govuk-body'>
-                    {error && <ErrorSummary errorList={[error]} />}
                     <h1 className='govuk-heading-l'>
-                      Select an address
+                    {locationPostCode
+                          ? 'Select an address'
+                          : 'Select a location'}
                     </h1>
                     {locationPostCode && (
                       <p className='govuk-body'>
@@ -113,10 +142,18 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
                         ))}
                       </tbody>
                     </table>
-                    <Details
-                      title='I cannot find my address here'
-                      text={detailsMessage}
-                    />
+                    {locationPostCode
+                      ? (
+                        <Details
+                          title='I cannot find my address here'
+                          text={detailsMessage}
+                        />
+                        )
+                      : (
+                          <Link onClick={() => navigate(-1)} className='govuk-link'>
+                            Search using a different location
+                          </Link>
+                          )}
                     <Pagination
                       totalPages={Math.ceil(
                         locations.length / locationsPerPage

@@ -14,6 +14,10 @@ export default function ChangeNamePage () {
     navigate('/account')
   }
 
+  const NavigateToNextPage = () => {
+    navigate('/account')
+  }
+
   const updateProfile = async (profile, authToken) => {
     const dataToSend = { profile, authToken }
     const { errorMessage, data } = await backendCall(
@@ -24,9 +28,7 @@ export default function ChangeNamePage () {
     if (errorMessage !== null) {
       setError(errorMessage)
     } else {
-      dispatch(
-        setProfile(data.profile)
-      )
+      dispatch(setProfile(data.profile))
       navigate('/account', {
         state: {
           changeName: true,
@@ -39,6 +41,7 @@ export default function ChangeNamePage () {
   return (
     <AddAccountNameLayout
       NavigateToPreviousPage={NavigateToPreviousPage}
+      NavigateToNextPage={NavigateToNextPage}
       buttonText='Save changes'
       changeName
       updateProfile={updateProfile}

@@ -21,7 +21,11 @@ export default function AddAccountNameLayout ({
   const [error, setError] = useState('')
   const session = useSelector((state) => state.session)
   const authToken = session.authToken
-  const [fullName, setFullName] = useState(session.profile ? session.profile?.firstname + ' ' + session.profile?.lastname : '')
+  const [fullName, setFullName] = useState(
+    session.profile
+      ? session.profile?.firstname + ' ' + session.profile?.lastname
+      : ''
+    )
 
   const handleSubmit = async () => {
     const validationError = fullNameValidation(fullName, 'fullName')
@@ -65,7 +69,8 @@ export default function AddAccountNameLayout ({
             </h2>
             <div className='govuk-body'>
               <p className='govuk-body govuk-!-margin-bottom-5'>
-                We'll use this name if we need to contact you about your account.
+                We'll use this name if we need to contact you about your
+                account.
               </p>
               <Input
                 inputType='text'
@@ -83,7 +88,7 @@ export default function AddAccountNameLayout ({
               />
               {changeName && (
                 <Link
-                  to='/account'
+                  onClick={navigateBack}
                   className='govuk-body govuk-link inline-link'
                 >
                   Cancel

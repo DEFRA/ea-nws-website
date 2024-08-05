@@ -11,7 +11,6 @@ frontend/build
 frontend/test/selenium-test/**/__pycache__
 frontend/**/*.pyc
 frontend/node_modules
-frontend/package-lock.json
 npm-debug.log
 server/public/build
 lcov.info

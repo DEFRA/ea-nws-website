@@ -20,7 +20,8 @@ import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
 export default function ValidateMobileLayout ({
   NavigateToNextPage,
   SkipValidation,
-  DifferentMobile
+  DifferentMobile,
+  NavigateToPreviousPage
 }) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -94,9 +95,36 @@ export default function ValidateMobileLayout ({
 
   const differentMobile = (event) => {
     event.preventDefault()
-    // remove email from users profile
-    dispatch(setProfile(removeUnverifiedContact(session.profile, mobile)))
+    removeMobileFromProfile()
     DifferentMobile(mobile)
+  }
+
+  const backLink = (event) => {
+    event.preventDefault()
+    removeMobileFromProfile()
+    NavigateToPreviousPage()
+  }
+
+  const removeMobileFromProfile = async () => {
+    let updatedProfile
+    if (session.profile.unverified.mobilePhones.includes(mobile)) {
+      updatedProfile = removeUnverifiedContact(session.profile, mobile)
+      dispatch(setProfile(removeUnverifiedContact(session.profile, mobile)))
+    }
+    if (session.profile.mobilePhones.includes(mobile)) {
+      updatedProfile = removeVerifiedContact(session.profile, mobile)
+      dispatch(setProfile(removeVerifiedContact(session.profile, mobile)))
+    }
+
+    const dataToSend = { profile: updatedProfile, authToken: session.authToken }
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/profile/update',
+      navigate
+    )
+    if (errorMessage !== null) {
+      setError(errorMessage)
+    }
   }
 
   return (
@@ -105,7 +133,7 @@ export default function ValidateMobileLayout ({
         ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
         : (
           <>
-            <BackLink to='/managecontacts/add-mobile' />
+            <BackLink onClick={backLink} />
             <main className='govuk-main-wrapper govuk-!-padding-top-4'>
               <div className='govuk-grid-row'>
                 <div className='govuk-grid-column-two-thirds'>
@@ -114,7 +142,7 @@ export default function ValidateMobileLayout ({
                     title='Success'
                     text={'New code sent at ' + codeResentTime}
                                  />}
-                  <ErrorSummary errorList={error === '' ? [] : [error]} />
+                  {error && <ErrorSummary errorList={[error]} />}
                   <h2 class='govuk-heading-l'>Check your mobile phone</h2>
                   <div class='govuk-body'>
                     We've sent a text with a code to:

@@ -7,11 +7,7 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import { setCurrentContact, setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import {
-  addUnverifiedContact,
-  removeUnverifiedContact,
-  removeVerifiedContact
-} from '../../../common/services/ProfileServices'
+import { addUnverifiedContact } from '../../../common/services/ProfileServices'
 import { normalisePhoneNumber } from '../../../common/services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
 
@@ -59,35 +55,18 @@ export default function AddLandlineLayout ({
   // if user is going back through the signup flow - we want to remove the landline
   // from either the verified or unverified list - we need to do both incase
   // they progressed past the validate landline path
-  const removeLandlineFromProfile = async (event) => {
+  const handleBackLink = (event) => {
     event.preventDefault()
-    // we need to check if location.state has a value - this will only hold a value
-    // if the user has come from the landline validate page - we will need to remove
-    // the number from the users profile if so
-    if (session && session.landline) {
-      event.preventDefault()
-      const normalisedLandline = normalisePhoneNumber(session.landline)
-      // remove landline from users profile
-      const updatedProfile = removeUnverifiedContact(
-        session.profile,
-        normalisedLandline
-      )
-      dispatch(
-        setProfile(removeVerifiedContact(updatedProfile, normalisedLandline))
-      )
-    }
-    // user could have navigated from contact preferences page
-    // or user could have come from account change details at the end of sign up flow
     NavigateToPreviousPage()
   }
 
   return (
     <>
-      <BackLink onClick={removeLandlineFromProfile} />
+      <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <ErrorSummary errorList={error === '' ? [] : [error]} />
+          {error && <ErrorSummary errorList={[error]} />}
             <h2 class='govuk-heading-l'>
               Enter a telephone number to get flood messages by phone call
             </h2>

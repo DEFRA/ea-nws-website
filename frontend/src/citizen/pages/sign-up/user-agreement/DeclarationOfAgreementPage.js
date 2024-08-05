@@ -1,20 +1,50 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import Checkbox from '../../../../common/components/gov-uk/CheckBox'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
+import { setRegistrations } from '../../../../common/redux/userSlice'
 
 export default function DeclarationOfAgreementPage () {
   const [isChecked, setIsChecked] = useState(false)
   const [error, setError] = useState('')
+  const session = useSelector((state) => state.session)
+  const profile = session.profile
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const handleSubmit = () => {
     if (isChecked === false) {
       setError('Tick to confirm you agree with the terms and conditions')
     } else {
-      // TODO New user home page currently, will need to be modified to direct to the signup review page after T&C agreement signed
-      navigate('/home')
+      const registrations = {
+        params: {
+          channelVoiceEnabled: profile.homePhones.length !== 0,
+          channelSmsEnabled: profile.mobilePhones.length !== 0,
+          channelEmailEnabled: profile.emails.length !== 0,
+          // What is that?
+          partnerCanView: false,
+          partnerCanEdit: false,
+          // TODO
+          categories: [
+            {
+              domain: 'NFWS',
+              code: 'FLOOD_ALERT'
+            },
+            {
+              domain: 'NFWS',
+              code: 'FLOOD_WARNING'
+            },
+            {
+              domain: 'NFWS',
+              code: 'SEVERE_FLOOD_WARNING'
+            }
+          ]
+        }
+      }
+      dispatch(setRegistrations(registrations))
+      navigate('/signup/review')
     }
   }
   return (

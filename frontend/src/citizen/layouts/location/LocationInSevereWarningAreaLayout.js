@@ -7,31 +7,121 @@ import FloodWarningKey from '../../../common/components/custom/FloodWarningKey'
 import Map from '../../../common/components/custom/Map'
 import Button from '../../../common/components/gov-uk/Button'
 import InsetText from '../../../common/components/gov-uk/InsetText'
-import { setProfile } from '../../../common/redux/userSlice'
-import { addLocation } from '../../../common/services/ProfileServices'
+import {
+  setAdditionalAlerts,
+  setProfile,
+  setSelectedFloodAlertArea
+} from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
+import { addLocation, removeLocation } from '../../../common/services/ProfileServices'
+import {
+  getAssociatedAlertArea,
+  getCoordsOfFloodArea
+} from '../../../common/services/WfsFloodDataService'
+
 
 export default function LocationInSevereWarningAreaLayout ({
   continueToNextPage
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const authToken = useSelector((state) => state.session.authToken)
   const profile = useSelector((state) => state.session.profile)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+  // only used when user is going through nearby target areas flow
+  const isUserInNearbyTargetFlowpath = useSelector(
+    (state) => state.session.nearbyTargetAreaFlow
+  )
+  const selectedFloodWarningArea = useSelector(
+    (state) => state.session.selectedFloodWarningArea
+  )
 
-  const handleSubmit = () => {
-    // geosafe doesnt accept locations with postcodes - need to remove this from the object
-    // eslint-disable-next-line no-use-before-define
-    const { postcode, ...locationWithoutPostcode } = selectedLocation
-    console.log('location', locationWithoutPostcode)
-    dispatch(setProfile(addLocation(profile, locationWithoutPostcode)))
+  const handleSubmit = async () => {
+    if (isUserInNearbyTargetFlowpath) {
+      await addFloodWarningArea()
+
+      // load associated flood alert area
+      await findAssociatedFloodAlertArea()
+    } else {
+      await addLocationWithFloodWarningAlerts()
+    }
+
+    // we must always show user the optional flood alert areas
+    dispatch(setAdditionalAlerts(true))
+    await updateGeosafeProfile()
     continueToNextPage()
+  }
+
+  const handleUserNavigatingBack = async () => {
+    if (isUserInNearbyTargetFlowpath) {
+      await removeFloodWarningArea()
+    } else {
+      await removeLocationWithFloodWarningAlerts()
+    }
+
+    dispatch(setAdditionalAlerts(false))
+    await updateGeosafeProfile()
+    navigate(-1)
+  }
+
+  const addFloodWarningArea = async () => {
+    const warningArea = {
+      name: selectedFloodWarningArea.properties.ta_name,
+      address: '',
+      coordinates: getCoordsOfFloodArea(selectedFloodWarningArea)
+    }
+    const updatedProfile = await addLocation(profile, warningArea)
+    dispatch(setProfile(updatedProfile))
+  }
+
+  const removeFloodWarningArea = async () => {
+    const updatedProfile = await removeLocation(
+      profile,
+      selectedFloodWarningArea.properties.ta_name
+    )
+    dispatch(setProfile(updatedProfile))
+  }
+
+  const findAssociatedFloodAlertArea = async () => {
+    const associatedAlertArea = await getAssociatedAlertArea(
+      selectedLocation.coordinates.latitude,
+      selectedLocation.coordinates.longitude,
+      selectedFloodWarningArea.properties.parent
+    )
+
+    if (associatedAlertArea) {
+      dispatch(setSelectedFloodAlertArea(associatedAlertArea))
+    }
+  }
+
+  const addLocationWithFloodWarningAlerts = async () => {
+    // geosafe doesnt accept locations with postcodes - need to remove this from the object
+    const { postcode, ...locationWithoutPostcode } = selectedLocation
+    // update location to recieve severe alert warnings
+    const locationWithAlertType = {
+      ...locationWithoutPostcode,
+      categories: ['severe']
+    }
+
+    const updatedProfile = await addLocation(profile, locationWithAlertType)
+    dispatch(setProfile(updatedProfile))
+  }
+
+  const removeLocationWithFloodWarningAlerts = async () => {
+    const updatedProfile = await removeLocation(profile, selectedLocation.name)
+    dispatch(setProfile(updatedProfile))
+  }
+
+  const updateGeosafeProfile = async () => {
+    const dataToSend = { authToken, profile }
+    await backendCall(dataToSend, 'api/profile/update', navigate)
   }
 
   return (
     <>
-      <BackLink onClick={() => navigate(-1)} />
+      <BackLink onClick={() => handleUserNavigatingBack()} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
@@ -42,7 +132,7 @@ export default function LocationInSevereWarningAreaLayout ({
             <InsetText text={selectedLocation.name} />
           </div>
           <div className='govuk-grid-column-three-quarters'>
-            <Map types={['warning']} />
+            <Map types={['severe']} />
             <FloodWarningKey type='severe' />
           </div>
 

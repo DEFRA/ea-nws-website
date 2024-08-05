@@ -20,7 +20,8 @@ import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
 export default function ValidateLandlineLayout ({
   NavigateToNextPage,
   SkipValidation,
-  DifferentHomePhone
+  DifferentHomePhone,
+  NavigateToPreviousPage
 }) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -93,11 +94,37 @@ export default function ValidateLandlineLayout ({
     SkipValidation(homePhone)
   }
 
-  const differentHomePhone = (event) => {
+  const differentHomePhone = async (event) => {
     event.preventDefault()
-    // remove homephone from users profile
-    dispatch(setProfile(removeUnverifiedContact(session.profile, homePhone)))
+    removeLandlineFromProfile()
     DifferentHomePhone(homePhone)
+  }
+
+  const backLink = async (event) => {
+    event.preventDefault()
+    removeLandlineFromProfile()
+    NavigateToPreviousPage()
+  }
+
+  const removeLandlineFromProfile = async () => {
+    let updatedProfile
+    if (session.profile.unverified.homePhones.includes(homePhone)) {
+      updatedProfile = removeUnverifiedContact(session.profile, homePhone)
+      dispatch(setProfile(removeUnverifiedContact(session.profile, homePhone)))
+    }
+    if (session.profile.homePhones.includes(homePhone)) {
+      updatedProfile = removeVerifiedContact(session.profile, homePhone)
+      dispatch(setProfile(removeVerifiedContact(session.profile, homePhone)))
+    }
+    const dataToSend = { profile: updatedProfile, authToken: session.authToken }
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/profile/update',
+      navigate
+    )
+    if (errorMessage !== null) {
+      setError(errorMessage)
+    }
   }
 
   return (
@@ -106,7 +133,7 @@ export default function ValidateLandlineLayout ({
         ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
         : (
           <>
-            <BackLink to='/managecontacts/add-landline' />
+            <BackLink onClick={backLink} />
             <main className='govuk-main-wrapper govuk-!-padding-top-4'>
               <div className='govuk-grid-row'>
                 <div className='govuk-grid-column-two-thirds'>
@@ -115,7 +142,7 @@ export default function ValidateLandlineLayout ({
                     title='Success'
                     text={'New code sent at ' + codeResentTime}
                                  />}
-                  <ErrorSummary errorList={error === '' ? [] : [error]} />
+                  {error && <ErrorSummary errorList={[error]} />}
                   <h2 class='govuk-heading-l'>Confirm telephone number</h2>
                   <div class='govuk-body'>
                     We're calling this number to read out a code:

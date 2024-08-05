@@ -13,12 +13,30 @@ import SkipConfirmMobilePhonePage from '../../pages/sign-up/channel-preferences/
 import ValidateMobilePhonePage from '../../pages/sign-up/channel-preferences/mobile-telephone-authentication/ValidateMobilePhonePage'
 import LocationInAlertAreaPage from '../../pages/sign-up/register-location/LocationInAlertAreaPage'
 import LocationInSevereWarningAreaPage from '../../pages/sign-up/register-location/LocationInSevereWarningAreaPage'
+import LocationInWarningAreaProximityPage from '../../pages/sign-up/register-location/LocationInWarningAreaProximityPage'
 import LocationNotNearDangerPage from '../../pages/sign-up/register-location/LocationNotNearDangerPage'
 import LocationSearchPage from '../../pages/sign-up/register-location/LocationSearchPage'
 import LocationSearchResultsPage from '../../pages/sign-up/register-location/LocationSearchResultsPage'
+import CheckYourAnswersPage from '../../pages/sign-up/review/CheckYourAnswersPage'
+import ChangeAccountEmailPage from '../../pages/sign-up/review/change-account/ChangeAccountEmailPage'
+import ChangeAccountEmailValidationPage from '../../pages/sign-up/review/change-account/ChangeAccountEmailValidatePage'
+import ChangeAccountNamePage from '../../pages/sign-up/review/change-account/ChangeAccountNamePage'
+import ChangeFloodAlertPage from '../../pages/sign-up/review/change-flood-alerts/ChangeFloodAlertsPage'
+import ChangeLocationInAlertAreaPage from '../../pages/sign-up/review/change-location/ChangeLocationInAlertAreaPage'
+import ChangeLocationInSevereWarningAreaPage from '../../pages/sign-up/review/change-location/ChangeLocationInSevereWarningAreaPage'
+import ChangeLocationNotNearDangerPage from '../../pages/sign-up/review/change-location/ChangeLocationNotNearDangerPage'
+import ChangeLocationSearchPage from '../../pages/sign-up/review/change-location/ChangeLocationSearchPage'
+import ChangeLocationSearchResultPage from '../../pages/sign-up/review/change-location/ChangeLocationSearchResultPage'
+import RemoveContactFromReviewConfirmationPage from '../../pages/sign-up/review/manage-contact/RemoveContactFromReviewConfirmationPage'
+import SelectContactTypeToAddPage from '../../pages/sign-up/review/manage-contact/SelectContactTypeToAddPage'
+import AddEmailContactStartPage from '../../pages/sign-up/review/manage-contact/add-email-contact/AddContactEmailStartPage'
+import ValidateEmailContactPage from '../../pages/sign-up/review/manage-contact/add-email-contact/AddContactEmailValidatePage'
+import AddLandlineContactPage from '../../pages/sign-up/review/manage-contact/add-landline-contact/AddContactLandlineStartPage'
+import ValidateLandlineContactPage from '../../pages/sign-up/review/manage-contact/add-landline-contact/AddContactLandlineValidatePage'
+import AddMobileContactStartPage from '../../pages/sign-up/review/manage-contact/add-mobile-contact/AddContactMobileStartPage'
+import ValidateMobileContactPage from '../../pages/sign-up/review/manage-contact/add-mobile-contact/AddContactMobileValidatePage'
 import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
 import DeclarationOfAgreementPage from '../../pages/sign-up/user-agreement/DeclarationOfAgreementPage'
-
 // sign up routes
 const signupRoutes = [
   { path: '/signup', component: <SignUpPage /> },
@@ -38,6 +56,10 @@ const signupRoutes = [
   {
     path: '/signup/register-location/search-results',
     component: <LocationSearchResultsPage />
+  },
+  {
+    path: '/signup/register-location/location-in-proximity-area/:type',
+    component: <LocationInWarningAreaProximityPage />
   },
   {
     path: '/signup/register-location/location-in-severe-warning-area',
@@ -97,6 +119,79 @@ const signupRoutes = [
   {
     path: '/signup/success',
     component: <SignUpSuccessPage />
+  },
+  {
+    path: '/signup/review',
+    component: <CheckYourAnswersPage />
+  },
+  {
+    path: '/signup/review/addcontact',
+    component: <SelectContactTypeToAddPage />
+  },
+  {
+    path: '/signup/review/add-landline',
+    component: <AddLandlineContactPage />
+  },
+  {
+    path: '/signup/review/validate-landline',
+    component: <ValidateLandlineContactPage />
+  },
+  {
+    path: '/signup/review/add-mobile',
+    component: <AddMobileContactStartPage />
+  },
+  {
+    path: '/signup/review/validate-mobile',
+    component: <ValidateMobileContactPage />
+  },
+  {
+    path: '/signup/review/add-email',
+    component: <AddEmailContactStartPage />
+  },
+  {
+    path: '/signup/review/validate-email',
+    component: <ValidateEmailContactPage />
+  },
+  {
+    path: '/signup/review/change-location-search',
+    component: <ChangeLocationSearchPage />
+  },
+  {
+    path: '/signup/review/change-location-results',
+    component: <ChangeLocationSearchResultPage />
+  },
+
+  {
+    path: '/signup/review/location-in-severe-warning-area',
+    component: <ChangeLocationInSevereWarningAreaPage />
+  },
+  {
+    path: '/signup/review/location-in-alert-area',
+    component: <ChangeLocationInAlertAreaPage />
+  },
+  {
+    path: '/signup/review/no-danger',
+    component: <ChangeLocationNotNearDangerPage />
+  },
+  {
+    path: '/signup/review/change-account-name',
+    component: <ChangeAccountNamePage />
+  },
+  {
+    path: '/signup/review/change-account-email',
+    component: <ChangeAccountEmailPage />
+  },
+  {
+    path: '/signup/review/change-email-validate',
+    component: <ChangeAccountEmailValidationPage />
+  },
+  {
+    path: '/signup/review/change-flood-alert',
+    component: <ChangeFloodAlertPage />
+  },
+  {
+    path: '/signup/review/remove-contact',
+    component: <RemoveContactFromReviewConfirmationPage />
   }
 ]
 

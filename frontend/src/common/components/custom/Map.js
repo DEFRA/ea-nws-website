@@ -1,7 +1,7 @@
 import { faRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   GeoJSON,
   MapContainer,
@@ -12,24 +12,41 @@ import {
   useMap
 } from 'react-leaflet'
 import { useSelector } from 'react-redux'
-import { getFloodTargetArea } from '../../services/GetFloodTargetAreas'
+import { getSurroundingFloodAreas } from '../../services/WfsFloodDataService'
 // Leaflet Marker Icon fix
 import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
-export default function Map ({ types }) {
+export default function Map ({ types, setFloodAreas }) {
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
   const { latitude, longitude } = selectedLocation.coordinates
+  // used when user selects flood area when location is within proximity
+  const selectedFloodWarningArea = useSelector(
+    (state) => state.session.selectedFloodWarningArea
+  )
+  const selectedFloodAlertArea = useSelector(
+    (state) => state.session.selectedFloodAlertArea
+  )
+  const showOnlySelectedFloodArea = useSelector(
+    (state) => state.session.showOnlySelectedFloodArea
+  )
+  // the below is used to interact with the map to highlight selected flood areas
+  // or only show selected flood areas
+  const alertAreaRef = useRef(null)
+  const warningAreaRef = useRef(null)
+  const [alertAreaRefVisible, setAlertAreaRefVisible] = useState(false)
+  const [warningAreaRefVisible, setWarningAreaRefVisible] = useState(false)
 
+  // get flood area data
   useEffect(() => {
     async function fetchFloodAreaData () {
-      const { alertArea, warningArea } = await getFloodTargetArea(
+      const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude
       )
@@ -38,6 +55,137 @@ export default function Map ({ types }) {
     }
     fetchFloodAreaData()
   }, [])
+
+  // pass flood area options to parent component - used to show nearby flood areas
+  useEffect(() => {
+    if (alertArea && warningArea && setFloodAreas) {
+      if (types.includes('severe')) {
+        setFloodAreas(warningArea.features)
+      } else if (types.includes('alert')) {
+        setFloodAreas(alertArea.features)
+      } else {
+        setFloodAreas(alertArea.features, warningArea.features)
+      }
+    }
+  }, [types, alertArea, warningArea])
+
+  // outline the selected flood area - used when user has chosen flood area from proximity
+  useEffect(() => {
+    if (
+      (selectedFloodWarningArea || selectedFloodAlertArea) &&
+      showOnlySelectedFloodArea
+    ) {
+      showSelectedArea(selectedFloodWarningArea, selectedFloodAlertArea)
+    } else if (
+      (selectedFloodWarningArea || selectedFloodAlertArea) &&
+      !showOnlySelectedFloodArea
+    ) {
+      HighlightSelectedArea(selectedFloodWarningArea, selectedFloodAlertArea)
+    }
+  }, [
+    selectedFloodWarningArea,
+    selectedFloodAlertArea,
+    showOnlySelectedFloodArea,
+    warningAreaRefVisible,
+    alertAreaRefVisible
+  ])
+
+  const HighlightSelectedArea = (
+    selectedFloodWarningArea,
+    selectedFloodAlertArea
+  ) => {
+    if (warningAreaRefVisible && types.includes('severe')) {
+      warningAreaRef.current.eachLayer((layer) => {
+        if (
+          layer.feature.properties.gml_id ===
+          selectedFloodWarningArea.properties.gml_id
+        ) {
+          layer.bringToFront()
+          layer.setStyle({
+            color: 'black',
+            weight: 3,
+            fillColor: '#f70202'
+          })
+        } else {
+          layer.bringToBack()
+          layer.setStyle({
+            fillColor: '#f70202'
+          })
+        }
+      })
+    }
+
+    if (alertAreaRefVisible && types.includes('alert')) {
+      alertAreaRef.current.eachLayer((layer) => {
+        if (
+          layer.feature.properties.gml_id ===
+          selectedFloodAlertArea.properties.gml_id
+        ) {
+          layer.bringToFront()
+          layer.setStyle({
+            color: 'black',
+            weight: 3,
+            fillColor: '#ffa200'
+          })
+        } else {
+          layer.bringToBack()
+          layer.setStyle({
+            fillColor: '#ffa200'
+          })
+        }
+      })
+    }
+  }
+
+  const showSelectedArea = (
+    selectedFloodWarningArea,
+    selectedFloodAlertArea
+  ) => {
+    if (warningAreaRefVisible && types.includes('severe')) {
+      warningAreaRef.current.eachLayer((layer) => {
+        if (
+          layer.feature.properties.gml_id ===
+          selectedFloodWarningArea.properties.gml_id
+        ) {
+          layer.setStyle({
+            fillColor: '#f70202'
+          })
+        } else {
+          layer.remove()
+        }
+      })
+    }
+
+    if (alertAreaRefVisible && types.includes('alert')) {
+      alertAreaRef.current.eachLayer((layer) => {
+        if (
+          layer.feature.properties.gml_id ===
+          selectedFloodAlertArea.properties.gml_id
+        ) {
+          layer.setStyle({
+            fillColor: '#ffa200'
+          })
+        } else {
+          layer.remove()
+        }
+      })
+    }
+  }
+
+  // reset the map to selected location
+  const ResetMapButton = () => {
+    const map = useMap()
+
+    const handleClick = () => {
+      map.setView([latitude, longitude], 14)
+    }
+
+    return (
+      <div className='reset-map-button' onClick={handleClick}>
+        <FontAwesomeIcon icon={faRotateLeft} size='2x' />
+      </div>
+    )
+  }
 
   // Leaflet Marker Icon fix
   const DefaultIcon = L.icon({
@@ -49,32 +197,6 @@ export default function Map ({ types }) {
   })
 
   L.Marker.prototype.options.icon = DefaultIcon
-
-  const ResetMapButton = () => {
-    const map = useMap()
-
-    const handleClick = () => {
-      map.setView([latitude, longitude], 14)
-    }
-
-    return (
-      <div
-        style={{
-          position: 'absolute',
-          bottom: '80px',
-          right: '12px',
-          zIndex: 1000,
-          background: 'white',
-          padding: '3px',
-          borderRadius: '5px',
-          cursor: 'pointer'
-        }}
-        onClick={handleClick}
-      >
-        <FontAwesomeIcon icon={faRotateLeft} size='2x' />
-      </div>
-    )
-  }
 
   return (
     <>
@@ -90,11 +212,25 @@ export default function Map ({ types }) {
         <Marker position={[latitude, longitude]}>
           <Popup />
         </Marker>
-        {warningArea && types.includes('warning') && (
-          <GeoJSON data={warningArea} style={{ color: '#f70202' }} />
+        {warningArea && types.includes('severe') && (
+          <GeoJSON
+            data={warningArea}
+            style={{ color: '#f70202' }}
+            ref={(el) => {
+              warningAreaRef.current = el
+              setWarningAreaRefVisible(true)
+            }}
+          />
         )}
         {alertArea && types.includes('alert') && (
-          <GeoJSON data={alertArea} style={{ color: '#ffa200' }} />
+          <GeoJSON
+            data={alertArea}
+            style={{ color: '#ffa200' }}
+            ref={(el) => {
+              alertAreaRef.current = el
+              setAlertAreaRefVisible(true)
+            }}
+          />
         )}
         <ResetMapButton />
       </MapContainer>

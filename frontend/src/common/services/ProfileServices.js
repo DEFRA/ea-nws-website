@@ -158,46 +158,48 @@ const updateAdditionals = (profile, id, value) => {
   }
 }
 
-const addLocation = (profile, location) => {
+const addLocation = (profile, newLocation) => {
   const currentLocations = profile.pois
 
-  const updatedProfile = {
-    ...profile,
-    pois: [...currentLocations, location]
-  }
+  const exists = currentLocations.some(
+    (existingLocation) => existingLocation.name === newLocation.name
+  )
 
-  return updatedProfile
+  if (!exists) {
+    const updatedProfile = {
+      ...profile,
+      pois: [...currentLocations, newLocation]
+    }
+    return updatedProfile
+  } else {
+    return profile
+  }
 }
 
-const removeLocationFromCoordinates = (profile, coordinates) => {
-  const updatedLocations = profile.pois.filter(
-    (pois) =>
-      pois.coordinates.longitude !== coordinates.longitude &&
-      pois.coordinates.latitude !== coordinates.latitude
+const removeLocation = (profile, name) => {
+  const newLocationList = profile.pois.filter(
+    (location) => location.name !== name
   )
 
   const updatedProfile = {
     ...profile,
-    pois: updatedLocations
+    pois: newLocationList
   }
 
   return updatedProfile
 }
 
-const checkIfSelectedLocationExistsAlready = (profile, selectedLocation) => {
-  if (profile) {
-    for (const position of profile.pois) {
-      const { latitude, longitude } = position.coordinates
-      if (
-        latitude === selectedLocation.coordinates.latitude &&
-        longitude === selectedLocation.coordinates.longitude
-      ) {
-        return true
-      }
-    }
-  } else {
-    return false
+const updateLocationsFloodCategory = (profile, location, updatedCategories) => {
+  const parsedProfile = JSON.parse(JSON.stringify(profile))
+
+  const locationIndex = parsedProfile.pois.findIndex(
+    (poi) => poi.name === location.name
+  )
+  if (locationIndex !== -1) {
+    parsedProfile.pois[locationIndex].categories = updatedCategories
   }
+
+  return parsedProfile
 }
 
 module.exports = {
@@ -209,6 +211,6 @@ module.exports = {
   getAdditionals,
   updateAdditionals,
   addLocation,
-  removeLocationFromCoordinates,
-  checkIfSelectedLocationExistsAlready
+  removeLocation,
+  updateLocationsFloodCategory
 }

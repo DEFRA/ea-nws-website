@@ -101,14 +101,37 @@ export default function ValidateEmailLayout ({
 
   const differentEmail = (event) => {
     event.preventDefault()
-    // remove email from users profile
-    dispatch(setProfile(removeUnverifiedContact(session.profile, email)))
+    removeEmailFromProfile()
     DifferentEmail(email)
   }
 
   const backLink = (event) => {
     event.preventDefault()
+    removeEmailFromProfile()
     NavigateToPreviousPage()
+  }
+
+  const removeEmailFromProfile = async () => {
+    let updatedProfile
+    if (session.profile.unverified.emails.includes(email)) {
+      updatedProfile = removeUnverifiedContact(session.profile, email)
+      dispatch(setProfile(removeUnverifiedContact(session.profile, email)))
+    }
+    if (session.profile.emails.includes(email)) {
+      updatedProfile = removeVerifiedContact(session.profile, email)
+      dispatch(setProfile(removeVerifiedContact(session.profile, email)))
+    }
+
+    const dataToSend = { profile: updatedProfile, authToken: session.authToken }
+
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/profile/update',
+      navigate
+    )
+    if (errorMessage !== null) {
+      setError(errorMessage)
+    }
   }
 
   return (

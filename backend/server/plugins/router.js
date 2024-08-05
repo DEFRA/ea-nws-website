@@ -14,6 +14,7 @@ const routes = [].concat(
   require('../routes/add_contact/email/email_validate'),
   require('../routes/partner/register_to_partner'),
   require('../routes/ordnance_survey/post_code_search'),
+  require('../routes/ordnance_survey/name_search'),
   require('../routes/ordnance_survey/oauth_2')
 )
 

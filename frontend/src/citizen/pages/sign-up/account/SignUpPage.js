@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
@@ -15,6 +15,7 @@ export default function SignUpPage () {
   const dispatch = useDispatch()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
+  const profile = useSelector((state) => state.session.profile)
 
   const handleSubmit = async () => {
     const validationError = emailValidation(email)
@@ -36,26 +37,9 @@ export default function SignUpPage () {
           setError(errorMessage)
         }
       } else {
-        // start empty profile for user
-        const profile = {
-          id: '',
-          enabled: true,
-          firstname: '',
-          lastname: '',
-          // email required validation to continue so can put in verified list
-          emails: [email],
-          mobilePhones: [],
-          homePhones: [],
-          language: 'EN', // [TODO] is this always english?
-          additionals: [],
-          unverified: {
-            emails: [],
-            mobilePhones: [],
-            homePhones: []
-          },
-          pois: []
-        }
-        dispatch(setProfile(profile))
+        // add email to  emails list
+        const updatedProfile = addVerifiedContact(profile, 'email', email)
+        dispatch(setProfile(updatedProfile))
         dispatch(setRegisterToken(data.registerToken))
         navigate('/signup/validate')
       }

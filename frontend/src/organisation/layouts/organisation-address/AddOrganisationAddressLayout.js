@@ -1,18 +1,28 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
+import { useNavigate } from 'react-router'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
+import {
+  setLocationPostCode,
+  setLocationSearchResults
+} from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
 export default function AddOrganisationAddressLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [postCode, setPostCode] = useState('')
   const [buildingNum, setBuildingNum] = useState('')
   const [error, setError] = useState('')
 
+  // Clear error when user makes correction
   useEffect(() => {
     setError('')
   }, [postCode])
@@ -21,8 +31,26 @@ export default function AddOrganisationAddressLayout({
     const validationError = postCodeValidation(postCode)
 
     if (!validationError) {
-      // DO something
-      NavigateToNextPage()
+      // Search postcode locations and store results in session
+      // normalise postcode
+      const dataToSend = {
+        postCode: postCode.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
+      }
+      console.log('Normalised postcode')
+      const { data, errorMessage } = await backendCall(
+        dataToSend,
+        'api/os-api/postcode-search',
+        navigate
+      )
+      if (!errorMessage) {
+        console.log('Reached dispatches')
+        dispatch(setLocationPostCode(data[0].postcode))
+        dispatch(setLocationSearchResults(data))
+        NavigateToNextPage()
+      } else {
+        // show error message from OS Api postcode search
+        setError(errorMessage)
+      }
     } else {
       setError(validationError)
     }

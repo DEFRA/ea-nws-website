@@ -1,5 +1,6 @@
-import AddOrganisationAddressPage from '../../pages/sign-up/AddOrganisationAddressPage'
-import AddOrganisationNamePage from '../../pages/sign-up/AddOrganisationNamePage'
+import AddOrganisationAddressPage from '../../pages/registration/AddOrganisationAddressPage'
+import AddOrganisationNamePage from '../../pages/registration/AddOrganisationNamePage'
+import SelectOrganisationAddressPage from '../../pages/registration/SelectOrganisationAddressPage'
 
 // registration
 const orgRegistrationRoutes = [
@@ -7,6 +8,10 @@ const orgRegistrationRoutes = [
   {
     path: '/organisation/register/address',
     component: <AddOrganisationAddressPage />
+  },
+  {
+    path: '/organisation/register/address-search',
+    component: <SelectOrganisationAddressPage />
   }
 ]
 

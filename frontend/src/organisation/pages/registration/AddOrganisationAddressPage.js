@@ -4,8 +4,9 @@ import AddOrganisationAddressLayout from '../../layouts/organisation-address/Add
 
 export default function AddOrganisationAddressPage() {
   const navigate = useNavigate()
-  const NavigateToNextPage = () => navigate('#')
-
+  const NavigateToNextPage = () => {
+    navigate('/organisation/register/address-search')
+  }
   const NavigateToPreviousPage = () => {
     navigate('/organisation/register')
   }

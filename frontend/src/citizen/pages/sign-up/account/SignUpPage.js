@@ -6,8 +6,9 @@ import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
 import InsetText from '../../../../common/components/gov-uk/InsetText'
-import { addVerifiedContact, setProfile, setRegisterToken } from '../../../../common/redux/userSlice'
+import { setProfile, setRegisterToken } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
+import { addVerifiedContact } from '../../../../common/services/ProfileServices'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 
 export default function SignUpPage () {

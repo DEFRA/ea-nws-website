@@ -1,15 +1,15 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import InsetText from '../../../common/components/gov-uk/InsetText'
-import { setProfile } from '../../../common/redu/userSlice'
+import { setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import BackLink from '../../../common/services/common/components/custom/BackLink'
 import {
   removeUnverifiedContact,
   removeVerifiedContact
-} from '../../../common/services/services/ProfileServices'
+} from '../../../common/services/ProfileServices'
 
 export default function ConfirmDeleteContactDetailsLayout ({
   NavigateToPreviousPage,

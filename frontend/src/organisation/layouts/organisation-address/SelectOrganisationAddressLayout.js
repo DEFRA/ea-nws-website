@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import LoadingSpinner from '../../../common/components/custom/LoadingSpinner'
-import Details from '../../../common/components/gov-uk/Details'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import { setSelectedLocation } from '../../../common/redux/userSlice'
@@ -18,7 +17,6 @@ export default function SelectOrganisationAddressLayout({
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
   const locations = useSelector((state) => state.session.locationSearchResults)
-  const profile = useSelector((state) => state.session.profile)
   const locationPostCode = useSelector(
     (state) => state.session.locationPostCode
   )
@@ -39,18 +37,14 @@ export default function SelectOrganisationAddressLayout({
     }
   }
 
-  const detailsMessage = (
-    <div>
-      You can view flood message areas&nbsp;
-      <a href='#' className='govuk-link'>
-        near this postcode
-      </a>
-    </div>
-  )
+  const navigateBack = async (event) => {
+    event.preventDefault()
+    NavigateToPreviousPage()
+  }
 
   return (
     <>
-      <BackLink onClick={() => NavigateToPreviousPage} />
+      <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>
           <div className='govuk-grid-row'>
@@ -94,10 +88,6 @@ export default function SelectOrganisationAddressLayout({
                       ))}
                     </tbody>
                   </table>
-                  <Details
-                    title='I cannot find my address here'
-                    text={detailsMessage}
-                  />
                   <Pagination
                     totalPages={Math.ceil(locations.length / locationsPerPage)}
                     onPageChange={(val) => setCurrentPage(val)}

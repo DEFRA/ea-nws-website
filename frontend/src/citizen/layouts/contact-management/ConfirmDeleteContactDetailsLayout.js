@@ -54,28 +54,28 @@ export default function ConfirmDeleteContactDetailsLayout ({
   return (
     <>
       <BackLink onClick={handleCancelLink} />
-          <main className='govuk-main-wrapper'>
-            <div className='govuk-grid-row'>
-              <div className='govuk-grid-column-two-thirds'>
-                <h2 className='govuk-heading-l'>
-                  Are you sure you want to remove this {location.state.type}?
-                </h2>
-                <InsetText text={location.state.contact} />
-                <Button
-                  className='govuk-button govuk-button--warning'
-                  text='Remove'
-                  onClick={removeContact}
-                />
+      <main className='govuk-main-wrapper'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
+            <h2 className='govuk-heading-l'>
+              Are you sure you want to remove this {location.state.type}?
+            </h2>
+            <InsetText text={location.state.contact} />
+            <Button
+              className='govuk-button govuk-button--warning'
+              text='Remove'
+              onClick={removeContact}
+            />
                 &nbsp; &nbsp;
-                <Link
-                  onClick={handleCancelLink}
-                  className='govuk-body govuk-link inline-link'
-                >
-                  Cancel
-                </Link>
-              </div>
-            </div>
-          </main>
+            <Link
+              onClick={handleCancelLink}
+              className='govuk-body govuk-link inline-link'
+            >
+              Cancel
+            </Link>
+          </div>
+        </div>
+      </main>
     </>
   )
 }

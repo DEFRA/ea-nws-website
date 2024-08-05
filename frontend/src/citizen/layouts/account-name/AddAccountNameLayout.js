@@ -25,7 +25,7 @@ export default function AddAccountNameLayout ({
     session.profile
       ? session.profile?.firstname + ' ' + session.profile?.lastname
       : ''
-    )
+  )
 
   const handleSubmit = async () => {
     const validationError = fullNameValidation(fullName, 'fullName')

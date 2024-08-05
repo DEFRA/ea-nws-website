@@ -106,9 +106,9 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
                 <div className='govuk-grid-column-two-thirds'>
                   <div className='govuk-body'>
                     <h1 className='govuk-heading-l'>
-                    {locationPostCode
-                          ? 'Select an address'
-                          : 'Select a location'}
+                      {locationPostCode
+                        ? 'Select an address'
+                        : 'Select a location'}
                     </h1>
                     {locationPostCode && (
                       <p className='govuk-body'>
@@ -150,10 +150,10 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
                         />
                         )
                       : (
-                          <Link onClick={() => navigate(-1)} className='govuk-link'>
-                            Search using a different location
-                          </Link>
-                          )}
+                        <Link onClick={() => navigate(-1)} className='govuk-link'>
+                          Search using a different location
+                        </Link>
+                        )}
                     <Pagination
                       totalPages={Math.ceil(
                         locations.length / locationsPerPage

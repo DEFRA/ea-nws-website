@@ -39,7 +39,7 @@ export default function SignInPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-          {error ? <ErrorSummary errorList={[error]} /> : <></>}
+            {error ? <ErrorSummary errorList={[error]} /> : <></>}
             <h2 class='govuk-heading-l'>
               Sign in to your flood warnings account
             </h2>

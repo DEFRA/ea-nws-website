@@ -19,7 +19,6 @@ import {
   getCoordsOfFloodArea
 } from '../../../common/services/WfsFloodDataService'
 
-
 export default function LocationInSevereWarningAreaLayout ({
   continueToNextPage
 }) {

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
@@ -55,45 +56,45 @@ export default function ChangeEmailLayout ({
   return (
     <>
       <BackLink onClick={handleBackLink} />
-          <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-            <div className='govuk-grid-row'>
-              <div className='govuk-grid-column-full'>
-                {error && <ErrorSummary errorList={[error]} />}
-                <h2 className='govuk-heading-l'>
-                  Change your email address for signing in
-                </h2>
-                <div className='govuk-body'>
-                  <p className='govuk-body'>
-                    We'll use this email if we need to contact you about your
-                    account.
-                  </p>
-                  <p className='govuk-body'>
-                    This email is also your sign-in name for this service
-                  </p>
-                  <p className='govuk-body govuk-!-margin-bottom-8'>
-                    If you change it here, use your new email when you next sign
-                    in
-                  </p>
-                  <Input
-                    className='govuk-input govuk-!-width-one-half'
-                    inputType='text'
-                    name='New email address'
-                    error={error}
-                    onChange={(val) => setEmail(val)}
-                  />
-                  <Button
-                    className='govuk-button'
-                    text='Save changes'
-                    onClick={handleSubmit}
-                  />
-                  <Link to='/account' className='govuk-link inline-link'>
-                    Cancel
-                  </Link>
-                  <br />
-                </div>
-              </div>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-full'>
+            {error && <ErrorSummary errorList={[error]} />}
+            <h2 className='govuk-heading-l'>
+              Change your email address for signing in
+            </h2>
+            <div className='govuk-body'>
+              <p className='govuk-body'>
+                We'll use this email if we need to contact you about your
+                account.
+              </p>
+              <p className='govuk-body'>
+                This email is also your sign-in name for this service
+              </p>
+              <p className='govuk-body govuk-!-margin-bottom-8'>
+                If you change it here, use your new email when you next sign
+                in
+              </p>
+              <Input
+                className='govuk-input govuk-!-width-one-half'
+                inputType='text'
+                name='New email address'
+                error={error}
+                onChange={(val) => setEmail(val)}
+              />
+              <Button
+                className='govuk-button'
+                text='Save changes'
+                onClick={handleSubmit}
+              />
+              <Link to='/account' className='govuk-link inline-link'>
+                Cancel
+              </Link>
+              <br />
             </div>
-          </main>
+          </div>
+        </div>
+      </main>
     </>
   )
 }

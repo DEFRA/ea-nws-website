@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import FloodWarningKey from '../../../common/components/custom/FloodWarningKey'
 import Map from '../../../common/components/custom/Map'
@@ -16,7 +16,10 @@ import {
 } from '../../../common/services/ProfileServices'
 import { getCoordsOfFloodArea } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInAlertAreaLayout ({ continueToNextPage }) {
+export default function LocationInAlertAreaLayout ({
+  continueToNextPage, continueToSearchResultsPage,
+  canCancel
+}) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [isChecked, setIsChecked] = useState(false)
@@ -176,35 +179,35 @@ export default function LocationInAlertAreaLayout ({ continueToNextPage }) {
               </>
             )}
             <div className='govuk-!-margin-top-5'>
-            <Button
-              text={
+              <Button
+                text={
                     additionalAlerts
                       ? 'Continue'
                       : 'Confirm you want this location'
                   }
-              className='govuk-button'
-              onClick={handleSubmit}
-            />
-            {!additionalAlerts && (
-                    <Link
-                      onClick={(e) => {
-                        e.preventDefault()
-                        continueToSearchResultsPage()
-                      }}
-                      className='govuk-link inline-link'
-                    >
-                      Choose different location
-                    </Link>
-                  )}
-                  {canCancel && (
-                    <Link
-                      className='govuk-link inline-link'
-                      onClick={() => navigate(-1)}
-                    >
-                      Cancel
-                    </Link>
-                  )}
-                </div>
+                className='govuk-button'
+                onClick={handleSubmit}
+              />
+              {!additionalAlerts && (
+                <Link
+                  onClick={(e) => {
+                    e.preventDefault()
+                    continueToSearchResultsPage()
+                  }}
+                  className='govuk-link inline-link'
+                >
+                  Choose different location
+                </Link>
+              )}
+              {canCancel && (
+                <Link
+                  className='govuk-link inline-link'
+                  onClick={() => navigate(-1)}
+                >
+                  Cancel
+                </Link>
+              )}
+            </div>
           </div>
         </div>
       </main>

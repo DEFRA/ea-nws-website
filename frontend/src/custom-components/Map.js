@@ -27,7 +27,6 @@ export default function Map({ types, setFloodAreas, mobileView }) {
   const dispatch = useDispatch()
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
-  const [loaded, setLoaded] = useState(false)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
@@ -58,7 +57,6 @@ export default function Map({ types, setFloodAreas, mobileView }) {
       )
       setAlertArea(alertArea)
       setWarningArea(warningArea)
-      setLoaded(true)
     }
     fetchFloodAreaData()
   }, [])

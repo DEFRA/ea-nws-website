@@ -7,6 +7,7 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import Input from '../../gov-uk-components/Input'
 import InsetText from '../../gov-uk-components/InsetText'
+import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import {
@@ -16,12 +17,12 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
-import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 
 export default function ValidateLandlineLayout ({
   NavigateToNextPage,
   SkipValidation,
-  DifferentHomePhone
+  DifferentHomePhone,
+  NavigateToPreviousPage
 }) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -94,11 +95,37 @@ export default function ValidateLandlineLayout ({
     SkipValidation(homePhone)
   }
 
-  const differentHomePhone = (event) => {
+  const differentHomePhone = async (event) => {
     event.preventDefault()
-    // remove homephone from users profile
-    dispatch(setProfile(removeUnverifiedContact(session.profile, homePhone)))
+    removeLandlineFromProfile()
     DifferentHomePhone(homePhone)
+  }
+
+  const backLink = async (event) => {
+    event.preventDefault()
+    removeLandlineFromProfile()
+    NavigateToPreviousPage()
+  }
+
+  const removeLandlineFromProfile = async () => {
+    let updatedProfile
+    if (session.profile.unverified.homePhones.includes(homePhone)) {
+      updatedProfile = removeUnverifiedContact(session.profile, homePhone)
+      dispatch(setProfile(removeUnverifiedContact(session.profile, homePhone)))
+    }
+    if (session.profile.homePhones.includes(homePhone)) {
+      updatedProfile = removeVerifiedContact(session.profile, homePhone)
+      dispatch(setProfile(removeVerifiedContact(session.profile, homePhone)))
+    }
+    const dataToSend = { profile: updatedProfile, authToken: session.authToken }
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/profile/update',
+      navigate
+    )
+    if (errorMessage !== null) {
+      setError(errorMessage)
+    }
   }
 
   return (
@@ -109,7 +136,7 @@ export default function ValidateLandlineLayout ({
           <div className='page-container'>
             <Header />
             <div class='govuk-width-container body-container'>
-              <Link to='/managecontacts/add-landline' className='govuk-back-link'>
+              <Link onClick={backLink} className='govuk-back-link'>
                 Back
               </Link>
               <main className='govuk-main-wrapper'>
@@ -120,7 +147,7 @@ export default function ValidateLandlineLayout ({
                       title='Success'
                       text={'New code sent at ' + codeResentTime}
                                    />}
-                    <ErrorSummary errorList={error === '' ? [] : [error]} />
+                    {error && <ErrorSummary errorList={[error]} />}
                     <h2 class='govuk-heading-l'>Confirm telephone number</h2>
                     <div class='govuk-body'>
                       We're calling this number to read out a code:

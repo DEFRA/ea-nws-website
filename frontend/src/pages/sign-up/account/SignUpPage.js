@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
 import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
@@ -10,6 +10,7 @@ import InsetText from '../../../gov-uk-components/InsetText'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 import { setProfile, setRegisterToken } from '../../../redux/userSlice'
 import { backendCall } from '../../../services/BackendService'
+import { addVerifiedContact } from '../../../services/ProfileServices'
 import { emailValidation } from '../../../services/validations/EmailValidation'
 
 export default function SignUpPage () {
@@ -17,6 +18,7 @@ export default function SignUpPage () {
   const dispatch = useDispatch()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
+  const profile = useSelector((state) => state.session.profile)
 
   const handleSubmit = async () => {
     const validationError = emailValidation(email)
@@ -38,6 +40,9 @@ export default function SignUpPage () {
           setError(errorMessage)
         }
       } else {
+        // add email to  emails list
+        const updatedProfile = addVerifiedContact(profile, 'email', email)
+        dispatch(setProfile(updatedProfile))
         // start empty profile for user
         const profile = {
           id: '',

@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import ExpiredCodeLayout from '../../common-layouts/expired-code/ExpiredCodeLayout'
 import Button from '../../gov-uk-components/Button'
 import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import Input from '../../gov-uk-components/Input'
 import InsetText from '../../gov-uk-components/InsetText'
+import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 import {
   setAuthToken,
   setProfile,

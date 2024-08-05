@@ -7,6 +7,7 @@ import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
+import { setRegistrations } from '../../../redux/userSlice'
 import { updateAdditionals } from '../../../services/ProfileServices'
 import { setProfile } from '../../../redux/userSlice'
 
@@ -15,12 +16,40 @@ export default function DeclarationOfAgreementPage () {
   const [isChecked, setIsChecked] = useState(false)
   const session = useSelector((state) => state.session)
   const [error, setError] = useState('')
+  const profile = session.profile
   const navigate = useNavigate()
 
   const handleSubmit = () => {
     if (isChecked === false) {
       setError('Tick to confirm you agree with the terms and conditions')
     } else {
+      const registrations = {
+        params: {
+          channelVoiceEnabled: profile.homePhones.length !== 0,
+          channelSmsEnabled: profile.mobilePhones.length !== 0,
+          channelEmailEnabled: profile.emails.length !== 0,
+          // What is that?
+          partnerCanView: false,
+          partnerCanEdit: false,
+          // TODO
+          categories: [
+            {
+              domain: 'NFWS',
+              code: 'FLOOD_ALERT'
+            },
+            {
+              domain: 'NFWS',
+              code: 'FLOOD_WARNING'
+            },
+            {
+              domain: 'NFWS',
+              code: 'SEVERE_FLOOD_WARNING'
+            }
+          ]
+        }
+      }
+      dispatch(setRegistrations(registrations))
+      navigate('/signup/review')
       // needs to be updated to review as below
       const updatedProfile = updateAdditionals(session.profile, [{ id: 'lastAccessedUrl', value: '/home' }])
       dispatch(setProfile(updatedProfile))

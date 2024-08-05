@@ -1,4 +1,5 @@
 const axios = require('axios')
+const https = require('https')
 const getSecretKeyValue = require('./SecretsManager')
 const apiToFrontendError = require('./ApiToFrontendError')
 
@@ -17,7 +18,10 @@ const apiCall = async (data, path) => {
       headers: {
         'Content-Type': 'application/json'
       },
-      withCredentials: true
+      httpsAgent: new https.Agent({
+        rejectUnauthorized: false
+      }),
+      withCredentials: false
     })
 
     return { status: response.status, data: response.data }

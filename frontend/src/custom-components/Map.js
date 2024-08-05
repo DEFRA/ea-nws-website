@@ -6,10 +6,15 @@ import {
   GeoJSON,
   MapContainer,
   Marker,
-  Popup, ZoomControl,
+  Popup,
+  ZoomControl,
   useMap
 } from 'react-leaflet'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  setSelectedFloodAlertArea,
+  setSelectedFloodWarningArea
+} from '../redux/userSlice'
 import { getSurroundingFloodAreas } from '../services/WfsFloodDataService'
 // Leaflet Marker Icon fix
 import L from 'leaflet'
@@ -19,7 +24,8 @@ import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { backendCall } from '../services/BackendService'
 import TileLayerWithHeader from './TileLayerWithHeader'
 
-export default function Map ({ types, setFloodAreas }) {
+export default function Map ({ types, setFloodAreas, mobileView }) {
+  const dispatch = useDispatch()
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
   const selectedLocation = useSelector(
@@ -200,10 +206,7 @@ export default function Map ({ types, setFloodAreas }) {
   L.Marker.prototype.options.icon = DefaultIcon
 
   async function getApiKey () {
-    const { data } = await backendCall(
-      'data',
-      'api/os-api/oauth2'
-    )
+    const { data } = await backendCall('data', 'api/os-api/oauth2')
     console.log(data)
     setApiKey(data.access_token)
     console.log('api key set')
@@ -211,12 +214,18 @@ export default function Map ({ types, setFloodAreas }) {
   }
 
   useEffect(() => {
-    return () => {getApiKey()}
+    return () => {
+      getApiKey()
+    }
   }, [])
 
   useEffect(() => {
-    const interval = setInterval(() => {getApiKey()}, 270000)
-    return () => {clearInterval(interval)}
+    const interval = setInterval(() => {
+      getApiKey()
+    }, 270000)
+    return () => {
+      clearInterval(interval)
+    }
   }, [])
 
   const url = 'https://api.os.uk/maps/raster/v1/wmts'
@@ -232,8 +241,10 @@ export default function Map ({ types, setFloodAreas }) {
     tileMatrix: '{z}'
   }
 
-  let parameterString = Object.keys(parameters)
-    .map(function(key) { return key + '=' + parameters[key]})
+  const parameterString = Object.keys(parameters)
+    .map(function (key) {
+      return key + '=' + parameters[key]
+    })
     .join('&')
 
   return (
@@ -243,17 +254,22 @@ export default function Map ({ types, setFloodAreas }) {
         zoom={14}
         zoomControl={false}
         attributionControl={false}
-        className='map-container'
+        className={mobileView ? 'map-mobile-view' : 'map-container'}
       >
         <TileLayerWithHeader url={url + '?' + parameterString} token={apiKey} />
-        <ZoomControl position='bottomright' />
-        <Marker position={[latitude, longitude]}>
+        {!mobileView && <ZoomControl position='bottomright' />}
+        <Marker position={[latitude, longitude]} interactive={false}>
           <Popup />
         </Marker>
         {warningArea && types.includes('severe') && (
           <GeoJSON
             data={warningArea}
             style={{ color: '#f70202' }}
+            onEachFeature={function (feature, layer) {
+              layer.on({
+                click: () => dispatch(setSelectedFloodWarningArea(feature))
+              })
+            }}
             ref={(el) => {
               warningAreaRef.current = el
               setWarningAreaRefVisible(true)
@@ -264,13 +280,18 @@ export default function Map ({ types, setFloodAreas }) {
           <GeoJSON
             data={alertArea}
             style={{ color: '#ffa200' }}
+            onEachFeature={function (feature, layer) {
+              layer.on({
+                click: () => dispatch(setSelectedFloodAlertArea(feature))
+              })
+            }}
             ref={(el) => {
               alertAreaRef.current = el
               setAlertAreaRefVisible(true)
             }}
           />
         )}
-        <ResetMapButton />
+        {!mobileView && <ResetMapButton />}
       </MapContainer>
     </>
   )

@@ -3,13 +3,16 @@ import AddOrganisationNameLayout from '../../layouts/organisation-name/AddOrgani
 
 export default function AddOrganisationNamePage() {
   const navigate = useNavigate()
-  const NavigateToNextPage = () => navigate('/declaration')
+  const NavigateToNextPage = () => navigate('/organisation/register/address')
+
+  const NavigateToPreviousPage = () => {
+    navigate(-1)
+  }
 
   return (
     <AddOrganisationNameLayout
       NavigateToNextPage={NavigateToNextPage}
-      NavigateToPreviousPage={navigate(-1)}
-      buttonText='Continue'
+      NavigateToPreviousPage={NavigateToPreviousPage}
     />
   )
 }

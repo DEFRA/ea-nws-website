@@ -1,25 +1,27 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
-import { setOrgName } from '../../../common/redux/userSlice'
-import { orgNameValidation } from '../../../common/services/validations/OrgNameValidation'
+import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
-export default function AddOrganisationNameLayout({
+export default function AddOrganisationAddressLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
-  const dispatch = useDispatch()
+  const [postCode, setPostCode] = useState('')
+  const [buildingNum, setBuildingNum] = useState('')
   const [error, setError] = useState('')
-  const [name, setName] = useState('')
+
+  useEffect(() => {
+    setError('')
+  }, [postCode])
 
   const handleSubmit = async () => {
-    const validationError = orgNameValidation(name, 'orgName')
+    const validationError = postCodeValidation(postCode)
 
     if (!validationError) {
-      dispatch(setOrgName(name))
+      // DO something
       NavigateToNextPage()
     } else {
       setError(validationError)
@@ -38,16 +40,26 @@ export default function AddOrganisationNameLayout({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>Your organisation's name</h1>
+            <h1 className='govuk-heading-l'>
+              Your organisation's UK head office address
+            </h1>
             <div className='govuk-body'>
               <Input
                 inputType='text'
-                value={name}
-                name='Organisation name'
-                onChange={(val) => setName(val)}
+                value={postCode}
+                name='Organisation postcode'
+                onChange={(val) => setPostCode(val)}
                 error={error}
                 className='govuk-input govuk-input--width-20'
-                defaultValue={name}
+                defaultValue={postCode}
+              />
+              <Input
+                inputType='text'
+                value={buildingNum}
+                name='Building name or number (optional)'
+                onChange={(val) => setBuildingNum(val)}
+                className='govuk-input govuk-input--width-20'
+                defaultValue={buildingNum}
               />
               <Button
                 text='Continue'

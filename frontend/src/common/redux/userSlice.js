@@ -42,6 +42,10 @@ const userSlice = createSlice({
     setAdditionalAlerts: (state, action) => {
       state.additionalAlerts = action.payload
     },
+    // organisation data
+    setOrgName: (state, action) => {
+      state.orgName = action.payload
+    },
     clearAuth: (state) => {
       state.authToken = null
       state.registerToken = null
@@ -52,6 +56,7 @@ const userSlice = createSlice({
       state.locationSearchResults = null
       state.selectedLocation = null
       state.additionalAlerts = null
+      state.orgName = null
     }
   }
 })
@@ -67,6 +72,7 @@ export const {
   setLocationSearchResults,
   setSelectedLocation,
   setAdditionalAlerts,
+  setOrgName,
   clearAuth
 } = userSlice.actions
 export default userSlice.reducer

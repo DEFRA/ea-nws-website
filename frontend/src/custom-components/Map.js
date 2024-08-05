@@ -27,6 +27,7 @@ export default function Map({ types, setFloodAreas, mobileView }) {
   const dispatch = useDispatch()
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
+  const [loaded, setLoaded] = useState(false)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
@@ -57,6 +58,7 @@ export default function Map({ types, setFloodAreas, mobileView }) {
       )
       setAlertArea(alertArea)
       setWarningArea(warningArea)
+      setLoaded(true)
     }
     fetchFloodAreaData()
   }, [])
@@ -213,7 +215,7 @@ export default function Map({ types, setFloodAreas, mobileView }) {
         className={mobileView ? 'map-mobile-view' : 'map-container'}
       >
         <TileLayer url='https://api.os.uk/maps/raster/v1/zxy/Outdoor_3857/{z}/{x}/{y}.png?key=tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a' />
-        <ZoomControl position='bottomright' />
+        {!mobileView && <ZoomControl position='bottomright' />}
         <Marker position={[latitude, longitude]} interactive={false}>
           <Popup />
         </Marker>
@@ -247,7 +249,7 @@ export default function Map({ types, setFloodAreas, mobileView }) {
             }}
           />
         )}
-        <ResetMapButton />
+        {!mobileView && <ResetMapButton />}
       </MapContainer>
     </>
   )

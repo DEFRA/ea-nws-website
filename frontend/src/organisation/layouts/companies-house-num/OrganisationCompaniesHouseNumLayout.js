@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../common/components/gov-uk/Radio'
+import { setOrgCompHouseNum } from '../../../common/redux/userSlice'
 
 export default function OrganisationCompaniesHouseNumLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
+  const dispatch = useDispatch()
   const [companyNumExists, setCompanyNumExists] = useState(null)
   const [companyNum, setCompanyNum] = useState('')
   const [error, setError] = useState('')
@@ -29,10 +32,14 @@ export default function OrganisationCompaniesHouseNumLayout({
       )
       return
     }
-    if (!companyNum) {
+    if (companyNumExists && !companyNum) {
       setNumberError('Enter your Companies House number')
       return
     }
+
+    // Validate number
+    dispatch(setOrgCompHouseNum(companyNumExists ? companyNum : null))
+    NavigateToNextPage()
   }
 
   const navigateBack = async (event) => {

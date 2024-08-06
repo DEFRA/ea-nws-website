@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Pagination from '../../../common/components/gov-uk/Pagination'
-import { setSelectedLocation } from '../../../common/redux/userSlice'
+import { setOrgAddress } from '../../../common/redux/userSlice'
 
 export default function SelectOrganisationAddressLayout({
   NavigateToNextPage,
@@ -24,7 +24,7 @@ export default function SelectOrganisationAddressLayout({
 
   const handleSelectedLocation = async (event, selectedLocation) => {
     event.preventDefault()
-    dispatch(setSelectedLocation(selectedLocation))
+    dispatch(setOrgAddress(selectedLocation))
     NavigateToNextPage()
   }
 

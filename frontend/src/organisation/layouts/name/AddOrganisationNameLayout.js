@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
@@ -12,11 +12,16 @@ export default function AddOrganisationNameLayout({
   NavigateToPreviousPage
 }) {
   const dispatch = useDispatch()
-  const [error, setError] = useState('')
   const [name, setName] = useState('')
+  const [error, setError] = useState('')
+
+  // Clear error when user makes changes
+  useEffect(() => {
+    setError('')
+  }, [name])
 
   const handleSubmit = async () => {
-    const validationError = orgNameValidation(name, 'orgName')
+    const validationError = orgNameValidation(name)
 
     if (!validationError) {
       dispatch(setOrgName(name))

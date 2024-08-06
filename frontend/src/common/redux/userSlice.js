@@ -8,7 +8,13 @@ const userSlice = createSlice({
     profile: null,
     contactPreferences: null,
     registrations: null,
-    currentContact: null
+    currentContact: null,
+    organisation: {
+      name: null,
+      address: null,
+      compHouseNum: null,
+      emergencySector: null
+    }
   },
   reducers: {
     setAuthToken: (state, action) => {
@@ -44,7 +50,16 @@ const userSlice = createSlice({
     },
     // organisation data
     setOrgName: (state, action) => {
-      state.orgName = action.payload
+      state.organisation.name = action.payload
+    },
+    setOrgAddress: (state, action) => {
+      state.organisation.address = action.payload
+    },
+    setOrgCompHouseNum: (state, action) => {
+      state.organisation.compHouseNum = action.payload
+    },
+    setOrgEmergencySector: (state, action) => {
+      state.organisation.emergencySector = action.payload
     },
     clearAuth: (state) => {
       state.authToken = null
@@ -56,7 +71,12 @@ const userSlice = createSlice({
       state.locationSearchResults = null
       state.selectedLocation = null
       state.additionalAlerts = null
-      state.orgName = null
+      state.organisation = {
+        name: null,
+        address: null,
+        compHouseNum: null,
+        emergencySector: null
+      }
     }
   }
 })
@@ -73,6 +93,9 @@ export const {
   setSelectedLocation,
   setAdditionalAlerts,
   setOrgName,
+  setOrgAddress,
+  setOrgCompHouseNum,
+  setOrgEmergencySector,
   clearAuth
 } = userSlice.actions
 export default userSlice.reducer

@@ -8,10 +8,13 @@ export default function ConfirmOrganisationAddressLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
-  const address = useSelector((state) => state.session.selectedLocation.name)
+  const address = useSelector(
+    (state) => state.session.organisation.address.name
+  )
 
   const handleSubmit = async () => {
-    // Correct address is already stored in state.session.selectedLocation
+    // Correct address is already stored in
+    // state.session.organisation.address
     NavigateToNextPage()
   }
 

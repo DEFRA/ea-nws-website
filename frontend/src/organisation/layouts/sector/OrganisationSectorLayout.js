@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../common/components/gov-uk/Radio'
+import { setOrgEmergencySector } from '../../../common/redux/userSlice'
 
 export default function OrganisationSectorLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
+  const dispatch = useDispatch()
+  const organisation = useSelector((state) => state.session.organisation)
   const [emergencySector, setEmergencySector] = useState(null)
   const [error, setError] = useState('')
 
@@ -16,6 +20,11 @@ export default function OrganisationSectorLayout({
     setError('')
   }, [emergencySector])
 
+  // RP DEBUG
+  useEffect(() => {
+    console.log('Updated organisation:', organisation)
+  }, [organisation])
+
   const handleSubmit = async () => {
     if (emergencySector === null) {
       setError(
@@ -23,6 +32,9 @@ export default function OrganisationSectorLayout({
       )
       return
     }
+
+    dispatch(setOrgEmergencySector(emergencySector))
+    NavigateToNextPage()
   }
 
   const navigateBack = async (event) => {

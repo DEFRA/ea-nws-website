@@ -8,7 +8,7 @@ import Input from '../../../common/components/gov-uk/Input'
 import {
   setLocationPostCode,
   setLocationSearchResults,
-  setSelectedLocation
+  setOrgAddress
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
@@ -50,15 +50,13 @@ export default function AddOrganisationAddressLayout({
           const address = data.find((location) =>
             location.name.includes(buildingNum)
           )
-          console.log(address)
           if (address) {
-            console.log('Inside condition')
-            dispatch(setSelectedLocation(address))
+            dispatch(setOrgAddress(address))
             navigate('/organisation/register/address-confirm')
             return // Ensure none of the following code is executed
           }
         }
-        // otherwise, send all results to pagination page
+        // otherwise, send all results to pagination page where user will confirm
         dispatch(setLocationSearchResults(data))
         NavigateToNextPage()
       } else {

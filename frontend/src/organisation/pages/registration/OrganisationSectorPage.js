@@ -3,7 +3,7 @@ import OrganisationSectorLayout from '../../layouts/sector/OrganisationSectorLay
 
 export default function OrganisationSectorPage() {
   const navigate = useNavigate()
-  const NavigateToNextPage = () => navigate('#') // Links to Laurent's EAN-1038 pages
+  const NavigateToNextPage = () => navigate('/organisation/register/sector/#') // Will link to Laurent's EAN-1038 pages
 
   const NavigateToPreviousPage = () => {
     navigate('/organisation/register/number')

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
 import ErrorSummary from '../../gov-uk-components/ErrorSummary'
@@ -7,6 +8,7 @@ import Header from '../../gov-uk-components/Header'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import Radio from '../../gov-uk-components/Radio'
 import TextArea from '../../gov-uk-components/TextArea'
+import { backendCall } from '../../services/BackendService'
 
 export default function AccountDeletePage() {
   const navigate = useNavigate()
@@ -28,6 +30,10 @@ export default function AccountDeletePage() {
   const [reasonError, setReasonError] = useState('')
   const [reasonTextError, setReasonTextError] = useState('')
   const [furtherInfoError, setFurtherInfoError] = useState('')
+  const [error, setError] = useState('')
+
+  const session = useSelector((state) => state.session)
+  const authToken = session.authToken
 
   useEffect(() => {
     setReasonError('')
@@ -41,7 +47,8 @@ export default function AccountDeletePage() {
     setFurtherInfoError('')
   }, [accountDeletionFurtherInfo])
 
-  const handleButton = async () => {
+  const handleButton = async (event) => {
+    event.preventDefault()
     let isValidInput = true
 
     // Check if reason is selected
@@ -70,7 +77,18 @@ export default function AccountDeletePage() {
     if (!isValidInput) {
       return
     } else {
-      navigate('/account/delete/confirm')
+      const dataToSend = { authToken }
+      const { errorMessage } = await backendCall(
+        dataToSend,
+        'api/account/delete',
+        navigate
+      )
+
+      if (!errorMessage) {
+        navigate('/account/delete/confirm')
+      } else {
+        setError('An error occured trying to delete user account.')
+      }
     }
   }
 

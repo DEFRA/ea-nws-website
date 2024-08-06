@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
 import Checkbox from '../../../gov-uk-components/CheckBox'
@@ -6,17 +7,46 @@ import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
+import { setRegistrations } from '../../../redux/userSlice'
 
 export default function DeclarationOfAgreementPage () {
   const [isChecked, setIsChecked] = useState(false)
   const [error, setError] = useState('')
+  const session = useSelector((state) => state.session)
+  const profile = session.profile
+  const dispatch = useDispatch()
   const navigate = useNavigate()
   const handleSubmit = () => {
     if (isChecked === false) {
       setError('Tick to confirm you agree with the terms and conditions')
     } else {
-      // TODO New user home page currently, will need to be modified to direct to the signup review page after T&C agreement signed
-      navigate('/home')
+      const registrations = {
+        params: {
+          channelVoiceEnabled: profile.homePhones.length !== 0,
+          channelSmsEnabled: profile.mobilePhones.length !== 0,
+          channelEmailEnabled: profile.emails.length !== 0,
+          // What is that?
+          partnerCanView: false,
+          partnerCanEdit: false,
+          // TODO
+          categories: [
+            {
+              domain: 'NFWS',
+              code: 'FLOOD_ALERT'
+            },
+            {
+              domain: 'NFWS',
+              code: 'FLOOD_WARNING'
+            },
+            {
+              domain: 'NFWS',
+              code: 'SEVERE_FLOOD_WARNING'
+            }
+          ]
+        }
+      }
+      dispatch(setRegistrations(registrations))
+      navigate('/signup/review')
     }
   }
   return (

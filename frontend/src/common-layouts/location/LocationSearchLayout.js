@@ -64,10 +64,30 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
           }
         }
         case 'PlaceNameTownOrKeyword':
-          if (!placeName) {
-            setPlaceNameError('Please enter a place name or keyword')
+          if (placeName) {
+            // normalise postcode
+            const dataToSend = {
+              name: placeName
+            }
+            const { data, errorMessage } = await backendCall(
+              dataToSend,
+              'api/os-api/name-search',
+              navigate
+            )
+            if (!errorMessage) {
+              dispatch(setLocationPostCode(''))
+              dispatch(setLocationSearchResults(data))
+              continueToNextPage()
+            } else {
+              // show error message from OS Api postcode search
+              setPlaceNameError(errorMessage)
+              setError('')
+            }
+            break
+          } else {
+            setPlaceNameError('Please enter a place name, town or keyword')
+            break
           }
-          break
         default:
           break
       }

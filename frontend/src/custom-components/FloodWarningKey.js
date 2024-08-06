@@ -2,48 +2,41 @@ import { faCircle } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 
-export default function FloodWarningKey ({ type }) {
+const FloodWarningKey = ({ type, mobileView }) => {
+  const renderKeyItem = (iconClass, text) => (
+    <div className='key-items'>
+      <b className='key-title'>Key</b>
+      <FontAwesomeIcon
+        icon={faCircle}
+        size={mobileView ? '2xl' : 'xl'}
+        className={`icon ${iconClass}`}
+      />
+      <span>{text}</span>
+    </div>
+  )
+
   return (
-    <>
-      <div className='flood-warning-key govuk-!-margin-top-6'>
-        <b>Key</b>{' '}
-        {type === 'both' && (
-          <>
-            <FontAwesomeIcon
-              icon={faCircle}
-              className='govuk-!-padding-left-1 govuk-!-padding-right-1'
-              style={{ color: '#f70202' }}
-            />{' '}
-            Severe flood warnings and flood warnings area
-            <FontAwesomeIcon
-              icon={faCircle}
-              className='govuk-!-padding-left-7 govuk-!-padding-right-1'
-              style={{ color: '#ffa200' }}
-            />{' '}
-            Flood alert area
-          </>
-        )}
-        {type === 'severe' && (
-          <>
-            <FontAwesomeIcon
-              icon={faCircle}
-              className='govuk-!-padding-left-1 govuk-!-padding-right-1'
-              style={{ color: '#f70202' }}
-            />{' '}
-            Severe flood warnings and flood warnings area
-          </>
-        )}
-        {type === 'alert' && (
-          <>
-            <FontAwesomeIcon
-              icon={faCircle}
-              className='govuk-!-padding-left-1 govuk-!-padding-right-1'
-              style={{ color: '#ffa200' }}
-            />{' '}
-            Flood alert area
-          </>
-        )}
-      </div>
-    </>
+    <div className='flood-warning-key'>
+      {type === 'both' && (
+        <>
+          {renderKeyItem(
+            'severe',
+            'Severe flood warnings and flood warnings area'
+          )}
+          {renderKeyItem('alert', 'Flood alert area')}
+        </>
+      )}
+      {type === 'severe' && (
+        <>
+          {renderKeyItem(
+            'severe',
+            'Severe flood warnings and flood warnings area'
+          )}
+        </>
+      )}
+      {type === 'alert' && <>{renderKeyItem('alert', 'Flood alert area')}</>}
+    </div>
   )
 }
+
+export default FloodWarningKey

@@ -66,10 +66,6 @@ export default function SignInValidatePage () {
 
         if (!isSignUpComplete && (lastAccessedUrl !== undefined)) {
           setSignUpNotComplete(true)
-        } else if(!isSignUpComplete && lastAccessedUrl === undefined) {
-          const updatedProfile = updateAdditionals(data.profile, [{ id: 'lastAccessedUrl', value: '/signup/accountname/add' }])
-          dispatch(setProfile(updatedProfile))
-          navigate('/home')
         }
         else{
           navigate('/home')

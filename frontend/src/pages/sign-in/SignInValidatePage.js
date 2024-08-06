@@ -17,7 +17,7 @@ import {
 import { backendCall } from '../../services/BackendService'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 
-export default function SignInValidatePage () {
+export default function SignInValidatePage() {
   const location = useLocation()
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -46,7 +46,10 @@ export default function SignInValidatePage () {
       )
 
       if (errorMessage !== null) {
-        if (errorMessage === 'The code you have entered has expired - please request a new code') {
+        if (
+          errorMessage ===
+          'The code you have entered has expired - please request a new code'
+        ) {
           setCodeExpired(true)
         } else {
           setError(errorMessage)
@@ -76,45 +79,48 @@ export default function SignInValidatePage () {
 
   return (
     <>
-      {codeExpired
-        ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
-        : (
-          <div className='page-container'>
-            <Header />
-            <div class='govuk-width-container body-container'>
-              <Link to='/signin' className='govuk-back-link'>Back</Link>
-              {codeResent &&
-                <NotificationBanner
-                  className='govuk-notification-banner govuk-notification-banner--success'
-                  title='Success'
-                  text={'New code sent at ' + codeResentTime}
-                />}
-              {error && <ErrorSummary errorList={[error]} />}
-              <h2 class='govuk-heading-l'>Check your email</h2>
-              <div class='govuk-body'>
-                We've sent a code to:
-                <InsetText text={location.state.email} />
-                <Input
-                  name='Enter code'
-                  inputType='text'
-                  value={code}
-                  error={error}
-                  onChange={(val) => setCode(val)}
-                />
-                <Button
-                  className='govuk-button'
-                  text='Continue'
-                  onClick={handleSubmit}
-                />
-                <br />
-                <Link onClick={getNewCode} className='govuk-link'>
-                  Get a new code
-                </Link>
-              </div>
+      {codeExpired ? (
+        <ExpiredCodeLayout getNewCode={getNewCode} />
+      ) : (
+        <div className='page-container'>
+          <Header />
+          <div className='govuk-width-container body-container'>
+            <Link to='/signin' className='govuk-back-link'>
+              Back
+            </Link>
+            {codeResent && (
+              <NotificationBanner
+                className='govuk-notification-banner govuk-notification-banner--success'
+                title='Success'
+                text={'New code sent at ' + codeResentTime}
+              />
+            )}
+            {error && <ErrorSummary errorList={[error]} />}
+            <h2 className='govuk-heading-l'>Check your email</h2>
+            <div className='govuk-body'>
+              We've sent a code to:
+              <InsetText text={location.state.email} />
+              <Input
+                name='Enter code'
+                inputType='text'
+                value={code}
+                error={error}
+                onChange={(val) => setCode(val)}
+              />
+              <Button
+                className='govuk-button'
+                text='Continue'
+                onClick={handleSubmit}
+              />
+              <br />
+              <Link onClick={getNewCode} className='govuk-link'>
+                Get a new code
+              </Link>
             </div>
-            <Footer />
           </div>
-          )}
+          <Footer />
+        </div>
+      )}
     </>
   )
 }

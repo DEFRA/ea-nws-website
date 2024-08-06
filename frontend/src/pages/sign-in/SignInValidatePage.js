@@ -17,7 +17,6 @@ import {
 import { backendCall } from '../../services/BackendService'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 import NotCompletedSigningUpLayout from '../../common-layouts/sign-up/NotCompletedSignUpLayout'
-import { updateAdditionals } from '../../services/ProfileServices'
 
 export default function SignInValidatePage () {
   const location = useLocation()
@@ -64,10 +63,9 @@ export default function SignInValidatePage () {
         const lastAccessedUrl = data.profile.additionals.filter(c => c.id === 'lastAccessedUrl')[0]?.value
         setLastAccessedUrl(lastAccessedUrl)
 
-        if (!isSignUpComplete && (lastAccessedUrl !== undefined)) {
+        if (!isSignUpComplete && lastAccessedUrl !== undefined) {
           setSignUpNotComplete(true)
-        }
-        else{
+        } else {
           navigate('/home')
         }
       }

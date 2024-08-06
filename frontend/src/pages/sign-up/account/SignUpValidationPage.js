@@ -8,13 +8,12 @@ import Header from '../../../gov-uk-components/Header'
 import Input from '../../../gov-uk-components/Input'
 import InsetText from '../../../gov-uk-components/InsetText'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
-import { setAuthToken } from '../../../redux/userSlice'
+import { setAuthToken, setProfile } from '../../../redux/userSlice'
 import { backendCall } from '../../../services/BackendService'
 import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
 import NotificationBanner from '../../../gov-uk-components/NotificationBanner'
 import ExpiredCodeLayout from '../../../common-layouts/expired-code/ExpiredCodeLayout'
 import { updateAdditionals } from '../../../services/ProfileServices'
-import { setProfile } from '../../../redux/userSlice'
 
 export default function SignUpValidationPage () {
   const navigate = useNavigate()
@@ -58,7 +57,7 @@ export default function SignUpValidationPage () {
         }
       } else {
         dispatch(setAuthToken(data.authToken))
-        const updatedProfile = updateAdditionals(profile, [{id: 'lastAccessedUrl', value: '/signup/accountname/add' }])
+        const updatedProfile = updateAdditionals(profile, [{ id: 'lastAccessedUrl', value: '/signup/accountname/add' }])
         dispatch(setProfile(updatedProfile))
         navigate('/signup/contactpreferences')
       }

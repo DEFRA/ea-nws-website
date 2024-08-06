@@ -7,9 +7,8 @@ import ErrorSummary from '../../../gov-uk-components/ErrorSummary'
 import Footer from '../../../gov-uk-components/Footer'
 import Header from '../../../gov-uk-components/Header'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
-import { setRegistrations } from '../../../redux/userSlice'
+import { setRegistrations, setProfile } from '../../../redux/userSlice'
 import { updateAdditionals } from '../../../services/ProfileServices'
-import { setProfile } from '../../../redux/userSlice'
 
 export default function DeclarationOfAgreementPage () {
   const dispatch = useDispatch()

@@ -22,7 +22,7 @@ export default function CheckYourAnswersPage () {
 
   const handleButton = () => {
     if (signUpAccountValidation) {
-      const updatedProfile = updateAdditionals(profile, [{ id: "signUpComplete", value: true }, { id: 'lastAccessedUrl', value: '/signup/review' }])
+      const updatedProfile = updateAdditionals(profile, [{ id: 'signUpComplete', value: true }, { id: 'lastAccessedUrl', value: '/signup/review' }])
       dispatch(setProfile(updatedProfile))
       navigate('/signup/success')
     }

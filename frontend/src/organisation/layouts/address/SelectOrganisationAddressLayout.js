@@ -22,9 +22,6 @@ export default function SelectOrganisationAddressLayout({
     currentPage * locationsPerPage
   )
 
-  console.log(locations)
-  console.log(locationPostCode)
-
   const handleSelectedLocation = async (event, selectedLocation) => {
     event.preventDefault()
     dispatch(setSelectedLocation(selectedLocation))

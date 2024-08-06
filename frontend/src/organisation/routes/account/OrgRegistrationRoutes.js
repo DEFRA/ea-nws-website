@@ -1,6 +1,7 @@
 import AddOrganisationAddressPage from '../../pages/registration/AddOrganisationAddressPage'
 import AddOrganisationNamePage from '../../pages/registration/AddOrganisationNamePage'
 import ConfirmOrganisationAddressPage from '../../pages/registration/ConfirmOrganisationAddressPage'
+import OrganisationCompaniesHouseNumPage from '../../pages/registration/OrganisationCompaniesHouseNumPage'
 import SelectOrganisationAddressPage from '../../pages/registration/SelectOrganisationAddressPage'
 
 // registration
@@ -17,6 +18,10 @@ const orgRegistrationRoutes = [
   {
     path: '/organisation/register/address-confirm',
     component: <ConfirmOrganisationAddressPage />
+  },
+  {
+    path: '/organisation/register/number',
+    component: <OrganisationCompaniesHouseNumPage />
   }
 ]
 

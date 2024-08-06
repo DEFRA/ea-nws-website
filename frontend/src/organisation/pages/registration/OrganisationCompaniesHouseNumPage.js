@@ -1,16 +1,16 @@
 import { useNavigate } from 'react-router'
-import AddOrganisationNameLayout from '../../layouts/name/AddOrganisationNameLayout'
+import OrganisationCompaniesHouseNumLayout from '../../layouts/companies-house-num/OrganisationCompaniesHouseNumLayout'
 
-export default function AddOrganisationNamePage() {
+export default function OrganisationCompaniesHouseNumPage() {
   const navigate = useNavigate()
   const NavigateToNextPage = () => navigate('/organisation/register/address')
 
   const NavigateToPreviousPage = () => {
-    navigate(-1)
+    navigate('/organisation/register/address-confirm')
   }
 
   return (
-    <AddOrganisationNameLayout
+    <OrganisationCompaniesHouseNumLayout
       NavigateToNextPage={NavigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
     />

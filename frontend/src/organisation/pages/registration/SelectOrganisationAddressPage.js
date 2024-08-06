@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import SelectOrganisationAddressLayout from '../../layouts/organisation-address/SelectOrganisationAddressLayout'
+import SelectOrganisationAddressLayout from '../../layouts/address/SelectOrganisationAddressLayout'
 
 export default function SelectOrganisationAddressPage() {
   const navigate = useNavigate()

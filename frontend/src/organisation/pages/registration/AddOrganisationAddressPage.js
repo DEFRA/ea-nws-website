@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import AddOrganisationAddressLayout from '../../layouts/organisation-address/AddOrganisationAddressLayout'
+import AddOrganisationAddressLayout from '../../layouts/address/AddOrganisationAddressLayout'
 
 export default function AddOrganisationAddressPage() {
   const navigate = useNavigate()

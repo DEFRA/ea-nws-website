@@ -7,10 +7,7 @@ async function getDeleteAccount(
     req: Hapi.Request,
     res: Hapi.ResponseToolkit
 ) {
-    console.log('Received DeleteAccount request for: ', req.payload)
     const { authToken } = req.payload as { authToken: string }
-
-    console.log('authToken: ' + authToken)
 
     if (authToken !== 'MockAuthToken') {
         console.log("invalid credentials, responding 101")

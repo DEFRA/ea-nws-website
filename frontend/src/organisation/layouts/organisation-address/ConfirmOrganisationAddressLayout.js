@@ -34,7 +34,7 @@ export default function ConfirmOrganisationAddressLayout({
               onClick={handleSubmit}
             />
             <Link
-              onClick={navigate(-1)}
+              onClick={navigateBack}
               className='govuk-link govuk-!-padding-left-5'
             >
               Choose different address

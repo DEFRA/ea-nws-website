@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
-import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import { setSelectedLocation } from '../../../common/redux/userSlice'
 
@@ -12,9 +11,7 @@ export default function SelectOrganisationAddressLayout({
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [error, setError] = useState('')
   const [currentPage, setCurrentPage] = useState(1)
-  const [loading, setLoading] = useState(false)
   const locations = useSelector((state) => state.session.locationSearchResults)
   const locationPostCode = useSelector(
     (state) => state.session.locationPostCode
@@ -47,7 +44,6 @@ export default function SelectOrganisationAddressLayout({
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
               <div className='govuk-body'>
-                {error && <ErrorSummary errorList={[error]} />}
                 <h1 className='govuk-heading-l'>Select an address</h1>
                 {locationPostCode && (
                   <p className='govuk-body'>

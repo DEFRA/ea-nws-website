@@ -7,7 +7,8 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import {
   setLocationPostCode,
-  setLocationSearchResults
+  setLocationSearchResults,
+  setSelectedLocation
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
@@ -31,12 +32,10 @@ export default function AddOrganisationAddressLayout({
     const validationError = postCodeValidation(postCode)
 
     if (!validationError) {
-      // Search postcode locations and store results in session
-      // normalise postcode
+      // Normalise postcode, then search locations and store results in session
       const dataToSend = {
         postCode: postCode.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
       }
-      console.log('Normalised postcode')
       const { data, errorMessage } = await backendCall(
         dataToSend,
         'api/os-api/postcode-search',
@@ -44,6 +43,22 @@ export default function AddOrganisationAddressLayout({
       )
       if (!errorMessage) {
         dispatch(setLocationPostCode(data[0].postcode))
+
+        // if buildingNum provided (and address exists) then navigate straight to confirmation
+        if (buildingNum) {
+          console.log(data[0].name)
+          const address = data.find((location) =>
+            location.name.includes(buildingNum)
+          )
+          console.log(address)
+          if (address) {
+            console.log('Inside condition')
+            dispatch(setSelectedLocation(address))
+            navigate('/organisation/register/address-confirm')
+            return // Ensure none of the following code is executed
+          }
+        }
+        // otherwise, send all results to pagination page
         dispatch(setLocationSearchResults(data))
         NavigateToNextPage()
       } else {

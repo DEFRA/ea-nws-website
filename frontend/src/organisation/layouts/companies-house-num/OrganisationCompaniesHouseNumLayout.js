@@ -28,7 +28,7 @@ export default function OrganisationCompaniesHouseNumLayout({
   const handleSubmit = async () => {
     if (companyNumExists === null) {
       setError(
-        'Select whether your organisation has a companies house number or not'
+        'Select whether your organisation has a Companies House number or not'
       )
       return
     }
@@ -79,7 +79,7 @@ export default function OrganisationCompaniesHouseNumLayout({
                   />
                   <Radio
                     key='radio_no'
-                    name='Yes'
+                    name='No'
                     label='No'
                     onChange={() => setCompanyNumExists(false)}
                   />

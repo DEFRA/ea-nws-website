@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "@turf/turf": "^7.0.0",
+    "react-device-detect": "^2.2.3"
+  }
+}

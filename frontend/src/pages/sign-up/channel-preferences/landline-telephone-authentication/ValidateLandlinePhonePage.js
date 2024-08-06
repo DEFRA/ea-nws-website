@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom'
 import ValidateLandlineLayout from '../../../../common-layouts/landline/ValidateLandlineLayout'
-import SkipConfirmLayout from '../../../../common-layouts/skip-confirm/SkipConfirmLayout'
 
 export default function ValidateLandlinePhonePage () {
   const navigate = useNavigate()
@@ -9,11 +8,10 @@ export default function ValidateLandlinePhonePage () {
     navigate('/signup/accountname/add')
   }
 
-  const SkipValidation = (homePhone) => {
-    <SkipConfirmLayout
-      contactPreference={homePhone}
-    />
+  const SkipValidation = () => {
+    navigate('/signup/contactpreferences/landline/skipconfirmation')
   }
+
   const DifferentHomePhone = (homePhone) => {
     navigate('/signup/contactpreferences/landline/add', {
       state: {

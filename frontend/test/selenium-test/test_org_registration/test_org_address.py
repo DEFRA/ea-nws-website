@@ -30,8 +30,3 @@ def test_valid_input(get_browser):
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)
     assert browser.current_url == nextPage
-    
-def test_select_result(get_browser):
-    browser = get_browser
-    browser.get(nextPage)
-    

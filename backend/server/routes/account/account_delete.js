@@ -12,8 +12,6 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        request.log('info', ['***ACCOUNT DELETED***', request.payload])
-
         return h.response({ status: 200 })
       } catch (error) {
         return createGenericErrorResponse(h)

@@ -74,9 +74,7 @@ export default function AccountDeletePage() {
       isValidInput = false
     }
 
-    if (!isValidInput) {
-      return
-    } else {
+    if (isValidInput) {
       const dataToSend = { authToken }
       const { errorMessage } = await backendCall(
         dataToSend,

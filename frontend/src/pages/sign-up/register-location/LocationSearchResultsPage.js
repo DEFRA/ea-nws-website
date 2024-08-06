@@ -34,7 +34,6 @@ export default function LocationSearchResultsPage () {
       pois: []
     }
     dispatch(setProfile(profile))
-    console.log("profile initally set", profile)
 
     if (isInWarningArea) {
       // take user to warning screen and then to alerts screen for optional alerts

@@ -7,7 +7,12 @@ export default function LocationSearchResultsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const continueToNextPage = (isInWarningArea, isInAlertArea) => {
+  const continueToNextPage = (
+    isInWarningArea,
+    isInAlertArea,
+    isWithinWarningAreaProximity,
+    isWithinAlertAreaProximity
+  ) => {
     if (isInWarningArea) {
       // take user to severe warning screen and then to alerts screen for
       // optional additional alerts
@@ -17,6 +22,12 @@ export default function LocationSearchResultsPage () {
       // take user to non option flood alerts scren
       dispatch(setAdditionalAlerts(false))
       navigate('/manage-locations/add/location-in-alert-area')
+    } else if (isWithinWarningAreaProximity) {
+      // users location is within distance to severe flood area
+      navigate(`/manage-locations/add/location-in-proximity-area/${'severe'}`)
+    } else if (isWithinAlertAreaProximity) {
+      // users location is within distance to alert flood area
+      navigate(`/manage-locations/add/location-in-proximity-area/${'alert'}`)
     } else {
       // location isnt in danger area
       navigate('/manage-locations/add/no-danger')

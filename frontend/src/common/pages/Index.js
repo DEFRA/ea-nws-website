@@ -7,6 +7,7 @@ import NotificationBanner from '../components/gov-uk/NotificationBanner'
 import {
   clearAuth,
   setAuthToken,
+  setContactPreferences,
   setProfile,
   setRegistrations
 } from '../redux/userSlice'
@@ -14,6 +15,7 @@ import {
 export default function IndexPage () {
   const dispatch = useDispatch()
   const [mockSessionActive, setmockSessionActive] = useState(false)
+  const [emptyProfileActive, setEmptyProfileActive] = useState(false)
 
   const mockOne = {
     id: '',
@@ -32,10 +34,11 @@ export default function IndexPage () {
     },
     pois: [
       {
-        address: 'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth, NR30 1AA',
+        name: 'Big Ben, London SW1A 0AA',
+        address: 'UPRN',
         coordinates: {
-          latitude: 52.6124445,
-          longitude: 1.7246405
+          latitude: 51.5007,
+          longitude: 0.1246
         }
       }
     ]
@@ -58,17 +61,19 @@ export default function IndexPage () {
     },
     pois: [
       {
-        address: 'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth, NR30 1AA',
+        name: 'Big Ben, London, SW1A 0AA',
+        address: 'UPRN',
         coordinates: {
-          latitude: 52.6124445,
-          longitude: 1.7246405
+          latitude: 51.5007,
+          longitude: 0.1246
         }
       },
       {
-        address: '60, Kingfisher Way, London, NW10 8TZ',
+        name: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'UPRN',
         coordinates: {
-          latitude: 51.5510932,
-          longitude: -0.2577994
+          latitude: 51.550738,
+          longitude: -0.257635
         }
       }
     ]
@@ -91,87 +96,131 @@ export default function IndexPage () {
     },
     pois: [
       {
-        address: 'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth, NR30 1AA',
+        name: 'Big Ben, London, SW1A 0AA',
+        address: 'UPRN',
         coordinates: {
-          latitude: 52.6124445,
-          longitude: 1.7246405
+          latitude: 51.5007,
+          longitude: 0.1246
         }
       },
       {
-        address: '60, Kingfisher Way, London, NW10 8TZ',
+        name: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'UPRN',
         coordinates: {
-          latitude: 51.5510932,
-          longitude: -0.2577994
+          latitude: 51.550738,
+          longitude: -0.257635
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Big Ben, London, SW1A 0AA',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.5007,
+          longitude: 0.1246
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.550738,
+          longitude: -0.257635
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Big Ben, London, SW1A 0AA',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.5007,
+          longitude: 0.1246
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.550738,
+          longitude: -0.257635
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Big Ben, London, SW1A 0AA',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.5007,
+          longitude: 0.1246
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.550738,
+          longitude: -0.257635
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Big Ben, London, SW1A 0AA',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.5007,
+          longitude: 0.1246
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.550738,
+          longitude: -0.257635
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Big Ben, London, SW1A 0AA',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.5007,
+          longitude: 0.1246
         }
       },
       {
-        address: 'Exeter, Royaume-Uni',
+        name: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'UPRN',
         coordinates: {
-          latitude: 50726037,
-          longitude: -3527489
+          latitude: 51.550738,
+          longitude: -0.257635
+        }
+      },
+      {
+        name: 'Big Ben, London, SW1A 0AA',
+        address: 'UPRN',
+        coordinates: {
+          latitude: 51.5007,
+          longitude: 0.1246
+        }
+      },
+      {
+        name: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'UPRN',
+        coordinates: {
+          latitude: 51.550738,
+          longitude: -0.257635
+        }
+      },
+      {
+        name: 'Big Ben, London, SW1A 0AA',
+        address: 'UPRN',
+        coordinates: {
+          latitude: 51.5007,
+          longitude: 0.1246
+        }
+      },
+      {
+        name: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'UPRN',
+        coordinates: {
+          latitude: 51.550738,
+          longitude: -0.257635
         }
       }
     ]
@@ -180,15 +229,75 @@ export default function IndexPage () {
   function mockSession (profile) {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
-      const registrations = { partner: '4', name: 'NWS England' }
+      const contactPreferences = ['Text']
+      const registrations = {
+        partner: {
+          id: '4',
+          name: 'NWS England',
+          description: 'We work to create better places for people and...',
+          longName: 'Environment Agency - England',
+          logoUrl: 'logo.png',
+          backgroundUrl: 'http://assets.gov.uk',
+          urlSlug: 'england'
+        },
+        registrationDate: '1683741990',
+        params: {
+          channelVoiceEnabled: true,
+          channelSmsEnabled: true,
+          channelEmailEnabled: true,
+          partnerCanView: false,
+          partnerCanEdit: false,
+          categories: [
+            {
+              domain: 'NFWS',
+              code: 'FLOOD_ALERT'
+            },
+            {
+              domain: 'NFWS',
+              code: 'FLOOD_WARNING'
+            },
+            {
+              domain: 'NFWS',
+              code: 'SEVERE_FLOOD_WARNING'
+            }
+          ]
+        }
+      }
 
       dispatch(setAuthToken(authToken))
       dispatch(setRegistrations(registrations))
+      dispatch(setContactPreferences(contactPreferences))
       dispatch(setProfile(profile))
       setmockSessionActive(true)
     } else {
       dispatch(clearAuth())
       setmockSessionActive(false)
+    }
+  }
+
+  function mockEmptyProfileWithNoAuthentication () {
+    if (!emptyProfileActive) {
+      const emptyProfile = {
+        id: '',
+        enabled: true,
+        firstname: '',
+        lastname: '',
+        emails: [],
+        mobilePhones: [],
+        homePhones: [],
+        language: 'EN', // [TODO] is this always english?
+        additionals: [],
+        unverified: {
+          emails: [],
+          mobilePhones: [],
+          homePhones: []
+        },
+        pois: []
+      }
+
+      dispatch(setProfile(emptyProfile))
+    } else {
+      dispatch(clearAuth())
     }
   }
 
@@ -201,9 +310,19 @@ export default function IndexPage () {
               <h1 className='govuk-heading-xl'>Next Warning Service Index</h1>
               <NotificationBanner
                 className='govuk-notification-banner govuk-notification-banner--success'
-                title='Mock session'
-                text={mockSessionActive ? 'Active' : 'Not Active'}
+                title='Empty profile'
+                text={emptyProfileActive ? 'Active' : 'Not Active'}
               />
+              <Button
+                className='govuk-button'
+                text='Activate/Deactivate Empty profile - Used for sign up tests'
+                onClick={() => {
+                  setEmptyProfileActive(!emptyProfileActive)
+                  mockEmptyProfileWithNoAuthentication()
+                }}
+              />
+              <br />
+
               <p className='govuk-body'>A quick link to each page</p>
               <ul className='govuk-list'>
                 <li>
@@ -227,6 +346,12 @@ export default function IndexPage () {
                 A session is required to access the below pages - click below to
                 start/kill the mock session
               </p>
+              <br />
+              <NotificationBanner
+                className='govuk-notification-banner govuk-notification-banner--success'
+                title='Mock session'
+                text={mockSessionActive ? 'Active' : 'Not Active'}
+              />
               <Button
                 className='govuk-button'
                 text='Activate/Deactivate Mock Session 1'
@@ -251,6 +376,11 @@ export default function IndexPage () {
                 <li>
                   <Link to='/managecontacts' className='govuk-link'>
                     Manage Contacts page
+                  </Link>
+                </li>
+                <li>
+                  <Link to='/signup/review' className='govuk-link'>
+                    Sign up review
                   </Link>
                 </li>
               </ul>

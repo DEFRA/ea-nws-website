@@ -9,9 +9,16 @@ export default function LocationInAlertAreaPage () {
     navigate('/signup')
   }
 
+  const continueToSearchResultsPage = () => {
+    navigate('/signup/register-location/search-results')
+  }
+
   return (
     <>
-      <LocationInAlertAreaLayout continueToNextPage={continueToNextPage} />
+      <LocationInAlertAreaLayout
+        continueToNextPage={continueToNextPage}
+        continueToSearchResultsPage={continueToSearchResultsPage}
+      />
     </>
   )
 }

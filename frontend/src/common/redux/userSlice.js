@@ -9,6 +9,17 @@ const userSlice = createSlice({
     contactPreferences: null,
     registrations: null,
     currentContact: null,
+    // location data
+    locationPostCode: null,
+    locationSearchResults: null,
+    selectedLocation: null,
+    additionalAlerts: null,
+    // required for nearby flood areas flow
+    selectedFloodWarningArea: null,
+    selectedFloodAlertArea: null,
+    showOnlySelectedFloodArea: null,
+    nearbyTargetAreaFlow: null,
+    // organisation data
     organisation: {
       name: null,
       address: null,
@@ -35,6 +46,9 @@ const userSlice = createSlice({
     setCurrentContact: (state, action) => {
       state.currentContact = action.payload
     },
+    addContactPreference: (state, action) => {
+      state.contactPreferences = action.payload
+    },
     // location data
     setLocationPostCode: (state, action) => {
       state.locationPostCode = action.payload
@@ -47,6 +61,19 @@ const userSlice = createSlice({
     },
     setAdditionalAlerts: (state, action) => {
       state.additionalAlerts = action.payload
+    },
+    // required for nearby flood areas flow
+    setSelectedFloodWarningArea: (state, action) => {
+      state.selectedFloodWarningArea = action.payload
+    },
+    setSelectedFloodAlertArea: (state, action) => {
+      state.selectedFloodAlertArea = action.payload
+    },
+    setShowOnlySelectedFloodArea: (state, action) => {
+      state.showOnlySelectedFloodArea = action.payload
+    },
+    setNearbyTargetAreasFlow: (state, action) => {
+      state.nearbyTargetAreaFlow = action.payload
     },
     // organisation data
     setOrgName: (state, action) => {
@@ -67,10 +94,16 @@ const userSlice = createSlice({
       state.profile = null
       state.contactPreferences = null
       state.registrations = null
-      state.setLocationPostCode = null
+      // location data
+      state.locationPostCode = null
       state.locationSearchResults = null
       state.selectedLocation = null
       state.additionalAlerts = null
+      // required for nearby flood areas flow
+      state.selectedFloodWarningArea = null
+      state.selectedFloodAlertArea = null
+      state.showOnlySelectedFloodArea = null
+      state.nearbyTargetAreaFlow = null
       state.organisation = {
         name: null,
         address: null,
@@ -88,14 +121,24 @@ export const {
   setRegistrations,
   setContactPreferences,
   setCurrentContact,
+  addContactPreference,
+  // location data
   setLocationPostCode,
   setLocationSearchResults,
   setSelectedLocation,
   setAdditionalAlerts,
+  // required for nearby flood areas flow
+  setSelectedFloodWarningArea,
+  setSelectedFloodAlertArea,
+  setShowOnlySelectedFloodArea,
+  setNearbyTargetAreasFlow,
+  // organisation data
   setOrgName,
   setOrgAddress,
   setOrgCompHouseNum,
   setOrgEmergencySector,
+  // clear state
   clearAuth
 } = userSlice.actions
+
 export default userSlice.reducer

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 
@@ -8,11 +8,11 @@ export default function ConfirmOrganisationAddressLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
-  const navigate = useNavigate()
   const address = useSelector((state) => state.session.selectedLocation.name)
 
   const handleSubmit = async () => {
-    console.log('Confirm')
+    // Correct address is already stored in state.session.selectedLocation
+    NavigateToNextPage()
   }
 
   const navigateBack = async (event) => {

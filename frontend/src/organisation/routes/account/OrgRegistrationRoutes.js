@@ -1,3 +1,4 @@
+import OrganisationSectorLayout from '../../layouts/sector/OrganisationSectorLayout'
 import AddOrganisationAddressPage from '../../pages/registration/AddOrganisationAddressPage'
 import AddOrganisationNamePage from '../../pages/registration/AddOrganisationNamePage'
 import ConfirmOrganisationAddressPage from '../../pages/registration/ConfirmOrganisationAddressPage'
@@ -22,6 +23,10 @@ const orgRegistrationRoutes = [
   {
     path: '/organisation/register/number',
     component: <OrganisationCompaniesHouseNumPage />
+  },
+  {
+    path: '/organisation/register/sector',
+    component: <OrganisationSectorLayout />
   }
 ]
 

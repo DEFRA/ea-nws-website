@@ -3,7 +3,7 @@ import OrganisationCompaniesHouseNumLayout from '../../layouts/companies-house-n
 
 export default function OrganisationCompaniesHouseNumPage() {
   const navigate = useNavigate()
-  const NavigateToNextPage = () => navigate('/organisation/register/address')
+  const NavigateToNextPage = () => navigate('/organisation/register/sector')
 
   const NavigateToPreviousPage = () => {
     navigate('/organisation/register/address-confirm')

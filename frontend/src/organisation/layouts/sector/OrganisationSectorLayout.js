@@ -4,33 +4,23 @@ import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../common/components/gov-uk/Radio'
 
-export default function OrganisationCompaniesHouseNumLayout({
+export default function OrganisationSectorLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
-  const [companyNumExists, setCompanyNumExists] = useState(null)
-  const [companyNum, setCompanyNum] = useState('')
+  const [emergencySector, setEmergencySector] = useState(null)
   const [error, setError] = useState('')
-  const [numberError, setNumberError] = useState('')
 
-  // Clear errors when user makes changes
+  // Clear error when user makes changes
   useEffect(() => {
     setError('')
-  }, [companyNumExists])
-
-  useEffect(() => {
-    setNumberError('')
-  }, [companyNum])
+  }, [emergencySector])
 
   const handleSubmit = async () => {
-    if (companyNumExists === null) {
+    if (emergencySector === null) {
       setError(
-        'Select whether your organisation has a companies house number or not'
+        'Select whether your organisation is involved in responding to public emergencies or incidents'
       )
-      return
-    }
-    if (!companyNum) {
-      setNumberError('Enter your Companies House number')
       return
     }
   }
@@ -48,10 +38,10 @@ export default function OrganisationCompaniesHouseNumLayout({
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>
-              Does your organisation have a Companies House number?
+              Is your organisation involved in responding to public emergencies
+              or incidents?
             </h1>
             <div className='govuk-body'>
-              {error && <p className='govuk-error-message'>{error}</p>}
               <div
                 className={
                   error
@@ -59,22 +49,27 @@ export default function OrganisationCompaniesHouseNumLayout({
                     : 'govuk-form-group'
                 }
               >
+                Known as Category 1 or Category 2 responders. For example,
+                police, fire or ambulance services, local authorities or member
+                of a local resilience forum.
+                {error && (
+                  <p className='govuk-error-message'>
+                    <br />
+                    {error}
+                  </p>
+                )}
                 <div className='govuk-radios'>
                   <Radio
                     key='radio_yes'
                     name='Yes'
                     label='Yes'
-                    onChange={() => setCompanyNumExists(true)}
-                    conditional={companyNumExists}
-                    conditionalQuestion='Companies House number'
-                    conditionalInput={(val) => setCompanyNum(val)}
-                    conditionalError={numberError}
+                    onChange={() => setEmergencySector(true)}
                   />
                   <Radio
                     key='radio_no'
                     name='Yes'
                     label='No'
-                    onChange={() => setCompanyNumExists(false)}
+                    onChange={() => setEmergencySector(false)}
                   />
                   <br />
                 </div>

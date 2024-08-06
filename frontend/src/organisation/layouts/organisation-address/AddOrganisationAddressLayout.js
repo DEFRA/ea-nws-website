@@ -43,7 +43,6 @@ export default function AddOrganisationAddressLayout({
         navigate
       )
       if (!errorMessage) {
-        console.log('Reached dispatches')
         dispatch(setLocationPostCode(data[0].postcode))
         dispatch(setLocationSearchResults(data))
         NavigateToNextPage()

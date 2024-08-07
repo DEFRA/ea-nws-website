@@ -20,11 +20,6 @@ export default function OrganisationSectorLayout({
     setError('')
   }, [emergencySector])
 
-  // RP DEBUG
-  useEffect(() => {
-    console.log(organisation)
-  }, [organisation])
-
   const handleSubmit = async () => {
     if (emergencySector === null) {
       setError(

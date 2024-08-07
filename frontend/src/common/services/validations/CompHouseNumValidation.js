@@ -10,7 +10,7 @@ const compHouseNumberValidation = (companyNumber) => {
   if (companyNumber.length <= compNumLen) {
     return ''
   } else {
-    return 'Companies House number must be 8 characters or fewer - it can include numbers or letters'
+    return `Companies House number must be ${compNumLen} characters or fewer - it can include numbers or letters`
   }
 }
 

@@ -22,7 +22,7 @@ export default function OrganisationSectorLayout({
 
   // RP DEBUG
   useEffect(() => {
-    console.log('Updated organisation:', organisation)
+    console.log(organisation)
   }, [organisation])
 
   const handleSubmit = async () => {
@@ -73,13 +73,13 @@ export default function OrganisationSectorLayout({
                 <div className='govuk-radios'>
                   <Radio
                     key='radio_yes'
-                    name='Yes'
+                    name='yes-no-radios'
                     label='Yes'
                     onChange={() => setEmergencySector(true)}
                   />
                   <Radio
                     key='radio_no'
-                    name='Yes'
+                    name='yes-no-radios'
                     label='No'
                     onChange={() => setEmergencySector(false)}
                   />

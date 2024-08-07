@@ -16,7 +16,7 @@ def test__empty_input(get_browser):
 def test_no(get_browser):
     browser = get_browser
     browser.get(url)
-    browser.find_element(By.NAME, "No").click()
+    browser.find_element(By.ID, "idNo").click()
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)
     assert browser.current_url == nextPage
@@ -24,7 +24,7 @@ def test_no(get_browser):
 def test_yes_with_no_number(get_browser):
     browser = get_browser
     browser.get(url)
-    browser.find_element(By.NAME, "Yes").click()
+    browser.find_element(By.ID, "idYes").click()
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)
     assert "Enter your Companies House number" in browser.page_source
@@ -33,7 +33,7 @@ def test_yes_with_no_number(get_browser):
 def test_yes_with_number(get_browser):
     browser = get_browser
     browser.get(url)
-    browser.find_element(By.NAME, "Yes").click()
+    browser.find_element(By.ID, "idYes").click()
     input_field = browser.find_element(By.NAME, "Companies House number")
     input_field.send_keys("00000000")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()

@@ -6,6 +6,7 @@ import SignUpPage from '../../pages/sign-up/account/SignUpPage'
 import SignUpValidationPage from '../../pages/sign-up/account/SignUpValidationPage'
 import WarningContactsPreferencePage from '../../pages/sign-up/channel-preferences/WarningContactsPreferencePage'
 import AddLandlinePhonePage from '../../pages/sign-up/channel-preferences/landline-telephone-authentication/AddLandlinePhonePage'
+import SelectAlternativeLandlinePage from '../../pages/sign-up/channel-preferences/landline-telephone-authentication/SelectAlternativeLandlinePage'
 import SkipConfirmLandlinePhonePage from '../../pages/sign-up/channel-preferences/landline-telephone-authentication/SkipConfirmLandlinePhonePage'
 import ValidateLandlinePhonePage from '../../pages/sign-up/channel-preferences/landline-telephone-authentication/ValidateLandlinePhonePage'
 import AddMobilePhonePage from '../../pages/sign-up/channel-preferences/mobile-telephone-authentication/AddMobilePhonePage'
@@ -37,7 +38,6 @@ import AddMobileContactStartPage from '../../pages/sign-up/review/manage-contact
 import ValidateMobileContactPage from '../../pages/sign-up/review/manage-contact/add-mobile-contact/AddContactMobileValidatePage'
 import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
 import DeclarationOfAgreementPage from '../../pages/sign-up/user-agreement/DeclarationOfAgreementPage'
-import SelectAlternateLandlinePage from '../../pages/sign-up/channel-preferences/landline-telephone-authentication/SelectAlternateLandlinePage'
 
 // sign up routes
 const signupRoutes = [
@@ -102,8 +102,8 @@ const signupRoutes = [
     component: <SkipConfirmLandlinePhonePage />
   },
   {
-    path: '/signup/contactpreferences/landline/alternate-landline',
-    component: <SelectAlternateLandlinePage />
+    path: '/signup/contactpreferences/landline/alternative-landline',
+    component: <SelectAlternativeLandlinePage />
   },
   { path: '/signup/accountname/add', component: <AddFullNamePage /> },
   {

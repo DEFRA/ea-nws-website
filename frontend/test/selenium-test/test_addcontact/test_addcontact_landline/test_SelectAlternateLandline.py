@@ -5,7 +5,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 import time
 
 signup_url = "http://localhost:3000/signup/"
-alternate_landline_url = "http://localhost:3000/signup/contactpreferences/landline/alternate-landline"
+alternative_landline_url = "http://localhost:3000/signup/contactpreferences/landline/alternative-landline"
 next_url = "http://localhost:3000/signup/contactpreferences/landline/validate"
 def setup_validate_test(get_browser):
     browser = get_browser
@@ -35,7 +35,7 @@ def setup_validate_test(get_browser):
 
 def test_page_load(get_browser):
     browser = setup_validate_test(get_browser)
-    assert browser.current_url == alternate_landline_url
+    assert browser.current_url == alternative_landline_url
 
 def test_errors_render(get_browser):
     browser = setup_validate_test(get_browser)

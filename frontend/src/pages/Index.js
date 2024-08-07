@@ -12,7 +12,7 @@ import {
   setRegistrations
 } from '../redux/userSlice'
 
-export default function IndexPage () {
+export default function IndexPage() {
   const dispatch = useDispatch()
   const [mockSessionActive, setmockSessionActive] = useState(false)
   const [emptyProfileActive, setEmptyProfileActive] = useState(false)
@@ -26,7 +26,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [],
+    additionals: [{ id: 'signUpComplete', value: true }],
     unverified: {
       emails: [],
       mobilePhones: [],
@@ -53,7 +53,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [],
+    additionals: [{ id: 'signUpComplete', value: true }],
     unverified: {
       emails: [],
       mobilePhones: [],
@@ -88,7 +88,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [],
+    additionals: [{ id: 'signUpComplete', value: true }],
     unverified: {
       emails: [],
       mobilePhones: [],
@@ -226,7 +226,7 @@ export default function IndexPage () {
     ]
   }
 
-  function mockSession (profile) {
+  function mockSession(profile) {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
       const contactPreferences = ['Text']
@@ -275,7 +275,7 @@ export default function IndexPage () {
     }
   }
 
-  function mockEmptyProfileWithNoAuthentication () {
+  function mockEmptyProfileWithNoAuthentication() {
     if (!emptyProfileActive) {
       const emptyProfile = {
         id: '',

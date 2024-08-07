@@ -145,17 +145,30 @@ const getAdditionals = (profile, id) => {
   return ''
 }
 
-const updateAdditionals = (profile, id, value) => {
+const updateAdditionals = (profile, updatedAdditionals) => {
   let idFound = false
-  for (let i = 0; i < profile.additionals.length; i++) {
-    if (profile.additionals[i].id === id) {
-      profile.additionals[i].value = value
-      idFound = true
+  const additionals = JSON.parse(JSON.stringify(profile.additionals))
+
+  for (let i = 0; i < updatedAdditionals.length; i++) {
+    const id = updatedAdditionals[i].id
+    const value = updatedAdditionals[i].value
+    for (let j = 0; j < additionals.length; j++) {
+      if (additionals[j].id === id) {
+        additionals[j].value = value
+        idFound = true
+      }
+    }
+    if (!idFound) {
+      additionals.push({ id, value })
     }
   }
-  if (!idFound) {
-    profile.additionals.push({ id, value })
+
+  const updatedProfile = {
+    ...profile,
+    additionals
   }
+
+  return updatedProfile
 }
 
 const addLocation = (profile, newLocation) => {

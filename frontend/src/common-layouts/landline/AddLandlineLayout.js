@@ -30,25 +30,28 @@ export default function AddLandlineLayout ({
     if (validationError === '') {
       const normalisedPhoneNumber = normalisePhoneNumber(landline)
       const dataToSend = { msisdn: normalisedPhoneNumber, authToken }
-      const { errorMessage } = await backendCall(
-        dataToSend,
-        'api/add_contact/landline/add',
+      const profile = addUnverifiedContact(session.profile, 'homePhones', normalisedPhoneNumber)
+      const profileDataToSend = { profile, authToken }
+      const { errorMessage, data } = await backendCall(
+        profileDataToSend,
+        'api/profile/update',
         navigate
       )
       if (errorMessage !== null) {
         setError(errorMessage)
       } else {
-        dispatch(
-          setProfile(
-            addUnverifiedContact(
-              session.profile,
-              'homePhones',
-              normalisedPhoneNumber
-            )
-          )
+        dispatch(setProfile(data.profile))
+        const { errorMessage } = await backendCall(
+          dataToSend,
+          'api/add_contact/landline/add',
+          navigate
         )
-        dispatch(setCurrentContact(normalisedPhoneNumber))
-        NavigateToNextPage()
+        if (errorMessage !== null) {
+          setError(errorMessage)
+        } else {
+          dispatch(setCurrentContact(normalisedPhoneNumber))
+          NavigateToNextPage()
+        }
       }
     }
   }

@@ -5,6 +5,7 @@ import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../common/components/gov-uk/Radio'
 import { setOrgCompHouseNum } from '../../../common/redux/userSlice'
+import { compHouseNumberValidation } from '../../../common/services/validations/CompHouseNumValidation'
 
 export default function OrganisationCompaniesHouseNumLayout({
   NavigateToNextPage,
@@ -37,9 +38,15 @@ export default function OrganisationCompaniesHouseNumLayout({
       return
     }
 
-    // Validate number
-    dispatch(setOrgCompHouseNum(companyNumExists ? companyNum : null))
-    NavigateToNextPage()
+    const validationError = compHouseNumberValidation(companyNum)
+
+    if (!validationError) {
+      dispatch(setOrgCompHouseNum(companyNumExists ? companyNum : null))
+      NavigateToNextPage()
+    } else {
+      setError(validationError)
+      setNumberError(validationError)
+    }
   }
 
   const navigateBack = async (event) => {

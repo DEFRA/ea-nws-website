@@ -6,7 +6,7 @@ const compHouseNumberValidation = (companyNumber) => {
   // Normalize input
   companyNumber = companyNumber.toUpperCase().trim()
 
-  // Companies House number regex pattern
+  // Companies House number regex pattern (8 digits, where the first two can be numbers/letters)
   const companyNumberPattern = /^[A-Z0-9]{2}\d{6}$/
 
   if (companyNumberPattern.test(companyNumber)) {

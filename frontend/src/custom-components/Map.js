@@ -24,7 +24,7 @@ import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { backendCall } from '../services/BackendService'
 import TileLayerWithHeader from './TileLayerWithHeader'
 
-export default function Map ({ types, setFloodAreas, mobileView }) {
+export default function Map({ types, setFloodAreas, mobileView }) {
   const dispatch = useDispatch()
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
@@ -52,7 +52,7 @@ export default function Map ({ types, setFloodAreas, mobileView }) {
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData () {
+    async function fetchFloodAreaData() {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude
@@ -205,11 +205,9 @@ export default function Map ({ types, setFloodAreas, mobileView }) {
 
   L.Marker.prototype.options.icon = DefaultIcon
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
-    console.log(data)
     setApiKey(data.access_token)
-    console.log('api key set')
     return data.expires_in
   }
 

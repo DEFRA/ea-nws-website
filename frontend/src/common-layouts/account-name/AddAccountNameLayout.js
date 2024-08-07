@@ -42,6 +42,7 @@ export default function AddAccountNameLayout ({
         firstname = fullName.substring(0, fullName.indexOf(' '))
         lastname = fullName.substring(fullName.indexOf(' ') + 1)
       }
+
       const profile = addAccountName(session.profile, firstname, lastname)
       dispatch(setProfile(profile))
 

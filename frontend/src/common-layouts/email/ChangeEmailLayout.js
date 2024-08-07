@@ -7,7 +7,7 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import Input from '../../gov-uk-components/Input'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
-import { setProfile } from '../../redux/userSlice'
+import { setCurrentContact, setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { addUnverifiedContact } from '../../services/ProfileServices'
 import { emailValidation } from '../../services/validations/EmailValidation'
@@ -52,7 +52,9 @@ export default function ChangeEmailLayout ({
           if (errorMessage !== null) {
             setError(errorMessage)
           } else {
+            dispatch(setCurrentContact(email))
             NavigateToNextPage()
+          }
         }
       }
     }

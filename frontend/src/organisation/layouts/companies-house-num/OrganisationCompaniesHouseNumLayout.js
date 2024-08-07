@@ -64,7 +64,9 @@ export default function OrganisationCompaniesHouseNumLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && <ErrorSummary errorList={[error]} />}
+            {(error || numberError) && (
+              <ErrorSummary errorList={[error, numberError]} />
+            )}
             <h1 className='govuk-heading-l'>
               Does your organisation have a Companies House number?
             </h1>

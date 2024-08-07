@@ -6,13 +6,11 @@ const compHouseNumberValidation = (companyNumber) => {
   // Normalize input
   companyNumber = companyNumber.toUpperCase().trim()
 
-  // Companies House number regex pattern (8 digits, where the first two can be numbers/letters)
-  const companyNumberPattern = /^[A-Z0-9]{2}\d{6}$/
-
-  if (companyNumberPattern.test(companyNumber)) {
+  const compNumLen = 8
+  if (companyNumber.length > compNumLen) {
     return ''
   } else {
-    return 'Enter a Companies House number in the correct format, like 01234567 or AB123456'
+    return 'Companies House number must be 8 characters or fewer - it can include numbers or letters'
   }
 }
 

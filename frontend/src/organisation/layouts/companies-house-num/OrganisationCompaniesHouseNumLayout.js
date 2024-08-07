@@ -12,8 +12,8 @@ export default function OrganisationCompaniesHouseNumLayout({
   NavigateToPreviousPage
 }) {
   const dispatch = useDispatch()
-  const [companyNumExists, setCompanyNumExists] = useState(null)
-  const [companyNum, setCompanyNum] = useState('')
+  const [companyNumExists, setCompanyNumExists] = useState(null) // This exists so that the input field does not disappear when user deletes text
+  const [companyNum, setCompanyNum] = useState(null)
   const [error, setError] = useState('')
   const [numberError, setNumberError] = useState('')
 
@@ -28,7 +28,7 @@ export default function OrganisationCompaniesHouseNumLayout({
 
   const handleSubmit = async () => {
     // Nothing selected
-    if (companyNumExists === null) {
+    if (companyNum === null) {
       setError(
         'Select whether your organisation has a Companies House number or not'
       )
@@ -36,11 +36,12 @@ export default function OrganisationCompaniesHouseNumLayout({
     }
 
     // No was clicked
-    if (!companyNum) {
+    // Explicitly checking for false as !companyNum would also include empty string
+    if (companyNum === false) {
       dispatch(setOrgCompHouseNum(null))
       NavigateToNextPage()
     }
-    // Yes was clicked
+    // Yes was clicked - validate input before proceeding
     else {
       const validationError = compHouseNumberValidation(companyNum)
       if (!validationError) {
@@ -81,7 +82,10 @@ export default function OrganisationCompaniesHouseNumLayout({
                     key='radio_yes'
                     name='yes-no-radios'
                     label='Yes'
-                    onChange={() => setCompanyNumExists(true)}
+                    onChange={() => {
+                      setCompanyNumExists(true)
+                      setCompanyNum('')
+                    }}
                     conditional={companyNumExists}
                     conditionalQuestion='Companies House number'
                     conditionalInput={(val) => setCompanyNum(val)}
@@ -91,7 +95,7 @@ export default function OrganisationCompaniesHouseNumLayout({
                     key='radio_no'
                     name='yes-no-radios'
                     label='No'
-                    onChange={() => setCompanyNumExists(false)}
+                    onChange={() => setCompanyNum(false)}
                   />
                   <br />
                 </div>

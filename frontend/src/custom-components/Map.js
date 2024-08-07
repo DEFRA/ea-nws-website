@@ -206,7 +206,6 @@ export default function Map ({ types, setFloodAreas, mobileView }) {
 
   async function getApiKey () {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
-    console.log(data.access_token)
     setApiKey(data.access_token)
   }
 

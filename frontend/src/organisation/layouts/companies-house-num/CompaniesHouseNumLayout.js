@@ -7,7 +7,7 @@ import Radio from '../../../common/components/gov-uk/Radio'
 import { setOrgCompHouseNum } from '../../../common/redux/userSlice'
 import { compHouseNumberValidation } from '../../../common/services/validations/CompHouseNumValidation'
 
-export default function OrganisationCompaniesHouseNumLayout({
+export default function CompaniesHouseNumLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {

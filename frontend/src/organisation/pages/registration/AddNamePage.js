@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router'
-import AddOrganisationNameLayout from '../../layouts/name/AddOrganisationNameLayout'
+import AddNameLayout from '../../layouts/name/AddNameLayout'
 
-export default function AddOrganisationNamePage() {
+export default function AddNamePage() {
   const navigate = useNavigate()
   const NavigateToNextPage = () => navigate('/organisation/register/address')
 
@@ -10,7 +10,7 @@ export default function AddOrganisationNamePage() {
   }
 
   return (
-    <AddOrganisationNameLayout
+    <AddNameLayout
       NavigateToNextPage={NavigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
     />

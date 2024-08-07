@@ -1,8 +1,8 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import SelectOrganisationAddressLayout from '../../layouts/address/SelectOrganisationAddressLayout'
+import SelectAddressLayout from '../../layouts/address/SelectAddressLayout'
 
-export default function SelectOrganisationAddressPage() {
+export default function SelectAddressPage() {
   const navigate = useNavigate()
   const NavigateToNextPage = () =>
     navigate('/organisation/register/address-confirm')
@@ -12,7 +12,7 @@ export default function SelectOrganisationAddressPage() {
   }
 
   return (
-    <SelectOrganisationAddressLayout
+    <SelectAddressLayout
       NavigateToNextPage={NavigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
     />

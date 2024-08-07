@@ -13,7 +13,7 @@ import {
 import { backendCall } from '../../../common/services/BackendService'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
-export default function AddOrganisationAddressLayout({
+export default function AddAddressLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {

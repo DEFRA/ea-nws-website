@@ -4,7 +4,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Layout from './Layout'
 import InactivityPopup from './common/components/custom/InactivityPopup'
 import ScrollToTop from './common/components/custom/ScrollToTop'
-import { authenticatedRoutes, orgRoutes, routes } from './routes'
+import { authenticatedRoutes, routes } from './routes'
 
 export default function App() {
   const auth = useSelector((state) => state.session.authToken)
@@ -88,9 +88,6 @@ export default function App() {
             />
           ))}
           {routes.map((route, index) => (
-            <Route key={index} path={route.path} element={route.component} />
-          ))}
-          {orgRoutes.map((route, index) => (
             <Route key={index} path={route.path} element={route.component} />
           ))}
         </Route>

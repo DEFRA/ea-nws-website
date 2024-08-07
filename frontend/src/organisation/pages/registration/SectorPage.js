@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router'
-import OrganisationSectorLayout from '../../layouts/sector/OrganisationSectorLayout'
+import SectorLayout from '../../layouts/sector/SectorLayout'
 
-export default function OrganisationSectorPage() {
+export default function SectorPage() {
   const navigate = useNavigate()
   const NavigateToNextPage = () => navigate('/organisation/register/sector') // Will link to Laurent's EAN-1038 pages
 
@@ -10,7 +10,7 @@ export default function OrganisationSectorPage() {
   }
 
   return (
-    <OrganisationSectorLayout
+    <SectorLayout
       NavigateToNextPage={NavigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
     />

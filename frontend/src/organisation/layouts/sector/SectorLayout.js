@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../common/components/gov-uk/Radio'
 import { setOrgEmergencySector } from '../../../common/redux/userSlice'
 
-export default function OrganisationSectorLayout({
+export default function SectorLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
   const dispatch = useDispatch()
-  const organisation = useSelector((state) => state.session.organisation)
   const [emergencySector, setEmergencySector] = useState(null)
   const [error, setError] = useState('')
 

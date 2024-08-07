@@ -5,7 +5,7 @@ import BackLink from '../../../common/components/custom/BackLink'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import { setOrgAddress } from '../../../common/redux/userSlice'
 
-export default function SelectOrganisationAddressLayout({
+export default function SelectAddressLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {

@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router'
-import ConfirmOrganisationAddressLayout from '../../layouts/address/ConfirmOrganisationAddressLayout'
+import ConfirmAddressLayout from '../../layouts/address/ConfirmAddressLayout'
 
-export default function ConfirmOrganisationAddressPage() {
+export default function ConfirmAddressPage() {
   const navigate = useNavigate()
   const NavigateToNextPage = () => navigate('/organisation/register/number')
 
@@ -10,7 +10,7 @@ export default function ConfirmOrganisationAddressPage() {
   }
 
   return (
-    <ConfirmOrganisationAddressLayout
+    <ConfirmAddressLayout
       NavigateToNextPage={NavigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
     />

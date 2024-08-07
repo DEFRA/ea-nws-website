@@ -27,25 +27,28 @@ export default function OrganisationCompaniesHouseNumLayout({
   }, [companyNum])
 
   const handleSubmit = async () => {
+    // Nothing selected
     if (companyNumExists === null) {
       setError(
         'Select whether your organisation has a Companies House number or not'
       )
       return
     }
-    if (companyNumExists && !companyNum) {
-      setNumberError('Enter your Companies House number')
-      return
-    }
 
-    const validationError = compHouseNumberValidation(companyNum)
-
-    if (!validationError) {
-      dispatch(setOrgCompHouseNum(companyNumExists ? companyNum : null))
+    // No was clicked
+    if (!companyNum) {
+      dispatch(setOrgCompHouseNum(null))
       NavigateToNextPage()
-    } else {
-      setError(validationError)
-      setNumberError(validationError)
+    }
+    // Yes was clicked
+    else {
+      const validationError = compHouseNumberValidation(companyNum)
+      if (!validationError) {
+        dispatch(setOrgCompHouseNum(companyNum))
+        NavigateToNextPage()
+      } else {
+        setNumberError(validationError)
+      }
     }
   }
 

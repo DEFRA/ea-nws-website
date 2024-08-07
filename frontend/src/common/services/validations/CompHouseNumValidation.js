@@ -1,4 +1,8 @@
 const compHouseNumberValidation = (companyNumber) => {
+  if (!companyNumber) {
+    return 'Enter your Companies House number'
+  }
+
   // Normalize input
   companyNumber = companyNumber.toUpperCase().trim()
 

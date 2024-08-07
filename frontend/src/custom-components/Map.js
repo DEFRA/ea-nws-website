@@ -243,17 +243,17 @@ export default function Map ({ types, setFloodAreas, mobileView }) {
       return key + '=' + parameters[key]
     })
     .join('&')
-    
+
   const maxBounds = [
-    [ 49.528423, -10.76418 ],
-    [ 61.331151, 1.9134116 ]
+    [49.528423, -10.76418],
+    [61.331151, 1.9134116]
   ]
 
   const tileLayerWithHeader = useMemo(
     () => <TileLayerWithHeader
-            url={url + '?' + parameterString}
-            token={apiKey}
-            bounds={maxBounds}
+      url={url + '?' + parameterString}
+      token={apiKey}
+      bounds={maxBounds}
           />, [apiKey])
 
   return (

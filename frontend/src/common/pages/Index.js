@@ -12,7 +12,7 @@ import {
   setRegistrations
 } from '../redux/userSlice'
 
-export default function IndexPage () {
+export default function IndexPage() {
   const dispatch = useDispatch()
   const [mockSessionActive, setmockSessionActive] = useState(false)
   const [emptyProfileActive, setEmptyProfileActive] = useState(false)
@@ -226,7 +226,7 @@ export default function IndexPage () {
     ]
   }
 
-  function mockSession (profile) {
+  function mockSession(profile) {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
       const contactPreferences = ['Text']
@@ -275,7 +275,7 @@ export default function IndexPage () {
     }
   }
 
-  function mockEmptyProfileWithNoAuthentication () {
+  function mockEmptyProfileWithNoAuthentication() {
     if (!emptyProfileActive) {
       const emptyProfile = {
         id: '',
@@ -323,21 +323,33 @@ export default function IndexPage () {
               />
               <br />
 
-              <p className='govuk-body'>A quick link to each page</p>
+              <p className='govuk-body'>A quick link to each page:</p>
               <ul className='govuk-list'>
                 <li>
                   <Link to='/' className='govuk-link'>
                     Start page
                   </Link>
                 </li>
+                <br />
+                Citizen:
                 <li>
+                  &emsp;
                   <Link to='/signin' className='govuk-link'>
                     Sign in page
                   </Link>
                 </li>
                 <li>
+                  &emsp;
                   <Link to='/signup' className='govuk-link'>
                     Sign up page
+                  </Link>
+                </li>
+                <br />
+                Organisation:
+                <li>
+                  &emsp;
+                  <Link to='/organisation/register' className='govuk-link'>
+                    Register
                   </Link>
                 </li>
               </ul>

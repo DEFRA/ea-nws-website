@@ -1,4 +1,5 @@
 import ConfirmDeleteContactDetailsPage from '../../pages/manage-location/ConfirmDeleteSingleLocationPage'
+import ViewLocationPage from '../../pages/manage-location/ViewLocationPage'
 import LocationInAlertAreaPage from '../../pages/manage-locations/add-location/LocationInAlertAreaPage'
 import LocationInSevereWarningAreaPage from '../../pages/manage-locations/add-location/LocationInSevereWarningAreaPage'
 import LocationInWarningAreaProximityPage from '../../pages/manage-locations/add-location/LocationInWarningAreaProximityPage'
@@ -37,6 +38,10 @@ const manageLocationRoutes = [
   {
     path: '/manage-locations/remove',
     component: <ConfirmDeleteContactDetailsPage />
+  }, // view a location
+  {
+    path: '/manage-locations/view/:type',
+    component: <ViewLocationPage />
   }
 ]
 

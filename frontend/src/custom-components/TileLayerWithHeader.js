@@ -1,13 +1,22 @@
-import { createElementObject, createTileLayerComponent, updateGridLayer, withPane } from '@react-leaflet/core'
+import {
+  createElementObject,
+  createTileLayerComponent,
+  updateGridLayer,
+  withPane
+} from '@react-leaflet/core'
 import L from 'leaflet'
 
-export default function TileLayerWithHeader ({ url, token }) {
-  function CreateTileLayerWithHeader ({ url, ...options }, context) {
+export default function TileLayerWithHeader({ url, token }) {
+  function CreateTileLayerWithHeader({ url, ...options }, context) {
     L.TileLayer.WithHeader = L.TileLayer.extend({
-      createTile (coords, done) {
+      createTile(coords, done) {
         const url = this.getTileUrl(coords)
         const img = document.createElement('img')
-        fetch(url, { headers: { Authorization: `Bearer ${options.token}` }, mode: 'cors' })
+        fetch(url, {
+          headers: { Authorization: `Bearer ${options.token}` },
+          mode: 'cors',
+          credentials: 'same-origin'
+        })
           .then((val) => val.blob())
           .then((blob) => {
             img.src = URL.createObjectURL(blob)
@@ -20,7 +29,7 @@ export default function TileLayerWithHeader ({ url, token }) {
     return createElementObject(layer, context)
   }
 
-  function updateTileLayerWithHeader (layer, props, prevProps) {
+  function updateTileLayerWithHeader(layer, props, prevProps) {
     updateGridLayer(layer, props, prevProps)
     const { url } = props
     if (url != null && url !== prevProps.url) {
@@ -28,9 +37,10 @@ export default function TileLayerWithHeader ({ url, token }) {
     }
   }
 
-  const TileLayerWithHeader = createTileLayerComponent(CreateTileLayerWithHeader, updateTileLayerWithHeader)
-
-  return (
-    <TileLayerWithHeader url={url} token={token} />
+  const TileLayerWithHeader = createTileLayerComponent(
+    CreateTileLayerWithHeader,
+    updateTileLayerWithHeader
   )
+
+  return <TileLayerWithHeader url={url} token={token} />
 }

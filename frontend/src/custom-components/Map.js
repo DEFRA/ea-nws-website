@@ -1,7 +1,7 @@
 import { faRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
   GeoJSON,
   MapContainer,
@@ -178,7 +178,6 @@ export default function Map({ types, setFloodAreas, mobileView }) {
       })
     }
   }
-
   // reset the map to selected location
   const ResetMapButton = () => {
     const map = useMap()
@@ -208,7 +207,6 @@ export default function Map({ types, setFloodAreas, mobileView }) {
   async function getApiKey() {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
     setApiKey(data.access_token)
-    return data.expires_in
   }
 
   useEffect(() => {
@@ -229,7 +227,7 @@ export default function Map({ types, setFloodAreas, mobileView }) {
   const url = 'https://api.os.uk/maps/raster/v1/wmts'
   const parameters = {
     tileMatrixSet: encodeURI('EPSG:3857'),
-    version: '1.0.0',
+    version: '2.0.0',
     style: 'default',
     layer: encodeURI('Outdoor_3857'),
     service: 'WMTS',
@@ -245,6 +243,22 @@ export default function Map({ types, setFloodAreas, mobileView }) {
     })
     .join('&')
 
+  const maxBounds = [
+    [49.528423, -10.76418],
+    [61.331151, 1.9134116]
+  ]
+
+  const tileLayerWithHeader = useMemo(
+    () => (
+      <TileLayerWithHeader
+        url={url + '?' + parameterString}
+        token={apiKey}
+        bounds={maxBounds}
+      />
+    ),
+    [apiKey]
+  )
+
   return (
     <>
       <MapContainer
@@ -252,9 +266,11 @@ export default function Map({ types, setFloodAreas, mobileView }) {
         zoom={14}
         zoomControl={false}
         attributionControl={false}
+        minZoom={7}
+        maxBounds={maxBounds}
         className={mobileView ? 'map-mobile-view' : 'map-container'}
       >
-        <TileLayerWithHeader url={url + '?' + parameterString} token={apiKey} />
+        {apiKey && tileLayerWithHeader}
         {!mobileView && <ZoomControl position='bottomright' />}
         <Marker position={[latitude, longitude]} interactive={false}>
           <Popup />

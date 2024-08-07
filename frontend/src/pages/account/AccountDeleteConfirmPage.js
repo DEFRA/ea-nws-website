@@ -1,11 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import ConfirmationPanel from '../../gov-uk-components/Panel'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
+import { clearAuth } from '../../redux/userSlice'
 
 export default function AccountDeleteConfirmPage() {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(clearAuth())
+  })
+
   return (
     <>
       <div className='page-container'>

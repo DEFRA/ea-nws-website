@@ -30,7 +30,6 @@ export default function AccountDeletePage() {
   const [reasonError, setReasonError] = useState('')
   const [reasonTextError, setReasonTextError] = useState('')
   const [furtherInfoError, setFurtherInfoError] = useState('')
-  const [error, setError] = useState('')
 
   const session = useSelector((state) => state.session)
   const authToken = session.authToken
@@ -84,8 +83,6 @@ export default function AccountDeletePage() {
 
       if (!errorMessage) {
         navigate('/account/delete/confirm')
-      } else {
-        setError('An error occured trying to delete user account.')
       }
     }
   }

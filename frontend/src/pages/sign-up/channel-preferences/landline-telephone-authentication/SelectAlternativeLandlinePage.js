@@ -15,7 +15,7 @@ import {
 } from '../../../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../../services/validations/PhoneValidation'
-export default function SelectAlternativeLandlinePage () {
+export default function SelectAlternativeLandlinePage() {
   const navigate = useNavigate()
   const [selectedNumber, setSelectedNumber] = useState('')
   const [selectedOption, setSelectedOption] = useState('')
@@ -36,9 +36,7 @@ export default function SelectAlternativeLandlinePage () {
       'mobileAndLandline'
     )
     setValidationError(
-      phoneValidationErrors ===
-        'Enter a UK landline or mobile telephone number' ||
-        phoneValidationErrors === 'Enter a UK mobile telephone number'
+      phoneValidationErrors === 'Enter a UK landline or mobile telephone number'
         ? 'Which telephone number do you want to use?'
         : phoneValidationErrors
     )
@@ -54,23 +52,30 @@ export default function SelectAlternativeLandlinePage () {
         setError(errorMessage)
       } else {
         if (verifiedMobileNumbers.includes(normalisedPhoneNumber)) {
-          dispatch(
+          const updatedProfile = dispatch(
             setProfile(
               addVerifiedContact(profile, 'homePhones', normalisedPhoneNumber)
             )
           )
+          updateBackEndProfile(updatedProfile)
           navigate('/signup/accountname/add')
         } else {
           dispatch(setCurrentContact(normalisedPhoneNumber))
-          dispatch(
+          const updatedProfile = dispatch(
             setProfile(
               addUnverifiedContact(profile, 'homePhones', normalisedPhoneNumber)
             )
           )
+          updateBackEndProfile(updatedProfile)
           navigate('/signup/contactpreferences/landline/validate')
         }
       }
     }
+  }
+
+  const updateBackEndProfile = async (updatedProfile) => {
+    const dataToSend = { profile: updatedProfile, authToken }
+    await backendCall(dataToSend, 'api/profile/update', navigate)
   }
 
   return (
@@ -84,11 +89,11 @@ export default function SelectAlternativeLandlinePage () {
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
               {error && <ErrorSummary errorList={[error, validationError]} />}
-              <h2 class='govuk-heading-l'>
+              <h2 className='govuk-heading-l'>
                 Which telephone number do you want to use to get flood messages
                 by phone call?
               </h2>
-              <div class='govuk-body'>
+              <div className='govuk-body'>
                 <p>
                   We recommend using a landline or mobile number that can be
                   called 24 hours a day

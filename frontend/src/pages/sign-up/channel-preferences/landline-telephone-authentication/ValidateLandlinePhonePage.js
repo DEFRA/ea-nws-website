@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import ValidateLandlineLayout from '../../../../common-layouts/landline/ValidateLandlineLayout'
 
-export default function ValidateLandlinePhonePage () {
+export default function ValidateLandlinePhonePage() {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {
@@ -12,12 +12,8 @@ export default function ValidateLandlinePhonePage () {
     navigate('/signup/contactpreferences/landline/skipconfirmation')
   }
 
-  const DifferentHomePhone = (homePhone) => {
-    navigate('/signup/contactpreferences/landline/add', {
-      state: {
-        homePhone
-      }
-    })
+  const DifferentHomePhone = () => {
+    navigate('/signup/contactpreferences/landline/add')
   }
 
   const ContinueToAlreadyEnteredMobileOptions = () => {

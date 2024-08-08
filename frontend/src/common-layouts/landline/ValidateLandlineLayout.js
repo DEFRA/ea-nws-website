@@ -35,7 +35,9 @@ export default function ValidateLandlineLayout({
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
-  const signUpComplete = profile.additionals.signUpComplete
+  const signUpComplete = profile.additionals.filter(
+    (c) => c.id === 'signUpComplete'
+  )[0]?.value
   // if error remove code sent notification
   useEffect(() => {
     setCodeResent(false)
@@ -105,8 +107,8 @@ export default function ValidateLandlineLayout({
     if (signUpComplete) {
       DifferentHomePhone(homePhone)
     } else {
-      const unverifiedMobile = profile.unverified.mobilePhones[0]
-      const verifiedMobile = profile.mobilePhones[0]
+      const unverifiedMobile = profile.unverified.mobilePhones.pop()
+      const verifiedMobile = profile.mobilePhones.pop()
       if (unverifiedMobile === undefined && verifiedMobile === undefined) {
         DifferentHomePhone(homePhone)
       } else {

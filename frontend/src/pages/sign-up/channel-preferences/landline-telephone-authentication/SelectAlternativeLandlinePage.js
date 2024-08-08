@@ -1,5 +1,5 @@
 /* eslint-disable no-use-before-define */
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../../gov-uk-components/Button'
@@ -11,11 +11,11 @@ import { setCurrentContact, setProfile } from '../../../../redux/userSlice'
 import { backendCall } from '../../../../services/BackendService'
 import { addUnverifiedContact } from '../../../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../../../services/formatters/NormalisePhoneNumber'
-
+import { phoneValidation } from '../../../../services/validations/PhoneValidation'
 export default function SelectAlternativeLandlinePage() {
   const navigate = useNavigate()
-  const [landline, setLandline] = useState('')
-  const [alternativeLandline, setAlternativeLandline] = useState('')
+  const [selectedNumber, setSelectedNumber] = useState('')
+  const [selectedOption, setSelectedOption] = useState('')
   const [error, setError] = useState('')
   const [validationError, setValidationError] = useState('')
   const dispatch = useDispatch()
@@ -26,25 +26,24 @@ export default function SelectAlternativeLandlinePage() {
   const verifiedMobileNumbers = profile.mobilePhones
   const mobileNumbers = [...unverifiedMobileNumbers, ...verifiedMobileNumbers]
 
-  useEffect(() => {
-    setValidationError('')
-    setError('')
-  }, [landline])
-
   const handleSubmit = async (event) => {
     event.preventDefault()
 
-    if (!landline && !alternativeLandline) {
-      setValidationError('Which telephone number do you want to use?')
-      return
-    }
-
+    const phoneValidationErrors = phoneValidation(
+      selectedNumber,
+      'mobileAndLandline'
+    )
+    setValidationError(
+      phoneValidationErrors ===
+        'Enter a UK landline or mobile telephone number' ||
+        phoneValidationErrors === 'Enter a UK mobile telephone number'
+        ? 'Which telephone number do you want to use?'
+        : phoneValidationErrors
+    )
     if (validationError === '') {
       let normalisedPhoneNumber = ''
-      if (alternativeLandline !== '') {
-        normalisedPhoneNumber = normalisePhoneNumber(alternativeLandline)
-      } else {
-        normalisedPhoneNumber = normalisePhoneNumber(landline)
+      if (selectedNumber !== '') {
+        normalisedPhoneNumber = normalisePhoneNumber(selectedNumber)
       }
 
       const dataToSend = { msisdn: normalisedPhoneNumber, authToken }
@@ -62,14 +61,11 @@ export default function SelectAlternativeLandlinePage() {
           )
         )
         dispatch(setCurrentContact(normalisedPhoneNumber))
-        if (error === '') {
-          navigate('/signup/contactpreferences/landline/validate')
+        navigate('/signup/contactpreferences/landline/validate')
+        if (verifiedMobileNumbers.includes(normalisedPhoneNumber)) {
+          navigate('/signup/accountname/add')
         } else {
-          if (verifiedMobileNumbers.includes(normalisedPhoneNumber)) {
-            navigate('/signup/accountname/add')
-          } else {
-            navigate('/signup/contactpreferences/landline/validate')
-          }
+          navigate('/signup/contactpreferences/landline/validate')
         }
       }
     }
@@ -113,19 +109,25 @@ export default function SelectAlternativeLandlinePage() {
                         label={mobileNumber}
                         value={mobileNumber}
                         id={mobileNumber}
-                        name='MobileNumbersRadios'
-                        onChange={(e) => setLandline(e.target.value)}
+                        name='phoneNumberRadio'
+                        onChange={(e) => {
+                          setSelectedOption(e.target.value)
+                          setSelectedNumber(mobileNumber)
+                        }}
+                        conditional={selectedOption === 'mobileNumber'}
                       />
                     ))}
-
                     <Radio
                       label='A different number'
-                      value='otherLandlineNumber'
-                      name='LandlineNumbersRadios'
-                      onChange={(e) => setLandline(e.target.value)}
-                      conditional={landline === 'otherLandlineNumber'}
+                      value='otherNumber'
+                      name='phoneNumberRadio'
+                      onChange={(e) => {
+                        setSelectedOption(e.target.value)
+                        setSelectedNumber('')
+                      }}
+                      conditional={selectedOption === 'otherNumber'}
                       conditionalQuestion='Uk landline or mobile telephone number'
-                      conditionalInput={(val) => setAlternativeLandline(val)}
+                      conditionalInput={(val) => setSelectedNumber(val)}
                       conditionalError={error}
                     />
                   </fieldset>

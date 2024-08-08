@@ -10,7 +10,7 @@ import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 import { setProfile, setRegistrations } from '../../../redux/userSlice'
 import { backendCall } from '../../../services/BackendService'
 import { updateAdditionals } from '../../../services/ProfileServices'
-export default function DeclarationOfAgreementPage() {
+export default function DeclarationOfAgreementPage () {
   const dispatch = useDispatch()
   const [isChecked, setIsChecked] = useState(false)
   const session = useSelector((state) => state.session)

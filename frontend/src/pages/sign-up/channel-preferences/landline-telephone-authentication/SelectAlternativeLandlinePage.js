@@ -15,7 +15,7 @@ import {
 } from '../../../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../../services/validations/PhoneValidation'
-export default function SelectAlternativeLandlinePage() {
+export default function SelectAlternativeLandlinePage () {
   const navigate = useNavigate()
   const [selectedNumber, setSelectedNumber] = useState('')
   const [selectedOption, setSelectedOption] = useState('')

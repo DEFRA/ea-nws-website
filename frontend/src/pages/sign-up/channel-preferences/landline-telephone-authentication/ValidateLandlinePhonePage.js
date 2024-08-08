@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import ValidateLandlineLayout from '../../../../common-layouts/landline/ValidateLandlineLayout'
 
-export default function ValidateLandlinePhonePage() {
+export default function ValidateLandlinePhonePage () {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {

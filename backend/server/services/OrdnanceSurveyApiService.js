@@ -6,7 +6,7 @@ const axios = require('axios')
 
 const osPostCodeApiCall = async (postCode) => {
   let responseData
-  const osApiKey = await getSecretKeyValue('nws/website/osApiKey', 'osApiKey')
+  const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
   const url = `https://api.os.uk/search/places/v1/postcode?postcode=${postCode}&key=${osApiKey}&output_srs=EPSG:4326`
 
   try {
@@ -41,7 +41,7 @@ const osPostCodeApiCall = async (postCode) => {
 
 const osFindNameApiCall = async (name) => {
   let responseData
-  const osApiKey = await getSecretKeyValue('nws/website/osApiKey', 'osApiKey')
+  const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
   const url = `https://api.os.uk/search/names/v1/find?query=${name}&key=${osApiKey}`
   proj4.defs(
     'EPSG:27700',
@@ -90,11 +90,8 @@ const osFindNameApiCall = async (name) => {
 }
 
 const osOAuth2ApiCall = async () => {
-  const osApiKey = await getSecretKeyValue('nws/website/osApiKey', 'osApiKey')
-  const osApiSecret = await getSecretKeyValue(
-    'nws/website/osApiSecret',
-    'osApiSecret'
-  )
+  const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
+  const osApiSecret = await getSecretKeyValue('nws/os', 'apiSecret')
   const url = 'https://api.os.uk/oauth2/token/v1'
 
   const btoa = (str) => Buffer.from(str).toString('base64')

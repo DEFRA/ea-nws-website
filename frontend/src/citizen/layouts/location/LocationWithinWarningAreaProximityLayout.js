@@ -123,7 +123,7 @@ export default function LocationWithinWarningAreaProximityLayout ({
                         <Radio
                           key={index}
                           small
-                          label={index + 1 + '. ' + area.properties.ta_name}
+                          label={`${index + 1}. ${area.properties.TA_NAME}`}
                           name='floodAreas'
                           onChange={() => setFloodArea(area)}
                           checked={
@@ -163,7 +163,7 @@ export default function LocationWithinWarningAreaProximityLayout ({
           <div class='govuk-grid-column-two-thirds'>
             <Map
               types={[type]}
-              setFloodAreas={(areas) => setFloodAreas(areas)}
+              setFloodAreas={setFloodAreas}
             />
             <FloodWarningKey type={type} />
           </div>

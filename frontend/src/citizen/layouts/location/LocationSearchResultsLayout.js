@@ -51,6 +51,8 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
         selectedLocation.coordinates.longitude
       )
 
+      const isError = !warningArea && !alertArea
+
       const isInAlertArea = alertArea && isLocationInFloodArea(
         selectedLocation.coordinates.latitude,
         selectedLocation.coordinates.longitude,
@@ -76,7 +78,8 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
         isInWarningArea,
         isInAlertArea,
         isWithinWarningAreaProximity,
-        isWithinAlertAreaProximity
+        isWithinAlertAreaProximity,
+        isError
       )
     } finally {
       setLoading(false)

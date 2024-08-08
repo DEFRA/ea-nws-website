@@ -11,7 +11,8 @@ export default function LocationSearchResultsPage () {
     isInWarningArea,
     isInAlertArea,
     isWithinWarningAreaProximity,
-    isWithinAlertAreaProximity
+    isWithinAlertAreaProximity,
+    isError
   ) => {
     if (isInWarningArea) {
       // take user to severe warning screen and then to alerts screen for
@@ -28,6 +29,8 @@ export default function LocationSearchResultsPage () {
     } else if (isWithinAlertAreaProximity) {
       // users location is within distance to alert flood area
       navigate(`/manage-locations/add/location-in-proximity-area/${'alert'}`)
+    } else if (isError) {
+      navigate('/error')
     } else {
       // location isnt in danger area
       navigate('/manage-locations/add/no-danger')

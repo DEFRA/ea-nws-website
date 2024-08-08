@@ -59,6 +59,8 @@ export default function Map ({ types, setFloodAreas }) {
   // pass flood area options to parent component - used to show nearby flood areas
   useEffect(() => {
     if (alertArea && warningArea && setFloodAreas) {
+      console.log(warningArea.features);
+      console.log(alertArea.features)
       if (types.includes('severe')) {
         setFloodAreas(warningArea.features)
       } else if (types.includes('alert')) {

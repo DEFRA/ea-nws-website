@@ -9,7 +9,10 @@ import Header from '../../../../gov-uk-components/Header'
 import Radio from '../../../../gov-uk-components/Radio'
 import { setCurrentContact, setProfile } from '../../../../redux/userSlice'
 import { backendCall } from '../../../../services/BackendService'
-import { addUnverifiedContact } from '../../../../services/ProfileServices'
+import {
+  addUnverifiedContact,
+  addVerifiedContact
+} from '../../../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../../services/validations/PhoneValidation'
 export default function SelectAlternativeLandlinePage() {
@@ -28,7 +31,6 @@ export default function SelectAlternativeLandlinePage() {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-
     const phoneValidationErrors = phoneValidation(
       selectedNumber,
       'mobileAndLandline'
@@ -41,11 +43,7 @@ export default function SelectAlternativeLandlinePage() {
         : phoneValidationErrors
     )
     if (validationError === '') {
-      let normalisedPhoneNumber = ''
-      if (selectedNumber !== '') {
-        normalisedPhoneNumber = normalisePhoneNumber(selectedNumber)
-      }
-
+      const normalisedPhoneNumber = normalisePhoneNumber(selectedNumber)
       const dataToSend = { msisdn: normalisedPhoneNumber, authToken }
       const { errorMessage } = await backendCall(
         dataToSend,
@@ -55,16 +53,20 @@ export default function SelectAlternativeLandlinePage() {
       if (errorMessage !== null) {
         setError(errorMessage)
       } else {
-        dispatch(
-          setProfile(
-            addUnverifiedContact(profile, 'homePhones', normalisedPhoneNumber)
-          )
-        )
-        dispatch(setCurrentContact(normalisedPhoneNumber))
-        navigate('/signup/contactpreferences/landline/validate')
         if (verifiedMobileNumbers.includes(normalisedPhoneNumber)) {
+          dispatch(
+            setProfile(
+              addVerifiedContact(profile, 'homePhones', normalisedPhoneNumber)
+            )
+          )
           navigate('/signup/accountname/add')
         } else {
+          dispatch(setCurrentContact(normalisedPhoneNumber))
+          dispatch(
+            setProfile(
+              addUnverifiedContact(profile, 'homePhones', normalisedPhoneNumber)
+            )
+          )
           navigate('/signup/contactpreferences/landline/validate')
         }
       }

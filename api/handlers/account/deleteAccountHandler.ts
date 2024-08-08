@@ -13,6 +13,7 @@ async function getDeleteAccount(
     console.log('invalid credentials, responding 101')
     return res.response(responseCodes.UNAUTHORIZED).code(500)
   }
+  return res.response(responseCodes.SUCCESS)
 }
 
 module.exports = { getDeleteAccount }

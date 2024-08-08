@@ -1,3 +1,4 @@
+const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
@@ -12,7 +13,15 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        return h.response({ status: 200 })
+        const { authToken } = request.payload
+
+        if (authToken) {
+          const response = await apiCall(
+            { authToken: authToken },
+            'member/deleteAccount'
+          )
+          return h.response(response)
+        }
       } catch (error) {
         return createGenericErrorResponse(h)
       }

@@ -6,7 +6,7 @@ index = "http://localhost:3000/index"
 url = "http://localhost:3000/account/delete"
 previous_url = "http://localhost:3000/account"
 next_url = "http://localhost:3000/account/delete/confirm"
-sleep=3
+sleep=1
 
 def check_exists_by_xpath(browser, xpath):
     try:
@@ -88,11 +88,12 @@ def test_other_option_selected_no_text(get_browser):
 
     # Select 'Other option' without any text
     input_xpath = f"//input[@value='Other']"
-    browser.find_element(By.XPATH, input_xpath).click()
-    
+    input_element = browser.find_element(By.XPATH, input_xpath)
+    browser.execute_script("arguments[0].click();", input_element)  
     time.sleep(sleep)
     input_xpath = f"//input[@name='Reason for deleting account']"
-    browser.find_element(By.XPATH, input_xpath).clear()
+    input_element = browser.find_element(By.XPATH, input_xpath)
+    browser.execute_script("arguments[0].value='';", input_element)
     click_button(browser, 'Delete account')
  
     # Checks
@@ -107,11 +108,14 @@ def test_other_option_selected_long_text(get_browser):
 
     # Select 'Other option' with long text
     input_xpath = f"//input[@value='Other']"
-    browser.find_element(By.XPATH, input_xpath).click()
+    input_element = browser.find_element(By.XPATH, input_xpath)
+    browser.execute_script("arguments[0].click();", input_element)  
     time.sleep(sleep)
     input_xpath = f"//input[@name='Reason for deleting account']"
-    sampleText = "A" * 2001
-    browser.find_element(By.XPATH, input_xpath).send_keys(sampleText)
+    longText = "A" * 2001
+    input_element = browser.find_element(By.XPATH, input_xpath)
+    input_element.send_keys(longText)
+    browser.execute_script("arguments[0].value='';", input_element)
     click_button(browser, 'Delete account')
  
     # Checks
@@ -126,10 +130,13 @@ def test_other_option_selected_valid_text(get_browser):
 
     # Select 'Other option' with valid text
     input_xpath = f"//input[@value='Other']"
-    browser.find_element(By.XPATH, input_xpath).click()
+    input_element= browser.find_element(By.XPATH, input_xpath)
+    browser.execute_script("arguments[0].click();", input_element)  
     time.sleep(sleep)
     input_xpath = f"//input[@name='Reason for deleting account']"
-    browser.find_element(By.XPATH, input_xpath).send_keys("test")
+    input_element = browser.find_element(By.XPATH, input_xpath)
+    input_element.send_keys("short text")
+    browser.execute_script("arguments[0].value='';", input_element)
     click_button(browser, 'Delete account')
 
     # Checks
@@ -140,7 +147,7 @@ def test_other_option_selected_valid_text(get_browser):
 def test_further_info_long_text(get_browser):
     browser = setup_testcase(get_browser, 1)
 
-    # Select 'Other option' with long text
+    # Select option with long further info text
     browser.find_element(By.CLASS_NAME, "govuk-radios__input").click()
     time.sleep(sleep)
     sampleText = "A" * 2001

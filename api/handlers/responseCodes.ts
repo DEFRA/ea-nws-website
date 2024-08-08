@@ -1,9 +1,6 @@
 module.exports = {
   SUCCESS: {},
-  UNKNOWN_EMAIL: {
-    code: 106,
-    desc: 'Email address not recognized - check and try again'
-  },
+  UNKNOWN_EMAIL: { code: 106, desc: 'unknown email' },
   INVALID_TOKEN: { code: 101, desc: 'Invalid Token' },
   INVALID_CODE: { code: 101, desc: 'Invalid Code' },
   DUPLICATE_EMAIL: { code: 107, desc: 'email already registered' },

@@ -107,14 +107,12 @@ export default function ValidateLandlineLayout({
     if (signUpComplete) {
       DifferentHomePhone(homePhone)
     } else {
-      console.log('HERE')
       const unverifiedMobile =
         profile.unverified.mobilePhones[
           profile.unverified.mobilePhones.length - 1
         ]
       const verifiedMobile =
         profile.mobilePhones[profile.mobilePhones.length - 1]
-      console.log('broke')
       if (unverifiedMobile === undefined && verifiedMobile === undefined) {
         DifferentHomePhone(homePhone)
       } else {

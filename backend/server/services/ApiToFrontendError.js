@@ -19,6 +19,6 @@ module.exports = {
   verifyHomePhoneValidate_101:
     'The code you have entered has expired - please request a new code',
 
-  // Error for deleted account
-  deleteAccount_101: 'Email address not recognized - check and try again'
+  // Error for unrecognised account
+  signinStart_106: 'Email address not recognised - check and try again'
 }

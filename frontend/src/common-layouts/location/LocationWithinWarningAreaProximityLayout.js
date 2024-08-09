@@ -1,6 +1,6 @@
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useMemo, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
@@ -76,7 +76,6 @@ export default function LocationWithinWarningAreaProximityLayout ({
     }
   }
 
-  const map = useMemo(() => (<Map types={[type]} mobileView interactive />), [type])
 
   return (
     <>
@@ -89,7 +88,7 @@ export default function LocationWithinWarningAreaProximityLayout ({
               size='xl'
               onClick={() => setShowMobileMap(false)}
             />
-            {map}
+            <Map types={[type]} mobileView interactive />
             {selectedFloodWarningArea || selectedFloodAlertArea
               ? (
                 <div className='govuk-body map-confirm-location-box-mobile-view'>

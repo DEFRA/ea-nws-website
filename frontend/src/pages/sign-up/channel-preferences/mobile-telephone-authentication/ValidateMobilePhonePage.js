@@ -3,13 +3,15 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import ValidateMobileLayout from '../../../../common-layouts/mobile/ValidateMobileLayout'
 
-export default function ValidateMobilePhone () {
+export default function ValidateMobilePhone() {
   const navigate = useNavigate()
-  const session = useSelector((state) => state.session)
+  const contactPreferences = useSelector(
+    (state) => state.session.contactPreferences
+  )
 
   const NavigateToNextPage = () => {
-    if (session.contactPreferences.includes('PhoneCall')) {
-      navigate('/signup/contactpreferences/landline/add')
+    if (contactPreferences.includes('PhoneCall')) {
+      navigate('/signup/contactpreferences/landline/alternative-landline')
     } else {
       navigate('/signup/accountname/add')
     }

@@ -16,18 +16,12 @@ export default function ValidateLandlinePhonePage() {
     navigate('/signup/contactpreferences/landline/add')
   }
 
-  const ContinueToAlreadyEnteredMobileOptions = () => {
-    navigate('/signup/contactpreferences/landline/alternative-landline')
-  }
   return (
     <ValidateLandlineLayout
       NavigateToNextPage={NavigateToNextPage}
       NavigateToPreviousPage={DifferentHomePhone}
       SkipValidation={SkipValidation}
       DifferentHomePhone={DifferentHomePhone}
-      ContinueToAlreadyEnteredMobileOptions={
-        ContinueToAlreadyEnteredMobileOptions
-      }
     />
   )
 }

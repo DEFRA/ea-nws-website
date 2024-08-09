@@ -22,8 +22,7 @@ export default function ValidateLandlineLayout({
   NavigateToNextPage,
   SkipValidation,
   DifferentHomePhone,
-  NavigateToPreviousPage,
-  ContinueToAlreadyEnteredMobileOptions
+  NavigateToPreviousPage
 }) {
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -35,9 +34,7 @@ export default function ValidateLandlineLayout({
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
-  const signUpComplete = profile.additionals.filter(
-    (c) => c.id === 'signUpComplete'
-  )[0]?.value
+
   // if error remove code sent notification
   useEffect(() => {
     setCodeResent(false)
@@ -102,22 +99,7 @@ export default function ValidateLandlineLayout({
   const differentHomePhone = async (event) => {
     event.preventDefault()
     removeLandlineFromProfile()
-
-    if (signUpComplete) {
-      DifferentHomePhone()
-    } else {
-      const unverifiedMobile =
-        profile.unverified.mobilePhones[
-          profile.unverified.mobilePhones.length - 1
-        ]
-      const verifiedMobile =
-        profile.mobilePhones[profile.mobilePhones.length - 1]
-      if (unverifiedMobile === undefined && verifiedMobile === undefined) {
-        DifferentHomePhone()
-      } else {
-        ContinueToAlreadyEnteredMobileOptions()
-      }
-    }
+    DifferentHomePhone()
   }
 
   const backLink = async (event) => {

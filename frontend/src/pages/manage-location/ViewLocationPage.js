@@ -35,7 +35,7 @@ const floodAlertCardDetails = (
   </>
 )
 
-export default function ViewLocationPage() {
+export default function ViewLocationPage () {
   const navigate = useNavigate()
   const location = useLocation()
   const { type } = useParams()
@@ -127,7 +127,7 @@ export default function ViewLocationPage() {
                               id='alert-on'
                               name='alert'
                               type='radio'
-                              checked={true}
+                              checked
                               value='on'
                             />
                             <label

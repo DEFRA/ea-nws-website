@@ -6,10 +6,10 @@ import {
 } from '@react-leaflet/core'
 import L from 'leaflet'
 
-export default function TileLayerWithHeader({ url, token, bounds }) {
-  function CreateTileLayerWithHeader({ url, ...options }, context) {
+export default function TileLayerWithHeader ({ url, token, bounds }) {
+  function CreateTileLayerWithHeader ({ url, ...options }, context) {
     L.TileLayer.WithHeader = L.TileLayer.extend({
-      createTile(coords, done) {
+      createTile (coords, done) {
         const url = this.getTileUrl(coords)
         const img = document.createElement('img')
         const token = this.options.token
@@ -29,7 +29,7 @@ export default function TileLayerWithHeader({ url, token, bounds }) {
     return createElementObject(layer, context)
   }
 
-  function updateTileLayerWithHeader(layer, props, prevProps) {
+  function updateTileLayerWithHeader (layer, props, prevProps) {
     updateGridLayer(layer, props, prevProps)
     const { url } = props
     if (url != null && url !== prevProps.url) {

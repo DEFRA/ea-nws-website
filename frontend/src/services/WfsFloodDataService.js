@@ -3,7 +3,7 @@ import L from 'leaflet'
 import leafletPip from 'leaflet-pip'
 
 export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
-  //const bboxKM = 0.5 // size of bounding box from centre in KM
+  // const bboxKM = 0.5 // size of bounding box from centre in KM
 
   // warning areas
   let baseWFSURL =
@@ -110,7 +110,7 @@ export const getCoordsOfFloodArea = (area) => {
   return firstLatLngCoords
 }
 
-function getFirstCoordinates(nestedArray) {
+function getFirstCoordinates (nestedArray) {
   let current = nestedArray
   while (Array.isArray(current[0])) {
     current = current[0]
@@ -118,7 +118,7 @@ function getFirstCoordinates(nestedArray) {
   return { latitude: current[1], longitude: current[0] }
 }
 
-function checkPointInPolygon(lat, lng, geojson) {
+function checkPointInPolygon (lat, lng, geojson) {
   const point = L.latLng(lat, lng)
 
   // Check each area in the GeoJSON data
@@ -135,7 +135,7 @@ function checkPointInPolygon(lat, lng, geojson) {
   return false
 }
 
-function calculateBoundingBox(centerLat, centerLng, distanceKm) {
+function calculateBoundingBox (centerLat, centerLng, distanceKm) {
   const EARTH_RADIUS_KM = 6371 // Earth radius in kilometers
 
   // Convert center latitude and longitude to radians

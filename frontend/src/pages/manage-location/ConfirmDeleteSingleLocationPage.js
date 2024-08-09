@@ -11,7 +11,7 @@ import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { removeLocation } from '../../services/ProfileServices'
 
-export default function ConfirmDeleteSingleLocationPage() {
+export default function ConfirmDeleteSingleLocationPage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)

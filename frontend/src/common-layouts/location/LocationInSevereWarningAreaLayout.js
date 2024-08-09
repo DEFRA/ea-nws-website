@@ -21,7 +21,7 @@ import {
   getCoordsOfFloodArea
 } from '../../services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout({
+export default function LocationInSevereWarningAreaLayout ({
   continueToNextPage
 }) {
   const navigate = useNavigate()

@@ -16,20 +16,20 @@ const FloodWarningKey = ({ type, mobileView }) => {
   )
 
   return (
-    <div className={`flood-warning-key`}>
+    <div className='flood-warning-key'>
       {type === 'both' && (
         <div className='key-items'>
           <b className='key-title'>Key</b>
           <FontAwesomeIcon
             icon={faCircle}
             size={mobileView ? '2xl' : 'xl'}
-            className={`icon severe`}
+            className='icon severe'
           />
           <span>Severe flood warnings and flood warnings area</span>
           <FontAwesomeIcon
             icon={faCircle}
             size={mobileView ? '2xl' : 'xl'}
-            className={`icon alert`}
+            className='icon alert'
           />
           <span>Flood alert area</span>
         </div>

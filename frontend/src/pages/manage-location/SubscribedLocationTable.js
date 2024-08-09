@@ -12,7 +12,7 @@ import {
 } from '../../redux/userSlice'
 import { getSurroundingFloodAreas } from '../../services/WfsFloodDataService'
 
-export default function SubscribedLocationTable() {
+export default function SubscribedLocationTable () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(1)
@@ -63,7 +63,10 @@ export default function SubscribedLocationTable() {
       location.name,
       alertArea.features
     )
-    if (locationIsWarningArea.length == 0 && locationIsAlertArea.length == 0) {
+    if (
+      locationIsWarningArea.length === 0 &&
+      locationIsAlertArea.length === 0
+    ) {
       // TODO - this will need updated when geosafe updates locations to have alert categories
       dispatch(setSelectedLocation(location))
       navigate(`/manage-locations/view/${'both'}`)

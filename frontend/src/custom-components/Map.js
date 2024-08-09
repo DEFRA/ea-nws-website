@@ -24,7 +24,7 @@ import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { backendCall } from '../services/BackendService'
 import TileLayerWithHeader from './TileLayerWithHeader'
 
-export default function Map({
+export default function Map ({
   types,
   setFloodAreas,
   mobileView,
@@ -57,7 +57,7 @@ export default function Map({
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData() {
+    async function fetchFloodAreaData () {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude
@@ -211,7 +211,7 @@ export default function Map({
 
   L.Marker.prototype.options.icon = DefaultIcon
 
-  async function getApiKey() {
+  async function getApiKey () {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
     setApiKey(data.access_token)
   }
@@ -266,7 +266,7 @@ export default function Map({
     [apiKey]
   )
 
-  function SetMapBoundsToShowFullFloodArea() {
+  function SetMapBoundsToShowFullFloodArea () {
     const map = useMap()
     useEffect(() => {
       if (
@@ -317,12 +317,10 @@ export default function Map({
             data={warningArea}
             style={{ color: '#f70202' }}
             onEachFeature={function (feature, layer) {
-              {
-                interactive &&
-                  layer.on({
-                    click: () => dispatch(setSelectedFloodWarningArea(feature))
-                  })
-              }
+              interactive &&
+                layer.on({
+                  click: () => dispatch(setSelectedFloodWarningArea(feature))
+                })
             }}
             ref={(el) => {
               warningAreaRef.current = el
@@ -335,12 +333,10 @@ export default function Map({
             data={alertArea}
             style={{ color: '#ffa200' }}
             onEachFeature={function (feature, layer) {
-              {
-                interactive &&
-                  layer.on({
-                    click: () => dispatch(setSelectedFloodAlertArea(feature))
-                  })
-              }
+              interactive &&
+                layer.on({
+                  click: () => dispatch(setSelectedFloodAlertArea(feature))
+                })
             }}
             ref={(el) => {
               alertAreaRef.current = el

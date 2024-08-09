@@ -111,6 +111,8 @@ export default function SelectAlternativeLandlinePage() {
                       <p className='govuk-error-message'>{validationError}</p>
                     )}
                     {mobileNumbers.map((mobileNumber) => (
+                      <div style={{display: 'block'}} >
+                      <div className='govuk-!-padding-bottom-4' style={{display: 'inline-flex', alignItems: 'center'}}>
                       <Radio
                         key={mobileNumber}
                         label={mobileNumber}
@@ -123,6 +125,13 @@ export default function SelectAlternativeLandlinePage() {
                         }}
                         conditional={selectedOption === 'mobileNumber'}
                       />
+                      {unverifiedMobileNumbers.includes(mobileNumber) && (
+                      <strong className='govuk-tag govuk-tag--red'>
+                        Unconfirmed
+                      </strong>
+                    )}
+                  </div>
+                  </div>
                     ))}
                     <Radio
                       label='A different number'
@@ -133,7 +142,7 @@ export default function SelectAlternativeLandlinePage() {
                         setSelectedNumber('')
                       }}
                       conditional={selectedOption === 'otherNumber'}
-                      conditionalQuestion='Uk landline or mobile telephone number'
+                      conditionalQuestion='UK landline or mobile telephone number'
                       conditionalInput={(val) => setSelectedNumber(val)}
                       conditionalError={error}
                     />

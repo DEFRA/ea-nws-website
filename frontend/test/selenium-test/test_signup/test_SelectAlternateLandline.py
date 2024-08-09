@@ -33,10 +33,6 @@ def setup_validate_test(get_browser):
     browser.find_element(By.ID,"govuk-text-input").send_keys("123456")
     browser.find_element(By.CLASS_NAME,"govuk-button").click()
     time.sleep(1)
-    browser.find_element(By.ID,"govuk-text-input").send_keys("+441410000001")
-    browser.find_element(By.CLASS_NAME,"govuk-button").click()
-    browser.find_element(By.LINK_TEXT, "Enter a different telephone number").click()
-    time.sleep(1)
     return browser
 
 def test_page_load(get_browser):

@@ -12,7 +12,7 @@ import {
   setRegistrations
 } from '../redux/userSlice'
 
-export default function IndexPage () {
+export default function IndexPage() {
   const dispatch = useDispatch()
   const [mockSessionActive, setmockSessionActive] = useState(false)
   const [emptyProfileActive, setEmptyProfileActive] = useState(false)
@@ -34,12 +34,13 @@ export default function IndexPage () {
     },
     pois: [
       {
-        name: 'Big Ben, London SW1A 0AA',
-        address: 'UPRN',
+        name: 'House Of Commons, Houses Of Parliament, London, SW1A 0AA',
+        address: '10033540874',
         coordinates: {
-          latitude: 51.5007,
-          longitude: 0.1246
-        }
+          latitude: 51.4998415,
+          longitude: -0.1246377
+        },
+        categories: ['severe', 'alert']
       }
     ]
   }
@@ -226,7 +227,7 @@ export default function IndexPage () {
     ]
   }
 
-  function mockSession (profile) {
+  function mockSession(profile) {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
       const contactPreferences = ['Text']
@@ -275,7 +276,7 @@ export default function IndexPage () {
     }
   }
 
-  function mockEmptyProfileWithNoAuthentication () {
+  function mockEmptyProfileWithNoAuthentication() {
     if (!emptyProfileActive) {
       const emptyProfile = {
         id: '',

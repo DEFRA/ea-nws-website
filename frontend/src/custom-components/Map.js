@@ -24,7 +24,12 @@ import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { backendCall } from '../services/BackendService'
 import TileLayerWithHeader from './TileLayerWithHeader'
 
-export default function Map ({ types, setFloodAreas, mobileView }) {
+export default function Map({
+  types,
+  setFloodAreas,
+  mobileView,
+  interactive = false
+}) {
   const dispatch = useDispatch()
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
@@ -52,7 +57,7 @@ export default function Map ({ types, setFloodAreas, mobileView }) {
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData () {
+    async function fetchFloodAreaData() {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude
@@ -82,11 +87,13 @@ export default function Map ({ types, setFloodAreas, mobileView }) {
       (selectedFloodWarningArea || selectedFloodAlertArea) &&
       showOnlySelectedFloodArea
     ) {
+      // user has decided on a flood area - show only this area
       showSelectedArea(selectedFloodWarningArea, selectedFloodAlertArea)
     } else if (
       (selectedFloodWarningArea || selectedFloodAlertArea) &&
       !showOnlySelectedFloodArea
     ) {
+      // user is still deciding what area to pick
       HighlightSelectedArea(selectedFloodWarningArea, selectedFloodAlertArea)
     }
   }, [
@@ -204,7 +211,7 @@ export default function Map ({ types, setFloodAreas, mobileView }) {
 
   L.Marker.prototype.options.icon = DefaultIcon
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
     setApiKey(data.access_token)
   }
@@ -249,11 +256,42 @@ export default function Map ({ types, setFloodAreas, mobileView }) {
   ]
 
   const tileLayerWithHeader = useMemo(
-    () => <TileLayerWithHeader
-      url={url + '?' + parameterString}
-      token={apiKey}
-      bounds={maxBounds}
-          />, [apiKey])
+    () => (
+      <TileLayerWithHeader
+        url={url + '?' + parameterString}
+        token={apiKey}
+        bounds={maxBounds}
+      />
+    ),
+    [apiKey]
+  )
+
+  function SetMapBoundsToShowFullFloodArea() {
+    const map = useMap()
+    useEffect(() => {
+      if (
+        (selectedFloodWarningArea || selectedFloodAlertArea) &&
+        showOnlySelectedFloodArea
+      ) {
+        // user has decided on a flood area - show only this area
+        showSelectedArea(selectedFloodWarningArea, selectedFloodAlertArea)
+        // fit the area to the map
+        if (types.includes('severe')) {
+          const layer = L.geoJSON(selectedFloodWarningArea)
+          const bounds = layer.getBounds()
+          map.fitBounds(bounds)
+        } else if (types.includes('alert')) {
+          const layer = L.geoJSON(selectedFloodAlertArea)
+          const bounds = layer.getBounds()
+          map.fitBounds(bounds)
+        }
+      }
+    }, [
+      selectedFloodWarningArea,
+      selectedFloodAlertArea,
+      showOnlySelectedFloodArea
+    ])
+  }
 
   return (
     <>
@@ -267,18 +305,24 @@ export default function Map ({ types, setFloodAreas, mobileView }) {
         className={mobileView ? 'map-mobile-view' : 'map-container'}
       >
         {apiKey && tileLayerWithHeader}
+        {showOnlySelectedFloodArea && <SetMapBoundsToShowFullFloodArea />}
         {!mobileView && <ZoomControl position='bottomright' />}
-        <Marker position={[latitude, longitude]} interactive={false}>
-          <Popup />
-        </Marker>
+        {!showOnlySelectedFloodArea && (
+          <Marker position={[latitude, longitude]} interactive={false}>
+            <Popup />
+          </Marker>
+        )}
         {warningArea && types.includes('severe') && (
           <GeoJSON
             data={warningArea}
             style={{ color: '#f70202' }}
             onEachFeature={function (feature, layer) {
-              layer.on({
-                click: () => dispatch(setSelectedFloodWarningArea(feature))
-              })
+              {
+                interactive &&
+                  layer.on({
+                    click: () => dispatch(setSelectedFloodWarningArea(feature))
+                  })
+              }
             }}
             ref={(el) => {
               warningAreaRef.current = el
@@ -291,9 +335,12 @@ export default function Map ({ types, setFloodAreas, mobileView }) {
             data={alertArea}
             style={{ color: '#ffa200' }}
             onEachFeature={function (feature, layer) {
-              layer.on({
-                click: () => dispatch(setSelectedFloodAlertArea(feature))
-              })
+              {
+                interactive &&
+                  layer.on({
+                    click: () => dispatch(setSelectedFloodAlertArea(feature))
+                  })
+              }
             }}
             ref={(el) => {
               alertAreaRef.current = el

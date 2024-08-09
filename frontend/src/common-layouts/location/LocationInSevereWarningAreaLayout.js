@@ -21,7 +21,7 @@ import {
   getCoordsOfFloodArea
 } from '../../services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout ({
+export default function LocationInSevereWarningAreaLayout({
   continueToNextPage
 }) {
   const navigate = useNavigate()
@@ -38,6 +38,7 @@ export default function LocationInSevereWarningAreaLayout ({
   const selectedFloodWarningArea = useSelector(
     (state) => state.session.selectedFloodWarningArea
   )
+  console.log('selectedFloodWarningArea', selectedFloodWarningArea)
 
   const handleSubmit = async () => {
     if (isUserInNearbyTargetFlowpath) {
@@ -139,7 +140,13 @@ export default function LocationInSevereWarningAreaLayout ({
                   You can get severe flood warnings and flood warnings for this
                   location
                 </h1>
-                <InsetText text={selectedLocation.name} />
+                <InsetText
+                  text={
+                    isUserInNearbyTargetFlowpath
+                      ? selectedFloodWarningArea.properties.ta_name
+                      : selectedLocation.name
+                  }
+                />
               </div>
               <div className='govuk-grid-column-three-quarters'>
                 <Map types={['severe']} />

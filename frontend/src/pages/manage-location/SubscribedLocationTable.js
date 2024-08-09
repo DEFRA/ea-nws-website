@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
@@ -42,15 +42,19 @@ export default function SubscribedLocationTable() {
     </div>
   )
 
+  useEffect(() => {
+    dispatch(setSelectedLocation(null))
+    dispatch(setShowOnlySelectedFloodArea(false))
+    dispatch(setSelectedFloodWarningArea(null))
+    dispatch(setSelectedFloodAlertArea(null))
+  }, [])
+
   const viewSelectedLocation = async (location) => {
-    console.log('location', location)
     const { alertArea, warningArea } = await getSurroundingFloodAreas(
       location.coordinates.latitude,
       location.coordinates.longitude,
-      0.01
+      0.5
     )
-    console.log('alertArea', alertArea)
-    console.log('warningArea', warningArea)
     const locationIsWarningArea = isSavedLocationTargetArea(
       location.name,
       warningArea.features
@@ -59,29 +63,26 @@ export default function SubscribedLocationTable() {
       location.name,
       alertArea.features
     )
-    console.log('locationIsWarningArea', locationIsWarningArea)
-    console.log('locationIsAlertArea', locationIsAlertArea)
-    if (!locationIsWarningArea || !locationIsAlertArea) {
-      dispatch(setSelectedLocation(location.coords))
+    if (locationIsWarningArea.length == 0 && locationIsAlertArea.length == 0) {
+      // TODO - this will need updated when geosafe updates locations to have alert categories
+      dispatch(setSelectedLocation(location))
       navigate(`/manage-locations/view/${'both'}`)
     } else {
       dispatch(setShowOnlySelectedFloodArea(true))
       dispatch(setSelectedLocation(location))
-      if (locationIsWarningArea) {
+      if (locationIsWarningArea.length > 0) {
         dispatch(setSelectedFloodWarningArea(locationIsWarningArea[0]))
         navigate(`/manage-locations/view/${'severe'}`)
-      } else if (locationIsAlertArea) {
+      } else if (locationIsAlertArea.length > 0) {
+        console.log('hit here')
         dispatch(setSelectedFloodAlertArea(locationIsAlertArea[0]))
         navigate(`/manage-locations/view/${'alert'}`)
       }
     }
-    navigate('/manage-locations/view')
   }
 
   const isSavedLocationTargetArea = (locationName, areas) => {
-    return areas.filter((area) => {
-      return locationName === area.properties.ta_name
-    })
+    return areas.filter((area) => locationName === area.properties.ta_name)
   }
 
   const locationTable = () => {
@@ -107,8 +108,7 @@ export default function SubscribedLocationTable() {
           <Link
             to='/manage-locations/remove'
             state={{
-              address: location.address,
-              coordinates: location.coordinates
+              name: location.name
             }}
             className='govuk-link'
           >

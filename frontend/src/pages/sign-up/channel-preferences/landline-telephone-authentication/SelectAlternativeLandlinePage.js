@@ -9,10 +9,7 @@ import Header from '../../../../gov-uk-components/Header'
 import Radio from '../../../../gov-uk-components/Radio'
 import { setCurrentContact, setProfile } from '../../../../redux/userSlice'
 import { backendCall } from '../../../../services/BackendService'
-import {
-  addUnverifiedContact,
-  addVerifiedContact
-} from '../../../../services/ProfileServices'
+import { addUnverifiedContact } from '../../../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../../services/validations/PhoneValidation'
 export default function SelectAlternativeLandlinePage() {
@@ -43,6 +40,11 @@ export default function SelectAlternativeLandlinePage() {
     if (validationError === '') {
       const normalisedPhoneNumber = normalisePhoneNumber(selectedNumber)
       const dataToSend = { msisdn: normalisedPhoneNumber, authToken }
+      const updatedProfile = dispatch(
+        setProfile(
+          addUnverifiedContact(profile, 'homePhones', normalisedPhoneNumber)
+        )
+      )
       const { errorMessage } = await backendCall(
         dataToSend,
         'api/add_contact/landline/add',
@@ -51,7 +53,8 @@ export default function SelectAlternativeLandlinePage() {
       if (errorMessage !== null) {
         setError(errorMessage)
       } else {
-        if (verifiedMobileNumbers.includes(normalisedPhoneNumber)) {
+        // Add in additional ticket that doesn't require to verify an already validated number
+        /*if (verifiedMobileNumbers.includes(normalisedPhoneNumber)) {
           const updatedProfile = dispatch(
             setProfile(
               addVerifiedContact(profile, 'homePhones', normalisedPhoneNumber)
@@ -59,16 +62,10 @@ export default function SelectAlternativeLandlinePage() {
           )
           updateBackEndProfile(updatedProfile)
           navigate('/signup/accountname/add')
-        } else {
-          dispatch(setCurrentContact(normalisedPhoneNumber))
-          const updatedProfile = dispatch(
-            setProfile(
-              addUnverifiedContact(profile, 'homePhones', normalisedPhoneNumber)
-            )
-          )
-          updateBackEndProfile(updatedProfile)
-          navigate('/signup/contactpreferences/landline/validate')
-        }
+        } else {*/
+        dispatch(setCurrentContact(normalisedPhoneNumber))
+        updateBackEndProfile(updatedProfile)
+        navigate('/signup/contactpreferences/landline/validate')
       }
     }
   }

@@ -9,7 +9,10 @@ import Header from '../../../../gov-uk-components/Header'
 import Radio from '../../../../gov-uk-components/Radio'
 import { setCurrentContact, setProfile } from '../../../../redux/userSlice'
 import { backendCall } from '../../../../services/BackendService'
-import { addUnverifiedContact } from '../../../../services/ProfileServices'
+import {
+  addUnverifiedContact,
+  addVerifiedContact
+} from '../../../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../../services/validations/PhoneValidation'
 export default function SelectAlternativeLandlinePage() {
@@ -39,35 +42,35 @@ export default function SelectAlternativeLandlinePage() {
     )
     if (validationError === '') {
       const normalisedPhoneNumber = normalisePhoneNumber(selectedNumber)
-      const dataToSend = { msisdn: normalisedPhoneNumber, authToken }
-      const updatedProfile = dispatch(
-        setProfile(
-          addUnverifiedContact(profile, 'homePhones', normalisedPhoneNumber)
-        )
-      )
-      const updateProfileError = await updateBackEndProfile(updatedProfile)
-      if (updateProfileError !== null) {
-        setError(updateProfileError)
-        return
-      }
-      const { errorMessage } = await backendCall(
-        dataToSend,
-        'api/add_contact/landline/add',
-        navigate
-      )
-      if (errorMessage !== null) {
-        setError(errorMessage)
-      } else {
-        // Add in additional ticket that doesn't require to verify an already validated number
-        /*if (verifiedMobileNumbers.includes(normalisedPhoneNumber)) {
-          const updatedProfile = dispatch(
-            setProfile(
-              addVerifiedContact(profile, 'homePhones', normalisedPhoneNumber)
-            )
+      if (verifiedMobileNumbers.includes(normalisedPhoneNumber)) {
+        const updatedProfile = dispatch(
+          setProfile(
+            addVerifiedContact(profile, 'homePhones', normalisedPhoneNumber)
           )
-          updateBackEndProfile(updatedProfile)
-          navigate('/signup/accountname/add')
-        } else {*/
+        )
+        updateBackEndProfile(updatedProfile)
+        navigate('/signup/accountname/add')
+      } else {
+        const updatedProfile = dispatch(
+          setProfile(
+            addUnverifiedContact(profile, 'homePhones', normalisedPhoneNumber)
+          )
+        )
+        const updateProfileError = await updateBackEndProfile(updatedProfile)
+        if (updateProfileError !== null) {
+          setError(updateProfileError)
+          return
+        }
+        const dataToSend = { msisdn: normalisedPhoneNumber, authToken }
+        const { errorMessage } = await backendCall(
+          dataToSend,
+          'api/add_contact/landline/add',
+          navigate
+        )
+        if (errorMessage !== null) {
+          setError(errorMessage)
+          return
+        }
         dispatch(setCurrentContact(normalisedPhoneNumber))
         navigate('/signup/contactpreferences/landline/validate')
       }

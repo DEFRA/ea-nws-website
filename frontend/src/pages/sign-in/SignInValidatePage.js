@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import ExpiredCodeLayout from '../../common-layouts/expired-code/ExpiredCodeLayout'
+import NotCompletedSigningUpLayout from '../../common-layouts/sign-up/NotCompletedSignUpLayout'
 import Button from '../../gov-uk-components/Button'
 import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
@@ -11,12 +12,12 @@ import InsetText from '../../gov-uk-components/InsetText'
 import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 import {
   setAuthToken,
+  setContactPreferences,
   setProfile,
   setRegistrations
 } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
-import NotCompletedSigningUpLayout from '../../common-layouts/sign-up/NotCompletedSignUpLayout'
 
 export default function SignInValidatePage () {
   const location = useLocation()
@@ -58,6 +59,11 @@ export default function SignInValidatePage () {
         dispatch(setAuthToken(data.authToken))
         dispatch(setProfile(data.profile))
         dispatch(setRegistrations(data.registrations))
+        dispatch(setContactPreferences([
+          data.profile.emails.length !== 0 && 'Email Address',
+          data.profile.homePhones.length !== 0 && 'PhoneCall',
+          data.profile.mobilePhones.length !== 0 && 'Text'
+        ]))
 
         const isSignUpComplete = data.profile.additionals.filter(c => c.id === 'signUpComplete')[0]?.value
         const lastAccessedUrl = data.profile.additionals.filter(c => c.id === 'lastAccessedUrl')[0]?.value

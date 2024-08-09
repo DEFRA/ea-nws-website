@@ -45,6 +45,11 @@ export default function SelectAlternativeLandlinePage() {
           addUnverifiedContact(profile, 'homePhones', normalisedPhoneNumber)
         )
       )
+      const updateProfileError = updateBackEndProfile(updatedProfile)
+      if (updateProfileError !== null) {
+        setError(errorMessage)
+        return
+      }
       const { errorMessage } = await backendCall(
         dataToSend,
         'api/add_contact/landline/add',
@@ -64,7 +69,6 @@ export default function SelectAlternativeLandlinePage() {
           navigate('/signup/accountname/add')
         } else {*/
         dispatch(setCurrentContact(normalisedPhoneNumber))
-        updateBackEndProfile(updatedProfile)
         navigate('/signup/contactpreferences/landline/validate')
       }
     }
@@ -72,7 +76,13 @@ export default function SelectAlternativeLandlinePage() {
 
   const updateBackEndProfile = async (updatedProfile) => {
     const dataToSend = { profile: updatedProfile, authToken }
-    await backendCall(dataToSend, 'api/profile/update', navigate)
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/profile/update',
+      navigate
+    )
+
+    return errorMessage
   }
 
   return (
@@ -108,27 +118,33 @@ export default function SelectAlternativeLandlinePage() {
                       <p className='govuk-error-message'>{validationError}</p>
                     )}
                     {mobileNumbers.map((mobileNumber) => (
-                      <div style={{display: 'block'}} >
-                      <div className='govuk-!-padding-bottom-4' style={{display: 'inline-flex', alignItems: 'center'}}>
-                      <Radio
-                        key={mobileNumber}
-                        label={mobileNumber}
-                        value={mobileNumber}
-                        id={mobileNumber}
-                        name='phoneNumberRadio'
-                        onChange={(e) => {
-                          setSelectedOption(e.target.value)
-                          setSelectedNumber(mobileNumber)
-                        }}
-                        conditional={selectedOption === 'mobileNumber'}
-                      />
-                      {unverifiedMobileNumbers.includes(mobileNumber) && (
-                      <strong className='govuk-tag govuk-tag--red'>
-                        Unconfirmed
-                      </strong>
-                    )}
-                  </div>
-                  </div>
+                      <div style={{ display: 'block' }}>
+                        <div
+                          className='govuk-!-padding-bottom-4'
+                          style={{
+                            display: 'inline-flex',
+                            alignItems: 'center'
+                          }}
+                        >
+                          <Radio
+                            key={mobileNumber}
+                            label={mobileNumber}
+                            value={mobileNumber}
+                            id={mobileNumber}
+                            name='phoneNumberRadio'
+                            onChange={(e) => {
+                              setSelectedOption(e.target.value)
+                              setSelectedNumber(mobileNumber)
+                            }}
+                            conditional={selectedOption === 'mobileNumber'}
+                          />
+                          {unverifiedMobileNumbers.includes(mobileNumber) && (
+                            <strong className='govuk-tag govuk-tag--red'>
+                              Unconfirmed
+                            </strong>
+                          )}
+                        </div>
+                      </div>
                     ))}
                     <Radio
                       label='A different number'

@@ -83,19 +83,7 @@ export default function Map ({
 
   // outline the selected flood area - used when user has chosen flood area from proximity
   useEffect(() => {
-    if (
-      (selectedFloodWarningArea || selectedFloodAlertArea) &&
-      showOnlySelectedFloodArea
-    ) {
-      // user has decided on a flood area - show only this area
-      showSelectedArea(selectedFloodWarningArea, selectedFloodAlertArea)
-    } else if (
-      (selectedFloodWarningArea || selectedFloodAlertArea) &&
-      !showOnlySelectedFloodArea
-    ) {
-      // user is still deciding what area to pick
-      HighlightSelectedArea(selectedFloodWarningArea, selectedFloodAlertArea)
-    }
+    showAreas()
   }, [
     selectedFloodWarningArea,
     selectedFloodAlertArea,
@@ -104,12 +92,14 @@ export default function Map ({
     alertAreaRefVisible
   ])
 
+
   const HighlightSelectedArea = (
     selectedFloodWarningArea,
     selectedFloodAlertArea
   ) => {
     if (warningAreaRefVisible && types.includes('severe')) {
       warningAreaRef.current.eachLayer((layer) => {
+        console.log('selected area properties: '+selectedFloodWarningArea.properties.gml_id)
         if (
           layer.feature.properties.gml_id ===
           selectedFloodWarningArea.properties.gml_id
@@ -185,6 +175,24 @@ export default function Map ({
       })
     }
   }
+
+  const showAreas = () => {
+    if (
+      (selectedFloodWarningArea || selectedFloodAlertArea) &&
+      showOnlySelectedFloodArea
+    ) {
+      // user has decided on a flood area - show only this area
+      showSelectedArea(selectedFloodWarningArea, selectedFloodAlertArea)
+    } else if (
+      (selectedFloodWarningArea || selectedFloodAlertArea) &&
+      !showOnlySelectedFloodArea
+    ) {
+      // user is still deciding what area to pick
+      HighlightSelectedArea(selectedFloodWarningArea, selectedFloodAlertArea)
+    }
+  }
+
+  showAreas()
   // reset the map to selected location
   const ResetMapButton = () => {
     const map = useMap()

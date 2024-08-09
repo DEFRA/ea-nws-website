@@ -45,9 +45,9 @@ export default function SelectAlternativeLandlinePage() {
           addUnverifiedContact(profile, 'homePhones', normalisedPhoneNumber)
         )
       )
-      const updateProfileError = updateBackEndProfile(updatedProfile)
+      const updateProfileError = await updateBackEndProfile(updatedProfile)
       if (updateProfileError !== null) {
-        setError(errorMessage)
+        setError(updateProfileError)
         return
       }
       const { errorMessage } = await backendCall(

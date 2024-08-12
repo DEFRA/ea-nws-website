@@ -6,7 +6,6 @@ import SignUpPage from '../../pages/sign-up/account/SignUpPage'
 import SignUpValidationPage from '../../pages/sign-up/account/SignUpValidationPage'
 import WarningContactsPreferencePage from '../../pages/sign-up/channel-preferences/WarningContactsPreferencePage'
 import AddLandlinePhonePage from '../../pages/sign-up/channel-preferences/landline-telephone-authentication/AddLandlinePhonePage'
-import SelectAlternativeLandlinePage from '../../pages/sign-up/channel-preferences/landline-telephone-authentication/SelectAlternativeLandlinePage'
 import SkipConfirmLandlinePhonePage from '../../pages/sign-up/channel-preferences/landline-telephone-authentication/SkipConfirmLandlinePhonePage'
 import ValidateLandlinePhonePage from '../../pages/sign-up/channel-preferences/landline-telephone-authentication/ValidateLandlinePhonePage'
 import AddMobilePhonePage from '../../pages/sign-up/channel-preferences/mobile-telephone-authentication/AddMobilePhonePage'
@@ -100,10 +99,6 @@ const signupRoutes = [
   {
     path: '/signup/contactpreferences/landline/skipconfirmation',
     component: <SkipConfirmLandlinePhonePage />
-  },
-  {
-    path: '/signup/contactpreferences/landline/alternative-landline',
-    component: <SelectAlternativeLandlinePage />
   },
   { path: '/signup/accountname/add', component: <AddFullNamePage /> },
   {

@@ -2,20 +2,24 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import Button from '../../../../gov-uk-components/Button'
-import ErrorSummary from '../../../../gov-uk-components/ErrorSummary'
-import Footer from '../../../../gov-uk-components/Footer'
-import Header from '../../../../gov-uk-components/Header'
-import Radio from '../../../../gov-uk-components/Radio'
-import { setCurrentContact, setProfile } from '../../../../redux/userSlice'
-import { backendCall } from '../../../../services/BackendService'
+import Button from '../../gov-uk-components/Button'
+import ErrorSummary from '../../gov-uk-components/ErrorSummary'
+import Footer from '../../gov-uk-components/Footer'
+import Header from '../../gov-uk-components/Header'
+import Radio from '../../gov-uk-components/Radio'
+import { setCurrentContact, setProfile } from '../../redux/userSlice'
+import { backendCall } from '../../services/BackendService'
 import {
   addUnverifiedContact,
   addVerifiedContact
-} from '../../../../services/ProfileServices'
-import { normalisePhoneNumber } from '../../../../services/formatters/NormalisePhoneNumber'
-import { phoneValidation } from '../../../../services/validations/PhoneValidation'
-export default function SelectAlternativeLandlinePage() {
+} from '../../services/ProfileServices'
+import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
+import { phoneValidation } from '../../services/validations/PhoneValidation'
+export default function SelectAlternativeLandlineLayout({
+  NextPageWithoutValidation,
+  NextPageWithValidation,
+  NavigateBack
+}) {
   const navigate = useNavigate()
   const [selectedNumber, setSelectedNumber] = useState('')
   const [selectedOption, setSelectedOption] = useState('')
@@ -49,7 +53,7 @@ export default function SelectAlternativeLandlinePage() {
           )
         )
         updateBackEndProfile(updatedProfile)
-        navigate('/signup/accountname/add')
+        NextPageWithoutValidation()
       } else {
         const updatedProfile = dispatch(
           setProfile(
@@ -72,7 +76,7 @@ export default function SelectAlternativeLandlinePage() {
           return
         }
         dispatch(setCurrentContact(normalisedPhoneNumber))
-        navigate('/signup/contactpreferences/landline/validate')
+        NextPageWithValidation()
       }
     }
   }
@@ -87,12 +91,15 @@ export default function SelectAlternativeLandlinePage() {
 
     return errorMessage
   }
+  const handleBackLink = () => {
+    NavigateBack()
+  }
 
   return (
     <>
       <Header />
       <div class='govuk-width-container'>
-        <Link onClick={() => navigate(-1)} className='govuk-back-link'>
+        <Link onClick={handleBackLink} className='govuk-back-link'>
           Back
         </Link>
         <main className='govuk-main-wrapper'>

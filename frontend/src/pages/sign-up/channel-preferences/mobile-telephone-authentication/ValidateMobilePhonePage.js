@@ -11,7 +11,7 @@ export default function ValidateMobilePhone() {
 
   const NavigateToNextPage = () => {
     if (contactPreferences.includes('PhoneCall')) {
-      navigate('/signup/contactpreferences/landline/alternative-landline')
+      navigate('/signup/contactpreferences/landline/add')
     } else {
       navigate('/signup/accountname/add')
     }

@@ -6,7 +6,7 @@ import time
 
 index = "http://localhost:3000/index"
 signup_url = "http://localhost:3000/signup/"
-alternative_landline_url = "http://localhost:3000/signup/contactpreferences/landline/alternative-landline"
+alternative_landline_url = "http://localhost:3000/signup/contactpreferences/landline/add"
 next_url = "http://localhost:3000/signup/contactpreferences/landline/validate"
 
 
@@ -38,6 +38,7 @@ def setup_validate_test(get_browser):
 def test_page_load(get_browser):
     browser = setup_validate_test(get_browser)
     assert browser.current_url == alternative_landline_url
+    assert "Which telephone number do you want to use to get flood messages by phone call?" in browser.page_source
 
 def test_errors_render(get_browser):
     browser = setup_validate_test(get_browser)

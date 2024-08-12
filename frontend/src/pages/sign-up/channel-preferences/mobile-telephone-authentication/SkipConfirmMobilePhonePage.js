@@ -6,18 +6,15 @@ import Footer from '../../../../gov-uk-components/Footer'
 import Header from '../../../../gov-uk-components/Header'
 import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
 
-export default function SkipConfirmMobilePhonePage () {
+export default function SkipConfirmMobilePhonePage() {
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
   const mobile = useSelector(
     (state) => state.session.profile.unverified.mobilePhones[0]
   )
 
-  function handleSubmit () {
-    // navigate through sign up flow
-    if (session.contactPreferences.includes('Email')) {
-      // navigate to email TODO - cameron add this once merged
-    } else if (session.contactPreferences.includes('PhoneCall')) {
+  function skipConfirm() {
+    if (session.contactPreferences.includes('PhoneCall')) {
       navigate('/signup/contactpreferences/landline/add')
     } else {
       navigate('/signup/accountname/add')
@@ -45,7 +42,7 @@ export default function SkipConfirmMobilePhonePage () {
               <Button
                 text={"I'll confirm this later"}
                 className='govuk-button'
-                onClick={handleSubmit}
+                onClick={skipConfirm}
               />
               &nbsp; &nbsp;
               <Link

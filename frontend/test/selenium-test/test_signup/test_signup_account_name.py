@@ -58,7 +58,7 @@ def test_SignUpAccountName_backButton(get_browser):
     browser.implicitly_wait(1)
     assert browser.current_url == previousPage
 
-'''server/
+'''
 def test_SignUpAccountName_validFullName(get_browser):
     browser = setup_empty_profile(get_browser) 
     input_xpath = f"//input[@name='Full name']"
@@ -71,4 +71,5 @@ def test_SignUpAccountName_validFullName(get_browser):
     button_element = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", button_element)
 
-    assert browser.current_url == nextPage'''
+    assert browser.current_url == nextPage
+'''

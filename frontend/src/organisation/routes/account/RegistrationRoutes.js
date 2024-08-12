@@ -3,7 +3,7 @@ import AddNamePage from '../../pages/registration/AddNamePage'
 import CompaniesHouseNumPage from '../../pages/registration/CompaniesHouseNumPage'
 import ConfirmAddressPage from '../../pages/registration/ConfirmAddressPage'
 import SectorPage from '../../pages/registration/SectorPage'
-import SelectAddressPage from '../../pages/registration/SelectAddressPage'
+import SelectAddressPage from '../../pages/registration/SearchAddressResultPage'
 
 // registration
 const registrationRoutes = [

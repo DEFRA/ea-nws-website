@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
@@ -14,11 +14,6 @@ export default function AddNameLayout({
   const dispatch = useDispatch()
   const [name, setName] = useState('')
   const [error, setError] = useState('')
-
-  // Clear error when user makes changes
-  useEffect(() => {
-    setError('')
-  }, [name])
 
   const handleSubmit = async () => {
     const validationError = orgNameValidation(name)

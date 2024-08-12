@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import SelectAddressLayout from '../../layouts/address/SelectAddressLayout'
+import SelectAddressLayout from '../../layouts/address/SearchAddressResultLayout'
 
 export default function SelectAddressPage() {
   const navigate = useNavigate()

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
@@ -16,15 +16,6 @@ export default function CompaniesHouseNumLayout({
   const [companyNum, setCompanyNum] = useState(null)
   const [error, setError] = useState('')
   const [numberError, setNumberError] = useState('')
-
-  // Clear errors when user makes changes
-  useEffect(() => {
-    setError('')
-  }, [companyNumExists])
-
-  useEffect(() => {
-    setNumberError('')
-  }, [companyNum])
 
   const handleSubmit = async () => {
     // Nothing selected

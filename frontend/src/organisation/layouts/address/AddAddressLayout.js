@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
@@ -19,14 +19,16 @@ export default function AddAddressLayout({
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const authToken = useSelector((state) => state.session.authToken)
+  const profile = useSelector((state) => state.session.profile)
   const [postCode, setPostCode] = useState('')
   const [buildingNum, setBuildingNum] = useState('')
   const [error, setError] = useState('')
 
-  // Clear error when user makes correction
-  useEffect(() => {
-    setError('')
-  }, [postCode])
+  const updateGeosafeProfile = async () => {
+    const dataToSend = { authToken, profile }
+    await backendCall(dataToSend, 'api/profile/update', navigate)
+  }
 
   const handleSubmit = async () => {
     const validationError = postCodeValidation(postCode)
@@ -44,20 +46,26 @@ export default function AddAddressLayout({
       if (!errorMessage) {
         dispatch(setLocationPostCode(data[0].postcode))
 
-        // if buildingNum provided (and address exists) then navigate straight to confirmation
+        // if buildingNum provided (and exactly one address is found) then navigate straight to confirmation
         if (buildingNum) {
-          console.log(data[0].name)
-          const address = data.find((location) =>
-            location.name.includes(buildingNum)
+          const address = data.filter((location) =>
+            location.name.toLowerCase().includes(buildingNum.toLowerCase())
           )
-          if (address) {
-            dispatch(setOrgAddress(address))
+          if (address.length === 1) {
+            dispatch(setOrgAddress(address[0]))
+            console.log('Org address set')
+            await updateGeosafeProfile()
             navigate('/organisation/register/address-confirm')
             return // Ensure none of the following code is executed
           }
+          // Multiple addresses with buildingNum returned, take them to pagination to confirm
+          else {
+            dispatch(setLocationSearchResults(address))
+          }
+        } else {
+          // otherwise, send all results to pagination page where user will confirm
+          dispatch(setLocationSearchResults(data))
         }
-        // otherwise, send all results to pagination page where user will confirm
-        dispatch(setLocationSearchResults(data))
         NavigateToNextPage()
       } else {
         // show error message from OS Api postcode search

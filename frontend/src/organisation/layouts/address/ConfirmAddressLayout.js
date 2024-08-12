@@ -1,16 +1,27 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
+import { backendCall } from '../../../common/services/BackendService'
 
 export default function ConfirmAddressLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const authToken = useSelector((state) => state.session.authToken)
+  const profile = useSelector((state) => state.session.profile)
   const address = useSelector(
     (state) => state.session.organisation.address.name
   )
+
+  const updateGeosafeProfile = async () => {
+    const dataToSend = { authToken, profile }
+    await backendCall(dataToSend, 'api/profile/update', navigate)
+  }
 
   const handleSubmit = async () => {
     // Correct address is already stored in
@@ -19,6 +30,9 @@ export default function ConfirmAddressLayout({
   }
 
   const navigateBack = async (event) => {
+    // Remove address from geosafe api
+    await updateGeosafeProfile()
+
     event.preventDefault()
     NavigateToPreviousPage()
   }

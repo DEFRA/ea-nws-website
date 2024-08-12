@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
@@ -13,11 +13,6 @@ export default function SectorLayout({
   const dispatch = useDispatch()
   const [emergencySector, setEmergencySector] = useState(null)
   const [error, setError] = useState('')
-
-  // Clear error when user makes changes
-  useEffect(() => {
-    setError('')
-  }, [emergencySector])
 
   const handleSubmit = async () => {
     if (emergencySector === null) {
@@ -67,13 +62,13 @@ export default function SectorLayout({
                 <div className='govuk-radios'>
                   <Radio
                     key='radio_yes'
-                    name='yes-no-radios'
+                    name='emergencySectorRadio'
                     label='Yes'
                     onChange={() => setEmergencySector(true)}
                   />
                   <Radio
                     key='radio_no'
-                    name='yes-no-radios'
+                    name='emergencySectorRadio'
                     label='No'
                     onChange={() => setEmergencySector(false)}
                   />

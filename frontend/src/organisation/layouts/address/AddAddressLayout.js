@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
@@ -19,16 +19,9 @@ export default function AddAddressLayout({
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const authToken = useSelector((state) => state.session.authToken)
-  const profile = useSelector((state) => state.session.profile)
   const [postCode, setPostCode] = useState('')
   const [buildingNum, setBuildingNum] = useState('')
   const [error, setError] = useState('')
-
-  const updateGeosafeProfile = async () => {
-    const dataToSend = { authToken, profile }
-    await backendCall(dataToSend, 'api/profile/update', navigate)
-  }
 
   const handleSubmit = async () => {
     const validationError = postCodeValidation(postCode)
@@ -53,8 +46,6 @@ export default function AddAddressLayout({
           )
           if (address.length === 1) {
             dispatch(setOrgAddress(address[0]))
-            console.log('Org address set')
-            await updateGeosafeProfile()
             navigate('/organisation/register/address-confirm')
             return // Ensure none of the following code is executed
           }

@@ -61,7 +61,11 @@ export default function App () {
 
   const isSignOutRoute = () => {
     const currentRoute = window.location.pathname
-    if (currentRoute === '/signout' || currentRoute === '/signout-auto') {
+    if (
+      currentRoute === '/signout' ||
+      currentRoute === '/signout-auto' ||
+      currentRoute === '/account/delete/confirm'
+    ) {
       return true
     } else {
       return false

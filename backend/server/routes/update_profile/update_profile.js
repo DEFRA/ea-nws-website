@@ -23,7 +23,7 @@ module.exports = [
           )
           return h.response(response)
         } else {
-          createGenericErrorResponse(h)
+          return createGenericErrorResponse(h)
         }
       } catch (error) {
         return createGenericErrorResponse(h)

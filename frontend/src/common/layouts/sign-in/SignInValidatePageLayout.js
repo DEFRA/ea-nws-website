@@ -16,7 +16,7 @@ import { backendCall } from '../../../common/services/BackendService'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from '../../../citizen/layouts/expired-code/ExpiredCodeLayout'
 
-export default function SignInValidatePageLayout ({NavigateToNextPage}) {
+export default function SignInValidatePageLayout ({ NavigateToNextPage }) {
   const location = useLocation()
   const [error, setError] = useState('')
   const dispatch = useDispatch()

@@ -1,4 +1,4 @@
-import SignInValidatePageLayout from "../../../common/layouts/sign-in/SignInValidatePageLayout";
+import SignInValidatePageLayout from '../../../common/layouts/sign-in/SignInValidatePageLayout'
 import { useNavigate } from 'react-router-dom'
 
 export default function SignInValidatePage () {
@@ -7,8 +7,8 @@ export default function SignInValidatePage () {
   const NavigateToNextPage = () => {
     navigate('/home')
   }
-  
+
   return (
-    <SignInValidatePageLayout NavigateToNextPage={NavigateToNextPage}/>
+    <SignInValidatePageLayout NavigateToNextPage={NavigateToNextPage} />
   )
 }

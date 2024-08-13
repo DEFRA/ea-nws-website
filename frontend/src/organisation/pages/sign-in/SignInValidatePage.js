@@ -9,7 +9,11 @@ export default function SignInValidatePage () {
     navigate('/home')
   }
 
+  const NavigateToPreviousPage = () => {
+    navigate('/organisation/signin')
+  }
+
   return (
-    <SignInValidatePageLayout NavigateToNextPage={NavigateToNextPage} />
+    <SignInValidatePageLayout NavigateToNextPage={NavigateToNextPage} NavigateToPreviousPage={NavigateToPreviousPage} />
   )
 }

@@ -16,7 +16,7 @@ import { backendCall } from '../../../common/services/BackendService'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from '../../../citizen/layouts/expired-code/ExpiredCodeLayout'
 
-export default function SignInValidatePageLayout ({ NavigateToNextPage }) {
+export default function SignInValidatePageLayout ({ NavigateToNextPage, NavigateToPreviousPage }) {
   const location = useLocation()
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -73,13 +73,18 @@ export default function SignInValidatePageLayout ({ NavigateToNextPage }) {
     setCodeExpired(false)
   }
 
+  const navigateBack = async (event) => {
+    event.preventDefault()
+    NavigateToPreviousPage()
+  }
+
   return (
     <>
       {codeExpired
         ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
         : (
           <>
-            <BackLink onClick={() => navigate(-1)} />
+            <BackLink onClick={navigateBack} />
             {codeResent &&
               <NotificationBanner
                 className='govuk-notification-banner govuk-notification-banner--success'

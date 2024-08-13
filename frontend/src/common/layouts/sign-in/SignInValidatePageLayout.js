@@ -95,9 +95,9 @@ export default function SignInValidatePageLayout ({ NavigateToNextPage, Navigate
               <div className='govuk-grid-row'>
                 <div className='govuk-grid-column-two-thirds'>
                   {error && <ErrorSummary errorList={[error]} />}
-                  <h2 class='govuk-heading-l'>Check your email</h2>
+                  <h2 class='govuk-heading-l'>Confirm email address </h2>
                   <div class='govuk-body'>
-                    We've sent a code to:
+                    We've sent an email with a code to:
                     <InsetText text={location.state.email} />
                     <Input
                       className='govuk-input govuk-input--width-10'

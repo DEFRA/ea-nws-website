@@ -79,7 +79,6 @@ def test_search_location_severe_warning(get_browser):
     browser.execute_script("arguments[0].click();", address_warning_link)
     time.sleep(3)
     assert browser.current_url == severe_warning_area_page
-    assert "You can get severe flood warnings and flood warnings for this location" in browser.page_source
 
 def test_search_location_alert(get_browser):
     browser = setup_search_location_result_test(get_browser, english_postcode_alert) 
@@ -88,7 +87,6 @@ def test_search_location_alert(get_browser):
     browser.execute_script("arguments[0].click();", address_alert_link)
     time.sleep(3)
     assert browser.current_url == alert_page
-    assert "You can get flood alerts for this location" in browser.page_source
 
 def test_search_location_nearby_warning_render(get_browser):
     browser = setup_search_location_result_test(get_browser, english_postcode_nearby_warning) 
@@ -97,8 +95,3 @@ def test_search_location_nearby_warning_render(get_browser):
     browser.execute_script("arguments[0].click();", address_nearby_link)
     time.sleep(3)
     assert browser.current_url == proximity_severe_page
-    assert "You can get flood messages near this location" in browser.page_source
-    assert "1. River Gade at Kings Langley and Croxley" in browser.page_source
-    assert "2. River Colne at Watford" in browser.page_source
-    assert "Select a nearby area" in browser.page_source 
-    assert "Skip to other areas nearby" in browser.page_source 

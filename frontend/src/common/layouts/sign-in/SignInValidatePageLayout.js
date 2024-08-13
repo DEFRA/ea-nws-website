@@ -112,6 +112,10 @@ export default function SignInValidatePageLayout ({ NavigateToNextPage, Navigate
                       text='Continue'
                       onClick={handleSubmit}
                     />
+                    &nbsp; &nbsp;
+                    <Link onClick={navigateBack} className='govuk-link'>
+                      Enter a different email
+                    </Link>
                     <br />
                     <Link onClick={getNewCode} className='govuk-link'>
                       Get a new code

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -11,6 +11,7 @@ export default function SignInPageLayout ({ NavigateToNextPage }) {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
+  const location = useLocation()
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -38,9 +39,7 @@ export default function SignInPageLayout ({ NavigateToNextPage }) {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error ? <ErrorSummary errorList={[error]} /> : <></>}
-            <h2 class='govuk-heading-l'>
-              Sign in to your flood warnings account
-            </h2>
+              {location.pathname === '/organisation/signin/' ? <h1 class='govuk-heading-l'>Sign in to your organisation's flood warning account</h1> : <h1 class='govuk-heading-l'>Sign in to your flood warnings account</h1>}
             <div class='govuk-body'>
               <Input
                 className='govuk-input govuk-input--width-10'

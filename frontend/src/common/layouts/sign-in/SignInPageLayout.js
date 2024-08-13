@@ -42,13 +42,6 @@ export default function SignInPageLayout ({ NavigateToNextPage }) {
               Sign in to your flood warnings account
             </h2>
             <div class='govuk-body'>
-              <p>You can:</p>
-              <ul className='govuk-list govuk-list--bullet'>
-                <li>update or remove your locations</li>
-                <li>change how you get flood messages</li>
-                <li>delete your account</li>
-              </ul>
-              <br />
               <Input
                 className='govuk-input govuk-input--width-10'
                 name='Email address'

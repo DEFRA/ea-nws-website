@@ -148,7 +148,7 @@ export default function SelectAlternativeLandlineLayout({
                             }}
                             conditional={selectedOption === 'mobileNumber'}
                           />
-                          {unverifiedMobileNumbers.includes({address: mobileNumber}) && (
+                          {unverifiedMobileNumbers.some(unverifiedMobileNumber => unverifiedMobileNumber.address === mobileNumber) && (
                             <strong className='govuk-tag govuk-tag--red'>
                               Unconfirmed
                             </strong>

@@ -14,6 +14,7 @@ const userSlice = createSlice({
     locationSearchResults: null,
     selectedLocation: null,
     additionalAlerts: null,
+    locationCategories: null,
     // required for nearby flood areas flow
     selectedFloodWarningArea: null,
     selectedFloodAlertArea: null,
@@ -55,6 +56,9 @@ const userSlice = createSlice({
     setAdditionalAlerts: (state, action) => {
       state.additionalAlerts = action.payload
     },
+    setLocationCategories: (state, action) => {
+      state.locationCategories = action.payload
+    },
     // required for nearby flood areas flow
     setSelectedFloodWarningArea: (state, action) => {
       state.selectedFloodWarningArea = action.payload
@@ -79,6 +83,7 @@ const userSlice = createSlice({
       state.locationSearchResults = null
       state.selectedLocation = null
       state.additionalAlerts = null
+      state.locationCategories = null
       // required for nearby flood areas flow
       state.selectedFloodWarningArea = null
       state.selectedFloodAlertArea = null
@@ -101,6 +106,7 @@ export const {
   setLocationSearchResults,
   setSelectedLocation,
   setAdditionalAlerts,
+  setLocationCategories,
   // required for nearby flood areas flow
   setSelectedFloodWarningArea,
   setSelectedFloodAlertArea,

@@ -9,12 +9,11 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
-import { setProfile } from '../../redux/userSlice'
+import { setLocationCategories, setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import {
   addLocation,
-  removeLocation,
-  updateLocationsFloodCategory
+  removeLocation
 } from '../../services/ProfileServices'
 import { getCoordsOfFloodArea } from '../../services/WfsFloodDataService'
 
@@ -47,14 +46,14 @@ export default function LocationInAlertAreaLayout ({
       if (isUserInNearbyTargetFlowpath) {
         await addFloodAlertArea()
       } else {
-        await updateExistingLocationCategories(['severe', 'alert'])
+        dispatch(setLocationCategories(['severe', 'alert']))
       }
     } else if (additionalAlerts && !isChecked) {
       // scenario where user has pressed back and un-checked to get notifications for alert areas
       if (isUserInNearbyTargetFlowpath) {
         await removeFloodAlertArea()
       } else {
-        await updateExistingLocationCategories(['severe'])
+        dispatch(setLocationCategories(['severe']))
       }
     } else {
       // location only has flood alerts availble or user has selected a nearby flood alert area
@@ -75,7 +74,7 @@ export default function LocationInAlertAreaLayout ({
       if (isUserInNearbyTargetFlowpath) {
         await removeFloodAlertArea()
       } else {
-        await updateExistingLocationCategories(['severe'])
+        dispatch(setLocationCategories(['severe']))
       }
     } else {
       // location only has flood alerts availble or user has selected a nearby flood alert area
@@ -112,24 +111,15 @@ export default function LocationInAlertAreaLayout ({
     const { postcode, ...locationWithoutPostcode } = selectedLocation
 
     const locationWithAlertType = {
-      ...locationWithoutPostcode,
-      categories: ['alert']
+      ...locationWithoutPostcode
     }
     const updatedProfile = await addLocation(profile, locationWithAlertType)
+    dispatch(setLocationCategories(['alert']))
     dispatch(setProfile(updatedProfile))
   }
 
   const removeLocationWithOnlyFloodAlerts = async () => {
     const updatedProfile = await removeLocation(profile, selectedLocation.name)
-    dispatch(setProfile(updatedProfile))
-  }
-
-  const updateExistingLocationCategories = async (categories) => {
-    const updatedProfile = await updateLocationsFloodCategory(
-      profile,
-      selectedLocation,
-      categories
-    )
     dispatch(setProfile(updatedProfile))
   }
 

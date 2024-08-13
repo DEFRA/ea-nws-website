@@ -210,12 +210,7 @@ export default function Map ({ types, setFloodAreas, mobileView }) {
   }
 
   useEffect(() => {
-    return () => {
-      getApiKey()
-    }
-  }, [])
-
-  useEffect(() => {
+    getApiKey()
     const interval = setInterval(() => {
       getApiKey()
     }, 270000)

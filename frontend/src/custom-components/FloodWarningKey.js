@@ -34,7 +34,7 @@ const FloodWarningKey = ({ type, mobileView }) => {
           )}
         </>
       )}
-      {type === 'alert' && <>{renderKeyItem('alert', 'Flood alert area')}</>}
+      {type === 'alert' && (<>{renderKeyItem('custom_alert', 'Flood alert area')}</>)}
     </div>
   )
 }

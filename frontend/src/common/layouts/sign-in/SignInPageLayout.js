@@ -7,7 +7,7 @@ import Input from '../../../common/components/gov-uk/Input'
 import { backendCall } from '../../../common/services/BackendService'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 
-export default function SignInPageLayout () {
+export default function SignInPageLayout ({NavigateToNextPage}) {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
@@ -26,9 +26,7 @@ export default function SignInPageLayout () {
       if (errorMessage !== null) {
         setError(errorMessage)
       } else {
-        navigate('/signin/validate', {
-          state: { signinToken: data.signinToken, email }
-        })
+        NavigateToNextPage({signinToken: data.signinToken, email})
       }
     }
   }

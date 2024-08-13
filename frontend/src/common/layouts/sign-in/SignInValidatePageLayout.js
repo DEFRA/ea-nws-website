@@ -14,7 +14,7 @@ import {
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
-import ExpiredCodeLayout from '../../../expired-code/ExpiredCodeLayout'
+import ExpiredCodeLayout from '../../../citizen/layouts/expired-code/ExpiredCodeLayout'
 
 export default function SignInValidatePageLayout ({NavigateToNextPage}) {
   const location = useLocation()
@@ -79,7 +79,7 @@ export default function SignInValidatePageLayout ({NavigateToNextPage}) {
         ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
         : (
           <>
-            <BackLink to='/signin' />
+            <BackLink onClick={() => navigate(-1)} />
             {codeResent &&
               <NotificationBanner
                 className='govuk-notification-banner govuk-notification-banner--success'

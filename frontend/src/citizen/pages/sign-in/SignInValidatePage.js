@@ -5,8 +5,9 @@ export default function SignInValidatePage () {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {
-    navigate('')
+    navigate('/home')
   }
+  
   return (
     <SignInValidatePageLayout NavigateToNextPage={NavigateToNextPage}/>
   )

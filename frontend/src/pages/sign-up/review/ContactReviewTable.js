@@ -23,7 +23,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
               ))}
               {profile.unverified.emails.map((unregisteredEmail, index) => (
                 <ContactReviewRow
-                  contact={unregisteredEmail}
+                  contact={unregisteredEmail.address}
                   contactType='email'
                   isConfirmed={false}
                   key={index}
@@ -52,7 +52,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
               {profile.unverified.mobilePhones.map(
                 (unregisteredMobilePhone, index) => (
                   <ContactReviewRow
-                    contact={unregisteredMobilePhone}
+                    contact={unregisteredMobilePhone.address}
                     contactType='mobilePhone'
                     isConfirmed={false}
                     key={index}
@@ -82,7 +82,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
               {profile.unverified.homePhones.map(
                 (unregisteredHomePhone, index) => (
                   <ContactReviewRow
-                    contact={unregisteredHomePhone}
+                    contact={unregisteredHomePhone.address}
                     contactType='homePhone'
                     isConfirmed={false}
                     key={index}

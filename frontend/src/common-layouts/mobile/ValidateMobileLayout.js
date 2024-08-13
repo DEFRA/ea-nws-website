@@ -108,7 +108,7 @@ export default function ValidateMobileLayout ({
 
   const removeMobileFromProfile = async () => {
     let updatedProfile
-    if (session.profile.unverified.mobilePhones.includes(mobile)) {
+    if (session.profile.unverified.mobilePhones.includes({address: mobile})) {
       updatedProfile = removeUnverifiedContact(session.profile, mobile)
       dispatch(setProfile(removeUnverifiedContact(session.profile, mobile)))
     }

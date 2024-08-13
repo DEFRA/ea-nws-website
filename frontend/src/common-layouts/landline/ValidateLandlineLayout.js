@@ -110,7 +110,7 @@ export default function ValidateLandlineLayout({
 
   const removeLandlineFromProfile = async () => {
     let updatedProfile
-    if (profile.unverified.homePhones.includes(homePhone)) {
+    if (profile.unverified.homePhones.includes({address: homePhone})) {
       updatedProfile = removeUnverifiedContact(profile, homePhone)
       dispatch(setProfile(removeUnverifiedContact(profile, homePhone)))
     }

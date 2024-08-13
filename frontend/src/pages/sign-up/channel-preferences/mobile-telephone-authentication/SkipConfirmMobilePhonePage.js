@@ -10,7 +10,7 @@ export default function SkipConfirmMobilePhonePage() {
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
   const mobile = useSelector(
-    (state) => state.session.profile.unverified.mobilePhones[0]
+    (state) => state.session.profile.unverified.mobilePhones[0].address
   )
 
   function skipConfirm() {

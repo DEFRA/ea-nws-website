@@ -115,7 +115,7 @@ export default function ValidateEmailLayout ({
 
   const removeEmailFromProfile = async () => {
     let updatedProfile
-    if (session.profile.unverified.emails.includes(email)) {
+    if (session.profile.unverified.emails.includes({address: email})) {
       updatedProfile = removeUnverifiedContact(session.profile, email)
       dispatch(setProfile(removeUnverifiedContact(session.profile, email)))
     }

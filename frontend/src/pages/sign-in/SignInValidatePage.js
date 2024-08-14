@@ -87,13 +87,14 @@ export default function SignInValidatePage () {
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const data = { email: location.state.email }
-    const { errorMessage } = await backendCall(data, 'api/sign_in', navigate)
+    const dataToSend = { email: location.state.email }
+    const { data, errorMessage } = await backendCall(dataToSend, 'api/sign_in', navigate)
 
     if (errorMessage !== null) {
       setError(errorMessage)
     }
 
+    data.signinToken = signinToken
     setCodeResent(true)
     setCodeResentTime(new Date().toLocaleTimeString())
     setCodeExpired(false)

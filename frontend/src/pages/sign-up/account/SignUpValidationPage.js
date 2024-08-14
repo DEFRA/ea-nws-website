@@ -14,6 +14,7 @@ import { authCodeValidation } from '../../../services/validations/AuthCodeValida
 import NotificationBanner from '../../../gov-uk-components/NotificationBanner'
 import ExpiredCodeLayout from '../../../common-layouts/expired-code/ExpiredCodeLayout'
 import { updateAdditionals } from '../../../services/ProfileServices'
+import { setRegisterToken } from '../../../redux/userSlice'
 
 export default function SignUpValidationPage () {
   const navigate = useNavigate()
@@ -66,9 +67,9 @@ export default function SignUpValidationPage () {
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const data = { email: loginEmail }
-    const { errorMessage } = await backendCall(
-      data,
+    const dataToSend = { email: loginEmail }
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
       'api/sign_up_start',
       navigate
     )
@@ -76,6 +77,7 @@ export default function SignUpValidationPage () {
     if (errorMessage !== null) {
       setError(errorMessage)
     } else {
+      dispatch(setRegisterToken(data.registerToken))
       setCodeResent(true)
       setCodeResentTime(new Date().toLocaleTimeString())
       setCodeExpired(false)

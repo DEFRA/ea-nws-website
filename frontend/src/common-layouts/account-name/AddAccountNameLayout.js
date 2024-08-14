@@ -11,7 +11,7 @@ import { setProfile } from '../../redux/userSlice'
 import { addAccountName } from '../../services/ProfileServices'
 import { fullNameValidation } from '../../services/validations/FullNameValidation'
 
-export default function AddAccountNameLayout ({
+export default function AddAccountNameLayout({
   NavigateToNextPage,
   NavigateToPreviousPage,
   buttonText,
@@ -24,30 +24,27 @@ export default function AddAccountNameLayout ({
   const session = useSelector((state) => state.session)
   const authToken = session.authToken
   const [fullName, setFullName] = useState(
-    session.profile
-      ? session.profile?.firstname + ' ' + session.profile?.lastname
+    session.profile?.firstname && session.profile?.lastname
+      ? `${session.profile.firstname} ${session.profile.lastname}`
       : ''
   )
 
   const handleSubmit = async () => {
-    const validationError = fullNameValidation(fullName, 'fullName')
+    const validationError = fullNameValidation(fullName)
     setError(validationError)
 
     if (validationError === '') {
       // Split the full name into first name and last name assuming they are separeted by a space.
       // if the string cannot be split then only the first name is set and the last name remains blank
-      let firstname = fullName
-      let lastname = ''
-      if (fullName.split(' ').length > 1) {
-        firstname = fullName.substring(0, fullName.indexOf(' '))
-        lastname = fullName.substring(fullName.indexOf(' ') + 1)
-      }
+      let [firstname, ...lastnameParts] = fullName.trim().split(' ')
+      let lastname = lastnameParts.join(' ')
+
       const profile = addAccountName(session.profile, firstname, lastname)
       dispatch(setProfile(profile))
 
       if (changeName) {
         updateProfile(profile, authToken)
-        setError(profileError)
+        if (profileError) setError(profileError)
       } else {
         NavigateToNextPage()
       }

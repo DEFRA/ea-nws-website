@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import ExpiredCodeLayout from '../../common-layouts/expired-code/ExpiredCodeLayout'
+import NotCompletedSigningUpLayout from '../../common-layouts/sign-up/NotCompletedSignUpLayout'
 import Button from '../../gov-uk-components/Button'
 import ErrorSummary from '../../gov-uk-components/ErrorSummary'
 import Footer from '../../gov-uk-components/Footer'
@@ -11,6 +12,7 @@ import InsetText from '../../gov-uk-components/InsetText'
 import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 import {
   setAuthToken,
+  setContactPreferences,
   setProfile,
   setRegistrations
 } from '../../redux/userSlice'
@@ -27,6 +29,8 @@ export default function SignInValidatePage () {
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
+  const [signUpNotComplete, setSignUpNotComplete] = useState(false)
+  const [lastAccessedUrl, setLastAccessedUrl] = useState('')
 
   // if error remove code sent notification
   useEffect(() => {
@@ -46,7 +50,10 @@ export default function SignInValidatePage () {
       )
 
       if (errorMessage !== null) {
-        if (errorMessage === 'The code you have entered has expired - please request a new code') {
+        if (
+          errorMessage ===
+          'The code you have entered has expired - please request a new code'
+        ) {
           setCodeExpired(true)
         } else {
           setError(errorMessage)
@@ -55,7 +62,25 @@ export default function SignInValidatePage () {
         dispatch(setAuthToken(data.authToken))
         dispatch(setProfile(data.profile))
         dispatch(setRegistrations(data.registrations))
-        navigate('/home')
+        dispatch(setContactPreferences([
+          data.profile.emails.length !== 0 && 'Email Address',
+          data.profile.homePhones.length !== 0 && 'PhoneCall',
+          data.profile.mobilePhones.length !== 0 && 'Text'
+        ]))
+
+        const isSignUpComplete = data.profile.additionals.filter(
+          (c) => c.id === 'signUpComplete'
+        )[0]?.value
+        const lastAccessedUrl = data.profile.additionals.filter(
+          (c) => c.id === 'lastAccessedUrl'
+        )[0]?.value
+        setLastAccessedUrl(lastAccessedUrl)
+
+        if (!isSignUpComplete && lastAccessedUrl !== undefined) {
+          setSignUpNotComplete(true)
+        } else {
+          navigate('/home')
+        }
       }
     }
   }
@@ -76,22 +101,30 @@ export default function SignInValidatePage () {
 
   return (
     <>
-      {codeExpired
-        ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
+      {codeExpired || signUpNotComplete
+        ? (
+            (codeExpired && <ExpiredCodeLayout getNewCode={getNewCode} />) ||
+        (signUpNotComplete && (
+          <NotCompletedSigningUpLayout nextPage={lastAccessedUrl} />
+        ))
+          )
         : (
           <div className='page-container'>
             <Header />
-            <div class='govuk-width-container body-container'>
-              <Link to='/signin' className='govuk-back-link'>Back</Link>
-              {codeResent &&
+            <div className='govuk-width-container body-container'>
+              <Link to='/signin' className='govuk-back-link'>
+                Back
+              </Link>
+              {codeResent && (
                 <NotificationBanner
                   className='govuk-notification-banner govuk-notification-banner--success'
                   title='Success'
                   text={'New code sent at ' + codeResentTime}
-                />}
+                />
+              )}
               {error && <ErrorSummary errorList={[error]} />}
-              <h2 class='govuk-heading-l'>Check your email</h2>
-              <div class='govuk-body'>
+              <h2 className='govuk-heading-l'>Check your email</h2>
+              <div className='govuk-body'>
                 We've sent a code to:
                 <InsetText text={location.state.email} />
                 <Input

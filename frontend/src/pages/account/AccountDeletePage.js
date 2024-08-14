@@ -1,0 +1,215 @@
+import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import Button from '../../gov-uk-components/Button'
+import ErrorSummary from '../../gov-uk-components/ErrorSummary'
+import Footer from '../../gov-uk-components/Footer'
+import Header from '../../gov-uk-components/Header'
+import PhaseBanner from '../../gov-uk-components/PhaseBanner'
+import Radio from '../../gov-uk-components/Radio'
+import TextArea from '../../gov-uk-components/TextArea'
+import { backendCall } from '../../services/BackendService'
+
+export default function AccountDeletePage() {
+  const navigate = useNavigate()
+  const charLimit = 2000
+  const charLimitText = 'Your answer must be 2000 characters or fewer'
+  const accountDeletionReasonOptions = [
+    { value: 'MovedOutOfArea', label: 'Moved out of area' },
+    { value: 'TooManyWarnings', label: 'Too many warnings' },
+    { value: 'WarningsAreTooLate', label: 'Warnings are too late' },
+    { value: 'NotGettingAnyWarnings', label: 'Not getting any warnings' },
+    { value: 'MyDetailsAreIncorrect', label: 'My details are incorrect' },
+    { value: 'ConcernedAboutPrivacy', label: 'Concerned about privacy' }
+  ]
+
+  const [accountDeletionReason, setAccountDeletionReason] = useState('')
+  const [accountDeletionReasonText, setaccountDeletionReasonText] = useState('')
+  const [accountDeletionFurtherInfo, setAccountDeletionFurtherInfo] =
+    useState('')
+  const [reasonError, setReasonError] = useState('')
+  const [reasonTextError, setReasonTextError] = useState('')
+  const [furtherInfoError, setFurtherInfoError] = useState('')
+
+  const session = useSelector((state) => state.session)
+  const authToken = session.authToken
+
+  useEffect(() => {
+    setReasonError('')
+  }, [accountDeletionReason])
+
+  useEffect(() => {
+    setReasonTextError('')
+  }, [accountDeletionReasonText])
+
+  useEffect(() => {
+    setFurtherInfoError('')
+  }, [accountDeletionFurtherInfo])
+
+  const handleButton = async (event) => {
+    event.preventDefault()
+    let isValidInput = true
+
+    // Check if reason is selected
+    if (!accountDeletionReason) {
+      setReasonError('Select a reason for deleting your account')
+      isValidInput = false
+    }
+
+    // Checks for 'other' reason selected
+    if (accountDeletionReason === 'Other') {
+      if (!accountDeletionReasonText) {
+        setReasonTextError('Enter reason for deleting your account')
+        isValidInput = false
+      } else if (accountDeletionReasonText.length > charLimit) {
+        setReasonTextError(charLimitText)
+        isValidInput = false
+      }
+    }
+
+    // Check for further information text length
+    if (accountDeletionFurtherInfo.length > charLimit) {
+      setFurtherInfoError(charLimitText)
+      isValidInput = false
+    }
+
+    if (isValidInput) {
+      const dataToSend = { authToken }
+      const { errorMessage } = await backendCall(
+        dataToSend,
+        'api/account/delete',
+        navigate
+      )
+
+      if (!errorMessage) {
+        navigate('/account/delete/confirm')
+      }
+    }
+  }
+
+  return (
+    <>
+      <div className='page-container'>
+        <Header />
+        <div className='govuk-width-container body-container'>
+          <PhaseBanner />
+
+          {/* Error summary */}
+          {(reasonError || reasonTextError || furtherInfoError) && (
+            <ErrorSummary
+              errorList={[reasonError, reasonTextError, furtherInfoError]}
+            />
+          )}
+
+          {/* Back link */}
+          <Link onClick={() => navigate(-1)} className='govuk-back-link'>
+            Back
+          </Link>
+
+          {/* Main body */}
+          <main className='govuk-main-wrapper'>
+            <div className='govuk-grid-row'>
+              <div className='govuk-grid-column-full'>
+                <h1 className='govuk-heading-l'>
+                  Delete your account and cancel flood messages
+                </h1>
+                <div className='govuk-body'>
+                  <p className='govuk-body govuk-!-margin-bottom-6'>
+                    We'll no longer send you any flood messages for all your
+                    locations.
+                  </p>
+                  <h2 className='govuk-heading-m'>
+                    Select reason for deleting your account
+                  </h2>
+                  <p className='govuk-body govuk-!-margin-bottom-6'>
+                    This helps us to improve this service.
+                  </p>
+
+                  {/* Select account deletion reason */}
+                  <div
+                    className={
+                      reasonError
+                        ? 'govuk-form-group govuk-form-group--error'
+                        : 'govuk-form-group'
+                    }
+                  >
+                    <div className='govuk-radios' data-module='govuk-radios'>
+                      {reasonError && (
+                        <p className='govuk-error-message'>{reasonError}</p>
+                      )}
+                      {accountDeletionReasonOptions.map((option) => (
+                        <Radio
+                          key={option.value}
+                          name='accountDeletionReasonRadios'
+                          label={option.label}
+                          value={option.value}
+                          onChange={(e) =>
+                            setAccountDeletionReason(e.target.value)
+                          }
+                        />
+                      ))}
+                      <Radio
+                        label='Other'
+                        value='Other'
+                        name='accountDeletionReasonRadios'
+                        onChange={(e) =>
+                          setAccountDeletionReason(e.target.value)
+                        }
+                        conditional={accountDeletionReason === 'Other'}
+                        conditionalQuestion='Reason for deleting account'
+                        conditionalInput={(val) =>
+                          setaccountDeletionReasonText(val)
+                        }
+                        conditionalError={reasonTextError}
+                      />
+                    </div>
+                  </div>
+
+                  <br></br>
+
+                  {/* Enter account deletion optional information */}
+                  <div
+                    className={
+                      furtherInfoError
+                        ? 'govuk-form-group govuk-form-group--error'
+                        : 'govuk-form-group'
+                    }
+                  >
+                    <fieldset className='govuk-fieldset' />
+                    <h2 className='govuk-label-wrapper'>
+                      <label
+                        className='govuk-label govuk-label--m'
+                        htmlFor='more-detail'
+                      >
+                        Any more information you'd like to tell us? (optional)
+                      </label>
+                    </h2>
+                    {furtherInfoError && (
+                      <p className='govuk-error-message'>{furtherInfoError}</p>
+                    )}
+                    <TextArea
+                      className='govuk-textarea govuk-!-width-one-half'
+                      id='more-detail'
+                      rows='5'
+                      onChange={(val) => setAccountDeletionFurtherInfo(val)}
+                    />
+                  </div>
+
+                  <Button
+                    text='Delete account'
+                    className='govuk-button govuk-button--warning'
+                    onClick={handleButton}
+                  />
+                  <Link to='/account' className='govuk-link inline-link'>
+                    Cancel
+                  </Link>
+                </div>
+              </div>
+            </div>
+          </main>
+        </div>
+        <Footer />
+      </div>
+    </>
+  )
+}

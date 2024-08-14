@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react'
+import { React, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../gov-uk-components/Button'
@@ -17,10 +17,6 @@ export default function ConfirmDeleteSingleLocationPage() {
   const session = useSelector((state) => state.session)
   const location = useLocation()
   const [error, setError] = useState('')
-
-  useEffect(() => {
-    console.log('name', location.state.name)
-  }, [])
 
   const handleSubmit = async () => {
     const updatedProfile = removeLocation(session.profile, location.state.name)

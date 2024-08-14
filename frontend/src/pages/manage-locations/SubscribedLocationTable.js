@@ -43,11 +43,12 @@ export default function SubscribedLocationTable() {
   )
 
   useEffect(() => {
+    console.log('hit')
     dispatch(setSelectedLocation(null))
     dispatch(setShowOnlySelectedFloodArea(false))
     dispatch(setSelectedFloodWarningArea(null))
     dispatch(setSelectedFloodAlertArea(null))
-  }, [])
+  })
 
   const viewSelectedLocation = async (location) => {
     const { alertArea, warningArea } = await getSurroundingFloodAreas(
@@ -142,6 +143,7 @@ export default function SubscribedLocationTable() {
           {displayedLocations.map((location, index) => (
             <tr key={index} className='govuk-table__row'>
               {addressColumn(location)}
+              {locations.length === 1 && <td className='govuk-table__cell' />}
               {locations.length === 1 && <td className='govuk-table__cell' />}
               {viewColumn(location)}
               {locations.length > 1 && removeColumn(location)}

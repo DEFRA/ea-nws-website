@@ -22,6 +22,7 @@ export default function ValidateLandlinePhonePage () {
       NavigateToPreviousPage={DifferentHomephone}
       SkipValidation={SkipValidation}
       DifferentHomePhone={DifferentHomephone}
+      ContinueToAlreadyEnteredMobileOptions={DifferentHomephone}
     />
   )
 }

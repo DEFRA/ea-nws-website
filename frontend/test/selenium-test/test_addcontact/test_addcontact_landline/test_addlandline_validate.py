@@ -74,11 +74,14 @@ def test_addlandlinevalidate_resendCode(get_browser):
     time.sleep(3)
     assert browser.current_url == current_url
 
+
 def test_addlandlinevalidate_enteradifferentnumber(get_browser):
     browser = setup_validatelandline_test(get_browser)  
     browser.find_element(By.LINK_TEXT, "Enter a different telephone number").click()
     time.sleep(3)
     assert browser.current_url == previous_page
+
+
 
 def test_addlandlinevalidate_enteradifferentLandline_correctLandline(get_browser):
     browser = setup_validatelandline_test(get_browser)  

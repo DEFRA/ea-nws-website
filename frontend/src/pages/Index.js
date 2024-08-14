@@ -26,7 +26,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [],
+    additionals: [{ id: 'signUpComplete', value: true }],
     unverified: {
       emails: [],
       mobilePhones: [],
@@ -54,7 +54,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [],
+    additionals: [{ id: 'signUpComplete', value: true }],
     unverified: {
       emails: [],
       mobilePhones: [],
@@ -89,7 +89,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [],
+    additionals: [{ id: 'signUpComplete', value: true }],
     unverified: {
       emails: [],
       mobilePhones: [],

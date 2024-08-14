@@ -1,11 +1,11 @@
-import ConfirmDeleteContactDetailsPage from '../../pages/manage-location/ConfirmDeleteSingleLocationPage'
-import ViewLocationPage from '../../pages/manage-location/ViewLocationPage'
 import LocationInAlertAreaPage from '../../pages/manage-locations/add-location/LocationInAlertAreaPage'
 import LocationInSevereWarningAreaPage from '../../pages/manage-locations/add-location/LocationInSevereWarningAreaPage'
 import LocationInWarningAreaProximityPage from '../../pages/manage-locations/add-location/LocationInWarningAreaProximityPage'
 import LocationNotNearDangerPage from '../../pages/manage-locations/add-location/LocationNotNearDangerPage'
 import LocationSearchPage from '../../pages/manage-locations/add-location/LocationSearchPage'
 import LocationSearchResultsPage from '../../pages/manage-locations/add-location/LocationSearchResultsPage'
+import ConfirmDeleteContactDetailsPage from '../../pages/manage-locations/remove-location/ConfirmDeleteSingleLocationPage'
+import ViewLocationPage from '../../pages/manage-locations/view-location/ViewLocationPage'
 
 // manage location routes
 const manageLocationRoutes = [

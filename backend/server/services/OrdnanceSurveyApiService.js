@@ -42,7 +42,7 @@ const osPostCodeApiCall = async (postCode) => {
 const osFindNameApiCall = async (name) => {
   let responseData
   const osApiKey = await getSecretKeyValue('nws/website/osApiKey', 'osApiKey')
-  const url = `https://api.os.uk/search/names/v1/find?query=${name}&key=${osApiKey}`
+  const url = `https://api.os.uk/search/names/v1/find?query=${name}&fq=LOCAL_TYPE:City LOCAL_TYPE:Hamlet LOCAL_TYPE:Hamlet LOCAL_TYPE:Other_Settlement LOCAL_TYPE:Suburban_Area LOCAL_TYPE:Town LOCAL_TYPE:Village&key=${osApiKey}`
   proj4.defs(
     'EPSG:27700',
     '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs'

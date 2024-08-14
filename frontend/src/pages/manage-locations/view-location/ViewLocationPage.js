@@ -1,12 +1,12 @@
 import { useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate, useParams } from 'react-router-dom'
-import AccountNavigation from '../../custom-components/AccountNavigation'
-import FloodWarningKey from '../../custom-components/FloodWarningKey'
-import Map from '../../custom-components/Map'
-import Button from '../../gov-uk-components/Button'
-import Details from '../../gov-uk-components/Details'
-import Header from '../../gov-uk-components/Header'
-import PhaseBanner from '../../gov-uk-components/PhaseBanner'
+import { Link, useNavigate, useParams } from 'react-router-dom'
+import AccountNavigation from '../../../custom-components/AccountNavigation'
+import FloodWarningKey from '../../../custom-components/FloodWarningKey'
+import Map from '../../../custom-components/Map'
+import Button from '../../../gov-uk-components/Button'
+import Details from '../../../gov-uk-components/Details'
+import Header from '../../../gov-uk-components/Header'
+import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
 
 const floodWarningCardDetails = (
   <>
@@ -35,9 +35,8 @@ const floodAlertCardDetails = (
   </>
 )
 
-export default function ViewLocationPage () {
+export default function ViewLocationPage() {
   const navigate = useNavigate()
-  const location = useLocation()
   const { type } = useParams()
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
@@ -47,7 +46,7 @@ export default function ViewLocationPage () {
 
   const removeLocation = () => {
     navigate('/manage-locations/remove', {
-      state: { name: location.name }
+      state: { name: selectedLocation.name }
     })
   }
 
@@ -107,7 +106,7 @@ export default function ViewLocationPage () {
                         style={{ flexDirection: 'column' }}
                       >
                         <h2 className='govuk-summary-card__title govuk-!-font-size-24'>
-                          Flood alerts (optional)
+                          Flood alerts {type === 'both' && '(optional)'}
                         </h2>
                         <p className='govuk-!-margin-bottom-1 govuk-!-margin-top-0'>
                           Early alerts that flooding is possible - be prepared

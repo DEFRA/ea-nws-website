@@ -8,20 +8,13 @@ import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
 
 export default function SkipConfirmLandlinePhonePage () {
   const navigate = useNavigate()
-  const session = useSelector((state) => state.session)
+
   const homePhone = useSelector(
     (state) => state.session.profile.unverified.homePhones[0]
   )
 
-  function handleSubmit () {
-    // navigate through sign up flow
-    if (session.contactPreferences.includes('Email')) {
-      // navigate to email TODO - cameron add this once merged
-    } else if (session.contactPreferences.includes('Text')) {
-      navigate('/signup/contactpreferences/mobile/add')
-    } else {
-      navigate('/signup/accountname/add')
-    }
+  function skipConfirm () {
+    navigate('/signup/accountname/add')
   }
 
   return (
@@ -45,7 +38,7 @@ export default function SkipConfirmLandlinePhonePage () {
               <Button
                 text={"I'll confirm this later"}
                 className='govuk-button'
-                onClick={handleSubmit}
+                onClick={skipConfirm}
               />
               &nbsp; &nbsp;
               <Link

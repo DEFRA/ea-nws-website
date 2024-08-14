@@ -18,7 +18,6 @@ export const routes = [
   ...startRoutes,
   ...signupRoutes,
   ...signinRoutes,
-  ...signupRoutes,
   ...footerRoutes
 ]
 

@@ -9,7 +9,7 @@ import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { backendCall } from '../../services/BackendService'
 import { emailValidation } from '../../services/validations/EmailValidation'
 
-export default function SignInPage () {
+export default function SignInPage() {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
@@ -39,14 +39,16 @@ export default function SignInPage () {
     <>
       <div className='page-container'>
         <Header />
-        <div class='govuk-width-container body-container'>
+        <div className='govuk-width-container body-container'>
           <PhaseBanner />
           <Link onClick={() => navigate(-1)} className='govuk-back-link'>
             Back
           </Link>
           {error ? <ErrorSummary errorList={[error]} /> : <></>}
-          <h2 class='govuk-heading-l'>Sign in to your flood warnings account</h2>
-          <div class='govuk-body'>
+          <h2 className='govuk-heading-l'>
+            Sign in to your flood warnings account
+          </h2>
+          <div className='govuk-body'>
             You can:
             <ul className='govuk-list govuk-list--bullet'>
               <li>update or remove your locations</li>

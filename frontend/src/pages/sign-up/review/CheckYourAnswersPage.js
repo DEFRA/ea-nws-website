@@ -13,7 +13,7 @@ import ContactReviewTable from './ContactReviewTable'
 import FloodMessageReviewTable from './FloodMessageReviewTable'
 import LocationReviewTable from './LocationReviewTable'
 
-export default function CheckYourAnswersPage() {
+export default function CheckYourAnswersPage () {
   const session = useSelector((state) => state.session)
   const profile = useSelector((state) => state.session.profile)
   const registration = useSelector((state) => state.session.registrations)

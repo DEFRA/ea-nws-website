@@ -249,11 +249,15 @@ export default function Map ({ types, setFloodAreas, mobileView }) {
   ]
 
   const tileLayerWithHeader = useMemo(
-    () => <TileLayerWithHeader
-      url={url + '?' + parameterString}
-      token={apiKey}
-      bounds={maxBounds}
-          />, [apiKey])
+    () => (
+      <TileLayerWithHeader
+        url={url + '?' + parameterString}
+        token={apiKey}
+        bounds={maxBounds}
+      />
+    ),
+    [apiKey]
+  )
 
   return (
     <>

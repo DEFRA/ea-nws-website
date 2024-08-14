@@ -37,6 +37,7 @@ import AddMobileContactStartPage from '../../pages/sign-up/review/manage-contact
 import ValidateMobileContactPage from '../../pages/sign-up/review/manage-contact/add-mobile-contact/AddContactMobileValidatePage'
 import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
 import DeclarationOfAgreementPage from '../../pages/sign-up/user-agreement/DeclarationOfAgreementPage'
+
 // sign up routes
 const signupRoutes = [
   { path: '/signup', component: <SignUpPage /> },

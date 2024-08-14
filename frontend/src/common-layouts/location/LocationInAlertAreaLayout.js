@@ -46,6 +46,7 @@ export default function LocationInAlertAreaLayout ({
       if (isUserInNearbyTargetFlowpath) {
         await addFloodAlertArea()
       } else {
+        // TODO: add to profile when API is updated
         dispatch(setLocationCategories(['severe', 'alert']))
       }
     } else if (additionalAlerts && !isChecked) {
@@ -53,6 +54,7 @@ export default function LocationInAlertAreaLayout ({
       if (isUserInNearbyTargetFlowpath) {
         await removeFloodAlertArea()
       } else {
+        // TODO: add to profile when API is updated
         dispatch(setLocationCategories(['severe']))
       }
     } else {
@@ -74,6 +76,7 @@ export default function LocationInAlertAreaLayout ({
       if (isUserInNearbyTargetFlowpath) {
         await removeFloodAlertArea()
       } else {
+        // TODO: add to profile when API is updated
         dispatch(setLocationCategories(['severe']))
       }
     } else {
@@ -114,6 +117,7 @@ export default function LocationInAlertAreaLayout ({
       ...locationWithoutPostcode
     }
     const updatedProfile = await addLocation(profile, locationWithAlertType)
+    // TODO: add to profile when API is updated
     dispatch(setLocationCategories(['alert']))
     dispatch(setProfile(updatedProfile))
   }

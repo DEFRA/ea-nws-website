@@ -107,6 +107,7 @@ export default function LocationInSevereWarningAreaLayout ({
     }
 
     const updatedProfile = await addLocation(profile, locationWithAlertType)
+    // TODO: add to profile when API is updated
     dispatch(setLocationCategories(['severe']))
     dispatch(setProfile(updatedProfile))
   }

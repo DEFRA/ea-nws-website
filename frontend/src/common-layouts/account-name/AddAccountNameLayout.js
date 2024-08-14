@@ -11,7 +11,7 @@ import { setProfile } from '../../redux/userSlice'
 import { addAccountName } from '../../services/ProfileServices'
 import { fullNameValidation } from '../../services/validations/FullNameValidation'
 
-export default function AddAccountNameLayout({
+export default function AddAccountNameLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage,
   buttonText,
@@ -36,8 +36,8 @@ export default function AddAccountNameLayout({
     if (validationError === '') {
       // Split the full name into first name and last name assuming they are separeted by a space.
       // if the string cannot be split then only the first name is set and the last name remains blank
-      let [firstname, ...lastnameParts] = fullName.trim().split(' ')
-      let lastname = lastnameParts.join(' ')
+      const [firstname, ...lastnameParts] = fullName.trim().split(' ')
+      const lastname = lastnameParts.join(' ')
 
       const profile = addAccountName(session.profile, firstname, lastname)
       dispatch(setProfile(profile))

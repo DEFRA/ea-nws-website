@@ -52,7 +52,6 @@ export default function LocationWithinWarningAreaProximityLayout ({
     setError(null)
   }, [type])
 
-
   const handleConfirm = () => {
     if (selectedFloodWarningArea || selectedFloodAlertArea) {
       if (type === 'severe') {
@@ -75,7 +74,6 @@ export default function LocationWithinWarningAreaProximityLayout ({
       dispatch(setSelectedFloodAlertArea(area))
     }
   }
-
 
   return (
     <>

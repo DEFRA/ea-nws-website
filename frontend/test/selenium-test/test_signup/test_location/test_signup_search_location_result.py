@@ -1,8 +1,6 @@
 import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.support.ui import WebDriverWait
 import time
 
 home_page = "http://localhost:3000/"
@@ -16,7 +14,9 @@ english_postcode_nearby_warning = "WD25 7LR"
 severe_warning_area_page = "http://localhost:3000/signup/register-location/location-in-severe-warning-area"
 alert_page = "http://localhost:3000/signup/register-location/location-in-alert-area"
 proximity_severe_page = "http://localhost:3000/signup/register-location/location-in-proximity-area/severe"
-#english_postcode_noflood = "E1W 1YN"
+# TODO Currently no_flood_area page is never shown, will need to implement bellow 
+# test once it's fixed
+# english_postcode_noflood = "E1W 1YN"
 
 def setup_search_location_result_test(get_browser, postcode):
     browser = get_browser

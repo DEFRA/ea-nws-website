@@ -9,7 +9,7 @@ nextPage = "http://localhost:3000/organisation/signin/validate"
 def test_SignInStart_render(get_browser):
     browser = get_browser
     browser.get(url)
-    assert "Sign in to your flood warnings account" in browser.page_source
+    assert "Sign in to your organisation's flood warning account" in browser.page_source
     assert browser.current_url == url
 
 def test_SignInStart_backButton(get_browser):

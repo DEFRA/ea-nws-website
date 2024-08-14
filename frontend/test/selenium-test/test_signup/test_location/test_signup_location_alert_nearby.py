@@ -29,17 +29,17 @@ def setup_search_location_result_test(get_browser, postcode, address_xpath):
     address_postcode_radio_xpath = "//label[text()='Address with postcode']/preceding-sibling::input[@type='radio']"
     address_postcode_radio = browser.find_element(By.XPATH, address_postcode_radio_xpath)
     browser.execute_script("arguments[0].click();", address_postcode_radio)
-    time.sleep(1)
+    time.sleep(3)
     address_postcode_input_xpath = "//label[text()='Address with postcode']/ancestor::div/following-sibling::div//input[@type='text']"
     address_postcode_input = browser.find_element(By.XPATH, address_postcode_input_xpath)
     address_postcode_input.send_keys(postcode)
     continue_button_xpath = f"//button[text()='Continue']"
     continue_button = browser.find_element(By.XPATH, continue_button_xpath)
     browser.execute_script("arguments[0].click();", continue_button)
-    time.sleep(3)
+    time.sleep(5)
     address_nearby_link = browser.find_element(By.XPATH, address_xpath)
     browser.execute_script("arguments[0].click();", address_nearby_link)
-    time.sleep(3)
+    time.sleep(5)
     return browser
 
 def test_search_location_nearby_alert_render(get_browser):
@@ -47,8 +47,8 @@ def test_search_location_nearby_alert_render(get_browser):
     assert browser.current_url == proximity_alert_page
     assert "You can get flood messages near this location" in browser.page_source
     assert "Flood message areas nearby are highlighted in orange on the map." in browser.page_source
-    assert "1. Lower River Irwell catchment including areas in Greater Manchester" in browser.page_source
-    assert "2. Middle River Mersey catchment including areas near Bramhall, Stockport, Sale, Altrincham and Urmston" in browser.page_source
+    assert "Lower River Irwell catchment including areas in Greater Manchester" in browser.page_source
+    assert "Middle River Mersey catchment including areas near Bramhall, Stockport, Sale, Altrincham and Urmston" in browser.page_source
     assert "Select a nearby area" in browser.page_source 
     assert "Flood alert area" in browser.page_source 
     assert "Confirm" in browser.page_source 

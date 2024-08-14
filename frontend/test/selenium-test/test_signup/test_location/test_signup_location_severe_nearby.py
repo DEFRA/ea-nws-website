@@ -49,8 +49,8 @@ def test_search_location_nearby_warning_render(get_browser):
     assert "You can get flood messages near this location" in browser.page_source
     assert "Flood message areas nearby are highlighted in red on the map." in browser.page_source
     assert "Severe flood warnings and flood warnings area" in browser.page_source
-    assert "1. River Gade at Kings Langley and Croxley" in browser.page_source
-    assert "2. River Colne at Watford" in browser.page_source
+    assert "River Gade at Kings Langley and Croxley" in browser.page_source
+    assert "River Colne at Watford" in browser.page_source
     assert "Select a nearby area" in browser.page_source 
     assert "Skip to other areas nearby" in browser.page_source 
 
@@ -81,7 +81,7 @@ def test_search_location_nearby_warning_confirm_error(get_browser):
 def test_search_location_nearby_warning_confirm(get_browser):
     browser = setup_search_location_result_test(get_browser, english_postcode_nearby_warning, warning_address_xpath)
     time.sleep(1)
-    address_postcode_radio_xpath = "//label[contains(text(), '1. River Gade at Kings')]/preceding-sibling::input[@type='radio']"
+    address_postcode_radio_xpath = "//label[contains(text(), 'River Gade at Kings')]/preceding-sibling::input[@type='radio']"
     address_postcode_radio = browser.find_element(By.XPATH, address_postcode_radio_xpath)
     browser.execute_script("arguments[0].click();", address_postcode_radio)
     confirm_button_xpath = f"//button[text()='Confirm']"

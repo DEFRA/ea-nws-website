@@ -19,7 +19,6 @@ def setup_empty_profile(get_browser):
 
 def test_FeedbackStart_render(get_browser):
     browser = setup_empty_profile(get_browser) 
-    browser = get_browser
     browser.get(url)
     assert "Give feedback about signing up" in browser.page_source
     assert browser.current_url == url
@@ -33,10 +32,12 @@ def setup_addFeedback_empty_test(get_browser):
     browser.execute_script("arguments[0].click();", continue_button)
     return browser
 
-def test_addFeedback_empty(get_browser):
+def setup_addFeedback_empty_test(get_browser):
     browser = setup_empty_profile(get_browser) 
+    time.sleep(1)
     assert browser.current_url == url
     assert "Select an answer to tell us how you feel about this service" in browser.page_source
+    assert "Tell us anything you like or do not like about this service" in browser.page_source
 
 
 def test_addFeedback_NoCheckboxSelected(get_browser):

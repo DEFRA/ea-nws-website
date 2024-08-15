@@ -150,36 +150,6 @@
   width: 12.75em;
 }
 
-.flood-warning-key {
-  background-color: #f2f2f2;
-  padding: 0.8rem;
-  border-radius: 0.5rem;
-  margin-top: 1.5rem;
-}
-
-.key-items {
-  display: flex;
-  align-items: center;
-}
-
-.key-title {
-  display: flex;
-  margin-right: 0.8rem;
-}
-
-.key-items .icon.severe {
-  color: #f70202;
-}
-
-.key-items .icon.alert {
-  color: #ffa200;
-}
-
-.key-items span {
-  flex: 1;
-  margin-left: 0.8rem;
-}
-
 @media (max-width: 1099px) {
   .map-container {
     height: 45vh;
@@ -196,6 +166,25 @@
   .map-container {
     height: 40vh;
   }
+}
+
+.flood-warning-key {
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.flood-warning-key-mobile {
+  display: flex;
+  align-items: center;
+}
+
+.warning-key-color {
+  color: #f70202;
+}
+
+.alert-key-color {
+  color: #ffa200;
 }
 
 .map-mobile-view {

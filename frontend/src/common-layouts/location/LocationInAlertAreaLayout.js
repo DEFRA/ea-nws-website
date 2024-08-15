@@ -18,7 +18,7 @@ import {
 } from '../../services/ProfileServices'
 import { getCoordsOfFloodArea } from '../../services/WfsFloodDataService'
 
-export default function LocationInAlertAreaLayout ({
+export default function LocationInAlertAreaLayout({
   continueToNextPage,
   continueToSearchResultsPage,
   canCancel
@@ -158,7 +158,13 @@ export default function LocationInAlertAreaLayout ({
                     ? 'You can also get flood alerts (optional)'
                     : 'You can get flood alerts for this location'}
                 </h1>
-                <InsetText text={selectedLocation.name} />
+                <InsetText
+                  text={
+                    isUserInNearbyTargetFlowpath
+                      ? selectedFloodAlertArea.properties.ta_name
+                      : selectedLocation.name
+                  }
+                />
               </div>
               <div className='govuk-grid-column-three-quarters'>
                 <Map types={['alert']} />
@@ -169,7 +175,10 @@ export default function LocationInAlertAreaLayout ({
                   These are early alerts of possible flooding to help you be
                   prepared.
                 </p>
-                <p>The following may be at risk:</p>
+                <p>
+                  They tell you when you should prepare and could pose a risk
+                  to:
+                </p>
                 <ul className='govuk-list govuk-list--bullet'>
                   <li>fields, recreational land and car parks</li>
                   <li>minor roads</li>

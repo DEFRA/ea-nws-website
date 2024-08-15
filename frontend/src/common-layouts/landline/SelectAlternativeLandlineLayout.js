@@ -137,7 +137,6 @@ export default function SelectAlternativeLandlineLayout ({
                           }}
                         >
                           <Radio
-                            key={mobileNumber}
                             label={mobileNumber}
                             value={mobileNumber}
                             id={mobileNumber}

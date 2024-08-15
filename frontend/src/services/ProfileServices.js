@@ -203,6 +203,19 @@ const removeLocation = (profile, name) => {
   return updatedProfile
 }
 
+const updateLocationsFloodCategory = (profile, location, updatedCategories) => {
+  const parsedProfile = JSON.parse(JSON.stringify(profile))
+
+  const locationIndex = parsedProfile.pois.findIndex(
+    (poi) => poi.name === location.name
+  )
+  if (locationIndex !== -1) {
+    parsedProfile.pois[locationIndex].categories = updatedCategories
+  }
+
+  return parsedProfile
+}
+
 module.exports = {
   addUnverifiedContact,
   removeUnverifiedContact,
@@ -212,5 +225,6 @@ module.exports = {
   getAdditionals,
   updateAdditionals,
   addLocation,
-  removeLocation
+  removeLocation,
+  updateLocationsFloodCategory
 }

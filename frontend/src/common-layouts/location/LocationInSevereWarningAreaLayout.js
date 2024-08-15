@@ -11,7 +11,6 @@ import InsetText from '../../gov-uk-components/InsetText'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import {
   setAdditionalAlerts,
-  setLocationCategories,
   setProfile,
   setSelectedFloodAlertArea
 } from '../../redux/userSlice'
@@ -103,12 +102,11 @@ export default function LocationInSevereWarningAreaLayout ({
     const { postcode, ...locationWithoutPostcode } = selectedLocation
     // update location to recieve severe alert warnings
     const locationWithAlertType = {
-      ...locationWithoutPostcode
+      ...locationWithoutPostcode,
+      categories: ['severe']
     }
 
     const updatedProfile = await addLocation(profile, locationWithAlertType)
-    // TODO: add to profile when API is updated
-    dispatch(setLocationCategories(['severe']))
     dispatch(setProfile(updatedProfile))
   }
 

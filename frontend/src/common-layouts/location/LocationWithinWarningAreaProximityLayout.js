@@ -52,11 +52,6 @@ export default function LocationWithinWarningAreaProximityLayout ({
     setError(null)
   }, [type])
 
-  useEffect(() => {
-    dispatch(setSelectedFloodAlertArea(null))
-    dispatch(setSelectedFloodWarningArea(null))
-  }, [showMobileMap])
-
   const handleConfirm = () => {
     if (selectedFloodWarningArea || selectedFloodAlertArea) {
       if (type === 'severe') {
@@ -91,7 +86,7 @@ export default function LocationWithinWarningAreaProximityLayout ({
               size='xl'
               onClick={() => setShowMobileMap(false)}
             />
-            <Map types={[type]} mobileView />
+            <Map types={[type]} mobileView interactive />
             {selectedFloodWarningArea || selectedFloodAlertArea
               ? (
                 <div className='govuk-body map-confirm-location-box-mobile-view'>
@@ -224,7 +219,11 @@ export default function LocationWithinWarningAreaProximityLayout ({
                       : 'govuk-grid-column-two-thirds'
                   }
                   >
-                    <Map types={[type]} setFloodAreas={setFloodAreas} />
+                    <Map
+                      types={[type]}
+                      setFloodAreas={setFloodAreas}
+                      interactive
+                    />
                     <FloodWarningKey type={type} />
                   </div>
                 </div>

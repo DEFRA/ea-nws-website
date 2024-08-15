@@ -15,7 +15,7 @@ import {
 } from '../../services/ProfileServices'
 import { normalisePhoneNumber } from '../../services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../services/validations/PhoneValidation'
-export default function SelectAlternativeLandlineLayout({
+export default function SelectAlternativeLandlineLayout ({
   NextPageWithoutValidation,
   NextPageWithValidation,
   NavigateBack
@@ -127,8 +127,8 @@ export default function SelectAlternativeLandlineLayout({
                     {validationError && (
                       <p className='govuk-error-message'>{validationError}</p>
                     )}
-                    {mobileNumbers.map((mobileNumber) => (
-                      <div style={{ display: 'block' }}>
+                    {mobileNumbers.map((mobileNumber, index) => (
+                      <div style={{ display: 'block' }} key={index}>
                         <div
                           className='govuk-!-padding-bottom-4'
                           style={{
@@ -137,7 +137,6 @@ export default function SelectAlternativeLandlineLayout({
                           }}
                         >
                           <Radio
-                            key={mobileNumber}
                             label={mobileNumber}
                             value={mobileNumber}
                             id={mobileNumber}

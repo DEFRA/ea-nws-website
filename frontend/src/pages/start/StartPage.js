@@ -5,7 +5,7 @@ import Footer from '../../gov-uk-components/Footer'
 import Header from '../../gov-uk-components/Header'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 
-export default function StartPage() {
+export default function StartPage () {
   const navigate = useNavigate()
 
   return (

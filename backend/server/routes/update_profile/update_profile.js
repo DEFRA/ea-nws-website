@@ -2,7 +2,6 @@ const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
-const { convertWebProfile } = require('../../services/formatters/profileFormatter')
 
 module.exports = [
   {
@@ -14,10 +13,7 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-
-        let { authToken, profile } = request.payload
-        profile = convertWebProfile(profile)
-        console.log(profile)
+        const { authToken, profile } = request.payload
 
         if (Object.keys(profile).length !== 0 && authToken) {
           const response = await apiCall(

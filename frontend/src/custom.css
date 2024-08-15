@@ -150,11 +150,6 @@
   width: 12.75em;
 }
 
-.flood-warning-key {
-  background-color: #f2f2f2;
-  padding: 10px;
-  border-radius: 5px;
-}
 @media (max-width: 1099px) {
   .map-container {
     height: 45vh;
@@ -173,6 +168,25 @@
   }
 }
 
+.flood-warning-key {
+  background-color: #f2f2f2;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.flood-warning-key-mobile {
+  display: flex;
+  align-items: center;
+}
+
+.warning-key-color {
+  color: #f70202;
+}
+
+.alert-key-color {
+  color: #ffa200;
+}
+
 .map-mobile-view {
   height: 100vh;
 }
@@ -184,14 +198,6 @@
   width: 95%;
   left: 50%;
   transform: translateX(-50%);
-}
-
-.warning-key-color {
-  color: #f70202;
-}
-
-.alert-key-color {
-  color: #ffa200;
 }
 
 .map-confirm-location-box-mobile-view {

@@ -23,14 +23,13 @@ export default function LocationInAlertAreaPage() {
   const continueToNextPage = () => {
     let name
     if (isUserInNearbyTargetFlowpath) {
-      name =
-        (selectedFloodWarningArea
-          ? 'Warning area - ' + selectedFloodWarningArea?.properties.ta_name
-          : '') +
-        '\n\n' +
-        (selectedFloodAlertArea
-          ? 'Alert area - ' + selectedFloodAlertArea?.properties.ta_name
-          : '')
+      // if user has selected a flood warning area, only show the name of the warning area in
+      // location added banner
+      if (selectedFloodWarningArea) {
+        name = selectedFloodWarningArea.properties.ta_name
+      } else {
+        name = selectedFloodAlertArea.properties.ta_name
+      }
     } else {
       name = selectedLocation.name
     }

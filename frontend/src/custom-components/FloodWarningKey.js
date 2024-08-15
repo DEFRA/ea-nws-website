@@ -4,28 +4,18 @@ import React from 'react'
 import { isMobile } from 'react-device-detect'
 
 export default function FloodWarningKey({ type }) {
-  // Larger circle for mobile key, default otherwise
+  // Larger circle for mobile, default otherwise
   const iconSize = isMobile ? 'xl' : 'lg'
 
   return (
     <>
       <div
-        className='flood-warning-key govuk-!-margin-top-6'
-        style={
-          isMobile
-            ? {
-                display: 'flex',
-                alignItems: 'center'
-              }
-            : {}
-        }
+        className={`flood-warning-key govuk-!-margin-top-6 ${
+          isMobile && 'flood-warning-key-mobile'
+        }`}
       >
         {/* Space needed between "Key" and icon on mobile */}
-        <b
-          style={type !== 'both' && isMobile ? { marginRight: '0.75rem' } : {}}
-        >
-          Key
-        </b>
+        <b className='govuk-!-margin-right-1'>Key</b>
         {type === 'both' && (
           <>
             <FontAwesomeIcon

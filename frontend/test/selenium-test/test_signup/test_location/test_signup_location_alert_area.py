@@ -28,17 +28,17 @@ def setup_location_alert_test(get_browser, postcode, address_xpath):
     address_postcode_radio_xpath = "//label[text()='Address with postcode']/preceding-sibling::input[@type='radio']"
     address_postcode_radio = browser.find_element(By.XPATH, address_postcode_radio_xpath)
     browser.execute_script("arguments[0].click();", address_postcode_radio)
-    time.sleep(1)
+    time.sleep(3)
     address_postcode_input_xpath = "//label[text()='Address with postcode']/ancestor::div/following-sibling::div//input[@type='text']"
     address_postcode_input = browser.find_element(By.XPATH, address_postcode_input_xpath)
     address_postcode_input.send_keys(postcode)
     continue_button_xpath = f"//button[text()='Continue']"
     continue_button = browser.find_element(By.XPATH, continue_button_xpath)
     browser.execute_script("arguments[0].click();", continue_button)
-    time.sleep(3)
+    time.sleep(5)
     address_link = browser.find_element(By.XPATH, address_xpath)
     browser.execute_script("arguments[0].click();", address_link)
-    time.sleep(3)
+    time.sleep(5)
     return browser
 
 def test_location_alert_render(get_browser):

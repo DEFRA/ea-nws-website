@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import LocationInAlertAreaLayout from '../../../common-layouts/location/LocationInAlertAreaLayout'
 
-export default function LocationInAlertAreaPage () {
+export default function LocationInAlertAreaPage() {
   const navigate = useNavigate()
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
@@ -17,8 +17,6 @@ export default function LocationInAlertAreaPage () {
   const selectedFloodAlertArea = useSelector(
     (state) => state.session.selectedFloodAlertArea
   )
-
-  console.log()
 
   const continueToNextPage = () => {
     let name

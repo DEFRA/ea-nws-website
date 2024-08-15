@@ -43,7 +43,6 @@ export default function SubscribedLocationTable () {
   )
 
   useEffect(() => {
-    console.log('hit')
     dispatch(setSelectedLocation(null))
     dispatch(setShowOnlySelectedFloodArea(false))
     dispatch(setSelectedFloodWarningArea(null))

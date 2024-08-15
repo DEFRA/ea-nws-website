@@ -21,7 +21,7 @@ import {
   getCoordsOfFloodArea
 } from '../../services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout ({
+export default function LocationInSevereWarningAreaLayout({
   continueToNextPage
 }) {
   const navigate = useNavigate()
@@ -164,7 +164,7 @@ export default function LocationInSevereWarningAreaLayout ({
                 <p>The following may be affected:</p>
                 <ul className='govuk-list govuk-list--bullet'>
                   <li>life and communities</li>
-                  <li>homes and business</li>
+                  <li>homes and businesses</li>
                   <li>roads, railway lines and infrastructure</li>
                   <li>coastal areas affected by spray or waves overtopping</li>
                   <li>flood plains, including caravan parks and campsites</li>

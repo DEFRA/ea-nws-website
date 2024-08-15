@@ -41,8 +41,9 @@ export default function AddAddressLayout({
 
         // if buildingNum provided (and exactly one address is found) then navigate straight to confirmation
         if (buildingNum) {
+          const normalisedBuildingNum = buildingNum.toLowerCase().trim()
           const address = data.filter((location) =>
-            location.name.toLowerCase().includes(buildingNum.toLowerCase())
+            location.name.toLowerCase().trim().includes(normalisedBuildingNum)
           )
           if (address.length === 1) {
             dispatch(setOrgAddress(address[0]))

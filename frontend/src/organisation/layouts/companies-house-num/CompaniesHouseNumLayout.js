@@ -73,7 +73,7 @@ export default function CompaniesHouseNumLayout({
                 <div className='govuk-radios'>
                   <Radio
                     key='radio_yes'
-                    name='yes-no-radios'
+                    name='comp-house-radios'
                     label='Yes'
                     onChange={() => {
                       setCompanyNumExists(true)
@@ -86,7 +86,7 @@ export default function CompaniesHouseNumLayout({
                   />
                   <Radio
                     key='radio_no'
-                    name='yes-no-radios'
+                    name='comp-house-radios'
                     label='No'
                     onChange={() => setCompanyNum(false)}
                   />

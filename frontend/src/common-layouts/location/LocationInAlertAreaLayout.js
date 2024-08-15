@@ -54,7 +54,7 @@ export default function LocationInAlertAreaLayout ({
       if (isUserInNearbyTargetFlowpath) {
         await removeFloodAlertArea()
       } else {
-        await updateExistingLocationCategories(['severe', 'alert'])
+        await updateExistingLocationCategories(['severe'])
       }
     } else {
       // location only has flood alerts availble or user has selected a nearby flood alert area

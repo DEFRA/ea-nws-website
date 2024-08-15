@@ -10,11 +10,8 @@ async function getUpdateProfile(
   const { authToken } = req.payload as { authToken: string }
   const { profile } = req.payload as { profile: Object }
 
-  console.log('hit the API')
-
   //not sure how to validate the profile data without doing hardcoded validation for each scenario
   if (authToken === "MockAuthToken" && Object.keys(profile).length != 0) {
-    console.log('returning something')
     return {
       authToken: 'MockAuthToken',
       profile: profile

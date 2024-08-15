@@ -7,9 +7,9 @@ import AlternativeContactTable from './AlternativeContactTable'
 import MainAdministratorTable from './MainAdministratorTable'
 import OrganisationDetailsTable from './OrganisationDetailsTable'
 export default function CheckYourAnswersPage() {
-  const session = useSelector((state) => state.session)
-  const profile = session.profile
-  const contactPreferences = session.contactPreferences
+  const organisation = useSelector((state) => state.session.organisation)
+  const profile = useSelector((state) => state.session.profile)
+
   const navigate = useNavigate()
 
   const handleButton = () => {
@@ -23,16 +23,10 @@ export default function CheckYourAnswersPage() {
         <div className='govuk-grid-row '>
           <div className='govuk-grid-column-three-quarters'>
             <h2 className='govuk-heading-l'>Check your answers</h2>
-            <OrganisationDetailsTable profile={profile} />
-            <MainAdministratorTable
-              locations={profile}
-              contactPreferences={contactPreferences}
-            />
+            <OrganisationDetailsTable organisation={organisation} />
+            <MainAdministratorTable locations={profile} />
             <br />
-            <AlternativeContactTable
-              profile={profile}
-              contactPreferences={contactPreferences}
-            />
+            <AlternativeContactTable profile={profile} />
             <br />
           </div>
         </div>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function OrganisationDetailsTable({ profile }) {
+export default function OrganisationDetailsTable({ organisation }) {
   return (
     <>
       <h3 className='govuk-heading-m'>Organisation</h3>
@@ -11,14 +11,11 @@ export default function OrganisationDetailsTable({ profile }) {
           <tr className='govuk-table__row'>
             <td class='govuk-table__header  govuk-!-width-one-half'>Name</td>
             <td className='govuk-table__cell  govuk-!-width-full'>
-              {profile.firstname + ' ' + profile.lastname}
+              {organisation.name}
             </td>
 
             <td className='govuk-table__cell'>
-              <Link
-                to='/signup/review/change-account-name'
-                className='govuk-link'
-              >
+              <Link to='/' className='govuk-link'>
                 Change
               </Link>
             </td>
@@ -28,14 +25,11 @@ export default function OrganisationDetailsTable({ profile }) {
               UK head office address
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
-              {profile.emails[0]}
+              {organisation.address}
             </td>
 
             <td className='govuk-table__cell'>
-              <Link
-                to='/signup/review/change-account-email'
-                className='govuk-link'
-              >
+              <Link to='/' className='govuk-link'>
                 Change
               </Link>
             </td>
@@ -45,14 +39,10 @@ export default function OrganisationDetailsTable({ profile }) {
               Has Companies House number?
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
-              {profile.emails[0]}
+              {organisation.compHouseNum ? 'Yes' : 'No'}
             </td>
-
             <td className='govuk-table__cell'>
-              <Link
-                to='/signup/review/change-account-email'
-                className='govuk-link'
-              >
+              <Link to='/' className='govuk-link'>
                 Change
               </Link>
             </td>
@@ -62,14 +52,11 @@ export default function OrganisationDetailsTable({ profile }) {
               Companies House number
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
-              {profile.emails[0]}
+              {organisation.compHouseNum}
             </td>
 
             <td className='govuk-table__cell'>
-              <Link
-                to='/signup/review/change-account-email'
-                className='govuk-link'
-              >
+              <Link to='/' className='govuk-link'>
                 Change
               </Link>
             </td>
@@ -79,14 +66,11 @@ export default function OrganisationDetailsTable({ profile }) {
               Involved in responding to public emergencies or incidents?
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
-              {profile.emails[0]}
+              {organisation.emergencySector}
             </td>
 
             <td className='govuk-table__cell'>
-              <Link
-                to='/signup/review/change-account-email'
-                className='govuk-link'
-              >
+              <Link to='/' className='govuk-link'>
                 Change
               </Link>
             </td>

@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { isMobile } from 'react-device-detect'
 
-export default function FloodWarningKey({ type }) {
+export default function FloodWarningKey ({ type }) {
   // Larger circle for mobile, default otherwise
   const iconSize = isMobile ? 'xl' : 'lg'
 

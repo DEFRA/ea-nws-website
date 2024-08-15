@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
 import InsetText from '../../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
-import { setAuthToken } from '../../../../common/redux/userSlice'
+import { setAuthToken, setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
+import { updateAdditionals } from '../../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../../common/services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from '../../../layouts/expired-code/ExpiredCodeLayout'
 
@@ -22,6 +24,8 @@ export default function SignUpValidationPage () {
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
+  const session = useSelector((state) => state.session)
+  const profile = session.profile
 
   // if error remove code sent notification
   useEffect(() => {
@@ -52,6 +56,8 @@ export default function SignUpValidationPage () {
         }
       } else {
         dispatch(setAuthToken(data.authToken))
+        const updatedProfile = updateAdditionals(profile, [{ id: 'lastAccessedUrl', value: '/signup/accountname/add' }])
+        dispatch(setProfile(updatedProfile))
         navigate('/signup/contactpreferences')
       }
     }

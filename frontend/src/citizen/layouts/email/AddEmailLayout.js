@@ -24,19 +24,28 @@ export default function AddEmailLayout ({ NavigateToNextPage }) {
     setError(validationError)
     const dataToSend = { email, authToken }
     if (validationError === '') {
-      const { errorMessage } = await backendCall(
-        dataToSend,
-        'api/add_contact/email/add',
+      const profile = addUnverifiedContact(session.profile, 'email', email)
+      const profileDataToSend = { profile, authToken }
+      const { errorMessage, data } = await backendCall(
+        profileDataToSend,
+        'api/profile/update',
         navigate
       )
       if (errorMessage !== null) {
         setError(errorMessage)
       } else {
-        dispatch(
-          setProfile(addUnverifiedContact(session.profile, 'email', email))
+        dispatch(setProfile(data.profile))
+        const { errorMessage } = await backendCall(
+          dataToSend,
+          'api/add_contact/email/add',
+          navigate
         )
-        dispatch(setCurrentContact(email))
-        NavigateToNextPage()
+        if (errorMessage !== null) {
+          setError(errorMessage)
+        } else {
+          dispatch(setCurrentContact(email))
+          NavigateToNextPage()
+        }
       }
     }
   }

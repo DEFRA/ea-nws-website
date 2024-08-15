@@ -9,12 +9,14 @@ import InsetText from '../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import {
   setAuthToken,
+  setContactPreferences,
   setProfile,
   setRegistrations
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from '../../layouts/expired-code/ExpiredCodeLayout'
+import NotCompletedSigningUpLayout from '../../layouts/sign-up/NotCompletedSignUpLayout'
 
 export default function SignInValidatePage () {
   const location = useLocation()
@@ -26,6 +28,8 @@ export default function SignInValidatePage () {
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
+  const [signUpNotComplete, setSignUpNotComplete] = useState(false)
+  const [lastAccessedUrl, setLastAccessedUrl] = useState('')
 
   // if error remove code sent notification
   useEffect(() => {
@@ -45,7 +49,10 @@ export default function SignInValidatePage () {
       )
 
       if (errorMessage !== null) {
-        if (errorMessage === 'The code you have entered has expired - please request a new code') {
+        if (
+          errorMessage ===
+          'The code you have entered has expired - please request a new code'
+        ) {
           setCodeExpired(true)
         } else {
           setError(errorMessage)
@@ -54,7 +61,25 @@ export default function SignInValidatePage () {
         dispatch(setAuthToken(data.authToken))
         dispatch(setProfile(data.profile))
         dispatch(setRegistrations(data.registrations))
+        dispatch(setContactPreferences([
+          data.profile.emails.length !== 0 && 'Email Address',
+          data.profile.homePhones.length !== 0 && 'PhoneCall',
+          data.profile.mobilePhones.length !== 0 && 'Text'
+        ]))
+
+        const isSignUpComplete = data.profile.additionals.filter(
+          (c) => c.id === 'signUpComplete'
+        )[0]?.value
+        const lastAccessedUrl = data.profile.additionals.filter(
+          (c) => c.id === 'lastAccessedUrl'
+        )[0]?.value
+        setLastAccessedUrl(lastAccessedUrl)
+
+        if (!isSignUpComplete && lastAccessedUrl !== undefined) {
+          setSignUpNotComplete(true)
+        } else {
         navigate('/home')
+        }
       }
     }
   }
@@ -75,8 +100,13 @@ export default function SignInValidatePage () {
 
   return (
     <>
-      {codeExpired
-        ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
+      {codeExpired || signUpNotComplete
+        ? (
+            (codeExpired && <ExpiredCodeLayout getNewCode={getNewCode} />) ||
+        (signUpNotComplete && (
+          <NotCompletedSigningUpLayout nextPage={lastAccessedUrl} />
+        ))
+          )
         : (
           <>
             <BackLink to='/signin' />
@@ -90,8 +120,8 @@ export default function SignInValidatePage () {
               <div className='govuk-grid-row'>
                 <div className='govuk-grid-column-two-thirds'>
                   {error && <ErrorSummary errorList={[error]} />}
-                  <h2 class='govuk-heading-l'>Check your email</h2>
-                  <div class='govuk-body'>
+                  <h2 className='govuk-heading-l'>Check your email</h2>
+                  <div className='govuk-body'>
                     We've sent a code to:
                     <InsetText text={location.state.email} />
                     <Input

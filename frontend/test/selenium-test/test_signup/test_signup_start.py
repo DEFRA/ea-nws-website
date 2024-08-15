@@ -29,7 +29,7 @@ def test_SignUpStart_backButton(get_browser):
     browser = setup_empty_profile(get_browser) 
     browser.get(url)
     browser.find_element(By.CLASS_NAME, "govuk-back-link").click()
-    assert browser.current_url == url
+    assert browser.current_url == index
 
 def test_SignUpStart_emptyEmail(get_browser):
     browser = setup_empty_profile(get_browser) 

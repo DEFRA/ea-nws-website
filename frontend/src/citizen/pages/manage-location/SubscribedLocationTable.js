@@ -5,7 +5,7 @@ import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 
-export default function SubscribedLocationTable () {
+export default function SubscribedLocationTable() {
   const [currentPage, setCurrentPage] = useState(1)
   const locationsPerPage = 10
 
@@ -86,9 +86,7 @@ export default function SubscribedLocationTable () {
           {displayedLocations.map((location, index) => (
             <tr key={index} className='govuk-table__row'>
               {addressColumn(location)}
-              {locations.length === 1 && (
-                <td className='govuk-table__cell' />
-              )}
+              {locations.length === 1 && <td className='govuk-table__cell' />}
               {viewColumn(location)}
               {locations.length > 1 && removeColumn(location)}
             </tr>
@@ -99,9 +97,9 @@ export default function SubscribedLocationTable () {
 
     const tableHead = () => {
       return (
-        <thead class='govuk-table__head'>
-          <tr class='govuk-table__row'>
-            <th colspan='3' scope='colspan' className='govuk-table__header'>
+        <thead className='govuk-table__head'>
+          <tr className='govuk-table__row'>
+            <th colSpan='3' scope='colspan' className='govuk-table__header'>
               {'Your locations (' + locations.length + ')'}
             </th>
           </tr>

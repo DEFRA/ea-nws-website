@@ -5,7 +5,7 @@ import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
-import { setProfile } from '../../../common/redux/userSlice'
+import { setCurrentContact, setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { addUnverifiedContact } from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
@@ -31,18 +31,28 @@ export default function ChangeEmailLayout ({
           'Enter a different email address to the one you currently sign in with'
         )
       } else {
-        const { errorMessage } = await backendCall(
-          dataToSend,
-          'api/add_contact/email/add',
+        const profile = addUnverifiedContact(session.profile, 'email', email)
+        const profileDataToSend = { profile, authToken }
+        const { errorMessage, data } = await backendCall(
+          profileDataToSend,
+          'api/profile/update',
           navigate
         )
         if (errorMessage !== null) {
           setError(errorMessage)
         } else {
-          dispatch(
-            setProfile(addUnverifiedContact(session.profile, 'email', email))
+          dispatch(setProfile(data.profile))
+          const { errorMessage } = await backendCall(
+            dataToSend,
+            'api/add_contact/email/add',
+            navigate
           )
-          NavigateToNextPage()
+          if (errorMessage !== null) {
+            setError(errorMessage)
+          } else {
+            dispatch(setCurrentContact(email))
+            NavigateToNextPage()
+          }
         }
       }
     }

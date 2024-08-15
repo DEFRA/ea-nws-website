@@ -1,31 +1,38 @@
 import { faRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
   GeoJSON,
   MapContainer,
   Marker,
   Popup,
-  TileLayer,
   ZoomControl,
   useMap
 } from 'react-leaflet'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import {
+  setSelectedFloodAlertArea,
+  setSelectedFloodWarningArea
+} from '../../redux/userSlice'
 import { getSurroundingFloodAreas } from '../../services/WfsFloodDataService'
 // Leaflet Marker Icon fix
 import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
+import { backendCall } from '../services/BackendService'
+import TileLayerWithHeader from './TileLayerWithHeader'
 
-export default function Map ({ types, setFloodAreas }) {
+export default function Map ({ types, setFloodAreas, mobileView }) {
+  const dispatch = useDispatch()
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
   const { latitude, longitude } = selectedLocation.coordinates
+  const [apiKey, setApiKey] = useState(null)
   // used when user selects flood area when location is within proximity
   const selectedFloodWarningArea = useSelector(
     (state) => state.session.selectedFloodWarningArea
@@ -171,7 +178,6 @@ export default function Map ({ types, setFloodAreas }) {
       })
     }
   }
-
   // reset the map to selected location
   const ResetMapButton = () => {
     const map = useMap()
@@ -198,6 +204,61 @@ export default function Map ({ types, setFloodAreas }) {
 
   L.Marker.prototype.options.icon = DefaultIcon
 
+  async function getApiKey () {
+    const { data } = await backendCall('data', 'api/os-api/oauth2')
+    setApiKey(data.access_token)
+  }
+
+  useEffect(() => {
+    return () => {
+      getApiKey()
+    }
+  }, [])
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getApiKey()
+    }, 270000)
+    return () => {
+      clearInterval(interval)
+    }
+  }, [])
+
+  const url = 'https://api.os.uk/maps/raster/v1/wmts'
+  const parameters = {
+    tileMatrixSet: encodeURI('EPSG:3857'),
+    version: '2.0.0',
+    style: 'default',
+    layer: encodeURI('Outdoor_3857'),
+    service: 'WMTS',
+    request: 'GetTile',
+    tileCol: '{x}',
+    tileRow: '{y}',
+    tileMatrix: '{z}'
+  }
+
+  const parameterString = Object.keys(parameters)
+    .map(function (key) {
+      return key + '=' + parameters[key]
+    })
+    .join('&')
+
+  const maxBounds = [
+    [49.528423, -10.76418],
+    [61.331151, 1.9134116]
+  ]
+
+  const tileLayerWithHeader = useMemo(
+    () => (
+      <TileLayerWithHeader
+        url={url + '?' + parameterString}
+        token={apiKey}
+        bounds={maxBounds}
+      />
+    ),
+    [apiKey]
+  )
+
   return (
     <>
       <MapContainer
@@ -205,17 +266,24 @@ export default function Map ({ types, setFloodAreas }) {
         zoom={14}
         zoomControl={false}
         attributionControl={false}
-        className='map-container'
+        minZoom={7}
+        maxBounds={maxBounds}
+        className={mobileView ? 'map-mobile-view' : 'map-container'}
       >
-        <TileLayer url='https://api.os.uk/maps/raster/v1/zxy/Outdoor_3857/{z}/{x}/{y}.png?key=tjk8EgPGUk5tD2sYxAbW3yudGJOhOr8a' />
-        <ZoomControl position='bottomright' />
-        <Marker position={[latitude, longitude]}>
+        {apiKey && tileLayerWithHeader}
+        {!mobileView && <ZoomControl position='bottomright' />}
+        <Marker position={[latitude, longitude]} interactive={false}>
           <Popup />
         </Marker>
         {warningArea && types.includes('severe') && (
           <GeoJSON
             data={warningArea}
             style={{ color: '#f70202' }}
+            onEachFeature={function (feature, layer) {
+              layer.on({
+                click: () => dispatch(setSelectedFloodWarningArea(feature))
+              })
+            }}
             ref={(el) => {
               warningAreaRef.current = el
               setWarningAreaRefVisible(true)
@@ -226,13 +294,18 @@ export default function Map ({ types, setFloodAreas }) {
           <GeoJSON
             data={alertArea}
             style={{ color: '#ffa200' }}
+            onEachFeature={function (feature, layer) {
+              layer.on({
+                click: () => dispatch(setSelectedFloodAlertArea(feature))
+              })
+            }}
             ref={(el) => {
               alertAreaRef.current = el
               setAlertAreaRefVisible(true)
             }}
           />
         )}
-        <ResetMapButton />
+        {!mobileView && <ResetMapButton />}
       </MapContainer>
     </>
   )

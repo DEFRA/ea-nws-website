@@ -152,8 +152,32 @@
 
 .flood-warning-key {
   background-color: #f2f2f2;
-  padding: 10px;
-  border-radius: 5px;
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  margin-top: 1.5rem;
+}
+
+.key-items {
+  display: flex;
+  align-items: center;
+}
+
+.key-title {
+  display: flex;
+  margin-right: 0.8rem;
+}
+
+.key-items .icon.severe {
+  color: #f70202;
+}
+
+.key-items .icon.alert {
+  color: #ffa200;
+}
+
+.key-items span {
+  flex: 1;
+  margin-left: 0.8rem;
 }
 
 @media (max-width: 1099px) {
@@ -174,6 +198,32 @@
   }
 }
 
+.map-mobile-view {
+  height: 100vh;
+}
+
+.flood-warning-key-mobile-view {
+  position: absolute;
+  bottom: 10px;
+  z-index: 1000;
+  width: 95%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.map-confirm-location-box-mobile-view {
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1001;
+  background-color: white;
+  width: 95%;
+  padding: 10px;
+  box-sizing: border-box;
+  border-radius: 10px;
+}
+
 .reset-map-button {
   position: absolute;
   bottom: 80px;
@@ -183,4 +233,28 @@
   padding: 3px;
   border-radius: 5px;
   cursor: pointer;
+}
+
+.back-map-button {
+  transform: translateX(-50%);
+  z-index: 1001;
+  position: absolute;
+  top: 1rem;
+  left: 2rem;
+  background-color: white;
+  padding: 0.625rem;
+  border-radius: 0.3125rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-width-button {
+  width: auto !important;
+}
+
+.button-link-container {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
 }

@@ -13,7 +13,7 @@ import { businessDetailsValidation } from '../../../common/services/validations/
 export default function ChangeBusinessDetailsPage () {
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
-  const profile = JSON.parse(JSON.stringify(session.profile))
+  const profile = session.profile
   const [businessNameError, setBusinessNameError] = useState('')
   const [jobTitleError, setJobTitleError] = useState('')
   const [error, setError] = useState('')
@@ -22,14 +22,16 @@ export default function ChangeBusinessDetailsPage () {
   const [businessName, setBusinessName] = useState(getAdditionals(profile, 'businessName'))
   const [jobTitle, setJobTitle] = useState(getAdditionals(profile, 'jobTitle'))
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = async () => {
     const { validationErrorBusiness, validationErrorJob } = businessDetailsValidation(businessName, jobTitle)
     setBusinessNameError(validationErrorBusiness)
     setJobTitleError(validationErrorJob)
-    updateAdditionals(profile, 'businessName', businessName)
-    updateAdditionals(profile, 'jobTitle', jobTitle)
+    const updatedProfile = updateAdditionals(
+      profile,
+      [{ id: 'businessName', value: businessName }, { id: 'jobTitle', value: jobTitle }]
+    )
 
-    const dataToSend = { profile, authToken }
+    const dataToSend = { profile: updatedProfile, authToken }
     if (!validationErrorBusiness && !validationErrorJob) {
       const { errorMessage, data } = await backendCall(
         dataToSend,
@@ -45,8 +47,8 @@ export default function ChangeBusinessDetailsPage () {
         navigate('/account', {
           state: {
             changeBusinessDetails: true,
-            businessName: getAdditionals(profile, 'businessName'),
-            jobTitle: getAdditionals(profile, 'jobTitle')
+            businessName: getAdditionals(data.profile, 'businessName'),
+            jobTitle: getAdditionals(data.profile, 'jobTitle')
           }
         })
       }

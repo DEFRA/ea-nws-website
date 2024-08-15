@@ -19,7 +19,6 @@ export default function WarningContactsPreferencePage () {
 
   const contactOptions = [
     { label: 'Text', value: 'Text' },
-    { label: 'Email', value: 'Email' },
     { label: 'Phone call', value: 'PhoneCall' }
   ]
 
@@ -30,8 +29,6 @@ export default function WarningContactsPreferencePage () {
       dispatch(setContactPreferences(selectedContactPreferences))
       if (selectedContactPreferences.includes('Text')) {
         navigate('/signup/contactpreferences/mobile/add')
-      } else if (selectedContactPreferences.includes('Email')) {
-        // navigate to email TODO - cameron add this once merged
       } else if (selectedContactPreferences.includes('PhoneCall')) {
         navigate('/signup/contactpreferences/landline/add')
       }

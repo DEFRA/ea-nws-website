@@ -1,4 +1,7 @@
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useState } from 'react'
+import { isMobile } from 'react-device-detect'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -27,6 +30,8 @@ export default function LocationWithinWarningAreaProximityLayout ({
   const { type } = useParams()
   const [floodAreas, setFloodAreas] = useState(null)
   const [error, setError] = useState(null)
+  const [showMobileMap, setShowMobileMap] = useState(false)
+
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
@@ -37,7 +42,6 @@ export default function LocationWithinWarningAreaProximityLayout ({
     (state) => state.session.selectedFloodAlertArea
   )
 
-  // reset all target area variables to default values on page load
   useEffect(() => {
     dispatch(setSelectedFloodAlertArea(null))
     dispatch(setSelectedFloodWarningArea(null))
@@ -46,24 +50,19 @@ export default function LocationWithinWarningAreaProximityLayout ({
     setError(null)
   }, [type])
 
+  useEffect(() => {
+    dispatch(setSelectedFloodAlertArea(null))
+    dispatch(setSelectedFloodWarningArea(null))
+  }, [showMobileMap])
+
   const handleConfirm = () => {
     if (selectedFloodWarningArea || selectedFloodAlertArea) {
-      // if user selected warning area, we need to show them optional associated alert area
-      switch (type) {
-        case 'severe':
-          dispatch(setAdditionalAlerts(true))
-          break
-        case 'alert':
-          dispatch(setAdditionalAlerts(false))
-          break
-        default:
-          break
+      if (type === 'severe') {
+        dispatch(setAdditionalAlerts(true))
+      } else if (type === 'alert') {
+        dispatch(setAdditionalAlerts(false))
       }
-
-      // only show the selected flood area on the map on next page
       dispatch(setShowOnlySelectedFloodArea(true))
-      // need to let the severe or alert pages know that nearby flood areas flow is taking place
-      // so that correct data is added
       dispatch(setNearbyTargetAreasFlow(true))
       continueToSelectedFloodWarningsPage(type)
     } else {
@@ -72,20 +71,48 @@ export default function LocationWithinWarningAreaProximityLayout ({
   }
 
   const setFloodArea = async (area) => {
-    switch (type) {
-      case 'severe':
-        dispatch(setSelectedFloodWarningArea(area))
-        break
-      case 'alert':
-        dispatch(setSelectedFloodAlertArea(area))
-        break
-      default:
-        break
+    if (type === 'severe') {
+      dispatch(setSelectedFloodWarningArea(area))
+    } else if (type === 'alert') {
+      dispatch(setSelectedFloodAlertArea(area))
     }
   }
 
   return (
     <>
+      {showMobileMap
+        ? (
+          <>
+            <FontAwesomeIcon
+              icon={faArrowLeft}
+              className='back-map-button'
+              size='xl'
+              onClick={() => setShowMobileMap(false)}
+            />
+            <Map types={[type]} mobileView />
+            {selectedFloodWarningArea || selectedFloodAlertArea
+              ? (
+                <div className='govuk-body map-confirm-location-box-mobile-view'>
+                  <p>
+                    {selectedFloodWarningArea?.properties.ta_name ||
+                  selectedFloodAlertArea?.properties.ta_name}
+                  </p>
+                  <Button
+                    text='Confirm this location'
+                    className='govuk-button custom-width-button govuk-!-margin-bottom-2'
+                    onClick={handleConfirm}
+                  />
+                </div>
+                )
+              : (
+                <div className='flood-warning-key-mobile-view'>
+                  <FloodWarningKey type={type} mobileView />
+                </div>
+                )}
+          </>
+          )
+        : (
+          <>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -96,7 +123,7 @@ export default function LocationWithinWarningAreaProximityLayout ({
             </h1>
             <InsetText text={selectedLocation.name} />
             <p>
-              Flood message areas nearby are highlight in{' '}
+              Flood message areas nearby are highlighted in{' '}
               {type === 'severe' ? 'red' : 'orange'} on the map.
             </p>
             <p>
@@ -105,8 +132,8 @@ export default function LocationWithinWarningAreaProximityLayout ({
             </p>
           </div>
         </div>
-        <div class='govuk-grid-row'>
-          <div class='govuk-grid-column-one-third'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-one-third'>
             <div
               className={
                     error
@@ -115,7 +142,7 @@ export default function LocationWithinWarningAreaProximityLayout ({
                   }
             >
               <fieldset className='govuk-fieldset'>
-                <h3 class='govuk-heading-s'>Select a nearby area</h3>
+                <h3 className='govuk-heading-s'>Select a nearby area</h3>
                 {error && <p className='govuk-error-message'>{error}</p>}
                 {floodAreas
                   ? (
@@ -123,12 +150,16 @@ export default function LocationWithinWarningAreaProximityLayout ({
                         <Radio
                           key={index}
                           small
-                          label={index + 1 + '. ' + area.properties.ta_name}
+                          label={`${index + 1}. ${area.properties.ta_name}`}
                           name='floodAreas'
                           onChange={() => setFloodArea(area)}
                           checked={
-                            (selectedFloodWarningArea ||
-                              selectedFloodAlertArea) === area
+                            (selectedFloodWarningArea &&
+                              selectedFloodWarningArea.properties.gml_id ===
+                                area.properties.gml_id) ||
+                            (selectedFloodAlertArea &&
+                              selectedFloodAlertArea.properties.gml_id ===
+                                area.properties.gml_id)
                           }
                         />
                       ))
@@ -138,16 +169,32 @@ export default function LocationWithinWarningAreaProximityLayout ({
                     )}
               </fieldset>
             </div>
+            <div className='button-link-container'>
             <Button
               text='Confirm'
-              className='govuk-button govuk-!-margin-top-5'
-              onClick={() => handleConfirm()}
+              className={`govuk-button govuk-!-margin-top-5 ${
+                isMobile ? 'custom-width-button' : ''
+              }`}
+              onClick={handleConfirm}
             />
+            {isMobile && (
+              <Link
+                onClick={(e) => {
+                  e.preventDefault()
+                  setShowMobileMap(true)
+                }}
+              >
+                View and select on map
+              </Link>
+            )}
+            </div>
             {type === 'severe' && (
               <Button
                 text='Skip to other areas nearby'
-                className='govuk-button govuk-button--secondary'
-                onClick={() => continueToNearbyFloodAlertsPage()}
+                className={`govuk-button govuk-button--secondary ${
+                  isMobile ? 'custom-width-button' : ''
+                }`}
+                onClick={continueToNearbyFloodAlertsPage}
               />
             )}
             <br />
@@ -160,15 +207,21 @@ export default function LocationWithinWarningAreaProximityLayout ({
               Choose different location
             </Link>
           </div>
-          <div class='govuk-grid-column-two-thirds'>
-            <Map
-              types={[type]}
-              setFloodAreas={(areas) => setFloodAreas(areas)}
-            />
+          <div 
+            className={
+            isMobile
+              ? 'govuk-visually-hidden'
+              : 'govuk-grid-column-two-thirds'
+          }
+          >
+            <Map types={[type]} setFloodAreas={setFloodAreas} />
             <FloodWarningKey type={type} />
           </div>
         </div>
+      
       </main>
+      </>
+      )}
     </>
   )
 }

@@ -11,7 +11,7 @@ import { setProfile } from '../../../redux/userSlice'
 import { backendCall } from '../../../services/BackendService'
 import { removeLocation } from '../../../services/ProfileServices'
 
-export default function ConfirmDeleteSingleLocationPage () {
+export default function ConfirmDeleteSingleLocationPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
@@ -37,7 +37,7 @@ export default function ConfirmDeleteSingleLocationPage () {
       dispatch(setProfile(updatedProfile))
       navigate('/home', {
         state: {
-          removedAddress: location.state.name
+          removedLocation: location.state.name
         }
       })
     } else {
@@ -56,7 +56,7 @@ export default function ConfirmDeleteSingleLocationPage () {
         <div className='govuk-width-container body-container'>
           <PhaseBanner />
           <Link
-            to={() => navigate(-1)}
+            onClick={() => navigate(-1)}
             className='govuk-back-link govuk-!-margin-bottom-0 govuk-!-margin-top-0'
           >
             Back
@@ -68,7 +68,7 @@ export default function ConfirmDeleteSingleLocationPage () {
                 <h2 className='govuk-heading-l'>
                   Are you sure you want to remove this location?
                 </h2>
-                <InsetText text={location.state.name} />
+                <InsetText text={location.state?.name} />
                 <p className='govuk-!-margin-bottom-6'>
                   You'll no longer get any flood warnings or alerts for this
                   location.

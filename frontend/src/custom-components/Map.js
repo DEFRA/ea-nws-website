@@ -198,7 +198,7 @@ export default function Map({
     const map = useMap()
 
     const handleClick = () => {
-      map.setView([latitude, longitude], 11)
+      map.setView([latitude, longitude], 14)
     }
 
     return (
@@ -305,7 +305,7 @@ export default function Map({
     <>
       <MapContainer
         center={[latitude, longitude]}
-        zoom={11}
+        zoom={14}
         zoomControl={false}
         attributionControl={false}
         minZoom={7}
@@ -315,6 +315,7 @@ export default function Map({
         {apiKey && tileLayerWithHeader}
         {showOnlySelectedFloodArea && <SetMapBoundsToShowFullFloodArea />}
         {!mobileView && <ZoomControl position='bottomright' />}
+        {!showOnlySelectedFloodArea && !mobileView && <ResetMapButton />}
         {!showOnlySelectedFloodArea && (
           <Marker position={[latitude, longitude]} interactive={false}>
             <Popup />
@@ -352,7 +353,6 @@ export default function Map({
             }}
           />
         )}
-        {!mobileView && <ResetMapButton />}
       </MapContainer>
     </>
   )

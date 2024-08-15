@@ -35,7 +35,7 @@ const floodAlertCardDetails = (
   </>
 )
 
-export default function ViewLocationPage () {
+export default function ViewLocationPage() {
   const navigate = useNavigate()
   const { type } = useParams()
   const selectedLocation = useSelector(
@@ -112,53 +112,56 @@ export default function ViewLocationPage () {
                           Early alerts that flooding is possible - be prepared
                         </p>
                       </div>
-                      <div
-                        className='govuk-summary-card__title-wrapper'
-                        style={{ alignItems: 'center' }}
-                      >
+                      {type === 'both' && (
                         <div
-                          className='govuk-radios govuk-radios--small govuk-radios--inline'
-                          data-module='govuk-radios'
+                          className='govuk-summary-card__title-wrapper'
+                          style={{ alignItems: 'center' }}
                         >
-                          <div className='govuk-radios__item govuk-!-margin-right-0'>
-                            <input
-                              className='govuk-radios__input'
-                              id='alert-on'
-                              name='alert'
-                              type='radio'
-                              checked
-                              value='on'
-                            />
-                            <label
-                              className='govuk-label govuk-radios__label'
-                              htmlFor='alert-on'
-                            >
-                              On
-                            </label>
+                          <div
+                            className='govuk-radios govuk-radios--small govuk-radios--inline'
+                            data-module='govuk-radios'
+                          >
+                            <div className='govuk-radios__item govuk-!-margin-right-0'>
+                              <input
+                                className='govuk-radios__input'
+                                id='alert-on'
+                                name='alert'
+                                type='radio'
+                                checked
+                                value='on'
+                              />
+                              <label
+                                className='govuk-label govuk-radios__label'
+                                htmlFor='alert-on'
+                              >
+                                On
+                              </label>
+                            </div>
+                            <div className='govuk-radios__item govuk-!-margin-right-0'>
+                              <input
+                                className='govuk-radios__input'
+                                id='alert-off'
+                                name='alert'
+                                type='radio'
+                                value='off'
+                              />
+                              <label
+                                className='govuk-label govuk-radios__label'
+                                htmlFor='alert-off'
+                              >
+                                Off
+                              </label>
+                            </div>
                           </div>
-                          <div className='govuk-radios__item govuk-!-margin-right-0'>
-                            <input
-                              className='govuk-radios__input'
-                              id='alert-off'
-                              name='alert'
-                              type='radio'
-                              value='off'
-                            />
-                            <label
-                              className='govuk-label govuk-radios__label'
-                              htmlFor='alert-off'
-                            >
-                              Off
-                            </label>
-                          </div>
+
+                          <Link
+                            to='/home'
+                            className='govuk-body govuk-link inline-link govuk-!-margin-bottom-0'
+                          >
+                            Save
+                          </Link>
                         </div>
-                        <Link
-                          to='/home'
-                          className='govuk-body govuk-link inline-link govuk-!-margin-bottom-0'
-                        >
-                          Save
-                        </Link>
-                      </div>
+                      )}
                     </div>
                     <div className='govuk-summary-card__content'>
                       <p className='govuk-body'>

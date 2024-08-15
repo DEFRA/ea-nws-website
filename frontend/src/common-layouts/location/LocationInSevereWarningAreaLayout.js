@@ -21,7 +21,7 @@ import {
   getCoordsOfFloodArea
 } from '../../services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout ({
+export default function LocationInSevereWarningAreaLayout({
   continueToNextPage
 }) {
   const navigate = useNavigate()
@@ -38,7 +38,6 @@ export default function LocationInSevereWarningAreaLayout ({
   const selectedFloodWarningArea = useSelector(
     (state) => state.session.selectedFloodWarningArea
   )
-  console.log('selectedFloodWarningArea', selectedFloodWarningArea)
 
   const handleSubmit = async () => {
     if (isUserInNearbyTargetFlowpath) {

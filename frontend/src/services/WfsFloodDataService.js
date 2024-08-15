@@ -5,6 +5,17 @@ import leafletPip from 'leaflet-pip'
 export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
   // const bboxKM = 0.5 // size of bounding box from centre in KM
 
+  // console.log(lng, lat)
+  // const p = turf.point([lng, lat])
+  // let buffer = turf.buffer(p, 0.01, { units: 'kilometres' })
+  // let bbox = turf.bbox(buffer)
+
+  // const [latMin, lngMin, latMax, lngMax] = bbox
+
+  // // Format the result string
+  // const result =
+  //   latMin + ',' + lngMin + ',' + latMax + ',' + lngMax + ',EPSG:4326'
+
   // warning areas
   let baseWFSURL =
     'https://environment.data.gov.uk/spatialdata/flood-warning-areas/wfs'
@@ -110,7 +121,7 @@ export const getCoordsOfFloodArea = (area) => {
   return firstLatLngCoords
 }
 
-function getFirstCoordinates (nestedArray) {
+function getFirstCoordinates(nestedArray) {
   let current = nestedArray
   while (Array.isArray(current[0])) {
     current = current[0]
@@ -118,7 +129,7 @@ function getFirstCoordinates (nestedArray) {
   return { latitude: current[1], longitude: current[0] }
 }
 
-function checkPointInPolygon (lat, lng, geojson) {
+function checkPointInPolygon(lat, lng, geojson) {
   const point = L.latLng(lat, lng)
 
   // Check each area in the GeoJSON data
@@ -135,7 +146,7 @@ function checkPointInPolygon (lat, lng, geojson) {
   return false
 }
 
-function calculateBoundingBox (centerLat, centerLng, distanceKm) {
+function calculateBoundingBox(centerLat, centerLng, distanceKm) {
   const EARTH_RADIUS_KM = 6371 // Earth radius in kilometers
 
   // Convert center latitude and longitude to radians
@@ -153,5 +164,7 @@ function calculateBoundingBox (centerLat, centerLng, distanceKm) {
 
   const result =
     lngMin + ',' + latMin + ',' + lngMax + ',' + latMax + ',EPSG:4326'
+
+  console.log('function result', result)
   return result
 }

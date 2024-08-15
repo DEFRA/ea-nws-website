@@ -186,6 +186,14 @@
   transform: translateX(-50%);
 }
 
+.warning-key-color {
+  color: #f70202;
+}
+
+.alert-key-color {
+  color: #ffa200;
+}
+
 .map-confirm-location-box-mobile-view {
   position: absolute;
   bottom: 0px;

@@ -2,6 +2,7 @@ const axios = require('axios')
 const https = require('https')
 const getSecretKeyValue = require('./SecretsManager')
 const apiToFrontendError = require('./ApiToFrontendError')
+const { convertGeoSafeProfile } = require('./formatters/profileFormatter')
 
 const getErrorMessage = (path, errorMessage) => {
   const apiPath = path.split('/').pop()
@@ -14,7 +15,7 @@ const apiCall = async (data, path) => {
   const url = apiUrl + '/' + path
 
   try {
-    const response = await axios.post(url, data, {
+    let response = await axios.post(url, data, {
       headers: {
         'Content-Type': 'application/json'
       },
@@ -23,6 +24,11 @@ const apiCall = async (data, path) => {
       }),
       withCredentials: false
     })
+
+    if (response.data.profile) {
+      response.data.profile = convertGeoSafeProfile(response.data.profile)
+      console.log(response.data)
+    }
 
     return { status: response.status, data: response.data }
   } catch (error) {

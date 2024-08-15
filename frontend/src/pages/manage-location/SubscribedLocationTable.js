@@ -5,7 +5,7 @@ import Button from '../../gov-uk-components/Button'
 import Details from '../../gov-uk-components/Details'
 import Pagination from '../../gov-uk-components/Pagination'
 
-export default function SubscribedLocationTable() {
+export default function SubscribedLocationTable () {
   const [currentPage, setCurrentPage] = useState(1)
   const locationsPerPage = 10
 

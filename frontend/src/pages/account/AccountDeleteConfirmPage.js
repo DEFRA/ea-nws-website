@@ -7,7 +7,7 @@ import ConfirmationPanel from '../../gov-uk-components/Panel'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import { clearAuth } from '../../redux/userSlice'
 
-export default function AccountDeleteConfirmPage() {
+export default function AccountDeleteConfirmPage () {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(clearAuth())

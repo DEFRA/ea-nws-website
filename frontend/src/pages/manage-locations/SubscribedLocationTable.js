@@ -1,23 +1,27 @@
-import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../gov-uk-components/Button'
 import Details from '../../gov-uk-components/Details'
 import Pagination from '../../gov-uk-components/Pagination'
+import {
+  setSelectedFloodAlertArea,
+  setSelectedFloodWarningArea,
+  setSelectedLocation,
+  setShowOnlySelectedFloodArea
+} from '../../redux/userSlice'
+import { getSurroundingFloodAreas } from '../../services/WfsFloodDataService'
 
 export default function SubscribedLocationTable() {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(1)
   const locationsPerPage = 10
-
-  const profile = useSelector((state) => state.session.profile)
-  const locations = profile.pois
-
+  const locations = useSelector((state) => state.session.profile.pois)
   const displayedLocations = locations.slice(
     (currentPage - 1) * locationsPerPage,
     currentPage * locationsPerPage
   )
-
-  const navigate = useNavigate()
 
   const detailsMessage = (
     <div>
@@ -38,14 +42,60 @@ export default function SubscribedLocationTable() {
     </div>
   )
 
+  useEffect(() => {
+    dispatch(setSelectedLocation(null))
+    dispatch(setShowOnlySelectedFloodArea(false))
+    dispatch(setSelectedFloodWarningArea(null))
+    dispatch(setSelectedFloodAlertArea(null))
+  })
+
+  const viewSelectedLocation = async (location) => {
+    const { alertArea, warningArea } = await getSurroundingFloodAreas(
+      location.coordinates.latitude,
+      location.coordinates.longitude,
+      0.5
+    )
+    const locationIsWarningArea = isSavedLocationTargetArea(
+      location.name,
+      warningArea.features
+    )
+    const locationIsAlertArea = isSavedLocationTargetArea(
+      location.name,
+      alertArea.features
+    )
+    if (
+      locationIsWarningArea.length === 0 &&
+      locationIsAlertArea.length === 0
+    ) {
+      // TODO - this will need updated when geosafe updates locations to have alert categories
+      // if location was saved as alert only, there is no way of telling currently 14/08/24 CP
+      dispatch(setSelectedLocation(location))
+      navigate(`/manage-locations/view/${'both'}`)
+    } else {
+      dispatch(setShowOnlySelectedFloodArea(true))
+      dispatch(setSelectedLocation(location))
+      if (locationIsWarningArea.length > 0) {
+        dispatch(setSelectedFloodWarningArea(locationIsWarningArea[0]))
+        navigate(`/manage-locations/view/${'severe'}`)
+      } else if (locationIsAlertArea.length > 0) {
+        dispatch(setSelectedFloodAlertArea(locationIsAlertArea[0]))
+        navigate(`/manage-locations/view/${'alert'}`)
+      }
+    }
+  }
+
+  const isSavedLocationTargetArea = (locationName, areas) => {
+    return areas.filter((area) => locationName === area.properties.ta_name)
+  }
+
   const locationTable = () => {
     const viewColumn = (location) => {
       return (
         <td className='govuk-table__cell'>
           <Link
-            to='/manage-locations/view'
-            state={{
-              address: location.address
+            onClick={(e) => {
+              e.preventDefault()
+              viewSelectedLocation(location)
             }}
             className='govuk-link'
           >
@@ -61,8 +111,7 @@ export default function SubscribedLocationTable() {
           <Link
             to='/manage-locations/remove'
             state={{
-              address: location.address,
-              coordinates: location.coordinates
+              name: location.name
             }}
             className='govuk-link'
           >
@@ -75,42 +124,31 @@ export default function SubscribedLocationTable() {
     const addressColumn = (location) => {
       return (
         <td className='govuk-table__cell govuk-!-width-full'>
-          {location.address}
+          {location.name}
         </td>
       )
     }
 
-    const tableBody = () => {
-      return (
+    return (
+      <table className='govuk-table'>
+        <thead class='govuk-table__head'>
+          <tr class='govuk-table__row'>
+            <th colspan='3' scope='colspan' className='govuk-table__header'>
+              {'Your locations (' + locations.length + ')'}
+            </th>
+          </tr>
+        </thead>
         <tbody className='govuk-table__body'>
           {displayedLocations.map((location, index) => (
             <tr key={index} className='govuk-table__row'>
               {addressColumn(location)}
+              {locations.length === 1 && <td className='govuk-table__cell' />}
               {locations.length === 1 && <td className='govuk-table__cell' />}
               {viewColumn(location)}
               {locations.length > 1 && removeColumn(location)}
             </tr>
           ))}
         </tbody>
-      )
-    }
-
-    const tableHead = () => {
-      return (
-        <thead className='govuk-table__head'>
-          <tr className='govuk-table__row'>
-            <th colSpan='3' scope='colspan' className='govuk-table__header'>
-              {'Your locations (' + locations.length + ')'}
-            </th>
-          </tr>
-        </thead>
-      )
-    }
-
-    return (
-      <table className='govuk-table'>
-        {tableHead()}
-        {tableBody()}
       </table>
     )
   }

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import ValidateMobileLayout from '../../../../common-layouts/mobile/ValidateMobileLayout'
 
-export default function ValidateMobilePhone() {
+export default function ValidateMobilePhone () {
   const navigate = useNavigate()
   const contactPreferences = useSelector(
     (state) => state.session.contactPreferences

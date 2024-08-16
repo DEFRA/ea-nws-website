@@ -6,14 +6,14 @@ import Footer from '../../../../gov-uk-components/Footer'
 import Header from '../../../../gov-uk-components/Header'
 import PhaseBanner from '../../../../gov-uk-components/PhaseBanner'
 
-export default function SkipConfirmMobilePhonePage() {
+export default function SkipConfirmMobilePhonePage () {
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
   const mobile = useSelector(
     (state) => state.session.profile.unverified.mobilePhones[0].address
   )
 
-  function skipConfirm() {
+  function skipConfirm () {
     if (session.contactPreferences.includes('PhoneCall')) {
       navigate('/signup/contactpreferences/landline/add')
     } else {

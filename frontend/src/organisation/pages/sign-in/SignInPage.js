@@ -5,7 +5,7 @@ export default function SignInPage () {
   const navigate = useNavigate()
 
   const NavigateToNextPage = ({ signinToken, email }) => {
-    navigate('/signin/validate', {
+    navigate('/organisation/signin/validate', {
       state: { signinToken, email }
     })
   }

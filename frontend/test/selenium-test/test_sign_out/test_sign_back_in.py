@@ -13,3 +13,9 @@ def test_sign_back_in_button(get_browser):
     browser.get(url_cit_home)
     click_button(browser, 'Sign in')
     assert browser.current_url == url_cit_signin
+
+# Test organisation sign back in page
+def test_sign_back_in_org(get_browser):
+    browser = get_browser
+    browser.get(url_org_home)
+    assert browser.current_url == url_org_sign_back_in

@@ -77,6 +77,15 @@ export default function App () {
     }
   }
 
+  const SignBackInLink = () => {
+    const currentRoute = window.location.pathname
+    if (currentRoute.includes('/organisation/')) {
+      return '/organisation/sign-back-in'
+    } else {
+      return '/sign-back-in'
+    }
+  }
+
   return (
     <BrowserRouter>
       <ScrollToTop />
@@ -92,7 +101,7 @@ export default function App () {
                       route.component
                     )
                   : (
-                    <Navigate to='/sign-back-in' />
+                    <Navigate to={SignBackInLink()} />
                     )
               }
             />

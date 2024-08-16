@@ -4,7 +4,7 @@ from selenium.common.exceptions import NoSuchElementException
 from common import *
 
 # Time for popup to appear after inactivity
-time_to_popup = 20*60
+time_to_popup = 28*60
 # Time to auto signout after popup appears
 time_to_auto_signout = 2*60
 # Time delay for popup
@@ -40,7 +40,7 @@ def test_popup_logout_button(get_browser):
     
     # Checks
     popup_not_found(browser)
-    assert browser.current_url == url_signout
+    assert browser.current_url == url_cit_signout
 
 # Introduce activity just before popup appears
 def test_stay_active(get_browser):
@@ -61,4 +61,4 @@ def test_auto_logout(get_browser):
     
     # Checks
     popup_not_found(browser)
-    assert browser.current_url == url_auto_signout
+    assert browser.current_url == url_cit_signout_auto

@@ -1,65 +1,43 @@
-from re import A
-import pytest
-from requests import get
-from selenium import webdriver
-from selenium.webdriver.common.by import By
+from common import *
 import time
 
-url_index = "http://localhost:3000/index"
-def test_sign_out_renders_and_button_header(get_browser):
-    url_sign_out = "http://localhost:3000/signout"
+# Test signout button
+def test_signout_button(get_browser):
     browser = get_browser
     browser.get(url_index)
-    button_xpath = f"//button[text()='Activate/Deactivate Mock Session 1']"
-    mock_session_link = browser.find_element(By.XPATH, button_xpath)
-    browser.execute_script("arguments[0].click();", mock_session_link)
-    link_xpath = f"//a[text()='Home page']"
-    link_link = browser.find_element(By.XPATH, link_xpath)
-    browser.execute_script("arguments[0].click();", link_link)
-    browser.find_element(By.LINK_TEXT,"Sign Out").click()
-    assert browser.current_url == url_sign_out
+    click_button(browser, 'Activate/Deactivate Mock Session 1')
+    click_link(browser, 'Home page')
+    click_link(browser, 'Sign Out')
+    assert browser.current_url == url_cit_signout
 
-
-def test_sign_out_page_sign_in_button(get_browser):
-    url_target = "http://localhost:3000/signin"
+# Test signin button on signout page
+def test_signin_button(get_browser):
     browser = get_browser
     browser.get(url_index)
-    button_xpath = f"//button[text()='Activate/Deactivate Mock Session 1']"
-    mock_session_link = browser.find_element(By.XPATH, button_xpath)
-    browser.execute_script("arguments[0].click();", mock_session_link)
-    link_xpath = f"//a[text()='Home page']"
-    link_link = browser.find_element(By.XPATH, link_xpath)
-    browser.execute_script("arguments[0].click();", link_link)
-    browser.find_element(By.LINK_TEXT,"Sign Out").click()
-    browser.find_element(By.CLASS_NAME,'govuk-button').click()
-    assert browser.current_url == url_target
+    click_button(browser, 'Activate/Deactivate Mock Session 1')
+    click_link(browser, 'Home page')
+    click_link(browser, 'Sign Out')
+    click_button(browser, 'Sign in')
+    assert browser.current_url == url_cit_signin
 
-
-def test_protect_from_flooding_link(get_browser):
-    target_url = "https://www.gov.uk/browse/environment-countryside/flooding-extreme-weather"
+# Test flood link
+def test_flood_link(get_browser):
     browser = get_browser
     browser.get(url_index)
-    button_xpath = f"//button[text()='Activate/Deactivate Mock Session 1']"
-    mock_session_link = browser.find_element(By.XPATH, button_xpath)
-    browser.execute_script("arguments[0].click();", mock_session_link)
-    link_xpath = f"//a[text()='Home page']"
-    link_link = browser.find_element(By.XPATH, link_xpath)
-    browser.execute_script("arguments[0].click();", link_link)
-    browser.find_element(By.LINK_TEXT,"Sign Out").click()
-    browser.find_element(By.LINK_TEXT, "protect yourself and your property online from flooding").click()
-    assert browser.current_url == target_url
+    click_button(browser, 'Activate/Deactivate Mock Session 1')
+    click_link(browser, 'Home page')
+    click_link(browser, 'Sign Out')
+    click_link(browser, 'protect yourself and your property online from flooding')
+    time.sleep(1)
+    assert browser.current_url == url_flood
 
-
-def test_survey_link(get_browser):
-    target_url = "http://localhost:3000/signup/feedback"
+# Test feedback link
+def test_feedback_link(get_browser):
     browser = get_browser
     browser.get(url_index)
-    button_xpath = f"//button[text()='Activate/Deactivate Mock Session 1']"
-    mock_session_link = browser.find_element(By.XPATH, button_xpath)
-    browser.execute_script("arguments[0].click();", mock_session_link)
-    link_xpath = f"//a[text()='Home page']"
-    link_link = browser.find_element(By.XPATH, link_xpath)
-    browser.execute_script("arguments[0].click();", link_link)
-    browser.find_element(By.LINK_TEXT,"Sign Out").click()
-    browser.find_element(By.LINK_TEXT, "What do you think of this service?").click()
-    assert browser.current_url == target_url
+    click_button(browser, 'Activate/Deactivate Mock Session 1')
+    click_link(browser, 'Home page')
+    click_link(browser, 'Sign Out')
+    click_link(browser, 'What do you think of this service?')
+    time.sleep(1)
+    assert browser.current_url == url_feedback

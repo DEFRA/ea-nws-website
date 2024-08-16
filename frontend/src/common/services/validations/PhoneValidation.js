@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 const phoneValidation = (number, type) => {
   switch (type) {
     case 'mobile': {

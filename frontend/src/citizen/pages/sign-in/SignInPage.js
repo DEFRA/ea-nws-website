@@ -40,10 +40,10 @@ export default function SignInPage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error ? <ErrorSummary errorList={[error]} /> : <></>}
-            <h2 class='govuk-heading-l'>
+            <h2 className='govuk-heading-l'>
               Sign in to your flood warnings account
             </h2>
-            <div class='govuk-body'>
+            <div className='govuk-body'>
               <p>You can:</p>
               <ul className='govuk-list govuk-list--bullet'>
                 <li>update or remove your locations</li>

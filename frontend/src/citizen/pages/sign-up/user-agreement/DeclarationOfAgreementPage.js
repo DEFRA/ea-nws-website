@@ -5,15 +5,18 @@ import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import Checkbox from '../../../../common/components/gov-uk/CheckBox'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
-import { setRegistrations } from '../../../../common/redux/userSlice'
+import { setProfile, setRegistrations } from '../../../../common/redux/userSlice'
+import { backendCall } from '../../../../common/services/BackendService'
+import { updateAdditionals } from '../../../../common/services/ProfileServices'
 
 export default function DeclarationOfAgreementPage () {
-  const [isChecked, setIsChecked] = useState(false)
-  const [error, setError] = useState('')
-  const session = useSelector((state) => state.session)
-  const profile = session.profile
   const dispatch = useDispatch()
+  const [isChecked, setIsChecked] = useState(false)
+  const session = useSelector((state) => state.session)
+  const [error, setError] = useState('')
+  const profile = session.profile
   const navigate = useNavigate()
+
   const handleSubmit = () => {
     if (isChecked === false) {
       setError('Tick to confirm you agree with the terms and conditions')
@@ -44,9 +47,23 @@ export default function DeclarationOfAgreementPage () {
         }
       }
       dispatch(setRegistrations(registrations))
+      const updatedProfile = updateAdditionals(session.profile, [
+        { id: 'lastAccessedUrl', value: '/home' }
+      ])
+      dispatch(setProfile(updatedProfile))
+      updateBackendProfile(updatedProfile)
       navigate('/signup/review')
     }
   }
+
+  const updateBackendProfile = async (updatedProfile) => {
+    const dataToSend = {
+      profile: updatedProfile,
+      authToken: session.authToken
+    }
+    await backendCall(dataToSend, 'api/profile/update', navigate)
+  }
+
   return (
     <>
       <BackLink onClick={() => navigate(-1)} />

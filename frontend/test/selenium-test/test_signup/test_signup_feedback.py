@@ -14,34 +14,30 @@ def setup_empty_profile(get_browser):
     button_xpath = f"//button[text()='Activate/Deactivate Empty profile - Used for sign up tests']"
     mock_empty_profile_link = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", mock_empty_profile_link)
+    browser.get(url)
     time.sleep(3)
     return browser
 
 def test_FeedbackStart_render(get_browser):
     browser = setup_empty_profile(get_browser) 
-    browser = get_browser
-    browser.get(url)
     assert "Give feedback about signing up" in browser.page_source
     assert browser.current_url == url
 
 def setup_addFeedback_empty_test(get_browser):
     browser = setup_empty_profile(get_browser) 
-    browser.get(url)
-    time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
     continue_button = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", continue_button)
     return browser
 
 def test_addFeedback_empty(get_browser):
-    browser = setup_empty_profile(get_browser) 
+    browser = setup_addFeedback_empty_test(get_browser)     
     assert browser.current_url == url
-    assert "Select an answer to tell us how you feel about this service" in browser.page_source
+    assert 'Select an answer to tell us how you feel about this service' in browser.page_source
 
 
 def test_addFeedback_NoCheckboxSelected(get_browser):
     browser = setup_empty_profile(get_browser) 
-    browser.get(url)
     browser.find_element(By.CLASS_NAME, "govuk-textarea").send_keys("test")
     time.sleep(3)
     button_xpath = f"//button[contains(@class, 'govuk-button')]"
@@ -63,7 +59,6 @@ def test_addFeedback_NoTextEntered(get_browser):
 
 def test_addFeedback_CharacterLimitExceeded(get_browser):
     browser = setup_empty_profile(get_browser) 
-    browser.get(url)
     browser.find_element(By.CLASS_NAME, "govuk-radios__input").click()
     time.sleep(1)
     sampleFeedback = "A" * 2001
@@ -78,7 +73,6 @@ def test_addFeedback_CharacterLimitExceeded(get_browser):
 
 def test_addFeedback_Valid(get_browser):
     browser = setup_empty_profile(get_browser) 
-    browser.get(url)
     browser.find_element(By.CLASS_NAME, "govuk-radios__input").click()
     browser.find_element(By.CLASS_NAME, "govuk-textarea").send_keys("test")
     time.sleep(3)

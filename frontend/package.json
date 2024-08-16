@@ -24,6 +24,7 @@
     "node-fetch": "^2.7.0",
     "react": "^18.3.1",
     "react-bootstrap": "^2.10.4",
+    "react-device-detect": "^2.2.3",
     "react-dom": "^18.3.1",
     "react-leaflet": "^4.2.1",
     "react-redux": "^9.1.2",

@@ -2,7 +2,7 @@ import React from 'react'
 import '../../css/custom.css'
 import Button from '../gov-uk/Button'
 
-export default function InactivityPopup({ onStayLoggedIn }) {
+export default function InactivityPopup ({ onStayLoggedIn }) {
   let signout_link = '/signout'
   const currentRoute = window.location.pathname
   if (currentRoute.includes('/organisation/')) {

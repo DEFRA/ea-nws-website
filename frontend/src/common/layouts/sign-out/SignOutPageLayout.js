@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router'
 import Button from '../../components/gov-uk/Button'
 
-export default function SignOutLayout({ text, signin_link }) {
+export default function SignOutLayout ({ text, signin_link }) {
   const navigate = useNavigate()
 
   return (

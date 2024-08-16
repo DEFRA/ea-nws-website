@@ -2,7 +2,7 @@ import React from 'react'
 import { useLocation } from 'react-router'
 import AccountNavigation from '../../../common/components/custom/AccountNavigation'
 
-export default function HomePage() {
+export default function HomePage () {
   return (
     <>
       <AccountNavigation currentPage={useLocation().pathname} />

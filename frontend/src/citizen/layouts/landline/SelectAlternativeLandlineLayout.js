@@ -91,85 +91,85 @@ export default function SelectAlternativeLandlineLayout ({
 
   return (
     <>
-    <BackLink onClick={handleBackLink} />
-        <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-          <div className='govuk-grid-row'>
-            <div className='govuk-grid-column-two-thirds'>
-              {error && <ErrorSummary errorList={[error, validationError]} />}
-              <h2 className='govuk-heading-l'>
-                Which telephone number do you want to use to get flood messages
-                by phone call?
-              </h2>
-              <div className='govuk-body'>
-                <p>
-                  We recommend using a landline or mobile number that can be
-                  called 24 hours a day
-                </p>
+      <BackLink onClick={handleBackLink} />
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
+            {error && <ErrorSummary errorList={[error, validationError]} />}
+            <h2 className='govuk-heading-l'>
+              Which telephone number do you want to use to get flood messages
+              by phone call?
+            </h2>
+            <div className='govuk-body'>
+              <p>
+                We recommend using a landline or mobile number that can be
+                called 24 hours a day
+              </p>
 
-                <div
-                  className={
+              <div
+                className={
                     validationError
                       ? 'govuk-form-group govuk-form-group--error'
                       : 'govuk-form-group'
                   }
-                >
-                  <fieldset className='govuk-fieldset'>
-                    {validationError && (
-                      <p className='govuk-error-message'>{validationError}</p>
-                    )}
-                    {mobileNumbers.map((mobileNumber, index) => (
-                      <div style={{ display: 'block' }} key={index}>
-                        <div
-                          className='govuk-!-padding-bottom-4'
-                          style={{
-                            display: 'inline-flex',
-                            alignItems: 'center'
+              >
+                <fieldset className='govuk-fieldset'>
+                  {validationError && (
+                    <p className='govuk-error-message'>{validationError}</p>
+                  )}
+                  {mobileNumbers.map((mobileNumber, index) => (
+                    <div style={{ display: 'block' }} key={index}>
+                      <div
+                        className='govuk-!-padding-bottom-4'
+                        style={{
+                          display: 'inline-flex',
+                          alignItems: 'center'
+                        }}
+                      >
+                        <Radio
+                          label={mobileNumber}
+                          value={mobileNumber}
+                          id={mobileNumber}
+                          name='phoneNumberRadio'
+                          onChange={(e) => {
+                            setSelectedOption(e.target.value)
+                            setSelectedNumber(mobileNumber)
                           }}
-                        >
-                          <Radio
-                            label={mobileNumber}
-                            value={mobileNumber}
-                            id={mobileNumber}
-                            name='phoneNumberRadio'
-                            onChange={(e) => {
-                              setSelectedOption(e.target.value)
-                              setSelectedNumber(mobileNumber)
-                            }}
-                            conditional={selectedOption === 'mobileNumber'}
-                          />
-                          {unverifiedMobileNumbers.some(unverifiedMobileNumber => unverifiedMobileNumber.address === mobileNumber) && (
-                            <strong className='govuk-tag govuk-tag--red'>
-                              Unconfirmed
-                            </strong>
-                          )}
-                        </div>
+                          conditional={selectedOption === 'mobileNumber'}
+                        />
+                        {unverifiedMobileNumbers.some(unverifiedMobileNumber => unverifiedMobileNumber.address === mobileNumber) && (
+                          <strong className='govuk-tag govuk-tag--red'>
+                            Unconfirmed
+                          </strong>
+                        )}
                       </div>
-                    ))}
-                    <Radio
-                      label='A different number'
-                      value='otherNumber'
-                      name='phoneNumberRadio'
-                      onChange={(e) => {
-                        setSelectedOption(e.target.value)
-                        setSelectedNumber('')
-                      }}
-                      conditional={selectedOption === 'otherNumber'}
-                      conditionalQuestion='UK landline or mobile telephone number'
-                      conditionalInput={(val) => setSelectedNumber(val)}
-                      conditionalError={error}
-                    />
-                  </fieldset>
-                </div>
-                <Button
-                  className='govuk-button'
-                  text='Continue'
-                  onClick={handleSubmit}
-                />
-                <br />
+                    </div>
+                  ))}
+                  <Radio
+                    label='A different number'
+                    value='otherNumber'
+                    name='phoneNumberRadio'
+                    onChange={(e) => {
+                      setSelectedOption(e.target.value)
+                      setSelectedNumber('')
+                    }}
+                    conditional={selectedOption === 'otherNumber'}
+                    conditionalQuestion='UK landline or mobile telephone number'
+                    conditionalInput={(val) => setSelectedNumber(val)}
+                    conditionalError={error}
+                  />
+                </fieldset>
               </div>
+              <Button
+                className='govuk-button'
+                text='Continue'
+                onClick={handleSubmit}
+              />
+              <br />
             </div>
           </div>
-        </main>
+        </div>
+      </main>
     </>
   )
 }

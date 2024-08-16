@@ -146,7 +146,7 @@ export default function LocationInAlertAreaLayout ({
                 ? 'You can also get flood alerts (optional)'
                 : 'You can get flood alerts for this location'}
             </h1>
-            <InsetText 
+            <InsetText
               text={
                 isUserInNearbyTargetFlowpath
                   ? selectedFloodAlertArea.properties.ta_name
@@ -164,7 +164,7 @@ export default function LocationInAlertAreaLayout ({
               prepared.
             </p>
             <p>
-              They tell you when you should prepare and could pose a risk 
+              They tell you when you should prepare and could pose a risk
               to:
             </p>
             <ul className='govuk-list govuk-list--bullet'>

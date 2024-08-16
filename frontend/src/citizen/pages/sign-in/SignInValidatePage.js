@@ -78,7 +78,7 @@ export default function SignInValidatePage () {
         if (!isSignUpComplete && lastAccessedUrl !== undefined) {
           setSignUpNotComplete(true)
         } else {
-        navigate('/home')
+          navigate('/home')
         }
       }
     }

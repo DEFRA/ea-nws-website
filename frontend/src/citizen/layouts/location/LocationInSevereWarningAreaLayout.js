@@ -132,7 +132,8 @@ export default function LocationInSevereWarningAreaLayout ({
               isUserInNearbyTargetFlowpath
                 ? selectedFloodWarningArea.properties.ta_name
                 : selectedLocation.name
-              } />
+              }
+            />
           </div>
           <div className='govuk-grid-column-three-quarters'>
             <Map types={['severe']} />

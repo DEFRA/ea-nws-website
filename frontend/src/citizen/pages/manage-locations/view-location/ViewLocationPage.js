@@ -51,139 +51,139 @@ export default function ViewLocationPage () {
 
   return (
     <>
-    <AccountNavigation currentPage='/home' />
-    <BackLink onClick={() => navigate(-1)} />
-        <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-          <div className='govuk-body'>
-            <div className='govuk-grid-row'>
-              <div className='govuk-grid-column-three-quarters'>
-                <h1 className='govuk-heading-l'>{selectedLocation.name}</h1>
+      <AccountNavigation currentPage='/home' />
+      <BackLink onClick={() => navigate(-1)} />
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+        <div className='govuk-body'>
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-three-quarters'>
+              <h1 className='govuk-heading-l'>{selectedLocation.name}</h1>
 
-                <Map types={areaAreas} />
-                <FloodWarningKey type={type} />
-                <h2 className='govuk-heading-m govuk-!-margin-top-5 govuk-!-margin-bottom-5'>
-                  Flood messages you get
-                </h2>
+              <Map types={areaAreas} />
+              <FloodWarningKey type={type} />
+              <h2 className='govuk-heading-m govuk-!-margin-top-5 govuk-!-margin-bottom-5'>
+                Flood messages you get
+              </h2>
 
-                {/* flood warnings card */}
-                {(type === 'both' || type === 'severe') && (
-                  <div className='govuk-summary-card'>
+              {/* flood warnings card */}
+              {(type === 'both' || type === 'severe') && (
+                <div className='govuk-summary-card'>
+                  <div
+                    className='govuk-summary-card__title-wrapper'
+                    style={{ flexDirection: 'column' }}
+                  >
+                    <h2 className='govuk-summary-card__title govuk-!-font-size-24'>
+                      Severe flood warnings and flood warnings
+                    </h2>
+                    <p className='govuk-!-margin-bottom-1 govuk-!-margin-top-0'>
+                      Danger to life or property - act immediately
+                    </p>
+                  </div>
+                  <div className='govuk-summary-card__content'>
+                    <p className='govuk-body'>
+                      Sent in last year: <b>6</b>
+                    </p>
+                    <Details
+                      title='Risks when these are in force'
+                      text={floodWarningCardDetails}
+                    />
+                  </div>
+                </div>
+              )}
+
+              {/* flood alerts card */}
+              {(type === 'both' || type === 'alert') && (
+                <div className='govuk-summary-card'>
+                  <div className='govuk-summary-card__title-wrapper govuk-!-padding-0'>
                     <div
                       className='govuk-summary-card__title-wrapper'
                       style={{ flexDirection: 'column' }}
                     >
                       <h2 className='govuk-summary-card__title govuk-!-font-size-24'>
-                        Severe flood warnings and flood warnings
+                        Flood alerts {type === 'both' && '(optional)'}
                       </h2>
                       <p className='govuk-!-margin-bottom-1 govuk-!-margin-top-0'>
-                        Danger to life or property - act immediately
+                        Early alerts that flooding is possible - be prepared
                       </p>
                     </div>
-                    <div className='govuk-summary-card__content'>
-                      <p className='govuk-body'>
-                        Sent in last year: <b>6</b>
-                      </p>
-                      <Details
-                        title='Risks when these are in force'
-                        text={floodWarningCardDetails}
-                      />
-                    </div>
-                  </div>
-                )}
-
-                {/* flood alerts card */}
-                {(type === 'both' || type === 'alert') && (
-                  <div className='govuk-summary-card'>
-                    <div className='govuk-summary-card__title-wrapper govuk-!-padding-0'>
+                    {type === 'both' && (
                       <div
                         className='govuk-summary-card__title-wrapper'
-                        style={{ flexDirection: 'column' }}
+                        style={{ alignItems: 'center' }}
                       >
-                        <h2 className='govuk-summary-card__title govuk-!-font-size-24'>
-                          Flood alerts {type === 'both' && '(optional)'}
-                        </h2>
-                        <p className='govuk-!-margin-bottom-1 govuk-!-margin-top-0'>
-                          Early alerts that flooding is possible - be prepared
-                        </p>
-                      </div>
-                      {type === 'both' && (
                         <div
-                          className='govuk-summary-card__title-wrapper'
-                          style={{ alignItems: 'center' }}
+                          className='govuk-radios govuk-radios--small govuk-radios--inline'
+                          data-module='govuk-radios'
                         >
-                          <div
-                            className='govuk-radios govuk-radios--small govuk-radios--inline'
-                            data-module='govuk-radios'
-                          >
-                            <div className='govuk-radios__item govuk-!-margin-right-0'>
-                              <input
-                                className='govuk-radios__input'
-                                id='alert-on'
-                                name='alert'
-                                type='radio'
-                                checked
-                                value='on'
-                              />
-                              <label
-                                className='govuk-label govuk-radios__label'
-                                htmlFor='alert-on'
-                              >
-                                On
-                              </label>
-                            </div>
-                            <div className='govuk-radios__item govuk-!-margin-right-0'>
-                              <input
-                                className='govuk-radios__input'
-                                id='alert-off'
-                                name='alert'
-                                type='radio'
-                                value='off'
-                              />
-                              <label
-                                className='govuk-label govuk-radios__label'
-                                htmlFor='alert-off'
-                              >
-                                Off
-                              </label>
-                            </div>
+                          <div className='govuk-radios__item govuk-!-margin-right-0'>
+                            <input
+                              className='govuk-radios__input'
+                              id='alert-on'
+                              name='alert'
+                              type='radio'
+                              checked
+                              value='on'
+                            />
+                            <label
+                              className='govuk-label govuk-radios__label'
+                              htmlFor='alert-on'
+                            >
+                              On
+                            </label>
                           </div>
-
-                          <Link
-                            to='/home'
-                            className='govuk-body govuk-link inline-link govuk-!-margin-bottom-0'
-                          >
-                            Save
-                          </Link>
+                          <div className='govuk-radios__item govuk-!-margin-right-0'>
+                            <input
+                              className='govuk-radios__input'
+                              id='alert-off'
+                              name='alert'
+                              type='radio'
+                              value='off'
+                            />
+                            <label
+                              className='govuk-label govuk-radios__label'
+                              htmlFor='alert-off'
+                            >
+                              Off
+                            </label>
+                          </div>
                         </div>
-                      )}
-                    </div>
-                    <div className='govuk-summary-card__content'>
-                      <p className='govuk-body'>
-                        You turned these early flood alerts off.
-                      </p>
-                      <p className='govuk-body'>
-                        Sent in last year: <b>27</b>
-                      </p>
-                      <Details
-                        title='Risks when these are in force'
-                        text={floodAlertCardDetails}
-                      />
-                    </div>
-                  </div>
-                )}
 
-                <h2 className='govuk-heading-m'>
-                  To stop all flood messages for this location
-                </h2>
-                <Button
-                  onClick={removeLocation}
-                  className='govuk-button govuk-button--warning'
-                  text='Remove location'
-                />
-              </div>
+                        <Link
+                          to='/home'
+                          className='govuk-body govuk-link inline-link govuk-!-margin-bottom-0'
+                        >
+                          Save
+                        </Link>
+                      </div>
+                    )}
+                  </div>
+                  <div className='govuk-summary-card__content'>
+                    <p className='govuk-body'>
+                      You turned these early flood alerts off.
+                    </p>
+                    <p className='govuk-body'>
+                      Sent in last year: <b>27</b>
+                    </p>
+                    <Details
+                      title='Risks when these are in force'
+                      text={floodAlertCardDetails}
+                    />
+                  </div>
+                </div>
+              )}
+
+              <h2 className='govuk-heading-m'>
+                To stop all flood messages for this location
+              </h2>
+              <Button
+                onClick={removeLocation}
+                className='govuk-button govuk-button--warning'
+                text='Remove location'
+              />
             </div>
           </div>
-        </main>
+        </div>
+      </main>
     </>
   )
 }

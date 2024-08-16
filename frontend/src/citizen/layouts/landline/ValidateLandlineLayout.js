@@ -130,7 +130,7 @@ export default function ValidateLandlineLayout ({
 
   return (
     <>
-      {codeExpired 
+      {codeExpired
         ? (
           <ExpiredCodeLayout getNewCode={getNewCode} />
           )
@@ -146,7 +146,7 @@ export default function ValidateLandlineLayout ({
                       title='Success'
                       text={'New code sent at ' + codeResentTime}
                     />
-                    )}
+                  )}
                   {error && <ErrorSummary errorList={[error]} />}
                   <h2 class='govuk-heading-l'>Confirm telephone number</h2>
                   <div class='govuk-body'>

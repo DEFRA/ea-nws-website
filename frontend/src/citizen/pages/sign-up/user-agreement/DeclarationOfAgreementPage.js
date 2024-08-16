@@ -13,8 +13,8 @@ export default function DeclarationOfAgreementPage () {
   const dispatch = useDispatch()
   const [isChecked, setIsChecked] = useState(false)
   const session = useSelector((state) => state.session)
-  const [error, setError] = useState('')  
-  const profile = session.profile  
+  const [error, setError] = useState('')
+  const profile = session.profile
   const navigate = useNavigate()
 
   const handleSubmit = () => {

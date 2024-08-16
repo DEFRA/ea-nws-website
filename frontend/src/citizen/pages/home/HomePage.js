@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useLocation } from 'react-router'
 import AccountNavigation from '../../../common/components/custom/AccountNavigation'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
-import SubscribedLocationTableLayout from '../manage-location/SubscribedLocationTable'
+import SubscribedLocationTableLayout from '../manage-locations/SubscribedLocationTable'
 
 export default function HomePage () {
   const location = useLocation()
@@ -16,13 +16,13 @@ export default function HomePage () {
     <>
       <AccountNavigation currentPage={useLocation().pathname} />
       {location.state !== null && location.state.removedLocation && (
-          <NotificationBanner
-            className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
-            title='Success'
-            heading='Location removed'
-            text={location.state.removedLocation}
-          />
-          )}
+        <NotificationBanner
+          className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
+          title='Success'
+          heading='Location removed'
+          text={location.state.removedLocation}
+        />
+      )}
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>

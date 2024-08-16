@@ -1,117 +1,63 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import Button from '../../../../common/components/gov-uk/Button'
-import ContactReviewRow from './ContactReviewRow'
-
-export default function ContactReviewTable({ profile, contactPreferences }) {
+import { Link, useNavigate } from 'react-router-dom'
+export default function ContactReviewTable({ organisation }) {
   const navigate = useNavigate()
-
-  const EmailAddressesSection = () => {
-    return (
-      <>
-        {(profile.emails.length > 0 ||
-          profile.unverified.emails.length > 0) && (
-          <tbody className='govuk-table__body'>
-            {profile.emails.map((email, index) => (
-              <ContactReviewRow
-                contact={email}
-                contactType='email'
-                isConfirmed
-                key={index}
-                emailIndex={index}
-              />
-            ))}
-            {profile.unverified.emails.map((unregisteredEmail, index) => (
-              <ContactReviewRow
-                contact={unregisteredEmail}
-                contactType='email'
-                isConfirmed={false}
-                key={index}
-              />
-            ))}
-          </tbody>
-        )}
-      </>
-    )
-  }
-
-  const MobileNumbersSection = () => {
-    return (
-      <>
-        {(profile.mobilePhones.length > 0 ||
-          profile.unverified.mobilePhones.length > 0) && (
-          <tbody className='govuk-table__body'>
-            {profile.mobilePhones.map((mobilePhone, index) => (
-              <ContactReviewRow
-                contact={mobilePhone}
-                contactType='mobilePhone'
-                isConfirmed
-                key={index}
-              />
-            ))}
-            {profile.unverified.mobilePhones.map(
-              (unregisteredMobilePhone, index) => (
-                <ContactReviewRow
-                  contact={unregisteredMobilePhone}
-                  contactType='mobilePhone'
-                  isConfirmed={false}
-                  key={index}
-                />
-              )
-            )}
-          </tbody>
-        )}
-      </>
-    )
-  }
-
-  const HomePhonesSection = () => {
-    return (
-      <>
-        {(profile.homePhones.length > 0 ||
-          profile.unverified.homePhones.length > 0) && (
-          <tbody className='govuk-table__body'>
-            {profile.homePhones.map((homePhone, index) => (
-              <ContactReviewRow
-                contact={homePhone}
-                contactType='homePhone'
-                isConfirmed
-                key={index}
-              />
-            ))}
-            {profile.unverified.homePhones.map(
-              (unregisteredHomePhone, index) => (
-                <ContactReviewRow
-                  contact={unregisteredHomePhone}
-                  contactType='homePhone'
-                  isConfirmed={false}
-                  key={index}
-                />
-              )
-            )}
-          </tbody>
-        )}
-      </>
-    )
-  }
-
-  const handleButton = () => {
-    navigate('/signup/review/addcontact')
-  }
 
   return (
     <>
-      <h3 className='govuk-heading-m'>Alternative contact</h3>
+      <h3 className='govuk-heading-m'>Alternative Contact</h3>
       <table className='govuk-table'>
-        <EmailAddressesSection />
-        {contactPreferences.includes('Text') && <MobileNumbersSection />}
-        {contactPreferences.includes('PhoneCall') && <HomePhonesSection />}
+        <tr className='govuk-table__row'>
+          <td class='govuk-table__header  govuk-!-width-one-half'>Name</td>
+          <td className='govuk-table__cell  govuk-!-width-full'>
+            {organisation.alternativecontact.name}
+          </td>
+          <td className='govuk-table__cell'>
+            <Link to='/' className='govuk-link'>
+              Change
+            </Link>
+          </td>
+        </tr>
+        <tr className='govuk-table__row'>
+          <td class='govuk-table__header  govuk-!-width-one-half'>
+            Email address
+          </td>
+          <td className='govuk-table__cell  govuk-!-width-full'>
+            {organisation.alternativecontact.emailaddress}
+          </td>
+          <td className='govuk-table__cell'>
+            <Link to='/' className='govuk-link'>
+              Change
+            </Link>
+          </td>
+        </tr>
+        <tr className='govuk-table__row'>
+          <td class='govuk-table__header  govuk-!-width-one-half'>
+            Telephone number
+          </td>
+          <td className='govuk-table__cell  govuk-!-width-full'>
+            {organisation.alternativecontact.phoneNumber}
+          </td>
+          <td className='govuk-table__cell'>
+            <Link to='/' className='govuk-link'>
+              Change
+            </Link>
+          </td>
+        </tr>
+        <tr className='govuk-table__row'>
+          <td class='govuk-table__header  govuk-!-width-one-half'>
+            Job title (optional)
+          </td>
+          <td className='govuk-table__cell  govuk-!-width-full'>
+            {organisation.alternativecontact.jobTitle}
+          </td>
+          <td className='govuk-table__cell'>
+            <Link to='/' className='govuk-link'>
+              Change
+            </Link>
+          </td>
+        </tr>
         <br />
-        <Button
-          className='govuk-button--secondary'
-          onClick={handleButton}
-          text='Add another email or phone number'
-        />{' '}
       </table>
     </>
   )

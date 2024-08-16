@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 
-export default function ContactReviewTable({ profile, organisation }) {
+export default function ContactReviewTable({ organisation }) {
   const navigate = useNavigate()
 
   return (

@@ -24,9 +24,9 @@ export default function CheckYourAnswersPage() {
           <div className='govuk-grid-column-three-quarters'>
             <h2 className='govuk-heading-l'>Check your answers</h2>
             <OrganisationDetailsTable organisation={organisation} />
-            <MainAdministratorTable locations={profile} />
+            <MainAdministratorTable organisation={organisation} />
             <br />
-            <AlternativeContactTable profile={profile} />
+            <AlternativeContactTable organisation={organisation} />
             <br />
           </div>
         </div>

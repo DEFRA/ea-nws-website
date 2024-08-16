@@ -1,6 +1,6 @@
 const addUnverifiedContact = (profile, type, contact) => {
   let unverifiedContactList
-  let formattedContact = {address: contact}
+  const formattedContact = { address: contact }
 
   switch (type) {
     case 'email':

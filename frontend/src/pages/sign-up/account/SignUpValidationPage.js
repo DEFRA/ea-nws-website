@@ -8,13 +8,12 @@ import Header from '../../../gov-uk-components/Header'
 import Input from '../../../gov-uk-components/Input'
 import InsetText from '../../../gov-uk-components/InsetText'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
-import { setAuthToken, setProfile } from '../../../redux/userSlice'
+import { setAuthToken, setProfile, setRegisterToken } from '../../../redux/userSlice'
 import { backendCall } from '../../../services/BackendService'
 import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
 import NotificationBanner from '../../../gov-uk-components/NotificationBanner'
 import ExpiredCodeLayout from '../../../common-layouts/expired-code/ExpiredCodeLayout'
 import { updateAdditionals } from '../../../services/ProfileServices'
-import { setRegisterToken } from '../../../redux/userSlice'
 
 export default function SignUpValidationPage () {
   const navigate = useNavigate()

@@ -15,12 +15,12 @@ const apiCall = async (data, path) => {
   const url = apiUrl + '/' + path
   let webProfile = null
   if (data.profile) {
-    webProfile = JSON.parse(JSON.stringify(data.profile));
+    webProfile = JSON.parse(JSON.stringify(data.profile))
     data.profile = convertWebProfile(data.profile)
   }
 
   try {
-    let response = await axios.post(url, data, {
+    const response = await axios.post(url, data, {
       headers: {
         'Content-Type': 'application/json'
       },

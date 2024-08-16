@@ -6,19 +6,23 @@ import SubscribedLocationTableLayout from '../manage-location/SubscribedLocation
 
 export default function HomePage () {
   const location = useLocation()
+
+  // remove added/removed location success banners
+  useEffect(() => {
+    window.history.replaceState({}, location.pathname)
+  }, [location])
+
   return (
     <>
       <AccountNavigation currentPage={useLocation().pathname} />
-      {location.state !== null && location.state.removedAddress
-        ? (
+      {location.state !== null && location.state.removedLocation && (
           <NotificationBanner
             className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
             title='Success'
             heading='Location removed'
-            text={location.state.removedAddress}
+            text={location.state.removedLocation}
           />
-          )
-        : null}
+          )}
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>

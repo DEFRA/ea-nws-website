@@ -16,7 +16,7 @@ export default function SignUpPage () {
     const dataToSend = { email }
     const { errorMessage, data } = await backendCall(
       dataToSend,
-      'api/signInStart',
+      'api/sign_in',
       navigate
     )
 

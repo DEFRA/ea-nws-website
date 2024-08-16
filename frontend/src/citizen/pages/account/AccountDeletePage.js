@@ -8,7 +8,7 @@ import Radio from '../../../common/components/gov-uk/Radio'
 import TextArea from '../../../common/components/gov-uk/TextArea'
 import { backendCall } from '../../../common/services/BackendService'
 
-export default function AccountDeletePage() {
+export default function AccountDeletePage () {
   const navigate = useNavigate()
   const charLimit = 2000
   const charLimitText = 'Your answer must be 2000 characters or fewer'
@@ -132,8 +132,7 @@ export default function AccountDeletePage() {
                           label={option.label}
                           value={option.value}
                           onChange={(e) =>
-                            setAccountDeletionReason(e.target.value)
-                          }
+                            setAccountDeletionReason(e.target.value)}
                         />
                       ))}
                       <Radio
@@ -141,19 +140,17 @@ export default function AccountDeletePage() {
                         value='Other'
                         name='accountDeletionReasonRadios'
                         onChange={(e) =>
-                          setAccountDeletionReason(e.target.value)
-                        }
+                          setAccountDeletionReason(e.target.value)}
                         conditional={accountDeletionReason === 'Other'}
                         conditionalQuestion='Reason for deleting account'
                         conditionalInput={(val) =>
-                          setaccountDeletionReasonText(val)
-                        }
+                          setaccountDeletionReasonText(val)}
                         conditionalError={reasonTextError}
                       />
                     </div>
                   </div>
 
-                  <br></br>
+                  <br />
 
                   {/* Enter account deletion optional information */}
                   <div

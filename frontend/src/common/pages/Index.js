@@ -34,12 +34,13 @@ export default function IndexPage () {
     },
     pois: [
       {
-        name: 'Big Ben, London SW1A 0AA',
-        address: 'UPRN',
+        name: 'House Of Commons, Houses Of Parliament, London, SW1A 0AA',
+        address: '10033540874',
         coordinates: {
-          latitude: 51.5007,
-          longitude: 0.1246
-        }
+          latitude: 51.4998415,
+          longitude: -0.1246377
+        },
+        categories: ['severe', 'alert']
       }
     ]
   }

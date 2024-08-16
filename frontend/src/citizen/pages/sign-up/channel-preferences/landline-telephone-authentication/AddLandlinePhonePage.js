@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import AddLandlineLayout from '../../../../layouts/landline/AddLandlineLayout'
 import SelectAlternativeLandlineLayout from '../../../../layouts/landline/SelectAlternativeLandlineLayout'
 
-export default function AddLandlinePhonePage() {
+export default function AddLandlinePhonePage () {
   const profile = useSelector((state) => state.session.profile)
   const navigate = useNavigate()
   const NavigateToNextWithValidationPage = () =>
@@ -17,18 +17,20 @@ export default function AddLandlinePhonePage() {
 
   return (
     <>
-      {profile.unverified.mobilePhones || profile.mobilePhones ? (
-        <SelectAlternativeLandlineLayout
-          NextPageWithoutValidation={NavigateToNextWithoutValidation}
-          NextPageWithValidation={NavigateToNextWithValidationPage}
-          NavigateBack={NavigateToPreviousPage}
-        />
-      ) : (
-        <AddLandlineLayout
-          NavigateToNextPage={NavigateToNextWithValidationPage}
-          NavigateToPreviousPage={NavigateToPreviousPage}
-        />
-      )}
+      {profile.unverified.mobilePhones || profile.mobilePhones
+        ? (
+          <SelectAlternativeLandlineLayout
+            NextPageWithoutValidation={NavigateToNextWithoutValidation}
+            NextPageWithValidation={NavigateToNextWithValidationPage}
+            NavigateBack={NavigateToPreviousPage}
+          />
+          )
+        : (
+          <AddLandlineLayout
+            NavigateToNextPage={NavigateToNextWithValidationPage}
+            NavigateToPreviousPage={NavigateToPreviousPage}
+          />
+          )}
     </>
   )
 }

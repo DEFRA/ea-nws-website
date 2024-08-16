@@ -8,7 +8,7 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
 import InsetText from '../../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
-import { setAuthToken, setProfile } from '../../../../common/redux/userSlice'
+import { setAuthToken, setProfile, setRegisterToken } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { updateAdditionals } from '../../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../../common/services/validations/AuthCodeValidation'
@@ -65,9 +65,9 @@ export default function SignUpValidationPage () {
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const data = { email: loginEmail }
-    const { errorMessage } = await backendCall(
-      data,
+    const dataToSend = { email: loginEmail }
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
       'api/sign_up_start',
       navigate
     )
@@ -75,6 +75,7 @@ export default function SignUpValidationPage () {
     if (errorMessage !== null) {
       setError(errorMessage)
     } else {
+      dispatch(setRegisterToken(data.registerToken))
       setCodeResent(true)
       setCodeResentTime(new Date().toLocaleTimeString())
       setCodeExpired(false)

@@ -17,7 +17,7 @@ import {
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
 
-export default function ValidateLandlineLayout({
+export default function ValidateLandlineLayout ({
   NavigateToNextPage,
   SkipValidation,
   DifferentHomePhone,
@@ -109,7 +109,7 @@ export default function ValidateLandlineLayout({
 
   const removeLandlineFromProfile = async () => {
     let updatedProfile
-    if (profile.unverified.homePhones.includes(homePhone)) {
+    if (profile.unverified.homePhones.some(unverifiedHomePhone => unverifiedHomePhone.address === homePhone)) {
       updatedProfile = removeUnverifiedContact(profile, homePhone)
       dispatch(setProfile(removeUnverifiedContact(profile, homePhone)))
     }
@@ -130,9 +130,11 @@ export default function ValidateLandlineLayout({
 
   return (
     <>
-      {codeExpired ? (
-        <ExpiredCodeLayout getNewCode={getNewCode} />
-      ) : (
+      {codeExpired 
+        ? (
+          <ExpiredCodeLayout getNewCode={getNewCode} />
+          )
+        : (
           <>
             <BackLink onClick={backLink} />
             <main className='govuk-main-wrapper govuk-!-padding-top-4'>
@@ -143,8 +145,8 @@ export default function ValidateLandlineLayout({
                       className='govuk-notification-banner govuk-notification-banner--success'
                       title='Success'
                       text={'New code sent at ' + codeResentTime}
-                    />)}
-
+                    />
+                    )}
                   {error && <ErrorSummary errorList={[error]} />}
                   <h2 class='govuk-heading-l'>Confirm telephone number</h2>
                   <div class='govuk-body'>

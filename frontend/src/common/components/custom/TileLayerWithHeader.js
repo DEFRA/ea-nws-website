@@ -1,4 +1,9 @@
-import { createElementObject, createTileLayerComponent, updateGridLayer, withPane } from '@react-leaflet/core'
+import {
+  createElementObject,
+  createTileLayerComponent,
+  updateGridLayer,
+  withPane
+} from '@react-leaflet/core'
 import L from 'leaflet'
 
 export default function TileLayerWithHeader ({ url, token, bounds }) {
@@ -8,7 +13,10 @@ export default function TileLayerWithHeader ({ url, token, bounds }) {
         const url = this.getTileUrl(coords)
         const img = document.createElement('img')
         const token = this.options.token
-        fetch(url, { headers: { Authorization: `Bearer ${token}` }, mode: 'cors' })
+        fetch(url, {
+          headers: { Authorization: `Bearer ${token}` },
+          mode: 'cors'
+        })
           .then((val) => val.blob())
           .then((blob) => {
             img.src = URL.createObjectURL(blob)
@@ -29,8 +37,10 @@ export default function TileLayerWithHeader ({ url, token, bounds }) {
     }
   }
 
-  const TileLayerWithHeader = createTileLayerComponent(CreateTileLayerWithHeader, updateTileLayerWithHeader)
-  return (
-    <TileLayerWithHeader url={url} token={token} bounds={bounds} />
+  const TileLayerWithHeader = createTileLayerComponent(
+    CreateTileLayerWithHeader,
+    updateTileLayerWithHeader
   )
+
+  return <TileLayerWithHeader url={url} token={token} />
 }

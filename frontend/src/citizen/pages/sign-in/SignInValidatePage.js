@@ -24,7 +24,7 @@ export default function SignInValidatePage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [code, setCode] = useState('')
-  const signinToken = location.state.signinToken
+  const [signinToken, setSignInToken] = useState(location.state.signinToken)
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
@@ -86,13 +86,14 @@ export default function SignInValidatePage () {
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const data = { email: location.state.email }
-    const { errorMessage } = await backendCall(data, 'api/sign_in', navigate)
+    const dataToSend = { email: location.state.email }
+    const { data, errorMessage } = await backendCall(dataToSend, 'api/sign_in', navigate)
 
     if (errorMessage !== null) {
       setError(errorMessage)
     }
 
+    setSignInToken(data.signinToken)
     setCodeResent(true)
     setCodeResentTime(new Date().toLocaleTimeString())
     setCodeExpired(false)

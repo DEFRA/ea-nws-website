@@ -14,7 +14,8 @@ import {
 } from '../../../common/services/ProfileServices'
 import { normalisePhoneNumber } from '../../../common/services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
-export default function SelectAlternativeLandlineLayout({
+
+export default function SelectAlternativeLandlineLayout ({
   NextPageWithoutValidation,
   NextPageWithValidation,
   NavigateBack
@@ -46,19 +47,13 @@ export default function SelectAlternativeLandlineLayout({
     if (validationError === '') {
       const normalisedPhoneNumber = normalisePhoneNumber(selectedNumber)
       if (verifiedMobileNumbers.includes(normalisedPhoneNumber)) {
-        const updatedProfile = dispatch(
-          setProfile(
-            addVerifiedContact(profile, 'homePhones', normalisedPhoneNumber)
-          )
-        )
+        const updatedProfile = addVerifiedContact(profile, 'homePhones', normalisedPhoneNumber)
+        dispatch(setProfile(updatedProfile))
         updateBackEndProfile(updatedProfile)
         NextPageWithoutValidation()
       } else {
-        const updatedProfile = dispatch(
-          setProfile(
-            addUnverifiedContact(profile, 'homePhones', normalisedPhoneNumber)
-          )
-        )
+        const updatedProfile = addUnverifiedContact(profile, 'homePhones', normalisedPhoneNumber)
+        dispatch(setProfile(updatedProfile))
         const updateProfileError = await updateBackEndProfile(updatedProfile)
         if (updateProfileError !== null) {
           setError(updateProfileError)
@@ -122,8 +117,8 @@ export default function SelectAlternativeLandlineLayout({
                     {validationError && (
                       <p className='govuk-error-message'>{validationError}</p>
                     )}
-                    {mobileNumbers.map((mobileNumber) => (
-                      <div style={{ display: 'block' }}>
+                    {mobileNumbers.map((mobileNumber, index) => (
+                      <div style={{ display: 'block' }} key={index}>
                         <div
                           className='govuk-!-padding-bottom-4'
                           style={{
@@ -132,7 +127,6 @@ export default function SelectAlternativeLandlineLayout({
                           }}
                         >
                           <Radio
-                            key={mobileNumber}
                             label={mobileNumber}
                             value={mobileNumber}
                             id={mobileNumber}
@@ -143,7 +137,7 @@ export default function SelectAlternativeLandlineLayout({
                             }}
                             conditional={selectedOption === 'mobileNumber'}
                           />
-                          {unverifiedMobileNumbers.includes(mobileNumber) && (
+                          {unverifiedMobileNumbers.some(unverifiedMobileNumber => unverifiedMobileNumber.address === mobileNumber) && (
                             <strong className='govuk-tag govuk-tag--red'>
                               Unconfirmed
                             </strong>

@@ -1,5 +1,6 @@
 const addUnverifiedContact = (profile, type, contact) => {
   let unverifiedContactList
+  const formattedContact = { address: contact }
 
   switch (type) {
     case 'email':
@@ -14,7 +15,7 @@ const addUnverifiedContact = (profile, type, contact) => {
   }
 
   // Check for duplicates
-  if (!unverifiedContactList.includes(contact)) {
+  if (!unverifiedContactList.some(unverifiedContact => unverifiedContact.address === contact)) {
     const updatedProfile = {
       ...profile,
       unverified: {
@@ -24,7 +25,7 @@ const addUnverifiedContact = (profile, type, contact) => {
           ? 'emails'
           : type === 'mobile'
             ? 'mobilePhones'
-            : 'homePhones']: [...unverifiedContactList, contact]
+            : 'homePhones']: [...unverifiedContactList, formattedContact]
       }
     }
     return updatedProfile
@@ -37,11 +38,11 @@ const addUnverifiedContact = (profile, type, contact) => {
 const removeUnverifiedContact = (profile, contact) => {
   let unverifiedContactListKey
 
-  if (profile.unverified.emails.includes(contact)) {
+  if (profile.unverified.emails.some(email => email.address === contact)) {
     unverifiedContactListKey = 'emails'
-  } else if (profile.unverified.mobilePhones.includes(contact)) {
+  } else if (profile.unverified.mobilePhones.some(mobilePhone => mobilePhone.address === contact)) {
     unverifiedContactListKey = 'mobilePhones'
-  } else if (profile.unverified.homePhones.includes(contact)) {
+  } else if (profile.unverified.homePhones.some(homePhone => homePhone.address === contact)) {
     unverifiedContactListKey = 'homePhones'
   } else {
     // contact not found in any unverified contacts list
@@ -51,7 +52,7 @@ const removeUnverifiedContact = (profile, contact) => {
   // eslint-disable-next-line no-self-compare
   const newUnverifiedContactList = profile.unverified[
     unverifiedContactListKey
-  ].filter((c) => c !== contact)
+  ].filter((c) => c.address !== contact)
 
   const updatedProfile = {
     ...profile,

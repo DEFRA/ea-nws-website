@@ -12,7 +12,7 @@ import {
 } from '../../redux/userSlice'
 import { getSurroundingFloodAreas } from '../../services/WfsFloodDataService'
 
-export default function SubscribedLocationTable () {
+export default function SubscribedLocationTable() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(1)

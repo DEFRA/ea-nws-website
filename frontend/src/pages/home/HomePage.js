@@ -7,7 +7,7 @@ import NotificationBanner from '../../gov-uk-components/NotificationBanner'
 import PhaseBanner from '../../gov-uk-components/PhaseBanner'
 import SubscribedLocationTableLayout from '../manage-locations/SubscribedLocationTable'
 
-export default function HomePage() {
+export default function HomePage () {
   const location = useLocation()
 
   // remove added/removed location success banners

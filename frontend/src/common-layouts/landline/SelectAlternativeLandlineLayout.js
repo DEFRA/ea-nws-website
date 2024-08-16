@@ -47,19 +47,13 @@ export default function SelectAlternativeLandlineLayout ({
     if (validationError === '') {
       const normalisedPhoneNumber = normalisePhoneNumber(selectedNumber)
       if (verifiedMobileNumbers.includes(normalisedPhoneNumber)) {
-        const updatedProfile = dispatch(
-          setProfile(
-            addVerifiedContact(profile, 'homePhones', normalisedPhoneNumber)
-          )
-        )
+        const updatedProfile = addVerifiedContact(profile, 'homePhones', normalisedPhoneNumber)
+        dispatch(setProfile(updatedProfile))
         updateBackEndProfile(updatedProfile)
         NextPageWithoutValidation()
       } else {
-        const updatedProfile = dispatch(
-          setProfile(
-            addUnverifiedContact(profile, 'homePhones', normalisedPhoneNumber)
-          )
-        )
+        const updatedProfile = addUnverifiedContact(profile, 'homePhones', normalisedPhoneNumber)
+        dispatch(setProfile(updatedProfile))
         const updateProfileError = await updateBackEndProfile(updatedProfile)
         if (updateProfileError !== null) {
           setError(updateProfileError)

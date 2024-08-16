@@ -10,7 +10,7 @@ export default function SkipConfirmLandlinePhonePage () {
   const navigate = useNavigate()
 
   const homePhone = useSelector(
-    (state) => state.session.profile.unverified.homePhones[0]
+    (state) => state.session.profile.unverified.homePhones[0].address
   )
 
   function skipConfirm () {

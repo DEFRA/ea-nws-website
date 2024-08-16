@@ -8,7 +8,7 @@ import Header from '../../../gov-uk-components/Header'
 import Input from '../../../gov-uk-components/Input'
 import InsetText from '../../../gov-uk-components/InsetText'
 import PhaseBanner from '../../../gov-uk-components/PhaseBanner'
-import { setAuthToken, setProfile } from '../../../redux/userSlice'
+import { setAuthToken, setProfile, setRegisterToken } from '../../../redux/userSlice'
 import { backendCall } from '../../../services/BackendService'
 import { authCodeValidation } from '../../../services/validations/AuthCodeValidation'
 import NotificationBanner from '../../../gov-uk-components/NotificationBanner'
@@ -66,9 +66,9 @@ export default function SignUpValidationPage () {
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const data = { email: loginEmail }
-    const { errorMessage } = await backendCall(
-      data,
+    const dataToSend = { email: loginEmail }
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
       'api/sign_up_start',
       navigate
     )
@@ -76,6 +76,7 @@ export default function SignUpValidationPage () {
     if (errorMessage !== null) {
       setError(errorMessage)
     } else {
+      dispatch(setRegisterToken(data.registerToken))
       setCodeResent(true)
       setCodeResentTime(new Date().toLocaleTimeString())
       setCodeExpired(false)

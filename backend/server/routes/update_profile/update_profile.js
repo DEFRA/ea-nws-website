@@ -13,17 +13,16 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-
         const { authToken, profile } = request.payload
 
-        if (Object.keys(profile).length !== 0) {
+        if (Object.keys(profile).length !== 0 && authToken) {
           const response = await apiCall(
             { authToken: authToken, profile: profile },
             'member/updateProfile'
           )
           return h.response(response)
         } else {
-          createGenericErrorResponse(h)
+          return createGenericErrorResponse(h)
         }
       } catch (error) {
         return createGenericErrorResponse(h)

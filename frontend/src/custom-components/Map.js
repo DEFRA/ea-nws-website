@@ -225,12 +225,7 @@ export default function Map ({
   }
 
   useEffect(() => {
-    return () => {
-      getApiKey()
-    }
-  }, [])
-
-  useEffect(() => {
+    getApiKey()
     const interval = setInterval(() => {
       getApiKey()
     }, 270000)

@@ -1,8 +1,10 @@
 import React from 'react'
 import { useNavigate } from 'react-router'
 import Button from '../../components/gov-uk/Button'
-export default function SignOutLayout ({ text }) {
+
+export default function SignOutLayout({ text, signin_link }) {
   const navigate = useNavigate()
+
   return (
     <>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
@@ -13,7 +15,7 @@ export default function SignOutLayout ({ text }) {
             <Button
               text='Sign in'
               className='govuk-button'
-              onClick={() => navigate('/signin')}
+              onClick={() => navigate(signin_link)}
             />
 
             <h3 className='govuk-heading-s'>More about flooding</h3>

@@ -1,7 +1,14 @@
 import React from 'react'
 import '../../css/custom.css'
 import Button from '../gov-uk/Button'
+
 export default function InactivityPopup({ onStayLoggedIn }) {
+  let signout_link = '/signout'
+  const currentRoute = window.location.pathname
+  if (currentRoute.includes('/organisation/')) {
+    signout_link = '/organisation/signout'
+  }
+
   return (
     <div className='timeout-dialog'>
       <div className='timeout-dialog-container'>
@@ -16,7 +23,7 @@ export default function InactivityPopup({ onStayLoggedIn }) {
             text='Stay signed in'
           />
           <p className='govuk-body timeout-dialog-link inline-link'>
-            <a href='/signout' class='govuk-link'>
+            <a href={signout_link} class='govuk-link'>
               Sign out
             </a>
           </p>

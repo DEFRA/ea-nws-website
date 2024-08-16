@@ -1,106 +1,37 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import ContactReviewRow from './ContactReviewRow'
+import { Link, useNavigate } from 'react-router-dom'
 
-export default function ContactReviewTable({ profile, contactPreferences }) {
+export default function ContactReviewTable({ profile, organisation }) {
   const navigate = useNavigate()
-
-  const EmailAddressesSection = () => {
-    return (
-      <>
-        {(profile.emails.length > 0 ||
-          profile.unverified.emails.length > 0) && (
-          <tbody className='govuk-table__body'>
-            {profile.emails.map((email, index) => (
-              <ContactReviewRow
-                contact={email}
-                contactType='email'
-                isConfirmed
-                key={index}
-                emailIndex={index}
-              />
-            ))}
-            {profile.unverified.emails.map((unregisteredEmail, index) => (
-              <ContactReviewRow
-                contact={unregisteredEmail}
-                contactType='email'
-                isConfirmed={false}
-                key={index}
-              />
-            ))}
-          </tbody>
-        )}
-      </>
-    )
-  }
-
-  const MobileNumbersSection = () => {
-    return (
-      <>
-        {(profile.mobilePhones.length > 0 ||
-          profile.unverified.mobilePhones.length > 0) && (
-          <tbody className='govuk-table__body'>
-            {profile.mobilePhones.map((mobilePhone, index) => (
-              <ContactReviewRow
-                contact={mobilePhone}
-                contactType='mobilePhone'
-                isConfirmed
-                key={index}
-              />
-            ))}
-            {profile.unverified.mobilePhones.map(
-              (unregisteredMobilePhone, index) => (
-                <ContactReviewRow
-                  contact={unregisteredMobilePhone}
-                  contactType='mobilePhone'
-                  isConfirmed={false}
-                  key={index}
-                />
-              )
-            )}
-          </tbody>
-        )}
-      </>
-    )
-  }
-
-  const HomePhonesSection = () => {
-    return (
-      <>
-        {(profile.homePhones.length > 0 ||
-          profile.unverified.homePhones.length > 0) && (
-          <tbody className='govuk-table__body'>
-            {profile.homePhones.map((homePhone, index) => (
-              <ContactReviewRow
-                contact={homePhone}
-                contactType='homePhone'
-                isConfirmed
-                key={index}
-              />
-            ))}
-            {profile.unverified.homePhones.map(
-              (unregisteredHomePhone, index) => (
-                <ContactReviewRow
-                  contact={unregisteredHomePhone}
-                  contactType='homePhone'
-                  isConfirmed={false}
-                  key={index}
-                />
-              )
-            )}
-          </tbody>
-        )}
-      </>
-    )
-  }
 
   return (
     <>
       <h3 className='govuk-heading-m'>Main administrator</h3>
       <table className='govuk-table'>
-        <EmailAddressesSection />
-        {contactPreferences.includes('Text') && <MobileNumbersSection />}
-        {contactPreferences.includes('PhoneCall') && <HomePhonesSection />}
+        <tr className='govuk-table__row'>
+          <td class='govuk-table__header  govuk-!-width-one-half'>Name</td>
+          <td className='govuk-table__cell  govuk-!-width-full'>
+            {organisation.mainadministrator.name}
+          </td>
+          <td className='govuk-table__cell'>
+            <Link to='/' className='govuk-link'>
+              Change
+            </Link>
+          </td>
+        </tr>
+        <tr className='govuk-table__row'>
+          <td class='govuk-table__header  govuk-!-width-one-half'>
+            Email address
+          </td>
+          <td className='govuk-table__cell  govuk-!-width-full'>
+            {organisation.mainadministrator.emailaddress}
+          </td>
+          <td className='govuk-table__cell'>
+            <Link to='/' className='govuk-link'>
+              Change
+            </Link>
+          </td>
+        </tr>
         <br />
       </table>
     </>

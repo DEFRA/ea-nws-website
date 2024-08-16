@@ -54,6 +54,7 @@ def test_search_location_change_postcode(get_browser):
     change_postcode_link_xpath = f"//a[text()='Change postcode']"
     change_postcode_link = browser.find_element(By.XPATH, change_postcode_link_xpath)
     browser.execute_script("arguments[0].click();", change_postcode_link)
+    time.sleep(1)
     assert browser.current_url == previous_page
     assert "Check if you can get flood messages for your location" in browser.page_source
     assert "Select how you want to search" in browser.page_source

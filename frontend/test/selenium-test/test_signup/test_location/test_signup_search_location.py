@@ -96,7 +96,7 @@ def test_search_location_englishpostcode(get_browser):
     continue_button_xpath = f"//button[text()='Continue']"
     continue_button = browser.find_element(By.XPATH, continue_button_xpath)
     browser.execute_script("arguments[0].click();", continue_button)
-    time.sleep(1)
+    time.sleep(3)
     assert browser.current_url==nextPage 
     assert "Select an address" in browser.page_source
     assert "House Of Commons" in browser.page_source

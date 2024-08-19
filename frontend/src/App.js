@@ -6,7 +6,7 @@ import InactivityPopup from './common/components/custom/InactivityPopup'
 import ScrollToTop from './common/components/custom/ScrollToTop'
 import { authenticatedRoutes, routes } from './routes'
 
-export default function App () {
+export default function App() {
   const auth = useSelector((state) => state.session.authToken)
   const [isInactive, setIsInactive] = useState(false)
   const inactivityTimer = useRef(null)
@@ -62,7 +62,11 @@ export default function App () {
 
   const isSignOutRoute = () => {
     const currentRoute = window.location.pathname
-    if (currentRoute === '/signout' || currentRoute === '/signout-auto') {
+    if (
+      currentRoute === '/signout' ||
+      currentRoute === '/signout-auto' ||
+      currentRoute === '/account/delete/confirm'
+    ) {
       return true
     } else {
       return false
@@ -79,14 +83,12 @@ export default function App () {
               key={index}
               path={route.path}
               element={
-              auth || isSignOutRoute()
-                ? (
-                    route.component
-                  )
-                : (
+                auth || isSignOutRoute() ? (
+                  route.component
+                ) : (
                   <Navigate to='/sign-back-in' />
-                  )
-            }
+                )
+              }
             />
           ))}
           {routes.map((route, index) => (

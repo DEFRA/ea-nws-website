@@ -9,6 +9,7 @@ import Index from './common/pages/Index'
 import commonFooterRoutes from './common/routes/footer/FooterRoutes'
 import commonSignOutRoutes from './common/routes/sign-out/SignOutRoutes'
 import commonStartRoutes from './common/routes/start/StartRoutes'
+import orgRegistrationRoutes from './organisation/routes/sign-up/SignUpRoutes'
 import organisationSigninRoutes from './organisation/routes/sign-in/SignInRoutes'
 
 // index routes
@@ -19,6 +20,8 @@ export const routes = [
   ...commonStartRoutes,
   ...citizenSignupRoutes,
   ...citizenSigninRoutes,
+  ...commonFooterRoutes,
+  ...orgRegistrationRoutes,
   ...citizenSignupRoutes,
   ...commonFooterRoutes,
   ...organisationSigninRoutes

@@ -27,3 +27,5 @@ paths:
     $ref: './paths/contact/email/verifyEmailValidate.yaml'
   /member/registerToPartner:
     $ref: './paths/partner/registerToPartner.yaml'
+  /member/deleteAccount:
+    $ref: './paths/account/deleteAccount.yaml'

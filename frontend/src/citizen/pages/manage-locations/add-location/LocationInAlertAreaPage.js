@@ -7,11 +7,34 @@ export default function LocationInAlertAreaPage () {
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+  // only used when user is going through nearby target areas flow
+  const isUserInNearbyTargetFlowpath = useSelector(
+    (state) => state.session.nearbyTargetAreaFlow
+  )
+  const selectedFloodWarningArea = useSelector(
+    (state) => state.session.selectedFloodWarningArea
+  )
+  const selectedFloodAlertArea = useSelector(
+    (state) => state.session.selectedFloodAlertArea
+  )
 
   const continueToNextPage = () => {
+    let name
+    if (isUserInNearbyTargetFlowpath) {
+      // if user has selected a flood warning area, only show the name of the warning area in
+      // location added banner
+      if (selectedFloodWarningArea) {
+        name = selectedFloodWarningArea.properties.ta_name
+      } else {
+        name = selectedFloodAlertArea.properties.ta_name
+      }
+    } else {
+      name = selectedLocation.name
+    }
+
     navigate('/home', {
       state: {
-        locationName: selectedLocation.name
+        locationName: name
       }
     })
   }

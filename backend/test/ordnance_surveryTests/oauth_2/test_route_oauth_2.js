@@ -18,7 +18,10 @@ lab.experiment('Route tests', () => {
   lab.test('POST / route ', async () => {
     const options = {
       method: 'POST',
-      url: '/api/os-api/oauth2'
+      url: '/api/os-api/oauth2',
+      payload: {
+        data: 'data'
+      }
     }
     const response = await server.inject(options)
     Code.expect(response.result.status).to.equal(200)

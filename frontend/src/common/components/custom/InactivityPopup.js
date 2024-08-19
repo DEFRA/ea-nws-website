@@ -5,7 +5,7 @@ export default function InactivityPopup ({ onStayLoggedIn }) {
   return (
     <div className='timeout-dialog'>
       <div className='timeout-dialog-container'>
-        <h3 className='govuk-heading-s'>Youre about to be signed out</h3>
+        <h3 className='govuk-heading-s'>You're about to be signed out</h3>
         <p className='govuk-body'>
           For your security we will sign you out in 2 minutes
         </p>

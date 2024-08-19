@@ -1,6 +1,8 @@
 const axios = require('axios')
+const https = require('https')
 const getSecretKeyValue = require('./SecretsManager')
 const apiToFrontendError = require('./ApiToFrontendError')
+const { convertGeoSafeProfile, convertWebProfile } = require('./formatters/profileFormatter')
 
 const getErrorMessage = (path, errorMessage) => {
   const apiPath = path.split('/').pop()
@@ -11,14 +13,26 @@ const getErrorMessage = (path, errorMessage) => {
 const apiCall = async (data, path) => {
   const apiUrl = await getSecretKeyValue('nws/geosafe', 'apiUrl')
   const url = apiUrl + '/' + path
+  let webProfile = null
+  if (data.profile) {
+    webProfile = JSON.parse(JSON.stringify(data.profile))
+    data.profile = convertWebProfile(data.profile)
+  }
 
   try {
     const response = await axios.post(url, data, {
       headers: {
         'Content-Type': 'application/json'
       },
-      withCredentials: true
+      httpsAgent: new https.Agent({
+        rejectUnauthorized: false
+      }),
+      withCredentials: false
     })
+
+    if (response.data.profile) {
+      response.data.profile = convertGeoSafeProfile(response.data.profile, webProfile)
+    }
 
     return { status: response.status, data: response.data }
   } catch (error) {

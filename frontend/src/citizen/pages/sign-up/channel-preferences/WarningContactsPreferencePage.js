@@ -59,7 +59,7 @@ export default function WarningContactsPreferencePage () {
               : (
                 <NotificationBanner
                   className='govuk-notification-banner govuk-notification-banner--success'
-                  title='success'
+                  title='Success'
                   heading='Email address confirmed'
                   text={loginEmail + ' is your sign in email'}
                 />
@@ -69,10 +69,10 @@ export default function WarningContactsPreferencePage () {
             </h1>
             <div
               className={
-                  error
-                    ? 'govuk-form-group govuk-form-group--error'
-                    : 'govuk-form-group'
-                }
+                error
+                  ? 'govuk-form-group govuk-form-group--error'
+                  : 'govuk-form-group'
+              }
             >
               <fieldset className='govuk-fieldset'>
                 <legend className='govuk-fieldset__legend'>

@@ -18,6 +18,7 @@ export const routes = [
   ...commonStartRoutes,
   ...citizenSignupRoutes,
   ...citizenSigninRoutes,
+  ...commonFooterRoutes,
   ...citizenSignupRoutes,
   ...commonFooterRoutes,
   ...organisationSignupRoutes

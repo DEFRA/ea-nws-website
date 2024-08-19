@@ -48,6 +48,7 @@ def test_reviewpage_successpage(get_browser):
     button_xpath = f"//button[text()='Finish sign up']"
     finish_link = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", finish_link)
+    time.sleep(1)
     assert browser.current_url == finish_page
     
 def test_reviewpage_removecontact(get_browser):

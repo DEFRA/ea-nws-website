@@ -8,7 +8,7 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import { setContactPreferences } from '../../../../common/redux/userSlice'
 
-export default function WarningContactsPreferencePage () {
+export default function WarningContactsPreferencePage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const loginEmail = useSelector((state) => state.session.profile.emails[0])
@@ -19,7 +19,6 @@ export default function WarningContactsPreferencePage () {
 
   const contactOptions = [
     { label: 'Text', value: 'Text' },
-    { label: 'Email', value: 'Email' },
     { label: 'Phone call', value: 'PhoneCall' }
   ]
 
@@ -30,8 +29,6 @@ export default function WarningContactsPreferencePage () {
       dispatch(setContactPreferences(selectedContactPreferences))
       if (selectedContactPreferences.includes('Text')) {
         navigate('/signup/contactpreferences/mobile/add')
-      } else if (selectedContactPreferences.includes('Email')) {
-        // navigate to email TODO - cameron add this once merged
       } else if (selectedContactPreferences.includes('PhoneCall')) {
         navigate('/signup/contactpreferences/landline/add')
       }
@@ -55,27 +52,25 @@ export default function WarningContactsPreferencePage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error
-              ? (
-                <ErrorSummary errorList={[error]} />
-                )
-              : (
-                <NotificationBanner
-                  className='govuk-notification-banner govuk-notification-banner--success'
-                  title='success'
-                  heading='Email address confirmed'
-                  text={loginEmail + ' is your sign in email'}
-                />
-                )}
+            {error ? (
+              <ErrorSummary errorList={[error]} />
+            ) : (
+              <NotificationBanner
+                className='govuk-notification-banner govuk-notification-banner--success'
+                title='Success'
+                heading='Email address confirmed'
+                text={loginEmail + ' is your sign in email'}
+              />
+            )}
             <h1 className='govuk-heading-l'>
               How would you like to get messages about flooding?
             </h1>
             <div
               className={
-                  error
-                    ? 'govuk-form-group govuk-form-group--error'
-                    : 'govuk-form-group'
-                }
+                error
+                  ? 'govuk-form-group govuk-form-group--error'
+                  : 'govuk-form-group'
+              }
             >
               <fieldset className='govuk-fieldset'>
                 <legend className='govuk-fieldset__legend'>

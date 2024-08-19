@@ -47,10 +47,11 @@ async function getMobileValidate(
     },
     pois: [
       {
-        address: 'Exeter, United Kingdom',
+        name: 'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth,  NR30 1AA',
+        address: '10023463293',
         coordinates: {
-          latitude: '50726037',
-          longitude: '-3527489'
+          latitude: '52612444.5',
+          longitude: '1724640.5'
         }
       }
     ]

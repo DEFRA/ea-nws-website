@@ -12,7 +12,7 @@ import {
   setRegistrations
 } from '../redux/userSlice'
 
-export default function IndexPage () {
+export default function IndexPage() {
   const dispatch = useDispatch()
   const [mockSessionActive, setmockSessionActive] = useState(false)
   const [emptyProfileActive, setEmptyProfileActive] = useState(false)
@@ -26,7 +26,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [],
+    additionals: [{ id: 'signUpComplete', value: true }],
     unverified: {
       emails: [],
       mobilePhones: [],
@@ -34,12 +34,13 @@ export default function IndexPage () {
     },
     pois: [
       {
-        name: 'Big Ben, London SW1A 0AA',
-        address: 'UPRN',
+        name: 'House Of Commons, Houses Of Parliament, London, SW1A 0AA',
+        address: '10033540874',
         coordinates: {
-          latitude: 51.5007,
-          longitude: 0.1246
-        }
+          latitude: 51.4998415,
+          longitude: -0.1246377
+        },
+        categories: ['severe', 'alert']
       }
     ]
   }
@@ -53,7 +54,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [],
+    additionals: [{ id: 'signUpComplete', value: true }],
     unverified: {
       emails: [],
       mobilePhones: [],
@@ -88,7 +89,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [],
+    additionals: [{ id: 'signUpComplete', value: true }],
     unverified: {
       emails: [],
       mobilePhones: [],
@@ -226,7 +227,7 @@ export default function IndexPage () {
     ]
   }
 
-  function mockSession (profile) {
+  function mockSession(profile) {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
       const contactPreferences = ['Text']
@@ -275,7 +276,7 @@ export default function IndexPage () {
     }
   }
 
-  function mockEmptyProfileWithNoAuthentication () {
+  function mockEmptyProfileWithNoAuthentication() {
     if (!emptyProfileActive) {
       const emptyProfile = {
         id: '',
@@ -323,21 +324,33 @@ export default function IndexPage () {
               />
               <br />
 
-              <p className='govuk-body'>A quick link to each page</p>
+              <p className='govuk-body'>A quick link to each page:</p>
               <ul className='govuk-list'>
                 <li>
                   <Link to='/' className='govuk-link'>
                     Start page
                   </Link>
                 </li>
+                <br />
+                Citizen:
                 <li>
+                  &emsp;
                   <Link to='/signin' className='govuk-link'>
                     Sign in page
                   </Link>
                 </li>
                 <li>
+                  &emsp;
                   <Link to='/signup' className='govuk-link'>
                     Sign up page
+                  </Link>
+                </li>
+                <br />
+                Organisation:
+                <li>
+                  &emsp;
+                  <Link to='/organisation/register' className='govuk-link'>
+                    Register
                   </Link>
                 </li>
               </ul>

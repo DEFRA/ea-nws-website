@@ -44,18 +44,19 @@ async function getSigninValidate(
     mobilePhones: ['07343454590', '07889668367'],
     homePhones: ['01475721535'],
     language: 'EN',
-    additionals: [],
+    additionals: [{id: "lastAccessedUrl", value: "/signup/accountname/add"}, {id: "signUpComplete", value: true}],
     unverified: {
       emails: [],
       mobilePhones: [],
-      homePhones: ['01475721535']
+      homePhones: [{address : '01475721535'}]
     },
     pois: [
       {
-        address: 'Exeter, United Kingdom',
+        name: 'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth,  NR30 1AA',
+        address: '10023463293',
         coordinates: {
-          latitude: '50726037',
-          longitude: '-3527489'
+          latitude: '52612444.5',
+          longitude: '1724640.5'
         }
       },
       {

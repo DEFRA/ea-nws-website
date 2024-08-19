@@ -150,11 +150,11 @@ export default function LocationWithinWarningAreaProximityLayout ({
                                 onChange={() => setFloodArea(area)}
                                 checked={
                             (selectedFloodWarningArea &&
-                              selectedFloodWarningArea.properties.gml_id ===
-                                area.properties.gml_id) ||
+                              selectedFloodWarningArea.id ===
+                                area.id) ||
                             (selectedFloodAlertArea &&
-                              selectedFloodAlertArea.properties.gml_id ===
-                                area.properties.gml_id)
+                              selectedFloodAlertArea.id ===
+                                area.id)
                           }
                               />
                             ))

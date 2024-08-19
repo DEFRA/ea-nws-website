@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect'
 import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
-import Pagination from '../../src/gov-uk-components/Pagination'
+import Pagination from '../../src/common/components/gov-uk/Pagination'
 
 describe('Pagination Component', () => {
   const onPageChange = jest.fn()

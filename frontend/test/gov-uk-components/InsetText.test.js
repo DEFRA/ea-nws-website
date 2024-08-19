@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
 import React from 'react'
-import InsetText from '../../src/gov-uk-components/InsetText'
+import InsetText from '../../src/common/components/gov-uk/InsetText'
 
 describe('InsetText component', () => {
   test('renders with the correct text', () => {

@@ -89,8 +89,8 @@ export default function LocationWithinWarningAreaProximityLayout ({
               ? (
                 <div className='govuk-body map-confirm-location-box-mobile-view'>
                   <p>
-                    {selectedFloodWarningArea?.properties.ta_name ||
-                  selectedFloodAlertArea?.properties.ta_name}
+                    {selectedFloodWarningArea?.properties.TA_NAME ||
+                  selectedFloodAlertArea?.properties.TA_NAME}
                   </p>
                   <Button
                     text='Confirm this location'

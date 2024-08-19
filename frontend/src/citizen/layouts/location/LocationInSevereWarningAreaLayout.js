@@ -67,7 +67,7 @@ export default function LocationInSevereWarningAreaLayout ({
 
   const addFloodWarningArea = async () => {
     const warningArea = {
-      name: selectedFloodWarningArea.properties.ta_name,
+      name: selectedFloodWarningArea.properties.TA_NAME,
       address: '',
       coordinates: getCoordsOfFloodArea(selectedFloodWarningArea)
     }
@@ -78,7 +78,7 @@ export default function LocationInSevereWarningAreaLayout ({
   const removeFloodWarningArea = async () => {
     const updatedProfile = await removeLocation(
       profile,
-      selectedFloodWarningArea.properties.ta_name
+      selectedFloodWarningArea.properties.TA_NAME
     )
     dispatch(setProfile(updatedProfile))
   }
@@ -87,7 +87,7 @@ export default function LocationInSevereWarningAreaLayout ({
     const associatedAlertArea = await getAssociatedAlertArea(
       selectedLocation.coordinates.latitude,
       selectedLocation.coordinates.longitude,
-      selectedFloodWarningArea.properties.parent
+      selectedFloodWarningArea.properties.PARENT
     )
 
     if (associatedAlertArea) {
@@ -130,7 +130,7 @@ export default function LocationInSevereWarningAreaLayout ({
             </h1>
             <InsetText text={
               isUserInNearbyTargetFlowpath
-                ? selectedFloodWarningArea.properties.ta_name
+                ? selectedFloodWarningArea.properties.TA_NAME
                 : selectedLocation.name
               }
             />

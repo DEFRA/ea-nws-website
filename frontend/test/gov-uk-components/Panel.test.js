@@ -2,7 +2,7 @@
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
 import React from 'react'
-import Panel from '../../src/gov-uk-components/Panel'
+import Panel from '../../src/common/components/gov-uk/Panel'
 
 describe('Panel component', () => {
   test('renders with the correct title and body', () => {

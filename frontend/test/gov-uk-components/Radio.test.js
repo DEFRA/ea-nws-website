@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect'
 import { fireEvent, render, screen } from '@testing-library/react'
 import React from 'react'
-import Radio from '../../src/gov-uk-components/Radio'
+import Radio from '../../src/common/components/gov-uk/Radio'
 
 describe('Radio Component', () => {
   const onChange = jest.fn()

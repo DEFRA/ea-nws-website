@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
 import React from 'react'
-import NotificationBanner from '../../src/gov-uk-components/NotificationBanner'
+import NotificationBanner from '../../src/common/components/gov-uk/NotificationBanner'
 
 describe('NotificationBanner component', () => {
   test('renders with the correct title, heading, and text', () => {

@@ -1,7 +1,7 @@
 import '@testing-library/jest-dom/extend-expect'
 import { render, screen } from '@testing-library/react'
 import React from 'react'
-import ErrorSummary from '../../src/gov-uk-components/ErrorSummary'
+import ErrorSummary from '../../src/common/components/gov-uk/ErrorSummary'
 
 describe('ErrorSummary component', () => {
   test('renders with the correct title and error list', () => {

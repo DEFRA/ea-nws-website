@@ -13,7 +13,7 @@ import commonStartRoutes from './common/routes/start/StartRoutes'
 
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
-const errorRoutes = [{ path: '/error', component: <ErrorPage />}]
+const errorRoutes = [{ path: '/error', component: <ErrorPage /> }]
 
 export const routes = [
   ...indexRoutes,

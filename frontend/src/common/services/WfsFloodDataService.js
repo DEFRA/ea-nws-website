@@ -61,7 +61,7 @@ export const getAssociatedAlertArea = async (lat, lng, code) => {
   }
   const { data: wfsAlertData } = await backendCall(
     WFSParams,
-    'api/wfs',
+    'api/wfs'
   )
 
   const filteredOutOtherAlertAreas = wfsAlertData?.features.filter(
@@ -141,9 +141,9 @@ function checkPointInPolygon (lat, lng, geojson) {
 }
 
 function calculateBoundingBox (centerLat, centerLng, distanceKm) {
-  const center = turf.point([centerLng, centerLat], {crs: 'EPSG:4326'});
-  const buffered = turf.buffer(center, distanceKm * 1000, { units: 'meters' });
-  const bbox = turf.bbox(buffered);
+  const center = turf.point([centerLng, centerLat], { crs: 'EPSG:4326' })
+  const buffered = turf.buffer(center, distanceKm * 1000, { units: 'meters' })
+  const bbox = turf.bbox(buffered)
 
   const result =
     bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3] + ',EPSG:4326'

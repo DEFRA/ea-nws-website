@@ -1,13 +1,14 @@
 const getSecretKeyValue = require('./SecretsManager')
+const fetch = require('node-fetch')
 const getWfsData = async (WFSParams) => {
   const baseWFSURL = await getSecretKeyValue('nws/qgis', 'qgisUrl')
-  let wfsURL = `${baseWFSURL}?${new URLSearchParams(WFSParams).toString()}`
+  const wfsURL = `${baseWFSURL}?${new URLSearchParams(WFSParams).toString()}`
 
   try {
     const wfsData = await fetch(wfsURL).then((response) => response.json())
-    return {status: 200, data: wfsData}
+    return { status: 200, data: wfsData }
   } catch (error) {
-    return {status: 500, data: null}
+    return { status: 500, data: null }
   }
 }
 

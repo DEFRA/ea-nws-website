@@ -1,8 +1,8 @@
 from common import *
 import time
 
-# Test signout button
-def test_signout_button(get_browser):
+# Test citizen signout button
+def test_cit_signout_button(get_browser):
     browser = get_browser
     browser.get(url_index)
     click_button(browser, 'Activate/Deactivate Mock Session 1')
@@ -10,8 +10,8 @@ def test_signout_button(get_browser):
     click_link(browser, 'Sign Out')
     assert browser.current_url == url_cit_signout
 
-# Test signin button on signout page
-def test_signin_button(get_browser):
+# Test citizen signin button on signout page
+def test_cit_signin_button(get_browser):
     browser = get_browser
     browser.get(url_index)
     click_button(browser, 'Activate/Deactivate Mock Session 1')
@@ -20,8 +20,8 @@ def test_signin_button(get_browser):
     click_button(browser, 'Sign in')
     assert browser.current_url == url_cit_signin
 
-# Test flood link
-def test_flood_link(get_browser):
+# Test citizen flood link
+def test_cit_flood_link(get_browser):
     browser = get_browser
     browser.get(url_index)
     click_button(browser, 'Activate/Deactivate Mock Session 1')
@@ -31,8 +31,8 @@ def test_flood_link(get_browser):
     time.sleep(1)
     assert browser.current_url == url_flood
 
-# Test feedback link
-def test_feedback_link(get_browser):
+# Test citizen feedback link
+def test_cit_feedback_link(get_browser):
     browser = get_browser
     browser.get(url_index)
     click_button(browser, 'Activate/Deactivate Mock Session 1')
@@ -41,3 +41,23 @@ def test_feedback_link(get_browser):
     click_link(browser, 'What do you think of this service?')
     time.sleep(1)
     assert browser.current_url == url_feedback
+
+# TODO: Need to fix theses 2 tests below, failing due to header
+# Test organisation signout button
+# def test_org_signout_button(get_browser):
+#     browser = get_browser
+#     browser.get(url_index)
+#     click_button(browser, 'Activate/Deactivate Mock Session 1')
+#     click_link(browser, 'Organisation home page')
+#     click_link(browser, 'Sign Out')
+#     assert browser.current_url == url_org_signout
+
+# # Test organisation signin button on signout page
+# def test_org_signin_button(get_browser):
+#     browser = get_browser
+#     browser.get(url_index)
+#     click_button(browser, 'Activate/Deactivate Mock Session 1')
+#     click_link(browser, 'Organisation home page')
+#     click_link(browser, 'Sign Out')
+#     click_button(browser, 'Sign in')
+#     assert browser.current_url == url_org_signin

@@ -13,6 +13,8 @@ export default function App () {
   const redirectTimer = useRef(null)
   const [isPopUpOnScreen, setIsPopUpOnScreen] = useState(false)
 
+  const currentRoute = window.location.pathname
+
   useEffect(() => {
     if (isPopUpOnScreen === false) {
       const resetInactivityTimer = () => {
@@ -49,7 +51,6 @@ export default function App () {
   useEffect(() => {
     if (isPopUpOnScreen === true) {
       redirectTimer.current = setTimeout(() => {
-        const currentRoute = window.location.pathname
         if (currentRoute.includes('/organisation/')) {
           window.location.pathname = '/organisation/signout-auto'
         } else {
@@ -66,7 +67,6 @@ export default function App () {
   }
 
   const isSignOutRoute = () => {
-    const currentRoute = window.location.pathname
     if (
       currentRoute.includes('signout') ||
       currentRoute === '/account/delete/confirm'
@@ -78,7 +78,6 @@ export default function App () {
   }
 
   const SignBackInLink = () => {
-    const currentRoute = window.location.pathname
     if (currentRoute.includes('/organisation/')) {
       return '/organisation/sign-back-in'
     } else {

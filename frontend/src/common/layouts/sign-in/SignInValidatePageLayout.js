@@ -9,12 +9,14 @@ import InsetText from '../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import {
   setAuthToken,
+  setContactPreferences,
   setProfile,
   setRegistrations
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from '../../../citizen/layouts/expired-code/ExpiredCodeLayout'
+import NotCompletedSigningUpLayout from '../../../citizen/layouts/sign-up/NotCompletedSignUpLayout'
 
 export default function SignInValidatePageLayout ({ NavigateToNextPage, NavigateToPreviousPage }) {
   const location = useLocation()
@@ -26,6 +28,9 @@ export default function SignInValidatePageLayout ({ NavigateToNextPage, Navigate
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
+  const [signUpNotComplete, setSignUpNotComplete] = useState(false)
+  const [lastAccessedUrl, setLastAccessedUrl] = useState('')
+
 
   // if error remove code sent notification
   useEffect(() => {
@@ -54,15 +59,33 @@ export default function SignInValidatePageLayout ({ NavigateToNextPage, Navigate
         dispatch(setAuthToken(data.authToken))
         dispatch(setProfile(data.profile))
         dispatch(setRegistrations(data.registrations))
-        NavigateToNextPage()
+        dispatch(setContactPreferences([
+          data.profile.emails.length !== 0 && 'Email Address',
+          data.profile.homePhones.length !== 0 && 'PhoneCall',
+          data.profile.mobilePhones.length !== 0 && 'Text'
+        ]))
+
+        const isSignUpComplete = data.profile.additionals.filter(
+          (c) => c.id === 'signUpComplete'
+        )[0]?.value
+        const lastAccessedUrl = data.profile.additionals.filter(
+          (c) => c.id === 'lastAccessedUrl'
+        )[0]?.value
+        setLastAccessedUrl(lastAccessedUrl)
+
+        if (!isSignUpComplete && lastAccessedUrl !== undefined) {
+          setSignUpNotComplete(true)
+        } else {
+          NavigateToNextPage()
+        }
       }
     }
   }
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const data = { email: location.state.email }
-    const { errorMessage } = await backendCall(data, 'api/sign_in', navigate)
+    const dataToSend = { email: location.state.email }
+    const { data, errorMessage } = await backendCall(dataToSend, 'api/sign_in', navigate)
 
     if (errorMessage !== null) {
       setError(errorMessage)
@@ -81,8 +104,13 @@ export default function SignInValidatePageLayout ({ NavigateToNextPage, Navigate
 
   return (
     <>
-      {codeExpired
-        ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
+      {codeExpired || signUpNotComplete
+        ? (
+            (codeExpired && <ExpiredCodeLayout getNewCode={getNewCode} />) ||
+        (signUpNotComplete && (
+          <NotCompletedSigningUpLayout nextPage={lastAccessedUrl} />
+        ))
+          )
         : (
           <>
             <BackLink onClick={navigateBack} />

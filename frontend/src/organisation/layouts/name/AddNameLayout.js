@@ -7,7 +7,7 @@ import Input from '../../../common/components/gov-uk/Input'
 import { setOrgName } from '../../../common/redux/userSlice'
 import { orgNameValidation } from '../../../common/services/validations/OrgNameValidation'
 
-export default function AddNameLayout({
+export default function AddNameLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {

@@ -31,7 +31,6 @@ export default function SignInValidatePageLayout ({ NavigateToNextPage, Navigate
   const [signUpNotComplete, setSignUpNotComplete] = useState(false)
   const [lastAccessedUrl, setLastAccessedUrl] = useState('')
 
-
   // if error remove code sent notification
   useEffect(() => {
     setCodeResent(false)

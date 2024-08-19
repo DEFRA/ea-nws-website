@@ -39,7 +39,7 @@ export default function SignInPageLayout ({ NavigateToNextPage }) {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error ? <ErrorSummary errorList={[error]} /> : <></>}
-              {location.pathname === '/organisation/signin' ? <h1 class='govuk-heading-l'>Sign in to your organisation's flood warning account</h1> : <h1 class='govuk-heading-l'>Sign in to your flood warnings account</h1>}
+            {location.pathname === '/organisation/signin' ? <h1 class='govuk-heading-l'>Sign in to your organisation's flood warning account</h1> : <h1 class='govuk-heading-l'>Sign in to your flood warnings account</h1>}
             <div class='govuk-body'>
               <Input
                 className='govuk-input govuk-input--width-10'

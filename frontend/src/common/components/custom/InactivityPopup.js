@@ -1,13 +1,10 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import '../../css/custom.css'
 import Button from '../gov-uk/Button'
 
 export default function InactivityPopup ({ onStayLoggedIn }) {
-  let signout_link = '/signout'
-  const currentRoute = window.location.pathname
-  if (currentRoute.includes('/organisation/')) {
-    signout_link = '/organisation/signout'
-  }
+  const signinType = useSelector((state) => state.session.signinType)
 
   return (
     <div className='timeout-dialog'>
@@ -23,7 +20,10 @@ export default function InactivityPopup ({ onStayLoggedIn }) {
             text='Stay signed in'
           />
           <p className='govuk-body timeout-dialog-link inline-link'>
-            <a href={signout_link} class='govuk-link'>
+            <a
+              href={signinType === 'org' ? '/organisation/signout' : '/signout'}
+              class='govuk-link'
+            >
               Sign out
             </a>
           </p>

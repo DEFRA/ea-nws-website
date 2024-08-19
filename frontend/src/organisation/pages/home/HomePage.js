@@ -1,8 +1,15 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useLocation } from 'react-router'
 import AccountNavigation from '../../../common/components/custom/AccountNavigation'
 
+import { useDispatch } from 'react-redux'
+import { setSigninType } from '../../../common/redux/userSlice'
+
 export default function HomePage () {
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(setSigninType('org'))
+  })
   return (
     <>
       <AccountNavigation currentPage={useLocation().pathname} />

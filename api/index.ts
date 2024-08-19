@@ -11,6 +11,7 @@ const mobileAuthenticationHandler = require('./handlers/contact/mobile/mobileAut
 const homePhoneAuthenticationHandlers = require('./handlers/contact/homephone/homephoneAuthenticationHandlers')
 const emailAuthenticationHandlers = require('./handlers/contact/email/emailAuthenticationHandlers')
 const registerToPartnerHandler = require('./handlers/partner/registerToPartnerHandler')
+const deleteAccountHandler = require('./handlers/account/deleteAccountHandler')
 // define api
 const api = new OpenAPIBackend({
   definition: './openapi/index.yaml',
@@ -33,7 +34,9 @@ const api = new OpenAPIBackend({
     //update profile routes
     getUpdateProfile: updateProfileHandler.getUpdateProfile,
     //partner routes
-    getRegisterToPartner: registerToPartnerHandler.getRegisterToPartner
+    getRegisterToPartner: registerToPartnerHandler.getRegisterToPartner,
+    //account deletion
+    getDeleteAccount: deleteAccountHandler.getDeleteAccount
   }
 })
 

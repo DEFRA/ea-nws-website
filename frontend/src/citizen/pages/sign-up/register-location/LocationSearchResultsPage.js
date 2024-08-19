@@ -26,7 +26,7 @@ export default function LocationSearchResultsPage () {
       mobilePhones: [],
       homePhones: [],
       language: 'EN', // [TODO] is this always english?
-      additionals: [],
+      additionals: [{ id: 'signUpComplete', value: false }],
       unverified: {
         emails: [],
         mobilePhones: [],

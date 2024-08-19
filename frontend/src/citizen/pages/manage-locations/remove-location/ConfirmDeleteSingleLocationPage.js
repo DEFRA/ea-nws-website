@@ -1,13 +1,13 @@
 import { React, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import BackLink from '../../../common/components/custom/BackLink'
-import Button from '../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
-import InsetText from '../../../common/components/gov-uk/InsetText'
-import { setProfile } from '../../../common/redux/userSlice'
-import { backendCall } from '../../../common/services/BackendService'
-import { removeLocationFromCoordinates } from '../../../common/services/ProfileServices'
+import BackLink from '../../../../common/components/custom/BackLink'
+import Button from '../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
+import InsetText from '../../../../common/components/gov-uk/InsetText'
+import { setProfile } from '../../../../common/redux/userSlice'
+import { backendCall } from '../../../../common/services/BackendService'
+import { removeLocation } from '../../../../common/services/ProfileServices'
 
 export default function ConfirmDeleteSingleLocationPage () {
   const location = useLocation()
@@ -17,10 +17,7 @@ export default function ConfirmDeleteSingleLocationPage () {
   const [error, setError] = useState('')
 
   const handleSubmit = async () => {
-    const updatedProfile = removeLocationFromCoordinates(
-      session.profile,
-      location.state.coordinates
-    )
+    const updatedProfile = removeLocation(session.profile, location.state.name)
 
     const data = {
       authToken: session.authToken,
@@ -38,13 +35,13 @@ export default function ConfirmDeleteSingleLocationPage () {
       dispatch(setProfile(updatedProfile))
       navigate('/home', {
         state: {
-          removedAddress: location.state.address
+          removedLocation: location.state.name
         }
       })
     } else {
       setError(
         'An error occured trying to remove a location.  ' +
-          location.state.address +
+          location.state.name +
           ' has not been removed. Please try again later.'
       )
     }
@@ -52,15 +49,15 @@ export default function ConfirmDeleteSingleLocationPage () {
 
   return (
     <>
-      <BackLink to={() => navigate(-1)} />
-      <ErrorSummary errorList={error === '' ? [] : [error]} />
+      <BackLink onClick={() => navigate(-1)} />
+      {error && <ErrorSummary errorList={[error]} />}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <h2 className='govuk-heading-l'>
               Are you sure you want to remove this location?
             </h2>
-            <InsetText text={location.state.address} />
+            <InsetText text={location.state?.name} />
             <p className='govuk-!-margin-bottom-6'>
               You'll no longer get any flood warnings or alerts for this
               location.
@@ -72,7 +69,7 @@ export default function ConfirmDeleteSingleLocationPage () {
             />
                 &nbsp; &nbsp;
             <Link
-              to='/home'
+              onClick={() => navigate(-1)}
               className='govuk-body govuk-link'
               style={{
                 display: 'inline-block',

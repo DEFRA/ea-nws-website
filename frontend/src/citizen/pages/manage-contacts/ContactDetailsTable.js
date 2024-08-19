@@ -120,7 +120,7 @@ export default function ContactDetailsTable ({
             {unregisteredContact.map((unregisteredContact, index) => (
               <tr key={index} className='govuk-table__row'>
                 <td className='govuk-table__cell govuk-!-width-full'>
-                  {unregisteredContact}
+                  {unregisteredContact.address}
                 </td>
                 <td className='govuk-table__cell'>
                   <strong className='govuk-tag govuk-tag--red'>
@@ -128,14 +128,14 @@ export default function ContactDetailsTable ({
                   </strong>
                 </td>
                 <td className='govuk-table__cell'>
-                  <UnconfirmedLink contact={unregisteredContact} />
+                  <UnconfirmedLink contact={unregisteredContact.address} />
                 </td>
                 <td className='govuk-table__cell'>
                   <Link
                     to='/managecontacts/confirm-delete'
                     state={{
                       type: contactType,
-                      contact: unregisteredContact,
+                      contact: unregisteredContact.address,
                       navigateTo: '/managecontacts'
                     }}
                     className='govuk-link'

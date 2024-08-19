@@ -26,7 +26,7 @@ export default function StartPage () {
                 These are sent by the Environment Agency, the offical source
                 of flood information in England. They help you:
               </p>
-              <ul class='govuk-list govuk-list--bullet'>
+              <ul className='govuk-list govuk-list--bullet'>
                 <li>prepare for possible flooding</li>
                 <li>
                   take action if needed, for exaple protecting or evacuating
@@ -46,7 +46,7 @@ export default function StartPage () {
                 Sign up for the first time
               </h2>
               <p>You'll need:</p>
-              <ul class='govuk-list govuk-list--bullet'>
+              <ul className='govuk-list govuk-list--bullet'>
                 <li>an email address to sign up with</li>
                 <li>
                   a way to contact you at any time of the day or night - you
@@ -68,7 +68,7 @@ export default function StartPage () {
                 </Link>{' '}
                 to your account to:
               </p>
-              <ul class='govuk-list govuk-list--bullet'>
+              <ul className='govuk-list govuk-list--bullet'>
                 <li>update your details</li>
                 <li>remove warnings</li>
                 <li>delete your account</li>
@@ -108,25 +108,25 @@ export default function StartPage () {
                 update your details or cancel your account by calling
                 Floodline.
               </p>
-              <h3 class='govuk-heading-s'>Floodline</h3>
-              <ul class='govuk-list'>
+              <h3 className='govuk-heading-s'>Floodline</h3>
+              <ul className='govuk-list'>
                 <li>Telephone: 0345 988 1188</li>
                 <li>Textphone: 0345 602 6340</li>
                 <li>24 hour service</li>
               </ul>
-              <p class='govuk-body'>
+              <p className='govuk-body'>
                 <a
                   href='https://www.gov.uk/call-charges'
-                  class='govuk-link'
+                  className='govuk-link'
                 >
                   Find out about call charges
                 </a>
               </p>
             </div>
           </div>
-          <div class='govuk-grid-column-one-third'>
-            <h3 class='govuk-heading-s'>related content</h3>
-            <ul class='govuk-list'>
+          <div className='govuk-grid-column-one-third'>
+            <h3 className='govuk-heading-s'>related content</h3>
+            <ul className='govuk-list'>
               <li>
                 <a
                   className='govuk-link'

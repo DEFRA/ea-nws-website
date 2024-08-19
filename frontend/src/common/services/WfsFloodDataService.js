@@ -3,9 +3,9 @@ import L from 'leaflet'
 import leafletPip from 'leaflet-pip'
 import { backendCall } from './BackendService'
 
-export const getSurroundingFloodAreas = async (lat, lng) => {
-  const bboxKM = 0.5 // size of bounding box from centre in KM
-  
+export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
+  // const bboxKM = 0.5 // size of bounding box from centre in KM
+
   // warning areas
   let WFSParams = {
     service: 'WFS',
@@ -158,5 +158,6 @@ function calculateBoundingBox (centerLat, centerLng, distanceKm) {
 
   const result =
     lngMin + ',' + latMin + ',' + lngMax + ',' + latMax + ',EPSG:4326'
+
   return result
 }

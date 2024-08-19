@@ -9,6 +9,7 @@ const userSlice = createSlice({
     contactPreferences: null,
     registrations: null,
     currentContact: null,
+    signinType: null,
     // location data
     locationPostCode: null,
     locationSearchResults: null,
@@ -42,6 +43,9 @@ const userSlice = createSlice({
     addContactPreference: (state, action) => {
       state.contactPreferences = action.payload
     },
+    setSigninType: (state, action) => {
+      state.signinType = action.payload
+    },
     // location data
     setLocationPostCode: (state, action) => {
       state.locationPostCode = action.payload
@@ -74,6 +78,7 @@ const userSlice = createSlice({
       state.profile = null
       state.contactPreferences = null
       state.registrations = null
+      state.signinType = null
       // location data
       state.locationPostCode = null
       state.locationSearchResults = null
@@ -96,6 +101,7 @@ export const {
   setContactPreferences,
   setCurrentContact,
   addContactPreference,
+  setSigninType,
   // location data
   setLocationPostCode,
   setLocationSearchResults,

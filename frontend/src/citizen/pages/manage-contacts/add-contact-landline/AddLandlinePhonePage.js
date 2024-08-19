@@ -15,6 +15,7 @@ export default function AddLandlinePhonePage () {
     <AddLandlineLayout
       NavigateToNextPage={NavigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
+
     />
   )
 }

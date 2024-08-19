@@ -1,5 +1,6 @@
 const addUnverifiedContact = (profile, type, contact) => {
   let unverifiedContactList
+  const formattedContact = { address: contact }
 
   switch (type) {
     case 'email':
@@ -14,7 +15,7 @@ const addUnverifiedContact = (profile, type, contact) => {
   }
 
   // Check for duplicates
-  if (!unverifiedContactList.includes(contact)) {
+  if (!unverifiedContactList.some(unverifiedContact => unverifiedContact.address === contact)) {
     const updatedProfile = {
       ...profile,
       unverified: {
@@ -24,7 +25,7 @@ const addUnverifiedContact = (profile, type, contact) => {
           ? 'emails'
           : type === 'mobile'
             ? 'mobilePhones'
-            : 'homePhones']: [...unverifiedContactList, contact]
+            : 'homePhones']: [...unverifiedContactList, formattedContact]
       }
     }
     return updatedProfile
@@ -37,11 +38,11 @@ const addUnverifiedContact = (profile, type, contact) => {
 const removeUnverifiedContact = (profile, contact) => {
   let unverifiedContactListKey
 
-  if (profile.unverified.emails.includes(contact)) {
+  if (profile.unverified.emails.some(email => email.address === contact)) {
     unverifiedContactListKey = 'emails'
-  } else if (profile.unverified.mobilePhones.includes(contact)) {
+  } else if (profile.unverified.mobilePhones.some(mobilePhone => mobilePhone.address === contact)) {
     unverifiedContactListKey = 'mobilePhones'
-  } else if (profile.unverified.homePhones.includes(contact)) {
+  } else if (profile.unverified.homePhones.some(homePhone => homePhone.address === contact)) {
     unverifiedContactListKey = 'homePhones'
   } else {
     // contact not found in any unverified contacts list
@@ -51,7 +52,7 @@ const removeUnverifiedContact = (profile, contact) => {
   // eslint-disable-next-line no-self-compare
   const newUnverifiedContactList = profile.unverified[
     unverifiedContactListKey
-  ].filter((c) => c !== contact)
+  ].filter((c) => c.address !== contact)
 
   const updatedProfile = {
     ...profile,
@@ -145,17 +146,30 @@ const getAdditionals = (profile, id) => {
   return ''
 }
 
-const updateAdditionals = (profile, id, value) => {
+const updateAdditionals = (profile, updatedAdditionals) => {
   let idFound = false
-  for (let i = 0; i < profile.additionals.length; i++) {
-    if (profile.additionals[i].id === id) {
-      profile.additionals[i].value = value
-      idFound = true
+  const additionals = JSON.parse(JSON.stringify(profile.additionals))
+
+  for (let i = 0; i < updatedAdditionals.length; i++) {
+    const id = updatedAdditionals[i].id
+    const value = updatedAdditionals[i].value
+    for (let j = 0; j < additionals.length; j++) {
+      if (additionals[j].id === id) {
+        additionals[j].value = value
+        idFound = true
+      }
+    }
+    if (!idFound) {
+      additionals.push({ id, value })
     }
   }
-  if (!idFound) {
-    profile.additionals.push({ id, value })
+
+  const updatedProfile = {
+    ...profile,
+    additionals
   }
+
+  return updatedProfile
 }
 
 const addLocation = (profile, newLocation) => {

@@ -29,25 +29,28 @@ export default function AddMobileLayout ({
     if (validationError === '') {
       const normalisedPhoneNumber = normalisePhoneNumber(mobile)
       const dataToSend = { msisdn: normalisedPhoneNumber, authToken }
-      const { errorMessage } = await backendCall(
-        dataToSend,
-        'api/add_contact/mobile/add',
+      const profile = addUnverifiedContact(session.profile, 'mobile', normalisedPhoneNumber)
+      const profileDataToSend = { profile, authToken }
+      const { errorMessage, data } = await backendCall(
+        profileDataToSend,
+        'api/profile/update',
         navigate
       )
       if (errorMessage !== null) {
         setError(errorMessage)
       } else {
-        dispatch(
-          setProfile(
-            addUnverifiedContact(
-              session.profile,
-              'mobile',
-              normalisedPhoneNumber
-            )
-          )
+        dispatch(setProfile(data.profile))
+        const { errorMessage } = await backendCall(
+          dataToSend,
+          'api/add_contact/mobile/add',
+          navigate
         )
-        dispatch(setCurrentContact(normalisedPhoneNumber))
-        NavigateToNextPage()
+        if (errorMessage !== null) {
+          setError(errorMessage)
+        } else {
+          dispatch(setCurrentContact(normalisedPhoneNumber))
+          NavigateToNextPage()
+        }
       }
     }
   }

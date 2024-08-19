@@ -65,7 +65,7 @@ export const getAssociatedAlertArea = async (lat, lng, code) => {
   )
 
   const filteredOutOtherAlertAreas = wfsAlertData?.features.filter(
-    (floodArea) => floodArea.properties.fws_tacode === code
+    (floodArea) => floodArea.properties.FWS_TACODE === code
   )
   if (filteredOutOtherAlertAreas.length > 0) {
     return filteredOutOtherAlertAreas[0]
@@ -141,23 +141,12 @@ function checkPointInPolygon (lat, lng, geojson) {
 }
 
 function calculateBoundingBox (centerLat, centerLng, distanceKm) {
-  const EARTH_RADIUS_KM = 6371 // Earth radius in kilometers
-
-  // Convert center latitude and longitude to radians
-  const centerLatRad = (Math.PI / 180) * centerLat
-  //   const centerLngRad = (Math.PI / 180) * centerLng
-
-  // Calculate the latitude difference (in radians) for the given distance
-  const latDiff = distanceKm / EARTH_RADIUS_KM
-
-  // Calculate the bounding box coordinates
-  const latMin = centerLat - (latDiff * 180) / Math.PI
-  const latMax = centerLat + (latDiff * 180) / Math.PI
-  const lngMin = centerLng - (latDiff * 180) / Math.PI / Math.cos(centerLatRad)
-  const lngMax = centerLng + (latDiff * 180) / Math.PI / Math.cos(centerLatRad)
+  const center = turf.point([centerLng, centerLat], {crs: 'EPSG:4326'});
+  const buffered = turf.buffer(center, distanceKm * 1000, { units: 'meters' });
+  const bbox = turf.bbox(buffered);
 
   const result =
-    lngMin + ',' + latMin + ',' + lngMax + ',' + latMax + ',EPSG:4326'
+    bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3] + ',EPSG:4326'
 
   return result
 }

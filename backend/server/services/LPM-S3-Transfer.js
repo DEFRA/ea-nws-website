@@ -66,8 +66,8 @@ const processLogs = async (directory) => {
   }
 }
 
-// Schedule the job to run every hour, on the hour
-const scheduledLPMTransfer = schedule.scheduleJob('0 * * * *', async () => {
+// Schedule the job to run every 10 minutes
+const scheduledLPMTransfer = schedule.scheduleJob('/10 * * * *', async () => {
   await processLogs(logDirectory)
 })
 

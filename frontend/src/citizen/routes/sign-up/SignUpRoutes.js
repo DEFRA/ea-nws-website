@@ -35,7 +35,7 @@ import AddLandlineContactPage from '../../pages/sign-up/review/manage-contact/ad
 import ValidateLandlineContactPage from '../../pages/sign-up/review/manage-contact/add-landline-contact/AddContactLandlineValidatePage'
 import AddMobileContactStartPage from '../../pages/sign-up/review/manage-contact/add-mobile-contact/AddContactMobileStartPage'
 import ValidateMobileContactPage from '../../pages/sign-up/review/manage-contact/add-mobile-contact/AddContactMobileValidatePage'
-import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
+import SignUpSuccessPage from '../../pages/sign-up/success/SignUpCitizenSuccessPage'
 import DeclarationOfAgreementPage from '../../pages/sign-up/user-agreement/DeclarationOfAgreementPage'
 
 // sign up routes

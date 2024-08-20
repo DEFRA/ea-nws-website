@@ -20,17 +20,18 @@ export default function SignOutLayout ({ text }) {
                 navigate(isOrgRoute ? '/organisation/signin' : '/signin')}
             />
 
-            <h3 className='govuk-heading-s'>
-              {!isOrgRoute && 'More about flooding'}
-            </h3>
-            <p className='govuk-body'>
-              {!isOrgRoute && 'Find out how to'}{' '}
-              <a href='https://www.gov.uk/flood' className='govuk-link'>
-                {!isOrgRoute &&
-                  'protect yourself and your property online from flooding'}
-              </a>
-              {!isOrgRoute && '.'}
-            </p>
+            {/* Flood text only for citizen route */}
+            {!isOrgRoute && (
+              <h3 className='govuk-heading-s'> More about flooding </h3>
+            ) && (
+              <p className='govuk-body'>
+                Find out how to{' '}
+                <a href='https://www.gov.uk/flood' className='govuk-link'>
+                  protect yourself and your property online from flooding
+                </a>
+                .
+              </p>
+            )}
 
             <p className='govuk-body'>
               <a href='/signup/feedback' className='govuk-link'>

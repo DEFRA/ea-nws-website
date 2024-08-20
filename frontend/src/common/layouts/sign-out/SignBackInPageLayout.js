@@ -2,14 +2,10 @@ import { useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
 export default function SignBackInPage () {
   const navigate = useNavigate()
+  const isOrgRoute = !!window.location.pathname.includes('/organisation/')
 
   function redirect () {
-    const currentRoute = window.location.pathname
-    if (currentRoute.includes('/organisation/')) {
-      navigate('/organisation/signin')
-    } else {
-      navigate('/signin')
-    }
+    isOrgRoute ? navigate('/organisation/signin') : navigate('/signin')
   }
 
   return (

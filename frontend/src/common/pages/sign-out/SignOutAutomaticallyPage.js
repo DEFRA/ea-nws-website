@@ -8,16 +8,5 @@ export default function SignOutManuallyPage () {
     dispatch(clearAuth())
   })
 
-  let signin_link = '/signin'
-  const currentRoute = window.location.pathname
-  if (currentRoute.includes('/organisation/')) {
-    signin_link = '/organisation/signin'
-  }
-
-  return (
-    <SignOutLayout
-      text={"You've been signed out for security reasons"}
-      signin_link={signin_link}
-    />
-  )
+  return <SignOutLayout text={"You've been signed out for security reasons"} />
 }

@@ -2,8 +2,9 @@ import React from 'react'
 import { useNavigate } from 'react-router'
 import Button from '../../components/gov-uk/Button'
 
-export default function SignOutLayout ({ text, signin_link }) {
+export default function SignOutLayout ({ text }) {
   const navigate = useNavigate()
+  const isOrgRoute = !!window.location.pathname.includes('/organisation/')
 
   return (
     <>
@@ -15,17 +16,20 @@ export default function SignOutLayout ({ text, signin_link }) {
             <Button
               text='Sign in'
               className='govuk-button'
-              onClick={() => navigate(signin_link)}
+              onClick={() =>
+                navigate(isOrgRoute ? '/organisation/signin' : '/signin')}
             />
 
-            <h3 className='govuk-heading-s'>More about flooding</h3>
-
+            <h3 className='govuk-heading-s'>
+              {!isOrgRoute && 'More about flooding'}
+            </h3>
             <p className='govuk-body'>
-              Find out how to{' '}
+              {!isOrgRoute && 'Find out how to'}{' '}
               <a href='https://www.gov.uk/flood' className='govuk-link'>
-                protect yourself and your property online from flooding
+                {!isOrgRoute &&
+                  'protect yourself and your property online from flooding'}
               </a>
-              .
+              {!isOrgRoute && '.'}
             </p>
 
             <p className='govuk-body'>

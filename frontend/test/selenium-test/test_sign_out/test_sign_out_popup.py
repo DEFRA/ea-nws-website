@@ -15,7 +15,7 @@ delay = 1
 # Confirm popup doesn't appear
 def popup_not_found(browser):
     try:
-        assert browser.find_element(By.CLASS_NAME,"govuk-heading-s").is_displayed()
+        assert browser.find_element(By.CLASS_NAME,"timeout-dialog").is_displayed()
     except NoSuchElementException:
         assert True
 

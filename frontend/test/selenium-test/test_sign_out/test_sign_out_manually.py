@@ -41,6 +41,7 @@ def test_org_signout_button(get_browser):
     browser = get_browser
     navigate_to_home_and_check_url(browser, 'Organisation home page', url_org_home)
     click_link(browser, 'Sign Out')
+    assert "More about flooding" not in browser.page_source
     assert browser.current_url == url_org_signout
 
 # Test signin button on signout page
@@ -50,3 +51,12 @@ def test_org_signin_button(get_browser):
     click_link(browser, 'Sign Out')
     click_button(browser, 'Sign in')
     assert browser.current_url == url_org_signin
+
+# Test feedback link
+def test_org_feedback_link(get_browser):
+    browser = get_browser
+    navigate_to_home_and_check_url(browser, 'Organisation home page', url_org_home)
+    click_link(browser, 'Sign Out')
+    click_link(browser, 'What do you think of this service?')
+    time.sleep(1)
+    assert browser.current_url == url_feedback

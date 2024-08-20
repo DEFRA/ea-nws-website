@@ -45,10 +45,17 @@ def check_exists_by_xpath(browser, xpath):
 def click_button(browser, button_text):
     button_xpath = f"//button[text()='{button_text}']"
     button_element = browser.find_element(By.XPATH, button_xpath)
-    browser.execute_script("arguments[0].click();", button_element)  
+    browser.execute_script("arguments[0].click();", button_element)
 
 # Click on link text
 def click_link(browser, link_text):
     link_xpath = f"//a[text()='{link_text}']"
     link_element = browser.find_element(By.XPATH, link_xpath)
     browser.execute_script("arguments[0].click();", link_element)
+
+# Navigate to authenticated routes on index page and check url
+def navigate_to_home_and_check_url(browser, link_text, url_check):
+    browser.get(url_index)
+    click_button(browser, 'Activate/Deactivate Mock Session 1')
+    click_link(browser, link_text)
+    assert browser.current_url == url_check

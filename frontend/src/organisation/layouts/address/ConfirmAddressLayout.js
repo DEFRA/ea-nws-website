@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 
-export default function ConfirmAddressLayout({
+export default function ConfirmAddressLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {

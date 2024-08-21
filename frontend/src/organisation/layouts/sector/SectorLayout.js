@@ -6,7 +6,7 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../common/components/gov-uk/Radio'
 import { setOrgEmergencySector } from '../../../common/redux/userSlice'
 
-export default function SectorLayout({
+export default function SectorLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {

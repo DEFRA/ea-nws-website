@@ -50,43 +50,29 @@ const processLogs = async (directory) => {
     'info.log',
     'warn.log'
   ]
-  let uploadFlag = false
 
-  // Check if any log is old, if yes then upload all
+  // Loop through logs and upload any that have 2 day old data
   for (const logFile of logFiles) {
     const logFilePath = path.join(directory, logFile)
+
     if (fs.existsSync(logFilePath) && isLogOld(logFilePath)) {
-      uploadFlag = true
-      break
-    }
-  }
+      // Form new file name/path with timestamp
+      const epochTimeStamp = Date.now()
+      const newName = `${path.basename(logFile, '.log')}_${epochTimeStamp}.log`
+      const newPath = path.join(directory, newName)
 
-  if (uploadFlag) {
-    for (const logFile of logFiles) {
-      const logFilePath = path.join(directory, logFile)
+      try {
+        // Rename log file with timestamp
+        fs.renameSync(logFilePath, newPath)
 
-      if (fs.existsSync(logFilePath)) {
-        // Form new file name/path with timestamp
-        const epochTimeStamp = Date.now()
-        const newName = `${path.basename(
-          logFile,
-          '.log'
-        )}_${epochTimeStamp}.log`
-        const newPath = path.join(directory, newName)
+        // Upload log file to S3 bucket
+        await uploadToBucket(newPath) // Can add error handling depending on whether promise is fulfilled/rejected
 
-        try {
-          // Rename log file with timestamp
-          fs.renameSync(logFilePath, newPath)
-
-          // Upload log file to S3 bucket
-          await uploadToBucket(newPath) // Can add error handling depending on whether promise is fulfilled/rejected
-
-          // Delete log file from system (it will be created again)
-          fs.unlinkSync(newPath)
-        } catch (err) {
-          // If promise is rejected, then upload failed
-          console.log(err)
-        }
+        // Delete log file from system (it will be created again)
+        fs.unlinkSync(newPath)
+      } catch (err) {
+        // If promise is rejected, then upload failed
+        console.log(err)
       }
     }
   }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -14,9 +14,13 @@ export default function AddNameLayout({
   const dispatch = useDispatch()
   const [name, setName] = useState('')
   const [error, setError] = useState('')
+  const session = useSelector((state) => state.session)
 
   const handleSubmit = async () => {
     const validationError = orgNameValidation(name)
+
+    console.log('Laurent - AdminDetailsLayout page')
+    console.log(session.organisation)
 
     if (!validationError) {
       dispatch(setOrgName(name))

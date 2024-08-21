@@ -24,7 +24,13 @@ const userSlice = createSlice({
       name: null,
       address: null,
       compHouseNum: null,
-      emergencySector: null
+      emergencySector: null,
+      laurent: null,
+      mainAdministrator: {
+        firstName: null,
+        lastName: null,
+        emailAddress: null
+      }
     }
   },
   reducers: {
@@ -88,6 +94,15 @@ const userSlice = createSlice({
     setOrgEmergencySector: (state, action) => {
       state.organisation.emergencySector = action.payload
     },
+    setOrgMainAdministratorFirstName: (state, action) => {
+      state.organisation.mainAdministrator.firstName = action.payload
+    },
+    setOrgMainAdministratorLastName: (state, action) => {
+      state.organisation.mainAdministrator.lastName = action.payload
+    },
+    setOrgMainAdministratorEmail: (state, action) => {
+      state.organisation.mainAdministrator.emailAddress = action.payload
+    },
     clearAuth: (state) => {
       state.authToken = null
       state.registerToken = null
@@ -108,7 +123,12 @@ const userSlice = createSlice({
         name: null,
         address: null,
         compHouseNum: null,
-        emergencySector: null
+        emergencySector: null,
+        mainAdministrator: {
+          firstName: null,
+          lastName: null,
+          emailAddress: null
+        }
       }
     }
   }
@@ -137,6 +157,9 @@ export const {
   setOrgAddress,
   setOrgCompHouseNum,
   setOrgEmergencySector,
+  setOrgMainAdministratorFirstName,
+  setOrgMainAdministratorLastName,
+  setOrgMainAdministratorEmail,
   // clear state
   clearAuth
 } = userSlice.actions

@@ -1,0 +1,116 @@
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import BackLink from '../../../common/components/custom/BackLink'
+import Button from '../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
+import Input from '../../../common/components/gov-uk/Input'
+import {
+  setOrgMainAdministratorFirstName,
+  setOrgMainAdministratorLastName
+} from '../../../common/redux/userSlice'
+import { emailValidation } from '../../../common/services/validations/EmailValidation'
+import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
+
+export default function AdminDetailsLayout({
+  NavigateToNextPage,
+  NavigateToPreviousPage,
+  isAdmin
+}) {
+  const dispatch = useDispatch()
+  const [errorFullName, setErrorFullName] = useState('')
+  const [errorEmail, setErrorEmail] = useState('')
+  const session = useSelector((state) => state.session)
+  const [fullName, setFullName] = useState(
+    session.organisation?.mainAdministrator?.firstname &&
+      session.organisation?.mainAdministrator?.lastname
+      ? `${session.organisation.mainAdministrator.firstname} ${session.organisation.mainAdministrator.lastname}`
+      : ''
+  )
+  const [email, setEmail] = useState('')
+
+  console.log(`Laurent - AdminDetailsLayout ${isAdmin}`)
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const fullNameValidationError = fullNameValidation(fullName)
+    setErrorFullName(fullNameValidationError)
+    const emailValidationError = emailValidation(email)
+    setErrorEmail(emailValidationError)
+
+    if (fullNameValidationError === '' && emailValidationError === '') {
+      // Split the full name into first name and last name assuming they are separeted by a space.
+      // if the string cannot be split then only the first name is set and the last name remains blank
+      const [firstname, ...lastnameParts] = fullName.trim().split(' ')
+      const lastname = lastnameParts.join(' ')
+
+      dispatch(setOrgMainAdministratorFirstName(firstname))
+      dispatch(setOrgMainAdministratorLastName(lastname))
+
+      NavigateToNextPage(email)
+    }
+  }
+
+  const navigateBack = async (event) => {
+    event.preventDefault()
+    NavigateToPreviousPage()
+  }
+
+  return (
+    <>
+      <BackLink onClick={navigateBack} />
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
+            {(errorFullName || errorEmail) && (
+              <ErrorSummary errorList={[errorFullName, errorEmail]} />
+            )}
+            {isAdmin === 'true' ? (
+              <h1 className='govuk-heading-l'>Enter your details</h1>
+            ) : (
+              <h1 className='govuk-heading-l'>
+                Enter details for main administrator
+              </h1>
+            )}
+            <div className='govuk-body'>
+              {isAdmin === 'true' ? (
+                <p className='govuk-body govuk-!-margin-bottom-5'>
+                  You'll be able to set up flood warning, locations and users.
+                  You will also receive flood messages for every locations you
+                  set up.
+                </p>
+              ) : (
+                <p className='govuk-body govuk-!-margin-bottom-5'>
+                  An administrator can set up flood warning, locations and
+                  users. they will also receive flood messages for every
+                  locations they set up.
+                </p>
+              )}
+              <Input
+                inputType='text'
+                value={fullName}
+                name='Full name'
+                onChange={(val) => setFullName(val)}
+                error={errorFullName}
+                className='govuk-input govuk-input--width-20'
+                defaultValue={fullName}
+              />
+              <Input
+                inputType='text'
+                value={email}
+                name='Email Address'
+                onChange={(val) => setEmail(val)}
+                error={errorEmail}
+                className='govuk-input govuk-input--width-20'
+                defaultValue={email}
+              />
+              <Button
+                text='Continue'
+                className='govuk-button'
+                onClick={handleSubmit}
+              />
+            </div>
+          </div>
+        </div>
+      </main>
+    </>
+  )
+}

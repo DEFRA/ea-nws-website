@@ -7,11 +7,25 @@ const logDirectory = path.join(__dirname, '../../NWS-logs')
 const bucketName = 'ean-951' // This will only work if the machine's aws credentials give access to the int-lpm-bucket in integration environment
 const bucketFolder = 'Website/'
 
+// Function to determine whether log data is older than the 2 day threshold
+const isLogOld = (logFilePath) => {
+  try {
+    // Read first entry to determine log date
+    const logEntry = JSON.parse(
+      fs.readFileSync(logFilePath, { encoding: 'utf-8' }).split('\n')[0]
+    )
+    return logEntry.time < Date.now() - 2 * 24 * 60 * 60 * 1000
+  } catch (err) {
+    // Return false if error while reading log file (most likely empty)
+    return false
+  }
+}
+
 // Function to read file and upload contents to S3 bucket
 const uploadToBucket = (filePath) => {
   return new Promise((resolve, reject) => {
     const fileName = path.basename(filePath)
-    const fileContent = fs.readFileSync(filePath)
+    const fileContent = fs.readFileSync(filePath, { encoding: 'utf-8' })
 
     const params = {
       Bucket: bucketName,
@@ -36,31 +50,43 @@ const processLogs = async (directory) => {
     'info.log',
     'warn.log'
   ]
+  let uploadFlag = false
 
+  // Check if any log is old, if yes then upload all
   for (const logFile of logFiles) {
-    // Grab current log file path
     const logFilePath = path.join(directory, logFile)
+    if (fs.existsSync(logFilePath) && isLogOld(logFilePath)) {
+      uploadFlag = true
+      break
+    }
+  }
 
-    // For each existing log file, rename with a timestamp then upload to bucket
-    // pino should appropriately handle this by creating a new log file when it next logs a message
-    if (fs.existsSync(logFilePath)) {
-      // Form new file name/path with timestamp
-      const epochTimeStamp = Date.now()
-      const newName = `${path.basename(logFile, '.log')}_${epochTimeStamp}.log`
-      const newPath = path.join(directory, newName)
+  if (uploadFlag) {
+    for (const logFile of logFiles) {
+      const logFilePath = path.join(directory, logFile)
 
-      // Rename log file with timestamp
-      fs.renameSync(logFilePath, newPath)
+      if (fs.existsSync(logFilePath)) {
+        // Form new file name/path with timestamp
+        const epochTimeStamp = Date.now()
+        const newName = `${path.basename(
+          logFile,
+          '.log'
+        )}_${epochTimeStamp}.log`
+        const newPath = path.join(directory, newName)
 
-      try {
-        // Upload log file to S3 bucket
-        await uploadToBucket(newPath) // Can add error handling depending on whether promise is fulfilled/rejected
+        try {
+          // Rename log file with timestamp
+          fs.renameSync(logFilePath, newPath)
 
-        // Delete log file from system (it will be created again)
-        fs.unlinkSync(newPath)
-      } catch (err) {
-        // If promise is rejected, then upload failed
-        console.log(err)
+          // Upload log file to S3 bucket
+          await uploadToBucket(newPath) // Can add error handling depending on whether promise is fulfilled/rejected
+
+          // Delete log file from system (it will be created again)
+          fs.unlinkSync(newPath)
+        } catch (err) {
+          // If promise is rejected, then upload failed
+          console.log(err)
+        }
       }
     }
   }
@@ -69,6 +95,8 @@ const processLogs = async (directory) => {
 const scheduledLPMTransfer = async () => {
   await processLogs(logDirectory)
 }
+
+scheduledLPMTransfer()
 
 module.exports = {
   scheduledLPMTransfer

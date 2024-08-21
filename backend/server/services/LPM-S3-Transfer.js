@@ -1,11 +1,10 @@
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3')
 const fs = require('fs')
 const path = require('path')
-const schedule = require('node-schedule')
 
 const client = new S3Client()
 const logDirectory = path.join(__dirname, '../../NWS-logs')
-const bucketName = 'ean-951' // TODO: change to take this value from secrets manager
+const bucketName = 'ean-951' // This will only work if the machine's aws credentials give access to the int-lpm-bucket in integration environment
 const bucketFolder = 'Website/'
 
 // Function to read file and upload contents to S3 bucket
@@ -28,7 +27,7 @@ const uploadToBucket = (filePath) => {
   })
 }
 
-// Function to process relevant logs in the directory
+// Function to process relevant logs in the given directory
 const processLogs = async (directory) => {
   const logFiles = [
     'debug.log',
@@ -50,7 +49,7 @@ const processLogs = async (directory) => {
       const newName = `${path.basename(logFile, '.log')}_${epochTimeStamp}.log`
       const newPath = path.join(directory, newName)
 
-      // Rename log file
+      // Rename log file with timestamp
       fs.renameSync(logFilePath, newPath)
 
       try {
@@ -60,16 +59,16 @@ const processLogs = async (directory) => {
         // Delete log file from system (it will be created again)
         fs.unlinkSync(newPath)
       } catch (err) {
+        // If promise is rejected, then upload failed
         console.log(err)
       }
     }
   }
 }
 
-// Schedule the job to run every 10 minutes
-const scheduledLPMTransfer = schedule.scheduleJob('/10 * * * *', async () => {
+const scheduledLPMTransfer = async () => {
   await processLogs(logDirectory)
-})
+}
 
 module.exports = {
   scheduledLPMTransfer

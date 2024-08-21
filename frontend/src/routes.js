@@ -9,6 +9,8 @@ import Index from './common/pages/Index'
 import commonFooterRoutes from './common/routes/footer/FooterRoutes'
 import commonSignOutRoutes from './common/routes/sign-out/SignOutRoutes'
 import commonStartRoutes from './common/routes/start/StartRoutes'
+import orgHomeRoutes from './organisation/routes/home/HomeRoutes'
+import orgSigninRoutes from './organisation/routes/sign-in/SignInRoutes'
 import orgRegistrationRoutes from './organisation/routes/sign-up/SignUpRoutes'
 
 // index routes
@@ -20,6 +22,7 @@ export const routes = [
   ...citizenSignupRoutes,
   ...citizenSigninRoutes,
   ...commonFooterRoutes,
+  ...orgSigninRoutes,
   ...orgRegistrationRoutes
 ]
 
@@ -28,5 +31,6 @@ export const authenticatedRoutes = [
   ...citizenManageContactRoutes,
   ...commonSignOutRoutes,
   ...citizenAccountRoutes,
-  ...citizenManageLocationRoutes
+  ...citizenManageLocationRoutes,
+  ...orgHomeRoutes
 ]

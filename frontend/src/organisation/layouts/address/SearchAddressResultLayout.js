@@ -5,7 +5,7 @@ import BackLink from '../../../common/components/custom/BackLink'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import { setOrgAddress } from '../../../common/redux/userSlice'
 
-export default function SelectAddressLayout({
+export default function SelectAddressLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -65,8 +65,7 @@ export default function SelectAddressLayout({
                           <Link
                             className='govuk-link'
                             onClick={(event) =>
-                              handleSelectedLocation(event, location)
-                            }
+                              handleSelectedLocation(event, location)}
                           >
                             {location.name}
                           </Link>

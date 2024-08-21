@@ -20,7 +20,7 @@ export default function LocationSearchResultsPage () {
       dispatch(setAdditionalAlerts(true))
       navigate('/manage-locations/add/location-in-severe-warning-area')
     } else if (isInAlertArea) {
-      // take user to non option flood alerts scren
+      // take user to non option flood alerts screen
       dispatch(setAdditionalAlerts(false))
       navigate('/manage-locations/add/location-in-alert-area')
     } else if (isWithinWarningAreaProximity) {

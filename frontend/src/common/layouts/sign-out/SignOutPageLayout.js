@@ -22,15 +22,16 @@ export default function SignOutLayout ({ text }) {
 
             {/* Flood text only for citizen route */}
             {!isOrgRoute && (
-              <h3 className='govuk-heading-s'> More about flooding </h3>
-            ) && (
-              <p className='govuk-body'>
-                Find out how to{' '}
-                <a href='https://www.gov.uk/flood' className='govuk-link'>
-                  protect yourself and your property online from flooding
-                </a>
-                .
-              </p>
+              <>
+                <h3 className='govuk-heading-s'> More about flooding </h3>
+                <p className='govuk-body'>
+                  Find out how to{' '}
+                  <a href='https://www.gov.uk/flood' className='govuk-link'>
+                    protect yourself and your property online from flooding
+                  </a>
+                  .
+                </p>
+              </>
             )}
 
             <p className='govuk-body'>

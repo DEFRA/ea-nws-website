@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -13,9 +14,9 @@ import { fullNameValidation } from '../../../common/services/validations/FullNam
 
 export default function AdminDetailsLayout({
   NavigateToNextPage,
-  NavigateToPreviousPage,
-  isAdmin
+  NavigateToPreviousPage
 }) {
+  const location = useLocation()
   const dispatch = useDispatch()
   const [errorFullName, setErrorFullName] = useState('')
   const [errorEmail, setErrorEmail] = useState('')
@@ -28,7 +29,7 @@ export default function AdminDetailsLayout({
   )
   const [email, setEmail] = useState('')
 
-  console.log(`Laurent - AdminDetailsLayout ${isAdmin}`)
+  console.log(`Laurent - AdminDetailsLayout ${location.state.isAdmin}`)
   const handleSubmit = async (event) => {
     event.preventDefault()
     const fullNameValidationError = fullNameValidation(fullName)
@@ -63,7 +64,7 @@ export default function AdminDetailsLayout({
             {(errorFullName || errorEmail) && (
               <ErrorSummary errorList={[errorFullName, errorEmail]} />
             )}
-            {isAdmin === 'true' ? (
+            {location.state.isAdmin ? (
               <h1 className='govuk-heading-l'>Enter your details</h1>
             ) : (
               <h1 className='govuk-heading-l'>
@@ -71,7 +72,7 @@ export default function AdminDetailsLayout({
               </h1>
             )}
             <div className='govuk-body'>
-              {isAdmin === 'true' ? (
+              {location.state.isAdmin ? (
                 <p className='govuk-body govuk-!-margin-bottom-5'>
                   You'll be able to set up flood warning, locations and users.
                   You will also receive flood messages for every locations you

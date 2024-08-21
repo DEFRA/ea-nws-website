@@ -25,7 +25,6 @@ const userSlice = createSlice({
       address: null,
       compHouseNum: null,
       emergencySector: null,
-      laurent: null,
       mainAdministrator: {
         firstName: null,
         lastName: null,

@@ -19,9 +19,6 @@ export default function AddNameLayout({
   const handleSubmit = async () => {
     const validationError = orgNameValidation(name)
 
-    console.log('Laurent - AdminDetailsLayout page')
-    console.log(session.organisation)
-
     if (!validationError) {
       dispatch(setOrgName(name))
       NavigateToNextPage()

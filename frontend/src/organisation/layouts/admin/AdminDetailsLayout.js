@@ -29,7 +29,6 @@ export default function AdminDetailsLayout({
   )
   const [email, setEmail] = useState('')
 
-  console.log(`Laurent - AdminDetailsLayout ${location.state.isAdmin}`)
   const handleSubmit = async (event) => {
     event.preventDefault()
     const fullNameValidationError = fullNameValidation(fullName)

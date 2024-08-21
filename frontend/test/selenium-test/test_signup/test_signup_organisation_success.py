@@ -29,6 +29,6 @@ def test_SuccessPage_Valid_SelectLink(get_browser):
 
 def test_SuccessPage_renderBody(get_browser):
     browser = setup_empty_profile(get_browser) 
-    assert "Once approved, we will email you and expain how the service can be accessed." in browser.page_source
+    assert "Once approved, we will email you and explain how the service can be accessed." in browser.page_source
     assert browser.current_url == url
 

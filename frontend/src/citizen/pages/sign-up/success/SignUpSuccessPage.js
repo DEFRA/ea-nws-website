@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import ConfirmationPanel from '../../../../common/components/gov-uk/Panel'
 
-export default function SuccessPage () {
+export default function SignUpSuccessPage() {
   // need to check for authToken
   return (
     <>
@@ -14,37 +14,39 @@ export default function SuccessPage () {
             />
             <div className='govuk-body govuk-!-margin-top-6'>
               <p>
-                We have sent you an email confirmation. If you have not received this within 2 hours, check your spam.
+                We have sent you an email confirmation. If you have not received
+                this within 2 hours, check your spam.
               </p>
               <h1 class='govuk-heading-m govuk-!-margin-top-6'>Next Steps</h1>
               <p className='govuk-!-margin-top-6'>
-                You'll now receive flood messages for your location. If any are issued.
+                You'll now receive flood messages for your location. If any are
+                issued.
               </p>
               <p className='govuk-!-margin-top-6'>
                 These will be sent from Floodline at the Environment Agency.
               </p>
-              <h2 class='govuk-heading-m govuk-!-margin-top-6'>If you want to add more locations or contacts</h2>
+              <h2 class='govuk-heading-m govuk-!-margin-top-6'>
+                If you want to add more locations or contacts
+              </h2>
               <p className='govuk-body govuk-!-margin-top-6'>
-                You can now use your account to add more {' '}
+                You can now use your account to add more{' '}
                 <Link to='/home' className='govuk-link'>
                   locations.
                 </Link>
               </p>
               <p className='govuk-!-margin-top-6'>
-                You can also add more {' '}
+                You can also add more{' '}
                 <Link to='/managecontacts' className='govuk-link'>
                   email addresses or phone numbers
                 </Link>
-                &nbsp;
-                to receive flood messages.
+                &nbsp; to receive flood messages.
               </p>
               <p className='govuk-!-margin-top-6'>
                 {' '}
                 <Link to='/signup/feedback' className='govuk-link'>
                   What do you think of the service?
                 </Link>
-                &nbsp;
-                (takes 30 seconds)
+                &nbsp; (takes 30 seconds)
               </p>
             </div>
           </div>

@@ -1,11 +1,9 @@
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3')
 const fs = require('fs')
 const path = require('path')
+const getSecretKeyValue = require('./SecretsManager')
 
 const client = new S3Client()
-const logDirectory = path.join(__dirname, '../../NWS-logs')
-const bucketName = 'ean-951' // This will only work if the machine's aws credentials give access to the int-lpm-bucket in integration environment
-const bucketFolder = 'Website/'
 
 // Function to determine whether log data is older than the 2 day threshold
 const isLogOld = (logFilePath) => {
@@ -22,14 +20,14 @@ const isLogOld = (logFilePath) => {
 }
 
 // Function to read file and upload contents to S3 bucket
-const uploadToBucket = (filePath) => {
+const uploadToBucket = (filePath, bucketName) => {
   return new Promise((resolve, reject) => {
     const fileName = path.basename(filePath)
     const fileContent = fs.readFileSync(filePath, { encoding: 'utf-8' })
 
     const params = {
       Bucket: bucketName,
-      Key: `${bucketFolder}${fileName}`,
+      Key: `Website/${fileName}`,
       Body: fileContent
     }
 
@@ -42,7 +40,7 @@ const uploadToBucket = (filePath) => {
 }
 
 // Function to process relevant logs in the given directory
-const processLogs = async (directory) => {
+const processLogs = async (directory, bucketName) => {
   const logFiles = [
     'debug.log',
     'error.log',
@@ -66,7 +64,7 @@ const processLogs = async (directory) => {
         fs.renameSync(logFilePath, newPath)
 
         // Upload log file to S3 bucket
-        await uploadToBucket(newPath) // Can add error handling depending on whether promise is fulfilled/rejected
+        await uploadToBucket(newPath, bucketName) // Can add error handling depending on whether promise is fulfilled/rejected
 
         // Delete log file from system (it will be created again)
         fs.unlinkSync(newPath)
@@ -79,7 +77,10 @@ const processLogs = async (directory) => {
 }
 
 const scheduledLPMTransfer = async () => {
-  await processLogs(logDirectory)
+  const logDirectory = path.join(__dirname, '../../NWS-logs')
+  const bucketName = await getSecretKeyValue('nws/aws', 'S3Bucket')
+
+  await processLogs(logDirectory, bucketName)
 }
 
 scheduledLPMTransfer()

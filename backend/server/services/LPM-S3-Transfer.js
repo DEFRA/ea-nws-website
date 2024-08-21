@@ -55,19 +55,13 @@ const processLogs = async (directory, bucketName) => {
 
     if (fs.existsSync(logFilePath) && isLogOld(logFilePath)) {
       // Form new file name/path with timestamp
-      const epochTimeStamp = Date.now()
-      const newName = `${path.basename(logFile, '.log')}_${epochTimeStamp}.log`
+      const newName = `${path.basename(logFile, '.log')}_${Date.now()}.log`
       const newPath = path.join(directory, newName)
 
       try {
-        // Rename log file with timestamp
-        fs.renameSync(logFilePath, newPath)
-
-        // Upload log file to S3 bucket
-        await uploadToBucket(newPath, bucketName) // Can add error handling depending on whether promise is fulfilled/rejected
-
-        // Delete log file from system (it will be created again)
-        fs.unlinkSync(newPath)
+        fs.renameSync(logFilePath, newPath) // Rename log file with timestamp
+        await uploadToBucket(newPath, bucketName) // Upload log file to S3 bucket
+        fs.unlinkSync(newPath) // Delete log file from system (it will be created again)
       } catch (err) {
         // If promise is rejected, then upload failed
         console.log(err)
@@ -82,8 +76,6 @@ const scheduledLPMTransfer = async () => {
 
   await processLogs(logDirectory, bucketName)
 }
-
-scheduledLPMTransfer()
 
 module.exports = {
   scheduledLPMTransfer

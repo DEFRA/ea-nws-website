@@ -71,6 +71,7 @@ def start_qgis():
     yield
 
     # Cleanup: stop the frontend server
+    qgis_process.kill()
     qgis_process.terminate()
     qgis_process.wait()
 

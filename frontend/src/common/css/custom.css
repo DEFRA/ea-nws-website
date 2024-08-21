@@ -247,3 +247,11 @@
   align-items: center;
   gap: 2rem;
 }
+
+.custom-header-link {
+  font-weight: bold;
+  position: absolute;
+  top: 15px;
+  right: 0;
+  line-height: 1.25;
+}

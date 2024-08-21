@@ -41,10 +41,10 @@ const processLogs = async (directory) => {
     // Grab current log file path
     const logFilePath = path.join(directory, logFile)
 
-    // For each existing log file, rename with a timestamp to upload to bucket
+    // For each existing log file, rename with a timestamp then upload to bucket
     // pino should appropriately handle this by creating a new log file when it next logs a message
     if (fs.existsSync(logFilePath)) {
-      // Form new name/path with timestamp
+      // Form new file name/path with timestamp
       const epochTimeStamp = Date.now()
       const newName = `${path.basename(logFile, '.log')}_${epochTimeStamp}.log`
       const newPath = path.join(directory, newName)

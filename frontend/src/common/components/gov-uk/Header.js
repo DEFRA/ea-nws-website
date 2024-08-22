@@ -1,8 +1,11 @@
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 
-export default function Header () {
-  const session = useSelector((state) => state.session)
+export default function Header() {
+  const location = useLocation()
+  const authToken = useSelector((state) => state.session.authToken)
+  const signinType = useSelector((state) => state.session.authToken)
+
   return (
     <>
       <header className='govuk-header' data-module='govuk-header'>
@@ -32,25 +35,23 @@ export default function Header () {
             style={{ display: 'inline-block' }}
           >
             <p className='govuk-header__service-name '>
-              Get flood warnings by text, phone or email
+              {location.pathname.includes('organisation')
+                ? 'Get flood warnings for your organisation'
+                : 'Get flood warnings by text, phone or email'}
             </p>
-            {session.authToken && (
+            {authToken ? (
               <Link
-                className='govuk-header__link'
-                style={{
-                  fontWeight: 'bold',
-                  position: 'absolute',
-                  top: '15px',
-                  right: '0',
-                  lineHeight: '1.25'
-                }}
-                to={
-                  session.signinType === 'org'
-                    ? '/organisation/signout'
-                    : '/signout'
-                }
+                className='govuk-header__link custom-header-link'
+                to={signinType === 'org' ? '/organisation/signout' : '/signout'}
               >
                 Sign Out
+              </Link>
+            ) : (
+              <Link
+                className='govuk-header__link custom-header-link'
+                to='/contact'
+              >
+                Contact us
               </Link>
             )}
           </div>

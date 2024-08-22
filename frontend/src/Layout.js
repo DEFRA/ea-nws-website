@@ -5,7 +5,7 @@ import Header from './common/components/gov-uk/Header'
 import PhaseBanner from './common/components/gov-uk/PhaseBanner'
 import './common/css/custom.css'
 
-function Layout () {
+function Layout() {
   return (
     <div className='page-container'>
       <Header />

@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import AccountNavigation from '../../../../common/components/custom/AccountNavigation'
 import BackLink from '../../../../common/components/custom/BackLink'
+import CitizenAccountNavigation from '../../../../common/components/custom/CitizenAccountNavigation'
 import FloodWarningKey from '../../../../common/components/custom/FloodWarningKey'
 import Map from '../../../../common/components/custom/Map'
 import Button from '../../../../common/components/gov-uk/Button'
@@ -34,7 +34,7 @@ const floodAlertCardDetails = (
   </>
 )
 
-export default function ViewLocationPage () {
+export default function ViewLocationPage() {
   const navigate = useNavigate()
   const { type } = useParams()
   const selectedLocation = useSelector(
@@ -51,7 +51,7 @@ export default function ViewLocationPage () {
 
   return (
     <>
-      <AccountNavigation currentPage='/home' />
+      <CitizenAccountNavigation currentPage='/home' />
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>

@@ -37,27 +37,27 @@ const uploadToBucket = (filePath, bucketName) => {
 }
 
 const processLogs = async (directory, bucketName) => {
-  const logFiles = [
-    'debug.log',
-    'error.log',
-    'fatal.log',
-    'info.log',
-    'warn.log'
-  ]
+  const logFiles = fs
+    .readdirSync(directory)
+    .filter((file) => file.endsWith('.log'))
 
   for (const logFile of logFiles) {
     const logFilePath = path.join(directory, logFile)
+    console.log(logFilePath)
 
-    if (fs.existsSync(logFilePath) && isLogOld(logFilePath)) {
-      const newName = `${path.basename(logFile, '.log')}_${Date.now()}.log`
-      const newPath = path.join(directory, newName)
+    if (fs.existsSync(logFilePath) && fs.statSync(logFilePath).size != 0) {
+      if (isLogOld(logFilePath)) {
+        fs.unlinkSync(logFilePath)
+      } else {
+        const newName = `${path.basename(logFile, '.log')}_${Date.now()}.log`
+        const newPath = path.join(directory, newName)
 
-      try {
-        fs.renameSync(logFilePath, newPath)
-        await uploadToBucket(newPath, bucketName)
-        fs.unlinkSync(newPath) // Delete uploaded log file from system (it will be created again by pino)
-      } catch (err) {
-        console.log(err)
+        try {
+          fs.renameSync(logFilePath, newPath)
+          await uploadToBucket(newPath, bucketName)
+        } catch (err) {
+          console.log(err)
+        }
       }
     }
   }
@@ -65,10 +65,14 @@ const processLogs = async (directory, bucketName) => {
 
 const scheduledLPMTransfer = async () => {
   const logDirectory = path.join(__dirname, '../../NWS-logs')
-  const bucketName = await getSecretKeyValue('nws/aws', 'S3Bucket')
+  // const bucketName = await getSecretKeyValue('nws/aws', 'S3Bucket')
+
+  const bucketName = 'ean-951'
 
   await processLogs(logDirectory, bucketName)
 }
+
+scheduledLPMTransfer()
 
 module.exports = {
   scheduledLPMTransfer

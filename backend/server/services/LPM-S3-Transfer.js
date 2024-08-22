@@ -5,7 +5,7 @@ const getSecretKeyValue = require('./SecretsManager')
 
 const client = new S3Client()
 
-// Returns whether the log data is older than the 2 day threshold
+// Checks the most recent entry in a file to determine if it is older than 2 day threshold
 const isLogOld = (logFilePath) => {
   try {
     const lastLogEntry = JSON.parse(
@@ -22,10 +22,8 @@ const logCleanUp = async (directory, excludedFiles) => {
     .readdirSync(directory)
     .filter((file) => file.endsWith('.log') && !excludedFiles.includes(file))
 
-  console.log(savedLogs)
   savedLogs.forEach((log) => {
     const logFilePath = path.join(directory, log)
-    console.log(`Processing - ${logFilePath}`)
     if (isLogOld(logFilePath)) {
       fs.unlinkSync(logFilePath)
     }
@@ -80,8 +78,6 @@ const scheduledLPMTransfer = async () => {
 
   await processLogs(logDirectory, bucketName)
 }
-
-scheduledLPMTransfer()
 
 module.exports = {
   scheduledLPMTransfer

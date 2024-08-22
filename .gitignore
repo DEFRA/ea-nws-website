@@ -14,7 +14,7 @@ frontend/node_modules
 npm-debug.log
 server/public/build
 lcov.info
-
 api/package-lock.json
 backend/package-lock.json
 frontend/package-lock.json
+**.gpkg-*

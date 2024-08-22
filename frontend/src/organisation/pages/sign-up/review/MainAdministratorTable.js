@@ -1,17 +1,17 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-export default function ContactReviewTable({ organisation }) {
-  const navigate = useNavigate()
-
+export default function ContactReviewTable () {
   return (
     <>
-      <h3 className='govuk-heading-m'>Main administrator</h3>
+      <h3 className='govuk-heading-m govuk-!-margin-top-9'>
+        Main administrator
+      </h3>
       <table className='govuk-table'>
         <tr className='govuk-table__row'>
           <td class='govuk-table__header  govuk-!-width-one-half'>Name</td>
           <td className='govuk-table__cell  govuk-!-width-full'>
-            {organisation.mainadministrator.name}
+            Frank Waters
           </td>
           <td className='govuk-table__cell'>
             <Link to='/' className='govuk-link'>
@@ -24,7 +24,7 @@ export default function ContactReviewTable({ organisation }) {
             Email address
           </td>
           <td className='govuk-table__cell  govuk-!-width-full'>
-            {organisation.mainadministrator.emailaddress}
+            frank.waters@floodinc.com
           </td>
           <td className='govuk-table__cell'>
             <Link to='/' className='govuk-link'>

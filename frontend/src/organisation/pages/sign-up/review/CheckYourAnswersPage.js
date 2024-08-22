@@ -1,5 +1,4 @@
 import { React } from 'react'
-import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
@@ -7,12 +6,15 @@ import AlternativeContactTable from './AlternativeContactTable'
 import MainAdministratorTable from './MainAdministratorTable'
 import OrganisationDetailsTable from './OrganisationDetailsTable'
 export default function CheckYourAnswersPage() {
-  const organisation = useSelector((state) => state.session.organisation)
-  const profile = useSelector((state) => state.session.profile)
+  // need to get org details from profiles additionals
+  // const profile = useSelector((state) => state.session.profile.additionals)
+
+  // TODO - laurent or cammy to update this page with correct data
 
   const navigate = useNavigate()
 
   const handleButton = () => {
+    // call to update profile with final profile here
     navigate('/organisation/signup/success')
   }
 
@@ -23,18 +25,16 @@ export default function CheckYourAnswersPage() {
         <div className='govuk-grid-row '>
           <div className='govuk-grid-column-three-quarters'>
             <h2 className='govuk-heading-l'>Check your answers</h2>
-            <OrganisationDetailsTable organisation={organisation} />
-            <MainAdministratorTable organisation={organisation} />
-            <br />
-            <AlternativeContactTable organisation={organisation} />
-            <br />
+            <OrganisationDetailsTable />
+            <MainAdministratorTable />
+            <AlternativeContactTable />
+            <Button
+              onClick={handleButton}
+              className='govuk-button'
+              text='Finish and submit'
+            />
           </div>
         </div>
-        <Button
-          onClick={handleButton}
-          className='govuk-button'
-          text='Finish sign up'
-        />
       </main>
     </>
   )

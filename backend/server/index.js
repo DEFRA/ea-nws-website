@@ -3,7 +3,7 @@ const config = require('./config')
 const schedule = require('node-schedule')
 const { scheduledLPMTransfer } = require('./services/LPM-S3-Transfer')
 
-async function createServer () {
+async function createServer() {
   // Create the hapi server
   const conf = await config()
 
@@ -27,8 +27,8 @@ async function createServer () {
   await server.register(require('blipp'))
 
   if (!conf.isDev) {
-    // Send logs to bucket every X mins (currently 1 but tbc)
-    schedule.scheduleJob('*/1 * * * *', async () => {
+    // Send logs to bucket every X mins (currently 10 but tbc)
+    schedule.scheduleJob('*/10 * * * *', async () => {
       await scheduledLPMTransfer()
     })
   }

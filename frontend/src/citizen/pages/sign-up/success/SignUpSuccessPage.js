@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import ConfirmationPanel from '../../../../common/components/gov-uk/Panel'
 
-export default function SignUpSuccessPage() {
+export default function SignUpSuccessPage () {
   // need to check for authToken
   return (
     <>

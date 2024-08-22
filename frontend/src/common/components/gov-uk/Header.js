@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 
-export default function Header() {
+export default function Header () {
   const location = useLocation()
   const authToken = useSelector((state) => state.session.authToken)
   const signinType = useSelector((state) => state.session.authToken)
@@ -39,21 +39,23 @@ export default function Header() {
                 ? 'Get flood warnings for your organisation'
                 : 'Get flood warnings by text, phone or email'}
             </p>
-            {authToken ? (
-              <Link
-                className='govuk-header__link  custom-header-link'
-                to={signinType === 'org' ? '/organisation/signout' : '/signout'}
-              >
-                Sign Out
-              </Link>
-            ) : (
-              <Link
-                className='govuk-header__link custom-header-link'
-                to={'/contact'}
-              >
-                Contact us
-              </Link>
-            )}
+            {authToken
+              ? (
+                <Link
+                  className='govuk-header__link  custom-header-link'
+                  to={signinType === 'org' ? '/organisation/signout' : '/signout'}
+                >
+                  Sign Out
+                </Link>
+                )
+              : (
+                <Link
+                  className='govuk-header__link custom-header-link'
+                  to='/contact'
+                >
+                  Contact us
+                </Link>
+                )}
           </div>
         </div>
       </header>

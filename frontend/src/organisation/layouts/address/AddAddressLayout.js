@@ -27,7 +27,6 @@ export default function AddAddressLayout ({
     const validationError = postCodeValidation(postCode)
 
     if (!validationError) {
-      // Normalise postcode, then search locations and store results in session
       const dataToSend = {
         postCode: postCode.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
       }
@@ -39,7 +38,6 @@ export default function AddAddressLayout ({
       if (!errorMessage) {
         dispatch(setLocationPostCode(data[0].postcode))
 
-        // if buildingNum provided (and exactly one address is found) then navigate straight to confirmation
         if (buildingNum) {
           const normalisedBuildingNum = buildingNum.toLowerCase().trim()
           const address = data.filter((location) =>
@@ -48,19 +46,15 @@ export default function AddAddressLayout ({
           if (address.length === 1) {
             dispatch(setOrgAddress(address[0]))
             navigate('/organisation/register/address-confirm')
-            return // Ensure none of the following code is executed
-          }
-          // Multiple addresses with buildingNum returned, take them to pagination to confirm
-          else {
+            return
+          } else {
             dispatch(setLocationSearchResults(address))
           }
         } else {
-          // otherwise, send all results to pagination page where user will confirm
           dispatch(setLocationSearchResults(data))
         }
         NavigateToNextPage()
       } else {
-        // show error message from OS Api postcode search
         setError(errorMessage)
       }
     } else {

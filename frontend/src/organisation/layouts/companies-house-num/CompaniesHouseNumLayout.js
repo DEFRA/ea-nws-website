@@ -12,13 +12,12 @@ export default function CompaniesHouseNumLayout ({
   NavigateToPreviousPage
 }) {
   const dispatch = useDispatch()
-  const [companyNumExists, setCompanyNumExists] = useState(null) // This exists so that the input field does not disappear when user deletes text
+  const [companyNumExists, setCompanyNumExists] = useState(null)
   const [companyNum, setCompanyNum] = useState(null)
   const [error, setError] = useState('')
   const [numberError, setNumberError] = useState('')
 
   const handleSubmit = async () => {
-    // Nothing selected
     if (companyNum === null) {
       setError(
         'Select whether your organisation has a Companies House number or not'
@@ -26,14 +25,10 @@ export default function CompaniesHouseNumLayout ({
       return
     }
 
-    // No was clicked
-    // Explicitly checking for false as !companyNum would also include empty string
     if (companyNum === false) {
       dispatch(setOrgCompHouseNum(null))
       NavigateToNextPage()
-    }
-    // Yes was clicked - validate input before proceeding
-    else {
+    } else {
       const validationError = compHouseNumberValidation(companyNum)
       if (!validationError) {
         dispatch(setOrgCompHouseNum(companyNum))

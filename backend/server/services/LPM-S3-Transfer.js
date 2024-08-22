@@ -5,21 +5,17 @@ const getSecretKeyValue = require('./SecretsManager')
 
 const client = new S3Client()
 
-// Function to determine whether log data is older than the 2 day threshold
 const isLogOld = (logFilePath) => {
   try {
-    // Read first entry to determine log date
     const logEntry = JSON.parse(
       fs.readFileSync(logFilePath, { encoding: 'utf-8' }).split('\n')[0]
     )
     return logEntry.time < Date.now() - 2 * 24 * 60 * 60 * 1000
   } catch (err) {
-    // Return false if error while reading log file (most likely empty)
     return false
   }
 }
 
-// Function to read file and upload contents to S3 bucket
 const uploadToBucket = (filePath, bucketName) => {
   return new Promise((resolve, reject) => {
     const fileName = path.basename(filePath)
@@ -39,7 +35,6 @@ const uploadToBucket = (filePath, bucketName) => {
   })
 }
 
-// Function to process relevant logs in the given directory
 const processLogs = async (directory, bucketName) => {
   const logFiles = [
     'debug.log',
@@ -49,21 +44,18 @@ const processLogs = async (directory, bucketName) => {
     'warn.log'
   ]
 
-  // Loop through logs and upload any that have 2 day old data
   for (const logFile of logFiles) {
     const logFilePath = path.join(directory, logFile)
 
     if (fs.existsSync(logFilePath) && isLogOld(logFilePath)) {
-      // Form new file name/path with timestamp
       const newName = `${path.basename(logFile, '.log')}_${Date.now()}.log`
       const newPath = path.join(directory, newName)
 
       try {
-        fs.renameSync(logFilePath, newPath) // Rename log file with timestamp
-        await uploadToBucket(newPath, bucketName) // Upload log file to S3 bucket
-        fs.unlinkSync(newPath) // Delete log file from system (it will be created again)
+        fs.renameSync(logFilePath, newPath)
+        await uploadToBucket(newPath, bucketName)
+        fs.unlinkSync(newPath) // Delete uploaded log file from system (it will be created again by pino)
       } catch (err) {
-        // If promise is rejected, then upload failed
         console.log(err)
       }
     }

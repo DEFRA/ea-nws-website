@@ -1,9 +1,10 @@
 import AddAddressPage from '../../pages/registration/AddAddressPage'
 import AddNamePage from '../../pages/registration/AddNamePage'
-import AdminDetailsPage from '../../pages/registration/AdminDetailsPage'
 import CompaniesHouseNumPage from '../../pages/registration/CompaniesHouseNumPage'
 import ConfirmAddressPage from '../../pages/registration/ConfirmAddressPage'
-import MainAdminPage from '../../pages/registration/MainAdminPage'
+import AdminDetailsPage from '../../pages/registration/mainAdministrator/AdminDetailsPage'
+import MainAdminPage from '../../pages/registration/mainAdministrator/MainAdminPage'
+import ValidateAdminEmailPage from '../../pages/registration/mainAdministrator/ValidateAdminEmailPage'
 import SelectAddressPage from '../../pages/registration/SearchAddressResultPage'
 import SectorPage from '../../pages/registration/SectorPage'
 
@@ -37,6 +38,10 @@ const registrationRoutes = [
   {
     path: '/organisation/register/admin-details',
     component: <AdminDetailsPage />
+  },
+  {
+    path: '/organisation/register/admin-email-confirm',
+    component: <ValidateAdminEmailPage />
   }
 ]
 

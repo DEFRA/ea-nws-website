@@ -32,11 +32,16 @@ export default function AdminDetailsLayout({
   const handleSubmit = async (event) => {
     event.preventDefault()
     const fullNameValidationError = fullNameValidation(fullName)
-    setErrorFullName(fullNameValidationError)
     const emailValidationError = emailValidation(email)
-    setErrorEmail(emailValidationError)
 
-    if (fullNameValidationError === '' && emailValidationError === '') {
+    if (fullNameValidationError !== '' || emailValidationError !== '') {
+      setErrorFullName(location.state.isAdmin ? fullNameValidationError : '')
+      setErrorEmail(
+        location.state.isAdmin
+          ? emailValidationError
+          : 'Enter their email address'
+      )
+    } else {
       // Split the full name into first name and last name assuming they are separeted by a space.
       // if the string cannot be split then only the first name is set and the last name remains blank
       const [firstname, ...lastnameParts] = fullName.trim().split(' ')

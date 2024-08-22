@@ -4,10 +4,13 @@ import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
-import { setOrgName } from '../../../common/redux/userSlice'
+import {
+  setOrganisationAdditionals,
+  updateOrganisationAdditionals
+} from '../../../common/services/ProfileServices'
 import { orgNameValidation } from '../../../common/services/validations/OrgNameValidation'
 
-export default function AddNameLayout({
+export default async function AddNameLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -15,12 +18,18 @@ export default function AddNameLayout({
   const [name, setName] = useState('')
   const [error, setError] = useState('')
   const session = useSelector((state) => state.session)
-
+  const organisationProfile = setOrganisationAdditionals(session.profile)
+  console.log('Laurent - AddNameLayout - organisationProfile:')
+  console.log(organisationProfile)
   const handleSubmit = async () => {
     const validationError = orgNameValidation(name)
 
     if (!validationError) {
-      dispatch(setOrgName(name))
+      //dispatch(setOrgName(name))
+
+      dispatch(
+        updateOrganisationAdditionals(session.profile, organisationProfile)
+      )
       NavigateToNextPage()
     } else {
       setError(validationError)

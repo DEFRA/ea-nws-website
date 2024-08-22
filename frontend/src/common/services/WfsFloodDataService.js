@@ -4,8 +4,6 @@ import leafletPip from 'leaflet-pip'
 import { backendCall } from './BackendService'
 
 export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
-  // const bboxKM = 0.5 // size of bounding box from centre in KM
-
   // warning areas
   let WFSParams = {
     service: 'WFS',

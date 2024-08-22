@@ -8,7 +8,6 @@ import Input from '../../../common/components/gov-uk/Input'
 import InsetText from '../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import { backendCall } from '../../../common/services/BackendService'
-import { addAdminEmail } from '../../../common/services/Organisation/AdminServices'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
 
@@ -61,7 +60,7 @@ export default function ValidateEmailLayout({
           updateProfile(data.profile, authToken)
           setError(profileError)
         } else {
-          dispatch(addAdminEmail(data.mainAdministrator))
+          //dispatch(addAdminEmail(data.mainAdministrator))
           NavigateToNextPage()
         }
       }

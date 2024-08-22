@@ -5,10 +5,8 @@ import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
-import {
-  setOrgMainAdministratorFirstName,
-  setOrgMainAdministratorLastName
-} from '../../../common/redux/userSlice'
+import { setProfile } from '../../../common/redux/userSlice'
+import { addAccountName } from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 
@@ -22,9 +20,8 @@ export default function AdminDetailsLayout({
   const [errorEmail, setErrorEmail] = useState('')
   const session = useSelector((state) => state.session)
   const [fullName, setFullName] = useState(
-    session.organisation?.mainAdministrator?.firstname &&
-      session.organisation?.mainAdministrator?.lastname
-      ? `${session.organisation.mainAdministrator.firstname} ${session.organisation.mainAdministrator.lastname}`
+    session.profile?.firstname && session.profile?.lastname
+      ? `${session.profile.firstname} ${session.profile.lastname}`
       : ''
   )
   const [email, setEmail] = useState('')
@@ -47,8 +44,11 @@ export default function AdminDetailsLayout({
       const [firstname, ...lastnameParts] = fullName.trim().split(' ')
       const lastname = lastnameParts.join(' ')
 
-      dispatch(setOrgMainAdministratorFirstName(firstname))
-      dispatch(setOrgMainAdministratorLastName(lastname))
+      const profile = addAccountName(session.profile, firstname, lastname)
+      dispatch(setProfile(profile))
+
+      console.log('Laurent - AdminDetailsLayout, current Profile shows:')
+      console.log(profile)
 
       NavigateToNextPage(email)
     }

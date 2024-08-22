@@ -184,24 +184,13 @@ const updateAdditionals = (profile, updatedAdditionals) => {
   return updatedProfile
 }
 const setOrganisationAdditionals = (profile) => {
-  /*state.organisation = {
-        name: null,
-        address: null,
-        compHouseNum: null,
-        emergencySector: null,
-        mainAdministrator: {
-          firstName: null,
-          lastName: null,
-          emailAddress: null
-        }
-      }*/
   const orgJson = {
     name: null,
     address: null,
     compHouseNum: null,
     emergencySector: null
   }
-  return updateAdditionals(profile, [{ id: 'organisation', value: orgJson }])
+  return updateOrganisationAdditionals(profile, orgJson)
 }
 const getOrganisationAdditionals = (profile) => {
   return getAdditionals(profile, 'organisation')

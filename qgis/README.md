@@ -1,0 +1,1 @@
+to run the qgis server run the command 'docker compose up'

@@ -64,3 +64,14 @@ def start_frontend():
     frontend_process.terminate()
     frontend_process.wait()
 
+@pytest.fixture(scope="session", autouse=True)
+def start_qgis():
+    qgis_process = subprocess.Popen(["docker", "compose", "up"], cwd="../qgis")
+    time.sleep(2)
+    yield
+
+    # Cleanup: stop the frontend server
+    qgis_process.kill()
+    qgis_process.terminate()
+    qgis_process.wait()
+

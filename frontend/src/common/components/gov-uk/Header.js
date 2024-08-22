@@ -44,7 +44,11 @@ export default function Header () {
                   right: '0',
                   lineHeight: '1.25'
                 }}
-                to='/signout'
+                to={
+                  session.signinType === 'org'
+                    ? '/organisation/signout'
+                    : '/signout'
+                }
               >
                 Sign Out
               </Link>

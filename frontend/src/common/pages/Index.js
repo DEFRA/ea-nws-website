@@ -396,6 +396,11 @@ export default function IndexPage () {
                     Sign up review
                   </Link>
                 </li>
+                <li>
+                  <Link to='/organisation/home' className='govuk-link'>
+                    Organisation home page
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>

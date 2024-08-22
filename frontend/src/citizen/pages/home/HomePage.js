@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react'
+import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router'
 import AccountNavigation from '../../../common/components/custom/AccountNavigation'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
+import { setSigninType } from '../../../common/redux/userSlice'
 import SubscribedLocationTableLayout from '../manage-locations/SubscribedLocationTable'
 
 export default function HomePage () {
@@ -11,6 +13,12 @@ export default function HomePage () {
   useEffect(() => {
     window.history.replaceState({}, location.pathname)
   }, [location])
+
+  // Set signin type
+  const dispatch = useDispatch()
+  useEffect(() => {
+    dispatch(setSigninType('citizen'))
+  })
 
   return (
     <>

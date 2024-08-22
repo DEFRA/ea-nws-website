@@ -5,6 +5,7 @@ const getSecretKeyValue = require('./SecretsManager')
 
 const client = new S3Client()
 
+// Returns whether the log data is older than the 2 day threshold
 const isLogOld = (logFilePath) => {
   try {
     const logEntry = JSON.parse(

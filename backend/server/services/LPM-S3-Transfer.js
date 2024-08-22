@@ -18,7 +18,7 @@ const isLogOld = (logFilePath) => {
   }
 }
 
-const uploadToBucket = (filePath, bucketName) => {
+const uploadToBucket = async (filePath, bucketName) => {
   return new Promise((resolve, reject) => {
     const fileName = path.basename(filePath)
     const fileContent = fs.readFileSync(filePath, { encoding: 'utf-8' })

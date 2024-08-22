@@ -8,10 +8,11 @@ const client = new S3Client()
 // Returns whether the log data is older than the 2 day threshold
 const isLogOld = (logFilePath) => {
   try {
-    const logEntry = JSON.parse(
-      fs.readFileSync(logFilePath, { encoding: 'utf-8' }).split('\n')[0]
+    const logEntries = JSON.parse(
+      fs.readFileSync(logFilePath, { encoding: 'utf-8' }).split('\n')
     )
-    return logEntry.time < Date.now() - 2 * 24 * 60 * 60 * 1000
+    const lastLogEntry = JSON.parse(logEntries[logEntries.length - 1])
+    return lastLogEntry.time < Date.now() - 2 * 24 * 60 * 60 * 1000
   } catch (err) {
     return false
   }
@@ -37,13 +38,10 @@ const uploadToBucket = (filePath, bucketName) => {
 }
 
 const processLogs = async (directory, bucketName) => {
-  const logFiles = fs
-    .readdirSync(directory)
-    .filter((file) => file.endsWith('.log'))
+  const logFiles = ['error.log', 'fatal.log', 'info.log', 'warn.log']
 
   for (const logFile of logFiles) {
     const logFilePath = path.join(directory, logFile)
-    console.log(logFilePath)
 
     if (fs.existsSync(logFilePath) && fs.statSync(logFilePath).size != 0) {
       if (isLogOld(logFilePath)) {
@@ -55,6 +53,7 @@ const processLogs = async (directory, bucketName) => {
         try {
           fs.renameSync(logFilePath, newPath)
           await uploadToBucket(newPath, bucketName)
+          fs.openSync(logFilePath, 'w')
         } catch (err) {
           console.log(err)
         }

@@ -1,64 +1,110 @@
-import pytest
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.action_chains import ActionChains 
 import time
 from selenium.common.exceptions import NoSuchElementException
+from common import *
+from selenium.webdriver import ActionChains
 
-index_url = manage_contacts_url = "http://localhost:3000/index"
+# Time for popup to appear after inactivity
+time_to_popup = 10
+# Time to auto signout after popup appears
+time_to_auto_signout = 5
+# Time delay
+delay = 1
 
-def test_popup_stay_signin_button(get_browser):
-    browser = get_browser
-    browser.get(index_url)
-    button_xpath = f"//button[text()='Activate/Deactivate Mock Session 1']"
-    mock_session_link = browser.find_element(By.XPATH, button_xpath)
-    browser.execute_script("arguments[0].click();", mock_session_link)
-    time.sleep(12)
-    browser.find_element(By.CLASS_NAME,"dialog").click()
+# FUNCTIONS
+# Confirm popup doesn't appear
+def popup_not_found(browser):
     try:
-         assert browser.find_element(By.CLASS_NAME,"govuk-heading-s").is_displayed()
-    except NoSuchElementException:
-        assert True
-    
-
-def test_popup_logout_button(get_browser):
-    url_signout = "http://localhost:3000/signout"
-    browser = get_browser
-    browser.get(index_url)
-    button_xpath = f"//button[text()='Activate/Deactivate Mock Session 1']"
-    mock_session_link = browser.find_element(By.XPATH, button_xpath)
-    browser.execute_script("arguments[0].click();", mock_session_link)
-    time.sleep(12)
-    browser.find_element(By.LINK_TEXT,"Sign out").click()
-    assert browser.current_url == url_signout
-
-
-def test_stay_active(get_browser):
-    browser = get_browser
-    browser.get(index_url)
-    button_xpath = f"//button[text()='Activate/Deactivate Mock Session 1']"
-    mock_session_link = browser.find_element(By.XPATH, button_xpath)
-    browser.execute_script("arguments[0].click();", mock_session_link)
-    time.sleep(7)
-    link_xpath = f"//a[text()='Home page']"
-    link_link = browser.find_element(By.XPATH, link_xpath)
-    browser.execute_script("arguments[0].click();", link_link)
-    time.sleep(5)
-    try:
-         browser.find_element(By.CLASS_NAME,"govuk-heading-s").is_displayed()
-         assert False
+        assert browser.find_element(By.CLASS_NAME,"timeout-dialog").is_displayed()
     except NoSuchElementException:
         assert True
 
+# Mouse hover to make session active
+def mouse_hover(browser):
+    hoverable = browser.find_element(By.CLASS_NAME, "govuk-heading-l")
+    ActionChains(browser).move_to_element(hoverable).perform()
 
-
-def test_auto_logout(get_browser):
-    auto_signout_url = "http://localhost:3000/signout-auto"
+# CITIZEN TESTS
+# Test 'stay signed in' button on popup
+def test_cit_popup_stay_signin_button(get_browser):
     browser = get_browser
-    browser.get(index_url)
-    button_xpath = f"//button[text()='Activate/Deactivate Mock Session 1']"
-    mock_session_link = browser.find_element(By.XPATH, button_xpath)
-    browser.execute_script("arguments[0].click();", mock_session_link)
-    time.sleep(16)
-    assert browser.current_url == auto_signout_url
+    navigate_to_home_and_check_url(browser, 'Home page', url_cit_home)
+    time.sleep(time_to_popup + delay)
+    click_button(browser, 'Stay signed in')
+    time.sleep(delay)
+    popup_not_found(browser)
 
+# Test 'sign out' button on popup
+def test_cit_popup_logout_button(get_browser):
+    browser = get_browser
+    navigate_to_home_and_check_url(browser, 'Home page', url_cit_home)
+    time.sleep(time_to_popup + delay)
+    click_link(browser, 'Sign out')
+    time.sleep(delay)
+
+    # Checks
+    popup_not_found(browser)
+    assert browser.current_url == url_cit_signout
+
+# Introduce activity just before popup appears
+def test_cit_stay_active(get_browser):
+    browser = get_browser
+    navigate_to_home_and_check_url(browser, 'Home page', url_cit_home)
+    time.sleep(time_to_popup - delay)
+    mouse_hover(browser)
+    time.sleep(delay)
+    popup_not_found(browser)
+
+# Auto logout after popup appears
+def test_cit_auto_logout(get_browser):
+    browser = get_browser
+    navigate_to_home_and_check_url(browser, 'Home page', url_cit_home)
+    time.sleep(time_to_popup + time_to_auto_signout + delay)
+
+    # Checks
+    popup_not_found(browser)
+    assert browser.current_url == url_cit_signout_auto
+
+# ORGANISATION TESTS
+# Test 'stay signed in' button on popup
+def test_org_popup_stay_signin_button(get_browser):
+    browser = get_browser
+    navigate_to_home_and_check_url(browser, 'Organisation home page', url_org_home)
+    time.sleep(time_to_popup + delay)
+    click_button(browser, 'Stay signed in')
+    time.sleep(delay)
+    popup_not_found(browser)
+
+# Test 'sign out' button on popup
+def test_org_popup_logout_button(get_browser):
+    browser = get_browser
+    navigate_to_home_and_check_url(browser, 'Organisation home page', url_org_home)
+    time.sleep(time_to_popup + delay)
+    click_link(browser, 'Sign out')
+    time.sleep(delay)
+
+    # Checks
+    popup_not_found(browser)
+    assert browser.current_url == url_org_signout
+
+# Introduce activity just before popup appears
+def test_org_stay_active(get_browser):
+    browser = get_browser
+    navigate_to_home_and_check_url(browser, 'Organisation home page', url_org_home)
+    time.sleep(time_to_popup - delay)
+    mouse_hover(browser)
+    time.sleep(delay)
+
+    # Checks
+    popup_not_found(browser)
+    assert browser.current_url == url_org_home
+
+# Auto logout after popup appears
+def test_org_auto_logout(get_browser):
+    browser = get_browser
+    navigate_to_home_and_check_url(browser, 'Organisation home page', url_org_home)
+    time.sleep(time_to_popup + time_to_auto_signout + delay)
+
+    # Checks
+    popup_not_found(browser)
+    assert browser.current_url == url_org_signout_auto

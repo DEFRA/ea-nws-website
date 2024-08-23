@@ -2,11 +2,11 @@ import AddAddressPage from '../../pages/registration/AddAddressPage'
 import AddNamePage from '../../pages/registration/AddNamePage'
 import CompaniesHouseNumPage from '../../pages/registration/CompaniesHouseNumPage'
 import ConfirmAddressPage from '../../pages/registration/ConfirmAddressPage'
-import SectorPage from '../../pages/registration/SectorPage'
 import SelectAddressPage from '../../pages/registration/SearchAddressResultPage'
+import SectorPage from '../../pages/registration/SectorPage'
+import CheckYourAnswersPage from '../../pages/sign-up/review/CheckYourAnswersPage'
 
-// registration
-const registrationRoutes = [
+const signupRoutes = [
   { path: '/organisation/register', component: <AddNamePage /> },
   {
     path: '/organisation/register/address',
@@ -27,7 +27,8 @@ const registrationRoutes = [
   {
     path: '/organisation/register/sector',
     component: <SectorPage />
-  }
+  },
+  { path: '/organisation/signup/review', component: <CheckYourAnswersPage /> }
 ]
 
-export default registrationRoutes
+export default signupRoutes

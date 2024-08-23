@@ -9,7 +9,10 @@ import Index from './common/pages/Index'
 import commonFooterRoutes from './common/routes/footer/FooterRoutes'
 import commonSignOutRoutes from './common/routes/sign-out/SignOutRoutes'
 import commonStartRoutes from './common/routes/start/StartRoutes'
-import organisationSignupRoutes from './organisation/routes/sign-up/SignupRoutes'
+import orgHomeRoutes from './organisation/routes/home/HomeRoutes'
+import orgSigninRoutes from './organisation/routes/sign-in/SignInRoutes'
+import orgSignupRoutes from './organisation/routes/sign-up/SignUpRoutes'
+
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
 
@@ -21,7 +24,8 @@ export const routes = [
   ...commonFooterRoutes,
   ...citizenSignupRoutes,
   ...commonFooterRoutes,
-  ...organisationSignupRoutes
+  ...orgSignupRoutes,
+  ...orgSigninRoutes
 ]
 
 export const authenticatedRoutes = [
@@ -29,5 +33,6 @@ export const authenticatedRoutes = [
   ...citizenManageContactRoutes,
   ...commonSignOutRoutes,
   ...citizenAccountRoutes,
-  ...citizenManageLocationRoutes
+  ...citizenManageLocationRoutes,
+  ...orgHomeRoutes
 ]

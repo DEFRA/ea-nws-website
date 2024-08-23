@@ -8,7 +8,5 @@ export default function SignOutManuallyPage () {
     dispatch(clearAuth())
   })
 
-  return (
-    <SignOutLayout text={"You've been signed out for security reasons"} />
-  )
+  return <SignOutLayout text={"You've been signed out for security reasons"} />
 }

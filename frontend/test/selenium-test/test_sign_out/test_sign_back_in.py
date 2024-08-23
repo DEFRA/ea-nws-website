@@ -1,17 +1,30 @@
-import pytest
-from selenium import webdriver
+from common import *
 from selenium.webdriver.common.by import By
 
-manage_contacts_url = "http://localhost:3000/managecontacts"
-sign_back_in_url = "http://localhost:3000/sign-back-in"
-def test_sign_back_in_render_redirect(get_browser):
+# CITIZEN TESTS
+# Test sign back in page
+def test_cit_sign_back_in_render_redirect(get_browser):
     browser = get_browser
-    browser.get(manage_contacts_url)
-    assert browser.current_url == sign_back_in_url
+    browser.get(url_cit_home)
+    assert browser.current_url == url_cit_sign_back_in
 
-def test_sign_back_in_button(get_browser):
-    sign_in_url = "http://localhost:3000/signin"
+# Test sign in button on sign back in page
+def test_cit_sign_back_in_button(get_browser):
     browser = get_browser
-    browser.get(manage_contacts_url)
-    browser.find_element(By.CLASS_NAME, "govuk-button").click()
-    assert browser.current_url == sign_in_url
+    browser.get(url_cit_home)
+    click_button(browser, 'Sign in')
+    assert browser.current_url == url_cit_signin
+
+# ORGANISATION TESTS
+# Test  sign back in page
+def test_org_sign_back_in(get_browser):
+    browser = get_browser
+    browser.get(url_org_home)
+    assert browser.current_url == url_org_sign_back_in
+
+# Test sign in button on sign back in page
+def test_org_sign_back_in_button(get_browser):
+    browser = get_browser
+    browser.get(url_org_home)
+    click_button(browser, 'Sign in')
+    assert browser.current_url == url_org_signin

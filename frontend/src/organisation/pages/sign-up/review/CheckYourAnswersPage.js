@@ -33,7 +33,7 @@ export default function CheckYourAnswersPage() {
         <Button
           onClick={handleButton}
           className='govuk-button'
-          text='Finish sign up'
+          text='Finish and submit'
         />
       </main>
     </>

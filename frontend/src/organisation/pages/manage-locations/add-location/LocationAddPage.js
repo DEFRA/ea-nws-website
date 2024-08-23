@@ -4,13 +4,14 @@ import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
+import orgManageLocationsUrls from '../../../routes/manage-locations/ManageLocationsUrls'
 
-export default function LocationAddPage() {
+export default function LocationAddPage () {
   const navigate = useNavigate()
 
   const addLocationOptions = [
     {
-      value: 'BulkAddressesAndPostcodes',
+      value: 'BulkAddresses',
       label: 'Addresses and postcodes in a file (.xls, .xlsx or .csv)'
     },
     { value: 'BulkCoordinates', label: 'X and Y coordinates in a file (.csv)' },
@@ -28,12 +29,11 @@ export default function LocationAddPage() {
 
   // Button
   const handleButton = async () => {
-    let isValidInput = true
-
     // Check if add location type is selected
     if (!addLocationType) {
       setAddLocationTypeError('Select how you want to add locations')
-      isValidInput = false
+    } else if (addLocationType === addLocationOptions[0].value) {
+      navigate(orgManageLocationsUrls.addAddressInfo)
     }
   }
 

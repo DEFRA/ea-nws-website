@@ -1,10 +1,16 @@
+import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/LocationAddAddressInfoPage'
 import LocationAddPage from '../../pages/manage-locations/add-location/LocationAddPage'
+import orgManageLocationsUrls from './ManageLocationsUrls'
 
-// manage location routes
+// Manage location routes
 const orgManageLocationRoutes = [
   {
-    path: '/organisation/manage-locations/add',
+    path: orgManageLocationsUrls.add,
     component: <LocationAddPage />
+  },
+  {
+    path: orgManageLocationsUrls.addAddressInfo,
+    component: <LocationAddAddressInfoPage />
   }
 ]
 

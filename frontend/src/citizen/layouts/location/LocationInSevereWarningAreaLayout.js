@@ -13,13 +13,16 @@ import {
   setSelectedFloodAlertArea
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import { addLocation, removeLocation } from '../../../common/services/ProfileServices'
+import {
+  addLocation,
+  removeLocation
+} from '../../../common/services/ProfileServices'
 import {
   getAssociatedAlertArea,
   getCoordsOfFloodArea
 } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout ({
+export default function LocationInSevereWarningAreaLayout({
   continueToNextPage
 }) {
   const navigate = useNavigate()
@@ -122,16 +125,17 @@ export default function LocationInSevereWarningAreaLayout ({
     <>
       <BackLink onClick={() => handleUserNavigatingBack()} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        <div className='govuk-grid-row'>
+        <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
               You can get severe flood warnings and flood warnings for this
               location
             </h1>
-            <InsetText text={
-              isUserInNearbyTargetFlowpath
-                ? selectedFloodWarningArea.properties.TA_NAME
-                : selectedLocation.name
+            <InsetText
+              text={
+                isUserInNearbyTargetFlowpath
+                  ? selectedFloodWarningArea.properties.TA_NAME
+                  : selectedLocation.name
               }
             />
           </div>
@@ -171,7 +175,7 @@ export default function LocationInSevereWarningAreaLayout ({
               className='govuk-button'
               onClick={handleSubmit}
             />
-                &nbsp; &nbsp;
+            &nbsp; &nbsp;
             <Link
               onClick={() => navigate(-1)}
               className='govuk-link'

@@ -255,3 +255,9 @@
   right: 0;
   line-height: 1.25;
 }
+
+.custom-width-container {
+  max-width: 100%;
+  margin-right: 1.875rem;
+  margin-left: 1.875rem;
+}

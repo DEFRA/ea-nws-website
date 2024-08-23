@@ -9,7 +9,13 @@ export default function Header() {
   return (
     <>
       <header className='govuk-header' data-module='govuk-header'>
-        <div className='govuk-header__container govuk-width-container'>
+        <div
+          className={`${
+            location.pathname.includes('organisation') //&& authToken
+              ? 'custom-width-container'
+              : 'govuk-width-container'
+          } govuk-header__container`}
+        >
           <div className='govuk-header__logo'>
             <a
               href='/#'

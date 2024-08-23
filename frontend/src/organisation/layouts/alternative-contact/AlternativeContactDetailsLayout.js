@@ -7,6 +7,7 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
+import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
 
 export default function AlternativeContactDetailsLayout({
   NavigateToNextPage,
@@ -19,11 +20,7 @@ export default function AlternativeContactDetailsLayout({
   const [errorTelephone, setErrorTelephone] = useState('')
   const [errorJobTitle, setErrorJobTitle] = useState('')
   const session = useSelector((state) => state.session)
-  const [fullName, setFullName] = useState(
-    session.profile?.firstname && session.profile?.lastname
-      ? `${session.profile.firstname} ${session.profile.lastname}`
-      : ''
-  )
+  const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [telephone, setTelephoneNumber] = useState('')
   const [jobTitle, setJobTitle] = useState('')
@@ -33,10 +30,19 @@ export default function AlternativeContactDetailsLayout({
     event.preventDefault()
     const fullNameValidationError = fullNameValidation(fullName)
     const emailValidationError = emailValidation(email)
+    const telephoneValidationError = phoneValidation(
+      telephone,
+      'mobileAndLandline'
+    )
 
-    if (fullNameValidationError !== '' || emailValidationError !== '') {
+    if (
+      fullNameValidationError !== '' ||
+      emailValidationError !== '' ||
+      telephoneValidationError !== ''
+    ) {
       setErrorFullName(fullNameValidationError)
       setErrorEmail(emailValidationError)
+      setErrorTelephone(telephoneValidationError)
     }
 
     console.log(`Laurent AlternativeContactDetailsLayout -  profile is:`)

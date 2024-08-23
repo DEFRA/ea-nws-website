@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -17,10 +17,11 @@ import { updateAdditionals } from '../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from '../../layouts/expired-code/ExpiredCodeLayout'
 
-export default function SignUpValidationPage({
+export default function ValidateEmailLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
+  const location = useLocation()
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const registerToken = useSelector((state) => state.session.registerToken)
@@ -32,6 +33,7 @@ export default function SignUpValidationPage({
   const [codeExpired, setCodeExpired] = useState(false)
   const session = useSelector((state) => state.session)
   const profile = session.profile
+  const adminDetails = location.state.isAdmin
 
   // if error remove code sent notification
   useEffect(() => {
@@ -69,7 +71,7 @@ export default function SignUpValidationPage({
           { id: 'lastAccessedUrl', value: '/signup/accountname/add' }
         ])
         dispatch(setProfile(updatedProfile))
-        NavigateToNextPage()
+        NavigateToNextPage(location.state.isAdmin)
       }
     }
   }
@@ -118,7 +120,6 @@ export default function SignUpValidationPage({
                 {error && <ErrorSummary errorList={[error]} />}
                 <h2 className='govuk-heading-l'>Confirm email address</h2>
                 <div className='govuk-body'>
-                  <p>You need to confirm your email address.</p>
                   <p className='govuk-!-margin-top-6'>
                     We've sent an email with a code to:
                   </p>

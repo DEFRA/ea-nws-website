@@ -78,7 +78,7 @@ export default function AdminDetailsLayout({
         dispatch(setProfile(updatedProfile))
         dispatch(setRegisterToken(data.registerToken))
         dispatch(setCurrentContact(email))
-        NavigateToNextPage()
+        NavigateToNextPage(location.state.isAdmin)
       }
     }
   }

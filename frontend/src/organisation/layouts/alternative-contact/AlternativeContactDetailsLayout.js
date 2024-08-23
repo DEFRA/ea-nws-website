@@ -43,10 +43,11 @@ export default function AlternativeContactDetailsLayout({
       setErrorFullName(fullNameValidationError)
       setErrorEmail(emailValidationError)
       setErrorTelephone(telephoneValidationError)
+    } else {
+      setErrorFullName('')
+      setErrorEmail('')
+      setErrorTelephone('')
     }
-
-    console.log(`Laurent AlternativeContactDetailsLayout -  profile is:`)
-    console.log(session.profile)
     //NavigateToNextPage() // TODO send to Org duplication main admin email page
   }
 
@@ -64,15 +65,28 @@ export default function AlternativeContactDetailsLayout({
             {(errorFullName || errorEmail) && (
               <ErrorSummary errorList={[errorFullName, errorEmail]} />
             )}
-            <h1 className='govuk-heading-l'>
-              Enter details for an alternative contact at your organisation
-            </h1>
+            {location.state.isAdmin ? (
+              <h1 className='govuk-heading-l'>Enter your details</h1>
+            ) : (
+              <h1 className='govuk-heading-l'>
+                Enter details for an alternative contact at your organisation
+              </h1>
+            )}
             <div className='govuk-body'>
-              <p className='govuk-body govuk-!-margin-bottom-5'>
-                This person will be an alternative contact, in case you're
-                unavailable in the future. They will not be given administrator
-                rights.
-              </p>
+              {location.state.isAdmin ? (
+                <p className='govuk-body govuk-!-margin-bottom-5'>
+                  This person will be an alternative contact, in case you're
+                  unavailable in the future. They will not be given
+                  administrator rights.
+                </p>
+              ) : (
+                <p className='govuk-body govuk-!-margin-bottom-5'>
+                  This person will be an alternative contact, in case{' '}
+                  {session.profile.firstname} {session.profile.lastname} is
+                  unavailable in the future. They will not be given
+                  administrator rights.
+                </p>
+              )}
               <Input
                 inputType='text'
                 value={fullName}

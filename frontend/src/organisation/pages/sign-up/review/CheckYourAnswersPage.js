@@ -33,11 +33,6 @@ export default function CheckYourAnswersPage() {
             text='Finish and submit'
           />
         </div>
-        <Button
-          onClick={handleButton}
-          className='govuk-button'
-          text='Finish and submit'
-        />
       </main>
     </>
   )

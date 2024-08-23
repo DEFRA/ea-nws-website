@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import ConfirmationPanel from '../../../common/components/gov-uk/Panel'
 import { clearAuth } from '../../../common/redux/userSlice'
 
-export default function AccountDeleteConfirmPage () {
+export default function AccountDeleteConfirmPage() {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(clearAuth())
@@ -30,7 +30,7 @@ export default function AccountDeleteConfirmPage () {
         <h2 className='govuk-heading-m'>If you change your mind</h2>
         <p className='govuk-body govuk-!-margin-bottom-6'>
           You'll need to{' '}
-          <Link to='/signup' className='govuk-link'>
+          <Link to='/signup/register-location/search' className='govuk-link'>
             sign up again
           </Link>
           .

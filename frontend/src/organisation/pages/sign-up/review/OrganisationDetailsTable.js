@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function OrganisationDetailsTable () {
+export default function OrganisationDetailsTable() {
   return (
     <>
       <h3 className='govuk-heading-m'>Organisation</h3>
@@ -9,7 +9,7 @@ export default function OrganisationDetailsTable () {
       <table className='govuk-table'>
         <tbody className='govuk-table__body'>
           <tr className='govuk-table__row'>
-            <td class='govuk-table__header  govuk-!-width-one-half'>Name</td>
+            <td class='govuk-table__header govuk-!-width-one-quarter'>Name</td>
             <td className='govuk-table__cell  govuk-!-width-full'>
               Flood Inc.
             </td>
@@ -21,7 +21,7 @@ export default function OrganisationDetailsTable () {
             </td>
           </tr>
           <tr className='govuk-table__row'>
-            <td class='govuk-table__header  govuk-!-width-one-half'>
+            <td class='govuk-table__header  govuk-!-width-one-quarter'>
               UK head office address
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
@@ -35,7 +35,7 @@ export default function OrganisationDetailsTable () {
             </td>
           </tr>
           <tr className='govuk-table__row'>
-            <td class='govuk-table__header  govuk-!-width-one-half'>
+            <td class='govuk-table__header  govuk-!-width-one-quarter'>
               Has Companies House number?
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>Yes</td>
@@ -46,7 +46,7 @@ export default function OrganisationDetailsTable () {
             </td>
           </tr>
           <tr className='govuk-table__row'>
-            <td class='govuk-table__header  govuk-!-width-one-half'>
+            <td class='govuk-table__header  govuk-!-width-one-quarter'>
               Companies House number
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
@@ -60,7 +60,7 @@ export default function OrganisationDetailsTable () {
             </td>
           </tr>
           <tr className='govuk-table__row'>
-            <td class='govuk-table__header  govuk-!-width-one-half'>
+            <td class='govuk-table__header  govuk-!-width-one-quarter'>
               Involved in responding to public emergencies or incidents?
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>Yes</td>

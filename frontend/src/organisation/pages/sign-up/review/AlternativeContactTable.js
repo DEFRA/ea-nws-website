@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-export default function ContactReviewTable () {
+export default function ContactReviewTable() {
   return (
     <>
       <h3 className='govuk-heading-m govuk-!-margin-top-9'>
@@ -8,7 +8,7 @@ export default function ContactReviewTable () {
       </h3>
       <table className='govuk-table'>
         <tr className='govuk-table__row'>
-          <td class='govuk-table__header  govuk-!-width-one-half'>Name</td>
+          <td class='govuk-table__header  govuk-!-width-one-quarter'>Name</td>
           <td className='govuk-table__cell  govuk-!-width-full'>Joan Smith</td>
           <td className='govuk-table__cell'>
             <Link to='/' className='govuk-link'>
@@ -17,7 +17,7 @@ export default function ContactReviewTable () {
           </td>
         </tr>
         <tr className='govuk-table__row'>
-          <td class='govuk-table__header  govuk-!-width-one-half'>
+          <td class='govuk-table__header  govuk-!-width-one-quarter'>
             Email address
           </td>
           <td className='govuk-table__cell  govuk-!-width-full'>
@@ -30,7 +30,7 @@ export default function ContactReviewTable () {
           </td>
         </tr>
         <tr className='govuk-table__row'>
-          <td class='govuk-table__header  govuk-!-width-one-half'>
+          <td class='govuk-table__header  govuk-!-width-one-quarter'>
             Telephone number
           </td>
           <td className='govuk-table__cell  govuk-!-width-full'>
@@ -43,7 +43,7 @@ export default function ContactReviewTable () {
           </td>
         </tr>
         <tr className='govuk-table__row'>
-          <td class='govuk-table__header  govuk-!-width-one-half'>
+          <td class='govuk-table__header  govuk-!-width-one-quarter'>
             Job title (optional)
           </td>
           <td className='govuk-table__cell  govuk-!-width-full'>IT Director</td>

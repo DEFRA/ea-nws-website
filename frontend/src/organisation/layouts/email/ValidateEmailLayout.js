@@ -7,45 +7,53 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import InsetText from '../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
+import {
+  setAuthToken,
+  setProfile,
+  setRegisterToken
+} from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
+import { updateAdditionals } from '../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
-import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
+import ExpiredCodeLayout from '../../layouts/expired-code/ExpiredCodeLayout'
 
-export default function ValidateEmailLayout({
+export default function SignUpValidationPage({
   NavigateToNextPage,
-  DifferentEmail,
-  NavigateToPreviousPage,
-  buttonText,
-  changeSignIn,
-  updateProfile,
-  profileError
+  NavigateToPreviousPage
 }) {
-  const [error, setError] = useState('')
-  const dispatch = useDispatch()
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const registerToken = useSelector((state) => state.session.registerToken)
+  const loginEmail = useSelector((state) => state.session.profile.emails[0])
   const [code, setCode] = useState('')
-  const authToken = useSelector((state) => state.session.authToken)
-  const session = useSelector((state) => state.session)
-  const email = session.currentContact
+  const [error, setError] = useState('')
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
+  const session = useSelector((state) => state.session)
+  const profile = session.profile
 
   // if error remove code sent notification
   useEffect(() => {
     setCodeResent(false)
   }, [error])
 
-  const handleSubmit = async (event) => {
-    event.preventDefault()
+  const handleSubmit = async () => {
     const validationError = authCodeValidation(code)
     setError(validationError)
+
     if (validationError === '') {
-      const dataToSend = { authToken, email, code }
-      const { errorMessage, data } = await backendCall(
+      const dataToSend = {
+        registerToken,
+        code
+      }
+
+      const { data, errorMessage } = await backendCall(
         dataToSend,
-        'api/add_contact/email/validate'
+        'api/sign_up_validate',
+        navigate
       )
+
       if (errorMessage !== null) {
         if (
           errorMessage ===
@@ -56,40 +64,36 @@ export default function ValidateEmailLayout({
           setError(errorMessage)
         }
       } else {
-        if (changeSignIn) {
-          updateProfile(data.profile, authToken)
-          setError(profileError)
-        } else {
-          //dispatch(addAdminEmail(data.mainAdministrator))
-          NavigateToNextPage()
-        }
+        dispatch(setAuthToken(data.authToken))
+        const updatedProfile = updateAdditionals(profile, [
+          { id: 'lastAccessedUrl', value: '/signup/accountname/add' }
+        ])
+        dispatch(setProfile(updatedProfile))
+        NavigateToNextPage()
       }
     }
   }
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const data = { authToken: session.authToken, email }
-    const { errorMessage } = await backendCall(
-      data,
-      'api/add_contact/email/add',
+    const dataToSend = { email: loginEmail }
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
+      'api/sign_up_start',
       navigate
     )
+
     if (errorMessage !== null) {
       setError(errorMessage)
     } else {
+      dispatch(setRegisterToken(data.registerToken))
       setCodeResent(true)
       setCodeResentTime(new Date().toLocaleTimeString())
       setCodeExpired(false)
     }
   }
 
-  const differentEmail = (event) => {
-    event.preventDefault()
-    DifferentEmail(email)
-  }
-
-  const backLink = (event) => {
+  const navigateBack = async (event) => {
     event.preventDefault()
     NavigateToPreviousPage()
   }
@@ -100,7 +104,7 @@ export default function ValidateEmailLayout({
         <ExpiredCodeLayout getNewCode={getNewCode} />
       ) : (
         <>
-          <BackLink onClick={backLink} />
+          <BackLink onClick={navigateBack} />
           <main className='govuk-main-wrapper govuk-!-padding-top-4'>
             <div className='govuk-grid-row'>
               <div className='govuk-grid-column-two-thirds'>
@@ -112,56 +116,51 @@ export default function ValidateEmailLayout({
                   />
                 )}
                 {error && <ErrorSummary errorList={[error]} />}
-                <h2 className='govuk-heading-l'>Check your email</h2>
+                <h2 className='govuk-heading-l'>Confirm email address</h2>
                 <div className='govuk-body'>
-                  {changeSignIn && (
-                    <p className='govuk-body'>
-                      You need to confirm your email address.
-                    </p>
-                  )}
-                  <p className='govuk-body govuk-!-margin-bottom-5'>
+                  <p>You need to confirm your email address.</p>
+                  <p className='govuk-!-margin-top-6'>
                     We've sent an email with a code to:
-                    <InsetText text={email} />
-                    {changeSignIn ? 'Enter' : 'Use'} the code within 4 hours or
-                    it will expire.
                   </p>
-                  <Input
-                    className='govuk-input govuk-input--width-10'
-                    name='Enter code'
-                    inputType='text'
-                    error={error}
-                    onChange={(val) => setCode(val)}
-                  />
+                  <InsetText text={loginEmail} />
+                  Enter the code within 4 hours or it will expire.
+                  <div className='govuk-!-margin-top-6'>
+                    <Input
+                      className='govuk-input govuk-input--width-10'
+                      inputType='text'
+                      value={code}
+                      name='Enter code'
+                      error={error}
+                      onChange={(val) => setCode(val)}
+                    />
+                  </div>
                   <Button
                     className='govuk-button'
-                    text={buttonText}
+                    text='Confirm email address'
                     onClick={handleSubmit}
                   />
-                  {changeSignIn ? (
-                    <>
-                      <Link
-                        onClick={differentEmail}
-                        className='govuk-link inline-link'
-                      >
-                        Enter a different email
-                      </Link>
-                      <br />
-                      <Link onClick={getNewCode} className='govuk-link'>
-                        Get a new code
-                      </Link>
-                    </>
-                  ) : (
-                    <>
-                      <br />
-                      <Link onClick={getNewCode} className='govuk-link'>
-                        Get a new code
-                      </Link>
-                      <br /> <br />
-                      <Link onClick={differentEmail} className='govuk-link'>
-                        Enter a different email
-                      </Link>
-                    </>
-                  )}
+                  &nbsp; &nbsp;
+                  <Link
+                    onClick={navigateBack}
+                    className='govuk-link'
+                    style={{
+                      display: 'inline-block',
+                      padding: '8px 10px 7px'
+                    }}
+                  >
+                    Use a different email
+                  </Link>
+                  <div className='govuk-!-margin-top-1'>
+                    <Link
+                      onClick={getNewCode}
+                      className='govuk-link'
+                      style={{
+                        display: 'inline-block'
+                      }}
+                    >
+                      Get a new code
+                    </Link>
+                  </div>
                 </div>
               </div>
             </div>

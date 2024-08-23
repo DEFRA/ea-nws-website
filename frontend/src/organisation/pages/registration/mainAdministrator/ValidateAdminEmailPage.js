@@ -1,30 +1,21 @@
 import { useNavigate } from 'react-router-dom'
 import ValidateEmailLayout from '../../../layouts/email/ValidateEmailLayout'
 
-export default function ValidateEmailPage () {
+export default function ValidateEmailPage() {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {
-    navigate('/managecontacts')
+    navigate('/organisation/register/alternative-contact')
   }
-  const SkipValidation = (email) => {
-    navigate('/managecontacts', {
-      state: {
-        unconfirmedtype: 'email',
-        unconfirmedvalue: email
-      }
-    })
-  }
-  const DifferentEmail = () => {
-    navigate('/managecontacts/add-email')
+
+  const NavigateToPreviousPage = () => {
+    navigate('/organisation/register/main-admin')
   }
 
   return (
     <ValidateEmailLayout
       NavigateToNextPage={NavigateToNextPage}
-      NavigateToPreviousPage={DifferentEmail}
-      SkipValidation={SkipValidation}
-      DifferentEmail={DifferentEmail}
+      NavigateToPreviousPage={NavigateToPreviousPage}
       buttonText='Continue'
     />
   )

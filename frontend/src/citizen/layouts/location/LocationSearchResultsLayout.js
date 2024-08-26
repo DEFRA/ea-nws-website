@@ -51,13 +51,15 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
         selectedLocation.coordinates.longitude
       )
 
-      const isInAlertArea = isLocationInFloodArea(
+      const isError = !warningArea && !alertArea
+
+      const isInAlertArea = alertArea && isLocationInFloodArea(
         selectedLocation.coordinates.latitude,
         selectedLocation.coordinates.longitude,
         alertArea
       )
 
-      const isInWarningArea = isLocationInFloodArea(
+      const isInWarningArea = warningArea && isLocationInFloodArea(
         selectedLocation.coordinates.latitude,
         selectedLocation.coordinates.longitude,
         warningArea
@@ -68,15 +70,16 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
 
       if (!isInAlertArea || !isInWarningArea) {
         // check that there are flood areas within boundary box around location
-        isWithinWarningAreaProximity = warningArea.features.length > 0
-        isWithinAlertAreaProximity = alertArea.features.length > 0
+        isWithinWarningAreaProximity = warningArea?.features.length > 0
+        isWithinAlertAreaProximity = alertArea?.features.length > 0
       }
 
       continueToNextPage(
         isInWarningArea,
         isInAlertArea,
         isWithinWarningAreaProximity,
-        isWithinAlertAreaProximity
+        isWithinAlertAreaProximity,
+        isError
       )
     } finally {
       setLoading(false)

@@ -89,8 +89,8 @@ export default function LocationWithinWarningAreaProximityLayout ({
               ? (
                 <div className='govuk-body map-confirm-location-box-mobile-view'>
                   <p>
-                    {selectedFloodWarningArea?.properties.ta_name ||
-                  selectedFloodAlertArea?.properties.ta_name}
+                    {selectedFloodWarningArea?.properties.TA_NAME ||
+                  selectedFloodAlertArea?.properties.TA_NAME}
                   </p>
                   <Button
                     text='Confirm this location'
@@ -145,16 +145,16 @@ export default function LocationWithinWarningAreaProximityLayout ({
                               <Radio
                                 key={index}
                                 small
-                                label={`${index + 1}. ${area.properties.ta_name}`}
+                                label={`${index + 1}. ${area.properties.TA_NAME}`}
                                 name='floodAreas'
                                 onChange={() => setFloodArea(area)}
                                 checked={
                             (selectedFloodWarningArea &&
-                              selectedFloodWarningArea.properties.gml_id ===
-                                area.properties.gml_id) ||
+                              selectedFloodWarningArea.id ===
+                                area.id) ||
                             (selectedFloodAlertArea &&
-                              selectedFloodAlertArea.properties.gml_id ===
-                                area.properties.gml_id)
+                              selectedFloodAlertArea.id ===
+                                area.id)
                           }
                               />
                             ))

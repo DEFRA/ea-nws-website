@@ -27,10 +27,7 @@ export const routes = [
   ...citizenSigninRoutes,
   ...commonFooterRoutes,
   ...orgSigninRoutes,
-  ...orgRegistrationRoutes,
-  ...citizenSignupRoutes,
-  ...commonFooterRoutes,
-  ...organisationSigninRoutes
+  ...orgRegistrationRoutes
 ]
 
 export const authenticatedRoutes = [

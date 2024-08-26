@@ -89,7 +89,7 @@ export default function LocationInAlertAreaLayout ({
 
   const addFloodAlertArea = async () => {
     const alertArea = {
-      name: selectedFloodAlertArea.properties.ta_name,
+      name: selectedFloodAlertArea.properties.TA_NAME,
       address: '',
       coordinates: getCoordsOfFloodArea(selectedFloodAlertArea)
     }
@@ -100,7 +100,7 @@ export default function LocationInAlertAreaLayout ({
   const removeFloodAlertArea = async () => {
     const updatedProfile = await removeLocation(
       profile,
-      selectedFloodAlertArea.properties.ta_name
+      selectedFloodAlertArea.properties.TA_NAME
     )
     dispatch(setProfile(updatedProfile))
   }
@@ -149,7 +149,7 @@ export default function LocationInAlertAreaLayout ({
             <InsetText
               text={
                 isUserInNearbyTargetFlowpath
-                  ? selectedFloodAlertArea.properties.ta_name
+                  ? selectedFloodAlertArea.properties.TA_NAME
                   : selectedLocation.name
               }
             />

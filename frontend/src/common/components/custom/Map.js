@@ -99,8 +99,8 @@ export default function Map ({
     if (warningAreaRefVisible && types.includes('severe')) {
       warningAreaRef.current.eachLayer((layer) => {
         if (
-          layer.feature.properties.gml_id ===
-          selectedFloodWarningArea.properties.gml_id
+          layer.feature.id ===
+          selectedFloodWarningArea.id
         ) {
           layer.bringToFront()
           layer.setStyle({
@@ -120,8 +120,8 @@ export default function Map ({
     if (alertAreaRefVisible && types.includes('alert')) {
       alertAreaRef.current.eachLayer((layer) => {
         if (
-          layer.feature.properties.gml_id ===
-          selectedFloodAlertArea.properties.gml_id
+          layer.feature.id ===
+          selectedFloodAlertArea.id
         ) {
           layer.bringToFront()
           layer.setStyle({
@@ -146,8 +146,8 @@ export default function Map ({
     if (warningAreaRefVisible && types.includes('severe')) {
       warningAreaRef.current.eachLayer((layer) => {
         if (
-          layer.feature.properties.gml_id ===
-          selectedFloodWarningArea.properties.gml_id
+          layer.feature.id ===
+          selectedFloodWarningArea.id
         ) {
           layer.setStyle({
             fillColor: '#f70202'
@@ -161,8 +161,8 @@ export default function Map ({
     if (alertAreaRefVisible && types.includes('alert')) {
       alertAreaRef.current.eachLayer((layer) => {
         if (
-          layer.feature.properties.gml_id ===
-          selectedFloodAlertArea.properties.gml_id
+          layer.feature.id ===
+          selectedFloodAlertArea.id
         ) {
           layer.setStyle({
             fillColor: '#ffa200'

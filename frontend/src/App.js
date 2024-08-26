@@ -12,6 +12,8 @@ export default function App () {
   const inactivityTimer = useRef(null)
   const redirectTimer = useRef(null)
   const [isPopUpOnScreen, setIsPopUpOnScreen] = useState(false)
+  const signinType = useSelector((state) => state.session.signinType)
+  const currentRoute = window.location.pathname
 
   useEffect(() => {
     if (isPopUpOnScreen === false) {
@@ -49,7 +51,8 @@ export default function App () {
   useEffect(() => {
     if (isPopUpOnScreen === true) {
       redirectTimer.current = setTimeout(() => {
-        window.location.pathname = '/signout-auto'
+        window.location.pathname =
+          signinType === 'org' ? '/organisation/signout-auto' : '/signout-auto'
       }, process.env.REACT_APP_TIMEOUT_POPUP * 1000)
     }
   }, [isPopUpOnScreen])
@@ -61,15 +64,21 @@ export default function App () {
   }
 
   const isSignOutRoute = () => {
-    const currentRoute = window.location.pathname
     if (
-      currentRoute === '/signout' ||
-      currentRoute === '/signout-auto' ||
+      currentRoute.includes('/signout') ||
       currentRoute === '/account/delete/confirm'
     ) {
       return true
     } else {
       return false
+    }
+  }
+
+  const SignBackInLink = () => {
+    if (currentRoute.includes('/organisation/')) {
+      return '/organisation/sign-back-in'
+    } else {
+      return '/sign-back-in'
     }
   }
 
@@ -83,13 +92,11 @@ export default function App () {
               key={index}
               path={route.path}
               element={
-                auth || isSignOutRoute()
-                  ? (
-                      route.component
-                    )
-                  : (
-                    <Navigate to='/sign-back-in' />
-                    )
+                auth || isSignOutRoute() ? (
+                  route.component
+                ) : (
+                  <Navigate to={SignBackInLink()} />
+                )
               }
             />
           ))}

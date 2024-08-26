@@ -10,7 +10,7 @@ next_page = "http://localhost:3000/"
 url = "http://localhost:3000/signup/register-location/search-results"
 english_postcode_severe_warning = "SW1A 0AA"
 english_postcode_alert = "NW10 8TZ"
-english_postcode_nearby_warning = "WD25 7LR"
+english_postcode_nearby_warning = "TR1 2AF"
 severe_warning_area_page = "http://localhost:3000/signup/register-location/location-in-severe-warning-area"
 alert_page = "http://localhost:3000/signup/register-location/location-in-alert-area"
 proximity_severe_page = "http://localhost:3000/signup/register-location/location-in-proximity-area/severe"
@@ -91,7 +91,7 @@ def test_search_location_alert(get_browser):
 
 def test_search_location_nearby_warning_render(get_browser):
     browser = setup_search_location_result_test(get_browser, english_postcode_nearby_warning) 
-    address_nearby_link_xpath = f"//a[contains(text(),'Warner Bros Studio Tour')]"
+    address_nearby_link_xpath = f"//a[contains(text(),'Prime Truro')]"
     address_nearby_link = browser.find_element(By.XPATH, address_nearby_link_xpath)
     browser.execute_script("arguments[0].click();", address_nearby_link)
     time.sleep(3)

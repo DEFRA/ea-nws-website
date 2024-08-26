@@ -12,7 +12,8 @@ export default function LocationSearchResultsPage () {
     isInWarningArea,
     isInAlertArea,
     isWithinWarningAreaProximity,
-    isWithinAlertAreaProximity
+    isWithinAlertAreaProximity,
+    isError
   ) => {
     // start an empty profile - if user chooses another location from results page
     // any previous picked locations are reset
@@ -53,6 +54,8 @@ export default function LocationSearchResultsPage () {
       navigate(
         `/signup/register-location/location-in-proximity-area/${'alert'}`
       )
+    } else if (isError) {
+      navigate('/error')
     } else {
       // location isnt in danger area
       navigate('/signup/register-location/no-danger')

@@ -85,7 +85,7 @@ export default function SubscribedLocationTable () {
   }
 
   const isSavedLocationTargetArea = (locationName, areas) => {
-    return areas.filter((area) => locationName === area.properties.ta_name)
+    return areas.filter((area) => locationName === area.properties.TA_NAME)
   }
 
   const locationTable = () => {

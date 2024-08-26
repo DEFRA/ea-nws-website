@@ -15,7 +15,7 @@ export default function ChangeLocationSearchResultPage () {
       dispatch(setAdditionalAlerts(true))
       navigate('/signup/review/location-in-severe-warning-area')
     } else if (isInAlertArea) {
-      // take user to non option flood alerts scren
+      // take user to non option flood alerts screen
       dispatch(setAdditionalAlerts(false))
       navigate('/signup/review/location-in-alert-area')
     } else {

@@ -13,7 +13,6 @@ import commonStartRoutes from './common/routes/start/StartRoutes'
 import orgHomeRoutes from './organisation/routes/home/HomeRoutes'
 import orgSigninRoutes from './organisation/routes/sign-in/SignInRoutes'
 import orgRegistrationRoutes from './organisation/routes/sign-up/SignUpRoutes'
-import organisationSigninRoutes from './organisation/routes/sign-in/SignInRoutes'
 
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]

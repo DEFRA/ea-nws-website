@@ -6,15 +6,15 @@ import orgManageLocationsUrls from './ManageLocationsUrls'
 // Manage location routes
 const orgManageLocationRoutes = [
   {
-    path: orgManageLocationsUrls.add,
+    path: orgManageLocationsUrls.add.options,
     component: <LocationAddPage />
   },
   {
-    path: orgManageLocationsUrls.addAddressInfo,
+    path: orgManageLocationsUrls.add.addressInfo,
     component: <LocationAddAddressInfoPage />
   },
   {
-    path: orgManageLocationsUrls.addUploadFile,
+    path: orgManageLocationsUrls.add.uploadFile,
     component: <LocationAddUploadFilePage />
   }
 ]

@@ -33,7 +33,7 @@ export default function LocationAddPage () {
     if (!addLocationType) {
       setAddLocationTypeError('Select how you want to add locations')
     } else if (addLocationType === addLocationOptions[0].value) {
-      navigate(orgManageLocationsUrls.addAddressInfo)
+      navigate(orgManageLocationsUrls.add.addressInfo)
     }
   }
 

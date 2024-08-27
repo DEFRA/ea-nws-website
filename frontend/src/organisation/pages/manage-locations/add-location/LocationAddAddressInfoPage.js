@@ -9,7 +9,7 @@ export default function LocationAddAddressInfoPage () {
 
   // Button
   const handleButton = async () => {
-    navigate(orgManageLocationsUrls.addUploadFile)
+    navigate(orgManageLocationsUrls.add.uploadFile)
   }
 
   return (
@@ -25,7 +25,8 @@ export default function LocationAddAddressInfoPage () {
             <div className='govuk-body'>
               <a
                 className='govuk-link '
-                href='https://www.gov.uk/prepare-for-flooding'
+                href={orgManageLocationsUrls.add.uploadTemplate}
+                target='_blank' rel='noreferrer'
               >
                 Download this template spreadsheet (.csv).
               </a>

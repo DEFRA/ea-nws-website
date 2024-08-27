@@ -3,8 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 
-url = "http://localhost:3000/signin/validate"
-previous_url = "http://localhost:3000/signin"
+url = "http://localhost:3000/organisation/signin/validate"
+previous_url = "http://localhost:3000/organisation/signin"
 next_page = "http://localhost:3000/home"
 
 def test_SignInValidate_render(get_browser):
@@ -13,7 +13,7 @@ def test_SignInValidate_render(get_browser):
     browser.find_element(By.NAME, "Email address").send_keys("valid@email.uk")
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(3)
-    assert "Check your email" in browser.page_source
+    assert "Confirm email address" in browser.page_source
     assert browser.current_url == url
 
 def test_SignInValidate_backButton(get_browser):

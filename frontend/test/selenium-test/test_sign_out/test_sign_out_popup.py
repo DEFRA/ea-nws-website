@@ -30,8 +30,7 @@ def test_cit_popup_stay_signin_button(get_browser):
     browser = get_browser
     navigate_to_auth_page_via_index(browser, 'Home page', url_cit_home)
     time.sleep(time_to_popup + delay)
-    click_button(browser, 'Stay signed in')
-    time.sleep(delay)
+    click_button(browser, 'Stay signed in', url_cit_home)
     popup_not_found(browser)
 
 # Test 'sign out' button on popup
@@ -39,12 +38,8 @@ def test_cit_popup_logout_button(get_browser):
     browser = get_browser
     navigate_to_auth_page_via_index(browser, 'Home page', url_cit_home)
     time.sleep(time_to_popup + delay)
-    click_link(browser, 'Sign out')
-    time.sleep(delay)
-
-    # Checks
+    click_link(browser, 'Sign out', url_cit_signout)
     popup_not_found(browser)
-    assert browser.current_url == url_cit_signout
 
 # Introduce activity just before popup appears
 def test_cit_stay_active(get_browser):
@@ -60,8 +55,6 @@ def test_cit_auto_logout(get_browser):
     browser = get_browser
     navigate_to_auth_page_via_index(browser, 'Home page', url_cit_home)
     time.sleep(time_to_popup + time_to_auto_signout + delay)
-
-    # Checks
     popup_not_found(browser)
     assert browser.current_url == url_cit_signout_auto
 
@@ -71,8 +64,7 @@ def test_org_popup_stay_signin_button(get_browser):
     browser = get_browser
     navigate_to_auth_page_via_index(browser, 'Organisation home page', url_org_home)
     time.sleep(time_to_popup + delay)
-    click_button(browser, 'Stay signed in')
-    time.sleep(delay)
+    click_button(browser, 'Stay signed in', url_org_home)
     popup_not_found(browser)
 
 # Test 'sign out' button on popup
@@ -80,12 +72,9 @@ def test_org_popup_logout_button(get_browser):
     browser = get_browser
     navigate_to_auth_page_via_index(browser, 'Organisation home page', url_org_home)
     time.sleep(time_to_popup + delay)
-    click_link(browser, 'Sign out')
+    click_link(browser, 'Sign out', url_org_signout)
     time.sleep(delay)
-
-    # Checks
     popup_not_found(browser)
-    assert browser.current_url == url_org_signout
 
 # Introduce activity just before popup appears
 def test_org_stay_active(get_browser):
@@ -94,8 +83,6 @@ def test_org_stay_active(get_browser):
     time.sleep(time_to_popup - delay)
     mouse_hover(browser)
     time.sleep(delay)
-
-    # Checks
     popup_not_found(browser)
     assert browser.current_url == url_org_home
 
@@ -104,7 +91,5 @@ def test_org_auto_logout(get_browser):
     browser = get_browser
     navigate_to_auth_page_via_index(browser, 'Organisation home page', url_org_home)
     time.sleep(time_to_popup + time_to_auto_signout + delay)
-
-    # Checks
     popup_not_found(browser)
     assert browser.current_url == url_org_signout_auto

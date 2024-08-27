@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+import time
 
 # Local host
 local_host = 'http://localhost:3000'
@@ -35,32 +36,38 @@ url_org_signout_auto = url_org + '/signout-auto'
 # Manage locations
 url_org_man_loc = url_org + '/manage-locations'
 url_org_add_loc = url_org_man_loc + '/add'
-url_org_add_loc = {
-    'options': url_org_add_loc,
-    'addressInfo': url_org_add_loc + '/address-info',
-    'uploadFile': url_org_add_loc + '/upload-file',
+url_org_man_loc = {
+    'add': {
+        'options': url_org_add_loc,
+        'addressInfo': url_org_add_loc + '/address-info',
+        'uploadFile': url_org_add_loc + '/upload-file',
+        'uploadTemplate': 'http://d39yn09rf1d1o9.cloudfront.net/template.csv'
+    }
 }
 
 # PAGE NAVIGATION
 # Navigate to authenticated page via index page and check url
-def navigate_to_auth_page_via_index(browser, link_text, url_check):
+def navigate_to_auth_page_via_index(browser, link_text, url_link):
     browser.get(url_index)
-    click_button(browser, 'Activate/Deactivate Mock Session 1')
-    click_link(browser, link_text)
-    assert browser.current_url == url_check
+    click_button(browser, 'Activate/Deactivate Mock Session 1', url_index)
+    click_link(browser, link_text, url_link)
 
 # CLICK / SELECT
-# Click on a button
-def click_button(browser, button_text):
+# Click on a button and check url
+def click_button(browser, button_text, url_button):
     button_xpath = f"//button[text()='{button_text}']"
     button_element = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", button_element)
+    time.sleep(1)
+    assert browser.current_url == url_button
 
-# Click on link text
-def click_link(browser, link_text):
+# Click on link text and check url
+def click_link(browser, link_text, url_link):
     link_xpath = f"//a[text()='{link_text}']"
     link_element = browser.find_element(By.XPATH, link_xpath)
     browser.execute_script("arguments[0].click();", link_element)
+    time.sleep(1)
+    assert browser.current_url == url_link
 
 # Select input radio option
 def select_input_radio_option(browser, radio_id):
@@ -89,4 +96,5 @@ def check_error_summary(browser):
 
 # Check for sign back in page for unauthenticated access
 def check_sign_back_in_page(browser):
+    assert '/sign-back-in' in browser.current_url
     return check_h1_heading(browser, 'You need to sign back in to view this page')

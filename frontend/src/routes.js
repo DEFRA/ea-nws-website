@@ -13,6 +13,7 @@ import commonStartRoutes from './common/routes/start/StartRoutes'
 import orgHomeRoutes from './organisation/routes/home/HomeRoutes'
 import orgSigninRoutes from './organisation/routes/sign-in/SignInRoutes'
 import orgRegistrationRoutes from './organisation/routes/sign-up/SignUpRoutes'
+import orgUnmatchedLocationsROutes from './organisation/routes/add-locations-in-bulk/unmatched-locations/UnmatchedLocationsRoutes'
 
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
@@ -26,7 +27,8 @@ export const routes = [
   ...citizenSigninRoutes,
   ...commonFooterRoutes,
   ...orgSigninRoutes,
-  ...orgRegistrationRoutes
+  ...orgRegistrationRoutes,
+  ...orgUnmatchedLocationsROutes
 ]
 
 export const authenticatedRoutes = [

@@ -18,7 +18,7 @@ export default function LocationAddAddressInfoPage () {
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-full'>
+          <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
               How to upload a file with addresses and postcodes
             </h1>
@@ -26,7 +26,8 @@ export default function LocationAddAddressInfoPage () {
               <a
                 className='govuk-link '
                 href={orgManageLocationsUrls.add.uploadTemplate}
-                target='_blank' rel='noreferrer'
+                target='_blank'
+                rel='noreferrer'
               >
                 Download this template spreadsheet (.csv).
               </a>
@@ -148,7 +149,7 @@ export default function LocationAddAddressInfoPage () {
 
               <Button
                 text='Continue'
-                className='govuk-button govuk-button'
+                className='govuk-button'
                 onClick={handleButton}
               />
             </div>

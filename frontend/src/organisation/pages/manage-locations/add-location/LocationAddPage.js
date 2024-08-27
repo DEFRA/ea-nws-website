@@ -43,7 +43,7 @@ export default function LocationAddPage () {
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-full'>
+          <div className='govuk-grid-column-two-thirds'>
             {/* Error summary */}
             {addLocationTypeError && (
               <ErrorSummary errorList={[addLocationTypeError]} />
@@ -81,7 +81,7 @@ export default function LocationAddPage () {
 
               <Button
                 text='Continue'
-                className='govuk-button govuk-button'
+                className='govuk-button'
                 onClick={handleButton}
               />
             </div>

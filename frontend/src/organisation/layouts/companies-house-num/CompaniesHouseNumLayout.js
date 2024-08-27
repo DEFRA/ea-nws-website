@@ -31,9 +31,8 @@ export default function CompaniesHouseNumLayout ({
     if (companyNum === false) {
       dispatch(setOrgCompHouseNum(null))
       NavigateToNextPage()
-    }
-    // Yes was clicked - validate input before proceeding
-    else {
+    } else {
+      // Yes was clicked - validate input before proceeding
       const validationError = compHouseNumberValidation(companyNum)
       if (!validationError) {
         dispatch(setOrgCompHouseNum(companyNum))

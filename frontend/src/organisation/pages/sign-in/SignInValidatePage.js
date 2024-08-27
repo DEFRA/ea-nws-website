@@ -5,11 +5,11 @@ export default function SignInValidatePage () {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {
-    navigate('/home')
+    navigate('/organisation/home')
   }
 
   const NavigateToPreviousPage = () => {
-    navigate('/signin')
+    navigate('/organisation/signin')
   }
 
   return (

@@ -49,9 +49,8 @@ export default function AddAddressLayout ({
             dispatch(setOrgAddress(address[0]))
             navigate('/organisation/register/address-confirm')
             return // Ensure none of the following code is executed
-          }
-          // Multiple addresses with buildingNum returned, take them to pagination to confirm
-          else {
+          } else {
+            // Multiple addresses with buildingNum returned, take them to pagination to confirm
             dispatch(setLocationSearchResults(address))
           }
         } else {

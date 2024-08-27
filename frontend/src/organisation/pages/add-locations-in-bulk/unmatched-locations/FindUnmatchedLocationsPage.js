@@ -39,7 +39,7 @@ export default function FindUnmatchedLocationsPage () {
       />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-full'>
+          <div className='govuk-grid-column-two-thirds'>
             {error && (
               <ErrorSummary errorList={[error]} />)}
             <h1 className='govuk-heading-l'>

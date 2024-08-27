@@ -27,7 +27,7 @@ export default function ConfirmLocationsPage () {
     <>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-full'>
+          <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
               ? out of ? locations can be added
             </h1>

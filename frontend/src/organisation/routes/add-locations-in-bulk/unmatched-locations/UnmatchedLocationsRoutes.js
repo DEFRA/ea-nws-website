@@ -2,11 +2,8 @@ import DoNotAddLocationsPage from '../../../pages/add-locations-in-bulk/unmatche
 import FindUnmatchedLocationsPage from '../../../pages/add-locations-in-bulk/unmatched-locations/FindUnmatchedLocationsPage'
 
 const unmatchedlocationsRoutes = [
-    { path: '/organisation/unmatchedlocations/donotadd', component: <DoNotAddLocationsPage /> },
-    { path: '/organisation/unmatchedlocations/find', component: <FindUnmatchedLocationsPage /> },
+  { path: '/organisation/unmatchedlocations/donotadd', component: <DoNotAddLocationsPage /> },
+  { path: '/organisation/unmatchedlocations/find', component: <FindUnmatchedLocationsPage /> }
 ]
 
 export default unmatchedlocationsRoutes
-
-
-

@@ -1,12 +1,9 @@
-import React, { useEffect, useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import React from 'react'
 import Button from '../../../../common/components/gov-uk/Button'
 import InsetText from '../../../../common/components/gov-uk/InsetText'
 import Details from '../../../../common/components/gov-uk/Details'
 
 export default function ConfirmLocationsPage () {
-  const navigate = useNavigate()
- 
   const detailsMessage = (
     <div>
       <h1 className='govuk-heading-s'>Location partly matched an address</h1>
@@ -18,14 +15,14 @@ export default function ConfirmLocationsPage () {
       </p>
       <h2 className='govuk-heading-s'>Address no found</h2>
       <p>
-       A location is not recognised, for example it may be a new address or uses a building name instead of a street address. Or it may be because the information is incorrectly typed or formatted.
+        A location is not recognised, for example it may be a new address or uses a building name instead of a street address. Or it may be because the information is incorrectly typed or formatted.
       </p>
       <p>
-       To find an address you can drop a pin on a map to select the address location. This can then be added to your locations.
+        To find an address you can drop a pin on a map to select the address location. This can then be added to your locations.
       </p>
     </div>
   )
-  
+
   return (
     <>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
@@ -34,26 +31,26 @@ export default function ConfirmLocationsPage () {
             <h1 className='govuk-heading-l'>
               ? out of ? locations can be added
             </h1>
-                <div className='govuk-body'>
-                    <InsetText text={'? locations need to be matched before they can be added. You can match them after you add the locations that have been found.'} />
-                    <Details
-                        title='Why do some locations not match?'
-                        text={detailsMessage}
-                    />
-                </div>
-                <Button
-                    text='Add and continue'
-                    className='govuk-button govuk-button'
-                    onClick={''}
-                />
-                &nbsp; &nbsp;
-                <Button
-                    text='Cancel upload'
-                    className='govuk-button govuk-button--warning inline-block'
-                    onClick={''}
-                />
+            <div className='govuk-body'>
+              <InsetText text='? locations need to be matched before they can be added. You can match them after you add the locations that have been found.' />
+              <Details
+                title='Why do some locations not match?'
+                text={detailsMessage}
+              />
             </div>
+            <Button
+              text='Add and continue'
+              className='govuk-button govuk-button'
+              onClick=''
+            />
+                &nbsp; &nbsp;
+            <Button
+              text='Cancel upload'
+              className='govuk-button govuk-button--warning inline-block'
+              onClick=''
+            />
           </div>
+        </div>
       </main>
     </>
   )

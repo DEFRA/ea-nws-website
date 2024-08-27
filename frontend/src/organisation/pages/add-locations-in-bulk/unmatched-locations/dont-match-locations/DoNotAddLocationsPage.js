@@ -19,26 +19,26 @@ export default function DoNotAddLocationsPage () {
           <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l govuk-!-margin-top-6'>Do not add locations</h1>
             <div className='govuk-body'>
-              <WarningText text={'If you continue, any locations not matched will not be added to this account and cannot be saved.'} />
+              <WarningText text='If you continue, any locations not matched will not be added to this account and cannot be saved.' />
               <p>
-              <>
-                {' '}
-                <Link to='/' className='govuk-link'>
+                <>
+                  {' '}
+                  <Link to='/' className='govuk-link'>
                     Download a file of all the locations not matched
-                </Link>{' '}
-                    if you want to add these later. You'll need to update these address and reupload them.
+                  </Link>{' '}
+                  if you want to add these later. You'll need to update these address and reupload them.
                 </>
               </p>
-              </div>
-            <br /> 
-              <Button
-                className='govuk-button'
-                text='Continue'
-                onClick={handleSubmit}
-              />
             </div>
-           
+            <br />
+            <Button
+              className='govuk-button'
+              text='Continue'
+              onClick={handleSubmit}
+            />
           </div>
+
+        </div>
       </main>
     </>
   )

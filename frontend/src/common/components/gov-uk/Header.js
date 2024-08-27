@@ -30,11 +30,16 @@ export default function Header () {
             {session.authToken && (
               <div
               className='govuk-header__content govuk-grid-row'
-              style={{ display: 'inline-block' }}
-            >
-              <p className='govuk-header__service-name '>
+              style={{ display: 'inline-block' }} 
+              to={
+                session.signinType === 'org' ? 
+                <p className='govuk-header__service-name '>
+                Get flood warnings for your organisation</p> 
+                : <p className='govuk-header__service-name '>
                 Get flood warnings by text, phone or email
-              </p>
+                </p>
+              }
+            >
               <Link
                 className='govuk-header__link'
                 style={{

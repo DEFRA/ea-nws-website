@@ -5,8 +5,7 @@ export default function SignInValidatePage () {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {
-    // TODO to be updated to new organisation home page
-    navigate('/home')
+    navigate('/organisation/home')
   }
 
   const NavigateToPreviousPage = () => {

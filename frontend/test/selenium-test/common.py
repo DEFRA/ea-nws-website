@@ -47,10 +47,11 @@ url_org_man_loc = {
 
 # PAGE NAVIGATION
 # Navigate to authenticated page via index page and check url
-def navigate_to_auth_page_via_index(browser, link_text, url_link):
+def navigate_to_auth_page_via_index(browser, url_target, mock_session=1):
     browser.get(url_index)
-    click_button(browser, 'Activate/Deactivate Mock Session 1', url_index)
-    click_link(browser, link_text, url_link)
+    button_text = 'Activate/Deactivate Mock Session ' + str(mock_session)
+    click_button(browser, button_text, url_index)
+    browser.get(url_target)
 
 # CLICK / SELECT
 # Click on a button and check url

@@ -7,7 +7,7 @@ url_upload_file = url_org_man_loc.get('add').get('uploadFile')
 
 # Render add location page
 def render_add_loc_page(browser):
-    navigate_to_auth_page_via_index(browser, 'Organisation add location', url_add_options)
+    navigate_to_auth_page_via_index(browser, url_add_options)
     assert check_h1_heading(browser, 'How do you want to add locations?')
 
 # Render add address information page

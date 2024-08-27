@@ -117,11 +117,11 @@ export default function SignInValidatePageLayout ({ NavigateToNextPage, Navigate
               <div className='govuk-grid-row'>
                 <div className='govuk-grid-column-two-thirds'>
                   {codeResent &&
-                  <NotificationBanner
-                    className='govuk-notification-banner govuk-notification-banner--success'
-                    title='Success'
-                    text={'New code sent at ' + codeResentTime}
-                  />}
+                    <NotificationBanner
+                      className='govuk-notification-banner govuk-notification-banner--success'
+                      title='Success'
+                      text={'New code sent at ' + codeResentTime}
+                    />}
                   {error && <ErrorSummary errorList={[error]} />}
                   <h2 class='govuk-heading-l'>Confirm email address </h2>
                   <div class='govuk-body'>

@@ -92,11 +92,13 @@ export default function App () {
               key={index}
               path={route.path}
               element={
-                auth || isSignOutRoute() ? (
-                  route.component
-                ) : (
-                  <Navigate to={SignBackInLink()} />
-                )
+                auth || isSignOutRoute()
+                  ? (
+                      route.component
+                    )
+                  : (
+                    <Navigate to={SignBackInLink()} />
+                    )
               }
             />
           ))}

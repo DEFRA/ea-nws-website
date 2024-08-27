@@ -27,19 +27,14 @@ export default function Header () {
               </svg>
             </a>
           </div>
-            {session.authToken && (
-              <div
+          {session.authToken && (
+            <div
               className='govuk-header__content govuk-grid-row'
-              style={{ display: 'inline-block' }} 
-              to={
-                session.signinType === 'org' ? 
-                <p className='govuk-header__service-name '>
-                Get flood warnings for your organisation</p> 
-                : <p className='govuk-header__service-name '>
-                Get flood warnings by text, phone or email
-                </p>
-              }
+              style={{ display: 'inline-block' }}
             >
+              {session.signinType === 'org'
+                ? <p className='govuk-header__service-name '>Get flood warnings for your organisation</p>
+                : <p className='govuk-header__service-name '>Get flood warnings by text, phone or email</p>}
               <Link
                 className='govuk-header__link'
                 style={{
@@ -57,8 +52,8 @@ export default function Header () {
               >
                 Sign Out
               </Link>
-              </div>
-            )}
+            </div>
+          )}
         </div>
       </header>
     </>

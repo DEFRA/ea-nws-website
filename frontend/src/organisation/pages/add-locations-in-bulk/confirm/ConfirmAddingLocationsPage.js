@@ -2,8 +2,25 @@ import React from 'react'
 import Button from '../../../../common/components/gov-uk/Button'
 import InsetText from '../../../../common/components/gov-uk/InsetText'
 import Details from '../../../../common/components/gov-uk/Details'
+import { useNavigate } from 'react-router-dom'
 
 export default function ConfirmLocationsPage () {
+  const navigate = useNavigate()
+
+  const handleLocations = async (event) => {
+    event.preventDefault()
+
+    // add matched address locations
+    // naviage to decide if user wants to find unmatched locations
+    navigate('/organisation/unmatchedlocations/find')
+  }
+
+  const handleCancel = async (event) => {
+    event.preventDefault()
+    // cancel the upload and return to setting screen
+    navigate('/organisation/home')
+  }
+
   const detailsMessage = (
     <div>
       <h1 className='govuk-heading-s'>Location partly matched an address</h1>
@@ -41,13 +58,13 @@ export default function ConfirmLocationsPage () {
             <Button
               text='Add and continue'
               className='govuk-button govuk-button'
-              onClick=''
+              onClick={handleLocations}
             />
                 &nbsp; &nbsp;
             <Button
               text='Cancel upload'
               className='govuk-button govuk-button--warning inline-block'
-              onClick=''
+              onClick={handleCancel}
             />
           </div>
         </div>

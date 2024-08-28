@@ -1,7 +1,7 @@
 import ConfirmLocationsPage from '../../../pages/add-locations-in-bulk/confirm/ConfirmAddingLocationsPage'
 
-const confirmlocationsRoutes = [
+const confirmLocationsRoutes = [
   { path: '/organisation/confirm/locations', component: <ConfirmLocationsPage /> }
 ]
 
-export default confirmlocationsRoutes
+export default confirmLocationsRoutes

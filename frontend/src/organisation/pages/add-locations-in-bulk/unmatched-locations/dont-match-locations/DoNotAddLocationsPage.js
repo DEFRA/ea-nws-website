@@ -8,6 +8,7 @@ export default function DoNotAddLocationsPage () {
   const navigate = useNavigate()
 
   const handleSubmit = async () => {
+    // this will need updated to the correct next page
     navigate('/organisation/home')
   }
 
@@ -22,10 +23,12 @@ export default function DoNotAddLocationsPage () {
               <WarningText text='If you continue, any locations not matched will not be added to this account and cannot be saved.' />
               <p>
                 <>
-                  {' '}
-                  <Link to='/' className='govuk-link'>
+                  <Link
+                    to='/' // link to download file of all locations not matched
+                    className='govuk-link'
+                  >
                     Download a file of all the locations not matched
-                  </Link>{' '}
+                  </Link>
                   if you want to add these later. You'll need to update these address and reupload them.
                 </>
               </p>
@@ -37,7 +40,6 @@ export default function DoNotAddLocationsPage () {
               onClick={handleSubmit}
             />
           </div>
-
         </div>
       </main>
     </>

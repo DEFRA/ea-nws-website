@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
-import Button from '../../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
-import Radio from '../../../../common/components/gov-uk/Radio'
-import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
+import Button from '../../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
+import Radio from '../../../../../common/components/gov-uk/Radio'
+import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 
 export default function FindUnmatchedLocationsPage () {
   const navigate = useNavigate()
@@ -15,7 +15,6 @@ export default function FindUnmatchedLocationsPage () {
     { value: 'DoNotAddLocations', label: 'Do not add locations' }
   ]
 
-  // Reset error
   useEffect(() => {
     setError('')
   }, [addUnmatchedLocationOption])
@@ -26,6 +25,7 @@ export default function FindUnmatchedLocationsPage () {
     } else if (addUnmatchedLocationOption === unmatchedLocationsOptions[1].value) {
       navigate('/organisation/unmatchedlocations/donotadd')
     } else {
+      // this will need updated to the list of unmatched locations page
       navigate('/')
     }
   }
@@ -43,7 +43,7 @@ export default function FindUnmatchedLocationsPage () {
             {error && (
               <ErrorSummary errorList={[error]} />)}
             <h1 className='govuk-heading-l'>
-              What do you want to do with the number of locations not matched locations not matched?
+              What do you want to do with the ? locations not matched?
             </h1>
             <div className='govuk-body'>
               <div
@@ -70,7 +70,7 @@ export default function FindUnmatchedLocationsPage () {
               </div>
               <p className='govuk-body'>
                 <Link
-                  onClick='/'
+                  onClick='/' // link to download file of all locations not matched
                   className='govuk-link'
                 >
                   Download a file of all the locations not matched,

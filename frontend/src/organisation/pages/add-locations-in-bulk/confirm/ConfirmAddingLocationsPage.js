@@ -22,15 +22,15 @@ export default function ConfirmLocationsPage () {
   }
 
   const detailsMessage = (
-    <div>
-      <h1 className='govuk-heading-s'>Location partly matched an address</h1>
+    <div className='govuk-body'>
+      <h1 className='govuk-heading-s'>Location partly matches an address</h1>
       <p>
         A location is recognised as an address but some of the information does not match ours, for example the street name or postcode.
       </p>
       <p>
-        To find the correct address if its partly matched, you can search from a drop-down list, match it to an address and then add it to your locations.
+        To find the correct address if it's partly matched, you can search from a drop-down list, match it to an address and then add it to your locations.
       </p>
-      <h2 className='govuk-heading-s'>Address no found</h2>
+      <h2 className='govuk-heading-s'>Address not found</h2>
       <p>
         A location is not recognised, for example it may be a new address or uses a building name instead of a street address. Or it may be because the information is incorrectly typed or formatted.
       </p>

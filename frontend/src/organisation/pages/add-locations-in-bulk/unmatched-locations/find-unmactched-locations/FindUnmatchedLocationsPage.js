@@ -35,7 +35,7 @@ export default function FindUnmatchedLocationsPage () {
       <NotificationBanner
         className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-10 govuk-!-margin-top-5'
         title='Success'
-        text='locations added'
+        text='? locations added'
       />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

@@ -44,7 +44,7 @@ export default function AddAccountNameLayout ({
         updateProfile(profile, authToken)
         if (profileError) setError(profileError)
       } else {
-        NavigateToNextPage()
+        NavigateToNextPage(profile)
       }
     }
   }

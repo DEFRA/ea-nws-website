@@ -103,7 +103,7 @@ export default function AddAddressLayout({
               <Input
                 inputType='text'
                 value={postCode}
-                name='Organisation postcode'
+                name='Postcode'
                 onChange={(val) => setPostCode(val)}
                 error={error}
                 className='govuk-input govuk-input--width-20'

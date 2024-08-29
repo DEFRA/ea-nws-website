@@ -57,7 +57,6 @@ export default function AddNameLayout({
               <Input
                 inputType='text'
                 value={name}
-                name='Organisation name'
                 onChange={(val) => setName(val)}
                 error={error}
                 className='govuk-input govuk-input--width-20'

@@ -112,7 +112,7 @@ export default function AdminDetailsLayout({
                   set up.
                 </p>
               ) : (
-                <p className='govuk-body govuk-!-margin-bottom-5'>
+                <p className='govuk-hint'>
                   An administrator can set up flood warning, locations and
                   users. they will also receive flood messages for every
                   locations they set up.
@@ -126,6 +126,13 @@ export default function AdminDetailsLayout({
                 error={errorFullName}
                 className='govuk-input govuk-input--width-20'
                 defaultValue={fullName}
+              />
+              <Input
+                inputType='text'
+                value='0'
+                name='Building name or number (optional)'
+                className='govuk-input'
+                defaultValue='{buildingNum}'
               />
               <Input
                 inputType='text'

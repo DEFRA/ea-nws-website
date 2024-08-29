@@ -672,8 +672,7 @@
   background-color: #ffdd00;
 }
 
-.one-login-header__nav__list-item.active::after,
-.one-login-header__nav__list-item:hover::after {
+.one-login-header__nav__list-item.active::after {
   content: '';
   position: absolute;
   bottom: 0;

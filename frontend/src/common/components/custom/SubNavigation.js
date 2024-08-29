@@ -1,7 +1,9 @@
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import '../../css/custom.css'
 
 export default function SubNavigation({ pages, currentPage }) {
+  const location = useLocation()
+
   return (
     <nav aria-label='Sub navigation'>
       <ul className='sub-navigation__list'>
@@ -12,7 +14,11 @@ export default function SubNavigation({ pages, currentPage }) {
               className='sub-navigation__link'
               aria-current={currentPage === page.link ? 'page' : 'no'}
             >
-              {page.title}
+              {location.pathname.includes('organisation') ? (
+                <b>{page.title}</b>
+              ) : (
+                <>{page.title}</>
+              )}
             </Link>
           </li>
         ))}

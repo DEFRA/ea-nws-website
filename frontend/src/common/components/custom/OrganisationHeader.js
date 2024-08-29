@@ -91,22 +91,9 @@ export default function OrganisationHeader() {
                   />
                   <span>F.Waters</span>
                 </li>
-                {/* Thin vertical white line as its own <li> element */}
-                <li
-                  className='one-login-header__nav__list-item'
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    padding: '0rem 0.625rem 0rem 0rem'
-                  }}
-                >
-                  <div
-                    style={{
-                      height: '2.8rem',
-                      width: '0.0625rem',
-                      backgroundColor: '#b1b4b6'
-                    }}
-                  ></div>
+
+                <li className='one-login-header__nav__list-item org-header-divider-line-container'>
+                  <div className='org-header-divider-line' />
                 </li>
                 <li
                   className='one-login-header__nav__list-item'

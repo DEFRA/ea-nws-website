@@ -15,7 +15,7 @@ function Layout() {
       <Header />
       <div
         className={`${
-          location.pathname.includes('organisation') //&& auth
+          location.pathname.includes('organisation') && auth
             ? 'custom-width-container'
             : 'govuk-width-container body-container'
         }`}

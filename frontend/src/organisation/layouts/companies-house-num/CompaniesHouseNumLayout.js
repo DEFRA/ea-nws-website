@@ -11,7 +11,7 @@ import {
 } from '../../../common/services/ProfileServices'
 import { compHouseNumberValidation } from '../../../common/services/validations/CompHouseNumValidation'
 
-export default function CompaniesHouseNumLayout({
+export default function CompaniesHouseNumLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -45,9 +45,8 @@ export default function CompaniesHouseNumLayout({
       dispatch(setProfile(updatedProfile))
 
       NavigateToNextPage()
-    }
-    // Yes was clicked - validate input before proceeding
-    else {
+    } else {
+      // Yes was clicked - validate input before proceeding
       const validationError = compHouseNumberValidation(companyNum)
       if (!validationError) {
         organisation.compHouseNum = companyNum

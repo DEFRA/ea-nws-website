@@ -17,7 +17,7 @@ import {
 } from '../../../common/services/ProfileServices'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
-export default function AddAddressLayout({
+export default function AddAddressLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -65,9 +65,8 @@ export default function AddAddressLayout({
 
             navigate('/organisation/register/address-confirm')
             return // Ensure none of the following code is executed
-          }
-          // Multiple addresses with buildingNum returned, take them to pagination to confirm
-          else {
+          } else {
+            // Multiple addresses with buildingNum returned, take them to pagination to confirm
             dispatch(setLocationSearchResults(address))
           }
         } else {

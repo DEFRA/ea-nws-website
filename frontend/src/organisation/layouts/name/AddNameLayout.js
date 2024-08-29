@@ -12,7 +12,7 @@ import {
 } from '../../../common/services/ProfileServices'
 import { orgNameValidation } from '../../../common/services/validations/OrgNameValidation'
 
-export default function AddNameLayout({
+export default function AddNameLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {

@@ -11,7 +11,8 @@ export default function LocationSearchResultsPage () {
     isInWarningArea,
     isInAlertArea,
     isWithinWarningAreaProximity,
-    isWithinAlertAreaProximity
+    isWithinAlertAreaProximity,
+    isError
   ) => {
     if (isInWarningArea) {
       // take user to severe warning screen and then to alerts screen for
@@ -19,7 +20,7 @@ export default function LocationSearchResultsPage () {
       dispatch(setAdditionalAlerts(true))
       navigate('/manage-locations/add/location-in-severe-warning-area')
     } else if (isInAlertArea) {
-      // take user to non option flood alerts scren
+      // take user to non option flood alerts screen
       dispatch(setAdditionalAlerts(false))
       navigate('/manage-locations/add/location-in-alert-area')
     } else if (isWithinWarningAreaProximity) {
@@ -28,6 +29,8 @@ export default function LocationSearchResultsPage () {
     } else if (isWithinAlertAreaProximity) {
       // users location is within distance to alert flood area
       navigate(`/manage-locations/add/location-in-proximity-area/${'alert'}`)
+    } else if (isError) {
+      navigate('/error')
     } else {
       // location isnt in danger area
       navigate('/manage-locations/add/no-danger')

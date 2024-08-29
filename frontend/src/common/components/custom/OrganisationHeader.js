@@ -1,5 +1,6 @@
 import {
   faAngleDown,
+  faAngleUp,
   faCircleUser,
   faMagnifyingGlass
 } from '@fortawesome/free-solid-svg-icons'
@@ -7,7 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function OrganisationHeader () {
+export default function OrganisationHeader() {
   const [activeHeader, setActiveHeader] = useState(null)
 
   return (
@@ -54,18 +55,20 @@ export default function OrganisationHeader () {
                   onClick={() => setActiveHeader('orgDetails')}
                 >
                   <FontAwesomeIcon
-                    icon={faAngleDown}
+                    icon={
+                      activeHeader === 'orgDetails' ? faAngleDown : faAngleUp
+                    }
                     size='lg'
-                    style={{
-                      color: activeHeader === 'orgDetails' && '#000000'
-                    }}
+                    className={`${
+                      activeHeader === 'orgDetails' && 'active'
+                    } highlighted`}
                   />
                   <FontAwesomeIcon
                     icon={faCircleUser}
                     size='xl'
-                    style={{
-                      color: activeHeader === 'orgDetails' && '#000000'
-                    }}
+                    className={`${
+                      activeHeader === 'orgDetails' && 'active'
+                    } highlighted`}
                   />
                   <span>Flood Inc.</span>
                 </li>
@@ -76,18 +79,22 @@ export default function OrganisationHeader () {
                   onClick={() => setActiveHeader('accountDetails')}
                 >
                   <FontAwesomeIcon
-                    icon={faAngleDown}
+                    icon={
+                      activeHeader === 'accountDetails'
+                        ? faAngleDown
+                        : faAngleUp
+                    }
                     size='lg'
-                    style={{
-                      color: activeHeader === 'accountDetails' && '#000000'
-                    }}
+                    className={`${
+                      activeHeader === 'accountDetails' && 'active'
+                    } highlighted`}
                   />
                   <FontAwesomeIcon
                     icon={faCircleUser}
                     size='xl'
-                    style={{
-                      color: activeHeader === 'accountDetails' && '#000000'
-                    }}
+                    className={`${
+                      activeHeader === 'accountDetails' && 'active'
+                    } highlighted`}
                   />
                   <span>F.Waters</span>
                 </li>

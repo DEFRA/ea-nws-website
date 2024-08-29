@@ -1,6 +1,6 @@
 import SubNavigation from './SubNavigation'
 
-export default function OrganisationAccountNavigation ({ currentPage }) {
+export default function OrganisationAccountNavigation({ currentPage }) {
   const pages = [
     { title: 'Live flood warnings', link: '/' },
     { title: 'Locations', link: '/' },
@@ -8,5 +8,5 @@ export default function OrganisationAccountNavigation ({ currentPage }) {
     { title: 'Reports', link: '/' }
   ]
 
-  return <SubNavigation pages={pages} currentPage={currentPage} />
+  return <SubNavigation pages={pages} currentPage={currentPage} type={'org'} />
 }

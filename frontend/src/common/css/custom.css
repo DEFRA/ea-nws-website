@@ -104,6 +104,44 @@
   }
 }
 
+.sub-navigation-org {
+  width: 100vw;
+  margin-left: -1.875rem;
+  margin-top: -22px;
+  background: #f3f2f1;
+}
+
+.sub-navigation__list {
+  font-size: 0;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+@media (min-width: 40.0625em) {
+  .sub-navigation__list {
+    box-shadow: inset 0 -0.0625rem 0 #b1b4b6;
+    width: 100%;
+  }
+}
+
+.sub-navigation-org__list {
+  font-size: 0;
+  list-style: none;
+  padding-left: 1.875rem;
+}
+@media (min-width: 40.0625em) {
+  .sub-navigation-org__list {
+    border-top: 1px solid #b1b4b6;
+    border-bottom: 1px solid #b1b4b6;
+    width: 100%;
+  }
+}
+
+.sub-navigation__item.bold {
+  font-weight: 700;
+}
+
 .inline-link {
   display: inline-block;
   padding: 0.5rem 0.625rem 0.4375rem;
@@ -625,12 +663,17 @@
   padding: 10px 0;
   gap: 0.5rem;
   cursor: pointer;
+  position: relative; /* Add this to ensure the pseudo-elements are positioned correctly */
 }
-.one-login-header__nav__list-item.active {
+
+/* Styles for the active state */
+.one-login-header__nav__list-item.active,
+.one-login-header__nav__list-item:hover {
   background-color: #ffdd00;
-  position: relative;
 }
-.one-login-header__nav__list-item.active::after {
+
+.one-login-header__nav__list-item.active::after,
+.one-login-header__nav__list-item:hover::after {
   content: '';
   position: absolute;
   bottom: 0;
@@ -640,17 +683,16 @@
   background-color: black;
 }
 
-.one-login-header__nav__list-item.active .faCircleUser,
-.one-login-header__nav__list-item.active .faAngleDown {
-  background-color: #000000;
-  color: #ffffff;
-  border-radius: 50%;
-  padding: 0.2rem;
-}
-
-.one-login-header__nav__list-item.active span {
+.one-login-header__nav__list-item .active,
+.one-login-header__nav__list-item:hover .highlighted {
   color: #000000;
 }
+
+.one-login-header__nav__list-item.active span,
+.one-login-header__nav__list-item:hover span {
+  color: #000000;
+}
+
 @media (min-width: 40.0625em) {
   .one-login-header__nav__list-item {
     padding: 12px 20px 12px 20px;
@@ -887,9 +929,7 @@
 
 .govuk-header__org-service-name {
   display: inline-block;
-  position: relative;
-  top: 8px;
-  margin-bottom: 15px;
+  margin-bottom: 0;
   font-size: 1.125rem;
   line-height: 1.1111111111;
   font-weight: 700;

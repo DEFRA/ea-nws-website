@@ -7,8 +7,7 @@ const orgManageLocationsUrls = {
   add: {
     options: urlAddLoc,
     addressInfo: urlAddLoc + '/address-info',
-    uploadFile: urlAddLoc + '/upload-file',
-    uploadTemplate: 'http://d39yn09rf1d1o9.cloudfront.net/template.csv'
+    uploadFile: urlAddLoc + '/upload-file'
   }
 }
 

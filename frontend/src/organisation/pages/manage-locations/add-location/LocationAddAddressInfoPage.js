@@ -1,11 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
+import { backendCall } from '../../../../common/services/BackendService'
 import orgManageLocationsUrls from '../../../routes/manage-locations/ManageLocationsUrls'
 
 export default function LocationAddAddressInfoPage () {
   const navigate = useNavigate()
+  const [templateUrl, setTemplateUrl] = useState(null)
+
+  // Get download template url from aws secret manager
+  async function getTemplateUrl () {
+    const { data } = await backendCall('data', 'api/download/template')
+    setTemplateUrl(data)
+  }
+
+  useEffect(() => {
+    getTemplateUrl()
+  })
 
   // Button
   const handleButton = async () => {
@@ -25,7 +37,7 @@ export default function LocationAddAddressInfoPage () {
             <div className='govuk-body'>
               <a
                 className='govuk-link '
-                href={orgManageLocationsUrls.add.uploadTemplate}
+                href={templateUrl}
                 target='_blank'
                 rel='noreferrer'
               >

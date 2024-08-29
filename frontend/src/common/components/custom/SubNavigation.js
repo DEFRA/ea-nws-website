@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import '../../css/custom.css'
 
-export default function SubNavigation({ pages, currentPage, type }) {
+export default function SubNavigation ({ pages, currentPage, type }) {
   if (type === 'org') {
     return (
       <nav aria-label='Sub navigation' className='sub-navigation-org'>

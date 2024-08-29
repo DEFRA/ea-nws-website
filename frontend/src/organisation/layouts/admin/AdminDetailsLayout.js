@@ -106,7 +106,7 @@ export default function AdminDetailsLayout({
             )}
             <div className='govuk-body'>
               {location.state.isAdmin ? (
-                <p className='govuk-body govuk-!-margin-bottom-5'>
+                <p className='govuk-hint'>
                   You'll be able to set up flood warning, locations and users.
                   You will also receive flood messages for every locations you
                   set up.
@@ -118,26 +118,28 @@ export default function AdminDetailsLayout({
                   locations they set up.
                 </p>
               )}
+              <label className='govuk-label govuk-label--m' htmlFor='full-name'>
+                Full name
+              </label>
               <Input
                 inputType='text'
+                id='full-name'
                 value={fullName}
-                name='Full name'
                 onChange={(val) => setFullName(val)}
                 error={errorFullName}
-                className='govuk-input govuk-input--width-20'
+                className='govuk-input govuk-input--width-20 govuk-typography-weight-bold'
                 defaultValue={fullName}
               />
-              <Input
-                inputType='text'
-                value='0'
-                name='Building name or number (optional)'
-                className='govuk-input'
-                defaultValue='{buildingNum}'
-              />
+              <label
+                className='govuk-label govuk-label--m'
+                htmlFor='email-address'
+              >
+                Email address
+              </label>
               <Input
                 inputType='text'
                 value={email}
-                name='Email Address'
+                id='email-address'
                 onChange={(val) => setEmail(val)}
                 error={errorEmail}
                 className='govuk-input govuk-input--width-20'

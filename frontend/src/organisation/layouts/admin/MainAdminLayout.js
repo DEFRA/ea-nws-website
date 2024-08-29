@@ -42,7 +42,10 @@ export default function MainAdminLayout({
                     : 'govuk-form-group'
                 }
               >
-                An administrator can set up flood warnings, locations and users.
+                <p className='govuk-hint'>
+                  An administrator can set up flood warnings, locations and
+                  users.
+                </p>
                 {error && (
                   <p className='govuk-error-message'>
                     <br />

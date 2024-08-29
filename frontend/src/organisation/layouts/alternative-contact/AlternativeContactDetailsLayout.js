@@ -87,34 +87,53 @@ export default function AlternativeContactDetailsLayout({
                   administrator rights.
                 </p>
               )}
+              <label className='govuk-label govuk-label--m' htmlFor='full-name'>
+                Full name
+              </label>
               <Input
                 inputType='text'
                 value={fullName}
-                name='Full name'
+                id='full-name'
                 onChange={(val) => setFullName(val)}
                 error={errorFullName}
                 className='govuk-input govuk-input--width-20'
                 defaultValue={fullName}
               />
+              <label
+                className='govuk-label govuk-label--m'
+                htmlFor='email-address'
+              >
+                Email address
+              </label>
               <Input
                 inputType='text'
                 value={email}
-                name='Email address'
+                id='email-address'
                 onChange={(val) => setEmail(val)}
                 error={errorEmail}
                 className='govuk-input govuk-input--width-20'
               />
+              <label
+                className='govuk-label govuk-label--m'
+                htmlFor='email-address'
+              >
+                Telephone number
+              </label>
               <Input
-                name='Telephone number'
                 inputType='text'
+                value={telephone}
+                id='telephone-number'
                 error={errorTelephone}
                 onChange={(val) => setTelephoneNumber(val)}
                 className='govuk-input govuk-input--width-20'
               />
+              <label className='govuk-label govuk-label--m' htmlFor='job-title'>
+                Job title (optional)
+              </label>
               <Input
                 inputType='text'
                 value={jobTitle}
-                name='Job title (optional)'
+                id='job-title'
                 onChange={(val) => setJobTitle(val)}
                 error={errorJobTitle}
                 className='govuk-input govuk-input--width-20'

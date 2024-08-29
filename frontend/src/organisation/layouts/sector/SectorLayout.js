@@ -10,7 +10,7 @@ import {
   updateOrganisationAdditionals
 } from '../../../common/services/ProfileServices'
 
-export default function SectorLayout ({
+export default function SectorLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -59,9 +59,11 @@ export default function SectorLayout ({
                     : 'govuk-form-group'
                 }
               >
-                Known as Category 1 or Category 2 responders. For example,
-                police, fire or ambulance services, local authorities or member
-                of a local resilience forum.
+                <p className='govuk-hint'>
+                  Known as Category 1 or Category 2 responders. For example,
+                  police, fire or ambulance services, local authorities or
+                  member of a local resilience forum.
+                </p>
                 {error && (
                   <p className='govuk-error-message'>
                     <br />

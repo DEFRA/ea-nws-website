@@ -5,13 +5,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 export default function OrganisationHeader() {
   const [activeHeader, setActiveHeader] = useState(null)
-
-  const handleActiveHeader = (item) => {
-    setActiveHeader(item)
-  }
 
   return (
     <>
@@ -44,11 +41,9 @@ export default function OrganisationHeader() {
               </a>
             </div>
 
-            <div class='org-parent-container'>
-              <p className='govuk-header__org-service-name'>
-                Get flood warnings for your organisation
-              </p>
-            </div>
+            <p className='govuk-header__org-service-name'>
+              Get flood warnings for your organisation
+            </p>
 
             <nav className='one-login-header__nav'>
               <ul className='one-login-header__nav__list'>
@@ -149,9 +144,12 @@ export default function OrganisationHeader() {
                       data-open-className='service-header__nav--open'
                     >
                       <li className='service-header__nav-list-item '>
-                        <a className='service-header__nav-list-item-link'>
+                        <Link
+                          className='service-header__nav-list-item-link'
+                          to='/organisation/manage-organisation-details'
+                        >
                           Organisation Details
-                        </a>
+                        </Link>
                       </li>
                       <li className='service-header__nav-list-item '>
                         <a className='service-header__nav-list-item-link'>

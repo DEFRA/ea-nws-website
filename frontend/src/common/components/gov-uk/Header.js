@@ -11,7 +11,7 @@ export default function Header() {
 
   return (
     <>
-      {isOrganisationPage ? (
+      {isOrganisationPage && authToken ? (
         <OrganisationHeader />
       ) : (
         <header className='govuk-header' data-module='govuk-header'>

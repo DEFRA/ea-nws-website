@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { setProfile } from '../../../../common/redux/userSlice'
 import { updateAdditionals } from '../../../../common/services/ProfileServices'
@@ -7,10 +7,9 @@ import AddAccountNameLayout from '../../../layouts/account-name/AddAccountNameLa
 export default function AddFullNamePage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const session = useSelector((state) => state.session)
 
-  const NavigateToNextPage = () => {
-    const updatedProfile = updateAdditionals(session.profile, [{ id: 'lastAccessedUrl', value: '/declaration' }])
+  const NavigateToNextPage = (profile) => {
+    const updatedProfile = updateAdditionals(profile, [{ id: 'lastAccessedUrl', value: '/declaration' }])
     dispatch(setProfile(updatedProfile))
     navigate('/declaration')
   }

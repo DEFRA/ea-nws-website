@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import { setSigninType } from '../../../common/redux/userSlice'
 
-export default function ManageOrganisationDetailsPage() {
+export default function ManageOrganisationDetailsPage () {
   const dispatch = useDispatch()
 
   useEffect(() => {

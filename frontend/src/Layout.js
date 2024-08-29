@@ -6,7 +6,7 @@ import Header from './common/components/gov-uk/Header'
 import PhaseBanner from './common/components/gov-uk/PhaseBanner'
 import './common/css/custom.css'
 
-function Layout() {
+function Layout () {
   const location = useLocation()
   const auth = useSelector((state) => state.session.authToken)
 

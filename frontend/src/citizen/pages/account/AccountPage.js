@@ -6,7 +6,7 @@ import Button from '../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import { getAdditionals } from '../../../common/services/ProfileServices'
 
-export default function AccountPage() {
+export default function AccountPage () {
   const location = useLocation()
 
   const navigate = useNavigate()
@@ -28,26 +28,28 @@ export default function AccountPage() {
           (location.state?.jobTitle ? location.state?.jobTitle : '')
       ]
     : location.state?.changeEmail
-    ? location.state?.email + ' is your new email address to sign in with'
-    : location.state?.changeName && location.state?.name
+      ? location.state?.email + ' is your new email address to sign in with'
+      : location.state?.changeName && location.state?.name
 
   const bannerHeading = location.state?.changeBusinessDetails
     ? 'Business details updated'
     : location.state?.changeEmail
-    ? 'Email address updated'
-    : location.state?.changeName && 'Name updated'
+      ? 'Email address updated'
+      : location.state?.changeName && 'Name updated'
 
   return (
     <>
       <CitizenAccountNavigation currentPage={useLocation().pathname} />
-      {location.state !== null ? (
-        <NotificationBanner
-          className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
-          title='Success'
-          heading={bannerHeading}
-          text={bannerText}
-        />
-      ) : null}
+      {location.state !== null
+        ? (
+          <NotificationBanner
+            className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
+            title='Success'
+            heading={bannerHeading}
+            text={bannerText}
+          />
+          )
+        : null}
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>

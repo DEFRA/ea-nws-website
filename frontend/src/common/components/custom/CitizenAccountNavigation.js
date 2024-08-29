@@ -1,6 +1,6 @@
 import SubNavigation from './SubNavigation'
 
-export default function CitizenAccountNavigation({ currentPage }) {
+export default function CitizenAccountNavigation ({ currentPage }) {
   const pages = [
     { title: 'Home', link: '/home' },
     { title: 'Your email addresses and numbers', link: '/managecontacts' },

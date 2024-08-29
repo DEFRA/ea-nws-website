@@ -6,7 +6,7 @@ import NotificationBanner from '../../../common/components/gov-uk/NotificationBa
 import { setSigninType } from '../../../common/redux/userSlice'
 import SubscribedLocationTableLayout from '../manage-locations/SubscribedLocationTable'
 
-export default function HomePage() {
+export default function HomePage () {
   const location = useLocation()
 
   // remove added/removed location success banners

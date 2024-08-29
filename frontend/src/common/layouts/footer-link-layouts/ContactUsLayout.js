@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 import CitizenAccountNavigation from '../../components/custom/CitizenAccountNavigation'
 
-export default function ContactUsLayout() {
+export default function ContactUsLayout () {
   const navigate = useNavigate()
   const location = useLocation()
   const authToken = useSelector((state) => state.session.authToken)
@@ -26,16 +26,18 @@ export default function ContactUsLayout() {
           <div className='govuk-grid-column-two-thirds'>
             <div className='govuk-body'>
               <h1 className='govuk-heading-l'>Contact us</h1>
-              {!authToken ? (
-                <p>
-                  Get in touch with us Floodline, if you need help signing up.
-                </p>
-              ) : (
-                <p>
-                  Get in touch with us Floodline, if you need help with making
-                  changes to your account
-                </p>
-              )}
+              {!authToken
+                ? (
+                  <p>
+                    Get in touch with us Floodline, if you need help signing up.
+                  </p>
+                  )
+                : (
+                  <p>
+                    Get in touch with us Floodline, if you need help with making
+                    changes to your account
+                  </p>
+                  )}
               <h2 className='govuk-heading-m'>Floodline</h2>
               <p>
                 Telephone: 0345 988 1188

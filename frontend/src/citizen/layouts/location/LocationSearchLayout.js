@@ -96,7 +96,7 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
     <>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        <div className='govuk-grid-row'>
+        <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-two-thirds'>
             {(error || postCodeError || placeNameError) && (
               <ErrorSummary
@@ -108,10 +108,10 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
             </h1>
             <div
               className={
-                  error
-                    ? 'govuk-form-group govuk-form-group--error'
-                    : 'govuk-form-group'
-                }
+                error
+                  ? 'govuk-form-group govuk-form-group--error'
+                  : 'govuk-form-group'
+              }
             >
               <fieldset className='govuk-fieldset'>
                 <legend className='govuk-fieldset__legend'>

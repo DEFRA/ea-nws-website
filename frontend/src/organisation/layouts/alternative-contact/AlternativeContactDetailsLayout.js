@@ -45,7 +45,7 @@ export default function AlternativeContactDetailsLayout({
       setErrorEmail('')
       setErrorTelephone('')
     }
-    //NavigateToNextPage() // TODO send to Org duplication main admin email page
+    //NavigateToNextPage() // TODO send to T&Ms
   }
 
   const navigateBack = async (event) => {
@@ -132,7 +132,6 @@ export default function AlternativeContactDetailsLayout({
                 value={jobTitle}
                 id='job-title'
                 onChange={(val) => setJobTitle(val)}
-                error={errorJobTitle}
                 className='govuk-input govuk-input--width-20'
               />
               <Button

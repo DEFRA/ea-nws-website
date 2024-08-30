@@ -1,13 +1,17 @@
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+import BackLink from '../../../../common/components/custom/BackLink'
 import ConfirmationPanel from '../../../../common/components/gov-uk/Panel'
 
-export default function SignUpSuccessPage () {
+export default function SignUpSuccessPage() {
   // need to check for authToken
+  const navigate = useNavigate()
+
   return (
     <>
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
+            <BackLink onClick={() => navigate(-1)} />
             <ConfirmationPanel title='Organisation details submitted for approval' />
             <div className='govuk-body govuk-!-margin-top-6'>
               <h1 class='govuk-heading-m govuk-!-margin-top-6'>
@@ -28,7 +32,6 @@ export default function SignUpSuccessPage () {
                 Help us improve this service
               </h1>
               <p className='govuk-!-margin-top-6'>
-                {' '}
                 <Link to='/signup/feedback' className='govuk-link'>
                   What do you think of the service?
                 </Link>

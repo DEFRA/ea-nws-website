@@ -12,6 +12,7 @@ import commonSignOutRoutes from './common/routes/sign-out/SignOutRoutes'
 import commonStartRoutes from './common/routes/start/StartRoutes'
 import orgManageAccountRoutes from './organisation/routes/account/AccountRoutes'
 import orgHomeRoutes from './organisation/routes/home/HomeRoutes'
+import { orgManageLocationRoutes } from './organisation/routes/manage-locations/ManageLocationsRoutes'
 import orgSigninRoutes from './organisation/routes/sign-in/SignInRoutes'
 import orgRegistrationRoutes from './organisation/routes/sign-up/SignUpRoutes'
 
@@ -37,5 +38,6 @@ export const authenticatedRoutes = [
   ...citizenAccountRoutes,
   ...citizenManageLocationRoutes,
   ...orgHomeRoutes,
-  ...orgManageAccountRoutes
+  ...orgManageAccountRoutes,
+  ...orgManageLocationRoutes
 ]

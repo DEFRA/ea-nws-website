@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { useLocation } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -14,17 +14,14 @@ export default function AlternativeContactDetailsLayout({
   NavigateToPreviousPage
 }) {
   const location = useLocation()
-  const dispatch = useDispatch()
   const [errorFullName, setErrorFullName] = useState('')
   const [errorEmail, setErrorEmail] = useState('')
   const [errorTelephone, setErrorTelephone] = useState('')
-  const [errorJobTitle, setErrorJobTitle] = useState('')
   const session = useSelector((state) => state.session)
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [telephone, setTelephoneNumber] = useState('')
   const [jobTitle, setJobTitle] = useState('')
-  const navigate = useNavigate()
 
   const handleSubmit = async (event) => {
     event.preventDefault()

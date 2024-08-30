@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router'
 import AdminDetailsLayout from '../../../layouts/admin/AdminDetailsLayout'
 
-export default function AdminDetailsPage() {
+export default function AdminDetailsPage () {
   const navigate = useNavigate()
 
   const NavigateToNextPage = (adminDetails) => {

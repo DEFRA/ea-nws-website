@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
 import ValidateEmailLayout from '../../../layouts/email/ValidateEmailLayout'
 
-export default function ValidateAdminEmailPage () {
+export default function ValidateAdminEmailPage() {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {
@@ -9,7 +9,7 @@ export default function ValidateAdminEmailPage () {
   }
 
   const NavigateToPreviousPage = () => {
-    navigate('/organisation/register/main-admin')
+    navigate('/organisation/register/admin-details')
   }
 
   return (

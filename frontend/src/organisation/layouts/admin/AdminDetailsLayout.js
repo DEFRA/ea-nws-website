@@ -19,7 +19,7 @@ import {
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 
-export default function AdminDetailsLayout ({
+export default function AdminDetailsLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -40,47 +40,57 @@ export default function AdminDetailsLayout ({
 
   const handleSubmit = async (event) => {
     event.preventDefault()
+    setErrorFullName('')
+    setErrorEmail('')
     const fullNameValidationError = fullNameValidation(fullName)
     const emailValidationError = emailValidation(email)
 
     if (fullNameValidationError !== '' || emailValidationError !== '') {
-      setErrorFullName(isAdmin ? fullNameValidationError : '')
+      setErrorFullName(
+        !isAdmin && fullNameValidationError !== ''
+          ? 'Enter their full name'
+          : fullNameValidationError
+      )
       setErrorEmail(
-        isAdmin ? emailValidationError : 'Enter their email address'
-      )
-    } else {
-      // Split the full name into first name and last name assuming they are separeted by a space.
-      // if the string cannot be split then only the first name is set and the last name remains blank
-      const [firstname, ...lastnameParts] = fullName.trim().split(' ')
-      const lastname = lastnameParts.join(' ')
-
-      const profile = addAccountName(session.profile, firstname, lastname)
-      dispatch(setProfile(profile))
-
-      // Add the main admin email to the unverified component
-      const dataToSend = { email }
-      const { data, errorMessage } = await backendCall(
-        dataToSend,
-        'api/sign_up_start',
-        navigate
+        !isAdmin && emailValidationError === 'Enter your email address'
+          ? 'Enter their email address'
+          : emailValidationError
       )
 
-      if (errorMessage !== null) {
-        if (errorMessage === 'email already registered') {
-          navigate('/signup/duplicate', {
-            state: { email }
-          })
-        } else {
-          setErrorEmail(errorMessage)
-        }
+      return
+    }
+
+    // Split the full name into first name and last name assuming they are separeted by a space.
+    // if the string cannot be split then only the first name is set and the last name remains blank
+    const [firstname, ...lastnameParts] = fullName.trim().split(' ')
+    const lastname = lastnameParts.join(' ')
+
+    const profile = addAccountName(session.profile, firstname, lastname)
+    dispatch(setProfile(profile))
+
+    // Add the main admin email to the unverified component
+    const dataToSend = { email }
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
+      'api/sign_up_start',
+      navigate
+    )
+
+    if (errorMessage !== null) {
+      if (errorMessage === 'email already registered') {
+        navigate('/signup/duplicate', {
+          state: { email }
+        })
       } else {
-        // add email to  emails list
-        const updatedProfile = addVerifiedContact(profile, 'email', email)
-        dispatch(setProfile(updatedProfile))
-        dispatch(setRegisterToken(data.registerToken))
-        dispatch(setCurrentContact(email))
-        NavigateToNextPage()
+        setErrorEmail(errorMessage)
       }
+    } else {
+      // add email to  emails list
+      const updatedProfile = addVerifiedContact(profile, 'email', email)
+      dispatch(setProfile(updatedProfile))
+      dispatch(setRegisterToken(data.registerToken))
+      dispatch(setCurrentContact(email))
+      NavigateToNextPage()
     }
   }
 
@@ -98,31 +108,27 @@ export default function AdminDetailsLayout ({
             {(errorFullName || errorEmail) && (
               <ErrorSummary errorList={[errorFullName, errorEmail]} />
             )}
-            {isAdmin
-              ? (
-                <h1 className='govuk-heading-l'>Enter your details</h1>
-                )
-              : (
-                <h1 className='govuk-heading-l'>
-                  Enter details for main administrator
-                </h1>
-                )}
+            {isAdmin ? (
+              <h1 className='govuk-heading-l'>Enter your details</h1>
+            ) : (
+              <h1 className='govuk-heading-l'>
+                Enter details for main administrator
+              </h1>
+            )}
             <div className='govuk-body'>
-              {isAdmin
-                ? (
-                  <p className='govuk-hint'>
-                    You'll be able to set up flood warning, locations and users.
-                    You will also receive flood messages for every locations you
-                    set up.
-                  </p>
-                  )
-                : (
-                  <p className='govuk-hint'>
-                    An administrator can set up flood warning, locations and
-                    users. they will also receive flood messages for every
-                    locations they set up.
-                  </p>
-                  )}
+              {isAdmin ? (
+                <p className='govuk-hint'>
+                  You'll be able to set up flood warning, locations and users.
+                  You will also receive flood messages for every locations you
+                  set up.
+                </p>
+              ) : (
+                <p className='govuk-hint'>
+                  An administrator can set up flood warning, locations and
+                  users. they will also receive flood messages for every
+                  locations they set up.
+                </p>
+              )}
               <label className='govuk-label govuk-label--m' htmlFor='full-name'>
                 Full name
               </label>

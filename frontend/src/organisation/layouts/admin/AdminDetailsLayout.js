@@ -118,14 +118,14 @@ export default function AdminDetailsLayout({
             <div className='govuk-body'>
               {isAdmin ? (
                 <p className='govuk-hint'>
-                  You'll be able to set up flood warning, locations and users.
+                  You'll be able to set up flood warnings, locations and users.
                   You will also receive flood messages for every locations you
                   set up.
                 </p>
               ) : (
                 <p className='govuk-hint'>
                   An administrator can set up flood warning, locations and
-                  users. they will also receive flood messages for every
+                  users. They will also receive flood messages for every
                   locations they set up.
                 </p>
               )}

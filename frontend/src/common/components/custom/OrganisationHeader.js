@@ -1,15 +1,23 @@
 import {
   faAngleDown,
   faAngleUp,
-  faCircleUser,
   faMagnifyingGlass
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function OrganisationHeader () {
+export default function OrganisationHeader() {
   const [activeHeader, setActiveHeader] = useState(null)
+
+  const handleActiveHeader = (item) => {
+    if (item === activeHeader) {
+      setActiveHeader(null)
+    } else {
+      setActiveHeader(item)
+    }
+  }
 
   return (
     <>
@@ -52,7 +60,7 @@ export default function OrganisationHeader () {
                   className={`one-login-header__nav__list-item ${
                     activeHeader === 'orgDetails' && 'active'
                   }`}
-                  onClick={() => setActiveHeader('orgDetails')}
+                  onClick={() => handleActiveHeader('orgDetails')}
                 >
                   <FontAwesomeIcon
                     icon={
@@ -63,20 +71,20 @@ export default function OrganisationHeader () {
                       activeHeader === 'orgDetails' && 'active'
                     } highlighted`}
                   />
-                  <FontAwesomeIcon
-                    icon={faCircleUser}
-                    size='xl'
+                  <AccountCircleOutlinedIcon
+                    style={{ fontSize: 38 }}
                     className={`${
                       activeHeader === 'orgDetails' && 'active'
                     } highlighted`}
                   />
+
                   <span>Flood Inc.</span>
                 </li>
                 <li
                   className={`one-login-header__nav__list-item ${
                     activeHeader === 'accountDetails' && 'active'
                   }`}
-                  onClick={() => setActiveHeader('accountDetails')}
+                  onClick={() => handleActiveHeader('accountDetails')}
                 >
                   <FontAwesomeIcon
                     icon={
@@ -89,13 +97,13 @@ export default function OrganisationHeader () {
                       activeHeader === 'accountDetails' && 'active'
                     } highlighted`}
                   />
-                  <FontAwesomeIcon
-                    icon={faCircleUser}
-                    size='xl'
+                  <AccountCircleOutlinedIcon
+                    style={{ fontSize: 38 }}
                     className={`${
                       activeHeader === 'accountDetails' && 'active'
                     } highlighted`}
                   />
+
                   <span>F.Waters</span>
                 </li>
 
@@ -111,9 +119,12 @@ export default function OrganisationHeader () {
                   <FontAwesomeIcon icon={faMagnifyingGlass} size='lg' />
                 </li>
                 <li className='one-login-header__nav__list-item'>
-                  <a className='one-login-header__nav__link' href='#'>
+                  <Link
+                    className='one-login-header__nav__link'
+                    to={'organisation/signout'}
+                  >
                     Sign out
-                  </a>
+                  </Link>
                 </li>
               </ul>
             </nav>

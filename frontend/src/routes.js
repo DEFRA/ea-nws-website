@@ -27,8 +27,7 @@ export const routes = [
   ...citizenSigninRoutes,
   ...commonFooterRoutes,
   ...orgSigninRoutes,
-  ...orgRegistrationRoutes,
-  ...orgManageAccountRoutes
+  ...orgRegistrationRoutes
 ]
 
 export const authenticatedRoutes = [
@@ -37,5 +36,6 @@ export const authenticatedRoutes = [
   ...commonSignOutRoutes,
   ...citizenAccountRoutes,
   ...citizenManageLocationRoutes,
-  ...orgHomeRoutes
+  ...orgHomeRoutes,
+  ...orgManageAccountRoutes
 ]

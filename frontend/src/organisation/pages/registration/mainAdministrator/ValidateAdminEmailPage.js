@@ -4,12 +4,8 @@ import ValidateEmailLayout from '../../../layouts/email/ValidateEmailLayout'
 export default function ValidateAdminEmailPage() {
   const navigate = useNavigate()
 
-  const NavigateToNextPage = (adminDetails) => {
-    navigate('/organisation/register/alternative-contact', {
-      state: {
-        isAdmin: adminDetails
-      }
-    })
+  const NavigateToNextPage = () => {
+    navigate('/organisation/register/alternative-contact')
   }
 
   const NavigateToPreviousPage = () => {

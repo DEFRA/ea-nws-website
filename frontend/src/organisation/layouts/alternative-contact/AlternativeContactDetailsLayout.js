@@ -1,10 +1,14 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
-import { useLocation } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
+import { setProfile } from '../../../common/redux/userSlice'
+import {
+  getOrganisationAdditionals,
+  updateOrganisationAdditionals
+} from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
@@ -13,7 +17,7 @@ export default function AlternativeContactDetailsLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
-  const location = useLocation()
+  const dispatch = useDispatch()
   const [errorFullName, setErrorFullName] = useState('')
   const [errorEmail, setErrorEmail] = useState('')
   const [errorTelephone, setErrorTelephone] = useState('')
@@ -22,6 +26,11 @@ export default function AlternativeContactDetailsLayout({
   const [email, setEmail] = useState('')
   const [telephone, setTelephoneNumber] = useState('')
   const [jobTitle, setJobTitle] = useState('')
+  let organisation = Object.assign(
+    {},
+    getOrganisationAdditionals(session.profile)
+  )
+  const isAdmin = organisation.isAdminRegistering
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -44,8 +53,30 @@ export default function AlternativeContactDetailsLayout({
       setErrorFullName('')
       setErrorEmail('')
       setErrorTelephone('')
+
+      // Split the full name into first name and last name assuming they are separeted by a space.
+      // if the string cannot be split then only the first name is set and the last name remains blank
+      const [firstname, ...lastnameParts] = fullName.trim().split(' ')
+      const lastname = lastnameParts.join(' ')
+
+      const updatedOrganisation = {
+        ...organisation,
+        alternativeContact: {
+          firstName: firstname,
+          lastName: lastname,
+          email: email,
+          telephone: telephone,
+          jobTitle: jobTitle
+        }
+      }
+
+      const updatedProfile = updateOrganisationAdditionals(
+        session.profile,
+        updatedOrganisation
+      )
+      dispatch(setProfile(updatedProfile))
+      NavigateToNextPage() // TODO send to T&Ms
     }
-    //NavigateToNextPage() // TODO send to T&Ms
   }
 
   const navigateBack = async (event) => {
@@ -62,7 +93,7 @@ export default function AlternativeContactDetailsLayout({
             {(errorFullName || errorEmail) && (
               <ErrorSummary errorList={[errorFullName, errorEmail]} />
             )}
-            {location.state.isAdmin ? (
+            {isAdmin ? (
               <h1 className='govuk-heading-l'>Enter your details</h1>
             ) : (
               <h1 className='govuk-heading-l'>
@@ -70,7 +101,7 @@ export default function AlternativeContactDetailsLayout({
               </h1>
             )}
             <div className='govuk-body'>
-              {location.state.isAdmin ? (
+              {isAdmin ? (
                 <p className='govuk-body govuk-!-margin-bottom-5'>
                   This person will be an alternative contact, in case you're
                   unavailable in the future. They will not be given

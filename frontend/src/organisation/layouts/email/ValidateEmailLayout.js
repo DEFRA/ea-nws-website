@@ -33,7 +33,6 @@ export default function ValidateEmailLayout({
   const [codeExpired, setCodeExpired] = useState(false)
   const session = useSelector((state) => state.session)
   const profile = session.profile
-  const adminDetails = location.state.isAdmin
 
   // if error remove code sent notification
   useEffect(() => {
@@ -71,7 +70,7 @@ export default function ValidateEmailLayout({
           { id: 'lastAccessedUrl', value: '/signup/accountname/add' }
         ])
         dispatch(setProfile(updatedProfile))
-        NavigateToNextPage(location.state.isAdmin)
+        NavigateToNextPage()
       }
     }
   }

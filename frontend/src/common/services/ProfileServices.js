@@ -188,7 +188,15 @@ const setOrganisationAdditionals = (profile) => {
     name: null,
     address: null,
     compHouseNum: null,
-    emergencySector: null
+    emergencySector: null,
+    isAdminRegistering: null,
+    alternativeContact: {
+      firstName: null,
+      lastName: null,
+      email: null,
+      telephone: null,
+      jobTitle: null
+    }
   }
   return updateOrganisationAdditionals(profile, orgJson)
 }

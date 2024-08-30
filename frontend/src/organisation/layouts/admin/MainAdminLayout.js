@@ -1,22 +1,36 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../common/components/gov-uk/Radio'
+import { setProfile } from '../../../common/redux/userSlice'
+import {
+  getOrganisationAdditionals,
+  updateOrganisationAdditionals
+} from '../../../common/services/ProfileServices'
 
 export default function MainAdminLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
+  const dispatch = useDispatch()
   const [adminDetails, addAdminDetails] = useState(null)
   const [error, setError] = useState('')
+  const profile = useSelector((state) => state.session.profile)
 
   const handleSubmit = async () => {
     if (adminDetails === null) {
       setError('Select whether you will be the main administrator or not')
       return
     }
-    NavigateToNextPage(adminDetails)
+
+    let organisation = Object.assign({}, getOrganisationAdditionals(profile))
+    organisation.isAdminRegistering = adminDetails
+
+    const updatedProfile = updateOrganisationAdditionals(profile, organisation)
+    dispatch(setProfile(updatedProfile))
+    NavigateToNextPage()
   }
 
   const navigateBack = async (event) => {

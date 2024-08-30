@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -13,7 +13,8 @@ import {
 import { backendCall } from '../../../common/services/BackendService'
 import {
   addAccountName,
-  addVerifiedContact
+  addVerifiedContact,
+  getOrganisationAdditionals
 } from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
@@ -22,7 +23,6 @@ export default function AdminDetailsLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
-  const location = useLocation()
   const dispatch = useDispatch()
   const [errorFullName, setErrorFullName] = useState('')
   const [errorEmail, setErrorEmail] = useState('')
@@ -35,17 +35,18 @@ export default function AdminDetailsLayout({
   const [email, setEmail] = useState('')
   const navigate = useNavigate()
 
+  const organisation = getOrganisationAdditionals(session.profile)
+  const isAdmin = organisation.isAdminRegistering
+
   const handleSubmit = async (event) => {
     event.preventDefault()
     const fullNameValidationError = fullNameValidation(fullName)
     const emailValidationError = emailValidation(email)
 
     if (fullNameValidationError !== '' || emailValidationError !== '') {
-      setErrorFullName(location.state.isAdmin ? fullNameValidationError : '')
+      setErrorFullName(isAdmin ? fullNameValidationError : '')
       setErrorEmail(
-        location.state.isAdmin
-          ? emailValidationError
-          : 'Enter their email address'
+        isAdmin ? emailValidationError : 'Enter their email address'
       )
     } else {
       // Split the full name into first name and last name assuming they are separeted by a space.
@@ -78,7 +79,7 @@ export default function AdminDetailsLayout({
         dispatch(setProfile(updatedProfile))
         dispatch(setRegisterToken(data.registerToken))
         dispatch(setCurrentContact(email))
-        NavigateToNextPage(location.state.isAdmin)
+        NavigateToNextPage()
       }
     }
   }
@@ -97,7 +98,7 @@ export default function AdminDetailsLayout({
             {(errorFullName || errorEmail) && (
               <ErrorSummary errorList={[errorFullName, errorEmail]} />
             )}
-            {location.state.isAdmin ? (
+            {isAdmin ? (
               <h1 className='govuk-heading-l'>Enter your details</h1>
             ) : (
               <h1 className='govuk-heading-l'>
@@ -105,7 +106,7 @@ export default function AdminDetailsLayout({
               </h1>
             )}
             <div className='govuk-body'>
-              {location.state.isAdmin ? (
+              {isAdmin ? (
                 <p className='govuk-hint'>
                   You'll be able to set up flood warning, locations and users.
                   You will also receive flood messages for every locations you

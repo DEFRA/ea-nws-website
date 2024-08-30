@@ -5,11 +5,7 @@ export default function AdminDetailsPage() {
   const navigate = useNavigate()
 
   const NavigateToNextPage = (adminDetails) => {
-    navigate('/organisation/register/admin-email-confirm', {
-      state: {
-        isAdmin: adminDetails
-      }
-    })
+    navigate('/organisation/register/admin-email-confirm')
   }
   const NavigateToPreviousPage = () => {
     navigate('/organisation/register/main-admin')

@@ -3,14 +3,13 @@ import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import { backendCall } from '../../../../common/services/BackendService'
-import orgManageLocationsUrls from '../../../routes/manage-locations/ManageLocationsUrls'
+import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddAddressInfoPage () {
+export default function LocationAddAddressInfoPage() {
   const navigate = useNavigate()
   const [templateUrl, setTemplateUrl] = useState(null)
 
-  // Get download template url from aws secret manager
-  async function getTemplateUrl () {
+  async function getTemplateUrl() {
     const { data } = await backendCall('data', 'api/download/template')
     setTemplateUrl(data)
   }
@@ -19,7 +18,6 @@ export default function LocationAddAddressInfoPage () {
     getTemplateUrl()
   })
 
-  // Button
   const handleButton = async () => {
     navigate(orgManageLocationsUrls.add.uploadFile)
   }
@@ -35,13 +33,8 @@ export default function LocationAddAddressInfoPage () {
               How to upload a file with addresses and postcodes
             </h1>
             <div className='govuk-body'>
-              <a
-                className='govuk-link '
-                href={templateUrl}
-                target='_blank'
-                rel='noreferrer'
-              >
-                Download this template spreadsheet (.csv).
+              <a className='govuk-link ' href={templateUrl}>
+                Download this template spreadsheet.
               </a>
               <p className='govuk-!-margin-bottom-9 govuk-!-margin-top-6'>
                 Enter your information and then upload it. The column names, or
@@ -55,30 +48,21 @@ export default function LocationAddAddressInfoPage () {
               <p className='govuk-!-margin-bottom-6 govuk-!-margin-top-6'>
                 We need all of this information to be able to upload a location:
               </p>
-              <h3
-                className='govuk-heading-s'
-                style={{ marginBottom: 3 + 'px' }}
-              >
+              <h3 className='govuk-heading-s govuk-!-margin-bottom-1'>
                 Location name
               </h3>
               <p className='govuk-!-margin-bottom-6'>
                 How you refer to the location, for example: head office, Brayton
                 Water pumping station
               </p>
-              <h3
-                className='govuk-heading-s'
-                style={{ marginBottom: 3 + 'px' }}
-              >
+              <h3 className='govuk-heading-s govuk-!-margin-bottom-1'>
                 Full address
               </h3>
               <p className='govuk-!-margin-bottom-6'>
                 Without postcode, for example: Richard Fairclough House,
                 Knutsford Road, Latchford, Warrington
               </p>
-              <h3
-                className='govuk-heading-s'
-                style={{ marginBottom: 3 + 'px' }}
-              >
+              <h3 className='govuk-heading-s govuk-!-margin-bottom-1'>
                 Postcode
               </h3>
               <p className='govuk-!-margin-bottom-9'>
@@ -89,40 +73,28 @@ export default function LocationAddAddressInfoPage () {
               <h2 className='govuk-heading-m'>
                 Optional information you can include in the file
               </h2>
-              <h3
-                className='govuk-heading-s'
-                style={{ marginBottom: 3 + 'px' }}
-              >
+              <h3 className='govuk-heading-s govuk-!-margin-bottom-1'>
                 Location reference
               </h3>
               <p className='govuk-!-margin-bottom-6'>
                 Your internal reference, for example: PS01, unit 57, Brid_04.
                 This can help you identify the location more easily.
               </p>
-              <h3
-                className='govuk-heading-s'
-                style={{ marginBottom: 3 + 'px' }}
-              >
+              <h3 className='govuk-heading-s govuk-!-margin-bottom-1'>
                 Location type
               </h3>
               <p className='govuk-!-margin-bottom-6'>
                 For example, pumping station, ground floor flat, office, retail
                 unit.
               </p>
-              <h3
-                className='govuk-heading-s'
-                style={{ marginBottom: 3 + 'px' }}
-              >
+              <h3 className='govuk-heading-s govuk-!-margin-bottom-1'>
                 Business criticality
               </h3>
               <p className='govuk-!-margin-bottom-6'>
                 How important the location is to your business, for example, low
                 or medium, business critical.
               </p>
-              <h3
-                className='govuk-heading-s'
-                style={{ marginBottom: 3 + 'px' }}
-              >
+              <h3 className='govuk-heading-s govuk-!-margin-bottom-1'>
                 Keywords for locations
               </h3>
               <p className='govuk-!-margin-bottom-6'>
@@ -136,10 +108,7 @@ export default function LocationAddAddressInfoPage () {
                 keyword, then show all of the locations with that keyword in a
                 list.
               </p>
-              <h3
-                className='govuk-heading-s'
-                style={{ marginBottom: 3 + 'px' }}
-              >
+              <h3 className='govuk-heading-s govuk-!-margin-bottom-1'>
                 Action to be taken
               </h3>
               <p className='govuk-!-margin-bottom-6'>
@@ -147,12 +116,7 @@ export default function LocationAddAddressInfoPage () {
                 example, inspect the location , use sandbags, move stock,
                 evacuate.
               </p>
-              <h3
-                className='govuk-heading-s'
-                style={{ marginBottom: 3 + 'px' }}
-              >
-                Notes
-              </h3>
+              <h3 className='govuk-heading-s govuk-!-margin-bottom-1'>Notes</h3>
               <p className='govuk-!-margin-bottom-9'>
                 Any notes that could be helpful to someone not familiar with the
                 site. For example, John Smith has the flood plan for this

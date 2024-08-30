@@ -4,9 +4,9 @@ import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
-import orgManageLocationsUrls from '../../../routes/manage-locations/ManageLocationsUrls'
+import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddPage () {
+export default function LocationAddPage() {
   const navigate = useNavigate()
 
   const addLocationOptions = [
@@ -18,18 +18,14 @@ export default function LocationAddPage () {
     { value: 'BulkShapeFile', label: 'Shapefile (points, lines or areas)' },
     { value: 'Manual', label: 'I want to add locations manually' }
   ]
-
   const [addLocationType, setAddLocationType] = useState('')
   const [addLocationTypeError, setAddLocationTypeError] = useState('')
 
-  // Reset add location type error
   useEffect(() => {
     setAddLocationTypeError('')
   }, [addLocationType])
 
-  // Button
   const handleButton = async () => {
-    // Check if add location type is selected
     if (!addLocationType) {
       setAddLocationTypeError('Select how you want to add locations')
     } else if (addLocationType === addLocationOptions[0].value) {
@@ -44,12 +40,10 @@ export default function LocationAddPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {/* Error summary */}
             {addLocationTypeError && (
               <ErrorSummary errorList={[addLocationTypeError]} />
             )}
 
-            {/* Select add location type */}
             <h1 className='govuk-heading-l'>
               How do you want to add locations?
             </h1>

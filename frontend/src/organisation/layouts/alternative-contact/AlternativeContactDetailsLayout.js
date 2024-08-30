@@ -93,13 +93,9 @@ export default function AlternativeContactDetailsLayout({
             {(errorFullName || errorEmail) && (
               <ErrorSummary errorList={[errorFullName, errorEmail]} />
             )}
-            {isAdmin ? (
-              <h1 className='govuk-heading-l'>Enter your details</h1>
-            ) : (
-              <h1 className='govuk-heading-l'>
-                Enter details for an alternative contact at your organisation
-              </h1>
-            )}
+            <h1 className='govuk-heading-l'>
+              Enter details for an alternative contact at your organisation
+            </h1>
             <div className='govuk-body'>
               {isAdmin ? (
                 <p className='govuk-body govuk-!-margin-bottom-5'>

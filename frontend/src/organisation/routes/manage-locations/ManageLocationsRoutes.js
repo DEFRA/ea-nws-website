@@ -54,7 +54,7 @@ const orgManageLocationRoutes = [
   {
     path: urlManageOrgConfirmLocations,
     component: <ConfirmLocationsPage />
-  },
+  }
 ]
 
 export { orgManageLocationRoutes, orgManageLocationsUrls }

@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 
-url = "http://localhost:3000/organisation/unmatchedlocations/donotadd"
+url = "http://localhost:3000/organisation/manage-locations/unmatched-locations/do-not-add"
 
 def test__render_page(get_browser):
     browser = get_browser

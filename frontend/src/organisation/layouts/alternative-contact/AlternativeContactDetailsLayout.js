@@ -90,8 +90,10 @@ export default function AlternativeContactDetailsLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {(errorFullName || errorEmail) && (
-              <ErrorSummary errorList={[errorFullName, errorEmail]} />
+            {(errorFullName || errorEmail || errorTelephone) && (
+              <ErrorSummary
+                errorList={[errorFullName, errorEmail, errorTelephone]}
+              />
             )}
             <h1 className='govuk-heading-l'>
               Enter details for an alternative contact at your organisation

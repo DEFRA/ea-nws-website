@@ -6,7 +6,7 @@ import time
 index_page = "http://localhost:3000/index"
 home_page = "http://localhost:3000/organisation/home"
 review_page = "http://localhost:3000/organisation/signup/review"
-change_organisationdetails_page = "
+change_organisationdetails_page = ""
 change_main_administrator_page = ""
 finish_page = "http://localhost:3000/organisation/signup/success"
 change_alternative_contact_page = ""

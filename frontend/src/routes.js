@@ -15,8 +15,6 @@ import orgHomeRoutes from './organisation/routes/home/HomeRoutes'
 import { orgManageLocationRoutes } from './organisation/routes/manage-locations/ManageLocationsRoutes'
 import orgSigninRoutes from './organisation/routes/sign-in/SignInRoutes'
 import orgRegistrationRoutes from './organisation/routes/sign-up/SignUpRoutes'
-import orgUnmatchedLocationsRoutes from './organisation/routes/add-locations-in-bulk/unmatched-locations/UnmatchedLocationsRoutes'
-import orgConfirmLocationsRoutes from './organisation/routes/add-locations-in-bulk/confirm-locations/ConfirmLocationsRoutes'
 
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
@@ -30,9 +28,7 @@ export const routes = [
   ...citizenSigninRoutes,
   ...commonFooterRoutes,
   ...orgSigninRoutes,
-  ...orgRegistrationRoutes,
-  ...orgUnmatchedLocationsRoutes,
-  ...orgConfirmLocationsRoutes
+  ...orgRegistrationRoutes
 ]
 
 export const authenticatedRoutes = [

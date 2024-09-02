@@ -16,7 +16,9 @@ const routes = [].concat(
   require('../routes/ordnance_survey/post_code_search'),
   require('../routes/ordnance_survey/name_search'),
   require('../routes/ordnance_survey/oauth_2'),
-  require('../routes/account/account_delete')
+  require('../routes/qgis/qgis'),
+  require('../routes/account/account_delete'),
+  require('../routes/download/template')
 )
 
 module.exports = {

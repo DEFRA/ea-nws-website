@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import AccountNavigation from '../../../common/components/custom/AccountNavigation'
+import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
 import Button from '../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import { getAdditionals } from '../../../common/services/ProfileServices'
@@ -20,24 +20,26 @@ export default function AccountPage () {
   const businessName = getAdditionals(profile, 'businessName')
   const jobTitle = getAdditionals(profile, 'jobTitle')
 
-  const bannerText = (location.state?.changeBusinessDetails)
+  const bannerText = location.state?.changeBusinessDetails
     ? [
-        'Business name: ' + ((location.state?.businessName) ? location.state?.businessName : ''),
-        'Job title: ' + ((location.state?.jobTitle) ? location.state?.jobTitle : '')
+        'Business name: ' +
+          (location.state?.businessName ? location.state?.businessName : ''),
+        'Job title: ' +
+          (location.state?.jobTitle ? location.state?.jobTitle : '')
       ]
-    : (location.state?.changeEmail)
-        ? location.state?.email + ' is your new email address to sign in with'
-        : (location.state?.changeName) && location.state?.name
+    : location.state?.changeEmail
+      ? location.state?.email + ' is your new email address to sign in with'
+      : location.state?.changeName && location.state?.name
 
-  const bannerHeading = (location.state?.changeBusinessDetails)
+  const bannerHeading = location.state?.changeBusinessDetails
     ? 'Business details updated'
-    : (location.state?.changeEmail)
-        ? 'Email address updated'
-        : (location.state?.changeName) && 'Name updated'
+    : location.state?.changeEmail
+      ? 'Email address updated'
+      : location.state?.changeName && 'Name updated'
 
   return (
     <>
-      <AccountNavigation currentPage={useLocation().pathname} />
+      <CitizenAccountNavigation currentPage={useLocation().pathname} />
       {location.state !== null
         ? (
           <NotificationBanner
@@ -57,57 +59,64 @@ export default function AccountPage () {
               <table className='govuk-table'>
                 <tbody className='govuk-table__body'>
                   <tr className='govuk-table__row'>
-                    <th scope='row' className='govuk-table__header row__header'>Name</th>
+                    <th scope='row' className='govuk-table__header row__header'>
+                      Name
+                    </th>
                     <td className='govuk-table__cell'>{name}</td>
                     <td className='govuk-table__cell govuk-!-text-align-right'>
-                      <Link
-                        to='/account/change-name'
-                        className='govuk-link'
-                      >
+                      <Link to='/account/change-name' className='govuk-link'>
                         Change
                       </Link>
                     </td>
                   </tr>
                   <tr className='govuk-table__row'>
-                    <th scope='row' className='govuk-table__header row__header'>Sign in email</th>
+                    <th scope='row' className='govuk-table__header row__header'>
+                      Sign in email
+                    </th>
                     <td className='govuk-table__cell'>{email}</td>
                     <td className='govuk-table__cell govuk-!-text-align-right'>
-                      <Link
-                        to='/account/change-email'
-                        className='govuk-link'
-                      >
+                      <Link to='/account/change-email' className='govuk-link'>
                         Change
                       </Link>
                     </td>
                   </tr>
                   <tr className='govuk-table__row'>
-                    <th scope='row' className='govuk-table__header row__header'>Business name (optional)</th>
+                    <th scope='row' className='govuk-table__header row__header'>
+                      Business name (optional)
+                    </th>
                     <td className='govuk-table__cell'>{businessName}</td>
                     <td className='govuk-table__cell govuk-!-text-align-right'>
                       <Link
                         to='/account/change-business-details'
                         className='govuk-link'
                       >
-                        {(businessName === '') ? 'Add' : 'Change'}
+                        {businessName === '' ? 'Add' : 'Change'}
                       </Link>
                     </td>
                   </tr>
                   <tr className='govuk-table__row'>
-                    <th scope='row' className='govuk-table__header row__header'>Job title (optional)</th>
+                    <th scope='row' className='govuk-table__header row__header'>
+                      Job title (optional)
+                    </th>
                     <td className='govuk-table__cell'>{jobTitle}</td>
                     <td className='govuk-table__cell govuk-!-text-align-right'>
                       <Link
                         to='/account/change-business-details'
                         className='govuk-link'
                       >
-                        {(jobTitle === '') ? 'Add' : 'Change'}
+                        {jobTitle === '' ? 'Add' : 'Change'}
                       </Link>
                     </td>
                   </tr>
                 </tbody>
               </table>
-              <h2 className='govuk-heading-m govuk-!-margin-bottom-6'>Delete your account</h2>
-              <p className='govuk-body govuk-!-margin-bottom-6'>If you no longer want to receive any flood messages, you can delete your account.</p>
+              <h2 className='govuk-heading-m govuk-!-margin-bottom-6'>
+                Delete your account
+              </h2>
+              <p className='govuk-body govuk-!-margin-bottom-6'>
+                If you no longer want to receive any flood messages, you can
+                delete your account.
+              </p>
               <Button
                 text='Delete your account'
                 className='govuk-button govuk-button--warning'

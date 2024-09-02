@@ -13,7 +13,7 @@ import {
 import { backendCall } from '../../../common/services/BackendService'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
-export default function AddAddressLayout ({
+export default function AddAddressLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -46,8 +46,9 @@ export default function AddAddressLayout ({
           if (address.length === 1) {
             dispatch(setOrgAddress(address[0]))
             navigate('/organisation/register/address-confirm')
-            return
+            return // Ensure none of the following code is executed
           } else {
+            // Multiple addresses with buildingNum returned, take them to pagination to confirm
             dispatch(setLocationSearchResults(address))
           }
         } else {

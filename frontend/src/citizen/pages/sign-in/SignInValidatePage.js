@@ -1,153 +1,18 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
-import BackLink from '../../../common/components/custom/BackLink'
-import Button from '../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
-import Input from '../../../common/components/gov-uk/Input'
-import InsetText from '../../../common/components/gov-uk/InsetText'
-import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
-import {
-  setAuthToken,
-  setContactPreferences,
-  setProfile,
-  setRegistrations
-} from '../../../common/redux/userSlice'
-import { backendCall } from '../../../common/services/BackendService'
-import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
-import ExpiredCodeLayout from '../../layouts/expired-code/ExpiredCodeLayout'
-import NotCompletedSigningUpLayout from '../../layouts/sign-up/NotCompletedSignUpLayout'
+import SignInValidatePageLayout from '../../../common/layouts/sign-in/SignInValidatePageLayout'
+import { useNavigate } from 'react-router-dom'
 
 export default function SignInValidatePage () {
-  const location = useLocation()
-  const [error, setError] = useState('')
-  const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [code, setCode] = useState('')
-  const [signinToken, setSignInToken] = useState(location.state.signinToken)
-  const [codeResent, setCodeResent] = useState(false)
-  const [codeResentTime, setCodeResentTime] = useState(new Date())
-  const [codeExpired, setCodeExpired] = useState(false)
-  const [signUpNotComplete, setSignUpNotComplete] = useState(false)
-  const [lastAccessedUrl, setLastAccessedUrl] = useState('')
 
-  // if error remove code sent notification
-  useEffect(() => {
-    setCodeResent(false)
-  }, [error])
-
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-
-    const validationError = authCodeValidation(code)
-    setError(validationError)
-    if (validationError === '') {
-      const dataToSend = { signinToken, code }
-      const { errorMessage, data } = await backendCall(
-        dataToSend,
-        'api/sign_in_validate'
-      )
-
-      if (errorMessage !== null) {
-        if (
-          errorMessage ===
-          'The code you have entered has expired - please request a new code'
-        ) {
-          setCodeExpired(true)
-        } else {
-          setError(errorMessage)
-        }
-      } else {
-        dispatch(setAuthToken(data.authToken))
-        dispatch(setProfile(data.profile))
-        dispatch(setRegistrations(data.registrations))
-        dispatch(setContactPreferences([
-          data.profile.emails.length !== 0 && 'Email Address',
-          data.profile.homePhones.length !== 0 && 'PhoneCall',
-          data.profile.mobilePhones.length !== 0 && 'Text'
-        ]))
-
-        const isSignUpComplete = data.profile.additionals.filter(
-          (c) => c.id === 'signUpComplete'
-        )[0]?.value
-        const lastAccessedUrl = data.profile.additionals.filter(
-          (c) => c.id === 'lastAccessedUrl'
-        )[0]?.value
-        setLastAccessedUrl(lastAccessedUrl)
-
-        if (!isSignUpComplete && lastAccessedUrl !== undefined) {
-          setSignUpNotComplete(true)
-        } else {
-          navigate('/home')
-        }
-      }
-    }
+  const NavigateToNextPage = () => {
+    navigate('/home')
   }
 
-  const getNewCode = async (event) => {
-    event.preventDefault()
-    const dataToSend = { email: location.state.email }
-    const { data, errorMessage } = await backendCall(dataToSend, 'api/sign_in', navigate)
-
-    if (errorMessage !== null) {
-      setError(errorMessage)
-    }
-
-    setSignInToken(data.signinToken)
-    setCodeResent(true)
-    setCodeResentTime(new Date().toLocaleTimeString())
-    setCodeExpired(false)
+  const NavigateToPreviousPage = () => {
+    navigate('/signin')
   }
 
   return (
-    <>
-      {codeExpired || signUpNotComplete
-        ? (
-            (codeExpired && <ExpiredCodeLayout getNewCode={getNewCode} />) ||
-        (signUpNotComplete && (
-          <NotCompletedSigningUpLayout nextPage={lastAccessedUrl} />
-        ))
-          )
-        : (
-          <>
-            <BackLink to='/signin' />
-            {codeResent &&
-              <NotificationBanner
-                className='govuk-notification-banner govuk-notification-banner--success'
-                title='Success'
-                text={'New code sent at ' + codeResentTime}
-              />}
-            <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-              <div className='govuk-grid-row'>
-                <div className='govuk-grid-column-two-thirds'>
-                  {error && <ErrorSummary errorList={[error]} />}
-                  <h2 className='govuk-heading-l'>Check your email</h2>
-                  <div className='govuk-body'>
-                    We've sent a code to:
-                    <InsetText text={location.state.email} />
-                    <Input
-                      className='govuk-input govuk-input--width-10'
-                      name='Enter code'
-                      inputType='text'
-                      value={code}
-                      error={error}
-                      onChange={(val) => setCode(val)}
-                    />
-                    <Button
-                      className='govuk-button'
-                      text='Continue'
-                      onClick={handleSubmit}
-                    />
-                    <br />
-                    <Link onClick={getNewCode} className='govuk-link'>
-                      Get a new code
-                    </Link>
-                  </div>
-                </div>
-              </div>
-            </main>
-          </>
-          )}
-    </>
+    <SignInValidatePageLayout NavigateToNextPage={NavigateToNextPage} NavigateToPreviousPage={NavigateToPreviousPage} />
   )
 }

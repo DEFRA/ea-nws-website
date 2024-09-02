@@ -1,8 +1,8 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
-import AccountNavigation from '../../components/custom/AccountNavigation'
 import BackLink from '../../components/custom/BackLink'
+import CitizenAccountNavigation from '../../components/custom/CitizenAccountNavigation'
 
 export default function ContactUsLayout () {
   const navigate = useNavigate()
@@ -11,17 +11,21 @@ export default function ContactUsLayout () {
 
   return (
     <>
-      {authToken && <AccountNavigation currentPage={location.pathname} />}
-      {!authToken && (
-        <BackLink onClick={() => navigate(-1)} />
+      {authToken && (
+        <CitizenAccountNavigation currentPage={location.pathname} />
       )}
-      <main className={authToken ? 'govuk-main-wrapper' : 'govuk-main-wrapper govuk-!-padding-top-4'}>
+      {!authToken && <BackLink onClick={() => navigate(-1)} />}
+      <main
+        className={
+          authToken
+            ? 'govuk-main-wrapper'
+            : 'govuk-main-wrapper govuk-!-padding-top-4'
+        }
+      >
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <div className='govuk-body'>
-              <h1 className='govuk-heading-l'>
-                Contact us
-              </h1>
+              <h1 className='govuk-heading-l'>Contact us</h1>
               {!authToken
                 ? (
                   <p>

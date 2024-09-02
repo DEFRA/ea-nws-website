@@ -401,6 +401,14 @@ export default function IndexPage () {
                     Organisation home page
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    to='/organisation/manage-locations/add'
+                    className='govuk-link'
+                  >
+                    Organisation add location
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>

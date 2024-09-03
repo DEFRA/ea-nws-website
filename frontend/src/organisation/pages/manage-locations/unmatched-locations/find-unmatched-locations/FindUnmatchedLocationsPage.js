@@ -7,7 +7,7 @@ import NotificationBanner from '../../../../../common/components/gov-uk/Notifica
 
 export default function FindUnmatchedLocationsPage () {
   const navigate = useNavigate()
-  const [addUnmatchedLocationOption, setUnmatchedLocationOption] = useState('')
+  const [unmatchedLocationOption, setUnmatchedLocationOption] = useState('')
   const [error, setError] = useState('')
 
   const unmatchedLocationsOptions = [
@@ -17,13 +17,13 @@ export default function FindUnmatchedLocationsPage () {
 
   useEffect(() => {
     setError('')
-  }, [addUnmatchedLocationOption])
+  }, [unmatchedLocationOption])
 
   const handleButton = async () => {
-    if (!addUnmatchedLocationOption) {
+    if (!unmatchedLocationOption) {
       setError('Select if you want to manually find, or not add, locations')
-    } else if (addUnmatchedLocationOption === unmatchedLocationsOptions[1].value) {
-      navigate('/organisation/unmatchedlocations/donotadd')
+    } else if (unmatchedLocationOption === unmatchedLocationsOptions[1].value) {
+      navigate('/organisation/manage-locations/unmatched-locations/do-not-add')
     } else {
       // this will need updated to the list of unmatched locations page
       navigate('/')
@@ -74,7 +74,7 @@ export default function FindUnmatchedLocationsPage () {
                   className='govuk-link'
                 >
                   Download a file of all the locations not matched,
-                </Link>
+                </Link> {''}
                 update it and reupload later.
               </p>
             </div>

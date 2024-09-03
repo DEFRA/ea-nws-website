@@ -11,8 +11,8 @@ export default function ConfirmLocationsPage () {
     event.preventDefault()
 
     // add matched address locations
-    // naviage to decide if user wants to find unmatched locations
-    navigate('/organisation/unmatchedlocations/find')
+    // navigate to decide if user wants to find unmatched locations
+    navigate('/organisation/manage-locations/unmatched-locations/find-unmatched-locations')
   }
 
   const handleCancel = async (event) => {

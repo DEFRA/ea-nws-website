@@ -2,7 +2,7 @@ import LocationAddAddressInfoPage from '../../pages/manage-locations/add-locatio
 import LocationAddPage from '../../pages/manage-locations/add-location/LocationAddPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/LocationAddUploadFilePage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
-import FindUnmatchedLocationsPage from '../../pages/manage-locations/unmatched-locations/find-unmactched-locations/FindUnmatchedLocationsPage'
+import FindUnmatchedLocationsPage from '../../pages/manage-locations/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
 import ConfirmLocationsPage from '../../pages/manage-locations/confirm-locations/ConfirmAddingLocationsPage'
 
 const urlManageOrg = '/organisation/manage-locations'

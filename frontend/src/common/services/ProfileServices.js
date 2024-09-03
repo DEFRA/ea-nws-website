@@ -15,7 +15,11 @@ const addUnverifiedContact = (profile, type, contact) => {
   }
 
   // Check for duplicates
-  if (!unverifiedContactList.some(unverifiedContact => unverifiedContact.address === contact)) {
+  if (
+    !unverifiedContactList.some(
+      (unverifiedContact) => unverifiedContact.address === contact
+    )
+  ) {
     const updatedProfile = {
       ...profile,
       unverified: {
@@ -24,8 +28,8 @@ const addUnverifiedContact = (profile, type, contact) => {
         [type === 'email'
           ? 'emails'
           : type === 'mobile'
-            ? 'mobilePhones'
-            : 'homePhones']: [...unverifiedContactList, formattedContact]
+          ? 'mobilePhones'
+          : 'homePhones']: [...unverifiedContactList, formattedContact]
       }
     }
     return updatedProfile
@@ -38,11 +42,19 @@ const addUnverifiedContact = (profile, type, contact) => {
 const removeUnverifiedContact = (profile, contact) => {
   let unverifiedContactListKey
 
-  if (profile.unverified.emails.some(email => email.address === contact)) {
+  if (profile.unverified.emails.some((email) => email.address === contact)) {
     unverifiedContactListKey = 'emails'
-  } else if (profile.unverified.mobilePhones.some(mobilePhone => mobilePhone.address === contact)) {
+  } else if (
+    profile.unverified.mobilePhones.some(
+      (mobilePhone) => mobilePhone.address === contact
+    )
+  ) {
     unverifiedContactListKey = 'mobilePhones'
-  } else if (profile.unverified.homePhones.some(homePhone => homePhone.address === contact)) {
+  } else if (
+    profile.unverified.homePhones.some(
+      (homePhone) => homePhone.address === contact
+    )
+  ) {
     unverifiedContactListKey = 'homePhones'
   } else {
     // contact not found in any unverified contacts list
@@ -88,8 +100,8 @@ const addVerifiedContact = (profile, type, contact) => {
       [type === 'email'
         ? 'emails'
         : type === 'mobile'
-          ? 'mobilePhones'
-          : 'homePhones']: [...verifiedContactList, contact]
+        ? 'mobilePhones'
+        : 'homePhones']: [...verifiedContactList, contact]
     }
     return updatedProfile
   } else {
@@ -171,6 +183,32 @@ const updateAdditionals = (profile, updatedAdditionals) => {
 
   return updatedProfile
 }
+const setOrganisationAdditionals = (profile) => {
+  const orgJson = {
+    name: null,
+    address: null,
+    compHouseNum: null,
+    emergencySector: null,
+    isAdminRegistering: null,
+    alternativeContact: {
+      firstName: null,
+      lastName: null,
+      email: null,
+      telephone: null,
+      jobTitle: null
+    }
+  }
+  return updateOrganisationAdditionals(profile, orgJson)
+}
+const getOrganisationAdditionals = (profile) => {
+  return getAdditionals(profile, 'organisation')
+}
+
+const updateOrganisationAdditionals = (profile, updatedOrganisation) => {
+  return updateAdditionals(profile, [
+    { id: 'organisation', value: updatedOrganisation }
+  ])
+}
 
 const addLocation = (profile, newLocation) => {
   const currentLocations = profile.pois
@@ -226,5 +264,8 @@ module.exports = {
   updateAdditionals,
   addLocation,
   removeLocation,
-  updateLocationsFloodCategory
+  updateLocationsFloodCategory,
+  setOrganisationAdditionals,
+  getOrganisationAdditionals,
+  updateOrganisationAdditionals
 }

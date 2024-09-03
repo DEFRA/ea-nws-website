@@ -2,8 +2,12 @@ import AddAddressPage from '../../pages/registration/AddAddressPage'
 import AddNamePage from '../../pages/registration/AddNamePage'
 import CompaniesHouseNumPage from '../../pages/registration/CompaniesHouseNumPage'
 import ConfirmAddressPage from '../../pages/registration/ConfirmAddressPage'
-import SectorPage from '../../pages/registration/SectorPage'
+import AdminDetailsPage from '../../pages/registration/mainAdministrator/AdminDetailsPage'
+import DuplicateAdminEmailPage from '../../pages/registration/mainAdministrator/DuplicateAdminEmailPage'
+import MainAdminPage from '../../pages/registration/mainAdministrator/MainAdminPage'
+import ValidateAdminEmailPage from '../../pages/registration/mainAdministrator/ValidateAdminEmailPage'
 import SelectAddressPage from '../../pages/registration/SearchAddressResultPage'
+import SectorPage from '../../pages/registration/SectorPage'
 
 // registration
 const registrationRoutes = [
@@ -27,6 +31,26 @@ const registrationRoutes = [
   {
     path: '/organisation/register/sector',
     component: <SectorPage />
+  },
+  {
+    path: '/organisation/register/main-admin',
+    component: <MainAdminPage />
+  },
+  {
+    path: '/organisation/register/admin-details',
+    component: <AdminDetailsPage />
+  },
+  {
+    path: '/organisation/register/admin-email-confirm',
+    component: <ValidateAdminEmailPage />
+  },
+  {
+    path: '/organisation/register/alternative-contact',
+    component: <AlternativeContactDetailsPage />
+  },
+  {
+    path: '/organisation/register/admin-email-duplicate',
+    component: <DuplicateAdminEmailPage />
   }
 ]
 

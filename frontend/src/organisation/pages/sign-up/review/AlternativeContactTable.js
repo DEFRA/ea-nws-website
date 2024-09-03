@@ -1,6 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-export default function ContactReviewTable() {
+export default function ContactReviewTable({ AlternativeContact }) {
+  const fullName =
+    AlternativeContact.firstName + ' ' + AlternativeContact.lastName
+
   return (
     <>
       <h3 className='govuk-heading-m govuk-!-margin-top-9'>
@@ -9,7 +12,7 @@ export default function ContactReviewTable() {
       <table className='govuk-table'>
         <tr className='govuk-table__row'>
           <td class='govuk-table__header  govuk-!-width-one-quarter'>Name</td>
-          <td className='govuk-table__cell  govuk-!-width-full'>Joan Smith</td>
+          <td className='govuk-table__cell  govuk-!-width-full'>{fullName}</td>
           <td className='govuk-table__cell'>
             <Link to='/' className='govuk-link'>
               Change
@@ -21,7 +24,7 @@ export default function ContactReviewTable() {
             Email address
           </td>
           <td className='govuk-table__cell  govuk-!-width-full'>
-            j.smith@floodinc.com
+            {AlternativeContact.email}
           </td>
           <td className='govuk-table__cell'>
             <Link to='/' className='govuk-link'>
@@ -34,7 +37,7 @@ export default function ContactReviewTable() {
             Telephone number
           </td>
           <td className='govuk-table__cell  govuk-!-width-full'>
-            0207 1739372
+            {AlternativeContact.telephone}
           </td>
           <td className='govuk-table__cell'>
             <Link to='/' className='govuk-link'>
@@ -46,7 +49,9 @@ export default function ContactReviewTable() {
           <td class='govuk-table__header  govuk-!-width-one-quarter'>
             Job title (optional)
           </td>
-          <td className='govuk-table__cell  govuk-!-width-full'>IT Director</td>
+          <td className='govuk-table__cell  govuk-!-width-full'>
+            {AlternativeContact.jobTitle}
+          </td>
           <td className='govuk-table__cell'>
             <Link to='/' className='govuk-link'>
               Change

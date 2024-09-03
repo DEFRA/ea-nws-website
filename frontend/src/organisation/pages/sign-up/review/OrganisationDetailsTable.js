@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function OrganisationDetailsTable() {
+export default function OrganisationDetailsTable({ Organisation }) {
   return (
     <>
       <h3 className='govuk-heading-m'>Organisation</h3>
@@ -11,7 +11,7 @@ export default function OrganisationDetailsTable() {
           <tr className='govuk-table__row'>
             <td class='govuk-table__header govuk-!-width-one-quarter'>Name</td>
             <td className='govuk-table__cell  govuk-!-width-full'>
-              Flood Inc.
+              {Organisation.name}
             </td>
 
             <td className='govuk-table__cell'>
@@ -25,7 +25,7 @@ export default function OrganisationDetailsTable() {
               UK head office address
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
-              1 All Saints house, The Causeway
+              {Organisation.address}
             </td>
 
             <td className='govuk-table__cell'>
@@ -38,7 +38,9 @@ export default function OrganisationDetailsTable() {
             <td class='govuk-table__header  govuk-!-width-one-quarter'>
               Has Companies House number?
             </td>
-            <td className='govuk-table__cell  govuk-!-width-full'>Yes</td>
+            <td className='govuk-table__cell  govuk-!-width-full'>
+              {Organisation.compHouseNum ? 'Yes' : 'No'}
+            </td>
             <td className='govuk-table__cell'>
               <Link to='/' className='govuk-link'>
                 Change
@@ -50,7 +52,7 @@ export default function OrganisationDetailsTable() {
               Companies House number
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
-              07889 456732
+              {Organisation.compHouseNum}
             </td>
 
             <td className='govuk-table__cell'>
@@ -63,7 +65,9 @@ export default function OrganisationDetailsTable() {
             <td class='govuk-table__header  govuk-!-width-one-quarter'>
               Involved in responding to public emergencies or incidents?
             </td>
-            <td className='govuk-table__cell  govuk-!-width-full'>Yes</td>
+            <td className='govuk-table__cell  govuk-!-width-full'>
+              {Organisation.emergencySector ? 'Yes' : 'No'}
+            </td>
 
             <td className='govuk-table__cell'>
               <Link to='/' className='govuk-link'>

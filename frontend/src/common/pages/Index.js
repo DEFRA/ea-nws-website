@@ -410,7 +410,10 @@ export default function IndexPage() {
                   </Link>
                 </li>
                 <li>
-                  <Link to='/organisation/signup/review' className='govuk-link'>
+                  <Link
+                    to='/organisation/sign-up/review'
+                    className='govuk-link'
+                  >
                     Sign up organisation review
                   </Link>
                 </li>

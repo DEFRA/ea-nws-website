@@ -26,9 +26,11 @@ export default function CheckYourAnswersPage() {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row '>
           <h2 className='govuk-heading-l'>Check your answers</h2>
-          <OrganisationDetailsTable />
-          <MainAdministratorTable />
-          <AlternativeContactTable />
+          <OrganisationDetailsTable Organisation={organisation} />
+          <MainAdministratorTable Profile={profile} />
+          <AlternativeContactTable
+            AlternativeContact={organisation.AlternativeContact}
+          />
           <Button
             onClick={handleButton}
             className='govuk-button'

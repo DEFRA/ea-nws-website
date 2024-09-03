@@ -3,16 +3,17 @@ import AddNamePage from '../../pages/sign-up/AddNamePage'
 import AlternativeContactDetailsPage from '../../pages/sign-up/AlternativeContactDetailsPage'
 import CompaniesHouseNumPage from '../../pages/sign-up/CompaniesHouseNumPage'
 import ConfirmAddressPage from '../../pages/sign-up/ConfirmAddressPage'
+import SelectAddressPage from '../../pages/sign-up/SearchAddressResultPage'
+import SectorPage from '../../pages/sign-up/SectorPage'
 import AdminDetailsPage from '../../pages/sign-up/mainAdministrator/AdminDetailsPage'
 import MainAdminPage from '../../pages/sign-up/mainAdministrator/MainAdminPage'
 import ValidateAdminEmailPage from '../../pages/sign-up/mainAdministrator/ValidateAdminEmailPage'
-import SelectAddressPage from '../../pages/sign-up/SearchAddressResultPage'
-import SectorPage from '../../pages/sign-up/SectorPage'
+import CheckYourAnswersPage from '../../pages/sign-up/review/CheckYourAnswersPage'
 
 const urlSignUpOrg = '/organisation/sign-up'
 
 // registration
-const registrationRoutes = [
+const signupRoutes = [
   { path: urlSignUpOrg, component: <AddNamePage /> },
   {
     path: urlSignUpOrg + '/address',
@@ -49,7 +50,8 @@ const registrationRoutes = [
   {
     path: urlSignUpOrg + '/alternative-contact',
     component: <AlternativeContactDetailsPage />
-  }
+  },
+  { path: urlSignUpOrg + '/review', component: <CheckYourAnswersPage /> }
 ]
 
 export default signupRoutes

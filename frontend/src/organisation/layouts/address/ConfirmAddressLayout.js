@@ -5,7 +5,7 @@ import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import { getOrganisationAdditionals } from '../../../common/services/ProfileServices'
 
-export default function ConfirmAddressLayout ({
+export default function ConfirmAddressLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -16,7 +16,6 @@ export default function ConfirmAddressLayout ({
 
   const handleSubmit = async () => {
     // Correct address is already stored in
-    // organisation.address
     NavigateToNextPage()
   }
 

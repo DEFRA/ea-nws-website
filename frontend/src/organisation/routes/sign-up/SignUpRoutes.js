@@ -9,43 +9,45 @@ import ValidateAdminEmailPage from '../../pages/registration/mainAdministrator/V
 import SelectAddressPage from '../../pages/registration/SearchAddressResultPage'
 import SectorPage from '../../pages/registration/SectorPage'
 
+const urlSignUpOrg = '/organisation/sign-up'
+
 // registration
 const registrationRoutes = [
-  { path: '/organisation/register', component: <AddNamePage /> },
+  { path: urlSignUpOrg, component: <AddNamePage /> },
   {
-    path: '/organisation/register/address',
+    path: urlSignUpOrg + '/address',
     component: <AddAddressPage />
   },
   {
-    path: '/organisation/register/address-search',
+    path: urlSignUpOrg + '/address-search',
     component: <SelectAddressPage />
   },
   {
-    path: '/organisation/register/address-confirm',
+    path: urlSignUpOrg + '/address-confirm',
     component: <ConfirmAddressPage />
   },
   {
-    path: '/organisation/register/number',
+    path: urlSignUpOrg + '/number',
     component: <CompaniesHouseNumPage />
   },
   {
-    path: '/organisation/register/sector',
+    path: urlSignUpOrg + '/sector',
     component: <SectorPage />
   },
   {
-    path: '/organisation/register/main-admin',
+    path: urlSignUpOrg + '/main-admin',
     component: <MainAdminPage />
   },
   {
-    path: '/organisation/register/admin-details',
+    path: urlSignUpOrg + '/admin-details',
     component: <AdminDetailsPage />
   },
   {
-    path: '/organisation/register/admin-email-confirm',
+    path: urlSignUpOrg + '/admin-email-confirm',
     component: <ValidateAdminEmailPage />
   },
   {
-    path: '/organisation/register/alternative-contact',
+    path: urlSignUpOrg + '/alternative-contact',
     component: <AlternativeContactDetailsPage />
   }
 ]

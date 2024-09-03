@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router'
 import AlternativeContactDetailsLayout from '../../layouts/alternative-contact/AlternativeContactDetailsLayout'
 
-export default function AlternativeContactDetailsPage () {
+export default function AlternativeContactDetailsPage() {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {
@@ -9,12 +9,12 @@ export default function AlternativeContactDetailsPage () {
   }
 
   const NavigateToPreviousPage = () => {
-    navigate('/organisation/register/main-admin')
+    navigate('/organisation/sign-up/main-admin')
   }
 
   return (
     <AlternativeContactDetailsLayout
-      NavigateToNextPage={() => NavigateToNextPage()}
+      NavigateToNextPage={NavigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
     />
   )

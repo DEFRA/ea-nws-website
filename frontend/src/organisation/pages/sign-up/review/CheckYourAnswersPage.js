@@ -1,13 +1,15 @@
 import { React } from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
+import { getOrganisationAdditionals } from '../../../../common/services/ProfileServices'
 import AlternativeContactTable from './AlternativeContactTable'
 import MainAdministratorTable from './MainAdministratorTable'
 import OrganisationDetailsTable from './OrganisationDetailsTable'
 export default function CheckYourAnswersPage() {
-  // need to get org details from profiles additionals
-  // const profile = useSelector((state) => state.session.profile.additionals)
+  const profile = useSelector((state) => state.session.profile.additionals)
+  let organisation = Object.assign({}, getOrganisationAdditionals(profile))
 
   // TODO - laurent or cammy to update this page with correct data
 

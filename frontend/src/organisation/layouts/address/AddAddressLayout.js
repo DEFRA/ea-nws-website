@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
@@ -8,12 +8,16 @@ import Input from '../../../common/components/gov-uk/Input'
 import {
   setLocationPostCode,
   setLocationSearchResults,
-  setOrgAddress
+  setProfile
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
+import {
+  getOrganisationAdditionals,
+  updateOrganisationAdditionals
+} from '../../../common/services/ProfileServices'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
-export default function AddAddressLayout ({
+export default function AddAddressLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -22,6 +26,7 @@ export default function AddAddressLayout ({
   const [postCode, setPostCode] = useState('')
   const [buildingNum, setBuildingNum] = useState('')
   const [error, setError] = useState('')
+  const profile = useSelector((state) => state.session.profile)
 
   const handleSubmit = async () => {
     const validationError = postCodeValidation(postCode)
@@ -46,8 +51,19 @@ export default function AddAddressLayout ({
             location.name.toLowerCase().trim().includes(normalisedBuildingNum)
           )
           if (address.length === 1) {
-            dispatch(setOrgAddress(address[0]))
-            navigate('/organisation/register/address-confirm')
+            let organisation = Object.assign(
+              {},
+              getOrganisationAdditionals(profile)
+            )
+            organisation.address = address[0]
+
+            const updatedProfile = updateOrganisationAdditionals(
+              profile,
+              organisation
+            )
+            dispatch(setProfile(updatedProfile))
+
+            navigate('/organisation/sign-up/address-confirm')
             return // Ensure none of the following code is executed
           } else {
             // Multiple addresses with buildingNum returned, take them to pagination to confirm
@@ -86,7 +102,7 @@ export default function AddAddressLayout ({
               <Input
                 inputType='text'
                 value={postCode}
-                name='Organisation postcode'
+                name='Postcode'
                 onChange={(val) => setPostCode(val)}
                 error={error}
                 className='govuk-input govuk-input--width-20'

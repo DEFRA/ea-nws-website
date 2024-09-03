@@ -10,25 +10,23 @@ import {
   updateOrganisationAdditionals
 } from '../../../common/services/ProfileServices'
 
-export default function SectorLayout({
+export default function MainAdminLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
   const dispatch = useDispatch()
-  const [emergencySector, setEmergencySector] = useState(null)
+  const [adminDetails, addAdminDetails] = useState(null)
   const [error, setError] = useState('')
   const profile = useSelector((state) => state.session.profile)
 
   const handleSubmit = async () => {
-    if (emergencySector === null) {
-      setError(
-        'Select whether your organisation is involved in responding to public emergencies or incidents'
-      )
+    if (adminDetails === null) {
+      setError('Select whether you will be the main administrator or not')
       return
     }
 
     let organisation = Object.assign({}, getOrganisationAdditionals(profile))
-    organisation.emergencySector = emergencySector
+    organisation.isAdminRegistering = adminDetails
 
     const updatedProfile = updateOrganisationAdditionals(profile, organisation)
     dispatch(setProfile(updatedProfile))
@@ -48,8 +46,7 @@ export default function SectorLayout({
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>
-              Is your organisation involved in responding to public emergencies
-              or incidents?
+              Will you be the main administrator on this account?
             </h1>
             <div className='govuk-body'>
               <div
@@ -60,9 +57,8 @@ export default function SectorLayout({
                 }
               >
                 <p className='govuk-hint'>
-                  Known as Category 1 or Category 2 responders. For example,
-                  police, fire or ambulance services, local authorities or
-                  member of a local resilience forum.
+                  An administrator can set up flood warnings, locations and
+                  users.
                 </p>
                 {error && (
                   <p className='govuk-error-message'>
@@ -73,15 +69,15 @@ export default function SectorLayout({
                 <div className='govuk-radios'>
                   <Radio
                     key='radio_yes'
-                    name='emergencySectorRadio'
+                    name='isAdminRadio'
                     label='Yes'
-                    onChange={() => setEmergencySector(true)}
+                    onChange={() => addAdminDetails(true)}
                   />
                   <Radio
                     key='radio_no'
-                    name='emergencySectorRadio'
-                    label='No'
-                    onChange={() => setEmergencySector(false)}
+                    name='isAdminRadio'
+                    label='No, it will be someone else'
+                    onChange={() => addAdminDetails(false)}
                   />
                   <br />
                 </div>

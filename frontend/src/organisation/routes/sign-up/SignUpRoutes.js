@@ -1,5 +1,6 @@
 import AddAddressPage from '../../pages/registration/AddAddressPage'
 import AddNamePage from '../../pages/registration/AddNamePage'
+import AlternativeContactDetailsPage from '../../pages/registration/AlternativeContactDetailsPage'
 import CompaniesHouseNumPage from '../../pages/registration/CompaniesHouseNumPage'
 import ConfirmAddressPage from '../../pages/registration/ConfirmAddressPage'
 import AdminDetailsPage from '../../pages/registration/mainAdministrator/AdminDetailsPage'

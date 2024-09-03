@@ -31,7 +31,7 @@ export default function CompaniesHouseNumLayout ({
       return
     }
 
-    let organisation = Object.assign({}, getOrganisationAdditionals(profile))
+    const organisation = Object.assign({}, getOrganisationAdditionals(profile))
 
     // No was clicked
     // Explicitly checking for false as !companyNum would also include empty string

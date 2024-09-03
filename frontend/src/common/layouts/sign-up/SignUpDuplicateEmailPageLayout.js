@@ -6,17 +6,17 @@ import ErrorSummary from '../../components/gov-uk/ErrorSummary'
 import InsetText from '../../components/gov-uk/InsetText'
 import { backendCall } from '../../services/BackendService'
 
-export default function SignUpDuplicateEmailPageLayout() {
+export default function SignUpDuplicateEmailPageLayout () {
   const navigate = useNavigate()
   const location = useLocation()
   const [error, setError] = useState('')
-  const email = 'test@mail.com' //location.state.email
+  const email = location.state.email
 
   const isOrganisationPage = location.pathname.includes('organisation')
-  const signup_url = isOrganisationPage
+  const urlSignup = isOrganisationPage
     ? '/organisation/register/admin-details'
     : '/signup'
-  const signin_validate_url = isOrganisationPage
+  const urlSigninValidate = isOrganisationPage
     ? '/organisation/signin/validate'
     : '/signin/validate'
 
@@ -31,7 +31,7 @@ export default function SignUpDuplicateEmailPageLayout() {
     if (errorMessage !== null) {
       setError(errorMessage)
     } else {
-      navigate(signin_validate_url, {
+      navigate(urlSigninValidate, {
         state: { signinToken: data.signinToken, email }
       })
     }
@@ -58,7 +58,7 @@ export default function SignUpDuplicateEmailPageLayout() {
               />
               &nbsp; &nbsp;
               <Link
-                to={signup_url}
+                to={urlSignup}
                 style={{ display: 'inline-block', padding: '8px 10px 7px' }}
                 className='govuk-link'
               >

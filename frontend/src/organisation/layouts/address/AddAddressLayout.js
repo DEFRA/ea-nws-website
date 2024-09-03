@@ -51,7 +51,7 @@ export default function AddAddressLayout ({
             location.name.toLowerCase().trim().includes(normalisedBuildingNum)
           )
           if (address.length === 1) {
-            let organisation = Object.assign(
+            const organisation = Object.assign(
               {},
               getOrganisationAdditionals(profile)
             )

@@ -14,20 +14,22 @@ export default function CheckYourAnswersPage() {
   const navigate = useNavigate()
 
   const handleButton = () => {
+    // TODO once we have updated API
     // call to update profile with final profile here
     navigate('/organisation/sign-up/success')
   }
 
   return (
     <>
-      <BackLink to='/declaration' />
+      {/* TODO - Should navigate back to Terms and Condition - Sprint 7 */}
+      <BackLink to='/organisation/sign-up/alternative-contact' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row '>
           <h2 className='govuk-heading-l'>Check your answers</h2>
-          <OrganisationDetailsTable Organisation={organisation} />
-          <MainAdministratorTable Profile={profile} />
+          <OrganisationDetailsTable organisation={organisation} />
+          <MainAdministratorTable profile={profile} />
           <AlternativeContactTable
-            AlternativeContact={organisation.alternativeContact}
+            alternativeContact={organisation.alternativeContact}
           />
           <Button
             onClick={handleButton}

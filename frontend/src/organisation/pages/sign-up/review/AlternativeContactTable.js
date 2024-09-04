@@ -1,8 +1,8 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-export default function ContactReviewTable({ AlternativeContact }) {
+export default function ContactReviewTable({ alternativeContact }) {
   const fullName =
-    AlternativeContact.firstName + ' ' + AlternativeContact.lastName
+    alternativeContact.firstName + ' ' + alternativeContact.lastName
 
   return (
     <>
@@ -14,6 +14,7 @@ export default function ContactReviewTable({ AlternativeContact }) {
           <td class='govuk-table__header  govuk-!-width-one-quarter'>Name</td>
           <td className='govuk-table__cell  govuk-!-width-full'>{fullName}</td>
           <td className='govuk-table__cell'>
+            {/* TODO - Add correct link when implemented */}
             <Link to='/' className='govuk-link'>
               Change
             </Link>
@@ -24,9 +25,10 @@ export default function ContactReviewTable({ AlternativeContact }) {
             Email address
           </td>
           <td className='govuk-table__cell  govuk-!-width-full'>
-            {AlternativeContact.email}
+            {alternativeContact.email}
           </td>
           <td className='govuk-table__cell'>
+            {/* TODO - Add correct link when implemented */}
             <Link to='/' className='govuk-link'>
               Change
             </Link>
@@ -37,9 +39,10 @@ export default function ContactReviewTable({ AlternativeContact }) {
             Telephone number
           </td>
           <td className='govuk-table__cell  govuk-!-width-full'>
-            {AlternativeContact.telephone}
+            {alternativeContact.telephone}
           </td>
           <td className='govuk-table__cell'>
+            {/* TODO - Add correct link when implemented */}
             <Link to='/' className='govuk-link'>
               Change
             </Link>
@@ -50,9 +53,10 @@ export default function ContactReviewTable({ AlternativeContact }) {
             Job title (optional)
           </td>
           <td className='govuk-table__cell  govuk-!-width-full'>
-            {AlternativeContact.jobTitle}
+            {alternativeContact.jobTitle}
           </td>
           <td className='govuk-table__cell'>
+            {/* TODO - Add correct link when implemented */}
             <Link to='/' className='govuk-link'>
               Change
             </Link>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function OrganisationDetailsTable({ Organisation }) {
+export default function OrganisationDetailsTable({ organisation }) {
   return (
     <>
       <h3 className='govuk-heading-m'>Organisation</h3>
@@ -11,10 +11,11 @@ export default function OrganisationDetailsTable({ Organisation }) {
           <tr className='govuk-table__row'>
             <td class='govuk-table__header govuk-!-width-one-quarter'>Name</td>
             <td className='govuk-table__cell  govuk-!-width-full'>
-              {Organisation.name}
+              {organisation.name}
             </td>
 
             <td className='govuk-table__cell'>
+              {/* TODO - Add correct link when implemented */}
               <Link to='/' className='govuk-link'>
                 Change
               </Link>
@@ -25,10 +26,11 @@ export default function OrganisationDetailsTable({ Organisation }) {
               UK head office address
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
-              {Organisation.address}
+              {organisation.address}
             </td>
 
             <td className='govuk-table__cell'>
+              {/* TODO - Add correct link when implemented */}
               <Link to='/' className='govuk-link'>
                 Change
               </Link>
@@ -39,9 +41,10 @@ export default function OrganisationDetailsTable({ Organisation }) {
               Has Companies House number?
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
-              {Organisation.compHouseNum ? 'Yes' : 'No'}
+              {organisation.compHouseNum ? 'Yes' : 'No'}
             </td>
             <td className='govuk-table__cell'>
+              {/* TODO - Add correct link when implemented */}
               <Link to='/' className='govuk-link'>
                 Change
               </Link>
@@ -52,10 +55,11 @@ export default function OrganisationDetailsTable({ Organisation }) {
               Companies House number
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
-              {Organisation.compHouseNum ? Organisation.compHouseNum : '-'}
+              {organisation.compHouseNum ? organisation.compHouseNum : '-'}
             </td>
 
             <td className='govuk-table__cell'>
+              {/* TODO - Add correct link when implemented */}
               <Link to='/' className='govuk-link'>
                 Change
               </Link>
@@ -66,10 +70,11 @@ export default function OrganisationDetailsTable({ Organisation }) {
               Involved in responding to public emergencies or incidents?
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
-              {Organisation.emergencySector ? 'Yes' : 'No'}
+              {organisation.emergencySector ? 'Yes' : 'No'}
             </td>
 
             <td className='govuk-table__cell'>
+              {/* TODO - Add correct link when implemented */}
               <Link to='/' className='govuk-link'>
                 Change
               </Link>

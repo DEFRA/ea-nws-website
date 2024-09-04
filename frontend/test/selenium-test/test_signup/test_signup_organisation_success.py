@@ -3,7 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 
-url = "http://localhost:3000/organisation/signup/success"
+url = "http://localhost:3000/organisation/sign-up/success"
 
 def go_to_success_page(get_browser):
     browser = get_browser
@@ -12,12 +12,12 @@ def go_to_success_page(get_browser):
     return browser
 
 def test_SuccessPage_render(get_browser):
-    browser = go_to_success_page(get_browser) 
+    browser = go_to_success_page(get_browser)
     assert "Organisation details submitted for approval" in browser.page_source
     assert browser.current_url == url
 
 def test_SuccessPage_renderBody(get_browser):
-    browser = go_to_success_page(get_browser) 
+    browser = go_to_success_page(get_browser)
     assert "Once approved, we will email you and explain how the service can be accessed." in browser.page_source
     assert browser.current_url == url
 

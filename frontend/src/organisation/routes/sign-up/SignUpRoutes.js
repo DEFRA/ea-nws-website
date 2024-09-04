@@ -9,6 +9,7 @@ import MainAdminPage from '../../pages/sign-up/mainAdministrator/MainAdminPage'
 import ValidateAdminEmailPage from '../../pages/sign-up/mainAdministrator/ValidateAdminEmailPage'
 import SelectAddressPage from '../../pages/sign-up/SearchAddressResultPage'
 import SectorPage from '../../pages/sign-up/SectorPage'
+import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
 
 const urlSignUpOrg = '/organisation/sign-up'
 
@@ -54,6 +55,10 @@ const registrationRoutes = [
   {
     path: urlSignUpOrg + '/admin-email-duplicate',
     component: <DuplicateAdminEmailPage />
+  },
+  {
+    path: urlSignUpOrg + '/success',
+    component: <SignUpSuccessPage />
   }
 ]
 

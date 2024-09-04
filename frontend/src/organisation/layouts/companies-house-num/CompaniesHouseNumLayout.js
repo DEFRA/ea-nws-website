@@ -11,19 +11,18 @@ import {
 } from '../../../common/services/ProfileServices'
 import { compHouseNumberValidation } from '../../../common/services/validations/CompHouseNumValidation'
 
-export default function CompaniesHouseNumLayout ({
+export default function CompaniesHouseNumLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
   const dispatch = useDispatch()
-  const [companyNumExists, setCompanyNumExists] = useState(null) // This exists so that the input field does not disappear when user deletes text
+  const [companyNumExists, setCompanyNumExists] = useState(null)
   const [companyNum, setCompanyNum] = useState(null)
   const [error, setError] = useState('')
   const [numberError, setNumberError] = useState('')
   const profile = useSelector((state) => state.session.profile)
 
   const handleSubmit = async () => {
-    // Nothing selected
     if (companyNum === null) {
       setError(
         'Select whether your organisation has a Companies House number or not'

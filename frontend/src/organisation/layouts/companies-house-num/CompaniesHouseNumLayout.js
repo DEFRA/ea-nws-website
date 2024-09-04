@@ -11,7 +11,7 @@ import {
 } from '../../../common/services/ProfileServices'
 import { compHouseNumberValidation } from '../../../common/services/validations/CompHouseNumValidation'
 
-export default function CompaniesHouseNumLayout({
+export default function CompaniesHouseNumLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {

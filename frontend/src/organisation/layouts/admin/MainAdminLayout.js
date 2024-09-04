@@ -75,7 +75,7 @@ export default function MainAdminLayout ({
                   />
                   <Radio
                     key='radio_no'
-                    name='isAdminRadio'
+                    name='isNotAdminRadio'
                     label='No, it will be someone else'
                     onChange={() => addAdminDetails(false)}
                   />

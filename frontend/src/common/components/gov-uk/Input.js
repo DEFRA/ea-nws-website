@@ -6,7 +6,8 @@ export default function Input ({
   defaultValue = '',
   inputType,
   onChange,
-  error = ''
+  error = '',
+  isNameBold = false
 }) {
   const handleChange = (event) => {
     onChange(event.target.value)
@@ -21,7 +22,12 @@ export default function Input ({
             : 'govuk-form-group govuk-form-group--error'
         }
       >
-        <label className='govuk-label' htmlFor='govuk-text-input'>
+        <label
+          className={
+            isNameBold === true ? 'govuk-label govuk-label--m' : 'govuk-label'
+          }
+          htmlFor='govuk-text-input'
+        >
           {name}
         </label>
         {error !== '' && (
@@ -30,7 +36,9 @@ export default function Input ({
           </p>
         )}
         <input
-          className={error === '' ? className : className + ' govuk-input--error'}
+          className={
+            error === '' ? className : className + ' govuk-input--error'
+          }
           name={name}
           id='govuk-text-input'
           type={inputType}

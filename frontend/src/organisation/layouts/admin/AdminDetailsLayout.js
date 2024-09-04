@@ -19,7 +19,7 @@ import {
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 
-export default function AdminDetailsLayout({
+export default function AdminDetailsLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -78,7 +78,7 @@ export default function AdminDetailsLayout({
 
     if (errorMessage !== null) {
       if (errorMessage === 'email already registered') {
-        navigate('/signup/duplicate', {
+        navigate('/organisation/register/admin-email-duplicate', {
           state: { email }
         })
       } else {
@@ -108,53 +108,50 @@ export default function AdminDetailsLayout({
             {(errorFullName || errorEmail) && (
               <ErrorSummary errorList={[errorFullName, errorEmail]} />
             )}
-            {isAdmin ? (
-              <h1 className='govuk-heading-l'>Enter your details</h1>
-            ) : (
-              <h1 className='govuk-heading-l'>
-                Enter details for main administrator
-              </h1>
-            )}
+            {isAdmin
+              ? (
+                <h1 className='govuk-heading-l'>Enter your details</h1>
+                )
+              : (
+                <h1 className='govuk-heading-l'>
+                  Enter details for main administrator
+                </h1>
+                )}
             <div className='govuk-body'>
-              {isAdmin ? (
-                <p className='govuk-hint'>
-                  You'll be able to set up flood warnings, locations and users.
-                  You will also receive flood messages for every locations you
-                  set up.
-                </p>
-              ) : (
-                <p className='govuk-hint'>
-                  An administrator can set up flood warning, locations and
-                  users. They will also receive flood messages for every
-                  locations they set up.
-                </p>
-              )}
-              <label className='govuk-label govuk-label--m' htmlFor='full-name'>
-                Full name
-              </label>
+              {isAdmin
+                ? (
+                  <p className='govuk-hint'>
+                    You'll be able to set up flood warnings, locations and users.
+                    You will also receive flood messages for every locations you
+                    set up.
+                  </p>
+                  )
+                : (
+                  <p className='govuk-hint'>
+                    An administrator can set up flood warning, locations and
+                    users. They will also receive flood messages for every
+                    locations they set up.
+                  </p>
+                  )}
               <Input
+                name='Full name'
                 inputType='text'
-                id='full-name'
                 value={fullName}
                 onChange={(val) => setFullName(val)}
                 error={errorFullName}
                 className='govuk-input govuk-input--width-20 govuk-typography-weight-bold'
                 defaultValue={fullName}
+                isNameBold
               />
-              <label
-                className='govuk-label govuk-label--m'
-                htmlFor='email-address'
-              >
-                Email address
-              </label>
               <Input
+                name='Email address'
                 inputType='text'
                 value={email}
-                id='email-address'
                 onChange={(val) => setEmail(val)}
                 error={errorEmail}
                 className='govuk-input govuk-input--width-20'
                 defaultValue={email}
+                isNameBold
               />
               <Button
                 text='Continue'

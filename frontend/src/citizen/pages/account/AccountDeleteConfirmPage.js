@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import ConfirmationPanel from '../../../common/components/gov-uk/Panel'
 import { clearAuth } from '../../../common/redux/userSlice'
 
-export default function AccountDeleteConfirmPage() {
+export default function AccountDeleteConfirmPage () {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(clearAuth())

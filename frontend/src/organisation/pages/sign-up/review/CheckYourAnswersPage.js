@@ -7,9 +7,9 @@ import { getOrganisationAdditionals } from '../../../../common/services/ProfileS
 import AlternativeContactTable from './AlternativeContactTable'
 import MainAdministratorTable from './MainAdministratorTable'
 import OrganisationDetailsTable from './OrganisationDetailsTable'
-export default function CheckYourAnswersPage() {
+export default function CheckYourAnswersPage () {
   const profile = useSelector((state) => state.session.profile)
-  let organisation = Object.assign({}, getOrganisationAdditionals(profile))
+  const organisation = Object.assign({}, getOrganisationAdditionals(profile))
 
   const navigate = useNavigate()
 

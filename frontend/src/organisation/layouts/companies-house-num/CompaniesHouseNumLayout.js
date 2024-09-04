@@ -11,7 +11,7 @@ import {
 } from '../../../common/services/ProfileServices'
 import { compHouseNumberValidation } from '../../../common/services/validations/CompHouseNumValidation'
 
-export default function CompaniesHouseNumLayout({
+export default function CompaniesHouseNumLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -30,7 +30,7 @@ export default function CompaniesHouseNumLayout({
       return
     }
 
-    let organisation = Object.assign({}, getOrganisationAdditionals(profile))
+    const organisation = Object.assign({}, getOrganisationAdditionals(profile))
 
     // No was clicked
     // Explicitly checking for false as !companyNum would also include empty string

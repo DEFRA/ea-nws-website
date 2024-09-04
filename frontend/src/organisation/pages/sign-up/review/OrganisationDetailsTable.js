@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function OrganisationDetailsTable({ organisation }) {
+export default function OrganisationDetailsTable ({ organisation }) {
   return (
     <>
       <h3 className='govuk-heading-m'>Organisation</h3>

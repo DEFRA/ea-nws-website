@@ -7,7 +7,6 @@ import FindUnmatchedLocationsPage from '../../pages/manage-locations/unmatched-l
 import ConfirmLocationsPage from '../../pages/manage-locations/confirm-locations/ConfirmAddingLocationsPage'
 
 const urlManageOrg = '/organisation/manage-locations'
-const urlAddLoc = urlManageOrg + '/add'
 const urlManageOrgUnmatchedLocations = '/organisation/manage-locations/unmatched-locations'
 const urlManageOrgConfirmLocations = '/organisation/manage-locations/confirm'
 

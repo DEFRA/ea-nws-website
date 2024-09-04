@@ -5,9 +5,11 @@ import { setSigninType } from '../../../common/redux/userSlice'
 
 export default function HomePage () {
   const dispatch = useDispatch()
+
   useEffect(() => {
     dispatch(setSigninType('org'))
   })
+
   return (
     <>
       <main className='govuk-main-wrapper'>

@@ -19,14 +19,7 @@ const userSlice = createSlice({
     selectedFloodWarningArea: null,
     selectedFloodAlertArea: null,
     showOnlySelectedFloodArea: null,
-    nearbyTargetAreaFlow: null,
-    // organisation data
-    organisation: {
-      name: null,
-      address: null,
-      compHouseNum: null,
-      emergencySector: null
-    }
+    nearbyTargetAreaFlow: null
   },
   reducers: {
     setAuthToken: (state, action) => {
@@ -79,19 +72,6 @@ const userSlice = createSlice({
     setNearbyTargetAreasFlow: (state, action) => {
       state.nearbyTargetAreaFlow = action.payload
     },
-    // organisation data
-    setOrgName: (state, action) => {
-      state.organisation.name = action.payload
-    },
-    setOrgAddress: (state, action) => {
-      state.organisation.address = action.payload
-    },
-    setOrgCompHouseNum: (state, action) => {
-      state.organisation.compHouseNum = action.payload
-    },
-    setOrgEmergencySector: (state, action) => {
-      state.organisation.emergencySector = action.payload
-    },
     clearAuth: (state) => {
       state.authToken = null
       state.registerToken = null
@@ -110,10 +90,11 @@ const userSlice = createSlice({
       state.showOnlySelectedFloodArea = null
       state.nearbyTargetAreaFlow = null
       state.organisation = {
-        name: null,
-        address: null,
-        compHouseNum: null,
-        emergencySector: null
+        mainAdministrator: {
+          firstName: null,
+          lastName: null,
+          emailAddress: null
+        }
       }
     }
   }
@@ -138,11 +119,6 @@ export const {
   setSelectedFloodAlertArea,
   setShowOnlySelectedFloodArea,
   setNearbyTargetAreasFlow,
-  // organisation data
-  setOrgName,
-  setOrgAddress,
-  setOrgCompHouseNum,
-  setOrgEmergencySector,
   // clear state
   clearAuth
 } = userSlice.actions

@@ -9,8 +9,8 @@ previous_page = "http://localhost:3000/signup/register-location/search-results"
 proximity_alert_page = "http://localhost:3000/signup/register-location/location-in-proximity-area/alert"
 alert_area_page = "http://localhost:3000/signup/register-location/location-in-alert-area"
 
-english_postcode_nearby_alert = "M1 1AE"
-alert_address_xpath = f"//a[contains(text(),'Apartment 1')]"
+english_postcode_nearby_alert = "WA7 3HA"
+alert_address_xpath = f"//a[contains(text(),'Holiday Inn')]"
 
 def setup_search_location_result_test(get_browser, postcode, address_xpath):
     browser = get_browser
@@ -45,8 +45,7 @@ def test_search_location_nearby_alert_render(get_browser):
     assert browser.current_url == proximity_alert_page
     assert "You can get flood messages near this location" in browser.page_source
     assert "Flood message areas nearby are highlighted in orange on the map." in browser.page_source
-    assert "Lower River Irwell catchment including areas in Greater Manchester" in browser.page_source
-    assert "Middle River Mersey catchment including areas near Bramhall, Stockport, Sale, Altrincham and Urmston" in browser.page_source
+    assert "Weaver catchment including Nantwich, Frodsham, Crewe, Winsford and Northwich" in browser.page_source
     assert "Select a nearby area" in browser.page_source 
     assert "Flood alert area" in browser.page_source 
     assert "Confirm" in browser.page_source 
@@ -77,7 +76,7 @@ def test_search_location_nearby_alert_confirm_error(get_browser):
 
 def test_search_location_nearby_alert_confirm(get_browser):
     browser = setup_search_location_result_test(get_browser, english_postcode_nearby_alert, alert_address_xpath)
-    address_postcode_radio_xpath = "//label[contains(text(), '1. Lower River Irwell catchment including areas in Greater Manchester')]/preceding-sibling::input[@type='radio']"
+    address_postcode_radio_xpath = "//label[contains(text(), '1. Weaver catchment including Nantwich, Frodsham, Crewe, Winsford and Northwich')]/preceding-sibling::input[@type='radio']"
     address_postcode_radio = browser.find_element(By.XPATH, address_postcode_radio_xpath)
     browser.execute_script("arguments[0].click();", address_postcode_radio)
     confirm_button_xpath = f"//button[text()='Confirm']"

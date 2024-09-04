@@ -17,7 +17,8 @@ import {
 import { getCoordsOfFloodArea } from '../../../common/services/WfsFloodDataService'
 
 export default function LocationInAlertAreaLayout ({
-  continueToNextPage, continueToSearchResultsPage,
+  continueToNextPage,
+  continueToSearchResultsPage,
   canCancel
 }) {
   const navigate = useNavigate()
@@ -89,7 +90,7 @@ export default function LocationInAlertAreaLayout ({
 
   const addFloodAlertArea = async () => {
     const alertArea = {
-      name: selectedFloodAlertArea.properties.ta_name,
+      name: selectedFloodAlertArea.properties.TA_NAME,
       address: '',
       coordinates: getCoordsOfFloodArea(selectedFloodAlertArea)
     }
@@ -100,7 +101,7 @@ export default function LocationInAlertAreaLayout ({
   const removeFloodAlertArea = async () => {
     const updatedProfile = await removeLocation(
       profile,
-      selectedFloodAlertArea.properties.ta_name
+      selectedFloodAlertArea.properties.TA_NAME
     )
     dispatch(setProfile(updatedProfile))
   }
@@ -139,7 +140,7 @@ export default function LocationInAlertAreaLayout ({
     <>
       <BackLink onClick={() => handleUserNavigatingBack()} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        <div className='govuk-grid-row'>
+        <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
               {additionalAlerts
@@ -149,7 +150,7 @@ export default function LocationInAlertAreaLayout ({
             <InsetText
               text={
                 isUserInNearbyTargetFlowpath
-                  ? selectedFloodAlertArea.properties.ta_name
+                  ? selectedFloodAlertArea.properties.TA_NAME
                   : selectedLocation.name
               }
             />
@@ -164,8 +165,7 @@ export default function LocationInAlertAreaLayout ({
               prepared.
             </p>
             <p>
-              They tell you when you should prepare and could pose a risk
-              to:
+              They tell you when you should prepare and could pose a risk to:
             </p>
             <ul className='govuk-list govuk-list--bullet'>
               <li>fields, recreational land and car parks</li>
@@ -190,10 +190,10 @@ export default function LocationInAlertAreaLayout ({
             <div className='govuk-!-margin-top-5'>
               <Button
                 text={
-                    additionalAlerts
-                      ? 'Continue'
-                      : 'Confirm you want this location'
-                  }
+                  additionalAlerts
+                    ? 'Continue'
+                    : 'Confirm you want this location'
+                }
                 className='govuk-button'
                 onClick={handleSubmit}
               />

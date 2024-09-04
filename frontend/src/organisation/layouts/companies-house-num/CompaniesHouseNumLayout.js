@@ -1,13 +1,17 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../common/components/gov-uk/Radio'
-import { setOrgCompHouseNum } from '../../../common/redux/userSlice'
+import { setProfile } from '../../../common/redux/userSlice'
+import {
+  getOrganisationAdditionals,
+  updateOrganisationAdditionals
+} from '../../../common/services/ProfileServices'
 import { compHouseNumberValidation } from '../../../common/services/validations/CompHouseNumValidation'
 
-export default function CompaniesHouseNumLayout ({
+export default function CompaniesHouseNumLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -16,6 +20,7 @@ export default function CompaniesHouseNumLayout ({
   const [companyNum, setCompanyNum] = useState(null)
   const [error, setError] = useState('')
   const [numberError, setNumberError] = useState('')
+  const profile = useSelector((state) => state.session.profile)
 
   const handleSubmit = async () => {
     if (companyNum === null) {
@@ -25,13 +30,31 @@ export default function CompaniesHouseNumLayout ({
       return
     }
 
+    let organisation = Object.assign({}, getOrganisationAdditionals(profile))
+
+    // No was clicked
+    // Explicitly checking for false as !companyNum would also include empty string
     if (companyNum === false) {
-      dispatch(setOrgCompHouseNum(null))
+      organisation.compHouseNum = null
+
+      const updatedProfile = updateOrganisationAdditionals(
+        profile,
+        organisation
+      )
+      dispatch(setProfile(updatedProfile))
+
       NavigateToNextPage()
     } else {
+      // Yes was clicked - validate input before proceeding
       const validationError = compHouseNumberValidation(companyNum)
       if (!validationError) {
-        dispatch(setOrgCompHouseNum(companyNum))
+        organisation.compHouseNum = companyNum
+
+        const updatedProfile = updateOrganisationAdditionals(
+          profile,
+          organisation
+        )
+        dispatch(setProfile(updatedProfile))
         NavigateToNextPage()
       } else {
         setNumberError(validationError)

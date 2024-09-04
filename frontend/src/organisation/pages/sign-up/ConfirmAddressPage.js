@@ -1,12 +1,12 @@
 import { useNavigate } from 'react-router'
 import ConfirmAddressLayout from '../../layouts/address/ConfirmAddressLayout'
 
-export default function ConfirmAddressPage () {
+export default function ConfirmAddressPage() {
   const navigate = useNavigate()
-  const NavigateToNextPage = () => navigate('/organisation/register/number')
+  const NavigateToNextPage = () => navigate('/organisation/sign-up/number')
 
   const NavigateToPreviousPage = () => {
-    navigate('/organisation/register/address')
+    navigate('/organisation/sign-up/address')
   }
 
   return (

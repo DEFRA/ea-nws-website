@@ -13,7 +13,10 @@ import {
   setSelectedFloodAlertArea
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import { addLocation, removeLocation } from '../../../common/services/ProfileServices'
+import {
+  addLocation,
+  removeLocation
+} from '../../../common/services/ProfileServices'
 import {
   getAssociatedAlertArea,
   getCoordsOfFloodArea
@@ -67,7 +70,7 @@ export default function LocationInSevereWarningAreaLayout ({
 
   const addFloodWarningArea = async () => {
     const warningArea = {
-      name: selectedFloodWarningArea.properties.ta_name,
+      name: selectedFloodWarningArea.properties.TA_NAME,
       address: '',
       coordinates: getCoordsOfFloodArea(selectedFloodWarningArea)
     }
@@ -78,7 +81,7 @@ export default function LocationInSevereWarningAreaLayout ({
   const removeFloodWarningArea = async () => {
     const updatedProfile = await removeLocation(
       profile,
-      selectedFloodWarningArea.properties.ta_name
+      selectedFloodWarningArea.properties.TA_NAME
     )
     dispatch(setProfile(updatedProfile))
   }
@@ -87,7 +90,7 @@ export default function LocationInSevereWarningAreaLayout ({
     const associatedAlertArea = await getAssociatedAlertArea(
       selectedLocation.coordinates.latitude,
       selectedLocation.coordinates.longitude,
-      selectedFloodWarningArea.properties.parent
+      selectedFloodWarningArea.properties.PARENT
     )
 
     if (associatedAlertArea) {
@@ -122,16 +125,17 @@ export default function LocationInSevereWarningAreaLayout ({
     <>
       <BackLink onClick={() => handleUserNavigatingBack()} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        <div className='govuk-grid-row'>
+        <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
               You can get severe flood warnings and flood warnings for this
               location
             </h1>
-            <InsetText text={
-              isUserInNearbyTargetFlowpath
-                ? selectedFloodWarningArea.properties.ta_name
-                : selectedLocation.name
+            <InsetText
+              text={
+                isUserInNearbyTargetFlowpath
+                  ? selectedFloodWarningArea.properties.TA_NAME
+                  : selectedLocation.name
               }
             />
           </div>
@@ -171,7 +175,7 @@ export default function LocationInSevereWarningAreaLayout ({
               className='govuk-button'
               onClick={handleSubmit}
             />
-                &nbsp; &nbsp;
+            &nbsp; &nbsp;
             <Link
               onClick={() => navigate(-1)}
               className='govuk-link'

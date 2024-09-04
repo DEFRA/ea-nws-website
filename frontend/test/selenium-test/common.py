@@ -26,13 +26,25 @@ url_cit_signout_auto = local_host + '/signout-auto'
 
 # ORGANISATION URLS
 url_org = local_host + '/organisation'
-url_org_signup = url_org + '/register'
-url_org_signin = url_org + '/signin'
-url_org_signin_val = url_org + '/signin/validate'
-url_org_sign_back_in = url_org + '/sign-back-in'
 url_org_home = url_org + '/home'
+# Signup urls
+url_org_signup = url_org + '/register'
+url_org_signup = {
+    'mainAdmin': url_org_signup + '/main-admin',
+    'adminDetails': url_org_signup + '/admin-details',
+    'duplicateEmail': url_org_signup + '/admin-email-duplicate'
+}
+# Signin urls
+url_org_signin = url_org + '/signin'
+url_org_signin = {
+    'validate': url_org_signin + '/validate',
+    'signBackIn': url_org + '/sign-back-in'
+}
+# Signout urls
 url_org_signout = url_org + '/signout'
-url_org_signout_auto = url_org + '/signout-auto'
+url_org_signout = {
+    'auto': url_org + '/signout-auto'
+}
 # Manage locations
 url_org_man_loc = url_org + '/manage-locations'
 url_org_add_loc = url_org_man_loc + '/add'
@@ -53,6 +65,14 @@ def navigate_to_auth_page_via_index(browser, url_target, mock_session=1):
     click_button(browser, button_text, url_index)
     browser.get(url_target)
 
+# Navigate to unauthenticated page via index page and check url
+def navigate_to_unauth_page_via_index(browser, url_target):
+    browser.get(url_index)
+    button_text = 'Activate/Deactivate Empty profile - Used for sign up tests'
+    click_button(browser, button_text, url_index)
+    browser.get(url_target)
+    return browser
+
 # CLICK / SELECT
 # Click on a button and check url
 def click_button(browser, button_text, url_button):
@@ -71,10 +91,17 @@ def click_link(browser, link_text, url_link):
     assert browser.current_url == url_link
 
 # Select input radio option
-def select_input_radio_option(browser, radio_id):
-    input_radio_xpath = f"//input[@value='{radio_id}']"
+def select_input_radio_option(browser, radio_id, property='value'):
+    input_radio_xpath = f"//input[@{property}='{radio_id}']"
     input_radio_element = browser.find_element(By.XPATH, input_radio_xpath)
     browser.execute_script("arguments[0].click();", input_radio_element)
+
+# ENTER TEXT
+# Enter input in text box
+def enter_input_text(browser, input_name, input_text):
+    input_xpath = f"//input[@name='{input_name}']"
+    input_element = browser.find_element(By.XPATH, input_xpath)
+    input_element.send_keys(input_text)
 
 # CHECKS
 # Check if xpath exists

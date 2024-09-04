@@ -92,4 +92,4 @@ def test_org_auto_logout(get_browser):
     navigate_to_auth_page_via_index(browser, url_org_home)
     time.sleep(time_to_popup + time_to_auto_signout + delay)
     popup_not_found(browser)
-    assert browser.current_url == url_org_signout_auto
+    assert browser.current_url == url_org_signout.auto

@@ -2,8 +2,13 @@ import LocationAddAddressInfoPage from '../../pages/manage-locations/add-locatio
 import LocationAddPage from '../../pages/manage-locations/add-location/LocationAddPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/LocationAddUploadFilePage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
+import DoNotAddLocationsPage from '../../pages/manage-locations/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
+import FindUnmatchedLocationsPage from '../../pages/manage-locations/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
+import ConfirmLocationsPage from '../../pages/manage-locations/confirm-locations/ConfirmAddingLocationsPage'
 
 const urlManageOrg = '/organisation/manage-locations'
+const urlManageOrgUnmatchedLocations = '/organisation/manage-locations/unmatched-locations'
+const urlManageOrgConfirmLocations = '/organisation/manage-locations/confirm'
 
 // Manage location urls
 const orgManageLocationsUrls = {
@@ -14,6 +19,10 @@ const orgManageLocationsUrls = {
     options: urlManageOrg + '/add',
     addressInfo: urlManageOrg + '/add/address-info',
     uploadFile: urlManageOrg + '/add/upload-file'
+  },
+  unmatchedLocations: {
+    doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
+    findUnmatchedLocations: urlManageOrgUnmatchedLocations + '/find-unmatched-locations'
   }
 }
 
@@ -34,6 +43,18 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.uploadFile,
     component: <LocationAddUploadFilePage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.doNotAdd,
+    component: <DoNotAddLocationsPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.findUnmatchedLocations,
+    component: <FindUnmatchedLocationsPage />
+  },
+  {
+    path: urlManageOrgConfirmLocations,
+    component: <ConfirmLocationsPage />
   }
 ]
 

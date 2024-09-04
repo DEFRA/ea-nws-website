@@ -97,15 +97,15 @@ def click_link(browser, link_text, url_link):
     assert browser.current_url == url_link
 
 # Select input radio option
-def select_input_radio_option(browser, radio_id, property='value'):
-    input_radio_xpath = f"//input[@{property}='{radio_id}']"
+def select_input_radio_option(browser, value, key='value'):
+    input_radio_xpath = f"//input[@{key}='{value}']"
     input_radio_element = browser.find_element(By.XPATH, input_radio_xpath)
     browser.execute_script("arguments[0].click();", input_radio_element)
 
 # ENTER TEXT
 # Enter input in text box
-def enter_input_text(browser, input_name, input_text):
-    input_xpath = f"//input[@name='{input_name}']"
+def enter_input_text(browser, value, input_text, key='name'):
+    input_xpath = f"//input[@{key}='{value}']"
     input_element = browser.find_element(By.XPATH, input_xpath)
     input_element.clear()
     input_element.send_keys(input_text)

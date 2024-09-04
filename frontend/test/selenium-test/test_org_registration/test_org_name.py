@@ -1,23 +1,14 @@
-import pytest
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-import time
+from common import *
 
-url = "http://localhost:3000/organisation/sign-up"
-nextPage = "http://localhost:3000/organisation/sign-up/address"
+url_signup = url_org_signup.get('signup')
+url_address = url_org_signup.get('address')
 
-def test__empty_input(get_browser):
-    browser = get_browser
-    browser.get(url)
-    browser.find_element(By.CLASS_NAME, "govuk-button").click()
+def test_empty_input(get_browser):
+    browser = navigate_to_unauth_page_via_index(get_browser, url_signup)
+    click_button(browser, 'Continue', url_signup)
     assert "Enter your organisation's name" in browser.page_source
-    assert browser.current_url == url
 
 def test_valid_input(get_browser):
-    browser = get_browser 
-    browser.get(url)
-    input_field = browser.find_element(By.NAME, "Organisation name")
-    input_field.send_keys("Valid Organisation Name")
-    browser.find_element(By.CLASS_NAME, "govuk-button").click()
-    time.sleep(1) 
-    assert browser.current_url == nextPage
+    browser = navigate_to_unauth_page_via_index(get_browser, url_signup)
+    enter_input_text(browser, 'govuk-text-input', 'Valid Organisation Name', 'id')
+    click_button(browser, 'Continue', url_address)

@@ -14,7 +14,7 @@ export default function SignUpDuplicateEmailPageLayout () {
 
   const isOrganisationPage = location.pathname.includes('organisation')
   const urlSignup = isOrganisationPage
-    ? '/organisation/register/admin-details'
+    ? '/organisation/sign-up/admin-details'
     : '/signup'
   const urlSigninValidate = isOrganisationPage
     ? '/organisation/signin/validate'

@@ -7,7 +7,7 @@ export default function ContactReviewTable({ AlternativeContact }) {
   return (
     <>
       <h3 className='govuk-heading-m govuk-!-margin-top-9'>
-        Alternative Contact
+        Alternative contact
       </h3>
       <table className='govuk-table'>
         <tr className='govuk-table__row'>

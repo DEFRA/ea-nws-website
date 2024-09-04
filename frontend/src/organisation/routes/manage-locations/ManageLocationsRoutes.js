@@ -19,16 +19,12 @@ const orgManageLocationsUrls = {
   add: {
     options: urlManageOrg + '/add',
     addressInfo: urlManageOrg + '/add/address-info',
-    uploadFile: urlManageOrg + '/add/upload-file',
-    addressInfo: urlAddLoc + '/address-info',
-    uploadFile: urlAddLoc + '/upload-file'
+    uploadFile: urlManageOrg + '/add/upload-file'
   },
-
   unmatchedLocations: {
     doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
     findUnmatchedLocations: urlManageOrgUnmatchedLocations + '/find-unmatched-locations'
   }
-
 }
 
 // Manage location routes
@@ -44,10 +40,6 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.addressInfo,
     component: <LocationAddAddressInfoPage />
-  },
-  {
-    path: orgManageLocationsUrls.add.uploadFile,
-    component: <LocationAddUploadFilePage />
   },
   {
     path: orgManageLocationsUrls.add.uploadFile,

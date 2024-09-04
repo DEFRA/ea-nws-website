@@ -1,6 +1,7 @@
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/LocationAddAddressInfoPage'
 import LocationAddPage from '../../pages/manage-locations/add-location/LocationAddPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/LocationAddUploadFilePage'
+import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
 import ConfirmLocationsPage from '../../pages/manage-locations/confirm-locations/ConfirmAddingLocationsPage'
@@ -12,8 +13,13 @@ const urlManageOrgConfirmLocations = '/organisation/manage-locations/confirm'
 
 // Manage location urls
 const orgManageLocationsUrls = {
+  view: {
+    dashboard: urlManageOrg + '/view-locations'
+  },
   add: {
-    options: urlAddLoc,
+    options: urlManageOrg + '/add',
+    addressInfo: urlManageOrg + '/add/address-info',
+    uploadFile: urlManageOrg + '/add/upload-file',
     addressInfo: urlAddLoc + '/address-info',
     uploadFile: urlAddLoc + '/upload-file'
   },
@@ -27,6 +33,10 @@ const orgManageLocationsUrls = {
 
 // Manage location routes
 const orgManageLocationRoutes = [
+  {
+    path: orgManageLocationsUrls.view.dashboard,
+    component: <ViewLocationsDashboardPage />
+  },
   {
     path: orgManageLocationsUrls.add.options,
     component: <LocationAddPage />

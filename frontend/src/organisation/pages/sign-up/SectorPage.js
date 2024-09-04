@@ -1,16 +1,16 @@
 import { useNavigate } from 'react-router'
-import AddNameLayout from '../../layouts/name/AddNameLayout'
+import SectorLayout from '../../layouts/sector/SectorLayout'
 
-export default function AddNamePage () {
+export default function SectorPage() {
   const navigate = useNavigate()
-  const NavigateToNextPage = () => navigate('/organisation/register/address')
+  const NavigateToNextPage = () => navigate('/organisation/sign-up/main-admin')
 
   const NavigateToPreviousPage = () => {
-    navigate(-1)
+    navigate('/organisation/sign-up/number')
   }
 
   return (
-    <AddNameLayout
+    <SectorLayout
       NavigateToNextPage={NavigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
     />

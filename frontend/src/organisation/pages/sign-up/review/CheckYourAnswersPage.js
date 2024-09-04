@@ -15,7 +15,7 @@ export default function CheckYourAnswersPage() {
 
   const handleButton = () => {
     // call to update profile with final profile here
-    navigate('/organisation/signup/success')
+    navigate('/organisation/sign-up/success')
   }
 
   return (

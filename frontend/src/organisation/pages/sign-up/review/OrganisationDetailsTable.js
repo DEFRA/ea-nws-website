@@ -52,7 +52,7 @@ export default function OrganisationDetailsTable({ Organisation }) {
               Companies House number
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
-              {Organisation.compHouseNum}
+              {Organisation.compHouseNum ? Organisation.compHouseNum : '-'}
             </td>
 
             <td className='govuk-table__cell'>

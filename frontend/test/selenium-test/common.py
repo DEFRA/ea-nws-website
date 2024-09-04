@@ -28,7 +28,7 @@ url_cit_signout_auto = local_host + '/signout-auto'
 url_org = local_host + '/organisation'
 url_org_home = url_org + '/home'
 # Signup urls
-url_org_signup_path = url_org + '/register'
+url_org_signup_path = url_org + '/sign-up'
 url_org_signup = {
     'signup': url_org_signup_path,
     'mainAdmin': url_org_signup_path + '/main-admin',
@@ -48,13 +48,14 @@ url_org_signout = {
     'auto': url_org + '/signout-auto'
 }
 # Manage locations
-url_org_man_loc = url_org + '/manage-locations'
-url_org_add_loc = url_org_man_loc + '/add'
+url_org_man_loc_path = url_org + '/manage-locations'
+url_org_add_loc_path = url_org_man_loc_path + '/add'
 url_org_man_loc = {
+    'manageLocations': url_org_man_loc_path,
     'add': {
-        'options': url_org_add_loc,
-        'addressInfo': url_org_add_loc + '/address-info',
-        'uploadFile': url_org_add_loc + '/upload-file',
+        'options': url_org_add_loc_path,
+        'addressInfo': url_org_add_loc_path + '/address-info',
+        'uploadFile': url_org_add_loc_path + '/upload-file',
         'uploadTemplate': 'http://d39yn09rf1d1o9.cloudfront.net/template.csv'
     }
 }

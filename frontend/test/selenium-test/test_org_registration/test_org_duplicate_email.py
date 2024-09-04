@@ -1,6 +1,4 @@
 from common import *
-import time
-from selenium.webdriver.common.by import By
 
 url_main_admin = url_org_signup.get('mainAdmin')
 url_admin_details = url_org_signup.get('adminDetails')

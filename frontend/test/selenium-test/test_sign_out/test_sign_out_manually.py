@@ -27,13 +27,13 @@ def test_cit_feedback_link(get_browser):
 def test_org_signout_button(get_browser):
     browser = get_browser
     navigate_to_auth_page_via_index(browser, url_org_home)
-    click_link(browser, 'Sign Out', url_org_signout)
+    click_link(browser, 'Sign out', url_org_signout.get('signout'))
     assert "More about flooding" not in browser.page_source
-    click_button(browser, 'Sign in', url_org_signin)
+    click_button(browser, 'Sign in', url_org_signin.get('signin'))
 
 # Test feedback link
 def test_org_feedback_link(get_browser):
     browser = get_browser
     navigate_to_auth_page_via_index(browser, url_org_home)
-    click_link(browser, 'Sign Out', url_org_signout)
+    click_link(browser, 'Sign out', url_org_signout.get('signout'))
     click_link(browser, 'What do you think of this service?', url_feedback)

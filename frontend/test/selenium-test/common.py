@@ -28,21 +28,23 @@ url_cit_signout_auto = local_host + '/signout-auto'
 url_org = local_host + '/organisation'
 url_org_home = url_org + '/home'
 # Signup urls
-url_org_signup = url_org + '/register'
+url_org_signup_path = url_org + '/register'
 url_org_signup = {
-    'mainAdmin': url_org_signup + '/main-admin',
-    'adminDetails': url_org_signup + '/admin-details',
-    'duplicateEmail': url_org_signup + '/admin-email-duplicate'
+    'signup': url_org_signup_path,
+    'mainAdmin': url_org_signup_path + '/main-admin',
+    'adminDetails': url_org_signup_path + '/admin-details',
+    'duplicateEmail': url_org_signup_path + '/admin-email-duplicate'
 }
 # Signin urls
-url_org_signin = url_org + '/signin'
+url_org_signin_path = url_org + '/signin'
 url_org_signin = {
-    'validate': url_org_signin + '/validate',
+    'signin': url_org_signin_path,
+    'validate': url_org_signin_path + '/validate',
     'signBackIn': url_org + '/sign-back-in'
 }
 # Signout urls
-url_org_signout = url_org + '/signout'
 url_org_signout = {
+    'signout': url_org + '/signout',
     'auto': url_org + '/signout-auto'
 }
 # Manage locations

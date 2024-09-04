@@ -10,7 +10,6 @@ import OrganisationDetailsTable from './OrganisationDetailsTable'
 export default function CheckYourAnswersPage () {
   const profile = useSelector((state) => state.session.profile)
   const organisation = Object.assign({}, getOrganisationAdditionals(profile))
-
   const navigate = useNavigate()
 
   const handleButton = () => {

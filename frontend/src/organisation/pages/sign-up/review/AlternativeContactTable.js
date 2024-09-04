@@ -1,9 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 export default function ContactReviewTable ({ alternativeContact }) {
-  const fullName =
-    alternativeContact.firstName + ' ' + alternativeContact.lastName
-
+  const fullName = `${alternativeContact.firstname} ${alternativeContact.lastname}`
   return (
     <>
       <h3 className='govuk-heading-m govuk-!-margin-top-9'>

@@ -8,10 +8,8 @@ import AlternativeContactTable from './AlternativeContactTable'
 import MainAdministratorTable from './MainAdministratorTable'
 import OrganisationDetailsTable from './OrganisationDetailsTable'
 export default function CheckYourAnswersPage() {
-  const profile = useSelector((state) => state.session.profile.additionals)
+  const profile = useSelector((state) => state.session.profile)
   let organisation = Object.assign({}, getOrganisationAdditionals(profile))
-
-  // TODO - laurent or cammy to update this page with correct data
 
   const navigate = useNavigate()
 
@@ -29,7 +27,7 @@ export default function CheckYourAnswersPage() {
           <OrganisationDetailsTable Organisation={organisation} />
           <MainAdministratorTable Profile={profile} />
           <AlternativeContactTable
-            AlternativeContact={organisation.AlternativeContact}
+            AlternativeContact={organisation.alternativeContact}
           />
           <Button
             onClick={handleButton}

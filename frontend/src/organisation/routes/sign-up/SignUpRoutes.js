@@ -9,6 +9,7 @@ import AdminDetailsPage from '../../pages/sign-up/mainAdministrator/AdminDetails
 import MainAdminPage from '../../pages/sign-up/mainAdministrator/MainAdminPage'
 import ValidateAdminEmailPage from '../../pages/sign-up/mainAdministrator/ValidateAdminEmailPage'
 import CheckYourAnswersPage from '../../pages/sign-up/review/CheckYourAnswersPage'
+import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
 
 const urlSignUpOrg = '/organisation/sign-up'
 
@@ -50,6 +51,10 @@ const signupRoutes = [
   {
     path: urlSignUpOrg + '/alternative-contact',
     component: <AlternativeContactDetailsPage />
+  },
+  {
+    path: urlSignUpOrg + '/success',
+    component: <SignUpSuccessPage />
   },
   { path: urlSignUpOrg + '/review', component: <CheckYourAnswersPage /> }
 ]

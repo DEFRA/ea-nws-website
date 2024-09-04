@@ -6,7 +6,7 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddPage() {
+export default function LocationAddPage () {
   const navigate = useNavigate()
 
   const addLocationOptions = [

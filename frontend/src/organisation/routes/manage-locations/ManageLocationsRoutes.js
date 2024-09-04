@@ -1,21 +1,28 @@
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/LocationAddAddressInfoPage'
 import LocationAddPage from '../../pages/manage-locations/add-location/LocationAddPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/LocationAddUploadFilePage'
+import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
 
 const urlManageOrg = '/organisation/manage-locations'
-const urlAddLoc = urlManageOrg + '/add'
 
 // Manage location urls
 const orgManageLocationsUrls = {
+  view: {
+    dashboard: urlManageOrg + '/view-locations'
+  },
   add: {
-    options: urlAddLoc,
-    addressInfo: urlAddLoc + '/address-info',
-    uploadFile: urlAddLoc + '/upload-file'
+    options: urlManageOrg + '/add',
+    addressInfo: urlManageOrg + '/add/address-info',
+    uploadFile: urlManageOrg + '/add/upload-file'
   }
 }
 
 // Manage location routes
 const orgManageLocationRoutes = [
+  {
+    path: orgManageLocationsUrls.view.dashboard,
+    component: <ViewLocationsDashboardPage />
+  },
   {
     path: orgManageLocationsUrls.add.options,
     component: <LocationAddPage />

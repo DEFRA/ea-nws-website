@@ -7,7 +7,7 @@ url_signin_validate = url_org_signin.get('validate')
 
 def duplicate_email_render(browser):
     browser = navigate_to_unauth_page_via_index(browser, url_main_admin)
-    select_input_radio_option(browser, 'isAdminRadio', 'name')
+    select_input_radio_option(browser, 'adminRadio')
     click_button(browser, 'Continue', url_admin_details)
     enter_input_text(browser, 'Full name', 'FirstName LastName')
     enter_input_text(browser, 'Email address', 'duplicate@email.com')

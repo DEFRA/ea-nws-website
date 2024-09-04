@@ -69,13 +69,15 @@ export default function MainAdminLayout ({
                 <div className='govuk-radios'>
                   <Radio
                     key='radio_yes'
-                    name='isAdminRadio'
+                    name='adminRadio'
+                    value='adminRadio'
                     label='Yes'
                     onChange={() => addAdminDetails(true)}
                   />
                   <Radio
                     key='radio_no'
-                    name='isNotAdminRadio'
+                    name='adminRadio'
+                    value='notAdminRadio'
                     label='No, it will be someone else'
                     onChange={() => addAdminDetails(false)}
                   />

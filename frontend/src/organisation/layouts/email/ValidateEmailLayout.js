@@ -127,13 +127,13 @@ export default function ValidateEmailLayout ({
                     Enter the code within 4 hours or it will expire.
                     <div className='govuk-!-margin-top-6'>
                       <Input
-                      className='govuk-input govuk-input--width-10'
-                      inputType='text'
-                      value={code}
-                      name='Enter code'
-                      error={error}
-                      onChange={(val) => setCode(val)}
-                    />
+                        className='govuk-input govuk-input--width-10'
+                        inputType='text'
+                        value={code}
+                        name='Enter code'
+                        error={error}
+                        onChange={(val) => setCode(val)}
+                      />
                     </div>
                     <Button
                       className='govuk-button'
@@ -156,10 +156,10 @@ export default function ValidateEmailLayout ({
                         onClick={getNewCode}
                         className='govuk-link'
                         style={{
-                  display: 'inline-block'
-                }}
+                          display: 'inline-block'
+                        }}
                       >
-                      Get a new code
+                        Get a new code
                       </Link>
                     </div>
                   </div>

@@ -16,7 +16,6 @@ export default function ConfirmAddressLayout ({
 
   const handleSubmit = async () => {
     // Correct address is already stored in
-    // organisation.address
     NavigateToNextPage()
   }
 

@@ -63,7 +63,7 @@ export default function AddAddressLayout ({
             )
             dispatch(setProfile(updatedProfile))
 
-            navigate('/organisation/register/address-confirm')
+            navigate('/organisation/sign-up/address-confirm')
             return // Ensure none of the following code is executed
           } else {
             // Multiple addresses with buildingNum returned, take them to pagination to confirm

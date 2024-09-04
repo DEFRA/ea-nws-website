@@ -78,7 +78,7 @@ export default function AdminDetailsLayout ({
 
     if (errorMessage !== null) {
       if (errorMessage === 'email already registered') {
-        navigate('/organisation/register/admin-email-duplicate', {
+        navigate('/organisation/sign-up/admin-email-duplicate', {
           state: { email }
         })
       } else {

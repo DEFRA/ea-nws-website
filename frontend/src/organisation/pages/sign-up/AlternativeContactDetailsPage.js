@@ -9,12 +9,12 @@ export default function AlternativeContactDetailsPage () {
   }
 
   const NavigateToPreviousPage = () => {
-    navigate('/organisation/register/main-admin')
+    navigate('/organisation/sign-up/main-admin')
   }
 
   return (
     <AlternativeContactDetailsLayout
-      NavigateToNextPage={() => NavigateToNextPage()}
+      NavigateToNextPage={NavigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
     />
   )

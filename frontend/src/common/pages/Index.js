@@ -349,7 +349,7 @@ export default function IndexPage () {
                 Organisation:
                 <li>
                   &emsp;
-                  <Link to='/organisation/register' className='govuk-link'>
+                  <Link to='/organisation/sign-up' className='govuk-link'>
                     Register
                   </Link>
                 </li>

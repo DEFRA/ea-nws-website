@@ -3,8 +3,8 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 
-url = "http://localhost:3000/organisation/register/number"
-nextPage = "http://localhost:3000/organisation/register/sector"
+url = "http://localhost:3000/organisation/sign-up/number"
+nextPage = "http://localhost:3000/organisation/sign-up/sector"
 
 def test__empty_input(get_browser):
     browser = get_browser

@@ -3,10 +3,10 @@ import CompaniesHouseNumLayout from '../../layouts/companies-house-num/Companies
 
 export default function CompaniesHouseNumPage () {
   const navigate = useNavigate()
-  const NavigateToNextPage = () => navigate('/organisation/register/sector')
+  const NavigateToNextPage = () => navigate('/organisation/sign-up/sector')
 
   const NavigateToPreviousPage = () => {
-    navigate('/organisation/register/address-confirm')
+    navigate('/organisation/sign-up/address-confirm')
   }
 
   return (

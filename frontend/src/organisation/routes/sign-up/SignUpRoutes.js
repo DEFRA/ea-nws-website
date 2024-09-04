@@ -1,56 +1,58 @@
-import AddAddressPage from '../../pages/registration/AddAddressPage'
-import AddNamePage from '../../pages/registration/AddNamePage'
-import AlternativeContactDetailsPage from '../../pages/registration/AlternativeContactDetailsPage'
-import CompaniesHouseNumPage from '../../pages/registration/CompaniesHouseNumPage'
-import ConfirmAddressPage from '../../pages/registration/ConfirmAddressPage'
-import AdminDetailsPage from '../../pages/registration/mainAdministrator/AdminDetailsPage'
-import DuplicateAdminEmailPage from '../../pages/registration/mainAdministrator/DuplicateAdminEmailPage'
-import MainAdminPage from '../../pages/registration/mainAdministrator/MainAdminPage'
-import ValidateAdminEmailPage from '../../pages/registration/mainAdministrator/ValidateAdminEmailPage'
-import SelectAddressPage from '../../pages/registration/SearchAddressResultPage'
-import SectorPage from '../../pages/registration/SectorPage'
+import AddAddressPage from '../../pages/sign-up/AddAddressPage'
+import AddNamePage from '../../pages/sign-up/AddNamePage'
+import AlternativeContactDetailsPage from '../../pages/sign-up/AlternativeContactDetailsPage'
+import CompaniesHouseNumPage from '../../pages/sign-up/CompaniesHouseNumPage'
+import ConfirmAddressPage from '../../pages/sign-up/ConfirmAddressPage'
+import AdminDetailsPage from '../../pages/sign-up/mainAdministrator/AdminDetailsPage'
+import DuplicateAdminEmailPage from '../../pages/sign-up/mainAdministrator/DuplicateAdminEmailPage'
+import MainAdminPage from '../../pages/sign-up/mainAdministrator/MainAdminPage'
+import ValidateAdminEmailPage from '../../pages/sign-up/mainAdministrator/ValidateAdminEmailPage'
+import SelectAddressPage from '../../pages/sign-up/SearchAddressResultPage'
+import SectorPage from '../../pages/sign-up/SectorPage'
+
+const urlSignUpOrg = '/organisation/sign-up'
 
 // registration
 const registrationRoutes = [
-  { path: '/organisation/register', component: <AddNamePage /> },
+  { path: urlSignUpOrg, component: <AddNamePage /> },
   {
-    path: '/organisation/register/address',
+    path: urlSignUpOrg + '/address',
     component: <AddAddressPage />
   },
   {
-    path: '/organisation/register/address-search',
+    path: urlSignUpOrg + '/address-search',
     component: <SelectAddressPage />
   },
   {
-    path: '/organisation/register/address-confirm',
+    path: urlSignUpOrg + '/address-confirm',
     component: <ConfirmAddressPage />
   },
   {
-    path: '/organisation/register/number',
+    path: urlSignUpOrg + '/number',
     component: <CompaniesHouseNumPage />
   },
   {
-    path: '/organisation/register/sector',
+    path: urlSignUpOrg + '/sector',
     component: <SectorPage />
   },
   {
-    path: '/organisation/register/main-admin',
+    path: urlSignUpOrg + '/main-admin',
     component: <MainAdminPage />
   },
   {
-    path: '/organisation/register/admin-details',
+    path: urlSignUpOrg + '/admin-details',
     component: <AdminDetailsPage />
   },
   {
-    path: '/organisation/register/admin-email-confirm',
+    path: urlSignUpOrg + '/admin-email-confirm',
     component: <ValidateAdminEmailPage />
   },
   {
-    path: '/organisation/register/alternative-contact',
+    path: urlSignUpOrg + '/alternative-contact',
     component: <AlternativeContactDetailsPage />
   },
   {
-    path: '/organisation/register/admin-email-duplicate',
+    path: urlSignUpOrg + '/admin-email-duplicate',
     component: <DuplicateAdminEmailPage />
   }
 ]

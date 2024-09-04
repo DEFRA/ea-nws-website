@@ -2,14 +2,15 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
+from common import *
 
 url = "http://localhost:3000/organisation/signin"
 nextPage = "http://localhost:3000/organisation/signin/validate"
 
 def test_SignInStart_render(get_browser):
     browser = get_browser
-    browser.get(url)
-    assert "Sign in to your organisation's flood warning account" in browser.page_source
+    navigate_to_auth_page_via_index(browser, url)
+    assert "Sign in to your organisation's flood warnings account" in browser.page_source
     assert browser.current_url == url
 
 def test_SignInStart_backButton(get_browser):

@@ -31,6 +31,10 @@ url_org_home = url_org + '/home'
 url_org_signup_path = url_org + '/sign-up'
 url_org_signup = {
     'signup': url_org_signup_path,
+    'address': url_org_signup_path + '/address',
+    'addressSearch': url_org_signup_path + '/address-search',
+    'number': url_org_signup_path + '/number',
+    'sector': url_org_signup_path + '/sector',
     'mainAdmin': url_org_signup_path + '/main-admin',
     'adminDetails': url_org_signup_path + '/admin-details',
     'duplicateEmail': url_org_signup_path + '/admin-email-duplicate'
@@ -49,13 +53,12 @@ url_org_signout = {
 }
 # Manage locations
 url_org_man_loc_path = url_org + '/manage-locations'
-url_org_add_loc_path = url_org_man_loc_path + '/add'
 url_org_man_loc = {
     'manageLocations': url_org_man_loc_path,
     'add': {
-        'options': url_org_add_loc_path,
-        'addressInfo': url_org_add_loc_path + '/address-info',
-        'uploadFile': url_org_add_loc_path + '/upload-file',
+        'options': url_org_man_loc_path + '/add',
+        'addressInfo': url_org_man_loc_path + '/add/address-info',
+        'uploadFile': url_org_man_loc_path + '/add/upload-file',
         'uploadTemplate': 'http://d39yn09rf1d1o9.cloudfront.net/template.csv'
     }
 }
@@ -104,6 +107,7 @@ def select_input_radio_option(browser, radio_id, property='value'):
 def enter_input_text(browser, input_name, input_text):
     input_xpath = f"//input[@name='{input_name}']"
     input_element = browser.find_element(By.XPATH, input_xpath)
+    input_element.clear()
     input_element.send_keys(input_text)
 
 # CHECKS

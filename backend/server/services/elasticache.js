@@ -1,11 +1,10 @@
 const redis = require ('redis');
+const getSecretKeyValue = require('./SecretsManager')
 
-// TODO: store the endpoint in secrets manager
-const redisEndpoint = 'ea-nws-website-pvm2vc.serverless.euw2.cache.amazonaws.com:6379'
-
-const connectToRedis = async (url) => {
+const connectToRedis = async () => {
+    const redisEndpoint = await getSecretKeyValue('nws/aws', 'redisEndpoint')
     // Create the client
-    const client = redis.createClient({url: 'rediss://'+url})
+    const client = redis.createClient({url: 'rediss://'+redisEndpoint})
     client.on('error', err => console.log('Redis Client Error', err))
     // Connect to the redis elasticache
     await client.connect();
@@ -13,15 +12,18 @@ const connectToRedis = async (url) => {
 }
 
 const setJsonData = async (key, json) => {
-    const client = await connectToRedis(redisEndpoint)
+    //only store data for 24 hours in the event the browser is closed without signing out
+    const time = 60*60*24
+    const client = await connectToRedis()
     // send the data 
     await client.json.set(key, '$', json)
+    await client.expire(key, time)
     // disconnect as we don't need the connection open anymore
     await client.disconnect();
 }
 
 const getJsonData = async (key, paths) => {
-    const client = await connectToRedis(redisEndpoint)
+    const client = await connectToRedis()
     let result
     if (paths) {
         const formattedPaths = {path: paths}
@@ -34,24 +36,15 @@ const getJsonData = async (key, paths) => {
 }
 
 const deleteJsonData = async (key) => {
-    const client = await connectToRedis(redisEndpoint)
+    const client = await connectToRedis()
     // delete the data 
     await client.json.del(key)
     // disconnect as we don't need the connection open anymore
     await client.disconnect();
 }
 
-const testFunction = async () => {
-
-    await setJsonData('user1', {profile: 'something'})
-    const fullJson = await getJsonData('user1')
-    const partialJson = await getJsonData('user1', ['.profile'])
-    console.log(fullJson)
-    console.log(partialJson)
-    await deleteJsonData('user1')
-    const newJson = await getJsonData('user1')
-    console.log(newJson)
-    
-}
-
-testFunction()
+module.exports = {
+    setJsonData,
+    getJsonData,
+    deleteJsonData
+  }

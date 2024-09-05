@@ -5,7 +5,7 @@ export default function AlternativeContactDetailsPage () {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {
-    navigate('/') // Todo in future US - go to organisation T&Cs
+    navigate('/organisation/sign-up/review') // Todo in future US - go to organisation T&Cs
   }
 
   const NavigateToPreviousPage = () => {

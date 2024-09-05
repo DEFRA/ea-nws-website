@@ -51,7 +51,9 @@ export default function ContactReviewTable ({ alternativeContact }) {
             Job title (optional)
           </td>
           <td className='govuk-table__cell  govuk-!-width-full'>
-            {alternativeContact.jobTitle}
+            {alternativeContact.jobTitle
+              ? `${alternativeContact.jobTitle}`
+              : '-'}
           </td>
           <td className='govuk-table__cell'>
             {/* TODO - Add correct link when implemented */}

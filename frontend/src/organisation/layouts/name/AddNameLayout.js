@@ -1,10 +1,12 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import { setProfile } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 import {
   getOrganisationAdditionals,
   setOrganisationAdditionals,
@@ -17,6 +19,7 @@ export default function AddNameLayout ({
   NavigateToPreviousPage
 }) {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const [name, setName] = useState('')
   const [error, setError] = useState('')
   const profile = useSelector((state) => state.session.profile)
@@ -26,6 +29,13 @@ export default function AddNameLayout ({
     const organisationProfile = setOrganisationAdditionals(profile)
     const organisation = getOrganisationAdditionals(organisationProfile)
 
+    const dataToSend = { name }
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/org/sign_up_start',
+      navigate
+    )
+
     if (!validationError) {
       organisation.name = name
 
@@ -34,9 +44,21 @@ export default function AddNameLayout ({
         organisation
       )
       dispatch(setProfile(updatedProfile))
-      NavigateToNextPage()
     } else {
       setError(validationError)
+      return
+    }
+
+    if (errorMessage !== null) {
+      if (errorMessage === 'organisation already registered') {
+        navigate('/organisation/sign-up/duplicate', {
+          state: { name }
+        })
+      } else {
+        setError(errorMessage)
+      }
+    } else {
+      NavigateToNextPage()
     }
   }
 

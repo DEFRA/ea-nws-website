@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-export default function ContactReviewTable ({ alternativeContact }) {
-  const fullName = `${alternativeContact.firstname} ${alternativeContact.lastname}`
+export default function ContactReviewTable({ alternativeContact }) {
+  const fullName = `${alternativeContact.firstName} ${alternativeContact.lastName}`
   return (
     <>
       <h3 className='govuk-heading-m govuk-!-margin-top-9'>

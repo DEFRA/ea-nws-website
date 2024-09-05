@@ -148,4 +148,5 @@ def activate_mock_org_1(get_browser):
     button_xpath = f"//button[text()='Activate/Deactivate Mock Org Session 1']"
     mock_session_link = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", mock_session_link)
+    time.sleep(1)
     return browser

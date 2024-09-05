@@ -5,7 +5,7 @@ import time
 
 url = "http://localhost:3000/organisation/signin/validate"
 previous_url = "http://localhost:3000/organisation/signin"
-next_page = "http://localhost:3000/home"
+next_page = "http://localhost:3000/organisation/home"
 
 def test_SignInValidate_render(get_browser):
     browser = get_browser

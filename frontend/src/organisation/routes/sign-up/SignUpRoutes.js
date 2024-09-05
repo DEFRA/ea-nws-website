@@ -3,6 +3,7 @@ import AddNamePage from '../../pages/sign-up/AddNamePage'
 import AlternativeContactDetailsPage from '../../pages/sign-up/AlternativeContactDetailsPage'
 import CompaniesHouseNumPage from '../../pages/sign-up/CompaniesHouseNumPage'
 import ConfirmAddressPage from '../../pages/sign-up/ConfirmAddressPage'
+import DuplicateNamePage from '../../pages/sign-up/DuplicateNamePage'
 import AdminDetailsPage from '../../pages/sign-up/mainAdministrator/AdminDetailsPage'
 import DuplicateAdminEmailPage from '../../pages/sign-up/mainAdministrator/DuplicateAdminEmailPage'
 import MainAdminPage from '../../pages/sign-up/mainAdministrator/MainAdminPage'
@@ -59,6 +60,10 @@ const registrationRoutes = [
   {
     path: urlSignUpOrg + '/success',
     component: <SignUpSuccessPage />
+  },
+  {
+    path: urlSignUpOrg + '/duplicate',
+    component: <DuplicateNamePage />
   }
 ]
 

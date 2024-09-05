@@ -1,4 +1,5 @@
 const proj4 = require('proj4')
+const { osFindApiCall } = require('../OrdnanceSurveyApiService')
 
 // const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3')
 
@@ -44,54 +45,86 @@ const data = fs.readFileSync('test.csv').toString()
 //    }] }
 var jsonData = csvToJson(data);
 
-// used to store valid and invalid locations
-var valid = []
-var invalid = []
+
 
 const locations = jsonData.locations
 
-// if there is location data we need to process it
-if (locations) {
-    locations.forEach(location => {
-        // Location name is mandatory
-        if (!location.Location_name) {
-            location.error = 'No location name'
-            invalid.push(location)
-            return
-        }
-        // Location coords/address is mandatory
-        if (location.X_coordinates && location.Y_coordinates) {
-            const isValid = validateCoords(location.X_coordinates, location.Y_coordinates)
-            if (isValid) {
-                // convert coords
-                location.coordinates = convertCoords(location.X_coordinates, location.Y_coordinates)
-                valid.push(location)
-                return 
-            } 
-        }
-
-        if (location.Full_Address && location.Postcode) {
-            // calculate X and Y based on address and postcode
-            const coords = getCoords(location.Full_Address, location.Postcode)
-            if (coords.length === 0) {
-                location.error = 'Unable get coordinates from provided address'
+const processLocations = async (locations) => {
+    // if there is location data we need to process it
+    if (locations) {
+        // used to store valid and invalid locations
+        var valid = []
+        var invalid = []
+        locations.forEach(async location => {
+            // Location name is mandatory
+            if (!location.Location_name) {
+                location.error = 'No location name'
                 invalid.push(location)
                 return
+            }
+            // Location coords/address is mandatory
+            if (location.X_coordinates && location.Y_coordinates) {
+                const isValid = validateCoords(location.X_coordinates, location.Y_coordinates)
+                if (isValid) {
+                    // convert coords
+                    location.coordinates = convertCoords(location.X_coordinates, location.Y_coordinates)
+                    valid.push(location)
+                    return 
+                } 
+            }
+
+            if (location.Full_address && location.Postcode) {
+                // calculate X and Y based on address and postcode
+                const addressWithPostcode = location.Full_address.concat(', ', location.Postcode)
+                const {errorMessage, data} = await osFindApiCall(addressWithPostcode, 1.0)
+                console.log(data)
+                if (errorMessage) {
+                    location.error = 'Unable get coordinates from provided address'
+                    invalid.push(location)
+                    return
+                } else {
+                    location.coordinates = data[0].coordinates
+                    valid.push(location)
+                    return
+                }
             } else {
-                location.X_coordinates = coords[0]
-                location.Y_coordinates = coords[1]
-                // convert coords
-                location.coordinates = convertCoords(location.X_coordinates, location.Y_coordinates)
-                valid.push(location)
+                location.error = 'Insufficient information for location'
+                invalid.push(location)
                 return
             }
-        } else {
-            location.error = 'Insufficient information for location'
-            invalid.push(location)
-            return
-        }
-    })
+        })
+
+        return [valid, invalid]
+    }
 }
+
+const result = processLocations(locations)
+
+const valid = result[0]
+const invalid = result[1]
+
+const pois = []
+valid.forEach(location => {
+    var poi = {
+        name: location.Location_name,
+        address: null,
+        coordinates: location.coordinates,
+        alert_categories: null,
+        meta_data: {
+            location_additional: {
+                internal_reference: location.Internal_reference,
+                business_criticality: location.Business_criticality,
+                location_type: location.Location_type,
+                action_plan: location.Action_plan,
+                notes: location.Notes,
+                keywords: location.Keywords
+            }
+        }
+      }
+    pois.push(poi)
+})
+
+console.log(pois)
 
 jsonData.locations.forEach(location => {
     console.log(location.Location_name)

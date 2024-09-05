@@ -37,7 +37,8 @@ url_org_signup = {
     'sector': url_org_signup_path + '/sector',
     'mainAdmin': url_org_signup_path + '/main-admin',
     'adminDetails': url_org_signup_path + '/admin-details',
-    'duplicateEmail': url_org_signup_path + '/admin-email-duplicate'
+    'duplicateEmail': url_org_signup_path + '/admin-email-duplicate',
+    'duplicateOrg': url_org_signup_path + '/duplicate'
 }
 # Signin urls
 url_org_signin_path = url_org + '/signin'

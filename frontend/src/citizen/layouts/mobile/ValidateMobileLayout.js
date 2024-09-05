@@ -54,7 +54,10 @@ export default function ValidateMobileLayout ({
         navigate
       )
       if (errorMessage !== null) {
-        if (errorMessage === 'The code you have entered has expired - please request a new code') {
+        if (
+          errorMessage ===
+          'The code you have entered has expired - please request a new code'
+        ) {
           setCodeExpired(true)
         } else {
           setError(errorMessage)
@@ -107,7 +110,11 @@ export default function ValidateMobileLayout ({
 
   const removeMobileFromProfile = async () => {
     let updatedProfile
-    if (session.profile.unverified.mobilePhones.some(unverifiedMobilePhone => unverifiedMobilePhone.address === mobile)) {
+    if (
+      session.profile.unverified.mobilePhones.some(
+        (unverifiedMobilePhone) => unverifiedMobilePhone.address === mobile
+      )
+    ) {
       updatedProfile = removeUnverifiedContact(session.profile, mobile)
       dispatch(setProfile(removeUnverifiedContact(session.profile, mobile)))
     }
@@ -130,21 +137,25 @@ export default function ValidateMobileLayout ({
   return (
     <>
       {codeExpired
-        ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
+        ? (
+          <ExpiredCodeLayout getNewCode={getNewCode} />
+          )
         : (
           <>
             <BackLink onClick={backLink} />
             <main className='govuk-main-wrapper govuk-!-padding-top-4'>
               <div className='govuk-grid-row'>
                 <div className='govuk-grid-column-two-thirds'>
-                  {codeResent && <NotificationBanner
-                    className='govuk-notification-banner govuk-notification-banner--success'
-                    title='Success'
-                    text={'New code sent at ' + codeResentTime}
-                                 />}
+                  {codeResent && (
+                    <NotificationBanner
+                      className='govuk-notification-banner govuk-notification-banner--success'
+                      title='Success'
+                      text={'New code sent at ' + codeResentTime}
+                    />
+                  )}
                   {error && <ErrorSummary errorList={[error]} />}
-                  <h2 class='govuk-heading-l'>Check your mobile phone</h2>
-                  <div class='govuk-body'>
+                  <h2 className='govuk-heading-l'>Check your mobile phone</h2>
+                  <div className='govuk-body'>
                     We've sent a text with a code to:
                     <InsetText text={mobile} />
                     Use the code within 4 hours or it will expire.

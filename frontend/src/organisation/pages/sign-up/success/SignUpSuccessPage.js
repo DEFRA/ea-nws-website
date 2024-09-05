@@ -14,7 +14,7 @@ export default function SignUpSuccessPage () {
             <BackLink onClick={() => navigate(-1)} />
             <ConfirmationPanel title='Organisation details submitted for approval' />
             <div className='govuk-body govuk-!-margin-top-6'>
-              <h1 class='govuk-heading-m govuk-!-margin-top-6'>
+              <h1 className='govuk-heading-m govuk-!-margin-top-6'>
                 What happens next
               </h1>
               <p className='govuk-!-margin-top-6'>
@@ -28,7 +28,7 @@ export default function SignUpSuccessPage () {
                 Once approved, we will email you and explain how the service can
                 be accessed.
               </p>
-              <h1 class='govuk-heading-m govuk-!-margin-top-6'>
+              <h1 className='govuk-heading-m govuk-!-margin-top-6'>
                 Help us improve this service
               </h1>
               <p className='govuk-!-margin-top-6'>

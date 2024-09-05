@@ -109,7 +109,11 @@ export default function ValidateLandlineLayout ({
 
   const removeLandlineFromProfile = async () => {
     let updatedProfile
-    if (profile.unverified.homePhones.some(unverifiedHomePhone => unverifiedHomePhone.address === homePhone)) {
+    if (
+      profile.unverified.homePhones.some(
+        (unverifiedHomePhone) => unverifiedHomePhone.address === homePhone
+      )
+    ) {
       updatedProfile = removeUnverifiedContact(profile, homePhone)
       dispatch(setProfile(removeUnverifiedContact(profile, homePhone)))
     }
@@ -148,8 +152,8 @@ export default function ValidateLandlineLayout ({
                     />
                   )}
                   {error && <ErrorSummary errorList={[error]} />}
-                  <h2 class='govuk-heading-l'>Confirm telephone number</h2>
-                  <div class='govuk-body'>
+                  <h2 className='govuk-heading-l'>Confirm telephone number</h2>
+                  <div className='govuk-body'>
                     We're calling this number to read out a code:
                     <InsetText text={homePhone} />
                     Use the code within 4 hours or it will expire.

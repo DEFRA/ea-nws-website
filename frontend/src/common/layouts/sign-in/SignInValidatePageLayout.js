@@ -18,7 +18,10 @@ import { authCodeValidation } from '../../../common/services/validations/AuthCod
 import ExpiredCodeLayout from '../../../citizen/layouts/expired-code/ExpiredCodeLayout'
 import NotCompletedSigningUpLayout from '../../../citizen/layouts/sign-up/NotCompletedSignUpLayout'
 
-export default function SignInValidatePageLayout ({ NavigateToNextPage, NavigateToPreviousPage }) {
+export default function SignInValidatePageLayout ({
+  NavigateToNextPage,
+  NavigateToPreviousPage
+}) {
   const location = useLocation()
   const [error, setError] = useState('')
   const dispatch = useDispatch()
@@ -49,7 +52,10 @@ export default function SignInValidatePageLayout ({ NavigateToNextPage, Navigate
       )
 
       if (errorMessage !== null) {
-        if (errorMessage === 'The code you have entered has expired - please request a new code') {
+        if (
+          errorMessage ===
+          'The code you have entered has expired - please request a new code'
+        ) {
           setCodeExpired(true)
         } else {
           setError(errorMessage)
@@ -58,11 +64,13 @@ export default function SignInValidatePageLayout ({ NavigateToNextPage, Navigate
         dispatch(setAuthToken(data.authToken))
         dispatch(setProfile(data.profile))
         dispatch(setRegistrations(data.registrations))
-        dispatch(setContactPreferences([
-          data.profile.emails.length !== 0 && 'Email Address',
-          data.profile.homePhones.length !== 0 && 'PhoneCall',
-          data.profile.mobilePhones.length !== 0 && 'Text'
-        ]))
+        dispatch(
+          setContactPreferences([
+            data.profile.emails.length !== 0 && 'Email Address',
+            data.profile.homePhones.length !== 0 && 'PhoneCall',
+            data.profile.mobilePhones.length !== 0 && 'Text'
+          ])
+        )
 
         const isSignUpComplete = data.profile.additionals.filter(
           (c) => c.id === 'signUpComplete'
@@ -84,7 +92,11 @@ export default function SignInValidatePageLayout ({ NavigateToNextPage, Navigate
   const getNewCode = async (event) => {
     event.preventDefault()
     const dataToSend = { email: location.state.email }
-    const { data, errorMessage } = await backendCall(dataToSend, 'api/sign_in', navigate)
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
+      'api/sign_in',
+      navigate
+    )
 
     if (errorMessage !== null) {
       setError(errorMessage)
@@ -116,15 +128,16 @@ export default function SignInValidatePageLayout ({ NavigateToNextPage, Navigate
             <main className='govuk-main-wrapper govuk-!-padding-top-4'>
               <div className='govuk-grid-row'>
                 <div className='govuk-grid-column-two-thirds'>
-                  {codeResent &&
+                  {codeResent && (
                     <NotificationBanner
                       className='govuk-notification-banner govuk-notification-banner--success'
                       title='Success'
                       text={'New code sent at ' + codeResentTime}
-                    />}
+                    />
+                  )}
                   {error && <ErrorSummary errorList={[error]} />}
-                  <h2 class='govuk-heading-l'>Confirm email address </h2>
-                  <div class='govuk-body'>
+                  <h2 className='govuk-heading-l'>Confirm email address </h2>
+                  <div className='govuk-body'>
                     We've sent an email with a code to:
                     <InsetText text={location.state.email} />
                     <Input
@@ -140,8 +153,11 @@ export default function SignInValidatePageLayout ({ NavigateToNextPage, Navigate
                       text='Continue'
                       onClick={handleSubmit}
                     />
-                    &nbsp; &nbsp;
-                    <Link onClick={navigateBack} className='govuk-link inline-link'>
+                  &nbsp; &nbsp;
+                    <Link
+                      onClick={navigateBack}
+                      className='govuk-link inline-link'
+                    >
                       Enter a different email
                     </Link>
                     <br />

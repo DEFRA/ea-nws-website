@@ -44,9 +44,9 @@ export default function SignUpDuplicateEmailPageLayout () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={error === '' ? [] : [error]} />}
-            <h2 className='govuk-heading-l'>
+            <h1 className='govuk-heading-l'>
               The email address you entered is <br /> already being used
-            </h2>
+            </h1>
             <InsetText text={email} />
             <div className='govuk-body'>
               <p>If this is your account, you can sign in by getting a code</p>

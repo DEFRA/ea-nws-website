@@ -1,6 +1,7 @@
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
+const { apiCall } = require('../../services/ApiService')
 
 module.exports = [
   {
@@ -13,15 +14,11 @@ module.exports = [
         }
 
         const { name } = request.payload
-
-        if (name !== 'duplicateOrganisation') {
-          return h.response({ status: 200 })
-        } else {
-          return h.response({
-            status: 500,
-            errorMessage: 'organisation already registered'
-          })
-        }
+        const response = await apiCall(
+          { name: name },
+          'member/registerOrgStart'
+        )
+        return h.response(response)
       } catch (error) {
         return createGenericErrorResponse(h)
       }

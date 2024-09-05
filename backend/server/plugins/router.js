@@ -3,6 +3,7 @@ const routes = [].concat(
   require('../routes/sign_in/signin_start'),
   require('../routes/sign_in/signin_validate'),
   require('../routes/sign_up/signup_start'),
+  require('../routes/sign_up/org_start'),
   require('../routes/sign_up/signup_validate'),
   require('../routes/sign_up/signup_feedback'),
   require('../routes/update_profile/update_profile'),
@@ -18,8 +19,7 @@ const routes = [].concat(
   require('../routes/ordnance_survey/oauth_2'),
   require('../routes/qgis/qgis'),
   require('../routes/account/account_delete'),
-  require('../routes/download/template'),
-  require('../routes/sign_up/org_start')
+  require('../routes/download/template')
 )
 
 module.exports = {

@@ -29,13 +29,6 @@ export default function AddNameLayout ({
     const organisationProfile = setOrganisationAdditionals(profile)
     const organisation = getOrganisationAdditionals(organisationProfile)
 
-    const dataToSend = { name }
-    const { errorMessage } = await backendCall(
-      dataToSend,
-      'api/org/sign_up_start',
-      navigate
-    )
-
     if (!validationError) {
       organisation.name = name
 
@@ -48,6 +41,14 @@ export default function AddNameLayout ({
       setError(validationError)
       return
     }
+
+    // Check for duplicate organisation name
+    const dataToSend = { name }
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/org/sign_up_start',
+      navigate
+    )
 
     if (errorMessage !== null) {
       if (errorMessage === 'organisation already registered') {

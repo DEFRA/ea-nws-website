@@ -9,6 +9,8 @@ paths:
     $ref: './paths/signin/signInValidate.yaml'
   /member/registerStart:
     $ref: './paths/signup/registerStart.yaml'
+  /member/registerOrgStart:
+    $ref: './paths/signup/registerOrgStart.yaml'
   /member/registerValidate:
     $ref: './paths/signup/registerValidate.yaml'
   /member/updateProfile:

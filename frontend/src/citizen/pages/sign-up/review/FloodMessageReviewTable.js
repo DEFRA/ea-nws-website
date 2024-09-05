@@ -27,7 +27,7 @@ export default function FloodMessageReviewTable ({ registration }) {
                         scope='row'
                         className='govuk-table__header govuk-!-width-one-half'
                       >
-                      Severe flood warnings and flood warnings
+                        Severe flood warnings and flood warnings
                       </th>
                       <td className='govuk-table__cell  govuk-!-width-full'>Yes</td>
                       <td className='govuk-table__cell' />
@@ -37,18 +37,18 @@ export default function FloodMessageReviewTable ({ registration }) {
                         scope='row'
                         className='govuk-table__header govuk-!-width-one-half'
                       >
-                      Flood alerts (optional)
+                        Flood alerts (optional)
                       </th>
                       <td className='govuk-table__cell govuk-!-width-full'>
                         {hasFloodAlert ? 'Yes' : 'No'}
                       </td>
                       <td className='govuk-table__cell'>
                         <Link
-                  to='/signup/review/change-flood-alert'
-                  className='govuk-link'
-                >
-                        Change
-                </Link>
+                          to='/signup/review/change-flood-alert'
+                          className='govuk-link'
+                        >
+                          Change
+                        </Link>
                       </td>
                     </tr>
                   </>
@@ -60,7 +60,7 @@ export default function FloodMessageReviewTable ({ registration }) {
                         scope='row'
                         className='govuk-table__header govuk-!-width-one-half'
                       >
-                      Flood alerts
+                        Flood alerts
                       </th>
                       <td className='govuk-table__cell govuk-!-width-full'>Yes</td>
 

@@ -8,7 +8,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function OrganisationHeader () {
+export default function OrganisationHeader() {
   const [activeHeader, setActiveHeader] = useState(null)
 
   const handleActiveHeader = (item) => {
@@ -118,7 +118,7 @@ export default function OrganisationHeader () {
                 >
                   <FontAwesomeIcon icon={faMagnifyingGlass} size='lg' />
                 </li>
-                <li className='one-login-header__nav__list-item'>
+                <li className='one-login-header__nav__list-item no-highlight'>
                   <Link
                     className='one-login-header__nav__link'
                     to='organisation/signout'

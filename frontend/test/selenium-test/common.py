@@ -145,8 +145,6 @@ def check_sign_back_in_page(browser):
 def activate_mock_org_1(get_browser):
     browser = get_browser
     browser.get(url_index)
-    button_xpath = f"//button[text()='Activate/Deactivate Mock Org Session 1']"
-    mock_session_link = browser.find_element(By.XPATH, button_xpath)
-    browser.execute_script("arguments[0].click();", mock_session_link)
+    click_button(browser, 'Activate/Deactivate Mock Org Session 1', url_index)
     time.sleep(1)
     return browser

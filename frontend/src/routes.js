@@ -14,7 +14,7 @@ import orgManageAccountRoutes from './organisation/routes/account/AccountRoutes'
 import orgHomeRoutes from './organisation/routes/home/HomeRoutes'
 import { orgManageLocationRoutes } from './organisation/routes/manage-locations/ManageLocationsRoutes'
 import orgSigninRoutes from './organisation/routes/sign-in/SignInRoutes'
-import orgRegistrationRoutes from './organisation/routes/sign-up/SignUpRoutes'
+import orgSignupRoutes from './organisation/routes/sign-up/SignUpRoutes'
 
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
@@ -27,8 +27,8 @@ export const routes = [
   ...citizenSignupRoutes,
   ...citizenSigninRoutes,
   ...commonFooterRoutes,
-  ...orgSigninRoutes,
-  ...orgRegistrationRoutes
+  ...orgSignupRoutes,
+  ...orgSigninRoutes
 ]
 
 export const authenticatedRoutes = [

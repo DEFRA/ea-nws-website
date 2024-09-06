@@ -10,7 +10,7 @@ import {
   updateOrganisationAdditionals
 } from '../../../common/services/ProfileServices'
 
-export default function SectorLayout({
+export default function SectorLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -27,7 +27,7 @@ export default function SectorLayout({
       return
     }
 
-    let organisation = Object.assign({}, getOrganisationAdditionals(profile))
+    const organisation = Object.assign({}, getOrganisationAdditionals(profile))
     organisation.emergencySector = emergencySector
 
     const updatedProfile = updateOrganisationAdditionals(profile, organisation)

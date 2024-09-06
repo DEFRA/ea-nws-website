@@ -26,22 +26,47 @@ url_cit_signout_auto = local_host + '/signout-auto'
 
 # ORGANISATION URLS
 url_org = local_host + '/organisation'
-url_org_signup = url_org + '/register'
-url_org_signin = url_org + '/signin'
-url_org_signin_val = url_org + '/signin/validate'
-url_org_sign_back_in = url_org + '/sign-back-in'
 url_org_home = url_org + '/home'
-url_org_signout = url_org + '/signout'
-url_org_signout_auto = url_org + '/signout-auto'
+# Signup urls
+url_org_signup_path = url_org + '/sign-up'
+url_org_signup = {
+    'signup': url_org_signup_path,
+    'address': url_org_signup_path + '/address',
+    'addressSearch': url_org_signup_path + '/address-search',
+    'number': url_org_signup_path + '/number',
+    'sector': url_org_signup_path + '/sector',
+    'mainAdmin': url_org_signup_path + '/main-admin',
+    'adminDetails': url_org_signup_path + '/admin-details',
+    'duplicateEmail': url_org_signup_path + '/admin-email-duplicate',
+    'review': url_org_signup_path + '/review',
+    'success': url_org_signup_path + '/success'
+}
+# Signin urls
+url_org_signin_path = url_org + '/signin'
+url_org_signin = {
+    'signin': url_org_signin_path,
+    'validate': url_org_signin_path + '/validate',
+    'signBackIn': url_org + '/sign-back-in'
+}
+# Signout urls
+url_org_signout = {
+    'signout': url_org + '/signout',
+    'auto': url_org + '/signout-auto'
+}
 # Manage locations
-url_org_man_loc = url_org + '/manage-locations'
-url_org_add_loc = url_org_man_loc + '/add'
+url_org_man_loc_path = url_org + '/manage-locations'
 url_org_man_loc = {
+    'manageLocations': url_org_man_loc_path,
     'add': {
-        'options': url_org_add_loc,
-        'addressInfo': url_org_add_loc + '/address-info',
-        'uploadFile': url_org_add_loc + '/upload-file',
+        'options': url_org_man_loc_path + '/add',
+        'addressInfo': url_org_man_loc_path + '/add/address-info',
+        'uploadFile': url_org_man_loc_path + '/add/upload-file',
         'uploadTemplate': 'http://d39yn09rf1d1o9.cloudfront.net/template.csv'
+    },
+    'change': {
+        'alternative_contact': local_host + '/',
+        'org_details':  local_host + '/',
+        'main_admin': local_host + '/'
     }
 }
 
@@ -70,11 +95,27 @@ def click_link(browser, link_text, url_link):
     time.sleep(1)
     assert browser.current_url == url_link
 
+# Click on link text and check url - for when there is more than one occurence of the same text
+def click_link_more_than_one_text(browser, link_text, link_text_iteration, url_link):
+    link_xpath = f"(//a[text()='{link_text}'])[{link_text_iteration}]"
+    link_element = browser.find_element(By.XPATH, link_xpath)
+    browser.execute_script("arguments[0].click();", link_element)
+    time.sleep(1)
+    assert browser.current_url == url_link
+
 # Select input radio option
-def select_input_radio_option(browser, radio_id):
-    input_radio_xpath = f"//input[@value='{radio_id}']"
+def select_input_radio_option(browser, value, key='value'):
+    input_radio_xpath = f"//input[@{key}='{value}']"
     input_radio_element = browser.find_element(By.XPATH, input_radio_xpath)
     browser.execute_script("arguments[0].click();", input_radio_element)
+
+# ENTER TEXT
+# Enter input in text box
+def enter_input_text(browser, value, input_text, key='name'):
+    input_xpath = f"//input[@{key}='{value}']"
+    input_element = browser.find_element(By.XPATH, input_xpath)
+    input_element.clear()
+    input_element.send_keys(input_text)
 
 # CHECKS
 # Check if xpath exists
@@ -99,3 +140,11 @@ def check_error_summary(browser):
 def check_sign_back_in_page(browser):
     assert '/sign-back-in' in browser.current_url
     return check_h1_heading(browser, 'You need to sign back in to view this page')
+
+#SETUP Mock Profile
+def activate_mock_org_1(get_browser):
+    browser = get_browser
+    browser.get(url_index)
+    click_button(browser, 'Activate/Deactivate Mock Org Session 1', url_index)
+    time.sleep(1)
+    return browser

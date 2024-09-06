@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router'
 import CompaniesHouseNumLayout from '../../layouts/companies-house-num/CompaniesHouseNumLayout'
 
-export default function CompaniesHouseNumPage() {
+export default function CompaniesHouseNumPage () {
   const navigate = useNavigate()
   const NavigateToNextPage = () => navigate('/organisation/sign-up/sector')
 

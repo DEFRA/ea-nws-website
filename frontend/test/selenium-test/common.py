@@ -71,6 +71,7 @@ def navigate_to_auth_page_via_index(browser, url_target, mock_session=1):
     button_text = 'Activate/Deactivate Mock Session ' + str(mock_session)
     click_button(browser, button_text, url_index)
     browser.get(url_target)
+    assert browser.current_url == url_target
 
 # Navigate to unauthenticated page via index page and check url
 def navigate_to_unauth_page_via_index(browser, url_target):
@@ -78,6 +79,7 @@ def navigate_to_unauth_page_via_index(browser, url_target):
     button_text = 'Activate/Deactivate Empty profile - Used for sign up tests'
     click_button(browser, button_text, url_index)
     browser.get(url_target)
+    assert browser.current_url == url_target
     return browser
 
 # CLICK / SELECT

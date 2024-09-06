@@ -2,8 +2,9 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
+from common import *
 
-url = "http://localhost:3000/organisation/signup/success"
+url = url_org_signup.get('success')
 
 def go_to_success_page(get_browser):
     browser = get_browser

@@ -4,7 +4,7 @@ import SignOutLayout from '../../layouts/sign-out/SignOutPageLayout'
 import { clearAuth } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 
-export default function SignOutManuallyPage () {
+export default function SignOutManuallyPage() {
   const dispatch = useDispatch()
   const signinType = useSelector((state) => state.session.signinType)
   const authToken = useSelector((state) => state.session.authToken)
@@ -12,10 +12,7 @@ export default function SignOutManuallyPage () {
   useEffect(() => {
     if (signinType === 'org') {
       // need to call the backend to remove data from elasticache once signed out
-      backendCall(
-        { authToken },
-        'api/sign_out'
-      )
+      backendCall({ authToken }, 'api/sign_out')
     }
     dispatch(clearAuth())
   })

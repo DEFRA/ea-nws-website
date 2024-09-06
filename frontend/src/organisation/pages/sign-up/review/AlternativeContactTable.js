@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
-export default function ContactReviewTable({ alternativeContact }) {
+export default function ContactReviewTable ({ alternativeContact }) {
   const fullName = `${alternativeContact.firstName} ${alternativeContact.lastName}`
   return (
     <>

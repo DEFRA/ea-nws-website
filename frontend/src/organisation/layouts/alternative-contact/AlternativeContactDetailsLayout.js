@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import { setProfile } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 import {
   getOrganisationAdditionals,
   updateOrganisationAdditionals
@@ -17,20 +19,33 @@ export default function AlternativeContactDetailsLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [errorFullName, setErrorFullName] = useState('')
   const [errorEmail, setErrorEmail] = useState('')
   const [errorTelephone, setErrorTelephone] = useState('')
-  const session = useSelector((state) => state.session)
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [telephone, setTelephoneNumber] = useState('')
   const [jobTitle, setJobTitle] = useState('')
+  const session = useSelector((state) => state.session)
   const organisation = Object.assign(
     {},
     getOrganisationAdditionals(session.profile)
   )
   const isAdmin = organisation.isAdminRegistering
+
+  useEffect(() => {
+    setErrorFullName('')
+  }, [fullName])
+
+  useEffect(() => {
+    setErrorEmail('')
+  }, [email])
+
+  useEffect(() => {
+    setErrorTelephone('')
+  }, [telephone])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -41,7 +56,18 @@ export default function AlternativeContactDetailsLayout ({
       'mobileAndLandline'
     )
 
-    if (
+    const dataToSend = { email }
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/sign_up_start',
+      navigate
+    )
+    console.log('errormessage', errorMessage)
+    if (errorMessage === 'email already registered') {
+      setErrorEmail(
+        'The email address you entered is already being used. Enter a different email address.'
+      )
+    } else if (
       fullNameValidationError !== '' ||
       emailValidationError !== '' ||
       telephoneValidationError !== ''
@@ -49,11 +75,12 @@ export default function AlternativeContactDetailsLayout ({
       setErrorFullName(fullNameValidationError)
       setErrorEmail(emailValidationError)
       setErrorTelephone(telephoneValidationError)
+    } else if (email === session.profile.emails[0]) {
+      // alternative contact cannot be the same as the main admin email
+      setErrorEmail(
+        'Enter a different email address to the main administrator email.'
+      )
     } else {
-      setErrorFullName('')
-      setErrorEmail('')
-      setErrorTelephone('')
-
       // Split the full name into first name and last name assuming they are separeted by a space.
       // if the string cannot be split then only the first name is set and the last name remains blank
       const [firstname, ...lastnameParts] = fullName.trim().split(' ')

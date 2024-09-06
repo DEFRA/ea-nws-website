@@ -118,7 +118,7 @@ export default function OrganisationHeader () {
                 >
                   <FontAwesomeIcon icon={faMagnifyingGlass} size='lg' />
                 </li>
-                <li className='one-login-header__nav__list-item'>
+                <li className='one-login-header__nav__list-item no-highlight'>
                   <Link
                     className='one-login-header__nav__link'
                     to='organisation/signout'

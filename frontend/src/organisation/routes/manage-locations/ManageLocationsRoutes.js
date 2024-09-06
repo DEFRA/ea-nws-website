@@ -1,13 +1,14 @@
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/LocationAddAddressInfoPage'
 import LocationAddPage from '../../pages/manage-locations/add-location/LocationAddPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/LocationAddUploadFilePage'
-import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
+import ConfirmLocationsPage from '../../pages/manage-locations/confirm-locations/ConfirmAddingLocationsPage'
+import SelectHowToFindThisLocationPage from '../../pages/manage-locations/partly-matched-locations/SelectHowToFindThisLocationPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
-import ConfirmLocationsPage from '../../pages/manage-locations/confirm-locations/ConfirmAddingLocationsPage'
-
+import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
 const urlManageOrg = '/organisation/manage-locations'
-const urlManageOrgUnmatchedLocations = '/organisation/manage-locations/unmatched-locations'
+const urlManageOrgUnmatchedLocations =
+  '/organisation/manage-locations/unmatched-locations'
 const urlManageOrgConfirmLocations = '/organisation/manage-locations/confirm'
 
 // Manage location urls
@@ -22,7 +23,10 @@ const orgManageLocationsUrls = {
   },
   unmatchedLocations: {
     doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
-    findUnmatchedLocations: urlManageOrgUnmatchedLocations + '/find-unmatched-locations'
+    findUnmatchedLocations:
+      urlManageOrgUnmatchedLocations + '/find-unmatched-locations',
+    selectHowToFindLocation:
+      urlManageOrgUnmatchedLocations + '/select-find-location'
   }
 }
 
@@ -51,6 +55,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.unmatchedLocations.findUnmatchedLocations,
     component: <FindUnmatchedLocationsPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.selectHowToFindLocation,
+    component: <SelectHowToFindThisLocationPage />
   },
   {
     path: urlManageOrgConfirmLocations,

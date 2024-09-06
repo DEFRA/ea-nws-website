@@ -1,5 +1,6 @@
 import React from 'react'
-export default function Input ({
+export default function Input({
+  id,
   name,
   className,
   value,
@@ -30,9 +31,11 @@ export default function Input ({
           </p>
         )}
         <input
-          className={error === '' ? className : className + ' govuk-input--error'}
+          className={
+            error === '' ? className : className + ' govuk-input--error'
+          }
           name={name}
-          id='govuk-text-input'
+          id={`govuk-text-input ${id ? id : ''}`}
           type={inputType}
           value={value}
           defaultValue={defaultValue}

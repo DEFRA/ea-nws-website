@@ -107,3 +107,11 @@ def check_error_summary(browser):
 def check_sign_back_in_page(browser):
     assert '/sign-back-in' in browser.current_url
     return check_h1_heading(browser, 'You need to sign back in to view this page')
+
+# ENTER TEXT
+# Enter input in text box
+def enter_input_text(browser, value, input_text, key='name'):
+    input_xpath = f"//input[@{key}='{value}']"
+    input_element = browser.find_element(By.XPATH, input_xpath)
+    input_element.clear()
+    input_element.send_keys(input_text)

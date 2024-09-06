@@ -22,34 +22,23 @@ def test__empty_input(get_browser):
 def test__invalid_input_email(get_browser):
     browser = setup_session(get_browser)
     browser.get(url)
-    email_xpath = f"//*[@id='govuk-text-input']"
-    input_element = browser.find_element(By.XPATH, email_xpath)
-    input_element.send_keys("sa")
+    enter_input_text(get_browser, 'govuk-text-input email-address', 'sa', 'id')
     click_button(get_browser, 'Continue', url)
     assert "Enter an email address in the correct format, like name@example.com" in browser.page_source
 
 def test__invalid_input_telephone(get_browser):
     browser = setup_session(get_browser)
     browser.get(url)
-    email_xpath = f"//*[@id='govuk-text-input']"
-    input_element = browser.find_element(By.XPATH, email_xpath)
-    input_element.send_keys("sa")
+    enter_input_text(get_browser, 'govuk-text-input telephone-number', 'sa', 'id')
     click_button(get_browser, 'Continue', url)
     assert "Enter a UK landline or mobile telephone number, like 01632 960 001 or 07700 900 982" in browser.page_source
 
 def test__valid_input(get_browser):
     browser = setup_session(get_browser)
     browser.get(url)
-    fullname_xpath = f"//*[@id='govuk-text-input']"
-    fullname_element = browser.find_element(By.XPATH, fullname_xpath)
-    fullname_element.send_keys("test@gmail.com")
 
-    email_xpath = f"//*[@id='govuk-text-input']"
-    email_element = browser.find_element(By.XPATH, email_xpath)
-    email_element.send_keys("test@gmail.com")
-
-    phone_xpath = f"//*[@id='govuk-text-input']"
-    phone_element = browser.find_element(By.XPATH, phone_xpath)
-    phone_element.send_keys("07889678367")
+    enter_input_text(get_browser, 'govuk-text-input full-name', 'Cammy', 'id')
+    enter_input_text(get_browser, 'govuk-text-input email-address', 'for@gmail.com', 'id')
+    enter_input_text(get_browser, 'govuk-text-input telephone-number', '07889668396', 'id')
 
     click_button(get_browser, 'Continue', nextUrl)

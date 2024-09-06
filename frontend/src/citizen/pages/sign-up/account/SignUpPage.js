@@ -14,7 +14,7 @@ import { backendCall } from '../../../../common/services/BackendService'
 import { addVerifiedContact } from '../../../../common/services/ProfileServices'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 
-export default function SignUpPage() {
+export default function SignUpPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [email, setEmail] = useState('')

@@ -8,7 +8,7 @@ import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function OrganisationHeader() {
+export default function OrganisationHeader () {
   const [activeHeader, setActiveHeader] = useState(null)
 
   const handleActiveHeader = (item) => {

@@ -28,7 +28,7 @@ export default function DoNotAddLocationsPage () {
                     className='govuk-link'
                   >
                     Download a file of all the locations not matched
-                  </Link>{''}
+                  </Link>
                   if you want to add these later. You'll need to update these addresses and reupload them.
                 </>
               </p>

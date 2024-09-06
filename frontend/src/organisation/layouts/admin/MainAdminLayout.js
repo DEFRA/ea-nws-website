@@ -10,7 +10,7 @@ import {
   updateOrganisationAdditionals
 } from '../../../common/services/ProfileServices'
 
-export default function MainAdminLayout({
+export default function MainAdminLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -25,7 +25,7 @@ export default function MainAdminLayout({
       return
     }
 
-    let organisation = Object.assign({}, getOrganisationAdditionals(profile))
+    const organisation = Object.assign({}, getOrganisationAdditionals(profile))
     organisation.isAdminRegistering = adminDetails
 
     const updatedProfile = updateOrganisationAdditionals(profile, organisation)

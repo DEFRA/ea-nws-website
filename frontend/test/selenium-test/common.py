@@ -38,7 +38,9 @@ url_org_signup = {
     'mainAdmin': url_org_signup_path + '/main-admin',
     'adminDetails': url_org_signup_path + '/admin-details',
     'duplicateEmail': url_org_signup_path + '/admin-email-duplicate',
-    'duplicateOrg': url_org_signup_path + '/duplicate'
+    'duplicateOrg': url_org_signup_path + '/duplicate',
+    'review': url_org_signup_path + '/review',
+    'success': url_org_signup_path + '/success'
 }
 # Signin urls
 url_org_signin_path = url_org + '/signin'
@@ -61,6 +63,11 @@ url_org_man_loc = {
         'addressInfo': url_org_man_loc_path + '/add/address-info',
         'uploadFile': url_org_man_loc_path + '/add/upload-file',
         'uploadTemplate': 'http://d39yn09rf1d1o9.cloudfront.net/template.csv'
+    },
+    'change': {
+        'alternative_contact': local_host + '/',
+        'org_details':  local_host + '/',
+        'main_admin': local_host + '/'
     }
 }
 
@@ -94,6 +101,14 @@ def click_button(browser, button_text, url_button):
 # Click on link text and check url
 def click_link(browser, link_text, url_link):
     link_xpath = f"//a[text()='{link_text}']"
+    link_element = browser.find_element(By.XPATH, link_xpath)
+    browser.execute_script("arguments[0].click();", link_element)
+    time.sleep(1)
+    assert browser.current_url == url_link
+
+# Click on link text and check url - for when there is more than one occurence of the same text
+def click_link_more_than_one_text(browser, link_text, link_text_iteration, url_link):
+    link_xpath = f"(//a[text()='{link_text}'])[{link_text_iteration}]"
     link_element = browser.find_element(By.XPATH, link_xpath)
     browser.execute_script("arguments[0].click();", link_element)
     time.sleep(1)
@@ -136,3 +151,11 @@ def check_error_summary(browser):
 def check_sign_back_in_page(browser):
     assert '/sign-back-in' in browser.current_url
     return check_h1_heading(browser, 'You need to sign back in to view this page')
+
+#SETUP Mock Profile
+def activate_mock_org_1(get_browser):
+    browser = get_browser
+    browser.get(url_index)
+    click_button(browser, 'Activate/Deactivate Mock Org Session 1', url_index)
+    time.sleep(1)
+    return browser

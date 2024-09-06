@@ -4,18 +4,19 @@ import AlternativeContactDetailsPage from '../../pages/sign-up/AlternativeContac
 import CompaniesHouseNumPage from '../../pages/sign-up/CompaniesHouseNumPage'
 import ConfirmAddressPage from '../../pages/sign-up/ConfirmAddressPage'
 import DuplicateNamePage from '../../pages/sign-up/DuplicateNamePage'
+import SelectAddressPage from '../../pages/sign-up/SearchAddressResultPage'
+import SectorPage from '../../pages/sign-up/SectorPage'
 import AdminDetailsPage from '../../pages/sign-up/mainAdministrator/AdminDetailsPage'
 import DuplicateAdminEmailPage from '../../pages/sign-up/mainAdministrator/DuplicateAdminEmailPage'
 import MainAdminPage from '../../pages/sign-up/mainAdministrator/MainAdminPage'
 import ValidateAdminEmailPage from '../../pages/sign-up/mainAdministrator/ValidateAdminEmailPage'
-import SelectAddressPage from '../../pages/sign-up/SearchAddressResultPage'
-import SectorPage from '../../pages/sign-up/SectorPage'
+import CheckYourAnswersPage from '../../pages/sign-up/review/CheckYourAnswersPage'
 import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
 
 const urlSignUpOrg = '/organisation/sign-up'
 
 // registration
-const registrationRoutes = [
+const signupRoutes = [
   { path: urlSignUpOrg, component: <AddNamePage /> },
   {
     path: urlSignUpOrg + '/address',
@@ -64,7 +65,8 @@ const registrationRoutes = [
   {
     path: urlSignUpOrg + '/duplicate',
     component: <DuplicateNamePage />
-  }
+  },
+  { path: urlSignUpOrg + '/review', component: <CheckYourAnswersPage /> }
 ]
 
-export default registrationRoutes
+export default signupRoutes

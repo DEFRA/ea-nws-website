@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import ExpiredCodeLayout from '../../../citizen/layouts/expired-code/ExpiredCodeLayout'
+import NotCompletedSigningUpLayout from '../../../citizen/layouts/sign-up/NotCompletedSignUpLayout'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -15,8 +17,6 @@ import {
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
-import ExpiredCodeLayout from '../../../citizen/layouts/expired-code/ExpiredCodeLayout'
-import NotCompletedSigningUpLayout from '../../../citizen/layouts/sign-up/NotCompletedSignUpLayout'
 
 export default function SignInValidatePageLayout ({
   NavigateToNextPage,
@@ -33,6 +33,7 @@ export default function SignInValidatePageLayout ({
   const [codeExpired, setCodeExpired] = useState(false)
   const [signUpNotComplete, setSignUpNotComplete] = useState(false)
   const [lastAccessedUrl, setLastAccessedUrl] = useState('')
+  const signinType = useSelector((state) => state.session.signinType)
 
   // if error remove code sent notification
   useEffect(() => {
@@ -45,7 +46,7 @@ export default function SignInValidatePageLayout ({
     const validationError = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      const dataToSend = { signinToken, code }
+      const dataToSend = { signinToken, code, signinType }
       const { errorMessage, data } = await backendCall(
         dataToSend,
         'api/sign_in_validate'

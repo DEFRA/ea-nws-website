@@ -45,6 +45,14 @@ url_org_man_loc = {
     }
 }
 
+# activate empty profile
+def setup_empty_profile_for_signup_flow(browser):
+    browser.get("http://localhost:3000/index")
+    button_xpath = f"//button[text()='Activate/Deactivate Empty profile - Used for sign up tests']"
+    button_element = browser.find_element(By.XPATH, button_xpath)
+    browser.execute_script("arguments[0].click();", button_element)
+    time.sleep(1)
+
 # PAGE NAVIGATION
 # Navigate to authenticated page via index page and check url
 def navigate_to_auth_page_via_index(browser, url_target, mock_session=1):

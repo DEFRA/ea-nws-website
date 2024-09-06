@@ -13,9 +13,9 @@ export default function SignOutManuallyPage () {
     if (signinType === 'org') {
       // need to call the backend to remove data from elasticache once signed out
       backendCall(
-          authToken,
-          'api/sign_out'
-        )
+        { authToken },
+        'api/sign_out'
+      )
     }
     dispatch(clearAuth())
   })

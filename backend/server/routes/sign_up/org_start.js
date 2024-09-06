@@ -14,11 +14,18 @@ module.exports = [
         }
 
         const { name } = request.payload
-        const response = await apiCall(
-          { name: name },
-          'member/registerOrgStart'
-        )
-        return h.response(response)
+        if (name != null) {
+          const response = await apiCall(
+            { name: name },
+            'member/registerOrgStart'
+          )
+          return h.response(response)
+        } else {
+          return h.response({
+            status: 500,
+            errorMessage: 'Organisation name is null'
+          })
+        }
       } catch (error) {
         return createGenericErrorResponse(h)
       }

@@ -22,3 +22,7 @@ def test_get_signin_code_button(get_browser):
 def test_enter_different_email_link(get_browser):
     browser = duplicate_email_render(get_browser)
     click_link(browser, 'Go back and enter a different email address', url_admin_details)
+
+def test_back_link(get_browser):
+    browser = duplicate_email_render(get_browser)
+    click_link(browser, 'Back', url_admin_details)

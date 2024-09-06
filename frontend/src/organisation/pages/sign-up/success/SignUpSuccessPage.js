@@ -2,7 +2,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import ConfirmationPanel from '../../../../common/components/gov-uk/Panel'
 
-export default function SignUpSuccessPage() {
+export default function SignUpSuccessPage () {
   // need to check for authToken
   const navigate = useNavigate()
 

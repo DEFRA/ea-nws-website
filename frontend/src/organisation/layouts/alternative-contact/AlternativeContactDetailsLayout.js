@@ -13,7 +13,7 @@ import { emailValidation } from '../../../common/services/validations/EmailValid
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
 
-export default function AlternativeContactDetailsLayout({
+export default function AlternativeContactDetailsLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -26,7 +26,7 @@ export default function AlternativeContactDetailsLayout({
   const [email, setEmail] = useState('')
   const [telephone, setTelephoneNumber] = useState('')
   const [jobTitle, setJobTitle] = useState('')
-  let organisation = Object.assign(
+  const organisation = Object.assign(
     {},
     getOrganisationAdditionals(session.profile)
   )
@@ -64,9 +64,9 @@ export default function AlternativeContactDetailsLayout({
         alternativeContact: {
           firstName: firstname,
           lastName: lastname,
-          email: email,
-          telephone: telephone,
-          jobTitle: jobTitle
+          email,
+          telephone,
+          jobTitle
         }
       }
 
@@ -99,20 +99,22 @@ export default function AlternativeContactDetailsLayout({
               Enter details for an alternative contact at your organisation
             </h1>
             <div className='govuk-body'>
-              {isAdmin ? (
-                <p className='govuk-body govuk-!-margin-bottom-5'>
-                  This person will be an alternative contact, in case you're
-                  unavailable in the future. They will not be given
-                  administrator rights.
-                </p>
-              ) : (
-                <p className='govuk-body govuk-!-margin-bottom-5'>
-                  This person will be an alternative contact, in case{' '}
-                  {session.profile.firstname} {session.profile.lastname} is
-                  unavailable in the future. They will not be given
-                  administrator rights.
-                </p>
-              )}
+              {isAdmin
+                ? (
+                  <p className='govuk-body govuk-!-margin-bottom-5'>
+                    This person will be an alternative contact, in case you're
+                    unavailable in the future. They will not be given
+                    administrator rights.
+                  </p>
+                  )
+                : (
+                  <p className='govuk-body govuk-!-margin-bottom-5'>
+                    This person will be an alternative contact, in case{' '}
+                    {session.profile.firstname} {session.profile.lastname} is
+                    unavailable in the future. They will not be given
+                    administrator rights.
+                  </p>
+                  )}
               <label className='govuk-label govuk-label--m' htmlFor='full-name'>
                 Full name
               </label>

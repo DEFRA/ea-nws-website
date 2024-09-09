@@ -36,10 +36,8 @@ export default function ValidateMobileLayout ({
     setCodeResent(false)
   }, [error])
 
-  const session = useSelector((state) => state.session)
-
-  const mobile = session.currentContact
-
+  const profile = useSelector((state) => state.session.profile)
+  const mobile = useSelector((state) => state.sessioncurrentContact)
   const authToken = useSelector((state) => state.session.authToken)
 
   const handleSubmit = async (event) => {
@@ -89,7 +87,7 @@ export default function ValidateMobileLayout ({
   const skipValidation = (event) => {
     event.preventDefault()
     // remove email from verified list if user is going back after validating
-    const updatedProfile = removeVerifiedContact(session.profile, mobile)
+    const updatedProfile = removeVerifiedContact(profile, mobile)
     // we will need to add the email back to the unverified list - if it already exists
     // nothing will happen and it will remain
     dispatch(setProfile(addUnverifiedContact(updatedProfile, 'mobile', mobile)))
@@ -111,19 +109,19 @@ export default function ValidateMobileLayout ({
   const removeMobileFromProfile = async () => {
     let updatedProfile
     if (
-      session.profile.unverified.mobilePhones.some(
+      profile.unverified.mobilePhones.some(
         (unverifiedMobilePhone) => unverifiedMobilePhone.address === mobile
       )
     ) {
-      updatedProfile = removeUnverifiedContact(session.profile, mobile)
-      dispatch(setProfile(removeUnverifiedContact(session.profile, mobile)))
+      updatedProfile = removeUnverifiedContact(profile, mobile)
+      dispatch(setProfile(removeUnverifiedContact(profile, mobile)))
     }
-    if (session.profile.mobilePhones.includes(mobile)) {
-      updatedProfile = removeVerifiedContact(session.profile, mobile)
-      dispatch(setProfile(removeVerifiedContact(session.profile, mobile)))
+    if (profile.mobilePhones.includes(mobile)) {
+      updatedProfile = removeVerifiedContact(profile, mobile)
+      dispatch(setProfile(removeVerifiedContact(profile, mobile)))
     }
 
-    const dataToSend = { profile: updatedProfile, authToken: session.authToken }
+    const dataToSend = { profile: updatedProfile, authToken }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/profile/update',

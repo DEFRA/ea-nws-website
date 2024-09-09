@@ -19,7 +19,7 @@ export default function AddMobileLayout ({
   const [mobile, setMobile] = useState('')
   const [error, setError] = useState('')
   const dispatch = useDispatch()
-  const session = useSelector((state) => state.session)
+  const sessionProfile = useSelector((state) => state.session.profile)
   const authToken = useSelector((state) => state.session.authToken)
 
   const handleSubmit = async (event) => {
@@ -30,7 +30,7 @@ export default function AddMobileLayout ({
       const normalisedPhoneNumber = normalisePhoneNumber(mobile)
       const dataToSend = { msisdn: normalisedPhoneNumber, authToken }
       const profile = addUnverifiedContact(
-        session.profile,
+        sessionProfile,
         'mobile',
         normalisedPhoneNumber
       )

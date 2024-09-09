@@ -142,55 +142,42 @@ export default function AlternativeContactDetailsLayout ({
                     administrator rights.
                   </p>
                   )}
-              <label className='govuk-label govuk-label--m' htmlFor='full-name'>
-                Full name
-              </label>
               <Input
                 inputType='text'
                 value={fullName}
-                id='full-name'
+                name='Full name'
                 onChange={(val) => setFullName(val)}
                 error={errorFullName}
                 className='govuk-input govuk-input--width-20'
                 defaultValue={fullName}
+                isNameBold
               />
-              <label
-                className='govuk-label govuk-label--m'
-                htmlFor='email-address'
-              >
-                Email address
-              </label>
               <Input
                 inputType='text'
                 value={email}
-                id='email-address'
+                name='Email address'
                 onChange={(val) => setEmail(val)}
                 error={errorEmail}
                 className='govuk-input govuk-input--width-20'
+                isNameBold
               />
-              <label
-                className='govuk-label govuk-label--m'
-                htmlFor='email-address'
-              >
-                Telephone number
-              </label>
               <Input
                 inputType='text'
                 value={telephone}
-                id='telephone-number'
+                name='Telephone number'
                 error={errorTelephone}
                 onChange={(val) => setTelephoneNumber(val)}
                 className='govuk-input govuk-input--width-20'
+                isNameBold
               />
-              <label className='govuk-label govuk-label--m' htmlFor='job-title'>
-                Job title (optional)
-              </label>
+
               <Input
                 inputType='text'
                 value={jobTitle}
-                id='job-title'
+                name='Job title (optional)'
                 onChange={(val) => setJobTitle(val)}
                 className='govuk-input govuk-input--width-20'
+                isNameBold
               />
               <Button
                 text='Continue'

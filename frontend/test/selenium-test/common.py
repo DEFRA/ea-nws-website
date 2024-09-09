@@ -39,6 +39,7 @@ url_org_signup = {
     'adminDetails': url_org_signup_path + '/admin-details',
     'duplicateEmail': url_org_signup_path + '/admin-email-duplicate',
     'duplicateOrg': url_org_signup_path + '/duplicate',
+    'alternativeContact': url_org_signup_path + '/alternative-contact',
     'review': url_org_signup_path + '/review',
     'success': url_org_signup_path + '/success'
 }

@@ -37,7 +37,7 @@ export default function ValidateMobileLayout ({
   }, [error])
 
   const profile = useSelector((state) => state.session.profile)
-  const mobile = useSelector((state) => state.sessioncurrentContact)
+  const mobile = useSelector((state) => state.session.currentContact)
   const authToken = useSelector((state) => state.session.authToken)
 
   const handleSubmit = async (event) => {

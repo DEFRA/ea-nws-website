@@ -672,6 +672,11 @@
   background-color: #ffdd00;
 }
 
+.one-login-header__nav__list-item.no-highlight:hover,
+.one-login-header__nav__list-item.no-highlight.active {
+  background-color: transparent !important;
+}
+
 .one-login-header__nav__list-item.active::after {
   content: '';
   position: absolute;

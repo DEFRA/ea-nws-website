@@ -74,7 +74,7 @@ export default function FindUnmatchedLocationsPage () {
                   className='govuk-link'
                 >
                   Download a file of all the locations not matched,
-                </Link> {''}
+                </Link>
                 update it and reupload later.
               </p>
             </div>

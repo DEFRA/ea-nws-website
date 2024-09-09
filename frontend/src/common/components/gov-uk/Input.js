@@ -1,5 +1,6 @@
 import React from 'react'
 export default function Input ({
+  id = '',
   name,
   className,
   value,
@@ -26,7 +27,7 @@ export default function Input ({
           className={
             isNameBold === true ? 'govuk-label govuk-label--m' : 'govuk-label'
           }
-          htmlFor='govuk-text-input'
+          htmlFor={`govuk-text-input ${id}`}
         >
           {name}
         </label>
@@ -40,7 +41,7 @@ export default function Input ({
             error === '' ? className : className + ' govuk-input--error'
           }
           name={name}
-          id='govuk-text-input'
+          id={`govuk-text-input ${id}`}
           type={inputType}
           value={value}
           defaultValue={defaultValue}

@@ -170,7 +170,6 @@ export default function AlternativeContactDetailsLayout ({
                 className='govuk-input govuk-input--width-20'
                 isNameBold
               />
-
               <Input
                 inputType='text'
                 value={jobTitle}

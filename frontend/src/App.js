@@ -8,11 +8,11 @@ import { authenticatedRoutes, routes } from './routes'
 
 export default function App () {
   const auth = useSelector((state) => state.session.authToken)
+  const signinType = useSelector((state) => state.session.signinType)
   const [isInactive, setIsInactive] = useState(false)
+  const [isPopUpOnScreen, setIsPopUpOnScreen] = useState(false)
   const inactivityTimer = useRef(null)
   const redirectTimer = useRef(null)
-  const [isPopUpOnScreen, setIsPopUpOnScreen] = useState(false)
-  const signinType = useSelector((state) => state.session.signinType)
   const currentRoute = window.location.pathname
 
   useEffect(() => {
@@ -75,7 +75,7 @@ export default function App () {
   }
 
   const SignBackInLink = () => {
-    if (currentRoute.includes('/organisation/')) {
+    if (currentRoute.includes('organisation')) {
       return '/organisation/sign-back-in'
     } else {
       return '/sign-back-in'

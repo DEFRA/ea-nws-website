@@ -227,6 +227,60 @@ export default function IndexPage () {
     ]
   }
 
+  const mockOrgOne = {
+    id: '',
+    enabled: true,
+    firstname: 'John',
+    lastname: 'Smith',
+    emails: ['matthew.pepper@gmail.com'],
+    mobilePhones: ['07343454590'],
+    homePhones: ['01475721535'],
+    language: 'EN',
+    additionals: [
+      {
+        id: 'organisation',
+        value: {
+          name: 'THE 123 GROUP LIMITED',
+          address: 'Boulton House 17-21 Chorlton Street, Manchester, M1 3HY',
+          compHouseNum: '05897191',
+          emergencySector: false,
+          isAdminRegistering: true,
+          alternativeContact: {
+            firstName: 'Julia Joyce',
+            lastName: 'Breen',
+            email: 'julia@email.com',
+            telephone: '01339944433',
+            jobTitle: 'Director'
+          }
+        }
+      },
+      { id: 'signUpComplete', value: false }
+    ],
+    unverified: {
+      emails: [],
+      mobilePhones: [],
+      homePhones: []
+    },
+    pois: [
+      {
+        name: 'Big Ben, London, SW1A 0AA',
+        address: 'UPRN',
+        coordinates: {
+          latitude: 51.5007,
+          longitude: 0.1246
+        }
+      },
+      {
+        name: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'UPRN',
+        coordinates: {
+          latitude: 51.550738,
+          longitude: -0.257635
+        }
+      }
+    ]
+  }
+
   function mockSession (profile) {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
@@ -349,7 +403,7 @@ export default function IndexPage () {
                 Organisation:
                 <li>
                   &emsp;
-                  <Link to='/organisation/register' className='govuk-link'>
+                  <Link to='/organisation/sign-up' className='govuk-link'>
                     Register
                   </Link>
                 </li>
@@ -380,6 +434,11 @@ export default function IndexPage () {
                 text='Activate/Deactivate Mock Session 3'
                 onClick={() => mockSession(mockThree)}
               />
+              <Button
+                className='govuk-button'
+                text='Activate/Deactivate Mock Org Session 1'
+                onClick={() => mockSession(mockOrgOne)}
+              />
               <ul className='govuk-list'>
                 <li>
                   <Link to='/home' className='govuk-link'>
@@ -399,6 +458,22 @@ export default function IndexPage () {
                 <li>
                   <Link to='/organisation/home' className='govuk-link'>
                     Organisation home page
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to='/organisation/manage-locations/add'
+                    className='govuk-link'
+                  >
+                    Organisation add location
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to='/organisation/sign-up/review'
+                    className='govuk-link'
+                  >
+                    Sign up organisation review
                   </Link>
                 </li>
               </ul>

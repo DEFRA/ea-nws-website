@@ -5,15 +5,13 @@ function splitLines(text) {
 }
 
 function splitLine(line) {
-  var lineArr = line.match(/(".*?"|[^",]+)(?=\s*,|\s*$)/g);
-  lineArr = lineArr.map(element => element.replace(/["]+/g, ''))
+  var lineArr = line.match(/((".*?"|[^",]+)(?=\s*,|\s*$))|(^,|(,(?=,))|,$)/g);
+  lineArr = lineArr.map(element => element.replace(/^,$|["]+/g, ''))
   return lineArr;
 }
 
 const csvToJson = (csv) => {
   const templateHeader = fs.readFileSync('template.csv').toString()
-
-  console.log('template header = '+templateHeader)
   var lines = splitLines(csv)
   //filter array to remove any empty items cased by no data on the last line(s) of the csv
   lines = lines.filter(element => element)
@@ -44,11 +42,19 @@ const csvToJson = (csv) => {
     const keywordHeader = 'Keywords';
     // add the keywords to the object
     obj[keywordHeader] = keywords
+    obj.line_Number = i+1
 
     result.push(obj);
   }
 
-  return {locations: result};
+  var duplicate = new Set();
+  const hasDuplicates = result.some(location => duplicate.size === duplicate.add(location.Location_name).size)
+
+  if (hasDuplicates) {
+    return {error: 'Duplicates'}
+  } else {
+    return {locations: result};
+  }
 }
 
 module.exports = {csvToJson}

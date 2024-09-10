@@ -122,7 +122,6 @@ const osFindApiCall = async (address, minmatch) => {
           postcode: result.DPA.POSTCODE
         }
       })
-
       return { status: response.status, data: responseData }
     } else {
       return {

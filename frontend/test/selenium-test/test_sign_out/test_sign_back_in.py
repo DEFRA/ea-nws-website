@@ -15,4 +15,4 @@ def test_org_sign_back_in(get_browser):
     browser = get_browser
     browser.get(url_org_home)
     assert browser.current_url == url_org_signin.get('signBackIn')
-    click_button(browser, 'Sign in', url_org_signin_path)
+    click_button(browser, 'Sign in', url_org_signin.get('signin'))

@@ -38,6 +38,8 @@ url_org_signup = {
     'mainAdmin': url_org_signup_path + '/main-admin',
     'adminDetails': url_org_signup_path + '/admin-details',
     'duplicateEmail': url_org_signup_path + '/admin-email-duplicate',
+    'duplicateOrg': url_org_signup_path + '/duplicate',
+    'alternativeContact': url_org_signup_path + '/alternative-contact',
     'review': url_org_signup_path + '/review',
     'success': url_org_signup_path + '/success'
 }
@@ -77,6 +79,16 @@ def navigate_to_auth_page_via_index(browser, url_target, mock_session=1):
     button_text = 'Activate/Deactivate Mock Session ' + str(mock_session)
     click_button(browser, button_text, url_index)
     browser.get(url_target)
+    assert browser.current_url == url_target
+
+# Navigate to unauthenticated page via index page and check url
+def navigate_to_unauth_page_via_index(browser, url_target):
+    browser.get(url_index)
+    button_text = 'Activate/Deactivate Empty profile - Used for sign up tests'
+    click_button(browser, button_text, url_index)
+    browser.get(url_target)
+    assert browser.current_url == url_target
+    return browser
 
 # CLICK / SELECT
 # Click on a button and check url

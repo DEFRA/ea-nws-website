@@ -13,8 +13,8 @@ export default function HomePage () {
   return (
     <>
       <main className='govuk-main-wrapper'>
-        <div class='govuk-grid-row'>
-          <div class='govuk-grid-column-full'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-full'>
             <h1 className='govuk-heading-l'>Organisation Home Page</h1>
           </div>
         </div>

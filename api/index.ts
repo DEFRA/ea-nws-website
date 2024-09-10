@@ -18,6 +18,7 @@ const api = new OpenAPIBackend({
   handlers: {
     //sign up routes
     getRegisterStart: registerHandlers.getRegisterStart,
+    getRegisterOrgStart: registerHandlers.getRegisterOrgStart,
     getRegisterValidate: registerHandlers.getRegisterValidate,
     //mobile authentication
     getMobileStart: mobileAuthenticationHandler.getMobileStart,

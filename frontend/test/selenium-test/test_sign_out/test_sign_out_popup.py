@@ -9,7 +9,7 @@ time_to_popup = 10
 # Time to auto signout after popup appears
 time_to_auto_signout = 5
 # Time delay
-delay = 1
+delay = 2
 
 # FUNCTIONS
 # Confirm popup doesn't appear
@@ -72,7 +72,7 @@ def test_org_popup_logout_button(get_browser):
     browser = get_browser
     navigate_to_auth_page_via_index(browser, url_org_home)
     time.sleep(time_to_popup + delay)
-    click_link(browser, 'Sign out', url_org_signout)
+    click_link(browser, 'Sign out', url_org_signout.get('signout'))
     time.sleep(delay)
     popup_not_found(browser)
 
@@ -92,4 +92,4 @@ def test_org_auto_logout(get_browser):
     navigate_to_auth_page_via_index(browser, url_org_home)
     time.sleep(time_to_popup + time_to_auto_signout + delay)
     popup_not_found(browser)
-    assert browser.current_url == url_org_signout_auto
+    assert browser.current_url == url_org_signout.get('auto')

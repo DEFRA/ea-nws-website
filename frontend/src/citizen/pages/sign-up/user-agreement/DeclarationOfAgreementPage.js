@@ -5,7 +5,10 @@ import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import Checkbox from '../../../../common/components/gov-uk/CheckBox'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
-import { setProfile, setRegistrations } from '../../../../common/redux/userSlice'
+import {
+  setProfile,
+  setRegistrations
+} from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { updateAdditionals } from '../../../../common/services/ProfileServices'
 
@@ -72,38 +75,42 @@ export default function DeclarationOfAgreementPage () {
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
             <div className='govuk-body'>
-              <h1 class='govuk-heading-l'>Check the terms and conditions</h1>
-              <h3 class='govuk-heading-s'>What we will do</h3>
+              <h1 className='govuk-heading-l'>
+                Check the terms and conditions
+              </h1>
+              <h3 className='govuk-heading-s'>What we will do</h3>
               <p>
-                We make all reasonable efforts to send the flood warnings you have
-                asked for, but we cannot guarantee they will be sent or arrive.
-                Warnings may be sent at any time of day or night.
+                We make all reasonable efforts to send the flood warnings you
+                have asked for, but we cannot guarantee they will be sent or
+                arrive. Warnings may be sent at any time of day or night.
               </p>
 
-              <h3 class='govuk-heading-s'>We do not:</h3>
-              <ul class='govuk-list govuk-list--bullet'>
+              <h3 className='govuk-heading-s'>We do not:</h3>
+              <ul className='govuk-list govuk-list--bullet'>
                 <li>accept responsibility if you fail to receive a warning</li>
                 <li>
                   guarantee that our online or phone services will be available
                 </li>
                 <li>
-                  accept responsibility for any loss, damage or costs incurred by
-                  you caused by flooding, or by issuing or failing to issue
+                  accept responsibility for any loss, damage or costs incurred
+                  by you caused by flooding, or by issuing or failing to issue
                   warnings, except where the law says we must
                 </li>
               </ul>
 
-              <h3 class='govuk-heading-s'>You are responsible for:</h3>
-              <ul class='govuk-list govuk-list--bullet'>
+              <h3 className='govuk-heading-s'>You are responsible for:</h3>
+              <ul className='govuk-list govuk-list--bullet'>
                 <li>providing us with accurate contact details</li>
-                <li>telling us about any changes to your contact information</li>
+                <li>
+                  telling us about any changes to your contact information
+                </li>
               </ul>
 
-              <h3 class='govuk-heading-s'>
+              <h3 className='govuk-heading-s'>
                 How will we use your personal information
               </h3>
               <p>We may use the personal information you provide to:</p>
-              <ul class='govuk-list govuk-list--bullet'>
+              <ul className='govuk-list govuk-list--bullet'>
                 <li>send you warnings you've asked for</li>
                 <li>
                   send you a small number of services or administrative messages
@@ -127,7 +134,7 @@ export default function DeclarationOfAgreementPage () {
                 The Environment Agency manages the flood warning systems. Our
                 <a
                   href='https://www.fws.environment-agency.gov.uk/app/olr/privacy'
-                  class='govuk-link'
+                  className='govuk-link'
                 >
                   {' '}
                   privacy notice (open new window)
@@ -136,12 +143,12 @@ export default function DeclarationOfAgreementPage () {
               </p>
 
               <p>
-                Natural Resources Wales use the same systems and will have access
-                to your personal information if you ask for a service in Wales.
-                Read how Natural Resources Wales
+                Natural Resources Wales use the same systems and will have
+                access to your personal information if you ask for a service in
+                Wales. Read how Natural Resources Wales
                 <a
                   href='https://www.gov.uk/government/organisations/environment-agency/about/personal-information-charter'
-                  class='govuk-link'
+                  className='govuk-link'
                 >
                   {' '}
                   Treat your personal information (opens new window)
@@ -150,10 +157,10 @@ export default function DeclarationOfAgreementPage () {
 
               <div
                 className={
-                error
-                  ? 'govuk-form-group govuk-form-group--error'
-                  : 'govuk-form-group'
-              }
+                  error
+                    ? 'govuk-form-group govuk-form-group--error'
+                    : 'govuk-form-group'
+                }
               >
                 {error && <p className='govuk-error-message'>{error}</p>}
                 <Checkbox

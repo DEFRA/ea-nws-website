@@ -8,6 +8,9 @@ import { Link } from 'react-router-dom'
 
 export default function OptionalLocationInformationPage () {
   const navigate = useNavigate()
+  const navigateToNextPage = () => {
+    navigate('/organisation/manage-locations/add/optional-address')
+  }
   return (
     <>
       <OrganisationAccountNavigation />
@@ -122,7 +125,7 @@ export default function OptionalLocationInformationPage () {
             <Button
               className='govuk-button'
               text='Add optional information now'
-              onClick=''
+              onClick={navigateToNextPage}
             />
             &nbsp; &nbsp;
             <Link

@@ -6,6 +6,7 @@ import DoNotAddLocationsPage from '../../pages/manage-locations/unmatched-locati
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
 import ConfirmLocationsPage from '../../pages/manage-locations/confirm-locations/ConfirmAddingLocationsPage'
 import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/OptionalLocationInformationPage'
+import AddOptionalAddress from '../../pages/manage-locations/add-location/AddOptionalAddress'
 
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgUnmatchedLocations = '/organisation/manage-locations/unmatched-locations'
@@ -20,7 +21,8 @@ const orgManageLocationsUrls = {
     options: urlManageOrg + '/add',
     addressInfo: urlManageOrg + '/add/address-info',
     uploadFile: urlManageOrg + '/add/upload-file',
-    optionalInfo: urlManageOrg + '/add/optional-location-info'
+    optionalInfo: urlManageOrg + '/add/optional-location-info',
+    optinalAddress: urlManageOrg + '/add/optional-address'
   },
   unmatchedLocations: {
     doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
@@ -60,6 +62,10 @@ const orgManageLocationRoutes = [
   }, {
     path: orgManageLocationsUrls.add.optionalInfo,
     component: <OptionalLocationInformationPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.optinalAddress,
+    component: <AddOptionalAddress/>
   }
 ]
 

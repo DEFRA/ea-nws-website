@@ -21,6 +21,21 @@ async function getRegisterStart(
   return { registerToken: '123456' }
 }
 
+async function getRegisterOrgStart(
+  context: Context,
+  req: Hapi.Request,
+  res: Hapi.ResponseToolkit
+) {
+  console.log('Received register start request for: ', req.payload)
+  const { name } = req.payload as { name: string }
+  if (name === 'duplicateOrganisation') {
+    console.log('duplicate organisation, responding 500')
+    return res.response(responseCodes.DUPLICATE_ORG).code(500)
+  }
+  console.log('Valid organisation, responding 200')
+  return res.response(responseCodes.SUCCESS)
+}
+
 async function getRegisterValidate(
   context: Context,
   req: Hapi.Request,
@@ -31,8 +46,8 @@ async function getRegisterValidate(
     code: string
     registerToken: string
   }
-  if(code === '111111'){
-    console.log("invalid credentials, responding 101")
+  if (code === '111111') {
+    console.log('invalid credentials, responding 101')
     return res.response(responseCodes.UNAUTHORIZED).code(500)
   }
 
@@ -45,4 +60,4 @@ async function getRegisterValidate(
   return { authToken: 'MockAuthToken' }
 }
 
-module.exports = { getRegisterStart, getRegisterValidate }
+module.exports = { getRegisterStart, getRegisterOrgStart, getRegisterValidate }

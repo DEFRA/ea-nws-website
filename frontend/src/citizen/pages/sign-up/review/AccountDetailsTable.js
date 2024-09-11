@@ -9,7 +9,7 @@ export default function AccountDetailsTable ({ profile }) {
       <table className='govuk-table'>
         <tbody className='govuk-table__body'>
           <tr className='govuk-table__row'>
-            <td class='govuk-table__header  govuk-!-width-one-half'>
+            <td className='govuk-table__header  govuk-!-width-one-half'>
               Full name
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
@@ -26,7 +26,7 @@ export default function AccountDetailsTable ({ profile }) {
             </td>
           </tr>
           <tr className='govuk-table__row'>
-            <td class='govuk-table__header  govuk-!-width-one-half'>
+            <td className='govuk-table__header  govuk-!-width-one-half'>
               Email to sign in
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>

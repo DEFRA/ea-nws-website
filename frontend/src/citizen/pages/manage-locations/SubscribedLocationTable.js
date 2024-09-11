@@ -131,8 +131,8 @@ export default function SubscribedLocationTable () {
 
     return (
       <table className='govuk-table'>
-        <thead class='govuk-table__head'>
-          <tr class='govuk-table__row'>
+        <thead className='govuk-table__head'>
+          <tr className='govuk-table__row'>
             <th colspan='3' scope='colspan' className='govuk-table__header'>
               {'Your locations (' + locations.length + ')'}
             </th>

@@ -39,8 +39,8 @@ export default function SignInPageLayout ({ NavigateToNextPage }) {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            {location.pathname.includes('organisation') ? <h1 class='govuk-heading-l'>Sign in to your organisation's flood warnings account</h1> : <h1 class='govuk-heading-l'>Sign in to your flood warnings account</h1>}
-            <div class='govuk-body'>
+            {location.pathname.includes('organisation') ? <h1 className='govuk-heading-l'>Sign in to your organisation's flood warnings account</h1> : <h1 className='govuk-heading-l'>Sign in to your flood warnings account</h1>}
+            <div className='govuk-body'>
               <Input
                 className='govuk-input govuk-input--width-30'
                 name='Email address'

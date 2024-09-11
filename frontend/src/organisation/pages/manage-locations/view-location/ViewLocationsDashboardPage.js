@@ -267,12 +267,12 @@ export default function ViewLocationsDashboardPage () {
               className='govuk-button govuk-button--secondary'
             />
             <p className=' govuk-!-margin-bottom-6'>700 locations</p>
-            <table class='govuk-table govuk-table--small-text-until-tablet'>
-              <thead class='govuk-table__head'>
-                <tr class='govuk-table__row'>
-                  <th scope='col' class='govuk-table__header'>
+            <table className='govuk-table govuk-table--small-text-until-tablet'>
+              <thead className='govuk-table__head'>
+                <tr className='govuk-table__row'>
+                  <th scope='col' className='govuk-table__header'>
                     <div
-                      class='govuk-checkboxes govuk-checkboxes--small'
+                      className='govuk-checkboxes govuk-checkboxes--small'
                       data-module='govuk-checkboxes'
                     >
                       <div className='govuk-checkboxes__item'>
@@ -286,29 +286,29 @@ export default function ViewLocationsDashboardPage () {
                       </div>
                     </div>
                   </th>
-                  <th scope='col' class='govuk-table__header'>
+                  <th scope='col' className='govuk-table__header'>
                     Location name
                   </th>
-                  <th scope='col' class='govuk-table__header'>
+                  <th scope='col' className='govuk-table__header'>
                     Location type
                   </th>
-                  <th scope='col' class='govuk-table__header'>
+                  <th scope='col' className='govuk-table__header'>
                     Flood messages
                     <br /> available
                   </th>
-                  <th scope='col' class='govuk-table__header'>
+                  <th scope='col' className='govuk-table__header'>
                     Business criticality
                   </th>
-                  <th scope='col' class='govuk-table__header' />
+                  <th scope='col' className='govuk-table__header' />
                 </tr>
               </thead>
-              <tbody class='govuk-table__body'>
+              <tbody className='govuk-table__body'>
                 {displayedLocations.map((location, index) => {
                   return (
-                    <tr class='govuk-table__row' key={index}>
-                      <th scope='row' class='govuk-table__header'>
+                    <tr className='govuk-table__row' key={index}>
+                      <th scope='row' className='govuk-table__header'>
                         <div
-                          class='govuk-checkboxes govuk-checkboxes--small'
+                          className='govuk-checkboxes govuk-checkboxes--small'
                           data-module='govuk-checkboxes'
                         >
                           <div className='govuk-checkboxes__item'>
@@ -322,11 +322,11 @@ export default function ViewLocationsDashboardPage () {
                           </div>
                         </div>
                       </th>
-                      <td class='govuk-table__cell'>{location.name}</td>
-                      <td class='govuk-table__cell'>{location.type}</td>
-                      <td class='govuk-table__cell'>{location.available}</td>
-                      <td class='govuk-table__cell'>{location.critical}</td>
-                      <td class='govuk-table__cell'>
+                      <td className='govuk-table__cell'>{location.name}</td>
+                      <td className='govuk-table__cell'>{location.type}</td>
+                      <td className='govuk-table__cell'>{location.available}</td>
+                      <td className='govuk-table__cell'>{location.critical}</td>
+                      <td className='govuk-table__cell'>
                         <Link>View or edit</Link>
                       </td>
                     </tr>

@@ -19,8 +19,7 @@ const routes = [].concat(
   require('../routes/qgis/qgis'),
   require('../routes/account/account_delete'),
   require('../routes/download/template'),
-  require('../routes/sign_out/sign_out'),
-  require('../routes/upload/uploadToS3')
+  require('../routes/sign_out/sign_out')
 )
 
 module.exports = {

@@ -25,7 +25,7 @@ export default function FloodMessageReviewTable ({ registration }) {
                     <tr className='govuk-table__row'>
                       <th
                         scope='row'
-                        class='govuk-table__header govuk-!-width-one-half'
+                        className='govuk-table__header govuk-!-width-one-half'
                       >
                         Severe flood warnings and flood warnings
                       </th>
@@ -35,7 +35,7 @@ export default function FloodMessageReviewTable ({ registration }) {
                     <tr className='govuk-table__row'>
                       <th
                         scope='row'
-                        class='govuk-table__header govuk-!-width-one-half'
+                        className='govuk-table__header govuk-!-width-one-half'
                       >
                         Flood alerts (optional)
                       </th>
@@ -58,7 +58,7 @@ export default function FloodMessageReviewTable ({ registration }) {
                     <tr className='govuk-table__row'>
                       <th
                         scope='row'
-                        class='govuk-table__header govuk-!-width-one-half'
+                        className='govuk-table__header govuk-!-width-one-half'
                       >
                         Flood alerts
                       </th>

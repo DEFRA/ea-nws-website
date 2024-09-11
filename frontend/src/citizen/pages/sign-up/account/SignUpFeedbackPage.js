@@ -87,9 +87,9 @@ export default function FeedbackPage () {
               This helps us to improve this service
               <br />
               <p className='govuk-inset-text'>
-                Only tell us about feedback on this page. If you need to check you
-                have <br /> signed up correctly or have a question about your
-                flood risk,{' '}
+                Only tell us about feedback on this page. If you need to check
+                you have <br /> signed up correctly or have a question about
+                your flood risk,{' '}
                 <a href='/contact' className='govuk-link'>
                   contact us.
                 </a>
@@ -97,10 +97,10 @@ export default function FeedbackPage () {
               <br />
               <div
                 className={
-                error
-                  ? 'govuk-form-group govuk-form-group--error'
-                  : 'govuk-form-group'
-              }
+                  error
+                    ? 'govuk-form-group govuk-form-group--error'
+                    : 'govuk-form-group'
+                }
               >
                 <fieldset className='govuk-fieldset'>
                   <h2 className='govuk-heading-m'>
@@ -125,21 +125,27 @@ export default function FeedbackPage () {
               <br />
               <div
                 className={
-                textError
-                  ? 'govuk-form-group govuk-form-group--error'
-                  : 'govuk-form-group'
-              }
+                  textError
+                    ? 'govuk-form-group govuk-form-group--error'
+                    : 'govuk-form-group'
+                }
               >
                 <fieldset className='govuk-fieldset' />
                 <h3 className='govuk-label-wrapper'>
-                  <label class='govuk-label govuk-label--m' for='more-detail'>
-                    Is there anything you like or do not like about this service?
+                  <label
+                    className='govuk-label govuk-label--m'
+                    for='more-detail'
+                  >
+                    Is there anything you like or do not like about this
+                    service?
                   </label>
                 </h3>
-                <div id='more-detail-hint' class='govuk-hint'>
+                <div id='more-detail-hint' className='govuk-hint'>
                   Do not include your personal or financial details
                 </div>
-                {textError && <p className='govuk-error-message'>{textError}</p>}
+                {textError && (
+                  <p className='govuk-error-message'>{textError}</p>
+                )}
                 <TextArea
                   className='govuk-textarea'
                   id='more-detail'

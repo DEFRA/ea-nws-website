@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router'
 import AlternativeContactDetailsLayout from '../../layouts/alternative-contact/AlternativeContactDetailsLayout'
 
-export default function AlternativeContactDetailsPage() {
+export default function AlternativeContactDetailsPage () {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {
-    navigate('/') // Todo in future US - go to organisation T&Cs
+    navigate('/organisation/sign-up/review') // Todo in future US - go to organisation T&Cs
   }
 
   const NavigateToPreviousPage = () => {

@@ -10,7 +10,7 @@ import {
   updateOrganisationAdditionals
 } from '../../../common/services/ProfileServices'
 
-export default function MainAdminLayout({
+export default function MainAdminLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -25,7 +25,7 @@ export default function MainAdminLayout({
       return
     }
 
-    let organisation = Object.assign({}, getOrganisationAdditionals(profile))
+    const organisation = Object.assign({}, getOrganisationAdditionals(profile))
     organisation.isAdminRegistering = adminDetails
 
     const updatedProfile = updateOrganisationAdditionals(profile, organisation)
@@ -69,13 +69,15 @@ export default function MainAdminLayout({
                 <div className='govuk-radios'>
                   <Radio
                     key='radio_yes'
-                    name='isAdminRadio'
+                    name='adminRadio'
+                    value='adminRadio'
                     label='Yes'
                     onChange={() => addAdminDetails(true)}
                   />
                   <Radio
                     key='radio_no'
-                    name='isAdminRadio'
+                    name='adminRadio'
+                    value='notAdminRadio'
                     label='No, it will be someone else'
                     onChange={() => addAdminDetails(false)}
                   />

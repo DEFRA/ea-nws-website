@@ -29,7 +29,7 @@ export default function SelectAddressLayout ({
 
   const handleSelectedLocation = async (event, selectedLocation) => {
     event.preventDefault()
-    let organisation = Object.assign({}, getOrganisationAdditionals(profile))
+    const organisation = Object.assign({}, getOrganisationAdditionals(profile))
     organisation.address = selectedLocation
 
     const updatedProfile = updateOrganisationAdditionals(profile, organisation)

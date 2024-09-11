@@ -1,5 +1,5 @@
 import AddFullNamePage from '../../pages/sign-up/account-name/AddFullNamePage'
-import SignUpDuplicateEmailPage from '../../pages/sign-up/account/SignUpDuplicateEmail'
+import SignUpDuplicateEmailPage from '../../pages/sign-up/account/SignUpDuplicateEmailPage'
 import SignUpFeedbackConfirmationPage from '../../pages/sign-up/account/SignUpFeedbackConfirmationPage'
 import SignUpFeedbackPage from '../../pages/sign-up/account/SignUpFeedbackPage'
 import SignUpPage from '../../pages/sign-up/account/SignUpPage'

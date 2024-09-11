@@ -17,7 +17,7 @@ import {
 } from '../../../common/services/ProfileServices'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
-export default function AddAddressLayout({
+export default function AddAddressLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -49,7 +49,7 @@ export default function AddAddressLayout({
             location.name.toLowerCase().trim().includes(normalisedBuildingNum)
           )
           if (address.length === 1) {
-            let organisation = Object.assign(
+            const organisation = Object.assign(
               {},
               getOrganisationAdditionals(profile)
             )

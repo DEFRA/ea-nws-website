@@ -1,10 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import { setProfile } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 import {
   getOrganisationAdditionals,
   updateOrganisationAdditionals
@@ -13,24 +15,37 @@ import { emailValidation } from '../../../common/services/validations/EmailValid
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
 
-export default function AlternativeContactDetailsLayout({
+export default function AlternativeContactDetailsLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [errorFullName, setErrorFullName] = useState('')
   const [errorEmail, setErrorEmail] = useState('')
   const [errorTelephone, setErrorTelephone] = useState('')
-  const session = useSelector((state) => state.session)
   const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [telephone, setTelephoneNumber] = useState('')
   const [jobTitle, setJobTitle] = useState('')
-  let organisation = Object.assign(
+  const session = useSelector((state) => state.session)
+  const organisation = Object.assign(
     {},
     getOrganisationAdditionals(session.profile)
   )
   const isAdmin = organisation.isAdminRegistering
+
+  useEffect(() => {
+    setErrorFullName('')
+  }, [fullName])
+
+  useEffect(() => {
+    setErrorEmail('')
+  }, [email])
+
+  useEffect(() => {
+    setErrorTelephone('')
+  }, [telephone])
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -41,7 +56,18 @@ export default function AlternativeContactDetailsLayout({
       'mobileAndLandline'
     )
 
-    if (
+    const dataToSend = { email }
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/sign_up_start',
+      navigate
+    )
+    console.log('errormessage', errorMessage)
+    if (errorMessage === 'email already registered') {
+      setErrorEmail(
+        'The email address you entered is already being used. Enter a different email address.'
+      )
+    } else if (
       fullNameValidationError !== '' ||
       emailValidationError !== '' ||
       telephoneValidationError !== ''
@@ -49,11 +75,12 @@ export default function AlternativeContactDetailsLayout({
       setErrorFullName(fullNameValidationError)
       setErrorEmail(emailValidationError)
       setErrorTelephone(telephoneValidationError)
+    } else if (email === session.profile.emails[0]) {
+      // alternative contact cannot be the same as the main admin email
+      setErrorEmail(
+        'Enter a different email address to the main administrator email.'
+      )
     } else {
-      setErrorFullName('')
-      setErrorEmail('')
-      setErrorTelephone('')
-
       // Split the full name into first name and last name assuming they are separeted by a space.
       // if the string cannot be split then only the first name is set and the last name remains blank
       const [firstname, ...lastnameParts] = fullName.trim().split(' ')
@@ -64,9 +91,9 @@ export default function AlternativeContactDetailsLayout({
         alternativeContact: {
           firstName: firstname,
           lastName: lastname,
-          email: email,
-          telephone: telephone,
-          jobTitle: jobTitle
+          email,
+          telephone,
+          jobTitle
         }
       }
 
@@ -99,69 +126,57 @@ export default function AlternativeContactDetailsLayout({
               Enter details for an alternative contact at your organisation
             </h1>
             <div className='govuk-body'>
-              {isAdmin ? (
-                <p className='govuk-body govuk-!-margin-bottom-5'>
-                  This person will be an alternative contact, in case you're
-                  unavailable in the future. They will not be given
-                  administrator rights.
-                </p>
-              ) : (
-                <p className='govuk-body govuk-!-margin-bottom-5'>
-                  This person will be an alternative contact, in case{' '}
-                  {session.profile.firstname} {session.profile.lastname} is
-                  unavailable in the future. They will not be given
-                  administrator rights.
-                </p>
-              )}
-              <label className='govuk-label govuk-label--m' htmlFor='full-name'>
-                Full name
-              </label>
+              {isAdmin
+                ? (
+                  <p className='govuk-body govuk-!-margin-bottom-5'>
+                    This person will be an alternative contact, in case you're
+                    unavailable in the future. They will not be given
+                    administrator rights.
+                  </p>
+                  )
+                : (
+                  <p className='govuk-body govuk-!-margin-bottom-5'>
+                    This person will be an alternative contact, in case{' '}
+                    {session.profile.firstname} {session.profile.lastname} is
+                    unavailable in the future. They will not be given
+                    administrator rights.
+                  </p>
+                  )}
               <Input
                 inputType='text'
                 value={fullName}
-                id='full-name'
+                name='Full name'
                 onChange={(val) => setFullName(val)}
                 error={errorFullName}
                 className='govuk-input govuk-input--width-20'
                 defaultValue={fullName}
+                isNameBold
               />
-              <label
-                className='govuk-label govuk-label--m'
-                htmlFor='email-address'
-              >
-                Email address
-              </label>
               <Input
                 inputType='text'
                 value={email}
-                id='email-address'
+                name='Email address'
                 onChange={(val) => setEmail(val)}
                 error={errorEmail}
                 className='govuk-input govuk-input--width-20'
+                isNameBold
               />
-              <label
-                className='govuk-label govuk-label--m'
-                htmlFor='email-address'
-              >
-                Telephone number
-              </label>
               <Input
                 inputType='text'
                 value={telephone}
-                id='telephone-number'
+                name='Telephone number'
                 error={errorTelephone}
                 onChange={(val) => setTelephoneNumber(val)}
                 className='govuk-input govuk-input--width-20'
+                isNameBold
               />
-              <label className='govuk-label govuk-label--m' htmlFor='job-title'>
-                Job title (optional)
-              </label>
               <Input
                 inputType='text'
                 value={jobTitle}
-                id='job-title'
+                name='Job title (optional)'
                 onChange={(val) => setJobTitle(val)}
                 className='govuk-input govuk-input--width-20'
+                isNameBold
               />
               <Button
                 text='Continue'

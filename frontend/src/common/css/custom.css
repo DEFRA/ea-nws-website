@@ -672,6 +672,11 @@
   background-color: #ffdd00;
 }
 
+.one-login-header__nav__list-item.no-highlight:hover,
+.one-login-header__nav__list-item.no-highlight.active {
+  background-color: transparent !important;
+}
+
 .one-login-header__nav__list-item.active::after {
   content: '';
   position: absolute;
@@ -950,4 +955,33 @@
   height: 2.8rem;
   width: 0.0625rem;
   background-color: #b1b4b6;
+}
+
+.locations-filter-container {
+  border: 1px solid #b1b4b6;
+}
+
+.locations-filter-header {
+  position: relative;
+  left: -1rem;
+  right: -1rem;
+  width: calc(100% + 2rem);
+  background-color: #b1b4b6;
+  padding: 0.5rem;
+  margin: 0 1rem 1rem 0;
+  border: 0.0625rem solid #b1b4b6;
+}
+
+.locations-filter-header h1 {
+  margin: 0.75rem 0 0.75rem 0.95rem;
+}
+
+.locations-filter-section {
+  display: flex;
+  align-items: center;
+}
+
+.locations-filter-title {
+  margin: 0 0 0 8px;
+  color: #1d70b8;
 }

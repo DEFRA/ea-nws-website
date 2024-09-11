@@ -476,6 +476,13 @@ export default function IndexPage () {
                     Sign up organisation review
                   </Link>
                 </li>
+                <li>
+                  <Link 
+                    to='/organisation/manage-locations/add/optional-location-info'
+                    className='govuk-link'>
+                      add location information
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>

@@ -65,7 +65,7 @@ const orgManageLocationRoutes = [
   },
   {
     path: orgManageLocationsUrls.add.optinalAddress,
-    component: <AddOptionalAddress/>
+    component: <AddOptionalAddress />
   }
 ]
 

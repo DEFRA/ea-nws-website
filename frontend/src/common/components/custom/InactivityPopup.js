@@ -22,7 +22,7 @@ export default function InactivityPopup ({ onStayLoggedIn }) {
           <p className='govuk-body timeout-dialog-link inline-link'>
             <a
               href={signinType === 'org' ? '/organisation/signout' : '/signout'}
-              class='govuk-link'
+              className='govuk-link'
             >
               Sign out
             </a>

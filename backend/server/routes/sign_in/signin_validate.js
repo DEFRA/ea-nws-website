@@ -28,7 +28,7 @@ module.exports = [
           if (signinType === 'org') {
             // Send the profile to elasticache
             console.log('Setting elasticache')
-            await setJsonData(response.data.authToken, {profile: response.data.profile})
+            await setJsonData(response.data.authToken, { profile: response.data.profile })
           }
           return h.response(response)
         } else {

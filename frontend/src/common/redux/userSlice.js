@@ -89,13 +89,6 @@ const userSlice = createSlice({
       state.selectedFloodAlertArea = null
       state.showOnlySelectedFloodArea = null
       state.nearbyTargetAreaFlow = null
-      state.organisation = {
-        mainAdministrator: {
-          firstName: null,
-          lastName: null,
-          emailAddress: null
-        }
-      }
     }
   }
 })

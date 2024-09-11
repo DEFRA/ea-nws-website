@@ -78,7 +78,7 @@ export default function AdminDetailsLayout ({
 
     if (errorMessage !== null) {
       if (errorMessage === 'email already registered') {
-        navigate('/signup/duplicate', {
+        navigate('/organisation/sign-up/admin-email-duplicate', {
           state: { email }
         })
       } else {
@@ -133,32 +133,25 @@ export default function AdminDetailsLayout ({
                     locations they set up.
                   </p>
                   )}
-              <label className='govuk-label govuk-label--m' htmlFor='full-name'>
-                Full name
-              </label>
               <Input
+                name='Full name'
                 inputType='text'
-                id='full-name'
                 value={fullName}
                 onChange={(val) => setFullName(val)}
                 error={errorFullName}
                 className='govuk-input govuk-input--width-20 govuk-typography-weight-bold'
                 defaultValue={fullName}
+                isNameBold
               />
-              <label
-                className='govuk-label govuk-label--m'
-                htmlFor='email-address'
-              >
-                Email address
-              </label>
               <Input
+                name='Email address'
                 inputType='text'
                 value={email}
-                id='email-address'
                 onChange={(val) => setEmail(val)}
                 error={errorEmail}
                 className='govuk-input govuk-input--width-20'
                 defaultValue={email}
+                isNameBold
               />
               <Button
                 text='Continue'

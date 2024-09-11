@@ -19,9 +19,9 @@ export default function SkipConfirmLandlinePhonePage () {
     <>
       <BackLink to='/signup/contactpreferences/landline/validate' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        <div class='govuk-grid-row'>
-          <div class='govuk-grid-column-two-thirds'>
-            <h1 class='govuk-heading-l'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
+            <h1 className='govuk-heading-l'>
               We cannot send flood messages to {homePhone} until you confirm
               this number
             </h1>
@@ -30,7 +30,7 @@ export default function SkipConfirmLandlinePhonePage () {
               className='govuk-button'
               onClick={skipConfirm}
             />
-              &nbsp; &nbsp;
+            &nbsp; &nbsp;
             <Link
               to='/signup/contactpreferences/landline/validate'
               className='govuk-body govuk-link inline-link'

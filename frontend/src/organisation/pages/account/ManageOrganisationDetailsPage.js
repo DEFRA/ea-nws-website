@@ -15,9 +15,9 @@ export default function ManageOrganisationDetailsPage () {
     <>
       <OrganisationAccountNavigation />
       <main className='govuk-main-wrapper'>
-        <div class='govuk-grid-row'>
-          <div class='govuk-grid-column-full govuk-body'>
-            <h1 class='govuk-heading-l'>Manage your organisation's details</h1>
+        <div Name='govuk-grid-row'>
+          <div className='govuk-grid-column-full govuk-body'>
+            <h1 className='govuk-heading-l'>Manage your organisation's details</h1>
 
             <p className='govuk-!-margin-top-3'>
               To change these details, email us at{' '}
@@ -27,7 +27,7 @@ export default function ManageOrganisationDetailsPage () {
             <table className='govuk-table'>
               <tbody className='govuk-table__body'>
                 <tr className='govuk-table__row'>
-                  <td class='govuk-table__header  govuk-!-width-one-quarter'>
+                  <td className='govuk-table__header  govuk-!-width-one-quarter'>
                     Name
                   </td>
                   <td className='govuk-table__cell  govuk-!-width-three-quarter'>
@@ -35,7 +35,7 @@ export default function ManageOrganisationDetailsPage () {
                   </td>
                 </tr>
                 <tr className='govuk-table__row'>
-                  <td class='govuk-table__header  govuk-!-width-one-quarter'>
+                  <td className='govuk-table__header  govuk-!-width-one-quarter'>
                     UK head office address
                   </td>
                   <td className='govuk-table__cell   govuk-!-width-three-quarter'>
@@ -43,7 +43,7 @@ export default function ManageOrganisationDetailsPage () {
                   </td>
                 </tr>
                 <tr className='govuk-table__row'>
-                  <td class='govuk-table__header  govuk-!-width-one-quarter'>
+                  <td className='govuk-table__header  govuk-!-width-one-quarter'>
                     Has Companies House number?
                   </td>
                   <td className='govuk-table__cell   govuk-!-width-three-quarter'>
@@ -51,7 +51,7 @@ export default function ManageOrganisationDetailsPage () {
                   </td>
                 </tr>
                 <tr className='govuk-table__row'>
-                  <td class='govuk-table__header  govuk-!-width-one-quarter'>
+                  <td className='govuk-table__header  govuk-!-width-one-quarter'>
                     Companies House number
                   </td>
                   <td className='govuk-table__cell   govuk-!-width-three-quarter'>
@@ -59,7 +59,7 @@ export default function ManageOrganisationDetailsPage () {
                   </td>
                 </tr>
                 <tr className='govuk-table__row'>
-                  <td class='govuk-table__header  govuk-!-width-one-quarter'>
+                  <td className='govuk-table__header  govuk-!-width-one-quarter'>
                     Involved in responding to public emergencies or incidents?
                   </td>
                   <td className='govuk-table__cell   govuk-!-width-three-quarter'>
@@ -74,7 +74,7 @@ export default function ManageOrganisationDetailsPage () {
             </h3>
             <table className='govuk-table'>
               <tr className='govuk-table__row'>
-                <td class='govuk-table__header  govuk-!-width-one-quarter'>
+                <td className='govuk-table__header  govuk-!-width-one-quarter'>
                   Name
                 </td>
                 <td className='govuk-table__cell   govuk-!-width-three-quarter'>
@@ -82,7 +82,7 @@ export default function ManageOrganisationDetailsPage () {
                 </td>
               </tr>
               <tr className='govuk-table__row'>
-                <td class='govuk-table__header  govuk-!-width-one-quarter'>
+                <td className='govuk-table__header  govuk-!-width-one-quarter'>
                   Email address
                 </td>
                 <td className='govuk-table__cell   govuk-!-width-three-quarter'>
@@ -90,7 +90,7 @@ export default function ManageOrganisationDetailsPage () {
                 </td>
               </tr>
               <tr className='govuk-table__row'>
-                <td class='govuk-table__header  govuk-!-width-one-quarter'>
+                <td className='govuk-table__header  govuk-!-width-one-quarter'>
                   Telephone number
                 </td>
                 <td className='govuk-table__cell   govuk-!-width-three-quarter'>
@@ -98,7 +98,7 @@ export default function ManageOrganisationDetailsPage () {
                 </td>
               </tr>
               <tr className='govuk-table__row'>
-                <td class='govuk-table__header  govuk-!-width-one-quarter'>
+                <td className='govuk-table__header  govuk-!-width-one-quarter'>
                   Job title (optional)
                 </td>
                 <td className='govuk-table__cell   govuk-!-width-three-quarter'>

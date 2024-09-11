@@ -20,7 +20,7 @@ export default function TermsAndConditionsPage () {
                 arrive. Warnings may be sent at any time of day or night.
               </p>
               <h2 className='govuk-heading-m'>We do not:</h2>
-              <ul class='govuk-list govuk-list--bullet'>
+              <ul className='govuk-list govuk-list--bullet'>
                 <li>
                   accept responsibility if you fail to receive a warning
                 </li>
@@ -35,7 +35,7 @@ export default function TermsAndConditionsPage () {
                 </li>
               </ul>
               <h2 className='govuk-heading-m'>You are responsible for:</h2>
-              <ul class='govuk-list govuk-list--bullet'>
+              <ul className='govuk-list govuk-list--bullet'>
                 <li>providing us with accurate contact details</li>
                 <li>
                   telling us about any changes to your contact information
@@ -45,7 +45,7 @@ export default function TermsAndConditionsPage () {
                 How we will use your personal information
               </h2>
               <p>We may use the personal information you provide to:</p>
-              <ul class='govuk-list govuk-list--bullet'>
+              <ul className='govuk-list govuk-list--bullet'>
                 <li>send you warnings you’ve asked for</li>
                 <li>
                   send you a small number of services or administrative

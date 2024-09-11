@@ -12,10 +12,7 @@ export default function SignOutManuallyPage () {
   useEffect(() => {
     if (signinType === 'org') {
       // need to call the backend to remove data from elasticache once signed out
-      backendCall(
-          authToken,
-          'api/sign_out'
-        )
+      backendCall({ authToken }, 'api/sign_out')
     }
     dispatch(clearAuth())
   })

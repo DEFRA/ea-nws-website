@@ -70,10 +70,10 @@ export default function AddLandlineLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h2 class='govuk-heading-l'>
+            <h2 className='govuk-heading-l'>
               Enter a telephone number to get flood messages by phone call
             </h2>
-            <div class='govuk-body'>
+            <div className='govuk-body'>
               <p>
                 We recommend using a landline or mobile number that can be
                 called 24 hours a day.

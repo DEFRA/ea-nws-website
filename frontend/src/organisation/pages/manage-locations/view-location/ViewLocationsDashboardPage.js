@@ -6,7 +6,7 @@ import Button from '../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../common/components/gov-uk/Pagination'
 
-export default function ViewLocationsDashboardPage () {
+export default function ViewLocationsDashboardPage() {
   const navigate = useNavigate()
 
   // TODO - grab the real data once ticket is done
@@ -137,7 +137,6 @@ export default function ViewLocationsDashboardPage () {
       available: 'Yes',
       critical: 'Low'
     },
-    // Additional 10 locations
     {
       id: 19,
       name: 'Location_ID19',
@@ -262,51 +261,22 @@ export default function ViewLocationsDashboardPage () {
               Last updated: by you at 11:15am, 10 May 2024,{' '}
               <Link>View all updates</Link>
             </p>
-            <Button
-              text='Filter locations'
-              className='govuk-button govuk-button--secondary'
-            />
-            <p className=' govuk-!-margin-bottom-6'>700 locations</p>
-            <table class='govuk-table govuk-table--small-text-until-tablet'>
-              <thead class='govuk-table__head'>
-                <tr class='govuk-table__row'>
-                  <th scope='col' class='govuk-table__header'>
-                    <div
-                      class='govuk-checkboxes govuk-checkboxes--small'
-                      data-module='govuk-checkboxes'
-                    >
-                      <div className='govuk-checkboxes__item'>
-                        <input
-                          className='govuk-checkboxes__input'
-                          type='checkbox'
-                          checked={isTopCheckboxChecked}
-                          onChange={handleHeaderCheckboxChange}
-                        />
-                        <label className='govuk-label govuk-checkboxes__label' />
-                      </div>
-                    </div>
-                  </th>
-                  <th scope='col' class='govuk-table__header'>
-                    Location name
-                  </th>
-                  <th scope='col' class='govuk-table__header'>
-                    Location type
-                  </th>
-                  <th scope='col' class='govuk-table__header'>
-                    Flood messages
-                    <br /> available
-                  </th>
-                  <th scope='col' class='govuk-table__header'>
-                    Business criticality
-                  </th>
-                  <th scope='col' class='govuk-table__header' />
-                </tr>
-              </thead>
-              <tbody class='govuk-table__body'>
-                {displayedLocations.map((location, index) => {
-                  return (
-                    <tr class='govuk-table__row' key={index}>
-                      <th scope='row' class='govuk-table__header'>
+
+            <div class='govuk-grid-row'>
+              <div class='govuk-grid-column-one-quarter'>
+                <p>test</p>
+              </div>
+
+              <div class='govuk-grid-column-three-quarters'>
+                <Button
+                  text='Filter locations'
+                  className='govuk-button govuk-button--secondary'
+                />
+                <p className=' govuk-!-margin-bottom-6'>700 locations</p>
+                <table class='govuk-table govuk-table--small-text-until-tablet'>
+                  <thead class='govuk-table__head'>
+                    <tr class='govuk-table__row'>
+                      <th scope='col' class='govuk-table__header'>
                         <div
                           class='govuk-checkboxes govuk-checkboxes--small'
                           data-module='govuk-checkboxes'
@@ -315,25 +285,68 @@ export default function ViewLocationsDashboardPage () {
                             <input
                               className='govuk-checkboxes__input'
                               type='checkbox'
-                              checked={selectedCheckboxes[index]}
-                              onChange={() => handleRowCheckboxChange(index)}
+                              checked={isTopCheckboxChecked}
+                              onChange={handleHeaderCheckboxChange}
                             />
                             <label className='govuk-label govuk-checkboxes__label' />
                           </div>
                         </div>
                       </th>
-                      <td class='govuk-table__cell'>{location.name}</td>
-                      <td class='govuk-table__cell'>{location.type}</td>
-                      <td class='govuk-table__cell'>{location.available}</td>
-                      <td class='govuk-table__cell'>{location.critical}</td>
-                      <td class='govuk-table__cell'>
-                        <Link>View or edit</Link>
-                      </td>
+                      <th scope='col' class='govuk-table__header'>
+                        Location name
+                      </th>
+                      <th scope='col' class='govuk-table__header'>
+                        Location type
+                      </th>
+                      <th scope='col' class='govuk-table__header'>
+                        Flood messages
+                        <br /> available
+                      </th>
+                      <th scope='col' class='govuk-table__header'>
+                        Business criticality
+                      </th>
+                      <th scope='col' class='govuk-table__header' />
                     </tr>
-                  )
-                })}
-              </tbody>
-            </table>
+                  </thead>
+                  <tbody class='govuk-table__body'>
+                    {displayedLocations.map((location, index) => {
+                      return (
+                        <tr class='govuk-table__row' key={index}>
+                          <th scope='row' class='govuk-table__header'>
+                            <div
+                              class='govuk-checkboxes govuk-checkboxes--small'
+                              data-module='govuk-checkboxes'
+                            >
+                              <div className='govuk-checkboxes__item'>
+                                <input
+                                  className='govuk-checkboxes__input'
+                                  type='checkbox'
+                                  checked={selectedCheckboxes[index]}
+                                  onChange={() =>
+                                    handleRowCheckboxChange(index)
+                                  }
+                                />
+                                <label className='govuk-label govuk-checkboxes__label' />
+                              </div>
+                            </div>
+                          </th>
+                          <td class='govuk-table__cell'>{location.name}</td>
+                          <td class='govuk-table__cell'>{location.type}</td>
+                          <td class='govuk-table__cell'>
+                            {location.available}
+                          </td>
+                          <td class='govuk-table__cell'>{location.critical}</td>
+                          <td class='govuk-table__cell'>
+                            <Link>View or edit</Link>
+                          </td>
+                        </tr>
+                      )
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
             <Pagination
               totalPages={Math.ceil(locations.length / locationsPerPage)}
               onPageChange={(val) => setCurrentPage(val)}

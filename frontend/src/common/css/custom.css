@@ -985,3 +985,19 @@
   margin: 0 0 0 8px;
   color: #1d70b8;
 }
+
+.input-with-icon {
+  position: relative; /* Create a relative container for positioning */
+}
+
+.input-icon {
+  position: absolute;
+  left: 8px;
+  top: 65%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.govuk-input-icon {
+  padding-left: 35px;
+}

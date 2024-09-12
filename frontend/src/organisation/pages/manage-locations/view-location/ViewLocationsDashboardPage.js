@@ -216,45 +216,6 @@ export default function ViewLocationsDashboardPage() {
     setFilteredLocations(l)
   }, [])
 
-  // selected filters
-  const [selectedLocationTypeFilters, setSelectedLocationTypeFilters] =
-    useState([])
-  const [
-    selectedFloodMessagesAvailbleFilters,
-    setSelectedFloodMessagesAvailbleFilters
-  ] = useState([])
-  const [
-    selectedBusinessCriticalityFilters,
-    setSelectedBusinessCriticalityFilters
-  ] = useState([])
-
-  const filterLocations = () => {
-    let filteredLocations = locations
-
-    // Apply Location Type filter
-    if (selectedLocationTypeFilters.length > 0) {
-      filteredLocations = filteredLocations.filter((location) =>
-        selectedLocationTypeFilters.includes(location.type)
-      )
-    }
-
-    // Apply Flood Messages filter
-    if (selectedFloodMessagesAvailbleFilters.length > 0) {
-      filteredLocations = filteredLocations.filter((location) =>
-        selectedFloodMessagesAvailbleFilters.includes(location.available)
-      )
-    }
-
-    // Apply Business Criticality filter
-    if (selectedBusinessCriticalityFilters.length > 0) {
-      filteredLocations = filteredLocations.filter((location) =>
-        selectedBusinessCriticalityFilters.includes(location.critical)
-      )
-    }
-
-    setFilteredLocations(filteredLocations)
-  }
-
   const [currentPage, setCurrentPage] = useState(1)
   const locationsPerPage = 10
   const displayedLocations = filteredLocations.slice(
@@ -288,23 +249,8 @@ export default function ViewLocationsDashboardPage() {
               <div className='govuk-grid-row'>
                 <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 locations-filter-container'>
                   <SearchFilter
-                    selectedLocationTypeFilters={selectedLocationTypeFilters}
-                    selectedFloodMessagesAvailbleFilters={
-                      selectedFloodMessagesAvailbleFilters
-                    }
-                    selectedBusinessCriticalityFilters={
-                      selectedBusinessCriticalityFilters
-                    }
-                    setSelectedLocationTypeFilters={
-                      setSelectedLocationTypeFilters
-                    }
-                    setSelectedFloodMessagesAvailbleFilters={
-                      setSelectedFloodMessagesAvailbleFilters
-                    }
-                    setSelectedBusinessCriticalityFilters={
-                      setSelectedBusinessCriticalityFilters
-                    }
-                    filterLocations={filterLocations}
+                    locations={locations}
+                    setFilteredLocations={setFilteredLocations}
                   />
                 </div>
 

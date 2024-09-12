@@ -1,19 +1,17 @@
-import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
+import {
+  faAngleDown,
+  faAngleUp,
+  faMagnifyingGlass
+} from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
 import Button from '../../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../../common/components/gov-uk/CheckBox'
 
-export default function SearchFilter({
-  selectedLocationTypeFilters,
-  setSelectedLocationTypeFilters,
-  selectedFloodMessagesAvailbleFilters,
-  setSelectedFloodMessagesAvailbleFilters,
-  selectedBusinessCriticalityFilters,
-  setSelectedBusinessCriticalityFilters,
-  filterLocations
-}) {
+export default function SearchFilter({ locations, setFilteredLocations }) {
   // filters
+  const [locationNameFilter, setLocationNameFilter] = useState('')
+
   const locationTypes = [
     { value: 'Office' },
     { value: 'Retail space' },
@@ -67,6 +65,54 @@ export default function SearchFilter({
     })
   }
 
+  // selected filters
+  const [selectedLocationTypeFilters, setSelectedLocationTypeFilters] =
+    useState([])
+  const [
+    selectedFloodMessagesAvailbleFilters,
+    setSelectedFloodMessagesAvailbleFilters
+  ] = useState([])
+  const [
+    selectedBusinessCriticalityFilters,
+    setSelectedBusinessCriticalityFilters
+  ] = useState([])
+
+  const filterLocations = () => {
+    let filteredLocations = locations
+
+    // Apply Location name filter
+    if (locationNameFilter) {
+      filteredLocations = filteredLocations.filter(
+        (location) => location.name === locationNameFilter
+      )
+    }
+
+    // Apply Location Type filter
+    if (selectedLocationTypeFilters.length > 0) {
+      filteredLocations = filteredLocations.filter((location) =>
+        selectedLocationTypeFilters.includes(location.type)
+      )
+    }
+
+    // Apply Flood Messages filter
+    if (selectedFloodMessagesAvailbleFilters.length > 0) {
+      filteredLocations = filteredLocations.filter((location) =>
+        selectedFloodMessagesAvailbleFilters.includes(location.available)
+      )
+    }
+
+    // Apply Business Criticality filter
+    if (selectedBusinessCriticalityFilters.length > 0) {
+      filteredLocations = filteredLocations.filter((location) =>
+        selectedBusinessCriticalityFilters.includes(location.critical)
+      )
+    }
+
+    setFilteredLocations(filteredLocations)
+  }
+
+  console.log('location name filter', locationNameFilter)
+
   return (
     <>
       <div className='govuk-heading-m locations-filter-header'>
@@ -91,6 +137,20 @@ export default function SearchFilter({
         />
         <p className='locations-filter-title'>Location name</p>
       </div>
+      <div class='govuk-form-group'>
+        <div class='input-with-icon'>
+          <FontAwesomeIcon icon={faMagnifyingGlass} className='input-icon' />
+          <input
+            className='govuk-input govuk-input-icon govuk-!-margin-top-3'
+            id='location-name'
+            type='text'
+            value={locationNameFilter}
+            onChange={(event) => {
+              setLocationNameFilter(event.target.value)
+            }}
+          />
+        </div>
+      </div>
       <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3' />
 
       {/* Location type filter */}
@@ -98,7 +158,6 @@ export default function SearchFilter({
         className='locations-filter-section'
         onClick={() => {
           setLocationTypeVisible(!locationTypeVisible)
-          setSelectedLocationTypeFilters([])
         }}
       >
         <FontAwesomeIcon
@@ -127,7 +186,6 @@ export default function SearchFilter({
         className='locations-filter-section'
         onClick={() => {
           setFloodMessagesVisible(!floodMessagesVisible)
-          setSelectedFloodMessagesAvailbleFilters([])
         }}
       >
         <FontAwesomeIcon
@@ -158,7 +216,6 @@ export default function SearchFilter({
         className='locations-filter-section'
         onClick={() => {
           setBusinessCriticalityVisible(!businessCriticalityVisible)
-          setSelectedBusinessCriticalityFilters([])
         }}
       >
         <FontAwesomeIcon

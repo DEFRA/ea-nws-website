@@ -1,18 +1,17 @@
-import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
-import { Link } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
-import CheckBox from '../../../../common/components/gov-uk/CheckBox'
-import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../common/components/gov-uk/Pagination'
+import DashboardHeader from './dashboard-components/DashboardHeader'
+import LocationsTable from './dashboard-components/LocationsTable'
+import SearchFilter from './dashboard-components/SearchFilter'
 
 export default function ViewLocationsDashboardPage() {
   const navigate = useNavigate()
   const [locations, setLocations] = useState([])
   const [filteredLocations, setFilteredLocations] = useState([])
+  const [isFilterVisible, setIsFilterVisible] = useState(false)
 
   useEffect(() => {
     const l = [
@@ -217,26 +216,6 @@ export default function ViewLocationsDashboardPage() {
     setFilteredLocations(l)
   }, [])
 
-  // filters
-  const locationTypes = [
-    { value: 'Office' },
-    { value: 'Retail space' },
-    { value: 'Warehouse' }
-  ]
-  const floodMessagesAvailble = [{ value: 'Yes' }, { value: 'No' }]
-  const businessCriticality = [
-    { value: 'High' },
-    { value: 'Medium' },
-    { value: 'Low' }
-  ]
-
-  // search filters visibility
-  const [locationNameVisible, setLocationNameVisible] = useState(true)
-  const [locationTypeVisible, setLocationTypeVisible] = useState(true)
-  const [floodMessagesVisible, setFloodMessagesVisible] = useState(true)
-  const [businessCriticalityVisible, setBusinessCriticalityVisible] =
-    useState(true)
-
   // selected filters
   const [selectedLocationTypeFilters, setSelectedLocationTypeFilters] =
     useState([])
@@ -248,40 +227,6 @@ export default function ViewLocationsDashboardPage() {
     selectedBusinessCriticalityFilters,
     setSelectedBusinessCriticalityFilters
   ] = useState([])
-
-  // handle filters applied
-  const handleLocationTypeFilterChange = (event) => {
-    const { value } = event.target
-    setSelectedLocationTypeFilters((prev) => {
-      if (prev.includes(value)) {
-        return prev.filter((preference) => preference !== value)
-      } else {
-        return [...prev, value]
-      }
-    })
-  }
-
-  const handleFloodMessagesAvailbleFilterChange = (event) => {
-    const { value } = event.target
-    setSelectedFloodMessagesAvailbleFilters((prev) => {
-      if (prev.includes(value)) {
-        return prev.filter((preference) => preference !== value)
-      } else {
-        return [...prev, value]
-      }
-    })
-  }
-
-  const handleBusinessCriticalityFilterChange = (event) => {
-    const { value } = event.target
-    setSelectedBusinessCriticalityFilters((prev) => {
-      if (prev.includes(value)) {
-        return prev.filter((preference) => preference !== value)
-      } else {
-        return [...prev, value]
-      }
-    })
-  }
 
   const filterLocations = () => {
     let filteredLocations = locations
@@ -317,29 +262,6 @@ export default function ViewLocationsDashboardPage() {
     currentPage * locationsPerPage
   )
 
-  const [selectedCheckboxes, setSelectedCheckboxes] = useState(
-    filteredLocations.map(() => false)
-  )
-  const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
-
-  const handleHeaderCheckboxChange = (event) => {
-    const isChecked = event.target.checked
-    setIsTopCheckboxChecked(isChecked)
-    setSelectedCheckboxes(filteredLocations.map(() => isChecked))
-  }
-
-  const handleRowCheckboxChange = (index) => {
-    const updatedCheckboxes = [...selectedCheckboxes]
-    updatedCheckboxes[index] = !updatedCheckboxes[index]
-    setSelectedCheckboxes(updatedCheckboxes)
-
-    if (!updatedCheckboxes[index]) {
-      setIsTopCheckboxChecked(false)
-    } else if (updatedCheckboxes.every((checked) => checked)) {
-      setIsTopCheckboxChecked(true)
-    }
-  }
-
   return (
     <>
       <BackLink onClick={() => navigate(-1)} />
@@ -347,219 +269,61 @@ export default function ViewLocationsDashboardPage() {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full govuk-body'>
-            <NotificationBanner
-              className='govuk-notification-banner govuk-notification-banner--success'
-              title='Success'
-              text='100 new locations added'
-            />
-            <h1 className='govuk-heading-l'>Your organisation's locations</h1>
-            <Button
-              text='Add locations'
-              className='govuk-button govuk-button--secondary'
-            />
-            <Link className='govuk-link inline-link'>Back to settings</Link>
-            <p className='govuk-caption-m govuk-!-margin-bottom-9'>
-              Last updated: by you at 11:15am, 10 May 2024,{' '}
-              <Link>View all updates</Link>
-            </p>
+            <DashboardHeader />
 
-            <div className='govuk-grid-row'>
-              <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 locations-filter-container'>
-                <div className='govuk-heading-m locations-filter-header'>
-                  <h1 className='govuk-heading-m'>Filter</h1>
-                </div>
-
+            {!isFilterVisible ? (
+              <>
                 <Button
-                  text='Apply Filter'
-                  className='govuk-button govuk-button--primary'
-                  onClick={() => filterLocations()}
-                />
-                <hr class='govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3' />
-
-                {/* Location name filter */}
-                <div
-                  className='locations-filter-section'
-                  onClick={() => setLocationNameVisible(!locationNameVisible)}
-                >
-                  <FontAwesomeIcon
-                    icon={locationNameVisible ? faAngleDown : faAngleUp}
-                    size='lg'
-                  />
-                  <p className='locations-filter-title'>Location name</p>
-                </div>
-                <hr class='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3' />
-
-                {/* Location type filter */}
-                <div
-                  className='locations-filter-section'
-                  onClick={() => {
-                    setLocationTypeVisible(!locationTypeVisible)
-                    setSelectedLocationTypeFilters([])
-                  }}
-                >
-                  <FontAwesomeIcon
-                    icon={locationTypeVisible ? faAngleDown : faAngleUp}
-                    size='lg'
-                  />
-                  <p className='locations-filter-title'>Location type</p>
-                </div>
-                {locationTypeVisible && (
-                  <div class='govuk-checkboxes govuk-checkboxes--small'>
-                    {locationTypes.map((option) => (
-                      <CheckBox
-                        key={option.value}
-                        label={option.value}
-                        value={option.value}
-                        checked={selectedLocationTypeFilters.includes(
-                          option.value
-                        )}
-                        onChange={handleLocationTypeFilterChange}
-                      />
-                    ))}
-                  </div>
-                )}
-                <hr class='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3' />
-
-                {/* Flood messages availble filter */}
-                <div
-                  className='locations-filter-section'
-                  onClick={() => {
-                    setFloodMessagesVisible(!floodMessagesVisible)
-                    setSelectedFloodMessagesAvailbleFilters([])
-                  }}
-                >
-                  <FontAwesomeIcon
-                    icon={floodMessagesVisible ? faAngleDown : faAngleUp}
-                    size='lg'
-                  />
-                  <p className='locations-filter-title'>
-                    Flood messages availble
-                  </p>
-                </div>
-                {floodMessagesVisible && (
-                  <div class='govuk-checkboxes govuk-checkboxes--small'>
-                    {floodMessagesAvailble.map((option) => (
-                      <CheckBox
-                        key={option.value}
-                        label={option.value}
-                        value={option.value}
-                        checked={selectedFloodMessagesAvailbleFilters.includes(
-                          option.value
-                        )}
-                        onChange={handleFloodMessagesAvailbleFilterChange}
-                      />
-                    ))}
-                  </div>
-                )}
-                <hr class='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3' />
-
-                {/* Business criticality filter */}
-                <div
-                  className='locations-filter-section'
-                  onClick={() => {
-                    setBusinessCriticalityVisible(!businessCriticalityVisible)
-                    setSelectedBusinessCriticalityFilters([])
-                  }}
-                >
-                  <FontAwesomeIcon
-                    icon={businessCriticalityVisible ? faAngleDown : faAngleUp}
-                    size='lg'
-                  />
-                  <p className='locations-filter-title'>Business criticality</p>
-                </div>
-                {businessCriticalityVisible && (
-                  <div class='govuk-checkboxes govuk-checkboxes--small'>
-                    {businessCriticality.map((option) => (
-                      <CheckBox
-                        key={option.value}
-                        label={option.value}
-                        value={option.value}
-                        checked={selectedBusinessCriticalityFilters.includes(
-                          option.value
-                        )}
-                        onChange={handleBusinessCriticalityFilterChange}
-                      />
-                    ))}
-                  </div>
-                )}
-              </div>
-
-              <div className='govuk-grid-column-three-quarters'>
-                <Button
-                  text='Close Filter'
+                  text='Filter locations'
                   className='govuk-button govuk-button--secondary'
+                  onClick={() => setIsFilterVisible(!isFilterVisible)}
                 />
-                <p className=' govuk-!-margin-bottom-6'>700 locations</p>
-                <table className='govuk-table govuk-table--small-text-until-tablet'>
-                  <thead className='govuk-table__head'>
-                    <tr className='govuk-table__row'>
-                      <th scope='col' className='govuk-table__header'>
-                        <div
-                          className='govuk-checkboxes govuk-checkboxes--small'
-                          data-module='govuk-checkboxes'
-                        >
-                          <CheckBox
-                            checked={isTopCheckboxChecked}
-                            onChange={handleHeaderCheckboxChange}
-                          />
-                        </div>
-                      </th>
-                      <th scope='col' className='govuk-table__header'>
-                        Location name
-                      </th>
-                      <th scope='col' className='govuk-table__header'>
-                        Location type
-                      </th>
-                      <th scope='col' className='govuk-table__header'>
-                        Flood messages
-                        <br /> available
-                      </th>
-                      <th scope='col' className='govuk-table__header'>
-                        Business criticality
-                      </th>
-                      <th scope='col' className='govuk-table__header' />
-                    </tr>
-                  </thead>
-                  <tbody className='govuk-table__body'>
-                    {displayedLocations.map((location, index) => {
-                      return (
-                        <tr className='govuk-table__row' key={index}>
-                          <th scope='row' className='govuk-table__header'>
-                            <div
-                              className='govuk-checkboxes govuk-checkboxes--small'
-                              data-module='govuk-checkboxes'
-                            >
-                              <CheckBox
-                                checked={selectedCheckboxes[index]}
-                                onChange={() => handleRowCheckboxChange(index)}
-                              />
-                            </div>
-                          </th>
-                          <td className='govuk-table__cell'>{location.name}</td>
-                          <td className='govuk-table__cell'>{location.type}</td>
-                          <td className='govuk-table__cell'>
-                            {location.available}
-                          </td>
-                          <td className='govuk-table__cell'>
-                            {location.critical}
-                          </td>
-                          <td className='govuk-table__cell'>
-                            <Link>View or edit</Link>
-                          </td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </table>
-
+                <LocationsTable locations={displayedLocations} />
                 <Pagination
-                  totalPages={Math.ceil(
-                    filteredLocations.length / locationsPerPage
-                  )}
+                  totalPages={Math.ceil(locations.length / locationsPerPage)}
                   onPageChange={(val) => setCurrentPage(val)}
                 />
+              </>
+            ) : (
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 locations-filter-container'>
+                  <SearchFilter
+                    selectedLocationTypeFilters={selectedLocationTypeFilters}
+                    selectedFloodMessagesAvailbleFilters={
+                      selectedFloodMessagesAvailbleFilters
+                    }
+                    selectedBusinessCriticalityFilters={
+                      selectedBusinessCriticalityFilters
+                    }
+                    setSelectedLocationTypeFilters={
+                      setSelectedLocationTypeFilters
+                    }
+                    setSelectedFloodMessagesAvailbleFilters={
+                      setSelectedFloodMessagesAvailbleFilters
+                    }
+                    setSelectedBusinessCriticalityFilters={
+                      setSelectedBusinessCriticalityFilters
+                    }
+                    filterLocations={filterLocations}
+                  />
+                </div>
+
+                <div className='govuk-grid-column-three-quarters'>
+                  <Button
+                    text='Close Filter'
+                    className='govuk-button govuk-button--secondary'
+                    onClick={() => setIsFilterVisible(!isFilterVisible)}
+                  />
+                  <LocationsTable locations={displayedLocations} />
+                  <Pagination
+                    totalPages={Math.ceil(
+                      filteredLocations.length / locationsPerPage
+                    )}
+                    onPageChange={(val) => setCurrentPage(val)}
+                  />
+                </div>
               </div>
-            </div>
+            )}
           </div>
         </div>
       </main>

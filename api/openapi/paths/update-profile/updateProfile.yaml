@@ -1,0 +1,206 @@
+post:
+  tags:
+    - Member
+  summary: Update the profile of a user
+  operationId: 'getUpdateProfile'
+  description: >-
+    This RPC updates the profile of the currently authenticated member,
+    defined by its authentication token. Only publicly visible contact
+    fields (fields marked with the attribute geosafeea:public) are updated,
+    the other fields are ignored if set. The updated profile is then
+    returned.
+
+
+    **Important**:
+
+
+    1. **The whole "profile" section MUST be passed for each call to this
+    RPC**; omitting a field means removing that field from the profile.
+        
+    2. **New contact methods (Emails, Phones) must be inserted in the
+    "unverified" section of the profile at first**
+        
+        1. These new contact methods are then validated one by one using verification RPCs of the member/ API
+        2. Once validated (verified) a contact method is moved out from the unverified section up to the root of the profile.
+            
+
+    **Notes:**
+
+
+    - Profile.id value is not read/updated by the backend: it should be left
+    empty.
+  requestBody:
+    content:
+      application/json:
+        schema:
+          type: object
+          example:
+            authToken: >-
+              MockAuthToken
+            profile:
+              id: '1'
+              enabled: true
+              firstname: 'John'
+              lastname: 'Smith'
+              emails:
+                - perry.pepper@gmail.com
+              mobilePhones:
+                - '07343 454590'
+                - '07889 668367'
+              homePhones:
+                - '01475 721535'
+              language: EN
+              additionals: []
+              unverified:
+                emails: []
+                mobilePhones: []
+                homePhones:
+                  - address: '+336********'
+              pois:
+                - address: Exeter, Royaume-Uni
+                  coordinates:
+                    latitude: 50726037
+                    longitude: -3527489
+  parameters:
+    - name: Content-Type
+      in: header
+      schema:
+        type: string
+      example: application/json
+    - name: Accept
+      in: header
+      schema:
+        type: string
+      example: application/json
+  responses:
+    200:
+      description: OK
+      headers:
+        Date:
+          schema:
+            type: string
+            example: Fri, 14 Apr 2023 11:23:11 GMT
+        Server:
+          schema:
+            type: string
+            example: Apache/2.4.38 (Debian)
+        Accept-Encoding:
+          schema:
+            type: string
+            example: identity, gzip, deflate
+        Access-Control-Allow-Origin:
+          schema:
+            type: string
+            example: '*'
+        Cache-Control:
+          schema:
+            type: string
+            example: no-store, no-cache, must-revalidate
+        Pragma:
+          schema:
+            type: string
+            example: no-cache
+        Content-Type:
+          schema:
+            type: string
+            example: application/json; charset=utf-8
+        Content-Encoding:
+          schema:
+            type: string
+            example: gzip
+        Content-Length:
+          schema:
+            type: integer
+            example: '176'
+        Keep-Alive:
+          schema:
+            type: string
+            example: timeout=5, max=100
+        Connection:
+          schema:
+            type: string
+            example: Keep-Alive
+      content:
+        application/json:
+          schema:
+            type: object
+          examples:
+            example-0:
+              summary: Updated the profile of a user (simple)
+              value:
+            authToken: >-
+              MockAuthToken
+            profile:
+              id: '1'
+              enabled: true
+              firstname: 'John'
+              lastname: 'Smith'
+              emails:
+                - perry.pepper@gmail.com
+              mobilePhones:
+                - '07343 454590'
+                - '07889 668367'
+              homePhones:
+                - '01475 721535'
+              language: EN
+              additionals: []
+              unverified:
+                emails: []
+                mobilePhones: []
+                homePhones:
+                  - address: '+336********'
+              pois:
+                - address: Exeter, Royaume-Uni
+                  coordinates:
+                    latitude: 50726037
+                    longitude: -3527489
+    500:
+      description: Internal Server Error
+      headers:
+        date:
+          schema:
+            type: string
+            example: Mon, 11 Mar 2024 17:27:25 GMT
+        content-type:
+          schema:
+            type: string
+            example: application/json; charset=utf-8
+        content-length:
+          schema:
+            type: integer
+            example: '56'
+        accept-encoding:
+          schema:
+            type: string
+            example: identity, gzip, deflate
+        access-control-allow-origin:
+          schema:
+            type: string
+            example: '*'
+        cache-control:
+          schema:
+            type: string
+            example: no-store, no-cache, must-revalidate
+        pragma:
+          schema:
+            type: string
+            example: no-cache
+        content-encoding:
+          schema:
+            type: string
+            example: gzip
+        x-iplb-request-id:
+          schema:
+            type: string
+            example: 3656328B:BC3F_05C462FB:01BB_65EF3EFD_CCF12:2B3A
+        x-iplb-instance:
+          schema:
+            type: integer
+            example: '53497'
+      content:
+        application/json:
+          schema:
+            type: object
+          example:
+            code: 101
+            desc: invalid token

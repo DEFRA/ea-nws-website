@@ -1,0 +1,45 @@
+# Website in a single container
+# To build container image run "BUILD_VERSION=1.0 docker compose build" or set BUILD_VERSION is .env
+name: ea_nws_website
+services:
+  frontend:
+    image: ea_nws_website:frontend-${BUILD_VERSION}
+    build:
+      context: ../
+      dockerfile: docker/ea_nws_website/Dockerfile_frontend
+    ports:
+      - '3000:3000'
+    networks:
+      main:
+        aliases:
+          - frontend
+
+  backend:
+    image: ea_nws_website:backend-${BUILD_VERSION}
+    build:
+      context: ../
+      dockerfile: docker/ea_nws_website/Dockerfile_backend
+    ports:
+      - '5000:5000'
+    networks:
+      main:
+        aliases:
+          - backend
+
+  nginx:
+    image: ea_nws_website:nginx-${BUILD_VERSION}
+    build:
+      context: ../
+      dockerfile: docker/nginx/Dockerfile
+    ports:
+      - '${NGINX_PORT}:${NGINX_PORT}'
+    environment:
+      - NGINX_PORT=${NGINX_PORT}
+      - NGINX_SERVER=${NGINX_SERVER}
+    networks:
+      main:
+        aliases:
+          - nginx
+
+networks:
+  main:

@@ -8,7 +8,7 @@ import { useState } from 'react'
 import Button from '../../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../../common/components/gov-uk/CheckBox'
 
-export default function SearchFilter({ locations, setFilteredLocations }) {
+export default function SearchFilter ({ locations, setFilteredLocations }) {
   // filters
   const [locationNameFilter, setLocationNameFilter] = useState('')
 
@@ -110,8 +110,6 @@ export default function SearchFilter({ locations, setFilteredLocations }) {
 
     setFilteredLocations(filteredLocations)
   }
-
-  console.log('location name filter', locationNameFilter)
 
   return (
     <>

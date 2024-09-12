@@ -5,7 +5,8 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
 import Button from '../../../../common/components/gov-uk/Button'
 import { useNavigate } from 'react-router'
-
+import { postCodeValidation } from '../../../../common/services/validations/PostCodeValidation' 
+import { useEffect } from 'react'
 export default function AddOptionalAddress () {
   const navigate = useNavigate()
   const [addressLine1, setAddressLine1] = useState('')
@@ -13,9 +14,27 @@ export default function AddOptionalAddress () {
   const [town, setTown] = useState('')
   const [county, setCounty] = useState('')
   const [postcode, setPostcode] = useState('')
+  const [postcodeError,setPostcodeError] = useState('')
 
+  useEffect(()=> {
+    setPostcodeError('')
+  }, [postcode])
   const navigateToNextPage = () => {
     navigate('/')
+  }
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    if (postcode !== ''){
+      const postcodeValidationError = postCodeValidation(postcode)
+      if (postcodeValidationError !== '') {
+        setPostcodeError(postcodeValidationError)
+      }
+      else{navigateToNextPage()}
+    }else{
+      navigateToNextPage()
+    }
+    
   }
   return (
     <>
@@ -24,6 +43,10 @@ export default function AddOptionalAddress () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
+            {postcodeError && (
+              <ErrorSummary
+              errorList={[postcodeError]}/>
+            )}
             <h1 className='govuk-heading-l'>
               What is the address?
             </h1>
@@ -62,6 +85,7 @@ export default function AddOptionalAddress () {
             <Input
               inputType='text'
               name='Postcode (optional)'
+              error={postcodeError}              
               onChange={(val) => setPostcode(val)}
               className='govuk-input govuk-input--width-20'
               isNameBold
@@ -70,7 +94,7 @@ export default function AddOptionalAddress () {
             <Button
               className='govuk-button'
               text='Continue'
-              onClick={navigateToNextPage}
+              onClick={handleSubmit}
             />
           </div>
         </div>

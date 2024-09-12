@@ -1,4 +1,4 @@
-const fs = require('node:fs')
+const template = require('./template')
 
 function splitLines (text) {
   return text.split('\n')
@@ -6,17 +6,57 @@ function splitLines (text) {
 
 function splitLine (line) {
   let lineArr = line.match(/((".*?"|[^",]+)(?=\s*,|\s*$))|(^,|(,(?=,))|,$)/g)
-  lineArr = lineArr.map(element => element.replace(/^,$|["]+/g, ''))
+  lineArr = lineArr.map(element => element.replace(/^,$|^\s+$|["]+/g, ''))
   return lineArr
 }
 
+const getErrors = (result) => {
+  const errors = []
+  
+  const duplicates = () => {
+    const nameReduce = result.reduce((prev, curr) => {
+      const found = prev.find((location) => location.Location_name === curr.Location_name)
+      if (found) {
+        found.Line_number = found.Line_number +', '+ curr.Line_number
+        found.count++
+        return prev
+      }
+      prev.push({ Location_name: curr.Location_name, Line_number: curr.Line_number, count: 1 })
+      return prev
+    }, [])
+    return nameReduce.filter((location) => { return location.count !== 1 })
+  }
+
+  const missingMandatory = () => {
+    const missingMandatory = []
+    result.forEach((location) => {
+      if (!location.Location_name || !(location.X_coordinates && location.Y_coordinates) && !((location.Full_address && location.Postcode))) {
+        missingMandatory.push(location.Line_number)
+        return
+      }
+    })
+    return missingMandatory
+  }
+
+  const duplicatesArr = duplicates()
+  const missingMandatoryArr = missingMandatory()
+
+  if (duplicatesArr.length > 0) {
+    errors.push({errorType: 'Duplicates', errorDetails: duplicatesArr})
+  }
+  if (missingMandatoryArr.length > 0) {
+    errors.push({errorType: 'Missing mandatory', errorDetails: missingMandatoryArr})
+  }
+
+  return errors
+}
+
 const csvToJson = (csv) => {
-  const templateHeader = fs.readFileSync('template.csv').toString()
   let lines = splitLines(csv)
   // filter array to remove any empty items cased by no data on the last line(s) of the csv
   lines = lines.filter(element => element)
   // Check the headers match the template
-  if (lines[0] !== templateHeader) {
+  if (lines[0] !== template) {
     return { error: 'Headers do not match!' }
   }
   // Get all the headers and format them
@@ -42,16 +82,15 @@ const csvToJson = (csv) => {
     const keywordHeader = 'Keywords'
     // add the keywords to the object
     obj[keywordHeader] = keywords
-    obj.line_Number = i + 1
+    obj.Line_number = i + 1
 
     result.push(obj)
   }
 
-  const duplicate = new Set()
-  const hasDuplicates = result.some(location => duplicate.size === duplicate.add(location.Location_name).size)
+  const errors = getErrors(result)
 
-  if (hasDuplicates) {
-    return { error: 'Duplicates' }
+  if (errors.length > 0 ) {
+    return { error: errors }
   } else {
     return { locations: result }
   }

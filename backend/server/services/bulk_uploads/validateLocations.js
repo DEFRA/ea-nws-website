@@ -8,13 +8,11 @@ const getCoords = async (location) => {
 }
 
 function validateCoords (X, Y) {
-  // check is valid
   // Check its a valid number
-
-  if (isNaN(parseFloat(X)) || isNaN(parseFloat(Y))) {
+  if (!(/^\d+$/.test(X)) || !(/^\d+$/.test(Y))) {
     // X or Y given is not a number
     return false
-  } else if ((Number(X) >= 0 <= 700000) && (Number(Y) >= 0 <= 1300000)) {
+  } else if ((Number(X) >= 0 && Number(X) <= 700000) && (Number(Y) >= 0 && Number(Y) <= 1300000)) {
     // Is a number and within the bounds for EPSG: 27700
     return true
   } else {
@@ -41,12 +39,6 @@ const validateLocations = async (locations) => {
   // if there is location data we need to process it
   if (locations) {
     await Promise.all(locations.map(async (location) => {
-      // Location name is mandatory
-      if (!location.Location_name) {
-        location.error = 'No location name'
-        invalid.push(location)
-        return
-      }
       // Location coords/address is mandatory
       if (location.X_coordinates && location.Y_coordinates) {
         const isValid = validateCoords(location.X_coordinates, location.Y_coordinates)
@@ -55,10 +47,11 @@ const validateLocations = async (locations) => {
           location.coordinates = convertCoords(location.X_coordinates, location.Y_coordinates)
           valid.push(location)
           return
+        } else {
+          location.error = 'Invalid coordinates'
+          invalid.push(location)
         }
-      }
-
-      if (location.Full_address && location.Postcode) {
+      } else if (location.Full_address && location.Postcode) {
         // calculate X and Y based on address and postcode
         const { errorMessage, data } = await getCoords(location)
         if (errorMessage) {

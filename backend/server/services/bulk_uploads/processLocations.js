@@ -1,13 +1,7 @@
 const { csvToJson } = require('./csvToJson')
 const { validateLocations } = require('./validateLocations')
 const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3')
-
-const params = {
-  Bucket: 'paul.chester',
-  Key: 'test.csv'
-}
-
-const client = new S3Client({})
+const getSecretKeyValue = require('../SecretsManager')
 
 const convertToPois = (locations) => {
   const pois = []
@@ -38,7 +32,13 @@ const convertToPois = (locations) => {
   return pois
 }
 
-const getCSV = async () => {
+const getCSV = async (fileName) => {
+  const client = new S3Client({})
+  const bucket = await getSecretKeyValue('nws/aws', 'bulkUploadBucket')
+  const params = {
+    Bucket: bucket,
+    Key: fileName
+  }
   const command = new GetObjectCommand(params)
   let data = []
   const result = {
@@ -48,56 +48,43 @@ const getCSV = async () => {
 
   try {
     const response = await client.send(command)
-    // The Body object also has 'transformToByteArray' and 'transformToWebStream' methods.
     data = await response.Body.transformToString()
     result.data = data
   } catch (err) {
     result.errorMessage = err
   }
-
+  
   return result
 }
 
-const prcoessLocations = async () => {
-  const { errorMessage, data } = await getCSV()
-
-  // convert the CSV to JSON
-  // The json is in the below format:
-  // { locations : [{
-  //      Location_name: 'Location name',
-  //      Full_address: 'Full address',
-  //      Postcode: 'Postcode',
-  //      X_coordinates: 'X coordinates',
-  //      Y_coordinates: 'Y coordinates',
-  //      Internal_reference: 'Internal reference',
-  //      Business_criticality: 'Business criticality',
-  //      Location_type: 'Location type',
-  //      Action_plan: 'Action plan',
-  //      Notes: 'Notes',
-  //      Keywords: [Array],
-  //      line_number: 1
-  //    }] }
+const processLocations = async (fileName) => {
+  const { errorMessage, data } = await getCSV(fileName)
   if (!errorMessage) {
+    // convert the CSV to JSON
+    // The json is in the below format:
+    // { locations : [{
+    //      Location_name: 'Location name',
+    //      Full_address: 'Full address',
+    //      Postcode: 'Postcode',
+    //      X_coordinates: 'X coordinates',
+    //      Y_coordinates: 'Y coordinates',
+    //      Internal_reference: 'Internal reference',
+    //      Business_criticality: 'Business criticality',
+    //      Location_type: 'Location type',
+    //      Action_plan: 'Action plan',
+    //      Notes: 'Notes',
+    //      Keywords: [Array],
+    //      Line_n
     const jsonData = csvToJson(data)
     if (jsonData.error) {
-      console.log('Error: ' + jsonData.error)
+      return {errorMessage: jsonData.error}
     } else {
       const locations = await validateLocations(jsonData.locations)
-      console.log(locations)
-      // Convert to POI object to add to thr profile
-      const pois = convertToPois(locations.valid)
-      console.log(pois)
-      // Update profile with new POIs (in elasticache)
-      // function here
-      // store invalid in elasticache (create a new key {authtoken}.invalidLocations) to be used later
-      // function here
+      return {data: locations}
     }
   } else {
-    console.log(errorMessage)
+    return {errorMessage: errorMessage}
   }
 }
 
-// Used for testing
-(async () => {
-  await prcoessLocations()
-})()
+module.exports = {convertToPois, processLocations}

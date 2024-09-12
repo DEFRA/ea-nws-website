@@ -60,6 +60,7 @@ export default function FindLocationByMatchedAddressesPage() {
                   name='availableAddressesDropDown'
                   onChange={(e) => setSelectedAddress(e.target.value)}
                   hint=''
+                  error={error}
                 />
               </div>
             </div>

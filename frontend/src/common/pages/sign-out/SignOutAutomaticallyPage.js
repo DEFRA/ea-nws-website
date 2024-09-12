@@ -4,7 +4,7 @@ import SignOutLayout from '../../layouts/sign-out/SignOutPageLayout'
 import { clearAuth } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 
-export default function SignOutManuallyPage() {
+export default function SignOutManuallyPage () {
   const dispatch = useDispatch()
   const signinType = useSelector((state) => state.session.signinType)
   const authToken = useSelector((state) => state.session.authToken)

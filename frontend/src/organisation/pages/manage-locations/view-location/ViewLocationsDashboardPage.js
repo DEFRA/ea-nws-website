@@ -7,7 +7,7 @@ import DashboardHeader from './dashboard-components/DashboardHeader'
 import LocationsTable from './dashboard-components/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
 
-export default function ViewLocationsDashboardPage () {
+export default function ViewLocationsDashboardPage() {
   const navigate = useNavigate()
   const [locations, setLocations] = useState([])
   const [filteredLocations, setFilteredLocations] = useState([])
@@ -232,46 +232,46 @@ export default function ViewLocationsDashboardPage () {
           <div className='govuk-grid-column-full govuk-body'>
             <DashboardHeader />
 
-            {!isFilterVisible
-              ? (
-                <>
+            {!isFilterVisible ? (
+              <>
+                <Button
+                  text='Filter locations'
+                  className='govuk-button govuk-button--secondary'
+                  onClick={() => setIsFilterVisible(!isFilterVisible)}
+                />
+                <LocationsTable locations={displayedLocations} />
+                <Pagination
+                  totalPages={Math.ceil(
+                    filteredLocations.length / locationsPerPage
+                  )}
+                  onPageChange={(val) => setCurrentPage(val)}
+                />
+              </>
+            ) : (
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 locations-filter-container'>
+                  <SearchFilter
+                    locations={locations}
+                    setFilteredLocations={setFilteredLocations}
+                  />
+                </div>
+
+                <div className='govuk-grid-column-three-quarters'>
                   <Button
-                    text='Filter locations'
+                    text='Close Filter'
                     className='govuk-button govuk-button--secondary'
                     onClick={() => setIsFilterVisible(!isFilterVisible)}
                   />
                   <LocationsTable locations={displayedLocations} />
                   <Pagination
-                    totalPages={Math.ceil(locations.length / locationsPerPage)}
+                    totalPages={Math.ceil(
+                      filteredLocations.length / locationsPerPage
+                    )}
                     onPageChange={(val) => setCurrentPage(val)}
                   />
-                </>
-                )
-              : (
-                <div className='govuk-grid-row'>
-                  <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 locations-filter-container'>
-                    <SearchFilter
-                      locations={locations}
-                      setFilteredLocations={setFilteredLocations}
-                    />
-                  </div>
-
-                  <div className='govuk-grid-column-three-quarters'>
-                    <Button
-                      text='Close Filter'
-                      className='govuk-button govuk-button--secondary'
-                      onClick={() => setIsFilterVisible(!isFilterVisible)}
-                    />
-                    <LocationsTable locations={displayedLocations} />
-                    <Pagination
-                      totalPages={Math.ceil(
-                        filteredLocations.length / locationsPerPage
-                      )}
-                      onPageChange={(val) => setCurrentPage(val)}
-                    />
-                  </div>
                 </div>
-                )}
+              </div>
+            )}
           </div>
         </div>
       </main>

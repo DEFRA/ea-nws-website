@@ -46,7 +46,6 @@ const validateLocations = async (locations) => {
           // convert coords
           location.coordinates = convertCoords(location.X_coordinates, location.Y_coordinates)
           valid.push(location)
-          return
         } else {
           location.error = 'Invalid coordinates'
           invalid.push(location)

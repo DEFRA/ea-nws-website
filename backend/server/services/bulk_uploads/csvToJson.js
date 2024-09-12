@@ -12,12 +12,12 @@ function splitLine (line) {
 
 const getErrors = (result) => {
   const errors = []
-  
+
   const duplicates = () => {
     const nameReduce = result.reduce((prev, curr) => {
       const found = prev.find((location) => location.Location_name === curr.Location_name)
       if (found) {
-        found.Line_number = found.Line_number +', '+ curr.Line_number
+        found.Line_number = found.Line_number + ', ' + curr.Line_number
         found.count++
         return prev
       }
@@ -30,9 +30,8 @@ const getErrors = (result) => {
   const missingMandatory = () => {
     const missingMandatory = []
     result.forEach((location) => {
-      if (!location.Location_name || !(location.X_coordinates && location.Y_coordinates) && !((location.Full_address && location.Postcode))) {
+      if (!location.Location_name || (!(location.X_coordinates && location.Y_coordinates) && !((location.Full_address && location.Postcode)))) {
         missingMandatory.push(location.Line_number)
-        return
       }
     })
     return missingMandatory
@@ -42,10 +41,10 @@ const getErrors = (result) => {
   const missingMandatoryArr = missingMandatory()
 
   if (duplicatesArr.length > 0) {
-    errors.push({errorType: 'Duplicates', errorDetails: duplicatesArr})
+    errors.push({ errorType: 'Duplicates', errorDetails: duplicatesArr })
   }
   if (missingMandatoryArr.length > 0) {
-    errors.push({errorType: 'Missing mandatory', errorDetails: missingMandatoryArr})
+    errors.push({ errorType: 'Missing mandatory', errorDetails: missingMandatoryArr })
   }
 
   return errors
@@ -89,7 +88,7 @@ const csvToJson = (csv) => {
 
   const errors = getErrors(result)
 
-  if (errors.length > 0 ) {
+  if (errors.length > 0) {
     return { error: errors }
   } else {
     return { locations: result }

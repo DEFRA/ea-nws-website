@@ -53,7 +53,7 @@ const getCSV = async (fileName) => {
   } catch (err) {
     result.errorMessage = err
   }
-  
+
   return result
 }
 
@@ -77,14 +77,14 @@ const processLocations = async (fileName) => {
     //      Line_n
     const jsonData = csvToJson(data)
     if (jsonData.error) {
-      return {errorMessage: jsonData.error}
+      return { errorMessage: jsonData.error }
     } else {
       const locations = await validateLocations(jsonData.locations)
-      return {data: locations}
+      return { data: locations }
     }
   } else {
-    return {errorMessage: errorMessage}
+    return { errorMessage: errorMessage }
   }
 }
 
-module.exports = {convertToPois, processLocations}
+module.exports = { convertToPois, processLocations }

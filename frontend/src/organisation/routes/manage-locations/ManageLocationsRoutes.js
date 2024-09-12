@@ -2,6 +2,7 @@ import LocationAddAddressInfoPage from '../../pages/manage-locations/add-locatio
 import LocationAddPage from '../../pages/manage-locations/add-location/LocationAddPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/LocationAddUploadFilePage'
 import ConfirmLocationsPage from '../../pages/manage-locations/confirm-locations/ConfirmAddingLocationsPage'
+import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/partly-matched-locations/FindLocationByMatchedAddressesPage'
 import SelectHowToFindThisLocationPage from '../../pages/manage-locations/partly-matched-locations/SelectHowToFindThisLocationPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
@@ -26,7 +27,9 @@ const orgManageLocationsUrls = {
     findUnmatchedLocations:
       urlManageOrgUnmatchedLocations + '/find-unmatched-locations',
     selectHowToFindLocation:
-      urlManageOrgUnmatchedLocations + '/select-find-location'
+      urlManageOrgUnmatchedLocations + '/select-find-location',
+    findLocationByMatchedAddresses:
+      urlManageOrgUnmatchedLocations + '/find-by-addresses'
   }
 }
 
@@ -63,6 +66,11 @@ const orgManageLocationRoutes = [
   {
     path: urlManageOrgConfirmLocations,
     component: <ConfirmLocationsPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations
+      .findLocationByMatchedAddresses,
+    component: <FindLocationByMatchedAddressesPage />
   }
 ]
 

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function LocationsTable ({ locations }) {
+export default function LocationsTable({ locations }) {
   const [selectedLocations, setSelectedLocations] = useState([])
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
 
@@ -86,9 +86,15 @@ export default function LocationsTable ({ locations }) {
                 </div>
               </th>
               <td className='govuk-table__cell'>{location.name}</td>
-              <td className='govuk-table__cell'>{location.type}</td>
-              <td className='govuk-table__cell'>{location.available}</td>
-              <td className='govuk-table__cell'>{location.critical}</td>
+              <td className='govuk-table__cell'>
+                {location.meta_data.location_additional.location_type}
+              </td>
+              <td className='govuk-table__cell'>
+                {location.alert_categories.length > 0 ? 'Yes' : 'No'}
+              </td>
+              <td className='govuk-table__cell'>
+                {location.meta_data.location_additional.business_criticality}
+              </td>
               <td className='govuk-table__cell'>
                 <Link>View or edit</Link>
               </td>

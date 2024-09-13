@@ -981,6 +981,10 @@
   align-items: center;
 }
 
+.locations-filter-section:hover {
+  cursor: pointer;
+}
+
 .locations-filter-title {
   margin: 0 0 0 8px;
   color: #1d70b8;

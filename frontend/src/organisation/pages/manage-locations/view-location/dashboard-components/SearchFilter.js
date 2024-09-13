@@ -8,7 +8,7 @@ import { useState } from 'react'
 import Button from '../../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../../common/components/gov-uk/CheckBox'
 
-export default function SearchFilter({
+export default function SearchFilter ({
   locations,
   setFilteredLocations,
   selectedLocationTypeFilters,
@@ -94,12 +94,20 @@ export default function SearchFilter({
     // Apply Flood Messages filter
     if (selectedFloodMessagesAvailbleFilters.length > 0) {
       filteredLocations = filteredLocations.filter((location) => {
-        if (selectedFloodMessagesAvailbleFilters.includes('Yes')) {
+        if (
+          selectedFloodMessagesAvailbleFilters.includes('Yes') &&
+          selectedFloodMessagesAvailbleFilters.includes('No')
+        ) {
+          // return all locations
+          return true
+        } else if (selectedFloodMessagesAvailbleFilters.includes('Yes')) {
           return location.alert_categories.length > 0
+        } else if (selectedFloodMessagesAvailbleFilters.includes('No')) {
+          return location.alert_categories.length === 0
         }
-        if (selectedFloodMessagesAvailbleFilters.includes('No')) {
-          return location.alert_categories.length == 0
-        }
+
+        // Default return none (this should never be reached)
+        return false
       })
     }
 

@@ -7,7 +7,7 @@ import DashboardHeader from './dashboard-components/DashboardHeader'
 import LocationsTable from './dashboard-components/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
 
-export default function ViewLocationsDashboardPage() {
+export default function ViewLocationsDashboardPage () {
   const navigate = useNavigate()
   const [locations, setLocations] = useState([])
   const [filteredLocations, setFilteredLocations] = useState([])
@@ -587,51 +587,11 @@ export default function ViewLocationsDashboardPage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full govuk-body'>
             <DashboardHeader />
-
-            {!isFilterVisible ? (
-              <>
-                <Button
-                  text='Filter locations'
-                  className='govuk-button govuk-button--secondary'
-                  onClick={() => setIsFilterVisible(!isFilterVisible)}
-                />
-                <LocationsTable locations={displayedLocations} />
-                <Pagination
-                  totalPages={Math.ceil(
-                    filteredLocations.length / locationsPerPage
-                  )}
-                  onPageChange={(val) => setCurrentPage(val)}
-                />
-              </>
-            ) : (
-              <div className='govuk-grid-row'>
-                <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 locations-filter-container'>
-                  <SearchFilter
-                    locations={locations}
-                    setFilteredLocations={setFilteredLocations}
-                    // must maintain selected filters in parent component - user may close and re-open search filter
-                    selectedLocationTypeFilters={selectedLocationTypeFilters}
-                    setSelectedLocationTypeFilters={
-                      setSelectedLocationTypeFilters
-                    }
-                    selectedFloodMessagesAvailbleFilters={
-                      selectedFloodMessagesAvailbleFilters
-                    }
-                    setSelectedFloodMessagesAvailbleFilters={
-                      setSelectedFloodMessagesAvailbleFilters
-                    }
-                    selectedBusinessCriticalityFilters={
-                      selectedBusinessCriticalityFilters
-                    }
-                    setSelectedBusinessCriticalityFilters={
-                      setSelectedBusinessCriticalityFilters
-                    }
-                  />
-                </div>
-
-                <div className='govuk-grid-column-three-quarters'>
+            {!isFilterVisible
+              ? (
+                <>
                   <Button
-                    text='Close Filter'
+                    text='Filter locations'
                     className='govuk-button govuk-button--secondary'
                     onClick={() => setIsFilterVisible(!isFilterVisible)}
                   />
@@ -642,9 +602,49 @@ export default function ViewLocationsDashboardPage() {
                     )}
                     onPageChange={(val) => setCurrentPage(val)}
                   />
+                </>
+                )
+              : (
+                <div className='govuk-grid-row'>
+                  <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 locations-filter-container'>
+                    <SearchFilter
+                      locations={locations}
+                      setFilteredLocations={setFilteredLocations}
+                      selectedLocationTypeFilters={selectedLocationTypeFilters}
+                      setSelectedLocationTypeFilters={
+                      setSelectedLocationTypeFilters
+                    }
+                      selectedFloodMessagesAvailbleFilters={
+                      selectedFloodMessagesAvailbleFilters
+                    }
+                      setSelectedFloodMessagesAvailbleFilters={
+                      setSelectedFloodMessagesAvailbleFilters
+                    }
+                      selectedBusinessCriticalityFilters={
+                      selectedBusinessCriticalityFilters
+                    }
+                      setSelectedBusinessCriticalityFilters={
+                      setSelectedBusinessCriticalityFilters
+                    }
+                    />
+                  </div>
+
+                  <div className='govuk-grid-column-three-quarters'>
+                    <Button
+                      text='Close Filter'
+                      className='govuk-button govuk-button--secondary'
+                      onClick={() => setIsFilterVisible(!isFilterVisible)}
+                    />
+                    <LocationsTable locations={displayedLocations} />
+                    <Pagination
+                      totalPages={Math.ceil(
+                        filteredLocations.length / locationsPerPage
+                      )}
+                      onPageChange={(val) => setCurrentPage(val)}
+                    />
+                  </div>
                 </div>
-              </div>
-            )}
+                )}
           </div>
         </div>
       </main>

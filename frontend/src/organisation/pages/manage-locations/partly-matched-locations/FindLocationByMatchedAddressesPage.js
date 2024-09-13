@@ -42,7 +42,7 @@ export default function FindLocationByMatchedAddressesPage() {
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>
-              Select from a drop-down list of partly matches addresses
+              Select from a drop-down list of partly matched addresses
             </h1>
             <div className='govuk-body'>
               <InsetText text={selectedLocation} />

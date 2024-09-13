@@ -46,7 +46,9 @@ export default function SelectHowToFindThisLocationPage() {
 
   const handleContinue = async () => {
     if (!findLocationOption) {
-      setError('Select if you want to manually find, or not add, locations')
+      setError(
+        'Select if you want to find this location from a drop-down list or on a map'
+      )
     } else if (findLocationOption === findLocationOptions[0].value) {
       await findAvailableAddresses()
       if (!error || error === '') {

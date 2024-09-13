@@ -69,6 +69,11 @@ url_org_man_loc = {
         'alternative_contact': local_host + '/',
         'org_details':  local_host + '/',
         'main_admin': local_host + '/'
+    },
+    'unmatched_location': {
+        'manually_find_locations': url_org_man_loc_path + '/unmatched-locations/select-find-location',
+        'select_how': url_org_man_loc_path + '/unmatched-locations/select-find-location',
+        'find_by_address': url_org_man_loc_path + '/unmatched-locations/find-by-addresses',
     }
 }
 
@@ -120,6 +125,12 @@ def select_input_radio_option(browser, value, key='value'):
     input_radio_xpath = f"//input[@{key}='{value}']"
     input_radio_element = browser.find_element(By.XPATH, input_radio_xpath)
     browser.execute_script("arguments[0].click();", input_radio_element)
+
+# Select input dropdown option
+def select_dropdown_option(browser, dropdown_name, value, key='value'):
+    option_xpath = f"//select[@name='{dropdown_name}']/option[@label='{value}']"
+    option_element = browser.find_element(By.XPATH, option_xpath)
+    browser.execute_script("arguments[0].click();", option_element)
 
 # ENTER TEXT
 # Enter input in text box

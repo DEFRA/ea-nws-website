@@ -1,6 +1,7 @@
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
+const getSecretKeyValue = require('../../services/SecretsManager')
 
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3')
 const client = new S3Client()
@@ -18,9 +19,14 @@ module.exports = [
         const { name, body } = request.payload
         const uniqFileName = Date.now() + '_' + name
 
+        const s3Bucket = await getSecretKeyValue(
+          'nws/website/organisation',
+          'uploadS3Bucket'
+        )
+
         const params = {
           // Body: body,
-          Bucket: 'jibrantest',
+          Bucket: s3Bucket,
           Key: uniqFileName
         }
 

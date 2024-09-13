@@ -1,4 +1,4 @@
-import AWS from 'aws-sdk'
+// import AWS from 'aws-sdk'
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -56,35 +56,35 @@ export default function LocationAddUploadFilePage () {
   }
 
   // Remove this function after debugging
-  const uploadFile = async (file) => {
-    const S3_BUCKET = 'jibrantest'
-    const REGION = 'eu-west-2'
+  // const uploadFile = async (file) => {
+  //   const S3_BUCKET = 'jibrantest'
+  //   const REGION = 'eu-west-2'
 
-    AWS.config.update({
-      accessKeyId: 'accessKeyId',
-      secretAccessKey: 'secretAccessKey'
-    })
+  //   AWS.config.update({
+  //     accessKeyId: 'accessKeyId',
+  //     secretAccessKey: 'secretAccessKey'
+  //   })
 
-    const s3 = new AWS.S3({
-      params: { Bucket: S3_BUCKET },
-      region: REGION
-    })
+  //   const s3 = new AWS.S3({
+  //     params: { Bucket: S3_BUCKET },
+  //     region: REGION
+  //   })
 
-    const params = {
-      Body: file,
-      Bucket: S3_BUCKET,
-      Key: Date.now() + '_' + file.name
-    }
+  //   const params = {
+  //     Body: file,
+  //     Bucket: S3_BUCKET,
+  //     Key: Date.now() + '_' + file.name
+  //   }
 
-    try {
-      await s3.putObject(params).promise()
-      setUploading(false)
-      console.log('File uploaded successfully.')
-    } catch (error) {
-      console.error(error)
-      setUploading(false)
-    }
-  }
+  //   try {
+  //     await s3.putObject(params).promise()
+  //     setUploading(false)
+  //     console.log('File uploaded successfully.')
+  //   } catch (error) {
+  //     console.error(error)
+  //     setUploading(false)
+  //   }
+  // }
 
   const handleUpload = async (e) => {
     e.preventDefault()

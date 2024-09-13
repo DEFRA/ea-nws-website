@@ -987,7 +987,7 @@
 }
 
 .input-with-icon {
-  position: relative; /* Create a relative container for positioning */
+  position: relative;
 }
 
 .input-icon {

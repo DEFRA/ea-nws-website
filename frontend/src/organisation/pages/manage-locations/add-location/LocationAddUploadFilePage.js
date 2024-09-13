@@ -102,7 +102,6 @@ export default function LocationAddUploadFilePage() {
       'api/bulkUpload/uploadFile'
     )
     console.log('File uploaded to s3 bucket: ' + data)
-    console.log('Error message: ' + errorMessage)
     !errorMessage && setUploading(false)
   }
 

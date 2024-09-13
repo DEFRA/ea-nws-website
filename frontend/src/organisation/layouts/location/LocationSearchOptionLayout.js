@@ -1,94 +1,38 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../common/components/gov-uk/Radio'
-import {
-  setLocationPostCode,
-  setLocationSearchResults
-} from '../../../common/redux/userSlice'
-import { backendCall } from '../../../common/services/BackendService'
-import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
 export default function LocationSearchOptionLayout({
-  NavigateToNextPage,
+  NavigateToPostcodeSearchPage,
+  NavigateToXYSearchPage,
+  NavigateToPinSearchPage,
   NavigateToPreviousPage
 }) {
-  const navigate = useNavigate()
-  const dispatch = useDispatch()
   const [searchOption, setSearchOption] = useState('')
-  const [postCode, setPostCode] = useState('')
-  const [placeName, setPlaceName] = useState('')
-  const [postCodeError, setPostCodeError] = useState('')
-  const [placeNameError, setPlaceNameError] = useState('')
   const [error, setError] = useState('')
 
   // remove any errors if user changes search option
   useEffect(() => {
-    setPostCodeError('')
-    setPlaceNameError('')
     setError('')
   }, [searchOption])
 
   const handleSubmit = async () => {
     if (!searchOption) {
-      setError('Select how you want to search for your location')
+      setError('Select how you want to find this location')
     } else {
       switch (searchOption) {
-        case 'AddressPostCode': {
-          const postCodeValidationError = postCodeValidation(postCode)
-          if (!postCodeValidationError) {
-            // normalise postcode
-            const dataToSend = {
-              postCode: postCode.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
-            }
-            const { data, errorMessage } = await backendCall(
-              dataToSend,
-              'api/os-api/postcode-search',
-              navigate
-            )
-            if (!errorMessage) {
-              dispatch(setLocationPostCode(data[0].postcode))
-              dispatch(setLocationSearchResults(data))
-              NavigateToNextPage()
-            } else {
-              // show error message from OS Api postcode search
-              setPostCodeError(errorMessage)
-              setError('')
-            }
-            break
-          } else {
-            setPostCodeError(postCodeValidationError)
-            break
-          }
-        }
-        case 'PlaceNameTownOrKeyword':
-          if (placeName) {
-            // normalise postcode
-            const dataToSend = {
-              name: placeName
-            }
-            const { data, errorMessage } = await backendCall(
-              dataToSend,
-              'api/os-api/name-search',
-              navigate
-            )
-            if (!errorMessage) {
-              dispatch(setLocationPostCode(''))
-              dispatch(setLocationSearchResults(data))
-              NavigateToNextPage()
-            } else {
-              // show error message from OS Api postcode search
-              setPlaceNameError(errorMessage)
-              setError('')
-            }
-            break
-          } else {
-            setPlaceNameError('Please enter a place name, town or keyword')
-            break
-          }
+        case 'UseAPostcode':
+          NavigateToPostcodeSearchPage()
+          break
+        case 'UseXAndYCoordinates':
+          NavigateToXYSearchPage()
+          break
+        case 'DropAPinOnAMap':
+          NavigateToPinSearchPage()
+          break
         default:
           break
       }
@@ -108,11 +52,7 @@ export default function LocationSearchOptionLayout({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-two-thirds'>
-            {(error || postCodeError || placeNameError) && (
-              <ErrorSummary
-                errorList={[error, postCodeError, placeNameError]}
-              />
-            )}
+            {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>
               How do you want to find {locationName}?
             </h1>
@@ -124,29 +64,29 @@ export default function LocationSearchOptionLayout({
               }
             >
               <fieldset className='govuk-fieldset'>
-                <legend className='govuk-fieldset__legend'>
-                  Select how you want to search
+                <legend className='govuk-fieldset__legend govuk-!-margin-bottom-5'>
+                  If your location is a polygon, or a line, your orgainsation
+                  has created you'll need to upload your location as a shapefile
+                  in a .zip file.
                 </legend>
                 {error && <p className='govuk-error-message'>{error}</p>}
                 <Radio
-                  label='Address with postcode'
-                  value='AddressPostCode'
+                  label='Use a postcode'
+                  value='UseAPostcode'
                   name='searchOptionsRadios'
                   onChange={(e) => setSearchOption(e.target.value)}
-                  conditional={searchOption === 'AddressPostCode'}
-                  conditionalQuestion='Postcode in England'
-                  conditionalInput={(val) => setPostCode(val)}
-                  conditionalError={postCodeError}
                 />
                 <Radio
-                  label='Place name, town or keyword'
-                  value='PlaceNameTownOrKeyword'
+                  label='Use X and Y coordinates'
+                  value='UseXAndYCoordinates'
                   name='searchOptionsRadios'
                   onChange={(e) => setSearchOption(e.target.value)}
-                  conditional={searchOption === 'PlaceNameTownOrKeyword'}
-                  conditionalQuestion='Enter a place name, town or keyword'
-                  conditionalInput={(val) => setPlaceName(val)}
-                  conditionalError={placeNameError}
+                />
+                <Radio
+                  label='Drop a pin on a map'
+                  value='DropAPinOnAMap'
+                  name='searchOptionsRadios'
+                  onChange={(e) => setSearchOption(e.target.value)}
                 />
               </fieldset>
             </div>

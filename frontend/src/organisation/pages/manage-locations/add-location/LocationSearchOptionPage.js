@@ -4,8 +4,18 @@ import LocationSearchOptionLayout from '../../../layouts/location/LocationSearch
 export default function LocationSearchOptionPage() {
   const navigate = useNavigate()
 
-  const NavigateToNextPage = () => {
+  const NavigateToPostcodeSearchPage = () => {
     navigate('/organisation/manage-locations/add/postcode-search')
+  }
+
+  // TODO: set this to point to the correct page when it exists
+  const NavigateToXYSearchPage = () => {
+    navigate('/organisation/manage-locations/add/xy-search')
+  }
+
+  // TODO: set this to point to the correct page when it exists
+  const NavigateToPinSearchPage = () => {
+    navigate('/organisation/manage-locations/add/pin-search')
   }
 
   const NavigateToPreviousPage = () => {
@@ -14,7 +24,9 @@ export default function LocationSearchOptionPage() {
 
   return (
     <LocationSearchOptionLayout
-      NavigateToNextPage={NavigateToNextPage}
+      NavigateToPostcodeSearchPage={NavigateToPostcodeSearchPage}
+      NavigateToXYSearchPage={NavigateToXYSearchPage}
+      NavigateToPinSearchPage={NavigateToPinSearchPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
     />
   )

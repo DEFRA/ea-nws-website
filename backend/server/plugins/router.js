@@ -19,7 +19,7 @@ const routes = [].concat(
   require('../routes/ordnance_survey/oauth_2'),
   require('../routes/qgis/qgis'),
   require('../routes/account/account_delete'),
-  require('../routes/bulkUpload_/downloadTemplate'),
+  require('../routes/bulkUpload/downloadTemplate'),
   require('../routes/bulkUpload/uploadFile'),
   require('../routes/sign_out/sign_out')
 )

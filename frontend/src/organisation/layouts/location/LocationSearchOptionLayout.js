@@ -56,6 +56,11 @@ export default function LocationSearchOptionLayout({
             <h1 className='govuk-heading-l'>
               How do you want to find {locationName}?
             </h1>
+            <p>
+              If your location is a polygon, or a line, your orgainsation has
+              created you'll need to upload your location as a shapefile in a
+              .zip file.
+            </p>
             <div
               className={
                 error
@@ -63,13 +68,8 @@ export default function LocationSearchOptionLayout({
                   : 'govuk-form-group'
               }
             >
+              {error && <p className='govuk-error-message'>{error}</p>}
               <fieldset className='govuk-fieldset'>
-                <legend className='govuk-fieldset__legend govuk-!-margin-bottom-5'>
-                  If your location is a polygon, or a line, your orgainsation
-                  has created you'll need to upload your location as a shapefile
-                  in a .zip file.
-                </legend>
-                {error && <p className='govuk-error-message'>{error}</p>}
                 <Radio
                   label='Use a postcode'
                   value='UseAPostcode'

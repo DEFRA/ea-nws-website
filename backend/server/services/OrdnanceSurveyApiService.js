@@ -89,6 +89,54 @@ const osFindNameApiCall = async (name) => {
   }
 }
 
+const osFindApiCall = async (address, minmatch) => {
+  let responseData
+  const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
+  const url = `https://api.os.uk/search/places/v1/find?query=${address}&minmatch=${minmatch}&key=${osApiKey}`
+  proj4.defs(
+    'EPSG:27700',
+    '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs'
+  )
+  proj4.defs('EPSG:4326', '+proj=longlat +datum=WGS84 +no_defs')
+
+  const convertCoordinates = (x, y) => {
+    const [longitude, latitude] = proj4('EPSG:27700', 'EPSG:4326', [x, y])
+    return { latitude, longitude }
+  }
+
+  try {
+    const response = await axios.get(url)
+
+    // Check that postcode is in England
+    if (response.data.results?.[0].DPA.COUNTRY_CODE === 'E') {
+      responseData = response.data.results.map((result) => {
+        const formattedAddress = addressFormatter(result.DPA.ADDRESS)
+        const coordinates = convertCoordinates(
+          result.DPA.X_COORDINATE,
+          result.DPA.Y_COORDINATE
+        )
+        return {
+          name: formattedAddress,
+          address: result.DPA.UPRN,
+          coordinates: coordinates,
+          postcode: result.DPA.POSTCODE
+        }
+      })
+      return { status: response.status, data: responseData }
+    } else {
+      return {
+        status: 500,
+        errorMessage: 'No matches found'
+      }
+    }
+  } catch {
+    return {
+      status: 500,
+      errorMessage: 'Oops, something happened!'
+    }
+  }
+}
+
 const osOAuth2ApiCall = async () => {
   const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
   const osApiSecret = await getSecretKeyValue('nws/os', 'apiSecret')
@@ -123,5 +171,6 @@ const osOAuth2ApiCall = async () => {
 module.exports = {
   osPostCodeApiCall,
   osFindNameApiCall,
-  osOAuth2ApiCall
+  osOAuth2ApiCall,
+  osFindApiCall
 }

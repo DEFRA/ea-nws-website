@@ -1,6 +1,6 @@
 import Spinner from 'react-bootstrap/Spinner'
 
-export default function LoadingSpinner({ text, loadingText = 'loading...' }) {
+export default function LoadingSpinner ({ text, loadingText = 'loading...' }) {
   return (
     <>
       <div

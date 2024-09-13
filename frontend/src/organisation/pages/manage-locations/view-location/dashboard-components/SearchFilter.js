@@ -8,21 +8,28 @@ import { useState } from 'react'
 import Button from '../../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../../common/components/gov-uk/CheckBox'
 
-export default function SearchFilter ({ locations, setFilteredLocations }) {
+export default function SearchFilter ({
+  locations,
+  setFilteredLocations,
+  selectedLocationTypeFilters,
+  setSelectedLocationTypeFilters,
+  selectedFloodMessagesAvailbleFilters,
+  setSelectedFloodMessagesAvailbleFilters,
+  selectedBusinessCriticalityFilters,
+  setSelectedBusinessCriticalityFilters
+}) {
   // filters
   const [locationNameFilter, setLocationNameFilter] = useState('')
 
   const locationTypes = [
-    { value: 'Office' },
-    { value: 'Retail space' },
-    { value: 'Warehouse' }
+    ...new Set(
+      locations.map(
+        (location) => location.meta_data.location_additional.location_type
+      )
+    )
   ]
-  const floodMessagesAvailble = [{ value: 'Yes' }, { value: 'No' }]
-  const businessCriticality = [
-    { value: 'High' },
-    { value: 'Medium' },
-    { value: 'Low' }
-  ]
+  const floodMessagesAvailble = ['Yes', 'No']
+  const businessCriticality = ['High', 'Medium', 'Low']
 
   // search filters visibility
   const [locationNameVisible, setLocationNameVisible] = useState(true)
@@ -65,18 +72,6 @@ export default function SearchFilter ({ locations, setFilteredLocations }) {
     })
   }
 
-  // selected filters
-  const [selectedLocationTypeFilters, setSelectedLocationTypeFilters] =
-    useState([])
-  const [
-    selectedFloodMessagesAvailbleFilters,
-    setSelectedFloodMessagesAvailbleFilters
-  ] = useState([])
-  const [
-    selectedBusinessCriticalityFilters,
-    setSelectedBusinessCriticalityFilters
-  ] = useState([])
-
   const filterLocations = () => {
     let filteredLocations = locations
 
@@ -90,21 +85,38 @@ export default function SearchFilter ({ locations, setFilteredLocations }) {
     // Apply Location Type filter
     if (selectedLocationTypeFilters.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
-        selectedLocationTypeFilters.includes(location.type)
+        selectedLocationTypeFilters.includes(
+          location.meta_data.location_additional.location_type
+        )
       )
     }
 
     // Apply Flood Messages filter
     if (selectedFloodMessagesAvailbleFilters.length > 0) {
-      filteredLocations = filteredLocations.filter((location) =>
-        selectedFloodMessagesAvailbleFilters.includes(location.available)
-      )
+      filteredLocations = filteredLocations.filter((location) => {
+        if (
+          selectedFloodMessagesAvailbleFilters.includes('Yes') &&
+          selectedFloodMessagesAvailbleFilters.includes('No')
+        ) {
+          // return all locations
+          return true
+        } else if (selectedFloodMessagesAvailbleFilters.includes('Yes')) {
+          return location.alert_categories.length > 0
+        } else if (selectedFloodMessagesAvailbleFilters.includes('No')) {
+          return location.alert_categories.length === 0
+        }
+
+        // Default return none (this should never be reached)
+        return false
+      })
     }
 
     // Apply Business Criticality filter
     if (selectedBusinessCriticalityFilters.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
-        selectedBusinessCriticalityFilters.includes(location.critical)
+        selectedBusinessCriticalityFilters.includes(
+          location.meta_data.location_additional.business_criticality
+        )
       )
     }
 
@@ -130,25 +142,27 @@ export default function SearchFilter ({ locations, setFilteredLocations }) {
         onClick={() => setLocationNameVisible(!locationNameVisible)}
       >
         <FontAwesomeIcon
-          icon={locationNameVisible ? faAngleDown : faAngleUp}
+          icon={locationNameVisible ? faAngleUp : faAngleDown}
           size='lg'
         />
         <p className='locations-filter-title'>Location name</p>
       </div>
-      <div class='govuk-form-group'>
-        <div class='input-with-icon'>
-          <FontAwesomeIcon icon={faMagnifyingGlass} className='input-icon' />
-          <input
-            className='govuk-input govuk-input-icon govuk-!-margin-top-3'
-            id='location-name'
-            type='text'
-            value={locationNameFilter}
-            onChange={(event) => {
-              setLocationNameFilter(event.target.value)
-            }}
-          />
+      {locationNameVisible && (
+        <div class='govuk-form-group'>
+          <div class='input-with-icon'>
+            <FontAwesomeIcon icon={faMagnifyingGlass} className='input-icon' />
+            <input
+              className='govuk-input govuk-input-icon govuk-!-margin-top-3'
+              id='location-name'
+              type='text'
+              value={locationNameFilter}
+              onChange={(event) => {
+                setLocationNameFilter(event.target.value)
+              }}
+            />
+          </div>
         </div>
-      </div>
+      )}
       <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3' />
 
       {/* Location type filter */}
@@ -159,7 +173,7 @@ export default function SearchFilter ({ locations, setFilteredLocations }) {
         }}
       >
         <FontAwesomeIcon
-          icon={locationTypeVisible ? faAngleDown : faAngleUp}
+          icon={locationTypeVisible ? faAngleUp : faAngleDown}
           size='lg'
         />
         <p className='locations-filter-title'>Location type</p>
@@ -168,10 +182,10 @@ export default function SearchFilter ({ locations, setFilteredLocations }) {
         <div className='govuk-checkboxes govuk-checkboxes--small'>
           {locationTypes.map((option) => (
             <CheckBox
-              key={option.value}
-              label={option.value}
-              value={option.value}
-              checked={selectedLocationTypeFilters.includes(option.value)}
+              key={option}
+              label={option}
+              value={option}
+              checked={selectedLocationTypeFilters.includes(option)}
               onChange={handleLocationTypeFilterChange}
             />
           ))}
@@ -187,7 +201,7 @@ export default function SearchFilter ({ locations, setFilteredLocations }) {
         }}
       >
         <FontAwesomeIcon
-          icon={floodMessagesVisible ? faAngleDown : faAngleUp}
+          icon={floodMessagesVisible ? faAngleUp : faAngleDown}
           size='lg'
         />
         <p className='locations-filter-title'>Flood messages available</p>
@@ -196,12 +210,10 @@ export default function SearchFilter ({ locations, setFilteredLocations }) {
         <div className='govuk-checkboxes govuk-checkboxes--small'>
           {floodMessagesAvailble.map((option) => (
             <CheckBox
-              key={option.value}
-              label={option.value}
-              value={option.value}
-              checked={selectedFloodMessagesAvailbleFilters.includes(
-                option.value
-              )}
+              key={option}
+              label={option}
+              value={option}
+              checked={selectedFloodMessagesAvailbleFilters.includes(option)}
               onChange={handleFloodMessagesAvailbleFilterChange}
             />
           ))}
@@ -217,7 +229,7 @@ export default function SearchFilter ({ locations, setFilteredLocations }) {
         }}
       >
         <FontAwesomeIcon
-          icon={businessCriticalityVisible ? faAngleDown : faAngleUp}
+          icon={businessCriticalityVisible ? faAngleUp : faAngleDown}
           size='lg'
         />
         <p className='locations-filter-title'>Business criticality</p>
@@ -226,12 +238,10 @@ export default function SearchFilter ({ locations, setFilteredLocations }) {
         <div className='govuk-checkboxes govuk-checkboxes--small'>
           {businessCriticality.map((option) => (
             <CheckBox
-              key={option.value}
-              label={option.value}
-              value={option.value}
-              checked={selectedBusinessCriticalityFilters.includes(
-                option.value
-              )}
+              key={option}
+              label={option}
+              value={option}
+              checked={selectedBusinessCriticalityFilters.includes(option)}
               onChange={handleBusinessCriticalityFilterChange}
             />
           ))}

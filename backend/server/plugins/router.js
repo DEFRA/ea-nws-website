@@ -21,6 +21,7 @@ const routes = [].concat(
   require('../routes/account/account_delete'),
   require('../routes/bulkUpload/downloadTemplate'),
   require('../routes/bulkUpload/uploadFile'),
+  require('../routes/bulk_uploads/process_file'),
   require('../routes/sign_out/sign_out')
 )
 

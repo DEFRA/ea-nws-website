@@ -1,4 +1,7 @@
-const { osFindNameApiCall } = require('../../services/OrdnanceSurveyApiService')
+const {
+  osFindNameApiCall,
+  osFindApiCall
+} = require('../../services/OrdnanceSurveyApiService')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
@@ -16,6 +19,23 @@ module.exports = [
         const { name } = request.payload
 
         const response = await osFindNameApiCall(name)
+        return h.response(response)
+      } catch {
+        return createGenericErrorResponse(h)
+      }
+    }
+  },
+  {
+    method: ['POST'],
+    path: '/api/os-api/name-minmatch-search',
+    handler: async (request, h) => {
+      try {
+        if (!request.payload) {
+          return createGenericErrorResponse(h)
+        }
+
+        const { name, minmatch } = request.payload
+        const response = await osFindApiCall(name, minmatch)
         return h.response(response)
       } catch {
         return createGenericErrorResponse(h)

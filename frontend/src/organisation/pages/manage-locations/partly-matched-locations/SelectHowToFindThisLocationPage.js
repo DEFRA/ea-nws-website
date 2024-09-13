@@ -31,11 +31,12 @@ export default function SelectHowToFindThisLocationPage() {
 
   const findAvailableAddresses = async () => {
     const dataToSend = {
-      name: selectedLocation
+      name: selectedLocation,
+      minmatch: 0.7
     }
     const { data, errorMessage } = await backendCall(
       dataToSend,
-      'api/os-api/name-search', //Need to use "Match"
+      'api/os-api/name-minmatch-search',
       navigate
     )
     if (!errorMessage) {

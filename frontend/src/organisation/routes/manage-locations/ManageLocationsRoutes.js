@@ -3,6 +3,7 @@ import LocationAddPage from '../../pages/manage-locations/add-location/LocationA
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/LocationAddUploadFilePage'
 import LocationNamePage from '../../pages/manage-locations/add-location/LocationNamePage'
 import LocationPostCodeSearchPage from '../../pages/manage-locations/add-location/LocationPostCodeSearchPage'
+import LocationPostCodeSearchResultsPage from '../../pages/manage-locations/add-location/LocationPostCodeSearchResultsPage'
 import LocationSearchOptionPage from '../../pages/manage-locations/add-location/LocationSearchOptionPage'
 import ConfirmLocationsPage from '../../pages/manage-locations/confirm-locations/ConfirmAddingLocationsPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
@@ -25,7 +26,8 @@ const orgManageLocationsUrls = {
     uploadFile: urlManageOrg + '/add/upload-file',
     name: urlManageOrg + '/add/name',
     searchOption: urlManageOrg + '/add/search-option',
-    postCodeSearch: urlManageOrg + '/add/postcode-search'
+    postCodeSearch: urlManageOrg + '/add/postcode-search',
+    postCodeSearchResults: urlManageOrg + '/add/postcode-search-results'
   },
   unmatchedLocations: {
     doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
@@ -59,6 +61,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.searchOption,
     component: <LocationSearchOptionPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.postCodeSearchResults,
+    component: <LocationPostCodeSearchResultsPage />
   },
   {
     path: orgManageLocationsUrls.add.postCodeSearch,

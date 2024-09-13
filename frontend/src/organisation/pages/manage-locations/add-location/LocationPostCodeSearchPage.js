@@ -5,7 +5,7 @@ export default function LocationPostCodeSearchPage() {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {
-    navigate('/organisation/manage-locations/add/search-option')
+    navigate('/organisation/manage-locations/add/postcode-search-results')
   }
 
   const NavigateToPreviousPage = () => {

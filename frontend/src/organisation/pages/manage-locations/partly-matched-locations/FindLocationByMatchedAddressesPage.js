@@ -17,7 +17,6 @@ export default function FindLocationByMatchedAddressesPage() {
   const availableAddresses = useSelector(
     (state) => state.session.locationSearchResults
   )
-  console.log(availableAddresses)
   useEffect(() => {
     setError('')
   }, [selectedAddress])

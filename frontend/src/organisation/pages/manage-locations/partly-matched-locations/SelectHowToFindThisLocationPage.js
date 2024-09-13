@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -25,14 +25,11 @@ export default function SelectHowToFindThisLocationPage() {
   /*useSelector(
     (state) => state.session.selectedLocation
   ) */
-  useEffect(() => {
-    setError('')
-  }, [findLocationOption])
 
   const findAvailableAddresses = async () => {
     const dataToSend = {
       name: selectedLocation,
-      minmatch: 0.7
+      minmatch: 0.5
     }
     const { data, errorMessage } = await backendCall(
       dataToSend,
@@ -51,10 +48,12 @@ export default function SelectHowToFindThisLocationPage() {
     if (!findLocationOption) {
       setError('Select if you want to manually find, or not add, locations')
     } else if (findLocationOption === findLocationOptions[0].value) {
-      findAvailableAddresses()
-      navigate(
-        '/organisation/manage-locations/unmatched-locations/find-by-addresses'
-      )
+      await findAvailableAddresses()
+      if (!error || error === '') {
+        navigate(
+          '/organisation/manage-locations/unmatched-locations/find-by-addresses'
+        )
+      }
     } else {
       navigate('/') // Navigate to map
     }

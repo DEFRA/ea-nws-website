@@ -128,7 +128,7 @@ def select_input_radio_option(browser, value, key='value'):
 
 # Select input dropdown option
 def select_dropdown_option(browser, dropdown_name, value, key='value'):
-    option_xpath = f"//select[@name='{dropdown_name}']/option[@label='{value}']"
+    option_xpath = f"//select[@name='{dropdown_name}']/option[@value='{value}']"
     option_element = browser.find_element(By.XPATH, option_xpath)
     browser.execute_script("arguments[0].click();", option_element)
 

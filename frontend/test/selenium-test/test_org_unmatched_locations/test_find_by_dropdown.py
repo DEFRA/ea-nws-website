@@ -31,7 +31,7 @@ def test_back_button(get_browser):
 
 def test_select_from_drop_down_continue(get_browser):
     test_setup(get_browser)
-    select_dropdown_option(get_browser, 'availableAddressesDropDown', '25a, Belgrave Road, London, E13 8RT')
+    select_dropdown_option(get_browser, 'availableAddressesDropDown', '25a,BelgraveRoad,London,E138RT')
     click_button(get_browser, 'Continue', next_url)
 
 

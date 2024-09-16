@@ -1,9 +1,9 @@
 import React from 'react'
-import BackLink from '../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
-import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
+import BackLink from '../../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
+import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import { useNavigate } from 'react-router'
-import Button from '../../../../common/components/gov-uk/Button'
+import Button from '../../../../../common/components/gov-uk/Button'
 import { Link } from 'react-router-dom'
 
 export default function OptionalLocationInformationPage () {

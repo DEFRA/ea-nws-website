@@ -5,8 +5,8 @@ import ViewLocationsDashboardPage from '../../pages/manage-locations/view-locati
 import DoNotAddLocationsPage from '../../pages/manage-locations/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
 import ConfirmLocationsPage from '../../pages/manage-locations/confirm-locations/ConfirmAddingLocationsPage'
-import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/OptionalLocationInformationPage'
-import AddOptionalAddress from '../../pages/manage-locations/add-location/AddOptionalAddress'
+import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-address/OptionalLocationInformationPage'
+import AddOptionalAddress from '../../pages/manage-locations/add-location/optional-address/AddOptionalAddress'
 
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgUnmatchedLocations = '/organisation/manage-locations/unmatched-locations'

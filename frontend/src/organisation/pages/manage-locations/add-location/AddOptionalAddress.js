@@ -5,7 +5,7 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
 import Button from '../../../../common/components/gov-uk/Button'
 import { useNavigate } from 'react-router'
-import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { setCurrentLocationFullAddress, setCurrentLocationPostcode } from '../../../../common/redux/userSlice'
 import { postCodeValidation } from '../../../../common/services/validations/PostCodeValidation'
 export default function AddOptionalAddress () {
@@ -16,7 +16,7 @@ export default function AddOptionalAddress () {
   const [county, setCounty] = useState('')
   const [postcode, setPostcode] = useState('')
   const [postcodeError, setPostcodeError] = useState('')
-  const session = useSelector((state) => state.session)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     setPostcodeError('')
@@ -33,10 +33,12 @@ export default function AddOptionalAddress () {
         setPostcodeError(postcodeValidationError)
       } else { navigateToNextPage() }
     } else {
-      setCurrentLocationFullAddress(session,
-        addressLine1 + ',' + addressLine2 + ',' + town + ',' + county)
+      await dispatch(
+        setCurrentLocationFullAddress(
+          addressLine1 + ', ' + addressLine2 + ', ' + town + ', ' + county))
 
-      setCurrentLocationPostcode(session, postcode)
+      await dispatch(
+        setCurrentLocationPostcode(postcode))
       navigateToNextPage()
     }
   }

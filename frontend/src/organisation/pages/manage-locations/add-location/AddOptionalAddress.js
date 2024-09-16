@@ -31,12 +31,19 @@ export default function AddOptionalAddress () {
       const postcodeValidationError = postCodeValidation(postcode)
       if (postcodeValidationError !== '') {
         setPostcodeError(postcodeValidationError)
-      } else { navigateToNextPage() }
+      } else {
+        await dispatch(
+          setCurrentLocationFullAddress(
+            addressLine1 + ', ' + addressLine2 + ', ' + town + ', ' + county))
+        await dispatch(
+          setCurrentLocationPostcode(postcode))
+
+        navigateToNextPage()
+      }
     } else {
       await dispatch(
         setCurrentLocationFullAddress(
           addressLine1 + ', ' + addressLine2 + ', ' + town + ', ' + county))
-
       await dispatch(
         setCurrentLocationPostcode(postcode))
       navigateToNextPage()

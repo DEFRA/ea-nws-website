@@ -63,7 +63,7 @@ export default function OptionalLocationInformationPage () {
                     <p className='govuk-body'>
                       Your internal reference, for example:
                       PS01, unit 57, Brid_04. This can help
-                      you identify the location more easily
+                      you identify the location more easily.
                     </p>
                   </li>
                   <li>

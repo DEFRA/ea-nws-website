@@ -1,12 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
 import BackLink from '../../../../common/components/custom/BackLink'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
 import Button from '../../../../common/components/gov-uk/Button'
 import { useNavigate } from 'react-router'
-import { postCodeValidation } from '../../../../common/services/validations/PostCodeValidation' 
-import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { setCurrentLocationFullAddress, setCurrentLocationPostcode } from '../../../../common/redux/userSlice'
+import { postCodeValidation } from '../../../../common/services/validations/PostCodeValidation'
 export default function AddOptionalAddress () {
   const navigate = useNavigate()
   const [addressLine1, setAddressLine1] = useState('')
@@ -14,9 +15,10 @@ export default function AddOptionalAddress () {
   const [town, setTown] = useState('')
   const [county, setCounty] = useState('')
   const [postcode, setPostcode] = useState('')
-  const [postcodeError,setPostcodeError] = useState('')
+  const [postcodeError, setPostcodeError] = useState('')
+  const session = useSelector((state) => state.session)
 
-  useEffect(()=> {
+  useEffect(() => {
     setPostcodeError('')
   }, [postcode])
   const navigateToNextPage = () => {
@@ -25,16 +27,18 @@ export default function AddOptionalAddress () {
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    if (postcode !== ''){
+    if (postcode !== '') {
       const postcodeValidationError = postCodeValidation(postcode)
       if (postcodeValidationError !== '') {
         setPostcodeError(postcodeValidationError)
-      }
-      else{navigateToNextPage()}
-    }else{
+      } else { navigateToNextPage() }
+    } else {
+      setCurrentLocationFullAddress(session,
+        addressLine1 + ',' + addressLine2 + ',' + town + ',' + county)
+
+      setCurrentLocationPostcode(session, postcode)
       navigateToNextPage()
     }
-    
   }
   return (
     <>
@@ -45,7 +49,8 @@ export default function AddOptionalAddress () {
           <div className='govuk-grid-column-two-thirds'>
             {postcodeError && (
               <ErrorSummary
-              errorList={[postcodeError]}/>
+                errorList={[postcodeError]}
+              />
             )}
             <h1 className='govuk-heading-l'>
               What is the address?
@@ -85,7 +90,7 @@ export default function AddOptionalAddress () {
             <Input
               inputType='text'
               name='Postcode (optional)'
-              error={postcodeError}              
+              error={postcodeError}
               onChange={(val) => setPostcode(val)}
               className='govuk-input govuk-input--width-20'
               isNameBold

@@ -72,7 +72,7 @@ export default function OptionalLocationInformationPage () {
                     </h3>
                     <p className='govuk-body'>
                       How important the location is to your Business.
-                      For example. low or medium, business critical.
+                      For example, low or medium, business critical.
                     </p>
                   </li>
                   <li>
@@ -97,13 +97,13 @@ export default function OptionalLocationInformationPage () {
                   get flood messages for a location unless they are linked to it.
                 </p>
                 <p className='govuk-body'>
-                  For example, you may want to add "North" or "Midlands" or "Team A"
+                  For example, you may want to add 'North' or 'Midlands' or 'Team A'
                   as keywords, then show all of the locations with that keyword in a list.
                 </p>
               </li>
               <li>
                 <h3 class='govuk-heading-s'>
-                  Actions to be taken
+                  Action to be taken
                 </h3>
                 <p className='govuk-body'>
                   What you can do to reduce the potential effects of flooding,
@@ -117,7 +117,7 @@ export default function OptionalLocationInformationPage () {
                 </h3>
                 <p className='govuk-body'>
                   Any notes that could be helpful to someone not familiar with the site.
-                  For example, John Smith has the flood plan for this location, the last time
+                  For example, John Smith has the flood plan for this location, the last time this
                   location flooded we used sandbags.
                 </p>
               </li>
@@ -130,7 +130,7 @@ export default function OptionalLocationInformationPage () {
             &nbsp; &nbsp;
             <Link
               to='/' // this will change when page is created
-              className='govuk-link'
+              className='govuk-link inline-link'
             >
               I'll do this later
             </Link>

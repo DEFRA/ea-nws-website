@@ -68,7 +68,7 @@ export default function AddOptionalAddress () {
               inputType='text'
               name='Address line 1 (optional)'
               onChange={(val) => setAddressLine1(val)}
-              className='govuk-input govuk-input--width-20'
+              className='govuk-input govuk-input--width-30'
               isNameBold
             />
 
@@ -76,7 +76,7 @@ export default function AddOptionalAddress () {
               inputType='text'
               name='Address line 2 (optional)'
               onChange={(val) => setAddressLine2(val)}
-              className='govuk-input govuk-input--width-20'
+              className='govuk-input govuk-input--width-30'
               isNameBold
             />
 
@@ -101,7 +101,7 @@ export default function AddOptionalAddress () {
               name='Postcode (optional)'
               error={postcodeError}
               onChange={(val) => setPostcode(val)}
-              className='govuk-input govuk-input--width-20'
+              className='govuk-input govuk-input--width-10'
               isNameBold
             />
 

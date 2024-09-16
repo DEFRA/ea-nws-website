@@ -22,7 +22,7 @@ const orgManageLocationsUrls = {
     addressInfo: urlManageOrg + '/add/address-info',
     uploadFile: urlManageOrg + '/add/upload-file',
     optionalInfo: urlManageOrg + '/add/optional-location-info',
-    optinalAddress: urlManageOrg + '/add/optional-address'
+    optionalAddress: urlManageOrg + '/add/optional-address'
   },
   unmatchedLocations: {
     doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
@@ -64,7 +64,7 @@ const orgManageLocationRoutes = [
     component: <OptionalLocationInformationPage />
   },
   {
-    path: orgManageLocationsUrls.add.optinalAddress,
+    path: orgManageLocationsUrls.add.optionalAddress,
     component: <AddOptionalAddress />
   }
 ]

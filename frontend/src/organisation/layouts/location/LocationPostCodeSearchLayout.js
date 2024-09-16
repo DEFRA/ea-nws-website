@@ -34,7 +34,7 @@ export default function LocationPostCodeSearchLayout({
         navigate
       )
       if (!errorMessage) {
-        dispatch(setLocationPostCode(data[0].postCode))
+        dispatch(setLocationPostCode(data[0].postcode))
         dispatch(setLocationSearchResults(data))
         NavigateToNextPage()
       } else {

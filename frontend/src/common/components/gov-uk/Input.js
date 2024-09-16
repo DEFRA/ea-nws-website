@@ -1,5 +1,5 @@
 import React from 'react'
-export default function Input ({
+export default function Input({
   name,
   className,
   value,
@@ -7,7 +7,8 @@ export default function Input ({
   inputType,
   onChange,
   error = '',
-  isNameBold = false
+  isNameBold = false,
+  labelSize = 'm'
 }) {
   const handleChange = (event) => {
     onChange(event.target.value)
@@ -23,9 +24,9 @@ export default function Input ({
         }
       >
         <label
-          className={
-            isNameBold === true ? 'govuk-label govuk-label--m' : 'govuk-label'
-          }
+          className={`govuk-label ${
+            isNameBold ? `govuk-label--${labelSize}` : ''
+          }`}
           htmlFor='govuk-text-input'
         >
           {name}

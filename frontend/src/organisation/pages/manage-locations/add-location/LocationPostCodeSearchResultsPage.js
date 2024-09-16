@@ -7,40 +7,34 @@ export default function LocationSearchResultsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const continueToNextPage = (
-    isInWarningArea,
-    isInAlertArea,
-    isWithinWarningAreaProximity,
-    isWithinAlertAreaProximity,
-    isError
-  ) => {
-    if (isInWarningArea) {
-      // take user to severe warning screen and then to alerts screen for
-      // optional additional alerts
+  const navigateToNextPage = (isInAlertArea, isInWarningArea, isError) => {
+    if (isInAlertArea && isInWarningArea) {
       dispatch(setAdditionalAlerts(true))
-      navigate('/manage-locations/add/location-in-severe-warning-area')
+      navigate(`/organisation/manage-locations/add/location-in-area/${'all'}`)
     } else if (isInAlertArea) {
-      // take user to non option flood alerts screen
       dispatch(setAdditionalAlerts(false))
-      navigate('/manage-locations/add/location-in-alert-area')
-    } else if (isWithinWarningAreaProximity) {
-      // users location is within distance to severe flood area
-      navigate(`/manage-locations/add/location-in-proximity-area/${'severe'}`)
-    } else if (isWithinAlertAreaProximity) {
-      // users location is within distance to alert flood area
-      navigate(`/manage-locations/add/location-in-proximity-area/${'alert'}`)
+      navigate(
+        `/organisation/manage-locations/add/location-in-area/${'alerts'}`
+      )
+    } else if (!isInAlertArea && !isInWarningArea) {
+      navigate(
+        `/organisation/manage-locations/add/location-in-area/${'no-alerts'}`
+      )
     } else if (isError) {
       navigate('/error')
-    } else {
-      // location isnt in danger area
-      navigate('/manage-locations/add/no-danger')
     }
+  }
+
+  const navigateToCannotFindAddressPage = () => {
+    // TODO: navigate to the appropriate page when user clicks "I cannot find address"
+    navigate(-1)
   }
 
   return (
     <>
       <LocationPostCodeSearchResultsLayout
-        continueToNextPage={continueToNextPage}
+        navigateToNextPage={navigateToNextPage}
+        navigateToCannotFindAddressPage={navigateToCannotFindAddressPage}
       />
     </>
   )

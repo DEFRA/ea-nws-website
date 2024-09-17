@@ -13,7 +13,9 @@ export default function KeywordsForThisLocationPage() {
     if (!keywords) {
       await dispatch()
     }
-    navigate()
+    navigate(
+      '/organisation/manage-locations/add/optional-address/add-action-plan'
+    )
   }
 
   const handleAddKeyword = () => {}

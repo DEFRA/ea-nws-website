@@ -1,8 +1,9 @@
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/LocationAddAddressInfoPage'
 import LocationAddPage from '../../pages/manage-locations/add-location/LocationAddPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/LocationAddUploadFilePage'
+import AddActionPlan from '../../pages/manage-locations/add-location/optional-address/ActionPlanPage'
 import AddKeyInformationPage from '../../pages/manage-locations/add-location/optional-address/AddKeyInformationPage'
-import KeywordsForThisLocationPage from '../../pages/manage-locations/add-location/optional-address/KeywordsForThisLocationPage'
+import AddNotesPage from '../../pages/manage-locations/add-location/optional-address/AddNotesPage'
 import ConfirmLocationsPage from '../../pages/manage-locations/confirm-locations/ConfirmAddingLocationsPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
@@ -23,7 +24,9 @@ const orgManageLocationsUrls = {
     uploadFile: urlManageOrg + '/add/upload-file',
     addKeyInformation:
       urlManageOrg + '/add/optional-address/add-key-information',
-    addKeywords: urlManageOrg + '/add/optional-address/add-keywords'
+    addKeywords: urlManageOrg + '/add/optional-address/add-keywords',
+    addActionPlan: urlManageOrg + '/add/optional-address/add-action-plan',
+    addNotes: urlManageOrg + '/add/optional-address/add-notes'
   },
   unmatchedLocations: {
     doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
@@ -63,8 +66,12 @@ const orgManageLocationRoutes = [
     component: <FindUnmatchedLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.add.addKeywords,
-    component: <KeywordsForThisLocationPage />
+    path: orgManageLocationsUrls.add.addActionPlan,
+    component: <AddActionPlan />
+  },
+  {
+    path: orgManageLocationsUrls.add.addNotes,
+    component: <AddNotesPage />
   },
   {
     path: urlManageOrgConfirmLocations,

@@ -1,10 +1,11 @@
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/LocationAddAddressInfoPage'
 import LocationAddPage from '../../pages/manage-locations/add-location/LocationAddPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/LocationAddUploadFilePage'
-import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
+import ConfirmLocationsPage from '../../pages/manage-locations/confirm-locations/ConfirmAddingLocationsPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
-import ConfirmLocationsPage from '../../pages/manage-locations/confirm-locations/ConfirmAddingLocationsPage'
+import ManuallyFindLocationsPage from '../../pages/manage-locations/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
+import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
 
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgUnmatchedLocations = '/organisation/manage-locations/unmatched-locations'
@@ -22,7 +23,8 @@ const orgManageLocationsUrls = {
   },
   unmatchedLocations: {
     doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
-    findUnmatchedLocations: urlManageOrgUnmatchedLocations + '/find-unmatched-locations'
+    findUnmatchedLocations: urlManageOrgUnmatchedLocations + '/find-unmatched-locations',
+    manuallyfind: urlManageOrgUnmatchedLocations + '/manually-find'
   }
 }
 
@@ -51,6 +53,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.unmatchedLocations.findUnmatchedLocations,
     component: <FindUnmatchedLocationsPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind,
+    component: <ManuallyFindLocationsPage />
   },
   {
     path: urlManageOrgConfirmLocations,

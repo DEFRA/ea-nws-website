@@ -14,8 +14,8 @@ export default function ManuallyFindLocationsPage () {
   const locations = [
     {
       Location_name: 'Location 1',
-      Full_address: 'Full address',
-      Postcode: 'Postcode',
+      Full_address: '25a belgrave road',
+      Postcode: 'SO17 3EA',
       X_coordinates: 'X coordinates',
       Y_coordinates: 'Y coordinates',
       Internal_reference: 'Internal reference',
@@ -27,8 +27,8 @@ export default function ManuallyFindLocationsPage () {
     },
     {
       Location_name: 'Location 2',
-      Full_address: 'Full address',
-      Postcode: 'Postcode',
+      Full_address: 'Bythesea Road',
+      Postcode: 'BA14 8JN',
       X_coordinates: 'X coordinates',
       Y_coordinates: 'Y coordinates',
       Internal_reference: 'Internal reference',
@@ -40,8 +40,8 @@ export default function ManuallyFindLocationsPage () {
     },
     {
       Location_name: 'Location 3',
-      Full_address: 'Full address',
-      Postcode: 'Postcode',
+      Full_address: '1000 Parkwaye, Whiteley',
+      Postcode: 'PO15 7AA',
       X_coordinates: 'X coordinates',
       Y_coordinates: 'Y coordinates',
       Internal_reference: 'Internal reference',
@@ -53,8 +53,8 @@ export default function ManuallyFindLocationsPage () {
     },
     {
       Location_name: 'Location 4',
-      Full_address: 'Full address',
-      Postcode: 'Postcode',
+      Full_address: 'Station Rd',
+      Postcode: 'SO51 7LP',
       X_coordinates: 'X coordinates',
       Y_coordinates: 'Y coordinates',
       Internal_reference: 'Internal reference',
@@ -66,8 +66,8 @@ export default function ManuallyFindLocationsPage () {
     },
     {
       Location_name: 'Location 5',
-      Full_address: 'Full address',
-      Postcode: 'Postcode',
+      Full_address: 'Romsey Office, Cannal Walk, Romsey',
+      Postcode: 'SO51 8DU',
       X_coordinates: 'X coordinates',
       Y_coordinates: 'Y coordinates',
       Internal_reference: 'Internal reference',

@@ -6,7 +6,9 @@ import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/par
 import SelectHowToFindThisLocationPage from '../../pages/manage-locations/partly-matched-locations/SelectHowToFindThisLocationPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
+import ManuallyFindLocationsPage from '../../pages/manage-locations/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
+
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgUnmatchedLocations =
   '/organisation/manage-locations/unmatched-locations'
@@ -25,11 +27,7 @@ const orgManageLocationsUrls = {
   unmatchedLocations: {
     doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
     findUnmatchedLocations:
-      urlManageOrgUnmatchedLocations + '/find-unmatched-locations',
-    selectHowToFindLocation:
-      urlManageOrgUnmatchedLocations + '/select-find-location',
-    findLocationByMatchedAddresses:
-      urlManageOrgUnmatchedLocations + '/find-by-addresses'
+      urlManageOrgUnmatchedLocations + '/find-unmatched-locations'
   }
 }
 
@@ -62,6 +60,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.unmatchedLocations.selectHowToFindLocation,
     component: <SelectHowToFindThisLocationPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind,
+    component: <ManuallyFindLocationsPage />
   },
   {
     path: urlManageOrgConfirmLocations,

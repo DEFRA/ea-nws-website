@@ -1,8 +1,7 @@
 from common import *
 from selenium.webdriver.common.by import By
-url = "http://localhost:3000/organisation/manage-locations/add/optional-location-info"
-url_next_page = "http://localhost:3000/organisation/manage-locations/add/optional-address"
-
+url = url_org_man_loc.get('add').get('optionalInfo')
+url_next_page = url_org_man_loc.get('add').get('optionalAddress')
 def setup(browser):
     navigate_to_auth_page_via_index(browser,url)
 

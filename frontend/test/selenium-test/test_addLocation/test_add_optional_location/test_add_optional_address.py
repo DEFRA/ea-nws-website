@@ -1,9 +1,6 @@
-"""Common.py not scrolling into view to send keys to 
-    so some tests have been wrote manually
-"""
 from common import *
 
-url = "http://localhost:3000/organisation/manage-locations/add/optional-address"
+url = url_org_man_loc.get('add').get('optionalAddress')
 # change below when next page is added
 url_next_page = "http://localhost:3000/"
 

@@ -18,14 +18,12 @@ export default function LocationNamePage () {
   const handleSubmit = () => {
     const locationName = name.trim()
     const validationError = locationNameValidation(locationName)
-
-    if (validationError) {
+    if (!validationError) {
+      dispatch(setLocationName(locationName))
+      navigate('/organisation/manage-locations/add/search-option')
+    } else {
       setError(validationError)
-      return
     }
-
-    dispatch(setLocationName(locationName))
-    navigate('/organisation/manage-locations/add/search-option')
   }
 
   const navigateBack = (event) => {

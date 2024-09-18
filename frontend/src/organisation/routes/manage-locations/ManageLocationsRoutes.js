@@ -5,11 +5,12 @@ import ConfirmLocationsPage from '../../pages/manage-locations/confirm-locations
 import DoNotAddLocationsPage from '../../pages/manage-locations/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
 import ManuallyFindLocationsPage from '../../pages/manage-locations/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
+import ProvideAreaNamePage from '../../pages/manage-locations/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
 
 const urlManageOrg = '/organisation/manage-locations'
-const urlManageOrgUnmatchedLocations = '/organisation/manage-locations/unmatched-locations'
-const urlManageOrgConfirmLocations = '/organisation/manage-locations/confirm'
+const UnmatchedLocations = urlManageOrg + '/unmatched-locations'
+const ConfirmLocations = urlManageOrg + '/confirm'
 
 // Manage location urls
 const orgManageLocationsUrls = {
@@ -22,9 +23,13 @@ const orgManageLocationsUrls = {
     uploadFile: urlManageOrg + '/add/upload-file'
   },
   unmatchedLocations: {
-    doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
-    findUnmatchedLocations: urlManageOrgUnmatchedLocations + '/find-unmatched-locations',
-    manuallyfind: urlManageOrgUnmatchedLocations + '/manually-find'
+    doNotAdd: UnmatchedLocations + '/do-not-add',
+    findUnmatchedLocations: UnmatchedLocations + '/find-unmatched-locations',
+    manuallyfind: {
+      index: UnmatchedLocations + '/manually-find',
+      areaName: UnmatchedLocations + '/manually-find/area-name',
+      map: UnmatchedLocations + '/manually-find/map'
+    }
   }
 }
 
@@ -55,11 +60,15 @@ const orgManageLocationRoutes = [
     component: <FindUnmatchedLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind,
+    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.index,
     component: <ManuallyFindLocationsPage />
   },
   {
-    path: urlManageOrgConfirmLocations,
+    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName,
+    component: <ProvideAreaNamePage />
+  },
+  {
+    path: ConfirmLocations,
     component: <ConfirmLocationsPage />
   }
 ]

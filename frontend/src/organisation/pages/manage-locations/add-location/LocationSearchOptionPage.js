@@ -6,7 +6,7 @@ import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
 
-export default function LocationSearchOptionPage() {
+export default function LocationSearchOptionPage () {
   const navigate = useNavigate()
 
   const NavigateToPostcodeSearchPage = () => {

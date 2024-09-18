@@ -63,7 +63,11 @@ url_org_man_loc = {
         'options': url_org_man_loc_path + '/add',
         'addressInfo': url_org_man_loc_path + '/add/address-info',
         'uploadFile': url_org_man_loc_path + '/add/upload-file',
-        'uploadTemplate': 'http://d39yn09rf1d1o9.cloudfront.net/template.csv'
+        'uploadTemplate': 'http://d39yn09rf1d1o9.cloudfront.net/template.csv',
+        'name': url_org_man_loc_path + '/add/name',
+        'searchOption': url_org_man_loc_path + '/add/search-option',
+        'postcodeSearch': url_org_man_loc_path + '/add/postcode-search',
+        'postcodeSearchResults': url_org_man_loc_path + '/add/postcode-search-results'
     },
     'change': {
         'alternative_contact': local_host + '/',
@@ -140,7 +144,9 @@ def check_exists_by_xpath(browser, xpath):
 
 # Check h1 heading
 def check_h1_heading(browser, page_heading):
-    page_heading_xpath = f"//h1[@class='govuk-heading-l' and text()='{page_heading}']"
+    # Use double quotes for text() in case the page_heading contains single quotes.
+    # e.g. "What is the location's postcode"
+    page_heading_xpath = f"//h1[@class='govuk-heading-l' and text()=\"{page_heading}\"]"
     return check_exists_by_xpath(browser, page_heading_xpath)
 
 # Check for error summary

@@ -12,18 +12,10 @@ export default function LocationNamePage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const NavigateToNextPage = () => {
-    navigate('/organisation/manage-locations/add/search-option')
-  }
-
-  const NavigateToPreviousPage = () => {
-    navigate(-1)
-  }
-
   const [name, setName] = useState('')
   const [error, setError] = useState('')
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     const locationName = name.trim()
     const validationError = locationNameValidation(locationName)
 
@@ -33,12 +25,12 @@ export default function LocationNamePage () {
     }
 
     dispatch(setLocationName(locationName))
-    NavigateToNextPage()
+    navigate('/organisation/manage-locations/add/search-option')
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
-    NavigateToPreviousPage()
+    navigate(-1)
   }
 
   return (
@@ -61,7 +53,6 @@ export default function LocationNamePage () {
                 onChange={(val) => setName(val)}
                 error={error}
                 className='govuk-input govuk-input--width-20'
-                defaultValue={name}
               />
               <Button
                 text='Continue'

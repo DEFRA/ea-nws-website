@@ -12,25 +12,33 @@ export default function FindLocationByMatchedAddressesPage() {
     (state) =>
       state.session.currentLocation.meta_data.location_additional.full_address
   )
-  const [selectedAddress, setSelectedAddress] = useState('')
+  const [selectedAddressIndex, setSelectedAddressIndex] = useState(null)
   const [error, setError] = useState('')
   const availableAddresses = useSelector(
     (state) => state.session.locationSearchResults
   )
+
   useEffect(() => {
     setError('')
-  }, [selectedAddress])
+  }, [selectedAddressIndex])
 
   const handleContinue = async () => {
-    if (!selectedAddress) {
+    console.log(availableAddresses[selectedAddressIndex])
+    if (!selectedAddressIndex) {
       setError('Select an address')
     } else {
-      navigate('/organisation/manage-locations/add')
+      sessionStorage.setItem(
+        'selectedAddress',
+        JSON.stringify(availableAddresses[selectedAddressIndex])
+      )
+      navigate(
+        '/organisation/manage-locations/unmatched-locations/confirm-location-address'
+      )
     }
   }
 
-  const options = availableAddresses.map((item) => ({
-    value: item.name.replace(/\s+/g, ''),
+  const options = availableAddresses.map((item, index) => ({
+    value: index,
     label: item.name
   }))
 
@@ -57,7 +65,7 @@ export default function FindLocationByMatchedAddressesPage() {
                   label='Select an address'
                   options={options}
                   name='availableAddressesDropDown'
-                  onChange={(e) => setSelectedAddress(e.target.value)}
+                  onChange={(e) => setSelectedAddressIndex(e.target.value)}
                   hint=''
                   error={error}
                 />

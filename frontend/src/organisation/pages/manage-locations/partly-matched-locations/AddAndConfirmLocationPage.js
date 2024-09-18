@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -7,22 +7,32 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
 export default function AddAndConfirmLocationPage() {
   const navigate = useNavigate()
-  const selectedLocation = useSelector(
-    (state) =>
-      state.session.currentLocation.meta_data.location_additional.full_address
+  const uploadedLocation = useSelector((state) => state.session.currentLocation)
+  const previouslySelectedLocation = JSON.parse(
+    sessionStorage.getItem('selectedAddress')
   )
   const [confirmedAddress, setConfirmedAddress] = useState('')
   const [error, setError] = useState('')
-  const addressOptions = [selectedLocation]
-  useEffect(() => {
-    setError('')
-  }, [confirmedAddress])
+  const addressOptions = [
+    {
+      value: 'uploaded',
+      label:
+        'Address uploaded - ' +
+        uploadedLocation.meta_data.location_additional.full_address
+    },
+    {
+      value: 'found',
+      label: 'Found address - ' + previouslySelectedLocation.name
+    }
+  ]
 
   const handleViewLocationButton = () => {}
 
   const handleContinue = async () => {
     if (!confirmedAddress) {
-      setError('Select an address')
+      setError(
+        'Select if you want to use the address uploaded or the address found'
+      )
     } else {
       navigate(
         '/organisation/manage-locations/unmatched-locations/manually-find'
@@ -44,6 +54,11 @@ export default function AddAndConfirmLocationPage() {
                 text='View location on map'
                 onClick={handleViewLocationButton}
               />
+              <br />
+              <br />
+              <h3 className='govuk-heading-m'>
+                Which address do you want to use for this location?
+              </h3>
               <div
                 className={
                   error
@@ -51,6 +66,7 @@ export default function AddAndConfirmLocationPage() {
                     : 'govuk-form-group'
                 }
               >
+                {error && <p className='govuk-error-message'>{error}</p>}
                 <div className='govuk-radios' data-module='govuk-radios'>
                   {addressOptions.map((option) => (
                     <Radio
@@ -73,12 +89,11 @@ export default function AddAndConfirmLocationPage() {
               onClick={handleContinue}
             />
             <Link
-              text='Cancel'
               className='govuk-link inline-link'
-              onClick={navigate(
-                '/organisation/manage-locations/unmatched-locations/manually-find'
-              )}
-            />
+              to='/organisation/manage-locations/unmatched-locations/manually-find'
+            >
+              Cancel
+            </Link>
           </div>
         </div>
       </main>

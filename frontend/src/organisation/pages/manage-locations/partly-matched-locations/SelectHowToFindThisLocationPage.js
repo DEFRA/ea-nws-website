@@ -36,11 +36,14 @@ export default function SelectHowToFindThisLocationPage() {
       'api/os-api/name-minmatch-search',
       navigate
     )
-    if (!errorMessage) {
-      dispatch(setLocationSearchResults(data))
-    } else {
+    if (errorMessage) {
       // show error message from OS Api postcode search
-      setError('There was an error')
+      setError(errorMessage)
+      return false
+    } else {
+      dispatch(setLocationSearchResults(data))
+      setError('')
+      return true
     }
   }
 
@@ -50,8 +53,9 @@ export default function SelectHowToFindThisLocationPage() {
         'Select if you want to find this location from a drop-down list or on a map'
       )
     } else if (findLocationOption === findLocationOptions[0].value) {
-      await findAvailableAddresses()
-      if (!error || error === '') {
+      const success = await findAvailableAddresses()
+
+      if (success) {
         navigate(
           '/organisation/manage-locations/unmatched-locations/find-location-by-address'
         )

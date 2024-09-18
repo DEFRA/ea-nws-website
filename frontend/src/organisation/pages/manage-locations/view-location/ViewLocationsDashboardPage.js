@@ -1,244 +1,583 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
-import { Link } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
-import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../common/components/gov-uk/Pagination'
+import DashboardHeader from './dashboard-components/DashboardHeader'
+import LocationsTable from './dashboard-components/LocationsTable'
+import SearchFilter from './dashboard-components/SearchFilter'
 
 export default function ViewLocationsDashboardPage () {
   const navigate = useNavigate()
+  const [locations, setLocations] = useState([])
+  const [filteredLocations, setFilteredLocations] = useState([])
+  const [isFilterVisible, setIsFilterVisible] = useState(false)
 
-  // TODO - grab the real data once ticket is done
-  const locations = [
-    {
-      id: 1,
-      name: 'Location_ID1',
-      type: 'Office',
-      available: 'Yes',
-      critical: 'High'
-    },
-    {
-      id: 2,
-      name: 'Location_ID2',
-      type: 'Retail space',
-      available: 'Yes',
-      critical: '-'
-    },
-    {
-      id: 3,
-      name: 'Location_ID3',
-      type: 'Office',
-      available: 'No',
-      critical: 'Medium'
-    },
-    {
-      id: 4,
-      name: 'Location_ID4',
-      type: 'Warehouse',
-      available: 'Yes',
-      critical: 'Low'
-    },
-    {
-      id: 5,
-      name: 'Location_ID5',
-      type: 'Office',
-      available: 'No',
-      critical: 'High'
-    },
-    {
-      id: 6,
-      name: 'Location_ID6',
-      type: 'Retail space',
-      available: 'Yes',
-      critical: 'Medium'
-    },
-    {
-      id: 7,
-      name: 'Location_ID7',
-      type: 'Office',
-      available: 'Yes',
-      critical: 'Low'
-    },
-    {
-      id: 8,
-      name: 'Location_ID8',
-      type: 'Data Center',
-      available: 'No',
-      critical: 'High'
-    },
-    {
-      id: 9,
-      name: 'Location_ID9',
-      type: 'Retail space',
-      available: 'Yes',
-      critical: 'Medium'
-    },
-    {
-      id: 10,
-      name: 'Location_ID10',
-      type: 'Warehouse',
-      available: 'No',
-      critical: 'Low'
-    },
-    {
-      id: 11,
-      name: 'Location_ID11',
-      type: 'Office',
-      available: 'Yes',
-      critical: 'Medium'
-    },
-    {
-      id: 12,
-      name: 'Location_ID12',
-      type: 'Data Center',
-      available: 'Yes',
-      critical: 'High'
-    },
-    {
-      id: 13,
-      name: 'Location_ID13',
-      type: 'Retail space',
-      available: 'No',
-      critical: 'Low'
-    },
-    {
-      id: 14,
-      name: 'Location_ID14',
-      type: 'Warehouse',
-      available: 'Yes',
-      critical: 'Medium'
-    },
-    {
-      id: 15,
-      name: 'Location_ID15',
-      type: 'Office',
-      available: 'No',
-      critical: 'Low'
-    },
-    {
-      id: 16,
-      name: 'Location_ID16',
-      type: 'Data Center',
-      available: 'Yes',
-      critical: 'High'
-    },
-    {
-      id: 17,
-      name: 'Location_ID17',
-      type: 'Warehouse',
-      available: 'No',
-      critical: 'Medium'
-    },
-    {
-      id: 18,
-      name: 'Location_ID18',
-      type: 'Retail space',
-      available: 'Yes',
-      critical: 'Low'
-    },
-    // Additional 10 locations
-    {
-      id: 19,
-      name: 'Location_ID19',
-      type: 'Office',
-      available: 'Yes',
-      critical: 'Medium'
-    },
-    {
-      id: 20,
-      name: 'Location_ID20',
-      type: 'Warehouse',
-      available: 'Yes',
-      critical: 'High'
-    },
-    {
-      id: 21,
-      name: 'Location_ID21',
-      type: 'Retail space',
-      available: 'No',
-      critical: 'Low'
-    },
-    {
-      id: 22,
-      name: 'Location_ID22',
-      type: 'Data Center',
-      available: 'Yes',
-      critical: 'High'
-    },
-    {
-      id: 23,
-      name: 'Location_ID23',
-      type: 'Warehouse',
-      available: 'No',
-      critical: 'Medium'
-    },
-    {
-      id: 24,
-      name: 'Location_ID24',
-      type: 'Office',
-      available: 'Yes',
-      critical: 'Low'
-    },
-    {
-      id: 25,
-      name: 'Location_ID25',
-      type: 'Retail space',
-      available: 'Yes',
-      critical: 'Medium'
-    },
-    {
-      id: 26,
-      name: 'Location_ID26',
-      type: 'Data Center',
-      available: 'No',
-      critical: 'High'
-    },
-    {
-      id: 27,
-      name: 'Location_ID27',
-      type: 'Warehouse',
-      available: 'Yes',
-      critical: 'Low'
-    },
-    {
-      id: 28,
-      name: 'Location_ID28',
-      type: 'Office',
-      available: 'No',
-      critical: 'Medium'
-    }
-  ]
+  useEffect(() => {
+    const l = [
+      {
+        name: 'Location_ID2',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Alert'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: '-',
+            location_type: 'Retail space',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID3',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: [],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID4',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Warning', 'Alert'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID5',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Warning'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'High',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID6',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Alert'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Retail space',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID7',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: [],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID8',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Warning'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID9',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Warning', 'Alert'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Retail space',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID10',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Warning'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID11',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Warning', 'Alert'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID12',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Alert'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID13',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Warning'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Retail space',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID14',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: [],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID15',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Warning', 'Alert'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID16',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: [],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID17',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Warning'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID18',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Alert'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Retail space',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID19',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Warning', 'Alert'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID20',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Warning'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID21',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: [],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Retail space',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID22',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Warning', 'Alert'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID23',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Warning'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID24',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Alert'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID25',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Warning', 'Alert'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Retail space',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID26',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Alert'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID27',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Warning'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      },
+      {
+        name: 'Location_ID28',
+        address: 'some address',
+        coordinates: ['lat', 'lng'],
+        alert_categories: ['Warning', 'Alert'],
+        meta_data: {
+          location_additional: {
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'lng',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            keywords: 'keywords'
+          }
+        }
+      }
+    ]
+    setLocations(l)
+    setFilteredLocations(l)
+  }, [])
 
   const [currentPage, setCurrentPage] = useState(1)
   const locationsPerPage = 10
-  const displayedLocations = locations.slice(
+  const displayedLocations = filteredLocations.slice(
     (currentPage - 1) * locationsPerPage,
     currentPage * locationsPerPage
   )
 
-  const [selectedCheckboxes, setSelectedCheckboxes] = useState(
-    locations.map(() => false)
-  )
-  const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
-
-  const handleHeaderCheckboxChange = (event) => {
-    const isChecked = event.target.checked
-    setIsTopCheckboxChecked(isChecked)
-    setSelectedCheckboxes(locations.map(() => isChecked))
-  }
-
-  const handleRowCheckboxChange = (index) => {
-    const updatedCheckboxes = [...selectedCheckboxes]
-    updatedCheckboxes[index] = !updatedCheckboxes[index]
-    setSelectedCheckboxes(updatedCheckboxes)
-
-    if (!updatedCheckboxes[index]) {
-      setIsTopCheckboxChecked(false)
-    } else if (updatedCheckboxes.every((checked) => checked)) {
-      setIsTopCheckboxChecked(true)
-    }
-  }
+  // selected filters
+  const [selectedLocationTypeFilters, setSelectedLocationTypeFilters] =
+    useState([])
+  const [
+    selectedFloodMessagesAvailbleFilters,
+    setSelectedFloodMessagesAvailbleFilters
+  ] = useState([])
+  const [
+    selectedBusinessCriticalityFilters,
+    setSelectedBusinessCriticalityFilters
+  ] = useState([])
 
   return (
     <>
@@ -247,97 +586,65 @@ export default function ViewLocationsDashboardPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full govuk-body'>
-            <NotificationBanner
-              className='govuk-notification-banner govuk-notification-banner--success'
-              title='Success'
-              text='100 new locations added'
-            />
-            <h1 className='govuk-heading-l'>Your organisation's locations</h1>
-            <Button
-              text='Add locations'
-              className='govuk-button govuk-button--secondary'
-            />
-            <Link className='govuk-link inline-link'>Back to settings</Link>
-            <p className='govuk-caption-m govuk-!-margin-bottom-9'>
-              Last updated: by you at 11:15am, 10 May 2024,{' '}
-              <Link>View all updates</Link>
-            </p>
-            <Button
-              text='Filter locations'
-              className='govuk-button govuk-button--secondary'
-            />
-            <p className=' govuk-!-margin-bottom-6'>700 locations</p>
-            <table className='govuk-table govuk-table--small-text-until-tablet'>
-              <thead className='govuk-table__head'>
-                <tr className='govuk-table__row'>
-                  <th scope='col' className='govuk-table__header'>
-                    <div
-                      className='govuk-checkboxes govuk-checkboxes--small'
-                      data-module='govuk-checkboxes'
-                    >
-                      <div className='govuk-checkboxes__item'>
-                        <input
-                          className='govuk-checkboxes__input'
-                          type='checkbox'
-                          checked={isTopCheckboxChecked}
-                          onChange={handleHeaderCheckboxChange}
-                        />
-                        <label className='govuk-label govuk-checkboxes__label' />
-                      </div>
-                    </div>
-                  </th>
-                  <th scope='col' className='govuk-table__header'>
-                    Location name
-                  </th>
-                  <th scope='col' className='govuk-table__header'>
-                    Location type
-                  </th>
-                  <th scope='col' className='govuk-table__header'>
-                    Flood messages
-                    <br /> available
-                  </th>
-                  <th scope='col' className='govuk-table__header'>
-                    Business criticality
-                  </th>
-                  <th scope='col' className='govuk-table__header' />
-                </tr>
-              </thead>
-              <tbody className='govuk-table__body'>
-                {displayedLocations.map((location, index) => {
-                  return (
-                    <tr className='govuk-table__row' key={index}>
-                      <th scope='row' className='govuk-table__header'>
-                        <div
-                          className='govuk-checkboxes govuk-checkboxes--small'
-                          data-module='govuk-checkboxes'
-                        >
-                          <div className='govuk-checkboxes__item'>
-                            <input
-                              className='govuk-checkboxes__input'
-                              type='checkbox'
-                              checked={selectedCheckboxes[index]}
-                              onChange={() => handleRowCheckboxChange(index)}
-                            />
-                            <label className='govuk-label govuk-checkboxes__label' />
-                          </div>
-                        </div>
-                      </th>
-                      <td className='govuk-table__cell'>{location.name}</td>
-                      <td className='govuk-table__cell'>{location.type}</td>
-                      <td className='govuk-table__cell'>{location.available}</td>
-                      <td className='govuk-table__cell'>{location.critical}</td>
-                      <td className='govuk-table__cell'>
-                        <Link>View or edit</Link>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-            <Pagination
-              totalPages={Math.ceil(locations.length / locationsPerPage)}
-              onPageChange={(val) => setCurrentPage(val)}
-            />
+            <DashboardHeader />
+            {!isFilterVisible
+              ? (
+                <>
+                  <Button
+                    text='Filter locations'
+                    className='govuk-button govuk-button--secondary'
+                    onClick={() => setIsFilterVisible(!isFilterVisible)}
+                  />
+                  <LocationsTable locations={displayedLocations} />
+                  <Pagination
+                    totalPages={Math.ceil(
+                      filteredLocations.length / locationsPerPage
+                    )}
+                    onPageChange={(val) => setCurrentPage(val)}
+                  />
+                </>
+                )
+              : (
+                <div className='govuk-grid-row'>
+                  <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 locations-filter-container'>
+                    <SearchFilter
+                      locations={locations}
+                      setFilteredLocations={setFilteredLocations}
+                      selectedLocationTypeFilters={selectedLocationTypeFilters}
+                      setSelectedLocationTypeFilters={
+                      setSelectedLocationTypeFilters
+                    }
+                      selectedFloodMessagesAvailbleFilters={
+                      selectedFloodMessagesAvailbleFilters
+                    }
+                      setSelectedFloodMessagesAvailbleFilters={
+                      setSelectedFloodMessagesAvailbleFilters
+                    }
+                      selectedBusinessCriticalityFilters={
+                      selectedBusinessCriticalityFilters
+                    }
+                      setSelectedBusinessCriticalityFilters={
+                      setSelectedBusinessCriticalityFilters
+                    }
+                    />
+                  </div>
+
+                  <div className='govuk-grid-column-three-quarters'>
+                    <Button
+                      text='Close Filter'
+                      className='govuk-button govuk-button--secondary'
+                      onClick={() => setIsFilterVisible(!isFilterVisible)}
+                    />
+                    <LocationsTable locations={displayedLocations} />
+                    <Pagination
+                      totalPages={Math.ceil(
+                        filteredLocations.length / locationsPerPage
+                      )}
+                      onPageChange={(val) => setCurrentPage(val)}
+                    />
+                  </div>
+                </div>
+                )}
           </div>
         </div>
       </main>

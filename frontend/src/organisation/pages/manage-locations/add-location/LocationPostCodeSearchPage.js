@@ -16,14 +16,6 @@ export default function LocationPostCodeSearchPage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const NavigateToNextPage = () => {
-    navigate('/organisation/manage-locations/add/postcode-search-results')
-  }
-
-  const NavigateToPreviousPage = () => {
-    navigate(-1)
-  }
-
   const [postCode, setPostCode] = useState('')
   const [error, setError] = useState('')
 
@@ -42,7 +34,7 @@ export default function LocationPostCodeSearchPage () {
       if (!errorMessage) {
         dispatch(setLocationPostCode(data[0].postcode))
         dispatch(setLocationSearchResults(data))
-        NavigateToNextPage()
+        navigate('/organisation/manage-locations/add/postcode-search-results')
       } else {
         // show error message from OS Api postcode search
         setError(errorMessage)
@@ -54,7 +46,7 @@ export default function LocationPostCodeSearchPage () {
 
   const navigateBack = async (event) => {
     event.preventDefault()
-    NavigateToPreviousPage()
+    navigate(-1)
   }
 
   return (
@@ -75,7 +67,6 @@ export default function LocationPostCodeSearchPage () {
                 onChange={(val) => setPostCode(val)}
                 error={error}
                 className='govuk-input govuk-input--width-10'
-                defaultValue={postCode}
               />
               <Button
                 text='Continue'

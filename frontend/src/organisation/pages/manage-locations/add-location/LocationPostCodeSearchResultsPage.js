@@ -7,11 +7,7 @@ import Button from '../../../../common/components/gov-uk/Button'
 import Pagination from '../../../../common/components/gov-uk/Pagination'
 import {
   setAdditionalAlerts,
-  setNearbyTargetAreasFlow,
-  setSelectedFloodAlertArea,
-  setSelectedFloodWarningArea,
-  setSelectedLocation,
-  setShowOnlySelectedFloodArea
+  setSelectedLocation
 } from '../../../../common/redux/userSlice'
 import {
   getSurroundingFloodAreas,
@@ -21,29 +17,6 @@ import {
 export default function LocationSearchResultsPage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
-  const navigateToNextPage = (isInAlertArea, isInWarningArea, isError) => {
-    if (isInAlertArea && isInWarningArea) {
-      dispatch(setAdditionalAlerts(true))
-      navigate(`/organisation/manage-locations/add/location-in-area/${'all'}`)
-    } else if (isInAlertArea) {
-      dispatch(setAdditionalAlerts(false))
-      navigate(
-        `/organisation/manage-locations/add/location-in-area/${'alerts'}`
-      )
-    } else if (!isInAlertArea && !isInWarningArea) {
-      navigate(
-        `/organisation/manage-locations/add/location-in-area/${'no-alerts'}`
-      )
-    } else if (isError) {
-      navigate('/error')
-    }
-  }
-
-  const navigateToCannotFindAddressPage = () => {
-    // TODO: navigate to the appropriate page when user clicks "I cannot find address"
-    navigate(-1)
-  }
 
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
@@ -63,13 +36,6 @@ export default function LocationSearchResultsPage () {
     setLoading(true)
     try {
       dispatch(setSelectedLocation(selectedLocation))
-
-      // reset map display - these are only required when user is taken through location in proximity to flood areas
-      // they are updated with data only in proximity flow
-      dispatch(setSelectedFloodAlertArea(null))
-      dispatch(setSelectedFloodWarningArea(null))
-      dispatch(setShowOnlySelectedFloodArea(false))
-      dispatch(setNearbyTargetAreasFlow(false))
 
       const { warningArea, alertArea } = await getSurroundingFloodAreas(
         selectedLocation.coordinates.latitude,
@@ -98,6 +64,28 @@ export default function LocationSearchResultsPage () {
     } finally {
       setLoading(false)
     }
+  }
+
+  const navigateToNextPage = (isInAlertArea, isInWarningArea, isError) => {
+    if (isInAlertArea && isInWarningArea) {
+      navigate(`/organisation/manage-locations/add/location-in-area/${'all'}`)
+    } else if (isInAlertArea) {
+      dispatch(setAdditionalAlerts(false))
+      navigate(
+        `/organisation/manage-locations/add/location-in-area/${'alerts'}`
+      )
+    } else if (!isInAlertArea && !isInWarningArea) {
+      navigate(
+        `/organisation/manage-locations/add/location-in-area/${'no-alerts'}`
+      )
+    } else if (isError) {
+      navigate('/error')
+    }
+  }
+
+  const navigateToCannotFindAddressPage = () => {
+    // TODO: navigate to the appropriate page when user clicks "I cannot find address"
+    navigate(-1)
   }
 
   return (

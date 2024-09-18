@@ -6,7 +6,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import WarningText from '../../../../../common/components/gov-uk/WarningText'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 
-export default function ManuallyFindLocationsPage () {
+export default function ManuallyFindLocationsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -15,7 +15,7 @@ export default function ManuallyFindLocationsPage () {
     {
       Location_name: 'Location 1',
       Full_address: '25a belgrave road',
-      Postcode: 'SO17 3EA',
+      Postcode: '',
       X_coordinates: 'X coordinates',
       Y_coordinates: 'Y coordinates',
       Internal_reference: 'Internal reference',
@@ -87,10 +87,10 @@ export default function ManuallyFindLocationsPage () {
     return {
       name: location.Location_name,
       // address is the UPRN
-      address: null,
+      address: location.address,
       // Coordinates in dd (degrees decimal)
-      coordinates: null,
-      alert_categories: null,
+      coordinates: location.coordinates,
+      alert_categories: location.alert_categories,
       meta_data: {
         location_additional: {
           full_address: location.Full_address,
@@ -114,7 +114,7 @@ export default function ManuallyFindLocationsPage () {
     event.preventDefault()
     const poi = locationToPOI(location)
     dispatch(setCurrentLocation(poi))
-    navigate('/organisation/manage-locations/find-location')
+    navigate('/organisation/manage-locations/unmatched-locations/find-location')
   }
 
   return (
@@ -136,14 +136,22 @@ export default function ManuallyFindLocationsPage () {
                   , update it and reupload later.
                 </>
               </p>
-              <h2 className='govuk-heading-m govuk-!-margin-top-6'>{locations.length} locations not matched</h2>
+              <h2 className='govuk-heading-m govuk-!-margin-top-6'>
+                {locations.length} locations not matched
+              </h2>
 
               <table class='govuk-table govuk-table--small-text-until-tablet'>
                 <thead class='govuk-table__head'>
                   <tr class='govuk-table__row'>
-                    <th scope='col' class='govuk-table__header'>Location name</th>
-                    <th scope='col' class='govuk-table__header'>Address uploaded</th>
-                    <th scope='col' class='govuk-table__header'>Postcode</th>
+                    <th scope='col' class='govuk-table__header'>
+                      Location name
+                    </th>
+                    <th scope='col' class='govuk-table__header'>
+                      Address uploaded
+                    </th>
+                    <th scope='col' class='govuk-table__header'>
+                      Postcode
+                    </th>
                     <th scope='col' class='govuk-table__header' />
                   </tr>
                 </thead>
@@ -151,11 +159,19 @@ export default function ManuallyFindLocationsPage () {
                   {locations.map((location, index) => {
                     return (
                       <tr class='govuk-table__row' key={index}>
-                        <th scope='row' class='govuk-table__header'>{location.Location_name}</th>
-                        <td class='govuk-table__cell'>{location.Full_address}</td>
+                        <th scope='row' class='govuk-table__header'>
+                          {location.Location_name}
+                        </th>
+                        <td class='govuk-table__cell'>
+                          {location.Full_address}
+                        </td>
                         <td class='govuk-table__cell'>{location.Postcode}</td>
                         <td class='govuk-table__cell'>
-                          <Link onClick={(event) => handleFind(event, location)}>Find this location</Link>
+                          <Link
+                            onClick={(event) => handleFind(event, location)}
+                          >
+                            Find this location
+                          </Link>
                         </td>
                       </tr>
                     )

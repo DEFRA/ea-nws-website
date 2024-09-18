@@ -8,10 +8,10 @@ import InsetText from '../../../../common/components/gov-uk/InsetText'
 import Select from '../../../../common/components/gov-uk/Select'
 export default function FindLocationByMatchedAddressesPage() {
   const navigate = useNavigate()
-  const selectedLocation = '25A BELGRAVE ROAD'
-  /*useSelector(
-    (state) => state.session.selectedLocation
-  )*/
+  const selectedLocation = useSelector(
+    (state) =>
+      state.session.currentLocation.meta_data.location_additional.full_address
+  )
   const [selectedAddress, setSelectedAddress] = useState('')
   const [error, setError] = useState('')
   const availableAddresses = useSelector(

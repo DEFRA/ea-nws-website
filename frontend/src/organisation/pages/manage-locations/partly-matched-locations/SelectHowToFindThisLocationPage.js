@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
@@ -21,10 +21,10 @@ export default function SelectHowToFindThisLocationPage() {
     { value: 'Map', label: 'Find location on a map' }
   ]
 
-  const selectedLocation = '25A BELGRAVE ROAD'
-  /*useSelector(
-    (state) => state.session.selectedLocation
-  ) */
+  const selectedLocation = useSelector(
+    (state) =>
+      state.session.currentLocation.meta_data.location_additional.full_address
+  )
 
   const findAvailableAddresses = async () => {
     const dataToSend = {
@@ -53,7 +53,7 @@ export default function SelectHowToFindThisLocationPage() {
       await findAvailableAddresses()
       if (!error || error === '') {
         navigate(
-          '/organisation/manage-locations/unmatched-locations/find-by-addresses'
+          '/organisation/manage-locations/unmatched-locations/find-location-by-address'
         )
       }
     } else {

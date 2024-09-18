@@ -9,24 +9,6 @@ import Radio from '../../../../common/components/gov-uk/Radio'
 export default function LocationSearchOptionPage () {
   const navigate = useNavigate()
 
-  const NavigateToPostcodeSearchPage = () => {
-    navigate('/organisation/manage-locations/add/postcode-search')
-  }
-
-  // TODO: set this to point to the correct page when it exists
-  const NavigateToXYSearchPage = () => {
-    navigate('/organisation/manage-locations/add/xy-search')
-  }
-
-  // TODO: set this to point to the correct page when it exists
-  const NavigateToPinSearchPage = () => {
-    navigate('/organisation/manage-locations/add/pin-search')
-  }
-
-  const NavigateToPreviousPage = () => {
-    navigate(-1)
-  }
-
   const [searchOption, setSearchOption] = useState('')
   const [error, setError] = useState('')
 
@@ -35,19 +17,19 @@ export default function LocationSearchOptionPage () {
     setError('')
   }, [searchOption])
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!searchOption) {
       setError('Select how you want to find this location')
     } else {
       switch (searchOption) {
         case 'UseAPostcode':
-          NavigateToPostcodeSearchPage()
+          navigate('/organisation/manage-locations/add/postcode-search')
           break
         case 'UseXAndYCoordinates':
-          NavigateToXYSearchPage()
+          navigate('/organisation/manage-locations/add/xy-search')
           break
         case 'DropAPinOnAMap':
-          NavigateToPinSearchPage()
+          navigate('/organisation/manage-locations/add/pin-search')
           break
         default:
           break
@@ -55,9 +37,9 @@ export default function LocationSearchOptionPage () {
     }
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
-    NavigateToPreviousPage()
+    navigate(-1)
   }
 
   const locationName = useSelector((state) => state.session.locationName)

@@ -5,7 +5,7 @@ import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
-export default function AddAndConfirmLocationPage() {
+export default function AddAndConfirmLocationPage () {
   const navigate = useNavigate()
   const uploadedLocation = useSelector((state) => state.session.currentLocation)
   const previouslySelectedLocation = JSON.parse(

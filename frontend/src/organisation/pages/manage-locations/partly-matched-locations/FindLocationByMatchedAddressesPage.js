@@ -6,7 +6,7 @@ import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import InsetText from '../../../../common/components/gov-uk/InsetText'
 import Select from '../../../../common/components/gov-uk/Select'
-export default function FindLocationByMatchedAddressesPage() {
+export default function FindLocationByMatchedAddressesPage () {
   const navigate = useNavigate()
   const selectedLocation = useSelector(
     (state) =>

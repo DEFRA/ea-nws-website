@@ -8,7 +8,7 @@ import InsetText from '../../../../common/components/gov-uk/InsetText'
 import Radio from '../../../../common/components/gov-uk/Radio'
 import { setLocationSearchResults } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
-export default function SelectHowToFindThisLocationPage() {
+export default function SelectHowToFindThisLocationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [findLocationOption, setFindLocationOption] = useState('')

@@ -6,7 +6,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import WarningText from '../../../../../common/components/gov-uk/WarningText'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 
-export default function ManuallyFindLocationsPage() {
+export default function ManuallyFindLocationsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 

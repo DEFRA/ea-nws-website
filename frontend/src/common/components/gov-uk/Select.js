@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function Select({
+export default function Select ({
   label,
   options,
   name,

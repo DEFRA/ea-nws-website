@@ -25,8 +25,19 @@ export default function AddOptionalAddress () {
     navigate('/')
   }
 
+  // only postcode validated because its an optional field the user is adding for their own benifit - UCD team
+
   const handleSubmit = async (event) => {
     event.preventDefault()
+    const fullAddressArray = [addressLine1, addressLine2, town, county]
+
+    let fullAddressStr = null
+
+    fullAddressArray.forEach((entry) => {
+      if (entry !== null) { fullAddressStr = fullAddressStr + entry }
+    })
+    fullAddressStr = fullAddressStr.slice(0, -2)
+
     if (postcode !== '') {
       const postcodeValidationError = postCodeValidation(postcode)
       if (postcodeValidationError !== '') {
@@ -34,7 +45,7 @@ export default function AddOptionalAddress () {
       } else {
         await dispatch(
           setCurrentLocationFullAddress(
-            addressLine1 + ', ' + addressLine2 + ', ' + town + ', ' + county))
+            fullAddressStr))
         await dispatch(
           setCurrentLocationPostcode(postcode))
 
@@ -43,7 +54,7 @@ export default function AddOptionalAddress () {
     } else {
       await dispatch(
         setCurrentLocationFullAddress(
-          addressLine1 + ', ' + addressLine2 + ', ' + town + ', ' + county))
+          fullAddressStr))
       await dispatch(
         setCurrentLocationPostcode(postcode))
       navigateToNextPage()

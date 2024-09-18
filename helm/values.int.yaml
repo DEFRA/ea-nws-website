@@ -17,7 +17,7 @@ serviceAccount:
   annotations: {}
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
-  name: "nonprd-public-website-s3-service-account"
+  name: "int-public-website-s3-service-account"
 
 podAnnotations: {}
 podLabels: {}
@@ -29,10 +29,10 @@ containers:
   - name: frontend
     securityContext: {}
     image:
-      repository: 590183962451.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
+      repository: 730335517085.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: "frontend-0.1.1"
+      tag: "frontend-1.0"
     livenessProbe:
       httpGet:
         path: /
@@ -55,10 +55,10 @@ containers:
   - name: backend
     securityContext: {}
     image:
-      repository: 590183962451.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
+      repository: 730335517085.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: "backend-0.1.1"
+      tag: "backend-1.0"
     livenessProbe:
       httpGet:
         path: /liveness
@@ -81,15 +81,15 @@ containers:
   - name: nginx
     securityContext: {}
     image:
-      repository: 590183962451.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
+      repository: 730335517085.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: "nginx-0.1.1"
+      tag: "nginx-1.0"
     env:
       - name: NGINX_PORT
         value: "7000"
       - name: NGINX_SERVER
-        value: "test-ea-nws-website.com"
+        value: "ea-nws-website.com"
     ports:
       - name: nginx
         port: 7000
@@ -140,8 +140,7 @@ volumes: []
 ingress:
   enabled: false
 
-nodeSelector:
-  eks.amazonaws.com/nodegroup: public-website-test-20240913090529127900000005
+nodeSelector: {}
 
 tolerations: []
 

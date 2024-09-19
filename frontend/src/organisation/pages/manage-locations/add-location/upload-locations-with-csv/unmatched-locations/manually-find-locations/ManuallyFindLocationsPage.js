@@ -1,12 +1,12 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import BackLink from '../../../../../common/components/custom/BackLink'
-import Button from '../../../../../common/components/gov-uk/Button'
-import WarningText from '../../../../../common/components/gov-uk/WarningText'
-import { setCurrentLocation } from '../../../../../common/redux/userSlice'
+import BackLink from '../../../../../../../common/components/custom/BackLink'
+import Button from '../../../../../../../common/components/gov-uk/Button'
+import WarningText from '../../../../../../../common/components/gov-uk/WarningText'
+import { setCurrentLocation } from '../../../../../../../common/redux/userSlice'
 
-export default function ManuallyFindLocationsPage () {
+export default function ManuallyFindLocationsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -136,14 +136,22 @@ export default function ManuallyFindLocationsPage () {
                   , update it and reupload later.
                 </>
               </p>
-              <h2 className='govuk-heading-m govuk-!-margin-top-6'>{locations.length} locations not matched</h2>
+              <h2 className='govuk-heading-m govuk-!-margin-top-6'>
+                {locations.length} locations not matched
+              </h2>
 
               <table class='govuk-table govuk-table--small-text-until-tablet'>
                 <thead class='govuk-table__head'>
                   <tr class='govuk-table__row'>
-                    <th scope='col' class='govuk-table__header'>Location name</th>
-                    <th scope='col' class='govuk-table__header'>Address uploaded</th>
-                    <th scope='col' class='govuk-table__header'>Postcode</th>
+                    <th scope='col' class='govuk-table__header'>
+                      Location name
+                    </th>
+                    <th scope='col' class='govuk-table__header'>
+                      Address uploaded
+                    </th>
+                    <th scope='col' class='govuk-table__header'>
+                      Postcode
+                    </th>
                     <th scope='col' class='govuk-table__header' />
                   </tr>
                 </thead>
@@ -151,11 +159,19 @@ export default function ManuallyFindLocationsPage () {
                   {locations.map((location, index) => {
                     return (
                       <tr class='govuk-table__row' key={index}>
-                        <th scope='row' class='govuk-table__header'>{location.Location_name}</th>
-                        <td class='govuk-table__cell'>{location.Full_address}</td>
+                        <th scope='row' class='govuk-table__header'>
+                          {location.Location_name}
+                        </th>
+                        <td class='govuk-table__cell'>
+                          {location.Full_address}
+                        </td>
                         <td class='govuk-table__cell'>{location.Postcode}</td>
                         <td class='govuk-table__cell'>
-                          <Link onClick={(event) => handleFind(event, location)}>Find this location</Link>
+                          <Link
+                            onClick={(event) => handleFind(event, location)}
+                          >
+                            Find this location
+                          </Link>
                         </td>
                       </tr>
                     )

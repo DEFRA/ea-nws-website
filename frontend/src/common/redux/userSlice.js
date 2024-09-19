@@ -19,7 +19,33 @@ const userSlice = createSlice({
     selectedFloodWarningArea: null,
     selectedFloodAlertArea: null,
     showOnlySelectedFloodArea: null,
-    nearbyTargetAreaFlow: null
+    nearbyTargetAreaFlow: null,
+
+    // org location data
+    currentLocation: {
+      name: null,
+      // address is the UPRN
+      address: null,
+      // Coordinates in dd (degrees decimal)
+      coordinates: null,
+      alert_categories: null,
+      meta_data: {
+        location_additional: {
+          full_address: null,
+          postcode: null,
+          // Easting EPSG: 27700
+          x_coordinate: null,
+          // Northing EPSG: 27700
+          y_coordinate: null,
+          internal_reference: null,
+          business_criticality: null,
+          location_type: null,
+          action_plan: null,
+          notes: null,
+          keywords: null
+        }
+      }
+    }
   },
   reducers: {
     setAuthToken: (state, action) => {
@@ -72,6 +98,66 @@ const userSlice = createSlice({
     setNearbyTargetAreasFlow: (state, action) => {
       state.nearbyTargetAreaFlow = action.payload
     },
+    // org location data
+    setCurrentLocation: (state, action) => {
+      state.currentLocation.name = action.payload.name
+      state.currentLocation.address = action.payload.address
+      state.currentLocation.coordinates = action.payload.coordinates
+      state.currentLocation.alert_categories = action.payload.alert_categories
+      state.currentLocation.meta_data.location_additional.full_address = action.payload.meta_data.location_additional.full_address
+      state.currentLocation.meta_data.location_additional.postcode = action.payload.meta_data.location_additional.postcode
+      state.currentLocation.meta_data.location_additional.x_coordinate = action.payload.meta_data.location_additional.x_coordinate
+      state.currentLocation.meta_data.location_additional.y_coordinate = action.payload.meta_data.location_additional.y_coordinate
+      state.currentLocation.meta_data.location_additional.internal_reference = action.payload.meta_data.location_additional.internal_reference
+      state.currentLocation.meta_data.location_additional.business_criticality = action.payload.meta_data.location_additional.business_criticality
+      state.currentLocation.meta_data.location_additional.location_type = action.payload.meta_data.location_additional.location_type
+      state.currentLocation.meta_data.location_additional.action_plan = action.payload.meta_data.location_additional.action_plan
+      state.currentLocation.meta_data.location_additional.notes = action.payload.meta_data.location_additional.notes
+      state.currentLocation.meta_data.location_additional.keywords = action.payload.meta_data.location_additional.keywords
+    },
+    setCurrentLocationName: (state, action) => {
+      state.currentLocation.name = action.payload
+    },
+    setCurrentLocationUPRN: (state, action) => {
+      state.currentLocation.address = action.payload
+    },
+    setCurrentLocationCoordinates: (state, action) => {
+      state.currentLocation.coordinates = action.payload
+    },
+    setCurrentLocationAlertCategories: (state, action) => {
+      state.currentLocation.alert_categories = action.payload
+    },
+    setCurrentLocationFullAddress: (state, action) => {
+      state.currentLocation.meta_data.location_additional.full_address = action.payload
+    },
+    setCurrentLocationPostcode: (state, action) => {
+      state.currentLocation.meta_data.location_additional.postcode = action.payload
+    },
+    setCurrentLocationEasting: (state, action) => {
+      state.currentLocation.meta_data.location_additional.x_coordinate = action.payload
+    },
+    setCurrentLocationNorthing: (state, action) => {
+      state.currentLocation.meta_data.location_additional.y_coordinate = action.payload
+    },
+    setCurrentLocationReference: (state, action) => {
+      state.currentLocation.meta_data.location_additional.internal_reference = action.payload
+    },
+    setCurrentLocationCriticality: (state, action) => {
+      state.currentLocation.meta_data.location_additional.business_criticality = action.payload
+    },
+    setCurrentLocationType: (state, action) => {
+      state.currentLocation.meta_data.location_additional.location_type = action.payload
+    },
+    setCurrentLocationActionPlan: (state, action) => {
+      state.currentLocation.meta_data.location_additional.action_plan = action.payload
+    },
+    setCurrentLocationNotes: (state, action) => {
+      state.currentLocation.meta_data.location_additional.notes = action.payload
+    },
+    setCurrentLocationKeywords: (state, action) => {
+      state.currentLocation.meta_data.location_additional.keywords = action.payload
+    },
+    // Clear state
     clearAuth: (state) => {
       state.authToken = null
       state.registerToken = null
@@ -89,6 +175,27 @@ const userSlice = createSlice({
       state.selectedFloodAlertArea = null
       state.showOnlySelectedFloodArea = null
       state.nearbyTargetAreaFlow = null
+      // org location data
+      state.currentLocation = {
+        name: null,
+        address: null,
+        coordinates: null,
+        alert_categories: null,
+        meta_data: {
+          location_additional: {
+            full_address: null,
+            postcode: null,
+            x_coordinate: null,
+            y_coordinate: null,
+            internal_reference: null,
+            business_criticality: null,
+            location_type: null,
+            action_plan: null,
+            notes: null,
+            keywords: null
+          }
+        }
+      }
     }
   }
 })
@@ -112,6 +219,22 @@ export const {
   setSelectedFloodAlertArea,
   setShowOnlySelectedFloodArea,
   setNearbyTargetAreasFlow,
+  // org location data
+  setCurrentLocation,
+  setCurrentLocationName,
+  setCurrentLocationUPRN,
+  setCurrentLocationCoordinates,
+  setCurrentLocationAlertCategories,
+  setCurrentLocationFullAddress,
+  setCurrentLocationPostcode,
+  setCurrentLocationEasting,
+  setCurrentLocationNorthing,
+  setCurrentLocationReference,
+  setCurrentLocationCriticality,
+  setCurrentLocationType,
+  setCurrentLocationActionPlan,
+  setCurrentLocationNotes,
+  setCurrentLocationKeywords,
   // clear state
   clearAuth
 } = userSlice.actions

@@ -63,7 +63,9 @@ url_org_man_loc = {
         'options': url_org_man_loc_path + '/add',
         'addressInfo': url_org_man_loc_path + '/add/address-info',
         'uploadFile': url_org_man_loc_path + '/add/upload-file',
-        'uploadTemplate': 'http://d39yn09rf1d1o9.cloudfront.net/template.csv'
+        'uploadTemplate': 'http://d39yn09rf1d1o9.cloudfront.net/template.csv',
+        'optionalInfo': url_org_man_loc_path + '/add/optional-location-info',
+        'optionalAddress': url_org_man_loc_path + '/add/optional-address'
     },
     'change': {
         'alternative_contact': local_host + '/',
@@ -101,7 +103,7 @@ def click_button(browser, button_text, url_button):
 
 # Click on link text and check url
 def click_link(browser, link_text, url_link):
-    link_xpath = f"//a[text()='{link_text}']"
+    link_xpath = f"//a[text()=\"{link_text}\"]"
     link_element = browser.find_element(By.XPATH, link_xpath)
     browser.execute_script("arguments[0].click();", link_element)
     time.sleep(1)

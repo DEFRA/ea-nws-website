@@ -9,7 +9,7 @@ import Input from '../../../../../../common/components/gov-uk/Input'
 import { setLocationName } from '../../../../../../common/redux/userSlice'
 import { locationNameValidation } from '../../../../../../common/services/validations/LocationNameValidation'
 
-export default function LocationNamePage() {
+export default function LocationNamePage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 

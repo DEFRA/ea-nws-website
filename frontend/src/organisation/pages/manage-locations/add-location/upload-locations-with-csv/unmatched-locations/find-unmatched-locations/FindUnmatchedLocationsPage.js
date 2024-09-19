@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import Button from '../../../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
-import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
-import Radio from '../../../../../common/components/gov-uk/Radio'
+import Button from '../../../../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../../../../common/components/gov-uk/ErrorSummary'
+import NotificationBanner from '../../../../../../../common/components/gov-uk/NotificationBanner'
+import Radio from '../../../../../../../common/components/gov-uk/Radio'
 
 export default function FindUnmatchedLocationsPage () {
   const navigate = useNavigate()
@@ -26,7 +26,9 @@ export default function FindUnmatchedLocationsPage () {
       navigate('/organisation/manage-locations/unmatched-locations/do-not-add')
     } else {
       // this will need updated to the list of unmatched locations page
-      navigate('/organisation/manage-locations/unmatched-locations/manually-find')
+      navigate(
+        '/organisation/manage-locations/unmatched-locations/manually-find'
+      )
     }
   }
 
@@ -40,17 +42,16 @@ export default function FindUnmatchedLocationsPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && (
-              <ErrorSummary errorList={[error]} />)}
+            {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>
               What do you want to do with the ? locations not matched?
             </h1>
             <div className='govuk-body'>
               <div
                 className={
-                    error
-                      ? 'govuk-form-group govuk-form-group--error'
-                      : 'govuk-form-group'
+                  error
+                    ? 'govuk-form-group govuk-form-group--error'
+                    : 'govuk-form-group'
                 }
               >
                 {error && <p className='govuk-error-message'>{error}</p>}

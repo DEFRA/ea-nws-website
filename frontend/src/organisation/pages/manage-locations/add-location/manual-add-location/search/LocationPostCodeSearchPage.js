@@ -68,7 +68,7 @@ export default function LocationPostCodeSearchPage () {
                 value={postCode}
                 onChange={(val) => setPostCode(val)}
                 error={error}
-                className='govuk-input govuk-input--width-10'
+                className='govuk-input govuk-input--width-20'
               />
               <Button
                 text='Continue'

@@ -43,7 +43,6 @@ export default function LocationSearchOptionPage () {
   }
 
   const locationName = useSelector((state) => state.session.locationName)
-  const heading = 'How do you want to find ' + locationName + '?'
   const searchOptions = [
     { label: 'Use a postcode', value: 'UseAPostcode' },
     { label: 'Use X and Y coordinates', value: 'UseXAndYCoordinates' },
@@ -57,7 +56,9 @@ export default function LocationSearchOptionPage () {
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>{heading}</h1>
+            <h1 className='govuk-heading-l'>
+              {`How do you want to find ${locationName}?`}
+            </h1>
             <p>
               If your location is a polygon, or a line, your orgainsation has
               created you'll need to upload your location as a shapefile in a
@@ -75,6 +76,7 @@ export default function LocationSearchOptionPage () {
                 <div className='govuk-radios' data-module='govuk-radios'>
                   {searchOptions.map((option) => (
                     <Radio
+                      key={option.label}
                       label={option.label}
                       value={option.value}
                       name='searchOptionsRadios'

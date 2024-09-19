@@ -1,16 +1,17 @@
-import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/LocationAddAddressInfoPage'
-import LocationAddPage from '../../pages/manage-locations/add-location/LocationAddPage'
-import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/LocationAddUploadFilePage'
-import ConfirmLocationsPage from '../../pages/manage-locations/confirm-locations/ConfirmAddingLocationsPage'
-import DoNotAddLocationsPage from '../../pages/manage-locations/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
-import FindUnmatchedLocationsPage from '../../pages/manage-locations/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
-import ManuallyFindLocationsPage from '../../pages/manage-locations/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
+import AddLocationOptionsPage from '../../pages/manage-locations/add-location/AddLocationOptionsPage'
+import AddOptionalAddress from '../../pages/manage-locations/add-location/manual-add-location/optional-address/AddOptionalAddress'
+import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/manual-add-location/optional-address/OptionalLocationInformationPage'
+import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
+import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
+import ConfirmLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
+import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
+import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
+import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
-import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-address/OptionalLocationInformationPage'
-import AddOptionalAddress from '../../pages/manage-locations/add-location/optional-address/AddOptionalAddress'
 
 const urlManageOrg = '/organisation/manage-locations'
-const urlManageOrgUnmatchedLocations = '/organisation/manage-locations/unmatched-locations'
+const urlManageOrgUnmatchedLocations =
+  '/organisation/manage-locations/unmatched-locations'
 const urlManageOrgConfirmLocations = '/organisation/manage-locations/confirm'
 
 // Manage location urls
@@ -27,7 +28,8 @@ const orgManageLocationsUrls = {
   },
   unmatchedLocations: {
     doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
-    findUnmatchedLocations: urlManageOrgUnmatchedLocations + '/find-unmatched-locations',
+    findUnmatchedLocations:
+      urlManageOrgUnmatchedLocations + '/find-unmatched-locations',
     manuallyfind: urlManageOrgUnmatchedLocations + '/manually-find'
   }
 }
@@ -40,7 +42,7 @@ const orgManageLocationRoutes = [
   },
   {
     path: orgManageLocationsUrls.add.options,
-    component: <LocationAddPage />
+    component: <AddLocationOptionsPage />
   },
   {
     path: orgManageLocationsUrls.add.addressInfo,
@@ -65,7 +67,8 @@ const orgManageLocationRoutes = [
   {
     path: urlManageOrgConfirmLocations,
     component: <ConfirmLocationsPage />
-  }, {
+  },
+  {
     path: orgManageLocationsUrls.add.optionalInfo,
     component: <OptionalLocationInformationPage />
   },

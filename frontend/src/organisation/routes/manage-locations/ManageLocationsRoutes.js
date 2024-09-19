@@ -1,17 +1,22 @@
-import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/LocationAddAddressInfoPage'
-import LocationAddPage from '../../pages/manage-locations/add-location/LocationAddPage'
-import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/LocationAddUploadFilePage'
+import AddLocationOptionsPage from '../../pages/manage-locations/add-location/AddLocationOptionsPage'
+import LocationNamePage from '../../pages/manage-locations/add-location/manual-add-location/name/LocationNamePage'
+import AddOptionalAddress from '../../pages/manage-locations/add-location/manual-add-location/optional-address/AddOptionalAddress'
+import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/manual-add-location/optional-address/OptionalLocationInformationPage'
+import LocationPostCodeSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationPostCodeSearchPage'
+import LocationPostCodeSearchResultsPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationPostCodeSearchResultsPage'
+import LocationSearchOptionPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationSearchOptionPage'
 import AddActionPlan from '../../pages/manage-locations/add-location/optional-address/AddActionPlanPage'
 import AddKeyInformationPage from '../../pages/manage-locations/add-location/optional-address/AddKeyInformationPage'
 import KeywordsForThisLocationPage from '../../pages/manage-locations/add-location/optional-address/AddKeywordsForThisLocationPage'
 import AddNotesPage from '../../pages/manage-locations/add-location/optional-address/AddNotesPage'
-import AddOptionalAddress from '../../pages/manage-locations/add-location/optional-address/AddOptionalAddress'
-import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-address/OptionalLocationInformationPage'
-import ConfirmLocationsPage from '../../pages/manage-locations/confirm-locations/ConfirmAddingLocationsPage'
-import DoNotAddLocationsPage from '../../pages/manage-locations/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
-import FindUnmatchedLocationsPage from '../../pages/manage-locations/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
-import ManuallyFindLocationsPage from '../../pages/manage-locations/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
+import ConfirmLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
+import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
+import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
+import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
+import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
+import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
+
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgUnmatchedLocations =
   '/organisation/manage-locations/unmatched-locations'
@@ -25,7 +30,11 @@ const orgManageLocationsUrls = {
   add: {
     options: urlManageOrgAddLocations,
     addressInfo: urlManageOrgAddLocations + '/address-info',
-    uploadFile: urlManageOrgAddLocations + '/upload-file'
+    uploadFile: urlManageOrgAddLocations + '/upload-file',
+    name: urlManageOrg + '/add/name',
+    searchOption: urlManageOrg + '/add/search-option',
+    postCodeSearch: urlManageOrg + '/add/postcode-search',
+    postCodeSearchResults: urlManageOrg + '/add/postcode-search-results'
   },
   optionalAddress: {
     optionalAddress: urlManageOrgAddLocations + '/optional-address',
@@ -53,7 +62,7 @@ const orgManageLocationRoutes = [
   },
   {
     path: orgManageLocationsUrls.add.options,
-    component: <LocationAddPage />
+    component: <AddLocationOptionsPage />
   },
   {
     path: orgManageLocationsUrls.add.addressInfo,
@@ -62,6 +71,22 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.uploadFile,
     component: <LocationAddUploadFilePage />
+  },
+  {
+    path: orgManageLocationsUrls.add.name,
+    component: <LocationNamePage />
+  },
+  {
+    path: orgManageLocationsUrls.add.searchOption,
+    component: <LocationSearchOptionPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.postCodeSearchResults,
+    component: <LocationPostCodeSearchResultsPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.postCodeSearch,
+    component: <LocationPostCodeSearchPage />
   },
   {
     path: orgManageLocationsUrls.unmatchedLocations.doNotAdd,
@@ -96,7 +121,7 @@ const orgManageLocationRoutes = [
     component: <ConfirmLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.optionalAddress.optionalInfo,
+    path: orgManageLocationsUrls.add.optionalInfo,
     component: <OptionalLocationInformationPage />
   },
   {

@@ -44,6 +44,11 @@ export default function LocationSearchOptionPage () {
 
   const locationName = useSelector((state) => state.session.locationName)
   const heading = 'How do you want to find ' + locationName + '?'
+  const searchOptions = [
+    { label: 'Use a postcode', value: 'UseAPostcode' },
+    { label: 'Use X and Y coordinates', value: 'UseXAndYCoordinates' },
+    { label: 'Drop a pin on a map', value: 'DropAPinOnAMap' }
+  ]
 
   return (
     <>
@@ -67,24 +72,16 @@ export default function LocationSearchOptionPage () {
             >
               {error && <p className='govuk-error-message'>{error}</p>}
               <fieldset className='govuk-fieldset'>
-                <Radio
-                  label='Use a postcode'
-                  value='UseAPostcode'
-                  name='searchOptionsRadios'
-                  onChange={(e) => setSearchOption(e.target.value)}
-                />
-                <Radio
-                  label='Use X and Y coordinates'
-                  value='UseXAndYCoordinates'
-                  name='searchOptionsRadios'
-                  onChange={(e) => setSearchOption(e.target.value)}
-                />
-                <Radio
-                  label='Drop a pin on a map'
-                  value='DropAPinOnAMap'
-                  name='searchOptionsRadios'
-                  onChange={(e) => setSearchOption(e.target.value)}
-                />
+                <div className='govuk-radios' data-module='govuk-radios'>
+                  {searchOptions.map((option) => (
+                    <Radio
+                      label={option.label}
+                      value={option.value}
+                      name='searchOptionsRadios'
+                      onChange={(e) => setSearchOption(e.target.value)}
+                    />
+                  ))}
+                </div>
               </fieldset>
             </div>
             <Button

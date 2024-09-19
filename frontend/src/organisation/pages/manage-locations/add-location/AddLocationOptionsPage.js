@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
@@ -49,8 +50,8 @@ export default function AddLocationOptionsPage() {
 
   return (
     <>
+      <OrganisationAccountNavigation />
       <BackLink onClick={() => navigate(-1)} />
-
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

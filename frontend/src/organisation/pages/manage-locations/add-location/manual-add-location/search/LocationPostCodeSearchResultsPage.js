@@ -1,18 +1,18 @@
 import { React, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import BackLink from '../../../../common/components/custom/BackLink'
-import LoadingSpinner from '../../../../common/components/custom/LoadingSpinner'
-import Button from '../../../../common/components/gov-uk/Button'
-import Pagination from '../../../../common/components/gov-uk/Pagination'
+import BackLink from '../../../../../../common/components/custom/BackLink'
+import LoadingSpinner from '../../../../../../common/components/custom/LoadingSpinner'
+import Button from '../../../../../../common/components/gov-uk/Button'
+import Pagination from '../../../../../../common/components/gov-uk/Pagination'
 import {
   setAdditionalAlerts,
   setSelectedLocation
-} from '../../../../common/redux/userSlice'
+} from '../../../../../../common/redux/userSlice'
 import {
   getSurroundingFloodAreas,
   isLocationInFloodArea
-} from '../../../../common/services/WfsFloodDataService'
+} from '../../../../../../common/services/WfsFloodDataService'
 
 export default function LocationSearchResultsPage () {
   const dispatch = useDispatch()

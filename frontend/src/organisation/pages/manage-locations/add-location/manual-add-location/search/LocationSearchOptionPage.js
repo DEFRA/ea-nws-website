@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
-import BackLink from '../../../../common/components/custom/BackLink'
-import Button from '../../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
-import Radio from '../../../../common/components/gov-uk/Radio'
+import BackLink from '../../../../../../common/components/custom/BackLink'
+import Button from '../../../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
+import Radio from '../../../../../../common/components/gov-uk/Radio'
 
 export default function LocationSearchOptionPage () {
   const navigate = useNavigate()

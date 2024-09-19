@@ -15,8 +15,8 @@ export default function LocationAlreadyExists () {
           <div className='govuk-grid-column-two-thirds' />
           <h1 className='govuk-heading-l'> "enter location var" already exists in this account</h1>
           <h2 className='govuk-heading-m'>What do you want to do next?</h2>
-          <ul className='govuk-list'>
-            <p className='govuk-body'> You can:</p>
+          <p className='govuk-body'> You can:</p>
+          <ul className="govuk-list govuk-list--bullet">
             <li>
               <Link 
               to="/"

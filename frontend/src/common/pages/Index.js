@@ -484,6 +484,12 @@ export default function IndexPage () {
                     add location information
                   </Link>
                 </li>
+                <li>
+                  <Link to='/organisation/manage-locations/add/location-already-exists'
+                  className='govuk-link'>
+                    location already exists
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>

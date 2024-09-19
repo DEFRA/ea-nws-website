@@ -12,7 +12,7 @@ import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upl
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
 import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
-
+import LocationAlreadyExists from '../../pages/manage-locations/add-location/LocationAlreadyExists'
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgUnmatchedLocations =
   '/organisation/manage-locations/unmatched-locations'
@@ -32,7 +32,8 @@ const orgManageLocationsUrls = {
     postCodeSearch: urlManageOrg + '/add/postcode-search',
     postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
     optionalInfo: urlManageOrg + '/add/optional-location-info',
-    optionalAddress: urlManageOrg + '/add/optional-address'
+    optionalAddress: urlManageOrg + '/add/optional-address',
+    alreadyExists: urlManageOrg + '/add/location-already-exists'
   },
   unmatchedLocations: {
     doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
@@ -99,6 +100,9 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.optionalAddress,
     component: <AddOptionalAddress />
+  },{
+    path: orgManageLocationsUrls.add.alreadyExists,
+    component: <LocationAlreadyExists/>
   }
 ]
 

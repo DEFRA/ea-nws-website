@@ -5,6 +5,8 @@ import LocationNamePage from '../../pages/manage-locations/add-location/Location
 import LocationPostCodeSearchPage from '../../pages/manage-locations/add-location/LocationPostCodeSearchPage'
 import LocationPostCodeSearchResultsPage from '../../pages/manage-locations/add-location/LocationPostCodeSearchResultsPage'
 import LocationSearchOptionPage from '../../pages/manage-locations/add-location/LocationSearchOptionPage'
+import AddOptionalAddress from '../../pages/manage-locations/add-location/optional-address/AddOptionalAddress'
+import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-address/OptionalLocationInformationPage'
 import ConfirmLocationsPage from '../../pages/manage-locations/confirm-locations/ConfirmAddingLocationsPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
@@ -28,7 +30,9 @@ const orgManageLocationsUrls = {
     name: urlManageOrg + '/add/name',
     searchOption: urlManageOrg + '/add/search-option',
     postCodeSearch: urlManageOrg + '/add/postcode-search',
-    postCodeSearchResults: urlManageOrg + '/add/postcode-search-results'
+    postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
+    optionalInfo: urlManageOrg + '/add/optional-location-info',
+    optionalAddress: urlManageOrg + '/add/optional-address'
   },
   unmatchedLocations: {
     doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
@@ -87,6 +91,14 @@ const orgManageLocationRoutes = [
   {
     path: urlManageOrgConfirmLocations,
     component: <ConfirmLocationsPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.optionalInfo,
+    component: <OptionalLocationInformationPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.optionalAddress,
+    component: <AddOptionalAddress />
   }
 ]
 

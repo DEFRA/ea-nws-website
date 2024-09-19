@@ -67,7 +67,9 @@ url_org_man_loc = {
         'name': url_org_man_loc_path + '/add/name',
         'searchOption': url_org_man_loc_path + '/add/search-option',
         'postcodeSearch': url_org_man_loc_path + '/add/postcode-search',
-        'postcodeSearchResults': url_org_man_loc_path + '/add/postcode-search-results'
+        'postcodeSearchResults': url_org_man_loc_path + '/add/postcode-search-results',
+        'optionalInfo': url_org_man_loc_path + '/add/optional-location-info',
+        'optionalAddress': url_org_man_loc_path + '/add/optional-address'
     },
     'change': {
         'alternative_contact': local_host + '/',
@@ -105,7 +107,7 @@ def click_button(browser, button_text, url_button):
 
 # Click on link text and check url
 def click_link(browser, link_text, url_link):
-    link_xpath = f"//a[text()='{link_text}']"
+    link_xpath = f"//a[text()=\"{link_text}\"]"
     link_element = browser.find_element(By.XPATH, link_xpath)
     browser.execute_script("arguments[0].click();", link_element)
     time.sleep(1)

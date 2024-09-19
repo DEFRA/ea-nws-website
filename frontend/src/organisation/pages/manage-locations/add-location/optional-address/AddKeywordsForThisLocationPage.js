@@ -5,20 +5,23 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../common/components/gov-uk/Details'
 import Input from '../../../../../common/components/gov-uk/Input'
+import { setCurrentLocationKeywords } from '../../../../../common/redux/userSlice'
 export default function KeywordsForThisLocationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [keywords, setKeywords] = useState([])
-  const handleButton = async () => {
-    if (!keywords) {
-      await dispatch()
-    }
+  const [keywords, setKeywords] = useState('')
+
+  const handleButton = () => {
     navigate(
       '/organisation/manage-locations/add/optional-address/add-action-plan'
     )
   }
 
-  const handleAddKeyword = () => {}
+  const handleAddKeyword = async () => {
+    if (!keywords) {
+      await dispatch(setCurrentLocationKeywords(keywords))
+    }
+  }
 
   const detailsText = (
     <>
@@ -46,16 +49,14 @@ export default function KeywordsForThisLocationPage() {
             </h1>
             <div className='govuk-body'>
               <Details title={'Why add keywords?'} text={detailsText} />
-              <Input
-                inputType='text'
-                onChange={(val) => setKeywords(val)}
-                className='govuk-input govuk-input--width-20'
-              />
-              <Button
-                text='Add keyword'
-                onClick={handleAddKeyword}
-                className='govuk-button--secondary'
-              />
+              <div className='inline-button'>
+                <Input
+                  inputType='text'
+                  onChange={(val) => setKeywords(val)}
+                  className='govuk-input govuk-input--width-20'
+                />
+                <Button text='Add keyword' onClick={handleAddKeyword} />
+              </div>
               <Button
                 text='Continue'
                 className='govuk-button'

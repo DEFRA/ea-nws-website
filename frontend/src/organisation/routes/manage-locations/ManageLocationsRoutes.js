@@ -1,8 +1,9 @@
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/LocationAddAddressInfoPage'
 import LocationAddPage from '../../pages/manage-locations/add-location/LocationAddPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/LocationAddUploadFilePage'
-import AddActionPlan from '../../pages/manage-locations/add-location/optional-address/ActionPlanPage'
+import AddActionPlan from '../../pages/manage-locations/add-location/optional-address/AddActionPlanPage'
 import AddKeyInformationPage from '../../pages/manage-locations/add-location/optional-address/AddKeyInformationPage'
+import KeywordsForThisLocationPage from '../../pages/manage-locations/add-location/optional-address/AddKeywordsForThisLocationPage'
 import AddNotesPage from '../../pages/manage-locations/add-location/optional-address/AddNotesPage'
 import AddOptionalAddress from '../../pages/manage-locations/add-location/optional-address/AddOptionalAddress'
 import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-address/OptionalLocationInformationPage'
@@ -11,29 +12,30 @@ import DoNotAddLocationsPage from '../../pages/manage-locations/unmatched-locati
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
 import ManuallyFindLocationsPage from '../../pages/manage-locations/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
-
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgUnmatchedLocations =
   '/organisation/manage-locations/unmatched-locations'
 const urlManageOrgConfirmLocations = '/organisation/manage-locations/confirm'
-
+const urlManageOrgAddLocations = '/organisation/manage-locations/add'
 // Manage location urls
 const orgManageLocationsUrls = {
   view: {
     dashboard: urlManageOrg + '/view-locations'
   },
   add: {
-    options: urlManageOrg + '/add',
-    addressInfo: urlManageOrg + '/add/address-info',
-    uploadFile: urlManageOrg + '/add/upload-file',
+    options: urlManageOrgAddLocations,
+    addressInfo: urlManageOrgAddLocations + '/address-info',
+    uploadFile: urlManageOrgAddLocations + '/upload-file'
+  },
+  optionalAddress: {
+    optionalAddress: urlManageOrgAddLocations + '/optional-address',
+    optionalInfo: urlManageOrgAddLocations + '/optional-location-info',
     addKeyInformation:
-      urlManageOrg + '/add/optional-address/add-key-information',
-    addKeywords: urlManageOrg + '/add/optional-address/add-keywords',
-    addActionPlan: urlManageOrg + '/add/optional-address/add-action-plan',
-    addNotes: urlManageOrg + '/add/optional-address/add-notes',
-    uploadFile: urlManageOrg + '/add/upload-file',
-    optionalInfo: urlManageOrg + '/add/optional-location-info',
-    optionalAddress: urlManageOrg + '/add/optional-address'
+      urlManageOrgAddLocations + '/optional-address/add-key-information',
+    addKeywords: urlManageOrgAddLocations + '/optional-address/add-keywords',
+    addActionPlan:
+      urlManageOrgAddLocations + '/optional-address/add-action-plan',
+    addNotes: urlManageOrgAddLocations + '/optional-address/add-notes'
   },
   unmatchedLocations: {
     doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
@@ -66,7 +68,7 @@ const orgManageLocationRoutes = [
     component: <DoNotAddLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.add.addKeyInformation,
+    path: orgManageLocationsUrls.optionalAddress.addKeyInformation,
     component: <AddKeyInformationPage />
   },
   {
@@ -74,12 +76,16 @@ const orgManageLocationRoutes = [
     component: <FindUnmatchedLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.add.addActionPlan,
+    path: orgManageLocationsUrls.optionalAddress.addActionPlan,
     component: <AddActionPlan />
   },
   {
-    path: orgManageLocationsUrls.add.addNotes,
+    path: orgManageLocationsUrls.optionalAddress.addNotes,
     component: <AddNotesPage />
+  },
+  {
+    path: orgManageLocationsUrls.optionalAddress.addKeywords,
+    component: <KeywordsForThisLocationPage />
   },
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind,
@@ -90,11 +96,11 @@ const orgManageLocationRoutes = [
     component: <ConfirmLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.add.optionalInfo,
+    path: orgManageLocationsUrls.optionalAddress.optionalInfo,
     component: <OptionalLocationInformationPage />
   },
   {
-    path: orgManageLocationsUrls.add.optionalAddress,
+    path: orgManageLocationsUrls.optionalAddress.optionalAddress,
     component: <AddOptionalAddress />
   }
 ]

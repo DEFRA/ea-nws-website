@@ -5,6 +5,12 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../common/components/gov-uk/Details'
 import Input from '../../../../../common/components/gov-uk/Input'
+import {
+  setCurrentLocationCriticality,
+  setCurrentLocationReference,
+  setCurrentLocationType
+} from '../../../../../common/redux/userSlice'
+
 export default function AddKeyInformationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -13,37 +19,39 @@ export default function AddKeyInformationPage() {
   const [locationType, setLocationType] = useState('')
   const handleButton = async () => {
     if (internalReference !== '') {
-      await dispatch()
+      await dispatch(setCurrentLocationReference(internalReference))
     }
     if (businessCriticality !== '') {
-      await dispatch()
+      await dispatch(setCurrentLocationCriticality(businessCriticality))
     }
     if (locationType !== '') {
-      await dispatch()
+      await dispatch(setCurrentLocationType(locationType))
     }
     navigate('/organisation/manage-locations/add/optional-address/add-keywords')
   }
 
   const detailsText = (
     <>
-      <p>
-        Adding optional information allows you to filter your organisation’s
-        locations and helps you identify them more easily.{' '}
-      </p>
-      <p>
-        <h3 className='govuk-heading-s'>Internal reference</h3> Your internal
-        reference, for example: PS01, unit 57, Brid_04. This can help you
-        identify the location more easily.
-      </p>
-      <p>
-        <h3 className='govuk-heading-s'>Location type</h3>
-        For example, pumping station, ground floor flat, office, retail unit.
-      </p>
-      <p>
-        <h3 className='govuk-heading-s'>Business critically</h3>
-        How important the location is to your business. For example, low or
-        medium business critical.
-      </p>
+      <div className='govuk-grid-column-two-third'>
+        <p>
+          Adding optional information allows you to filter your organisation’s
+          locations and helps you identify them more easily.{' '}
+        </p>
+        <p>
+          <h3 className='govuk-heading-s'>Internal reference</h3> Your internal
+          reference, for example: PS01, unit 57, Brid_04. This can help you
+          identify the location more easily.
+        </p>
+        <p>
+          <h3 className='govuk-heading-s'>Location type</h3>
+          For example, pumping station, ground floor flat, office, retail unit.
+        </p>
+        <p>
+          <h3 className='govuk-heading-s'>Business critically</h3>
+          How important the location is to your business. For example, low or
+          medium business critical.
+        </p>
+      </div>
     </>
   )
 

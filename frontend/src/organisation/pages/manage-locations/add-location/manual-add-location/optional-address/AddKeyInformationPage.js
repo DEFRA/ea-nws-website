@@ -1,17 +1,17 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import BackLink from '../../../../../common/components/custom/BackLink'
-import Button from '../../../../../common/components/gov-uk/Button'
-import Details from '../../../../../common/components/gov-uk/Details'
-import Input from '../../../../../common/components/gov-uk/Input'
+import BackLink from '../../../../../../common/components/custom/BackLink'
+import Button from '../../../../../../common/components/gov-uk/Button'
+import Details from '../../../../../../common/components/gov-uk/Details'
+import Input from '../../../../../../common/components/gov-uk/Input'
 import {
   setCurrentLocationCriticality,
   setCurrentLocationReference,
   setCurrentLocationType
-} from '../../../../../common/redux/userSlice'
+} from '../../../../../../common/redux/userSlice'
 
-export default function AddKeyInformationPage () {
+export default function AddKeyInformationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [internalReference, setInternalReference] = useState('')

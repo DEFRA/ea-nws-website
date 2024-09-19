@@ -11,7 +11,7 @@ import {
   setCurrentLocationType
 } from '../../../../../common/redux/userSlice'
 
-export default function AddKeyInformationPage() {
+export default function AddKeyInformationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [internalReference, setInternalReference] = useState('')
@@ -65,7 +65,7 @@ export default function AddKeyInformationPage() {
             <h1 className='govuk-heading-l'>Key information</h1>
             <div className='govuk-body'>
               <Details
-                title={'Why add optional information?'}
+                title='Why add optional information?'
                 text={detailsText}
               />
               <Input

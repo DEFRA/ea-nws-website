@@ -6,7 +6,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../common/components/gov-uk/Details'
 import Input from '../../../../../common/components/gov-uk/Input'
 import { setCurrentLocationKeywords } from '../../../../../common/redux/userSlice'
-export default function KeywordsForThisLocationPage() {
+export default function KeywordsForThisLocationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [keywords, setKeywords] = useState('')
@@ -52,7 +52,7 @@ export default function KeywordsForThisLocationPage() {
                 You can add new keywords. Or you can remove existing keywords
                 associated with this location by unticking the relevant box.
               </p>
-              <Details title={'Why add keywords?'} text={detailsText} />
+              <Details title='Why add keywords?' text={detailsText} />
               <div className='inline-button'>
                 <Input
                   inputType='text'

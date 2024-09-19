@@ -6,9 +6,10 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AddLocationOptionsPage () {
+export default function AddLocationOptionsPage() {
   const navigate = useNavigate()
-
+  const [addLocationType, setAddLocationType] = useState('')
+  const [addLocationTypeError, setAddLocationTypeError] = useState('')
   const addLocationOptions = [
     {
       value: 'BulkAddresses',
@@ -18,18 +19,31 @@ export default function AddLocationOptionsPage () {
     { value: 'BulkShapeFile', label: 'Shapefile (points, lines or areas)' },
     { value: 'Manual', label: 'I want to add locations manually' }
   ]
-  const [addLocationType, setAddLocationType] = useState('')
-  const [addLocationTypeError, setAddLocationTypeError] = useState('')
 
   useEffect(() => {
     setAddLocationTypeError('')
   }, [addLocationType])
 
-  const handleButton = async () => {
+  const handleButton = () => {
     if (!addLocationType) {
       setAddLocationTypeError('Select how you want to add locations')
-    } else if (addLocationType === addLocationOptions[0].value) {
-      navigate(orgManageLocationsUrls.add.addressInfo)
+    } else {
+      switch (addLocationType) {
+        case addLocationOptions[0].value:
+          navigate(orgManageLocationsUrls.add.addressInfo)
+          break
+        case addLocationOptions[1].value:
+          //Someone to update
+          //navigate(orgManageLocationsUrls.add.addressInfo)
+          break
+        case addLocationOptions[2].value:
+          //Someone to update
+          //navigate(orgManageLocationsUrls.add.addressInfo)
+          break
+        case addLocationOptions[3].value:
+          navigate(orgManageLocationsUrls.add.name)
+          break
+      }
     }
   }
 

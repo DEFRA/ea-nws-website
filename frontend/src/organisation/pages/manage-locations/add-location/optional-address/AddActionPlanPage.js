@@ -46,6 +46,7 @@ export default function ActionPlanPage() {
               </p>
               <TextArea
                 error={error}
+                name='actionplan'
                 inputType='text'
                 rows='5'
                 id='action-plan-input'

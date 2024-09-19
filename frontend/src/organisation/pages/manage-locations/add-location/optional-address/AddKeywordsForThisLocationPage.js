@@ -48,12 +48,17 @@ export default function KeywordsForThisLocationPage() {
               Keywords for this location (optional)
             </h1>
             <div className='govuk-body'>
+              <p>
+                You can add new keywords. Or you can remove existing keywords
+                associated with this location by unticking the relevant box.
+              </p>
               <Details title={'Why add keywords?'} text={detailsText} />
               <div className='inline-button'>
                 <Input
                   inputType='text'
                   onChange={(val) => setKeywords(val)}
                   className='govuk-input govuk-input--width-20'
+                  name='keywords'
                 />
                 <Button text='Add keyword' onClick={handleAddKeyword} />
               </div>

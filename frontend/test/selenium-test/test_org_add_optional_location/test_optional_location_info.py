@@ -1,10 +1,9 @@
 from common import *
 from selenium.webdriver.common.by import By
-url = url_org_man_loc.get('add').get('optionalInfo')
-url_next_page = url_org_man_loc.get('add').get('optionalAddress')
+url = url_org_man_loc.get('optionalLocation').get('optionalInfo')
+url_next_page = url_org_man_loc.get('optionalLocation').get('optionalAddress')
 def setup(browser):
     navigate_to_auth_page_via_index(browser,url)
-
 
 def test_optional_loc_page_render(get_browser):
     browser = get_browser

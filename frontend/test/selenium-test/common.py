@@ -64,8 +64,14 @@ url_org_man_loc = {
         'addressInfo': url_org_man_loc_path + '/add/address-info',
         'uploadFile': url_org_man_loc_path + '/add/upload-file',
         'uploadTemplate': 'http://d39yn09rf1d1o9.cloudfront.net/template.csv',
+    },
+    'optionalLocation':{
         'optionalInfo': url_org_man_loc_path + '/add/optional-location-info',
-        'optionalAddress': url_org_man_loc_path + '/add/optional-address'
+        'optionalAddress': url_org_man_loc_path + '/add/optional-address',
+        'addKeyInformation': url_org_man_loc_path + '/add/optional-address/add-key-information',
+        'addKeywords': url_org_man_loc_path + '/add/optional-address/add-keywords',
+        'addActionPlan': url_org_man_loc_path + '/add/optional-address/add-action-plan', 
+        'addNotes': url_org_man_loc_path + '/add/optional-address/add-notes'
     },
     'change': {
         'alternative_contact': local_host + '/',
@@ -109,6 +115,12 @@ def click_link(browser, link_text, url_link):
     time.sleep(1)
     assert browser.current_url == url_link
 
+def click_span(browser, span_text):
+    span_xpath = f"//span[text()=\"{span_text}\"]"
+    span_element = browser.find_element(By.XPATH, span_xpath)
+    browser.execute_script("arguments[0].click();", span_element)
+    time.sleep(1)
+
 # Click on link text and check url - for when there is more than one occurence of the same text
 def click_link_more_than_one_text(browser, link_text, link_text_iteration, url_link):
     link_xpath = f"(//a[text()='{link_text}'])[{link_text_iteration}]"
@@ -127,6 +139,14 @@ def select_input_radio_option(browser, value, key='value'):
 # Enter input in text box
 def enter_input_text(browser, value, input_text, key='name'):
     input_xpath = f"//input[@{key}='{value}']"
+    input_element = browser.find_element(By.XPATH, input_xpath)
+    input_element.clear()
+    input_element.send_keys(input_text)
+
+# ENTER TEXT
+# Enter input in text box
+def enter_textarea_text(browser, value, input_text, key='name'):
+    input_xpath = f"//textarea[@{key}='{value}']"
     input_element = browser.find_element(By.XPATH, input_xpath)
     input_element.clear()
     input_element.send_keys(input_text)

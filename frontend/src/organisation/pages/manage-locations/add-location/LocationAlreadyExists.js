@@ -19,7 +19,7 @@ export default function LocationAlreadyExists () {
           <ul className="govuk-list govuk-list--bullet">
             <li>
               <Link 
-              to="/"
+              to="/organisation/manage-locations/add/name"
               className='govuk-link'
               >
                 use a differnt location name for this location
@@ -27,7 +27,7 @@ export default function LocationAlreadyExists () {
             </li>
             <li>
               <Link 
-              to="/"
+              to="/" //update link when location information page is made
               className='govuk-link'
               >
                 edit the existing location in this account

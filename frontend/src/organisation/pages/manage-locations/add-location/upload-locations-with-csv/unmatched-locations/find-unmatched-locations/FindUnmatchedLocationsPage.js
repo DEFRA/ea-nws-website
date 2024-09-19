@@ -5,7 +5,7 @@ import ErrorSummary from '../../../../../../../common/components/gov-uk/ErrorSum
 import NotificationBanner from '../../../../../../../common/components/gov-uk/NotificationBanner'
 import Radio from '../../../../../../../common/components/gov-uk/Radio'
 
-export default function FindUnmatchedLocationsPage() {
+export default function FindUnmatchedLocationsPage () {
   const navigate = useNavigate()
   const [unmatchedLocationOption, setUnmatchedLocationOption] = useState('')
   const [error, setError] = useState('')

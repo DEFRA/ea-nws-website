@@ -4,7 +4,7 @@ import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
 import InsetText from '../../../../../../common/components/gov-uk/InsetText'
 
-export default function ConfirmLocationsPage() {
+export default function ConfirmLocationsPage () {
   const navigate = useNavigate()
 
   const handleLocations = async (event) => {

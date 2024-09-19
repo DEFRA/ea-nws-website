@@ -1,6 +1,10 @@
 import AddLocationOptionsPage from '../../pages/manage-locations/add-location/AddLocationOptionsPage'
+import LocationNamePage from '../../pages/manage-locations/add-location/manual-add-location/name/LocationNamePage'
 import AddOptionalAddress from '../../pages/manage-locations/add-location/manual-add-location/optional-address/AddOptionalAddress'
 import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/manual-add-location/optional-address/OptionalLocationInformationPage'
+import LocationPostCodeSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationPostCodeSearchPage'
+import LocationPostCodeSearchResultsPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationPostCodeSearchResultsPage'
+import LocationSearchOptionPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationSearchOptionPage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
 import ConfirmLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
@@ -23,6 +27,10 @@ const orgManageLocationsUrls = {
     options: urlManageOrg + '/add',
     addressInfo: urlManageOrg + '/add/address-info',
     uploadFile: urlManageOrg + '/add/upload-file',
+    name: urlManageOrg + '/add/name',
+    searchOption: urlManageOrg + '/add/search-option',
+    postCodeSearch: urlManageOrg + '/add/postcode-search',
+    postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
     optionalInfo: urlManageOrg + '/add/optional-location-info',
     optionalAddress: urlManageOrg + '/add/optional-address'
   },
@@ -51,6 +59,22 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.uploadFile,
     component: <LocationAddUploadFilePage />
+  },
+  {
+    path: orgManageLocationsUrls.add.name,
+    component: <LocationNamePage />
+  },
+  {
+    path: orgManageLocationsUrls.add.searchOption,
+    component: <LocationSearchOptionPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.postCodeSearchResults,
+    component: <LocationPostCodeSearchResultsPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.postCodeSearch,
+    component: <LocationPostCodeSearchPage />
   },
   {
     path: orgManageLocationsUrls.unmatchedLocations.doNotAdd,

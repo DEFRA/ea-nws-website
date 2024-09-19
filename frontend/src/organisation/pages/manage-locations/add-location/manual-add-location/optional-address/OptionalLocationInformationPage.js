@@ -6,7 +6,7 @@ import OrganisationAccountNavigation from '../../../../../../common/components/c
 import Button from '../../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
 
-export default function OptionalLocationInformationPage() {
+export default function OptionalLocationInformationPage () {
   const navigate = useNavigate()
   const navigateToNextPage = () => {
     navigate('/organisation/manage-locations/add/optional-address')

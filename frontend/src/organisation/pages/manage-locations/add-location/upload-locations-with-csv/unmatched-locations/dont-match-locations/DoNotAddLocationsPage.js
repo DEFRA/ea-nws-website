@@ -4,7 +4,7 @@ import BackLink from '../../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../../common/components/gov-uk/Button'
 import WarningText from '../../../../../../../common/components/gov-uk/WarningText'
 
-export default function DoNotAddLocationsPage() {
+export default function DoNotAddLocationsPage () {
   const navigate = useNavigate()
 
   const handleSubmit = async () => {

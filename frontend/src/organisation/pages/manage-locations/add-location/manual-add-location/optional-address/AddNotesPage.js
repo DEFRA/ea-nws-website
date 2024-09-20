@@ -50,7 +50,7 @@ export default function AddNotesPage() {
                 rows='5'
                 id='notes-input'
                 onChange={(val) => setNotes(val)}
-                className='govuk-textarea govuk-!-width-one-half'
+                className='govuk-textarea'
               />
               <p>You can enter up to 200 characters.</p>
               <Button

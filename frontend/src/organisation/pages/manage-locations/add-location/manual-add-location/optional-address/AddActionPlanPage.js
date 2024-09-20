@@ -50,7 +50,7 @@ export default function ActionPlanPage() {
                 rows='5'
                 id='action-plan-input'
                 onChange={(val) => setActionPlan(val)}
-                className='govuk-textarea govuk-!-width-one-half'
+                className='govuk-textarea'
               />
               <p>You can enter up to 200 characters.</p>
               <Button

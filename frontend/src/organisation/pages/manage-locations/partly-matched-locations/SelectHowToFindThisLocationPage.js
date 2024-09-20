@@ -6,9 +6,7 @@ import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import InsetText from '../../../../common/components/gov-uk/InsetText'
 import Radio from '../../../../common/components/gov-uk/Radio'
-import { setLocationSearchResults } from '../../../../common/redux/userSlice'
-import { backendCall } from '../../../../common/services/BackendService'
-export default function SelectHowToFindThisLocationPage () {
+export default function SelectHowToFindThisLocationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [findLocationOption, setFindLocationOption] = useState('')
@@ -26,26 +24,9 @@ export default function SelectHowToFindThisLocationPage () {
       state.session.currentLocation.meta_data.location_additional.full_address
   )
 
-  const findAvailableAddresses = async () => {
-    const dataToSend = {
-      name: selectedLocation,
-      minmatch: 0.5
-    }
-    const { data, errorMessage } = await backendCall(
-      dataToSend,
-      'api/os-api/name-minmatch-search',
-      navigate
-    )
-    if (errorMessage) {
-      // show error message from OS Api postcode search
-      setError(errorMessage)
-      return false
-    } else {
-      dispatch(setLocationSearchResults(data))
-      setError('')
-      return true
-    }
-  }
+  const locationSearchResults = useSelector(
+    (state) => state.session.locationSearchResults
+  )
 
   const handleContinue = async () => {
     if (!findLocationOption) {
@@ -53,9 +34,7 @@ export default function SelectHowToFindThisLocationPage () {
         'Select if you want to find this location from a drop-down list or on a map'
       )
     } else if (findLocationOption === findLocationOptions[0].value) {
-      const success = await findAvailableAddresses()
-
-      if (success) {
+      if (locationSearchResults) {
         navigate(
           '/organisation/manage-locations/unmatched-locations/find-location-by-address'
         )

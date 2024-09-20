@@ -956,3 +956,52 @@
   width: 0.0625rem;
   background-color: #b1b4b6;
 }
+
+.locations-filter-container {
+  border: 1px solid #b1b4b6;
+}
+
+.locations-filter-header {
+  position: relative;
+  left: -1rem;
+  right: -1rem;
+  width: calc(100% + 2rem);
+  background-color: #b1b4b6;
+  padding: 0.5rem;
+  margin: 0 1rem 1rem 0;
+  border: 0.0625rem solid #b1b4b6;
+}
+
+.locations-filter-header h1 {
+  margin: 0.75rem 0 0.75rem 0.95rem;
+}
+
+.locations-filter-section {
+  display: flex;
+  align-items: center;
+}
+
+.locations-filter-section:hover {
+  cursor: pointer;
+}
+
+.locations-filter-title {
+  margin: 0 0 0 8px;
+  color: #1d70b8;
+}
+
+.input-with-icon {
+  position: relative;
+}
+
+.input-icon {
+  position: absolute;
+  left: 8px;
+  top: 65%;
+  transform: translateY(-50%);
+  z-index: 1;
+}
+
+.govuk-input-icon {
+  padding-left: 35px;
+}

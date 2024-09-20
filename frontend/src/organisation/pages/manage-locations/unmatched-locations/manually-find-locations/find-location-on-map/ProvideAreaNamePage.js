@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
-import InsetText from '../../../../../../common/components/gov-uk/InsetText'
+import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../../../common/components/gov-uk/Input'
-import { backendCall } from '../../../../../../common/services/BackendService'
+import InsetText from '../../../../../../common/components/gov-uk/InsetText'
 import {
   setLocationSearchResults
 } from '../../../../../../common/redux/userSlice'
-import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
+import { backendCall } from '../../../../../../common/services/BackendService'
 
 export default function ProvideAreaNamePage () {
   const navigate = useNavigate()
@@ -17,6 +17,33 @@ export default function ProvideAreaNamePage () {
   const fullAddress = useSelector((state) => state.session.currentLocation.meta_data.location_additional.full_address)
   const [areaName, setAreaName] = useState('')
   const [error, setError] = useState('')
+  // const [results, setResults] = useState(null)
+
+  // const handleInputChange = async (value) => {
+
+  //   const query = value
+  //   const queryEmpty = query.length === 0
+  //   const queryLongEnough = query.length >= 3
+
+  //   const searchForOptions = !queryEmpty && queryLongEnough
+  //   if (searchForOptions) {
+  //     const dataToSend = {
+  //       name: value
+  //     }
+  //     const { data, errorMessage } = await backendCall(
+  //       dataToSend,
+  //       'api/os-api/name-search',
+  //       navigate
+  //     )
+  //     if (!errorMessage) {
+  //       setResults(data)
+  //     } else {
+  //       // show error message from OS Api postcode search
+  //       setError('Place name, town or postcode is not recognised')
+  //     }
+  //   }
+  // } 
+  
 
   
 
@@ -44,7 +71,6 @@ export default function ProvideAreaNamePage () {
   
   }
 
-
   return (
     <>
       <BackLink onClick={() => navigate(-1)} />
@@ -58,16 +84,27 @@ export default function ProvideAreaNamePage () {
             )}
             <h1 className='govuk-heading-l'>Find location on a map</h1>
             <div className='govuk-body'>
-            <InsetText text={fullAddress} />
+            {/* <InsetText text={fullAddress} /> */}
+            <InsetText text='25A BELGRAVE ROAD' />
             <p>
               This location cannot be found. We need some additional information to help us find it
             </p>
-            <Input
+            {/* <Autocomplete
+                className='govuk-input govuk-!-width-full'
+                name='Enter a place name, town or postcode'
+                inputType='text'
+                error={error}
+                onChange={(val) => handleInputChange(val)}
+                results={results}
+                menuOpen={true}
+              /> */}
+              <Input
                 className='govuk-input govuk-!-width-full'
                 name='Enter a place name, town or postcode'
                 inputType='text'
                 error={error}
                 onChange={(val) => setAreaName(val)}
+                value={areaName}
               />
             </div>
             <Button

@@ -5,7 +5,9 @@ import ConfirmLocationsPage from '../../pages/manage-locations/confirm-locations
 import DoNotAddLocationsPage from '../../pages/manage-locations/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
 import ManuallyFindLocationsPage from '../../pages/manage-locations/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
+import NotInEnglandPage from '../../pages/manage-locations/unmatched-locations/manually-find-locations/find-location-on-map/NotInEnglandPage'
 import ProvideAreaNamePage from '../../pages/manage-locations/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
+import SelectOnMapPage from '../../pages/manage-locations/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
 
 const urlManageOrg = '/organisation/manage-locations'
@@ -28,7 +30,8 @@ const orgManageLocationsUrls = {
     manuallyfind: {
       index: UnmatchedLocations + '/manually-find',
       areaName: UnmatchedLocations + '/manually-find/area-name',
-      map: UnmatchedLocations + '/manually-find/map'
+      map: UnmatchedLocations + '/manually-find/map',
+      notInEngland: UnmatchedLocations + '/manually-find/not-in-england'
     }
   }
 }
@@ -66,6 +69,14 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName,
     component: <ProvideAreaNamePage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.map,
+    component: <SelectOnMapPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.notInEngland,
+    component: <NotInEnglandPage />
   },
   {
     path: ConfirmLocations,

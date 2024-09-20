@@ -1,8 +1,11 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function LocationsTable ({ locations }) {
-  const [selectedLocations, setSelectedLocations] = useState([])
+export default function LocationsTable({
+  locations,
+  selectedLocations,
+  setSelectedLocations
+}) {
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
 
   const handleHeaderCheckboxChange = (event) => {

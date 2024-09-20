@@ -3,9 +3,13 @@ import BackLink from '../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
-
+import { useSelector } from 'react-redux'
+// ToDo make location name from pevious page appear
+// Make previous page go to this page or other page
 export default function LocationAlreadyExists () {
   const navigate = useNavigate()
+  const locationName = useSelector((state) => state.session.locationName.meta_data)
+
   return (
     <>
       <OrganisationAccountNavigation />
@@ -13,7 +17,7 @@ export default function LocationAlreadyExists () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds' />
-          <h1 className='govuk-heading-l'> "enter location var" already exists in this account</h1>
+          <h1 className='govuk-heading-l'> {locationName} already exists in this account</h1>
           <h2 className='govuk-heading-m'>What do you want to do next?</h2>
           <p className='govuk-body'> You can:</p>
           <ul className="govuk-list govuk-list--bullet">

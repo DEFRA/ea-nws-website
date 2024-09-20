@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
@@ -16,6 +16,8 @@ export default function SelectOnMapPage () {
   //const fullAddress = useSelector((state) => state.session.currentLocation.meta_data.location_additional.full_address)
   const [pinCoords, setPinCoords] = useState('')
   const [error, setError] = useState('')
+
+  const coordinates = useSelector((state) => state.session.currentLocation.coordinates)
 
   
 
@@ -51,7 +53,7 @@ export default function SelectOnMapPage () {
             </p>
             {/* <InsetText text={'For '+fullAddress} /> */}
             <InsetText text='For 25A BELGRAVE ROAD' />
-            <Map coordinates={{latitude: 50.951022, longitude: -1.359543}} setCoordinates={setPinCoords} type={'drop'}/>
+            <Map coordinates={coordinates} setCoordinates={setPinCoords} type={'drop'}/>
             </div>
             <Button
               className='govuk-button'

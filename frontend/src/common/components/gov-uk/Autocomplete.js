@@ -1,4 +1,4 @@
-import React, { useEffect, useReducer, useState } from 'react'
+import React, { useEffect, useMemo, useReducer, useState } from 'react'
 import '../../css/autocomplete.css'
 
 export default function Autocomplete ({
@@ -11,10 +11,11 @@ export default function Autocomplete ({
   error = '',
   isNameBold = false,
   results,
-  menuOpen
+  menuOpen,
+  onClick
 }) {
 
-  const [options, setOptions] = useState([])
+  const [options, setOptions] = useState(null)
   const [, forceUpdate] = useReducer(x => x + 1, 0)
   useEffect(() => {
     setOptions(results)
@@ -30,7 +31,7 @@ export default function Autocomplete ({
   }
   const [selected, setSelected] = useState(-1)
   const [focused, setFocused] = useState(-1)
-  const [hovered, setHovered] = useState(null)
+  const [hovered, setHovered] = useState([])
 
   const handleOptionFocus = (index) => {
     setFocused(index)
@@ -79,7 +80,7 @@ export default function Autocomplete ({
 
   const handleOptionClick = (index) => {
     const selectedOption = options[index]
-    onChange(selectedOption)
+    onClick(selectedOption)
   }
 
   const showNoOptionsFound = options?.length === 0
@@ -88,6 +89,38 @@ export default function Autocomplete ({
   const handleOptionMouseEnter = (index) => {
     setHovered(index)
   }
+
+  const dropDown = useMemo(
+    () => (
+      <ul>
+          {options?.map((option, index) => {
+            const showFocused = focused === -1 ? selected === index : focused === index
+            const optionModifierFocused = showFocused && hovered === null ? ` autocomplete__option--focused` : ''
+            const optionModifierOdd = (index % 2) ? ` autocomplete__option--odd` : ''
+            return (
+              <li
+                aria-selected={focused === index ? 'true' : 'false'}
+                className={`autocomplete__option${optionModifierFocused}${optionModifierOdd}`}
+                id={`option--${index}`}
+                key={index}
+                onClick={() => handleOptionClick(index)}
+                onMouseDown={(event) => event.preventDefault()}
+                onMouseEnter={() => handleOptionMouseEnter(index)}
+                role='option'
+                tabIndex='-1'
+                aria-posinset={index + 1}
+                aria-setsize={options.length}
+              >{option.name}</li>
+            )
+          })}
+
+          {showNoOptionsFound && (
+            <li className={`autocomplete__option autocomplete__option--no-results`} role='option' aria-disabled='true'>No results found</li>
+          )}
+          </ul>
+    ),
+    [options]
+  )
 
   return (
     <>
@@ -125,32 +158,7 @@ export default function Autocomplete ({
             value={value}
             defaultValue={defaultValue}
           />
-          <ul>
-          {options?.forEach((option, index) => {
-            const showFocused = focused === -1 ? selected === index : focused === index
-            const optionModifierFocused = showFocused && hovered === null ? ` autocomplete__option--focused` : ''
-            const optionModifierOdd = (index % 2) ? ` autocomplete__option--odd` : ''
-            return (
-              <li
-                aria-selected={focused === index ? 'true' : 'false'}
-                className={`autocomplete__option${optionModifierFocused}${optionModifierOdd}`}
-                id={`option--${index}`}
-                key={index}
-                onClick={() => handleOptionClick(index)}
-                onMouseDown={(event) => event.preventDefault()}
-                onMouseEnter={() => handleOptionMouseEnter(index)}
-                role='option'
-                tabIndex='-1'
-                aria-posinset={index + 1}
-                aria-setsize={options.length}
-              >{option.name}</li>
-            )
-          })}
-
-          {showNoOptionsFound && (
-            <li className={`autocomplete__option autocomplete__option--no-results`} role='option' aria-disabled='true'>No results found</li>
-          )}
-          </ul>
+          {dropDown}
         </div>
       </div>
     </>

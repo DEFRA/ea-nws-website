@@ -28,7 +28,8 @@ export default function Map ({
   //)
   const { latitude, longitude } = coordinates
   const [apiKey, setApiKey] = useState(null)
-  const [marker, setMarker] = useState([latitude, longitude])
+  const [marker, setMarker] = useState(null)
+  const center = [latitude, longitude]
 
 
   // reset the map to selected location
@@ -125,13 +126,15 @@ export default function Map ({
         }
       }
     })
-    return null
+    return (
+      marker && (<Marker position={marker} interactive={false} />)
+    )
   }
 
   return (
     <div ref={ref}>
       <MapContainer
-        center={[latitude, longitude]}
+        center={center}
         zoom={12}
         zoomControl={false}
         attributionControl={false}
@@ -142,8 +145,7 @@ export default function Map ({
         {apiKey && tileLayerWithHeader}
         <ZoomControl position='bottomright' />
         <ResetMapButton />
-        <Marker position={marker} interactive={false} />
-        {type === 'drop' && <AddMarker />}
+        {type === 'drop' ? <AddMarker /> : <Marker position={center} interactive={false} />}
       </MapContainer>
     </div>
   )

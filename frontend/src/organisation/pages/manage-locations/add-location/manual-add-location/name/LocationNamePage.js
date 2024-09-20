@@ -16,12 +16,23 @@ export default function LocationNamePage () {
   const [name, setName] = useState('')
   const [error, setError] = useState('')
 
+  const nameUsedBefore = () => {
+    return true
+  }
+
   const handleSubmit = () => {
     const locationName = name.trim()
     const validationError = locationNameValidation(locationName)
     if (!validationError) {
       dispatch(setLocationName(locationName))
-      navigate('/organisation/manage-locations/add/search-option')
+      // refreactor this with the function
+      if(nameUsedBefore === true){
+        navigate('/organisation/manage-locations/add/location-already-exists')
+      }
+      else{
+        navigate('/organisation/manage-locations/add/search-option')
+      }
+      
     } else {
       setError(validationError)
     }

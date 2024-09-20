@@ -8,8 +8,8 @@ import {
   setCurrentLocation,
   setLocationSearchResults
 } from '../../../../../common/redux/userSlice'
-import { backendCall } from '../../../../common/services/BackendService'
-export default function ManuallyFindLocationsPage() {
+import { backendCall } from '../../../../../common/services/BackendService'
+export default function ManuallyFindLocationsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -148,7 +148,7 @@ export default function ManuallyFindLocationsPage() {
       )
     } else {
       // otherwise, navigate to find on map directly
-      navigate('/') //Link to map
+      navigate('/') // Link to map
     }
   }
 

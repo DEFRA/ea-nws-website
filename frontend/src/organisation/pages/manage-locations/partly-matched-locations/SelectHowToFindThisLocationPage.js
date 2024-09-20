@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
@@ -8,7 +8,6 @@ import InsetText from '../../../../common/components/gov-uk/InsetText'
 import Radio from '../../../../common/components/gov-uk/Radio'
 export default function SelectHowToFindThisLocationPage() {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const [findLocationOption, setFindLocationOption] = useState('')
   const [error, setError] = useState('')
   const findLocationOptions = [

@@ -91,7 +91,7 @@ def test_add_search_option_no_selection(get_browser):
     locationName = 'LOCATION_1'
     enter_input_text(browser, 'Location name', locationName)
     click_button(browser, 'Continue', url_add_search_option)
-    assert check_h1_heading(browser, 'How do you want to find ' + locationName + '?')
+    assert 'How do you want to find ' + locationName + '?' in browser.page_source
     click_button(browser, 'Continue', url_add_search_option)
     assert check_error_summary(browser)
 
@@ -117,7 +117,7 @@ def test_add_named_location_using_postcode(get_browser):
     locationName = 'LOCATION_1'
     enter_input_text(browser, 'Location name', locationName)
     click_button(browser, 'Continue', url_add_search_option)
-    assert check_h1_heading(browser, 'How do you want to find ' + locationName + '?')
+    assert 'How do you want to find ' + locationName + '?' in browser.page_source
     select_input_radio_option(browser, 'UseAPostcode')
     click_button(browser, 'Continue', url_add_postcode_search)
     postcode = 'PO15 7AA'

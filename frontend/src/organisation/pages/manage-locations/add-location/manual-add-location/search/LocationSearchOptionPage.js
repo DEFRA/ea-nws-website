@@ -7,7 +7,7 @@ import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../../../common/components/gov-uk/Radio'
 
-export default function LocationSearchOptionPage () {
+export default function LocationSearchOptionPage() {
   const navigate = useNavigate()
 
   const [searchOption, setSearchOption] = useState('')
@@ -59,7 +59,7 @@ export default function LocationSearchOptionPage () {
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>
-              {`How do you want to find ${locationName}?`}
+              How do you want to find {locationName}?
             </h1>
             <p>
               If your location is a polygon, or a line, your orgainsation has

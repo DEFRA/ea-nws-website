@@ -12,7 +12,7 @@ import {
 } from '../../../../../../common/redux/userSlice'
 import { postCodeValidation } from '../../../../../../common/services/validations/PostCodeValidation'
 
-export default function AddOptionalAddress () {
+export default function AddOptionalAddress() {
   const navigate = useNavigate()
   const [addressLine1, setAddressLine1] = useState('')
   const [addressLine2, setAddressLine2] = useState('')
@@ -26,7 +26,9 @@ export default function AddOptionalAddress () {
     setPostcodeError('')
   }, [postcode])
   const navigateToNextPage = () => {
-    navigate('/')
+    navigate(
+      '/organisation/manage-locations/add/optional-address/add-key-information'
+    )
   }
 
   // only postcode validated because its an optional field the user is adding for their own benifit - UCD team

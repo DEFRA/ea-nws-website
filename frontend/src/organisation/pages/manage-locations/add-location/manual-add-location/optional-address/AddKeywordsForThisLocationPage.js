@@ -58,7 +58,7 @@ export default function KeywordsForThisLocationPage() {
                   inputType='text'
                   onChange={(val) => setKeywords(val)}
                   className='govuk-input govuk-input--width-20'
-                  name='keywords'
+                  id='keywords-input'
                 />
                 <Button text='Add keyword' onClick={handleAddKeyword} />
               </div>

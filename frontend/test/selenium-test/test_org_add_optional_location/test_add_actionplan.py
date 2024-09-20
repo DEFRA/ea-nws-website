@@ -30,18 +30,18 @@ def test_continue_empty(get_browser):
 
 def test_continue_filled_text_length_just_right(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
-    enter_textarea_text(get_browser, 'actionplan', text_just_right)
+    enter_textarea_text(get_browser, 'action-plan-input', text_just_right, 'id')
     click_button(get_browser, 'Continue', url_next_page)
     assert 'Notes (optional)' in get_browser.page_source
 
 def test_continue_filled_text_length_too_long_failure(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
-    enter_textarea_text(get_browser, 'actionplan', text_too_long)
+    enter_textarea_text(get_browser, 'action-plan-input', text_too_long, 'id')
     click_button(get_browser, 'Continue', current_url)
     check_error_summary(get_browser)
 
 def test_continue_filled_text_length_under_req(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
-    enter_textarea_text(get_browser, 'actionplan', text_under_req)
+    enter_textarea_text(get_browser, 'action-plan-input', text_under_req, 'id')
     click_button(get_browser, 'Continue', url_next_page)
     assert 'Notes (optional)' in get_browser.page_source

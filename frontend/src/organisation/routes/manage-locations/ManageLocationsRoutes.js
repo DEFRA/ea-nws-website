@@ -5,6 +5,7 @@ import OptionalLocationInformationPage from '../../pages/manage-locations/add-lo
 import LocationSearchOptionPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationSearchOptionPage'
 import LocationPostCodeSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/postcode/LocationPostCodeSearchPage'
 import LocationPostCodeSearchResultsPage from '../../pages/manage-locations/add-location/manual-add-location/search/postcode/LocationPostCodeSearchResultsPage'
+import LocationXYCoordinatesSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/xy-coordinates/LocationXYCoordinatesSearchPage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
 import ConfirmLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
@@ -31,6 +32,7 @@ const orgManageLocationsUrls = {
     searchOption: urlManageOrg + '/add/search-option',
     postCodeSearch: urlManageOrg + '/add/postcode-search',
     postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
+    xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search',
     optionalInfo: urlManageOrg + '/add/optional-location-info',
     optionalAddress: urlManageOrg + '/add/optional-address'
   },
@@ -75,6 +77,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.postCodeSearch,
     component: <LocationPostCodeSearchPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.xyCoordinatesSearch,
+    component: <LocationXYCoordinatesSearchPage />
   },
   {
     path: orgManageLocationsUrls.unmatchedLocations.doNotAdd,

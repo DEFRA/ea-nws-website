@@ -6,8 +6,9 @@ import OrganisationAccountNavigation from '../../../../../../common/components/c
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../../../common/components/gov-uk/Radio'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationSearchOptionPage () {
+export default function LocationSearchOptionPage() {
   const navigate = useNavigate()
 
   const [searchOption, setSearchOption] = useState('')
@@ -24,13 +25,14 @@ export default function LocationSearchOptionPage () {
     } else {
       switch (searchOption) {
         case 'UseAPostcode':
-          navigate('/organisation/manage-locations/add/postcode-search')
+          navigate(orgManageLocationsUrls.add.postCodeSearch)
           break
         case 'UseXAndYCoordinates':
-          navigate('/organisation/manage-locations/add/xy-search')
+          navigate(orgManageLocationsUrls.add.xyCoordinatesSearch)
           break
         case 'DropAPinOnAMap':
-          navigate('/organisation/manage-locations/add/pin-search')
+          // TODO: Uncomment when page available
+          //navigate(orgManageLocationsUrls.add.dropPinSearch)
           break
         default:
           break

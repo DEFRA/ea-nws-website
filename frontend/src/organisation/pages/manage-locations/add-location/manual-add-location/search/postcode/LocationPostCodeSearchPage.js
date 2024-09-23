@@ -12,8 +12,9 @@ import {
 } from '../../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../../common/services/BackendService'
 import { postCodeValidation } from '../../../../../../../common/services/validations/PostCodeValidation'
+import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationPostCodeSearchPage () {
+export default function LocationPostCodeSearchPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -35,7 +36,7 @@ export default function LocationPostCodeSearchPage () {
       if (!errorMessage) {
         dispatch(setLocationPostCode(data[0].postcode))
         dispatch(setLocationSearchResults(data))
-        navigate('/organisation/manage-locations/add/postcode-search-results')
+        navigate(orgManageLocationsUrls.add.postCodeSearchResults)
       } else {
         // show error message from OS Api postcode search
         setError(errorMessage)

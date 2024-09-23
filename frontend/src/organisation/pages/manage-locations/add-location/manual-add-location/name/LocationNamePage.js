@@ -8,8 +8,9 @@ import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummar
 import Input from '../../../../../../common/components/gov-uk/Input'
 import { setLocationName } from '../../../../../../common/redux/userSlice'
 import { locationNameValidation } from '../../../../../../common/services/validations/LocationNameValidation'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationNamePage () {
+export default function LocationNamePage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -21,7 +22,7 @@ export default function LocationNamePage () {
     const validationError = locationNameValidation(locationName)
     if (!validationError) {
       dispatch(setLocationName(locationName))
-      navigate('/organisation/manage-locations/add/search-option')
+      navigate(orgManageLocationsUrls.add.searchOption)
     } else {
       setError(validationError)
     }

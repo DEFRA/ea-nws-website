@@ -4,11 +4,12 @@ import OrganisationAccountNavigation from '../../../../common/components/custom/
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-// ToDo make location name from pevious page appear
+// ToDo 
+//work out how to check elasticache
 // Make previous page go to this page or other page
 export default function LocationAlreadyExists () {
   const navigate = useNavigate()
-  const locationName = useSelector((state) => state.session.locationName.meta_data)
+  const locationName = useSelector((state) => state.session.locationName)
 
   return (
     <>

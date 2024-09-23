@@ -1,7 +1,7 @@
 import React from 'react'
 export default function Input({
   name,
-  subName = '',
+  hint = '',
   className,
   value,
   defaultValue = '',
@@ -26,19 +26,15 @@ export default function Input({
         <label
           className={
             isNameBold === true
-              ? subName
-                ? 'govuk-label govuk-label--s'
-                : 'govuk-label govuk-label--m'
+              ? `govuk-label govuk-label--${hint ? 's' : 'm'}`
               : 'govuk-label'
           }
           htmlFor='govuk-text-input'
         >
           {name}
         </label>
-        {subName && (
-          <label className={'govuk-label'} htmlFor='govuk-text-input'>
-            {subName}
-          </label>
+        {hint && (
+          <div className={'govuk-hint govuk-!-margin-bottom-2'}>{hint}</div>
         )}
         {error !== '' && (
           <p id='govuk-text-input-error' className='govuk-error-message'>

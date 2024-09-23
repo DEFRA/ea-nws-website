@@ -71,7 +71,7 @@ export default function LocationXYCoordinatesSearchPage() {
             <div className='govuk-body'>
               <Input
                 name='X coordinate'
-                subName="A number representing how far east or west a location is (also known as an 'easting'), for example: 362105."
+                hint="A number representing how far east or west a location is (also known as an 'easting'), for example: 362105."
                 inputType='text'
                 value={xCoordinate}
                 onChange={(val) => setXCoordinate(val)}
@@ -81,7 +81,7 @@ export default function LocationXYCoordinatesSearchPage() {
               />
               <Input
                 name='Y coordinate'
-                subName="A number representing how far north or south a location is (also known as a 'northing'), for example: 387217."
+                hint="A number representing how far north or south a location is (also known as a 'northing'), for example: 387217."
                 inputType='text'
                 value={yCoordinate}
                 onChange={(val) => setYCoordinate(val)}

@@ -17,7 +17,7 @@ export default function LocationAlreadyExists () {
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds' />
+          <div className='govuk-grid-column-one-half' />
           <h1 className='govuk-heading-l'> {locationName} already exists in this account</h1>
           <h2 className='govuk-heading-m'>What do you want to do next?</h2>
           <p className='govuk-body'> You can:</p>

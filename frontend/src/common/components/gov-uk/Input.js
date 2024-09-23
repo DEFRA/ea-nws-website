@@ -1,6 +1,7 @@
 import React from 'react'
-export default function Input ({
+export default function Input({
   name,
+  subName = '',
   className,
   value,
   defaultValue = '',
@@ -24,12 +25,21 @@ export default function Input ({
       >
         <label
           className={
-            isNameBold === true ? 'govuk-label govuk-label--m' : 'govuk-label'
+            isNameBold === true
+              ? subName
+                ? 'govuk-label govuk-label--s'
+                : 'govuk-label govuk-label--m'
+              : 'govuk-label'
           }
           htmlFor='govuk-text-input'
         >
           {name}
         </label>
+        {subName && (
+          <label className={'govuk-label'} htmlFor='govuk-text-input'>
+            {subName}
+          </label>
+        )}
         {error !== '' && (
           <p id='govuk-text-input-error' className='govuk-error-message'>
             <span className='govuk-visually-hidden'>Error:</span> {error}

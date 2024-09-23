@@ -26,7 +26,7 @@ export default function LocationNamePage () {
     if (!validationError) {
       dispatch(setLocationName(locationName))
       // refreactor this with the function
-      if(nameUsedBefore === true){
+      if(nameUsedBefore() === true){
         navigate('/organisation/manage-locations/add/location-already-exists')
       }
       else{

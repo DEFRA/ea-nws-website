@@ -100,9 +100,9 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.optionalAddress,
     component: <AddOptionalAddress />
-  },{
+  }, {
     path: orgManageLocationsUrls.add.alreadyExists,
-    component: <LocationAlreadyExists/>
+    component: <LocationAlreadyExists />
   }
 ]
 

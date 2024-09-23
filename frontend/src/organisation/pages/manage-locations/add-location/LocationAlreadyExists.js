@@ -4,9 +4,6 @@ import OrganisationAccountNavigation from '../../../../common/components/custom/
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-// ToDo 
-//work out how to check elasticache
-// Make previous page go to this page or other page
 export default function LocationAlreadyExists () {
   const navigate = useNavigate()
   const locationName = useSelector((state) => state.session.locationName)
@@ -21,19 +18,19 @@ export default function LocationAlreadyExists () {
           <h1 className='govuk-heading-l'> {locationName} already exists in this account</h1>
           <h2 className='govuk-heading-m'>What do you want to do next?</h2>
           <p className='govuk-body'> You can:</p>
-          <ul className="govuk-list govuk-list--bullet">
+          <ul className='govuk-list govuk-list--bullet'>
             <li>
-              <Link 
-              to="/organisation/manage-locations/add/name"
-              className='govuk-link'
+              <Link
+                to='/organisation/manage-locations/add/name'
+                className='govuk-link'
               >
                 use a differnt location name for this location
               </Link>
             </li>
             <li>
-              <Link 
-              to="/" //update link when location information page is made
-              className='govuk-link'
+              <Link
+                to='/' // update link when location information page is made
+                className='govuk-link'
               >
                 edit the existing location in this account
               </Link>

@@ -16,11 +16,11 @@ export default function LocationNamePage () {
   const [name, setName] = useState('')
   const [error, setError] = useState('')
 
-  //This will need to be ToDo
+  // This will need to be ToDo
   const locationNameUsedBefore = () => {
     return true
   }
-  //////////
+  /// ///////
 
   const handleSubmit = () => {
     const locationName = name.trim()
@@ -28,13 +28,11 @@ export default function LocationNamePage () {
     if (!validationError) {
       dispatch(setLocationName(locationName))
       // refreactor this with the function ToDo:
-      if(locationNameUsedBefore() === true){
+      if (locationNameUsedBefore() === true) {
         navigate('/organisation/manage-locations/add/location-already-exists')
-      }
-      else{
+      } else {
         navigate('/organisation/manage-locations/add/search-option')
       }
-      
     } else {
       setError(validationError)
     }

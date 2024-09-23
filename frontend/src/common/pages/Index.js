@@ -485,8 +485,10 @@ export default function IndexPage () {
                   </Link>
                 </li>
                 <li>
-                  <Link to='/organisation/manage-locations/add/name'
-                  className='govuk-link'>
+                  <Link
+                    to='/organisation/manage-locations/add/name'
+                    className='govuk-link'
+                  >
                     location already exists
                   </Link>
                 </li>

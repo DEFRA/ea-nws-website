@@ -63,7 +63,13 @@ url_org_man_loc = {
         'options': url_org_man_loc_path + '/add',
         'addressInfo': url_org_man_loc_path + '/add/address-info',
         'uploadFile': url_org_man_loc_path + '/add/upload-file',
-        'uploadTemplate': 'http://d39yn09rf1d1o9.cloudfront.net/template.csv'
+        'uploadTemplate': 'http://d39yn09rf1d1o9.cloudfront.net/template.csv',
+        'name': url_org_man_loc_path + '/add/name',
+        'searchOption': url_org_man_loc_path + '/add/search-option',
+        'postcodeSearch': url_org_man_loc_path + '/add/postcode-search',
+        'postcodeSearchResults': url_org_man_loc_path + '/add/postcode-search-results',
+        'optionalInfo': url_org_man_loc_path + '/add/optional-location-info',
+        'optionalAddress': url_org_man_loc_path + '/add/optional-address'
     },
     'change': {
         'alternative_contact': local_host + '/',
@@ -106,7 +112,7 @@ def click_button(browser, button_text, url_button):
 
 # Click on link text and check url
 def click_link(browser, link_text, url_link):
-    link_xpath = f"//a[text()='{link_text}']"
+    link_xpath = f"//a[text()=\"{link_text}\"]"
     link_element = browser.find_element(By.XPATH, link_xpath)
     browser.execute_script("arguments[0].click();", link_element)
     time.sleep(1)
@@ -151,7 +157,9 @@ def check_exists_by_xpath(browser, xpath):
 
 # Check h1 heading
 def check_h1_heading(browser, page_heading):
-    page_heading_xpath = f"//h1[@class='govuk-heading-l' and text()='{page_heading}']"
+    # Use double quotes for text() in case the page_heading contains single quotes.
+    # e.g. "What is the location's postcode"
+    page_heading_xpath = f"//h1[@class='govuk-heading-l' and text()=\"{page_heading}\"]"
     return check_exists_by_xpath(browser, page_heading_xpath)
 
 # Check for error summary

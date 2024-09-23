@@ -21,7 +21,6 @@ export default function ProvideAreaNamePage () {
   const [results, setResults] = useState(null)
 
   const handleInputChange = async (value) => {
-
     setAreaName(value)
     const query = value
     const queryEmpty = query.length === 0
@@ -39,34 +38,30 @@ export default function ProvideAreaNamePage () {
       )
       if (!errorMessage) {
         setResults(data)
+        setError('')
       } else {
         setResults([])
         // show error message from OS Api postcode search
         setError('Place name, town or postcode is not recognised')
       }
     }
-  } 
+  }
 
   const handleOnClick = async (value) => {
     setAreaName(value.name)
     setAreaCoords(value.coordinates)
-  } 
-  
-
-  
+  }
 
   const handleSubmit = async () => {
-
     if (areaName === '') {
       setError('Enter a place name, town or postcode')
     } else if (areaCoords === null) {
       setError('Select an option from the dropdown')
     } else {
-        dispatch(setCurrentLocationCoordinates(areaCoords))
-        navigate('/organisation/manage-locations/unmatched-locations/manually-find/map')
-      }
+      dispatch(setCurrentLocationCoordinates(areaCoords))
+      navigate('/organisation/manage-locations/unmatched-locations/manually-find/map')
     }
-  
+  }
 
   return (
     <>
@@ -74,29 +69,29 @@ export default function ProvideAreaNamePage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-          {error && (
+            {error && (
               <ErrorSummary
                 errorList={[error]}
               />
             )}
             <h1 className='govuk-heading-l'>Find location on a map</h1>
             <div className='govuk-body'>
-            {/* <InsetText text={fullAddress} /> */}
-            <InsetText text='25A BELGRAVE ROAD' />
-            <p>
-              This location cannot be found. We need some additional information to help us find it
-            </p>
-            <Autocomplete
+              {/* <InsetText text={fullAddress} /> */}
+              <InsetText text='25A BELGRAVE ROAD' />
+              <p>
+                This location cannot be found. We need some additional information to help us find it
+              </p>
+              <Autocomplete
                 className='govuk-input govuk-!-width-full'
                 name='Enter a place name, town or postcode'
                 inputType='text'
                 error={error}
                 onChange={(val) => handleInputChange(val)}
                 results={results}
-                menuOpen={true}
+                menuOpen
                 value={areaName}
                 onClick={(val) => handleOnClick(val)}
-              /> 
+              />
             </div>
             <Button
               className='govuk-button'

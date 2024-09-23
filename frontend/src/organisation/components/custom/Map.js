@@ -21,16 +21,15 @@ export default function Map ({
   coordinates,
   setCoordinates
 }) {
-  //const dispatch = useDispatch()
+  // const dispatch = useDispatch()
 
-  //const selectedLocation = useSelector(
+  // const selectedLocation = useSelector(
   //  (state) => state.session.selectedLocation
-  //)
+  // )
   const { latitude, longitude } = coordinates
   const [apiKey, setApiKey] = useState(null)
   const [marker, setMarker] = useState(null)
   const center = [latitude, longitude]
-
 
   // reset the map to selected location
   const ResetMapButton = () => {
@@ -116,13 +115,12 @@ export default function Map ({
         const mapWidth = ref.current.clientWidth
         const { x, y } = e.containerPoint
         if (!(
-          (x > (mapWidth - 30) && x < (mapWidth - 9))
-           &&
+          (x > (mapWidth - 30) && x < (mapWidth - 9)) &&
           (y > (mapHeight - 110) && y < (mapHeight - 77))
         )) {
           const { lat, lng } = e.latlng
-        setMarker([lat, lng])
-        setCoordinates({latitude: lat, longitude: lng})
+          setMarker([lat, lng])
+          setCoordinates({ latitude: lat, longitude: lng })
         }
       }
     })
@@ -140,7 +138,7 @@ export default function Map ({
         attributionControl={false}
         minZoom={7}
         maxBounds={maxBounds}
-        className={'map-container'}
+        className='map-container'
       >
         {apiKey && tileLayerWithHeader}
         <ZoomControl position='bottomright' />

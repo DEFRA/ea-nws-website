@@ -13,16 +13,13 @@ import Map from '../../../../../components/custom/Map'
 export default function SelectOnMapPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  //const fullAddress = useSelector((state) => state.session.currentLocation.meta_data.location_additional.full_address)
+  // const fullAddress = useSelector((state) => state.session.currentLocation.meta_data.location_additional.full_address)
   const [pinCoords, setPinCoords] = useState('')
   const [error, setError] = useState('')
 
   const coordinates = useSelector((state) => state.session.currentLocation.coordinates)
 
-  
-
   const handleSubmit = async () => {
-
     if (pinCoords === '') {
       setError('Click on the map to drop a pin')
     } else {
@@ -31,9 +28,7 @@ export default function SelectOnMapPage () {
       // set coords and navigate back to find locations page, api call first to set elasticache
       dispatch(setCurrentLocationCoordinates(pinCoords))
     }
-  
   }
-
 
   return (
     <>
@@ -41,19 +36,19 @@ export default function SelectOnMapPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-          {error && (
+            {error && (
               <ErrorSummary
                 errorList={[error]}
               />
             )}
             <h1 className='govuk-heading-l'>Find location on a map</h1>
             <div className='govuk-body'>
-            <p>
-              Click on the map to drop a pin where you think this location is. You can then add the location to this account.
-            </p>
-            {/* <InsetText text={'For '+fullAddress} /> */}
-            <InsetText text='For 25A BELGRAVE ROAD' />
-            <Map coordinates={coordinates} setCoordinates={setPinCoords} type={'drop'}/>
+              <p>
+                Click on the map to drop a pin where you think this location is. You can then add the location to this account.
+              </p>
+              {/* <InsetText text={'For '+fullAddress} /> */}
+              <InsetText text='For 25A BELGRAVE ROAD' />
+              <Map coordinates={coordinates} setCoordinates={setPinCoords} type='drop' />
             </div>
             <Button
               className='govuk-button'

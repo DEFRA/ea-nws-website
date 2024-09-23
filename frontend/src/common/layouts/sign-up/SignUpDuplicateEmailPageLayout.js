@@ -66,7 +66,10 @@ export default function SignUpDuplicateEmailPageLayout () {
                       text='Get code to sign in'
                       onClick={handleSubmit}
                     />
-                  &nbsp; &nbsp; &nbsp;
+                  &nbsp;
+                    <Link to={urlSignup} className='govuk-link inline-link'>
+                      Go back and enter a different email address
+                    </Link>
                   </>
                   )
                 : (
@@ -75,15 +78,11 @@ export default function SignUpDuplicateEmailPageLayout () {
                     service.
                     <br />
                     <br />
+                    <Link to={urlSignup} className='govuk-link'>
+                      Go back and enter a different email address
+                    </Link>
                   </>
                   )}
-              <Link
-                to={urlSignup}
-                style={{ display: 'inline-block', padding: '8px 0px 7px' }}
-                className='govuk-link'
-              >
-                Go back and enter a different email address
-              </Link>
             </div>
           </div>
         </div>

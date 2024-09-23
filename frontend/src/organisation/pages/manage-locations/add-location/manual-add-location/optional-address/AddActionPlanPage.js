@@ -6,7 +6,7 @@ import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../../../../common/components/gov-uk/TextArea'
 import { setCurrentLocationActionPlan } from '../../../../../../common/redux/userSlice'
-export default function ActionPlanPage () {
+export default function ActionPlanPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [actionPlan, setActionPlan] = useState('')
@@ -48,7 +48,6 @@ export default function ActionPlanPage () {
                 error={error}
                 inputType='text'
                 rows='5'
-                id='action-plan-input'
                 onChange={(val) => setActionPlan(val)}
                 className='govuk-textarea'
               />

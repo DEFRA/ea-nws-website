@@ -17,7 +17,7 @@ export default function OptionalLocationInformationPage () {
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             <NotificationBanner
               className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
               title='Success'
@@ -38,18 +38,18 @@ export default function OptionalLocationInformationPage () {
             </h2>
             <ul className='govuk-list'>
               <li>
-                <h3 class='govuk-heading-s'>Address</h3>
-                <p className='govuk-body'>
+                <h3 class='govuk-heading-s govuk-!-margin-bottom-0'>Address</h3>
+                <p className='govuk-body '>
                   If you add a location as X and Y coordinate you can add an
                   address. This address will then be associated with the
                   location.
                 </p>
               </li>
               <li>
-                <h3 class='govuk-heading-s'>Key information</h3>
+                <h3 class='govuk-heading-s govuk-!-margin-bottom-3'>Key information</h3>
                 <ul class='govuk-list govuk-list--bullet'>
                   <li>
-                    <h3 class='govuk-heading-s'>Internal reference</h3>
+                    <h3 class='govuk-heading-s govuk-!-margin-bottom-0'>Internal reference</h3>
                     <p className='govuk-body'>
                       Your internal reference, for example: PS01, unit 57,
                       Brid_04. This can help you identify the location more
@@ -57,14 +57,14 @@ export default function OptionalLocationInformationPage () {
                     </p>
                   </li>
                   <li>
-                    <h3 class='govuk-heading-s'>Business criticality</h3>
+                    <h3 class='govuk-heading-s govuk-!-margin-bottom-0'>Business criticality</h3>
                     <p className='govuk-body'>
                       How important the location is to your Business. For
                       example, low or medium, business critical.
                     </p>
                   </li>
                   <li>
-                    <h3 class='govuk-heading-s'>Location type</h3>
+                    <h3 class='govuk-heading-s govuk-!-margin-bottom-0'>Location type</h3>
                     <p className='govuk-body'>
                       For example, pumping station, ground floor flat, office,
                       retail unit.
@@ -73,7 +73,7 @@ export default function OptionalLocationInformationPage () {
                 </ul>
               </li>
               <li>
-                <h3 class='govuk-heading-s'>Keywords of locations</h3>
+                <h3 class='govuk-heading-s govuk-!-margin-bottom-0'>Keywords of locations</h3>
                 <p className='govuk-body'>
                   Adding keywords for each location can make it easier for you
                   to filter and create lists of locations you can then link to
@@ -88,7 +88,7 @@ export default function OptionalLocationInformationPage () {
                 </p>
               </li>
               <li>
-                <h3 class='govuk-heading-s'>Action to be taken</h3>
+                <h3 class='govuk-heading-s govuk-!-margin-bottom-0'>Action to be taken</h3>
                 <p className='govuk-body'>
                   What you can do to reduce the potential effects of flooding,
                   for example, inspect the location, use sandbags, move stock,
@@ -96,7 +96,7 @@ export default function OptionalLocationInformationPage () {
                 </p>
               </li>
               <li>
-                <h3 class='govuk-heading-s'>Notes</h3>
+                <h3 class='govuk-heading-s govuk-!-margin-bottom-0'>Notes</h3>
                 <p className='govuk-body'>
                   Any notes that could be helpful to someone not familiar with
                   the site. For example, John Smith has the flood plan for this

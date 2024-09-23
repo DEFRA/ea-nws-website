@@ -9,17 +9,21 @@ import { setCurrentLocationKeywords } from '../../../../../../common/redux/userS
 export default function KeywordsForThisLocationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [keywords, setKeywords] = useState('')
+  const [keyword, setKeyword] = useState('')
+  let keywordsArray = []
 
-  const handleButton = () => {
+  const handleButton = async () => {
+    if (keywordsArray.length > 0) {
+      await dispatch(setCurrentLocationKeywords(keywordsArray))
+    }
     navigate(
       '/organisation/manage-locations/add/optional-address/add-action-plan'
     )
   }
 
-  const handleAddKeyword = async () => {
-    if (!keywords) {
-      await dispatch(setCurrentLocationKeywords(keywords))
+  const handleAddKeyword = () => {
+    if (keyword) {
+      keywordsArray.push(keyword)
     }
   }
 
@@ -56,7 +60,7 @@ export default function KeywordsForThisLocationPage() {
               <div className='inline-button'>
                 <Input
                   inputType='text'
-                  onChange={(val) => setKeywords(val)}
+                  onChange={(val) => setKeyword(val)}
                   className='govuk-input govuk-input--width-20'
                   id='keywords-input'
                 />

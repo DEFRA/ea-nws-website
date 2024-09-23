@@ -32,26 +32,24 @@ export default function AddKeyInformationPage() {
 
   const detailsText = (
     <>
-      <div className='govuk-grid-column-two-third'>
-        <p>
-          Adding optional information allows you to filter your organisation’s
-          locations and helps you identify them more easily.{' '}
-        </p>
-        <p>
-          <h3 className='govuk-heading-s'>Internal reference</h3> Your internal
-          reference, for example: PS01, unit 57, Brid_04. This can help you
-          identify the location more easily.
-        </p>
-        <p>
-          <h3 className='govuk-heading-s'>Location type</h3>
-          For example, pumping station, ground floor flat, office, retail unit.
-        </p>
-        <p>
-          <h3 className='govuk-heading-s'>Business critically</h3>
-          How important the location is to your business. For example, low or
-          medium business critical.
-        </p>
-      </div>
+      <p>
+        Adding optional information allows you to filter your organisation’s
+        locations and helps you identify them more easily.{' '}
+      </p>
+      <p>
+        <h3 className='govuk-heading-s'>Internal reference</h3> Your internal
+        reference, for example: PS01, unit 57, Brid_04. This can help you
+        identify the location more easily.
+      </p>
+      <p>
+        <h3 className='govuk-heading-s'>Location type</h3>
+        For example, pumping station, ground floor flat, office, retail unit.
+      </p>
+      <p>
+        <h3 className='govuk-heading-s'>Business critically</h3>
+        How important the location is to your business. For example, low or
+        medium business critical.
+      </p>
     </>
   )
 

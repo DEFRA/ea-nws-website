@@ -69,7 +69,8 @@ url_org_man_loc = {
         'postcodeSearch': url_org_man_loc_path + '/add/postcode-search',
         'postcodeSearchResults': url_org_man_loc_path + '/add/postcode-search-results',
         'optionalInfo': url_org_man_loc_path + '/add/optional-location-info',
-        'optionalAddress': url_org_man_loc_path + '/add/optional-address'
+        'optionalAddress': url_org_man_loc_path + '/add/optional-address',
+        'duplicateLocation': url_org_man_loc_path + '/add/location-already-exists'
     },
     'change': {
         'alternative_contact': local_host + '/',

@@ -12,6 +12,7 @@ import MainAdminPage from '../../pages/sign-up/mainAdministrator/MainAdminPage'
 import ValidateAdminEmailPage from '../../pages/sign-up/mainAdministrator/ValidateAdminEmailPage'
 import CheckYourAnswersPage from '../../pages/sign-up/review/CheckYourAnswersPage'
 import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
+import TermsConditionsPage from '../../pages/sign-up/TermsConditionsPage'
 
 const urlSignUpOrg = '/organisation/sign-up'
 
@@ -66,7 +67,11 @@ const signupRoutes = [
     path: urlSignUpOrg + '/duplicate',
     component: <DuplicateNamePage />
   },
-  { path: urlSignUpOrg + '/review', component: <CheckYourAnswersPage /> }
+  { path: urlSignUpOrg + '/review', component: <CheckYourAnswersPage /> },
+  {
+    path: urlSignUpOrg + '/terms-and-conditions',
+    component: <TermsConditionsPage />
+  }
 ]
 
 export default signupRoutes

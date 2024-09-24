@@ -6,6 +6,12 @@ import OrganisationAccountNavigation from '../../../../../../../common/component
 import Button from '../../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../../../../common/components/gov-uk/Input'
+import {
+  setCurrentLocationEasting,
+  setCurrentLocationNorthing
+} from '../../../../../../../common/redux/userSlice'
+import { xCoordinateValidation } from '../../../../../../../common/services/validations/XCoordinateValidation'
+import { yCoordinateValidation } from '../../../../../../../common/services/validations/YCoordinateValidation'
 
 export default function LocationXYCoordinatesSearchPage() {
   const dispatch = useDispatch()
@@ -16,38 +22,26 @@ export default function LocationXYCoordinatesSearchPage() {
   const [yCoordinate, setYCoordinate] = useState('')
   const [yCoordinateError, setYCoordinateError] = useState('')
 
-  // TODO Stll need async once complete?
+  // TODO Does this still need async once complete?
   const handleSubmit = async () => {
     setXCoordinateError('')
     setYCoordinateError('')
-    if (!xCoordinate) {
-      setXCoordinateError('Enter an X coordinate')
+
+    const xCoordinateValidationError = xCoordinateValidation(xCoordinate)
+    if (xCoordinateValidationError) {
+      setXCoordinateError(xCoordinateValidationError)
     }
-    if (!yCoordinate) {
-      setYCoordinateError('Enter a Y coordinate')
+
+    const yCoordinateValidationError = yCoordinateValidation(yCoordinate)
+    if (yCoordinateValidationError) {
+      setYCoordinateError(yCoordinateValidationError)
     }
-    // const postCodeValidationError = postCodeValidation(postCode)
-    // if (!postCodeValidationError) {
-    //   // normalise postcode
-    //   const dataToSend = {
-    //     postCode: postCode.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
-    //   }
-    //   const { data, errorMessage } = await backendCall(
-    //     dataToSend,
-    //     'api/os-api/postcode-search',
-    //     navigate
-    //   )
-    //   if (!errorMessage) {
-    //     dispatch(setLocationPostCode(data[0].postcode))
-    //     dispatch(setLocationSearchResults(data))
-    //     navigate('/organisation/manage-locations/add/postcode-search-results')
-    //   } else {
-    //     // show error message from OS Api postcode search
-    //     setError(errorMessage)
-    //   }
-    // } else {
-    //   setError(postCodeValidationError)
-    // }
+
+    if (!xCoordinateValidationError && !yCoordinateValidationError) {
+      dispatch(setCurrentLocationEasting(Number(xCoordinate)))
+      dispatch(setCurrentLocationNorthing(Number(yCoordinate)))
+      //navigate(orgManageLocationsUrls.add.searchOption)
+    }
   }
 
   const navigateBack = async (event) => {

@@ -7,9 +7,10 @@ import Button from '../../../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../../../common/components/gov-uk/ErrorSummary'
 import InsetText from '../../../../../../../../common/components/gov-uk/InsetText'
 import {
-    setCurrentLocationCoordinates
+  setCurrentLocationCoordinates
 } from '../../../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../../../common/services/BackendService'
+import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ProvideAreaNamePage () {
   const navigate = useNavigate()
@@ -59,13 +60,13 @@ export default function ProvideAreaNamePage () {
       setError('Select an option from the dropdown')
     } else {
       dispatch(setCurrentLocationCoordinates(areaCoords))
-      navigate('/organisation/manage-locations/unmatched-locations/manually-find/map')
+      navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.map)
     }
   }
 
   return (
     <>
-      <BackLink onClick={() => navigate(-1)} />
+      <BackLink onClick={() => navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

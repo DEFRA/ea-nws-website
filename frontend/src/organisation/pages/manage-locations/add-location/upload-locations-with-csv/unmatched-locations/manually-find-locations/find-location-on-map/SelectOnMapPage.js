@@ -6,9 +6,10 @@ import Button from '../../../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../../../common/components/gov-uk/ErrorSummary'
 import InsetText from '../../../../../../../../common/components/gov-uk/InsetText'
 import {
-    setCurrentLocationCoordinates
+  setCurrentLocationCoordinates
 } from '../../../../../../../../common/redux/userSlice'
 import Map from '../../../../../../../components/custom/Map'
+import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function SelectOnMapPage () {
   const navigate = useNavigate()
@@ -27,12 +28,16 @@ export default function SelectOnMapPage () {
       // code here
       // set coords and navigate back to find locations page, api call first to set elasticache
       dispatch(setCurrentLocationCoordinates(pinCoords))
+      // Send currentLocation object to elasticache and geosafe, then navigate
+      navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index, {
+        state: 'Added'
+      })
     }
   }
 
   return (
     <>
-      <BackLink onClick={() => navigate(-1)} />
+      <BackLink onClick={() => navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

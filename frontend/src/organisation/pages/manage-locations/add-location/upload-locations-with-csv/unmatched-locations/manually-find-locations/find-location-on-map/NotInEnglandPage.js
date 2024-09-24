@@ -2,17 +2,20 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../../../common/components/gov-uk/Button'
+import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function NotInEnglandPage () {
   const navigate = useNavigate()
 
   const handleSubmit = async () => {
-    navigate('/home')
+    navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index, {
+      state: 'NotAdded'
+    })
   }
 
   return (
     <>
-      <BackLink onClick={() => navigate(-1)} />
+      <BackLink onClick={() => navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.map)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

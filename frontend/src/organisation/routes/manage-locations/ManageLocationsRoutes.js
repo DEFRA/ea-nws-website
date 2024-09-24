@@ -32,8 +32,10 @@ const orgManageLocationsUrls = {
     searchOption: urlManageOrg + '/add/search-option',
     postCodeSearch: urlManageOrg + '/add/postcode-search',
     postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
+    xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search',
     optionalInfo: urlManageOrg + '/add/optional-location-info',
     optionalAddress: urlManageOrg + '/add/optional-address'
+
   },
   unmatchedLocations: {
     doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',

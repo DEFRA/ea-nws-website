@@ -22,7 +22,7 @@ export default function EditLocationOptionsPage () {
   const handleButton = () => {
     if (!addLocationType) {
       // change this later when figma is answered
-      setAddLocationTypeError('select how you want to edit locations')
+      setAddLocationTypeError('Select how you want to edit locations')
     } else {
       if (addLocationType === editLocationOptions[0].value) {
         // change when page made
@@ -63,7 +63,7 @@ export default function EditLocationOptionsPage () {
                   {editLocationOptions.map((option) => (
                     <Radio
                       key={option.value}
-                      name='addLocationOptionsRadios'
+                      name='editLocationOptionsRadios'
                       label={option.label}
                       value={option.value}
                       onChange={(e) => setAddLocationType(e.target.value)}

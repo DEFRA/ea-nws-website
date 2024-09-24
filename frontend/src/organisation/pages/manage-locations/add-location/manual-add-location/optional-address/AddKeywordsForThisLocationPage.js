@@ -1,19 +1,26 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
 import Input from '../../../../../../common/components/gov-uk/Input'
 import { setCurrentLocationKeywords } from '../../../../../../common/redux/userSlice'
-export default function KeywordsForThisLocationPage () {
+export default function KeywordsForThisLocationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [keyword, setKeyword] = useState('')
-  const keywordsArray = []
+  const savedKeywords = useSelector(
+    (state) =>
+      state.session.currentLocation.meta_data.location_additional.keywords
+  )
+  const [keywordsArray, setKeywordsArray] = useState([...savedKeywords])
 
   const handleButton = async () => {
-    if (keywordsArray.length > 0) {
+    if (
+      keywordsArray.length !== savedKeywords.length ||
+      !keywordsArray.every((val, idx) => val === savedKeywords[idx])
+    ) {
       await dispatch(setCurrentLocationKeywords(keywordsArray))
     }
     navigate(
@@ -23,7 +30,8 @@ export default function KeywordsForThisLocationPage () {
 
   const handleAddKeyword = () => {
     if (keyword) {
-      keywordsArray.push(keyword)
+      setKeywordsArray([...keywordsArray, keyword])
+      setKeyword('')
     }
   }
 
@@ -62,7 +70,6 @@ export default function KeywordsForThisLocationPage () {
                   inputType='text'
                   onChange={(val) => setKeyword(val)}
                   className='govuk-input govuk-input--width-20'
-                  id='keywords-input'
                 />
                 <Button text='Add keyword' onClick={handleAddKeyword} />
               </div>

@@ -121,7 +121,7 @@ const orgManageLocationRoutes = [
     component: <ConfirmLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.add.optionalInfo,
+    path: orgManageLocationsUrls.optionalAddress.optionalInfo,
     component: <OptionalLocationInformationPage />
   },
   {

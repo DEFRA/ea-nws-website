@@ -29,6 +29,6 @@ def test_continue_empty(get_browser):
 
 def test_continue_filled(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
-    enter_input_text(get_browser, 'keywords-input', 'keyword1, keyword4', 'id')
+    enter_input_text(get_browser, 'govuk-text-input', 'keyword1, keyword4', 'id')
     click_button(get_browser, 'Continue', url_next_page)
     assert 'Action plan (optional)' in get_browser.page_source

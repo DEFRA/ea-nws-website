@@ -13,6 +13,7 @@ import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-locatio
 import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
 import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationOptionsPage'
+import EditLocationCoordinatesPage from '../../pages/manage-locations/edit-location/EditLocationCoordinatesPage'
 
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgUnmatchedLocations =
@@ -41,8 +42,9 @@ const orgManageLocationsUrls = {
       urlManageOrgUnmatchedLocations + '/find-unmatched-locations',
     manuallyfind: urlManageOrgUnmatchedLocations + '/manually-find'
   },
-  edit:{
-    options: urlManageOrg + '/edit/location-options'
+  edit: {
+    options: urlManageOrg + '/edit/location-options',
+    coordinates: urlManageOrg + '/edit/coordinates'
   }
 }
 
@@ -106,7 +108,7 @@ const orgManageLocationRoutes = [
   },
   {
     path: orgManageLocationsUrls.edit.options,
-    component: <EditLocationOptionsPage/>
+    component: <EditLocationOptionsPage />
   }
 ]
 

@@ -1,40 +1,38 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
 import BackLink from '../../../../common/components/custom/BackLink'
 import { useNavigate } from 'react-router'
-import { useState } from 'react'
 import Radio from '../../../../common/components/gov-uk/Radio'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Button from '../../../../common/components/gov-uk/Button'
-import { useEffect } from 'react'
 
 export default function EditLocationOptionsPage () {
-    const navigate = useNavigate()
-    const [addLocationType,setAddLocationType] = useState('')
-    const [addLocationTypeError, setAddLocationTypeError] = useState('')
-    const editLocationOptions = [
-        {value:'Coordinates', label: 'Use X and Y coordinates'},
-        {value: 'Pin drop', label: 'Drop a pin on a map'}
-    ]
+  const navigate = useNavigate()
+  const [addLocationType, setAddLocationType] = useState('')
+  const [addLocationTypeError, setAddLocationTypeError] = useState('')
+  const editLocationOptions = [
+    { value: 'Coordinates', label: 'Use X and Y coordinates' },
+    { value: 'Pin drop', label: 'Drop a pin on a map' }
+  ]
 
-    useEffect(() => {
-        setAddLocationTypeError()
-    },[addLocationType])
+  useEffect(() => {
+    setAddLocationTypeError()
+  }, [addLocationType])
 
-    const handleButton = () => {
-        if(!addLocationType) {
-            // change this later when figma is answered
-            setAddLocationTypeError('select how you want to edit locations')
-        }else{
-            if (addLocationType === editLocationOptions[0].value){
-                //change when page made
-                navigate('/')
-            }else{
-                //Update this later when page made
-                navigate('/')
-            }
-        }
+  const handleButton = () => {
+    if (!addLocationType) {
+      // change this later when figma is answered
+      setAddLocationTypeError('select how you want to edit locations')
+    } else {
+      if (addLocationType === editLocationOptions[0].value) {
+        // change when page made
+        navigate('/organisation/manage-locations/edit/coordinates')
+      } else {
+        // Update this later when page made
+        navigate('/')
+      }
     }
+  }
 
   return (
     <>
@@ -43,11 +41,11 @@ export default function EditLocationOptionsPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-          {addLocationTypeError && (
+            {addLocationTypeError && (
               <ErrorSummary errorList={[addLocationTypeError]} />
             )}
             <h1 className='govuk-heading-l'>How do you want to change the existing location?</h1>
-            
+
             <div className='govuk-body'>
               <div
                 className={

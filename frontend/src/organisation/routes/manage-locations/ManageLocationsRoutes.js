@@ -42,6 +42,9 @@ const orgManageLocationsUrls = {
     findUnmatchedLocations:
       urlManageOrgUnmatchedLocations + '/find-unmatched-locations',
     manuallyfind: urlManageOrgUnmatchedLocations + '/manually-find'
+  },
+  edit:{
+    options: urlManageOrg + '/edit/location-options'
   }
 }
 

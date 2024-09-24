@@ -26,7 +26,7 @@ export default function EditLocationOptionsPage () {
     } else {
       if (addLocationType === editLocationOptions[0].value) {
         // change when page made
-        navigate('/organisation/manage-locations/edit/coordinates')
+        navigate('/organisation/manage-locations/add/xy-coordinates-search')
       } else {
         // Update this later when page made
         navigate('/')

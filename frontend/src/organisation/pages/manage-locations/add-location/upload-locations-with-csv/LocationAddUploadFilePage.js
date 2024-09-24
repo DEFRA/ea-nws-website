@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import BackLink from '../../../../common/components/custom/BackLink'
+import BackLink from '../../../../../common/components/custom/BackLink'
 
 export default function LocationAddUploadFilePage () {
   const navigate = useNavigate()

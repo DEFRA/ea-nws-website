@@ -1,8 +1,8 @@
 import React from 'react'
-import Button from '../../../../common/components/gov-uk/Button'
-import InsetText from '../../../../common/components/gov-uk/InsetText'
-import Details from '../../../../common/components/gov-uk/Details'
 import { useNavigate } from 'react-router-dom'
+import Button from '../../../../../../common/components/gov-uk/Button'
+import Details from '../../../../../../common/components/gov-uk/Details'
+import InsetText from '../../../../../../common/components/gov-uk/InsetText'
 
 export default function ConfirmLocationsPage () {
   const navigate = useNavigate()
@@ -12,7 +12,9 @@ export default function ConfirmLocationsPage () {
 
     // add matched address locations
     // navigate to decide if user wants to find unmatched locations
-    navigate('/organisation/manage-locations/unmatched-locations/find-unmatched-locations')
+    navigate(
+      '/organisation/manage-locations/unmatched-locations'
+    )
   }
 
   const handleCancel = async (event) => {
@@ -25,17 +27,23 @@ export default function ConfirmLocationsPage () {
     <div className='govuk-body'>
       <h1 className='govuk-heading-s'>Location partly matches an address</h1>
       <p>
-        A location is recognised as an address but some of the information does not match ours, for example the street name or postcode.
+        A location is recognised as an address but some of the information does
+        not match ours, for example the street name or postcode.
       </p>
       <p>
-        To find the correct address if it's partly matched, you can search from a drop-down list, match it to an address and then add it to your locations.
+        To find the correct address if it's partly matched, you can search from
+        a drop-down list, match it to an address and then add it to your
+        locations.
       </p>
       <h2 className='govuk-heading-s'>Address not found</h2>
       <p>
-        A location is not recognised, for example it may be a new address or uses a building name instead of a street address. Or it may be because the information is incorrectly typed or formatted.
+        A location is not recognised, for example it may be a new address or
+        uses a building name instead of a street address. Or it may be because
+        the information is incorrectly typed or formatted.
       </p>
       <p>
-        To find an address you can drop a pin on a map to select the address location. This can then be added to your locations.
+        To find an address you can drop a pin on a map to select the address
+        location. This can then be added to your locations.
       </p>
     </div>
   )
@@ -60,7 +68,7 @@ export default function ConfirmLocationsPage () {
               className='govuk-button govuk-button'
               onClick={handleLocations}
             />
-                &nbsp; &nbsp;
+            &nbsp; &nbsp;
             <Button
               text='Cancel upload'
               className='govuk-button govuk-button--warning inline-block'

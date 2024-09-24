@@ -1,15 +1,15 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import BackLink from '../../../../../../common/components/custom/BackLink'
-import Autocomplete from '../../../../../../common/components/gov-uk/Autocomplete'
-import Button from '../../../../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
-import InsetText from '../../../../../../common/components/gov-uk/InsetText'
+import BackLink from '../../../../../../../../common/components/custom/BackLink'
+import Autocomplete from '../../../../../../../../common/components/gov-uk/Autocomplete'
+import Button from '../../../../../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../../../../../common/components/gov-uk/ErrorSummary'
+import InsetText from '../../../../../../../../common/components/gov-uk/InsetText'
 import {
-  setCurrentLocationCoordinates
-} from '../../../../../../common/redux/userSlice'
-import { backendCall } from '../../../../../../common/services/BackendService'
+    setCurrentLocationCoordinates
+} from '../../../../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../../../../common/services/BackendService'
 
 export default function ProvideAreaNamePage () {
   const navigate = useNavigate()

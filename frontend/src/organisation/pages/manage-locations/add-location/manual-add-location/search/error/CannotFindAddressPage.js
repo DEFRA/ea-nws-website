@@ -5,6 +5,13 @@ import OrganisationAccountNavigation from '../../../../../../../common/component
 export default function CannotFindAddressPage() {
   const navigate = useNavigate()
 
+  const handleDifferentPostCode = () => {
+    navigate('/organisation/manage-locations/add/postcode-search')
+  }
+
+  const handleFindOnMap = () => {
+    navigate('/organisation/manage-locations/add/postcode-search')
+  }
   return (
     <>
       <OrganisationAccountNavigation />
@@ -25,10 +32,20 @@ export default function CannotFindAddressPage() {
                 You can:
                 <ul className='govuk-list govuk-list--bullet'>
                   <li>
-                    <Link>use a different postcode</Link>
+                    <Link
+                      onClick={handleDifferentPostCode}
+                      className='govuk-body govuk-link inline-link'
+                    >
+                      use a different postcode
+                    </Link>
                   </li>
                   <li>
-                    <Link>find the location on a map</Link>
+                    <Link
+                      onClick={handleFindOnMap}
+                      className='govuk-body govuk-link inline-link'
+                    >
+                      find the location on a map
+                    </Link>
                   </li>
                 </ul>
               </p>

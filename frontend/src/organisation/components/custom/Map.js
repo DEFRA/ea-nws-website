@@ -36,7 +36,7 @@ export default function Map ({
     const map = useMap()
 
     const handleClick = () => {
-      map.setView([latitude, longitude], 12)
+      map.setView([latitude, longitude], 14)
     }
 
     return (
@@ -133,7 +133,7 @@ export default function Map ({
     <div ref={ref}>
       <MapContainer
         center={center}
-        zoom={12}
+        zoom={14}
         zoomControl={false}
         attributionControl={false}
         minZoom={7}

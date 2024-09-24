@@ -76,8 +76,7 @@ export default function ProvideAreaNamePage () {
             )}
             <h1 className='govuk-heading-l'>Find location on a map</h1>
             <div className='govuk-body'>
-              {/* <InsetText text={fullAddress} /> */}
-              <InsetText text='25A BELGRAVE ROAD' />
+              <InsetText text={fullAddress} />
               <p>
                 This location cannot be found. We need some additional information to help us find it
               </p>

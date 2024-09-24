@@ -13,7 +13,7 @@ import Map from '../../../../../components/custom/Map'
 export default function SelectOnMapPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  // const fullAddress = useSelector((state) => state.session.currentLocation.meta_data.location_additional.full_address)
+  const fullAddress = useSelector((state) => state.session.currentLocation.meta_data.location_additional.full_address)
   const [pinCoords, setPinCoords] = useState('')
   const [error, setError] = useState('')
 
@@ -46,8 +46,7 @@ export default function SelectOnMapPage () {
               <p>
                 Click on the map to drop a pin where you think this location is. You can then add the location to this account.
               </p>
-              {/* <InsetText text={'For '+fullAddress} /> */}
-              <InsetText text='For 25A BELGRAVE ROAD' />
+              <InsetText text={'For '+fullAddress} />
               <Map coordinates={coordinates} setCoordinates={setPinCoords} type='drop' />
             </div>
             <Button

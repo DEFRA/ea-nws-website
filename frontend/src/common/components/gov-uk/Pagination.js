@@ -8,7 +8,6 @@ export default function Pagination({ totalPages, onPageChange, reset }) {
   }, [currentPage, onPageChange])
 
   useEffect(() => {
-    console.log('hit')
     setCurrentPage(1)
   }, [reset])
 

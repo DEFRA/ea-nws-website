@@ -36,7 +36,8 @@ const orgManageLocationsUrls = {
     searchOption: urlManageOrg + '/add/search-option',
     postCodeSearch: urlManageOrg + '/add/postcode-search',
     postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
-    confirmManualSearchedLocation: urlManageOrg + '/add/location-in-area/:type',
+    confirmManualSearchedLocation:
+      urlManageOrg + '/add/location-in-area/:flow/:type',
     optionalInfo: urlManageOrg + '/add/optional-location-info',
     optionalAddress: urlManageOrg + '/add/optional-address'
   },

@@ -562,11 +562,17 @@ export default function ViewLocationsDashboardPage() {
   }, [])
 
   const [currentPage, setCurrentPage] = useState(1)
+  const [resetPaging, setResetPaging] = useState(false)
   const locationsPerPage = 10
   const displayedLocations = filteredLocations.slice(
     (currentPage - 1) * locationsPerPage,
     currentPage * locationsPerPage
   )
+
+  useEffect(() => {
+    setCurrentPage(1)
+    setSelectedLocations([])
+  }, [resetPaging])
 
   // selected filters
   const [selectedLocationTypeFilters, setSelectedLocationTypeFilters] =
@@ -596,7 +602,9 @@ export default function ViewLocationsDashboardPage() {
                   onClick={() => setIsFilterVisible(!isFilterVisible)}
                 />
                 <LocationsTable
-                  locations={displayedLocations}
+                  locations={locations}
+                  displayedLocations={displayedLocations}
+                  filteredLocations={filteredLocations}
                   selectedLocations={selectedLocations}
                   setSelectedLocations={setSelectedLocations}
                 />
@@ -613,6 +621,8 @@ export default function ViewLocationsDashboardPage() {
                   <SearchFilter
                     locations={locations}
                     setFilteredLocations={setFilteredLocations}
+                    resetPaging={resetPaging}
+                    setResetPaging={setResetPaging}
                     selectedLocationTypeFilters={selectedLocationTypeFilters}
                     setSelectedLocationTypeFilters={
                       setSelectedLocationTypeFilters
@@ -639,7 +649,9 @@ export default function ViewLocationsDashboardPage() {
                     onClick={() => setIsFilterVisible(!isFilterVisible)}
                   />
                   <LocationsTable
-                    locations={displayedLocations}
+                    locations={locations}
+                    displayedLocations={displayedLocations}
+                    filteredLocations={filteredLocations}
                     selectedLocations={selectedLocations}
                     setSelectedLocations={setSelectedLocations}
                   />
@@ -648,6 +660,7 @@ export default function ViewLocationsDashboardPage() {
                       filteredLocations.length / locationsPerPage
                     )}
                     onPageChange={(val) => setCurrentPage(val)}
+                    reset={resetPaging}
                   />
                 </div>
               </div>

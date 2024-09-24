@@ -68,15 +68,17 @@ export default function LocationSearchResultsPage() {
 
   const navigateToNextPage = (isInAlertArea, isInWarningArea, isError) => {
     if (isInAlertArea && isInWarningArea) {
-      navigate(`/organisation/manage-locations/add/location-in-area/${'all'}`)
+      navigate(
+        '/organisation/manage-locations/add/location-in-area/postcode-search/all'
+      )
     } else if (isInAlertArea) {
       dispatch(setAdditionalAlerts(false))
       navigate(
-        `/organisation/manage-locations/add/location-in-area/${'alerts'}`
+        '/organisation/manage-locations/add/location-in-area/postcode-search/alerts'
       )
     } else if (!isInAlertArea && !isInWarningArea) {
       navigate(
-        `/organisation/manage-locations/add/location-in-area/${'no-alerts'}`
+        '/organisation/manage-locations/add/location-in-area/postcode-search/no-alerts'
       )
     } else if (isError) {
       navigate('/error')

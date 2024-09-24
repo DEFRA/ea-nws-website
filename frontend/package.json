@@ -49,7 +49,7 @@
     "eject": "react-scripts eject",
     "uitest": "python3 -m pytest test/selenium-test",
     "test": "jest",
-    "lint": "standard --fix"
+    "lint": "standard"
   },
   "eslintConfig": {
     "extends": [

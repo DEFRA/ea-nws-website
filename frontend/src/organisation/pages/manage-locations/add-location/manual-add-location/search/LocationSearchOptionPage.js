@@ -45,7 +45,9 @@ export default function LocationSearchOptionPage() {
     navigate(-1)
   }
 
-  const locationName = useSelector((state) => state.session.locationName)
+  const locationName = useSelector(
+    (state) => state.session.currentLocation.name
+  )
   const searchOptions = [
     { label: 'Use a postcode', value: 'UseAPostcode' },
     { label: 'Use X and Y coordinates', value: 'UseXAndYCoordinates' },

@@ -7,7 +7,7 @@ import Button from '../../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../../../../common/components/gov-uk/Input'
 import {
-  setLocationPostCode,
+  setCurrentLocationPostcode,
   setLocationSearchResults
 } from '../../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../../common/services/BackendService'
@@ -34,7 +34,7 @@ export default function LocationPostCodeSearchPage() {
         navigate
       )
       if (!errorMessage) {
-        dispatch(setLocationPostCode(data[0].postcode))
+        dispatch(setCurrentLocationPostcode(data[0].postcode))
         dispatch(setLocationSearchResults(data))
         navigate(orgManageLocationsUrls.add.postCodeSearchResults)
       } else {

@@ -6,46 +6,18 @@ import BackLink from '../../../../common/components/custom/BackLink'
 import FloodWarningKey from '../../../../common/components/custom/FloodWarningKey'
 import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../common/components/gov-uk/Button'
-import { convertCoordinatesToEspg27700 } from '../../../../common/services/CoordinatesFormatConverter'
 import Map from '../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmLocationLayout() {
+export default function ConfirmLocationLayout () {
   const navigate = useNavigate()
-  let { type } = useParams()
-  let { flow } = useParams()
+  const { type } = useParams()
+  const { flow } = useParams()
   const locationName = useSelector((state) => state.session.locationName)
-  const selectedLocation = useSelector(
-    (state) => state.session.selectedLocation
-  )
-  const formattedAddress = selectedLocation.name.split(',')
-  const coordinates = selectedLocation.coordinates
-
-  const getCoordinatesToDisplay = (flow) => {
-    switch (flow) {
-      case 'postcode-search':
-        return convertCoordinatesToEspg27700(
-          selectedLocation.coordinates.longitude,
-          selectedLocation.coordinates.latitude
-        )
-      case 'xy-coordinates-search':
-        return (
-          selectedLocation.coordinates.longitude,
-          selectedLocation.coordinates.latitude
-        )
-    }
-  }
-
-  const { latitude, longitude } = getCoordinatesToDisplay(flow)
-
-  const handleSubmit = () => {
-    navigate(orgManageLocationsUrls.add.optionalInfo)
-  }
-
-  const navigateBack = (event) => {
-    event.preventDefault()
-    navigate(-1)
-  }
+  const currentLocation = useSelector((state) => state.session.currentLocation)
+  const formattedAddress =
+    currentLocation.meta_data.location_additional.full_address.split(',')
+  const coordinatesForMap = currentLocation.coordinates
 
   const getFloodMessage = (type) => {
     switch (type) {
@@ -76,6 +48,17 @@ export default function ConfirmLocationLayout() {
   const { floodMessagesAvailableHeader, floodInfoMessage } =
     getFloodMessage(type)
 
+  const handleSubmit = () => {
+    // do we need to do anything else here?
+
+    navigate(orgManageLocationsUrls.add.optionalInfo)
+  }
+
+  const navigateBack = (event) => {
+    event.preventDefault()
+    navigate(-1)
+  }
+
   return (
     <>
       <OrganisationAccountNavigation />
@@ -96,12 +79,12 @@ export default function ConfirmLocationLayout() {
                   Address
                 </h3>
                 <p>
-                  {formattedAddress.map((line) => {
+                  {formattedAddress.map((line, index) => {
                     return (
-                      <>
+                      <p key={index}>
                         {line}
                         <br />
-                      </>
+                      </p>
                     )
                   })}
                 </p>
@@ -111,15 +94,22 @@ export default function ConfirmLocationLayout() {
               X and Y Coordinates
             </h3>
             <p>
-              {Math.round(latitude)}, {Math.round(longitude)}
+              {/* {Math.round(latitude)}, {Math.round(longitude)} */}
+              {Math.round(
+                currentLocation.meta_data.location_additional.x_coordinate
+              )}
+              ,
+              {Math.round(
+                currentLocation.meta_data.location_additional.y_coordinate
+              )}
             </p>
             {flow === 'xy-coordinates-search' && (
               <>
-                <Link to={'james to update'} className='govuk-link'>
+                <Link to='james to update' className='govuk-link'>
                   Move the pin on the map
                 </Link>
                 <br />
-                <Link to={'james to update'} className='govuk-link'>
+                <Link to='james to update' className='govuk-link'>
                   Use different X and Y coordinates
                 </Link>
               </>
@@ -149,11 +139,11 @@ export default function ConfirmLocationLayout() {
             style={{ marginTop: '105px' }}
           >
             <Map
-              coordinates={coordinates}
+              coordinates={coordinatesForMap}
               showMapControls={false}
               zoomLevel={14}
             />
-            <FloodWarningKey type={'both'} />
+            <FloodWarningKey type='both' />
             <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
               This is not a live flood map
             </span>

@@ -6,30 +6,21 @@ proj4.defs(
 )
 proj4.defs('EPSG:4326', '+proj=longlat +datum=WGS84 +no_defs')
 
-const areCoordinatesInEspg4326 = (x, y) => {
-  return x >= -180 && x <= 180 && y >= -90 && y <= 90
-}
-
-const areCoordinatesInEspg27700 = (x, y) => {
-  return x >= 100000 && x <= 800000 && y >= 0 && y <= 1300000
-}
-
 // Converts from EPSG:4326 (WGS 84) to EPSG:27700 (British National Grid)
-export const convertCoordinatesToEspg27700 = (x, y) => {
-  if (areCoordinatesInEspg27700(x, y)) {
-    return { latitude: y, longitude: x }
-  }
-  const [longitude, latitude] = proj4('EPSG:4326', 'EPSG:27700', [x, y])
-  return { latitude, longitude }
+export const convertCoordinatesToEspg27700 = (longitude, latitude) => {
+  const [northing, easting] = proj4('EPSG:4326', 'EPSG:27700', [
+    longitude,
+    latitude
+  ])
+  return { northing, easting }
 }
 
 // Converts from EPSG:27700 (British National Grid) to EPSG:4326 (WGS 84)
-export const convertCoordinatesToEspg4326 = (x, y) => {
-  if (areCoordinatesInEspg4326(x, y)) {
-    // Coordinates already in EPSG:4326, no conversion needed
-    return { latitude: y, longitude: x }
-  }
-  const [longitude, latitude] = proj4('EPSG:27700', 'EPSG:4326', [x, y])
+export const convertCoordinatesToEspg4326 = (easting, northing) => {
+  const [longitude, latitude] = proj4('EPSG:27700', 'EPSG:4326', [
+    easting,
+    northing
+  ])
 
   return { latitude, longitude }
 }

@@ -7,7 +7,7 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AddLocationOptionsPage() {
+export default function AddLocationOptionsPage () {
   const navigate = useNavigate()
   const [addLocationType, setAddLocationType] = useState('')
   const [addLocationTypeError, setAddLocationTypeError] = useState('')
@@ -34,12 +34,12 @@ export default function AddLocationOptionsPage() {
           navigate(orgManageLocationsUrls.add.addressInfo)
           break
         case addLocationOptions[1].value:
-          //Someone to update
-          //navigate(orgManageLocationsUrls.add.addressInfo)
+          // Someone to update
+          // navigate(orgManageLocationsUrls.add.addressInfo)
           break
         case addLocationOptions[2].value:
-          //Someone to update
-          //navigate(orgManageLocationsUrls.add.addressInfo)
+          // Someone to update
+          // navigate(orgManageLocationsUrls.add.addressInfo)
           break
         case addLocationOptions[3].value:
           navigate(orgManageLocationsUrls.add.name)

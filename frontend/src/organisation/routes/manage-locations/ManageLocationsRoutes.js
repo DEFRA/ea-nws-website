@@ -13,6 +13,7 @@ import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-locatio
 import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
 
+import CannotFindAddressPage from '../../pages/manage-locations/add-location/manual-add-location/search/error/CannotFindAddressPage'
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgUnmatchedLocations =
   '/organisation/manage-locations/unmatched-locations'
@@ -32,7 +33,10 @@ const orgManageLocationsUrls = {
     postCodeSearch: urlManageOrg + '/add/postcode-search',
     postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
     optionalInfo: urlManageOrg + '/add/optional-location-info',
-    optionalAddress: urlManageOrg + '/add/optional-address'
+    optionalAddress: urlManageOrg + '/add/optional-address',
+    error: {
+      cannotFindAddress: urlManageOrg + '/add/cannot-find-address'
+    }
   },
   unmatchedLocations: {
     doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
@@ -99,6 +103,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.optionalAddress,
     component: <AddOptionalAddress />
+  },
+  {
+    path: orgManageLocationsUrls.add.error.cannotFindAddress,
+    component: <CannotFindAddressPage />
   }
 ]
 

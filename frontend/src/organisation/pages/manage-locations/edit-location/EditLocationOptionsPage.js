@@ -25,10 +25,9 @@ export default function EditLocationOptionsPage () {
       setAddLocationTypeError('Select how you want to edit locations')
     } else {
       if (addLocationType === editLocationOptions[0].value) {
-        // change when page made
         navigate('/organisation/manage-locations/add/xy-coordinates-search')
       } else {
-        // Update this later when page made
+        // Update this later when page made interactive map with pin is made
         navigate('/')
       }
     }

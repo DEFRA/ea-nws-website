@@ -9,25 +9,25 @@ import Button from '../../../../common/components/gov-uk/Button'
 export default function EditLocationOptionsPage () {
   const navigate = useNavigate()
   const [addLocationType, setAddLocationType] = useState('')
-  const [addLocationTypeError, setAddLocationTypeError] = useState('')
+  const [Error, setError] = useState('')
   const editLocationOptions = [
     { value: 'Coordinates', label: 'Use X and Y coordinates' },
     { value: 'Pin drop', label: 'Drop a pin on a map' }
   ]
 
   useEffect(() => {
-    setAddLocationTypeError()
+    setError()
   }, [addLocationType])
 
   const handleButton = () => {
     if (!addLocationType) {
-      // change this later when figma is answered
-      setAddLocationTypeError('Select how you want to edit locations')
+      // ToDo change this later when figma is answered
+      setError('Select how you want to edit locations')
     } else {
       if (addLocationType === editLocationOptions[0].value) {
         navigate('/organisation/manage-locations/add/xy-coordinates-search')
       } else {
-        // Update this later when page made interactive map with pin is made
+        // ToDo Update this later when page made interactive map with pin is made
         navigate('/')
       }
     }
@@ -40,23 +40,23 @@ export default function EditLocationOptionsPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {addLocationTypeError && (
-              <ErrorSummary errorList={[addLocationTypeError]} />
+            {Error && (
+              <ErrorSummary errorList={[Error]} />
             )}
             <h1 className='govuk-heading-l'>How do you want to change the existing location?</h1>
 
             <div className='govuk-body'>
               <div
                 className={
-                  addLocationTypeError
+                  Error
                     ? 'govuk-form-group govuk-form-group--error'
                     : 'govuk-form-group'
                 }
               >
                 <div className='govuk-radios' data-module='govuk-radios'>
-                  {addLocationTypeError && (
+                  {Error && (
                     <p className='govuk-error-message'>
-                      {addLocationTypeError}
+                      {Error}
                     </p>
                   )}
                   {editLocationOptions.map((option) => (

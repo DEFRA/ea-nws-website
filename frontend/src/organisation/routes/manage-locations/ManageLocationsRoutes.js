@@ -109,6 +109,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.edit.options,
     component: <EditLocationOptionsPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.coordinates,
+    component: <EditLocationCoordinatesPage />
   }
 ]
 

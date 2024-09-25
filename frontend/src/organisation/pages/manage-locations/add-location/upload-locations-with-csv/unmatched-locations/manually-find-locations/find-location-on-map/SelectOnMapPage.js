@@ -55,7 +55,7 @@ export default function SelectOnMapPage () {
               <p>
                 Click on the map to drop a pin where you think this location is. You can then add the location to this account.
               </p>
-              <InsetText text={'For '+fullAddress} />
+              <InsetText text={'For ' + fullAddress} />
               <Map coordinates={coordinates} setCoordinates={setPinCoords} type='drop' />
             </div>
             <Button

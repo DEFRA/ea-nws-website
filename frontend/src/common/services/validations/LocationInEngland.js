@@ -3,7 +3,7 @@ import { backendCall } from '../BackendService'
 
 export const locationInEngland = async (lat, lng) => {
   // warning areas
-  let WFSParams = {
+  const WFSParams = {
     service: 'WFS',
     map: 'uk-ob.qgz',
     version: '1.1.0',
@@ -23,6 +23,4 @@ export const locationInEngland = async (lat, lng) => {
   const poly = turf.multiPolygon(geojson.features[0].geometry.coordinates)
   const isInEngland = turf.booleanPointInPolygon(point, poly)
   return isInEngland
-
 }
-

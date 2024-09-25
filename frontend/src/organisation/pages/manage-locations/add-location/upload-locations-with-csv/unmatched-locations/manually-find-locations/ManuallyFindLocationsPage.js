@@ -122,12 +122,12 @@ export default function ManuallyFindLocationsPage () {
     <>
       {location.state &&
          (
-          <NotificationBanner
-            className={`govuk-notification-banner ${location.state === 'Added' && 'govuk-notification-banner--success'} govuk-!-margin-bottom-0 govuk-!-margin-top-4`}
-            title={location.state === 'Added' ? 'Success' : 'Information'}
-            text={location.state === 'Added' ? '1 Location Added' : '1 location cannot be added because it\'s not in England'}
-          />
-          )}
+           <NotificationBanner
+             className={`govuk-notification-banner ${location.state === 'Added' && 'govuk-notification-banner--success'} govuk-!-margin-bottom-0 govuk-!-margin-top-4`}
+             title={location.state === 'Added' ? 'Success' : 'Information'}
+             text={location.state === 'Added' ? '1 Location Added' : '1 location cannot be added because it\'s not in England'}
+           />
+         )}
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

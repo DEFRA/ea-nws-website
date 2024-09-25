@@ -15,18 +15,19 @@ import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
+import { useSelector } from 'react-redux'
 import TileLayerWithHeader from '../../../common/components/custom/TileLayerWithHeader'
 import { backendCall } from '../../../common/services/BackendService'
 import { getSurroundingFloodAreas } from '../../../common/services/WfsFloodDataService'
 
-export default function Map ({
+export default function Map({
   type,
-  coordinates,
   setCoordinates,
   showMapControls = true,
   zoomLevel = 12
 }) {
-  const { latitude, longitude } = coordinates
+  const currentLocation = useSelector((state) => state.session.currentLocation)
+  const { latitude, longitude } = currentLocation.coordinates
   const [apiKey, setApiKey] = useState(null)
   const [marker, setMarker] = useState(null)
   const center = [latitude, longitude]
@@ -35,7 +36,7 @@ export default function Map ({
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData () {
+    async function fetchFloodAreaData() {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude
@@ -72,7 +73,7 @@ export default function Map ({
 
   L.Marker.prototype.options.icon = DefaultIcon
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
     setApiKey(data.access_token)
   }
@@ -123,7 +124,7 @@ export default function Map ({
   )
   const ref = useRef(null)
 
-  function AddMarker () {
+  function AddMarker() {
     useMapEvents({
       click: (e) => {
         const mapHeight = ref.current.clientHeight
@@ -164,13 +165,11 @@ export default function Map ({
             <ResetMapButton />
           </>
         )}
-        {type === 'drop'
-          ? (
-            <AddMarker />
-            )
-          : (
-            <Marker position={center} interactive={false} />
-            )}
+        {type === 'drop' ? (
+          <AddMarker />
+        ) : (
+          <Marker position={center} interactive={false} />
+        )}
         {warningArea && (
           <GeoJSON data={warningArea} style={{ color: '#f70202' }} />
         )}

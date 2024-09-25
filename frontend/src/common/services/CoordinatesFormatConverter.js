@@ -8,7 +8,7 @@ proj4.defs('EPSG:4326', '+proj=longlat +datum=WGS84 +no_defs')
 
 // Converts from EPSG:4326 (WGS 84) to EPSG:27700 (British National Grid)
 export const convertCoordinatesToEspg27700 = (longitude, latitude) => {
-  const [northing, easting] = proj4('EPSG:4326', 'EPSG:27700', [
+  const [easting, northing] = proj4('EPSG:4326', 'EPSG:27700', [
     longitude,
     latitude
   ])

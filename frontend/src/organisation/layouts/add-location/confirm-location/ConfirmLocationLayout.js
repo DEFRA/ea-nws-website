@@ -3,21 +3,22 @@ import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
-import FloodWarningKey from '../../../../common/components/custom/FloodWarningKey'
 import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../common/components/gov-uk/Button'
+import FloodWarningKey from '../../../components/custom/FloodWarningKey'
 import Map from '../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmLocationLayout () {
+export default function ConfirmLocationLayout() {
   const navigate = useNavigate()
   const { type } = useParams()
   const { flow } = useParams()
-  const locationName = useSelector((state) => state.session.locationName)
   const currentLocation = useSelector((state) => state.session.currentLocation)
+  const locationName = currentLocation.name
   const formattedAddress =
-    currentLocation.meta_data.location_additional.full_address.split(',')
-  const coordinatesForMap = currentLocation.coordinates
+    flow === 'postcode-search'
+      ? currentLocation.meta_data.location_additional.full_address.split(',')
+      : ''
 
   const getFloodMessage = (type) => {
     switch (type) {
@@ -81,10 +82,10 @@ export default function ConfirmLocationLayout () {
                 <p>
                   {formattedAddress.map((line, index) => {
                     return (
-                      <p key={index}>
+                      <span key={index}>
                         {line}
                         <br />
-                      </p>
+                      </span>
                     )
                   })}
                 </p>
@@ -94,11 +95,10 @@ export default function ConfirmLocationLayout () {
               X and Y Coordinates
             </h3>
             <p>
-              {/* {Math.round(latitude)}, {Math.round(longitude)} */}
               {Math.round(
                 currentLocation.meta_data.location_additional.x_coordinate
               )}
-              ,
+              {', '}
               {Math.round(
                 currentLocation.meta_data.location_additional.y_coordinate
               )}
@@ -136,14 +136,12 @@ export default function ConfirmLocationLayout () {
           </div>
           <div
             className='govuk-grid-column-one-half'
-            style={{ marginTop: '105px' }}
+            style={{ marginTop: '95px' }}
           >
-            <Map
-              coordinates={coordinatesForMap}
-              showMapControls={false}
-              zoomLevel={14}
-            />
-            <FloodWarningKey type='both' />
+            <Map showMapControls={false} zoomLevel={14} />
+            <div className='govuk-!-margin-top-4'>
+              <FloodWarningKey type='both' />
+            </div>
             <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
               This is not a live flood map
             </span>

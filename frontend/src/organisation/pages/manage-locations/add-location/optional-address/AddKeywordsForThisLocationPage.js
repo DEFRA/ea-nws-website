@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import BackLink from '../../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
-import Button from '../../../../../../common/components/gov-uk/Button'
-import Details from '../../../../../../common/components/gov-uk/Details'
-import Input from '../../../../../../common/components/gov-uk/Input'
-import { setCurrentLocationKeywords } from '../../../../../../common/redux/userSlice'
-export default function KeywordsForThisLocationPage () {
+import BackLink from '../../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
+import Button from '../../../../../common/components/gov-uk/Button'
+import Details from '../../../../../common/components/gov-uk/Details'
+import Input from '../../../../../common/components/gov-uk/Input'
+import { setCurrentLocationKeywords } from '../../../../../common/redux/userSlice'
+export default function KeywordsForThisLocationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [keyword, setKeyword] = useState('')

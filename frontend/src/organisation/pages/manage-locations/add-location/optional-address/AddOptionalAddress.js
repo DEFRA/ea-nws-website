@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
-import BackLink from '../../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
-import Button from '../../../../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
-import Input from '../../../../../../common/components/gov-uk/Input'
+import BackLink from '../../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
+import Button from '../../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
+import Input from '../../../../../common/components/gov-uk/Input'
 import {
   setCurrentLocationFullAddress,
   setCurrentLocationPostcode
-} from '../../../../../../common/redux/userSlice'
-import { postCodeValidation } from '../../../../../../common/services/validations/PostCodeValidation'
+} from '../../../../../common/redux/userSlice'
+import { postCodeValidation } from '../../../../../common/services/validations/PostCodeValidation'
 
-export default function AddOptionalAddress () {
+export default function AddOptionalAddress() {
   const navigate = useNavigate()
   const [addressLine1, setAddressLine1] = useState('')
   const [addressLine2, setAddressLine2] = useState('')

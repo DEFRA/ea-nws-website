@@ -7,9 +7,14 @@ import OrganisationAccountNavigation from '../../../../../../../common/component
 import Button from '../../../../../../../common/components/gov-uk/Button'
 import Pagination from '../../../../../../../common/components/gov-uk/Pagination'
 import {
-  setAdditionalAlerts,
-  setSelectedLocation
+  setCurrentLocationCoordinates,
+  setCurrentLocationEasting,
+  setCurrentLocationFullAddress,
+  setCurrentLocationNorthing,
+  setCurrentLocationPostcode,
+  setCurrentLocationUPRN
 } from '../../../../../../../common/redux/userSlice'
+import { convertCoordinatesToEspg27700 } from '../../../../../../../common/services/CoordinatesFormatConverter'
 import {
   getSurroundingFloodAreas,
   isLocationInFloodArea
@@ -37,7 +42,18 @@ export default function LocationSearchResultsPage() {
 
     setLoading(true)
     try {
-      dispatch(setSelectedLocation(selectedLocation))
+      dispatch(setCurrentLocationUPRN(selectedLocation.address))
+      dispatch(setCurrentLocationCoordinates(selectedLocation.coordinates))
+      dispatch(setCurrentLocationFullAddress(selectedLocation.name))
+      dispatch(setCurrentLocationPostcode(selectedLocation.name))
+
+      const { northing, easting } = convertCoordinatesToEspg27700(
+        selectedLocation.coordinates.longitude,
+        selectedLocation.coordinates.latitude
+      )
+
+      dispatch(setCurrentLocationNorthing(northing))
+      dispatch(setCurrentLocationEasting(easting))
 
       const { warningArea, alertArea } = await getSurroundingFloodAreas(
         selectedLocation.coordinates.latitude,
@@ -70,15 +86,16 @@ export default function LocationSearchResultsPage() {
 
   const navigateToNextPage = (isInAlertArea, isInWarningArea, isError) => {
     if (isInAlertArea && isInWarningArea) {
-      navigate(`/organisation/manage-locations/add/location-in-area/${'all'}`)
-    } else if (isInAlertArea) {
-      dispatch(setAdditionalAlerts(false))
       navigate(
-        `/organisation/manage-locations/add/location-in-area/${'alerts'}`
+        '/organisation/manage-locations/add/location-in-area/postcode-search/all'
+      )
+    } else if (isInAlertArea) {
+      navigate(
+        '/organisation/manage-locations/add/location-in-area/postcode-search/alerts'
       )
     } else if (!isInAlertArea && !isInWarningArea) {
       navigate(
-        `/organisation/manage-locations/add/location-in-area/${'no-alerts'}`
+        '/organisation/manage-locations/add/location-in-area/postcode-search/no-alerts'
       )
     } else if (isError) {
       navigate('/error')

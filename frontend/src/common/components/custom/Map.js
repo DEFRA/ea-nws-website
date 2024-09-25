@@ -22,9 +22,10 @@ import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { backendCall } from '../../services/BackendService'
+import { convertCoordinatesToEspg4326 } from '../../services/CoordinatesFormatConverter'
 import TileLayerWithHeader from './TileLayerWithHeader'
 
-export default function Map ({
+export default function Map({
   types,
   setFloodAreas,
   mobileView,
@@ -36,7 +37,11 @@ export default function Map ({
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
-  const { latitude, longitude } = selectedLocation.coordinates
+  // always convert to ESPG 4326 - react leaflet requires this
+  const { latitude, longitude } = convertCoordinatesToEspg4326(
+    selectedLocation.coordinates.longitude,
+    selectedLocation.coordinates.latitude
+  )
   const [apiKey, setApiKey] = useState(null)
   // used when user selects flood area when location is within proximity
   const selectedFloodWarningArea = useSelector(
@@ -57,7 +62,7 @@ export default function Map ({
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData () {
+    async function fetchFloodAreaData() {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude
@@ -98,10 +103,7 @@ export default function Map ({
   ) => {
     if (warningAreaRefVisible && types.includes('severe')) {
       warningAreaRef.current.eachLayer((layer) => {
-        if (
-          layer.feature.id ===
-          selectedFloodWarningArea.id
-        ) {
+        if (layer.feature.id === selectedFloodWarningArea.id) {
           layer.bringToFront()
           layer.setStyle({
             color: 'black',
@@ -119,10 +121,7 @@ export default function Map ({
 
     if (alertAreaRefVisible && types.includes('alert')) {
       alertAreaRef.current.eachLayer((layer) => {
-        if (
-          layer.feature.id ===
-          selectedFloodAlertArea.id
-        ) {
+        if (layer.feature.id === selectedFloodAlertArea.id) {
           layer.bringToFront()
           layer.setStyle({
             color: 'black',
@@ -145,10 +144,7 @@ export default function Map ({
   ) => {
     if (warningAreaRefVisible && types.includes('severe')) {
       warningAreaRef.current.eachLayer((layer) => {
-        if (
-          layer.feature.id ===
-          selectedFloodWarningArea.id
-        ) {
+        if (layer.feature.id === selectedFloodWarningArea.id) {
           layer.setStyle({
             fillColor: '#f70202'
           })
@@ -160,10 +156,7 @@ export default function Map ({
 
     if (alertAreaRefVisible && types.includes('alert')) {
       alertAreaRef.current.eachLayer((layer) => {
-        if (
-          layer.feature.id ===
-          selectedFloodAlertArea.id
-        ) {
+        if (layer.feature.id === selectedFloodAlertArea.id) {
           layer.setStyle({
             fillColor: '#ffa200'
           })
@@ -219,7 +212,7 @@ export default function Map ({
 
   L.Marker.prototype.options.icon = DefaultIcon
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
     setApiKey(data.access_token)
   }
@@ -269,7 +262,7 @@ export default function Map ({
     [apiKey]
   )
 
-  function SetMapBoundsToShowFullFloodArea () {
+  function SetMapBoundsToShowFullFloodArea() {
     const map = useMap()
     useEffect(() => {
       if (

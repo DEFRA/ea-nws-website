@@ -1,4 +1,5 @@
 import AddLocationOptionsPage from '../../pages/manage-locations/add-location/AddLocationOptionsPage'
+import ConfirmLocationPage from '../../pages/manage-locations/add-location/manual-add-location/confirm-location/ConfirmLocationPage'
 import LocationNamePage from '../../pages/manage-locations/add-location/manual-add-location/name/LocationNamePage'
 import AddOptionalAddress from '../../pages/manage-locations/add-location/manual-add-location/optional-address/AddOptionalAddress'
 import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/manual-add-location/optional-address/OptionalLocationInformationPage'
@@ -8,7 +9,7 @@ import LocationPostCodeSearchResultsPage from '../../pages/manage-locations/add-
 import LocationXYCoordinatesSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/xy-coordinates/LocationXYCoordinatesSearchPage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
-import ConfirmLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
+import ConfirmAddingLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
 import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
@@ -25,6 +26,10 @@ const orgManageLocationsUrls = {
     dashboard: urlManageOrg + '/view-locations'
   },
   add: {
+    addLocationWithinBoundaries: {},
+    manualAddLocation: {},
+    uploadLocationsWithCsv: {},
+    addLocationsWithShapefile: {},
     options: urlManageOrg + '/add',
     addressInfo: urlManageOrg + '/add/address-info',
     uploadFile: urlManageOrg + '/add/upload-file',
@@ -33,6 +38,8 @@ const orgManageLocationsUrls = {
     postCodeSearch: urlManageOrg + '/add/postcode-search',
     postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
     xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search',
+    confirmManualSearchedLocation:
+      urlManageOrg + '/add/location-in-area/:flow/:type',
     optionalInfo: urlManageOrg + '/add/optional-location-info',
     optionalAddress: urlManageOrg + '/add/optional-address'
   },
@@ -74,6 +81,11 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.add.postCodeSearchResults,
     component: <LocationPostCodeSearchResultsPage />
   },
+
+  {
+    path: orgManageLocationsUrls.add.confirmManualSearchedLocation,
+    component: <ConfirmLocationPage />
+  },
   {
     path: orgManageLocationsUrls.add.postCodeSearch,
     component: <LocationPostCodeSearchPage />
@@ -96,7 +108,7 @@ const orgManageLocationRoutes = [
   },
   {
     path: urlManageOrgConfirmLocations,
-    component: <ConfirmLocationsPage />
+    component: <ConfirmAddingLocationsPage />
   },
   {
     path: orgManageLocationsUrls.add.optionalInfo,

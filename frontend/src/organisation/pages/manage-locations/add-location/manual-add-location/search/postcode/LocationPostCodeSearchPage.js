@@ -17,7 +17,6 @@ import { orgManageLocationsUrls } from '../../../../../../routes/manage-location
 export default function LocationPostCodeSearchPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
   const [postCode, setPostCode] = useState('')
   const [error, setError] = useState('')
 

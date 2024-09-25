@@ -7,9 +7,11 @@ import Button from '../../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../../../../common/components/gov-uk/Input'
 import {
+  setCurrentLocationCoordinates,
   setCurrentLocationEasting,
   setCurrentLocationNorthing
 } from '../../../../../../../common/redux/userSlice'
+import { convertCoordinatesToEspg4326 } from '../../../../../../../common/services/CoordinatesFormatConverter'
 import { xCoordinateValidation } from '../../../../../../../common/services/validations/XCoordinateValidation'
 import { yCoordinateValidation } from '../../../../../../../common/services/validations/YCoordinateValidation'
 
@@ -38,9 +40,20 @@ export default function LocationXYCoordinatesSearchPage() {
     }
 
     if (!xCoordinateValidationError && !yCoordinateValidationError) {
+      const { latitude, longitude } = convertCoordinatesToEspg4326(
+        Number(xCoordinate),
+        Number(yCoordinate)
+      )
+
+      const coordinates = { latitude, longitude }
+      dispatch(setCurrentLocationCoordinates(coordinates))
+
       dispatch(setCurrentLocationEasting(Number(xCoordinate)))
       dispatch(setCurrentLocationNorthing(Number(yCoordinate)))
-      //navigate(orgManageLocationsUrls.add.searchOption)
+
+      navigate(
+        '/organisation/manage-locations/add/location-in-area/xy-coordinates-search/all'
+      )
     }
   }
 

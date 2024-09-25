@@ -1,15 +1,20 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function LocationsTable ({ locations }) {
-  const [selectedLocations, setSelectedLocations] = useState([])
+export default function LocationsTable({
+  locations,
+  displayedLocations,
+  filteredLocations,
+  selectedLocations,
+  setSelectedLocations
+}) {
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
 
   const handleHeaderCheckboxChange = (event) => {
     const isChecked = event.target.checked
     setIsTopCheckboxChecked(isChecked)
     if (isChecked) {
-      setSelectedLocations(locations)
+      setSelectedLocations(displayedLocations)
     } else {
       setSelectedLocations([])
     }
@@ -30,7 +35,9 @@ export default function LocationsTable ({ locations }) {
 
   return (
     <>
-      <p className='govuk-!-margin-bottom-6'>700 locations</p>
+      <p className='govuk-!-margin-bottom-6'>
+        showing {filteredLocations.length} of {locations.length} locations
+      </p>
       <table className='govuk-table govuk-table--small-text-until-tablet'>
         <thead className='govuk-table__head'>
           <tr className='govuk-table__row'>
@@ -67,7 +74,7 @@ export default function LocationsTable ({ locations }) {
           </tr>
         </thead>
         <tbody className='govuk-table__body'>
-          {locations.map((location, index) => (
+          {displayedLocations.map((location, index) => (
             <tr className='govuk-table__row' key={index}>
               <th scope='row' className='govuk-table__header'>
                 <div

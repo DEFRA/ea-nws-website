@@ -10,7 +10,6 @@ import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/M
 
 export default function LocationSearchOptionPage() {
   const navigate = useNavigate()
-
   const [searchOption, setSearchOption] = useState('')
   const [error, setError] = useState('')
 

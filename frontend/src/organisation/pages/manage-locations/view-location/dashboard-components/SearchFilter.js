@@ -8,9 +8,11 @@ import { useState } from 'react'
 import Button from '../../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../../common/components/gov-uk/CheckBox'
 
-export default function SearchFilter ({
+export default function SearchFilter({
   locations,
   setFilteredLocations,
+  resetPaging,
+  setResetPaging,
   selectedLocationTypeFilters,
   setSelectedLocationTypeFilters,
   selectedFloodMessagesAvailbleFilters,
@@ -77,8 +79,8 @@ export default function SearchFilter ({
 
     // Apply Location name filter
     if (locationNameFilter) {
-      filteredLocations = filteredLocations.filter(
-        (location) => location.name === locationNameFilter
+      filteredLocations = filteredLocations.filter((location) =>
+        location.name.toLowerCase().includes(locationNameFilter.toLowerCase())
       )
     }
 
@@ -120,6 +122,7 @@ export default function SearchFilter ({
       )
     }
 
+    setResetPaging(!resetPaging)
     setFilteredLocations(filteredLocations)
   }
 

@@ -13,7 +13,6 @@ import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/M
 export default function LocationNamePage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
   const [name, setName] = useState('')
   const [error, setError] = useState('')
 

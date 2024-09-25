@@ -16,10 +16,7 @@ export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
     outputFormat: 'GEOJSON'
   }
 
-  const { data: wfsWarningData } = await backendCall(
-    WFSParams,
-    'api/wfs'
-  )
+  const { data: wfsWarningData } = await backendCall(WFSParams, 'api/wfs')
 
   // alert area
   WFSParams = {
@@ -32,10 +29,7 @@ export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
     bbox: calculateBoundingBox(lat, lng, bboxKM),
     outputFormat: 'GEOJSON'
   }
-  const { data: wfsAlertData } = await backendCall(
-    WFSParams,
-    'api/wfs'
-  )
+  const { data: wfsAlertData } = await backendCall(WFSParams, 'api/wfs')
 
   return {
     alertArea: wfsAlertData,
@@ -57,10 +51,7 @@ export const getAssociatedAlertArea = async (lat, lng, code) => {
     bbox: calculateBoundingBox(lat, lng, bboxKM),
     outputFormat: 'GEOJSON'
   }
-  const { data: wfsAlertData } = await backendCall(
-    WFSParams,
-    'api/wfs'
-  )
+  const { data: wfsAlertData } = await backendCall(WFSParams, 'api/wfs')
 
   const filteredOutOtherAlertAreas = wfsAlertData?.features.filter(
     (floodArea) => floodArea.properties.FWS_TACODE === code
@@ -113,7 +104,7 @@ export const getCoordsOfFloodArea = (area) => {
   return firstLatLngCoords
 }
 
-function getFirstCoordinates (nestedArray) {
+function getFirstCoordinates(nestedArray) {
   let current = nestedArray
   while (Array.isArray(current[0])) {
     current = current[0]
@@ -121,7 +112,7 @@ function getFirstCoordinates (nestedArray) {
   return { latitude: current[1], longitude: current[0] }
 }
 
-function checkPointInPolygon (lat, lng, geojson) {
+function checkPointInPolygon(lat, lng, geojson) {
   const point = L.latLng(lat, lng)
 
   // Check each area in the GeoJSON data
@@ -138,7 +129,7 @@ function checkPointInPolygon (lat, lng, geojson) {
   return false
 }
 
-function calculateBoundingBox (centerLat, centerLng, distanceKm) {
+function calculateBoundingBox(centerLat, centerLng, distanceKm) {
   const center = turf.point([centerLng, centerLat], { crs: 'EPSG:4326' })
   const buffered = turf.buffer(center, distanceKm * 1000, { units: 'meters' })
   const bbox = turf.bbox(buffered)

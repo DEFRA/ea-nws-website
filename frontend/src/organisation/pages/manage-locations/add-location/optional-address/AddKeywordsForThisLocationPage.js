@@ -7,6 +7,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../common/components/gov-uk/Details'
 import Input from '../../../../../common/components/gov-uk/Input'
 import { setCurrentLocationKeywords } from '../../../../../common/redux/userSlice'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 export default function KeywordsForThisLocationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -26,9 +27,8 @@ export default function KeywordsForThisLocationPage () {
     ) {
       dispatch(setCurrentLocationKeywords(keywordsArray))
     }
-    navigate(
-      '/organisation/manage-locations/add/optional-address/add-action-plan'
-    )
+
+    navigate(orgManageLocationsUrls.optionalAddress.addActionPlan)
   }
 
   const handleAddKeyword = () => {

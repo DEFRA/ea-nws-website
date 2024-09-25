@@ -10,6 +10,7 @@ import {
   setCurrentLocationReference,
   setCurrentLocationType
 } from '../../../../../common/redux/userSlice'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import OrganisationAccountNavigation from './OptionalLocationInformationPage'
 export default function AddKeyInformationPage () {
   const navigate = useNavigate()
@@ -27,7 +28,7 @@ export default function AddKeyInformationPage () {
     if (locationType !== '') {
       dispatch(setCurrentLocationType(locationType))
     }
-    navigate('/organisation/manage-locations/add/optional-address/add-keywords')
+    navigate(orgManageLocationsUrls.optionalAddress.addKeywords)
   }
 
   const detailsText = (

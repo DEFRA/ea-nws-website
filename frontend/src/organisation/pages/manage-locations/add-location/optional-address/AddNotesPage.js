@@ -15,19 +15,18 @@ export default function AddNotesPage () {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    setError('')
+    if (notes.length > charLimit) {
+      setError('You can enter up to 200 characters')
+    } else {
+      setError('')
+    }
   }, [notes])
 
   const handleButton = () => {
-    setError('')
-    if (notes.length > charLimit) {
-      setError('You can enter up to 200 characters')
-      return
-    }
+    if (error) return
     if (notes) {
       dispatch(setCurrentLocationNotes(notes))
     }
-
     navigate('/') // View Location page
   }
 
@@ -53,7 +52,7 @@ export default function AddNotesPage () {
                 onChange={(val) => setNotes(val)}
                 className='govuk-textarea'
               />
-              <p>You can enter up to 200 characters.</p>
+              <p className='govuk-hint'>You can enter up to 200 characters.</p>
               <Button
                 text='Continue'
                 className='govuk-button'

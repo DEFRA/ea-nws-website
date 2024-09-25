@@ -7,6 +7,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../../../common/components/gov-uk/TextArea'
 import { setCurrentLocationActionPlan } from '../../../../../common/redux/userSlice'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 export default function ActionPlanPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -15,19 +16,19 @@ export default function ActionPlanPage () {
   const [error, setError] = useState('')
 
   useEffect(() => {
-    setError('')
+    if (actionPlan.length > charLimit) {
+      setError('You can enter up to 200 characters')
+    } else {
+      setError('')
+    }
   }, [actionPlan])
 
   const handleButton = () => {
-    setError('')
-    if (actionPlan.length > charLimit) {
-      setError('You can enter up to 200 characters')
-      return
-    }
+    if (error) return
     if (actionPlan) {
       dispatch(setCurrentLocationActionPlan(actionPlan))
     }
-    navigate('/organisation/manage-locations/add/optional-address/add-notes')
+    navigate(orgManageLocationsUrls.optionalAddress.addNotes)
   }
 
   return (
@@ -52,7 +53,7 @@ export default function ActionPlanPage () {
                 onChange={(val) => setActionPlan(val)}
                 className='govuk-textarea'
               />
-              <p>You can enter up to 200 characters.</p>
+              <p className='govuk-hint'>You can enter up to 200 characters.</p>
               <Button
                 text='Continue'
                 className='govuk-button'

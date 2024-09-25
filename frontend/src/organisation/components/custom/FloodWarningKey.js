@@ -2,7 +2,7 @@ import React from 'react'
 import alertIcon from '../../../common/assets/images/alert_area_icon.png'
 import warningIcon from '../../../common/assets/images/warning_area_icon.png'
 
-export default function FloodWarningKey() {
+export default function FloodWarningKey () {
   return (
     <div className='org-flood-warning-key'>
       <div className='org-flood-warning-item'>

@@ -9,7 +9,7 @@ import FloodWarningKey from '../../../components/custom/FloodWarningKey'
 import Map from '../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmLocationLayout() {
+export default function ConfirmLocationLayout () {
   const navigate = useNavigate()
   const { type } = useParams()
   const { flow } = useParams()

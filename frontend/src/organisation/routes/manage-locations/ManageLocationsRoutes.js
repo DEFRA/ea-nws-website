@@ -1,14 +1,14 @@
 import AddLocationOptionsPage from '../../pages/manage-locations/add-location/AddLocationOptionsPage'
 import LocationNamePage from '../../pages/manage-locations/add-location/manual-add-location/name/LocationNamePage'
-import AddActionPlan from '../../pages/manage-locations/add-location/manual-add-location/optional-address/AddActionPlanPage'
-import AddKeyInformationPage from '../../pages/manage-locations/add-location/manual-add-location/optional-address/AddKeyInformationPage'
-import KeywordsForThisLocationPage from '../../pages/manage-locations/add-location/manual-add-location/optional-address/AddKeywordsForThisLocationPage'
-import AddNotesPage from '../../pages/manage-locations/add-location/manual-add-location/optional-address/AddNotesPage'
-import AddOptionalAddress from '../../pages/manage-locations/add-location/manual-add-location/optional-address/AddOptionalAddress'
-import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/manual-add-location/optional-address/OptionalLocationInformationPage'
 import LocationPostCodeSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationPostCodeSearchPage'
 import LocationPostCodeSearchResultsPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationPostCodeSearchResultsPage'
 import LocationSearchOptionPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationSearchOptionPage'
+import AddActionPlan from '../../pages/manage-locations/add-location/optional-address/AddActionPlanPage'
+import AddKeyInformationPage from '../../pages/manage-locations/add-location/optional-address/AddKeyInformationPage'
+import KeywordsForThisLocationPage from '../../pages/manage-locations/add-location/optional-address/AddKeywordsForThisLocationPage'
+import AddNotesPage from '../../pages/manage-locations/add-location/optional-address/AddNotesPage'
+import AddOptionalAddress from '../../pages/manage-locations/add-location/optional-address/AddOptionalAddress'
+import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-address/OptionalLocationInformationPage'
 import ConfirmLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
@@ -31,7 +31,9 @@ const orgManageLocationsUrls = {
     options: urlManageOrgAddLocations,
     addressInfo: urlManageOrgAddLocations + '/address-info',
     uploadFile: urlManageOrgAddLocations + '/upload-file',
-    name: urlManageOrg + '/add/name',
+    name: urlManageOrg + '/add/name'
+  },
+  search: {
     searchOption: urlManageOrg + '/add/search-option',
     postCodeSearch: urlManageOrg + '/add/postcode-search',
     postCodeSearchResults: urlManageOrg + '/add/postcode-search-results'
@@ -77,15 +79,15 @@ const orgManageLocationRoutes = [
     component: <LocationNamePage />
   },
   {
-    path: orgManageLocationsUrls.add.searchOption,
+    path: orgManageLocationsUrls.search.searchOption,
     component: <LocationSearchOptionPage />
   },
   {
-    path: orgManageLocationsUrls.add.postCodeSearchResults,
+    path: orgManageLocationsUrls.search.postCodeSearchResults,
     component: <LocationPostCodeSearchResultsPage />
   },
   {
-    path: orgManageLocationsUrls.add.postCodeSearch,
+    path: orgManageLocationsUrls.search.postCodeSearch,
     component: <LocationPostCodeSearchPage />
   },
   {

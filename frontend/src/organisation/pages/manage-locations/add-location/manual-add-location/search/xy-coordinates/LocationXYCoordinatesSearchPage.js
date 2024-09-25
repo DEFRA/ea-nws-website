@@ -12,6 +12,10 @@ import {
   setCurrentLocationNorthing
 } from '../../../../../../../common/redux/userSlice'
 import { convertCoordinatesToEspg4326 } from '../../../../../../../common/services/CoordinatesFormatConverter'
+import {
+  getSurroundingFloodAreas,
+  isLocationInFloodArea
+} from '../../../../../../../common/services/WfsFloodDataService'
 import { xCoordinateValidation } from '../../../../../../../common/services/validations/XCoordinateValidation'
 import { yCoordinateValidation } from '../../../../../../../common/services/validations/YCoordinateValidation'
 
@@ -24,7 +28,6 @@ export default function LocationXYCoordinatesSearchPage() {
   const [yCoordinate, setYCoordinate] = useState('')
   const [yCoordinateError, setYCoordinateError] = useState('')
 
-  // TODO Does this still need async once complete?
   const handleSubmit = async () => {
     setXCoordinateError('')
     setYCoordinateError('')
@@ -51,9 +54,38 @@ export default function LocationXYCoordinatesSearchPage() {
       dispatch(setCurrentLocationEasting(Number(xCoordinate)))
       dispatch(setCurrentLocationNorthing(Number(yCoordinate)))
 
+      const { warningArea, alertArea } = await getSurroundingFloodAreas(
+        latitude,
+        longitude
+      )
+
+      const isError = !warningArea && !alertArea
+
+      const isInAlertArea =
+        alertArea && isLocationInFloodArea(latitude, longitude, alertArea)
+
+      const isInWarningArea =
+        warningArea && isLocationInFloodArea(latitude, longitude, warningArea)
+
+      navigateToNextPage(isInAlertArea, isInWarningArea, isError)
+    }
+  }
+
+  const navigateToNextPage = (isInAlertArea, isInWarningArea, isError) => {
+    if (isInAlertArea && isInWarningArea) {
       navigate(
         '/organisation/manage-locations/add/location-in-area/xy-coordinates-search/all'
       )
+    } else if (isInAlertArea) {
+      navigate(
+        '/organisation/manage-locations/add/location-in-area/xy-coordinates-search/alerts'
+      )
+    } else if (!isInAlertArea && !isInWarningArea) {
+      navigate(
+        '/organisation/manage-locations/add/location-in-area/xy-coordinates-search/no-alerts'
+      )
+    } else if (isError) {
+      navigate('/error')
     }
   }
 

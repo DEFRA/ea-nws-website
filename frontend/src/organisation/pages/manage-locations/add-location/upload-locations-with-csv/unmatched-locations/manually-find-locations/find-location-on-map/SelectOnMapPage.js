@@ -8,6 +8,7 @@ import InsetText from '../../../../../../../../common/components/gov-uk/InsetTex
 import {
   setCurrentLocationCoordinates
 } from '../../../../../../../../common/redux/userSlice'
+import { locationInEngland } from '../../../../../../../../common/services/validations/LocationInEngland'
 import Map from '../../../../../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
@@ -24,14 +25,17 @@ export default function SelectOnMapPage () {
     if (pinCoords === '') {
       setError('Click on the map to drop a pin')
     } else {
-      // check ccords are in england if not navigate to error page
+      const inEngland = await locationInEngland(pinCoords.latitude, pinCoords.longitude)
       // code here
-      // set coords and navigate back to find locations page, api call first to set elasticache
-      dispatch(setCurrentLocationCoordinates(pinCoords))
-      // Send currentLocation object to elasticache and geosafe, then navigate
-      navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index, {
-        state: 'Added'
-      })
+      if (inEngland) {
+        dispatch(setCurrentLocationCoordinates(pinCoords))
+        // Send currentLocation object to elasticache and geosafe, then navigate
+        navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index, {
+          state: 'Added'
+        })
+      } else {
+        navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.notInEngland)
+      }
     }
   }
 

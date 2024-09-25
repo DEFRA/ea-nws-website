@@ -2,6 +2,7 @@ import React from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../../common/components/gov-uk/Button'
+import NotificationBanner from '../../../../../../../common/components/gov-uk/NotificationBanner'
 import WarningText from '../../../../../../../common/components/gov-uk/WarningText'
 import { setCurrentLocation } from '../../../../../../../common/redux/userSlice'
 

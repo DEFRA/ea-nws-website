@@ -11,7 +11,7 @@ import {
   setCurrentLocationType
 } from '../../../../../common/redux/userSlice'
 import OrganisationAccountNavigation from './OptionalLocationInformationPage'
-export default function AddKeyInformationPage() {
+export default function AddKeyInformationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [internalReference, setInternalReference] = useState('')

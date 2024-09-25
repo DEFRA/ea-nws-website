@@ -12,7 +12,7 @@ import {
 } from '../../../../../common/redux/userSlice'
 import { postCodeValidation } from '../../../../../common/services/validations/PostCodeValidation'
 
-export default function AddOptionalAddress() {
+export default function AddOptionalAddress () {
   const navigate = useNavigate()
   const [addressLine1, setAddressLine1] = useState('')
   const [addressLine2, setAddressLine2] = useState('')

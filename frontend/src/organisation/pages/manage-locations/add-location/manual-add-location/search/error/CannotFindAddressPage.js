@@ -10,7 +10,8 @@ export default function CannotFindAddressPage() {
   }
 
   const handleFindOnMap = () => {
-    navigate('/organisation/manage-locations/add/postcode-search')
+    // TODO add once
+    navigate('/')
   }
   return (
     <>

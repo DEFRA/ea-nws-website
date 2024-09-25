@@ -12,7 +12,7 @@ import {
 } from '../../../../../common/redux/userSlice'
 import { postCodeValidation } from '../../../../../common/services/validations/PostCodeValidation'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-export default function AddOptionalAddress () {
+export default function AddOptionalAddress() {
   const navigate = useNavigate()
   const [addressLine1, setAddressLine1] = useState('')
   const [addressLine2, setAddressLine2] = useState('')
@@ -60,10 +60,16 @@ export default function AddOptionalAddress () {
       navigateToNextPage()
     }
   }
+
+  const navigateBack = (event) => {
+    event.preventDefault()
+    navigate(-1)
+  }
+
   return (
     <>
       <OrganisationAccountNavigation />
-      <BackLink onClick={() => navigate(-1)} />
+      <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

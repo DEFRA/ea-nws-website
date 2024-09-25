@@ -70,8 +70,8 @@ url_org_man_loc = {
         'postcodeSearchResults': url_org_man_loc_path + '/add/postcode-search-results',
     },
     'optionalLocation':{
-        'optionalInfo': url_org_man_loc_path + '/add/optional-location-info',
-        'optionalAddress': url_org_man_loc_path + '/add/optional-address',
+        'optionalInfo': url_org_man_loc_path + '/add/optional-location/info',
+        'optionalAddress': url_org_man_loc_path + '/add/optional-address/optional-location',
         'addKeyInformation': url_org_man_loc_path + '/add/optional-address/add-key-information',
         'addKeywords': url_org_man_loc_path + '/add/optional-address/add-keywords',
         'addActionPlan': url_org_man_loc_path + '/add/optional-address/add-action-plan', 

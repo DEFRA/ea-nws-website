@@ -7,7 +7,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../../../common/components/gov-uk/TextArea'
 import { setCurrentLocationNotes } from '../../../../../common/redux/userSlice'
-export default function AddNotesPage () {
+export default function AddNotesPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const charLimit = 200
@@ -30,10 +30,15 @@ export default function AddNotesPage () {
     navigate('/') // View Location page
   }
 
+  const navigateBack = (event) => {
+    event.preventDefault()
+    navigate(-1)
+  }
+
   return (
     <>
       <OrganisationAccountNavigation />
-      <BackLink onClick={() => navigate(-1)} />
+      <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

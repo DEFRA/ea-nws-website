@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../common/components/gov-uk/Details'
 import Input from '../../../../../common/components/gov-uk/Input'
@@ -11,13 +12,15 @@ import {
   setCurrentLocationType
 } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-import OrganisationAccountNavigation from './OptionalLocationInformationPage'
-export default function AddKeyInformationPage () {
+
+export default function AddKeyInformationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
   const [internalReference, setInternalReference] = useState('')
   const [businessCriticality, setBusinessCriticality] = useState('')
   const [locationType, setLocationType] = useState('')
+
   const handleButton = () => {
     if (internalReference !== '') {
       dispatch(setCurrentLocationReference(internalReference))
@@ -29,6 +32,11 @@ export default function AddKeyInformationPage () {
       dispatch(setCurrentLocationType(locationType))
     }
     navigate(orgManageLocationsUrls.optionalAddress.addKeywords)
+  }
+
+  const navigateBack = (event) => {
+    event.preventDefault()
+    navigate(-1)
   }
 
   const detailsText = (
@@ -57,7 +65,7 @@ export default function AddKeyInformationPage () {
   return (
     <>
       <OrganisationAccountNavigation />
-      <BackLink onClick={() => navigate(-1)} />
+      <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

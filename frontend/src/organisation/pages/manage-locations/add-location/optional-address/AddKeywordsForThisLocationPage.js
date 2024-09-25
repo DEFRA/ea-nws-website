@@ -8,9 +8,10 @@ import Details from '../../../../../common/components/gov-uk/Details'
 import Input from '../../../../../common/components/gov-uk/Input'
 import { setCurrentLocationKeywords } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-export default function KeywordsForThisLocationPage () {
+export default function KeywordsForThisLocationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
   const [keyword, setKeyword] = useState('')
   const savedKeywords = useSelector((state) =>
     state.session.currentLocation.meta_data.location_additional.keywords !==
@@ -38,6 +39,11 @@ export default function KeywordsForThisLocationPage () {
     }
   }
 
+  const navigateBack = (event) => {
+    event.preventDefault()
+    navigate(-1)
+  }
+
   const detailsText = (
     <>
       <p>
@@ -55,7 +61,7 @@ export default function KeywordsForThisLocationPage () {
   return (
     <>
       <OrganisationAccountNavigation />
-      <BackLink onClick={() => navigate(-1)} />
+      <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
@@ -70,6 +76,7 @@ export default function KeywordsForThisLocationPage () {
               <Details title='Why add keywords?' text={detailsText} />
               <div className='inline-button'>
                 <Input
+                  value={keyword}
                   inputType='text'
                   onChange={(val) => setKeyword(val)}
                   className='govuk-input govuk-input--width-20'

@@ -7,7 +7,7 @@ import OrganisationAccountNavigation from '../../../../../common/components/cust
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-export default function OptionalLocationInformationPage () {
+export default function OptionalLocationInformationPage() {
   const navigate = useNavigate()
   const postcode = useSelector(
     (state) =>
@@ -17,14 +17,19 @@ export default function OptionalLocationInformationPage () {
     if (postcode) {
       navigate(orgManageLocationsUrls.optionalAddress.addKeyInformation)
     } else {
-      navigate(orgManageLocationsUrls.optionalAddress.optionalAddress)
+      navigate(orgManageLocationsUrls.optionalAddress.optionalLocation)
     }
+  }
+
+  const navigateBack = (event) => {
+    event.preventDefault()
+    navigate(-1)
   }
 
   return (
     <>
       <OrganisationAccountNavigation />
-      <BackLink onClick={() => navigate(-1)} />
+      <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
@@ -33,6 +38,7 @@ export default function OptionalLocationInformationPage () {
               title='Success'
               text='Location added'
             />
+            &nbsp; &nbsp;
             <h1 className='govuk-heading-l'>
               Add optional information for this location
             </h1>

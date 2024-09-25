@@ -8,7 +8,7 @@ import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../../../common/components/gov-uk/TextArea'
 import { setCurrentLocationActionPlan } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-export default function ActionPlanPage () {
+export default function ActionPlanPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [actionPlan, setActionPlan] = useState('')
@@ -31,10 +31,15 @@ export default function ActionPlanPage () {
     navigate(orgManageLocationsUrls.optionalAddress.addNotes)
   }
 
+  const navigateBack = (event) => {
+    event.preventDefault()
+    navigate(-1)
+  }
+
   return (
     <>
       <OrganisationAccountNavigation />
-      <BackLink onClick={() => navigate(-1)} />
+      <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

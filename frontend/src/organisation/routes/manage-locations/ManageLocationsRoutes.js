@@ -39,8 +39,9 @@ const orgManageLocationsUrls = {
     postCodeSearchResults: urlManageOrg + '/add/postcode-search-results'
   },
   optionalAddress: {
-    optionalAddress: urlManageOrgAddLocations + '/optional-address',
-    optionalInfo: urlManageOrgAddLocations + '/optional-location-info',
+    optionalLocation:
+      urlManageOrgAddLocations + '/optional-address/optional-location',
+    optionalInfo: urlManageOrgAddLocations + '/optional-address/info',
     addKeyInformation:
       urlManageOrgAddLocations + '/optional-address/add-key-information',
     addKeywords: urlManageOrgAddLocations + '/optional-address/add-keywords',
@@ -127,7 +128,7 @@ const orgManageLocationRoutes = [
     component: <OptionalLocationInformationPage />
   },
   {
-    path: orgManageLocationsUrls.optionalAddress.optionalAddress,
+    path: orgManageLocationsUrls.optionalAddress.optionalLocation,
     component: <AddOptionalAddress />
   }
 ]

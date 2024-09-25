@@ -43,7 +43,7 @@ const userSlice = createSlice({
           location_type: null,
           action_plan: null,
           notes: null,
-          keywords: []
+          keywords: null
         }
       }
     }

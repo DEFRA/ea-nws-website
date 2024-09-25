@@ -11,9 +11,11 @@ export default function KeywordsForThisLocationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [keyword, setKeyword] = useState('')
-  const savedKeywords = useSelector(
-    (state) =>
-      state.session.currentLocation.meta_data.location_additional.keywords
+  const savedKeywords = useSelector((state) =>
+    state.session.currentLocation.meta_data.location_additional.keywords !==
+    null
+      ? state.session.currentLocation.meta_data.location_additional.keywords
+      : []
   )
   const [keywordsArray, setKeywordsArray] = useState([...savedKeywords])
 

@@ -118,11 +118,17 @@ export default function ConfirmLocationLayout() {
 
             {flow === 'xy-coordinates-search' && (
               <>
-                <Link to='james to update' className='govuk-link'>
+                <Link
+                  to='TODO: add link to move pin'
+                  className='govuk-link govuk-!-margin-bottom-10'
+                >
                   Move the pin on the map
                 </Link>
                 <br />
-                <Link to='james to update' className='govuk-link'>
+                <Link
+                  to={orgManageLocationsUrls.add.xyCoordinatesSearch}
+                  className='govuk-link'
+                >
                   Use different X and Y coordinates
                 </Link>
               </>

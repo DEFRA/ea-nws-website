@@ -38,9 +38,9 @@ export default function AddKeyInformationPage () {
         locations and helps you identify them more easily.{' '}
       </p>
       <p>
-        <h3 className='govuk-heading-s'>Internal reference</h3> Your internal
-        reference, for example: PS01, unit 57, Brid_04. This can help you
-        identify the location more easily.
+        <h3 className='govuk-heading-s'>Internal reference</h3>
+        Your internal reference, for example: PS01, unit 57, Brid_04. This can
+        help you identify the location more easily.
       </p>
       <p>
         <h3 className='govuk-heading-s'>Location type</h3>

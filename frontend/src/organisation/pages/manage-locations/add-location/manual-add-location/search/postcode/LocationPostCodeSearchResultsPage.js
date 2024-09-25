@@ -45,7 +45,7 @@ export default function LocationSearchResultsPage() {
       dispatch(setCurrentLocationUPRN(selectedLocation.address))
       dispatch(setCurrentLocationCoordinates(selectedLocation.coordinates))
       dispatch(setCurrentLocationFullAddress(selectedLocation.name))
-      dispatch(setCurrentLocationPostcode(selectedLocation.name))
+      dispatch(setCurrentLocationPostcode(selectedLocation.postcode))
 
       const { northing, easting } = convertCoordinatesToEspg27700(
         selectedLocation.coordinates.longitude,

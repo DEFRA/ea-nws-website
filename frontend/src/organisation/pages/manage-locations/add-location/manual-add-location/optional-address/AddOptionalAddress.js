@@ -51,14 +51,14 @@ export default function AddOptionalAddress () {
       if (postcodeValidationError !== '') {
         setPostcodeError(postcodeValidationError)
       } else {
-        await dispatch(setCurrentLocationFullAddress(fullAddressStr))
-        await dispatch(setCurrentLocationPostcode(postcode))
+        dispatch(setCurrentLocationFullAddress(fullAddressStr))
+        dispatch(setCurrentLocationPostcode(postcode))
 
         navigateToNextPage()
       }
     } else {
-      await dispatch(setCurrentLocationFullAddress(fullAddressStr))
-      await dispatch(setCurrentLocationPostcode(postcode))
+      dispatch(setCurrentLocationFullAddress(fullAddressStr))
+      dispatch(setCurrentLocationPostcode(postcode))
       navigateToNextPage()
     }
   }

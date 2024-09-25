@@ -2,11 +2,12 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
 import Input from '../../../../../../common/components/gov-uk/Input'
 import { setCurrentLocationKeywords } from '../../../../../../common/redux/userSlice'
-export default function KeywordsForThisLocationPage() {
+export default function KeywordsForThisLocationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [keyword, setKeyword] = useState('')
@@ -16,12 +17,12 @@ export default function KeywordsForThisLocationPage() {
   )
   const [keywordsArray, setKeywordsArray] = useState([...savedKeywords])
 
-  const handleButton = async () => {
+  const handleButton = () => {
     if (
       keywordsArray.length !== savedKeywords.length ||
       !keywordsArray.every((val, idx) => val === savedKeywords[idx])
     ) {
-      await dispatch(setCurrentLocationKeywords(keywordsArray))
+      dispatch(setCurrentLocationKeywords(keywordsArray))
     }
     navigate(
       '/organisation/manage-locations/add/optional-address/add-action-plan'
@@ -51,8 +52,8 @@ export default function KeywordsForThisLocationPage() {
 
   return (
     <>
+      <OrganisationAccountNavigation />
       <BackLink onClick={() => navigate(-1)} />
-
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

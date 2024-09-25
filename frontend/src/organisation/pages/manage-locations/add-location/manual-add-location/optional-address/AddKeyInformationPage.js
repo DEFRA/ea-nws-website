@@ -10,22 +10,22 @@ import {
   setCurrentLocationReference,
   setCurrentLocationType
 } from '../../../../../../common/redux/userSlice'
-
+import OrganisationAccountNavigation from './OptionalLocationInformationPage'
 export default function AddKeyInformationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [internalReference, setInternalReference] = useState('')
   const [businessCriticality, setBusinessCriticality] = useState('')
   const [locationType, setLocationType] = useState('')
-  const handleButton = async () => {
+  const handleButton = () => {
     if (internalReference !== '') {
-      await dispatch(setCurrentLocationReference(internalReference))
+      dispatch(setCurrentLocationReference(internalReference))
     }
     if (businessCriticality !== '') {
-      await dispatch(setCurrentLocationCriticality(businessCriticality))
+      dispatch(setCurrentLocationCriticality(businessCriticality))
     }
     if (locationType !== '') {
-      await dispatch(setCurrentLocationType(locationType))
+      dispatch(setCurrentLocationType(locationType))
     }
     navigate('/organisation/manage-locations/add/optional-address/add-keywords')
   }
@@ -55,8 +55,8 @@ export default function AddKeyInformationPage () {
 
   return (
     <>
+      <OrganisationAccountNavigation />
       <BackLink onClick={() => navigate(-1)} />
-
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

@@ -160,7 +160,8 @@ export default function Map({
 
     layer.setStyle({
       color: '#f70202',
-      weight: 2
+      weight: 2,
+      fillOpacity: 0.25
     })
   }
 
@@ -169,7 +170,8 @@ export default function Map({
 
     layer.setStyle({
       color: '#ffa200',
-      weight: 2
+      weight: 2,
+      fillOpacity: 0.5
     })
   }
 

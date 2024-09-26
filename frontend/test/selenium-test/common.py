@@ -70,7 +70,7 @@ url_org_man_loc = {
         'postcodeSearchResults': url_org_man_loc_path + '/add/postcode-search-results',
     },
     'optionalLocation':{
-        'optionalInfo': url_org_man_loc_path + '/add/optional-location/info',
+        'optionalInfo': url_org_man_loc_path + '/add/optional-address/info',
         'optionalAddress': url_org_man_loc_path + '/add/optional-address/optional-location',
         'addKeyInformation': url_org_man_loc_path + '/add/optional-address/add-key-information',
         'addKeywords': url_org_man_loc_path + '/add/optional-address/add-keywords',

@@ -89,7 +89,7 @@ containers:
       - name: NGINX_PORT
         value: "7000"
       - name: NGINX_SERVER
-        value: "ea-nws-website.com"
+        value: "*.ea-nws-website.com"
     ports:
       - name: nginx
         port: 7000

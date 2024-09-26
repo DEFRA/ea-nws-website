@@ -14,6 +14,7 @@ import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location
 import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/NotInEnglandPage'
 import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
+import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationOptionsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
 
 const urlManageOrg = '/organisation/manage-locations'
@@ -33,8 +34,10 @@ const orgManageLocationsUrls = {
     searchOption: urlManageOrg + '/add/search-option',
     postCodeSearch: urlManageOrg + '/add/postcode-search',
     postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
+    xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search',
     optionalInfo: urlManageOrg + '/add/optional-location-info',
     optionalAddress: urlManageOrg + '/add/optional-address'
+
   },
   unmatchedLocations: {
     index: urlManageOrgUnmatchedLocations,
@@ -45,7 +48,9 @@ const orgManageLocationsUrls = {
       map: urlManageOrgUnmatchedLocations + '/manually-find/map',
       notInEngland: urlManageOrgUnmatchedLocations + '/manually-find/not-in-england'
     }
-
+  },
+  edit: {
+    options: urlManageOrg + '/edit/location-options'
   }
 }
 
@@ -118,6 +123,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.optionalAddress,
     component: <AddOptionalAddress />
+  },
+  {
+    path: orgManageLocationsUrls.edit.options,
+    component: <EditLocationOptionsPage />
   }
 ]
 

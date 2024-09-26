@@ -117,7 +117,7 @@ export default function ManuallyFindLocationsPage() {
   const findAvailableAddresses = async (location) => {
     const dataToSend = {
       name: location,
-      minmatch: 0.5
+      minmatch: 0.7
     }
     const { data, errorMessage } = await backendCall(
       dataToSend,
@@ -139,7 +139,9 @@ export default function ManuallyFindLocationsPage() {
     const poi = locationToPOI(location)
     dispatch(setCurrentLocation(poi))
     const isAddressValid = findAvailableAddresses(
-      location.meta_data.location_additional.full_address
+      location.meta_data.location_additional.full_address +
+        ', ' +
+        location.meta_data.location_additional.postcode
     )
     // If there is results for the unmatched address, navigate to the radio screen
     // where user can select how to find the address

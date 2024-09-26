@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
-import BackLink from '../../common/components/custom/BackLink'
+import BackLink from '../../../common/components/custom/BackLink'
 import { useNavigate } from 'react-router'
-import ErrorSummary from '../../common/components/gov-uk/ErrorSummary'
-import Button from '../../common/components/gov-uk/Button'
-import Checkbox from '../../common/components/gov-uk/CheckBox'
+import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
+import Button from '../../../common/components/gov-uk/Button'
+import Checkbox from '../../../common/components/gov-uk/CheckBox'
 
 export default function OrgTermsConditionsPage () {
   const navigate = useNavigate()

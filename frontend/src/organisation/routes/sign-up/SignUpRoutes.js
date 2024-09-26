@@ -13,7 +13,6 @@ import ValidateAdminEmailPage from '../../pages/sign-up/mainAdministrator/Valida
 import CheckYourAnswersPage from '../../pages/sign-up/review/CheckYourAnswersPage'
 import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
 
-
 const urlSignUpOrg = '/organisation/sign-up'
 
 // registration
@@ -67,7 +66,7 @@ const signupRoutes = [
     path: urlSignUpOrg + '/duplicate',
     component: <DuplicateNamePage />
   },
-  { path: urlSignUpOrg + '/review', component: <CheckYourAnswersPage /> },
+  { path: urlSignUpOrg + '/review', component: <CheckYourAnswersPage /> }
 ]
 
 export default signupRoutes

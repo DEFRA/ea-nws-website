@@ -5,7 +5,7 @@ url_add_name = url_org_man_loc.get('add').get('name')
 url_add_search_option = url_org_man_loc.get('add').get('searchOption')
 url_add_postcode_search = url_org_man_loc.get('add').get('postcodeSearch')
 url_add_postcode_search_results = url_org_man_loc.get('add').get('postcodeSearchResults')
-url_add_postcode_search_results = url_org_man_loc.get('add').get('postcodeSearchResults')
+url_cannot_find_address = url_org_man_loc.get('error').get('cannotFindAddress')
 
 def setup(browser):
     navigate_to_auth_page_via_index(browser, url_add_name)
@@ -18,8 +18,20 @@ def setup(browser):
     enter_input_text(browser, 'Postcode', postcode)
     click_button(browser, 'Continue', url_add_postcode_search_results)
     time.sleep(1)
-    click_button(browser, '"I cannot find the address', url_add_postcode_search_results)
+    click_button(browser, 'I cannot find the address', url_cannot_find_address)
 
-def test_add_named_location_using_postcode(get_browser):
+def test_render(get_browser):
     setup(get_browser)
-    assert "I cannot find the address" in get_browser.page_source
+    assert "If you cannot find the address:" in get_browser.page_source
+    assert "This might be because the address is not recognised, for example it may be a new address, or it uses a building name instead of a street address." in get_browser.page_source
+    assert "use a different postcode" in get_browser.page_source
+    assert "find the location on a map" in get_browser.page_source
+
+def test_back_button(get_browser):
+    setup(get_browser)
+    click_link(get_browser, "Back", url_add_postcode_search_results)
+
+def test_click_differentpostcode_link(get_browser):
+    setup(get_browser)
+    time.sleep(360)
+    click_link(get_browser, "use a different postcode", url_add_postcode_search)

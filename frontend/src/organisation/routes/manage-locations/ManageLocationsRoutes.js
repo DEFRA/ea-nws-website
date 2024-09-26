@@ -50,7 +50,7 @@ const orgManageLocationsUrls = {
     }
   },
   edit: {
-    options: urlManageOrg + '/edit/location-options'
+    SelectLocationOptions: urlManageOrg + '/edit/select-location-options'
   }
 }
 

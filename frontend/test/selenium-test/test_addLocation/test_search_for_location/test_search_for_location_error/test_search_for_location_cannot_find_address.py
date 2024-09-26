@@ -6,6 +6,7 @@ url_add_search_option = url_org_man_loc.get('add').get('searchOption')
 url_add_postcode_search = url_org_man_loc.get('add').get('postcodeSearch')
 url_add_postcode_search_results = url_org_man_loc.get('add').get('postcodeSearchResults')
 url_cannot_find_address = url_org_man_loc.get('error').get('cannotFindAddress')
+url_map_search = 'http://localhost:3000/organisation/manage-locations/add' # update when map search added
 
 def setup(browser):
     navigate_to_auth_page_via_index(browser, url_add_name)
@@ -34,3 +35,7 @@ def test_back_button(get_browser):
 def test_click_differentpostcode_link(get_browser):
     setup(get_browser)
     click_link(get_browser, "use a different postcode", url_add_postcode_search)
+
+def test_click_findonmap_link(get_browser):
+    setup(get_browser)
+    click_link(get_browser, "find the location on a map", url_map_search)

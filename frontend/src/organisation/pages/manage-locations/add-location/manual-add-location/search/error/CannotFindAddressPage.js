@@ -2,17 +2,10 @@ import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../../../common/components/custom/OrganisationAccountNavigation'
+import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 export default function CannotFindAddressPage() {
   const navigate = useNavigate()
 
-  const handleDifferentPostCode = () => {
-    navigate('/organisation/manage-locations/add/postcode-search')
-  }
-
-  const handleFindOnMap = () => {
-    // TODO add once
-    navigate('/')
-  }
   return (
     <>
       <OrganisationAccountNavigation />
@@ -34,16 +27,16 @@ export default function CannotFindAddressPage() {
                 <ul className='govuk-list govuk-list--bullet'>
                   <li>
                     <Link
-                      onClick={handleDifferentPostCode}
-                      className='govuk-body govuk-link inline-link'
+                      to={orgManageLocationsUrls.search.postCodeSearch}
+                      className='govuk-link'
                     >
                       use a different postcode
                     </Link>
                   </li>
                   <li>
                     <Link
-                      onClick={handleFindOnMap}
-                      className='govuk-body govuk-link inline-link'
+                      to='/organisation/manage-locations/add' // TODO -update when search map is added
+                      className='govuk-link'
                     >
                       find the location on a map
                     </Link>

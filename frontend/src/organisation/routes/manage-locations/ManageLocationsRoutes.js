@@ -30,15 +30,17 @@ const orgManageLocationsUrls = {
     addressInfo: urlManageOrg + '/add/address-info',
     uploadFile: urlManageOrg + '/add/upload-file',
     name: urlManageOrg + '/add/name',
-    searchOption: urlManageOrg + '/add/search-option',
-    postCodeSearch: urlManageOrg + '/add/postcode-search',
-    postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
-    xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search',
     optionalInfo: urlManageOrg + '/add/optional-location-info',
     optionalAddress: urlManageOrg + '/add/optional-address',
     error: {
       cannotFindAddress: urlManageOrg + '/add/cannot-find-address'
     }
+  },
+  search: {
+    searchOption: urlManageOrg + '/add/search-option',
+    postCodeSearch: urlManageOrg + '/add/postcode-search',
+    postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
+    xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search'
   },
   unmatchedLocations: {
     doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
@@ -74,15 +76,15 @@ const orgManageLocationRoutes = [
     component: <LocationNamePage />
   },
   {
-    path: orgManageLocationsUrls.add.searchOption,
+    path: orgManageLocationsUrls.search.searchOption,
     component: <LocationSearchOptionPage />
   },
   {
-    path: orgManageLocationsUrls.add.postCodeSearchResults,
+    path: orgManageLocationsUrls.search.postCodeSearchResults,
     component: <LocationPostCodeSearchResultsPage />
   },
   {
-    path: orgManageLocationsUrls.add.postCodeSearch,
+    path: orgManageLocationsUrls.search.postCodeSearch,
     component: <LocationPostCodeSearchPage />
   },
   {

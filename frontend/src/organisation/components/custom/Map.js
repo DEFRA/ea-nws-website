@@ -141,22 +141,22 @@ export default function Map ({
         maxBounds={maxBounds}
         className='map-container'
       >
-        {apiKey
-          ? apiKey !== 'error' (
-            <>
-              {tileLayerWithHeader}
-              <ZoomControl position='bottomright' />
-              <ResetMapButton />
-              {type === 'drop' ? <AddMarker /> : <Marker position={center} interactive={false} />}
-            </>
-            )
-          :
-            (
-              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
-                <Link className='govuk-body-s' onClick={() => getApiKey()}>Reload map</Link>
-              </div>
-            )}
+        {apiKey &&
+           (apiKey !== 'error'
+             ? (
+               <>
+                 {tileLayerWithHeader}
+                 <ZoomControl position='bottomright' />
+                 <ResetMapButton />
+                 {type === 'drop' ? <AddMarker /> : <Marker position={center} interactive={false} />}
+               </>
+               )
+             : (
+               <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                 <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
+                 <Link className='govuk-body-s' onClick={() => getApiKey()}>Reload map</Link>
+               </div>
+               ))}
       </MapContainer>
     </div>
   )

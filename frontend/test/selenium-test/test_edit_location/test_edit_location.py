@@ -13,14 +13,14 @@ def test_error_message_shows(get_browser):
     browser =  get_browser
     navigate_to_auth_page_via_index(browser,url)
     click_button(browser, 'Continue',url)
-    assert 'Select how you want to edit locations' in browser.page_source
+    assert 'Select if you want to use X and Y coordinates or drop a pin on a map' in browser.page_source
 
 def test_error_dissapears_when_clicked(get_browser):
     browser =  get_browser
     navigate_to_auth_page_via_index(browser,url)
     click_button(browser, 'Continue',url)
     select_input_radio_option(browser,'idUse X and Y coordinates','id')
-    assert 'Select how you want to edit locations' not in browser.page_source
+    assert 'Select if you want to use X and Y coordinates or drop a pin on a map' not in browser.page_source
 
 def test_next_page(get_browser):
     browser =  get_browser

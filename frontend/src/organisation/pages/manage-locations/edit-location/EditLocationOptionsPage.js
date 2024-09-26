@@ -22,7 +22,7 @@ export default function EditLocationOptionsPage () {
   const handleButton = () => {
     if (!addLocationType) {
       // ToDo change this later when figma is answered
-      setError('Select how you want to edit locations')
+      setError('Select if you want to use X and Y coordinates or drop a pin on a map')
     } else {
       if (addLocationType === editLocationOptions[0].value) {
         navigate('/organisation/manage-locations/add/xy-coordinates-search')

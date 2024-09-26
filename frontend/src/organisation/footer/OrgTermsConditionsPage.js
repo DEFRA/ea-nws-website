@@ -1,11 +1,11 @@
 import React, { useState } from 'react'
-import BackLink from '../../../common/components/custom/BackLink'
+import BackLink from '../../common/components/custom/BackLink'
 import { useNavigate } from 'react-router'
-import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
-import Button from '../../../common/components/gov-uk/Button'
-import Checkbox from '../../../common/components/gov-uk/CheckBox'
+import ErrorSummary from '../../common/components/gov-uk/ErrorSummary'
+import Button from '../../common/components/gov-uk/Button'
+import Checkbox from '../../common/components/gov-uk/CheckBox'
 
-export default function TermsConditionsPage () {
+export default function OrgTermsConditionsPage () {
   const navigate = useNavigate()
   const [error, setError] = useState('')
   const [isChecked, setIsChecked] = useState(false)
@@ -132,7 +132,7 @@ https://ico.org.uk/for-organisations/eir-and-access-to-information/guide-to-the-
             </p>
             <p className='govuk-body'>The Environment Agency manages the flood warning systems. Our
               <a
-                href='/privacy'
+                href='/organisation/privacy'
                 className='govuk-link'
               >
                 {' '}

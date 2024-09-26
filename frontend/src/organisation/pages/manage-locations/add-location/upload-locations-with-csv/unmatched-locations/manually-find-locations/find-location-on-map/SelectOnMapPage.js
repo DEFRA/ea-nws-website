@@ -1,71 +1,33 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import BackLink from '../../../../../../../../common/components/custom/BackLink'
-import Button from '../../../../../../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../../../../../../common/components/gov-uk/ErrorSummary'
-import InsetText from '../../../../../../../../common/components/gov-uk/InsetText'
-import {
-  setCurrentLocationCoordinates
-} from '../../../../../../../../common/redux/userSlice'
-import { locationInEngland } from '../../../../../../../../common/services/validations/LocationInEngland'
-import Map from '../../../../../../../components/custom/Map'
+import SelectOnMapLayout from '../../../../../../../layouts/add-location/upload-locations-with-csv/unmatched-locations/SelectOnMapLayout'
 import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function SelectOnMapPage () {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const fullAddress = useSelector((state) => state.session.currentLocation.meta_data.location_additional.full_address)
-  const [pinCoords, setPinCoords] = useState('')
-  const [error, setError] = useState('')
 
-  const coordinates = useSelector((state) => state.session.currentLocation.coordinates)
+  const NavigateToPreviousPage = () => {
+    navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName)
+  }
 
-  const handleSubmit = async () => {
-    if (pinCoords === '') {
-      setError('Click on the map to drop a pin')
-    } else {
-      const inEngland = await locationInEngland(pinCoords.latitude, pinCoords.longitude)
-      // code here
-      if (inEngland) {
-        dispatch(setCurrentLocationCoordinates(pinCoords))
-        // Send currentLocation object to elasticache and geosafe, then navigate
-        navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index, {
-          state: 'Added'
-        })
-      } else {
-        navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.notInEngland)
-      }
-    }
+  const NavigateToNotFound = () => {
+    navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.notInEngland)
+  }
+
+  const NavigateToNextPage = () => {
+    navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index, {
+      state: 'Added'
+    })
   }
 
   return (
-    <>
-      <BackLink onClick={() => navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName)} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
-            {error && (
-              <ErrorSummary
-                errorList={[error]}
-              />
-            )}
-            <h1 className='govuk-heading-l'>Find location on a map</h1>
-            <div className='govuk-body'>
-              <p>
-                Click on the map to drop a pin where you think this location is. You can then add the location to this account.
-              </p>
-              <InsetText text={'For ' + fullAddress} />
-              <Map coordinates={coordinates} setCoordinates={setPinCoords} type='drop' />
-            </div>
-            <Button
-              className='govuk-button'
-              text='Add location'
-              onClick={handleSubmit}
-            />
-          </div>
-        </div>
-      </main>
-    </>
+    <SelectOnMapLayout
+      fullAddress={fullAddress}
+      NavigateToPreviousPage={NavigateToPreviousPage}
+      NavigateToNextPage={NavigateToNextPage}
+      NavigateToNotFound={NavigateToNotFound}
+    />
   )
 }

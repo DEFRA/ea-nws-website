@@ -53,7 +53,7 @@ export default function ProvideAreaNamePage () {
     setAreaCoords(value.coordinates)
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (areaName === '') {
       setError('Enter a place name, town or postcode')
     } else if (areaCoords === null) {

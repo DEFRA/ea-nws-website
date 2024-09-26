@@ -86,7 +86,6 @@ export default function Autocomplete ({
   }
 
   const handleKeyDown = (event) => {
-    console.log(event.keyCode)
     switch (keyCodes[event.keyCode]) {
       case 'up':
         handleUpArrow(event)

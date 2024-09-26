@@ -13,19 +13,15 @@ import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
+import { useSelector } from 'react-redux'
 import TileLayerWithHeader from '../../../common/components/custom/TileLayerWithHeader'
 import { backendCall } from '../../../common/services/BackendService'
 
 export default function Map ({
   type,
-  coordinates,
   setCoordinates
 }) {
-  // const dispatch = useDispatch()
-
-  // const selectedLocation = useSelector(
-  //  (state) => state.session.selectedLocation
-  // )
+  const coordinates = useSelector((state) => state.session.currentLocation.coordinates)
   const { latitude, longitude } = coordinates
   const [apiKey, setApiKey] = useState(null)
   const [marker, setMarker] = useState(null)

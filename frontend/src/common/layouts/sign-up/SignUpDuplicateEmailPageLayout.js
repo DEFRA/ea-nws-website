@@ -1,5 +1,7 @@
 import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { getOrganisationAdditionals } from '../../../common/services/ProfileServices'
 import BackLink from '../../components/custom/BackLink'
 import Button from '../../components/gov-uk/Button'
 import ErrorSummary from '../../components/gov-uk/ErrorSummary'
@@ -11,6 +13,7 @@ export default function SignUpDuplicateEmailPageLayout () {
   const location = useLocation()
   const [error, setError] = useState('')
   const email = location.state.email
+  const profile = useSelector((state) => state.session.profile)
 
   const isOrganisationPage = location.pathname.includes('organisation')
   const urlSignup = isOrganisationPage
@@ -19,6 +22,8 @@ export default function SignUpDuplicateEmailPageLayout () {
   const urlSigninValidate = isOrganisationPage
     ? '/organisation/signin/validate'
     : '/signin/validate'
+
+  const organisation = Object.assign({}, getOrganisationAdditionals(profile))
 
   const handleSubmit = async () => {
     const dataToSend = { email }
@@ -47,23 +52,37 @@ export default function SignUpDuplicateEmailPageLayout () {
             <h1 className='govuk-heading-l'>
               The email address you entered is <br /> already being used
             </h1>
-            <InsetText text={email} />
+            <InsetText text={email} isTextBold />
             <div className='govuk-body'>
-              <p>If this is your account, you can sign in by getting a code</p>
-              <br />
-              <Button
-                className='govuk-button'
-                text='Get code to sign in'
-                onClick={handleSubmit}
-              />
-              &nbsp; &nbsp;
-              <Link
-                to={urlSignup}
-                style={{ display: 'inline-block', padding: '8px 10px 7px' }}
-                className='govuk-link'
-              >
-                Go back and enter a different email address
-              </Link>
+              {organisation.isAdminRegistering
+                ? (
+                  <>
+                    <p>
+                      If this is your account, you can sign in by getting a code
+                    </p>
+                    <br />
+                    <Button
+                      className='govuk-button'
+                      text='Get code to sign in'
+                      onClick={handleSubmit}
+                    />
+                  &nbsp;
+                    <Link to={urlSignup} className='govuk-link inline-link'>
+                      Go back and enter a different email address
+                    </Link>
+                  </>
+                  )
+                : (
+                  <>
+                    If they already have an account, they can sign in and use the
+                    service.
+                    <br />
+                    <br />
+                    <Link to={urlSignup} className='govuk-link'>
+                      Go back and enter a different email address
+                    </Link>
+                  </>
+                  )}
             </div>
           </div>
         </div>

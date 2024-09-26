@@ -5,7 +5,7 @@ import OrgPrivacyNoticePage from "../../footer/OrgPrivacyNoticePage";
 const urlFooterOrg = '/organisation'
 
 const orgFooterRoutes = [
-    {path: urlFooterOrg + '/declartation', component: <OrgTermsConditionsPage/>},
+    {path: urlFooterOrg + '/declaration', component: <OrgTermsConditionsPage/>},
     {path: urlFooterOrg + '/privacy', component: <OrgPrivacyNoticePage />}
 ]
 

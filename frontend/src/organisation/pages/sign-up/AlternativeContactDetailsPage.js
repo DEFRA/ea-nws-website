@@ -5,7 +5,7 @@ export default function AlternativeContactDetailsPage () {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {
-    navigate('/organisation/sign-up/terms-and-conditions')
+    navigate('/organisation/declaration')
   }
 
   const NavigateToPreviousPage = () => {

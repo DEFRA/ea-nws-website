@@ -115,7 +115,7 @@ export default function LocationXYCoordinatesSearchPage() {
                 value={xCoordinate}
                 onChange={(val) => setXCoordinate(val)}
                 error={xCoordinateError}
-                isNameBold={true}
+                isNameBold
                 className='govuk-input govuk-input--width-20'
               />
               <Input
@@ -125,7 +125,7 @@ export default function LocationXYCoordinatesSearchPage() {
                 value={yCoordinate}
                 onChange={(val) => setYCoordinate(val)}
                 error={yCoordinateError}
-                isNameBold={true}
+                isNameBold
                 className='govuk-input govuk-input--width-20'
               />
               <Button

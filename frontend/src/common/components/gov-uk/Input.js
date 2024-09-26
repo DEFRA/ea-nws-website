@@ -1,5 +1,5 @@
 import React from 'react'
-export default function Input({
+export default function Input ({
   name,
   hint = '',
   className,
@@ -34,7 +34,7 @@ export default function Input({
           {name}
         </label>
         {hint && (
-          <div className={'govuk-hint govuk-!-margin-bottom-2'}>{hint}</div>
+          <div className='govuk-hint govuk-!-margin-bottom-2'>{hint}</div>
         )}
         {error !== '' && (
           <p id='govuk-text-input-error' className='govuk-error-message'>

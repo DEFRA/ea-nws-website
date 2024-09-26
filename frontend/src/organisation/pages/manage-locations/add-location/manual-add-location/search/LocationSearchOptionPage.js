@@ -31,7 +31,7 @@ export default function LocationSearchOptionPage () {
           break
         case 'DropAPinOnAMap':
           // TODO: Uncomment when page available
-          //navigate(orgManageLocationsUrls.add.dropPinSearch)
+          // navigate(orgManageLocationsUrls.add.dropPinSearch)
           break
         default:
           break

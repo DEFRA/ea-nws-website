@@ -14,7 +14,7 @@ import { backendCall } from '../../../../../../../common/services/BackendService
 import { postCodeValidation } from '../../../../../../../common/services/validations/PostCodeValidation'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationPostCodeSearchPage() {
+export default function LocationPostCodeSearchPage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [postCode, setPostCode] = useState('')

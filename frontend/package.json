@@ -25,6 +25,7 @@
     "govuk-frontend": "^5.4.0",
     "leaflet": "^1.9.4",
     "leaflet-pip": "^1.1.0",
+    "leaflet.pattern": "^0.1.0",
     "node-fetch": "^2.7.0",
     "proj4": "^2.12.1",
     "react": "^18.3.1",

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-export default function Pagination({ totalPages, onPageChange, reset }) {
+export default function Pagination ({ totalPages, onPageChange, reset }) {
   const [currentPage, setCurrentPage] = useState(1)
 
   useEffect(() => {

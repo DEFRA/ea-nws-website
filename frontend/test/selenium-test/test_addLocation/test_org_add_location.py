@@ -219,6 +219,8 @@ def test_add_named_location_using_xy_coordinates_no_alerts(get_browser):
     assert 'Confirm Location' in browser.page_source
     assert locationName in browser.page_source
     assert x + ', ' + y in browser.page_source
+    assert 'Move the pin on the map' in browser.page_source
+    assert 'Use different X and Y coordinates' in browser.page_source
     assert 'Flood messages unavailable' in browser.page_source
     # TODO: Continue with this once more of the flow is complete
 
@@ -240,6 +242,8 @@ def test_add_named_location_using_xy_coordinates_all(get_browser):
     assert 'Confirm Location' in browser.page_source
     assert locationName in browser.page_source
     assert x + ', ' + y in browser.page_source
+    assert 'Move the pin on the map' in browser.page_source
+    assert 'Use different X and Y coordinates' in browser.page_source
     assert 'All flood messages available' in browser.page_source
     # TODO: Continue with this once more of the flow is complete
 
@@ -261,5 +265,7 @@ def test_add_named_location_using_xy_coordinates_alerts(get_browser):
     assert 'Confirm Location' in browser.page_source
     assert locationName in browser.page_source
     assert x + ', ' + y in browser.page_source
+    assert 'Move the pin on the map' in browser.page_source
+    assert 'Use different X and Y coordinates' in browser.page_source
     assert 'Severe flood warnings and flood warnings available' in browser.page_source
     # TODO: Continue with this once more of the flow is complete

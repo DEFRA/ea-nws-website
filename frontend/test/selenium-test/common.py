@@ -68,6 +68,7 @@ url_org_man_loc = {
         'searchOption': url_org_man_loc_path + '/add/search-option',
         'postcodeSearch': url_org_man_loc_path + '/add/postcode-search',
         'postcodeSearchResults': url_org_man_loc_path + '/add/postcode-search-results',
+        'xyCoordinatesSearch': url_org_man_loc_path + '/add/xy-coordinates-search',
     },
     'optionalLocation':{
         'optionalInfo': url_org_man_loc_path + '/add/optional-address/info',
@@ -81,6 +82,9 @@ url_org_man_loc = {
         'alternative_contact': local_host + '/',
         'org_details':  local_host + '/',
         'main_admin': local_host + '/'
+    },
+    'edit':{
+        'options': url_org_man_loc_path + '/edit/location-options'
     }
 }
 

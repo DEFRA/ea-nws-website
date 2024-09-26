@@ -15,6 +15,7 @@ import LocationAddUploadFilePage from '../../pages/manage-locations/add-location
 import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
 import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
+import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationOptionsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
 
 const urlManageOrg = '/organisation/manage-locations'
@@ -36,7 +37,8 @@ const orgManageLocationsUrls = {
   search: {
     searchOption: urlManageOrg + '/add/search-option',
     postCodeSearch: urlManageOrg + '/add/postcode-search',
-    postCodeSearchResults: urlManageOrg + '/add/postcode-search-results'
+    postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
+    xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search'
   },
   optionalAddress: {
     optionalLocation:
@@ -54,6 +56,9 @@ const orgManageLocationsUrls = {
     findUnmatchedLocations:
       urlManageOrgUnmatchedLocations + '/find-unmatched-locations',
     manuallyfind: urlManageOrgUnmatchedLocations + '/manually-find'
+  },
+  edit: {
+    options: urlManageOrg + '/edit/location-options'
   }
 }
 
@@ -130,6 +135,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.optionalAddress.optionalLocation,
     component: <AddOptionalAddress />
+  },
+  {
+    path: orgManageLocationsUrls.edit.options,
+    component: <EditLocationOptionsPage />
   }
 ]
 

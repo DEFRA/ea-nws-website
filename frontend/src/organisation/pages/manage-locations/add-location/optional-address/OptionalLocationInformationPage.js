@@ -54,7 +54,7 @@ export default function OptionalLocationInformationPage() {
             </h2>
             <ul className='govuk-list'>
               <li>
-                <h3 class='govuk-heading-s'>Address</h3>
+                <h3 className='govuk-heading-s'>Address</h3>
                 <p className='govuk-body'>
                   If you add a location as X and Y coordinate you can add an
                   address. This address will then be associated with the
@@ -62,10 +62,10 @@ export default function OptionalLocationInformationPage() {
                 </p>
               </li>
               <li>
-                <h3 class='govuk-heading-s'>Key information</h3>
-                <ul class='govuk-list govuk-list--bullet'>
+                <h3 className='govuk-heading-s'>Key information</h3>
+                <ul className='govuk-list govuk-list--bullet'>
                   <li>
-                    <h3 class='govuk-heading-s'>Internal reference</h3>
+                    <h3 className='govuk-heading-s'>Internal reference</h3>
                     <p className='govuk-body'>
                       Your internal reference, for example: PS01, unit 57,
                       Brid_04. This can help you identify the location more
@@ -73,7 +73,7 @@ export default function OptionalLocationInformationPage() {
                     </p>
                   </li>
                   <li>
-                    <h3 class='govuk-heading-s'>Business criticality</h3>
+                    <h3 className='govuk-heading-s'>Business criticality</h3>
                     <p className='govuk-body'>
                       How important the location is to your Business. For
                       example, low or medium, business critical.
@@ -89,7 +89,7 @@ export default function OptionalLocationInformationPage() {
                 </ul>
               </li>
               <li>
-                <h3 class='govuk-heading-s'>Keywords of locations</h3>
+                <h3 className='govuk-heading-s'>Keywords of locations</h3>
                 <p className='govuk-body'>
                   Adding keywords for each location can make it easier for you
                   to filter and create lists of locations you can then link to
@@ -104,7 +104,7 @@ export default function OptionalLocationInformationPage() {
                 </p>
               </li>
               <li>
-                <h3 class='govuk-heading-s'>Action to be taken</h3>
+                <h3 className='govuk-heading-s'>Action to be taken</h3>
                 <p className='govuk-body'>
                   What you can do to reduce the potential effects of flooding,
                   for example, inspect the location, use sandbags, move stock,
@@ -112,7 +112,7 @@ export default function OptionalLocationInformationPage() {
                 </p>
               </li>
               <li>
-                <h3 class='govuk-heading-s'>Notes</h3>
+                <h3 className='govuk-heading-s'>Notes</h3>
                 <p className='govuk-body'>
                   Any notes that could be helpful to someone not familiar with
                   the site. For example, John Smith has the flood plan for this

@@ -184,43 +184,42 @@ export default function Map({
         maxBounds={maxBounds}
         className='map-container'
       >
-        {apiKey &&
-          (apiKey !== 'error' ? (
-            <>
-              {tileLayerWithHeader}
-              {showMapControls && (
-                <>
-                  <ZoomControl position='bottomright' />
-                  <ResetMapButton />
-                </>
-              )}
-              {type === 'drop' ? (
-                <AddMarker />
-              ) : (
-                <Marker position={center} interactive={false} />
-              )}
-              {alertArea && (
-                <GeoJSON
-                  data={alertArea}
-                  onEachFeature={onEachAlertAreaFeature}
-                />
-              )}
-              {/* warning area must be added after alert areas - this pushes warning areas to the top */}
-              {warningArea && (
-                <GeoJSON
-                  data={warningArea}
-                  onEachFeature={onEachWarningAreaFeature}
-                />
-              )}
-            </>
-          ) : (
-            <div className='map-error-container'>
-              <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
-              <Link className='govuk-body-s' onClick={() => getApiKey()}>
-                Reload map
-              </Link>
-            </div>
-          ))}
+        {apiKey && apiKey !== 'error' ? (
+          <>
+            {tileLayerWithHeader}
+            {showMapControls && (
+              <>
+                <ZoomControl position='bottomright' />
+                <ResetMapButton />
+              </>
+            )}
+            {type === 'drop' ? (
+              <AddMarker />
+            ) : (
+              <Marker position={center} interactive={false} />
+            )}
+            {alertArea && (
+              <GeoJSON
+                data={alertArea}
+                onEachFeature={onEachAlertAreaFeature}
+              />
+            )}
+            {/* warning area must be added after alert areas - this pushes warning areas to the top */}
+            {warningArea && (
+              <GeoJSON
+                data={warningArea}
+                onEachFeature={onEachWarningAreaFeature}
+              />
+            )}
+          </>
+        ) : (
+          <div className='map-error-container'>
+            <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
+            <Link className='govuk-body-s' onClick={() => getApiKey()}>
+              Reload map
+            </Link>
+          </div>
+        )}
       </MapContainer>
     </div>
   )

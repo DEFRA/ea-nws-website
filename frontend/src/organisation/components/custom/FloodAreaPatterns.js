@@ -26,7 +26,7 @@ export const createWarningPattern = () => {
     .append('path')
     .attr('d', 'M 0 0 L 10 10 M 10 0 L 0 10')
     .attr('stroke', 'white')
-    .attr('stroke-width', 2)
+    .attr('stroke-width', 1)
 }
 
 export const createAlertPattern = () => {

@@ -4,7 +4,11 @@ import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../../common/components/gov-uk/Button'
 import WarningText from '../../../../../../../common/components/gov-uk/WarningText'
-import { setCurrentLocation } from '../../../../../../../common/redux/userSlice'
+import {
+  setCurrentLocation,
+  setLocationSearchResults
+} from '../../../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../../../common/services/BackendService'
 
 export default function ManuallyFindLocationsPage() {
   const navigate = useNavigate()
@@ -110,11 +114,43 @@ export default function ManuallyFindLocationsPage() {
     }
   }
 
+  const findAvailableAddresses = async (location) => {
+    const dataToSend = {
+      name: location,
+      minmatch: 0.5
+    }
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
+      'api/os-api/name-minmatch-search',
+      navigate
+    )
+    if (errorMessage) {
+      // If there was an error message, return false
+      return false
+    } else {
+      // Otherwise, dispatch results and return true
+      dispatch(setLocationSearchResults(data))
+      return true
+    }
+  }
+
   const handleFind = async (event, location) => {
     event.preventDefault()
     const poi = locationToPOI(location)
     dispatch(setCurrentLocation(poi))
-    navigate('/organisation/manage-locations/find-location')
+    const isAddressValid = findAvailableAddresses(
+      location.meta_data.location_additional.full_address
+    )
+    // If there is results for the unmatched address, navigate to the radio screen
+    // where user can select how to find the address
+    if (isAddressValid) {
+      navigate(
+        '/organisation/manage-locations/unmatched-locations/find-location'
+      )
+    } else {
+      // otherwise, navigate to find on map directly
+      navigate('/') //Link to map
+    }
   }
 
   return (

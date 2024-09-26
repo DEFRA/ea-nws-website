@@ -4,7 +4,7 @@ from selenium.webdriver.common.by import By
 import time
 from common import *
 
-url = "http://localhost:3000/organisation/manage-locations/unmatched-locations/find-unmatched-locations"
+url = "http://localhost:3000/organisation/manage-locations/unmatched-locations"
 nextPage = "http://localhost:3000"
 
 def test__empty_input(get_browser):

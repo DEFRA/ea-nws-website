@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import Button from '../../../../../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../../../../../common/components/gov-uk/ErrorSummary'
-import NotificationBanner from '../../../../../../../common/components/gov-uk/NotificationBanner'
-import Radio from '../../../../../../../common/components/gov-uk/Radio'
+import Button from '../../../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
+import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
+import Radio from '../../../../../../common/components/gov-uk/Radio'
 
 export default function FindUnmatchedLocationsPage () {
   const navigate = useNavigate()

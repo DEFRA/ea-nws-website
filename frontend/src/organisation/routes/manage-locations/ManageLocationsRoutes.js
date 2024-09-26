@@ -8,17 +8,19 @@ import LocationSearchOptionPage from '../../pages/manage-locations/add-location/
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
 import ConfirmLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
+import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/FindUnmatchedLocationsPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
-import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
 import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
+import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/NotInEnglandPage'
+import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
+import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
 import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationOptionsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
 
 import CannotFindAddressPage from '../../pages/manage-locations/add-location/manual-add-location/search/error/CannotFindAddressPage'
 const urlManageOrg = '/organisation/manage-locations'
-const urlManageOrgUnmatchedLocations =
-  '/organisation/manage-locations/unmatched-locations'
-const urlManageOrgConfirmLocations = '/organisation/manage-locations/confirm'
+const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
+const urlManageOrgConfirmLocations = urlManageOrg + '/confirm'
 
 // Manage location urls
 const orgManageLocationsUrls = {
@@ -43,10 +45,15 @@ const orgManageLocationsUrls = {
     xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search'
   },
   unmatchedLocations: {
+    index: urlManageOrgUnmatchedLocations,
     doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
-    findUnmatchedLocations:
-      urlManageOrgUnmatchedLocations + '/find-unmatched-locations',
-    manuallyfind: urlManageOrgUnmatchedLocations + '/manually-find'
+    manuallyfind: {
+      index: urlManageOrgUnmatchedLocations + '/manually-find',
+      areaName: urlManageOrgUnmatchedLocations + '/manually-find/area-name',
+      map: urlManageOrgUnmatchedLocations + '/manually-find/map',
+      notInEngland:
+        urlManageOrgUnmatchedLocations + '/manually-find/not-in-england'
+    }
   },
   edit: {
     options: urlManageOrg + '/edit/location-options'
@@ -92,12 +99,24 @@ const orgManageLocationRoutes = [
     component: <DoNotAddLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.unmatchedLocations.findUnmatchedLocations,
+    path: orgManageLocationsUrls.unmatchedLocations.index,
     component: <FindUnmatchedLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind,
+    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.index,
     component: <ManuallyFindLocationsPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName,
+    component: <ProvideAreaNamePage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.map,
+    component: <SelectOnMapPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.notInEngland,
+    component: <NotInEnglandPage />
   },
   {
     path: urlManageOrgConfirmLocations,

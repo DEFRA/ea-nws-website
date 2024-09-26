@@ -14,6 +14,7 @@ import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import TileLayerWithHeader from '../../../common/components/custom/TileLayerWithHeader'
 import { backendCall } from '../../../common/services/BackendService'
 
@@ -54,8 +55,12 @@ export default function Map ({
   L.Marker.prototype.options.icon = DefaultIcon
 
   async function getApiKey () {
-    const { data } = await backendCall('data', 'api/os-api/oauth2')
-    setApiKey(data.access_token)
+    const { errorMessage, data } = await backendCall('data', 'api/os-api/oauth2')
+    if (!errorMessage) {
+      setApiKey(data.access_token)
+    } else {
+      setApiKey('error')
+    }
   }
 
   useEffect(() => {
@@ -136,10 +141,22 @@ export default function Map ({
         maxBounds={maxBounds}
         className='map-container'
       >
-        {apiKey && tileLayerWithHeader}
-        <ZoomControl position='bottomright' />
-        <ResetMapButton />
-        {type === 'drop' ? <AddMarker /> : <Marker position={center} interactive={false} />}
+        {apiKey
+          ? (
+            <>
+              {tileLayerWithHeader}
+              <ZoomControl position='bottomright' />
+              <ResetMapButton />
+              {type === 'drop' ? <AddMarker /> : <Marker position={center} interactive={false} />}
+            </>
+            )
+          : apiKey === 'error' &&
+            (
+              <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+                <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
+                <Link className='govuk-body-s' onClick={() => getApiKey()}>Reload map</Link>
+              </div>
+            )}
       </MapContainer>
     </div>
   )

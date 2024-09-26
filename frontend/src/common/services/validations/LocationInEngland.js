@@ -17,8 +17,6 @@ export const locationInEngland = async (lat, lng) => {
     WFSParams,
     'api/wfs'
   )
-  console.log(geojson)
-  console.log(geojson.features[0].geometry.coordinates)
   const point = turf.point([lng, lat])
   const poly = turf.multiPolygon(geojson.features[0].geometry.coordinates)
   const isInEngland = turf.booleanPointInPolygon(point, poly)

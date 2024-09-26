@@ -142,7 +142,7 @@ export default function Map ({
         className='map-container'
       >
         {apiKey
-          ? (
+          ? apiKey !== 'error' (
             <>
               {tileLayerWithHeader}
               <ZoomControl position='bottomright' />
@@ -150,7 +150,7 @@ export default function Map ({
               {type === 'drop' ? <AddMarker /> : <Marker position={center} interactive={false} />}
             </>
             )
-          : apiKey === 'error' &&
+          :
             (
               <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
                 <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>

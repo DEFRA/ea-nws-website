@@ -16,7 +16,7 @@ export default function EditLocationOptionsPage () {
   ]
 
   useEffect(() => {
-    setError()
+    setError('')
   }, [addLocationType])
 
   const handleButton = () => {

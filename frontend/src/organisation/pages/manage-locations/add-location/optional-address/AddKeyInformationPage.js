@@ -13,7 +13,7 @@ import {
 } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AddKeyInformationPage() {
+export default function AddKeyInformationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 

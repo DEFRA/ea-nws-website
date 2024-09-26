@@ -7,7 +7,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../../../common/components/gov-uk/TextArea'
 import { setCurrentLocationNotes } from '../../../../../common/redux/userSlice'
-export default function AddNotesPage() {
+export default function AddNotesPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const charLimit = 200

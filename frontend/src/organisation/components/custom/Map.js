@@ -16,11 +16,13 @@ import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { useSelector } from 'react-redux'
+import { Link } from 'react-router-dom'
 import TileLayerWithHeader from '../../../common/components/custom/TileLayerWithHeader'
 import { backendCall } from '../../../common/services/BackendService'
 import { getSurroundingFloodAreas } from '../../../common/services/WfsFloodDataService'
+import { createAlertPattern, createWarningPattern } from './FloodAreaPatterns'
 
-export default function Map ({
+export default function Map({
   type,
   setCoordinates,
   showMapControls = true,
@@ -36,7 +38,7 @@ export default function Map ({
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData () {
+    async function fetchFloodAreaData() {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude
@@ -73,7 +75,7 @@ export default function Map ({
 
   L.Marker.prototype.options.icon = DefaultIcon
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
     setApiKey(data.access_token)
   }
@@ -124,7 +126,7 @@ export default function Map ({
   )
   const ref = useRef(null)
 
-  function AddMarker () {
+  function AddMarker() {
     useMapEvents({
       click: (e) => {
         const mapHeight = ref.current.clientHeight
@@ -147,6 +149,30 @@ export default function Map ({
     return marker && <Marker position={marker} interactive={false} />
   }
 
+  useEffect(() => {
+    createWarningPattern()
+    createAlertPattern()
+  }, [])
+
+  const onEachWarningAreaFeature = (feature, layer) => {
+    layer.options.className = 'warning-area-pattern-fill'
+    layer.bringToFront()
+
+    layer.setStyle({
+      color: '#f70202',
+      weight: 2
+    })
+  }
+
+  const onEachAlertAreaFeature = (feature, layer) => {
+    layer.options.className = 'alert-area-pattern-fill'
+
+    layer.setStyle({
+      color: '#ffa200',
+      weight: 2
+    })
+  }
+
   return (
     <div ref={ref}>
       <MapContainer
@@ -158,24 +184,43 @@ export default function Map ({
         maxBounds={maxBounds}
         className='map-container'
       >
-        {apiKey && tileLayerWithHeader}
-        {showMapControls && (
-          <>
-            <ZoomControl position='bottomright' />
-            <ResetMapButton />
-          </>
-        )}
-        {type === 'drop'
-          ? (
-            <AddMarker />
-            )
-          : (
-            <Marker position={center} interactive={false} />
-            )}
-        {warningArea && (
-          <GeoJSON data={warningArea} style={{ color: '#f70202' }} />
-        )}
-        {alertArea && <GeoJSON data={alertArea} style={{ color: '#ffa200' }} />}
+        {apiKey &&
+          (apiKey !== 'error' ? (
+            <>
+              {tileLayerWithHeader}
+              {showMapControls && (
+                <>
+                  <ZoomControl position='bottomright' />
+                  <ResetMapButton />
+                </>
+              )}
+              {type === 'drop' ? (
+                <AddMarker />
+              ) : (
+                <Marker position={center} interactive={false} />
+              )}
+              {alertArea && (
+                <GeoJSON
+                  data={alertArea}
+                  onEachFeature={onEachAlertAreaFeature}
+                />
+              )}
+              {/* warning area must be added after alert areas - this pushes warning areas to the top */}
+              {warningArea && (
+                <GeoJSON
+                  data={warningArea}
+                  onEachFeature={onEachWarningAreaFeature}
+                />
+              )}
+            </>
+          ) : (
+            <div className='map-error-container'>
+              <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
+              <Link className='govuk-body-s' onClick={() => getApiKey()}>
+                Reload map
+              </Link>
+            </div>
+          ))}
       </MapContainer>
     </div>
   )

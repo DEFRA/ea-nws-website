@@ -11,6 +11,7 @@ import ConfirmLocationsPage from '../../pages/manage-locations/add-location/uplo
 import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/find-unmatched-locations/FindUnmatchedLocationsPage'
 import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
+import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationOptionsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
 
 import CannotFindAddressPage from '../../pages/manage-locations/add-location/manual-add-location/search/error/CannotFindAddressPage'
@@ -32,6 +33,7 @@ const orgManageLocationsUrls = {
     searchOption: urlManageOrg + '/add/search-option',
     postCodeSearch: urlManageOrg + '/add/postcode-search',
     postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
+    xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search',
     optionalInfo: urlManageOrg + '/add/optional-location-info',
     optionalAddress: urlManageOrg + '/add/optional-address',
     error: {
@@ -43,6 +45,9 @@ const orgManageLocationsUrls = {
     findUnmatchedLocations:
       urlManageOrgUnmatchedLocations + '/find-unmatched-locations',
     manuallyfind: urlManageOrgUnmatchedLocations + '/manually-find'
+  },
+  edit: {
+    options: urlManageOrg + '/edit/location-options'
   }
 }
 
@@ -107,6 +112,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.error.cannotFindAddress,
     component: <CannotFindAddressPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.options,
+    component: <EditLocationOptionsPage />
   }
 ]
 

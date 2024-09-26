@@ -33,5 +33,4 @@ def test_back_button(get_browser):
 
 def test_click_differentpostcode_link(get_browser):
     setup(get_browser)
-    time.sleep(360)
     click_link(get_browser, "use a different postcode", url_add_postcode_search)

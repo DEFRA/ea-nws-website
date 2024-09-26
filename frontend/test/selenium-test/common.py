@@ -82,6 +82,10 @@ url_org_man_loc = {
     }
 }
 
+# org footer urls
+url_org_declaration = url_org + '/declaration'
+url_org_privacy_notice = url_org + '/privacy'
+
 # PAGE NAVIGATION
 # Navigate to authenticated page via index page and check url
 def navigate_to_auth_page_via_index(browser, url_target, mock_session=1):

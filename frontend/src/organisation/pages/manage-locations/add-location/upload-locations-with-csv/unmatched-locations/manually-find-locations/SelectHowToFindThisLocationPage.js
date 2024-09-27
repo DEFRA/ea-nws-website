@@ -8,7 +8,7 @@ import InsetText from '../../../../../../../common/components/gov-uk/InsetText'
 import Radio from '../../../../../../../common/components/gov-uk/Radio'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function SelectHowToFindThisLocationPage () {
+export default function SelectHowToFindThisLocationPage() {
   const navigate = useNavigate()
   const [findLocationOption, setFindLocationOption] = useState('')
   const [error, setError] = useState('')
@@ -36,9 +36,7 @@ export default function SelectHowToFindThisLocationPage () {
       )
     } else if (findLocationOption === findLocationOptions[0].value) {
       if (locationSearchResults) {
-        navigate(
-          orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName
-        )
+        navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.address)
       }
     } else {
       navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName) // Navigate to map

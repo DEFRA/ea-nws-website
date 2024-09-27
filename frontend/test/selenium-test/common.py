@@ -78,9 +78,9 @@ url_org_man_loc = {
         'main_admin': local_host + '/'
     },
     'unmatched_location': {
-        'manually_find_locations': url_org_man_loc_path + '/unmatched-locations/select-find-location',
-        'select_how': url_org_man_loc_path + '/unmatched-locations/select-find-location',
-        'find_by_address': url_org_man_loc_path + '/unmatched-locations/find-by-addresses',
+        'manually_find_locations': url_org_man_loc_path + '/unmatched-locations/manually-find',
+        'select_how': url_org_man_loc_path + '/unmatched-locations/manually-find/how-to-find',
+        'find_by_address': url_org_man_loc_path + '/unmatched-locations/manually-find/address',
     },
     'edit':{
         'options': url_org_man_loc_path + '/edit/location-options'

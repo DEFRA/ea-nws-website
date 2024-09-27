@@ -6,6 +6,8 @@ import Button from '../../../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../../../common/components/gov-uk/ErrorSummary'
 import InsetText from '../../../../../../../../common/components/gov-uk/InsetText'
 import Select from '../../../../../../../../common/components/gov-uk/Select'
+import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
+
 export default function FindLocationByMatchedAddressesPage() {
   const navigate = useNavigate()
   const selectedLocation = useSelector(
@@ -23,7 +25,6 @@ export default function FindLocationByMatchedAddressesPage() {
   }, [selectedAddressIndex])
 
   const handleContinue = async () => {
-    console.log(availableAddresses[selectedAddressIndex])
     if (!selectedAddressIndex) {
       setError('Select an address')
     } else {
@@ -31,9 +32,7 @@ export default function FindLocationByMatchedAddressesPage() {
         'selectedAddress',
         JSON.stringify(availableAddresses[selectedAddressIndex])
       )
-      navigate(
-        '/organisation/manage-locations/unmatched-locations/confirm-location-address'
-      )
+      navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index)
     }
   }
 

@@ -70,12 +70,15 @@ export default function LocationOptionsLayout ({ heading, searchOptions, errorMe
             )}
             <h1 className='govuk-heading-l'>{heading}</h1>
             {isAddingLocation
-              ? <p>
-                If your location is a polygon, or a line, your orgainsation has
-                created you'll need to upload your location as a shapefile in a
-                .zip file.
+              ? (
+                <p>
+                  If your location is a polygon, or a line, your organization has
+                  created you'll need to upload your location as a shapefile in a
+                  .zip file.
                 </p>
+                )
               : null}
+
             <div
               className={
                 error

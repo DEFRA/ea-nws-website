@@ -19,6 +19,7 @@ import {
 import { locationInEngland } from '../../../../../../../common/services/validations/LocationInEngland'
 import { xCoordinateValidation } from '../../../../../../../common/services/validations/XCoordinateValidation'
 import { yCoordinateValidation } from '../../../../../../../common/services/validations/YCoordinateValidation'
+import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationXYCoordinatesSearchPage() {
   const dispatch = useDispatch()
@@ -71,7 +72,7 @@ export default function LocationXYCoordinatesSearchPage() {
 
         navigateToNextPage(isInAlertArea, isInWarningArea, isError)
       } else {
-        // TODO: navigate to Not in England page
+        navigate(orgManageLocationsUrls.add.xyCoordinatesNotInEngland)
       }
     }
   }

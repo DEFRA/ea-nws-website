@@ -92,7 +92,6 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.add.postCodeSearchResults,
     component: <LocationPostCodeSearchResultsPage />
   },
-
   {
     path: orgManageLocationsUrls.add.confirmManualSearchedLocation,
     component: <ConfirmLocationPage />

@@ -1030,3 +1030,19 @@
 .org-flood-warning-text {
   line-height: 1.2;
 }
+
+.warning-area-pattern-fill {
+  fill: url(#warning-pattern);
+}
+
+.alert-area-pattern-fill {
+  fill: url(#alert-pattern);
+}
+
+.map-error-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}

@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
 import { setCurrentContact } from '../../../common/redux/userSlice'
 
-export default function ContactDetailsTable({
+export default function ContactDetailsTable ({
   contacts,
   contactTitle,
   contactType,
@@ -146,17 +146,19 @@ export default function ContactDetailsTable({
           </tbody>
         </table>
       )}
-      {contacts.length + unregisteredContact.length < 5 ? (
-        <Button
-          className='govuk-button govuk-button--secondary'
-          text={`Add ${
+      {contacts.length + unregisteredContact.length < 5
+        ? (
+          <Button
+            className='govuk-button govuk-button--secondary'
+            text={`Add ${
             contactType === 'email address' ? 'an' : 'a'
           } ${contactType}`}
-          onClick={handleButton}
-        />
-      ) : (
-        <MaximumReached />
-      )}
+            onClick={handleButton}
+          />
+          )
+        : (
+          <MaximumReached />
+          )}
     </>
   )
 }

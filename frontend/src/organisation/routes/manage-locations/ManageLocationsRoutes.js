@@ -7,6 +7,7 @@ import LocationPostCodeSearchResultsPage from '../../pages/manage-locations/add-
 import LocationSearchOptionPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationSearchOptionPage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirm'
+import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
 import ConfirmLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
@@ -28,6 +29,7 @@ const orgManageLocationsUrls = {
     options: urlManageOrg + '/add',
     addressInfo: urlManageOrg + '/add/address-info',
     uploadFile: urlManageOrg + '/add/upload-file',
+    loadingPage: urlManageOrg + '/add/upload-file/loading',
     confirm: urlManageOrg + '/add/confirm',
     name: urlManageOrg + '/add/name',
     searchOption: urlManageOrg + '/add/search-option',
@@ -61,6 +63,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.uploadFile,
     component: <LocationAddUploadFilePage />
+  },
+  {
+    path: orgManageLocationsUrls.add.loadingPage,
+    component: <LocationAddLoadingPage />
   },
   {
     path: orgManageLocationsUrls.add.confirm,

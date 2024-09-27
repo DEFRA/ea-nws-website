@@ -22,7 +22,8 @@ const routes = [].concat(
   require('../routes/bulkUpload/downloadTemplate'),
   require('../routes/bulkUpload/uploadFile'),
   require('../routes/bulk_uploads/process_file'),
-  require('../routes/sign_out/sign_out')
+  require('../routes/sign_out/sign_out'),
+  require('../routes/bulk_uploads/process_status')
 )
 
 module.exports = {

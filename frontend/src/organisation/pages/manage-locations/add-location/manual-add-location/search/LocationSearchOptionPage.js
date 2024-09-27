@@ -8,7 +8,7 @@ import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummar
 import Radio from '../../../../../../common/components/gov-uk/Radio'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationSearchOptionPage () {
+export default function LocationSearchOptionPage() {
   const navigate = useNavigate()
   const [searchOption, setSearchOption] = useState('')
   const [error, setError] = useState('')
@@ -18,18 +18,24 @@ export default function LocationSearchOptionPage () {
     setError('')
   }, [searchOption])
 
+  const searchOptions = [
+    { label: 'Use a postcode', value: 'UseAPostcode' },
+    { label: 'Use X and Y coordinates', value: 'UseXAndYCoordinates' },
+    { label: 'Drop a pin on a map', value: 'DropAPinOnAMap' }
+  ]
+
   const handleSubmit = () => {
     if (!searchOption) {
       setError('Select how you want to find this location')
     } else {
       switch (searchOption) {
-        case 'UseAPostcode':
+        case searchOptions[0].value:
           navigate(orgManageLocationsUrls.add.postCodeSearch)
           break
-        case 'UseXAndYCoordinates':
+        case searchOptions[1].value:
           navigate(orgManageLocationsUrls.add.xyCoordinatesSearch)
           break
-        case 'DropAPinOnAMap':
+        case searchOptions[2].value:
           // TODO: Uncomment when page available
           // navigate(orgManageLocationsUrls.add.dropPinSearch)
           break
@@ -47,12 +53,6 @@ export default function LocationSearchOptionPage () {
   const locationName = useSelector(
     (state) => state.session.currentLocation.name
   )
-  const searchOptions = [
-    { label: 'Use a postcode', value: 'UseAPostcode' },
-    { label: 'Use X and Y coordinates', value: 'UseXAndYCoordinates' },
-    { label: 'Drop a pin on a map', value: 'DropAPinOnAMap' }
-  ]
-
   return (
     <>
       <OrganisationAccountNavigation />

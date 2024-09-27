@@ -16,8 +16,10 @@ import {
   getSurroundingFloodAreas,
   isLocationInFloodArea
 } from '../../../../../../../common/services/WfsFloodDataService'
+import { locationInEngland } from '../../../../../../../common/services/validations/LocationInEngland'
 import { xCoordinateValidation } from '../../../../../../../common/services/validations/XCoordinateValidation'
 import { yCoordinateValidation } from '../../../../../../../common/services/validations/YCoordinateValidation'
+import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationXYCoordinatesSearchPage() {
   const dispatch = useDispatch()
@@ -48,26 +50,30 @@ export default function LocationXYCoordinatesSearchPage() {
         Number(yCoordinate)
       )
 
-      const coordinates = { latitude, longitude }
-      dispatch(setCurrentLocationCoordinates(coordinates))
+      if (await locationInEngland(latitude, longitude)) {
+        const coordinates = { latitude, longitude }
+        dispatch(setCurrentLocationCoordinates(coordinates))
 
-      dispatch(setCurrentLocationEasting(Number(xCoordinate)))
-      dispatch(setCurrentLocationNorthing(Number(yCoordinate)))
+        dispatch(setCurrentLocationEasting(Number(xCoordinate)))
+        dispatch(setCurrentLocationNorthing(Number(yCoordinate)))
 
-      const { warningArea, alertArea } = await getSurroundingFloodAreas(
-        latitude,
-        longitude
-      )
+        const { warningArea, alertArea } = await getSurroundingFloodAreas(
+          latitude,
+          longitude
+        )
 
-      const isError = !warningArea && !alertArea
+        const isError = !warningArea && !alertArea
 
-      const isInAlertArea =
-        alertArea && isLocationInFloodArea(latitude, longitude, alertArea)
+        const isInAlertArea =
+          alertArea && isLocationInFloodArea(latitude, longitude, alertArea)
 
-      const isInWarningArea =
-        warningArea && isLocationInFloodArea(latitude, longitude, warningArea)
+        const isInWarningArea =
+          warningArea && isLocationInFloodArea(latitude, longitude, warningArea)
 
-      navigateToNextPage(isInAlertArea, isInWarningArea, isError)
+        navigateToNextPage(isInAlertArea, isInWarningArea, isError)
+      } else {
+        navigate(orgManageLocationsUrls.add.xyCoordinatesNotInEngland)
+      }
     }
   }
 

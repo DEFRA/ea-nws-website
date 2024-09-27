@@ -6,7 +6,7 @@ import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import InsetText from '../../../../common/components/gov-uk/InsetText'
 import Radio from '../../../../common/components/gov-uk/Radio'
-export default function SelectHowToFindThisLocationPage() {
+export default function SelectHowToFindThisLocationPage () {
   const navigate = useNavigate()
   const [findLocationOption, setFindLocationOption] = useState('')
   const [error, setError] = useState('')

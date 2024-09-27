@@ -50,13 +50,12 @@ export default function LocationXYCoordinatesSearchPage() {
         Number(yCoordinate)
       )
 
+      const coordinates = { latitude, longitude }
+      dispatch(setCurrentLocationCoordinates(coordinates))
+      dispatch(setCurrentLocationEasting(Number(xCoordinate)))
+      dispatch(setCurrentLocationNorthing(Number(yCoordinate)))
+
       if (await locationInEngland(latitude, longitude)) {
-        const coordinates = { latitude, longitude }
-        dispatch(setCurrentLocationCoordinates(coordinates))
-
-        dispatch(setCurrentLocationEasting(Number(xCoordinate)))
-        dispatch(setCurrentLocationNorthing(Number(yCoordinate)))
-
         const { warningArea, alertArea } = await getSurroundingFloodAreas(
           latitude,
           longitude

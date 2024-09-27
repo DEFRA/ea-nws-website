@@ -69,9 +69,7 @@ export default function NotInEnglandLayout({
               <ul className='govuk-list govuk-list--bullet'>
                 <li>
                   <Link
-                    onClick={navigate(
-                      orgManageLocationsUrls.add.postCodeSearch
-                    )}
+                    to={orgManageLocationsUrls.add.postCodeSearch}
                     className='govuk-link inline-link'
                   >
                     use a different postcode
@@ -79,9 +77,7 @@ export default function NotInEnglandLayout({
                 </li>
                 <li>
                   <Link
-                    onClick={navigate(
-                      orgManageLocationsUrls.add.xyCoordinatesSearch
-                    )}
+                    to={orgManageLocationsUrls.add.xyCoordinatesSearch}
                     className='govuk-link inline-link'
                   >
                     use a different set of X and Y coordinates
@@ -89,9 +85,9 @@ export default function NotInEnglandLayout({
                 </li>
                 <li>
                   <Link
-                    onClick={navigate(
+                    to={
                       orgManageLocationsUrls.unmatchedLocations.manuallyfind.map
-                    )}
+                    }
                     className='govuk-link inline-link'
                   >
                     find the location on a map

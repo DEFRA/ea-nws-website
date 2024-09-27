@@ -4,6 +4,8 @@ const {
 const getSecretKeyValue = require('../../services/SecretsManager')
 
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3')
+const { getSignedURL } = require('@aws-sdk/s3-request-presigner')
+
 const client = new S3Client()
 
 module.exports = [
@@ -16,12 +18,9 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const body = request.payload
+        const { name, fileType } = request.query
 
-        // const { name } = request.payload
-        // const name = request.payload.get('name')
-        // const uniqFileName = Date.now() + '_' + name
-        const uniqFileName = 'uniqFileName'
+        const uniqFileName = `${name}_${Date.now()}`
 
         // Change to nws/aws (bulkUploadBucket).
         // Would probably need the bucket to be configured correctly (see nws/website/organisation)
@@ -31,17 +30,20 @@ module.exports = [
         )
 
         const params = {
-          Body: body,
           Bucket: s3Bucket,
-          Key: uniqFileName
+          Key: uniqFileName,
+          ContentType: fileType
         }
 
         const command = new PutObjectCommand(params)
-        client.send(command)
+
+        // Generate pre-signed URL that will allow frontend to upload file
+        const signedURL = await getSignedURL(client, command)
 
         return {
           status: 200,
-          data: uniqFileName
+          url: signedURL,
+          fileName: uniqFileName
         }
       } catch {
         createGenericErrorResponse(h)

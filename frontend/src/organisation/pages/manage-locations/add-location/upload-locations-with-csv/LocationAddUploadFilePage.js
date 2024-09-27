@@ -94,37 +94,37 @@ export default function LocationAddUploadFilePage () {
       return
     }
     setUploading(true)
-    await new Promise((r) => setTimeout(r, 2000)) // Remove after debugging
 
-    // When this works correctly, it can be adjusted in backendCall function.
-    // Currently, the file is uploaded to bucket where the body contains a lot more information than the actual data.
-    const selectedFileMod = new FormData()
-    selectedFileMod.append('file', selectedFile)
-    console.dir(selectedFileMod)
-    const path = 'api/bulkUpload/uploadFile'
-    const domain = process.env.REACT_APP_API_URL
-    const url = domain ? domain + '/' + path : '/' + path
-    const input = selectedFileMod
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'text/csv'
-      },
-      body: input
-    })
-    const responseData = await response.json()
-    setUploading(false)
+    try {
+      // Get pre-signed URL from backend
+      const response = await fetch(
+        `/api/bulkUpload/uploadFile?name=${selectedFile.name}&fileType=${selectedFile.type}`
+      )
+      const { url } = await response.json()
 
-    // Using this results in no body contents uploaded to bucket.
-    // const input = { name: selectedFile.name, body: selectedFileMod }
-    // const { data, errorMessage } = await backendCall(
-    //   input,
-    //   'api/bulkUpload/uploadFile',
-    //   navigate,
-    //   true
-    // )
-    // console.log('File uploaded to s3 bucket: ' + data)
-    // !errorMessage && setUploading(false)
+      if (!url) {
+        throw new Error('Failed to get pre-signed URL')
+      }
+
+      // Upload the file to S3 using generated URL
+      const uploadResponse = await fetch(url, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': selectedFile.type
+        },
+        body: selectedFile
+      })
+
+      if (!uploadResponse.ok) {
+        throw new Error('File upload failed')
+      }
+
+      setUploading(false)
+    } catch (err) {
+      console.log(err) // DEBUG
+      setUploading(false)
+      setErrorFileType('Error uploading file')
+    }
   }
 
   return (

@@ -9,6 +9,7 @@ import {
   setLocationSearchResults
 } from '../../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../../common/services/BackendService'
+import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ManuallyFindLocationsPage () {
   const navigate = useNavigate()
@@ -152,20 +153,25 @@ export default function ManuallyFindLocationsPage () {
       )
     } else {
       // otherwise, navigate to find on map directly
-      navigate('/') // Link to map
+      navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName) // Link to map
     }
   }
 
   return (
     <>
-      {location.state &&
-         (
-           <NotificationBanner
-             className={`govuk-notification-banner ${location.state === 'Added' && 'govuk-notification-banner--success'} govuk-!-margin-bottom-0 govuk-!-margin-top-4`}
-             title={location.state === 'Added' ? 'Success' : 'Information'}
-             text={location.state === 'Added' ? '1 Location Added' : '1 location cannot be added because it\'s not in England'}
-           />
-         )}
+      {location.state && (
+        <NotificationBanner
+          className={`govuk-notification-banner ${
+            location.state === 'Added' && 'govuk-notification-banner--success'
+          } govuk-!-margin-bottom-0 govuk-!-margin-top-4`}
+          title={location.state === 'Added' ? 'Success' : 'Information'}
+          text={
+            location.state === 'Added'
+              ? '1 Location Added'
+              : "1 location cannot be added because it's not in England"
+          }
+        />
+      )}
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

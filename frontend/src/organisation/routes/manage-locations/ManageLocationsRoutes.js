@@ -11,9 +11,9 @@ import ConfirmLocationsPage from '../../pages/manage-locations/add-location/uplo
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/FindUnmatchedLocationsPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
-import AddAndConfirmLocationPage from '../../pages/manage-locations/partly-matched-locations/AddAndConfirmLocationPage'
-import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/partly-matched-locations/FindLocationByMatchedAddressesPage'
-import SelectHowToFindThisLocationPage from '../../pages/manage-locations/partly-matched-locations/SelectHowToFindThisLocationPage'
+import SelectHowToFindThisLocationPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/SelectHowToFindThisLocationPage'
+import AddAndConfirmLocationPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-by-address/AddAndConfirmLocationPage'
+import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-by-address/FindLocationByMatchedAddressesPage'
 import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/NotInEnglandPage'
 import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
@@ -45,19 +45,18 @@ const orgManageLocationsUrls = {
     doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
     manuallyfind: {
       index: urlManageOrgUnmatchedLocations + '/manually-find',
+      howToFind: urlManageOrgUnmatchedLocations + '/manually-find/how-to-find',
       areaName: urlManageOrgUnmatchedLocations + '/manually-find/area-name',
       map: urlManageOrgUnmatchedLocations + '/manually-find/map',
       notInEngland:
-        urlManageOrgUnmatchedLocations + '/manually-find/not-in-england'
+        urlManageOrgUnmatchedLocations + '/manually-find/not-in-england',
+      address: urlManageOrgUnmatchedLocations + '/manually-find/address',
+      confirmAddress:
+        urlManageOrgUnmatchedLocations + '/manually-find/confirm-address'
     }
   },
   edit: {
-    options: urlManageOrg + '/edit/location-options',
-    findLocation: urlManageOrgUnmatchedLocations + '/find-location',
-    findLocationByMatchedAddresses:
-      urlManageOrgUnmatchedLocations + '/find-location-by-address',
-    confirmLocation:
-      urlManageOrgUnmatchedLocations + '/confirm-location-address'
+    options: urlManageOrg + '/edit/location-options'
   }
 }
 
@@ -104,11 +103,7 @@ const orgManageLocationRoutes = [
     component: <FindUnmatchedLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.unmatchedLocations.findLocation,
-    component: <SelectHowToFindThisLocationPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.findLocation,
+    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.howToFind,
     component: <SelectHowToFindThisLocationPage />
   },
   {
@@ -132,12 +127,11 @@ const orgManageLocationRoutes = [
     component: <ConfirmLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.unmatchedLocations.confirmLocation,
+    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.confirmAddress,
     component: <AddAndConfirmLocationPage />
   },
   {
-    path: orgManageLocationsUrls.unmatchedLocations
-      .findLocationByMatchedAddresses,
+    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.address,
     component: <FindLocationByMatchedAddressesPage />
   },
   {

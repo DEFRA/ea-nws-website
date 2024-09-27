@@ -1,11 +1,13 @@
 import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import BackLink from '../../../../common/components/custom/BackLink'
-import Button from '../../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
-import InsetText from '../../../../common/components/gov-uk/InsetText'
-import Radio from '../../../../common/components/gov-uk/Radio'
+import BackLink from '../../../../../../../common/components/custom/BackLink'
+import Button from '../../../../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../../../../common/components/gov-uk/ErrorSummary'
+import InsetText from '../../../../../../../common/components/gov-uk/InsetText'
+import Radio from '../../../../../../../common/components/gov-uk/Radio'
+import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
+
 export default function SelectHowToFindThisLocationPage () {
   const navigate = useNavigate()
   const [findLocationOption, setFindLocationOption] = useState('')
@@ -35,11 +37,11 @@ export default function SelectHowToFindThisLocationPage () {
     } else if (findLocationOption === findLocationOptions[0].value) {
       if (locationSearchResults) {
         navigate(
-          '/organisation/manage-locations/unmatched-locations/find-location-by-address'
+          orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName
         )
       }
     } else {
-      navigate('/') // Navigate to map
+      navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName) // Navigate to map
     }
   }
 

@@ -1,8 +1,8 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
-import BackLink from '../../../../../../../common/components/custom/BackLink'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../../common/components/gov-uk/Button'
+import NotificationBanner from '../../../../../../../common/components/gov-uk/NotificationBanner'
 import WarningText from '../../../../../../../common/components/gov-uk/WarningText'
 import {
   setCurrentLocation,
@@ -13,6 +13,7 @@ import { backendCall } from '../../../../../../../common/services/BackendService
 export default function ManuallyFindLocationsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const location = useLocation()
 
   // dumy data this will be updated to come from the upload.
   const locations = [
@@ -157,7 +158,15 @@ export default function ManuallyFindLocationsPage() {
 
   return (
     <>
-      <BackLink onClick={() => navigate(-1)} />
+      {location.state &&
+         (
+           <NotificationBanner
+             className={`govuk-notification-banner ${location.state === 'Added' && 'govuk-notification-banner--success'} govuk-!-margin-bottom-0 govuk-!-margin-top-4`}
+             title={location.state === 'Added' ? 'Success' : 'Information'}
+             text={location.state === 'Added' ? '1 Location Added' : '1 location cannot be added because it\'s not in England'}
+           />
+         )}
+
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>

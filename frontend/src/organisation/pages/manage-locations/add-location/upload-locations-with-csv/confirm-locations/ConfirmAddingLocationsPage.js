@@ -13,7 +13,7 @@ export default function ConfirmLocationsPage () {
     // add matched address locations
     // navigate to decide if user wants to find unmatched locations
     navigate(
-      '/organisation/manage-locations/unmatched-locations/find-unmatched-locations'
+      '/organisation/manage-locations/unmatched-locations'
     )
   }
 

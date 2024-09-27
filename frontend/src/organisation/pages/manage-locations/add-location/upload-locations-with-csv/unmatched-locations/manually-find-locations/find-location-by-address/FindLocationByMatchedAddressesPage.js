@@ -8,7 +8,7 @@ import InsetText from '../../../../../../../../common/components/gov-uk/InsetTex
 import Select from '../../../../../../../../common/components/gov-uk/Select'
 import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function FindLocationByMatchedAddressesPage() {
+export default function FindLocationByMatchedAddressesPage () {
   const navigate = useNavigate()
   const selectedLocation = useSelector(
     (state) =>

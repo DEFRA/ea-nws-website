@@ -141,12 +141,12 @@ export default function LocationSearchResultsPage () {
                           <tr key={index} className='govuk-table__row'>
                             <td className='govuk-table__cell'>
                               <Link
-                  className='govuk-link'
-                  onClick={(event) =>
-                                handleSelectedLocation(event, location)}
-                >
-                  {location.name}
-                </Link>
+                                className='govuk-link'
+                                onClick={(event) =>
+                                  handleSelectedLocation(event, location)}
+                              >
+                                {location.name}
+                              </Link>
                             </td>
                           </tr>
                         ))}

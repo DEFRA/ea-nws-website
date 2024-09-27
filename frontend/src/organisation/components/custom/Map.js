@@ -22,7 +22,7 @@ import { backendCall } from '../../../common/services/BackendService'
 import { getSurroundingFloodAreas } from '../../../common/services/WfsFloodDataService'
 import { createAlertPattern, createWarningPattern } from './FloodAreaPatterns'
 
-export default function Map({
+export default function Map ({
   type,
   setCoordinates,
   showMapControls = true,
@@ -38,7 +38,7 @@ export default function Map({
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData() {
+    async function fetchFloodAreaData () {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude
@@ -75,7 +75,7 @@ export default function Map({
 
   L.Marker.prototype.options.icon = DefaultIcon
 
-  async function getApiKey() {
+  async function getApiKey () {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
     setApiKey(data.access_token)
   }
@@ -126,7 +126,7 @@ export default function Map({
   )
   const ref = useRef(null)
 
-  function AddMarker() {
+  function AddMarker () {
     useMapEvents({
       click: (e) => {
         const mapHeight = ref.current.clientHeight
@@ -195,11 +195,13 @@ export default function Map({
                 <ResetMapButton />
               </>
             )}
-            {type === 'drop' ? (
-              <AddMarker />
-            ) : (
-              <Marker position={center} interactive={false} />
-            )}
+            {type === 'drop'
+              ? (
+                <AddMarker />
+                )
+              : (
+                <Marker position={center} interactive={false} />
+                )}
             {alertArea && (
               <GeoJSON
                 data={alertArea}

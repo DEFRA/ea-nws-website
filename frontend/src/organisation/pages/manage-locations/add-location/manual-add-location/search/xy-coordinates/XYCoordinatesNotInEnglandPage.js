@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import NotInEnglandLayout from '../../../../../../layouts/add-location/unmatched-locations/NotInEnglandLayout'
 
-export default function XYCoordinatesNotInEnglandPage() {
+export default function XYCoordinatesNotInEnglandPage () {
   const navigate = useNavigate()
 
   const NavigateToPreviousPage = () => {
@@ -10,9 +10,9 @@ export default function XYCoordinatesNotInEnglandPage() {
   }
 
   const NavigateToNextPage = () => {
-    //navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index, {
+    // navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index, {
     //  state: 'NotAdded'
-    //})
+    // })
   }
 
   return (

@@ -140,7 +140,7 @@ export default function ManuallyFindLocationsPage() {
     event.preventDefault()
     const poi = locationToPOI(location)
     dispatch(setCurrentLocation(poi))
-    const isAddressValid = findAvailableAddresses(
+    const isAddressValid = await findAvailableAddresses(
       poi.meta_data.location_additional.full_address +
         ', ' +
         poi.meta_data.location_additional.postcode

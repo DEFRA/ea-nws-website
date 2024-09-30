@@ -1,6 +1,7 @@
 import React from 'react'
 export default function Input ({
   name,
+  hint = '',
   className,
   value,
   defaultValue = '',
@@ -8,7 +9,7 @@ export default function Input ({
   onChange,
   error = '',
   isNameBold = false,
-  labelSize = 'm'
+  labelSize = hint? 's' : 'm'
 }) {
   const handleChange = (event) => {
     onChange(event.target.value)
@@ -31,6 +32,9 @@ export default function Input ({
         >
           {name}
         </label>
+        {hint && (
+          <div className='govuk-hint govuk-!-margin-bottom-2'>{hint}</div>
+        )}
         {error !== '' && (
           <p id='govuk-text-input-error' className='govuk-error-message'>
             <span className='govuk-visually-hidden'>Error:</span> {error}

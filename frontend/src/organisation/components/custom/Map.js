@@ -3,8 +3,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
+  GeoJSON,
   MapContainer,
-  Marker, ZoomControl,
+  Marker,
+  ZoomControl,
   useMap,
   useMapEvents
 } from 'react-leaflet'
@@ -17,23 +19,42 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import TileLayerWithHeader from '../../../common/components/custom/TileLayerWithHeader'
 import { backendCall } from '../../../common/services/BackendService'
+import { getSurroundingFloodAreas } from '../../../common/services/WfsFloodDataService'
+import { createAlertPattern, createWarningPattern } from './FloodAreaPatterns'
 
 export default function Map ({
   type,
-  setCoordinates
+  setCoordinates,
+  showMapControls = true,
+  zoomLevel = 12
 }) {
-  const coordinates = useSelector((state) => state.session.currentLocation.coordinates)
-  const { latitude, longitude } = coordinates
+  const currentLocation = useSelector((state) => state.session.currentLocation)
+  const { latitude, longitude } = currentLocation.coordinates
   const [apiKey, setApiKey] = useState(null)
   const [marker, setMarker] = useState(null)
   const center = [latitude, longitude]
+  const [alertArea, setAlertArea] = useState(null)
+  const [warningArea, setWarningArea] = useState(null)
+
+  // get flood area data
+  useEffect(() => {
+    async function fetchFloodAreaData () {
+      const { alertArea, warningArea } = await getSurroundingFloodAreas(
+        latitude,
+        longitude
+      )
+      setAlertArea(alertArea)
+      setWarningArea(warningArea)
+    }
+    fetchFloodAreaData()
+  }, [])
 
   // reset the map to selected location
   const ResetMapButton = () => {
     const map = useMap()
 
     const handleClick = () => {
-      map.setView([latitude, longitude], 14)
+      map.setView([latitude, longitude], 12)
     }
 
     return (
@@ -55,12 +76,8 @@ export default function Map ({
   L.Marker.prototype.options.icon = DefaultIcon
 
   async function getApiKey () {
-    const { errorMessage, data } = await backendCall('data', 'api/os-api/oauth2')
-    if (!errorMessage) {
-      setApiKey(data.access_token)
-    } else {
-      setApiKey('error')
-    }
+    const { data } = await backendCall('data', 'api/os-api/oauth2')
+    setApiKey(data.access_token)
   }
 
   useEffect(() => {
@@ -115,48 +132,100 @@ export default function Map ({
         const mapHeight = ref.current.clientHeight
         const mapWidth = ref.current.clientWidth
         const { x, y } = e.containerPoint
-        if (!(
-          (x > (mapWidth - 30) && x < (mapWidth - 9)) &&
-          (y > (mapHeight - 110) && y < (mapHeight - 77))
-        )) {
+        if (
+          !(
+            x > mapWidth - 30 &&
+            x < mapWidth - 9 &&
+            y > mapHeight - 110 &&
+            y < mapHeight - 77
+          )
+        ) {
           const { lat, lng } = e.latlng
           setMarker([lat, lng])
           setCoordinates({ latitude: lat, longitude: lng })
         }
       }
     })
-    return (
-      marker && (<Marker position={marker} interactive={false} />)
-    )
+    return marker && <Marker position={marker} interactive={false} />
+  }
+
+  useEffect(() => {
+    createWarningPattern()
+    createAlertPattern()
+  }, [])
+
+  const onEachWarningAreaFeature = (feature, layer) => {
+    layer.options.className = 'warning-area-pattern-fill'
+    layer.bringToFront()
+
+    layer.setStyle({
+      color: '#f70202',
+      weight: 2,
+      fillOpacity: 0.25
+    })
+  }
+
+  const onEachAlertAreaFeature = (feature, layer) => {
+    layer.options.className = 'alert-area-pattern-fill'
+
+    layer.setStyle({
+      color: '#ffa200',
+      weight: 2,
+      fillOpacity: 0.5
+    })
   }
 
   return (
     <div ref={ref}>
       <MapContainer
         center={center}
-        zoom={14}
+        zoom={zoomLevel}
         zoomControl={false}
         attributionControl={false}
         minZoom={7}
         maxBounds={maxBounds}
         className='map-container'
       >
-        {apiKey &&
-           (apiKey !== 'error'
-             ? (
-               <>
-                 {tileLayerWithHeader}
-                 <ZoomControl position='bottomright' />
-                 <ResetMapButton />
-                 {type === 'drop' ? <AddMarker /> : <Marker position={center} interactive={false} />}
-               </>
-               )
-             : (
-               <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
-                 <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
-                 <Link className='govuk-body-s' onClick={() => getApiKey()}>Reload map</Link>
-               </div>
-               ))}
+        {apiKey && apiKey !== 'error'
+          ? (
+            <>
+              {tileLayerWithHeader}
+              {showMapControls && (
+                <>
+                  <ZoomControl position='bottomright' />
+                  <ResetMapButton />
+                </>
+              )}
+              {type === 'drop'
+                ? (
+                  <AddMarker />
+                  )
+                : (
+                  <Marker position={center} interactive={false} />
+                  )}
+              {alertArea && (
+                <GeoJSON
+                  data={alertArea}
+                  onEachFeature={onEachAlertAreaFeature}
+                />
+              )}
+              {/* warning area must be added after alert areas - this pushes warning areas to the top */}
+              {warningArea && (
+                <GeoJSON
+                  data={warningArea}
+                  onEachFeature={onEachWarningAreaFeature}
+                />
+              )}
+            </>
+            )
+          : (
+            <div className='map-error-container'>
+              <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
+              <Link className='govuk-body-s' onClick={() => getApiKey()}>
+                Reload map
+              </Link>
+            </div>
+            )}
       </MapContainer>
     </div>
   )

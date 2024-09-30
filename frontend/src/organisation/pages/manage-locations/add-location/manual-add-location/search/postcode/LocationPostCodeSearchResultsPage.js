@@ -19,6 +19,7 @@ import {
   getSurroundingFloodAreas,
   isLocationInFloodArea
 } from '../../../../../../../common/services/WfsFloodDataService'
+import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationSearchResultsPage () {
   const dispatch = useDispatch()
@@ -104,7 +105,7 @@ export default function LocationSearchResultsPage () {
 
   const navigateToCannotFindAddressPage = () => {
     // TODO: navigate to the appropriate page when user clicks "I cannot find address"
-    navigate('/organisation/manage-locations/add/cannot-find-address')
+    navigate(orgManageLocationsUrls.add.error.cannotFindAddress)
   }
 
   return (

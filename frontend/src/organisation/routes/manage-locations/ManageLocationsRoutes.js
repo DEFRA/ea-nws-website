@@ -12,7 +12,6 @@ import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-locatio
 import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
 import SelectHowToFindThisLocationPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/SelectHowToFindThisLocationPage'
-import AddAndConfirmLocationPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-by-address/AddAndConfirmLocationPage'
 import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-by-address/FindLocationByMatchedAddressesPage'
 import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/NotInEnglandPage'
 import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
@@ -50,9 +49,7 @@ const orgManageLocationsUrls = {
       map: urlManageOrgUnmatchedLocations + '/manually-find/map',
       notInEngland:
         urlManageOrgUnmatchedLocations + '/manually-find/not-in-england',
-      address: urlManageOrgUnmatchedLocations + '/manually-find/address',
-      confirmAddress:
-        urlManageOrgUnmatchedLocations + '/manually-find/confirm-address'
+      address: urlManageOrgUnmatchedLocations + '/manually-find/address'
     }
   },
   edit: {
@@ -125,10 +122,6 @@ const orgManageLocationRoutes = [
   {
     path: urlManageOrgConfirmLocations,
     component: <ConfirmLocationsPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.confirmAddress,
-    component: <AddAndConfirmLocationPage />
   },
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.address,

@@ -108,16 +108,26 @@ const userSlice = createSlice({
       state.currentLocation.address = action.payload.address
       state.currentLocation.coordinates = action.payload.coordinates
       state.currentLocation.alert_categories = action.payload.alert_categories
-      state.currentLocation.meta_data.location_additional.full_address = action.payload.meta_data.location_additional.full_address
-      state.currentLocation.meta_data.location_additional.postcode = action.payload.meta_data.location_additional.postcode
-      state.currentLocation.meta_data.location_additional.x_coordinate = action.payload.meta_data.location_additional.x_coordinate
-      state.currentLocation.meta_data.location_additional.y_coordinate = action.payload.meta_data.location_additional.y_coordinate
-      state.currentLocation.meta_data.location_additional.internal_reference = action.payload.meta_data.location_additional.internal_reference
-      state.currentLocation.meta_data.location_additional.business_criticality = action.payload.meta_data.location_additional.business_criticality
-      state.currentLocation.meta_data.location_additional.location_type = action.payload.meta_data.location_additional.location_type
-      state.currentLocation.meta_data.location_additional.action_plan = action.payload.meta_data.location_additional.action_plan
-      state.currentLocation.meta_data.location_additional.notes = action.payload.meta_data.location_additional.notes
-      state.currentLocation.meta_data.location_additional.keywords = action.payload.meta_data.location_additional.keywords
+      state.currentLocation.meta_data.location_additional.full_address =
+        action.payload.meta_data.location_additional.full_address
+      state.currentLocation.meta_data.location_additional.postcode =
+        action.payload.meta_data.location_additional.postcode
+      state.currentLocation.meta_data.location_additional.x_coordinate =
+        action.payload.meta_data.location_additional.x_coordinate
+      state.currentLocation.meta_data.location_additional.y_coordinate =
+        action.payload.meta_data.location_additional.y_coordinate
+      state.currentLocation.meta_data.location_additional.internal_reference =
+        action.payload.meta_data.location_additional.internal_reference
+      state.currentLocation.meta_data.location_additional.business_criticality =
+        action.payload.meta_data.location_additional.business_criticality
+      state.currentLocation.meta_data.location_additional.location_type =
+        action.payload.meta_data.location_additional.location_type
+      state.currentLocation.meta_data.location_additional.action_plan =
+        action.payload.meta_data.location_additional.action_plan
+      state.currentLocation.meta_data.location_additional.notes =
+        action.payload.meta_data.location_additional.notes
+      state.currentLocation.meta_data.location_additional.keywords =
+        action.payload.meta_data.location_additional.keywords
     },
     setCurrentLocationName: (state, action) => {
       state.currentLocation.name = action.payload
@@ -132,34 +142,43 @@ const userSlice = createSlice({
       state.currentLocation.alert_categories = action.payload
     },
     setCurrentLocationFullAddress: (state, action) => {
-      state.currentLocation.meta_data.location_additional.full_address = action.payload
+      state.currentLocation.meta_data.location_additional.full_address =
+        action.payload
     },
     setCurrentLocationPostcode: (state, action) => {
-      state.currentLocation.meta_data.location_additional.postcode = action.payload
+      state.currentLocation.meta_data.location_additional.postcode =
+        action.payload
     },
     setCurrentLocationEasting: (state, action) => {
-      state.currentLocation.meta_data.location_additional.x_coordinate = action.payload
+      state.currentLocation.meta_data.location_additional.x_coordinate =
+        action.payload
     },
     setCurrentLocationNorthing: (state, action) => {
-      state.currentLocation.meta_data.location_additional.y_coordinate = action.payload
+      state.currentLocation.meta_data.location_additional.y_coordinate =
+        action.payload
     },
     setCurrentLocationReference: (state, action) => {
-      state.currentLocation.meta_data.location_additional.internal_reference = action.payload
+      state.currentLocation.meta_data.location_additional.internal_reference =
+        action.payload
     },
     setCurrentLocationCriticality: (state, action) => {
-      state.currentLocation.meta_data.location_additional.business_criticality = action.payload
+      state.currentLocation.meta_data.location_additional.business_criticality =
+        action.payload
     },
     setCurrentLocationType: (state, action) => {
-      state.currentLocation.meta_data.location_additional.location_type = action.payload
+      state.currentLocation.meta_data.location_additional.location_type =
+        action.payload
     },
     setCurrentLocationActionPlan: (state, action) => {
-      state.currentLocation.meta_data.location_additional.action_plan = action.payload
+      state.currentLocation.meta_data.location_additional.action_plan =
+        action.payload
     },
     setCurrentLocationNotes: (state, action) => {
       state.currentLocation.meta_data.location_additional.notes = action.payload
     },
     setCurrentLocationKeywords: (state, action) => {
-      state.currentLocation.meta_data.location_additional.keywords = action.payload
+      state.currentLocation.meta_data.location_additional.keywords =
+        action.payload
     },
     // Clear state
     clearAuth: (state) => {

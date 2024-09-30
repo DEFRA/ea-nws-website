@@ -1,22 +1,22 @@
 import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import BackLink from '../../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
-import Button from '../../../../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
-import Input from '../../../../../../common/components/gov-uk/Input'
+import BackLink from '../../../../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../../../../common/components/custom/OrganisationAccountNavigation'
+import Button from '../../../../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../../../../common/components/gov-uk/ErrorSummary'
+import Input from '../../../../../../../common/components/gov-uk/Input'
 import {
-  setLocationPostCode,
+  setCurrentLocationPostcode,
   setLocationSearchResults
-} from '../../../../../../common/redux/userSlice'
-import { backendCall } from '../../../../../../common/services/BackendService'
-import { postCodeValidation } from '../../../../../../common/services/validations/PostCodeValidation'
+} from '../../../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../../../common/services/BackendService'
+import { postCodeValidation } from '../../../../../../../common/services/validations/PostCodeValidation'
+import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationPostCodeSearchPage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
   const [postCode, setPostCode] = useState('')
   const [error, setError] = useState('')
 
@@ -33,9 +33,9 @@ export default function LocationPostCodeSearchPage () {
         navigate
       )
       if (!errorMessage) {
-        dispatch(setLocationPostCode(data[0].postcode))
+        dispatch(setCurrentLocationPostcode(data[0].postcode))
         dispatch(setLocationSearchResults(data))
-        navigate('/organisation/manage-locations/add/postcode-search-results')
+        navigate(orgManageLocationsUrls.add.postCodeSearchResults)
       } else {
         // show error message from OS Api postcode search
         setError(errorMessage)

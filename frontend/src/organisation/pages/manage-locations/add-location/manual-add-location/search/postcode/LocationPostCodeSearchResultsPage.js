@@ -1,19 +1,24 @@
 import { React, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import BackLink from '../../../../../../common/components/custom/BackLink'
-import LoadingSpinner from '../../../../../../common/components/custom/LoadingSpinner'
-import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
-import Button from '../../../../../../common/components/gov-uk/Button'
-import Pagination from '../../../../../../common/components/gov-uk/Pagination'
+import BackLink from '../../../../../../../common/components/custom/BackLink'
+import LoadingSpinner from '../../../../../../../common/components/custom/LoadingSpinner'
+import OrganisationAccountNavigation from '../../../../../../../common/components/custom/OrganisationAccountNavigation'
+import Button from '../../../../../../../common/components/gov-uk/Button'
+import Pagination from '../../../../../../../common/components/gov-uk/Pagination'
 import {
-  setAdditionalAlerts,
-  setSelectedLocation
-} from '../../../../../../common/redux/userSlice'
+  setCurrentLocationCoordinates,
+  setCurrentLocationEasting,
+  setCurrentLocationFullAddress,
+  setCurrentLocationNorthing,
+  setCurrentLocationPostcode,
+  setCurrentLocationUPRN
+} from '../../../../../../../common/redux/userSlice'
+import { convertCoordinatesToEspg27700 } from '../../../../../../../common/services/CoordinatesFormatConverter'
 import {
   getSurroundingFloodAreas,
   isLocationInFloodArea
-} from '../../../../../../common/services/WfsFloodDataService'
+} from '../../../../../../../common/services/WfsFloodDataService'
 
 export default function LocationSearchResultsPage () {
   const dispatch = useDispatch()
@@ -21,8 +26,9 @@ export default function LocationSearchResultsPage () {
 
   const [currentPage, setCurrentPage] = useState(1)
   const [loading, setLoading] = useState(false)
-  const locationPostCode = useSelector(
-    (state) => state.session.locationPostCode
+  const postCode = useSelector(
+    (state) =>
+      state.session.currentLocation.meta_data.location_additional.postcode
   )
   const locations = useSelector((state) => state.session.locationSearchResults)
   const locationsPerPage = 20
@@ -36,7 +42,18 @@ export default function LocationSearchResultsPage () {
 
     setLoading(true)
     try {
-      dispatch(setSelectedLocation(selectedLocation))
+      dispatch(setCurrentLocationUPRN(selectedLocation.address))
+      dispatch(setCurrentLocationCoordinates(selectedLocation.coordinates))
+      dispatch(setCurrentLocationFullAddress(selectedLocation.name))
+      dispatch(setCurrentLocationPostcode(selectedLocation.postcode))
+
+      const { northing, easting } = convertCoordinatesToEspg27700(
+        selectedLocation.coordinates.longitude,
+        selectedLocation.coordinates.latitude
+      )
+
+      dispatch(setCurrentLocationNorthing(northing))
+      dispatch(setCurrentLocationEasting(easting))
 
       const { warningArea, alertArea } = await getSurroundingFloodAreas(
         selectedLocation.coordinates.latitude,
@@ -69,15 +86,16 @@ export default function LocationSearchResultsPage () {
 
   const navigateToNextPage = (isInAlertArea, isInWarningArea, isError) => {
     if (isInAlertArea && isInWarningArea) {
-      navigate(`/organisation/manage-locations/add/location-in-area/${'all'}`)
-    } else if (isInAlertArea) {
-      dispatch(setAdditionalAlerts(false))
       navigate(
-        `/organisation/manage-locations/add/location-in-area/${'alerts'}`
+        '/organisation/manage-locations/add/location-in-area/postcode-search/all'
+      )
+    } else if (isInAlertArea) {
+      navigate(
+        '/organisation/manage-locations/add/location-in-area/postcode-search/alerts'
       )
     } else if (!isInAlertArea && !isInWarningArea) {
       navigate(
-        `/organisation/manage-locations/add/location-in-area/${'no-alerts'}`
+        '/organisation/manage-locations/add/location-in-area/postcode-search/no-alerts'
       )
     } else if (isError) {
       navigate('/error')
@@ -105,7 +123,7 @@ export default function LocationSearchResultsPage () {
                   <div className='govuk-body'>
                     <h1 className='govuk-heading-l'>Select an address</h1>
                     <p className='govuk-body'>
-                      Postcode: {locationPostCode}
+                      Postcode: {postCode}
                       {'   '}
                       <Link
                         onClick={() => navigate(-1)}

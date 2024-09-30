@@ -4,7 +4,7 @@ import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function NotInEnglandLayout ({
+export default function NotInEnglandLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -68,6 +68,7 @@ export default function NotInEnglandLayout ({
               <ul className='govuk-list govuk-list--bullet'>
                 <li>
                   <Link
+                    // TODO: need to remove these hardcoded URLs
                     to={orgManageLocationsUrls.add.postCodeSearch}
                     className='govuk-link inline-link'
                   >
@@ -76,6 +77,7 @@ export default function NotInEnglandLayout ({
                 </li>
                 <li>
                   <Link
+                    // TODO: need to remove these hardcoded URLs
                     to={orgManageLocationsUrls.add.xyCoordinatesSearch}
                     className='govuk-link inline-link'
                   >

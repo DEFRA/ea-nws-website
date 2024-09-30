@@ -28,10 +28,6 @@ export default function FindLocationByMatchedAddressesPage () {
     if (!selectedAddressIndex) {
       setError('Select an address')
     } else {
-      sessionStorage.setItem(
-        'selectedAddress',
-        JSON.stringify(availableAddresses[selectedAddressIndex])
-      )
       navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index)
     }
   }

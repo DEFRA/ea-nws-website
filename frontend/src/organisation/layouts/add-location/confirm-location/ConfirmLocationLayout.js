@@ -1,6 +1,6 @@
 import { React } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router'
+import { useNavigate, useParams, useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
@@ -8,7 +8,6 @@ import Button from '../../../../common/components/gov-uk/Button'
 import FloodWarningKey from '../../../components/custom/FloodWarningKey'
 import Map from '../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
-import { useLocation } from 'react-router'
 export default function ConfirmLocationLayout () {
   const location = useLocation()
   const navigate = useNavigate()
@@ -21,8 +20,8 @@ export default function ConfirmLocationLayout () {
       ? currentLocation.meta_data.location_additional.full_address.split(',')
       : ''
 
-  const isUserAddingLocation = location.pathname.includes('add') ? true : false
-  
+  const isUserAddingLocation = !!location.pathname.includes('add')
+
   const getFloodMessage = (type) => {
     switch (type) {
       case 'all':
@@ -121,20 +120,22 @@ export default function ConfirmLocationLayout () {
                   Move the pin on the map
                 </Link>
                 <br />
-                {isUserAddingLocation? <Link
-                  to={orgManageLocationsUrls.add.xyCoordinatesSearch}
-                  className='govuk-link'
-                >
-                  Use different X and Y coordinates
-                </Link> : 
-                <Link 
-                to={orgManageLocationsUrls.edit.xyCoordinatesSearch}
-                className='govuk-link'
-                >
-                  Use different X and Y coordinates
-                </Link>
-                }
-                
+                {isUserAddingLocation
+                  ? (
+                    <Link
+                      to={orgManageLocationsUrls.add.xyCoordinatesSearch}
+                      className='govuk-link'
+                    >
+                      Use different X and Y coordinates
+                    </Link>)
+                  : (
+                    <Link
+                      to={orgManageLocationsUrls.edit.xyCoordinatesSearch}
+                      className='govuk-link'
+                    >
+                      Use different X and Y coordinates
+                    </Link>)}
+
               </>
             )}
 

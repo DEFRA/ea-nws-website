@@ -21,8 +21,6 @@ import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-lo
 import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationOptionsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
 import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
-import { path } from 'd3'
-import ConfirmEditLocationsPage from '../../pages/manage-locations/edit-location/ConfirmEditLocationPage'
 
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
@@ -165,13 +163,13 @@ const orgManageLocationRoutes = [
   },
   {
     path: orgManageLocationsUrls.edit.xyCoordinatesSearch,
-    component: <EditLocationXYCoordinatesSearchPage/>
+    component: <EditLocationXYCoordinatesSearchPage />
   },
   {
     path: orgManageLocationsUrls.edit.ConfirmEditLocations,
-    component: <ConfirmLocationPage/>
+    component: <ConfirmLocationPage />
   }
-  
+
 ]
 
 export { orgManageLocationRoutes, orgManageLocationsUrls }

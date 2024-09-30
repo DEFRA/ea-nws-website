@@ -20,6 +20,9 @@ import ProvideAreaNamePage from '../../pages/manage-locations/add-location/uploa
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
 import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationOptionsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
+import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
+import { path } from 'd3'
+import ConfirmEditLocationsPage from '../../pages/manage-locations/edit-location/ConfirmEditLocationPage'
 
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
@@ -64,7 +67,9 @@ const orgManageLocationsUrls = {
     }
   },
   edit: {
-    SelectLocationOptions: urlManageOrg + '/edit/select-location-options'
+    SelectLocationOptions: urlManageOrg + '/edit/select-location-options',
+    xyCoordinatesSearch: urlManageOrg + '/edit/xy-coordinates-search',
+    ConfirmEditLocations: urlManageOrg + '/edit/location-in-area/:flow/:type'
   }
 }
 
@@ -155,9 +160,18 @@ const orgManageLocationRoutes = [
     component: <AddOptionalAddress />
   },
   {
-    path: orgManageLocationsUrls.edit.options,
+    path: orgManageLocationsUrls.edit.SelectLocationOptions,
     component: <EditLocationOptionsPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.xyCoordinatesSearch,
+    component: <EditLocationXYCoordinatesSearchPage/>
+  },
+  {
+    path: orgManageLocationsUrls.edit.ConfirmEditLocations,
+    component: <ConfirmEditLocationsPage/>
   }
+  
 ]
 
 export { orgManageLocationRoutes, orgManageLocationsUrls }

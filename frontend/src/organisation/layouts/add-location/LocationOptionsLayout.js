@@ -39,7 +39,7 @@ export default function LocationOptionsLayout ({ heading, searchOptions, errorMe
         }
       } else {
         if (searchOption === searchOptions[0].value) {
-          navigate('/edit location route')
+          navigate('/organisation/manage-locations/edit/xy-coordinates-search')
         } else {
           // ToDo update this later when interactive pin drop map is made
           navigate('/')

@@ -1,3 +1,4 @@
+// Validate y-coordinate to ensure it is in range for EPSG:27700.
 const yCoordinateValidation = (yCoordinate) => {
   if (!yCoordinate) {
     return 'Enter a Y coordinate'

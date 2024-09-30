@@ -104,11 +104,11 @@ const orgManageLocationRoutes = [
     component: <LocationPostCodeSearchPage />
   },
   {
-    path: orgManageLocationsUrls.add.xyCoordinatesSearch,
+    path: orgManageLocationsUrls.search.xyCoordinatesSearch,
     component: <LocationXYCoordinatesSearchPage />
   },
   {
-    path: orgManageLocationsUrls.add.xyCoordinatesNotInEngland,
+    path: orgManageLocationsUrls.add.error.xyCoordinatesNotInEngland,
     component: <XYCoordinatesNotInEnglandPage />
   },
   {

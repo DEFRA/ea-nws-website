@@ -9,7 +9,7 @@ export default function Input ({
   onChange,
   error = '',
   isNameBold = false,
-  labelSize = hint? 's' : 'm'
+  labelSize = hint ? 's' : 'm'
 }) {
   const handleChange = (event) => {
     onChange(event.target.value)

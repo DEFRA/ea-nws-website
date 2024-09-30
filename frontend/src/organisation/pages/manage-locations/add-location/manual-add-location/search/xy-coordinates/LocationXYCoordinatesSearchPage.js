@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../../common/components/custom/BackLink'
@@ -21,7 +21,7 @@ import { xCoordinateValidation } from '../../../../../../../common/services/vali
 import { yCoordinateValidation } from '../../../../../../../common/services/validations/YCoordinateValidation'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationXYCoordinatesSearchPage () {
+export default function LocationXYCoordinatesSearchPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -30,10 +30,16 @@ export default function LocationXYCoordinatesSearchPage () {
   const [yCoordinate, setYCoordinate] = useState('')
   const [yCoordinateError, setYCoordinateError] = useState('')
 
-  const handleSubmit = async () => {
-    setXCoordinateError('')
-    setYCoordinateError('')
+  useEffect(() => {
+    if (xCoordinateError) {
+      setXCoordinateError('')
+    }
+    if (yCoordinateError) {
+      setYCoordinateError('')
+    }
+  }, [xCoordinate, yCoordinate])
 
+  const handleSubmit = async () => {
     const xCoordinateValidationError = xCoordinateValidation(xCoordinate)
     if (xCoordinateValidationError) {
       setXCoordinateError(xCoordinateValidationError)

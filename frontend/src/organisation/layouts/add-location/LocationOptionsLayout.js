@@ -16,14 +16,8 @@ export default function LocationOptionsLayout ({ heading, searchOptions, errorMe
     setError('')
   }, [searchOption])
 
-  const isAddingLocation = () => {
-    const currentUrl = location.pathname
-    if (currentUrl === '/organisation/manage-locations/add/search-option') {
-      return true
-    } else {
-      return false
-    }
-  }
+  const isAddingLocation = location.pathname.includes('add') ? true:false
+  
 
   const handleSubmit = () => {
     if (!searchOption) {
@@ -35,7 +29,7 @@ export default function LocationOptionsLayout ({ heading, searchOptions, errorMe
             navigate('/organisation/manage-locations/add/postcode-search')
             break
           case 'UseXAndYCoordinates':
-            navigate('/organisation/manage-locations/add/xy-search')
+            navigate('/organisation/manage-locations/add/xy-coordinates-search')
             break
           case 'DropAPinOnAMap':
             navigate('/organisation/manage-locations/add/pin-search')

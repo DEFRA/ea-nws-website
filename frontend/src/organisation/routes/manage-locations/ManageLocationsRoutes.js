@@ -169,7 +169,7 @@ const orgManageLocationRoutes = [
   },
   {
     path: orgManageLocationsUrls.edit.ConfirmEditLocations,
-    component: <ConfirmEditLocationsPage/>
+    component: <ConfirmLocationPage/>
   }
   
 ]

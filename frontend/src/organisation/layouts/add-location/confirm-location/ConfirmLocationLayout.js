@@ -21,7 +21,7 @@ export default function ConfirmLocationLayout () {
       ? currentLocation.meta_data.location_additional.full_address.split(',')
       : ''
 
-  const isUserAddingLocation = location.pathname.includes('edit') ? true : false
+  const isUserAddingLocation = location.pathname.includes('add') ? true : false
   
   const getFloodMessage = (type) => {
     switch (type) {

@@ -1,12 +1,11 @@
 import React from 'react'
-import OrgTermsConditionsPage from '../../pages/footer/OrgTermsConditionsPage'
-import OrgPrivacyNoticePage from '../../pages/footer/OrgPrivacyNoticePage'
+
+import PrivacyNoticePage from '../../pages/footer/PrivacyNoticePage'
 
 const urlFooterOrg = '/organisation'
 
 const orgFooterRoutes = [
-  { path: urlFooterOrg + '/declaration', component: <OrgTermsConditionsPage /> },
-  { path: urlFooterOrg + '/privacy', component: <OrgPrivacyNoticePage /> }
+  { path: urlFooterOrg + '/privacy', component: <PrivacyNoticePage /> }
 ]
 
 export default orgFooterRoutes

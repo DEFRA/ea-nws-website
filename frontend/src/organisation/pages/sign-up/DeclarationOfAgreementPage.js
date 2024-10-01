@@ -5,7 +5,7 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Button from '../../../common/components/gov-uk/Button'
 import Checkbox from '../../../common/components/gov-uk/CheckBox'
 
-export default function OrgTermsConditionsPage () {
+export default function DeclarationOfAgreement () {
   const navigate = useNavigate()
   const [error, setError] = useState('')
   const [isChecked, setIsChecked] = useState(false)

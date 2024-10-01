@@ -12,7 +12,7 @@ import {
 } from '../../../../../../common/redux/userSlice'
 import { postCodeValidation } from '../../../../../../common/services/validations/PostCodeValidation'
 
-export default function AddOptionalAddress () {
+export default function AddOptionalAddress() {
   const navigate = useNavigate()
   const [addressLine1, setAddressLine1] = useState('')
   const [addressLine2, setAddressLine2] = useState('')
@@ -31,7 +31,7 @@ export default function AddOptionalAddress () {
 
   // only postcode validated because its an optional field the user is adding for their own benifit - UCD team
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
     const fullAddressArray = [addressLine1, addressLine2, town, county]
 
@@ -49,14 +49,14 @@ export default function AddOptionalAddress () {
       if (postcodeValidationError !== '') {
         setPostcodeError(postcodeValidationError)
       } else {
-        await dispatch(setCurrentLocationFullAddress(fullAddressStr))
-        await dispatch(setCurrentLocationPostcode(postcode))
+        dispatch(setCurrentLocationFullAddress(fullAddressStr))
+        dispatch(setCurrentLocationPostcode(postcode))
 
         navigateToNextPage()
       }
     } else {
-      await dispatch(setCurrentLocationFullAddress(fullAddressStr))
-      await dispatch(setCurrentLocationPostcode(postcode))
+      dispatch(setCurrentLocationFullAddress(fullAddressStr))
+      dispatch(setCurrentLocationPostcode(postcode))
       navigateToNextPage()
     }
   }

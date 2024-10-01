@@ -1,6 +1,6 @@
 from common import *
 
-url = url_org_man_loc.get('add').get('optionalAddress')
+url = url_org_man_loc.get('optional').get('optionalAddress')
 # change below when next page is added
 url_next_page = "http://localhost:3000/"
 

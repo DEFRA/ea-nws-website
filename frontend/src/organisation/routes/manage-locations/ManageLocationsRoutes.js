@@ -1,16 +1,12 @@
 import AddLocationOptionsPage from '../../pages/manage-locations/add-location/AddLocationOptionsPage'
 import LocationNamePage from '../../pages/manage-locations/add-location/manual-add-location/name/LocationNamePage'
+import AddOptionalAddress from '../../pages/manage-locations/add-location/manual-add-location/optional-address/AddOptionalAddress'
+import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/manual-add-location/optional-address/OptionalLocationInformationPage'
 import LocationSearchOptionPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationSearchOptionPage'
 import LocationPostCodeSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/postcode/LocationPostCodeSearchPage'
 import LocationPostCodeSearchResultsPage from '../../pages/manage-locations/add-location/manual-add-location/search/postcode/LocationPostCodeSearchResultsPage'
 import LocationXYCoordinatesSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/xy-coordinates/LocationXYCoordinatesSearchPage'
 import XYCoordinatesNotInEnglandPage from '../../pages/manage-locations/add-location/manual-add-location/search/xy-coordinates/XYCoordinatesNotInEnglandPage'
-import AddActionPlan from '../../pages/manage-locations/add-location/optional-address/AddActionPlanPage'
-import AddKeyInformationPage from '../../pages/manage-locations/add-location/optional-address/AddKeyInformationPage'
-import KeywordsForThisLocationPage from '../../pages/manage-locations/add-location/optional-address/AddKeywordsForThisLocationPage'
-import AddNotesPage from '../../pages/manage-locations/add-location/optional-address/AddNotesPage'
-import AddOptionalAddress from '../../pages/manage-locations/add-location/optional-address/AddOptionalAddress'
-import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-address/OptionalLocationInformationPage'
 import AddLocationNotInEnglandPage from '../../pages/manage-locations/add-location/unmatched-location/NotInEnglandPage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
@@ -130,36 +126,8 @@ const orgManageLocationRoutes = [
     component: <DoNotAddLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.optionalAddress.addKeyInformation,
-    component: <AddKeyInformationPage />
-  },
-  {
     path: orgManageLocationsUrls.unmatchedLocations.index,
     component: <FindUnmatchedLocationsPage />
-  },
-  {
-    path: orgManageLocationsUrls.optionalAddress.addActionPlan,
-    component: <AddActionPlan />
-  },
-  {
-    path: orgManageLocationsUrls.optionalAddress.addNotes,
-    component: <AddNotesPage />
-  },
-  {
-    path: orgManageLocationsUrls.optionalAddress.addKeywords,
-    component: <KeywordsForThisLocationPage />
-  },
-  {
-    path: orgManageLocationsUrls.optionalAddress.addActionPlan,
-    component: <AddActionPlan />
-  },
-  {
-    path: orgManageLocationsUrls.optionalAddress.addNotes,
-    component: <AddNotesPage />
-  },
-  {
-    path: orgManageLocationsUrls.optionalAddress.addKeywords,
-    component: <KeywordsForThisLocationPage />
   },
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.index,

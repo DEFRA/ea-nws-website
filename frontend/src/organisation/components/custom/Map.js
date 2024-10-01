@@ -186,7 +186,7 @@ export default function Map ({
         maxBounds={maxBounds}
         className='map-container'
       >
-        {apiKey && apiKey !== 'error'
+        {apiKey && (apiKey !== 'error'
           ? (
             <>
               {tileLayerWithHeader}
@@ -225,7 +225,7 @@ export default function Map ({
                 Reload map
               </Link>
             </div>
-            )}
+            ))}
       </MapContainer>
     </div>
   )

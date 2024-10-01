@@ -1,4 +1,5 @@
 import AddLocationOptionsPage from '../../pages/manage-locations/add-location/AddLocationOptionsPage'
+import ConfirmLocationPage from '../../pages/manage-locations/add-location/manual-add-location/confirm-location/ConfirmLocationPage'
 import LocationNamePage from '../../pages/manage-locations/add-location/manual-add-location/name/LocationNamePage'
 import LocationSearchOptionPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationSearchOptionPage'
 import LocationPostCodeSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/postcode/LocationPostCodeSearchPage'
@@ -23,7 +24,6 @@ import ProvideAreaNamePage from '../../pages/manage-locations/add-location/uploa
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
 import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationOptionsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
-
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgAddLocations = '/organisation/manage-locations/add'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
@@ -96,6 +96,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.addressInfo,
     component: <LocationAddAddressInfoPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.confirmManualSearchedLocation,
+    component: <ConfirmLocationPage />
   },
   {
     path: orgManageLocationsUrls.add.uploadFile,

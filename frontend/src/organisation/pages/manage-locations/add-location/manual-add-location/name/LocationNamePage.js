@@ -10,7 +10,7 @@ import { setCurrentLocationName } from '../../../../../../common/redux/userSlice
 import { locationNameValidation } from '../../../../../../common/services/validations/LocationNameValidation'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationNamePage () {
+export default function LocationNamePage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [name, setName] = useState('')
@@ -21,7 +21,7 @@ export default function LocationNamePage () {
     const validationError = locationNameValidation(locationName)
     if (!validationError) {
       dispatch(setCurrentLocationName(locationName))
-      navigate(orgManageLocationsUrls.add.searchOption)
+      navigate(orgManageLocationsUrls.search.searchOption)
     } else {
       setError(validationError)
     }

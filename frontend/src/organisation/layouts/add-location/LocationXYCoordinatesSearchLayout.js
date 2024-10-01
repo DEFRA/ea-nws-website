@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
@@ -20,6 +20,9 @@ import { locationInEngland } from '../../../common/services/validations/Location
 import { xCoordinateValidation } from '../../../common/services/validations/XCoordinateValidation'
 import { yCoordinateValidation } from '../../../common/services/validations/YCoordinateValidation'
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
+import { useLocation } from 'react-router-dom'
+import userSlice from '../../../common/redux/userSlice'
+
 export default function LocationXYCoordinatesSearchLayout ({
   allAlertsRoute,
   alertsRoute,
@@ -27,12 +30,34 @@ export default function LocationXYCoordinatesSearchLayout ({
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const location = useLocation()
+  const isLocationAdding = location.pathname.includes('add') ? true: false
+  //ToDo change these to const once dummy data is removed so previous location data can be used when editting coords
+  //const previousXCoordinate = useSelector((state) => state.session.currentLocation.meta_data.x_coordinate)
+  //const previousYCoordinate = useSelector((state) => state.session.currentLocation.meta_data.y_coordinate)
+  // const previousXCoordinate = '520814'
+  // const previousYCoordinate = '185016'
+  // const initalXCoord = () => {
+  //   if (!isLocationAdding){
+  //     return previousXCoordinate
+  //   }else{
+  //     return ''
+  //   }
+  // }
+
+  // const initalYCoord = () => {
+  //   if (!isLocationAdding){
+  //     return previousYCoordinate
+  //   }else{
+  //     return ''
+  //   }
+  // }
 
   const [xCoordinate, setXCoordinate] = useState('')
   const [xCoordinateError, setXCoordinateError] = useState('')
   const [yCoordinate, setYCoordinate] = useState('')
   const [yCoordinateError, setYCoordinateError] = useState('')
-
+  
   useEffect(() => {
     if (xCoordinateError) {
       setXCoordinateError('')
@@ -41,6 +66,10 @@ export default function LocationXYCoordinatesSearchLayout ({
       setYCoordinateError('')
     }
   }, [xCoordinate, yCoordinate])
+
+  
+
+  
 
   const handleSubmit = async () => {
     const xCoordinateValidationError = xCoordinateValidation(xCoordinate)
@@ -72,6 +101,8 @@ export default function LocationXYCoordinatesSearchLayout ({
 
         const isError = !warningArea && !alertArea
 
+        console.log('aert area is',alertArea)
+
         const isInAlertArea =
             alertArea && isLocationInFloodArea(latitude, longitude, alertArea)
 
@@ -86,6 +117,8 @@ export default function LocationXYCoordinatesSearchLayout ({
   }
 
   const navigateToNextPage = (isInAlertArea, isInWarningArea, isError) => {
+    console.log('there is alert area',isInAlertArea)
+    console.log('there is warning error', isInWarningArea)
     if (isInAlertArea && isInWarningArea) {
       navigate(allAlertsRoute)
     } else if (isInAlertArea) {
@@ -101,6 +134,8 @@ export default function LocationXYCoordinatesSearchLayout ({
     event.preventDefault()
     navigate(-1)
   }
+
+  
 
   return (
     <>

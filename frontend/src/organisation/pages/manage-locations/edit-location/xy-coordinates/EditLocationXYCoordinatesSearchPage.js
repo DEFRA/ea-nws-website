@@ -2,6 +2,7 @@ import React from 'react'
 import LocationXYCoordinatesSearchLayout from '../../../../layouts/add-location/LocationXYCoordinatesSearchLayout'
 
 export default function EditLocationXYCoordinatesSearchPage () {
+    // pre populated inputs with existing coords
   return (
     <>
       <LocationXYCoordinatesSearchLayout

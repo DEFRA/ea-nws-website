@@ -6,7 +6,7 @@ import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinn
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 
-export default function LocationAddUploadFilePage () {
+export default function LocationAddUploadFilePage() {
   const navigate = useNavigate()
   const [errorFileType, setErrorFileType] = useState(null)
   const [errorFileSize, setErrorFileSize] = useState(null)
@@ -88,6 +88,8 @@ export default function LocationAddUploadFilePage () {
 
   const handleUpload = async (e) => {
     e.preventDefault()
+    setErrorFileSize(null)
+    setErrorFileType(null)
 
     if (!selectedFile) {
       setErrorFileSize('The file is empty')
@@ -96,11 +98,16 @@ export default function LocationAddUploadFilePage () {
     setUploading(true)
 
     try {
+      console.dir(selectedFile)
+
       // Get pre-signed URL from backend
       const response = await fetch(
         `/api/bulkUpload/uploadFile?name=${selectedFile.name}&fileType=${selectedFile.type}`
       )
-      const { url } = await response.json()
+
+      const url = response.url
+
+      console.log(`URL - ${url}`)
 
       if (!url) {
         throw new Error('Failed to get pre-signed URL')
@@ -115,13 +122,14 @@ export default function LocationAddUploadFilePage () {
         body: selectedFile
       })
 
+      console.log(uploadResponse.body)
+
       if (!uploadResponse.ok) {
         throw new Error('File upload failed')
       }
-
-      setUploading(false)
+      console.log('Upload complete')
     } catch (err) {
-      console.log(err) // DEBUG
+      console.log(err)
       setUploading(false)
       setErrorFileType('Error uploading file')
     }
@@ -136,63 +144,59 @@ export default function LocationAddUploadFilePage () {
           {(errorFileType || errorFileSize) && (
             <ErrorSummary errorList={[errorFileType, errorFileSize]} />
           )}
-          {!uploading
-            ? (
-              <div className='govuk-grid-column-full'>
-                <h1 className='govuk-heading-l'>Upload file</h1>
-                {!errorFileType && !errorFileSize
-                  ? (
-                    <div className='govuk-form-group'>
-                      <p className='govuk-hint'>File can be .xls, .xlsx, .csv</p>
-                      <input
-                        type='file'
-                        className='govuk-file-upload'
-                        id='file-upload'
-                        onChange={setValidselectedFile}
-                      />
-                    </div>
-                    )
-                  : (
-                    <div className='govuk-form-group govuk-form-group--error'>
-                      <p className='govuk-hint'>File can be .xls, .xlsx, .csv</p>
-                      {errorFileType && (
-                        <p id='file-upload-1-error' className='govuk-error-message'>
-                          <span className='govuk-visually-hidden'>Error:</span>
-                          {errorFileType}
-                        </p>
-                      )}
-                      {errorFileSize && (
-                        <p id='file-upload-1-error' className='govuk-error-message'>
-                          <span className='govuk-visually-hidden'>Error:</span>
-                          {errorFileSize}
-                        </p>
-                      )}
-                      <input
-                        type='file'
-                        className='govuk-file-upload govuk-file-upload--error'
-                        id='file-upload'
-                        onChange={setValidselectedFile}
-                      />
-                    </div>
-                    )}
-                <Button
-                  text='Upload'
-                  className='govuk-button'
-                  onClick={handleUpload}
-                />
-                <Link
-                  onClick={() => navigate(-1)}
-                  className='govuk-body govuk-link inline-link'
-                >
-                  Cancel
-                </Link>
-              </div>
-              )
-            : (
-              <div className='hods-loading-spinner'>
-                <LoadingSpinner text='Uploading' loadingText='' />
-              </div>
+          {!uploading ? (
+            <div className='govuk-grid-column-full'>
+              <h1 className='govuk-heading-l'>Upload file</h1>
+              {!errorFileType && !errorFileSize ? (
+                <div className='govuk-form-group'>
+                  <p className='govuk-hint'>File can be .xls, .xlsx, .csv</p>
+                  <input
+                    type='file'
+                    className='govuk-file-upload'
+                    id='file-upload'
+                    onChange={setValidselectedFile}
+                  />
+                </div>
+              ) : (
+                <div className='govuk-form-group govuk-form-group--error'>
+                  <p className='govuk-hint'>File can be .xls, .xlsx, .csv</p>
+                  {errorFileType && (
+                    <p id='file-upload-1-error' className='govuk-error-message'>
+                      <span className='govuk-visually-hidden'>Error:</span>
+                      {errorFileType}
+                    </p>
+                  )}
+                  {errorFileSize && (
+                    <p id='file-upload-1-error' className='govuk-error-message'>
+                      <span className='govuk-visually-hidden'>Error:</span>
+                      {errorFileSize}
+                    </p>
+                  )}
+                  <input
+                    type='file'
+                    className='govuk-file-upload govuk-file-upload--error'
+                    id='file-upload'
+                    onChange={setValidselectedFile}
+                  />
+                </div>
               )}
+              <Button
+                text='Upload'
+                className='govuk-button'
+                onClick={handleUpload}
+              />
+              <Link
+                onClick={() => navigate(-1)}
+                className='govuk-body govuk-link inline-link'
+              >
+                Cancel
+              </Link>
+            </div>
+          ) : (
+            <div className='hods-loading-spinner'>
+              <LoadingSpinner text='Uploading' loadingText='' />
+            </div>
+          )}
         </div>
       </main>
     </>

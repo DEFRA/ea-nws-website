@@ -69,6 +69,7 @@ url_org_man_loc = {
         'postcodeSearch': url_org_man_loc_path + '/add/postcode-search',
         'postcodeSearchResults': url_org_man_loc_path + '/add/postcode-search-results',
         'xyCoordinatesSearch': url_org_man_loc_path + '/add/xy-coordinates-search',
+        'locationInArea': url_org_man_loc_path + '/add/location-in-area',
     },
     'optionalLocation':{
         'optionalInfo': url_org_man_loc_path + '/add/optional-address/info',

@@ -44,9 +44,9 @@ const orgManageLocationsUrls = {
     uploadFile: urlManageOrgAddLocations + '/upload-file',
     name: urlManageOrg + '/add/name',
     xyCoordinatesNotInEngland:
-    urlManageOrg + '/add/xy-coordinates-not-in-england',
+      urlManageOrg + '/add/xy-coordinates-not-in-england',
     confirmManualSearchedLocation:
-    urlManageOrg + '/add/location-in-area/:flow/:type'
+      urlManageOrg + '/add/location-in-area/:flow/:type'
   },
   search: {
     searchOption: urlManageOrg + '/add/search-option',
@@ -73,7 +73,6 @@ const orgManageLocationsUrls = {
       areaName: urlManageOrgUnmatchedLocations + '/manually-find/area-name',
       map: urlManageOrgUnmatchedLocations + '/manually-find/map',
       notInEngland:
-
         urlManageOrgUnmatchedLocations + '/manually-find/not-in-england',
       notInEnglandLP:
         urlManageOrgUnmatchedLocations + '/manually-find/not-in-england-lp'

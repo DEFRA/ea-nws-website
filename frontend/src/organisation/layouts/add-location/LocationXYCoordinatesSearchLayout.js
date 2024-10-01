@@ -32,30 +32,30 @@ export default function LocationXYCoordinatesSearchLayout ({
   const navigate = useNavigate()
   const location = useLocation()
   const isLocationAdding = location.pathname.includes('add') ? true: false
-  //ToDo change these to const once dummy data is removed so previous location data can be used when editting coords
+  //ToDo uncomment these and remove the hard coded coords once dashboard page has been created, for edititing xy coords
   //const previousXCoordinate = useSelector((state) => state.session.currentLocation.meta_data.x_coordinate)
   //const previousYCoordinate = useSelector((state) => state.session.currentLocation.meta_data.y_coordinate)
-  // const previousXCoordinate = '520814'
-  // const previousYCoordinate = '185016'
-  // const initalXCoord = () => {
-  //   if (!isLocationAdding){
-  //     return previousXCoordinate
-  //   }else{
-  //     return ''
-  //   }
-  // }
+  const previousXCoordinate = '520814'
+  const previousYCoordinate = '185016'
+  const initalXCoord = () => {
+    if (!isLocationAdding){
+      return previousXCoordinate
+    }else{
+      return ''
+    }
+  }
 
-  // const initalYCoord = () => {
-  //   if (!isLocationAdding){
-  //     return previousYCoordinate
-  //   }else{
-  //     return ''
-  //   }
-  // }
+  const initalYCoord = () => {
+    if (!isLocationAdding){
+      return previousYCoordinate
+    }else{
+      return ''
+    }
+  }
 
-  const [xCoordinate, setXCoordinate] = useState('')
+  const [xCoordinate, setXCoordinate] = useState(initalXCoord)
   const [xCoordinateError, setXCoordinateError] = useState('')
-  const [yCoordinate, setYCoordinate] = useState('')
+  const [yCoordinate, setYCoordinate] = useState(initalYCoord)
   const [yCoordinateError, setYCoordinateError] = useState('')
   
   useEffect(() => {
@@ -101,7 +101,6 @@ export default function LocationXYCoordinatesSearchLayout ({
 
         const isError = !warningArea && !alertArea
 
-        console.log('aert area is',alertArea)
 
         const isInAlertArea =
             alertArea && isLocationInFloodArea(latitude, longitude, alertArea)
@@ -117,8 +116,7 @@ export default function LocationXYCoordinatesSearchLayout ({
   }
 
   const navigateToNextPage = (isInAlertArea, isInWarningArea, isError) => {
-    console.log('there is alert area',isInAlertArea)
-    console.log('there is warning error', isInWarningArea)
+   
     if (isInAlertArea && isInWarningArea) {
       navigate(allAlertsRoute)
     } else if (isInAlertArea) {

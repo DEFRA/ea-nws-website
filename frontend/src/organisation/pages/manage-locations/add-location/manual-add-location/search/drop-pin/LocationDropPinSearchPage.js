@@ -7,10 +7,7 @@ import Autocomplete from '../../../../../../../common/components/gov-uk/Autocomp
 import Button from '../../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../../../../common/components/gov-uk/Radio'
-import {
-  setCurrentLocationCoordinates,
-  setCurrentLocationName
-} from '../../../../../../../common/redux/userSlice'
+import { setCurrentLocationCoordinates } from '../../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../../common/services/BackendService'
 
 export default function LocationDropPinSearchPage() {
@@ -125,7 +122,6 @@ export default function LocationDropPinSearchPage() {
     }
 
     if (!error) {
-      dispatch(setCurrentLocationName(placeNameTownOrPostcode))
       dispatch(setCurrentLocationCoordinates(placeNameTownOrPostcodeCoords))
 
       // TODO: navigate to next page

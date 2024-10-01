@@ -212,11 +212,13 @@ def test_add_named_location_using_xy_coordinates_no_alerts(get_browser):
     assert 'How do you want to find ' + locationName + '?' in browser.page_source
     select_input_radio_option(browser, 'UseXAndYCoordinates')
     click_button(browser, 'Continue', url_add_xy_coordinates_search)
+    time.sleep(3)
     x = '465373'
     y = '101250'
     enter_input_text(browser, 'X coordinate', x)
     enter_input_text(browser, 'Y coordinate', y)
     click_button(browser, 'Continue', url_add_location_in_area_xy_coordinates_search_no_alerts)
+    time.sleep(3)
     assert 'Confirm Location' in browser.page_source
     assert locationName in browser.page_source
     assert x + ', ' + y in browser.page_source

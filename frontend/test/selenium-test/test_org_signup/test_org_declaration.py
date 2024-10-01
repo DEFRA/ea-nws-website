@@ -1,5 +1,5 @@
 from common import *
-
+url_org_declaration = url_org_signup.get('declaration')
 url_next_page = url_org_signup.get('review')
 url_alt_contact_page = url_org_signup.get('alternativeContact')
 freedom_info_url = 'https://www.gov.uk/make-a-freedom-of-information-request'

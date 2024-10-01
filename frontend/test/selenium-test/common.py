@@ -41,7 +41,8 @@ url_org_signup = {
     'duplicateOrg': url_org_signup_path + '/duplicate',
     'alternativeContact': url_org_signup_path + '/alternative-contact',
     'review': url_org_signup_path + '/review',
-    'success': url_org_signup_path + '/success'
+    'success': url_org_signup_path + '/success',
+    'declaration': url_org_signup_path + '/declaration'
 }
 # Signin urls
 url_org_signin_path = url_org + '/signin'
@@ -85,7 +86,7 @@ url_org_man_loc = {
 }
 
 # org footer urls
-url_org_declaration = url_org + '/declaration'
+
 url_org_privacy_notice = url_org + '/privacy'
 
 # PAGE NAVIGATION

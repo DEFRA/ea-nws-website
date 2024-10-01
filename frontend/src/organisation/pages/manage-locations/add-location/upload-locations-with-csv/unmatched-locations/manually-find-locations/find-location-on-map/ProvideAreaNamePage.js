@@ -30,7 +30,8 @@ export default function ProvideAreaNamePage () {
     const searchForOptions = !queryEmpty && queryLongEnough
     if (searchForOptions) {
       const dataToSend = {
-        name: value
+        name: value,
+        filter: null
       }
       const { data, errorMessage } = await backendCall(
         dataToSend,

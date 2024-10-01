@@ -4,6 +4,7 @@ import LocationNamePage from '../../pages/manage-locations/add-location/manual-a
 import AddOptionalAddress from '../../pages/manage-locations/add-location/manual-add-location/optional-address/AddOptionalAddress'
 import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/manual-add-location/optional-address/OptionalLocationInformationPage'
 import LocationSearchOptionPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationSearchOptionPage'
+import LocationDropPinSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/drop-pin/LocationDropPinSearchPage'
 import LocationPostCodeSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/postcode/LocationPostCodeSearchPage'
 import LocationPostCodeSearchResultsPage from '../../pages/manage-locations/add-location/manual-add-location/search/postcode/LocationPostCodeSearchResultsPage'
 import LocationXYCoordinatesSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/xy-coordinates/LocationXYCoordinatesSearchPage'
@@ -45,6 +46,7 @@ const orgManageLocationsUrls = {
     xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search',
     xyCoordinatesNotInEngland:
       urlManageOrg + '/add/xy-coordinates-not-in-england',
+    dropPinSearch: urlManageOrg + '/add/drop-pin-search',
     confirmManualSearchedLocation:
       urlManageOrg + '/add/location-in-area/:flow/:type',
     optionalInfo: urlManageOrg + '/add/optional-location-info',
@@ -113,6 +115,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.xyCoordinatesNotInEngland,
     component: <XYCoordinatesNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.dropPinSearch,
+    component: <LocationDropPinSearchPage />
   },
   {
     path: orgManageLocationsUrls.unmatchedLocations.doNotAdd,

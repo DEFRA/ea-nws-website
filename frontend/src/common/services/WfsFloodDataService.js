@@ -16,10 +16,7 @@ export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
     outputFormat: 'GEOJSON'
   }
 
-  const { data: wfsWarningData } = await backendCall(
-    WFSParams,
-    'api/wfs'
-  )
+  const { data: wfsWarningData } = await backendCall(WFSParams, 'api/wfs')
 
   // alert area
   WFSParams = {
@@ -32,10 +29,7 @@ export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
     bbox: calculateBoundingBox(lat, lng, bboxKM),
     outputFormat: 'GEOJSON'
   }
-  const { data: wfsAlertData } = await backendCall(
-    WFSParams,
-    'api/wfs'
-  )
+  const { data: wfsAlertData } = await backendCall(WFSParams, 'api/wfs')
 
   return {
     alertArea: wfsAlertData,
@@ -57,10 +51,7 @@ export const getAssociatedAlertArea = async (lat, lng, code) => {
     bbox: calculateBoundingBox(lat, lng, bboxKM),
     outputFormat: 'GEOJSON'
   }
-  const { data: wfsAlertData } = await backendCall(
-    WFSParams,
-    'api/wfs'
-  )
+  const { data: wfsAlertData } = await backendCall(WFSParams, 'api/wfs')
 
   const filteredOutOtherAlertAreas = wfsAlertData?.features.filter(
     (floodArea) => floodArea.properties.FWS_TACODE === code

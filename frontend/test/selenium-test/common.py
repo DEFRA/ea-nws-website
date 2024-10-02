@@ -73,12 +73,12 @@ url_org_man_loc = {
         'xyCoordinatesNotInEngland': url_org_man_loc_path + '/add/xy-coordinates-not-in-england',
     },
     'optionalLocation':{
-        'optionalInfo': url_org_man_loc_path + '/add/optional-address/info',
-        'optionalAddress': url_org_man_loc_path + '/add/optional-address/optional-location',
-        'addKeyInformation': url_org_man_loc_path + '/add/optional-address/add-key-information',
-        'addKeywords': url_org_man_loc_path + '/add/optional-address/add-keywords',
-        'addActionPlan': url_org_man_loc_path + '/add/optional-address/add-action-plan', 
-        'addNotes': url_org_man_loc_path + '/add/optional-address/add-notes'
+        'optionalInfo': url_org_man_loc_path + '/add/optional-information',
+        'optionalAddress': url_org_man_loc_path + '/add/optional-information/address',
+        'addKeyInformation': url_org_man_loc_path + '/add/optional-information/key-information',
+        'addKeywords': url_org_man_loc_path + '/add/optional-information/keywords',
+        'addActionPlan': url_org_man_loc_path + '/add/optional-information/action-plan', 
+        'addNotes': url_org_man_loc_path + '/add/optional-information/notes'
     },
     'error': {
         'cannotFindAddress': url_org_man_loc_path + '/add/cannot-find-address',

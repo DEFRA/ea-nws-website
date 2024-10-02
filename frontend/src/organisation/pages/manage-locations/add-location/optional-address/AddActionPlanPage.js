@@ -8,7 +8,7 @@ import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../../../common/components/gov-uk/TextArea'
 import { setCurrentLocationActionPlan } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-export default function ActionPlanPage () {
+export default function ActionPlanPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [actionPlan, setActionPlan] = useState('')
@@ -28,7 +28,7 @@ export default function ActionPlanPage () {
     if (actionPlan) {
       dispatch(setCurrentLocationActionPlan(actionPlan))
     }
-    navigate(orgManageLocationsUrls.optionalAddress.addNotes)
+    navigate(orgManageLocationsUrls.optionalInformation.addNotes)
   }
 
   const navigateBack = (event) => {

@@ -58,16 +58,16 @@ const orgManageLocationsUrls = {
     postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
     xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search'
   },
-  optionalAddress: {
+  optionalInformation: {
+    optionalInfo: urlManageOrgAddLocations + '/optional-information',
     optionalLocation:
-      urlManageOrgAddLocations + '/optional-address/optional-location',
-    optionalInfo: urlManageOrgAddLocations + '/optional-address/info',
+      urlManageOrgAddLocations + '/optional-information/address',
     addKeyInformation:
-      urlManageOrgAddLocations + '/optional-address/add-key-information',
-    addKeywords: urlManageOrgAddLocations + '/optional-address/add-keywords',
+      urlManageOrgAddLocations + '/optional-information/key-information',
+    addKeywords: urlManageOrgAddLocations + '/optional-information/keywords',
     addActionPlan:
-      urlManageOrgAddLocations + '/optional-address/add-action-plan',
-    addNotes: urlManageOrgAddLocations + '/optional-address/add-notes'
+      urlManageOrgAddLocations + '/optional-information/action-plan',
+    addNotes: urlManageOrgAddLocations + '/optional-information/notes'
   },
   unmatchedLocations: {
     index: urlManageOrgUnmatchedLocations,
@@ -141,7 +141,7 @@ const orgManageLocationRoutes = [
     component: <DoNotAddLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.optionalAddress.addKeyInformation,
+    path: orgManageLocationsUrls.optionalInformation.addKeyInformation,
     component: <AddKeyInformationPage />
   },
   {
@@ -149,27 +149,27 @@ const orgManageLocationRoutes = [
     component: <FindUnmatchedLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.optionalAddress.addActionPlan,
+    path: orgManageLocationsUrls.optionalInformation.addActionPlan,
     component: <AddActionPlan />
   },
   {
-    path: orgManageLocationsUrls.optionalAddress.addNotes,
+    path: orgManageLocationsUrls.optionalInformation.addNotes,
     component: <AddNotesPage />
   },
   {
-    path: orgManageLocationsUrls.optionalAddress.addKeywords,
+    path: orgManageLocationsUrls.optionalInformation.addKeywords,
     component: <KeywordsForThisLocationPage />
   },
   {
-    path: orgManageLocationsUrls.optionalAddress.addActionPlan,
+    path: orgManageLocationsUrls.optionalInformation.addActionPlan,
     component: <AddActionPlan />
   },
   {
-    path: orgManageLocationsUrls.optionalAddress.addNotes,
+    path: orgManageLocationsUrls.optionalInformation.addNotes,
     component: <AddNotesPage />
   },
   {
-    path: orgManageLocationsUrls.optionalAddress.addKeywords,
+    path: orgManageLocationsUrls.optionalInformation.addKeywords,
     component: <KeywordsForThisLocationPage />
   },
   {
@@ -197,11 +197,11 @@ const orgManageLocationRoutes = [
     component: <ConfirmAddingLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.optionalAddress.optionalInfo,
+    path: orgManageLocationsUrls.optionalInformation.optionalInfo,
     component: <OptionalLocationInformationPage />
   },
   {
-    path: orgManageLocationsUrls.optionalAddress.optionalLocation,
+    path: orgManageLocationsUrls.optionalInformation.optionalLocation,
     component: <AddOptionalAddress />
   },
   {

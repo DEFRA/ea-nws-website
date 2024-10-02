@@ -3,7 +3,7 @@ const Code = require('@hapi/code')
 const lab = (exports.lab = Lab.script())
 const createServer = require('../../../server')
 const { startApiServer, apiServerStarted } = require('../../test_api_setup')
-const uuidv4 = require('./../generateAuthToken')
+const uuidv4 = require('./../../generateAuthToken')
 
 lab.experiment('Integration tests', () => {
   let server

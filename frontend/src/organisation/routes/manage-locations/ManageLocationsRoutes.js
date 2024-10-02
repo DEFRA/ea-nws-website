@@ -44,8 +44,6 @@ const orgManageLocationsUrls = {
     addressInfo: urlManageOrgAddLocations + '/address-info',
     uploadFile: urlManageOrgAddLocations + '/upload-file',
     name: urlManageOrg + '/add/name',
-    optionalInfo: urlManageOrg + '/add/optional-location-info',
-    optionalAddress: urlManageOrg + '/add/optional-address',
     confirmManualSearchedLocation:
       urlManageOrg + '/add/location-in-area/:flow/:type',
     error: {

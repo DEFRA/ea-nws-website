@@ -8,7 +8,7 @@ import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummar
 import Radio from '../../../../../../common/components/gov-uk/Radio'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationSearchOptionPage() {
+export default function LocationSearchOptionPage () {
   const navigate = useNavigate()
   const [searchOption, setSearchOption] = useState('')
   const [error, setError] = useState('')

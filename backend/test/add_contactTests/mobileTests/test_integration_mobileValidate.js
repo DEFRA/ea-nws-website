@@ -3,6 +3,7 @@ const Code = require('@hapi/code')
 const lab = (exports.lab = Lab.script())
 const createServer = require('../../../server')
 const { startApiServer, apiServerStarted } = require('../../test_api_setup')
+const uuidv4 = require('./../generateAuthToken')
 
 lab.experiment('Integration tests', () => {
   let server
@@ -20,7 +21,7 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/api/add_contact/mobile/validate',
       payload: {
-        authToken: 'MockAuthToken',
+        authToken: uuidv4(),
         msisdn: '07590000000',
         code: '999999'
       }
@@ -34,7 +35,7 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/api/add_contact/mobile/validate',
       payload: {
-        authToken: 'MockAuthToken',
+        authToken: uuidv4(),
         msisdn: '07590000000',
         code: '123'
       }
@@ -48,7 +49,7 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/api/add_contact/mobile/validate',
       payload: {
-        authToken: 'MockAuthToken',
+        authToken: uuidv4(),
         msisdn: '07590000000',
         code: ''
       }
@@ -63,7 +64,7 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/api/add_contact/mobile/validate',
       payload: {
-        authToken: 'MockAuthToken',
+        authToken: uuidv4(),
         msisdn: '07590000000',
         code: ''
       }

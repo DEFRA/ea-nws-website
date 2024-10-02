@@ -3,6 +3,7 @@ const Code = require('@hapi/code')
 const lab = (exports.lab = Lab.script())
 const createServer = require('../../../server')
 const { startApiServer, apiServerStarted } = require('../../test_api_setup')
+const uuidv4 = require('./../generateAuthToken')
 
 lab.experiment('Route tests', () => {
   let server
@@ -42,7 +43,7 @@ lab.experiment('Route tests', () => {
       method: 'POST',
       url: '/api/add_contact/landline/add',
       payload: {
-        authToken: 'MockAuthToken',
+        authToken: uuidv4(),
         msisdn: '07590000000'
       }
     }

@@ -28,8 +28,9 @@ export default function Map ({
   showMapControls = true,
   zoomLevel = 12
 }) {
-  const currentLocation = useSelector((state) => state.session.currentLocation)
-  const { latitude, longitude } = currentLocation.coordinates
+  const { latitude, longitude } = useSelector(
+    (state) => state.session.currentLocation.coordinates
+  )
   const [apiKey, setApiKey] = useState(null)
   const [marker, setMarker] = useState(null)
   const center = [latitude, longitude]
@@ -76,8 +77,15 @@ export default function Map ({
   L.Marker.prototype.options.icon = DefaultIcon
 
   async function getApiKey () {
-    const { data } = await backendCall('data', 'api/os-api/oauth2')
-    setApiKey(data.access_token)
+    const { errorMessage, data } = await backendCall(
+      'data',
+      'api/os-api/oauth2'
+    )
+    if (!errorMessage) {
+      setApiKey(data.access_token)
+    } else {
+      setApiKey('error')
+    }
   }
 
   useEffect(() => {
@@ -186,7 +194,7 @@ export default function Map ({
         maxBounds={maxBounds}
         className='map-container'
       >
-        {apiKey && apiKey !== 'error'
+        {apiKey && (apiKey !== 'error'
           ? (
             <>
               {tileLayerWithHeader}
@@ -225,7 +233,7 @@ export default function Map ({
                 Reload map
               </Link>
             </div>
-            )}
+            ))}
       </MapContainer>
     </div>
   )

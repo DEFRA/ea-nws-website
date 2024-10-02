@@ -74,6 +74,9 @@ url_org_man_loc = {
         'optionalAddress': url_org_man_loc_path + '/add/optional-address',
         'locationInArea': url_org_man_loc_path + '/add/location-in-area'
     },
+    'error': {
+        'cannotFindAddress': url_org_man_loc_path + '/add/cannot-find-address',
+    },
     'change': {
         'alternative_contact': local_host + '/',
         'org_details':  local_host + '/',

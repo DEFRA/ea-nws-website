@@ -4,6 +4,7 @@ import LocationNamePage from '../../pages/manage-locations/add-location/manual-a
 import AddOptionalAddress from '../../pages/manage-locations/add-location/manual-add-location/optional-address/AddOptionalAddress'
 import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/manual-add-location/optional-address/OptionalLocationInformationPage'
 import LocationSearchOptionPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationSearchOptionPage'
+import CannotFindAddressPage from '../../pages/manage-locations/add-location/manual-add-location/search/error/CannotFindAddressPage'
 import LocationPostCodeSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/postcode/LocationPostCodeSearchPage'
 import LocationPostCodeSearchResultsPage from '../../pages/manage-locations/add-location/manual-add-location/search/postcode/LocationPostCodeSearchResultsPage'
 import LocationXYCoordinatesSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/xy-coordinates/LocationXYCoordinatesSearchPage'
@@ -20,7 +21,6 @@ import ProvideAreaNamePage from '../../pages/manage-locations/add-location/uploa
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
 import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationOptionsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
-
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
 const urlManageOrgConfirmLocations = urlManageOrg + '/confirm'
@@ -39,16 +39,23 @@ const orgManageLocationsUrls = {
     addressInfo: urlManageOrg + '/add/address-info',
     uploadFile: urlManageOrg + '/add/upload-file',
     name: urlManageOrg + '/add/name',
+    optionalInfo: urlManageOrg + '/add/optional-location-info',
+    optionalAddress: urlManageOrg + '/add/optional-address',
+    confirmManualSearchedLocation:
+      urlManageOrg + '/add/location-in-area/:flow/:type',
+    error: {
+      cannotFindAddress: urlManageOrg + '/add/cannot-find-address',
+      xyCoordinatesNotInEngland:
+        urlManageOrg + '/add/xy-coordinates-not-in-england'
+    }
+  },
+  search: {
     searchOption: urlManageOrg + '/add/search-option',
     postCodeSearch: urlManageOrg + '/add/postcode-search',
     postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
     xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search',
-    xyCoordinatesNotInEngland:
-      urlManageOrg + '/add/xy-coordinates-not-in-england',
     confirmManualSearchedLocation:
-      urlManageOrg + '/add/location-in-area/:flow/:type',
-    optionalInfo: urlManageOrg + '/add/optional-location-info',
-    optionalAddress: urlManageOrg + '/add/optional-address'
+      urlManageOrg + '/add/location-in-area/:flow/:type'
   },
   unmatchedLocations: {
     index: urlManageOrgUnmatchedLocations,
@@ -58,9 +65,7 @@ const orgManageLocationsUrls = {
       areaName: urlManageOrgUnmatchedLocations + '/manually-find/area-name',
       map: urlManageOrgUnmatchedLocations + '/manually-find/map',
       notInEngland:
-        urlManageOrgUnmatchedLocations + '/manually-find/not-in-england',
-      notInEnglandLP:
-        urlManageOrgUnmatchedLocations + '/manually-find/not-in-england-lp'
+        urlManageOrgUnmatchedLocations + '/manually-find/not-in-england'
     }
   },
   edit: {
@@ -91,27 +96,28 @@ const orgManageLocationRoutes = [
     component: <LocationNamePage />
   },
   {
-    path: orgManageLocationsUrls.add.searchOption,
+    path: orgManageLocationsUrls.search.searchOption,
     component: <LocationSearchOptionPage />
   },
+
   {
-    path: orgManageLocationsUrls.add.postCodeSearchResults,
-    component: <LocationPostCodeSearchResultsPage />
-  },
-  {
-    path: orgManageLocationsUrls.add.confirmManualSearchedLocation,
+    path: orgManageLocationsUrls.search.confirmManualSearchedLocation,
     component: <ConfirmLocationPage />
   },
   {
-    path: orgManageLocationsUrls.add.postCodeSearch,
+    path: orgManageLocationsUrls.search.postCodeSearchResults,
+    component: <LocationPostCodeSearchResultsPage />
+  },
+  {
+    path: orgManageLocationsUrls.search.postCodeSearch,
     component: <LocationPostCodeSearchPage />
   },
   {
-    path: orgManageLocationsUrls.add.xyCoordinatesSearch,
+    path: orgManageLocationsUrls.search.xyCoordinatesSearch,
     component: <LocationXYCoordinatesSearchPage />
   },
   {
-    path: orgManageLocationsUrls.add.xyCoordinatesNotInEngland,
+    path: orgManageLocationsUrls.add.error.xyCoordinatesNotInEngland,
     component: <XYCoordinatesNotInEnglandPage />
   },
   {
@@ -153,6 +159,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.optionalAddress,
     component: <AddOptionalAddress />
+  },
+  {
+    path: orgManageLocationsUrls.add.error.cannotFindAddress,
+    component: <CannotFindAddressPage />
   },
   {
     path: orgManageLocationsUrls.edit.options,

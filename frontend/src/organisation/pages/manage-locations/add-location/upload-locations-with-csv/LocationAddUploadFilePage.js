@@ -5,6 +5,7 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner'
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
+import { backendCall } from '../../../../../common/services/BackendService'
 
 export default function LocationAddUploadFilePage() {
   const navigate = useNavigate()
@@ -101,17 +102,24 @@ export default function LocationAddUploadFilePage() {
       console.dir(selectedFile)
 
       // Get pre-signed URL from backend
-      const response = await fetch(
-        `/api/bulkUpload/uploadFile?name=${selectedFile.name}&fileType=${selectedFile.type}`
+      const dataToSend = {
+        name: selectedFile.name,
+        filetype: selectedFile.type
+      }
+      const { errorMessage, data } = await backendCall(
+        dataToSend,
+        'api/bulkUpload/uploadFile',
+        navigate
       )
 
-      const url = response.url
+      if (errorMessage) {
+        throw new Error(`Failed to get pre-signed URL: ${errorMessage}`)
+      }
+
+      const url = data.url
+      const uniqFileName = data.fileName
 
       console.log(`URL - ${url}`)
-
-      if (!url) {
-        throw new Error('Failed to get pre-signed URL')
-      }
 
       // Upload the file to S3 using generated URL
       const uploadResponse = await fetch(url, {

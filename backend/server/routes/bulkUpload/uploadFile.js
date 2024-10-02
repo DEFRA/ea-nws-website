@@ -18,40 +18,48 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { name, fileType } = request.query
-        const uniqFileName = `${name}_${Date.now()}`
+        const { name, fileType } = request.payload
 
-        const client = new S3Client()
+        if (name && fileType) {
+          const uniqFileName = `${name}_${Date.now()}`
 
-        // Change to nws/aws (bulkUploadBucket).
-        // Would probably need the bucket to be configured correctly (see nws/website/organisation)
-        const s3BucketName = await getSecretKeyValue(
-          'nws/website/organisation',
-          'uploadS3Bucket'
-        )
+          const client = new S3Client()
 
-        if (!s3BucketName) {
-          console.error('S3 Bucket value undefined in Secrets Manager')
-          return createGenericErrorResponse(h)
+          // Change to nws/aws (bulkUploadBucket).
+          // Would probably need the bucket to be configured correctly (see nws/website/organisation)
+          const s3BucketName = await getSecretKeyValue(
+            'nws/website/organisation',
+            'uploadS3Bucket'
+          )
+
+          if (!s3BucketName) {
+            console.error('S3 Bucket value undefined in Secrets Manager')
+            return createGenericErrorResponse(h)
+          }
+
+          const params = {
+            Bucket: s3BucketName,
+            Key: uniqFileName,
+            ContentType: fileType
+          }
+
+          const command = new PutObjectCommand(params)
+
+          // Generate pre-signed URL that will allow frontend to upload file
+          const signedURL = await getSignedURL(client, command)
+
+          return h.response({
+            status: 200,
+            url: signedURL,
+            fileName: uniqFileName
+          })
+        } else {
+          return h.response({
+            status: 500,
+            errorMessage: 'File name and/or type not provided'
+          })
         }
-
-        const params = {
-          Bucket: s3BucketName,
-          Key: uniqFileName,
-          ContentType: fileType
-        }
-
-        const command = new PutObjectCommand(params)
-
-        // Generate pre-signed URL that will allow frontend to upload file
-        const signedURL = await getSignedURL(client, command)
-
-        return h.response({
-          status: 200,
-          url: signedURL,
-          fileName: uniqFileName
-        })
-      } catch {
+      } catch (error) {
         createGenericErrorResponse(h)
       }
     }

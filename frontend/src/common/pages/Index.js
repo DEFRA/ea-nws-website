@@ -12,6 +12,8 @@ import {
   setRegistrations
 } from '../redux/userSlice'
 
+import crypto from 'crypto'
+
 export default function IndexPage () {
   const dispatch = useDispatch()
   const [mockSessionActive, setmockSessionActive] = useState(false)

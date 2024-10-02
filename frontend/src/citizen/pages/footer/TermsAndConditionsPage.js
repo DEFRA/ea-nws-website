@@ -1,6 +1,6 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import BackLink from '../../components/custom/BackLink'
+import BackLink from '../../../common/components/custom/BackLink'
 
 export default function TermsAndConditionsPage () {
   const navigate = useNavigate()

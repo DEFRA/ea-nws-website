@@ -41,7 +41,8 @@ url_org_signup = {
     'duplicateOrg': url_org_signup_path + '/duplicate',
     'alternativeContact': url_org_signup_path + '/alternative-contact',
     'review': url_org_signup_path + '/review',
-    'success': url_org_signup_path + '/success'
+    'success': url_org_signup_path + '/success',
+    'declaration': url_org_signup_path + '/declaration'
 }
 # Signin urls
 url_org_signin_path = url_org + '/signin'
@@ -86,6 +87,10 @@ url_org_man_loc = {
         'options': url_org_man_loc_path + '/edit/location-options'
     }
 }
+
+# org footer urls
+
+url_org_privacy_notice = url_org + '/privacy'
 
 # PAGE NAVIGATION
 # Navigate to authenticated page via index page and check url

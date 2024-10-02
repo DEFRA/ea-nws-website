@@ -2,17 +2,17 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import NotInEnglandLayout from '../../../../../../layouts/add-location/unmatched-locations/NotInEnglandLayout'
 
-export default function XYCoordinatesNotInEnglandPage() {
+export default function DropPinNotInEnglandPage() {
   const navigate = useNavigate()
 
   const NavigateToPreviousPage = () => {
     navigate(-1)
   }
 
-  const NavigateToNextPage = () => {
-    // TODO: where should the Continue button navigate to?
-  }
+  const NavigateToNextPage = () => {}
 
+  // TODO: somehow we need to pass a parameter to layout so that bottom half
+  // of the page (including the Continue button) is hidden.
   return (
     <NotInEnglandLayout
       NavigateToNextPage={NavigateToNextPage}

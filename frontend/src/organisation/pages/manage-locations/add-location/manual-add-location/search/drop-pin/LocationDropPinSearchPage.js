@@ -9,6 +9,7 @@ import ErrorSummary from '../../../../../../../common/components/gov-uk/ErrorSum
 import Radio from '../../../../../../../common/components/gov-uk/Radio'
 import { setCurrentLocationCoordinates } from '../../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../../common/services/BackendService'
+import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationDropPinSearchPage() {
   const dispatch = useDispatch()
@@ -86,10 +87,7 @@ export default function LocationDropPinSearchPage() {
           setPlaceNameTownOrPostcodeError('')
         } else {
           // show error message from OS Api postcode search
-          setPlaceNameTownOrPostcodeError(
-            errorMessage
-            //            placeNameTownOrPostcodeNotRecognisedErrorText
-          )
+          setPlaceNameTownOrPostcodeError(errorMessage)
         }
       }
     } else {
@@ -121,10 +119,9 @@ export default function LocationDropPinSearchPage() {
       error = true
     }
 
-    if (!error) {
+    if (!error && placeNameTownOrPostcodeCoords) {
       dispatch(setCurrentLocationCoordinates(placeNameTownOrPostcodeCoords))
-
-      // TODO: navigate to next page
+      navigate(orgManageLocationsUrls.add.dropPinSearchResults)
     }
   }
 

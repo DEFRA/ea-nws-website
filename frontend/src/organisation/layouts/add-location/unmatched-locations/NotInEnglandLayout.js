@@ -4,7 +4,7 @@ import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function NotInEnglandLayout ({
+export default function NotInEnglandLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -62,7 +62,7 @@ export default function NotInEnglandLayout ({
                 .
               </p>
               <h2>
-                If you think this is not correct and the locations is in England
+                If you think this is not correct and the location is in England
               </h2>
               <p>You can</p>
               <ul className='govuk-list govuk-list--bullet'>

@@ -1,4 +1,5 @@
 import AddLocationOptionsPage from '../../pages/manage-locations/add-location/AddLocationOptionsPage'
+import ConfirmLocationPage from '../../pages/manage-locations/add-location/manual-add-location/confirm-location/ConfirmLocationPage'
 import LocationNamePage from '../../pages/manage-locations/add-location/manual-add-location/name/LocationNamePage'
 import LocationSearchOptionPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationSearchOptionPage'
 import CannotFindAddressPage from '../../pages/manage-locations/add-location/manual-add-location/search/error/CannotFindAddressPage'
@@ -19,6 +20,8 @@ import ConfirmAddingLocationsPage from '../../pages/manage-locations/add-locatio
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/FindUnmatchedLocationsPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
+import SelectHowToFindThisLocationPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/SelectHowToFindThisLocationPage'
+import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-by-address/FindLocationByMatchedAddressesPage'
 import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/NotInEnglandPage'
 import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
@@ -73,6 +76,8 @@ const orgManageLocationsUrls = {
     doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
     manuallyfind: {
       index: urlManageOrgUnmatchedLocations + '/manually-find',
+      selectHow: urlManageOrgUnmatchedLocations + '/manually-find/select-how',
+      address: urlManageOrgUnmatchedLocations + '/manually-find/address',
       areaName: urlManageOrgUnmatchedLocations + '/manually-find/area-name',
       map: urlManageOrgUnmatchedLocations + '/manually-find/map',
       notInEngland:
@@ -165,6 +170,14 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.notInEnglandLP,
     component: <AddLocationNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.selectHow,
+    component: <SelectHowToFindThisLocationPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.address,
+    component: <FindLocationByMatchedAddressesPage />
   },
   // optional information
   {

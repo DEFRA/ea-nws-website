@@ -94,7 +94,7 @@ url_org_man_loc = {
     },
     'unmatched_location': {
         'manually_find_locations': url_org_man_loc_path + '/unmatched-locations/manually-find',
-        'select_how': url_org_man_loc_path + '/unmatched-locations/manually-find/how-to-find',
+        'select_how': url_org_man_loc_path + '/unmatched-locations/manually-find/select-how',
         'find_by_address': url_org_man_loc_path + '/unmatched-locations/manually-find/address',
     },
     'edit':{

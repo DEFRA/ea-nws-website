@@ -11,7 +11,7 @@ import {
 import { backendCall } from '../../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ManuallyFindLocationsPage () {
+export default function ManuallyFindLocationsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
@@ -148,7 +148,7 @@ export default function ManuallyFindLocationsPage () {
     // If there is results for the unmatched address, navigate to the radio screen
     // where user can select how to find the address
     if (isAddressValid) {
-      navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.howToFind)
+      navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.selectHow)
     } else {
       // otherwise, navigate to find on map directly
       navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName) // Link to map

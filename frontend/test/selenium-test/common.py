@@ -69,8 +69,19 @@ url_org_man_loc = {
         'postcodeSearch': url_org_man_loc_path + '/add/postcode-search',
         'postcodeSearchResults': url_org_man_loc_path + '/add/postcode-search-results',
         'xyCoordinatesSearch': url_org_man_loc_path + '/add/xy-coordinates-search',
+        'locationInArea': url_org_man_loc_path + '/add/location-in-area',
         'xyCoordinatesNotInEngland': url_org_man_loc_path + '/add/xy-coordinates-not-in-england',
-        'locationInArea': url_org_man_loc_path + '/add/location-in-area'
+    },
+    'optionalLocation':{
+        'optionalInfo': url_org_man_loc_path + '/add/optional-information',
+        'optionalAddress': url_org_man_loc_path + '/add/optional-information/address',
+        'addKeyInformation': url_org_man_loc_path + '/add/optional-information/key-information',
+        'addKeywords': url_org_man_loc_path + '/add/optional-information/keywords',
+        'addActionPlan': url_org_man_loc_path + '/add/optional-information/action-plan', 
+        'addNotes': url_org_man_loc_path + '/add/optional-information/notes'
+    },
+    'error': {
+        'cannotFindAddress': url_org_man_loc_path + '/add/cannot-find-address',
     },
     'optional':{
         'optionalAddress': url_org_man_loc_path + '/add/optional-address/optional-location',
@@ -126,6 +137,12 @@ def click_link(browser, link_text, url_link):
     time.sleep(1)
     assert browser.current_url == url_link
 
+def click_span(browser, span_text):
+    span_xpath = f"//span[text()=\"{span_text}\"]"
+    span_element = browser.find_element(By.XPATH, span_xpath)
+    browser.execute_script("arguments[0].click();", span_element)
+    time.sleep(1)
+
 # Click on link text and check url - for when there is more than one occurence of the same text
 def click_link_more_than_one_text(browser, link_text, link_text_iteration, url_link):
     link_xpath = f"(//a[text()='{link_text}'])[{link_text_iteration}]"
@@ -150,6 +167,14 @@ def select_dropdown_option(browser, dropdown_name, value, key='value'):
 # Enter input in text box
 def enter_input_text(browser, value, input_text, key='name'):
     input_xpath = f"//input[@{key}='{value}']"
+    input_element = browser.find_element(By.XPATH, input_xpath)
+    input_element.clear()
+    input_element.send_keys(input_text)
+
+# ENTER TEXT
+# Enter input in text box
+def enter_textarea_text(browser, value, input_text, key='name'):
+    input_xpath = f"//textarea[@{key}='{value}']"
     input_element = browser.find_element(By.XPATH, input_xpath)
     input_element.clear()
     input_element.send_keys(input_text)

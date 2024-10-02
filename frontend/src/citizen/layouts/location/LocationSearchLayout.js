@@ -65,7 +65,8 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
           if (placeName) {
             // normalise postcode
             const dataToSend = {
-              name: placeName
+              name: placeName,
+              filter: null
             }
             const { data, errorMessage } = await backendCall(
               dataToSend,

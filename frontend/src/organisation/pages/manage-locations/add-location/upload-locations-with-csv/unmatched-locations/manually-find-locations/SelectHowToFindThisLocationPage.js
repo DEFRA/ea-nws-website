@@ -54,7 +54,7 @@ export default function SelectHowToFindThisLocationPage () {
               How do you want to find this location?
             </h1>
             <div className='govuk-body'>
-              <InsetText text={selectedLocation} />
+              <InsetText text={selectedLocation.toUpperCase()} />
               <div
                 className={
                   error

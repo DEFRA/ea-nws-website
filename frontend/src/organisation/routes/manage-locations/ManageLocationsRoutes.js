@@ -91,6 +91,7 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.view.dashboard,
     component: <ViewLocationsDashboardPage />
   },
+  // add
   {
     path: orgManageLocationsUrls.add.options,
     component: <AddLocationOptionsPage />
@@ -111,14 +112,19 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.add.name,
     component: <LocationNamePage />
   },
+  // add error
+  {
+    path: orgManageLocationsUrls.add.error.xyCoordinatesNotInEngland,
+    component: <XYCoordinatesNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.error.cannotFindAddress,
+    component: <CannotFindAddressPage />
+  },
+  // search
   {
     path: orgManageLocationsUrls.search.searchOption,
     component: <LocationSearchOptionPage />
-  },
-
-  {
-    path: orgManageLocationsUrls.search.confirmManualSearchedLocation,
-    component: <ConfirmLocationPage />
   },
   {
     path: orgManageLocationsUrls.search.postCodeSearchResults,
@@ -132,45 +138,14 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.search.xyCoordinatesSearch,
     component: <LocationXYCoordinatesSearchPage />
   },
-  {
-    path: orgManageLocationsUrls.add.error.xyCoordinatesNotInEngland,
-    component: <XYCoordinatesNotInEnglandPage />
-  },
+  // unmatched locations
   {
     path: orgManageLocationsUrls.unmatchedLocations.doNotAdd,
     component: <DoNotAddLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.optionalInformation.addKeyInformation,
-    component: <AddKeyInformationPage />
-  },
-  {
     path: orgManageLocationsUrls.unmatchedLocations.index,
     component: <FindUnmatchedLocationsPage />
-  },
-  {
-    path: orgManageLocationsUrls.optionalInformation.addActionPlan,
-    component: <AddActionPlan />
-  },
-  {
-    path: orgManageLocationsUrls.optionalInformation.addNotes,
-    component: <AddNotesPage />
-  },
-  {
-    path: orgManageLocationsUrls.optionalInformation.addKeywords,
-    component: <KeywordsForThisLocationPage />
-  },
-  {
-    path: orgManageLocationsUrls.optionalInformation.addActionPlan,
-    component: <AddActionPlan />
-  },
-  {
-    path: orgManageLocationsUrls.optionalInformation.addNotes,
-    component: <AddNotesPage />
-  },
-  {
-    path: orgManageLocationsUrls.optionalInformation.addKeywords,
-    component: <KeywordsForThisLocationPage />
   },
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.index,
@@ -192,9 +167,22 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.notInEnglandLP,
     component: <AddLocationNotInEnglandPage />
   },
+  // optional information
   {
-    path: urlManageOrgConfirmLocations,
-    component: <ConfirmAddingLocationsPage />
+    path: orgManageLocationsUrls.optionalInformation.addKeyInformation,
+    component: <AddKeyInformationPage />
+  },
+  {
+    path: orgManageLocationsUrls.optionalInformation.addActionPlan,
+    component: <AddActionPlan />
+  },
+  {
+    path: orgManageLocationsUrls.optionalInformation.addNotes,
+    component: <AddNotesPage />
+  },
+  {
+    path: orgManageLocationsUrls.optionalInformation.addKeywords,
+    component: <KeywordsForThisLocationPage />
   },
   {
     path: orgManageLocationsUrls.optionalInformation.optionalInfo,
@@ -205,8 +193,8 @@ const orgManageLocationRoutes = [
     component: <AddOptionalAddress />
   },
   {
-    path: orgManageLocationsUrls.add.error.cannotFindAddress,
-    component: <CannotFindAddressPage />
+    path: urlManageOrgConfirmLocations,
+    component: <ConfirmAddingLocationsPage />
   },
   {
     path: orgManageLocationsUrls.edit.options,

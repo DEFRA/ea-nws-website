@@ -4,9 +4,7 @@ const {
 const getSecretKeyValue = require('../../services/SecretsManager')
 
 const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3')
-const { getSignedURL } = require('@aws-sdk/s3-request-presigner')
-
-const client = new S3Client()
+const { getSignedUrl } = require('@aws-sdk/s3-request-presigner')
 
 module.exports = [
   {
@@ -21,7 +19,7 @@ module.exports = [
         const { name, fileType } = request.payload
 
         if (name && fileType) {
-          const uniqFileName = `${name}_${Date.now()}`
+          const uniqFileName = `${Date.now()}_${name}`
 
           const client = new S3Client()
 
@@ -31,6 +29,8 @@ module.exports = [
             'nws/website/organisation',
             'uploadS3Bucket'
           )
+
+          console.log(s3BucketName)
 
           if (!s3BucketName) {
             console.error('S3 Bucket value undefined in Secrets Manager')
@@ -45,13 +45,17 @@ module.exports = [
 
           const command = new PutObjectCommand(params)
 
+          console.log(command)
+
           // Generate pre-signed URL that will allow frontend to upload file
-          const signedURL = await getSignedURL(client, command)
+          const signedURL = await getSignedUrl(client, command)
+
+          console.log(signedURL)
 
           return h.response({
             status: 200,
-            url: signedURL,
-            fileName: uniqFileName
+            data : {url: signedURL,
+            fileName: uniqFileName}
           })
         } else {
           return h.response({

@@ -104,8 +104,10 @@ export default function LocationAddUploadFilePage() {
       // Get pre-signed URL from backend
       const dataToSend = {
         name: selectedFile.name,
-        filetype: selectedFile.type
+        fileType: selectedFile.type
       }
+
+      console.log(dataToSend)
       const { errorMessage, data } = await backendCall(
         dataToSend,
         'api/bulkUpload/uploadFile',

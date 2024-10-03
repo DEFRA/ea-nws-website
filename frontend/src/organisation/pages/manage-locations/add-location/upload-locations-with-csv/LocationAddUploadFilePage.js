@@ -2,10 +2,11 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
-import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner'
+import { Spinner } from '../../../../../common/components/custom/Spinner'
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import { backendCall } from '../../../../../common/services/BackendService'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationAddUploadFilePage() {
   const navigate = useNavigate()
@@ -44,7 +45,7 @@ export default function LocationAddUploadFilePage() {
     if (file.size === 0) {
       setErrorFileSize('The file is empty')
       isValidFile = false
-    } else if (file.size / 1024 > 5000) {
+    } else if (file.size / 1024 > 5 * 1024) {
       setErrorFileSize('The file must be smaller than 5MB')
       isValidFile = false
     } else {
@@ -54,38 +55,6 @@ export default function LocationAddUploadFilePage() {
 
     return isValidFile
   }
-
-  // Remove this function after debugging. Using this file uploads successfully using frontend
-  // but we want to send to backend and upload from there.
-  // const uploadFile = async (file) => {
-  //   const S3_BUCKET = 'jibrantest'
-  //   const REGION = 'eu-west-2'
-
-  //   AWS.config.update({
-  //     accessKeyId: 'accessKeyId',
-  //     secretAccessKey: 'secretAccessKey'
-  //   })
-
-  //   const s3 = new AWS.S3({
-  //     params: { Bucket: S3_BUCKET },
-  //     region: REGION
-  //   })
-
-  //   const params = {
-  //     Body: file,
-  //     Bucket: S3_BUCKET,
-  //     Key: Date.now() + '_' + file.name
-  //   }
-
-  //   try {
-  //     await s3.putObject(params).promise()
-  //     setUploading(false)
-  //     console.log('File uploaded successfully.')
-  //   } catch (error) {
-  //     console.error(error)
-  //     setUploading(false)
-  //   }
-  // }
 
   const handleUpload = async (e) => {
     e.preventDefault()
@@ -110,7 +79,7 @@ export default function LocationAddUploadFilePage() {
       console.log(dataToSend)
       const { errorMessage, data } = await backendCall(
         dataToSend,
-        'api/bulkUpload/uploadFile',
+        'api/bulk_uploads/upload_file',
         navigate
       )
 
@@ -125,6 +94,7 @@ export default function LocationAddUploadFilePage() {
 
       // Upload the file to S3 using generated URL
       const uploadResponse = await fetch(url, {
+        mode: 'cors',
         method: 'PUT',
         headers: {
           'Content-Type': selectedFile.type
@@ -135,9 +105,15 @@ export default function LocationAddUploadFilePage() {
       console.log(uploadResponse.body)
 
       if (!uploadResponse.ok) {
-        throw new Error('File upload failed')
+        setUploading(false)
+        setErrorFileType('Error uploading file')
+      } else {
+        navigate(orgManageLocationsUrls.add.loadingPage, {
+          state: {
+            fileName: uniqFileName,
+          }
+        })
       }
-      console.log('Upload complete')
     } catch (err) {
       console.log(err)
       setUploading(false)
@@ -157,18 +133,7 @@ export default function LocationAddUploadFilePage() {
           {!uploading ? (
             <div className='govuk-grid-column-full'>
               <h1 className='govuk-heading-l'>Upload file</h1>
-              {!errorFileType && !errorFileSize ? (
-                <div className='govuk-form-group'>
-                  <p className='govuk-hint'>File can be .xls, .xlsx, .csv</p>
-                  <input
-                    type='file'
-                    className='govuk-file-upload'
-                    id='file-upload'
-                    onChange={setValidselectedFile}
-                  />
-                </div>
-              ) : (
-                <div className='govuk-form-group govuk-form-group--error'>
+                <div className={errorFileSize || errorFileType ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
                   <p className='govuk-hint'>File can be .xls, .xlsx, .csv</p>
                   {errorFileType && (
                     <p id='file-upload-1-error' className='govuk-error-message'>
@@ -177,19 +142,20 @@ export default function LocationAddUploadFilePage() {
                     </p>
                   )}
                   {errorFileSize && (
-                    <p id='file-upload-1-error' className='govuk-error-message'>
+                    <p id='file-upload-2-error' className='govuk-error-message'>
                       <span className='govuk-visually-hidden'>Error:</span>
                       {errorFileSize}
                     </p>
                   )}
                   <input
                     type='file'
-                    className='govuk-file-upload govuk-file-upload--error'
+                    className={
+                      errorFileSize || errorFileType ? 'govuk-file-upload govuk-file-upload--error' : 'govuk-file-upload'
+                    }
                     id='file-upload'
                     onChange={setValidselectedFile}
                   />
                 </div>
-              )}
               <Button
                 text='Upload'
                 className='govuk-button'
@@ -203,8 +169,11 @@ export default function LocationAddUploadFilePage() {
               </Link>
             </div>
           ) : (
-            <div className='hods-loading-spinner'>
-              <LoadingSpinner text='Uploading' loadingText='' />
+            <div className='govuk-!-text-align-centre'>
+              <h1 className='govuk-heading-l'>Uploading</h1>
+              <div className='govuk-body'>
+                <Spinner size='75' />
+              </div>
             </div>
           )}
         </div>

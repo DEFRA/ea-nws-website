@@ -9,7 +9,7 @@ const { getSignedUrl } = require('@aws-sdk/s3-request-presigner')
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/bulkUpload/uploadFile',
+    path: '/api/bulk_uploads/upload_file',
     handler: async (request, h) => {
       try {
         if (!request.payload) {
@@ -23,12 +23,7 @@ module.exports = [
 
           const client = new S3Client()
 
-          // Change to nws/aws (bulkUploadBucket).
-          // Would probably need the bucket to be configured correctly (see nws/website/organisation)
-          const s3BucketName = await getSecretKeyValue(
-            'nws/website/organisation',
-            'uploadS3Bucket'
-          )
+          const s3BucketName = await getSecretKeyValue('nws/aws', 'bulkUploadBucket')
 
           console.log(s3BucketName)
 

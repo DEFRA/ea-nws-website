@@ -19,8 +19,8 @@ const routes = [].concat(
   require('../routes/ordnance_survey/oauth_2'),
   require('../routes/qgis/qgis'),
   require('../routes/account/account_delete'),
-  require('../routes/bulkUpload/downloadTemplate'),
-  require('../routes/bulkUpload/uploadFile'),
+  require('../routes/bulk_uploads/download_template'),
+  require('../routes/bulk_uploads/upload_file'),
   require('../routes/bulk_uploads/process_file'),
   require('../routes/sign_out/sign_out'),
   require('../routes/bulk_uploads/process_status')

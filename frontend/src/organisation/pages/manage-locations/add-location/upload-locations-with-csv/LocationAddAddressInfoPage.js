@@ -12,7 +12,7 @@ export default function LocationAddAddressInfoPage () {
   async function getTemplateUrl () {
     const { data } = await backendCall(
       'data',
-      'api/bulkUpload/downloadTemplate'
+      'api/bulk_uploads/download_template'
     )
     setTemplateUrl(data)
   }

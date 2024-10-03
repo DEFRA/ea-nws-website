@@ -994,6 +994,47 @@
   position: relative;
 }
 
+.search-container {
+  background: #f3f2f1;
+}
+
+.search-input-container {
+  display: flex;
+  width: 100%;
+}
+
+.search-input {
+  position: relative;
+  z-index: 1;
+  white-space: nowrap;
+}
+
+.search-button-container {
+  vertical-align: top;
+  position: relative;
+  white-space: nowrap;
+  width: 40px;
+}
+
+.search-button {
+  display: block;
+  position: relative;
+  width: 40px;
+  height: 40px;
+  margin: 0px;
+  padding: 0px;
+  box-shadow: none;
+  background-color: #00703c;
+  border: 2px solid #00703c;
+  cursor: pointer;
+  color: #fff;
+}
+
+.search-button:hover {
+  background-color: #005a30;;
+  border-color: #005a30;;
+}
+
 .input-icon {
   position: absolute;
   left: 8px;
@@ -1005,6 +1046,7 @@
 .govuk-input-icon {
   padding-left: 35px;
 }
+
 
 .org-flood-warning-key {
   display: flex;

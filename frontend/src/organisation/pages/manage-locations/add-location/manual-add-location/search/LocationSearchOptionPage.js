@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import LocationOptionsLayout from '../../../../../layouts/add-location/LocationOptionsLayout'
 
 export default function LocationSearchOptionPage () {
-  const locationName = useSelector((state) => state.session.locationName)
+  const locationName = useSelector((state) => state.session.currentLocation.name)
   const searchOptions = [
     { label: 'Use a postcode', value: 'UseAPostcode' },
     { label: 'Use X and Y coordinates', value: 'UseXAndYCoordinates' },

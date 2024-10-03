@@ -68,33 +68,36 @@ export default function NotInEnglandLayout ({
               <p>You can</p>
               <ul className='govuk-list govuk-list--bullet'>
                 <li>
+
+                  <Link
+                    // TODO: need to remove these hardcoded URLs
+                    to={orgManageLocationsUrls.search.postCodeSearch}
+                    className='govuk-link inline-link'
+                  >
+                    use a different postcode
+                  </Link>
+                </li>
+                <li>
                   {isLocationAdding
                     ? (
                       <Link
                     // TODO: need to remove these hardcoded URLs
-                        to={orgManageLocationsUrls.search.postCodeSearch}
+                        to={orgManageLocationsUrls.search.xyCoordinatesSearch}
                         className='govuk-link inline-link'
                       >
-                        use a different postcode
-                      </Link>)
+                        use a different set of X and Y coordinates
+                      </Link>
+                      )
                     : (
                       <Link
                     // TODO: need to remove these hardcoded URLs
                         to={orgManageLocationsUrls.edit.xyCoordinatesSearch}
                         className='govuk-link inline-link'
                       >
-                        use a different postcode
+                        use a different set of X and Y coordinates
                       </Link>
                       )}
-                </li>
-                <li>
-                  <Link
-                    // TODO: need to remove these hardcoded URLs
-                    to={orgManageLocationsUrls.search.xyCoordinatesSearch}
-                    className='govuk-link inline-link'
-                  >
-                    use a different set of X and Y coordinates
-                  </Link>
+
                 </li>
                 <li>
                   <Link

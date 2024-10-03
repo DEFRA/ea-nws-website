@@ -16,6 +16,7 @@ import Radio from '../../../../../../../common/components/gov-uk/Radio'
 import { setCurrentLocationCoordinates } from '../../../../../../../common/redux/userSlice'
 import { locationInEngland } from '../../../../../../../common/services/validations/LocationInEngland'
 import Map from '../../../../../../components/custom/Map'
+import MapKey from '../../../../../../components/custom/MapKey'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationDropPinSearchResults() {
@@ -85,131 +86,7 @@ export default function LocationDropPinSearchResults() {
                   <Map setCoordinates={setPinCoords} type='drop' />
                 </div>
                 <div class='govuk-grid-column-one-third'>
-                  {/* TODO: make this key into a custom component in components/custom */}
-                  <span className='govuk-heading-m govuk-!-font-size-18 govuk-!-margin-bottom-2'>
-                    Key
-                  </span>
-                  <hr class='govuk-section-break govuk-section-break--visible' />
-                  <div className='govuk-heading-m govuk-!-font-size-14 govuk-!-margin-top-2 govuk-!-margin-bottom-0'>
-                    Base map
-                  </div>
-                  <div>
-                    <div
-                      className='govuk-radios govuk-radios--small'
-                      data-module='govuk-radios'
-                      style={{ display: 'flex', alignItems: 'center' }}
-                    >
-                      <Radio name='base map' />
-                      <FontAwesomeIcon
-                        icon={faMap}
-                        size='xl'
-                        style={{ marginLeft: '-15px', marginRight: '7px' }}
-                      />
-                      <p style={{ fontSize: '14px', margin: 0 }}>
-                        Default view
-                      </p>
-                      <br />
-                    </div>
-                    <div
-                      className='govuk-radios govuk-radios--small'
-                      data-module='govuk-radios'
-                      style={{ display: 'flex', alignItems: 'center' }}
-                    >
-                      <Radio name='base map' />
-                      <FontAwesomeIcon
-                        icon={PublicSharpIcon}
-                        size='xl'
-                        style={{ marginLeft: '-15px', marginRight: '7px' }}
-                      />
-                      <PublicSharpIcon
-                        style={{
-                          fontSize: 32,
-                          marginLeft: '-15px',
-                          marginRight: '7px'
-                        }}
-                      />
-                      <p style={{ fontSize: '14px', margin: 0 }}>
-                        Satellite view
-                      </p>
-                    </div>
-                  </div>
-                  <hr class='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
-                  <div className='govuk-heading-m govuk-!-font-size-14 govuk-!-margin-top-2 govuk-!-margin-bottom-0'>
-                    Flood areas
-                  </div>
-                  <div>
-                    <div
-                      className='govuk-checkboxes govuk-checkboxes--small'
-                      data-module='govuk-checkboxes'
-                      style={{ display: 'flex', alignItems: 'center' }}
-                    >
-                      <CheckBox name='flood areas' />
-                      <img
-                        src={warningIcon}
-                        style={{
-                          width: '24px',
-                          height: 'auto',
-                          marginLeft: '-15px',
-                          marginRight: '7px'
-                        }}
-                      />
-                      <p style={{ fontSize: '14px', margin: 0 }}>
-                        Flood warning and <br />
-                        severe area
-                      </p>
-                      <br />
-                    </div>
-                    <div
-                      className='govuk-checkboxes govuk-checkboxes--small'
-                      data-module='govuk-checkboxes'
-                      style={{ display: 'flex', alignItems: 'center' }}
-                    >
-                      <CheckBox name='flood areas' />
-                      <FontAwesomeIcon
-                        icon={PublicSharpIcon}
-                        size='xl'
-                        style={{ marginLeft: '-15px', marginRight: '7px' }}
-                      />
-                      <img
-                        src={alertIcon}
-                        style={{
-                          width: '24px',
-                          height: 'auto',
-                          marginLeft: '-15px',
-                          marginRight: '7px'
-                        }}
-                      />
-                      <p style={{ fontSize: '14px', margin: 0 }}>
-                        Flood alert area
-                      </p>
-                    </div>
-                    <div
-                      className='govuk-checkboxes govuk-checkboxes--small'
-                      data-module='govuk-checkboxes'
-                      style={{ display: 'flex', alignItems: 'center' }}
-                    >
-                      <CheckBox name='flood areas' />
-                      <FontAwesomeIcon
-                        icon={PublicSharpIcon}
-                        size='xl'
-                        style={{ marginLeft: '-15px', marginRight: '7px' }}
-                      />
-                      <img
-                        src={alertIcon}
-                        style={{
-                          width: '24px',
-                          height: 'auto',
-                          marginLeft: '-15px',
-                          marginRight: '7px'
-                        }}
-                      />
-                      <p style={{ fontSize: '14px', margin: 0 }}>
-                        Flood extent
-                      </p>
-                    </div>
-                  </div>
-
-                  <hr class='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
+                  <MapKey />
                 </div>
               </div>
               <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>

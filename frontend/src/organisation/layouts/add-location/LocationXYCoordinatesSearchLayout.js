@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../common/components/gov-uk/Button'
@@ -20,8 +19,7 @@ import { locationInEngland } from '../../../common/services/validations/Location
 import { xCoordinateValidation } from '../../../common/services/validations/XCoordinateValidation'
 import { yCoordinateValidation } from '../../../common/services/validations/YCoordinateValidation'
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
-import { useLocation } from 'react-router-dom'
-import userSlice from '../../../common/redux/userSlice'
+import { useDispatch } from 'react-redux'
 
 export default function LocationXYCoordinatesSearchLayout ({
   allAlertsRoute,
@@ -31,24 +29,24 @@ export default function LocationXYCoordinatesSearchLayout ({
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
-  const isLocationAdding = location.pathname.includes('add') ? true: false
-  //ToDo uncomment these and remove the hard coded coords once dashboard page has been created, for edititing xy coords
-  //const previousXCoordinate = useSelector((state) => state.session.currentLocation.meta_data.x_coordinate)
-  //const previousYCoordinate = useSelector((state) => state.session.currentLocation.meta_data.y_coordinate)
+  const isLocationAdding = !!location.pathname.includes('add')
+  // ToDo uncomment these and remove the hard coded coords once dashboard page has been created, for edititing xy coords
+  // const previousXCoordinate = useSelector((state) => state.session.currentLocation.meta_data.x_coordinate)
+  // const previousYCoordinate = useSelector((state) => state.session.currentLocation.meta_data.y_coordinate)
   const previousXCoordinate = '520814'
   const previousYCoordinate = '185016'
   const initalXCoord = () => {
-    if (!isLocationAdding){
+    if (!isLocationAdding) {
       return previousXCoordinate
-    }else{
+    } else {
       return ''
     }
   }
 
   const initalYCoord = () => {
-    if (!isLocationAdding){
+    if (!isLocationAdding) {
       return previousYCoordinate
-    }else{
+    } else {
       return ''
     }
   }
@@ -57,7 +55,7 @@ export default function LocationXYCoordinatesSearchLayout ({
   const [xCoordinateError, setXCoordinateError] = useState('')
   const [yCoordinate, setYCoordinate] = useState(initalYCoord)
   const [yCoordinateError, setYCoordinateError] = useState('')
-  
+
   useEffect(() => {
     if (xCoordinateError) {
       setXCoordinateError('')
@@ -66,10 +64,6 @@ export default function LocationXYCoordinatesSearchLayout ({
       setYCoordinateError('')
     }
   }, [xCoordinate, yCoordinate])
-
-  
-
-  
 
   const handleSubmit = async () => {
     const xCoordinateValidationError = xCoordinateValidation(xCoordinate)
@@ -101,7 +95,6 @@ export default function LocationXYCoordinatesSearchLayout ({
 
         const isError = !warningArea && !alertArea
 
-
         const isInAlertArea =
             alertArea && isLocationInFloodArea(latitude, longitude, alertArea)
 
@@ -110,13 +103,16 @@ export default function LocationXYCoordinatesSearchLayout ({
 
         navigateToNextPage(isInAlertArea, isInWarningArea, isError)
       } else {
-        navigate(orgManageLocationsUrls.add.xyCoordinatesNotInEngland)
+        if (isLocationAdding) {
+          navigate(orgManageLocationsUrls.add.error.xyCoordinatesNotInEngland)
+        } else {
+          navigate(orgManageLocationsUrls.edit.error.xyCoordinatesNotInEngland)
+        }
       }
     }
   }
 
   const navigateToNextPage = (isInAlertArea, isInWarningArea, isError) => {
-   
     if (isInAlertArea && isInWarningArea) {
       navigate(allAlertsRoute)
     } else if (isInAlertArea) {
@@ -132,8 +128,6 @@ export default function LocationXYCoordinatesSearchLayout ({
     event.preventDefault()
     navigate(-1)
   }
-
-  
 
   return (
     <>

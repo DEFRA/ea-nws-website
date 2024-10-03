@@ -10,9 +10,7 @@ export default function XYCoordinatesNotInEnglandPage () {
   }
 
   const NavigateToNextPage = () => {
-    // navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index, {
-    //  state: 'NotAdded'
-    // })
+
   }
 
   return (

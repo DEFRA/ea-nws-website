@@ -85,7 +85,11 @@ const orgManageLocationsUrls = {
   edit: {
     SelectLocationOptions: urlManageOrg + '/edit/select-location-options',
     xyCoordinatesSearch: urlManageOrg + '/edit/xy-coordinates-search',
-    ConfirmEditLocations: urlManageOrg + '/edit/location-in-area/:flow/:type'
+    ConfirmEditLocations: urlManageOrg + '/edit/location-in-area/:flow/:type',
+    error: {
+      xyCoordinatesNotInEngland:
+        urlManageOrg + '/edit/xy-coordinates-not-in-england'
+    }
   }
 }
 
@@ -211,6 +215,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.edit.ConfirmEditLocations,
     component: <ConfirmLocationPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.error.xyCoordinatesNotInEngland,
+    component: <XYCoordinatesNotInEnglandPage />
   }
 
 ]

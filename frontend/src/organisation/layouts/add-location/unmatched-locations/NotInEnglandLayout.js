@@ -1,13 +1,14 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
-
 export default function NotInEnglandLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
+  const location = useLocation()
+  const isLocationAdding = !!location.pathname.includes('add')
   const handleSubmit = () => {
     NavigateToNextPage()
   }
@@ -67,13 +68,24 @@ export default function NotInEnglandLayout ({
               <p>You can</p>
               <ul className='govuk-list govuk-list--bullet'>
                 <li>
-                  <Link
+                  {isLocationAdding
+                    ? (
+                      <Link
                     // TODO: need to remove these hardcoded URLs
-                    to={orgManageLocationsUrls.search.postCodeSearch}
-                    className='govuk-link inline-link'
-                  >
-                    use a different postcode
-                  </Link>
+                        to={orgManageLocationsUrls.search.postCodeSearch}
+                        className='govuk-link inline-link'
+                      >
+                        use a different postcode
+                      </Link>)
+                    : (
+                      <Link
+                    // TODO: need to remove these hardcoded URLs
+                        to={orgManageLocationsUrls.edit.xyCoordinatesSearch}
+                        className='govuk-link inline-link'
+                      >
+                        use a different postcode
+                      </Link>
+                      )}
                 </li>
                 <li>
                   <Link

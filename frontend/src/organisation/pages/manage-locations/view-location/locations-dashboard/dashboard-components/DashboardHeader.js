@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom'
-import Button from '../../../../../common/components/gov-uk/Button'
-import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
+import Button from '../../../../../../common/components/gov-uk/Button'
+import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
 
-export default function DashboardHeader ({ LocationsAdded, LastUpdated }) {
+export default function DashboardHeader({ LocationsAdded, LastUpdated }) {
   return (
     <>
       <NotificationBanner

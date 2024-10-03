@@ -4,7 +4,7 @@ import Input from './Input'
 const ConditionalWrapper = ({ condition, wrapper, children }) =>
   condition ? wrapper(children) : children
 
-export default function Radio ({
+export default function Radio({
   label,
   value,
   name,

@@ -8,6 +8,8 @@ import citizenSignupRoutes from './citizen/routes/sign-up/SignUpRoutes'
 import ErrorPage from './common/pages/ErrorPage'
 import Index from './common/pages/Index'
 import commonFooterRoutes from './common/routes/footer/FooterRoutes'
+import footerRoutes from './citizen/routes/footer/FooterRoutes'
+import orgFooterRoutes from './organisation/routes/footer/FooterRoutes'
 import commonSignOutRoutes from './common/routes/sign-out/SignOutRoutes'
 import commonStartRoutes from './common/routes/start/StartRoutes'
 import orgManageAccountRoutes from './organisation/routes/account/AccountRoutes'
@@ -27,9 +29,11 @@ export const routes = [
   ...commonStartRoutes,
   ...citizenSignupRoutes,
   ...citizenSigninRoutes,
+  ...footerRoutes,
   ...commonFooterRoutes,
   ...orgSignupRoutes,
-  ...orgSigninRoutes
+  ...orgSigninRoutes,
+  ...orgFooterRoutes
 ]
 
 export const authenticatedRoutes = [

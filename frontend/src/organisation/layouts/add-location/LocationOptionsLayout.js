@@ -16,7 +16,7 @@ export default function LocationOptionsLayout ({ heading, searchOptions, errorMe
     setError('')
   }, [searchOption])
 
-  const isAddingLocation = !!location.pathname.includes('add')
+  const isAddingLocation = location.pathname.includes('add')
 
   const handleSubmit = () => {
     if (!searchOption) {

@@ -29,10 +29,12 @@ export default function LocationXYCoordinatesSearchLayout ({
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const location = useLocation()
-  const isLocationAdding = !!location.pathname.includes('add')
+  const isLocationAdding = location.pathname.includes('add')
   // ToDo uncomment these and remove the hard coded coords once dashboard page has been created, for edititing xy coords
   // const previousXCoordinate = useSelector((state) => state.session.currentLocation.meta_data.x_coordinate)
   // const previousYCoordinate = useSelector((state) => state.session.currentLocation.meta_data.y_coordinate)
+  // const locationName = useSelector((state) => state.session.currentLocation.name)
+  // These are in to pass demo
   const previousXCoordinate = '520814'
   const previousYCoordinate = '185016'
   const initalXCoord = () => {

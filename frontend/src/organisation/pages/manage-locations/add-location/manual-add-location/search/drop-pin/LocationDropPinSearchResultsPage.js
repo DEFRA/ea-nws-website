@@ -1,11 +1,18 @@
+import { faMap } from '@fortawesome/free-regular-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import PublicSharpIcon from '@mui/icons-material/PublicSharp'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
+import alertIcon from '../../../../../../../common/assets/images/alert_area_icon.png'
+import warningIcon from '../../../../../../../common/assets/images/warning_area_icon.png'
 import BackLink from '../../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../../common/components/gov-uk/Button'
+import CheckBox from '../../../../../../../common/components/gov-uk/CheckBox'
 import ErrorSummary from '../../../../../../../common/components/gov-uk/ErrorSummary'
 import InsetText from '../../../../../../../common/components/gov-uk/InsetText'
+import Radio from '../../../../../../../common/components/gov-uk/Radio'
 import { setCurrentLocationCoordinates } from '../../../../../../../common/redux/userSlice'
 import { locationInEngland } from '../../../../../../../common/services/validations/LocationInEngland'
 import Map from '../../../../../../components/custom/Map'
@@ -73,14 +80,145 @@ export default function LocationDropPinSearchResults() {
                   Search with a different place name, town or postcode
                 </a>
               </div>
-              <Map setCoordinates={setPinCoords} type='drop' />
-              <p className='govuk-heading-s govuk-!-margin-top-4 govuk-!-margin-bottom-1'>
+              <div class='govuk-grid-row'>
+                <div class='govuk-grid-column-two-thirds'>
+                  <Map setCoordinates={setPinCoords} type='drop' />
+                </div>
+                <div class='govuk-grid-column-one-third'>
+                  {/* TODO: make this key into a custom component in components/custom */}
+                  <span className='govuk-heading-m govuk-!-font-size-18 govuk-!-margin-bottom-2'>
+                    Key
+                  </span>
+                  <hr class='govuk-section-break govuk-section-break--visible' />
+                  <div className='govuk-heading-m govuk-!-font-size-14 govuk-!-margin-top-2 govuk-!-margin-bottom-0'>
+                    Base map
+                  </div>
+                  <div>
+                    <div
+                      className='govuk-radios govuk-radios--small'
+                      data-module='govuk-radios'
+                      style={{ display: 'flex', alignItems: 'center' }}
+                    >
+                      <Radio name='base map' />
+                      <FontAwesomeIcon
+                        icon={faMap}
+                        size='xl'
+                        style={{ marginLeft: '-15px', marginRight: '7px' }}
+                      />
+                      <p style={{ fontSize: '14px', margin: 0 }}>
+                        Default view
+                      </p>
+                      <br />
+                    </div>
+                    <div
+                      className='govuk-radios govuk-radios--small'
+                      data-module='govuk-radios'
+                      style={{ display: 'flex', alignItems: 'center' }}
+                    >
+                      <Radio name='base map' />
+                      <FontAwesomeIcon
+                        icon={PublicSharpIcon}
+                        size='xl'
+                        style={{ marginLeft: '-15px', marginRight: '7px' }}
+                      />
+                      <PublicSharpIcon
+                        style={{
+                          fontSize: 32,
+                          marginLeft: '-15px',
+                          marginRight: '7px'
+                        }}
+                      />
+                      <p style={{ fontSize: '14px', margin: 0 }}>
+                        Satellite view
+                      </p>
+                    </div>
+                  </div>
+                  <hr class='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
+                  <div className='govuk-heading-m govuk-!-font-size-14 govuk-!-margin-top-2 govuk-!-margin-bottom-0'>
+                    Flood areas
+                  </div>
+                  <div>
+                    <div
+                      className='govuk-checkboxes govuk-checkboxes--small'
+                      data-module='govuk-checkboxes'
+                      style={{ display: 'flex', alignItems: 'center' }}
+                    >
+                      <CheckBox name='flood areas' />
+                      <img
+                        src={warningIcon}
+                        style={{
+                          width: '24px',
+                          height: 'auto',
+                          marginLeft: '-15px',
+                          marginRight: '7px'
+                        }}
+                      />
+                      <p style={{ fontSize: '14px', margin: 0 }}>
+                        Flood warning and <br />
+                        severe area
+                      </p>
+                      <br />
+                    </div>
+                    <div
+                      className='govuk-checkboxes govuk-checkboxes--small'
+                      data-module='govuk-checkboxes'
+                      style={{ display: 'flex', alignItems: 'center' }}
+                    >
+                      <CheckBox name='flood areas' />
+                      <FontAwesomeIcon
+                        icon={PublicSharpIcon}
+                        size='xl'
+                        style={{ marginLeft: '-15px', marginRight: '7px' }}
+                      />
+                      <img
+                        src={alertIcon}
+                        style={{
+                          width: '24px',
+                          height: 'auto',
+                          marginLeft: '-15px',
+                          marginRight: '7px'
+                        }}
+                      />
+                      <p style={{ fontSize: '14px', margin: 0 }}>
+                        Flood alert area
+                      </p>
+                    </div>
+                    <div
+                      className='govuk-checkboxes govuk-checkboxes--small'
+                      data-module='govuk-checkboxes'
+                      style={{ display: 'flex', alignItems: 'center' }}
+                    >
+                      <CheckBox name='flood areas' />
+                      <FontAwesomeIcon
+                        icon={PublicSharpIcon}
+                        size='xl'
+                        style={{ marginLeft: '-15px', marginRight: '7px' }}
+                      />
+                      <img
+                        src={alertIcon}
+                        style={{
+                          width: '24px',
+                          height: 'auto',
+                          marginLeft: '-15px',
+                          marginRight: '7px'
+                        }}
+                      />
+                      <p style={{ fontSize: '14px', margin: 0 }}>
+                        Flood extent
+                      </p>
+                    </div>
+                  </div>
+
+                  <hr class='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
+                </div>
+              </div>
+              <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
                 This is not a live flood map
-              </p>
-              <p>
+              </span>
+              <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-margin-top-1'>
                 It shows fixed areas that we provide flood warnings and alerts
                 for.
-              </p>
+              </span>
             </div>
             <Button
               className='govuk-button govuk-!-margin-top-4'

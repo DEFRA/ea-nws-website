@@ -81,7 +81,7 @@ export default function LocationXYCoordinatesSearchPage() {
 
         navigateToNextPage(isInAlertArea, isInWarningArea, isError)
       } else {
-        navigate(orgManageLocationsUrls.add.xyCoordinatesNotInEngland)
+        navigate(orgManageLocationsUrls.add.error.xyCoordinatesNotInEngland)
       }
     }
   }

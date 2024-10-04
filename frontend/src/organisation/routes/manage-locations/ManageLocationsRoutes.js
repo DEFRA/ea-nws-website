@@ -103,7 +103,8 @@ const orgManageLocationRoutes = [
   },
 
   {
-    path: orgManageLocationsUrls.search.confirmManualSearchedLocation,
+    path: orgManageLocationsUrls.add.manualAddLocation
+      .confirmManualSearchedLocation,
     component: <ConfirmLocationPage />
   },
   {

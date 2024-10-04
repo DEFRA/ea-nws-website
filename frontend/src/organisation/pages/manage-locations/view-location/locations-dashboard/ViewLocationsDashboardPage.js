@@ -17,22 +17,24 @@ export default function ViewLocationsDashboardPage() {
   useEffect(() => {
     const l = [
       {
-        name: 'Location_ID2',
-        address: 'some address',
+        name: 'UPRN',
+        address: '34 Hughenden Road, High Wycombe, LE2 7BB',
         coordinates: ['lat', 'lng'],
         alert_categories: ['Alert'],
         meta_data: {
           location_additional: {
+            location_name: 'my location name',
             full_address: 'some address',
             postcode: 'some postcode',
             x_coordinate: 'lat',
             y_coordinate: 'lng',
-            internal_reference: 'reference',
-            business_criticality: '-',
-            location_type: 'Retail space',
+            internal_reference: 'PS01, unit 57, HighW_07',
+            business_criticality: 'Medium',
+            location_type: 'Office',
             action_plan: 'action plan',
-            notes: 'some notes',
-            keywords: 'keywords'
+            notes:
+              'John Smith has the flood plane for this location. His contact number is 01234 567 890',
+            keywords: 'Midlands'
           }
         }
       },

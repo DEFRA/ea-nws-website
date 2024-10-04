@@ -32,6 +32,7 @@ const userSlice = createSlice({
       alert_categories: null,
       meta_data: {
         location_additional: {
+          location_name: null,
           full_address: null,
           postcode: null,
           // Easting EPSG: 27700
@@ -43,7 +44,8 @@ const userSlice = createSlice({
           location_type: null,
           action_plan: null,
           notes: null,
-          keywords: null
+          keywords: null,
+          location_data_type: null
         }
       }
     }

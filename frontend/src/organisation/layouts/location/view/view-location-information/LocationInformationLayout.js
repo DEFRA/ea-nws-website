@@ -15,6 +15,50 @@ export default function LocationInformationLayout() {
   const address = '49, south street, Greenock'
   const formattedAddress = address.split(',')
 
+  const floodRiskDetails = (
+    <>
+      <p>
+        Flood risk is based on a combination of likelihood and impact – how
+        likely it is that flooding will happen and the effect that flooding will
+        have on people, buildings and services. Flood risk can fall into the
+        following categories:
+      </p>
+      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+        High Risk
+      </h3>
+      <p>
+        Each year there’s a chance of flooding from rivers and the sea of
+        greater than 1 in 30. 
+      </p>
+      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+        Medium Risk
+      </h3>
+      <p>
+        Each year there’s a chance of flooding from rivers and the sea of
+        between 1 in 100 and 1 in 30.
+      </p>
+      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+        Low Risk
+      </h3>
+      <p>
+        Each year there’s a chance of flooding from rivers and the sea of
+        between 1 in 1000 and 1 in 100. 
+      </p>
+      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+        Possible
+      </h3>
+      <p>
+        Flooding is possible in the local area when groundwater levels are high.
+      </p>
+      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+        Unlikely
+      </h3>
+      <p>
+        It’s unlikely the location will be affected by groundwater flooding.
+      </p>
+    </>
+  )
+
   return (
     <>
       <OrganisationAccountNavigation />
@@ -273,7 +317,10 @@ export default function LocationInformationLayout() {
             </div>
             {/* flood risk details */}
             <div className='govuk-!-margin-top-7'>
-              <Details title={'What is a flood risk?'} />
+              <Details
+                title={'What is a flood risk?'}
+                text={floodRiskDetails}
+              />
             </div>
           </div>
 

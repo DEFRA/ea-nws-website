@@ -22,7 +22,7 @@ import { backendCall } from '../../../common/services/BackendService'
 import { getSurroundingFloodAreas } from '../../../common/services/WfsFloodDataService'
 import { createAlertPattern, createWarningPattern } from './FloodAreaPatterns'
 
-export default function Map ({
+export default function Map({
   type,
   setCoordinates,
   showMapControls = true,
@@ -39,7 +39,7 @@ export default function Map ({
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData () {
+    async function fetchFloodAreaData() {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude
@@ -76,7 +76,7 @@ export default function Map ({
 
   L.Marker.prototype.options.icon = DefaultIcon
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { errorMessage, data } = await backendCall(
       'data',
       'api/os-api/oauth2'
@@ -134,7 +134,7 @@ export default function Map ({
   )
   const ref = useRef(null)
 
-  function AddMarker () {
+  function AddMarker() {
     useMapEvents({
       click: (e) => {
         const mapHeight = ref.current.clientHeight
@@ -169,7 +169,7 @@ export default function Map ({
     layer.setStyle({
       color: '#f70202',
       weight: 2,
-      fillOpacity: 0.25
+      fillOpacity: 0
     })
   }
 
@@ -194,8 +194,8 @@ export default function Map ({
         maxBounds={maxBounds}
         className='map-container'
       >
-        {apiKey && (apiKey !== 'error'
-          ? (
+        {apiKey &&
+          (apiKey !== 'error' ? (
             <>
               {tileLayerWithHeader}
               {showMapControls && (
@@ -204,13 +204,11 @@ export default function Map ({
                   <ResetMapButton />
                 </>
               )}
-              {type === 'drop'
-                ? (
-                  <AddMarker />
-                  )
-                : (
-                  <Marker position={center} interactive={false} />
-                  )}
+              {type === 'drop' ? (
+                <AddMarker />
+              ) : (
+                <Marker position={center} interactive={false} />
+              )}
               {alertArea && (
                 <GeoJSON
                   data={alertArea}
@@ -225,15 +223,14 @@ export default function Map ({
                 />
               )}
             </>
-            )
-          : (
+          ) : (
             <div className='map-error-container'>
               <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
               <Link className='govuk-body-s' onClick={() => getApiKey()}>
                 Reload map
               </Link>
             </div>
-            ))}
+          ))}
       </MapContainer>
     </div>
   )

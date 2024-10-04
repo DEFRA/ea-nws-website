@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../../../common/components/custom/OrganisationAccountNavigation'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
-export default function CannotFindAddressPage () {
+export default function CannotFindAddressPage() {
   const navigate = useNavigate()
 
   return (
@@ -27,7 +27,7 @@ export default function CannotFindAddressPage () {
                 <ul className='govuk-list govuk-list--bullet'>
                   <li>
                     <Link
-                      to={orgManageLocationsUrls.search.postCodeSearch}
+                      to={orgManageLocationsUrls.add.search.postCodeSearch}
                       className='govuk-link'
                     >
                       use a different postcode

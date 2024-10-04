@@ -7,7 +7,7 @@ import OrganisationAccountNavigation from '../../../../../common/components/cust
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-export default function OptionalLocationInformationPage () {
+export default function OptionalLocationInformationPage() {
   const navigate = useNavigate()
   const postcode = useSelector(
     (state) =>
@@ -15,9 +15,9 @@ export default function OptionalLocationInformationPage () {
   )
   const navigateToNextPage = () => {
     if (postcode) {
-      navigate(orgManageLocationsUrls.optionalInformation.addKeyInformation)
+      navigate(orgManageLocationsUrls.add.optionalInformation.addKeyInformation)
     } else {
-      navigate(orgManageLocationsUrls.optionalInformation.optionalLocation)
+      navigate(orgManageLocationsUrls.add.optionalInformation.optionalLocation)
     }
   }
 

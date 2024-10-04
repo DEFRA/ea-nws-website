@@ -13,7 +13,7 @@ import {
 } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AddKeyInformationPage () {
+export default function AddKeyInformationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -31,7 +31,7 @@ export default function AddKeyInformationPage () {
     if (locationType !== '') {
       dispatch(setCurrentLocationType(locationType))
     }
-    navigate(orgManageLocationsUrls.optionalInformation.addKeywords)
+    navigate(orgManageLocationsUrls.add.optionalInformation.addKeywords)
   }
 
   const navigateBack = (event) => {

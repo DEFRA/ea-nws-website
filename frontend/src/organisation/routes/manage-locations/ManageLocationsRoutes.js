@@ -52,24 +52,24 @@ const orgManageLocationsUrls = {
       cannotFindAddress: urlManageOrg + '/add/cannot-find-address',
       xyCoordinatesNotInEngland:
         urlManageOrg + '/add/xy-coordinates-not-in-england'
+    },
+    search: {
+      searchOption: urlManageOrg + '/add/search-option',
+      postCodeSearch: urlManageOrg + '/add/postcode-search',
+      postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
+      xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search'
+    },
+    optionalInformation: {
+      optionalInfo: urlManageOrgAddLocations + '/optional-information',
+      optionalLocation:
+        urlManageOrgAddLocations + '/optional-information/address',
+      addKeyInformation:
+        urlManageOrgAddLocations + '/optional-information/key-information',
+      addKeywords: urlManageOrgAddLocations + '/optional-information/keywords',
+      addActionPlan:
+        urlManageOrgAddLocations + '/optional-information/action-plan',
+      addNotes: urlManageOrgAddLocations + '/optional-information/notes'
     }
-  },
-  search: {
-    searchOption: urlManageOrg + '/add/search-option',
-    postCodeSearch: urlManageOrg + '/add/postcode-search',
-    postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
-    xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search'
-  },
-  optionalInformation: {
-    optionalInfo: urlManageOrgAddLocations + '/optional-information',
-    optionalLocation:
-      urlManageOrgAddLocations + '/optional-information/address',
-    addKeyInformation:
-      urlManageOrgAddLocations + '/optional-information/key-information',
-    addKeywords: urlManageOrgAddLocations + '/optional-information/keywords',
-    addActionPlan:
-      urlManageOrgAddLocations + '/optional-information/action-plan',
-    addNotes: urlManageOrgAddLocations + '/optional-information/notes'
   },
   unmatchedLocations: {
     index: urlManageOrgUnmatchedLocations,
@@ -127,19 +127,19 @@ const orgManageLocationRoutes = [
   },
   // search
   {
-    path: orgManageLocationsUrls.search.searchOption,
+    path: orgManageLocationsUrls.add.search.searchOption,
     component: <LocationSearchOptionPage />
   },
   {
-    path: orgManageLocationsUrls.search.postCodeSearchResults,
+    path: orgManageLocationsUrls.add.search.postCodeSearchResults,
     component: <LocationPostCodeSearchResultsPage />
   },
   {
-    path: orgManageLocationsUrls.search.postCodeSearch,
+    path: orgManageLocationsUrls.add.search.postCodeSearch,
     component: <LocationPostCodeSearchPage />
   },
   {
-    path: orgManageLocationsUrls.search.xyCoordinatesSearch,
+    path: orgManageLocationsUrls.add.search.xyCoordinatesSearch,
     component: <LocationXYCoordinatesSearchPage />
   },
   // unmatched locations
@@ -181,27 +181,27 @@ const orgManageLocationRoutes = [
   },
   // optional information
   {
-    path: orgManageLocationsUrls.optionalInformation.addKeyInformation,
+    path: orgManageLocationsUrls.add.optionalInformation.addKeyInformation,
     component: <AddKeyInformationPage />
   },
   {
-    path: orgManageLocationsUrls.optionalInformation.addActionPlan,
+    path: orgManageLocationsUrls.add.optionalInformation.addActionPlan,
     component: <AddActionPlan />
   },
   {
-    path: orgManageLocationsUrls.optionalInformation.addNotes,
+    path: orgManageLocationsUrls.add.optionalInformation.addNotes,
     component: <AddNotesPage />
   },
   {
-    path: orgManageLocationsUrls.optionalInformation.addKeywords,
+    path: orgManageLocationsUrls.add.optionalInformation.addKeywords,
     component: <KeywordsForThisLocationPage />
   },
   {
-    path: orgManageLocationsUrls.optionalInformation.optionalInfo,
+    path: orgManageLocationsUrls.add.optionalInformation.optionalInfo,
     component: <OptionalLocationInformationPage />
   },
   {
-    path: orgManageLocationsUrls.optionalInformation.optionalLocation,
+    path: orgManageLocationsUrls.add.optionalInformation.optionalLocation,
     component: <AddOptionalAddress />
   },
   {

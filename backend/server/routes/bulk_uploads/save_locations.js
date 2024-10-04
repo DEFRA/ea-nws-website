@@ -34,7 +34,6 @@ module.exports = [
           })
           invalid.forEach(async (location) => {
             location.meta_data.location_id = uuidv4()
-            console.log(location)
             await addInvLocation(authToken, location)
           })
 

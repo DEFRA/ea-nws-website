@@ -20,12 +20,8 @@ module.exports = [
 
         if (name && fileType) {
           const uniqFileName = `${Date.now()}_${name}`
-
           const client = new S3Client()
-
           const s3BucketName = await getSecretKeyValue('nws/aws', 'bulkUploadBucket')
-
-          console.log(s3BucketName)
 
           if (!s3BucketName) {
             console.error('S3 Bucket value undefined in Secrets Manager')
@@ -40,12 +36,8 @@ module.exports = [
 
           const command = new PutObjectCommand(params)
 
-          console.log(command)
-
           // Generate pre-signed URL that will allow frontend to upload file
           const signedURL = await getSignedUrl(client, command)
-
-          console.log(signedURL)
 
           return h.response({
             status: 200,

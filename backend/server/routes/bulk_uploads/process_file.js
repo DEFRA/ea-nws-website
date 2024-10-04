@@ -10,16 +10,12 @@ module.exports = [
     method: ['POST'],
     path: '/api/bulk_uploads/process_file',
     handler: async (request, h) => {
-      console.log(request)
       try {
-        console.log(request.payload)
         if (request.payload.Message) {
           const fileName = request.payload.Message
           const elasticacheKey = 'bulk_upload:' + fileName.split('.')[0]
-          console.log(elasticacheKey)
           await setJsonData(elasticacheKey, { stage: 'Processing', status: 'working' })
           const response = await processLocations(request.payload.Message)
-          console.log(response)
           if (response.errorMessage) {
             await setJsonData(elasticacheKey, { stage: 'Processing', status: 'rejected', error: response.errorMessage })
           } else if (response.data) {

@@ -87,12 +87,12 @@ export default function ManuallyFindLocationsPage () {
                     return (
                       <tr class='govuk-table__row' key={index}>
                         <th scope='row' class='govuk-table__header'>
-                          {location.Location_name}
+                          {location.name}
                         </th>
                         <td class='govuk-table__cell'>
-                          {location.Full_address}
+                          {location.meta_data.location_additional.full_address}
                         </td>
-                        <td class='govuk-table__cell'>{location.Postcode}</td>
+                        <td class='govuk-table__cell'>{location.meta_data.location_additional.postcode}</td>
                         <td class='govuk-table__cell'>
                           <Link
                             onClick={(event) => handleFind(event, location)}

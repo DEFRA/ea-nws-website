@@ -8,6 +8,7 @@ const connectToRedis = async () => {
   client.on('error', err => console.log('Redis Client Error', err))
   // Connect to the redis elasticache
   await client.connect()
+  console.log('client connecteed')
   return client
 }
 
@@ -44,8 +45,16 @@ const deleteJsonData = async (key) => {
 }
 
 const getKeys = async (partialKey) => {
+  console.log('geeting keys')
+  console.log(partialKey)
   const client = await connectToRedis()
-  const keys = await client.keys(partialKey + '*')
+  const keysArr = []
+  const results = await client.scan(0, partialKey+'*', 10000)
+  console.log(results)
+  keysArr.append(results.keys)
+  console.log(keysArr)
+  console.log('after command')
+  await client.disconnect()
   return keys
 }
 
@@ -113,7 +122,11 @@ for manually matching locations to coordinates
 const addInvLocation = async (authToken, location) => {
   const locationID = location.meta_data.location_id
   const key = authToken + ':t_invPOIS:' + locationID
+  console.log(key)
   await setJsonData(key, location)
+  const data = await getJsonData(key)
+  console.log(data)
+
 }
 
 const removeInvLocation = async (authToken, locationID) => {
@@ -122,7 +135,9 @@ const removeInvLocation = async (authToken, locationID) => {
 }
 
 const getInvLocationKeys = async (authToken) => {
+  console.log('inside')
   const keys = await getKeys(authToken + ':t_invPOIS:')
+  console.log(keys)
   return keys
 }
 

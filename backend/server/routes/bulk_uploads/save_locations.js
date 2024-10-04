@@ -5,6 +5,12 @@ const {
 const { getJsonData, addInvLocation, addLocation } = require('../../services/elasticache')
 const { convertToPois } = require('../../services/bulk_uploads/processLocations')
 
+function uuidv4 () {
+  return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, c =>
+    (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+  )
+}
+
 module.exports = [
   {
     method: ['POST'],
@@ -21,10 +27,14 @@ module.exports = [
           const result = await getJsonData(elasticacheKey)
           const valid = convertToPois(result.data.valid)
           const invalid = convertToPois(result.data.invalid)
+          // add unique location ID and add to elsaticache
           valid.forEach(async (location) => {
+            location.meta_data.location_id = uuidv4()
             await addLocation(authToken, location)
           })
           invalid.forEach(async (location) => {
+            location.meta_data.location_id = uuidv4()
+            console.log(location)
             await addInvLocation(authToken, location)
           })
 

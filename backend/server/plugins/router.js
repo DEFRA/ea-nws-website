@@ -23,7 +23,9 @@ const routes = [].concat(
   require('../routes/bulk_uploads/upload_file'),
   require('../routes/bulk_uploads/process_file'),
   require('../routes/sign_out/sign_out'),
-  require('../routes/bulk_uploads/process_status')
+  require('../routes/bulk_uploads/process_status'),
+  require('../routes/bulk_uploads/save_locations'),
+  require('../routes/bulk_uploads/get_invalid_locations'),
 )
 
 module.exports = {

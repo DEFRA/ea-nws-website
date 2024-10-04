@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Spinner } from '../../../../../common/components/custom/Spinner'
 import { backendCall } from '../../../../../common/services/BackendService'
@@ -9,7 +8,8 @@ export default function LocationAddLoadingPage () {
   const navigate = useNavigate()
   const [status, setStatus] = useState('')
   const [stage, setStage] = useState('Scanning Upload')
-  const authToken = useSelector((state) => state.session.authToken)
+  const [validLocations, setValidLocations] = useState(null)
+  const [invalidLocations, setInvalidLocations] = useState(null)
   const location = useLocation()
   const fileName = location.state?.fileName
 
@@ -20,29 +20,23 @@ export default function LocationAddLoadingPage () {
 
   // Each time the status changes check if it's complete and save the locations to elasticache and geosafe
   useEffect(() => {
-    const dataToSend = { authToken, fileName }
-    if (status === 'complete') {
-      const { data, errorMessage } = async () => await backendCall(
-        dataToSend,
-        'api/bulk_uploads/save_locations',
-        navigate
-      )
-      if (!errorMessage) {
-        if (data.invalid === 0) {
-          navigate(orgManageLocationsUrls.add.confirm, {
-            state: { added: data.valid }
-          })
-        } else {
-          /* navigate([url for page with options], {
-            state: {
-              added: data.valid
-              notAdded: data.invalid
-            }
-          }) */
-        }
+    const continueToNextPage = async () => {
+      if (invalidLocations === null) {
+        navigate(orgManageLocationsUrls.add.confirm, {
+          state: { fileName: fileName, valid: validLocations }
+        })
       } else {
-        // Navigate to error page
+        navigate('/organisation/manage-locations/confirm', {
+          state: {
+            fileName: fileName,
+            valid: validLocations,
+            invalid: invalidLocations
+          }
+        })
       }
+    }
+    if (status === 'complete') {
+      continueToNextPage()
     }
   }, [status])
 
@@ -60,6 +54,10 @@ export default function LocationAddLoadingPage () {
           setStage(data.stage)
         }
         if (data?.status !== status) {
+          if (data?.data) {
+            setValidLocations(data.data?.valid.length)
+            setInvalidLocations(data.data?.invalid.length)
+          }
           setStatus(data.status)
         }
         if (data?.error) {
@@ -78,8 +76,9 @@ export default function LocationAddLoadingPage () {
 
   // Only temporary to trigger file processing until scanning in AWS is implemented
   useEffect(() => {
-    const dataToSend = { Message: fileName }
-      const { errorMessage } = async () => await backendCall(
+    const startProcessing = async () => {
+      const dataToSend = { Message: fileName }
+      const { errorMessage } = await backendCall(
         dataToSend,
         'api/bulk_uploads/process_file',
         navigate
@@ -89,6 +88,9 @@ export default function LocationAddLoadingPage () {
       } else {
         console.log('file processing not triggered')
       }
+
+    }
+    startProcessing()
   }, [])
 
 

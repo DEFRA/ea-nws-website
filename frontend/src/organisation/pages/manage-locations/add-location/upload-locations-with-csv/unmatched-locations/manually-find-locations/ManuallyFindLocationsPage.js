@@ -1,118 +1,44 @@
-import React from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../../common/components/gov-uk/Button'
 import WarningText from '../../../../../../../common/components/gov-uk/WarningText'
 import { setCurrentLocation } from '../../../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../../../common/services/BackendService'
 
 export default function ManuallyFindLocationsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const authToken = useSelector((state) => state.session.authToken)
+  const [locations, setLocations] = useState(null)
 
-  // dumy data this will be updated to come from the upload.
-  const locations = [
-    {
-      Location_name: 'Location 1',
-      Full_address: '25a belgrave road',
-      Postcode: 'SO17 3EA',
-      X_coordinates: 'X coordinates',
-      Y_coordinates: 'Y coordinates',
-      Internal_reference: 'Internal reference',
-      Business_criticality: 'Business criticality',
-      Location_type: 'Location type',
-      Action_plan: 'Action plan',
-      Notes: 'Notes',
-      Keywords: [Array]
-    },
-    {
-      Location_name: 'Location 2',
-      Full_address: 'Bythesea Road',
-      Postcode: 'BA14 8JN',
-      X_coordinates: 'X coordinates',
-      Y_coordinates: 'Y coordinates',
-      Internal_reference: 'Internal reference',
-      Business_criticality: 'Business criticality',
-      Location_type: 'Location type',
-      Action_plan: 'Action plan',
-      Notes: 'Notes',
-      Keywords: [Array]
-    },
-    {
-      Location_name: 'Location 3',
-      Full_address: '1000 Parkwaye, Whiteley',
-      Postcode: 'PO15 7AA',
-      X_coordinates: 'X coordinates',
-      Y_coordinates: 'Y coordinates',
-      Internal_reference: 'Internal reference',
-      Business_criticality: 'Business criticality',
-      Location_type: 'Location type',
-      Action_plan: 'Action plan',
-      Notes: 'Notes',
-      Keywords: [Array]
-    },
-    {
-      Location_name: 'Location 4',
-      Full_address: 'Station Rd',
-      Postcode: 'SO51 7LP',
-      X_coordinates: 'X coordinates',
-      Y_coordinates: 'Y coordinates',
-      Internal_reference: 'Internal reference',
-      Business_criticality: 'Business criticality',
-      Location_type: 'Location type',
-      Action_plan: 'Action plan',
-      Notes: 'Notes',
-      Keywords: [Array]
-    },
-    {
-      Location_name: 'Location 5',
-      Full_address: 'Romsey Office, Cannal Walk, Romsey',
-      Postcode: 'SO51 8DU',
-      X_coordinates: 'X coordinates',
-      Y_coordinates: 'Y coordinates',
-      Internal_reference: 'Internal reference',
-      Business_criticality: 'Business criticality',
-      Location_type: 'Location type',
-      Action_plan: 'Action plan',
-      Notes: 'Notes',
-      Keywords: [Array]
+  useEffect(() => {
+    const getInvLocations = async () => {
+      const dataToSend = { authToken }
+      const { data } = await backendCall(
+        dataToSend,
+        'api/bulk_uploads/get_invalid_locations',
+        navigate
+      )
+      if (data) {
+        setLocations(data)
+      } else {
+        console.log('no invalid locations')
+      }
+
     }
-  ]
+    getInvLocations()
+  }, [])
+
 
   const handleSubmit = async () => {
     navigate('/organisation/manage-locations/view-locations')
   }
 
-  const locationToPOI = (location) => {
-    return {
-      name: location.Location_name,
-      // address is the UPRN
-      address: null,
-      // Coordinates in dd (degrees decimal)
-      coordinates: null,
-      alert_categories: null,
-      meta_data: {
-        location_additional: {
-          full_address: location.Full_address,
-          postcode: location.Postcode,
-          // Easting EPSG: 27700
-          x_coordinate: location.X_coordinates,
-          // Northing EPSG: 27700
-          y_coordinate: location.Y_coordinates,
-          internal_reference: location.Internal_reference,
-          business_criticality: location.Business_criticality,
-          location_type: location.Location_type,
-          action_plan: location.Action_plan,
-          notes: location.Notes,
-          keywords: location.Keywords
-        }
-      }
-    }
-  }
-
   const handleFind = async (event, location) => {
     event.preventDefault()
-    const poi = locationToPOI(location)
+    const poi = location
     dispatch(setCurrentLocation(poi))
     navigate('/organisation/manage-locations/find-location')
   }
@@ -137,7 +63,7 @@ export default function ManuallyFindLocationsPage () {
                 </>
               </p>
               <h2 className='govuk-heading-m govuk-!-margin-top-6'>
-                {locations.length} locations not matched
+                {locations?.length} locations not matched
               </h2>
 
               <table class='govuk-table govuk-table--small-text-until-tablet'>
@@ -156,7 +82,8 @@ export default function ManuallyFindLocationsPage () {
                   </tr>
                 </thead>
                 <tbody class='govuk-table__body'>
-                  {locations.map((location, index) => {
+                  {locations &&
+                  locations.map((location, index) => {
                     return (
                       <tr class='govuk-table__row' key={index}>
                         <th scope='row' class='govuk-table__header'>

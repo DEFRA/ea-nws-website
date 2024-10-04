@@ -7,7 +7,7 @@ import OrganisationAccountNavigation from '../../../../../common/components/cust
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-export default function OptionalLocationInformationPage() {
+export default function OptionalLocationInformationPage () {
   const navigate = useNavigate()
   const postcode = useSelector(
     (state) =>

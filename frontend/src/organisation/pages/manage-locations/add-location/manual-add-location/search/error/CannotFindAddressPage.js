@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../../../common/components/custom/OrganisationAccountNavigation'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
-export default function CannotFindAddressPage() {
+export default function CannotFindAddressPage () {
   const navigate = useNavigate()
 
   return (

@@ -36,7 +36,7 @@ export default function LocationSearchOptionPage() {
           navigate(orgManageLocationsUrls.search.xyCoordinatesSearch)
           break
         case searchOptions[2].value:
-          navigate(orgManageLocationsUrls.add.dropPinSearch)
+          navigate(orgManageLocationsUrls.search.dropPinSearch)
           break
         default:
           break

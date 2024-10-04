@@ -9,7 +9,7 @@ import FloodWarningKey from '../../../components/custom/FloodWarningKey'
 import Map from '../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmLocationLayout () {
+export default function ConfirmLocationLayout() {
   const navigate = useNavigate()
   const { type } = useParams()
   const { flow } = useParams()
@@ -119,7 +119,7 @@ export default function ConfirmLocationLayout () {
                 </Link>
                 <br />
                 <Link
-                  to={orgManageLocationsUrls.add.xyCoordinatesSearch}
+                  to={orgManageLocationsUrls.search.xyCoordinatesSearch}
                   className='govuk-link'
                 >
                   Use different X and Y coordinates

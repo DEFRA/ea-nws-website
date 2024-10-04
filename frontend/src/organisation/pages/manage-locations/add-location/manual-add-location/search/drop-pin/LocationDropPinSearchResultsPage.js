@@ -1,18 +1,11 @@
-import { faMap } from '@fortawesome/free-regular-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import PublicSharpIcon from '@mui/icons-material/PublicSharp'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
-import alertIcon from '../../../../../../../common/assets/images/alert_area_icon.png'
-import warningIcon from '../../../../../../../common/assets/images/warning_area_icon.png'
 import BackLink from '../../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../../common/components/gov-uk/Button'
-import CheckBox from '../../../../../../../common/components/gov-uk/CheckBox'
 import ErrorSummary from '../../../../../../../common/components/gov-uk/ErrorSummary'
 import InsetText from '../../../../../../../common/components/gov-uk/InsetText'
-import Radio from '../../../../../../../common/components/gov-uk/Radio'
 import { setCurrentLocationCoordinates } from '../../../../../../../common/redux/userSlice'
 import { locationInEngland } from '../../../../../../../common/services/validations/LocationInEngland'
 import Map from '../../../../../../components/custom/Map'
@@ -24,6 +17,12 @@ export default function LocationDropPinSearchResults() {
   const navigate = useNavigate()
   const [pinCoords, setPinCoords] = useState('')
   const [error, setError] = useState('')
+  const [
+    isFloodWarningAndSevereAreasVisible,
+    setFloodWarningAndSevereAreasVisible
+  ] = useState(true)
+  const [isFloodAlertAreasVisible, setFloodAlertAreasVisible] = useState(true)
+  const [isFloodExtentsVisible, setFloodExtentsVisible] = useState(true)
 
   // remove error if user drops a pin
   useEffect(() => {
@@ -45,7 +44,7 @@ export default function LocationDropPinSearchResults() {
         // TODO: Send currentLocation object to elasticache and geosafe, then navigate
         // NavigateToNextPage()
       } else {
-        navigate(orgManageLocationsUrls.add.dropPinNotInEngland)
+        navigate(orgManageLocationsUrls.search.dropPinNotInEngland)
       }
     }
   }
@@ -58,6 +57,10 @@ export default function LocationDropPinSearchResults() {
   const currentLocationName = useSelector(
     (state) => state.session.currentLocation.name
   )
+
+  console.log('1:', isFloodWarningAndSevereAreasVisible)
+  console.log('2:', isFloodAlertAreasVisible)
+  console.log('3:', isFloodExtentsVisible)
 
   return (
     <>
@@ -76,17 +79,33 @@ export default function LocationDropPinSearchResults() {
               <div className='govuk-!-margin-bottom-4'>
                 <a
                   className='govuk-link'
-                  href={orgManageLocationsUrls.add.dropPinSearch}
+                  href={orgManageLocationsUrls.search.dropPinSearch}
                 >
                   Search with a different place name, town or postcode
                 </a>
               </div>
               <div class='govuk-grid-row'>
                 <div class='govuk-grid-column-two-thirds'>
-                  <Map setCoordinates={setPinCoords} type='drop' />
+                  <Map
+                    setCoordinates={setPinCoords}
+                    type='drop'
+                    showWarningAreas={isFloodWarningAndSevereAreasVisible}
+                    showAlertAreas={isFloodAlertAreasVisible}
+                  />
                 </div>
                 <div class='govuk-grid-column-one-third'>
-                  <MapKey />
+                  <MapKey
+                    isFloodWarningAndSevereAreasVisible={
+                      isFloodWarningAndSevereAreasVisible
+                    }
+                    setFloodWarningAndSevereAreasVisible={
+                      setFloodWarningAndSevereAreasVisible
+                    }
+                    isFloodAlertAreasVisible={isFloodAlertAreasVisible}
+                    setFloodAlertAreasVisible={setFloodAlertAreasVisible}
+                    isFloodExtentsVisible={isFloodExtentsVisible}
+                    setFloodExtentsVisible={setFloodExtentsVisible}
+                  />
                 </div>
               </div>
               <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>

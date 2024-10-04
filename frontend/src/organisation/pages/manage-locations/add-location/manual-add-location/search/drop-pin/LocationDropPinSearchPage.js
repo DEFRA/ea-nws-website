@@ -121,7 +121,7 @@ export default function LocationDropPinSearchPage() {
 
     if (!error && placeNameTownOrPostcodeCoords) {
       dispatch(setCurrentLocationCoordinates(placeNameTownOrPostcodeCoords))
-      navigate(orgManageLocationsUrls.add.dropPinSearchResults)
+      navigate(orgManageLocationsUrls.search.dropPinSearchResults)
     }
   }
 

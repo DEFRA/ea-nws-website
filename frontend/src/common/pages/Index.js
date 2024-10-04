@@ -478,10 +478,18 @@ export default function IndexPage () {
                 </li>
                 <li>
                   <Link
-                    to='/organisation/manage-locations/add/optional-location-info'
+                    to='/organisation/manage-locations/add/optional-address/info'
                     className='govuk-link'
                   >
                     add location information
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    to='/organisation/manage-locations/edit/location-options'
+                    className='govuk-link'
+                  >
+                    edit location
                   </Link>
                 </li>
               </ul>

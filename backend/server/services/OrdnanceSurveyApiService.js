@@ -39,10 +39,14 @@ const osPostCodeApiCall = async (postCode) => {
   }
 }
 
-const osFindNameApiCall = async (name) => {
+const osFindNameApiCall = async (name, filter) => {
   let responseData
   const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
-  const url = `https://api.os.uk/search/names/v1/find?query=${name}&key=${osApiKey}`
+  let url = `https://api.os.uk/search/names/v1/find?query=${name}&key=${osApiKey}`
+  if (filter !== null) {
+    const filterStr = 'LOCAL_TYPE:' + filter.join(' LOCAL_TYPE:')
+    url = `https://api.os.uk/search/names/v1/find?query=${name}&fq=${filterStr}&key=${osApiKey}`
+  }
   proj4.defs(
     'EPSG:27700',
     '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs'

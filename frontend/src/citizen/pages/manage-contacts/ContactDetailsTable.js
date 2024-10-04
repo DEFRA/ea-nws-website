@@ -96,23 +96,25 @@ export default function ContactDetailsTable ({
                 </td>
                 <td className='govuk-table__cell' />
                 <td className='govuk-table__cell' />
-                {contact !== primaryContact ? (
-                  <td className='govuk-table__cell'>
-                    <Link
-                      to='/managecontacts/confirm-delete'
-                      state={{
-                        type: contactType,
-                        contact
-                      }}
-                      className='govuk-link'
-                    >
-                      Remove
-                    </Link>
-                  </td>
-                ) : (
-                  // empty space in table without this
-                  <td className='govuk-table__cell' />
-                )}
+                {contact !== primaryContact
+                  ? (
+                    <td className='govuk-table__cell'>
+                      <Link
+                        to='/managecontacts/confirm-delete'
+                        state={{
+                          type: contactType,
+                          contact
+                        }}
+                        className='govuk-link'
+                      >
+                        Remove
+                      </Link>
+                    </td>
+                    )
+                  : (
+                // empty space in table without this
+                    <td className='govuk-table__cell' />
+                    )}
               </tr>
             ))}
             {unregisteredContact.map((unregisteredContact, index) => (

@@ -1,28 +1,27 @@
 import React, { useState, useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
-import BackLink from '../../../common/components/custom/BackLink'
-import Radio from '../../../common/components/gov-uk/Radio'
-import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
-import Button from '../../../common/components/gov-uk/Button'
+import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
+import BackLink from '../../../../../common/components/custom/BackLink'
+import Radio from '../../../../../common/components/gov-uk/Radio'
+import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
+import Button from '../../../../../common/components/gov-uk/Button'
 
 export default function LocationOptionsLayout ({ heading, searchOptions, errorMessage }) {
   const navigate = useNavigate()
   const [searchOption, setSearchOption] = useState('')
   const [error, setError] = useState('')
   const location = useLocation()
+  const isAddingLocationFlow = location.pathname.includes('add')
 
   useEffect(() => {
     setError('')
   }, [searchOption])
 
-  const isAddingLocation = location.pathname.includes('add')
-
   const handleSubmit = () => {
     if (!searchOption) {
       setError(errorMessage)
     } else {
-      if (isAddingLocation) {
+      if (isAddingLocationFlow) {
         switch (searchOption) {
           case 'UseAPostcode':
             navigate('/organisation/manage-locations/add/postcode-search')
@@ -62,7 +61,7 @@ export default function LocationOptionsLayout ({ heading, searchOptions, errorMe
               <ErrorSummary errorList={[error]} />
             )}
             <h1 className='govuk-heading-l'>{heading}</h1>
-            {isAddingLocation
+            {isAddingLocationFlow
               ? (
                 <p>
                   If your location is a polygon, or a line, your organization has

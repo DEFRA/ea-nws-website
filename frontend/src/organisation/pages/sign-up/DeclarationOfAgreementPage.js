@@ -40,8 +40,8 @@ export default function DeclarationOfAgreement () {
               </li>
               <li>
                 for any loss, damage or costs to your organisation due
-                  to flooding or us sending or not sending flood warnings, unless we must by law
-                
+                to flooding or us sending or not sending flood warnings, unless we must by law
+
               </li>
             </ul>
             <p>
@@ -52,7 +52,7 @@ export default function DeclarationOfAgreement () {
             <p>You need to:</p>
             <ul className='govuk-list govuk-list--bullet'>
               <li>
-                 give correct organisation contact details
+                give correct organisation contact details
               </li>
               <li>
                 confirm you can act on behalf of your organisation
@@ -74,8 +74,8 @@ export default function DeclarationOfAgreement () {
               </li>
               <li>
                 keep an offline copy of all locations entered into our service,
-                  in case data in our service is lost
-                
+                in case data in our service is lost
+
               </li>
             </ul>
 
@@ -96,35 +96,35 @@ export default function DeclarationOfAgreement () {
               </li>
               <li>
                 reply to requests for information under the
-                  <a
-                    href='https://www.gov.uk/make-a-freedom-of-information-request'
-                    className='govuk-link'
-                  >
-                    {' '}
-                    Freedom of Information Act {' '}
-                  </a>
-                  or
-                  <a
-                    href='
+                <a
+                  href='https://www.gov.uk/make-a-freedom-of-information-request'
+                  className='govuk-link'
+                >
+                  {' '}
+                  Freedom of Information Act {' '}
+                </a>
+                or
+                <a
+                  href='
 https://ico.org.uk/for-organisations/eir-and-access-to-information/guide-to-the-environmental-information-regulations/what-are-the-eir/'
-                    className='govuk-link'
-                  >
-                    {' '}
-                    Environmental Information Regulations
-                  </a>
-                  , if the
-                  <a
-                    href='https://www.gov.uk/data-protection'
-                    className='govuk-link'
-                  >
-                    {' '}
-                    Data Protection Act {' '}
-                  </a>
-                  allows
-                
+                  className='govuk-link'
+                >
+                  {' '}
+                  Environmental Information Regulations
+                </a>
+                , if the
+                <a
+                  href='https://www.gov.uk/data-protection'
+                  className='govuk-link'
+                >
+                  {' '}
+                  Data Protection Act {' '}
+                </a>
+                allows
+
               </li>
             </ul>
-            <p >
+            <p>
               We may give personal information to our agents or representatives,
               so they can do any of these things for us.
               And we may share this information with other organisations,

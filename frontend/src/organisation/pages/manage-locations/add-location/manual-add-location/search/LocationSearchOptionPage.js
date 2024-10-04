@@ -1,7 +1,6 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import LocationOptionsLayout from '../../../../../layouts/add-location/LocationOptionsLayout'
-
+import LocationOptionsLayout from '../../../../../layouts/add-location/manual-add-or-edit-location/search/LocationOptionsLayout'
 export default function LocationSearchOptionPage () {
   const locationName = useSelector((state) => state.session.currentLocation.name)
   const searchOptions = [

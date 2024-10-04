@@ -146,19 +146,19 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.search.xyCoordinatesSearch,
     component: <LocationXYCoordinatesSearchPage />
   },
-  // unmatched locations
   {
-    path: orgManageLocationsUrls.add.dropPinSearch,
+    path: orgManageLocationsUrls.search.dropPinSearch,
     component: <LocationDropPinSearchPage />
   },
   {
-    path: orgManageLocationsUrls.add.dropPinSearchResults,
+    path: orgManageLocationsUrls.search.dropPinSearchResults,
     component: <LocationDropPinSearchResultsPage />
   },
   {
-    path: orgManageLocationsUrls.add.dropPinNotInEngland,
+    path: orgManageLocationsUrls.search.dropPinNotInEngland,
     component: <DropPinNotInEnglandPage />
   },
+  // unmatched locations
   {
     path: orgManageLocationsUrls.unmatchedLocations.doNotAdd,
     component: <DoNotAddLocationsPage />

@@ -25,10 +25,12 @@ export default function ConfirmLocationsPage () {
       navigate
     )
     if (!errorMessage) {
-      navigate(orgManageLocationsUrls.unmatchedLocations.findUnmatchedLocations, { state: {
-        added: data.valid,
-        notAdded: data.invalid
-      }})
+      navigate(orgManageLocationsUrls.unmatchedLocations.findUnmatchedLocations, {
+        state: {
+          added: data.valid,
+          notAdded: data.invalid
+        }
+      })
     } else {
       // got to some sort of error page
     }
@@ -74,7 +76,7 @@ export default function ConfirmLocationsPage () {
               {locationsValid} out of {locationsInvalid + locationsValid} locations can be added
             </h1>
             <div className='govuk-body'>
-              <InsetText text={locationsInvalid +' locations need to be matched before they can be added. You can match them after you add the locations that have been found.'} />
+              <InsetText text={locationsInvalid + ' locations need to be matched before they can be added. You can match them after you add the locations that have been found.'} />
               <Details
                 title='Why do some locations not match?'
                 text={detailsMessage}

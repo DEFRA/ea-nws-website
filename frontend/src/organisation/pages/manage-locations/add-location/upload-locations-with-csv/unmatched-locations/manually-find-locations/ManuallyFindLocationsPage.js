@@ -26,11 +26,9 @@ export default function ManuallyFindLocationsPage () {
       } else {
         console.log('no invalid locations')
       }
-
     }
     getInvLocations()
   }, [])
-
 
   const handleSubmit = async () => {
     navigate('/organisation/manage-locations/view-locations')

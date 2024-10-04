@@ -92,7 +92,7 @@ const getLocationKeys = async (authToken) => {
   const ids = await getList(authToken + ':t_POIS_locID')
   const keys = []
   ids.forEach((id) => {
-    keys.push(authToken+':t_POIS:'+id)
+    keys.push(authToken + ':t_POIS:' + id)
   })
   return keys
 }
@@ -136,7 +136,6 @@ const addInvLocation = async (authToken, location) => {
   const key = authToken + ':t_invPOIS:' + locationID
   await setJsonData(key, location)
   await addToList(authToken + ':t_invPOIS_locID', locationID)
-
 }
 
 const removeInvLocation = async (authToken, locationID) => {
@@ -150,7 +149,7 @@ const getInvLocationKeys = async (authToken) => {
   const ids = await getList(authToken + ':t_invPOIS_locID')
   const keys = []
   ids.forEach((id) => {
-    keys.push(authToken+':t_invPOIS:'+id)
+    keys.push(authToken + ':t_invPOIS:' + id)
   })
   return keys
 }

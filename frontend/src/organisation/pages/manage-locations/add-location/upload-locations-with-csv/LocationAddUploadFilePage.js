@@ -8,7 +8,7 @@ import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddUploadFilePage() {
+export default function LocationAddUploadFilePage () {
   const navigate = useNavigate()
   const [errorFileType, setErrorFileType] = useState(null)
   const [errorFileSize, setErrorFileSize] = useState(null)
@@ -110,7 +110,7 @@ export default function LocationAddUploadFilePage() {
       } else {
         navigate(orgManageLocationsUrls.add.loadingPage, {
           state: {
-            fileName: uniqFileName,
+            fileName: uniqFileName
           }
         })
       }
@@ -130,9 +130,10 @@ export default function LocationAddUploadFilePage() {
           {(errorFileType || errorFileSize) && (
             <ErrorSummary errorList={[errorFileType, errorFileSize]} />
           )}
-          {!uploading ? (
-            <div className='govuk-grid-column-full'>
-              <h1 className='govuk-heading-l'>Upload file</h1>
+          {!uploading
+            ? (
+              <div className='govuk-grid-column-full'>
+                <h1 className='govuk-heading-l'>Upload file</h1>
                 <div className={errorFileSize || errorFileType ? 'govuk-form-group govuk-form-group--error' : 'govuk-form-group'}>
                   <p className='govuk-hint'>File can be .xls, .xlsx, .csv</p>
                   {errorFileType && (
@@ -156,26 +157,27 @@ export default function LocationAddUploadFilePage() {
                     onChange={setValidselectedFile}
                   />
                 </div>
-              <Button
-                text='Upload'
-                className='govuk-button'
-                onClick={handleUpload}
-              />
-              <Link
-                onClick={() => navigate(-1)}
-                className='govuk-body govuk-link inline-link'
-              >
-                Cancel
-              </Link>
-            </div>
-          ) : (
-            <div className='govuk-!-text-align-centre'>
-              <h1 className='govuk-heading-l'>Uploading</h1>
-              <div className='govuk-body'>
-                <Spinner size='75' />
+                <Button
+                  text='Upload'
+                  className='govuk-button'
+                  onClick={handleUpload}
+                />
+                <Link
+                  onClick={() => navigate(-1)}
+                  className='govuk-body govuk-link inline-link'
+                >
+                  Cancel
+                </Link>
               </div>
-            </div>
-          )}
+              )
+            : (
+              <div className='govuk-!-text-align-centre'>
+                <h1 className='govuk-heading-l'>Uploading</h1>
+                <div className='govuk-body'>
+                  <Spinner size='75' />
+                </div>
+              </div>
+              )}
         </div>
       </main>
     </>

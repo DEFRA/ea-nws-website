@@ -14,7 +14,7 @@ export default function LocationAddLoadingPage () {
   const fileName = location.state?.fileName
 
   if (!fileName) {
-    //theres not fileName so naviagte back. will need to give an error
+    // theres not fileName so naviagte back. will need to give an error
     navigate(-1)
   }
 
@@ -23,12 +23,12 @@ export default function LocationAddLoadingPage () {
     const continueToNextPage = async () => {
       if (invalidLocations === null) {
         navigate(orgManageLocationsUrls.add.confirm, {
-          state: { fileName: fileName, valid: validLocations }
+          state: { fileName, valid: validLocations }
         })
       } else {
         navigate('/organisation/manage-locations/confirm', {
           state: {
-            fileName: fileName,
+            fileName,
             valid: validLocations,
             invalid: invalidLocations
           }
@@ -73,7 +73,6 @@ export default function LocationAddLoadingPage () {
     }
   }, [])
 
-
   // Only temporary to trigger file processing until scanning in AWS is implemented
   useEffect(() => {
     const startProcessing = async () => {
@@ -88,11 +87,9 @@ export default function LocationAddLoadingPage () {
       } else {
         console.log('file processing not triggered')
       }
-
     }
     startProcessing()
   }, [])
-
 
   return (
     <>

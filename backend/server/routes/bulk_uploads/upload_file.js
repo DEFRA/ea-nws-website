@@ -41,8 +41,10 @@ module.exports = [
 
           return h.response({
             status: 200,
-            data : {url: signedURL,
-            fileName: uniqFileName}
+            data: {
+              url: signedURL,
+              fileName: uniqFileName
+            }
           })
         } else {
           return h.response({

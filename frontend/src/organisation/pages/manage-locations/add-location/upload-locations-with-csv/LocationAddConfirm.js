@@ -6,7 +6,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddUploadFilePage() {
+export default function LocationAddUploadFilePage () {
   const navigate = useNavigate()
   const location = useLocation()
   const locationsValid = location?.state.valid
@@ -21,9 +21,11 @@ export default function LocationAddUploadFilePage() {
       navigate
     )
     if (!errorMessage) {
-      navigate('/', { state: {
-        added: data.valid
-      }})
+      navigate('/', {
+        state: {
+          added: data.valid
+        }
+      })
     } else {
       // got to some sort of error page
     }

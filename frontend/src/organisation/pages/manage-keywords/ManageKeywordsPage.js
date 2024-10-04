@@ -4,12 +4,14 @@ import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
-import { setCurrentLocationKeywords } from '../../../../../common/redux/userSlice'
 import BackLink from '../../../common/components/custom/BackLink'
 import Details from '../../../common/components/gov-uk/Details'
+import { setCurrentLocationKeywords } from '../../../common/redux/userSlice'
 export default function ManageKeywordsPage() {
   const navigate = useNavigate()
   const [keywordType, setKeywordType] = useState('location')
+  const [selectedKeywords, setSelectedKeywords] = useState([])
+
   const dispatch = useDispatch()
   const locationKeywords = useSelector((state) =>
     state.session.currentLocation.meta_data.location_additional.keywords !==
@@ -19,20 +21,16 @@ export default function ManageKeywordsPage() {
   )
   const contactKeywords = []
 
-  const handleSubmit = () => {
-    navigate(-1)
-  }
-
   const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
   }
 
-  const removeKeywords = (keywords) => {
+  const removeKeywords = () => {
     switch (keywordType) {
       case 'location':
         const updatedKeywords = locationKeywords.filter(
-          (k) => !keywords.includes(k)
+          (k) => !selectedKeywords.includes(k)
         )
         dispatch(setCurrentLocationKeywords(updatedKeywords))
         break
@@ -43,6 +41,8 @@ export default function ManageKeywordsPage() {
         break
     }
   }
+
+  const handleDelete = () => {}
 
   const detailsText =
     keywordType === 'location' ? (
@@ -154,6 +154,7 @@ export default function ManageKeywordsPage() {
                   Clear Seach results
                 </Link>
               </div>
+              <Link onClick={handleDelete}>Delete</Link>
             </div>
           </div>
         </div>

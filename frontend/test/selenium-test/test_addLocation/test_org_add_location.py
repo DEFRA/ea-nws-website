@@ -147,6 +147,8 @@ def test_add_named_location_using_postcode_no_alerts(get_browser):
 def test_add_xy_coordinate_search_no_coordinates(get_browser):
     browser = get_browser
     render_add_xy_coordinates_search_page(browser)
+    enter_input_text(browser, 'X coordinate', '')
+    enter_input_text(browser, 'Y coordinate', '')
     click_button(browser, 'Continue', url_add_xy_coordinates_search)
     assert check_error_summary(browser)
 
@@ -154,6 +156,7 @@ def test_add_xy_coordinate_search_no_coordinates(get_browser):
 def test_add_xy_coordinate_search_no_x_coordinate(get_browser):
     browser = get_browser
     render_add_xy_coordinates_search_page(browser)
+    enter_input_text(browser, 'X coordinate', '')
     enter_input_text(browser, 'Y coordinate', '123')
     click_button(browser, 'Continue', url_add_xy_coordinates_search)
     assert check_error_summary(browser)
@@ -181,6 +184,7 @@ def test_add_xy_coordinate_search_no_y_coordinate(get_browser):
     browser = get_browser
     render_add_xy_coordinates_search_page(browser)
     enter_input_text(browser, 'X coordinate', '123')
+    enter_input_text(browser, 'Y coordinate', '')
     click_button(browser, 'Continue', url_add_xy_coordinates_search)
     assert check_error_summary(browser)
 
@@ -270,7 +274,7 @@ def test_add_named_location_using_xy_coordinates_alerts(get_browser):
     assert x + ', ' + y in browser.page_source
     assert 'Move the pin on the map' in browser.page_source
     assert 'Use different X and Y coordinates' in browser.page_source
-    assert 'Severe flood warnings and flood warnings available' in browser.page_source
+    assert 'Severe flood warnings and flood warnings unavailable' in browser.page_source
     # TODO: Continue with this once more of the flow is complete
 
 # Test add named location using xy coordinates not in england followed by

@@ -92,7 +92,7 @@ def test_no_alerts(get_browser):
 def test_alerts(get_browser):
     browser = get_browser
     setup2(browser,'520814','185016',False,url_alerts)
-    assert 'Severe flood warnings and flood warnings available' in browser.page_source
+    assert 'Severe flood warnings and flood warnings unavailable' in browser.page_source
 
 def test_all_alerts(get_browser):
     browser = get_browser

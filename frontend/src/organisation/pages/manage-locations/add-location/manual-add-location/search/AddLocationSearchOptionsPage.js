@@ -1,10 +1,10 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import LocationOptionsLayout from '../../../../../layouts/location/manual-add-or-edit-location/search/LocationOptionsLayout'
+import LocationOptionsLayout from '../../../../../layouts/location/manual-add-or-edit-location/search/LocationSearchOptionsLayout'
 import { useNavigate } from 'react-router'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationSearchOptionPage () {
+export default function AddLocationSearchOptionsPage () {
   const navigate = useNavigate()
 
   const locationName = useSelector((state) => state.session.currentLocation.name)
@@ -15,7 +15,7 @@ export default function LocationSearchOptionPage () {
   ]
 
   const navigateToNextPage = (searchOption) => {
-    switch(searchOption) {
+    switch (searchOption) {
       case 'UseAPostcode':
         navigate(orgManageLocationsUrls.search.postCodeSearch)
         break
@@ -23,11 +23,11 @@ export default function LocationSearchOptionPage () {
         navigate(orgManageLocationsUrls.search.xyCoordinatesSearch)
         break
       case 'DropAPinOnAMap':
-        //ToDo add in when pin drop URls made
+        // ToDo add in when pin drop URls made
         navigate('/')
         break
-        default:
-          break
+      default:
+        break
     }
   }
 

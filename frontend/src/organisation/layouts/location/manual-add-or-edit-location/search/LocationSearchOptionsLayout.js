@@ -6,7 +6,7 @@ import Radio from '../../../../../common/components/gov-uk/Radio'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import Button from '../../../../../common/components/gov-uk/Button'
 
-export default function LocationOptionsLayout ({ heading, searchOptions, errorMessage,navigateToNextPage }) {
+export default function LocationSearchOptionsLayout ({ heading, searchOptions, errorMessage, navigateToNextPage }) {
   const navigate = useNavigate()
   const [searchOption, setSearchOption] = useState('')
   const [error, setError] = useState('')
@@ -40,15 +40,12 @@ export default function LocationOptionsLayout ({ heading, searchOptions, errorMe
               <ErrorSummary errorList={[error]} />
             )}
             <h1 className='govuk-heading-l'>{heading}</h1>
-            {isAddingLocationFlow
-              ? (
-                <p>
-                  If your location is a polygon, or a line, your organization has
-                  created you'll need to upload your location as a shapefile in a
-                  .zip file.
-                </p>
-                )
-              : null}
+            {isAddingLocationFlow &&
+              <p>
+                If your location is a polygon, or a line, your organization has
+                created you'll need to upload your location as a shapefile in a
+                .zip file.
+              </p>}
 
             <div
               className={

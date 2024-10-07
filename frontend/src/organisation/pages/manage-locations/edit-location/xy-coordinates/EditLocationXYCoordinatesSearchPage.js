@@ -1,14 +1,21 @@
 import React from 'react'
 import LocationXYCoordinatesSearchLayout from '../../../../layouts/location/LocationXYCoordinatesSearchLayout'
+import { useNavigate } from 'react-router'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function EditLocationXYCoordinatesSearchPage () {
-  // pre populated inputs with existing coords
+  const navigate = useNavigate()
+
+  const navigateToNotInEngland = () => {
+    navigate(orgManageLocationsUrls.edit.error.xyCoordinatesNotInEngland)
+  }
   return (
     <>
       <LocationXYCoordinatesSearchLayout
-        allAlertsRoute='/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/all'
-        alertsRoute='/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/alerts'
-        noAlertsRoute='/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/no-alerts'
+        allFloodAreasAvailbleRoute='/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/all'
+        floodAlertAreasAvailbleOnlyRoute='/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/alerts'
+        noFloodAreasAvailbleRoute='/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/no-alerts'
+        navigateToNotInEngland={navigateToNotInEngland}
       />
     </>
   )

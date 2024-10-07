@@ -1,21 +1,21 @@
 import React from 'react'
-import { Link, useLocation } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
-import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 export default function NotInEnglandLayout ({
   NavigateToNextPage,
-  NavigateToPreviousPage
+  postCodeSearchUrl,
+  xyCoordinatesSearchUrl,
+  manuallyFindMapUrl
 }) {
-  const location = useLocation()
-  const isLocationAdding = !!location.pathname.includes('add')
+  const navigate = useNavigate()
   const handleSubmit = () => {
     NavigateToNextPage()
   }
 
   const navigateBack = (event) => {
     event.preventDefault()
-    NavigateToPreviousPage()
+    navigate(-1)
   }
 
   return (
@@ -68,41 +68,27 @@ export default function NotInEnglandLayout ({
               <p>You can</p>
               <ul className='govuk-list govuk-list--bullet'>
                 <li>
-
                   <Link
                     // TODO: need to remove these hardcoded URLs
-                    to={orgManageLocationsUrls.search.postCodeSearch}
+                    to={postCodeSearchUrl}
                     className='govuk-link inline-link'
                   >
                     use a different postcode
                   </Link>
                 </li>
                 <li>
-                  {isLocationAdding
-                    ? (
-                      <Link
+                  <Link
                     // TODO: need to remove these hardcoded URLs
-                        to={orgManageLocationsUrls.search.xyCoordinatesSearch}
-                        className='govuk-link inline-link'
-                      >
-                        use a different set of X and Y coordinates
-                      </Link>
-                      )
-                    : (
-                      <Link
-                    // TODO: need to remove these hardcoded URLs
-                        to={orgManageLocationsUrls.edit.xyCoordinatesSearch}
-                        className='govuk-link inline-link'
-                      >
-                        use a different set of X and Y coordinates
-                      </Link>
-                      )}
-
+                    to={xyCoordinatesSearchUrl}
+                    className='govuk-link inline-link'
+                  >
+                    use a different set of X and Y coordinates
+                  </Link>
                 </li>
                 <li>
                   <Link
                     to={
-                      orgManageLocationsUrls.unmatchedLocations.manuallyfind.map
+                      manuallyFindMapUrl
                     }
                     className='govuk-link inline-link'
                   >

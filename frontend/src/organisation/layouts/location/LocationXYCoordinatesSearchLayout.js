@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../common/components/gov-uk/Button'
@@ -18,44 +18,25 @@ import {
 import { locationInEngland } from '../../../common/services/validations/LocationInEngland'
 import { xCoordinateValidation } from '../../../common/services/validations/XCoordinateValidation'
 import { yCoordinateValidation } from '../../../common/services/validations/YCoordinateValidation'
-import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
-import { useDispatch } from 'react-redux'
-
+import { useDispatch, useSelector } from 'react-redux'
 export default function LocationXYCoordinatesSearchLayout ({
-  allAlertsRoute,
-  alertsRoute,
-  noAlertsRoute
+  allFloodAreasAvailbleRoute,
+  floodAlertAreasAvailbleOnlyRoute,
+  noFloodAreasAvailbleRoute,
+  navigateToNotInEngland
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const location = useLocation()
-  const isLocationAdding = location.pathname.includes('add')
+
   // ToDo uncomment these and remove the hard coded coords once dashboard page has been created, for edititing xy coords
-  // const previousXCoordinate = useSelector((state) => state.session.currentLocation.meta_data.x_coordinate)
-  // const previousYCoordinate = useSelector((state) => state.session.currentLocation.meta_data.y_coordinate)
-  // const locationName = useSelector((state) => state.session.currentLocation.name)
-  // These are in to pass demo
-  const previousXCoordinate = '520814'
-  const previousYCoordinate = '185016'
-  const initalXCoord = () => {
-    if (!isLocationAdding) {
-      return previousXCoordinate
-    } else {
-      return ''
-    }
-  }
+  let currentXCoordinate = useSelector((state) => state.session.currentLocation.meta_data.x_coordinate)
+  let currentYCoordinate = useSelector((state) => state.session.currentLocation.meta_data.y_coordinate)
+  currentXCoordinate = '520814'
+  currentYCoordinate = '185016'
 
-  const initalYCoord = () => {
-    if (!isLocationAdding) {
-      return previousYCoordinate
-    } else {
-      return ''
-    }
-  }
-
-  const [xCoordinate, setXCoordinate] = useState(initalXCoord)
+  const [xCoordinate, setXCoordinate] = useState(currentXCoordinate || '')
   const [xCoordinateError, setXCoordinateError] = useState('')
-  const [yCoordinate, setYCoordinate] = useState(initalYCoord)
+  const [yCoordinate, setYCoordinate] = useState(currentYCoordinate || '')
   const [yCoordinateError, setYCoordinateError] = useState('')
 
   useEffect(() => {
@@ -105,22 +86,18 @@ export default function LocationXYCoordinatesSearchLayout ({
 
         navigateToNextPage(isInAlertArea, isInWarningArea, isError)
       } else {
-        if (isLocationAdding) {
-          navigate(orgManageLocationsUrls.add.error.xyCoordinatesNotInEngland)
-        } else {
-          navigate(orgManageLocationsUrls.edit.error.xyCoordinatesNotInEngland)
-        }
+        navigateToNotInEngland()
       }
     }
   }
 
   const navigateToNextPage = (isInAlertArea, isInWarningArea, isError) => {
     if (isInAlertArea && isInWarningArea) {
-      navigate(allAlertsRoute)
+      navigate(allFloodAreasAvailbleRoute)
     } else if (isInAlertArea) {
-      navigate(alertsRoute)
+      navigate(floodAlertAreasAvailbleOnlyRoute)
     } else if (!isInAlertArea && !isInWarningArea) {
-      navigate(noAlertsRoute)
+      navigate(noFloodAreasAvailbleRoute)
     } else if (isError) {
       navigate('/error')
     }

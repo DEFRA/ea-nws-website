@@ -26,12 +26,12 @@ export default function AddOptionalAddress () {
     setPostcodeError('')
   }, [postcode])
   const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.optionalInformation.addKeyInformation)
+    navigate(orgManageLocationsUrls.add.optionalInformation.addKeyInformation)
   }
 
   // only postcode validated because its an optional field the user is adding for their own benifit - UCD team
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
     const fullAddressArray = [addressLine1, addressLine2, town, county]
 

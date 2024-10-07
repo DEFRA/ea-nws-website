@@ -31,7 +31,7 @@ export default function AddKeyInformationPage () {
     if (locationType !== '') {
       dispatch(setCurrentLocationType(locationType))
     }
-    navigate(orgManageLocationsUrls.optionalInformation.addKeywords)
+    navigate(orgManageLocationsUrls.add.optionalInformation.addKeywords)
   }
 
   const navigateBack = (event) => {

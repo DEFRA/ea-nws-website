@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
+import Popup from '../../../common/components/custom/Popup'
 import Details from '../../../common/components/gov-uk/Details'
 import { setCurrentLocationKeywords } from '../../../common/redux/userSlice'
 export default function ManageKeywordsPage() {
@@ -44,6 +45,7 @@ export default function ManageKeywordsPage() {
 
   const handleDelete = () => {}
 
+  const onCancelDialog = () => {}
   const detailsText =
     keywordType === 'location' ? (
       <>
@@ -155,6 +157,14 @@ export default function ManageKeywordsPage() {
                 </Link>
               </div>
               <Link onClick={handleDelete}>Delete</Link>
+              <Popup
+                onAction={console.log('action')}
+                onCancel={onCancelDialog}
+                onClose={onCancelDialog}
+                title='Delete keyword'
+                popupText='popuptext'
+                buttonText='Delete keyword'
+              ></Popup>
             </div>
           </div>
         </div>

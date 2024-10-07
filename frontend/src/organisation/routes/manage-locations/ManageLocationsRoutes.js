@@ -58,7 +58,8 @@ const orgManageLocationsUrls = {
     searchOption: urlManageOrg + '/add/search-option',
     postCodeSearch: urlManageOrg + '/add/postcode-search',
     postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
-    xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search'
+    xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search',
+    dropAPinSearch: urlManageOrg + '/add/pin-search'
   },
   optionalInformation: {
     optionalInfo: urlManageOrgAddLocations + '/optional-information',

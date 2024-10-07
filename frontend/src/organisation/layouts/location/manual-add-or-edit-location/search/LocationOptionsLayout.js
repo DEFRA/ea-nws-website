@@ -6,7 +6,7 @@ import Radio from '../../../../../common/components/gov-uk/Radio'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import Button from '../../../../../common/components/gov-uk/Button'
 
-export default function LocationOptionsLayout ({ heading, searchOptions, errorMessage }) {
+export default function LocationOptionsLayout ({ heading, searchOptions, errorMessage,navigateToNextPage }) {
   const navigate = useNavigate()
   const [searchOption, setSearchOption] = useState('')
   const [error, setError] = useState('')
@@ -21,28 +21,29 @@ export default function LocationOptionsLayout ({ heading, searchOptions, errorMe
     if (!searchOption) {
       setError(errorMessage)
     } else {
-      if (isAddingLocationFlow) {
-        switch (searchOption) {
-          case 'UseAPostcode':
-            navigate('/organisation/manage-locations/add/postcode-search')
-            break
-          case 'UseXAndYCoordinates':
-            navigate('/organisation/manage-locations/add/xy-coordinates-search')
-            break
-          case 'DropAPinOnAMap':
-            navigate('/organisation/manage-locations/add/pin-search')
-            break
-          default:
-            break
-        }
-      } else {
-        if (searchOption === searchOptions[0].value) {
-          navigate('/organisation/manage-locations/edit/xy-coordinates-search')
-        } else {
-          // ToDo update this later when interactive pin drop map is made
-          navigate('/')
-        }
-      }
+      navigateToNextPage(searchOption)
+      // if (isAddingLocationFlow) {
+      //   switch (searchOption) {
+      //     case 'UseAPostcode':
+      //       navigate('/organisation/manage-locations/add/postcode-search')
+      //       break
+      //     case 'UseXAndYCoordinates':
+      //       navigate('/organisation/manage-locations/add/xy-coordinates-search')
+      //       break
+      //     case 'DropAPinOnAMap':
+      //       navigate('/organisation/manage-locations/add/pin-search')
+      //       break
+      //     default:
+      //       break
+      //   }
+      // } else {
+      //   if (searchOption === searchOptions[0].value) {
+      //     navigate('/organisation/manage-locations/edit/xy-coordinates-search')
+      //   } else {
+      //     // ToDo update this later when interactive pin drop map is made
+      //     navigate('/')
+      //   }
+      // }
     }
   }
 

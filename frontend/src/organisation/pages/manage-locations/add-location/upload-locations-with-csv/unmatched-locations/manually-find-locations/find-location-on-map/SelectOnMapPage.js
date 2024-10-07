@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import SelectOnMapLayout from '../../../../../../../layouts/add-location/upload-locations-with-csv/unmatched-locations/SelectOnMapLayout'
+import SelectOnMapLayout from '../../../../../../../layouts/location/upload-locations-with-csv/unmatched-locations/SelectOnMapLayout'
 import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function SelectOnMapPage () {

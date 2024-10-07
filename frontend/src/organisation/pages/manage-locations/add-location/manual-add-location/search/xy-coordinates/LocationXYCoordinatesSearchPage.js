@@ -1,5 +1,5 @@
 import React from 'react'
-import LocationXYCoordinatesSearchLayout from '../../../../../../layouts/add-location/LocationXYCoordinatesSearchLayout'
+import LocationXYCoordinatesSearchLayout from '../../../../../../layouts/location/LocationXYCoordinatesSearchLayout'
 
 export default function LocationXYCoordinatesSearchPage () {
   return (

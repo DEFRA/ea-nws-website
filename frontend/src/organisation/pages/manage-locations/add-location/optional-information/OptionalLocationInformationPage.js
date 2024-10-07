@@ -15,9 +15,9 @@ export default function OptionalLocationInformationPage () {
   )
   const navigateToNextPage = () => {
     if (postcode) {
-      navigate(orgManageLocationsUrls.optionalInformation.addKeyInformation)
+      navigate(orgManageLocationsUrls.add.optionalInformation.addKeyInformation)
     } else {
-      navigate(orgManageLocationsUrls.optionalInformation.optionalLocation)
+      navigate(orgManageLocationsUrls.add.optionalInformation.optionalLocation)
     }
   }
 

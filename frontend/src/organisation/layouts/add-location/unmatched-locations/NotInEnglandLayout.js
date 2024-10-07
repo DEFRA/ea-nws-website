@@ -69,7 +69,7 @@ export default function NotInEnglandLayout ({
                 <li>
                   <Link
                     // TODO: need to remove these hardcoded URLs
-                    to={orgManageLocationsUrls.search.postCodeSearch}
+                    to={orgManageLocationsUrls.add.search.postCodeSearch}
                     className='govuk-link inline-link'
                   >
                     use a different postcode
@@ -78,7 +78,7 @@ export default function NotInEnglandLayout ({
                 <li>
                   <Link
                     // TODO: need to remove these hardcoded URLs
-                    to={orgManageLocationsUrls.search.xyCoordinatesSearch}
+                    to={orgManageLocationsUrls.add.search.xyCoordinatesSearch}
                     className='govuk-link inline-link'
                   >
                     use a different set of X and Y coordinates

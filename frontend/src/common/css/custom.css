@@ -170,28 +170,41 @@
   z-index: 1000;
 }
 
+.popup-dialog-container {
+  width: 80%;
+  max-width: 650px;
+  background-color: white;
+  border-style: solid;
+  border-width: medium;
+}
+
 .popup-dialog-header {
   background-color: black;
-  padding: 10px;
   color: white;
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  padding: 0.5rem 1rem;
 }
 
 /* Close button */
 .popup-close-btn {
-  font-size: 20px;
+  font-size: 30px;
   font-weight: bold;
   color: white;
   cursor: pointer;
+  padding-left: 1rem;
+}
+
+.popup-close-txt {
+  font-size: 20px;
+  color: white;
+  margin: 0;
 }
 
 .popup-dialog-body {
   background-color: white;
-  border-style: solid;
-  border-width: medium;
-  padding: 1.5rem;
+  padding: 1.5rem 1.5rem 0rem 1.5rem;
 }
 
 .popup-dialog-flex {

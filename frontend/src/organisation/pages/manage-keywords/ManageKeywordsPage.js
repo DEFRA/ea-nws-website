@@ -59,6 +59,18 @@ export default function ManageKeywordsPage() {
       setShowDeleteDialog(false)
     }
   }
+
+  const deleteKeywordText = (
+    <>
+      If you continue this keyword will be deleted from this account and no
+      longer associated with 2 locations.
+      <br />
+      <br />
+      Deleting this keyword does not unlink contacts and locations. If you no
+      longer want contacts and locations to be linked you need to unlink them.
+    </>
+  )
+
   const detailsText =
     keywordType === 'location' ? (
       <>
@@ -176,8 +188,9 @@ export default function ManageKeywordsPage() {
                   onCancel={onCancelDialog}
                   onClose={onCancelDialog}
                   title='Delete keyword'
-                  popupText='popuptext'
+                  popupText={deleteKeywordText}
                   buttonText='Delete keyword'
+                  buttonClass='govuk-button--warning'
                 />
               )}
             </div>

@@ -23,7 +23,8 @@ export default function LocationSearchOptionPage () {
         navigate(orgManageLocationsUrls.search.xyCoordinatesSearch)
         break
       case 'DropAPinOnAMap':
-        navigate(orgManageLocationsUrls.search.dropAPinSearch)
+        //ToDo add in when pin drop URls made
+        navigate('/')
         break
         default:
           break

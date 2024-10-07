@@ -28,7 +28,7 @@ export default function ActionPlanPage () {
     if (actionPlan) {
       dispatch(setCurrentLocationActionPlan(actionPlan))
     }
-    navigate(orgManageLocationsUrls.optionalInformation.addNotes)
+    navigate(orgManageLocationsUrls.add.optionalInformation.addNotes)
   }
 
   const navigateBack = (event) => {

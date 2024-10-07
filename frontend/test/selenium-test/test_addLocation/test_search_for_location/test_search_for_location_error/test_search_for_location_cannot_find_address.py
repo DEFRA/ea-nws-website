@@ -17,8 +17,9 @@ def setup(browser):
     click_button(browser, 'Continue', url_add_postcode_search)
     postcode = 'PO15 7AA'
     enter_input_text(browser, 'Postcode', postcode)
+    time.sleep(3)
     click_button(browser, 'Continue', url_add_postcode_search_results)
-    time.sleep(1)
+    time.sleep(3)
     click_button(browser, 'I cannot find the address', url_cannot_find_address)
 
 def test_render(get_browser):

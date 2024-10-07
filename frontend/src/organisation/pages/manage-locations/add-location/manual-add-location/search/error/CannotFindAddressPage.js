@@ -27,7 +27,7 @@ export default function CannotFindAddressPage () {
                 <ul className='govuk-list govuk-list--bullet'>
                   <li>
                     <Link
-                      to={orgManageLocationsUrls.search.postCodeSearch}
+                      to={orgManageLocationsUrls.add.search.postCodeSearch}
                       className='govuk-link'
                     >
                       use a different postcode

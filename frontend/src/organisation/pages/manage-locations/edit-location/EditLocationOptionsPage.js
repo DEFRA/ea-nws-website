@@ -1,5 +1,5 @@
 import React from 'react'
-import LocationOptionsLayout from '../../../layouts/add-location/manual-add-or-edit-location/search/LocationOptionsLayout'
+import LocationOptionsLayout from '../../../layouts/location/manual-add-or-edit-location/search/LocationOptionsLayout'
 export default function EditLocationOptionsPage () {
   const locationOptions = [
     { value: 'Coordinates', label: 'Use X and Y coordinates' },

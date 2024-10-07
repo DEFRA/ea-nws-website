@@ -12,6 +12,7 @@ export default function ManageKeywordsPage() {
   const navigate = useNavigate()
   const [keywordType, setKeywordType] = useState('location')
   const [selectedKeywords, setSelectedKeywords] = useState([])
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
 
   const dispatch = useDispatch()
   const locationKeywords = useSelector((state) =>
@@ -43,9 +44,21 @@ export default function ManageKeywordsPage() {
     }
   }
 
-  const handleDelete = () => {}
+  const handleDelete = () => {
+    console.log('In delete')
+  }
 
-  const onCancelDialog = () => {}
+  const onOpenDeleteDialog = () => {
+    if (!showDeleteDialog) {
+      setShowDeleteDialog(true)
+    }
+  }
+
+  const onCancelDialog = () => {
+    if (showDeleteDialog) {
+      setShowDeleteDialog(false)
+    }
+  }
   const detailsText =
     keywordType === 'location' ? (
       <>
@@ -156,15 +169,17 @@ export default function ManageKeywordsPage() {
                   Clear Seach results
                 </Link>
               </div>
-              <Link onClick={handleDelete}>Delete</Link>
-              <Popup
-                onAction={console.log('action')}
-                onCancel={onCancelDialog}
-                onClose={onCancelDialog}
-                title='Delete keyword'
-                popupText='popuptext'
-                buttonText='Delete keyword'
-              ></Popup>
+              <Link onClick={onOpenDeleteDialog}>Delete</Link>
+              {showDeleteDialog && (
+                <Popup
+                  onAction={handleDelete}
+                  onCancel={onCancelDialog}
+                  onClose={onCancelDialog}
+                  title='Delete keyword'
+                  popupText='popuptext'
+                  buttonText='Delete keyword'
+                />
+              )}
             </div>
           </div>
         </div>

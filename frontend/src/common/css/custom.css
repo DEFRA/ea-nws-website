@@ -157,7 +157,7 @@
   margin-top: -1.5rem;
 }
 
-.dialog {
+.popup-dialog {
   position: fixed;
   top: 0;
   left: 0;
@@ -170,7 +170,7 @@
   z-index: 1000;
 }
 
-.dialog-header {
+.popup-dialog-header {
   background-color: black;
   padding: 10px;
   color: white;
@@ -180,33 +180,33 @@
 }
 
 /* Close button */
-.close-btn {
+.popup-close-btn {
   font-size: 20px;
   font-weight: bold;
   color: white;
   cursor: pointer;
 }
 
-.dialog-body {
+.popup-dialog-body {
   background-color: white;
   border-style: solid;
   border-width: medium;
   padding: 1.5rem;
 }
 
-.dialog-flex {
+.popup-dialog-flex {
   display: flex;
   justify-content: start;
   justify-items: start;
   gap: 2rem;
 }
 
-.dialog-link {
+.popup-dialog-link {
   width: 100%;
 }
 
 @media (min-width: 40.0625em) {
-  .dialog-link {
+  .popup-dialog-link {
     width: auto;
   }
 }

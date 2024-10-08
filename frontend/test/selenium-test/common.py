@@ -41,7 +41,8 @@ url_org_signup = {
     'duplicateOrg': url_org_signup_path + '/duplicate',
     'alternativeContact': url_org_signup_path + '/alternative-contact',
     'review': url_org_signup_path + '/review',
-    'success': url_org_signup_path + '/success'
+    'success': url_org_signup_path + '/success',
+    'declaration': url_org_signup_path + '/declaration'
 }
 # Signin urls
 url_org_signin_path = url_org + '/signin'
@@ -69,23 +70,42 @@ url_org_man_loc = {
         'postcodeSearch': url_org_man_loc_path + '/add/postcode-search',
         'postcodeSearchResults': url_org_man_loc_path + '/add/postcode-search-results',
         'xyCoordinatesSearch': url_org_man_loc_path + '/add/xy-coordinates-search',
+        'locationInArea': url_org_man_loc_path + '/add/location-in-area',
         'xyCoordinatesNotInEngland': url_org_man_loc_path + '/add/xy-coordinates-not-in-england',
-        'optionalInfo': url_org_man_loc_path + '/add/optional-location-info',
-        'optionalAddress': url_org_man_loc_path + '/add/optional-address',
-        'locationInArea': url_org_man_loc_path + '/add/location-in-area'
+    },
+    'optionalLocation':{
+        'optionalInfo': url_org_man_loc_path + '/add/optional-information',
+        'optionalAddress': url_org_man_loc_path + '/add/optional-information/address',
+        'addKeyInformation': url_org_man_loc_path + '/add/optional-information/key-information',
+        'addKeywords': url_org_man_loc_path + '/add/optional-information/keywords',
+        'addActionPlan': url_org_man_loc_path + '/add/optional-information/action-plan', 
+        'addNotes': url_org_man_loc_path + '/add/optional-information/notes'
     },
     'error': {
         'cannotFindAddress': url_org_man_loc_path + '/add/cannot-find-address',
+    },
+    'optional':{
+        'optionalAddress': url_org_man_loc_path + '/add/optional-address/optional-location',
+        'optionalInfo': url_org_man_loc_path + '/add/optional-address/info',
     },
     'change': {
         'alternative_contact': local_host + '/',
         'org_details':  local_host + '/',
         'main_admin': local_host + '/'
     },
+    'unmatched_location': {
+        'manually_find_locations': url_org_man_loc_path + '/unmatched-locations/manually-find',
+        'select_how': url_org_man_loc_path + '/unmatched-locations/manually-find/select-how',
+        'find_by_address': url_org_man_loc_path + '/unmatched-locations/manually-find/address',
+    },
     'edit':{
         'options': url_org_man_loc_path + '/edit/location-options'
     }
 }
+
+# org footer urls
+
+url_org_privacy_notice = url_org + '/privacy'
 
 # PAGE NAVIGATION
 # Navigate to authenticated page via index page and check url
@@ -122,6 +142,12 @@ def click_link(browser, link_text, url_link):
     time.sleep(1)
     assert browser.current_url == url_link
 
+def click_span(browser, span_text):
+    span_xpath = f"//span[text()=\"{span_text}\"]"
+    span_element = browser.find_element(By.XPATH, span_xpath)
+    browser.execute_script("arguments[0].click();", span_element)
+    time.sleep(1)
+
 # Click on link text and check url - for when there is more than one occurence of the same text
 def click_link_more_than_one_text(browser, link_text, link_text_iteration, url_link):
     link_xpath = f"(//a[text()='{link_text}'])[{link_text_iteration}]"
@@ -136,10 +162,24 @@ def select_input_radio_option(browser, value, key='value'):
     input_radio_element = browser.find_element(By.XPATH, input_radio_xpath)
     browser.execute_script("arguments[0].click();", input_radio_element)
 
+# Select input dropdown option
+def select_dropdown_option(browser, dropdown_name, value, key='value'):
+    option_xpath = f"//select[@name='{dropdown_name}']/option[@value='{value}']"
+    option_element = browser.find_element(By.XPATH, option_xpath)
+    browser.execute_script("arguments[0].click();", option_element)
+
 # ENTER TEXT
 # Enter input in text box
 def enter_input_text(browser, value, input_text, key='name'):
     input_xpath = f"//input[@{key}='{value}']"
+    input_element = browser.find_element(By.XPATH, input_xpath)
+    input_element.clear()
+    input_element.send_keys(input_text)
+
+# ENTER TEXT
+# Enter input in text box
+def enter_textarea_text(browser, value, input_text, key='name'):
+    input_xpath = f"//textarea[@{key}='{value}']"
     input_element = browser.find_element(By.XPATH, input_xpath)
     input_element.clear()
     input_element.send_keys(input_text)

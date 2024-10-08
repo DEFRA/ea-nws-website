@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
-import BackLink from '../../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
-import Button from '../../../../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
-import Input from '../../../../../../common/components/gov-uk/Input'
+import BackLink from '../../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
+import Button from '../../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
+import Input from '../../../../../common/components/gov-uk/Input'
 import {
   setCurrentLocationFullAddress,
   setCurrentLocationPostcode
-} from '../../../../../../common/redux/userSlice'
-import { postCodeValidation } from '../../../../../../common/services/validations/PostCodeValidation'
-
+} from '../../../../../common/redux/userSlice'
+import { postCodeValidation } from '../../../../../common/services/validations/PostCodeValidation'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 export default function AddOptionalAddress () {
   const navigate = useNavigate()
   const [addressLine1, setAddressLine1] = useState('')
@@ -26,12 +26,12 @@ export default function AddOptionalAddress () {
     setPostcodeError('')
   }, [postcode])
   const navigateToNextPage = () => {
-    navigate('/')
+    navigate(orgManageLocationsUrls.add.optionalInformation.addKeyInformation)
   }
 
   // only postcode validated because its an optional field the user is adding for their own benifit - UCD team
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault()
     const fullAddressArray = [addressLine1, addressLine2, town, county]
 
@@ -49,21 +49,27 @@ export default function AddOptionalAddress () {
       if (postcodeValidationError !== '') {
         setPostcodeError(postcodeValidationError)
       } else {
-        await dispatch(setCurrentLocationFullAddress(fullAddressStr))
-        await dispatch(setCurrentLocationPostcode(postcode))
+        dispatch(setCurrentLocationFullAddress(fullAddressStr))
+        dispatch(setCurrentLocationPostcode(postcode))
 
         navigateToNextPage()
       }
     } else {
-      await dispatch(setCurrentLocationFullAddress(fullAddressStr))
-      await dispatch(setCurrentLocationPostcode(postcode))
+      dispatch(setCurrentLocationFullAddress(fullAddressStr))
+      dispatch(setCurrentLocationPostcode(postcode))
       navigateToNextPage()
     }
   }
+
+  const navigateBack = (event) => {
+    event.preventDefault()
+    navigate(-1)
+  }
+
   return (
     <>
       <OrganisationAccountNavigation />
-      <BackLink onClick={() => navigate(-1)} />
+      <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

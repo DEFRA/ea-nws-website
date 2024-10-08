@@ -58,10 +58,6 @@ export default function LocationDropPinSearchResults() {
     (state) => state.session.currentLocation.name
   )
 
-  console.log('1:', isFloodWarningAndSevereAreasVisible)
-  console.log('2:', isFloodAlertAreasVisible)
-  console.log('3:', isFloodExtentsVisible)
-
   return (
     <>
       <BackLink onClick={navigateBack} />

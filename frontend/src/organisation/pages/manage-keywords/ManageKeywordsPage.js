@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Details from '../../../common/components/gov-uk/Details'
+import Popup from '../../../common/components/custom/Popup'
 
 export default function ManageKeywordsPage () {
   const navigate = useNavigate()
@@ -18,6 +19,15 @@ export default function ManageKeywordsPage () {
   const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
+  }
+
+
+  const handleClickEdit = () => {
+
+  }
+
+  const editKeyword = () => {
+    
   }
 
   const detailsText = keywordType === 'location' ? (

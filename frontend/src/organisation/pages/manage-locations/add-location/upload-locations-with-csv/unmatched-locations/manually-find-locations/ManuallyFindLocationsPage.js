@@ -4,7 +4,10 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../../../common/components/gov-uk/NotificationBanner'
 import WarningText from '../../../../../../../common/components/gov-uk/WarningText'
-import { setCurrentLocation } from '../../../../../../../common/redux/userSlice'
+import {
+  setCurrentLocation,
+  setLocationSearchResults
+} from '../../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
@@ -33,15 +36,73 @@ export default function ManuallyFindLocationsPage() {
   }, [])
 
   const handleSubmit = async () => {
-    navigate(orgManageLocationsUrls.view.dashboard)
+    navigate('/organisation/manage-locations/view-locations')
+  }
+
+  const locationToPOI = (location) => {
+    return {
+      name: location.Location_name,
+      // address is the UPRN
+      address: null,
+      // Coordinates in dd (degrees decimal)
+      coordinates: null,
+      alert_categories: null,
+      meta_data: {
+        location_additional: {
+          full_address: location.Full_address,
+          postcode: location.Postcode,
+          // Easting EPSG: 27700
+          x_coordinate: location.X_coordinates,
+          // Northing EPSG: 27700
+          y_coordinate: location.Y_coordinates,
+          internal_reference: location.Internal_reference,
+          business_criticality: location.Business_criticality,
+          location_type: location.Location_type,
+          action_plan: location.Action_plan,
+          notes: location.Notes,
+          keywords: location.Keywords
+        }
+      }
+    }
+  }
+
+  const findAvailableAddresses = async (location) => {
+    const dataToSend = {
+      name: location,
+      minmatch: 0.7
+    }
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
+      'api/os-api/name-minmatch-search',
+      navigate
+    )
+    if (errorMessage) {
+      // If there was an error message, return false
+      return false
+    } else {
+      // Otherwise, dispatch results and return true
+      dispatch(setLocationSearchResults(data))
+      return true
+    }
   }
 
   const handleFind = async (event, location) => {
     event.preventDefault()
     const poi = location
     dispatch(setCurrentLocation(poi))
-    navigate(orgManageLocationsUrls)
-    navigate('/organisation/manage-locations/find-location')
+    const isAddressValid = await findAvailableAddresses(
+      poi.meta_data.location_additional.full_address +
+        ', ' +
+        poi.meta_data.location_additional.postcode
+    )
+    // If there is results for the unmatched address, navigate to the radio screen
+    // where user can select how to find the address
+    if (isAddressValid) {
+      navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.selectHow)
+    } else {
+      // otherwise, navigate to find on map directly
+      navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName) // Link to map
+    }
   }
 
   return (

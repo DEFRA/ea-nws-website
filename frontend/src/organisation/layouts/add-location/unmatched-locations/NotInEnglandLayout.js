@@ -1,7 +1,6 @@
 import { React } from 'react'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
-import Button from '../../../../common/components/gov-uk/Button'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function NotInEnglandLayout({
@@ -99,11 +98,6 @@ export default function NotInEnglandLayout({
                 </li>
               </ul>
             </div>
-            <Button
-              className='govuk-button'
-              text='Continue'
-              onClick={handleSubmit}
-            />
           </div>
         </div>
       </main>

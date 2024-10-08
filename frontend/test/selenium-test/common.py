@@ -85,10 +85,19 @@ url_org_man_loc = {
     'error': {
         'cannotFindAddress': url_org_man_loc_path + '/add/cannot-find-address',
     },
+    'optional':{
+        'optionalAddress': url_org_man_loc_path + '/add/optional-address/optional-location',
+        'optionalInfo': url_org_man_loc_path + '/add/optional-address/info',
+    },
     'change': {
         'alternative_contact': local_host + '/',
         'org_details':  local_host + '/',
         'main_admin': local_host + '/'
+    },
+    'unmatched_location': {
+        'manually_find_locations': url_org_man_loc_path + '/unmatched-locations/manually-find',
+        'select_how': url_org_man_loc_path + '/unmatched-locations/manually-find/select-how',
+        'find_by_address': url_org_man_loc_path + '/unmatched-locations/manually-find/address',
     },
     'edit':{
         'options': url_org_man_loc_path + '/edit/location-options'
@@ -153,6 +162,12 @@ def select_input_radio_option(browser, value, key='value'):
     input_radio_xpath = f"//input[@{key}='{value}']"
     input_radio_element = browser.find_element(By.XPATH, input_radio_xpath)
     browser.execute_script("arguments[0].click();", input_radio_element)
+
+# Select input dropdown option
+def select_dropdown_option(browser, dropdown_name, value, key='value'):
+    option_xpath = f"//select[@name='{dropdown_name}']/option[@value='{value}']"
+    option_element = browser.find_element(By.XPATH, option_xpath)
+    browser.execute_script("arguments[0].click();", option_element)
 
 # ENTER TEXT
 # Enter input in text box

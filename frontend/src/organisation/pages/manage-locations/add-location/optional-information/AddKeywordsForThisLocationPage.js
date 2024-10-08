@@ -29,7 +29,7 @@ export default function KeywordsForThisLocationPage () {
       dispatch(setCurrentLocationKeywords(keywordsArray))
     }
 
-    navigate(orgManageLocationsUrls.optionalInformation.addActionPlan)
+    navigate(orgManageLocationsUrls.add.optionalInformation.addActionPlan)
   }
 
   const handleAddKeyword = () => {

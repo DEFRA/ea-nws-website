@@ -30,39 +30,36 @@ export default function ManageKeywordsPage () {
   }
 
   const removeKeywords = () => {
-    switch (keywordType) {
-      case 'location':
-        const updatedKeywords = locationKeywords.filter(
-          (k) => !selectedKeywords.includes(k)
-        )
-        dispatch(setCurrentLocationKeywords(updatedKeywords))
-        break
-      case 'contact':
-        // code the contact keywords here
-        break
-      default:
-        break
+    if (keywordType === 'location') {
+      const updatedKeywords = locationKeywords.filter(
+        (k) => !selectedKeywords.includes(k)
+      )
+      dispatch(setCurrentLocationKeywords(updatedKeywords))
+    } else {
+      const updatedKeywords = contactKeywords.filter(
+        (k) => !selectedKeywords.includes(k)
+      )
+      dispatch(setCurrentLocationKeywords(updatedKeywords))
     }
   }
 
   const handleDelete = () => {
     console.log('In delete')
-    setKeywordDeletedText('Keyword deleted')
-    onClickDeleteDialog()
-    // add some error control to make sure that the keywords were deleted
-    /* if (
+
+    if (
       (keywordType === 'location' && locationKeywords.length !== 0) ||
       (keywordType === 'contact' && contactKeywords.length !== 0)
     ) {
       if (selectedKeywords.length > 0) {
-        setKeywordDeleted(true)
         if (selectedKeywords.length === 1) {
           setKeywordDeletedText('Keyword deleted')
         } else {
           setKeywordDeletedText(`${selectedKeywords.length} keywords deleted`)
         }
+        removeKeywords()
+        onClickDeleteDialog()
       }
-    } */
+    }
   }
 
   const onClickDeleteDialog = () => {

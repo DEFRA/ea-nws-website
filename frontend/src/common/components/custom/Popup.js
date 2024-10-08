@@ -11,7 +11,6 @@ export default function Popup({
   title,
   popupText,
   input = '',
-  textInput,
   setTextInput,
   buttonClass = '',
   buttonText

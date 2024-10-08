@@ -201,7 +201,6 @@ export default function ManageKeywordsPage() {
                   popupText={editDialogText}
                   buttonText='Change keyword'
                   input='Keyword'
-                  textInput={keywordEditInput}
                   setTextInput={setKeywordEditInput}
                 />
               )}

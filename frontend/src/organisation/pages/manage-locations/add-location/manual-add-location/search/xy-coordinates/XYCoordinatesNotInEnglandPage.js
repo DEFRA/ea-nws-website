@@ -17,6 +17,7 @@ export default function XYCoordinatesNotInEnglandPage() {
     <NotInEnglandLayout
       NavigateToNextPage={NavigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
+      locationType={'xyCoordinate'}
     />
   )
 }

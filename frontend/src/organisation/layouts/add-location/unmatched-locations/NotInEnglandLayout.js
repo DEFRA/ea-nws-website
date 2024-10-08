@@ -1,4 +1,4 @@
-import React from 'react'
+import { React } from 'react'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
@@ -6,7 +6,8 @@ import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageL
 
 export default function NotInEnglandLayout({
   NavigateToNextPage,
-  NavigateToPreviousPage
+  NavigateToPreviousPage,
+  locationType
 }) {
   const handleSubmit = () => {
     NavigateToNextPage()
@@ -66,24 +67,26 @@ export default function NotInEnglandLayout({
               </h2>
               <p>You can</p>
               <ul className='govuk-list govuk-list--bullet'>
-                <li>
-                  <Link
-                    // TODO: need to remove these hardcoded URLs
-                    to={orgManageLocationsUrls.search.postCodeSearch}
-                    className='govuk-link inline-link'
-                  >
-                    use a different postcode
-                  </Link>
-                </li>
-                <li>
-                  <Link
-                    // TODO: need to remove these hardcoded URLs
-                    to={orgManageLocationsUrls.search.xyCoordinatesSearch}
-                    className='govuk-link inline-link'
-                  >
-                    use a different set of X and Y coordinates
-                  </Link>
-                </li>
+                {locationType === 'postcode' && (
+                  <li>
+                    <Link
+                      to={orgManageLocationsUrls.add.postCodeSearch}
+                      className='govuk-link inline-link'
+                    >
+                      use a different postcode
+                    </Link>
+                  </li>
+                )}
+                {locationType === 'xyCoordinate' && (
+                  <li>
+                    <Link
+                      to={orgManageLocationsUrls.add.xyCoordinatesSearch}
+                      className='govuk-link inline-link'
+                    >
+                      use a different set of X and Y coordinates
+                    </Link>
+                  </li>
+                )}
                 <li>
                   <Link
                     to={

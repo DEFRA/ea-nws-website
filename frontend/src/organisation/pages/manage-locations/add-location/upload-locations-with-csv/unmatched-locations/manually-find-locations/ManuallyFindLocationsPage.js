@@ -6,6 +6,7 @@ import NotificationBanner from '../../../../../../../common/components/gov-uk/No
 import WarningText from '../../../../../../../common/components/gov-uk/WarningText'
 import { setCurrentLocation } from '../../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../../common/services/BackendService'
+import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ManuallyFindLocationsPage() {
   const navigate = useNavigate()
@@ -32,13 +33,14 @@ export default function ManuallyFindLocationsPage() {
   }, [])
 
   const handleSubmit = async () => {
-    navigate('/organisation/manage-locations/view-locations')
+    navigate(orgManageLocationsUrls.view.dashboard)
   }
 
   const handleFind = async (event, location) => {
     event.preventDefault()
     const poi = location
     dispatch(setCurrentLocation(poi))
+    navigate(orgManageLocationsUrls)
     navigate('/organisation/manage-locations/find-location')
   }
 

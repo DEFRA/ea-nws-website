@@ -4,7 +4,7 @@ import { Spinner } from '../../../../../common/components/custom/Spinner'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddLoadingPage () {
+export default function LocationAddLoadingPage() {
   const navigate = useNavigate()
   const [status, setStatus] = useState('')
   const [stage, setStage] = useState('Scanning Upload')
@@ -21,7 +21,7 @@ export default function LocationAddLoadingPage () {
   // Each time the status changes check if it's complete and save the locations to elasticache and geosafe
   useEffect(() => {
     const continueToNextPage = async () => {
-      if (invalidLocations === null) {
+      if (invalidLocations === 0) {
         navigate(orgManageLocationsUrls.add.confirm, {
           state: { fileName, valid: validLocations }
         })
@@ -82,10 +82,8 @@ export default function LocationAddLoadingPage () {
         'api/bulk_uploads/process_file',
         navigate
       )
-      if (!errorMessage) {
-        console.log('File processing triggered')
-      } else {
-        console.log('file processing not triggered')
+      if (errorMessage) {
+        console.log(errorMessage)
       }
     }
     startProcessing()

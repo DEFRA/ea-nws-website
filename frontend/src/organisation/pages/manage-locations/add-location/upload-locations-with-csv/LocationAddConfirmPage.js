@@ -6,11 +6,12 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddUploadFilePage () {
+export default function LocationAddConfirmPage() {
   const navigate = useNavigate()
   const location = useLocation()
-  const locationsValid = location?.state.valid
-  const fileName = location?.state.fileName
+
+  const locationsValid = location?.state?.valid || 0
+  const fileName = location?.state?.fileName || ''
   const authToken = useSelector((state) => state.session.authToken)
 
   const upload = async () => {
@@ -21,27 +22,28 @@ export default function LocationAddUploadFilePage () {
       navigate
     )
     if (!errorMessage) {
-      navigate('/', {
+      navigate(orgManageLocationsUrls.view.dashboard, {
         state: {
           added: data.valid
         }
       })
     } else {
-      // got to some sort of error page
+      // go to some sort of error page (part of next DOR)
     }
   }
 
   const cancel = () => {
-    navigate(orgManageLocationsUrls.add.addressInfo) // TODO: Should link to settings page (not made yet)
+    navigate('#') // TODO: Should link to settings page
   }
 
   return (
     <>
-      <BackLink onClick={() => navigate(-1)} />
+      <BackLink onClick={() => navigate(-2)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-column-two-thirds'>
-          <h1 className='govuk-heading-l'>{locationsValid} locations can be added</h1>{' '}
-          {/* Must replace X with number of locations */}
+          <h1 className='govuk-heading-l'>
+            {locationsValid} locations can be added
+          </h1>{' '}
           <Button
             text='Add and continue'
             className='govuk-button'

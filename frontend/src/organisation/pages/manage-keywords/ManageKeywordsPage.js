@@ -1,54 +1,129 @@
-import {
-  faMagnifyingGlass
-} from '@fortawesome/free-solid-svg-icons'
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
-import Details from '../../../common/components/gov-uk/Details'
 import Popup from '../../../common/components/custom/Popup'
-
-export default function ManageKeywordsPage () {
+import Details from '../../../common/components/gov-uk/Details'
+import { setCurrentLocationKeywords } from '../../../common/redux/userSlice'
+export default function ManageKeywordsPage() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [keywordType, setKeywordType] = useState('location')
-  const handleSubmit = () => {
-    navigate(-1)
-  }
+  const [selectedKeywords, setSelectedKeywords] = useState([])
+  const [showEditDialog, setShowEditDialog] = useState(false)
+  const [keywordEditInput, setKeywordEditInput] = useState('')
+  const locationKeywords = useSelector((state) =>
+    state.session.currentLocation.meta_data.location_additional.keywords !==
+    null
+      ? state.session.currentLocation.meta_data.location_additional.keywords
+      : []
+  )
+  const contactKeywords = []
 
   const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
   }
 
-
-  const handleClickEdit = () => {
-
+  const onClickEditDialog = () => {
+    if (!showEditDialog) {
+      setShowEditDialog(true)
+    } else {
+      setShowEditDialog(false)
+    }
   }
 
   const editKeyword = () => {
-    
+    if (keywordType === 'location') {
+      const updatedKeywords = locationKeywords.map((k) => {
+        if (selectedKeywords.includes(k)) {
+          return keywordEditInput
+        }
+        return k
+      })
+      dispatch(setCurrentLocationKeywords(updatedKeywords))
+    } else {
+      const updatedKeywords = contactKeywords.map((k) => {
+        if (selectedKeywords.includes(k)) {
+          return keywordEditInput
+        }
+        return k
+      })
+      dispatch(setCurrentLocationKeywords(updatedKeywords))
+    }
   }
 
-  const detailsText = keywordType === 'location' ? (
-    <>
-      <p>Adding keywords for each location can make it easier for you to filter and create lists of locations you can link to contacts to get relevant flood messages.</p>
-      <p>For example, you may want to add 'pumping station' or 'office' or 'Midlands' as a keyword, then show all of the locations with that keyword in a list.</p>
-      <p>Once you use a keyword it will be saved so you can select it for any other locations.</p>
-  </> 
-  ) : keywordType === 'contact' ? (
-    <>
-      <p>Adding keywords for each contact can make it easier for you to filter and create lists of people you can link to locations to get relevant flood messages.</p>
-      <p>For example, you may want to add 'North' or 'South' as a keyword, then show all of the contacts with that keyword in a list.</p>
-      <p>Once you use a keyword it will be saved so you can select it for any other contacts.</p>
-      <p>You can add a maximum of 50 keywords and each keyword can be single or multiple words, for example 'South' or 'South West'.</p>
-    </>
-  ) : null
+  const handleEdit = () => {
+    if (keywordEditInput === '') {
+      //remove
+      console.log('input is empty')
+      onClickEditDialog()
+      //onClickRemove
+    } else {
+      editKeyword()
+      onClickEditDialog()
+    }
+    if (
+      (keywordType === 'location' && locationKeywords.length !== 0) ||
+      (keywordType === 'contact' && contactKeywords.length !== 0)
+    ) {
+      if (selectedKeywords.length > 0) {
+        editKeyword()
+        onClickEditDialog()
+      }
+    }
+    setKeywordEditInput('')
+  }
+
+  const editDialogText =
+    'Changing this keyword will change it for all the locations it’s associated with.'
+
+  const detailsText =
+    keywordType === 'location' ? (
+      <>
+        <p>
+          Adding keywords for each location can make it easier for you to filter
+          and create lists of locations you can link to contacts to get relevant
+          flood messages.
+        </p>
+        <p>
+          For example, you may want to add 'pumping station' or 'office' or
+          'Midlands' as a keyword, then show all of the locations with that
+          keyword in a list.
+        </p>
+        <p>
+          Once you use a keyword it will be saved so you can select it for any
+          other locations.
+        </p>
+      </>
+    ) : keywordType === 'contact' ? (
+      <>
+        <p>
+          Adding keywords for each contact can make it easier for you to filter
+          and create lists of people you can link to locations to get relevant
+          flood messages.
+        </p>
+        <p>
+          For example, you may want to add 'North' or 'South' as a keyword, then
+          show all of the contacts with that keyword in a list.
+        </p>
+        <p>
+          Once you use a keyword it will be saved so you can select it for any
+          other contacts.
+        </p>
+        <p>
+          You can add a maximum of 50 keywords and each keyword can be single or
+          multiple words, for example 'South' or 'South West'.
+        </p>
+      </>
+    ) : null
 
   const setTab = (tab) => {
     setKeywordType(tab)
   }
-    
 
   return (
     <>
@@ -59,12 +134,12 @@ export default function ManageKeywordsPage () {
             <h1 className='govuk-heading-l'>Manage keywords</h1>
             <div className='govuk-body'>
               <p>
-              As an admin you can edit and delete keywords. Deleting a keyword will remove it from this account and you will no longer be able to use it to filter any locations or contacts that were previously associated with it.
+                As an admin you can edit and delete keywords. Deleting a keyword
+                will remove it from this account and you will no longer be able
+                to use it to filter any locations or contacts that were
+                previously associated with it.
               </p>
-              <Details
-                title='Why add keywords?'
-                text={detailsText} 
-              />
+              <Details title='Why add keywords?' text={detailsText} />
               <nav aria-label='Sub navigation'>
                 <ul className='sub-navigation__list'>
                   <li className='sub-navigation__item'>
@@ -88,8 +163,11 @@ export default function ManageKeywordsPage () {
                 </ul>
               </nav>
               <div className='search-container govuk-!-padding-bottom-5 govuk-!-padding-left-4 govuk-!-padding-top-7'>
-                <div class="govuk-form-group govuk-!-margin-bottom-2">
-                  <label class="govuk-label govuk-label--s" for="keyword-search">
+                <div class='govuk-form-group govuk-!-margin-bottom-2'>
+                  <label
+                    class='govuk-label govuk-label--s'
+                    for='keyword-search'
+                  >
                     Search for a {keywordType} keyword
                   </label>
                   <div class='search-input-container' id='keyword-search'>
@@ -101,13 +179,32 @@ export default function ManageKeywordsPage () {
                     />
                     <div className='search-button-container'>
                       <button className='search-button'>
-                      <FontAwesomeIcon icon={faMagnifyingGlass} width={'20px'} />
+                        <FontAwesomeIcon
+                          icon={faMagnifyingGlass}
+                          width={'20px'}
+                        />
                       </button>
                     </div>
                   </div>
                 </div>
-                <Link to='/' className='govuk-link' >Clear Seach results</Link>
+                <Link to='/' className='govuk-link'>
+                  Clear Seach results
+                </Link>
               </div>
+              <Link onClick={onClickEditDialog}>Edit</Link>
+              {showEditDialog && (
+                <Popup
+                  onAction={handleEdit}
+                  onCancel={onClickEditDialog}
+                  onClose={onClickEditDialog}
+                  title='Change keyword'
+                  popupText={editDialogText}
+                  buttonText='Change keyword'
+                  input='Keyword'
+                  textInput={keywordEditInput}
+                  setTextInput={setKeywordEditInput}
+                />
+              )}
             </div>
           </div>
         </div>

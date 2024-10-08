@@ -13,6 +13,7 @@ url_add_xy_coordinates_not_in_england = url_org_man_loc.get('add').get('xyCoordi
 url_add_location_in_area_xy_coordinates_search_no_alerts = url_org_man_loc.get('add').get('locationInArea') + '/xy-coordinates-search/no-alerts'
 url_add_location_in_area_xy_coordinates_search_all = url_org_man_loc.get('add').get('locationInArea') + '/xy-coordinates-search/all'
 url_add_location_in_area_xy_coordinates_search_alerts = url_org_man_loc.get('add').get('locationInArea') + '/xy-coordinates-search/alerts'
+url_add_drop_pin_search = url_org_man_loc.get('add').get('dropPinSearch')
 
 # Render add location page
 def render_add_loc_page(browser):
@@ -45,6 +46,11 @@ def render_add_postcode_search_page(browser):
 def render_add_xy_coordinates_search_page(browser):
     navigate_to_auth_page_via_index(browser, url_add_xy_coordinates_search)
     assert check_h1_heading(browser, 'What are the X and Y coordinates?')
+
+# Render add drop pin search page
+def render_add_drop_pin_search_page(browser):
+    navigate_to_auth_page_via_index(browser, url_add_drop_pin_search)
+    assert check_h1_heading(browser, 'How do you want to find the location on a map?')
 
 # Test add location page render with no selection
 def test_add_loc_no_selection(get_browser):
@@ -212,13 +218,11 @@ def test_add_named_location_using_xy_coordinates_no_alerts(get_browser):
     assert 'How do you want to find ' + locationName + '?' in browser.page_source
     select_input_radio_option(browser, 'UseXAndYCoordinates')
     click_button(browser, 'Continue', url_add_xy_coordinates_search)
-    time.sleep(3)
     x = '465373'
     y = '101250'
     enter_input_text(browser, 'X coordinate', x)
     enter_input_text(browser, 'Y coordinate', y)
     click_button(browser, 'Continue', url_add_location_in_area_xy_coordinates_search_no_alerts)
-    time.sleep(3)
     assert 'Confirm Location' in browser.page_source
     assert locationName in browser.page_source
     assert x + ', ' + y in browser.page_source
@@ -291,3 +295,78 @@ def test_add_named_location_using_xy_coordinates_not_in_england(get_browser):
     click_button(browser, 'Continue', url_add_xy_coordinates_not_in_england)
     assert check_h1_heading(browser, 'This location is not in England and cannot be added to this account')
     click_link(browser, "use a different set of X and Y coordinates", url_add_xy_coordinates_search)
+
+# Test add drop pin search page with no input
+def test_add_drop_pin_search_no_input(get_browser):
+    browser = get_browser
+    render_add_drop_pin_search_page(browser)
+    click_button(browser, 'Continue', url_add_drop_pin_search)
+    assert check_error_summary(browser)
+
+# Test add drop pin search page with no place name
+def test_add_drop_pin_search_no_place_name(get_browser):
+    browser = get_browser
+    render_add_drop_pin_search_page(browser)
+    select_input_radio_option(browser, 'PlaceName')
+    click_button(browser, 'Continue', url_add_drop_pin_search)
+    assert check_error_summary(browser)
+
+# Test add drop pin search page with invalid place name
+def test_add_drop_pin_search_invalid_place_name(get_browser):
+    browser = get_browser
+    render_add_drop_pin_search_page(browser)
+    select_input_radio_option(browser, 'PlaceName')
+    enter_input_text(browser, 'Enter a place name, town or postcode', '?')
+    click_button(browser, 'Continue', url_add_drop_pin_search)
+    assert check_error_summary(browser)
+
+# Test add drop pin search page with no town
+def test_add_drop_pin_search_no_town(get_browser):
+    browser = get_browser
+    render_add_drop_pin_search_page(browser)
+    select_input_radio_option(browser, 'Town')
+    click_button(browser, 'Continue', url_add_drop_pin_search)
+    assert check_error_summary(browser)
+
+# Test add drop pin search page with invalid town
+def test_add_drop_pin_search_invalid_town(get_browser):
+    browser = get_browser
+    render_add_drop_pin_search_page(browser)
+    select_input_radio_option(browser, 'Town')
+    enter_input_text(browser, 'Enter a place name, town or postcode', '?')
+    click_button(browser, 'Continue', url_add_drop_pin_search)
+    assert check_error_summary(browser)
+
+# Test add drop pin search page with no postcode
+def test_add_drop_pin_search_no_postcode(get_browser):
+    browser = get_browser
+    render_add_drop_pin_search_page(browser)
+    select_input_radio_option(browser, 'Postcode')
+    click_button(browser, 'Continue', url_add_drop_pin_search)
+    assert check_error_summary(browser)
+
+# Test add drop pin search page with invalid postcode
+def test_add_drop_pin_search_invalid_postcode(get_browser):
+    browser = get_browser
+    render_add_drop_pin_search_page(browser)
+    select_input_radio_option(browser, 'Postcode')
+    enter_input_text(browser, 'Enter a place name, town or postcode', '?')
+    click_button(browser, 'Continue', url_add_drop_pin_search)
+    assert check_error_summary(browser)
+
+# Test add named location using drop pin
+def test_add_named_location_using_drop_pin(get_browser):
+    browser = get_browser
+    render_add_name_page(browser)
+    locationName = 'LOCATION_1'
+    enter_input_text(browser, 'Location name', locationName)
+    click_button(browser, 'Continue', url_add_search_option)
+    assert 'How do you want to find ' + locationName + '?' in browser.page_source
+    select_input_radio_option(browser, 'DropAPinOnAMap')
+    click_button(browser, 'Continue', url_add_drop_pin_search)
+    select_input_radio_option(browser, 'PlaceName')
+    enter_input_text(browser, 'Enter a place name, town or postcode', 'stonehenge')
+    time.sleep(5)
+    # TODO: Need a new function in common.py to allow an item in the drop-down list
+    #       to be clicked, e.g. 'Stonehenge Down, SP4'
+    # TODO: Continue with this once more of the flow is complete

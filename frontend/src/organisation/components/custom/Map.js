@@ -166,7 +166,6 @@ export default function Map({
 
   const onEachWarningAreaFeature = (feature, layer) => {
     layer.options.className = 'warning-area-pattern-fill'
-    layer.bringToFront()
 
     layer.setStyle({
       color: '#f70202',
@@ -184,6 +183,10 @@ export default function Map({
       fillOpacity: 0.5
     })
   }
+
+  const showWarningAndAlertAreas = showWarningAreas && showAlertAreas
+  const showJustWarningAreas = showWarningAreas && !showAlertAreas
+  const showJustAlertAreas = !showWarningAreas && showAlertAreas
 
   return (
     <div ref={ref}>
@@ -211,14 +214,25 @@ export default function Map({
               ) : (
                 <Marker position={center} interactive={false} />
               )}
-              {showAlertAreas && alertArea && (
+              {showWarningAndAlertAreas && alertArea && (
                 <GeoJSON
                   data={alertArea}
                   onEachFeature={onEachAlertAreaFeature}
                 />
               )}
-              {/* warning area must be added after alert areas - this pushes warning areas to the top */}
-              {showWarningAreas && warningArea && (
+              {showWarningAndAlertAreas && warningArea && (
+                <GeoJSON
+                  data={warningArea}
+                  onEachFeature={onEachWarningAreaFeature}
+                />
+              )}
+              {showJustAlertAreas && alertArea && (
+                <GeoJSON
+                  data={alertArea}
+                  onEachFeature={onEachAlertAreaFeature}
+                />
+              )}
+              {showJustWarningAreas && warningArea && (
                 <GeoJSON
                   data={warningArea}
                   onEachFeature={onEachWarningAreaFeature}

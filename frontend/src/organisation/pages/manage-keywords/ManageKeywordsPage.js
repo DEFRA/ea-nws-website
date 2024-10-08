@@ -7,13 +7,14 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Popup from '../../../common/components/custom/Popup'
 import Details from '../../../common/components/gov-uk/Details'
+import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import { setCurrentLocationKeywords } from '../../../common/redux/userSlice'
 export default function ManageKeywordsPage() {
   const navigate = useNavigate()
   const [keywordType, setKeywordType] = useState('location')
   const [selectedKeywords, setSelectedKeywords] = useState([])
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
-
+  const [keywordDeletedText, setKeywordDeletedText] = useState('')
   const dispatch = useDispatch()
   const locationKeywords = useSelector((state) =>
     state.session.currentLocation.meta_data.location_additional.keywords !==
@@ -46,16 +47,28 @@ export default function ManageKeywordsPage() {
 
   const handleDelete = () => {
     console.log('In delete')
+    setKeywordDeletedText('Keyword deleted')
+    onClickDeleteDialog()
+    // add some error control to make sure that the keywords were deleted
+    /*if (
+      (keywordType === 'location' && locationKeywords.length !== 0) ||
+      (keywordType === 'contact' && contactKeywords.length !== 0)
+    ) {
+      if (selectedKeywords.length > 0) {
+        setKeywordDeleted(true)
+        if (selectedKeywords.length === 1) {
+          setKeywordDeletedText('Keyword deleted')
+        } else {
+          setKeywordDeletedText(`${selectedKeywords.length} keywords deleted`)
+        }
+      }
+    }*/
   }
 
-  const onOpenDeleteDialog = () => {
+  const onClickDeleteDialog = () => {
     if (!showDeleteDialog) {
       setShowDeleteDialog(true)
-    }
-  }
-
-  const onCancelDialog = () => {
-    if (showDeleteDialog) {
+    } else {
       setShowDeleteDialog(false)
     }
   }
@@ -121,6 +134,13 @@ export default function ManageKeywordsPage() {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
+            {keywordDeletedText && (
+              <NotificationBanner
+                className='govuk-notification-banner govuk-notification-banner--success'
+                title='Success'
+                text='Keyword deleted'
+              />
+            )}
             <h1 className='govuk-heading-l'>Manage keywords</h1>
             <div className='govuk-body'>
               <p>
@@ -181,12 +201,12 @@ export default function ManageKeywordsPage() {
                   Clear Seach results
                 </Link>
               </div>
-              <Link onClick={onOpenDeleteDialog}>Delete</Link>
+              <Link onClick={onClickDeleteDialog}>Delete</Link>
               {showDeleteDialog && (
                 <Popup
                   onAction={handleDelete}
-                  onCancel={onCancelDialog}
-                  onClose={onCancelDialog}
+                  onCancel={onClickDeleteDialog}
+                  onClose={onClickDeleteDialog}
                   title='Delete keyword'
                   popupText={deleteKeywordText}
                   buttonText='Delete keyword'

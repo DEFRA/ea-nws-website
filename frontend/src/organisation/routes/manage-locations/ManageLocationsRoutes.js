@@ -87,10 +87,10 @@ const orgManageLocationsUrls = {
     }
   },
   edit: {
-    editLocationCoords:{
+    editLocationCoords: {
       SelectLocationOptions: urlManageOrg + '/edit/select-location-options',
       xyCoordinatesSearch: urlManageOrg + '/edit/xy-coordinates-search',
-      ConfirmEditLocations: urlManageOrg + '/edit/location-in-area/:flow/:type',
+      ConfirmEditLocations: urlManageOrg + '/edit/location-in-area/:flow/:type'
     },
     error: {
       xyCoordinatesNotInEngland:

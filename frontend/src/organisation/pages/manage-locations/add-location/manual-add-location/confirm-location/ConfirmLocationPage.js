@@ -4,8 +4,6 @@ import { useNavigate } from 'react-router'
 
 export default function ConfirmLocationPage () {
   const navigate = useNavigate()
-  
-  
 
   return (
     <>

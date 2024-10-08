@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import NotInEnglandLayout from '../../../../../../layouts/add-location/unmatched-locations/NotInEnglandLayout'
 
-export default function XYCoordinatesNotInEnglandPage () {
+export default function XYCoordinatesNotInEnglandPage() {
   const navigate = useNavigate()
 
   const NavigateToPreviousPage = () => {
@@ -19,6 +19,7 @@ export default function XYCoordinatesNotInEnglandPage () {
     <NotInEnglandLayout
       NavigateToNextPage={NavigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
+      locationType={'xyCoordinate'}
     />
   )
 }

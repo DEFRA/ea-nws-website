@@ -87,7 +87,7 @@ const orgManageLocationsUrls = {
     }
   },
   edit: {
-    search:{
+    editLocationCoords:{
       SelectLocationOptions: urlManageOrg + '/edit/select-location-options',
       xyCoordinatesSearch: urlManageOrg + '/edit/xy-coordinates-search',
       ConfirmEditLocations: urlManageOrg + '/edit/location-in-area/:flow/:type',
@@ -219,15 +219,15 @@ const orgManageLocationRoutes = [
     component: <ConfirmAddingLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.edit.SelectLocationOptions,
+    path: orgManageLocationsUrls.edit.editLocationCoords.SelectLocationOptions,
     component: <EditLocationOptionsPage />
   },
   {
-    path: orgManageLocationsUrls.edit.xyCoordinatesSearch,
+    path: orgManageLocationsUrls.edit.editLocationCoords.xyCoordinatesSearch,
     component: <EditLocationXYCoordinatesSearchPage />
   },
   {
-    path: orgManageLocationsUrls.edit.ConfirmEditLocations,
+    path: orgManageLocationsUrls.edit.editLocationCoords.ConfirmEditLocations,
     component: <ConfirmLocationPage />
   },
   {

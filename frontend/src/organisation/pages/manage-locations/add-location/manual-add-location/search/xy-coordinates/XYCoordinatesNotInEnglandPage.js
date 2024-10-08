@@ -7,7 +7,7 @@ export default function XYCoordinatesNotInEnglandPage () {
   const location = useLocation()
   const postCodeSearchUrl = orgManageLocationsUrls.add.search.postCodeSearch
   const addXyCoordinatesSearchUrl = orgManageLocationsUrls.add.search.xyCoordinatesSearch
-  const editXyCoordinatesSearchUrl = orgManageLocationsUrls.edit.search.xyCoordinatesSearch
+  const editXyCoordinatesSearchUrl = orgManageLocationsUrls.edit.editLocationCoords.xyCoordinatesSearch
   const manuallyFindMapUrl = orgManageLocationsUrls.unmatchedLocations.manuallyfind.map
   const isAddingLocation = location.pathname.includes('add')
 

@@ -7,7 +7,7 @@ import WarningText from '../../../../../../../common/components/gov-uk/WarningTe
 import { setCurrentLocation } from '../../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../../common/services/BackendService'
 
-export default function ManuallyFindLocationsPage () {
+export default function ManuallyFindLocationsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
@@ -25,7 +25,7 @@ export default function ManuallyFindLocationsPage () {
       if (data) {
         setLocations(data)
       } else {
-        console.log('no invalid locations')
+        setLocations(null)
       }
     }
     getInvLocations()
@@ -44,14 +44,19 @@ export default function ManuallyFindLocationsPage () {
 
   return (
     <>
-      {location.state &&
-         (
-           <NotificationBanner
-             className={`govuk-notification-banner ${location.state === 'Added' && 'govuk-notification-banner--success'} govuk-!-margin-bottom-0 govuk-!-margin-top-4`}
-             title={location.state === 'Added' ? 'Success' : 'Information'}
-             text={location.state === 'Added' ? '1 Location Added' : '1 location cannot be added because it\'s not in England'}
-           />
-         )}
+      {location.state && (
+        <NotificationBanner
+          className={`govuk-notification-banner ${
+            location.state === 'Added' && 'govuk-notification-banner--success'
+          } govuk-!-margin-bottom-0 govuk-!-margin-top-4`}
+          title={location.state === 'Added' ? 'Success' : 'Information'}
+          text={
+            location.state === 'Added'
+              ? '1 Location Added'
+              : "1 location cannot be added because it's not in England"
+          }
+        />
+      )}
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -90,26 +95,31 @@ export default function ManuallyFindLocationsPage () {
                 </thead>
                 <tbody class='govuk-table__body'>
                   {locations &&
-                  locations.map((location, index) => {
-                    return (
-                      <tr class='govuk-table__row' key={index}>
-                        <th scope='row' class='govuk-table__header'>
-                          {location.name}
-                        </th>
-                        <td class='govuk-table__cell'>
-                          {location.meta_data.location_additional.full_address}
-                        </td>
-                        <td class='govuk-table__cell'>{location.meta_data.location_additional.postcode}</td>
-                        <td class='govuk-table__cell'>
-                          <Link
-                            onClick={(event) => handleFind(event, location)}
-                          >
-                            Find this location
-                          </Link>
-                        </td>
-                      </tr>
-                    )
-                  })}
+                    locations.map((location, index) => {
+                      return (
+                        <tr class='govuk-table__row' key={index}>
+                          <th scope='row' class='govuk-table__header'>
+                            {location.name}
+                          </th>
+                          <td class='govuk-table__cell'>
+                            {
+                              location.meta_data.location_additional
+                                .full_address
+                            }
+                          </td>
+                          <td class='govuk-table__cell'>
+                            {location.meta_data.location_additional.postcode}
+                          </td>
+                          <td class='govuk-table__cell'>
+                            <Link
+                              onClick={(event) => handleFind(event, location)}
+                            >
+                              Find this location
+                            </Link>
+                          </td>
+                        </tr>
+                      )
+                    })}
                 </tbody>
               </table>
 

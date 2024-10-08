@@ -74,7 +74,6 @@ export default function LocationAddUploadFilePage() {
         fileType: selectedFile.type
       }
 
-      console.log(dataToSend)
       const { errorMessage, data } = await backendCall(
         dataToSend,
         'api/bulk_uploads/upload_file',
@@ -88,8 +87,6 @@ export default function LocationAddUploadFilePage() {
       const url = data.url
       const uniqFileName = data.fileName
 
-      console.log(`URL - ${url}`)
-
       // Upload the file to S3 using generated URL
       const uploadResponse = await fetch(url, {
         mode: 'cors',
@@ -99,8 +96,6 @@ export default function LocationAddUploadFilePage() {
         },
         body: selectedFile
       })
-
-      console.log(uploadResponse.body)
 
       if (!uploadResponse.ok) {
         setUploading(false)

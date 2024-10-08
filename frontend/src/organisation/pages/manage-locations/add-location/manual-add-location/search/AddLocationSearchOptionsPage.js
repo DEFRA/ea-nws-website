@@ -17,10 +17,10 @@ export default function AddLocationSearchOptionsPage () {
   const navigateToNextPage = (searchOption) => {
     switch (searchOption) {
       case 'UseAPostcode':
-        navigate(orgManageLocationsUrls.search.postCodeSearch)
+        navigate(orgManageLocationsUrls.add.search.postCodeSearch)
         break
       case 'UseXAndYCoordinates':
-        navigate(orgManageLocationsUrls.search.xyCoordinatesSearch)
+        navigate(orgManageLocationsUrls.add.search.xyCoordinatesSearch)
         break
       case 'DropAPinOnAMap':
         // ToDo add in when pin drop URls made

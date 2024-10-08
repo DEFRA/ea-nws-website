@@ -5,11 +5,11 @@ import { orgManageLocationsUrls } from '../../../../../../routes/manage-location
 
 export default function XYCoordinatesNotInEnglandPage () {
   const location = useLocation()
-  const postCodeSearchUrl = orgManageLocationsUrls.search.postCodeSearch
-  const addXyCoordinatesSearchUrl = orgManageLocationsUrls.search.xyCoordinatesSearch
-  const editXyCoordinatesSearchUrl = orgManageLocationsUrls.edit.xyCoordinatesSearch
+  const postCodeSearchUrl = orgManageLocationsUrls.add.search.postCodeSearch
+  const addXyCoordinatesSearchUrl = orgManageLocationsUrls.add.search.xyCoordinatesSearch
+  const editXyCoordinatesSearchUrl = orgManageLocationsUrls.edit.search.xyCoordinatesSearch
   const manuallyFindMapUrl = orgManageLocationsUrls.unmatchedLocations.manuallyfind.map
-  const isAddingLocation = !!location.pathname.includes('add')
+  const isAddingLocation = location.pathname.includes('add')
 
   const NavigateToNextPage = () => {
 

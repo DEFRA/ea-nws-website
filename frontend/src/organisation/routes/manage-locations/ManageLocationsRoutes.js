@@ -87,9 +87,11 @@ const orgManageLocationsUrls = {
     }
   },
   edit: {
-    SelectLocationOptions: urlManageOrg + '/edit/select-location-options',
-    xyCoordinatesSearch: urlManageOrg + '/edit/xy-coordinates-search',
-    ConfirmEditLocations: urlManageOrg + '/edit/location-in-area/:flow/:type',
+    search:{
+      SelectLocationOptions: urlManageOrg + '/edit/select-location-options',
+      xyCoordinatesSearch: urlManageOrg + '/edit/xy-coordinates-search',
+      ConfirmEditLocations: urlManageOrg + '/edit/location-in-area/:flow/:type',
+    },
     error: {
       xyCoordinatesNotInEngland:
         urlManageOrg + '/edit/xy-coordinates-not-in-england'

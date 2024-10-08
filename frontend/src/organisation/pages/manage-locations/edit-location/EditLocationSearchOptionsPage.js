@@ -13,7 +13,7 @@ export default function EditLocationSearchOptionsPage () {
   const navigateToNextPage = (searchOption) => {
     switch (searchOption) {
       case 'Coordinates':
-        navigate(orgManageLocationsUrls.edit.xyCoordinatesSearch)
+        navigate(orgManageLocationsUrls.edit.search.xyCoordinatesSearch)
         break
       case 'pinDrop':
         // ToDo add in when pin drop pages added

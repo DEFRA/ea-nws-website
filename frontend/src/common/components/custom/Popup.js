@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import '../../css/custom.css'
 import Button from '../gov-uk/Button'
 
-export default function Popup({
+export default function Popup ({
   onAction,
   onCancel,
   onClose,

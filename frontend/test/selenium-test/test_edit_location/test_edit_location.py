@@ -93,11 +93,13 @@ def test_no_alerts(get_browser):
 def test_alerts(get_browser):
     browser = get_browser
     setup2(browser,'520814','185016',False,url_alerts)
+    time.sleep(3)
     assert 'Severe flood warnings and flood warnings unavailable' in browser.page_source
 
 def test_all_alerts(get_browser):
     browser = get_browser
     setup2(browser,'530270','179545',False,url_all_alert)
+    time.sleep(3)
     assert 'All flood messages available' in browser.page_source
 
 def test_not_in_england(get_browser):
@@ -108,4 +110,5 @@ def test_not_in_england(get_browser):
     enter_input_text(browser,'X coordinate',X_coord)
     enter_input_text(browser,'Y coordinate',Y_coord)
     click_button(browser, 'Continue', url_not_in_england)
+    time.sleep(3)
     assert 'This location is not in England and cannot be added to this account' in browser.page_source

@@ -246,6 +246,7 @@ def test_add_named_location_using_xy_coordinates_all(get_browser):
     enter_input_text(browser, 'X coordinate', x)
     enter_input_text(browser, 'Y coordinate', y)
     click_button(browser, 'Continue', url_add_location_in_area_xy_coordinates_search_all)
+    time.sleep(3)
     assert 'Confirm Location' in browser.page_source
     assert locationName in browser.page_source
     assert x + ', ' + y in browser.page_source
@@ -269,6 +270,7 @@ def test_add_named_location_using_xy_coordinates_alerts(get_browser):
     enter_input_text(browser, 'X coordinate', x)
     enter_input_text(browser, 'Y coordinate', y)
     click_button(browser, 'Continue', url_add_location_in_area_xy_coordinates_search_alerts)
+    time.sleep(3)
     assert 'Confirm Location' in browser.page_source
     assert locationName in browser.page_source
     assert x + ', ' + y in browser.page_source
@@ -293,5 +295,6 @@ def test_add_named_location_using_xy_coordinates_not_in_england(get_browser):
     enter_input_text(browser, 'X coordinate', x)
     enter_input_text(browser, 'Y coordinate', y)
     click_button(browser, 'Continue', url_add_xy_coordinates_not_in_england)
+    time.sleep(3)
     assert check_h1_heading(browser, 'This location is not in England and cannot be added to this account')
     click_link(browser, "use a different set of X and Y coordinates", url_add_xy_coordinates_search)

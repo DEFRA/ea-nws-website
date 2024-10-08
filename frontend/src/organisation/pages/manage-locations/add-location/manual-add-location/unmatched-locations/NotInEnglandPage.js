@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import NotInEnglandLayout from '../../../../../layouts/add-location/unmatched-locations/NotInEnglandLayout'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function NotInEnglandPage() {
+export default function NotInEnglandPage () {
   const navigate = useNavigate()
 
   const NavigateToPreviousPage = () => {

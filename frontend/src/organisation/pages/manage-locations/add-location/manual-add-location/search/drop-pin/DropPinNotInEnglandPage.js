@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import NotInEnglandLayout from '../../../../../../layouts/add-location/unmatched-locations/NotInEnglandLayout'
 
-export default function DropPinNotInEnglandPage() {
+export default function DropPinNotInEnglandPage () {
   const navigate = useNavigate()
 
   const NavigateToPreviousPage = () => {

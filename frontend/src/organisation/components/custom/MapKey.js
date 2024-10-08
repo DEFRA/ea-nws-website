@@ -5,7 +5,7 @@ import alertIcon from '../../../common/assets/images/alert_area_icon.png'
 import warningIcon from '../../../common/assets/images/warning_area_icon.png'
 import CheckBox from '../../../common/components/gov-uk/CheckBox'
 
-export default function MapKey({
+export default function MapKey ({
   isFloodWarningAndSevereAreasVisible,
   setFloodWarningAndSevereAreasVisible,
   isFloodAlertAreasVisible,
@@ -33,8 +33,7 @@ export default function MapKey({
             onChange={() =>
               setFloodWarningAndSevereAreasVisible(
                 !isFloodWarningAndSevereAreasVisible
-              )
-            }
+              )}
             checked={isFloodWarningAndSevereAreasVisible}
           />
           <img
@@ -60,8 +59,7 @@ export default function MapKey({
           <CheckBox
             name='FloodAlertArea'
             onChange={() =>
-              setFloodAlertAreasVisible(!isFloodAlertAreasVisible)
-            }
+              setFloodAlertAreasVisible(!isFloodAlertAreasVisible)}
             checked={isFloodAlertAreasVisible}
           />
           <FontAwesomeIcon

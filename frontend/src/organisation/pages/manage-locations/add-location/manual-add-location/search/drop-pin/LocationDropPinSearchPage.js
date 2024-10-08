@@ -11,7 +11,7 @@ import { setCurrentLocationCoordinates } from '../../../../../../../common/redux
 import { backendCall } from '../../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationDropPinSearchPage() {
+export default function LocationDropPinSearchPage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [searchOption, setSearchOption] = useState('')
@@ -58,7 +58,7 @@ export default function LocationDropPinSearchPage() {
     if (searchOption) {
       const valueLongEnough = value.length >= 3
       const valueValid = !valueEmpty && valueLongEnough
-      var searchFilter = null
+      let searchFilter = null
       if (valueValid) {
         switch (searchOption) {
           case searchOptions[0].value:
@@ -101,7 +101,7 @@ export default function LocationDropPinSearchPage() {
   }
 
   const handleSubmit = () => {
-    var error = false
+    let error = false
 
     if (!searchOption) {
       setSearchOptionError(searchOptionErrorText)

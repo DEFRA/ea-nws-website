@@ -21,7 +21,7 @@ import { xCoordinateValidation } from '../../../../../../../common/services/vali
 import { yCoordinateValidation } from '../../../../../../../common/services/validations/YCoordinateValidation'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationXYCoordinatesSearchPage() {
+export default function LocationXYCoordinatesSearchPage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -40,7 +40,7 @@ export default function LocationXYCoordinatesSearchPage() {
   }, [xCoordinate, yCoordinate])
 
   const handleSubmit = async () => {
-    var error = false
+    let error = false
 
     const xCoordinateValidationError = xCoordinateValidation(xCoordinate)
     if (xCoordinateValidationError) {

@@ -10,7 +10,7 @@ import { setCurrentLocationCoordinates } from '../../../../../../../../common/re
 import { backendCall } from '../../../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ProvideAreaNamePage() {
+export default function ProvideAreaNamePage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const fullAddress = useSelector(
@@ -70,8 +70,7 @@ export default function ProvideAreaNamePage() {
     <>
       <BackLink
         onClick={() =>
-          navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index)
-        }
+          navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index)}
       />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function NotInEnglandLayout({
+export default function NotInEnglandLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage,
   locationType

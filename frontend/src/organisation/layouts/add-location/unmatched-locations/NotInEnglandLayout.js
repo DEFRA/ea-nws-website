@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function NotInEnglandLayout ({
+export default function NotInEnglandLayout({
   NavigateToNextPage,
   NavigateToPreviousPage,
   locationType
@@ -65,7 +65,7 @@ export default function NotInEnglandLayout ({
                 {locationType === 'postcode' && (
                   <li>
                     <Link
-                      to={orgManageLocationsUrls.add.postCodeSearch}
+                      to={orgManageLocationsUrls.add.search.postCodeSearch}
                       className='govuk-link inline-link'
                     >
                       use a different postcode
@@ -75,7 +75,7 @@ export default function NotInEnglandLayout ({
                 {locationType === 'xyCoordinate' && (
                   <li>
                     <Link
-                      to={orgManageLocationsUrls.add.xyCoordinatesSearch}
+                      to={orgManageLocationsUrls.add.search.xyCoordinatesSearch}
                       className='govuk-link inline-link'
                     >
                       use a different set of X and Y coordinates

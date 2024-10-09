@@ -179,8 +179,8 @@ export default function ConfirmLocationLayout() {
             <Map
               showMapControls={false}
               zoomLevel={14}
-              showFloodWarningAreas={showFloodWarningAreas}
-              showFloodAlertAreas={showFloodAlertAreas}
+              showFloodWarningAreas={true}
+              showFloodAlertAreas={false}
             />
             <div className='govuk-!-margin-top-4'>
               <FloodWarningKey type='both' />

@@ -11,9 +11,7 @@ import ViewLocationSubNavigation from './location-information-components/ViewLoc
 
 export default function LocationInformationLayout() {
   const currentLocation = useSelector((state) => state.session.currentLocation)
-
-  const address = '49, south street, Greenock'
-  const formattedAddress = address.split(',')
+  const formattedAddress = currentLocation.address?.split(',')
 
   const floodRiskDetails = (
     <>
@@ -59,6 +57,8 @@ export default function LocationInformationLayout() {
     </>
   )
 
+  console.log(currentLocation)
+
   return (
     <>
       <OrganisationAccountNavigation />
@@ -67,7 +67,9 @@ export default function LocationInformationLayout() {
         <div class='govuk-grid-row'>
           <div class='govuk-grid-column-one-half'>
             <span class='govuk-caption-l'>View location</span>
-            <h1 class='govuk-heading-l'>Location_ID01</h1>
+            <h1 class='govuk-heading-l'>
+              {currentLocation.meta_data.location_additional.location_name}
+            </h1>
           </div>
           <div
             class='govuk-grid-column-one-half right'
@@ -117,7 +119,7 @@ export default function LocationInformationLayout() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {/* Address details*/}
-            {currentLocation.name && (
+            {currentLocation.address && (
               <>
                 <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
                   Address

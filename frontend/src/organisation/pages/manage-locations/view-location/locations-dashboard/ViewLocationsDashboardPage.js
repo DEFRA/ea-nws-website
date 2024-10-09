@@ -19,19 +19,19 @@ export default function ViewLocationsDashboardPage() {
       {
         name: 'UPRN',
         address: '34 Hughenden Road, High Wycombe, LE2 7BB',
-        coordinates: ['lat', 'lng'],
+        coordinates: { latitude: 50.84106, longitude: -1.05814 },
         alert_categories: ['Alert'],
         meta_data: {
           location_additional: {
-            location_name: 'my location name',
+            location_name: 'Location_01',
             full_address: 'some address',
-            postcode: 'some postcode',
-            x_coordinate: 'lat',
-            y_coordinate: 'lng',
+            postcode: 'LE2 7BB',
+            x_coordinate: 466413.18,
+            y_coordinate: 105037.31,
             internal_reference: 'PS01, unit 57, HighW_07',
             business_criticality: 'Medium',
             location_type: 'Office',
-            action_plan: 'action plan',
+            action_plan: '1. Dont panic!',
             notes:
               'John Smith has the flood plane for this location. His contact number is 01234 567 890',
             keywords: 'Midlands'

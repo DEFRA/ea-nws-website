@@ -1,5 +1,6 @@
 import React from 'react'
-import BackLink from '../../../../common/components/custom/BackLink'
+import BackLink from '../../../../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../../../../common/components/custom/OrganisationAccountNavigation'
 
 export default function CannotChangeLocationManuallyLayout({
   NavigateToPreviousPage,
@@ -12,6 +13,7 @@ export default function CannotChangeLocationManuallyLayout({
 
   return (
     <>
+      <OrganisationAccountNavigation />
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

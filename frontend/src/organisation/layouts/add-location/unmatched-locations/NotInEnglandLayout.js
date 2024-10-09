@@ -8,10 +8,6 @@ export default function NotInEnglandLayout ({
   NavigateToPreviousPage,
   locationType
 }) {
-  const handleSubmit = () => {
-    NavigateToNextPage()
-  }
-
   const navigateBack = (event) => {
     event.preventDefault()
     NavigateToPreviousPage()

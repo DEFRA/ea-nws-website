@@ -216,6 +216,7 @@ export default function Map({
           weight: 2,
           fillOpacity: 0.25
         })
+        layer.bringToFront()
       })
     }
   }
@@ -234,21 +235,21 @@ export default function Map({
     }
   }
 
-  const hideAlertArea = () => {
-    if (alertAreaRef.current && alertAreaRefVisible) {
-      alertAreaRef.current.getLayers().forEach((layer) => {
-        layer.setStyle({ opacity: 0, fillOpacity: 0 })
-      })
-      setAlertAreaRefVisible(false)
-    }
-  }
-
   const hideWarningArea = () => {
-    if (warningAreaRef.current && warningAreaRefVisible) {
-      warningAreaRef.current.getLayers().forEach((layer) => {
+    if (warningAreaRefVisible && warningAreaRef.current) {
+      warningAreaRef.current.eachLayer((layer) => {
         layer.setStyle({ opacity: 0, fillOpacity: 0 })
       })
       setWarningAreaRefVisible(false)
+    }
+  }
+
+  const hideAlertArea = () => {
+    if (alertAreaRefVisible && alertAreaRef.current) {
+      alertAreaRef.current.eachLayer((layer) => {
+        layer.setStyle({ opacity: 0, fillOpacity: 0 })
+      })
+      setAlertAreaRefVisible(false)
     }
   }
 

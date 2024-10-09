@@ -12,7 +12,7 @@ import Map from '../../../../../../components/custom/Map'
 import MapKey from '../../../../../../components/custom/MapKey'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationDropPinSearchResults () {
+export default function LocationDropPinSearchResults() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [pinCoords, setPinCoords] = useState('')
@@ -44,7 +44,7 @@ export default function LocationDropPinSearchResults () {
         // TODO: Send currentLocation object to elasticache and geosafe, then navigate
         // NavigateToNextPage()
       } else {
-        navigate(orgManageLocationsUrls.search.dropPinNotInEngland)
+        navigate(orgManageLocationsUrls.add.search.dropPinNotInEngland)
       }
     }
   }
@@ -75,7 +75,7 @@ export default function LocationDropPinSearchResults () {
               <div className='govuk-!-margin-bottom-4'>
                 <a
                   className='govuk-link'
-                  href={orgManageLocationsUrls.search.dropPinSearch}
+                  href={orgManageLocationsUrls.add.search.dropPinSearch}
                 >
                   Search with a different place name, town or postcode
                 </a>

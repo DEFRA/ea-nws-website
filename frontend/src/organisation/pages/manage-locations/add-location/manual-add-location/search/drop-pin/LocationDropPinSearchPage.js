@@ -11,7 +11,7 @@ import { setCurrentLocationCoordinates } from '../../../../../../../common/redux
 import { backendCall } from '../../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationDropPinSearchPage () {
+export default function LocationDropPinSearchPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [searchOption, setSearchOption] = useState('')
@@ -121,7 +121,7 @@ export default function LocationDropPinSearchPage () {
 
     if (!error && placeNameTownOrPostcodeCoords) {
       dispatch(setCurrentLocationCoordinates(placeNameTownOrPostcodeCoords))
-      navigate(orgManageLocationsUrls.search.dropPinSearchResults)
+      navigate(orgManageLocationsUrls.add.search.dropPinSearchResults)
     }
   }
 

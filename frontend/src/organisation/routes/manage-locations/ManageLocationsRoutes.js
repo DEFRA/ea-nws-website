@@ -60,7 +60,12 @@ const orgManageLocationsUrls = {
       searchOption: urlManageOrg + '/add/search-option',
       postCodeSearch: urlManageOrg + '/add/postcode-search',
       postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
-      xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search'
+      xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search',
+      xyCoordinatesNotInEngland:
+        urlManageOrg + '/add/xy-coordinates-not-in-england',
+      dropPinSearch: urlManageOrg + '/add/drop-pin-search',
+      dropPinSearchResults: urlManageOrg + '/add/drop-pin-search-results',
+      dropPinNotInEngland: urlManageOrg + '/add/drop-pin-not-in-england'
     },
     optionalInformation: {
       optionalInfo: urlManageOrgAddLocations + '/optional-information',
@@ -73,17 +78,6 @@ const orgManageLocationsUrls = {
         urlManageOrgAddLocations + '/optional-information/action-plan',
       addNotes: urlManageOrgAddLocations + '/optional-information/notes'
     }
-  },
-  search: {
-    searchOption: urlManageOrg + '/add/search-option',
-    postCodeSearch: urlManageOrg + '/add/postcode-search',
-    postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
-    xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search',
-    xyCoordinatesNotInEngland:
-      urlManageOrg + '/add/xy-coordinates-not-in-england',
-    dropPinSearch: urlManageOrg + '/add/drop-pin-search',
-    dropPinSearchResults: urlManageOrg + '/add/drop-pin-search-results',
-    dropPinNotInEngland: urlManageOrg + '/add/drop-pin-not-in-england'
   },
   optionalInformation: {
     optionalInfo: urlManageOrgAddLocations + '/optional-information',
@@ -168,15 +162,15 @@ const orgManageLocationRoutes = [
     component: <LocationXYCoordinatesSearchPage />
   },
   {
-    path: orgManageLocationsUrls.search.dropPinSearch,
+    path: orgManageLocationsUrls.add.search.dropPinSearch,
     component: <LocationDropPinSearchPage />
   },
   {
-    path: orgManageLocationsUrls.search.dropPinSearchResults,
+    path: orgManageLocationsUrls.add.search.dropPinSearchResults,
     component: <LocationDropPinSearchResultsPage />
   },
   {
-    path: orgManageLocationsUrls.search.dropPinNotInEngland,
+    path: orgManageLocationsUrls.add.search.dropPinNotInEngland,
     component: <DropPinNotInEnglandPage />
   },
   // unmatched locations

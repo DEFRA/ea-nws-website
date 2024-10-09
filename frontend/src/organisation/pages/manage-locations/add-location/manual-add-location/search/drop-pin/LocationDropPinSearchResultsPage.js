@@ -12,7 +12,7 @@ import Map from '../../../../../../components/custom/Map'
 import MapKey from '../../../../../../components/custom/MapKey'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationDropPinSearchResults () {
+export default function LocationDropPinSearchResults() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [pinCoords, setPinCoords] = useState('')
@@ -44,7 +44,7 @@ export default function LocationDropPinSearchResults () {
         // TODO: Send currentLocation object to elasticache and geosafe, then navigate
         // NavigateToNextPage()
       } else {
-        navigate(orgManageLocationsUrls.add.search.dropPinNotInEngland)
+        navigate(orgManageLocationsUrls.add.error.dropPinNotInEngland)
       }
     }
   }

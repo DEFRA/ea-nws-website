@@ -54,18 +54,16 @@ const orgManageLocationsUrls = {
     error: {
       cannotFindAddress: urlManageOrg + '/add/cannot-find-address',
       xyCoordinatesNotInEngland:
-        urlManageOrg + '/add/xy-coordinates-not-in-england'
+        urlManageOrg + '/add/xy-coordinates-not-in-england',
+      dropPinNotInEngland: urlManageOrg + '/add/drop-pin-not-in-england'
     },
     search: {
       searchOption: urlManageOrg + '/add/search-option',
       postCodeSearch: urlManageOrg + '/add/postcode-search',
       postCodeSearchResults: urlManageOrg + '/add/postcode-search-results',
       xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search',
-      xyCoordinatesNotInEngland:
-        urlManageOrg + '/add/xy-coordinates-not-in-england',
       dropPinSearch: urlManageOrg + '/add/drop-pin-search',
-      dropPinSearchResults: urlManageOrg + '/add/drop-pin-search-results',
-      dropPinNotInEngland: urlManageOrg + '/add/drop-pin-not-in-england'
+      dropPinSearchResults: urlManageOrg + '/add/drop-pin-search-results'
     },
     optionalInformation: {
       optionalInfo: urlManageOrgAddLocations + '/optional-information',
@@ -137,12 +135,16 @@ const orgManageLocationRoutes = [
   },
   // add error
   {
+    path: orgManageLocationsUrls.add.error.cannotFindAddress,
+    component: <CannotFindAddressPage />
+  },
+  {
     path: orgManageLocationsUrls.add.error.xyCoordinatesNotInEngland,
     component: <XYCoordinatesNotInEnglandPage />
   },
   {
-    path: orgManageLocationsUrls.add.error.cannotFindAddress,
-    component: <CannotFindAddressPage />
+    path: orgManageLocationsUrls.add.error.dropPinNotInEngland,
+    component: <DropPinNotInEnglandPage />
   },
   // search
   {
@@ -168,10 +170,6 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.search.dropPinSearchResults,
     component: <LocationDropPinSearchResultsPage />
-  },
-  {
-    path: orgManageLocationsUrls.add.search.dropPinNotInEngland,
-    component: <DropPinNotInEnglandPage />
   },
   // unmatched locations
   {

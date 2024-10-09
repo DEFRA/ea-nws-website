@@ -18,7 +18,12 @@ export default function ManageKeywordsPage() {
   const [showEditDialog, setShowEditDialog] = useState(false)
   const [keywordEditInput, setKeywordEditInput] = useState('')
   const [showDeleteDialog, setShowDeleteDialog] = useState(false)
-  const [keywordDeletedText, setKeywordDeletedText] = useState('')
+  const [dialogText, setDialogText] = useState('')
+  const [notificationText, setNotificationText] = useState('')
+  const [dialogTitle, setDialogTitle] = useState('')
+  const [dialogButtonText, setDialogButtonText] = useState('')
+  const associatedLocation = 2
+  const associatedLocations = 6
 
   // REMOVE WHEN READY - FOR TESTING
   const AddTestData = () => {
@@ -35,6 +40,9 @@ export default function ManageKeywordsPage() {
   }
   const setSelected = () => {
     setSelectedKeywords([locationKeywords[1]])
+  }
+  const setMultipleSelected = () => {
+    setSelectedKeywords([locationKeywords[1], locationKeywords[2]])
   }
 
   const locationKeywords = useSelector((state) =>
@@ -55,11 +63,12 @@ export default function ManageKeywordsPage() {
   }
 
   const onClickEditDialog = () => {
-    if (!showEditDialog) {
-      setShowEditDialog(true)
-    } else {
-      setShowEditDialog(false)
-    }
+    setDialogTitle('Change keyword')
+    setDialogText(
+      `Changing this keyword will change it for all the locations it's associated with.`
+    )
+    setDialogButtonText('Change keyword')
+    setShowEditDialog(!showEditDialog)
   }
 
   const editKeyword = () => {
@@ -83,20 +92,15 @@ export default function ManageKeywordsPage() {
   }
 
   const handleEdit = () => {
-    if (keywordEditInput === '') {
-      //remove
-      console.log('input is empty')
-      onClickEditDialog()
-      //onClickRemove
-    } else {
-      editKeyword()
-      onClickEditDialog()
-    }
     if (
-      (keywordType === 'location' && locationKeywords.length !== 0) ||
-      (keywordType === 'contact' && contactKeywords.length !== 0)
+      ((keywordType === 'location' && locationKeywords.length !== 0) ||
+        (keywordType === 'contact' && contactKeywords.length !== 0)) &&
+      selectedKeywords.length > 0
     ) {
-      if (selectedKeywords.length > 0) {
+      if (keywordEditInput === '') {
+        onClickEditDialog()
+        onClickDeleteDialog('changeLink')
+      } else {
         editKeyword()
         onClickEditDialog()
       }
@@ -119,30 +123,68 @@ export default function ManageKeywordsPage() {
   }
 
   const handleDelete = () => {
-    console.log('In delete')
-
     if (
       (keywordType === 'location' && locationKeywords.length !== 0) ||
       (keywordType === 'contact' && contactKeywords.length !== 0)
     ) {
       if (selectedKeywords.length > 0) {
-        if (selectedKeywords.length === 1) {
-          setKeywordDeletedText('Keyword deleted')
-        } else {
-          setKeywordDeletedText(`${selectedKeywords.length} keywords deleted`)
-        }
         removeKeywords()
+        if (selectedKeywords.length === 1) {
+          setNotificationText('Keyword deleted')
+        } else {
+          setNotificationText(`${selectedKeywords.length} keywords deleted`)
+        }
         onClickDeleteDialog()
       }
     }
   }
 
-  const onClickDeleteDialog = () => {
-    if (!showDeleteDialog) {
-      setShowDeleteDialog(true)
-    } else {
-      setShowDeleteDialog(false)
+  const onClickDeleteDialog = (from) => {
+    if (from === 'deleteLink') {
+      if (selectedKeywords.length === 1) {
+        setDialogTitle('Delete keyword')
+        setDialogText(
+          <>
+            If you continue this keyword will be deleted from this account and
+            no longer associated with {associatedLocation} locations.
+            <br />
+            <br />
+            Deleting this keyword does not unlink contacts and locations. If you
+            no longer want contacts and locations to be linked you need to
+            unlink them.
+          </>
+        )
+        setDialogButtonText('Delete keyword')
+      } else {
+        setDialogTitle(`Delete ${selectedKeywords.length} keywords`)
+        setDialogText(
+          <>
+            If you continue these keywords will be deleted from this account and
+            no longer associated with {associatedLocations} locations.
+            <br />
+            <br />
+            Deleting these keywords does not unlink contacts and locations. If
+            you no longer want contacts and locations to be linked you need to
+            unlink them.
+          </>
+        )
+        setDialogButtonText('Delete keywords')
+      }
+    } else if (from === 'changeLink') {
+      setDialogText(
+        <>
+          Removing the keyword will delete it from this account. It will no
+          longer be in the keyword list and you will not be able to associate it
+          with any other locations.
+          <br />
+          <br />
+          Deleting this keyword does not unlink contacts and locations. If you
+          no longer want contacts and locations to be linked you need to unlink
+          them.
+        </>
+      )
     }
+    setShowDeleteDialog(!showDeleteDialog)
   }
 
   const detailsText =
@@ -185,20 +227,6 @@ export default function ManageKeywordsPage() {
       </>
     ) : null
 
-  const editDialogText =
-    'Changing this keyword will change it for all the locations it’s associated with.'
-
-  const deleteKeywordText = (
-    <>
-      If you continue this keyword will be deleted from this account and no
-      longer associated with 2 locations.
-      <br />
-      <br />
-      Deleting this keyword does not unlink contacts and locations. If you no
-      longer want contacts and locations to be linked you need to unlink them.
-    </>
-  )
-
   console.log('Location keywords: ', locationKeywords)
   console.log('Selected: ', selectedKeywords)
 
@@ -208,11 +236,11 @@ export default function ManageKeywordsPage() {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-            {keywordDeletedText && (
+            {notificationText && (
               <NotificationBanner
                 className='govuk-notification-banner govuk-notification-banner--success'
                 title='Success'
-                text='Keyword deleted'
+                text={notificationText}
               />
             )}
             <h1 className='govuk-heading-l'>Manage keywords</h1>
@@ -280,28 +308,33 @@ export default function ManageKeywordsPage() {
               <br />
               <Link onClick={setSelected}>set selected</Link>
               <br />
+              <Link onClick={setMultipleSelected}>set multiple selected</Link>
+              <br />
               <Link onClick={onClickEditDialog}>Edit</Link>
               {showEditDialog && (
                 <Popup
                   onAction={handleEdit}
                   onCancel={onClickEditDialog}
                   onClose={onClickEditDialog}
-                  title='Change keyword'
-                  popupText={editDialogText}
-                  buttonText='Change keyword'
+                  title={dialogTitle}
+                  popupText={dialogText}
+                  buttonText={dialogButtonText}
                   input='Keyword'
                   setTextInput={setKeywordEditInput}
                 />
               )}
-              <Link onClick={onClickDeleteDialog}>Delete</Link>
+              <br />
+              <Link onClick={() => onClickDeleteDialog('deleteLink')}>
+                Delete
+              </Link>
               {showDeleteDialog && (
                 <Popup
                   onAction={handleDelete}
                   onCancel={onClickDeleteDialog}
                   onClose={onClickDeleteDialog}
-                  title='Delete keyword'
-                  popupText={deleteKeywordText}
-                  buttonText='Delete keyword'
+                  title={dialogTitle}
+                  popupText={dialogText}
+                  buttonText={dialogButtonText}
                   buttonClass='govuk-button--warning'
                 />
               )}

@@ -26,9 +26,9 @@ export default function Map ({
   type,
   setCoordinates,
   showMapControls = true,
-  showWarningAreas = true,
-  showAlertAreas = true,
-  zoomLevel = 12
+  zoomLevel = 12,
+  showFloodWarningAreas,
+  showFloodAlertAreas
 }) {
   const { latitude, longitude } = useSelector(
     (state) => state.session.currentLocation.coordinates
@@ -184,9 +184,76 @@ export default function Map ({
     })
   }
 
-  const showWarningAndAlertAreas = showWarningAreas && showAlertAreas
-  const showJustWarningAreas = showWarningAreas && !showAlertAreas
-  const showJustAlertAreas = !showWarningAreas && showAlertAreas
+  const alertAreaRef = useRef(null)
+  const warningAreaRef = useRef(null)
+  const [alertAreaRefVisible, setAlertAreaRefVisible] = useState(false)
+  const [warningAreaRefVisible, setWarningAreaRefVisible] = useState(false)
+
+  useEffect(() => {
+    showAreas()
+  }, [showFloodWarningAreas, showFloodAlertAreas])
+
+  const showAreas = () => {
+    if (showFloodWarningAreas && showFloodAlertAreas) {
+      showAlertAreas()
+      showWarningAreas()
+    } else if (showFloodWarningAreas) {
+      showWarningAreas()
+      hideAlertArea()
+    } else if (showFloodAlertAreas) {
+      showAlertAreas()
+      hideWarningArea()
+    } else {
+      hideWarningArea()
+      hideAlertArea()
+    }
+  }
+
+  const showWarningAreas = () => {
+    if (warningAreaRefVisible && warningAreaRef.current) {
+      warningAreaRef.current.eachLayer((layer) => {
+        layer.options.className = 'warning-area-pattern-fill'
+        layer.setStyle({
+          opacity: 1,
+          color: '#f70202',
+          weight: 2,
+          fillOpacity: 0.25
+        })
+      })
+    }
+  }
+
+  const showAlertAreas = () => {
+    if (alertAreaRefVisible && alertAreaRef.current) {
+      alertAreaRef.current.eachLayer((layer) => {
+        layer.options.className = 'alert-area-pattern-fill'
+        layer.setStyle({
+          opacity: 1,
+          color: '#ffa200',
+          weight: 2,
+          fillOpacity: 0.5
+        })
+      })
+    }
+  }
+
+  const hideAlertArea = () => {
+    if (alertAreaRef.current && alertAreaRefVisible) {
+      alertAreaRef.current.getLayers().forEach((layer) => {
+        layer.setStyle({ opacity: 0, fillOpacity: 0 })
+      })
+      setAlertAreaRefVisible(false)
+    }
+  }
+
+  const hideWarningArea = () => {
+    if (warningAreaRef.current && warningAreaRefVisible) {
+      warningAreaRef.current.getLayers().forEach((layer) => {
+        layer.setStyle({ opacity: 0, fillOpacity: 0 })
+      })
+      setWarningAreaRefVisible(false)
+    }
+  }
 
   return (
     <div ref={ref}>
@@ -200,57 +267,52 @@ export default function Map ({
         className='map-container'
       >
         {apiKey &&
-          (apiKey !== 'error'
-            ? (
-              <>
-                {tileLayerWithHeader}
-                {showMapControls && (
-                  <>
-                    <ZoomControl position='bottomright' />
-                    <ResetMapButton />
-                  </>
-                )}
-                {type === 'drop'
-                  ? (
-                    <AddMarker />
-                    )
-                  : (
-                    <Marker position={center} interactive={false} />
-                    )}
-                {showWarningAndAlertAreas && alertArea && (
-                  <GeoJSON
-                    data={alertArea}
-                    onEachFeature={onEachAlertAreaFeature}
-                  />
-                )}
-                {showWarningAndAlertAreas && warningArea && (
-                  <GeoJSON
-                    data={warningArea}
-                    onEachFeature={onEachWarningAreaFeature}
-                  />
-                )}
-                {showJustAlertAreas && alertArea && (
-                  <GeoJSON
-                    data={alertArea}
-                    onEachFeature={onEachAlertAreaFeature}
-                  />
-                )}
-                {showJustWarningAreas && warningArea && (
-                  <GeoJSON
-                    data={warningArea}
-                    onEachFeature={onEachWarningAreaFeature}
-                  />
-                )}
-              </>
-              )
-            : (
-              <div className='map-error-container'>
-                <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
-                <Link className='govuk-body-s' onClick={() => getApiKey()}>
-                  Reload map
-                </Link>
-              </div>
-              ))}
+          (apiKey !== 'error' ? (
+            <>
+              {tileLayerWithHeader}
+              {showMapControls && (
+                <>
+                  <ZoomControl position='bottomright' />
+                  <ResetMapButton />
+                </>
+              )}
+              {type === 'drop'
+                ? (
+                  <AddMarker />
+                  )
+                : (
+                  <Marker position={center} interactive={false} />
+                  )}
+              {alertArea && (
+                <GeoJSON
+                  data={alertArea}
+                  onEachFeature={onEachAlertAreaFeature}
+                  ref={(el) => {
+                    alertAreaRef.current = el
+                    setAlertAreaRefVisible(true)
+                  }}
+                />
+              )}
+              {/* warning area must be added after alert areas - this pushes warning areas to the top */}
+              {warningArea && (
+                <GeoJSON
+                  data={warningArea}
+                  onEachFeature={onEachWarningAreaFeature}
+                  ref={(el) => {
+                    warningAreaRef.current = el
+                    setWarningAreaRefVisible(true)
+                  }}
+                />
+              )}
+            </>
+          ) : (
+            <div className='map-error-container'>
+              <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
+              <Link className='govuk-body-s' onClick={() => getApiKey()}>
+                Reload map
+              </Link>
+            </div>
+          ))}
       </MapContainer>
     </div>
   )

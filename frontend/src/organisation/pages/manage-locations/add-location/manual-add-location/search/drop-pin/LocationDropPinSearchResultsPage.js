@@ -85,8 +85,8 @@ export default function LocationDropPinSearchResults () {
                   <Map
                     setCoordinates={setPinCoords}
                     type='drop'
-                    showWarningAreas={isFloodWarningAndSevereAreasVisible}
-                    showAlertAreas={isFloodAlertAreasVisible}
+                    showFloodWarningAreas={isFloodWarningAndSevereAreasVisible}
+                    showFloodAlertAreas={isFloodAlertAreasVisible}
                   />
                 </div>
                 <div class='govuk-grid-column-one-third'>

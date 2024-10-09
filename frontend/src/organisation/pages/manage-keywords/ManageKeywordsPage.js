@@ -8,7 +8,7 @@ import BackLink from '../../../common/components/custom/BackLink'
 import Popup from '../../../common/components/custom/Popup'
 import Details from '../../../common/components/gov-uk/Details'
 import { setCurrentLocationKeywords } from '../../../common/redux/userSlice'
-export default function ManageKeywordsPage() {
+export default function ManageKeywordsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [keywordType, setKeywordType] = useState('location')
@@ -16,7 +16,7 @@ export default function ManageKeywordsPage() {
   const [showEditDialog, setShowEditDialog] = useState(false)
   const [keywordEditInput, setKeywordEditInput] = useState('')
 
-  //REMOVE WHEN READY - FOR TESTING
+  // REMOVE WHEN READY - FOR TESTING
   const AddTestData = () => {
     const testData = [
       'keyword1',
@@ -81,10 +81,10 @@ export default function ManageKeywordsPage() {
     ) {
       if (selectedKeywords.length > 0) {
         if (keywordEditInput === '') {
-          //remove
+          // remove
           console.log('input is empty')
           onClickEditDialog()
-          //onClickRemove
+          // onClickRemove
         } else {
           editKeyword()
           onClickEditDialog()
@@ -98,44 +98,48 @@ export default function ManageKeywordsPage() {
     'Changing this keyword will change it for all the locations it’s associated with.'
 
   const detailsText =
-    keywordType === 'location' ? (
-      <>
-        <p>
-          Adding keywords for each location can make it easier for you to filter
-          and create lists of locations you can link to contacts to get relevant
-          flood messages.
-        </p>
-        <p>
-          For example, you may want to add 'pumping station' or 'office' or
-          'Midlands' as a keyword, then show all of the locations with that
-          keyword in a list.
-        </p>
-        <p>
-          Once you use a keyword it will be saved so you can select it for any
-          other locations.
-        </p>
-      </>
-    ) : keywordType === 'contact' ? (
-      <>
-        <p>
-          Adding keywords for each contact can make it easier for you to filter
-          and create lists of people you can link to locations to get relevant
-          flood messages.
-        </p>
-        <p>
-          For example, you may want to add 'North' or 'South' as a keyword, then
-          show all of the contacts with that keyword in a list.
-        </p>
-        <p>
-          Once you use a keyword it will be saved so you can select it for any
-          other contacts.
-        </p>
-        <p>
-          You can add a maximum of 50 keywords and each keyword can be single or
-          multiple words, for example 'South' or 'South West'.
-        </p>
-      </>
-    ) : null
+    keywordType === 'location'
+      ? (
+        <>
+          <p>
+            Adding keywords for each location can make it easier for you to filter
+            and create lists of locations you can link to contacts to get relevant
+            flood messages.
+          </p>
+          <p>
+            For example, you may want to add 'pumping station' or 'office' or
+            'Midlands' as a keyword, then show all of the locations with that
+            keyword in a list.
+          </p>
+          <p>
+            Once you use a keyword it will be saved so you can select it for any
+            other locations.
+          </p>
+        </>
+        )
+      : keywordType === 'contact'
+        ? (
+          <>
+            <p>
+              Adding keywords for each contact can make it easier for you to filter
+              and create lists of people you can link to locations to get relevant
+              flood messages.
+            </p>
+            <p>
+              For example, you may want to add 'North' or 'South' as a keyword, then
+              show all of the contacts with that keyword in a list.
+            </p>
+            <p>
+              Once you use a keyword it will be saved so you can select it for any
+              other contacts.
+            </p>
+            <p>
+              You can add a maximum of 50 keywords and each keyword can be single or
+              multiple words, for example 'South' or 'South West'.
+            </p>
+          </>
+          )
+        : null
 
   const setTab = (tab) => {
     setKeywordType(tab)
@@ -200,7 +204,7 @@ export default function ManageKeywordsPage() {
                       <button className='search-button'>
                         <FontAwesomeIcon
                           icon={faMagnifyingGlass}
-                          width={'20px'}
+                          width='20px'
                         />
                       </button>
                     </div>
@@ -210,7 +214,7 @@ export default function ManageKeywordsPage() {
                   Clear Seach results
                 </Link>
               </div>
-              {/*TO REMOVE */}
+              {/* TO REMOVE */}
               <Link onClick={AddTestData}>Test Data</Link>
               <br />
               <Link onClick={setSelected}>set selected</Link>

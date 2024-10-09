@@ -2,7 +2,7 @@ import React from 'react'
 import BackLink from '../../../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../../../common/components/custom/OrganisationAccountNavigation'
 
-export default function CannotChangeLocationManuallyLayout({
+export default function CannotChangeLocationManuallyLayout ({
   NavigateToPreviousPage,
   LocationType
 }) {

@@ -214,7 +214,7 @@ const orgManageLocationRoutes = [
     path: urlManageOrgConfirmLocations,
     component: <ConfirmAddingLocationsPage />
   },
-  //edit
+  // edit
   {
     path: orgManageLocationsUrls.edit.options,
     component: <EditLocationOptionsPage />

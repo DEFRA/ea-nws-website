@@ -15,6 +15,24 @@ export default function ManageKeywordsPage() {
   const [selectedKeywords, setSelectedKeywords] = useState([])
   const [showEditDialog, setShowEditDialog] = useState(false)
   const [keywordEditInput, setKeywordEditInput] = useState('')
+
+  //REMOVE WHEN READY - FOR TESTING
+  const AddTestData = () => {
+    const testData = [
+      'keyword1',
+      'keyword2',
+      'keyword3',
+      'keyword4',
+      'keyword5',
+      'keyword6'
+    ]
+    dispatch(setCurrentLocationKeywords(testData))
+    console.log(testData + ' added')
+  }
+  const setSelected = () => {
+    setSelectedKeywords([locationKeywords[1]])
+  }
+
   const locationKeywords = useSelector((state) =>
     state.session.currentLocation.meta_data.location_additional.keywords !==
     null
@@ -57,22 +75,20 @@ export default function ManageKeywordsPage() {
   }
 
   const handleEdit = () => {
-    if (keywordEditInput === '') {
-      //remove
-      console.log('input is empty')
-      onClickEditDialog()
-      //onClickRemove
-    } else {
-      editKeyword()
-      onClickEditDialog()
-    }
     if (
-      (keywordType === 'location' && locationKeywords.length !== 0) ||
-      (keywordType === 'contact' && contactKeywords.length !== 0)
+      (keywordType === 'location' && locationKeywords.length > 0) ||
+      (keywordType === 'contact' && contactKeywords.length > 0)
     ) {
       if (selectedKeywords.length > 0) {
-        editKeyword()
-        onClickEditDialog()
+        if (keywordEditInput === '') {
+          //remove
+          console.log('input is empty')
+          onClickEditDialog()
+          //onClickRemove
+        } else {
+          editKeyword()
+          onClickEditDialog()
+        }
       }
     }
     setKeywordEditInput('')
@@ -124,6 +140,9 @@ export default function ManageKeywordsPage() {
   const setTab = (tab) => {
     setKeywordType(tab)
   }
+
+  console.log('Location keywords: ', locationKeywords)
+  console.log('Selected: ', selectedKeywords)
 
   return (
     <>
@@ -191,6 +210,11 @@ export default function ManageKeywordsPage() {
                   Clear Seach results
                 </Link>
               </div>
+              {/*TO REMOVE */}
+              <Link onClick={AddTestData}>Test Data</Link>
+              <br />
+              <Link onClick={setSelected}>set selected</Link>
+              <br />
               <Link onClick={onClickEditDialog}>Edit</Link>
               {showEditDialog && (
                 <Popup

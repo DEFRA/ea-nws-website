@@ -26,7 +26,9 @@ export default function Map({
   type,
   setCoordinates,
   showMapControls = true,
-  zoomLevel = 12
+  zoomLevel = 12,
+  showFloodWarningAreas,
+  showFloodAlertAreas
 }) {
   const { latitude, longitude } = useSelector(
     (state) => state.session.currentLocation.coordinates
@@ -164,12 +166,11 @@ export default function Map({
 
   const onEachWarningAreaFeature = (feature, layer) => {
     layer.options.className = 'warning-area-pattern-fill'
-    layer.bringToFront()
 
     layer.setStyle({
       color: '#f70202',
       weight: 2,
-      fillOpacity: 0
+      fillOpacity: 0.25
     })
   }
 
@@ -181,6 +182,74 @@ export default function Map({
       weight: 2,
       fillOpacity: 0.5
     })
+  }
+
+  const alertAreaRef = useRef(null)
+  const warningAreaRef = useRef(null)
+  const [alertAreaRefVisible, setAlertAreaRefVisible] = useState(false)
+  const [warningAreaRefVisible, setWarningAreaRefVisible] = useState(false)
+
+  useEffect(() => {
+    showAreas()
+  }, [showFloodWarningAreas, showFloodAlertAreas])
+
+  const showAreas = () => {
+    if (showFloodWarningAreas && showFloodAlertAreas) {
+      showAlertAreas()
+      showWarningAreas()
+    } else if (showFloodWarningAreas) {
+      showWarningAreas()
+      hideAlertArea()
+    } else if (showFloodAlertAreas) {
+      showAlertAreas()
+      hideWarningArea()
+    }
+  }
+
+  const showWarningAreas = () => {
+    if (warningAreaRefVisible && warningAreaRef.current) {
+      warningAreaRef.current.eachLayer((layer) => {
+        layer.options.className = 'warning-area-pattern-fill'
+        layer.setStyle({
+          opacity: 1,
+          color: '#f70202',
+          weight: 2,
+          fillOpacity: 0.25
+        })
+      })
+    }
+  }
+
+  const showAlertAreas = () => {
+    if (alertAreaRefVisible && alertAreaRef.current) {
+      alertAreaRef.current.eachLayer((layer) => {
+        layer.options.className = 'alert-area-pattern-fill'
+        layer.setStyle({
+          opacity: 1,
+          color: '#ffa200',
+          weight: 2,
+          fillOpacity: 0.5
+        })
+      })
+    }
+  }
+
+  const hideAlertArea = () => {
+    if (alertAreaRef.current && alertAreaRefVisible) {
+      alertAreaRef.current.getLayers().forEach((layer) => {
+        layer.setStyle({ opacity: 0, fillOpacity: 0 })
+      })
+      setAlertAreaRefVisible(false)
+    }
+  }
+
+  const hideWarningArea = () => {
+    if (warningAreaRef.current && warningAreaRefVisible) {
+      warningAreaRef.current.getLayers().forEach((layer) => {
+        layer.setStyle({ opacity: 0, fillOpacity: 0 })
+      })
+      setWarningAreaRefVisible(false)
+    }
   }
 
   return (
@@ -213,6 +282,10 @@ export default function Map({
                 <GeoJSON
                   data={alertArea}
                   onEachFeature={onEachAlertAreaFeature}
+                  ref={(el) => {
+                    alertAreaRef.current = el
+                    setAlertAreaRefVisible(true)
+                  }}
                 />
               )}
               {/* warning area must be added after alert areas - this pushes warning areas to the top */}
@@ -220,6 +293,10 @@ export default function Map({
                 <GeoJSON
                   data={warningArea}
                   onEachFeature={onEachWarningAreaFeature}
+                  ref={(el) => {
+                    warningAreaRef.current = el
+                    setWarningAreaRefVisible(true)
+                  }}
                 />
               )}
             </>

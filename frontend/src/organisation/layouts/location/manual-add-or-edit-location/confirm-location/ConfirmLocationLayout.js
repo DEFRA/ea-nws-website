@@ -1,10 +1,11 @@
-import { React } from 'react'
+import { React, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../common/components/gov-uk/Button'
+import Checkbox from '../../../../../common/components/gov-uk/CheckBox'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -67,6 +68,9 @@ export default function ConfirmLocationLayout() {
     navigate(-1)
   }
 
+  const [showFloodWarningAreas, setShowFloodWarningAreas] = useState(true)
+  const [showFloodAlertAreas, setShowFloodAlertAreas] = useState(true)
+
   return (
     <>
       <OrganisationAccountNavigation />
@@ -77,6 +81,16 @@ export default function ConfirmLocationLayout() {
             <h1 className='govuk-heading-l govuk-!-margin-top-5'>
               Confirm Location
             </h1>
+            <Checkbox
+              onChange={() => setShowFloodWarningAreas(!showFloodWarningAreas)}
+              checked={showFloodWarningAreas}
+              label='show flood warning areas'
+            />
+            <Checkbox
+              onChange={() => setShowFloodAlertAreas(!showFloodAlertAreas)}
+              checked={showFloodAlertAreas}
+              label='show flood alert areas'
+            />
             <h2 className='govuk-heading-m govuk-!-margin-top-6'>
               {locationName}
             </h2>
@@ -162,7 +176,12 @@ export default function ConfirmLocationLayout() {
             className='govuk-grid-column-one-half'
             style={{ marginTop: '95px' }}
           >
-            <Map showMapControls={false} zoomLevel={14} />
+            <Map
+              showMapControls={false}
+              zoomLevel={14}
+              showFloodWarningAreas={showFloodWarningAreas}
+              showFloodAlertAreas={showFloodAlertAreas}
+            />
             <div className='govuk-!-margin-top-4'>
               <FloodWarningKey type='both' />
             </div>

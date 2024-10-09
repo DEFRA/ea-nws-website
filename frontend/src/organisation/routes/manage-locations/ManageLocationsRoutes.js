@@ -27,6 +27,8 @@ import ProvideAreaNamePage from '../../pages/manage-locations/add-location/uploa
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
 import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationOptionsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
+import CannotChangeLocationLinePage from '../../pages/manage-locations/view-location/edit-location/edit-line-location/CannotChangeLocationLinePage'
+import CannotChangeLocationPolygonPage from '../../pages/manage-locations/view-location/edit-location/edit-polygon-location/CannotChangeLocationPolygonPage'
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgAddLocations = '/organisation/manage-locations/add'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
@@ -85,7 +87,11 @@ const orgManageLocationsUrls = {
     }
   },
   edit: {
-    options: urlManageOrg + '/edit/location-options'
+    options: urlManageOrg + '/edit/location-options',
+    error: {
+      cannotChangeLocationPolygon: urlManageOrg + '/edit/cannot-change-polygon',
+      cannotChangeLocationLine: urlManageOrg + '/edit/cannot-change-line'
+    }
   }
 }
 
@@ -208,9 +214,18 @@ const orgManageLocationRoutes = [
     path: urlManageOrgConfirmLocations,
     component: <ConfirmAddingLocationsPage />
   },
+  //edit
   {
     path: orgManageLocationsUrls.edit.options,
     component: <EditLocationOptionsPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.error.cannotChangeLocationLine,
+    component: <CannotChangeLocationLinePage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.error.cannotChangeLocationPolygon,
+    component: <CannotChangeLocationPolygonPage />
   }
 ]
 

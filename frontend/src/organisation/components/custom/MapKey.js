@@ -5,7 +5,7 @@ import alertIcon from '../../../common/assets/images/alert_area_icon.png'
 import warningIcon from '../../../common/assets/images/warning_area_icon.png'
 import CheckBox from '../../../common/components/gov-uk/CheckBox'
 
-export default function MapKey ({
+export default function MapKey({
   isFloodWarningAndSevereAreasVisible,
   setFloodWarningAndSevereAreasVisible,
   isFloodAlertAreasVisible,
@@ -24,16 +24,16 @@ export default function MapKey ({
       </div>
       <div>
         <div
-          className='govuk-checkboxes govuk-checkboxes--small'
+          className='govuk-checkboxes govuk-checkboxes--small locations-map-key'
           data-module='govuk-checkboxes'
-          style={{ display: 'flex', alignItems: 'center' }}
         >
           <CheckBox
             name='FloodWarningAndSevereArea'
             onChange={() =>
               setFloodWarningAndSevereAreasVisible(
                 !isFloodWarningAndSevereAreasVisible
-              )}
+              )
+            }
             checked={isFloodWarningAndSevereAreasVisible}
           />
           <img
@@ -52,14 +52,14 @@ export default function MapKey ({
           <br />
         </div>
         <div
-          className='govuk-checkboxes govuk-checkboxes--small'
+          className='govuk-checkboxes govuk-checkboxes--small locations-map-key'
           data-module='govuk-checkboxes'
-          style={{ display: 'flex', alignItems: 'center' }}
         >
           <CheckBox
             name='FloodAlertArea'
             onChange={() =>
-              setFloodAlertAreasVisible(!isFloodAlertAreasVisible)}
+              setFloodAlertAreasVisible(!isFloodAlertAreasVisible)
+            }
             checked={isFloodAlertAreasVisible}
           />
           <FontAwesomeIcon
@@ -79,9 +79,8 @@ export default function MapKey ({
           <p style={{ fontSize: '14px', margin: 0 }}>Flood alert area</p>
         </div>
         <div
-          className='govuk-checkboxes govuk-checkboxes--small'
+          className='govuk-checkboxes govuk-checkboxes--small locations-map-key'
           data-module='govuk-checkboxes'
-          style={{ display: 'flex', alignItems: 'center' }}
         >
           <CheckBox
             name='FloodExtent'

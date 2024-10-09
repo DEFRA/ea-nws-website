@@ -2,14 +2,16 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import '../../css/custom.css'
 import Button from '../gov-uk/Button'
+import Input from '../gov-uk/Input'
 
-export default function Popup ({
+export default function Popup({
   onAction,
   onCancel,
   onClose,
   title,
   popupText,
   input = '',
+  setTextInput,
   buttonClass = '',
   buttonText
 }) {
@@ -25,7 +27,13 @@ export default function Popup ({
         <div className='popup-dialog-body'>
           <h3 className='govuk-heading-l'>{title}</h3>
           <p className='govuk-body'>{popupText}</p>
-          {input && <p>input</p>}
+          {input && (
+            <Input
+              name={input}
+              onChange={(val) => setTextInput(val)}
+              className='govuk-input govuk-input--width-20'
+            />
+          )}
 
           <div className='popup-dialog-flex'>
             <Button

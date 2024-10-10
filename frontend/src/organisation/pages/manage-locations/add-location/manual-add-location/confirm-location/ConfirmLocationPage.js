@@ -4,11 +4,14 @@ import { useNavigate } from 'react-router'
 
 export default function ConfirmLocationPage () {
   const navigate = useNavigate()
+  const navigateBack = () => {
+    navigate(-1)
+  }
 
   return (
     <>
       <ConfirmLocationLayout
-        differentXyCoordinates={navigate(-1)}
+        differentXyCoordinates={navigateBack}
       />
     </>
   )

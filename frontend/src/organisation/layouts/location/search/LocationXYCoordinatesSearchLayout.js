@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import BackLink from '../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
-import Button from '../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
-import Input from '../../../common/components/gov-uk/Input'
+import BackLink from '../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
+import Button from '../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
+import Input from '../../../../common/components/gov-uk/Input'
 import {
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
   setCurrentLocationNorthing
-} from '../../../common/redux/userSlice'
-import { convertCoordinatesToEspg4326 } from '../../../common/services/CoordinatesFormatConverter'
+} from '../../../../common/redux/userSlice'
+import { convertCoordinatesToEspg4326 } from '../../../../common/services/CoordinatesFormatConverter'
 import {
   getSurroundingFloodAreas,
   isLocationInFloodArea
-} from '../../../common/services/WfsFloodDataService'
-import { locationInEngland } from '../../../common/services/validations/LocationInEngland'
-import { xCoordinateValidation } from '../../../common/services/validations/XCoordinateValidation'
-import { yCoordinateValidation } from '../../../common/services/validations/YCoordinateValidation'
+} from '../../../../common/services/WfsFloodDataService'
+import { locationInEngland } from '../../../../common/services/validations/LocationInEngland'
+import { xCoordinateValidation } from '../../../../common/services/validations/XCoordinateValidation'
+import { yCoordinateValidation } from '../../../../common/services/validations/YCoordinateValidation'
 import { useDispatch, useSelector } from 'react-redux'
 export default function LocationXYCoordinatesSearchLayout ({
-  allFloodAreasAvailbleRoute,
-  floodAlertAreasAvailbleOnlyRoute,
-  noFloodAreasAvailbleRoute,
+  allFloodAreasAvailableRoute,
+  floodAlertAreasAvailableOnlyRoute,
+  noFloodAreasAvailableRoute,
   navigateToNotInEngland
 }) {
   const dispatch = useDispatch()
@@ -93,11 +93,11 @@ export default function LocationXYCoordinatesSearchLayout ({
 
   const navigateToNextPage = (isInAlertArea, isInWarningArea, isError) => {
     if (isInAlertArea && isInWarningArea) {
-      navigate(allFloodAreasAvailbleRoute)
+      allFloodAreasAvailableRoute()
     } else if (isInAlertArea) {
-      navigate(floodAlertAreasAvailbleOnlyRoute)
+      floodAlertAreasAvailableOnlyRoute()
     } else if (!isInAlertArea && !isInWarningArea) {
-      navigate(noFloodAreasAvailbleRoute)
+      noFloodAreasAvailableRoute()
     } else if (isError) {
       navigate('/error')
     }

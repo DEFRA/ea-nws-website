@@ -27,8 +27,8 @@ export default function Map({
   setCoordinates,
   showMapControls = true,
   zoomLevel = 12,
-  showFloodWarningAreas,
-  showFloodAlertAreas
+  showFloodWarningAreas = true,
+  showFloodAlertAreas = true
 }) {
   const { latitude, longitude } = useSelector(
     (state) => state.session.currentLocation.coordinates
@@ -254,6 +254,9 @@ export default function Map({
     } else if (showFloodAlertAreas) {
       showAlertAreas()
       hideWarningArea()
+    } else {
+      hideWarningArea()
+      hideAlertArea()
     }
   }
 

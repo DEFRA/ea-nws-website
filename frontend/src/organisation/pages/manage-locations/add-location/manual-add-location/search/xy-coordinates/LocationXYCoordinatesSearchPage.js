@@ -21,7 +21,7 @@ import { xCoordinateValidation } from '../../../../../../../common/services/vali
 import { yCoordinateValidation } from '../../../../../../../common/services/validations/YCoordinateValidation'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationXYCoordinatesSearchPage () {
+export default function LocationXYCoordinatesSearchPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -40,21 +40,17 @@ export default function LocationXYCoordinatesSearchPage () {
   }, [xCoordinate, yCoordinate])
 
   const handleSubmit = async () => {
-    let error = false
-
     const xCoordinateValidationError = xCoordinateValidation(xCoordinate)
     if (xCoordinateValidationError) {
       setXCoordinateError(xCoordinateValidationError)
-      error = true
     }
 
     const yCoordinateValidationError = yCoordinateValidation(yCoordinate)
     if (yCoordinateValidationError) {
       setYCoordinateError(yCoordinateValidationError)
-      error = true
     }
 
-    if (!error) {
+    if (!xCoordinateValidationError && !yCoordinateValidationError) {
       const { latitude, longitude } = convertCoordinatesToEspg4326(
         Number(xCoordinate),
         Number(yCoordinate)

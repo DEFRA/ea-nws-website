@@ -23,8 +23,6 @@ export default function LocationDropPinSearchPage() {
     useState(null)
   const [placeNameTownOrPostcodeError, setPlaceNameTownOrPostcodeError] =
     useState('')
-  const placeNameTownOrPostcodeNotRecognisedErrorText =
-    'Place name, town or postcode is not recognised'
   const [results, setResults] = useState(null)
 
   // remove error if user changes search option
@@ -97,25 +95,24 @@ export default function LocationDropPinSearchPage() {
   }
 
   const handleSubmit = () => {
-    let error = false
-
     if (!searchOption) {
       setSearchOptionError(searchOptionErrorText)
-      error = true
     }
 
     const trimmedPlaceNameTownOrPostcode = placeNameTownOrPostcode.trim()
     if (trimmedPlaceNameTownOrPostcode === '') {
       setPlaceNameTownOrPostcodeError(placeNameTownOrPostcodeText)
-      error = true
     } else if (results && results.length === 0) {
       setPlaceNameTownOrPostcodeError(
-        placeNameTownOrPostcodeNotRecognisedErrorText
+        'Place name, town or postcode is not recognised'
       )
-      error = true
     }
 
-    if (!error && placeNameTownOrPostcodeCoords) {
+    if (
+      !searchOptionError &&
+      !placeNameTownOrPostcodeError &&
+      placeNameTownOrPostcodeCoords
+    ) {
       dispatch(setCurrentLocationCoordinates(placeNameTownOrPostcodeCoords))
       navigate(orgManageLocationsUrls.add.search.dropPinSearchResults)
     }

@@ -13,7 +13,6 @@ import KeywordsForThisLocationPage from '../../pages/manage-locations/add-locati
 import AddNotesPage from '../../pages/manage-locations/add-location/optional-information/AddNotesPage'
 import AddOptionalAddress from '../../pages/manage-locations/add-location/optional-information/AddOptionalAddress'
 import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-information/OptionalLocationInformationPage'
-import AddLocationNotInEnglandPage from '../../pages/manage-locations/add-location/unmatched-location/NotInEnglandPage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
 import ConfirmAddingLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
@@ -166,10 +165,6 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.notInEngland,
     component: <NotInEnglandPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.notInEnglandLP,
-    component: <AddLocationNotInEnglandPage />
   },
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.selectHow,

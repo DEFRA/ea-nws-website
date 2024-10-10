@@ -8,6 +8,7 @@ import {
   clearAuth,
   setAuthToken,
   setContactPreferences,
+  setCurrentLocation,
   setProfile,
   setRegistrations
 } from '../redux/userSlice'
@@ -281,6 +282,31 @@ export default function IndexPage () {
     ]
   }
 
+  const mockCurrentLocation = {
+    name: null,
+    // address is the UPRN
+    address: null,
+    // Coordinates in dd (degrees decimal)
+    coordinates: null,
+    alert_categories: null,
+    meta_data: {
+      location_additional: {
+        full_address: null,
+        postcode: null,
+        // Easting EPSG: 27700
+        x_coordinate: null,
+        // Northing EPSG: 27700
+        y_coordinate: null,
+        internal_reference: null,
+        business_criticality: null,
+        location_type: null,
+        action_plan: null,
+        notes: null,
+        keywords: null
+      }
+    }
+  }
+
   function mockSession (profile) {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
@@ -323,6 +349,7 @@ export default function IndexPage () {
       dispatch(setRegistrations(registrations))
       dispatch(setContactPreferences(contactPreferences))
       dispatch(setProfile(profile))
+      dispatch(setCurrentLocation(mockCurrentLocation))
       setmockSessionActive(true)
     } else {
       dispatch(clearAuth())
@@ -478,7 +505,7 @@ export default function IndexPage () {
                 </li>
                 <li>
                   <Link
-                    to='/organisation/manage-locations/add/optional-location-info'
+                    to='/organisation/manage-locations/add/optional-address/info'
                     className='govuk-link'
                   >
                     add location information

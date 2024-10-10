@@ -30,10 +30,10 @@ export default function LocationSearchOptionPage () {
     } else {
       switch (searchOption) {
         case searchOptions[0].value:
-          navigate(orgManageLocationsUrls.add.postCodeSearch)
+          navigate(orgManageLocationsUrls.add.search.postCodeSearch)
           break
         case searchOptions[1].value:
-          navigate(orgManageLocationsUrls.add.xyCoordinatesSearch)
+          navigate(orgManageLocationsUrls.add.search.xyCoordinatesSearch)
           break
         case searchOptions[2].value:
           // TODO: Uncomment when page available

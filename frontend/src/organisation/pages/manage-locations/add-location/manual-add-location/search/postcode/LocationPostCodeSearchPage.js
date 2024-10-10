@@ -35,7 +35,7 @@ export default function LocationPostCodeSearchPage () {
       if (!errorMessage) {
         dispatch(setCurrentLocationPostcode(data[0].postcode))
         dispatch(setLocationSearchResults(data))
-        navigate(orgManageLocationsUrls.add.postCodeSearchResults)
+        navigate(orgManageLocationsUrls.add.search.postCodeSearchResults)
       } else {
         // show error message from OS Api postcode search
         setError(errorMessage)

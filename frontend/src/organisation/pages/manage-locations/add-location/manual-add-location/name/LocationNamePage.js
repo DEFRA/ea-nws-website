@@ -21,7 +21,7 @@ export default function LocationNamePage () {
     const validationError = locationNameValidation(locationName)
     if (!validationError) {
       dispatch(setCurrentLocationName(locationName))
-      navigate(orgManageLocationsUrls.add.searchOption)
+      navigate(orgManageLocationsUrls.add.search.searchOption)
     } else {
       setError(validationError)
     }

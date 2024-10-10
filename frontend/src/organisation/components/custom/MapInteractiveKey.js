@@ -5,7 +5,7 @@ import alertIcon from '../../../common/assets/images/alert_area_icon.png'
 import warningIcon from '../../../common/assets/images/warning_area_icon.png'
 import CheckBox from '../../../common/components/gov-uk/CheckBox'
 
-export default function MapInteractiveKey({
+export default function MapInteractiveKey ({
   showFloodWarningAreas,
   setShowFloodWarningAreas,
   showFloodAlertAreas,

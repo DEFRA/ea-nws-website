@@ -10,7 +10,7 @@ import Radio from '../../../../../../common/components/gov-uk/Radio'
 import { setCurrentLocationCoordinates } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 
-export default function LocationDropPinSearchLayout({
+export default function LocationDropPinSearchLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {

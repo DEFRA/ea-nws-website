@@ -9,10 +9,10 @@ import InsetText from '../../../../../../../common/components/gov-uk/InsetText'
 import { setCurrentLocationCoordinates } from '../../../../../../../common/redux/userSlice'
 import { locationInEngland } from '../../../../../../../common/services/validations/LocationInEngland'
 import Map from '../../../../../../components/custom/Map'
-import MapKey from '../../../../../../components/custom/MapKey'
+import MapInteractiveKey from '../../../../../../components/custom/MapInteractiveKey'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationDropPinSearchResults () {
+export default function LocationDropPinSearchResults() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [pinCoords, setPinCoords] = useState('')
@@ -90,7 +90,7 @@ export default function LocationDropPinSearchResults () {
                   />
                 </div>
                 <div class='govuk-grid-column-one-third'>
-                  <MapKey
+                  <MapInteractiveKey
                     isFloodWarningAndSevereAreasVisible={
                       isFloodWarningAndSevereAreasVisible
                     }

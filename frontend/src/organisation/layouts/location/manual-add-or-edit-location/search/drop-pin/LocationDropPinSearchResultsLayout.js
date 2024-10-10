@@ -109,8 +109,7 @@ export default function LocationDropPinSearchLayout({
               onClick={handleSubmit}
             />
             <Link
-              // TODO: where should Cancel navigate to?
-              to=''
+              to={NavigateToPreviousPage()}
               className='govuk-body govuk-link inline-link govuk-!-margin-top-4 govuk-!-margin-left-2'
             >
               Cancel

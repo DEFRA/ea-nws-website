@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
@@ -18,12 +17,14 @@ export default function LocationDropPinSearchLayout({
   DifferentSearchUrl
 }) {
   const dispatch = useDispatch()
-  const navigate = useNavigate()
   const [pinCoords, setPinCoords] = useState('')
   const [error, setError] = useState('')
   const [showFloodWarningAreas, setShowFloodWarningAreas] = useState(true)
   const [showFloodAlertAreas, setShowFloodAlertAreas] = useState(true)
   const [showFloodExtents, setShowFloodExtents] = useState(true)
+  const currentLocationName = useSelector(
+    (state) => state.session.currentLocation.name
+  )
 
   // remove error if user drops a pin
   useEffect(() => {
@@ -54,10 +55,6 @@ export default function LocationDropPinSearchLayout({
     event.preventDefault()
     NavigateToPreviousPage()
   }
-
-  const currentLocationName = useSelector(
-    (state) => state.session.currentLocation.name
-  )
 
   return (
     <>

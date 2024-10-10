@@ -21,12 +21,9 @@ export default function LocationDropPinSearchLayout({
   const navigate = useNavigate()
   const [pinCoords, setPinCoords] = useState('')
   const [error, setError] = useState('')
-  const [
-    isFloodWarningAndSevereAreasVisible,
-    setFloodWarningAndSevereAreasVisible
-  ] = useState(true)
-  const [isFloodAlertAreasVisible, setFloodAlertAreasVisible] = useState(true)
-  const [isFloodExtentsVisible, setFloodExtentsVisible] = useState(true)
+  const [showFloodWarningAreas, setShowFloodWarningAreas] = useState(true)
+  const [showFloodAlertAreas, setShowFloodAlertAreas] = useState(true)
+  const [showFloodExtents, setShowFloodExtents] = useState(true)
 
   // remove error if user drops a pin
   useEffect(() => {
@@ -86,22 +83,18 @@ export default function LocationDropPinSearchLayout({
                   <Map
                     setCoordinates={setPinCoords}
                     type='drop'
-                    showFloodWarningAreas={isFloodWarningAndSevereAreasVisible}
-                    showFloodAlertAreas={isFloodAlertAreasVisible}
+                    showFloodWarningAreas={showFloodWarningAreas}
+                    showFloodAlertAreas={showFloodAlertAreas}
                   />
                 </div>
                 <div class='govuk-grid-column-one-third'>
                   <MapInteractiveKey
-                    isFloodWarningAndSevereAreasVisible={
-                      isFloodWarningAndSevereAreasVisible
-                    }
-                    setFloodWarningAndSevereAreasVisible={
-                      setFloodWarningAndSevereAreasVisible
-                    }
-                    isFloodAlertAreasVisible={isFloodAlertAreasVisible}
-                    setFloodAlertAreasVisible={setFloodAlertAreasVisible}
-                    isFloodExtentsVisible={isFloodExtentsVisible}
-                    setFloodExtentsVisible={setFloodExtentsVisible}
+                    showFloodWarningAreas={showFloodWarningAreas}
+                    setShowFloodWarningAreas={setShowFloodWarningAreas}
+                    showFloodAlertAreas={showFloodAlertAreas}
+                    setShowFloodAlertAreas={setShowFloodAlertAreas}
+                    showFloodExtents={showFloodExtents}
+                    setShowFloodExtents={setShowFloodExtents}
                   />
                 </div>
               </div>

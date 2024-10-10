@@ -6,12 +6,12 @@ import warningIcon from '../../../common/assets/images/warning_area_icon.png'
 import CheckBox from '../../../common/components/gov-uk/CheckBox'
 
 export default function MapInteractiveKey({
-  isFloodWarningAndSevereAreasVisible,
-  setFloodWarningAndSevereAreasVisible,
-  isFloodAlertAreasVisible,
-  setFloodAlertAreasVisible,
-  isFloodExtentsVisible,
-  setFloodExtentsVisible
+  showFloodWarningAreas,
+  setShowFloodWarningAreas,
+  showFloodAlertAreas,
+  setShowFloodAlertAreas,
+  showFloodExtents,
+  setShowFloodExtents
 }) {
   return (
     <div>
@@ -29,12 +29,8 @@ export default function MapInteractiveKey({
         >
           <CheckBox
             name='FloodWarningAndSevereArea'
-            onChange={() =>
-              setFloodWarningAndSevereAreasVisible(
-                !isFloodWarningAndSevereAreasVisible
-              )
-            }
-            checked={isFloodWarningAndSevereAreasVisible}
+            onChange={() => setShowFloodWarningAreas(!showFloodWarningAreas)}
+            checked={showFloodWarningAreas}
           />
           <img
             src={warningIcon}
@@ -57,10 +53,8 @@ export default function MapInteractiveKey({
         >
           <CheckBox
             name='FloodAlertArea'
-            onChange={() =>
-              setFloodAlertAreasVisible(!isFloodAlertAreasVisible)
-            }
-            checked={isFloodAlertAreasVisible}
+            onChange={() => setShowFloodAlertAreas(!showFloodAlertAreas)}
+            checked={showFloodAlertAreas}
           />
           <FontAwesomeIcon
             icon={PublicSharpIcon}
@@ -84,8 +78,8 @@ export default function MapInteractiveKey({
         >
           <CheckBox
             name='FloodExtent'
-            onChange={() => setFloodExtentsVisible(!isFloodExtentsVisible)}
-            checked={isFloodExtentsVisible}
+            onChange={() => setShowFloodExtents(!showFloodExtents)}
+            checked={showFloodExtents}
           />
           <FontAwesomeIcon
             icon={PublicSharpIcon}

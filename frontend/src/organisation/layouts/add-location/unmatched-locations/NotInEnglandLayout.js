@@ -62,26 +62,24 @@ export default function NotInEnglandLayout({
               </h2>
               <p>You can</p>
               <ul className='govuk-list govuk-list--bullet'>
-                {locationType === 'postcode' && (
-                  <li>
-                    <Link
-                      to={orgManageLocationsUrls.add.postCodeSearch}
-                      className='govuk-link inline-link'
-                    >
-                      use a different postcode
-                    </Link>
-                  </li>
-                )}
-                {locationType === 'xyCoordinate' && (
-                  <li>
-                    <Link
-                      to={orgManageLocationsUrls.add.xyCoordinatesSearch}
-                      className='govuk-link inline-link'
-                    >
-                      use a different set of X and Y coordinates
-                    </Link>
-                  </li>
-                )}
+                <li>
+                  <Link
+                    // TODO: need to remove these hardcoded URLs
+                    to={orgManageLocationsUrls.add.postCodeSearch}
+                    className='govuk-link inline-link'
+                  >
+                    use a different postcode
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    // TODO: need to remove these hardcoded URLs
+                    to={orgManageLocationsUrls.add.xyCoordinatesSearch}
+                    className='govuk-link inline-link'
+                  >
+                    use a different set of X and Y coordinates
+                  </Link>
+                </li>
                 <li>
                   <Link
                     to={

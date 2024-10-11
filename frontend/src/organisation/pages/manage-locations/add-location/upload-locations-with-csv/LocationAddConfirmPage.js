@@ -6,7 +6,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddConfirmPage() {
+export default function LocationAddConfirmPage () {
   const navigate = useNavigate()
   const location = useLocation()
 

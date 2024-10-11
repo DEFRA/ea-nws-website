@@ -11,7 +11,7 @@ import {
 import { backendCall } from '../../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ManuallyFindLocationsPage() {
+export default function ManuallyFindLocationsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
@@ -37,33 +37,6 @@ export default function ManuallyFindLocationsPage() {
 
   const handleSubmit = async () => {
     navigate('/organisation/manage-locations/view-locations')
-  }
-
-  const locationToPOI = (location) => {
-    return {
-      name: location.Location_name,
-      // address is the UPRN
-      address: null,
-      // Coordinates in dd (degrees decimal)
-      coordinates: null,
-      alert_categories: null,
-      meta_data: {
-        location_additional: {
-          full_address: location.Full_address,
-          postcode: location.Postcode,
-          // Easting EPSG: 27700
-          x_coordinate: location.X_coordinates,
-          // Northing EPSG: 27700
-          y_coordinate: location.Y_coordinates,
-          internal_reference: location.Internal_reference,
-          business_criticality: location.Business_criticality,
-          location_type: location.Location_type,
-          action_plan: location.Action_plan,
-          notes: location.Notes,
-          keywords: location.Keywords
-        }
-      }
-    }
   }
 
   const findAvailableAddresses = async (location) => {

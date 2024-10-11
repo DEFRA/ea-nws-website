@@ -1,5 +1,5 @@
 // import AWS from 'aws-sdk'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import { Spinner } from '../../../../../common/components/custom/Spinner'
@@ -8,7 +8,7 @@ import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddUploadFilePage() {
+export default function LocationAddUploadFilePage () {
   const navigate = useNavigate()
   const [errorFileType, setErrorFileType] = useState(null)
   const [errorFileSize, setErrorFileSize] = useState(null)
@@ -21,13 +21,16 @@ export default function LocationAddUploadFilePage() {
     'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
   ]
 
-  const setValidselectedFile = (data) => {
+  useEffect(() => {
+    setErrorFileType(null)
+    setErrorFileSize(null)
+  }, [selectedFile])
+
+  const setValidSelectedFile = (data) => {
     const file = data.target.files[0]
 
     if (checkFile(file)) {
       setSelectedFile(file)
-    } else {
-      setSelectedFile(null)
     }
   }
 
@@ -38,8 +41,6 @@ export default function LocationAddUploadFilePage() {
     if (!allowedTypes.includes(file.type)) {
       setErrorFileType('The selected file must be .xls, .xlsx or .csv')
       isValidFile = false
-    } else {
-      setErrorFileType(null)
     }
 
     if (file.size === 0) {
@@ -48,8 +49,6 @@ export default function LocationAddUploadFilePage() {
     } else if (file.size / 1024 > 5 * 1024) {
       setErrorFileSize('The file must be smaller than 5MB')
       isValidFile = false
-    } else {
-      setErrorFileSize(null)
     }
     return isValidFile
   }
@@ -66,8 +65,6 @@ export default function LocationAddUploadFilePage() {
     setUploading(true)
 
     try {
-      console.dir(selectedFile)
-
       // Get pre-signed URL from backend
       const dataToSend = {
         name: selectedFile.name,
@@ -81,6 +78,7 @@ export default function LocationAddUploadFilePage() {
       )
 
       if (errorMessage) {
+        // Set to an error to be displayed when doing DoR11 work
         throw new Error(`Failed to get pre-signed URL: ${errorMessage}`)
       }
 
@@ -108,7 +106,6 @@ export default function LocationAddUploadFilePage() {
         })
       }
     } catch (err) {
-      console.log(err)
       setUploading(false)
       setErrorFileType('Error uploading file')
     }
@@ -120,63 +117,65 @@ export default function LocationAddUploadFilePage() {
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          {(errorFileType || errorFileSize) && (
-            <ErrorSummary errorList={[errorFileType, errorFileSize]} />
-          )}
-          {!uploading ? (
-            <div className='govuk-grid-column-full'>
-              <h1 className='govuk-heading-l'>Upload file</h1>
-              <div
-                className={
+          {!uploading
+            ? (
+              <>
+                {(errorFileType || errorFileSize) && (
+                  <ErrorSummary errorList={[errorFileType, errorFileSize]} />
+                )}
+                <div className='govuk-grid-column-full'>
+                  <h1 className='govuk-heading-l'>Upload file</h1>
+                  <div
+                    className={
                   errorFileSize || errorFileType
                     ? 'govuk-form-group govuk-form-group--error'
                     : 'govuk-form-group'
                 }
-              >
-                <p className='govuk-hint'>File can be .xls, .xlsx, .csv</p>
-                {errorFileType && (
-                  <p id='file-upload-1-error' className='govuk-error-message'>
-                    <span className='govuk-visually-hidden'>Error:</span>
-                    {errorFileType}
-                  </p>
-                )}
-                {errorFileSize && (
-                  <p id='file-upload-2-error' className='govuk-error-message'>
-                    <span className='govuk-visually-hidden'>Error:</span>
-                    {errorFileSize}
-                  </p>
-                )}
-                <input
-                  type='file'
-                  className={
+                  >
+                    <p className='govuk-hint'>File can be .xls, .xlsx, .csv</p>
+                    {errorFileType && (
+                      <p id='file-upload-1-error' className='govuk-error-message'>
+                        {errorFileType}
+                      </p>
+                    )}
+                    {errorFileSize && (
+                      <p id='file-upload-2-error' className='govuk-error-message'>
+                        {errorFileSize}
+                      </p>
+                    )}
+                    <input
+                      type='file'
+                      className={
                     errorFileSize || errorFileType
                       ? 'govuk-file-upload govuk-file-upload--error'
                       : 'govuk-file-upload'
                   }
-                  id='file-upload'
-                  onChange={setValidselectedFile}
-                />
+                      id='file-upload'
+                      onChange={setValidSelectedFile}
+                    />
+                  </div>
+                  <Button
+                    text='Upload'
+                    className='govuk-button'
+                    onClick={handleUpload}
+                  />
+                  <Link
+                    onClick={() => navigate(-1)}
+                    className='govuk-body govuk-link inline-link'
+                  >
+                    Cancel
+                  </Link>
+                </div>
+              </>
+              )
+            : (
+              <div className='govuk-!-text-align-centre'>
+                <h1 className='govuk-heading-l'>Uploading</h1>
+                <div className='govuk-body'>
+                  <Spinner size='75' />
+                </div>
               </div>
-              <Button
-                text='Upload'
-                className='govuk-button'
-                onClick={handleUpload}
-              />
-              <Link
-                onClick={() => navigate(-1)}
-                className='govuk-body govuk-link inline-link'
-              >
-                Cancel
-              </Link>
-            </div>
-          ) : (
-            <div className='govuk-!-text-align-centre'>
-              <h1 className='govuk-heading-l'>Uploading</h1>
-              <div className='govuk-body'>
-                <Spinner size='75' />
-              </div>
-            </div>
-          )}
+              )}
         </div>
       </main>
     </>

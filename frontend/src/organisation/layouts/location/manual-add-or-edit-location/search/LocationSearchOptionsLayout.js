@@ -19,7 +19,11 @@ export default function LocationSearchOptionsLayout ({ heading, searchOptions, e
 
   const handleSubmit = () => {
     if (!searchOption) {
-      setError(errorMessage)
+      if (Object.keys(searchOptions).length > 2) {
+        setError('Select how you want to find this location')
+      } else {
+        setError('Select if you want to use X and Y coordinates or drop a pin on a map')
+      }
     } else {
       navigateToNextPage(searchOption)
     }

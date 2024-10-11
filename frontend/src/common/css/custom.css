@@ -991,6 +991,11 @@
   align-items: center;
 }
 
+.locations-map-key {
+  display: flex;
+  align-items: center;
+}
+
 .locations-filter-section:hover {
   cursor: pointer;
 }

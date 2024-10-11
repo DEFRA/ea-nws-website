@@ -6,14 +6,19 @@ import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locat
 
 export default function SelectOnMapPage () {
   const navigate = useNavigate()
-  const fullAddress = useSelector((state) => state.session.currentLocation.meta_data.location_additional.full_address)
+  const fullAddress = useSelector(
+    (state) =>
+      state.session.currentLocation.meta_data.location_additional.full_address
+  )
 
   const NavigateToPreviousPage = () => {
     navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName)
   }
 
   const NavigateToNotFound = () => {
-    navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.notInEngland)
+    navigate(
+      orgManageLocationsUrls.unmatchedLocations.manuallyfind.notInEngland
+    )
   }
 
   const NavigateToNextPage = () => {

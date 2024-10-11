@@ -32,7 +32,7 @@ containers:
       repository: 590183962451.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: "frontend-0.1.1"
+      tag: "frontend-0.1.3"
     livenessProbe:
       httpGet:
         path: /
@@ -58,7 +58,7 @@ containers:
       repository: 590183962451.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: "backend-0.1.1"
+      tag: "backend-0.1.3"
     livenessProbe:
       httpGet:
         path: /liveness
@@ -84,7 +84,7 @@ containers:
       repository: 590183962451.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
       pullPolicy: Always
       # Overrides the image tag whose default is the chart appVersion.
-      tag: "nginx-0.1.1"
+      tag: "nginx-0.1.3"
     env:
       - name: NGINX_PORT
         value: "7000"

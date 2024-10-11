@@ -35,7 +35,6 @@ export default function AddLocationSearchOptionsPage () {
     <LocationOptionsLayout
       heading={`How do you want to find ${locationName}?`}
       searchOptions={searchOptions}
-      errorMessage='Select how you want to find this location'
       navigateToNextPage={navigateToNextPage}
     />
   )

@@ -20,9 +20,9 @@ import { xCoordinateValidation } from '../../../../common/services/validations/X
 import { yCoordinateValidation } from '../../../../common/services/validations/YCoordinateValidation'
 import { useDispatch, useSelector } from 'react-redux'
 export default function LocationXYCoordinatesSearchLayout ({
-  allFloodAreasAvailableRoute,
-  floodAlertAreasAvailableOnlyRoute,
-  noFloodAreasAvailableRoute,
+  allFloodAreasAvailable,
+  floodAlertAreasAvailableOnly,
+  noFloodAreasAvailable,
   navigateToNotInEngland
 }) {
   const dispatch = useDispatch()
@@ -93,11 +93,11 @@ export default function LocationXYCoordinatesSearchLayout ({
 
   const navigateToNextPage = (isInAlertArea, isInWarningArea, isError) => {
     if (isInAlertArea && isInWarningArea) {
-      allFloodAreasAvailableRoute()
+      allFloodAreasAvailable()
     } else if (isInAlertArea) {
-      floodAlertAreasAvailableOnlyRoute()
+      floodAlertAreasAvailableOnly()
     } else if (!isInAlertArea && !isInWarningArea) {
-      noFloodAreasAvailableRoute()
+      noFloodAreasAvailable()
     } else if (isError) {
       navigate('/error')
     }

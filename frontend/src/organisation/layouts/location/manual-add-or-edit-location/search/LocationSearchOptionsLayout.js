@@ -6,7 +6,7 @@ import Radio from '../../../../../common/components/gov-uk/Radio'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import Button from '../../../../../common/components/gov-uk/Button'
 
-export default function LocationSearchOptionsLayout ({ heading, searchOptions, errorMessage, navigateToNextPage }) {
+export default function LocationSearchOptionsLayout ({ heading, searchOptions, navigateToNextPage }) {
   const navigate = useNavigate()
   const [searchOption, setSearchOption] = useState('')
   const [error, setError] = useState('')

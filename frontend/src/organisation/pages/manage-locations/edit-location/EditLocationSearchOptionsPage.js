@@ -28,7 +28,6 @@ export default function EditLocationSearchOptionsPage () {
     <LocationOptionsLayout
       heading='How do you want to change the existing location?'
       searchOptions={locationOptions}
-      errorMessage='Select if you want to use X and Y coordinates or drop a pin on a map'
       navigateToNextPage={navigateToNextPage}
     />
   )

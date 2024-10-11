@@ -9,21 +9,21 @@ export default function EditLocationXYCoordinatesSearchPage () {
   const navigateToNotInEngland = () => {
     navigate(orgManageLocationsUrls.edit.error.xyCoordinatesNotInEngland)
   }
-  const allFloodAreasAvailableRoute = () => {
+  const allFloodAreasAvailable = () => {
     navigate('/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/all')
   }
-  const floodAlertAreasAvailableOnlyRoute = () => {
+  const floodAlertAreasAvailableOnly = () => {
     navigate('/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/alerts')
   }
-  const noFloodAreasAvailableRoute = () => {
+  const noFloodAreasAvailable = () => {
     navigate('/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/no-alerts')
   }
   return (
     <>
       <LocationXYCoordinatesSearchLayout
-        allFloodAreasAvailableRoute={allFloodAreasAvailableRoute}
-        floodAlertAreasAvailableOnlyRoute={floodAlertAreasAvailableOnlyRoute}
-        noFloodAreasAvailableRoute={noFloodAreasAvailableRoute}
+        allFloodAreasAvailable={allFloodAreasAvailable}
+        floodAlertAreasAvailableOnly={floodAlertAreasAvailableOnly}
+        noFloodAreasAvailable={noFloodAreasAvailable}
         navigateToNotInEngland={navigateToNotInEngland}
       />
     </>

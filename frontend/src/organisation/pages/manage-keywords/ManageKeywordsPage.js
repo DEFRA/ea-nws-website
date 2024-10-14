@@ -19,14 +19,12 @@ export default function ManageKeywordsPage () {
   const [filteredKeywords, setFilteredKeywords] = useState([])
   const [currentPage, setCurrentPage] = useState(1)
   const [resetPaging, setResetPaging] = useState(false)
+  const [displayedKeywords, setDisplayedKeywords] = useState([])
   const keywordsPerPage = 10
-  const displayedKeywords = filteredKeywords.slice(
-    (currentPage - 1) * keywordsPerPage,
-    currentPage * keywordsPerPage
-  )
 
   const setTab = (tab) => {
     setKeywordType(tab)
+    setResetPaging(!resetPaging)
   }
 
   useEffect(() => {
@@ -38,106 +36,113 @@ export default function ManageKeywordsPage () {
     const locationKeywords = [
       {
         name: 'Location Keyword 1',
-        locations: ['id', 'id']
+        linked_ids: ['id', 'id']
       },
       {
         name: 'Location Keyword 2',
-        locations: ['id']
+        linked_ids: ['id']
       },
       {
         name: 'Location Keyword 3',
-        locations: []
+        linked_ids: []
       },
       {
         name: 'Location Keyword 4',
-        locations: ['id', 'id']
+        linked_ids: ['id', 'id']
       },
       {
         name: 'Location Keyword 5',
-        locations: ['id', 'id', 'id']
+        linked_ids: ['id', 'id', 'id']
       },
       {
         name: 'Location Keyword 6',
-        locations: ['id', 'id', 'id', 'id']
+        linked_ids: ['id', 'id', 'id', 'id']
       },
       {
         name: 'Location Keyword 7',
-        locations: ['id', 'id']
+        linked_ids: ['id', 'id']
       },
       {
         name: 'Location Keyword 8',
-        locations: ['id']
+        linked_ids: ['id']
       },
       {
         name: 'Location Keyword 9',
-        locations: ['id', 'id']
+        linked_ids: ['id', 'id']
       },
       {
         name: 'Location Keyword 10',
-        locations: ['id', 'id']
+        linked_ids: ['id', 'id']
       },
       {
         name: 'Location Keyword 11',
-        locations: ['id', 'id']
+        linked_ids: ['id', 'id']
       },
       {
         name: 'Location Keyword 12',
-        locations: ['id', 'id']
+        linked_ids: ['id', 'id']
       }
     ]
     const contactKeywords = [
       {
         name: 'Contact Keyword 1',
-        locations: ['id', 'id']
+        linked_ids: ['id', 'id']
       },
       {
         name: 'Contact Keyword 2',
-        locations: ['id']
+        linked_ids: ['id']
       },
       {
         name: 'Contact Keyword 3',
-        locations: []
+        linked_ids: []
       },
       {
         name: 'Contact Keyword 4',
-        locations: ['id', 'id']
+        linked_ids: ['id', 'id']
       },
       {
         name: 'Contact Keyword 5',
-        locations: ['id', 'id', 'id']
+        linked_ids: ['id', 'id', 'id']
       },
       {
         name: 'Contact Keyword 6',
-        locations: ['id', 'id', 'id', 'id']
+        linked_ids: ['id', 'id', 'id', 'id']
       },
       {
         name: 'Contact Keyword 7',
-        locations: ['id', 'id']
+        linked_ids: ['id', 'id']
       },
       {
         name: 'Contact Keyword 8',
-        locations: ['id']
+        linked_ids: ['id']
       },
       {
         name: 'Contact Keyword 9',
-        locations: ['id', 'id']
+        linked_ids: ['id', 'id']
       },
       {
         name: 'Contact Keyword 10',
-        locations: ['id', 'id']
+        linked_ids: ['id', 'id']
       },
       {
         name: 'Contact Keyword 11',
-        locations: ['id', 'id']
+        linked_ids: ['id', 'id']
       },
       {
         name: 'Contact Keyword 12',
-        locations: ['id', 'id']
+        linked_ids: ['id', 'id']
       }
     ]
     setKeywords(keywordType === 'location' ? locationKeywords : contactKeywords)
     setFilteredKeywords(keywordType === 'location' ? locationKeywords : contactKeywords)
   }, [keywordType])
+
+  useEffect(() => {
+    setDisplayedKeywords(filteredKeywords.slice(
+      (currentPage - 1) * keywordsPerPage,
+      currentPage * keywordsPerPage
+    ))
+  }, [filteredKeywords, currentPage])
 
   const handleSearch = () => {
     // TODO: use keywordType to search the correct array and set the results array
@@ -229,7 +234,7 @@ export default function ManageKeywordsPage () {
                     </div>
                   </div>
                 </div>
-                <Link onClick={() => setResetPaging(true)} className='govuk-link'>Clear Seach results</Link>
+                <Link onClick={() => setResetPaging(!resetPaging)} className='govuk-link'>Clear Seach results</Link>
               </div>
               <div className='govuk-grid-column-two-thirds'>
                 <Button
@@ -242,8 +247,10 @@ export default function ManageKeywordsPage () {
                   keywords={keywords}
                   displayedKeywords={displayedKeywords}
                   filteredKeywords={filteredKeywords}
+                  setFilteredKeywords={setFilteredKeywords}
                   selectedKeywords={selectedKeywords}
                   setSelectedKeywords={setSelectedKeywords}
+                  type={keywordType}
                 />
                 <Pagination
                   totalPages={Math.ceil(

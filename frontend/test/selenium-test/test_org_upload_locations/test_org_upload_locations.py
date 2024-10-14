@@ -80,7 +80,6 @@ def test_valid_file(get_browser):
     file_input.send_keys(validFilePath)
     click_button(browser, "Upload", nextPage)
 
-    print(browser.current_url)
     assert "Scanning Upload" in browser.page_source
     assert browser.current_url == nextPage
     os.remove(validFilePath)

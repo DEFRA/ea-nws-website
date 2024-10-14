@@ -19,118 +19,118 @@ export default function DeclarationOfAgreement () {
   return (
     <>
       <BackLink onClick={() => navigate(-1)} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-body govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'> Check the terms and conditions</h1>
             <h2 className='govuk-heading-m'>What we will do</h2>
-            <p className='govuk-body'>
+            <p>
               We make all reasonable efforts to send flood warnings for locations added to your organisation’s account,
               but we cannot guarantee they will be sent or arrive.
             </p>
 
-            <p className='govuk-body'> We may send warnings at any time of day or night.</p>
-            <h2 className='govuk-heading-m'>What we will not do</h2>
-            <p className='govuk-body'> We do not accept responsibility:</p>
+            <p> We may send warnings at any time of day or night.</p>
+            <h2 className='govuk-heading-m govuk-!-padding-top-6'>What we will not do</h2>
+            <p> We do not accept responsibility:</p>
 
             <ul className='govuk-list govuk-list--bullet'>
               <li>
-                <p className='govuk-body'>if you fail to receive a warning</p>
+                if you fail to receive a warning
               </li>
               <li>
-                <p className='govuk-body'>for any loss, damage or costs to your organisation due
-                  to flooding or us sending or not sending flood warnings, unless we must by law
-                </p>
+                for any loss, damage or costs to your organisation due
+                to flooding or us sending or not sending flood warnings, unless we must by law
+
               </li>
             </ul>
-            <p className='govuk-body'>
+            <p>
               We do not guarantee that our online or phone services will be available.
             </p>
 
-            <h2 className='govuk-heading-m'>What you're responsible for</h2>
-            <p className='govuk-body'>You need to:</p>
+            <h2 className='govuk-heading-m govuk-!-padding-top-6'>What you're responsible for</h2>
+            <p>You need to:</p>
             <ul className='govuk-list govuk-list--bullet'>
               <li>
-                <p className='govuk-body'> give correct organisation contact details</p>
+                give correct organisation contact details
               </li>
               <li>
-                <p className='govuk-body'> confirm you can act on behalf of your organisation</p>
+                confirm you can act on behalf of your organisation
               </li>
             </ul>
             <p className='govuk-body'>Your organisation needs to:</p>
             <ul className='govuk-list govuk-list--bullet'>
               <li>
-                <p className='govuk-body'>set up the service, using an administrator sign-in</p>
+                set up the service, using an administrator sign-in
               </li>
               <li>
-                <p className='govuk-body'>add and maintain locations your organisation need warnings for</p>
+                add and maintain locations your organisation need warnings for
               </li>
               <li>
-                <p className='govuk-body'>manage types of warnings your organisation needs</p>
+                manage types of warnings your organisation needs
               </li>
               <li>
-                <p className='govuk-body'>maintain user details, such as email addresses and telephone numbers</p>
+                maintain user details, such as email addresses and telephone numbers
               </li>
               <li>
-                <p className='govuk-body'>keep an offline copy of all locations entered into our service,
-                  in case data in our service is lost
-                </p>
+                keep an offline copy of all locations entered into our service,
+                in case data in our service is lost
+
               </li>
             </ul>
 
-            <h2 className='govuk-heading-m'>How we use personal information</h2>
-            <p className='govuk-body'>We may use this to: </p>
+            <h2 className='govuk-heading-m govuk-!-padding-top-6'>How we use personal information</h2>
+            <p> We may use this to: </p>
             <ul className='govuk-list govuk-list--bullet'>
               <li>
-                <p className='govuk-body'>send warnings for requested locations</p>
+                send warnings for requested locations
               </li>
               <li>
-                <p className='govuk-body'>send a small number of administrative messages</p>
+                send a small number of administrative messages
               </li>
               <li>
-                <p className='govuk-body'>help with our work on flood warning and flood risk management</p>
+                help with our work on flood warning and flood risk management
               </li>
               <li>
-                <p className='govuk-body'>help emergency services and local councils respond to flooding</p>
+                help emergency services and local councils respond to flooding
               </li>
               <li>
-                <p className='govuk-body'>reply to requests for information under the
-                  <a
-                    href='https://www.gov.uk/make-a-freedom-of-information-request'
-                    className='govuk-link'
-                  >
-                    {' '}
-                    Freedom of Information Act {' '}
-                  </a>
-                  or
-                  <a
-                    href='
+                reply to requests for information under the
+                <a
+                  href='https://www.gov.uk/make-a-freedom-of-information-request'
+                  className='govuk-link'
+                >
+                  {' '}
+                  Freedom of Information Act {' '}
+                </a>
+                or
+                <a
+                  href='
 https://ico.org.uk/for-organisations/eir-and-access-to-information/guide-to-the-environmental-information-regulations/what-are-the-eir/'
-                    className='govuk-link'
-                  >
-                    {' '}
-                    Environmental Information Regulations
-                  </a>
-                  , if the
-                  <a
-                    href='https://www.gov.uk/data-protection'
-                    className='govuk-link'
-                  >
-                    {' '}
-                    Data Protection Act {' '}
-                  </a>
-                  allows
-                </p>
+                  className='govuk-link'
+                >
+                  {' '}
+                  Environmental Information Regulations
+                </a>
+                , if the
+                <a
+                  href='https://www.gov.uk/data-protection'
+                  className='govuk-link'
+                >
+                  {' '}
+                  Data Protection Act {' '}
+                </a>
+                allows
+
               </li>
             </ul>
-            <p className='govuk-body'>
+            <p>
               We may give personal information to our agents or representatives,
               so they can do any of these things for us.
               And we may share this information with other organisations,
               if the laws says we must.
             </p>
-            <p className='govuk-body'>The Environment Agency manages the flood warning systems. Our
+            <p>The Environment Agency manages the flood warning systems. Our
               <a
                 href='/organisation/privacy'
                 className='govuk-link'

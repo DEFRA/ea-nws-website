@@ -28,8 +28,10 @@ import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/add
 import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/NotInEnglandPage'
 import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
-import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationOptionsPage'
+import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationSearchOptionsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
+import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
+
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgAddLocations = '/organisation/manage-locations/add'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
@@ -102,7 +104,15 @@ const orgManageLocationsUrls = {
     }
   },
   edit: {
-    options: urlManageOrg + '/edit/location-options'
+    editLocationCoords: {
+      SelectLocationOptions: urlManageOrg + '/edit/select-location-options',
+      xyCoordinatesSearch: urlManageOrg + '/edit/xy-coordinates-search',
+      ConfirmEditLocations: urlManageOrg + '/edit/location-in-area/:flow/:type'
+    },
+    error: {
+      xyCoordinatesNotInEngland:
+        urlManageOrg + '/edit/xy-coordinates-not-in-england'
+    }
   }
 }
 
@@ -238,9 +248,22 @@ const orgManageLocationRoutes = [
     component: <ConfirmAddingLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.edit.options,
+    path: orgManageLocationsUrls.edit.editLocationCoords.SelectLocationOptions,
     component: <EditLocationOptionsPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.editLocationCoords.xyCoordinatesSearch,
+    component: <EditLocationXYCoordinatesSearchPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.editLocationCoords.ConfirmEditLocations,
+    component: <ConfirmLocationPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.error.xyCoordinatesNotInEngland,
+    component: <XYCoordinatesNotInEnglandPage />
   }
+
 ]
 
 export { orgManageLocationRoutes, orgManageLocationsUrls }

@@ -1,20 +1,35 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
-import BackLink from '../../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
-import Button from '../../../../../../common/components/gov-uk/Button'
-import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
-
+import BackLink from '../../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
+import Button from '../../../../../common/components/gov-uk/Button'
+import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 export default function OptionalLocationInformationPage () {
   const navigate = useNavigate()
+  const postcode = useSelector(
+    (state) =>
+      state.session.currentLocation.meta_data.location_additional.postcode
+  )
   const navigateToNextPage = () => {
-    navigate('/organisation/manage-locations/add/optional-address')
+    if (postcode) {
+      navigate(orgManageLocationsUrls.add.optionalInformation.addKeyInformation)
+    } else {
+      navigate(orgManageLocationsUrls.add.optionalInformation.optionalLocation)
+    }
   }
+
+  const navigateBack = (event) => {
+    event.preventDefault()
+    navigate(-1)
+  }
+
   return (
     <>
       <OrganisationAccountNavigation />
-      <BackLink onClick={() => navigate(-1)} />
+      <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
@@ -23,6 +38,7 @@ export default function OptionalLocationInformationPage () {
               title='Success'
               text='Location added'
             />
+            &nbsp; &nbsp;
             <h1 className='govuk-heading-l'>
               Add optional information for this location
             </h1>

@@ -2,12 +2,12 @@ import { React } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate, useParams } from 'react-router'
 import { Link } from 'react-router-dom'
-import BackLink from '../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
-import Button from '../../../../common/components/gov-uk/Button'
-import FloodWarningKey from '../../../components/custom/FloodWarningKey'
-import Map from '../../../components/custom/Map'
-import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
+import BackLink from '../../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
+import Button from '../../../../../common/components/gov-uk/Button'
+import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
+import Map from '../../../../components/custom/Map'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ConfirmLocationLayout () {
   const navigate = useNavigate()
@@ -119,7 +119,7 @@ export default function ConfirmLocationLayout () {
                 </Link>
                 <br />
                 <Link
-                  to={orgManageLocationsUrls.add.xyCoordinatesSearch}
+                  to={orgManageLocationsUrls.add.search.xyCoordinatesSearch}
                   className='govuk-link'
                 >
                   Use different X and Y coordinates

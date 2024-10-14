@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import NotInEnglandLayout from '../../../../../../layouts/add-location/unmatched-locations/NotInEnglandLayout'
+import NotInEnglandLayout from '../../../../../../layouts/location/unmatched-locations/NotInEnglandLayout'
 
 export default function XYCoordinatesNotInEnglandPage () {
   const navigate = useNavigate()
@@ -10,15 +10,14 @@ export default function XYCoordinatesNotInEnglandPage () {
   }
 
   const NavigateToNextPage = () => {
-    // navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index, {
-    //  state: 'NotAdded'
-    // })
+    // TODO: where should the Continue button navigate to?
   }
 
   return (
     <NotInEnglandLayout
       NavigateToNextPage={NavigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
+      locationType='xyCoordinate'
     />
   )
 }

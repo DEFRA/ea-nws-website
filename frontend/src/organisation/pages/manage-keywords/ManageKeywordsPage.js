@@ -7,6 +7,10 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Popup from '../../../common/components/custom/Popup'
 import Details from '../../../common/components/gov-uk/Details'
+import {
+  setContactKeywords,
+  setCurrentLocationKeywords
+} from '../../../common/redux/userSlice'
 
 export default function ManageKeywordsPage() {
   const navigate = useNavigate()
@@ -18,6 +22,11 @@ export default function ManageKeywordsPage() {
   const [currentPage, setCurrentPage] = useState(1)
   const [resetPaging, setResetPaging] = useState(false)
   const [displayedKeywords, setDisplayedKeywords] = useState([])
+  const [showEditDialog, setShowEditDialog] = useState(false)
+  const [keywordEditInput, setKeywordEditInput] = useState('')
+  const [dialogText, setDialogText] = useState('')
+  const [dialogTitle, setDialogTitle] = useState('')
+  const [dialogButtonText, setDialogButtonText] = useState('')
   const keywordsPerPage = 10
 
   const setTab = (tab) => {
@@ -30,7 +39,8 @@ export default function ManageKeywordsPage() {
     setSelectedKeywords([])
   }, [resetPaging])
 
-  useEffect(() => {
+  // REMOVE WHEN READY - FOR TESTING
+  const AddTestData = () => {
     const locationKeywords = [
       {
         name: 'Location Keyword 1',
@@ -131,16 +141,90 @@ export default function ManageKeywordsPage() {
         linked_ids: ['id', 'id']
       }
     ]
+    dispatch(setCurrentLocationKeywords(locationKeywords))
+    dispatch(setContactKeywords(contactKeywords))
+    console.log(locationKeywords + ' added')
+  }
+
+  const locationKeywords = useSelector((state) =>
+    state.session.currentLocation.meta_data.location_additional.keywords !==
+    null
+      ? state.session.currentLocation.meta_data.location_additional.keywords
+      : []
+  )
+  const contactKeywords = useSelector((state) =>
+    state.session.contactKeywords !== null ? state.session.contactKeywords : []
+  )
+
+  useEffect(() => {
     setKeywords(keywordType === 'location' ? locationKeywords : contactKeywords)
-    setFilteredKeywords(keywordType === 'location' ? locationKeywords : contactKeywords)
+    setFilteredKeywords(
+      keywordType === 'location' ? locationKeywords : contactKeywords
+    )
   }, [keywordType])
 
   useEffect(() => {
-    setDisplayedKeywords(filteredKeywords.slice(
-      (currentPage - 1) * keywordsPerPage,
-      currentPage * keywordsPerPage
-    ))
+    setDisplayedKeywords(
+      filteredKeywords.slice(
+        (currentPage - 1) * keywordsPerPage,
+        currentPage * keywordsPerPage
+      )
+    )
   }, [filteredKeywords, currentPage])
+
+  const navigateBack = (event) => {
+    event.preventDefault()
+    navigate(-1)
+  }
+
+  const onClickEditDialog = () => {
+    setDialogTitle('Change keyword')
+    setDialogText(
+      "Changing this keyword will change it for all the locations it's associated with."
+    )
+    setDialogButtonText('Change keyword')
+    setShowEditDialog(!showEditDialog)
+  }
+
+  const editKeyword = () => {
+    if (keywordType === 'location') {
+      const updatedKeywords = locationKeywords.map((k) => {
+        if (selectedKeywords.includes(k)) {
+          return keywordEditInput
+        }
+        return k
+      })
+      dispatch(setCurrentLocationKeywords(updatedKeywords))
+    } else {
+      const updatedKeywords = contactKeywords.map((k) => {
+        if (selectedKeywords.includes(k)) {
+          return keywordEditInput
+        }
+        return k
+      })
+      dispatch(setContactKeywords(updatedKeywords))
+    }
+  }
+
+  const handleEdit = () => {
+    if (
+      (keywordType === 'location' && locationKeywords.length > 0) ||
+      (keywordType === 'contact' && contactKeywords.length > 0)
+    ) {
+      if (selectedKeywords.length > 0) {
+        if (keywordEditInput === '') {
+          // remove
+          console.log('input is empty')
+          onClickEditDialog()
+          // onClickRemove
+        } else {
+          editKeyword()
+          onClickEditDialog()
+        }
+      }
+    }
+    setKeywordEditInput('')
+  }
 
   const handleSearch = () => {
     // TODO: use keywordType to search the correct array and set the results array
@@ -150,41 +234,6 @@ export default function ManageKeywordsPage() {
     if (selectedKeywords) {
       // TODO: delete keywords
     }
-  const [selectedKeywords, setSelectedKeywords] = useState([])
-  const [showEditDialog, setShowEditDialog] = useState(false)
-  const [keywordEditInput, setKeywordEditInput] = useState('')
-  const [dialogText, setDialogText] = useState('')
-  const [dialogTitle, setDialogTitle] = useState('')
-  const [dialogButtonText, setDialogButtonText] = useState('')
-
-  // REMOVE WHEN READY - FOR TESTING
-  const AddTestData = () => {
-    const testData = [
-      'keyword1',
-      'keyword2',
-      'keyword3',
-      'keyword4',
-      'keyword5',
-      'keyword6'
-    ]
-    dispatch(setCurrentLocationKeywords(testData))
-    console.log(testData + ' added')
-  }
-  const setSelected = () => {
-    setSelectedKeywords([locationKeywords[1]])
-  }
-
-  const locationKeywords = useSelector((state) =>
-    state.session.currentLocation.meta_data.location_additional.keywords !==
-    null
-      ? state.session.currentLocation.meta_data.location_additional.keywords
-      : []
-  )
-  const contactKeywords = []
-
-  const navigateBack = (event) => {
-    event.preventDefault()
-    navigate(-1)
   }
 
   const detailsText =
@@ -226,10 +275,6 @@ export default function ManageKeywordsPage() {
         </p>
       </>
     ) : null
-
-  const setTab = (tab) => {
-    setKeywordType(tab)
-  }
 
   return (
     <>
@@ -299,8 +344,6 @@ export default function ManageKeywordsPage() {
               </div>
               {/* TO REMOVE */}
               <Link onClick={AddTestData}>Test Data</Link>
-              <br />
-              <Link onClick={setSelected}>set selected</Link>
               <br />
               <Link onClick={onClickEditDialog}>Edit</Link>
               {showEditDialog && (

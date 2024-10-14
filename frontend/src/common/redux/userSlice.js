@@ -21,7 +21,7 @@ const userSlice = createSlice({
     selectedFloodAlertArea: null,
     showOnlySelectedFloodArea: null,
     nearbyTargetAreaFlow: null,
-
+    contactKeywords: null,
     // org location data
     currentLocation: {
       name: null,
@@ -101,6 +101,9 @@ const userSlice = createSlice({
     },
     setNearbyTargetAreasFlow: (state, action) => {
       state.nearbyTargetAreaFlow = action.payload
+    },
+    setContactKeywords: (state, action) => {
+      state.contactKeywords = action.payload
     },
     // org location data
     setCurrentLocation: (state, action) => {
@@ -199,6 +202,8 @@ const userSlice = createSlice({
       state.selectedFloodAlertArea = null
       state.showOnlySelectedFloodArea = null
       state.nearbyTargetAreaFlow = null
+      // contact info
+      state.contactKeywords = null
       // org location data
       state.currentLocation = {
         name: null,
@@ -244,6 +249,8 @@ export const {
   setSelectedFloodAlertArea,
   setShowOnlySelectedFloodArea,
   setNearbyTargetAreasFlow,
+  // contact
+  setContactKeywords,
   // org location data
   setCurrentLocation,
   setCurrentLocationName,

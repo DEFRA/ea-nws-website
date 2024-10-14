@@ -10,17 +10,23 @@ export default function LocationXYCoordinatesSearchPage() {
   }
   const allFloodAreasAvailable = () => {
     navigate(
-      '/organisation/manage-locations/add/location-in-area/xy-coordinates-search/all'
+      orgManageLocationsUrls.add.confirmManualSearchedLocation
+        .replace(':flow', 'xy-coordinates-search')
+        .replace(':type', 'all')
     )
   }
   const floodAlertAreasAvailableOnly = () => {
     navigate(
-      '/organisation/manage-locations/add/location-in-area/xy-coordinates-search/alerts'
+      orgManageLocationsUrls.add.confirmManualSearchedLocation
+        .replace(':flow', 'xy-coordinates-search')
+        .replace(':type', 'alerts')
     )
   }
   const noFloodAreasAvailable = () => {
     navigate(
-      '/organisation/manage-locations/add/location-in-area/xy-coordinates-search/no-alerts'
+      orgManageLocationsUrls.add.confirmManualSearchedLocation
+        .replace(':flow', 'xy-coordinates-search')
+        .replace(':type', 'no-alerts')
     )
   }
   return (

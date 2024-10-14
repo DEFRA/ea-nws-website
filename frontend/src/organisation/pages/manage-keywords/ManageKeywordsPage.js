@@ -12,6 +12,10 @@ import {
   setCurrentLocationKeywords
 } from '../../../common/redux/userSlice'
 
+import Button from '../../../common/components/gov-uk/Button'
+import Pagination from '../../../common/components/gov-uk/Pagination'
+import KeywordsTable from '../../components/custom/KeywordsTable'
+
 export default function ManageKeywordsPage() {
   const navigate = useNavigate()
   const [keywords, setKeywords] = useState([])
@@ -338,6 +342,36 @@ export default function ManageKeywordsPage() {
                     </div>
                   </div>
                 </div>
+                <Link
+                  onClick={() => setResetPaging(!resetPaging)}
+                  className='govuk-link'
+                >
+                  Clear Seach results
+                </Link>
+              </div>
+              <div className='govuk-grid-column-two-thirds'>
+                <Button
+                  className='govuk-button govuk-button--secondary'
+                  onClick={handleButton}
+                  text='Delete selected keywords'
+                />
+
+                <KeywordsTable
+                  keywords={keywords}
+                  displayedKeywords={displayedKeywords}
+                  filteredKeywords={filteredKeywords}
+                  setFilteredKeywords={setFilteredKeywords}
+                  selectedKeywords={selectedKeywords}
+                  setSelectedKeywords={setSelectedKeywords}
+                  type={keywordType}
+                />
+                <Pagination
+                  totalPages={Math.ceil(
+                    filteredKeywords.length / keywordsPerPage
+                  )}
+                  onPageChange={(val) => setCurrentPage(val)}
+                  reset={resetPaging}
+                />
                 <Link to='/' className='govuk-link'>
                   Clear Seach results
                 </Link>

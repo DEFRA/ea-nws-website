@@ -28,10 +28,11 @@ import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/add
 import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/NotInEnglandPage'
 import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
-import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationOptionsPage'
+import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationSearchOptionsPage'
 import CannotChangeLocationLinePage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-line/CannotChangeLocationLinePage'
 import CannotChangeLocationPolygonPage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-polygon/CannotChangeLocationPolygonPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
+
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgAddLocations = '/organisation/manage-locations/add'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
@@ -104,13 +105,21 @@ const orgManageLocationsUrls = {
     }
   },
   edit: {
-    options: urlManageOrg + '/edit/location-options',
+    editLocationCoords: {
+      SelectLocationOptions: urlManageOrg + '/edit/select-location-options',
+      xyCoordinatesSearch: urlManageOrg + '/edit/xy-coordinates-search',
+      ConfirmEditLocations: urlManageOrg + '/edit/location-in-area/:flow/:type'
+    },
     individualLocation: {
       editShape: {
         cannotChangeLocationPolygon:
           urlManageOrg + '/edit/cannot-change-polygon',
         cannotChangeLocationLine: urlManageOrg + '/edit/cannot-change-line'
       }
+    },
+    error: {
+      xyCoordinatesNotInEngland:
+        urlManageOrg + '/edit/xy-coordinates-not-in-england'
     }
   }
 }
@@ -248,7 +257,7 @@ const orgManageLocationRoutes = [
   },
   // edit
   {
-    path: orgManageLocationsUrls.edit.options,
+    path: orgManageLocationsUrls.edit.editLocationCoords.SelectLocationOptions,
     component: <EditLocationOptionsPage />
   },
   {
@@ -260,6 +269,18 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.edit.individualLocation.editShape
       .cannotChangeLocationPolygon,
     component: <CannotChangeLocationPolygonPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.editLocationCoords.xyCoordinatesSearch,
+    component: <EditLocationXYCoordinatesSearchPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.editLocationCoords.ConfirmEditLocations,
+    component: <ConfirmLocationPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.error.xyCoordinatesNotInEngland,
+    component: <XYCoordinatesNotInEnglandPage />
   }
 ]
 

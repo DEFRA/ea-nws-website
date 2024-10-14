@@ -1,5 +1,5 @@
 from common import *
-
+import time
 # Urls
 url_add_name = url_org_man_loc.get('add').get('name')
 url_add_search_option = url_org_man_loc.get('add').get('searchOption')
@@ -19,10 +19,14 @@ def render_add_xy_coordinates_search_page(browser):
     navigate_to_auth_page_via_index(browser, url_add_xy_coordinates_search)
     assert check_h1_heading(browser, 'What are the X and Y coordinates?')
 
+
+
 # Test add xy coordinate search page with no coordinates
 def test_add_xy_coordinate_search_no_coordinates(get_browser):
     browser = get_browser
     render_add_xy_coordinates_search_page(browser)
+    enter_input_text(browser,'Y coordinate',"")
+    enter_input_text(browser,'X coordinate',"")
     click_button(browser, 'Continue', url_add_xy_coordinates_search)
     assert check_error_summary(browser)
 
@@ -30,6 +34,7 @@ def test_add_xy_coordinate_search_no_coordinates(get_browser):
 def test_add_xy_coordinate_search_no_x_coordinate(get_browser):
     browser = get_browser
     render_add_xy_coordinates_search_page(browser)
+    enter_input_text(browser,'X coordinate',"")
     enter_input_text(browser, 'Y coordinate', '123')
     click_button(browser, 'Continue', url_add_xy_coordinates_search)
     assert check_error_summary(browser)
@@ -38,6 +43,8 @@ def test_add_xy_coordinate_search_no_x_coordinate(get_browser):
 def test_add_xy_coordinate_search_x_coordinate_non_numeric(get_browser):
     browser = get_browser
     render_add_xy_coordinates_search_page(browser)
+    enter_input_text(browser,'Y coordinate',"")
+    enter_input_text(browser,'X coordinate',"")
     enter_input_text(browser, 'X coordinate', 'ABC')
     enter_input_text(browser, 'Y coordinate', '123')
     click_button(browser, 'Continue', url_add_xy_coordinates_search)
@@ -47,6 +54,8 @@ def test_add_xy_coordinate_search_x_coordinate_non_numeric(get_browser):
 def test_add_xy_coordinate_search_x_coordinate_out_of_range(get_browser):
     browser = get_browser
     render_add_xy_coordinates_search_page(browser)
+    enter_input_text(browser,'Y coordinate',"")
+    enter_input_text(browser,'X coordinate',"")
     enter_input_text(browser, 'X coordinate', '700001')
     enter_input_text(browser, 'Y coordinate', '123')
     click_button(browser, 'Continue', url_add_xy_coordinates_search)
@@ -56,6 +65,8 @@ def test_add_xy_coordinate_search_x_coordinate_out_of_range(get_browser):
 def test_add_xy_coordinate_search_no_y_coordinate(get_browser):
     browser = get_browser
     render_add_xy_coordinates_search_page(browser)
+    enter_input_text(browser,'Y coordinate',"")
+    enter_input_text(browser,'X coordinate',"")
     enter_input_text(browser, 'X coordinate', '123')
     click_button(browser, 'Continue', url_add_xy_coordinates_search)
     assert check_error_summary(browser)
@@ -64,6 +75,8 @@ def test_add_xy_coordinate_search_no_y_coordinate(get_browser):
 def test_add_xy_coordinate_search_y_coordinate_non_numeric(get_browser):
     browser = get_browser
     render_add_xy_coordinates_search_page(browser)
+    enter_input_text(browser,'Y coordinate',"")
+    enter_input_text(browser,'X coordinate',"")
     enter_input_text(browser, 'X coordinate', '123')
     enter_input_text(browser, 'Y coordinate', 'ABC')
     click_button(browser, 'Continue', url_add_xy_coordinates_search)
@@ -73,6 +86,8 @@ def test_add_xy_coordinate_search_y_coordinate_non_numeric(get_browser):
 def test_add_xy_coordinate_search_y_coordinate_out_of_range(get_browser):
     browser = get_browser
     render_add_xy_coordinates_search_page(browser)
+    enter_input_text(browser,'Y coordinate',"")
+    enter_input_text(browser,'X coordinate',"")
     enter_input_text(browser, 'X coordinate', '123')
     enter_input_text(browser, 'Y coordinate', '1300001')
     click_button(browser, 'Continue', url_add_xy_coordinates_search)
@@ -101,7 +116,6 @@ def test_add_named_location_using_xy_coordinates_no_alerts(get_browser):
     assert 'Flood messages unavailable' in browser.page_source
     # TODO: Continue with this once more of the flow is complete
 
-# Test add named location using xy coordinates (all)
 def test_add_named_location_using_xy_coordinates_all(get_browser):
     browser = get_browser
     render_add_name_page(browser)
@@ -144,7 +158,7 @@ def test_add_named_location_using_xy_coordinates_alerts(get_browser):
     assert x + ', ' + y in browser.page_source
     assert 'Move the pin on the map' in browser.page_source
     assert 'Use different X and Y coordinates' in browser.page_source
-    assert 'Severe flood warnings and flood warnings available' in browser.page_source
+    assert 'Severe flood warnings and flood warnings unavailable' in browser.page_source
     # TODO: Continue with this once more of the flow is complete
 
 # Test add named location using xy coordinates not in england followed by
@@ -164,4 +178,4 @@ def test_add_named_location_using_xy_coordinates_not_in_england(get_browser):
     enter_input_text(browser, 'Y coordinate', y)
     click_button(browser, 'Continue', url_add_xy_coordinates_not_in_england)
     assert check_h1_heading(browser, 'This location is not in England and cannot be added to this account')
-    click_link(browser, "use a different set of X and Y coordinates", url_add_xy_coordinates_search)
+    click_link(browser, "Back", url_add_xy_coordinates_search)

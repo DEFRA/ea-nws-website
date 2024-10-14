@@ -1052,7 +1052,8 @@
   display: flex;
   align-items: center;
   border: 1px solid #b1b4b6;
-  padding: 10px;
+  padding: 5px;
+  height: 100%;
 }
 
 .flood-risk-banner-item {
@@ -1068,15 +1069,34 @@
 
 .flood-risk-banner-label {
   display: inline-block;
+}
+
+.flood-risk-container {
   padding: 4px 8px;
   border-radius: 4px;
   margin-right: 30px;
 }
 
+.very-low-risk {
+  background-color: rgba(0, 112, 60, 0.2);
+}
+
 .low-risk {
-  background-color: #fff3b0;
+  background-color: rgba(255, 243, 176, 1);
+}
+
+.medium-risk {
+  background-color: rgba(244, 119, 56, 0.4);
+}
+
+.high-risk {
+  background-color: rgba(244, 153, 190, 0.6);
 }
 
 .unlikely-risk {
-  background-color: #f3f2f1;
+  background-color: rgba(243, 242, 241, 1);
+}
+
+.possible-risk {
+  background-color: rgba(244, 153, 190, 0.6);
 }

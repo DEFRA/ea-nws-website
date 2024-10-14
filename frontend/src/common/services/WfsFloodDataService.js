@@ -104,7 +104,7 @@ export const getCoordsOfFloodArea = (area) => {
   return firstLatLngCoords
 }
 
-function getFirstCoordinates (nestedArray) {
+function getFirstCoordinates(nestedArray) {
   let current = nestedArray
   while (Array.isArray(current[0])) {
     current = current[0]
@@ -112,7 +112,7 @@ function getFirstCoordinates (nestedArray) {
   return { latitude: current[1], longitude: current[0] }
 }
 
-function checkPointInPolygon (lat, lng, geojson) {
+function checkPointInPolygon(lat, lng, geojson) {
   const point = L.latLng(lat, lng)
 
   // Check each area in the GeoJSON data
@@ -129,7 +129,7 @@ function checkPointInPolygon (lat, lng, geojson) {
   return false
 }
 
-function calculateBoundingBox (centerLat, centerLng, distanceKm) {
+function calculateBoundingBox(centerLat, centerLng, distanceKm) {
   const center = turf.point([centerLng, centerLat], { crs: 'EPSG:4326' })
   const buffered = turf.buffer(center, distanceKm * 1000, { units: 'meters' })
   const bbox = turf.bbox(buffered)
@@ -138,4 +138,92 @@ function calculateBoundingBox (centerLat, centerLng, distanceKm) {
     bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3] + ',EPSG:4326'
 
   return result
+}
+
+export const getLocationsNearbyRiversAndSeaFloodAreas = async (
+  lat,
+  lng,
+  bboxKM = 0.5
+) => {
+  let WFSParams = {
+    service: 'WFS',
+    map: 'uk-rs.qgz',
+    version: '1.1.0',
+    request: 'GetFeature',
+    typename: 'risk-rivers-sea',
+    srsname: 'EPSG:4326',
+    bbox: calculateBoundingBox(lat, lng, bboxKM),
+    outputFormat: 'GEOJSON'
+  }
+
+  const { data: riversAndSeaFloodRiskData } = await backendCall(
+    WFSParams,
+    'api/wfs'
+  )
+
+  return riversAndSeaFloodRiskData
+}
+
+export const getLocationsNearbyGroundWaterFloodAreas = async (
+  lat,
+  lng,
+  bboxKM = 0.5
+) => {
+  let WFSParams = {
+    service: 'WFS',
+    map: 'uk-gf.qgz',
+    version: '1.1.0',
+    request: 'GetFeature',
+    typename: 'groundwater-flood-risk',
+    srsname: 'EPSG:4326',
+    bbox: calculateBoundingBox(lat, lng, bboxKM),
+    outputFormat: 'GEOJSON'
+  }
+
+  const { data: groundwaterFloodRiskData } = await backendCall(
+    WFSParams,
+    'api/wfs'
+  )
+
+  return groundwaterFloodRiskData
+}
+
+export const getRiversAndSeaFloodRiskRatingOfLocation = async (lat, lng) => {
+  const data = await getLocationsNearbyRiversAndSeaFloodAreas(lat, lng)
+
+  const ratingOrder = {
+    'v.low': 1,
+    low: 2,
+    medium: 3,
+    high: 4
+  }
+
+  return getHighestRiskRating(data.features, ratingOrder)
+}
+
+export const getGroundwaterFloodRiskRatingOfLocation = async (lat, lng) => {
+  const data = await getLocationsNearbyGroundWaterFloodAreas(lat, lng)
+
+  const ratingOrder = {
+    unlikely: 1,
+    possible: 2
+  }
+
+  return getHighestRiskRating(data.features, ratingOrder)
+}
+
+function getHighestRiskRating(areas, ratingOrder) {
+  let highestRating = null
+
+  areas?.forEach((area) => {
+    const rating = area.properties?.prob_4band.toLowerCase()
+
+    if (
+      ratingOrder[rating] > (highestRating ? ratingOrder[highestRating] : 0)
+    ) {
+      highestRating = rating
+    }
+  })
+
+  return highestRating
 }

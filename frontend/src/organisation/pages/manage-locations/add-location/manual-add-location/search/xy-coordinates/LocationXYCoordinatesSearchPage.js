@@ -1,21 +1,27 @@
 import React from 'react'
-import LocationXYCoordinatesSearchLayout from '../../../../../../layouts/location/search/LocationXYCoordinatesSearchLayout'
 import { useNavigate } from 'react-router'
+import LocationXYCoordinatesSearchLayout from '../../../../../../layouts/location/add-or-edit-location/search/xy-coord/LocationXYCoordinatesSearchLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
-export default function LocationXYCoordinatesSearchPage () {
+export default function LocationXYCoordinatesSearchPage() {
   const navigate = useNavigate()
 
   const navigateToNotInEngland = () => {
     navigate(orgManageLocationsUrls.add.error.xyCoordinatesNotInEngland)
   }
   const allFloodAreasAvailable = () => {
-    navigate('/organisation/manage-locations/add/location-in-area/xy-coordinates-search/all')
+    navigate(
+      '/organisation/manage-locations/add/location-in-area/xy-coordinates-search/all'
+    )
   }
   const floodAlertAreasAvailableOnly = () => {
-    navigate('/organisation/manage-locations/add/location-in-area/xy-coordinates-search/alerts')
+    navigate(
+      '/organisation/manage-locations/add/location-in-area/xy-coordinates-search/alerts'
+    )
   }
   const noFloodAreasAvailable = () => {
-    navigate('/organisation/manage-locations/add/location-in-area/xy-coordinates-search/no-alerts')
+    navigate(
+      '/organisation/manage-locations/add/location-in-area/xy-coordinates-search/no-alerts'
+    )
   }
   return (
     <>

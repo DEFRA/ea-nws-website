@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import BackLink from '../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
-import Button from '../../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
-import Input from '../../../../common/components/gov-uk/Input'
+import BackLink from '../../../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
+import Button from '../../../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
+import Input from '../../../../../../common/components/gov-uk/Input'
 import {
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
   setCurrentLocationNorthing
-} from '../../../../common/redux/userSlice'
-import { convertCoordinatesToEspg4326 } from '../../../../common/services/CoordinatesFormatConverter'
+} from '../../../../../../common/redux/userSlice'
+import { convertCoordinatesToEspg4326 } from '../../../../../../common/services/CoordinatesFormatConverter'
 import {
   getSurroundingFloodAreas,
   isLocationInFloodArea
-} from '../../../../common/services/WfsFloodDataService'
-import { locationInEngland } from '../../../../common/services/validations/LocationInEngland'
-import { xCoordinateValidation } from '../../../../common/services/validations/XCoordinateValidation'
-import { yCoordinateValidation } from '../../../../common/services/validations/YCoordinateValidation'
-import { useDispatch, useSelector } from 'react-redux'
-export default function LocationXYCoordinatesSearchLayout ({
+} from '../../../../../../common/services/WfsFloodDataService'
+import { locationInEngland } from '../../../../../../common/services/validations/LocationInEngland'
+import { xCoordinateValidation } from '../../../../../../common/services/validations/XCoordinateValidation'
+import { yCoordinateValidation } from '../../../../../../common/services/validations/YCoordinateValidation'
+export default function LocationXYCoordinatesSearchLayout({
   allFloodAreasAvailable,
   floodAlertAreasAvailableOnly,
   noFloodAreasAvailable,
@@ -29,8 +29,12 @@ export default function LocationXYCoordinatesSearchLayout ({
   const navigate = useNavigate()
 
   // ToDo uncomment these and remove the hard coded coords once dashboard page has been created, for edititing xy coords
-  let currentXCoordinate = useSelector((state) => state.session.currentLocation.meta_data.x_coordinate)
-  let currentYCoordinate = useSelector((state) => state.session.currentLocation.meta_data.y_coordinate)
+  let currentXCoordinate = useSelector(
+    (state) => state.session.currentLocation.meta_data.x_coordinate
+  )
+  let currentYCoordinate = useSelector(
+    (state) => state.session.currentLocation.meta_data.y_coordinate
+  )
   currentXCoordinate = '520814'
   currentYCoordinate = '185016'
 
@@ -79,10 +83,10 @@ export default function LocationXYCoordinatesSearchLayout ({
         const isError = !warningArea && !alertArea
 
         const isInAlertArea =
-            alertArea && isLocationInFloodArea(latitude, longitude, alertArea)
+          alertArea && isLocationInFloodArea(latitude, longitude, alertArea)
 
         const isInWarningArea =
-            warningArea && isLocationInFloodArea(latitude, longitude, warningArea)
+          warningArea && isLocationInFloodArea(latitude, longitude, warningArea)
 
         navigateToNextPage(isInAlertArea, isInWarningArea, isError)
       } else {

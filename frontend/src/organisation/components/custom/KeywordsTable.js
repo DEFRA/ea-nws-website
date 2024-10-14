@@ -1,0 +1,103 @@
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+
+export default function KeywordsTable ({
+  keywords,
+  displayedKeywords,
+  filteredKeywords,
+  selectedKeywords,
+  setSelectedKeywords
+}) {
+  const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
+
+  const handleHeaderCheckboxChange = (event) => {
+    const isChecked = event.target.checked
+    setIsTopCheckboxChecked(isChecked)
+    if (isChecked) {
+      setSelectedKeywords(displayedKeywords)
+    } else {
+      setSelectedKeywords([])
+    }
+  }
+
+  const handleKeywordSelected = (keyword) => {
+    let updatedSelectedKeywords = []
+
+    if (selectedKeywords.includes(keyword)) {
+      updatedSelectedKeywords = selectedKeywords.filter(
+        (selectedKeyword) => selectedKeyword !== keyword
+      )
+    } else {
+      updatedSelectedKeywords = [...selectedKeywords, keyword]
+    }
+    setSelectedKeywords(updatedSelectedKeywords)
+  }
+
+  return (
+    <>
+      <p className='govuk-!-margin-bottom-6' style={{ color: '#505a5f' }}>
+        {filteredKeywords.length !== keywords.length
+          ? 'Showing ' + filteredKeywords.length + ' of ' + keywords.length + ' keywords'
+          : keywords.length + ' keywords'} | <Link className='govuk-link'>{selectedKeywords.length + ' keywords selected'}</Link>
+      </p>
+      <table className='govuk-table govuk-table--small-text-until-tablet'>
+        <thead className='govuk-table__head'>
+          <tr className='govuk-table__row'>
+            <th scope='col' className='govuk-table__header govuk-!-padding-0'>
+              <div
+                className='govuk-checkboxes govuk-checkboxes--small'
+                data-module='govuk-checkboxes'
+              >
+                <div className='govuk-checkboxes__item'>
+                  <input
+                    className='govuk-checkboxes__input'
+                    type='checkbox'
+                    checked={isTopCheckboxChecked}
+                    onChange={handleHeaderCheckboxChange}
+                  />
+                  <label className='govuk-label govuk-checkboxes__label' />
+                </div>
+              </div>
+            </th>
+            <th scope='col' className='govuk-table__header' aria-sort='none'>
+              <button type='button'>Keyword</button>
+            </th>
+            <th scope='col' className='govuk-table__header' aria-sort='none'>
+              <button type='button'>Associated locations</button>
+            </th>
+            <th scope='col' className='govuk-table__header' />
+          </tr>
+        </thead>
+        <tbody className='govuk-table__body'>
+          {displayedKeywords.map((keyword, index) => (
+            <tr className='govuk-table__row' key={index}>
+              <th scope='row' className='govuk-table__header govuk-!-padding-0'>
+                <div
+                  className='govuk-checkboxes govuk-checkboxes--small'
+                  data-module='govuk-checkboxes'
+                >
+                  <div className='govuk-checkboxes__item'>
+                    <input
+                      className='govuk-checkboxes__input'
+                      type='checkbox'
+                      checked={selectedKeywords.includes(keyword)}
+                      onChange={() => handleKeywordSelected(keyword)}
+                    />
+                    <label className='govuk-label govuk-checkboxes__label' />
+                  </div>
+                </div>
+              </th>
+              <td className='govuk-table__cell'>{keyword.name}</td>
+              <td className='govuk-table__cell'>
+                {keyword.locations.length}
+              </td>
+              <td className='govuk-table__cell'>
+                <Link className='govuk-link'>Change</Link> <span style={{ color: '#b1b4b6' }}>|</span> <Link className='govuk-link'>Delete</Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </>
+  )
+}

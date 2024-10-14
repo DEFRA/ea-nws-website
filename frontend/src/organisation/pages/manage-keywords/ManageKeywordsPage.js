@@ -2,17 +2,151 @@ import {
   faMagnifyingGlass
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
+import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
+import Pagination from '../../../common/components/gov-uk/Pagination'
+import KeywordsTable from '../../components/custom/KeywordsTable'
 
 export default function ManageKeywordsPage () {
   const navigate = useNavigate()
+  const [keywords, setKeywords] = useState([])
   const [keywordType, setKeywordType] = useState('location')
-  const handleSubmit = () => {
-    navigate(-1)
+  const [selectedKeywords, setSelectedKeywords] = useState([])
+  const [filteredKeywords, setFilteredKeywords] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [resetPaging, setResetPaging] = useState(false)
+  const keywordsPerPage = 10
+  const displayedKeywords = filteredKeywords.slice(
+    (currentPage - 1) * keywordsPerPage,
+    currentPage * keywordsPerPage
+  )
+
+  const setTab = (tab) => {
+    setKeywordType(tab)
+  }
+
+  useEffect(() => {
+    setCurrentPage(1)
+    setSelectedKeywords([])
+  }, [resetPaging])
+
+  useEffect(() => {
+    const locationKeywords = [
+      {
+        name: 'Location Keyword 1',
+        locations: ['id', 'id']
+      },
+      {
+        name: 'Location Keyword 2',
+        locations: ['id']
+      },
+      {
+        name: 'Location Keyword 3',
+        locations: []
+      },
+      {
+        name: 'Location Keyword 4',
+        locations: ['id', 'id']
+      },
+      {
+        name: 'Location Keyword 5',
+        locations: ['id', 'id', 'id']
+      },
+      {
+        name: 'Location Keyword 6',
+        locations: ['id', 'id', 'id', 'id']
+      },
+      {
+        name: 'Location Keyword 7',
+        locations: ['id', 'id']
+      },
+      {
+        name: 'Location Keyword 8',
+        locations: ['id']
+      },
+      {
+        name: 'Location Keyword 9',
+        locations: ['id', 'id']
+      },
+      {
+        name: 'Location Keyword 10',
+        locations: ['id', 'id']
+      },
+      {
+        name: 'Location Keyword 11',
+        locations: ['id', 'id']
+      },
+      {
+        name: 'Location Keyword 12',
+        locations: ['id', 'id']
+      }
+    ]
+    const contactKeywords = [
+      {
+        name: 'Contact Keyword 1',
+        locations: ['id', 'id']
+      },
+      {
+        name: 'Contact Keyword 2',
+        locations: ['id']
+      },
+      {
+        name: 'Contact Keyword 3',
+        locations: []
+      },
+      {
+        name: 'Contact Keyword 4',
+        locations: ['id', 'id']
+      },
+      {
+        name: 'Contact Keyword 5',
+        locations: ['id', 'id', 'id']
+      },
+      {
+        name: 'Contact Keyword 6',
+        locations: ['id', 'id', 'id', 'id']
+      },
+      {
+        name: 'Contact Keyword 7',
+        locations: ['id', 'id']
+      },
+      {
+        name: 'Contact Keyword 8',
+        locations: ['id']
+      },
+      {
+        name: 'Contact Keyword 9',
+        locations: ['id', 'id']
+      },
+      {
+        name: 'Contact Keyword 10',
+        locations: ['id', 'id']
+      },
+      {
+        name: 'Contact Keyword 11',
+        locations: ['id', 'id']
+      },
+      {
+        name: 'Contact Keyword 12',
+        locations: ['id', 'id']
+      }
+    ]
+    setKeywords(keywordType === 'location' ? locationKeywords : contactKeywords)
+    setFilteredKeywords(keywordType === 'location' ? locationKeywords : contactKeywords)
+  }, [keywordType])
+
+  const handleSearch = () => {
+    // TODO: use keywordType to search the correct array and set the results array
+  }
+
+  const handleButton = () => {
+    if (selectedKeywords) {
+      // TODO: delete keywords
+    }
   }
 
   const navigateBack = (event) => {
@@ -20,25 +154,24 @@ export default function ManageKeywordsPage () {
     navigate(-1)
   }
 
-  const detailsText = keywordType === 'location' ? (
-    <>
-      <p>Adding keywords for each location can make it easier for you to filter and create lists of locations you can link to contacts to get relevant flood messages.</p>
-      <p>For example, you may want to add 'pumping station' or 'office' or 'Midlands' as a keyword, then show all of the locations with that keyword in a list.</p>
-      <p>Once you use a keyword it will be saved so you can select it for any other locations.</p>
-  </> 
-  ) : keywordType === 'contact' ? (
-    <>
-      <p>Adding keywords for each contact can make it easier for you to filter and create lists of people you can link to locations to get relevant flood messages.</p>
-      <p>For example, you may want to add 'North' or 'South' as a keyword, then show all of the contacts with that keyword in a list.</p>
-      <p>Once you use a keyword it will be saved so you can select it for any other contacts.</p>
-      <p>You can add a maximum of 50 keywords and each keyword can be single or multiple words, for example 'South' or 'South West'.</p>
-    </>
-  ) : null
-
-  const setTab = (tab) => {
-    setKeywordType(tab)
-  }
-    
+  const detailsText = keywordType === 'location'
+    ? (
+      <>
+        <p>Adding keywords for each location can make it easier for you to filter and create lists of locations you can link to contacts to get relevant flood messages.</p>
+        <p>For example, you may want to add 'pumping station' or 'office' or 'Midlands' as a keyword, then show all of the locations with that keyword in a list.</p>
+        <p>Once you use a keyword it will be saved so you can select it for any other locations.</p>
+      </>
+      )
+    : keywordType === 'contact'
+      ? (
+        <>
+          <p>Adding keywords for each contact can make it easier for you to filter and create lists of people you can link to locations to get relevant flood messages.</p>
+          <p>For example, you may want to add 'North' or 'South' as a keyword, then show all of the contacts with that keyword in a list.</p>
+          <p>Once you use a keyword it will be saved so you can select it for any other contacts.</p>
+          <p>You can add a maximum of 50 keywords and each keyword can be single or multiple words, for example 'South' or 'South West'.</p>
+        </>
+        )
+      : null
 
   return (
     <>
@@ -49,11 +182,11 @@ export default function ManageKeywordsPage () {
             <h1 className='govuk-heading-l'>Manage keywords</h1>
             <div className='govuk-body'>
               <p>
-              As an admin you can edit and delete keywords. Deleting a keyword will remove it from this account and you will no longer be able to use it to filter any locations or contacts that were previously associated with it.
+                As an admin you can edit and delete keywords. Deleting a keyword will remove it from this account and you will no longer be able to use it to filter any locations or contacts that were previously associated with it.
               </p>
               <Details
                 title='Why add keywords?'
-                text={detailsText} 
+                text={detailsText}
               />
               <nav aria-label='Sub navigation'>
                 <ul className='sub-navigation__list'>
@@ -77,9 +210,9 @@ export default function ManageKeywordsPage () {
                   </li>
                 </ul>
               </nav>
-              <div className='search-container govuk-!-padding-bottom-5 govuk-!-padding-left-4 govuk-!-padding-top-7'>
-                <div class="govuk-form-group govuk-!-margin-bottom-2">
-                  <label class="govuk-label govuk-label--s" for="keyword-search">
+              <div className='search-container govuk-!-padding-bottom-5 govuk-!-margin-bottom-6 govuk-!-padding-left-4 govuk-!-padding-top-7'>
+                <div class='govuk-form-group govuk-!-margin-bottom-2'>
+                  <label class='govuk-label govuk-label--s' for='keyword-search'>
                     Search for a {keywordType} keyword
                   </label>
                   <div class='search-input-container' id='keyword-search'>
@@ -90,13 +223,35 @@ export default function ManageKeywordsPage () {
                       value={null}
                     />
                     <div className='search-button-container'>
-                      <button className='search-button'>
-                      <FontAwesomeIcon icon={faMagnifyingGlass} width={'20px'} />
+                      <button className='search-button' onClick={() => handleSearch()}>
+                        <FontAwesomeIcon icon={faMagnifyingGlass} width='20px' />
                       </button>
                     </div>
                   </div>
                 </div>
-                <Link to='/' className='govuk-link' >Clear Seach results</Link>
+                <Link onClick={() => setResetPaging(true)} className='govuk-link'>Clear Seach results</Link>
+              </div>
+              <div className='govuk-grid-column-two-thirds'>
+                <Button
+                  className='govuk-button govuk-button--secondary'
+                  onClick={handleButton}
+                  text='Delete selected keywords'
+                />
+
+                <KeywordsTable
+                  keywords={keywords}
+                  displayedKeywords={displayedKeywords}
+                  filteredKeywords={filteredKeywords}
+                  selectedKeywords={selectedKeywords}
+                  setSelectedKeywords={setSelectedKeywords}
+                />
+                <Pagination
+                  totalPages={Math.ceil(
+                    filteredKeywords.length / keywordsPerPage
+                  )}
+                  onPageChange={(val) => setCurrentPage(val)}
+                  reset={resetPaging}
+                />
               </div>
             </div>
           </div>

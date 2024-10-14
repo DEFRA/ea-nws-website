@@ -29,9 +29,9 @@ import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-l
 import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
 import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationOptionsPage'
+import CannotChangeLocationLinePage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-line/CannotChangeLocationLinePage'
+import CannotChangeLocationPolygonPage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-polygon/CannotChangeLocationPolygonPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
-import CannotChangeLocationLinePage from '../../pages/manage-locations/view-location/edit-location/edit-line-location/CannotChangeLocationLinePage'
-import CannotChangeLocationPolygonPage from '../../pages/manage-locations/view-location/edit-location/edit-polygon-location/CannotChangeLocationPolygonPage'
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgAddLocations = '/organisation/manage-locations/add'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
@@ -105,9 +105,12 @@ const orgManageLocationsUrls = {
   },
   edit: {
     options: urlManageOrg + '/edit/location-options',
-    error: {
-      cannotChangeLocationPolygon: urlManageOrg + '/edit/cannot-change-polygon',
-      cannotChangeLocationLine: urlManageOrg + '/edit/cannot-change-line'
+    individualLocation: {
+      editShape: {
+        cannotChangeLocationPolygon:
+          urlManageOrg + '/edit/cannot-change-polygon',
+        cannotChangeLocationLine: urlManageOrg + '/edit/cannot-change-line'
+      }
     }
   }
 }
@@ -249,11 +252,13 @@ const orgManageLocationRoutes = [
     component: <EditLocationOptionsPage />
   },
   {
-    path: orgManageLocationsUrls.edit.error.cannotChangeLocationLine,
+    path: orgManageLocationsUrls.edit.individualLocation.editShape
+      .cannotChangeLocationLine,
     component: <CannotChangeLocationLinePage />
   },
   {
-    path: orgManageLocationsUrls.edit.error.cannotChangeLocationPolygon,
+    path: orgManageLocationsUrls.edit.individualLocation.editShape
+      .cannotChangeLocationPolygon,
     component: <CannotChangeLocationPolygonPage />
   }
 ]

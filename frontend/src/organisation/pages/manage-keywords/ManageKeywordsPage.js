@@ -1,17 +1,155 @@
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Popup from '../../../common/components/custom/Popup'
 import Details from '../../../common/components/gov-uk/Details'
-import { setCurrentLocationKeywords } from '../../../common/redux/userSlice'
-export default function ManageKeywordsPage () {
+
+export default function ManageKeywordsPage() {
   const navigate = useNavigate()
+  const [keywords, setKeywords] = useState([])
   const dispatch = useDispatch()
   const [keywordType, setKeywordType] = useState('location')
+  const [selectedKeywords, setSelectedKeywords] = useState([])
+  const [filteredKeywords, setFilteredKeywords] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
+  const [resetPaging, setResetPaging] = useState(false)
+  const [displayedKeywords, setDisplayedKeywords] = useState([])
+  const keywordsPerPage = 10
+
+  const setTab = (tab) => {
+    setKeywordType(tab)
+    setResetPaging(!resetPaging)
+  }
+
+  useEffect(() => {
+    setCurrentPage(1)
+    setSelectedKeywords([])
+  }, [resetPaging])
+
+  useEffect(() => {
+    const locationKeywords = [
+      {
+        name: 'Location Keyword 1',
+        linked_ids: ['id', 'id']
+      },
+      {
+        name: 'Location Keyword 2',
+        linked_ids: ['id']
+      },
+      {
+        name: 'Location Keyword 3',
+        linked_ids: []
+      },
+      {
+        name: 'Location Keyword 4',
+        linked_ids: ['id', 'id']
+      },
+      {
+        name: 'Location Keyword 5',
+        linked_ids: ['id', 'id', 'id']
+      },
+      {
+        name: 'Location Keyword 6',
+        linked_ids: ['id', 'id', 'id', 'id']
+      },
+      {
+        name: 'Location Keyword 7',
+        linked_ids: ['id', 'id']
+      },
+      {
+        name: 'Location Keyword 8',
+        linked_ids: ['id']
+      },
+      {
+        name: 'Location Keyword 9',
+        linked_ids: ['id', 'id']
+      },
+      {
+        name: 'Location Keyword 10',
+        linked_ids: ['id', 'id']
+      },
+      {
+        name: 'Location Keyword 11',
+        linked_ids: ['id', 'id']
+      },
+      {
+        name: 'Location Keyword 12',
+        linked_ids: ['id', 'id']
+      }
+    ]
+    const contactKeywords = [
+      {
+        name: 'Contact Keyword 1',
+        linked_ids: ['id', 'id']
+      },
+      {
+        name: 'Contact Keyword 2',
+        linked_ids: ['id']
+      },
+      {
+        name: 'Contact Keyword 3',
+        linked_ids: []
+      },
+      {
+        name: 'Contact Keyword 4',
+        linked_ids: ['id', 'id']
+      },
+      {
+        name: 'Contact Keyword 5',
+        linked_ids: ['id', 'id', 'id']
+      },
+      {
+        name: 'Contact Keyword 6',
+        linked_ids: ['id', 'id', 'id', 'id']
+      },
+      {
+        name: 'Contact Keyword 7',
+        linked_ids: ['id', 'id']
+      },
+      {
+        name: 'Contact Keyword 8',
+        linked_ids: ['id']
+      },
+      {
+        name: 'Contact Keyword 9',
+        linked_ids: ['id', 'id']
+      },
+      {
+        name: 'Contact Keyword 10',
+        linked_ids: ['id', 'id']
+      },
+      {
+        name: 'Contact Keyword 11',
+        linked_ids: ['id', 'id']
+      },
+      {
+        name: 'Contact Keyword 12',
+        linked_ids: ['id', 'id']
+      }
+    ]
+    setKeywords(keywordType === 'location' ? locationKeywords : contactKeywords)
+    setFilteredKeywords(keywordType === 'location' ? locationKeywords : contactKeywords)
+  }, [keywordType])
+
+  useEffect(() => {
+    setDisplayedKeywords(filteredKeywords.slice(
+      (currentPage - 1) * keywordsPerPage,
+      currentPage * keywordsPerPage
+    ))
+  }, [filteredKeywords, currentPage])
+
+  const handleSearch = () => {
+    // TODO: use keywordType to search the correct array and set the results array
+  }
+
+  const handleButton = () => {
+    if (selectedKeywords) {
+      // TODO: delete keywords
+    }
   const [selectedKeywords, setSelectedKeywords] = useState([])
   const [showEditDialog, setShowEditDialog] = useState(false)
   const [keywordEditInput, setKeywordEditInput] = useState('')
@@ -49,105 +187,49 @@ export default function ManageKeywordsPage () {
     navigate(-1)
   }
 
-  const onClickEditDialog = () => {
-    setDialogTitle('Change keyword')
-    setDialogText(
-      'Changing this keyword will change it for all the locations it\'s associated with.'
-    )
-    setDialogButtonText('Change keyword')
-    setShowEditDialog(!showEditDialog)
-  }
-
-  const editKeyword = () => {
-    if (keywordType === 'location') {
-      const updatedKeywords = locationKeywords.map((k) => {
-        if (selectedKeywords.includes(k)) {
-          return keywordEditInput
-        }
-        return k
-      })
-      dispatch(setCurrentLocationKeywords(updatedKeywords))
-    } else {
-      const updatedKeywords = contactKeywords.map((k) => {
-        if (selectedKeywords.includes(k)) {
-          return keywordEditInput
-        }
-        return k
-      })
-      dispatch(setCurrentLocationKeywords(updatedKeywords))
-    }
-  }
-
-  const handleEdit = () => {
-    if (
-      (keywordType === 'location' && locationKeywords.length > 0) ||
-      (keywordType === 'contact' && contactKeywords.length > 0)
-    ) {
-      if (selectedKeywords.length > 0) {
-        if (keywordEditInput === '') {
-          // remove
-          console.log('input is empty')
-          onClickEditDialog()
-          // onClickRemove
-        } else {
-          editKeyword()
-          onClickEditDialog()
-        }
-      }
-    }
-    setKeywordEditInput('')
-  }
-
   const detailsText =
-    keywordType === 'location'
-      ? (
-        <>
-          <p>
-            Adding keywords for each location can make it easier for you to filter
-            and create lists of locations you can link to contacts to get relevant
-            flood messages.
-          </p>
-          <p>
-            For example, you may want to add 'pumping station' or 'office' or
-            'Midlands' as a keyword, then show all of the locations with that
-            keyword in a list.
-          </p>
-          <p>
-            Once you use a keyword it will be saved so you can select it for any
-            other locations.
-          </p>
-        </>
-        )
-      : keywordType === 'contact'
-        ? (
-          <>
-            <p>
-              Adding keywords for each contact can make it easier for you to filter
-              and create lists of people you can link to locations to get relevant
-              flood messages.
-            </p>
-            <p>
-              For example, you may want to add 'North' or 'South' as a keyword, then
-              show all of the contacts with that keyword in a list.
-            </p>
-            <p>
-              Once you use a keyword it will be saved so you can select it for any
-              other contacts.
-            </p>
-            <p>
-              You can add a maximum of 50 keywords and each keyword can be single or
-              multiple words, for example 'South' or 'South West'.
-            </p>
-          </>
-          )
-        : null
+    keywordType === 'location' ? (
+      <>
+        <p>
+          Adding keywords for each location can make it easier for you to filter
+          and create lists of locations you can link to contacts to get relevant
+          flood messages.
+        </p>
+        <p>
+          For example, you may want to add 'pumping station' or 'office' or
+          'Midlands' as a keyword, then show all of the locations with that
+          keyword in a list.
+        </p>
+        <p>
+          Once you use a keyword it will be saved so you can select it for any
+          other locations.
+        </p>
+      </>
+    ) : keywordType === 'contact' ? (
+      <>
+        <p>
+          Adding keywords for each contact can make it easier for you to filter
+          and create lists of people you can link to locations to get relevant
+          flood messages.
+        </p>
+        <p>
+          For example, you may want to add 'North' or 'South' as a keyword, then
+          show all of the contacts with that keyword in a list.
+        </p>
+        <p>
+          Once you use a keyword it will be saved so you can select it for any
+          other contacts.
+        </p>
+        <p>
+          You can add a maximum of 50 keywords and each keyword can be single or
+          multiple words, for example 'South' or 'South West'.
+        </p>
+      </>
+    ) : null
 
   const setTab = (tab) => {
     setKeywordType(tab)
   }
-
-  console.log('Location keywords: ', locationKeywords)
-  console.log('Selected: ', selectedKeywords)
 
   return (
     <>
@@ -205,7 +287,7 @@ export default function ManageKeywordsPage () {
                       <button className='search-button'>
                         <FontAwesomeIcon
                           icon={faMagnifyingGlass}
-                          width='20px'
+                          width={'20px'}
                         />
                       </button>
                     </div>

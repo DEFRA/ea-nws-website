@@ -40,9 +40,7 @@ def test_invalid_file(get_browser):
 
     file_input = browser.find_element(By.ID, 'file-upload')
     file_input.send_keys(invalidFilePath)
-    
-    time.sleep(2)
-    
+        
     assert "The selected file must be .xls, .xlsx or .csv" in browser.page_source
     assert browser.current_url == currentPage
     os.remove(invalidFilePath)

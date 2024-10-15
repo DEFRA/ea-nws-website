@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 import LocationXYCoordinatesSearchLayout from '../../../../layouts/location/add-or-edit-location/search/xy-coord/LocationXYCoordinatesSearchLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function EditLocationXYCoordinatesSearchPage () {
+export default function EditLocationXYCoordinatesSearchPage() {
   const navigate = useNavigate()
 
   const navigateToNotInEngland = () => {
@@ -11,23 +11,26 @@ export default function EditLocationXYCoordinatesSearchPage () {
   }
   const allFloodAreasAvailable = () => {
     navigate(
-      orgManageLocationsUrls.edit.editLocationCoords
-        .replace(':flow', 'xy-coordinates-search')
-        .replace(':type', 'all')
+      orgManageLocationsUrls.edit.editLocationCoords.ConfirmEditLocations.replace(
+        ':flow',
+        'xy-coordinates-search'
+      ).replace(':type', 'all')
     )
   }
   const floodAlertAreasAvailableOnly = () => {
     navigate(
-      orgManageLocationsUrls.edit.editLocationCoords
-        .replace(':flow', 'xy-coordinates-search')
-        .replace(':type', 'alerts')
+      orgManageLocationsUrls.edit.editLocationCoords.ConfirmEditLocations.replace(
+        ':flow',
+        'xy-coordinates-search'
+      ).replace(':type', 'alerts')
     )
   }
   const noFloodAreasAvailable = () => {
     navigate(
-      orgManageLocationsUrls.edit.editLocationCoords
-        .replace(':flow', 'xy-coordinates-search')
-        .replace(':type', 'no-alerts')
+      orgManageLocationsUrls.edit.editLocationCoords.ConfirmEditLocations.replace(
+        ':flow',
+        'xy-coordinates-search'
+      ).replace(':type', 'no-alerts')
     )
   }
   return (

@@ -29,6 +29,7 @@ import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-l
 import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
 import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationOptionsPage'
+import LocationDropPinEditPage from '../../pages/manage-locations/edit-location/drop-pin/LocationDropPinEditPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgAddLocations = '/organisation/manage-locations/add'
@@ -102,7 +103,8 @@ const orgManageLocationsUrls = {
     }
   },
   edit: {
-    options: urlManageOrg + '/edit/location-options'
+    options: urlManageOrg + '/edit/location-options',
+    dropPinEdit: urlManageOrg + '/edit/drop-pin-edit'
   }
 }
 
@@ -240,6 +242,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.edit.options,
     component: <EditLocationOptionsPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.dropPinEdit,
+    component: <LocationDropPinEditPage />
   }
 ]
 

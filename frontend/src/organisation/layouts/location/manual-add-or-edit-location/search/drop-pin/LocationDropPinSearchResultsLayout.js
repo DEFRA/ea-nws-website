@@ -10,7 +10,8 @@ import { locationInEngland } from '../../../../../../common/services/validations
 import Map from '../../../../../components/custom/Map'
 import MapInteractiveKey from '../../../../../components/custom/MapInteractiveKey'
 
-export default function LocationDropPinSearchLayout({
+export default function LocationDropPinSearchLayout ({
+  Type,
   NavigateToNextPage,
   NavigateToPreviousPage,
   NavigateToNotInEnglandPage,
@@ -24,6 +25,9 @@ export default function LocationDropPinSearchLayout({
   const [showFloodExtents, setShowFloodExtents] = useState(true)
   const currentLocationName = useSelector(
     (state) => state.session.currentLocation.name
+  )
+  const currentLocationCoordinates = useSelector(
+    (state) => state.session.currentLocation.coordinates
   )
 
   // remove error if user drops a pin
@@ -78,6 +82,9 @@ export default function LocationDropPinSearchLayout({
               <div class='govuk-grid-row'>
                 <div class='govuk-grid-column-two-thirds'>
                   <Map
+                    coordinates={
+                      Type === 'edit' ? currentLocationCoordinates : null
+                    }
                     setCoordinates={setPinCoords}
                     type='drop'
                     showFloodWarningAreas={showFloodWarningAreas}
@@ -105,11 +112,11 @@ export default function LocationDropPinSearchLayout({
             </div>
             <Button
               className='govuk-button govuk-!-margin-top-4'
-              text='Add location'
+              text={Type === 'add' ? 'Add location' : 'Save location'}
               onClick={handleSubmit}
             />
             <Link
-              onCLick={() => NavigateToPreviousPage()}
+              onClick={navigateBack}
               className='govuk-body govuk-link inline-link govuk-!-margin-top-4 govuk-!-margin-left-2'
             >
               Cancel

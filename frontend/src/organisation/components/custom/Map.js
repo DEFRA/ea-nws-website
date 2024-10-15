@@ -24,6 +24,7 @@ import { createAlertPattern, createWarningPattern } from './FloodAreaPatterns'
 
 export default function Map ({
   type,
+  coordinates = null,
   setCoordinates,
   showMapControls = true,
   zoomLevel = 12,
@@ -156,6 +157,10 @@ export default function Map ({
         }
       }
     })
+    // Set initial marker location if coordinates provided
+    if (!marker && coordinates) {
+      setMarker([coordinates.latitude, coordinates.longitude])
+    }
     return marker && <Marker position={marker} interactive={false} />
   }
 

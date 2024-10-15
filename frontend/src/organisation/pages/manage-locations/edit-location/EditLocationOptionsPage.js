@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react'
-import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
-import BackLink from '../../../../common/components/custom/BackLink'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
-import Radio from '../../../../common/components/gov-uk/Radio'
-import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
+import BackLink from '../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
+import Radio from '../../../../common/components/gov-uk/Radio'
+import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function EditLocationOptionsPage () {
   const navigate = useNavigate()
@@ -22,13 +23,14 @@ export default function EditLocationOptionsPage () {
   const handleButton = () => {
     if (!addLocationType) {
       // ToDo change this later when figma is answered
-      setError('Select if you want to use X and Y coordinates or drop a pin on a map')
+      setError(
+        'Select if you want to use X and Y coordinates or drop a pin on a map'
+      )
     } else {
       if (addLocationType === editLocationOptions[0].value) {
         navigate('/organisation/manage-locations/add/xy-coordinates-search')
-      } else {
-        // ToDo Update this later when page made interactive map with pin is made
-        navigate('/')
+      } else if (addLocationType === editLocationOptions[1].value) {
+        navigate(orgManageLocationsUrls.edit.dropPinEdit)
       }
     }
   }
@@ -40,10 +42,10 @@ export default function EditLocationOptionsPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {Error && (
-              <ErrorSummary errorList={[Error]} />
-            )}
-            <h1 className='govuk-heading-l'>How do you want to change the existing location?</h1>
+            {Error && <ErrorSummary errorList={[Error]} />}
+            <h1 className='govuk-heading-l'>
+              How do you want to change the existing location?
+            </h1>
 
             <div className='govuk-body'>
               <div
@@ -54,11 +56,7 @@ export default function EditLocationOptionsPage () {
                 }
               >
                 <div className='govuk-radios' data-module='govuk-radios'>
-                  {Error && (
-                    <p className='govuk-error-message'>
-                      {Error}
-                    </p>
-                  )}
+                  {Error && <p className='govuk-error-message'>{Error}</p>}
                   {editLocationOptions.map((option) => (
                     <Radio
                       key={option.value}
@@ -77,7 +75,6 @@ export default function EditLocationOptionsPage () {
                 onClick={handleButton}
               />
             </div>
-
           </div>
         </div>
       </main>

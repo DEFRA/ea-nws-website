@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function LocationsTable ({
+export default function LocationsTable({
   locations,
   displayedLocations,
   filteredLocations,
@@ -92,7 +92,7 @@ export default function LocationsTable ({
                   </div>
                 </div>
               </th>
-              <td className='govuk-table__cell'>{location.name}</td>
+              <td className='govuk-table__cell'>{location.address}</td>
               <td className='govuk-table__cell'>
                 {location.meta_data.location_additional.location_type}
               </td>

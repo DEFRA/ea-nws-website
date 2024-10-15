@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 import LocationXYCoordinatesSearchLayout from '../../../../layouts/location/add-or-edit-location/search/xy-coords/LocationXYCoordinatesSearchLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function EditLocationXYCoordinatesSearchPage() {
+export default function EditLocationXYCoordinatesSearchPage () {
   const navigate = useNavigate()
 
   const navigateToNotInEngland = () => {

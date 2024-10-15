@@ -11,7 +11,7 @@ export default function EditLocationXYCoordinatesSearchPage() {
   }
   const allFloodAreasAvailable = () => {
     navigate(
-      orgManageLocationsUrls.edit.editLocationCoords.ConfirmEditLocations.replace(
+      orgManageLocationsUrls.edit.individualLocation.editLocationCoords.ConfirmEditLocations.replace(
         ':flow',
         'xy-coordinates-search'
       ).replace(':type', 'all')
@@ -19,7 +19,7 @@ export default function EditLocationXYCoordinatesSearchPage() {
   }
   const floodAlertAreasAvailableOnly = () => {
     navigate(
-      orgManageLocationsUrls.edit.editLocationCoords.ConfirmEditLocations.replace(
+      orgManageLocationsUrls.edit.individualLocation.editLocationCoords.ConfirmEditLocations.replace(
         ':flow',
         'xy-coordinates-search'
       ).replace(':type', 'alerts')
@@ -27,7 +27,7 @@ export default function EditLocationXYCoordinatesSearchPage() {
   }
   const noFloodAreasAvailable = () => {
     navigate(
-      orgManageLocationsUrls.edit.editLocationCoords.ConfirmEditLocations.replace(
+      orgManageLocationsUrls.edit.individualLocation.editLocationCoords.ConfirmEditLocations.replace(
         ':flow',
         'xy-coordinates-search'
       ).replace(':type', 'no-alerts')

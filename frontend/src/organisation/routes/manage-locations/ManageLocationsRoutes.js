@@ -105,16 +105,16 @@ const orgManageLocationsUrls = {
     }
   },
   edit: {
-    editLocationCoords: {
-      SelectLocationOptions: urlManageOrg + '/edit/select-location-options',
-      xyCoordinatesSearch: urlManageOrg + '/edit/xy-coordinates-search',
-      ConfirmEditLocations: urlManageOrg + '/edit/location-in-area/:flow/:type'
-    },
     individualLocation: {
+      editLocationCoords: {
+        SelectLocationOptions: urlManageOrg + '/edit/select-location-options',
+        xyCoordinatesSearch: urlManageOrg + '/edit/xy-coordinates-search',
+        ConfirmEditLocations:
+          urlManageOrg + '/edit/location-in-area/:flow/:type'
+      },
       editShape: {
-        cannotChangeLocationPolygon:
-          urlManageOrg + '/edit/cannot-change-polygon',
-        cannotChangeLocationLine: urlManageOrg + '/edit/cannot-change-line'
+        editPolygon: urlManageOrg + '/edit/edit-polygon',
+        editLine: urlManageOrg + '/edit/edit-line'
       }
     },
     error: {
@@ -257,25 +257,26 @@ const orgManageLocationRoutes = [
   },
   // edit
   {
-    path: orgManageLocationsUrls.edit.editLocationCoords.SelectLocationOptions,
+    path: orgManageLocationsUrls.edit.individualLocation.editLocationCoords
+      .SelectLocationOptions,
     component: <EditLocationOptionsPage />
   },
   {
-    path: orgManageLocationsUrls.edit.individualLocation.editShape
-      .cannotChangeLocationLine,
+    path: orgManageLocationsUrls.edit.individualLocation.editShape.editLine,
     component: <CannotChangeLocationLinePage />
   },
   {
-    path: orgManageLocationsUrls.edit.individualLocation.editShape
-      .cannotChangeLocationPolygon,
+    path: orgManageLocationsUrls.edit.individualLocation.editShape.editPolygon,
     component: <CannotChangeLocationPolygonPage />
   },
   {
-    path: orgManageLocationsUrls.edit.editLocationCoords.xyCoordinatesSearch,
+    path: orgManageLocationsUrls.edit.individualLocation.editLocationCoords
+      .xyCoordinatesSearch,
     component: <EditLocationXYCoordinatesSearchPage />
   },
   {
-    path: orgManageLocationsUrls.edit.editLocationCoords.ConfirmEditLocations,
+    path: orgManageLocationsUrls.edit.individualLocation.editLocationCoords
+      .ConfirmEditLocations,
     component: <ConfirmLocationPage />
   },
   {

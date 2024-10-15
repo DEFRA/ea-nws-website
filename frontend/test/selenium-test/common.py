@@ -100,8 +100,8 @@ url_org_man_loc = {
         'find_by_address': url_org_man_loc_path + '/unmatched-locations/manually-find/address',
     },
     'edit':{
-        'cannot_change_location_polygon': url_org_man_loc_path + '/edit/cannot-change-polygon',
-        'cannot_change_location_line': url_org_man_loc_path + '/edit/cannot-change-line',
+        'cannot_change_location_polygon': url_org_man_loc_path + '/edit/edit-polygon',
+        'cannot_change_location_line': url_org_man_loc_path + '/edit/edit-line',
         'options': url_org_man_loc_path + '/edit/select-location-options',
         'xyCoordinatesSearch': url_org_man_loc_path + '/edit/xy-coordinates-search',
         'locationInArea': url_org_man_loc_path + '/edit/location-in-area',

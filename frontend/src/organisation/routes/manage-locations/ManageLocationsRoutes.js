@@ -31,6 +31,7 @@ import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-lo
 import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationSearchOptionsPage'
 import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
+import LocationInformationPage from '../../pages/manage-locations/view-location/view-location-information/LocationInformationPage'
 
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgAddLocations = '/organisation/manage-locations/add'
@@ -109,9 +110,14 @@ const orgManageLocationsUrls = {
 
 // Manage location routes
 const orgManageLocationRoutes = [
+  // view
   {
     path: orgManageLocationsUrls.view.dashboard,
     component: <ViewLocationsDashboardPage />
+  },
+  {
+    path: orgManageLocationsUrls.view.viewLocation,
+    component: <LocationInformationPage />
   },
   // add
   {

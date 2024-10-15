@@ -198,10 +198,14 @@ export const getRiversAndSeaFloodRiskRatingOfLocation = async (lat, lng) => {
     high: 4
   }
 
-  if (data.features && data.features.length > 0) {
-    return getHighestRiskRating(data.features, ratingOrder)
+  if (data) {
+    if (data.features && data.features.length > 0) {
+      return getHighestRiskRating(data.features, ratingOrder)
+    } else {
+      return 'v.low'
+    }
   } else {
-    return 'v.low'
+    return 'unavailble'
   }
 }
 
@@ -212,12 +216,14 @@ export const getGroundwaterFloodRiskRatingOfLocation = async (lat, lng) => {
     unlikely: 1,
     possible: 2
   }
-
-  if (data.features && data.features.length > 0) {
-    console.log('1')
-    return getHighestRiskRating(data.features, ratingOrder)
+  if (data) {
+    if (data.features && data.features.length > 0) {
+      return getHighestRiskRating(data.features, ratingOrder)
+    } else {
+      return 'unlikely'
+    }
   } else {
-    return 'unlikely'
+    return 'unavailble'
   }
 }
 

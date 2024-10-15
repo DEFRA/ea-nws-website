@@ -160,7 +160,7 @@ export default function LocationInformationLayout () {
                   <div className='flood-risk-banner govuk-!-margin-top-2'>
                     <div className='flood-risk-banner-item govuk-!-padding-2'>
                       <h3 className='flood-risk-banner-title govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                        Rivers and sea flood risk
+                        {RiskAreaType.RIVERS_AND_SEA}
                       </h3>
                       <div className='flood-risk-banner-label '>
                         <RiskCategoryLabel
@@ -170,7 +170,7 @@ export default function LocationInformationLayout () {
                     </div>
                     <div className='flood-risk-banner-item'>
                       <h3 className='flood-risk-banner-title govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                        Groundwater flood risk
+                        {RiskAreaType.GROUNDWATER}
                       </h3>
                       <div className='flood-risk-banner-label '>
                         <RiskCategoryLabel
@@ -205,9 +205,6 @@ export default function LocationInformationLayout () {
                   Change
                 </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                  Address
-                </h3>
                 <p>
                   {formattedAddress.map((line, index) => {
                     return (

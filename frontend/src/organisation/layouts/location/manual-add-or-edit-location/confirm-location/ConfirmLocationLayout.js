@@ -24,36 +24,36 @@ export default function ConfirmLocationLayout () {
     switch (type) {
       case 'all':
         return {
-          floodMessagesAvailableHeader: 'All flood messages available',
+          floodMessagesAvailabilityHeader: 'All flood messages available',
 
           floodInfoMessage: `You can get all flood messages for ${locationName} as it is in a flood warning and a flood alert area.`
         }
 
       case 'alerts':
         return {
-          floodMessagesAvailableHeader:
-            'Severe flood warnings and flood warnings available',
+          floodMessagesAvailabilityHeader:
+            'Severe flood warnings and flood warnings unavailable',
 
           floodInfoMessage: `You cannot get flood warnings for ${locationName} as it is not in a flood warning area. But you may be able to link this location to any nearby locations that can get severe flood warnings and flood warnings.`
         }
 
       case 'no-alerts':
         return {
-          floodMessagesAvailableHeader: 'Flood messages unavailable',
+          floodMessagesAvailabilityHeader: 'Flood messages unavailable',
 
           floodInfoMessage: `You cannot get flood messages for ${locationName} as it is not in a flood area. But you may be able to link this location to any nearby locations that can get flood messages.`
         }
 
       default:
         return {
-          floodMessagesAvailableHeader: 'Unknown flood status',
+          floodMessagesAvailabilityHeader: 'Unknown flood status',
 
           floodInfoMessage: `Flood message status for ${locationName} is unknown.`
         }
     }
   }
 
-  const { floodMessagesAvailableHeader, floodInfoMessage } =
+  const { floodMessagesAvailabilityHeader, floodInfoMessage } =
     getFloodMessage(type)
 
   const handleSubmit = () => {
@@ -119,7 +119,7 @@ export default function ConfirmLocationLayout () {
                 </Link>
                 <br />
                 <Link
-                  to={orgManageLocationsUrls.add.search.xyCoordinatesSearch}
+                  onClick={navigateBack}
                   className='govuk-link'
                 >
                   Use different X and Y coordinates
@@ -127,8 +127,20 @@ export default function ConfirmLocationLayout () {
               </>
             )}
 
+            {type === 'alerts' && (
+              <>
+                <h3 className='govuk-heading-s govuk-!-margin-top-8'>
+                  {locationName} gets flood alerts
+                </h3>
+                <p>
+                  This location is in a flood alert area and will get flood
+                  alerts.
+                </p>
+              </>
+            )}
+
             <h3 className='govuk-heading-s govuk-!-margin-top-8'>
-              {floodMessagesAvailableHeader}
+              {floodMessagesAvailabilityHeader}
             </h3>
             <p>{floodInfoMessage}</p>
 

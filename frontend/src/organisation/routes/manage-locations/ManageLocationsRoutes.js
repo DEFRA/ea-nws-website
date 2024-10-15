@@ -28,9 +28,11 @@ import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/add
 import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/NotInEnglandPage'
 import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
-import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationOptionsPage'
+import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationSearchOptionsPage'
 import LocationDropPinEditPage from '../../pages/manage-locations/edit-location/drop-pin/LocationDropPinEditPage'
+import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
+
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgAddLocations = '/organisation/manage-locations/add'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
@@ -103,8 +105,16 @@ const orgManageLocationsUrls = {
     }
   },
   edit: {
-    options: urlManageOrg + '/edit/location-options',
-    dropPinEdit: urlManageOrg + '/edit/drop-pin-edit'
+    editLocationCoords: {
+      SelectLocationOptions: urlManageOrg + '/edit/select-location-options',
+      xyCoordinatesSearch: urlManageOrg + '/edit/xy-coordinates-search',
+      ConfirmEditLocations: urlManageOrg + '/edit/location-in-area/:flow/:type',
+      dropPinEdit: urlManageOrg + '/edit/drop-pin-edit'
+    },
+    error: {
+      xyCoordinatesNotInEngland:
+        urlManageOrg + '/edit/xy-coordinates-not-in-england'
+    }
   }
 }
 
@@ -240,12 +250,24 @@ const orgManageLocationRoutes = [
     component: <ConfirmAddingLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.edit.options,
+    path: orgManageLocationsUrls.edit.editLocationCoords.SelectLocationOptions,
     component: <EditLocationOptionsPage />
   },
   {
-    path: orgManageLocationsUrls.edit.dropPinEdit,
+    path: orgManageLocationsUrls.edit.editLocationCoords.dropPinEdit,
     component: <LocationDropPinEditPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.editLocationCoords.xyCoordinatesSearch,
+    component: <EditLocationXYCoordinatesSearchPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.editLocationCoords.ConfirmEditLocations,
+    component: <ConfirmLocationPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.error.xyCoordinatesNotInEngland,
+    component: <XYCoordinatesNotInEnglandPage />
   }
 ]
 

@@ -516,7 +516,7 @@ export default function IndexPage () {
                 </li>
                 <li>
                   <Link
-                    to='/organisation/manage-locations/edit/location-options'
+                    to='/organisation/manage-locations/edit/select-location-options'
                     className='govuk-link'
                   >
                     edit location

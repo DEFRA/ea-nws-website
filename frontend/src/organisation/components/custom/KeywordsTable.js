@@ -21,33 +21,32 @@ export default function KeywordsTable ({
 
   const sortKeywords = () => {
     if (keywordSort === 'none' || keywordSort === 'descending') {
-        setKeywordSort('ascending')
-        setFilteredKeywords(
-            [...filteredKeywords].sort((a, b) => (a.name > b.name ? 1 : -1))
-        )
+      setKeywordSort('ascending')
+      setFilteredKeywords(
+        [...filteredKeywords].sort((a, b) => (a.name > b.name ? 1 : -1))
+      )
     }
     if (keywordSort === 'ascending') {
-        setKeywordSort('descending')
-        setFilteredKeywords(
-            [...filteredKeywords].sort((a, b) => (a.name < b.name ? 1 : -1))
-        )
+      setKeywordSort('descending')
+      setFilteredKeywords(
+        [...filteredKeywords].sort((a, b) => (a.name < b.name ? 1 : -1))
+      )
     }
   }
 
   const sortAssociated = () => {
     if (associatedSort === 'none' || associatedSort === 'descending') {
-        setAssociatedSort('ascending')
-        setFilteredKeywords(
-            [...filteredKeywords].sort((a, b) => (a.linked_ids.length > b.linked_ids.length ? 1 : -1))
-        )
+      setAssociatedSort('ascending')
+      setFilteredKeywords(
+        [...filteredKeywords].sort((a, b) => (a.linked_ids.length > b.linked_ids.length ? 1 : -1))
+      )
     }
     if (associatedSort === 'ascending') {
-        setAssociatedSort('descending')
-        setFilteredKeywords(
-            [...filteredKeywords].sort((a, b) => (a.linked_ids.length < b.linked_ids.length ? 1 : -1))
-        )
+      setAssociatedSort('descending')
+      setFilteredKeywords(
+        [...filteredKeywords].sort((a, b) => (a.linked_ids.length < b.linked_ids.length ? 1 : -1))
+      )
     }
-
   }
 
   const handleHeaderCheckboxChange = (event) => {
@@ -103,7 +102,7 @@ export default function KeywordsTable ({
               <button type='button' onClick={() => sortKeywords()}>Keyword</button>
             </th>
             <th scope='col' className='govuk-table__header' aria-sort={associatedSort}>
-              <button type='button' onClick={() => sortAssociated()}>{'Associated '+type+'s'}</button>
+              <button type='button' onClick={() => sortAssociated()}>{'Associated ' + type + 's'}</button>
             </th>
             <th scope='col' className='govuk-table__header' />
           </tr>

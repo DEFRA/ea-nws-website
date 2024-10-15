@@ -79,7 +79,7 @@ url_org_man_loc = {
         'optionalAddress': url_org_man_loc_path + '/add/optional-information/address',
         'addKeyInformation': url_org_man_loc_path + '/add/optional-information/key-information',
         'addKeywords': url_org_man_loc_path + '/add/optional-information/keywords',
-        'addActionPlan': url_org_man_loc_path + '/add/optional-information/action-plan', 
+        'addActionPlan': url_org_man_loc_path + '/add/optional-information/action-plan',
         'addNotes': url_org_man_loc_path + '/add/optional-information/notes'
     },
     'error': {

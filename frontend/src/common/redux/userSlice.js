@@ -24,8 +24,9 @@ const userSlice = createSlice({
 
     // org location data
     currentLocation: {
+      // name is the UPRN
       name: null,
-      // address is the UPRN
+      // address is the human readable address
       address: null,
       // Coordinates in dd (degrees decimal)
       coordinates: null,

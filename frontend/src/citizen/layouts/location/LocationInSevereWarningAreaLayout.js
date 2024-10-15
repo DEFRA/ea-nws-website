@@ -22,7 +22,7 @@ import {
   getCoordsOfFloodArea
 } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout ({
+export default function LocationInSevereWarningAreaLayout({
   continueToNextPage
 }) {
   const navigate = useNavigate()
@@ -70,8 +70,8 @@ export default function LocationInSevereWarningAreaLayout ({
 
   const addFloodWarningArea = async () => {
     const warningArea = {
-      name: selectedFloodWarningArea.properties.TA_NAME,
-      address: '',
+      name: '',
+      address: selectedFloodWarningArea.properties.TA_NAME,
       coordinates: getCoordsOfFloodArea(selectedFloodWarningArea)
     }
     const updatedProfile = await addLocation(profile, warningArea)
@@ -135,7 +135,7 @@ export default function LocationInSevereWarningAreaLayout ({
               text={
                 isUserInNearbyTargetFlowpath
                   ? selectedFloodWarningArea.properties.TA_NAME
-                  : selectedLocation.name
+                  : selectedLocation.address
               }
             />
           </div>

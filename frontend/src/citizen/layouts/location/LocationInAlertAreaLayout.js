@@ -16,7 +16,7 @@ import {
 } from '../../../common/services/ProfileServices'
 import { getCoordsOfFloodArea } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInAlertAreaLayout ({
+export default function LocationInAlertAreaLayout({
   continueToNextPage,
   continueToSearchResultsPage,
   canCancel
@@ -90,8 +90,8 @@ export default function LocationInAlertAreaLayout ({
 
   const addFloodAlertArea = async () => {
     const alertArea = {
-      name: selectedFloodAlertArea.properties.TA_NAME,
-      address: '',
+      name: '',
+      address: selectedFloodAlertArea.properties.TA_NAME,
       coordinates: getCoordsOfFloodArea(selectedFloodAlertArea)
     }
     const updatedProfile = await addLocation(profile, alertArea)
@@ -118,7 +118,10 @@ export default function LocationInAlertAreaLayout ({
   }
 
   const removeLocationWithOnlyFloodAlerts = async () => {
-    const updatedProfile = await removeLocation(profile, selectedLocation.name)
+    const updatedProfile = await removeLocation(
+      profile,
+      selectedLocation.address
+    )
     dispatch(setProfile(updatedProfile))
   }
 
@@ -151,7 +154,7 @@ export default function LocationInAlertAreaLayout ({
               text={
                 isUserInNearbyTargetFlowpath
                   ? selectedFloodAlertArea.properties.TA_NAME
-                  : selectedLocation.name
+                  : selectedLocation.address
               }
             />
           </div>

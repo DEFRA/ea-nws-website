@@ -17,14 +17,8 @@ const osPostCodeApiCall = async (postCode) => {
       responseData = response.data.results.map((result) => {
         const formattedAddress = addressFormatter(result.DPA.ADDRESS)
         return {
-<<<<<<< Updated upstream
           name: result.DPA.UPRN,
           address: formattedAddress,
-=======
-          name: formattedAddress,
-          location_name: formattedAddress,
-          address: result.DPA.UPRN,
->>>>>>> Stashed changes
           coordinates: { latitude: result.DPA.LAT, longitude: result.DPA.LNG },
           postcode: result.DPA.POSTCODE
         }

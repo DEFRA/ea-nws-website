@@ -43,8 +43,28 @@ const deleteJsonData = async (key) => {
   await client.disconnect()
 }
 
+const searchLocations = async (authToken, searchKey, value) => {
+  const locationKeys = await getLocationKeys(authToken)
+  const locationArr = []
+  const searchKeyArr = searchKey.split('.')
+  locationKeys.forEach((key) => {
+    const location = getJsonData(key)
+    let jsonValue = searchKeyArr[0]
+    if (searchKeyArr.length < 1) {
+      for (let i = 1; i < searchKeyArr.length; i++) {
+        jsonValue = jsonValue[searchKeyArr[i]]
+      }
+    }
+    if (value === jsonValue) {
+      locationArr.push(location)
+    }
+  })
+  return locationArr
+}
+
 module.exports = {
   setJsonData,
   getJsonData,
-  deleteJsonData
+  deleteJsonData,
+  searchLocations
 }

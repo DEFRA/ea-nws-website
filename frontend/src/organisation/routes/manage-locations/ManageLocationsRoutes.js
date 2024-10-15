@@ -31,6 +31,7 @@ import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-lo
 import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationSearchOptionsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
 import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
+import LocationAlreadyExists from '../../pages/manage-locations/add-location/LocationAlreadyExists'
 
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgAddLocations = '/organisation/manage-locations/add'
@@ -57,7 +58,8 @@ const orgManageLocationsUrls = {
       cannotFindAddress: urlManageOrg + '/add/cannot-find-address',
       xyCoordinatesNotInEngland:
         urlManageOrg + '/add/xy-coordinates-not-in-england',
-      dropPinNotInEngland: urlManageOrg + '/add/drop-pin-not-in-england'
+      dropPinNotInEngland: urlManageOrg + '/add/drop-pin-not-in-england',
+      alreadyExists: urlManageOrg + '/add/location-already-exists'
     },
     search: {
       searchOption: urlManageOrg + '/add/search-option',
@@ -180,6 +182,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.search.dropPinSearchResults,
     component: <LocationDropPinSearchResultsPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.error.alreadyExists,
+    component: <LocationAlreadyExists />
   },
   // unmatched locations
   {

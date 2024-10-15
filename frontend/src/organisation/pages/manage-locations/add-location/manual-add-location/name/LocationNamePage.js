@@ -1,5 +1,5 @@
 import { React, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
@@ -9,25 +9,38 @@ import Input from '../../../../../../common/components/gov-uk/Input'
 import { setCurrentLocationName } from '../../../../../../common/redux/userSlice'
 import { locationNameValidation } from '../../../../../../common/services/validations/LocationNameValidation'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
-
+import { backendCall } from '../../../../../../common/services/BackendService'
 export default function LocationNamePage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [name, setName] = useState('')
   const [error, setError] = useState('')
+  const authToken = useSelector((state) => state.session.authToken)
 
   // This will need to be ToDo
-  const locationNameUsedBefore = () => {
-    return true
-  }
+  const locationNameUsedBefore = async () => {
+    const locationName = name.trim()
+    const dataToSend = { authToken, locationName }
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/locations/check_duplicate',
+      navigate
+    )
+    if (errorMessage === 'duplicate location') {
+      return true
+    } else {
+      return false
+    }
   /// ///////
-
+  }
   const handleSubmit = () => {
     const locationName = name.trim()
     const validationError = locationNameValidation(locationName)
-    if (!validationError) {
+    if (!validationError && !locationNameUsedBefore()) {
       dispatch(setCurrentLocationName(locationName))
       navigate(orgManageLocationsUrls.add.search.searchOption)
+    } else if (!validationError && locationNameUsedBefore()) {
+      navigate(orgManageLocationsUrls.add.error.alreadyExists)
     } else {
       setError(validationError)
     }

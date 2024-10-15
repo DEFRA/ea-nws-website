@@ -32,7 +32,7 @@ export default function ConfirmLocationLayout () {
       case 'alerts':
         return {
           floodMessagesAvailableHeader:
-            'Severe flood warnings and flood warnings available',
+            'Severe flood warnings and flood warnings unavailable',
 
           floodInfoMessage: `You cannot get flood warnings for ${locationName} as it is not in a flood warning area. But you may be able to link this location to any nearby locations that can get severe flood warnings and flood warnings.`
         }
@@ -119,11 +119,23 @@ export default function ConfirmLocationLayout () {
                 </Link>
                 <br />
                 <Link
-                  to={orgManageLocationsUrls.add.search.xyCoordinatesSearch}
+                  to={orgManageLocationsUrls.add.xyCoordinatesSearch}
                   className='govuk-link'
                 >
                   Use different X and Y coordinates
                 </Link>
+              </>
+            )}
+
+            {type === 'alerts' && (
+              <>
+                <h3 className='govuk-heading-s govuk-!-margin-top-8'>
+                  {locationName} gets flood alerts
+                </h3>
+                <p>
+                  This location is in a flood alert area and will get flood
+                  alerts.
+                </p>
               </>
             )}
 

@@ -147,6 +147,16 @@
   padding: 0.5rem 0.625rem 0.4375rem;
 }
 
+.inline-button {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.inline-button button {
+  margin-top: -1.5rem; /* Adjust the value as needed */
+}
+
 .timeout-dialog {
   position: fixed;
   top: 0;
@@ -981,6 +991,11 @@
   align-items: center;
 }
 
+.locations-map-key {
+  display: flex;
+  align-items: center;
+}
+
 .locations-filter-section:hover {
   cursor: pointer;
 }
@@ -1004,4 +1019,45 @@
 
 .govuk-input-icon {
   padding-left: 35px;
+}
+
+.org-flood-warning-key {
+  display: flex;
+  gap: 2.5rem;
+  align-items: center;
+  background-color: #f3f2f1;
+  padding: 0.625rem;
+}
+
+.org-flood-warning-item,
+.org-flood-alert-item {
+  display: flex;
+  gap: 0.625rem;
+  align-items: center;
+}
+
+.org-flood-warning-item img,
+.org-flood-alert-item img {
+  width: 1.5625rem;
+  height: 1.5625rem;
+}
+
+.org-flood-warning-text {
+  line-height: 1.2;
+}
+
+.warning-area-pattern-fill {
+  fill: url(#warning-pattern);
+}
+
+.alert-area-pattern-fill {
+  fill: url(#alert-pattern);
+}
+
+.map-error-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }

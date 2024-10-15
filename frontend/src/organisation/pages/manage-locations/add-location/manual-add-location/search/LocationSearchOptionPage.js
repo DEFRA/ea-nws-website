@@ -6,10 +6,10 @@ import OrganisationAccountNavigation from '../../../../../../common/components/c
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../../../common/components/gov-uk/Radio'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationSearchOptionPage () {
   const navigate = useNavigate()
-
   const [searchOption, setSearchOption] = useState('')
   const [error, setError] = useState('')
 
@@ -18,19 +18,25 @@ export default function LocationSearchOptionPage () {
     setError('')
   }, [searchOption])
 
+  const searchOptions = [
+    { label: 'Use a postcode', value: 'UseAPostcode' },
+    { label: 'Use X and Y coordinates', value: 'UseXAndYCoordinates' },
+    { label: 'Drop a pin on a map', value: 'DropAPinOnAMap' }
+  ]
+
   const handleSubmit = () => {
     if (!searchOption) {
       setError('Select how you want to find this location')
     } else {
       switch (searchOption) {
-        case 'UseAPostcode':
-          navigate('/organisation/manage-locations/add/postcode-search')
+        case searchOptions[0].value:
+          navigate(orgManageLocationsUrls.add.search.postCodeSearch)
           break
-        case 'UseXAndYCoordinates':
-          navigate('/organisation/manage-locations/add/xy-search')
+        case searchOptions[1].value:
+          navigate(orgManageLocationsUrls.add.search.xyCoordinatesSearch)
           break
-        case 'DropAPinOnAMap':
-          navigate('/organisation/manage-locations/add/pin-search')
+        case searchOptions[2].value:
+          navigate(orgManageLocationsUrls.add.search.dropPinSearch)
           break
         default:
           break
@@ -43,13 +49,9 @@ export default function LocationSearchOptionPage () {
     navigate(-1)
   }
 
-  const locationName = useSelector((state) => state.session.locationName)
-  const searchOptions = [
-    { label: 'Use a postcode', value: 'UseAPostcode' },
-    { label: 'Use X and Y coordinates', value: 'UseXAndYCoordinates' },
-    { label: 'Drop a pin on a map', value: 'DropAPinOnAMap' }
-  ]
-
+  const locationName = useSelector(
+    (state) => state.session.currentLocation.name
+  )
   return (
     <>
       <OrganisationAccountNavigation />
@@ -59,7 +61,7 @@ export default function LocationSearchOptionPage () {
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>
-              {`How do you want to find ${locationName}?`}
+              How do you want to find {locationName}?
             </h1>
             <p>
               If your location is a polygon, or a line, your orgainsation has

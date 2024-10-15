@@ -1,14 +1,20 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
-import BackLink from '../../../../../../../common/components/custom/BackLink'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../../common/components/gov-uk/Button'
+import NotificationBanner from '../../../../../../../common/components/gov-uk/NotificationBanner'
 import WarningText from '../../../../../../../common/components/gov-uk/WarningText'
-import { setCurrentLocation } from '../../../../../../../common/redux/userSlice'
+import {
+  setCurrentLocation,
+  setLocationSearchResults
+} from '../../../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../../../common/services/BackendService'
+import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ManuallyFindLocationsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const location = useLocation()
 
   // dumy data this will be updated to come from the upload.
   const locations = [
@@ -110,16 +116,61 @@ export default function ManuallyFindLocationsPage () {
     }
   }
 
+  const findAvailableAddresses = async (location) => {
+    const dataToSend = {
+      name: location,
+      minmatch: 0.7
+    }
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
+      'api/os-api/name-minmatch-search',
+      navigate
+    )
+    if (errorMessage) {
+      // If there was an error message, return false
+      return false
+    } else {
+      // Otherwise, dispatch results and return true
+      dispatch(setLocationSearchResults(data))
+      return true
+    }
+  }
+
   const handleFind = async (event, location) => {
     event.preventDefault()
     const poi = locationToPOI(location)
     dispatch(setCurrentLocation(poi))
-    navigate('/organisation/manage-locations/find-location')
+    const isAddressValid = await findAvailableAddresses(
+      poi.meta_data.location_additional.full_address +
+        ', ' +
+        poi.meta_data.location_additional.postcode
+    )
+    // If there is results for the unmatched address, navigate to the radio screen
+    // where user can select how to find the address
+    if (isAddressValid) {
+      navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.selectHow)
+    } else {
+      // otherwise, navigate to find on map directly
+      navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName) // Link to map
+    }
   }
 
   return (
     <>
-      <BackLink onClick={() => navigate(-1)} />
+      {location.state && (
+        <NotificationBanner
+          className={`govuk-notification-banner ${
+            location.state === 'Added' && 'govuk-notification-banner--success'
+          } govuk-!-margin-bottom-0 govuk-!-margin-top-4`}
+          title={location.state === 'Added' ? 'Success' : 'Information'}
+          text={
+            location.state === 'Added'
+              ? '1 Location Added'
+              : "1 location cannot be added because it's not in England"
+          }
+        />
+      )}
+
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>

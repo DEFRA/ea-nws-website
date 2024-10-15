@@ -98,10 +98,7 @@ export default function Map ({
   ) => {
     if (warningAreaRefVisible && types.includes('severe')) {
       warningAreaRef.current.eachLayer((layer) => {
-        if (
-          layer.feature.id ===
-          selectedFloodWarningArea.id
-        ) {
+        if (layer.feature.id === selectedFloodWarningArea.id) {
           layer.bringToFront()
           layer.setStyle({
             color: 'black',
@@ -119,10 +116,7 @@ export default function Map ({
 
     if (alertAreaRefVisible && types.includes('alert')) {
       alertAreaRef.current.eachLayer((layer) => {
-        if (
-          layer.feature.id ===
-          selectedFloodAlertArea.id
-        ) {
+        if (layer.feature.id === selectedFloodAlertArea.id) {
           layer.bringToFront()
           layer.setStyle({
             color: 'black',
@@ -145,10 +139,7 @@ export default function Map ({
   ) => {
     if (warningAreaRefVisible && types.includes('severe')) {
       warningAreaRef.current.eachLayer((layer) => {
-        if (
-          layer.feature.id ===
-          selectedFloodWarningArea.id
-        ) {
+        if (layer.feature.id === selectedFloodWarningArea.id) {
           layer.setStyle({
             fillColor: '#f70202'
           })
@@ -160,10 +151,7 @@ export default function Map ({
 
     if (alertAreaRefVisible && types.includes('alert')) {
       alertAreaRef.current.eachLayer((layer) => {
-        if (
-          layer.feature.id ===
-          selectedFloodAlertArea.id
-        ) {
+        if (layer.feature.id === selectedFloodAlertArea.id) {
           layer.setStyle({
             fillColor: '#ffa200'
           })

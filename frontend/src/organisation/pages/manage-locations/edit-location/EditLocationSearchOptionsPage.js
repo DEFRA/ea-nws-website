@@ -1,6 +1,6 @@
 import React from 'react'
-import LocationOptionsLayout from '../../../layouts/location/manual-add-or-edit-location/search/LocationSearchOptionsLayout'
 import { useNavigate } from 'react-router'
+import LocationSearchOptionsLayout from '../../../layouts/location/add-or-edit-location/search/LocationSearchOptionsLayout'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function EditLocationSearchOptionsPage () {
@@ -13,7 +13,9 @@ export default function EditLocationSearchOptionsPage () {
   const navigateToNextPage = (searchOption) => {
     switch (searchOption) {
       case 'Coordinates':
-        navigate(orgManageLocationsUrls.edit.editLocationCoords.xyCoordinatesSearch)
+        navigate(
+          orgManageLocationsUrls.edit.editLocationCoords.xyCoordinatesSearch
+        )
         break
       case 'pinDrop':
         // ToDo add in when pin drop pages added
@@ -25,7 +27,7 @@ export default function EditLocationSearchOptionsPage () {
   }
 
   return (
-    <LocationOptionsLayout
+    <LocationSearchOptionsLayout
       heading='How do you want to change the existing location?'
       searchOptions={locationOptions}
       navigateToNextPage={navigateToNextPage}

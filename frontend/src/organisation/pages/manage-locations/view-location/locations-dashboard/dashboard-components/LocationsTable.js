@@ -1,5 +1,8 @@
 import { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { setCurrentLocation } from '../../../../../../common/redux/userSlice'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationsTable ({
   locations,
@@ -8,6 +11,8 @@ export default function LocationsTable ({
   selectedLocations,
   setSelectedLocations
 }) {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
 
   const handleHeaderCheckboxChange = (event) => {
@@ -31,6 +36,12 @@ export default function LocationsTable ({
       updatedSelectedLocations = [...selectedLocations, location]
     }
     setSelectedLocations(updatedSelectedLocations)
+  }
+
+  const viewLocation = (e, location) => {
+    e.preventDefault()
+    dispatch(setCurrentLocation(location))
+    navigate(orgManageLocationsUrls.view.viewLocation)
   }
 
   return (
@@ -92,7 +103,9 @@ export default function LocationsTable ({
                   </div>
                 </div>
               </th>
-              <td className='govuk-table__cell'>{location.name}</td>
+              <td className='govuk-table__cell'>
+                {location.meta_data.location_additional.location_name}
+              </td>
               <td className='govuk-table__cell'>
                 {location.meta_data.location_additional.location_type}
               </td>
@@ -103,7 +116,9 @@ export default function LocationsTable ({
                 {location.meta_data.location_additional.business_criticality}
               </td>
               <td className='govuk-table__cell'>
-                <Link>View or edit</Link>
+                <Link onClick={(e) => viewLocation(e, location)}>
+                  View or edit
+                </Link>
               </td>
             </tr>
           ))}

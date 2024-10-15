@@ -19,7 +19,7 @@ import {
 import { locationInEngland } from '../../../../../../common/services/validations/LocationInEngland'
 import { xCoordinateValidation } from '../../../../../../common/services/validations/XCoordinateValidation'
 import { yCoordinateValidation } from '../../../../../../common/services/validations/YCoordinateValidation'
-export default function LocationXYCoordinatesSearchLayout({
+export default function LocationXYCoordinatesSearchLayout ({
   allFloodAreasAvailable,
   floodAlertAreasAvailableOnly,
   noFloodAreasAvailable,

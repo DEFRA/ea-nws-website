@@ -1,6 +1,6 @@
 import React from 'react'
-import LocationXYCoordinatesSearchLayout from '../../../../layouts/location/search/LocationXYCoordinatesSearchLayout'
 import { useNavigate } from 'react-router'
+import LocationXYCoordinatesSearchLayout from '../../../../layouts/location/add-or-edit-location/search/xy-coords/LocationXYCoordinatesSearchLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function EditLocationXYCoordinatesSearchPage () {
@@ -10,13 +10,19 @@ export default function EditLocationXYCoordinatesSearchPage () {
     navigate(orgManageLocationsUrls.edit.error.xyCoordinatesNotInEngland)
   }
   const allFloodAreasAvailable = () => {
-    navigate('/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/all')
+    navigate(
+      '/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/all'
+    )
   }
   const floodAlertAreasAvailableOnly = () => {
-    navigate('/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/alerts')
+    navigate(
+      '/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/alerts'
+    )
   }
   const noFloodAreasAvailable = () => {
-    navigate('/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/no-alerts')
+    navigate(
+      '/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/no-alerts'
+    )
   }
   return (
     <>

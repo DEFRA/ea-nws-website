@@ -1,14 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function KeywordsTable ({
+export default function KeywordsTable({
   keywords,
   displayedKeywords,
   filteredKeywords,
   setFilteredKeywords,
   selectedKeywords,
   setSelectedKeywords,
-  type
+  type,
+  onEdit
 }) {
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
   const [keywordSort, setKeywordSort] = useState('none')
@@ -21,33 +22,36 @@ export default function KeywordsTable ({
 
   const sortKeywords = () => {
     if (keywordSort === 'none' || keywordSort === 'descending') {
-        setKeywordSort('ascending')
-        setFilteredKeywords(
-            [...filteredKeywords].sort((a, b) => (a.name > b.name ? 1 : -1))
-        )
+      setKeywordSort('ascending')
+      setFilteredKeywords(
+        [...filteredKeywords].sort((a, b) => (a.name > b.name ? 1 : -1))
+      )
     }
     if (keywordSort === 'ascending') {
-        setKeywordSort('descending')
-        setFilteredKeywords(
-            [...filteredKeywords].sort((a, b) => (a.name < b.name ? 1 : -1))
-        )
+      setKeywordSort('descending')
+      setFilteredKeywords(
+        [...filteredKeywords].sort((a, b) => (a.name < b.name ? 1 : -1))
+      )
     }
   }
 
   const sortAssociated = () => {
     if (associatedSort === 'none' || associatedSort === 'descending') {
-        setAssociatedSort('ascending')
-        setFilteredKeywords(
-            [...filteredKeywords].sort((a, b) => (a.linked_ids.length > b.linked_ids.length ? 1 : -1))
+      setAssociatedSort('ascending')
+      setFilteredKeywords(
+        [...filteredKeywords].sort((a, b) =>
+          a.linked_ids.length > b.linked_ids.length ? 1 : -1
         )
+      )
     }
     if (associatedSort === 'ascending') {
-        setAssociatedSort('descending')
-        setFilteredKeywords(
-            [...filteredKeywords].sort((a, b) => (a.linked_ids.length < b.linked_ids.length ? 1 : -1))
+      setAssociatedSort('descending')
+      setFilteredKeywords(
+        [...filteredKeywords].sort((a, b) =>
+          a.linked_ids.length < b.linked_ids.length ? 1 : -1
         )
+      )
     }
-
   }
 
   const handleHeaderCheckboxChange = (event) => {
@@ -77,8 +81,16 @@ export default function KeywordsTable ({
     <>
       <p className='govuk-!-margin-bottom-6' style={{ color: '#505a5f' }}>
         {filteredKeywords.length !== keywords.length
-          ? 'Showing ' + filteredKeywords.length + ' of ' + keywords.length + ' keywords'
-          : keywords.length + ' keywords'} | <Link className='govuk-link'>{selectedKeywords.length + ' keywords selected'}</Link>
+          ? 'Showing ' +
+            filteredKeywords.length +
+            ' of ' +
+            keywords.length +
+            ' keywords'
+          : keywords.length + ' keywords'}{' '}
+        |{' '}
+        <Link className='govuk-link'>
+          {selectedKeywords.length + ' keywords selected'}
+        </Link>
       </p>
       <table className='govuk-table govuk-table--small-text-until-tablet'>
         <thead className='govuk-table__head'>
@@ -99,11 +111,23 @@ export default function KeywordsTable ({
                 </div>
               </div>
             </th>
-            <th scope='col' className='govuk-table__header' aria-sort={keywordSort}>
-              <button type='button' onClick={() => sortKeywords()}>Keyword</button>
+            <th
+              scope='col'
+              className='govuk-table__header'
+              aria-sort={keywordSort}
+            >
+              <button type='button' onClick={() => sortKeywords()}>
+                Keyword
+              </button>
             </th>
-            <th scope='col' className='govuk-table__header' aria-sort={associatedSort}>
-              <button type='button' onClick={() => sortAssociated()}>{'Associated '+type+'s'}</button>
+            <th
+              scope='col'
+              className='govuk-table__header'
+              aria-sort={associatedSort}
+            >
+              <button type='button' onClick={() => sortAssociated()}>
+                {'Associated ' + type + 's'}
+              </button>
             </th>
             <th scope='col' className='govuk-table__header' />
           </tr>
@@ -128,11 +152,13 @@ export default function KeywordsTable ({
                 </div>
               </th>
               <td className='govuk-table__cell'>{keyword.name}</td>
+              <td className='govuk-table__cell'>{keyword.linked_ids.length}</td>
               <td className='govuk-table__cell'>
-                {keyword.linked_ids.length}
-              </td>
-              <td className='govuk-table__cell'>
-                <Link className='govuk-link'>Change</Link> <span style={{ color: '#b1b4b6' }}>|</span> <Link className='govuk-link'>Delete</Link>
+                <Link className='govuk-link' onClick={() => onEdit(keyword)}>
+                  Change
+                </Link>{' '}
+                <span style={{ color: '#b1b4b6' }}>|</span>{' '}
+                <Link className='govuk-link'>Delete</Link>
               </td>
             </tr>
           ))}

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import LocationDropPinSearchResultsLayout from '../../../../layouts/location/manual-add-or-edit-location/search/drop-pin/LocationDropPinSearchResultsLayout'
+import LocationDropPinSearchResultsLayout from '../../../../layouts/location/add-or-edit-location/search/drop-pin/LocationDropPinSearchResultsLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationDropPinEditPage () {

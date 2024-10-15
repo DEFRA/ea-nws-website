@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router'
-import LocationOptionsLayout from '../../../layouts/location/manual-add-or-edit-location/search/LocationSearchOptionsLayout'
+import LocationOptionsLayout from '../../../layouts/location/add-or-edit-location/search/LocationSearchOptionsLayout'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function EditLocationSearchOptionsPage () {

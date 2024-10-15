@@ -32,7 +32,9 @@ import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/
 import CannotChangeLocationLinePage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-line/CannotChangeLocationLinePage'
 import CannotChangeLocationPolygonPage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-polygon/CannotChangeLocationPolygonPage'
 import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
-import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/ViewLocationsDashboardPage'
+import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
+import LocationInformationPage from '../../pages/manage-locations/view-location/view-location-information/LocationInformationPage'
+
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgAddLocations = '/organisation/manage-locations/add'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
@@ -41,19 +43,21 @@ const urlManageOrgConfirmLocations = urlManageOrg + '/confirm'
 // Manage location urls
 const orgManageLocationsUrls = {
   view: {
-    dashboard: urlManageOrg + '/view-locations'
+    dashboard: urlManageOrg + '/view-locations',
+    viewLocation: urlManageOrg + '/location/view-location'
   },
   add: {
     addLocationWithinBoundaries: {},
-    manualAddLocation: {},
+    manualAddLocation: {
+      confirmManualSearchedLocation:
+        urlManageOrg + '/add/location-in-area/:flow/:type'
+    },
     uploadLocationsWithCsv: {},
     addLocationsWithShapefile: {},
     options: urlManageOrgAddLocations,
     addressInfo: urlManageOrgAddLocations + '/address-info',
     uploadFile: urlManageOrgAddLocations + '/upload-file',
     name: urlManageOrg + '/add/name',
-    confirmManualSearchedLocation:
-      urlManageOrg + '/add/location-in-area/:flow/:type',
     error: {
       cannotFindAddress: urlManageOrg + '/add/cannot-find-address',
       xyCoordinatesNotInEngland:
@@ -79,17 +83,6 @@ const orgManageLocationsUrls = {
         urlManageOrgAddLocations + '/optional-information/action-plan',
       addNotes: urlManageOrgAddLocations + '/optional-information/notes'
     }
-  },
-  optionalInformation: {
-    optionalInfo: urlManageOrgAddLocations + '/optional-information',
-    optionalLocation:
-      urlManageOrgAddLocations + '/optional-information/address',
-    addKeyInformation:
-      urlManageOrgAddLocations + '/optional-information/key-information',
-    addKeywords: urlManageOrgAddLocations + '/optional-information/keywords',
-    addActionPlan:
-      urlManageOrgAddLocations + '/optional-information/action-plan',
-    addNotes: urlManageOrgAddLocations + '/optional-information/notes'
   },
   unmatchedLocations: {
     index: urlManageOrgUnmatchedLocations,
@@ -126,9 +119,14 @@ const orgManageLocationsUrls = {
 
 // Manage location routes
 const orgManageLocationRoutes = [
+  // view
   {
     path: orgManageLocationsUrls.view.dashboard,
     component: <ViewLocationsDashboardPage />
+  },
+  {
+    path: orgManageLocationsUrls.view.viewLocation,
+    component: <LocationInformationPage />
   },
   // add
   {

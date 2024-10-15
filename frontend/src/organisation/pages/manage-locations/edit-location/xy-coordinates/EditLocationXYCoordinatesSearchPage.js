@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router'
-import LocationXYCoordinatesSearchLayout from '../../../../layouts/location/add-or-edit-location/search/xy-coord/LocationXYCoordinatesSearchLayout'
+import LocationXYCoordinatesSearchLayout from '../../../../layouts/location/add-or-edit-location/search/xy-coords/LocationXYCoordinatesSearchLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function EditLocationXYCoordinatesSearchPage() {
@@ -11,6 +11,9 @@ export default function EditLocationXYCoordinatesSearchPage() {
   }
   const allFloodAreasAvailable = () => {
     navigate(
+      '/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/all'
+    )
+    navigate(
       orgManageLocationsUrls.edit.individualLocation.editLocationCoords.ConfirmEditLocations.replace(
         ':flow',
         'xy-coordinates-search'
@@ -19,6 +22,9 @@ export default function EditLocationXYCoordinatesSearchPage() {
   }
   const floodAlertAreasAvailableOnly = () => {
     navigate(
+      '/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/alerts'
+    )
+    navigate(
       orgManageLocationsUrls.edit.individualLocation.editLocationCoords.ConfirmEditLocations.replace(
         ':flow',
         'xy-coordinates-search'
@@ -26,6 +32,9 @@ export default function EditLocationXYCoordinatesSearchPage() {
     )
   }
   const noFloodAreasAvailable = () => {
+    navigate(
+      '/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/no-alerts'
+    )
     navigate(
       orgManageLocationsUrls.edit.individualLocation.editLocationCoords.ConfirmEditLocations.replace(
         ':flow',

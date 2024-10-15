@@ -11,8 +11,7 @@ import {
   setCurrentLocationEasting,
   setCurrentLocationFullAddress,
   setCurrentLocationNorthing,
-  setCurrentLocationPostcode,
-  setCurrentLocationUPRN
+  setCurrentLocationPostcode
 } from '../../../../../../../common/redux/userSlice'
 import { convertCoordinatesToEspg27700 } from '../../../../../../../common/services/CoordinatesFormatConverter'
 import {
@@ -43,7 +42,8 @@ export default function LocationSearchResultsPage () {
 
     setLoading(true)
     try {
-      dispatch(setCurrentLocationUPRN(selectedLocation.address))
+      // the below is being updated in another branch by Ronan
+      // dispatch(setCurrentLocationUPRN(selectedLocation.address))
       dispatch(setCurrentLocationCoordinates(selectedLocation.coordinates))
       dispatch(setCurrentLocationFullAddress(selectedLocation.name))
       dispatch(setCurrentLocationPostcode(selectedLocation.postcode))

@@ -165,49 +165,37 @@ export default function Map ({
   }, [])
 
   const onEachWarningAreaFeature = (feature, layer) => {
-    layer.options.className = 'warning-area-pattern-fill'
+    if (showFloodWarningAreas) {
+      layer.options.className = 'warning-area-pattern-fill'
 
-    layer.setStyle({
-      color: '#f70202',
-      weight: 2,
-      fillOpacity: 0.25
-    })
+      layer.setStyle({
+        color: '#f70202',
+        weight: 2,
+        fillOpacity: 0.25
+      })
+    } else {
+      layer.setStyle({ opacity: 0, fillOpacity: 0 })
+    }
   }
 
   const onEachAlertAreaFeature = (feature, layer) => {
-    layer.options.className = 'alert-area-pattern-fill'
+    if (showFloodAlertAreas) {
+      layer.options.className = 'alert-area-pattern-fill'
 
-    layer.setStyle({
-      color: '#ffa200',
-      weight: 2,
-      fillOpacity: 0.5
-    })
+      layer.setStyle({
+        color: '#ffa200',
+        weight: 2,
+        fillOpacity: 0.5
+      })
+    } else {
+      layer.setStyle({ opacity: 0, fillOpacity: 0 })
+    }
   }
 
   const alertAreaRef = useRef(null)
   const warningAreaRef = useRef(null)
   const [alertAreaRefVisible, setAlertAreaRefVisible] = useState(false)
   const [warningAreaRefVisible, setWarningAreaRefVisible] = useState(false)
-
-  useEffect(() => {
-    showAreas()
-  }, [showFloodWarningAreas, showFloodAlertAreas])
-
-  const showAreas = () => {
-    if (showFloodWarningAreas && showFloodAlertAreas) {
-      showAlertAreas()
-      showWarningAreas()
-    } else if (showFloodWarningAreas) {
-      showWarningAreas()
-      hideAlertArea()
-    } else if (showFloodAlertAreas) {
-      showAlertAreas()
-      hideWarningArea()
-    } else {
-      hideWarningArea()
-      hideAlertArea()
-    }
-  }
 
   const showWarningAreas = () => {
     if (warningAreaRefVisible && warningAreaRef.current) {
@@ -219,6 +207,7 @@ export default function Map ({
           weight: 2,
           fillOpacity: 0.25
         })
+        layer.bringToFront()
       })
     }
   }
@@ -237,23 +226,43 @@ export default function Map ({
     }
   }
 
+  const hideWarningArea = () => {
+    if (warningAreaRefVisible && warningAreaRef.current) {
+      warningAreaRef.current.eachLayer((layer) => {
+        layer.setStyle({ opacity: 0, fillOpacity: 0 })
+      })
+      setWarningAreaRefVisible(false)
+    }
+  }
+
   const hideAlertArea = () => {
-    if (alertAreaRef.current && alertAreaRefVisible) {
-      alertAreaRef.current.getLayers().forEach((layer) => {
+    if (alertAreaRefVisible && alertAreaRef.current) {
+      alertAreaRef.current.eachLayer((layer) => {
         layer.setStyle({ opacity: 0, fillOpacity: 0 })
       })
       setAlertAreaRefVisible(false)
     }
   }
 
-  const hideWarningArea = () => {
-    if (warningAreaRef.current && warningAreaRefVisible) {
-      warningAreaRef.current.getLayers().forEach((layer) => {
-        layer.setStyle({ opacity: 0, fillOpacity: 0 })
-      })
-      setWarningAreaRefVisible(false)
+  const showAreas = () => {
+    if (showFloodWarningAreas && showFloodAlertAreas) {
+      showAlertAreas()
+      showWarningAreas()
+    } else if (showFloodWarningAreas) {
+      showWarningAreas()
+      hideAlertArea()
+    } else if (showFloodAlertAreas) {
+      showAlertAreas()
+      hideWarningArea()
+    } else {
+      hideWarningArea()
+      hideAlertArea()
     }
   }
+
+  useEffect(() => {
+    showAreas()
+  }, [showFloodWarningAreas, showFloodAlertAreas])
 
   return (
     <div ref={ref}>
@@ -266,8 +275,8 @@ export default function Map ({
         maxBounds={maxBounds}
         className='map-container'
       >
-        {apiKey &&
-          (apiKey !== 'error'
+        {apiKey && (
+          apiKey !== 'error'
             ? (
               <>
                 {tileLayerWithHeader}
@@ -294,7 +303,6 @@ export default function Map ({
                     }}
                   />
                 )}
-                {/* warning area must be added after alert areas - this pushes warning areas to the top */}
                 {warningArea && (
                   <GeoJSON
                     data={warningArea}
@@ -314,7 +322,8 @@ export default function Map ({
                   Reload map
                 </Link>
               </div>
-              ))}
+              )
+        )}
       </MapContainer>
     </div>
   )

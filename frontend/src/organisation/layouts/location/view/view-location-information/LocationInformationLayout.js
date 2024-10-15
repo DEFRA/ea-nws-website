@@ -1,5 +1,4 @@
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined'
-import { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -7,13 +6,10 @@ import OrganisationAccountNavigation from '../../../../../common/components/cust
 import Button from '../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../common/components/gov-uk/Details'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
-import {
-  getGroundwaterFloodRiskRatingOfLocation,
-  getRiversAndSeaFloodRiskRatingOfLocation
-} from '../../../../../common/services/WfsFloodDataService'
+import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
-import RiskCategory from '../../../../components/custom/RiskCategory'
+import RiskCategoryLabel from '../../../../components/custom/RiskCategoryLabel'
 import ViewLocationSubNavigation from './location-information-components/ViewLocationSubNavigation'
 
 export default function LocationInformationLayout() {
@@ -21,23 +17,6 @@ export default function LocationInformationLayout() {
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = currentLocation.meta_data.location_additional
   const formattedAddress = currentLocation.address?.split(',')
-  const [riversAndSeaRiskRating, setRiversAndSeaRiskRating] = useState(null)
-  const [groundwaterRiskRating, setGroundwaterRiskRating] = useState(null)
-
-  useEffect(() => {
-    const getRiskRatings = async () => {
-      const { latitude, longitude } = currentLocation.coordinates
-
-      const [riversAndSeaRisk, groundwaterRisk] = await Promise.all([
-        getRiversAndSeaFloodRiskRatingOfLocation(latitude, longitude),
-        getGroundwaterFloodRiskRatingOfLocation(latitude, longitude)
-      ])
-
-      setRiversAndSeaRiskRating(riversAndSeaRisk)
-      setGroundwaterRiskRating(groundwaterRisk)
-    }
-    getRiskRatings()
-  }, [])
 
   const LocationHeader = () => {
     switch (additionalData.location_data_type) {
@@ -184,7 +163,9 @@ export default function LocationInformationLayout() {
                     Rivers and sea flood risk
                   </h3>
                   <div className='flood-risk-banner-label '>
-                    <RiskCategory riskRating={riversAndSeaRiskRating} />
+                    <RiskCategoryLabel
+                      riskAreaType={RiskAreaType.RIVERS_AND_SEA}
+                    />
                   </div>
                 </div>
                 <div className='flood-risk-banner-item'>
@@ -192,7 +173,9 @@ export default function LocationInformationLayout() {
                     Groundwater flood risk
                   </h3>
                   <div className='flood-risk-banner-label '>
-                    <RiskCategory riskRating={groundwaterRiskRating} />
+                    <RiskCategoryLabel
+                      riskAreaType={RiskAreaType.GROUNDWATER}
+                    />
                   </div>
                 </div>
               </div>

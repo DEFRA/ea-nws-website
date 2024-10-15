@@ -1009,29 +1009,29 @@
   position: relative;
 }
 
-.search-container {
+.keyword-search-container {
   background: #f3f2f1;
 }
 
-.search-input-container {
+.keyword-search-input-container {
   display: flex;
   width: 100%;
 }
 
-.search-input {
+.keyword-search-input {
   position: relative;
   z-index: 1;
   white-space: nowrap;
 }
 
-.search-button-container {
+.keyword-search-button-container {
   vertical-align: top;
   position: relative;
   white-space: nowrap;
   width: 40px;
 }
 
-.search-button {
+.keyword-search-button {
   display: block;
   position: relative;
   width: 40px;
@@ -1045,7 +1045,7 @@
   color: #fff;
 }
 
-.search-button:hover {
+.keyword-search-button:hover {
   background-color: #005a30;;
   border-color: #005a30;;
 }

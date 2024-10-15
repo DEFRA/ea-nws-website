@@ -76,8 +76,8 @@ export default function KeywordsTable ({
     <>
       <p className='govuk-!-margin-bottom-6' style={{ color: '#505a5f' }}>
         {filteredKeywords.length !== keywords.length
-          ? 'Showing ' + filteredKeywords.length + ' of ' + keywords.length + ' keywords'
-          : keywords.length + ' keywords'} | <Link className='govuk-link'>{selectedKeywords.length + ' keywords selected'}</Link>
+          ? `Showing ${filteredKeywords.length} of ${keywords.length} keywords`
+          : `${keywords.length} keywords`} | <Link className='govuk-link'>{`${selectedKeywords.length} keywords selected`}</Link>
       </p>
       <table className='govuk-table govuk-table--small-text-until-tablet'>
         <thead className='govuk-table__head'>
@@ -102,7 +102,7 @@ export default function KeywordsTable ({
               <button type='button' onClick={() => sortKeywords()}>Keyword</button>
             </th>
             <th scope='col' className='govuk-table__header' aria-sort={associatedSort}>
-              <button type='button' onClick={() => sortAssociated()}>{'Associated ' + type + 's'}</button>
+              <button type='button' onClick={() => sortAssociated()}>{`Associated ${type}s`}</button>
             </th>
             <th scope='col' className='govuk-table__header' />
           </tr>

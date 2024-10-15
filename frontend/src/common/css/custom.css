@@ -147,6 +147,16 @@
   padding: 0.5rem 0.625rem 0.4375rem;
 }
 
+.inline-button {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.inline-button button {
+  margin-top: -1.5rem; /* Adjust the value as needed */
+}
+
 .timeout-dialog {
   position: fixed;
   top: 0;
@@ -977,6 +987,11 @@
 }
 
 .locations-filter-section {
+  display: flex;
+  align-items: center;
+}
+
+.locations-map-key {
   display: flex;
   align-items: center;
 }

@@ -8,12 +8,12 @@ import {
   clearAuth,
   setAuthToken,
   setContactPreferences,
-  setCurrentLocationCoordinates,
+  setCurrentLocation,
   setProfile,
   setRegistrations
 } from '../redux/userSlice'
 
-export default function IndexPage() {
+export default function IndexPage () {
   const dispatch = useDispatch()
   const [mockSessionActive, setmockSessionActive] = useState(false)
   const [emptyProfileActive, setEmptyProfileActive] = useState(false)
@@ -282,7 +282,32 @@ export default function IndexPage() {
     ]
   }
 
-  function mockSession(profile) {
+  const mockCurrentLocation = {
+    name: null,
+    // address is the UPRN
+    address: null,
+    // Coordinates in dd (degrees decimal)
+    coordinates: null,
+    alert_categories: null,
+    meta_data: {
+      location_additional: {
+        full_address: null,
+        postcode: null,
+        // Easting EPSG: 27700
+        x_coordinate: null,
+        // Northing EPSG: 27700
+        y_coordinate: null,
+        internal_reference: null,
+        business_criticality: null,
+        location_type: null,
+        action_plan: null,
+        notes: null,
+        keywords: null
+      }
+    }
+  }
+
+  function mockSession (profile) {
     if (mockSessionActive === false) {
       const authToken = 'MockAuthToken'
       const contactPreferences = ['Text']
@@ -319,14 +344,12 @@ export default function IndexPage() {
           ]
         }
       }
-      const coordinates = { latitude: 50.84106, longitude: -1.05814 }
-
-      dispatch(setCurrentLocationCoordinates(coordinates))
 
       dispatch(setAuthToken(authToken))
       dispatch(setRegistrations(registrations))
       dispatch(setContactPreferences(contactPreferences))
       dispatch(setProfile(profile))
+      dispatch(setCurrentLocation(mockCurrentLocation))
       setmockSessionActive(true)
     } else {
       dispatch(clearAuth())
@@ -334,7 +357,7 @@ export default function IndexPage() {
     }
   }
 
-  function mockEmptyProfileWithNoAuthentication() {
+  function mockEmptyProfileWithNoAuthentication () {
     if (!emptyProfileActive) {
       const emptyProfile = {
         id: '',
@@ -482,7 +505,7 @@ export default function IndexPage() {
                 </li>
                 <li>
                   <Link
-                    to='/organisation/manage-locations/add/optional-location-info'
+                    to='/organisation/manage-locations/add/optional-address/info'
                     className='govuk-link'
                   >
                     add location information
@@ -490,7 +513,7 @@ export default function IndexPage() {
                 </li>
                 <li>
                   <Link
-                    to='/organisation/manage-locations/edit/location-options'
+                    to='/organisation/manage-locations/edit/select-location-options'
                     className='govuk-link'
                   >
                     edit location

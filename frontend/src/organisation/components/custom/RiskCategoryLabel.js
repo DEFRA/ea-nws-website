@@ -6,7 +6,7 @@ import {
   getRiversAndSeaFloodRiskRatingOfLocation
 } from '../../../common/services/WfsFloodDataService'
 
-export default function RiskCategoryLabel({ riskAreaType }) {
+export default function RiskCategoryLabel ({ riskAreaType }) {
   const currentLocationCoordinates = useSelector(
     (state) => state.session.currentLocation.coordinates
   )

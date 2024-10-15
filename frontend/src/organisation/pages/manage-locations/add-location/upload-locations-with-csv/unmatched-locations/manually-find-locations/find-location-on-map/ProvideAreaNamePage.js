@@ -6,16 +6,17 @@ import Autocomplete from '../../../../../../../../common/components/gov-uk/Autoc
 import Button from '../../../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../../../common/components/gov-uk/ErrorSummary'
 import InsetText from '../../../../../../../../common/components/gov-uk/InsetText'
-import {
-  setCurrentLocationCoordinates
-} from '../../../../../../../../common/redux/userSlice'
+import { setCurrentLocationCoordinates } from '../../../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ProvideAreaNamePage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const fullAddress = useSelector((state) => state.session.currentLocation.meta_data.location_additional.full_address)
+  const fullAddress = useSelector(
+    (state) =>
+      state.session.currentLocation.meta_data.location_additional.full_address
+  )
   const [areaName, setAreaName] = useState('')
   const [areaCoords, setAreaCoords] = useState(null)
   const [error, setError] = useState('')
@@ -65,22 +66,24 @@ export default function ProvideAreaNamePage () {
     }
   }
 
+  const navigateBack = (event) => {
+    event.preventDefault()
+    navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index)
+  }
+
   return (
     <>
-      <BackLink onClick={() => navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index)} />
+      <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error && (
-              <ErrorSummary
-                errorList={[error]}
-              />
-            )}
+            {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>Find location on a map</h1>
             <div className='govuk-body'>
               <InsetText text={fullAddress} />
               <p>
-                This location cannot be found. We need some additional information to help us find it
+                This location cannot be found. We need some additional
+                information to help us find it
               </p>
               <Autocomplete
                 className='govuk-input govuk-!-width-full'

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import SelectOnMapLayout from '../../../../../../../layouts/location/upload-locations-with-csv/unmatched-locations/SelectOnMapLayout'
 import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function SelectOnMapPage() {
+export default function SelectOnMapPage () {
   const navigate = useNavigate()
   const fullAddress = useSelector(
     (state) =>

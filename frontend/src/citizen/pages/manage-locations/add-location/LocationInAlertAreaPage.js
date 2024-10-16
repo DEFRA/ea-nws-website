@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import LocationInAlertAreaLayout from '../../../layouts/location/LocationInAlertAreaLayout'
 
-export default function LocationInAlertAreaPage () {
+export default function LocationInAlertAreaPage() {
   const navigate = useNavigate()
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
@@ -29,7 +29,7 @@ export default function LocationInAlertAreaPage () {
         name = selectedFloodAlertArea.properties.TA_NAME
       }
     } else {
-      name = selectedLocation.name
+      name = selectedLocation.address
     }
 
     navigate('/home', {

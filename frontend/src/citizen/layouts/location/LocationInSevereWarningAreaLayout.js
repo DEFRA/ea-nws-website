@@ -112,7 +112,10 @@ export default function LocationInSevereWarningAreaLayout({
   }
 
   const removeLocationWithFloodWarningAlerts = async () => {
-    const updatedProfile = await removeLocation(profile, selectedLocation.name)
+    const updatedProfile = await removeLocation(
+      profile,
+      selectedLocation.address
+    )
     dispatch(setProfile(updatedProfile))
   }
 

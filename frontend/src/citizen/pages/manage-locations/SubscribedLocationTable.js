@@ -12,7 +12,7 @@ import {
 } from '../../../common/redux/userSlice'
 import { getSurroundingFloodAreas } from '../../../common/services/WfsFloodDataService'
 
-export default function SubscribedLocationTable () {
+export default function SubscribedLocationTable() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(1)
@@ -56,11 +56,11 @@ export default function SubscribedLocationTable () {
       0.5
     )
     const locationIsWarningArea = isSavedLocationTargetArea(
-      location.name,
+      location.address,
       warningArea.features
     )
     const locationIsAlertArea = isSavedLocationTargetArea(
-      location.name,
+      location.address,
       alertArea.features
     )
     if (
@@ -111,7 +111,7 @@ export default function SubscribedLocationTable () {
           <Link
             to='/manage-locations/remove'
             state={{
-              name: location.name
+              name: location.address
             }}
             className='govuk-link'
           >
@@ -124,7 +124,7 @@ export default function SubscribedLocationTable () {
     const addressColumn = (location) => {
       return (
         <td className='govuk-table__cell govuk-!-width-full'>
-          {location.name}
+          {location.address}
         </td>
       )
     }

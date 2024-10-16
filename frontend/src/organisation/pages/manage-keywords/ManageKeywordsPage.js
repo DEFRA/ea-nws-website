@@ -6,14 +6,14 @@ import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Popup from '../../../common/components/custom/Popup'
+import Autocomplete from '../../../common/components/gov-uk/Autocomplete'
+import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
+import Pagination from '../../../common/components/gov-uk/Pagination'
 import {
   setContactKeywords,
   setLocationKeywords
 } from '../../../common/redux/userSlice'
-
-import Button from '../../../common/components/gov-uk/Button'
-import Pagination from '../../../common/components/gov-uk/Pagination'
 import KeywordsTable from '../../components/custom/KeywordsTable'
 
 export default function ManageKeywordsPage () {
@@ -34,6 +34,7 @@ export default function ManageKeywordsPage () {
   const [updatedKeyword, setUpdatedKeyword] = useState('')
   const [results, setResults] = useState(null)
   const [searchInput, setSearchInput] = useState(null)
+  const [editError, setEditError] = useState('')
   const keywordsPerPage = 10
 
   const setTab = (tab) => {
@@ -112,11 +113,16 @@ export default function ManageKeywordsPage () {
         console.log('input is empty')
         onClickEditDialog()
         // onClickRemove
-      } else {
+      } 
+      else {
         editKeyword()
         onClickEditDialog()
       }
     }
+  }
+
+  const validateInput = () => {
+    return keywords.some((k) => updatedKeyword === k.name) ? 'This keyword already exists' : ''    
   }
 
   const handleSearch = () => {
@@ -244,7 +250,10 @@ export default function ManageKeywordsPage () {
                   >
                     Search for a {keywordType} keyword
                   </label>
-                  <div class='keyword-search-input-container' id='keyword-search'>
+                  <div
+                    class='keyword-search-input-container'
+                    id='keyword-search'
+                  >
                     <Autocomplete
                       className='govuk-input govuk-input--width-20 keyword-search-input'
                       inputType='text'
@@ -269,7 +278,9 @@ export default function ManageKeywordsPage () {
                     </div>
                   </div>
                 </div>
-                <Link onClick={() => clearSearch()} className='govuk-link'>Clear Seach results</Link>
+                <Link onClick={() => clearSearch()} className='govuk-link'>
+                  Clear Seach results
+                </Link>
               </div>
               <div className='govuk-grid-column-two-thirds'>
                 {filteredKeywords.length !== 0
@@ -280,38 +291,46 @@ export default function ManageKeywordsPage () {
                         onClick={handleButton}
                         text='Delete selected keywords'
                       />
-
-                <KeywordsTable
-                  keywords={keywords}
-                  displayedKeywords={displayedKeywords}
-                  filteredKeywords={filteredKeywords}
-                  setFilteredKeywords={setFilteredKeywords}
-                  selectedKeywords={selectedKeywords}
-                  setSelectedKeywords={setSelectedKeywords}
-                  type={keywordType}
-                  onEdit={onClickEditDialog}
-                />
-                <Pagination
-                  totalPages={Math.ceil(
-                    filteredKeywords.length / keywordsPerPage
-                  )}
-                  onPageChange={(val) => setCurrentPage(val)}
-                  reset={resetPaging}
-                />
+                      <KeywordsTable
+                        keywords={keywords}
+                        displayedKeywords={displayedKeywords}
+                        filteredKeywords={filteredKeywords}
+                        setFilteredKeywords={setFilteredKeywords}
+                        selectedKeywords={selectedKeywords}
+                        setSelectedKeywords={setSelectedKeywords}
+                        type={keywordType}
+                        onEdit={onClickEditDialog}
+                      />
+                      <Pagination
+                        totalPages={Math.ceil(
+                          filteredKeywords.length / keywordsPerPage
+                        )}
+                        onPageChange={(val) => setCurrentPage(val)}
+                        reset={resetPaging}
+                      />
+                    </>
+                    )
+                  : <p>No results. Try searching with a different keyword.</p>}
+                {showEditDialog && (
+                  <>
+                    <Popup
+                      onAction={handleEdit}
+                      onCancel={onClickEditDialog}
+                      onClose={onClickEditDialog}
+                      title={dialogTitle}
+                      popupText={dialogText}
+                      buttonText={dialogButtonText}
+                      input='Keyword'
+                      textInput={updatedKeyword}
+                      setTextInput={setUpdatedKeyword}
+                      charLimit={20}
+                      error={editError}
+                      setError={setEditError}
+                      validateInput={validateInput}
+                    />
+                  </>
+                )}
               </div>
-
-              {showEditDialog && (
-                <Popup
-                  onAction={handleEdit}
-                  onCancel={onClickEditDialog}
-                  onClose={onClickEditDialog}
-                  title={dialogTitle}
-                  popupText={dialogText}
-                  buttonText={dialogButtonText}
-                  input='Keyword'
-                  setTextInput={setUpdatedKeyword}
-                />
-              )}
             </div>
           </div>
         </div>

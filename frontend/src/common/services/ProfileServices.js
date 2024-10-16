@@ -28,8 +28,8 @@ const addUnverifiedContact = (profile, type, contact) => {
         [type === 'email'
           ? 'emails'
           : type === 'mobile'
-            ? 'mobilePhones'
-            : 'homePhones']: [...unverifiedContactList, formattedContact]
+          ? 'mobilePhones'
+          : 'homePhones']: [...unverifiedContactList, formattedContact]
       }
     }
     return updatedProfile
@@ -100,8 +100,8 @@ const addVerifiedContact = (profile, type, contact) => {
       [type === 'email'
         ? 'emails'
         : type === 'mobile'
-          ? 'mobilePhones'
-          : 'homePhones']: [...verifiedContactList, contact]
+        ? 'mobilePhones'
+        : 'homePhones']: [...verifiedContactList, contact]
     }
     return updatedProfile
   } else {
@@ -214,7 +214,7 @@ const addLocation = (profile, newLocation) => {
   const currentLocations = profile.pois
 
   const exists = currentLocations.some(
-    (existingLocation) => existingLocation.name === newLocation.name
+    (existingLocation) => existingLocation.address === newLocation.address
   )
 
   if (!exists) {
@@ -228,9 +228,9 @@ const addLocation = (profile, newLocation) => {
   }
 }
 
-const removeLocation = (profile, name) => {
+const removeLocation = (profile, address) => {
   const newLocationList = profile.pois.filter(
-    (location) => location.name !== name
+    (location) => location.address !== address
   )
 
   const updatedProfile = {
@@ -245,7 +245,7 @@ const updateLocationsFloodCategory = (profile, location, updatedCategories) => {
   const parsedProfile = JSON.parse(JSON.stringify(profile))
 
   const locationIndex = parsedProfile.pois.findIndex(
-    (poi) => poi.name === location.name
+    (poi) => poi.address === location.address
   )
   if (locationIndex !== -1) {
     parsedProfile.pois[locationIndex].categories = updatedCategories

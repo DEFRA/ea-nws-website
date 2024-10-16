@@ -76,7 +76,9 @@ export default function ManageKeywordsPage() {
     setTargetKeyword(keyword)
     setDialogTitle('Change keyword')
     setDialogText(
-      "Changing this keyword will change it for all the locations it's associated with."
+      `Changing this keyword will change it for all the ${
+        keywordType === 'location' ? 'locations' : 'contacts'
+      } it's associated with.`
     )
     setDialogButtonText('Change keyword')
     setShowEditDialog(!showEditDialog)

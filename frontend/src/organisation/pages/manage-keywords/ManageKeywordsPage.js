@@ -273,28 +273,34 @@ export default function ManageKeywordsPage () {
                 <Link onClick={() => clearSearch()} className='govuk-link'>Clear Seach results</Link>
               </div>
               <div className='govuk-grid-column-two-thirds'>
-                <Button
-                  className='govuk-button govuk-button--secondary'
-                  onClick={handleButton}
-                  text='Delete selected keywords'
-                />
+                {filteredKeywords.length !== 0
+                  ? (
+                    <>
+                      <Button
+                        className='govuk-button govuk-button--secondary'
+                        onClick={handleButton}
+                        text='Delete selected keywords'
+                      />
 
-                <KeywordsTable
-                  keywords={keywords}
-                  displayedKeywords={displayedKeywords}
-                  filteredKeywords={filteredKeywords}
-                  setFilteredKeywords={setFilteredKeywords}
-                  selectedKeywords={selectedKeywords}
-                  setSelectedKeywords={setSelectedKeywords}
-                  type={keywordType}
-                />
-                <Pagination
-                  totalPages={Math.ceil(
-                    filteredKeywords.length / keywordsPerPage
-                  )}
-                  onPageChange={(val) => setCurrentPage(val)}
-                  reset={resetPaging}
-                />
+                      <KeywordsTable
+                        keywords={keywords}
+                        displayedKeywords={displayedKeywords}
+                        filteredKeywords={filteredKeywords}
+                        setFilteredKeywords={setFilteredKeywords}
+                        selectedKeywords={selectedKeywords}
+                        setSelectedKeywords={setSelectedKeywords}
+                        type={keywordType}
+                      />
+                      <Pagination
+                        totalPages={Math.ceil(
+                          filteredKeywords.length / keywordsPerPage
+                        )}
+                        onPageChange={(val) => setCurrentPage(val)}
+                        reset={resetPaging}
+                      />
+                    </>
+                    )
+                  : <p>No results. Try searching with a different keyword.</p>}
               </div>
             </div>
           </div>

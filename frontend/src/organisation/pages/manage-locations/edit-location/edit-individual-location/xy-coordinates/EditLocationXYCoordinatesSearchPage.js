@@ -11,17 +11,26 @@ export default function EditLocationXYCoordinatesSearchPage () {
   }
   const allFloodAreasAvailable = () => {
     navigate(
-      '/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/all'
+      orgManageLocationsUrls.edit.individualLocation.editLocationCoords.ConfirmEditLocations.replace(
+        ':flow',
+        'xy-coordinates-search'
+      ).replace(':type', 'all')
     )
   }
   const floodAlertAreasAvailableOnly = () => {
     navigate(
-      '/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/alerts'
+      orgManageLocationsUrls.edit.individualLocation.editLocationCoords.ConfirmEditLocations.replace(
+        ':flow',
+        'xy-coordinates-search'
+      ).replace(':type', 'alerts')
     )
   }
   const noFloodAreasAvailable = () => {
     navigate(
-      '/organisation/manage-locations/edit/location-in-area/xy-coordinates-search/no-alerts'
+      orgManageLocationsUrls.edit.individualLocation.editLocationCoords.ConfirmEditLocations.replace(
+        ':flow',
+        'xy-coordinates-search'
+      ).replace(':type', 'no-alerts')
     )
   }
   return (

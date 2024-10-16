@@ -23,3 +23,26 @@ def test_locations_tab(get_browser):
     click_link(get_browser, "Locations keywords", current_url)
     assert 'Search for a location keyword' in get_browser.page_source
     assert 'Associated locations' in get_browser.page_source
+
+def test_edit_dialog_render_location_keyword_tab(get_browser):
+    navigate_to_auth_org_page_via_index(get_browser,current_url)
+    click_link(get_browser, "Locations keywords", current_url)
+    click_link_more_than_one_text(get_browser, "Change", 1, current_url)
+    time.sleep(1)
+    assert 'Change keyword' in get_browser.page_source
+    assert 'Close' in get_browser.page_source
+    assert 'Changing this keyword will change it for all the locations' in get_browser.page_source
+
+def test_edit_close_dialog_render_location_keyword_tab(get_browser):
+    navigate_to_auth_org_page_via_index(get_browser,current_url)
+    click_link(get_browser, "Locations keywords", current_url)
+    click_link_more_than_one_text(get_browser, "Change", 1, current_url)
+    time.sleep(1)
+    assert 'Change keyword' in get_browser.page_source
+    assert 'Close' in get_browser.page_source
+    assert 'Changing this keyword will change it for all the locations' in get_browser.page_source
+    click_span(get_browser, "×")
+    time.sleep(1)
+    assert 'Change keyword' not in get_browser.page_source
+    assert 'Changing this keyword will change it for all the locations' not in get_browser.page_source
+

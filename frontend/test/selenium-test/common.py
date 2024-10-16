@@ -132,6 +132,14 @@ def navigate_to_unauth_page_via_index(browser, url_target):
     assert browser.current_url == url_target
     return browser
 
+# Navigate to authenticated page via index page and check url
+def navigate_to_auth_org_page_via_index(browser, url_target):
+    browser.get(url_index)
+    click_button(browser, 'Activate/Deactivate Mock Org Session 1', url_index)
+    browser.get(url_target)
+    assert browser.current_url == url_target
+    return browser
+
 # CLICK / SELECT
 # Click on a button and check url
 def click_button(browser, button_text, url_button):

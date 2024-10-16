@@ -53,113 +53,6 @@ export default function ManageKeywordsPage() {
     )
   }, [filteredKeywords, currentPage])
 
-  // REMOVE WHEN READY - FOR TESTING
-  const AddTestData = () => {
-    const locationKeywords = [
-      {
-        name: 'Location Keyword 1',
-        linked_ids: ['id', 'id']
-      },
-      {
-        name: 'Location Keyword 2',
-        linked_ids: ['id']
-      },
-      {
-        name: 'Location Keyword 3',
-        linked_ids: []
-      },
-      {
-        name: 'Location Keyword 4',
-        linked_ids: ['id', 'id']
-      },
-      {
-        name: 'Location Keyword 5',
-        linked_ids: ['id', 'id', 'id']
-      },
-      {
-        name: 'Location Keyword 6',
-        linked_ids: ['id', 'id', 'id', 'id']
-      },
-      {
-        name: 'Location Keyword 7',
-        linked_ids: ['id', 'id']
-      },
-      {
-        name: 'Location Keyword 8',
-        linked_ids: ['id']
-      },
-      {
-        name: 'Location Keyword 9',
-        linked_ids: ['id', 'id']
-      },
-      {
-        name: 'Location Keyword 10',
-        linked_ids: ['id', 'id']
-      },
-      {
-        name: 'Location Keyword 11',
-        linked_ids: ['id', 'id']
-      },
-      {
-        name: 'Location Keyword 12',
-        linked_ids: ['id', 'id']
-      }
-    ]
-    const contactKeywords = [
-      {
-        name: 'Contact Keyword 1',
-        linked_ids: ['id', 'id']
-      },
-      {
-        name: 'Contact Keyword 2',
-        linked_ids: ['id']
-      },
-      {
-        name: 'Contact Keyword 3',
-        linked_ids: []
-      },
-      {
-        name: 'Contact Keyword 4',
-        linked_ids: ['id', 'id']
-      },
-      {
-        name: 'Contact Keyword 5',
-        linked_ids: ['id', 'id', 'id']
-      },
-      {
-        name: 'Contact Keyword 6',
-        linked_ids: ['id', 'id', 'id', 'id']
-      },
-      {
-        name: 'Contact Keyword 7',
-        linked_ids: ['id', 'id']
-      },
-      {
-        name: 'Contact Keyword 8',
-        linked_ids: ['id']
-      },
-      {
-        name: 'Contact Keyword 9',
-        linked_ids: ['id', 'id']
-      },
-      {
-        name: 'Contact Keyword 10',
-        linked_ids: ['id', 'id']
-      },
-      {
-        name: 'Contact Keyword 11',
-        linked_ids: ['id', 'id']
-      },
-      {
-        name: 'Contact Keyword 12',
-        linked_ids: ['id', 'id']
-      }
-    ]
-    dispatch(setLocationKeywords(locationKeywords))
-    dispatch(setContactKeywords(contactKeywords))
-    console.log(locationKeywords + ' added')
-  }
-
   const locationKeywords = useSelector((state) =>
     state.session.locationKeywords !== null
       ? state.session.locationKeywords
@@ -372,15 +265,6 @@ export default function ManageKeywordsPage() {
                 <Link to='/' className='govuk-link'>
                   Clear Seach results
                 </Link>
-
-                {/* TO REMOVE */}
-                <br />
-                <br />
-                <Button
-                  onClick={AddTestData}
-                  text='TO REMOVE!!! - Add Test Data'
-                ></Button>
-                <br />
               </div>
 
               {showEditDialog && (

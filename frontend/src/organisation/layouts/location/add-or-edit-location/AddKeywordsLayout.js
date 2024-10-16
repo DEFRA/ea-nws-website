@@ -14,17 +14,12 @@ export default function AddKeywordsLayout () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const [keywordError, setKeywordError] = useState('')
-
-  const [keyword, setKeyword] = useState('')
-
   const savedKeywords = useSelector((state) =>
     state.session.currentLocation.meta_data.location_additional.keywords !==
     null
       ? state.session.currentLocation.meta_data.location_additional.keywords
       : []
   )
-  const [keywordsArray, setKeywordsArray] = useState([...savedKeywords])
 
   const checkboxArray = []
   if (savedKeywords.length !== 0) {
@@ -32,6 +27,10 @@ export default function AddKeywordsLayout () {
       checkboxArray.push(true)
     }
   }
+
+  const [keywordError, setKeywordError] = useState('')
+  const [keyword, setKeyword] = useState('')
+  const [keywordsArray, setKeywordsArray] = useState([...savedKeywords])
   const [isCheckboxCheckedArray, setIsCheckboxCheckedArray] = useState([
     ...checkboxArray
   ])
@@ -62,7 +61,11 @@ export default function AddKeywordsLayout () {
 
   const handleAddKeyword = () => {
     if (keyword) {
-      if (keywordsArray.includes(keyword)) {
+      if (keyword.length > 20) {
+        setKeywordError('Keywords must be 20 characters of less')
+      } else if (keywordsArray.length > 49) {
+        setKeywordError('You can add a maximum of 50 keywords')
+      } else if (keywordsArray.includes(keyword)) {
         setKeywordError('This keyword already exists')
         console.log('Duplicate found')
       } else {

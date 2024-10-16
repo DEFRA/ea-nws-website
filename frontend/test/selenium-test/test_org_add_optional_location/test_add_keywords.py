@@ -4,6 +4,12 @@ previous_url= url_org_man_loc.get('optionalLocation').get('addKeyInformation')
 current_url  = url_org_man_loc.get('optionalLocation').get('addKeywords')
 url_next_page = url_org_man_loc.get('optionalLocation').get('addActionPlan')
 
+keywords_max = 50
+keyword_error_max = 'You can add a maximum of 50 keywords'
+keyword_char_max = 20
+keyword_error_char_max = 'Keywords must be 20 characters of less'
+keyword_error_duplicate = 'This keyword already exists'
+
 def add_keyword(get_browser, keyword):
     enter_input_text(get_browser, 'govuk-text-input', keyword, 'id')
     click_button(get_browser, 'Add keyword', current_url)
@@ -13,16 +19,13 @@ def add_keyword_success(get_browser, keyword):
     assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='id{keyword}']")
     assert check_exists_by_xpath(get_browser, f"//input[@class='govuk-checkboxes__input' and @id='id{keyword}']")
 
-def add_keyword_fail(get_browser, keyword):
+def add_keyword_fail(get_browser, keyword, error):
     add_keyword(get_browser, keyword)
     assert check_error_summary(get_browser)
-    assert 'This keyword already exists' in get_browser.page_source
-    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='id{keyword}']")
-    assert check_exists_by_xpath(get_browser, f"//input[@class='govuk-checkboxes__input' and @id='id{keyword}']")
-
-def check_keyword_added(get_browser, text):
-    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='id{text}']")
-    assert check_exists_by_xpath(get_browser, f"//input[@class='govuk-checkboxes__input' and @id='id{text}']")
+    assert error in get_browser.page_source
+    if error == keyword_error_duplicate:
+        assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='id{keyword}']")
+        assert check_exists_by_xpath(get_browser, f"//input[@class='govuk-checkboxes__input' and @id='id{keyword}']")
 
 def test_render(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
@@ -46,7 +49,18 @@ def test_add_multiple_keywords(get_browser):
     add_keyword_success(get_browser, 'South')
     add_keyword_success(get_browser, 'East')
     add_keyword_success(get_browser, 'West')
-    add_keyword_fail(get_browser, 'South')
-    add_keyword_fail(get_browser, 'North')
+    add_keyword_fail(get_browser, 'South', keyword_error_duplicate)
+    add_keyword_fail(get_browser, 'North', keyword_error_duplicate)
+    click_button(get_browser, 'Continue', url_next_page)
+    assert check_h1_heading(get_browser, 'Action plan (optional)')
 
+def test_max_keywords(get_browser):
+    navigate_to_auth_page_via_index(get_browser,current_url)
+    for i in range(keywords_max):
+        add_keyword_success(get_browser, 'keyword'+str(i))
+    add_keyword_fail(get_browser, 'keyword51', keyword_error_max)
 
+def test_max_char_keyword(get_browser):
+    navigate_to_auth_page_via_index(get_browser,current_url)
+    long_keyword = "A" * (keyword_char_max+1)
+    add_keyword_fail(get_browser, long_keyword, keyword_error_char_max)

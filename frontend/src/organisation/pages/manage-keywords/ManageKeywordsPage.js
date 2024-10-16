@@ -171,10 +171,8 @@ export default function ManageKeywordsPage() {
 
   useEffect(() => {
     setKeywords(keywordType === 'location' ? locationKeywords : contactKeywords)
-    setFilteredKeywords(
-      keywordType === 'location' ? locationKeywords : contactKeywords
-    )
-  }, [keywordType])
+    setFilteredKeywords(keywords)
+  }, [contactKeywords, keywordType, keywords, locationKeywords])
 
   const navigateBack = (event) => {
     event.preventDefault()

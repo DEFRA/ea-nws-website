@@ -1,15 +1,14 @@
 import { React } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function NotInEnglandLayout ({
-  NavigateToPreviousPage,
-  locationType
-}) {
+export default function NotInEnglandLayout ({ locationType }) {
+  const navigate = useNavigate()
+
   const navigateBack = (event) => {
     event.preventDefault()
-    NavigateToPreviousPage()
+    navigate(-1)
   }
 
   return (

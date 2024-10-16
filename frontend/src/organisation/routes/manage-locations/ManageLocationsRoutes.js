@@ -28,9 +28,9 @@ import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/add
 import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/NotInEnglandPage'
 import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
-import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationSearchOptionsPage'
-import LocationDropPinEditPage from '../../pages/manage-locations/edit-location/drop-pin/LocationDropPinEditPage'
-import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
+import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/edit-individual-location/EditLocationSearchOptionsPage'
+import LocationDropPinEditPage from '../../pages/manage-locations/edit-location/edit-individual-location/drop-pin/LocationDropPinEditPage'
+import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/edit-individual-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
 import LocationInformationPage from '../../pages/manage-locations/view-location/view-location-information/LocationInformationPage'
 
@@ -97,11 +97,18 @@ const orgManageLocationsUrls = {
     }
   },
   edit: {
-    editLocationCoords: {
-      SelectLocationOptions: urlManageOrg + '/edit/select-location-options',
-      xyCoordinatesSearch: urlManageOrg + '/edit/xy-coordinates-search',
-      ConfirmEditLocations: urlManageOrg + '/edit/location-in-area/:flow/:type',
-      dropPinEdit: urlManageOrg + '/edit/drop-pin-edit'
+    individualLocation: {
+      editLocationCoords: {
+        SelectLocationOptions: urlManageOrg + '/edit/select-location-options',
+        xyCoordinatesSearch: urlManageOrg + '/edit/xy-coordinates-search',
+        ConfirmEditLocations:
+          urlManageOrg + '/edit/location-in-area/:flow/:type',
+        dropPinEdit: urlManageOrg + '/edit/drop-pin-edit'
+      },
+      editShape: {
+        editPolygon: urlManageOrg + '/edit/edit-polygon',
+        editLine: urlManageOrg + '/edit/edit-line'
+      }
     },
     error: {
       xyCoordinatesNotInEngland:
@@ -247,20 +254,24 @@ const orgManageLocationRoutes = [
     component: <ConfirmAddingLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.edit.editLocationCoords.SelectLocationOptions,
+    path: orgManageLocationsUrls.edit.individualLocation.editLocationCoords
+      .SelectLocationOptions,
     component: <EditLocationOptionsPage />
   },
   {
-    path: orgManageLocationsUrls.edit.editLocationCoords.dropPinEdit,
-    component: <LocationDropPinEditPage />
-  },
-  {
-    path: orgManageLocationsUrls.edit.editLocationCoords.xyCoordinatesSearch,
+    path: orgManageLocationsUrls.edit.individualLocation.editLocationCoords
+      .xyCoordinatesSearch,
     component: <EditLocationXYCoordinatesSearchPage />
   },
   {
-    path: orgManageLocationsUrls.edit.editLocationCoords.ConfirmEditLocations,
+    path: orgManageLocationsUrls.edit.individualLocation.editLocationCoords
+      .ConfirmEditLocations,
     component: <ConfirmLocationPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.individualLocation.editLocationCoords
+      .dropPinEdit,
+    component: <LocationDropPinEditPage />
   },
   {
     path: orgManageLocationsUrls.edit.error.xyCoordinatesNotInEngland,

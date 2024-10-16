@@ -10,7 +10,8 @@ export default function XYCoordinatesNotInEnglandPage () {
   const addXyCoordinatesSearchUrl =
     orgManageLocationsUrls.add.search.xyCoordinatesSearch
   const editXyCoordinatesSearchUrl =
-    orgManageLocationsUrls.edit.editLocationCoords.xyCoordinatesSearch
+    orgManageLocationsUrls.edit.individualLocation.editLocationCoords
+      .xyCoordinatesSearch
   const manuallyFindMapUrl =
     orgManageLocationsUrls.unmatchedLocations.manuallyfind.map
   const isAddingLocation = location.pathname.includes('add')

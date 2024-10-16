@@ -24,12 +24,12 @@ import { createAlertPattern, createWarningPattern } from './FloodAreaPatterns'
 
 export default function Map ({
   type,
-  coordinates = null,
   setCoordinates,
   showMapControls = true,
   zoomLevel = 12,
   showFloodWarningAreas = true,
-  showFloodAlertAreas = true
+  showFloodAlertAreas = true,
+  showMarker = false
 }) {
   const { latitude, longitude } = useSelector(
     (state) => state.session.currentLocation.coordinates
@@ -157,9 +157,8 @@ export default function Map ({
         }
       }
     })
-    // Set initial marker location if coordinates provided
-    if (!marker && coordinates) {
-      setMarker([coordinates.latitude, coordinates.longitude])
+    if (showMarker && !marker) {
+      setMarker([latitude, longitude])
     }
     return marker && <Marker position={marker} interactive={false} />
   }
@@ -280,8 +279,8 @@ export default function Map ({
         maxBounds={maxBounds}
         className='map-container'
       >
-        {apiKey && (
-          apiKey !== 'error'
+        {apiKey &&
+          (apiKey !== 'error'
             ? (
               <>
                 {tileLayerWithHeader}
@@ -327,8 +326,7 @@ export default function Map ({
                   Reload map
                 </Link>
               </div>
-              )
-        )}
+              ))}
       </MapContainer>
     </div>
   )

@@ -22,7 +22,6 @@ export default function LocationDropPinEditPage () {
 
   return (
     <LocationDropPinSearchResultsLayout
-      Type='edit'
       NavigateToNextPage={NavigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
       NavigateToNotInEnglandPage={NavigateToNotInEnglandPage}

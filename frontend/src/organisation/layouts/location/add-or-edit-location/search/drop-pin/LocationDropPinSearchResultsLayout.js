@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
@@ -11,7 +12,6 @@ import Map from '../../../../../components/custom/Map'
 import MapInteractiveKey from '../../../../../components/custom/MapInteractiveKey'
 
 export default function LocationDropPinSearchLayout ({
-  Type,
   NavigateToNextPage,
   NavigateToPreviousPage,
   NavigateToNotInEnglandPage,
@@ -25,9 +25,6 @@ export default function LocationDropPinSearchLayout ({
   const [showFloodExtents, setShowFloodExtents] = useState(true)
   const currentLocationName = useSelector(
     (state) => state.session.currentLocation.name
-  )
-  const currentLocationCoordinates = useSelector(
-    (state) => state.session.currentLocation.coordinates
   )
 
   // remove error if user drops a pin
@@ -82,13 +79,11 @@ export default function LocationDropPinSearchLayout ({
               <div class='govuk-grid-row'>
                 <div class='govuk-grid-column-two-thirds'>
                   <Map
-                    coordinates={
-                      Type === 'edit' ? currentLocationCoordinates : null
-                    }
                     setCoordinates={setPinCoords}
                     type='drop'
                     showFloodWarningAreas={showFloodWarningAreas}
                     showFloodAlertAreas={showFloodAlertAreas}
+                    showMarker={!useLocation().pathname.includes('add')}
                   />
                 </div>
                 <div class='govuk-grid-column-one-third'>
@@ -112,7 +107,11 @@ export default function LocationDropPinSearchLayout ({
             </div>
             <Button
               className='govuk-button govuk-!-margin-top-4'
-              text={Type === 'add' ? 'Add location' : 'Save location'}
+              text={
+                useLocation().pathname.includes('add')
+                  ? 'Add location'
+                  : 'Save location'
+              }
               onClick={handleSubmit}
             />
             <Link

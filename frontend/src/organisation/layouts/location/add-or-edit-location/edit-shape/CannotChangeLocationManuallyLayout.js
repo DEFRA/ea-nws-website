@@ -1,20 +1,14 @@
 import React from 'react'
+import { useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 
-export default function CannotChangeLocationManuallyLayout ({
-  NavigateToPreviousPage,
-  LocationType
-}) {
-  const navigateBack = (event) => {
-    event.preventDefault()
-    NavigateToPreviousPage()
-  }
-
+export default function CannotChangeLocationManuallyLayout ({ LocationType }) {
+  const navigate = useNavigate()
   return (
     <>
       <OrganisationAccountNavigation />
-      <BackLink onClick={navigateBack} />
+      <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

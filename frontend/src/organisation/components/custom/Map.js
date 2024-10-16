@@ -28,7 +28,8 @@ export default function Map ({
   showMapControls = true,
   zoomLevel = 12,
   showFloodWarningAreas = true,
-  showFloodAlertAreas = true
+  showFloodAlertAreas = true,
+  showMarker = false
 }) {
   const { latitude, longitude } = useSelector(
     (state) => state.session.currentLocation.coordinates
@@ -156,6 +157,9 @@ export default function Map ({
         }
       }
     })
+    if (showMarker && !marker) {
+      setMarker([latitude, longitude])
+    }
     return marker && <Marker position={marker} interactive={false} />
   }
 
@@ -275,8 +279,8 @@ export default function Map ({
         maxBounds={maxBounds}
         className='map-container'
       >
-        {apiKey && (
-          apiKey !== 'error'
+        {apiKey &&
+          (apiKey !== 'error'
             ? (
               <>
                 {tileLayerWithHeader}
@@ -322,8 +326,7 @@ export default function Map ({
                   Reload map
                 </Link>
               </div>
-              )
-        )}
+              ))}
       </MapContainer>
     </div>
   )

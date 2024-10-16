@@ -17,6 +17,7 @@ export default function DropPinNotInEnglandPage () {
     <NotInEnglandLayout
       NavigateToNextPage={NavigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
+      locationType='dropPin'
     />
   )
 }

@@ -105,7 +105,8 @@ url_org_man_loc = {
         'options': url_org_man_loc_path + '/edit/select-location-options',
         'xyCoordinatesSearch': url_org_man_loc_path + '/edit/xy-coordinates-search',
         'locationInArea': url_org_man_loc_path + '/edit/location-in-area',
-        'notInEngland': url_org_man_loc_path + '/edit/xy-coordinates-not-in-england'
+        'notInEngland': url_org_man_loc_path + '/edit/xy-coordinates-not-in-england',
+        'dropPinEdit': url_org_man_loc_path + '/edit/drop-pin-edit'
     }
 }
 

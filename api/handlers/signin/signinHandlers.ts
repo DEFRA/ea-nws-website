@@ -1,6 +1,7 @@
 const responseCodes = require('../responseCodes')
 import Hapi from '@hapi/hapi'
 import type { Context } from 'openapi-backend'
+import uuidv4 from '../generateAuthToken'
 
 async function getSigninStart(
   context: Context,
@@ -102,7 +103,7 @@ async function getSigninValidate(
     }
   }
   return {
-    authToken: 'MockAuthToken',
+    authToken: uuidv4(),
     profile: profile,
     registrations: registrations
   }

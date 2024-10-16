@@ -3,6 +3,7 @@ const Code = require('@hapi/code')
 const lab = (exports.lab = Lab.script())
 const createServer = require('../../../server')
 const { startApiServer, apiServerStarted } = require('./../../test_api_setup')
+const uuidv4 = require('./../../generateAuthToken')
 
 lab.experiment('Integration tests', () => {
   let server
@@ -20,7 +21,7 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/api/partner/register',
       payload: {
-        authToken: '',
+        authToken: null,
         partnerId: '1',
         params: { someParam: '1' }
       }
@@ -34,7 +35,7 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/api/partner/register',
       payload: {
-        authToken: 'MockAuthToken',
+        authToken: uuidv4(),
         partnerId: '',
         params: { someParam: '1' }
       }
@@ -48,7 +49,7 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/api/partner/register',
       payload: {
-        authToken: 'MockAuthToken',
+        authToken: uuidv4(),
         partnerId: '1',
         params: {}
       }
@@ -62,7 +63,7 @@ lab.experiment('Integration tests', () => {
       method: 'POST',
       url: '/api/partner/register',
       payload: {
-        authToken: 'MockAuthToken',
+        authToken: uuidv4(),
         partnerId: '1',
         params: { someParam: '1' }
       }

@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
+import Autocomplete from '../../../common/components/gov-uk/Autocomplete'
 import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
 import Pagination from '../../../common/components/gov-uk/Pagination'
@@ -20,6 +21,8 @@ export default function ManageKeywordsPage () {
   const [currentPage, setCurrentPage] = useState(1)
   const [resetPaging, setResetPaging] = useState(false)
   const [displayedKeywords, setDisplayedKeywords] = useState([])
+  const [results, setResults] = useState(null)
+  const [searchInput, setSearchInput] = useState(null)
   const keywordsPerPage = 10
 
   const setTab = (tab) => {
@@ -30,6 +33,8 @@ export default function ManageKeywordsPage () {
   useEffect(() => {
     setCurrentPage(1)
     setSelectedKeywords([])
+    setResults(null)
+    setSearchInput('')
   }, [resetPaging])
 
   useEffect(() => {
@@ -145,7 +150,33 @@ export default function ManageKeywordsPage () {
   }, [filteredKeywords, currentPage])
 
   const handleSearch = () => {
-    // TODO: use keywordType to search the correct array and set the results array
+    if (searchInput) {
+      const updatedFilter = keywords.filter((keyword) =>
+        keyword.name.toLowerCase().includes(searchInput.toLowerCase())
+      )
+      setFilteredKeywords(updatedFilter)
+    }
+  }
+
+  const handleOnClick = (value) => {
+    setSearchInput(value.name)
+  }
+
+  const handleOnChange = (value) => {
+    setSearchInput(value)
+    if (value) {
+      const updatedFilter = keywords.filter((keyword) =>
+        keyword.name.toLowerCase().includes(value.toLowerCase())
+      )
+      setResults(updatedFilter)
+    } else {
+      setResults(null)
+    }
+  }
+
+  const clearSearch = () => {
+    setFilteredKeywords(keywords)
+    setResetPaging(!resetPaging)
   }
 
   const handleButton = () => {
@@ -221,11 +252,16 @@ export default function ManageKeywordsPage () {
                     Search for a {keywordType} keyword
                   </label>
                   <div class='keyword-search-input-container' id='keyword-search'>
-                    <input
+                    <Autocomplete
                       className='govuk-input govuk-input--width-20 keyword-search-input'
-                      id='location-name'
-                      type='text'
-                      value={null}
+                      inputType='text'
+                      error=''
+                      onChange={(val) => handleOnChange(val)}
+                      results={results}
+                      value={searchInput}
+                      onClick={(val) => handleOnClick(val)}
+                      position='absolute'
+                      showNotFound={false}
                     />
                     <div className='keyword-search-button-container'>
                       <button className='keyword-search-button' onClick={() => handleSearch()}>
@@ -234,31 +270,37 @@ export default function ManageKeywordsPage () {
                     </div>
                   </div>
                 </div>
-                <Link onClick={() => setResetPaging(!resetPaging)} className='govuk-link'>Clear Seach results</Link>
+                <Link onClick={() => clearSearch()} className='govuk-link'>Clear Seach results</Link>
               </div>
               <div className='govuk-grid-column-two-thirds'>
-                <Button
-                  className='govuk-button govuk-button--secondary'
-                  onClick={handleButton}
-                  text='Delete selected keywords'
-                />
+                {filteredKeywords.length !== 0
+                  ? (
+                    <>
+                      <Button
+                        className='govuk-button govuk-button--secondary'
+                        onClick={handleButton}
+                        text='Delete selected keywords'
+                      />
 
-                <KeywordsTable
-                  keywords={keywords}
-                  displayedKeywords={displayedKeywords}
-                  filteredKeywords={filteredKeywords}
-                  setFilteredKeywords={setFilteredKeywords}
-                  selectedKeywords={selectedKeywords}
-                  setSelectedKeywords={setSelectedKeywords}
-                  type={keywordType}
-                />
-                <Pagination
-                  totalPages={Math.ceil(
-                    filteredKeywords.length / keywordsPerPage
-                  )}
-                  onPageChange={(val) => setCurrentPage(val)}
-                  reset={resetPaging}
-                />
+                      <KeywordsTable
+                        keywords={keywords}
+                        displayedKeywords={displayedKeywords}
+                        filteredKeywords={filteredKeywords}
+                        setFilteredKeywords={setFilteredKeywords}
+                        selectedKeywords={selectedKeywords}
+                        setSelectedKeywords={setSelectedKeywords}
+                        type={keywordType}
+                      />
+                      <Pagination
+                        totalPages={Math.ceil(
+                          filteredKeywords.length / keywordsPerPage
+                        )}
+                        onPageChange={(val) => setCurrentPage(val)}
+                        reset={resetPaging}
+                      />
+                    </>
+                    )
+                  : <p>No results. Try searching with a different keyword.</p>}
               </div>
             </div>
           </div>

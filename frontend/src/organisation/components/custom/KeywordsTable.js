@@ -16,6 +16,10 @@ export default function KeywordsTable({
   const [associatedSort, setAssociatedSort] = useState('none')
 
   useEffect(() => {
+    setFilteredKeywords(keywords) // Update filteredKeywords to match keywords on change
+  }, [keywords, setFilteredKeywords])
+
+  useEffect(() => {
     setKeywordSort('none')
     setAssociatedSort('none')
   }, [type])

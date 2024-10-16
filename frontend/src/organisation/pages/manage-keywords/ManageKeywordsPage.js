@@ -206,14 +206,12 @@ export default function ManageKeywordsPage() {
     } else {
       dispatch(setContactKeywords(updatedKeywords))
     }
+    setKeywords([...updatedKeywords])
   }
 
   const handleEdit = () => {
-    console.log('A')
-    if (keywords.length > 0) {
-      console.log('B', updatedKeyword)
+    if (targetKeyword) {
       if (updatedKeyword === '') {
-        // remove
         console.log('input is empty')
         onClickEditDialog()
         // onClickRemove
@@ -370,11 +368,17 @@ export default function ManageKeywordsPage() {
                 <Link to='/' className='govuk-link'>
                   Clear Seach results
                 </Link>
+
+                {/* TO REMOVE */}
+                <br />
+                <br />
+                <Button
+                  onClick={AddTestData}
+                  text='TO REMOVE!!! - Add Test Data'
+                ></Button>
+                <br />
               </div>
-              {/* TO REMOVE */}
-              <Link onClick={AddTestData}>Test Data</Link>
-              <br />
-              <Link onClick={onClickEditDialog}>Edit</Link>
+
               {showEditDialog && (
                 <Popup
                   onAction={handleEdit}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
@@ -9,6 +9,7 @@ export default function FindUnmatchedLocationsPage () {
   const navigate = useNavigate()
   const [unmatchedLocationOption, setUnmatchedLocationOption] = useState('')
   const [error, setError] = useState('')
+  const location = useLocation()
 
   const unmatchedLocationsOptions = [
     { value: 'ManuallyFindLocations', label: 'Manually find locations' },
@@ -37,14 +38,14 @@ export default function FindUnmatchedLocationsPage () {
       <NotificationBanner
         className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-10 govuk-!-margin-top-5'
         title='Success'
-        text='? locations added'
+        text={location?.state.added + ' locations added'}
       />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>
-              What do you want to do with the ? locations not matched?
+              What do you want to do with the {location?.state.notAdded} locations not matched?
             </h1>
             <div className='govuk-body'>
               <div

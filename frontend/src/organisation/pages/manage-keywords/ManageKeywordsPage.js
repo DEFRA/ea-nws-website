@@ -32,6 +32,8 @@ export default function ManageKeywordsPage () {
   const [dialogTitle, setDialogTitle] = useState('')
   const [dialogButtonText, setDialogButtonText] = useState('')
   const [updatedKeyword, setUpdatedKeyword] = useState('')
+  const [results, setResults] = useState(null)
+  const [searchInput, setSearchInput] = useState(null)
   const keywordsPerPage = 10
 
   const setTab = (tab) => {
@@ -42,6 +44,8 @@ export default function ManageKeywordsPage () {
   useEffect(() => {
     setCurrentPage(1)
     setSelectedKeywords([])
+    setResults(null)
+    setSearchInput('')
   }, [resetPaging])
 
   useEffect(() => {
@@ -116,7 +120,33 @@ export default function ManageKeywordsPage () {
   }
 
   const handleSearch = () => {
-    // TODO: use keywordType to search the correct array and set the results array
+    if (searchInput) {
+      const updatedFilter = keywords.filter((keyword) =>
+        keyword.name.toLowerCase().includes(searchInput.toLowerCase())
+      )
+      setFilteredKeywords(updatedFilter)
+    }
+  }
+
+  const handleOnClick = (value) => {
+    setSearchInput(value.name)
+  }
+
+  const handleOnChange = (value) => {
+    setSearchInput(value)
+    if (value) {
+      const updatedFilter = keywords.filter((keyword) =>
+        keyword.name.toLowerCase().includes(value.toLowerCase())
+      )
+      setResults(updatedFilter)
+    } else {
+      setResults(null)
+    }
+  }
+
+  const clearSearch = () => {
+    setFilteredKeywords(keywords)
+    setResetPaging(!resetPaging)
   }
 
   const handleButton = () => {
@@ -214,15 +244,17 @@ export default function ManageKeywordsPage () {
                   >
                     Search for a {keywordType} keyword
                   </label>
-                  <div
-                    class='keyword-search-input-container'
-                    id='keyword-search'
-                  >
-                    <input
+                  <div class='keyword-search-input-container' id='keyword-search'>
+                    <Autocomplete
                       className='govuk-input govuk-input--width-20 keyword-search-input'
-                      id='location-name'
-                      type='text'
-                      value={null}
+                      inputType='text'
+                      error=''
+                      onChange={(val) => handleOnChange(val)}
+                      results={results}
+                      value={searchInput}
+                      onClick={(val) => handleOnClick(val)}
+                      position='absolute'
+                      showNotFound={false}
                     />
                     <div className='keyword-search-button-container'>
                       <button
@@ -237,19 +269,17 @@ export default function ManageKeywordsPage () {
                     </div>
                   </div>
                 </div>
-                <Link
-                  onClick={() => setResetPaging(!resetPaging)}
-                  className='govuk-link'
-                >
-                  Clear Seach results
-                </Link>
+                <Link onClick={() => clearSearch()} className='govuk-link'>Clear Seach results</Link>
               </div>
               <div className='govuk-grid-column-two-thirds'>
-                <Button
-                  className='govuk-button govuk-button--secondary'
-                  onClick={handleButton}
-                  text='Delete selected keywords'
-                />
+                {filteredKeywords.length !== 0
+                  ? (
+                    <>
+                      <Button
+                        className='govuk-button govuk-button--secondary'
+                        onClick={handleButton}
+                        text='Delete selected keywords'
+                      />
 
                 <KeywordsTable
                   keywords={keywords}
@@ -268,9 +298,6 @@ export default function ManageKeywordsPage () {
                   onPageChange={(val) => setCurrentPage(val)}
                   reset={resetPaging}
                 />
-                <Link to='/' className='govuk-link'>
-                  Clear Seach results
-                </Link>
               </div>
 
               {showEditDialog && (

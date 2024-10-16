@@ -11,7 +11,9 @@ export default function Autocomplete ({
   error = '',
   isNameBold = false,
   results,
-  onClick
+  onClick,
+  position,
+  showNotFound = true
 }) {
   const [options, setOptions] = useState(null)
   const [, forceUpdate] = useReducer((x) => x + 1, 0)
@@ -112,7 +114,7 @@ export default function Autocomplete ({
     onClick(selectedOption)
   }
 
-  const showNoOptionsFound = options?.length === 0
+  const showNoOptionsFound = options?.length === 0 && showNotFound
 
   const handleOptionMouseEnter = (index) => {
     setHovered(index)
@@ -192,21 +194,22 @@ export default function Autocomplete ({
             : 'govuk-form-group govuk-form-group--error'
         }
       >
-        <label
-          className={
+        {name &&
+          <label
+            className={
             isNameBold === true ? 'govuk-label govuk-label--m' : 'govuk-label'
           }
-          htmlFor='govuk-text-input'
-        >
-          {name}
-        </label>
+            htmlFor='govuk-text-input'
+          >
+            {name}
+          </label>}
         {error !== '' && (
           <p id='govuk-text-input-error' className='govuk-error-message'>
             <span className='govuk-visually-hidden'>Error:</span> {error}
           </p>
         )}
         <div
-          className='autocomplete_wrapper'
+          className='autocomplete__wrapper'
           onKeyDown={(event) => handleKeyDown(event)}
         >
           <input
@@ -217,6 +220,8 @@ export default function Autocomplete ({
             id='govuk-text-input'
             onClick={handleChange}
             onChange={handleChange}
+            onBlur={() => setMenuOpen(false)}
+            onFocus={() => setMenuOpen(true)}
             type={inputType}
             role='combobox'
             value={value}
@@ -232,6 +237,7 @@ export default function Autocomplete ({
             role='listbox'
             className={menuClassList.join(' ')}
             onMouseLeave={handeListMouseLeave}
+            style={position && { position, zIndex: 1 }}
           >
             {dropDown}
           </ul>

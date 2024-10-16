@@ -1,15 +1,14 @@
 import { React } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function NotInEnglandLayout ({
-  NavigateToPreviousPage,
-  locationType
-}) {
+export default function NotInEnglandLayout ({ locationType }) {
+  const navigate = useNavigate()
+
   const navigateBack = (event) => {
     event.preventDefault()
-    NavigateToPreviousPage()
+    navigate(-1)
   }
 
   return (
@@ -56,42 +55,51 @@ export default function NotInEnglandLayout ({
                 </a>
                 .
               </p>
-              <h2>
-                If you think this is not correct and the location is in England
-              </h2>
-              <p>You can</p>
-              <ul className='govuk-list govuk-list--bullet'>
-                {locationType === 'postcode' && (
-                  <li>
-                    <Link
-                      to={orgManageLocationsUrls.add.search.postCodeSearch}
-                      className='govuk-link inline-link'
-                    >
-                      use a different postcode
-                    </Link>
-                  </li>
-                )}
-                {locationType === 'xyCoordinate' && (
-                  <li>
-                    <Link
-                      to={orgManageLocationsUrls.add.search.xyCoordinatesSearch}
-                      className='govuk-link inline-link'
-                    >
-                      use a different set of X and Y coordinates
-                    </Link>
-                  </li>
-                )}
-                <li>
-                  <Link
-                    to={
-                      orgManageLocationsUrls.unmatchedLocations.manuallyfind.map
-                    }
-                    className='govuk-link inline-link'
-                  >
-                    find the location on a map
-                  </Link>
-                </li>
-              </ul>
+              {locationType !== 'dropPin' && (
+                <div>
+                  <h2>
+                    If you think this is not correct and the location is in
+                    England
+                  </h2>
+                  <p>You can</p>
+                  <ul className='govuk-list govuk-list--bullet'>
+                    {locationType === 'postcode' && (
+                      <li>
+                        <Link
+                          to={orgManageLocationsUrls.add.search.postCodeSearch}
+                          className='govuk-link inline-link'
+                        >
+                          use a different postcode
+                        </Link>
+                      </li>
+                    )}
+                    {locationType === 'xyCoordinate' && (
+                      <li>
+                        <Link
+                          to={
+                            orgManageLocationsUrls.add.search
+                              .xyCoordinatesSearch
+                          }
+                          className='govuk-link inline-link'
+                        >
+                          use a different set of X and Y coordinates
+                        </Link>
+                      </li>
+                    )}
+                    <li>
+                      <Link
+                        to={
+                          orgManageLocationsUrls.unmatchedLocations.manuallyfind
+                            .map
+                        }
+                        className='govuk-link inline-link'
+                      >
+                        find the location on a map
+                      </Link>
+                    </li>
+                  </ul>
+                </div>
+              )}
             </div>
           </div>
         </div>

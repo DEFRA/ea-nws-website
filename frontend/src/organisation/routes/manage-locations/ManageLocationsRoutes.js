@@ -29,6 +29,7 @@ import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-l
 import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
 import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/edit-individual-location/EditLocationSearchOptionsPage'
+import LocationDropPinEditPage from '../../pages/manage-locations/edit-location/edit-individual-location/drop-pin/LocationDropPinEditPage'
 import CannotChangeLocationLinePage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-line/CannotChangeLocationLinePage'
 import CannotChangeLocationPolygonPage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-polygon/CannotChangeLocationPolygonPage'
 import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/edit-individual-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
@@ -103,7 +104,8 @@ const orgManageLocationsUrls = {
         SelectLocationOptions: urlManageOrg + '/edit/select-location-options',
         xyCoordinatesSearch: urlManageOrg + '/edit/xy-coordinates-search',
         ConfirmEditLocations:
-          urlManageOrg + '/edit/location-in-area/:flow/:type'
+          urlManageOrg + '/edit/location-in-area/:flow/:type',
+        dropPinEdit: urlManageOrg + '/edit/drop-pin-edit'
       },
       editShape: {
         editPolygon: urlManageOrg + '/edit/edit-polygon',
@@ -277,6 +279,11 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.edit.individualLocation.editLocationCoords
       .ConfirmEditLocations,
     component: <ConfirmLocationPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.individualLocation.editLocationCoords
+      .dropPinEdit,
+    component: <LocationDropPinEditPage />
   },
   {
     path: orgManageLocationsUrls.edit.error.xyCoordinatesNotInEngland,

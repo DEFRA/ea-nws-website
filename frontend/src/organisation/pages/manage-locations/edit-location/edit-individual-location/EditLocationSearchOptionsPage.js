@@ -18,9 +18,11 @@ export default function EditLocationSearchOptionsPage () {
             .xyCoordinatesSearch
         )
         break
-      case 'pinDrop':
-        // ToDo add in when pin drop pages added
-        navigate('/')
+      case 'PinDrop':
+        navigate(
+          orgManageLocationsUrls.edit.individualLocation.editLocationCoords
+            .dropPinEdit
+        )
         break
       default:
         break

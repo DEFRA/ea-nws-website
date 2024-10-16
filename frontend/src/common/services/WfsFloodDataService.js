@@ -139,3 +139,107 @@ function calculateBoundingBox (centerLat, centerLng, distanceKm) {
 
   return result
 }
+
+export const getLocationsNearbyRiversAndSeaFloodAreas = async (
+  lat,
+  lng,
+  bboxKM = 0.5
+) => {
+  const WFSParams = {
+    service: 'WFS',
+    map: 'uk-rs.qgz',
+    version: '1.1.0',
+    request: 'GetFeature',
+    typename: 'risk-rivers-sea',
+    srsname: 'EPSG:4326',
+    bbox: calculateBoundingBox(lat, lng, bboxKM),
+    outputFormat: 'GEOJSON'
+  }
+
+  const { data: riversAndSeaFloodRiskData } = await backendCall(
+    WFSParams,
+    'api/wfs'
+  )
+
+  return riversAndSeaFloodRiskData
+}
+
+export const getLocationsNearbyGroundWaterFloodAreas = async (
+  lat,
+  lng,
+  bboxKM = 0.5
+) => {
+  const WFSParams = {
+    service: 'WFS',
+    map: 'uk-gf.qgz',
+    version: '1.1.0',
+    request: 'GetFeature',
+    typename: 'groundwater-flood-risk',
+    srsname: 'EPSG:4326',
+    bbox: calculateBoundingBox(lat, lng, bboxKM),
+    outputFormat: 'GEOJSON'
+  }
+
+  const { data: groundwaterFloodRiskData } = await backendCall(
+    WFSParams,
+    'api/wfs'
+  )
+
+  return groundwaterFloodRiskData
+}
+
+export const getRiversAndSeaFloodRiskRatingOfLocation = async (lat, lng) => {
+  const data = await getLocationsNearbyRiversAndSeaFloodAreas(lat, lng)
+
+  const ratingOrder = {
+    'v.low': 1,
+    low: 2,
+    medium: 3,
+    high: 4
+  }
+
+  if (data) {
+    if (data.features && data.features.length > 0) {
+      return getHighestRiskRating(data.features, ratingOrder)
+    } else {
+      return 'v.low'
+    }
+  } else {
+    return 'unavailble'
+  }
+}
+
+export const getGroundwaterFloodRiskRatingOfLocation = async (lat, lng) => {
+  const data = await getLocationsNearbyGroundWaterFloodAreas(lat, lng)
+
+  const ratingOrder = {
+    unlikely: 1,
+    possible: 2
+  }
+  if (data) {
+    if (data.features && data.features.length > 0) {
+      return getHighestRiskRating(data.features, ratingOrder)
+    } else {
+      return 'unlikely'
+    }
+  } else {
+    return 'unavailble'
+  }
+}
+
+function getHighestRiskRating (areas, ratingOrder) {
+  // if there are no areas nearby, set to lowest risk rating
+  let highestRating = null
+
+  areas?.forEach((area) => {
+    const rating = area.properties?.prob_4band.toLowerCase()
+
+    if (
+      ratingOrder[rating] > (highestRating ? ratingOrder[highestRating] : 0)
+    ) {
+      highestRating = rating
+    }
+  })
+
+  return highestRating
+}

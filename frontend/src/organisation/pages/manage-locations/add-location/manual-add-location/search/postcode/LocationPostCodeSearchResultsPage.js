@@ -11,8 +11,7 @@ import {
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
   setCurrentLocationNorthing,
-  setCurrentLocationPostcode,
-  setCurrentLocationUPRN
+  setCurrentLocationPostcode
 } from '../../../../../../../common/redux/userSlice'
 import { convertCoordinatesToEspg27700 } from '../../../../../../../common/services/CoordinatesFormatConverter'
 import {

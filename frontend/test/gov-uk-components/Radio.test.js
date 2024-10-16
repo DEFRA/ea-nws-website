@@ -12,7 +12,7 @@ describe('Radio Component', () => {
 
   test('renders correctly with given props', () => {
     render(
-      <Radio label="Option 1" value="1" name="testRadio" onChange={onChange} />
+      <Radio label='Option 1' value='1' name='testRadio' onChange={onChange} />
     )
 
     const radioInput = screen.getByLabelText('Option 1')
@@ -24,7 +24,7 @@ describe('Radio Component', () => {
 
   test('calls onChange when clicked', () => {
     render(
-      <Radio label="Option 1" value="1" name="testRadio" onChange={onChange} />
+      <Radio label='Option 1' value='1' name='testRadio' onChange={onChange} />
     )
 
     const radioInput = screen.getByLabelText('Option 1')
@@ -35,7 +35,7 @@ describe('Radio Component', () => {
 
   test('input gets the correct id and label is associated with it', () => {
     render(
-      <Radio label="Option 1" value="1" name="testRadio" onChange={onChange} />
+      <Radio label='Option 1' value='1' name='testRadio' onChange={onChange} />
     )
 
     const radioInput = screen.getByLabelText('Option 1')

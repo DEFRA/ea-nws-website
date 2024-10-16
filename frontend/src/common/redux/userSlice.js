@@ -34,6 +34,7 @@ const userSlice = createSlice({
       meta_data: {
         location_additional: {
           location_name: null,
+          location_name: null,
           full_address: null,
           postcode: null,
           // Easting EPSG: 27700
@@ -45,7 +46,8 @@ const userSlice = createSlice({
           location_type: null,
           action_plan: null,
           notes: null,
-          keywords: null
+          keywords: null,
+          location_data_type: null
         }
       }
     }
@@ -132,6 +134,8 @@ const userSlice = createSlice({
         action.payload.meta_data.location_additional.notes
       state.currentLocation.meta_data.location_additional.keywords =
         action.payload.meta_data.location_additional.keywords
+      state.currentLocation.meta_data.location_additional.location_data_type =
+        action.payload.meta_data.location_additional.location_data_type
     },
     setCurrentLocationUPRN: (state, action) => {
       state.currentLocation.name = action.payload
@@ -188,6 +192,10 @@ const userSlice = createSlice({
       state.currentLocation.meta_data.location_additional.keywords =
         action.payload
     },
+    setCurrentLocationDataType: (state, action) => {
+      state.currentLocation.meta_data.location_additional.location_data_type =
+        action.payload
+    },
     // Clear state
     clearAuth: (state) => {
       state.authToken = null
@@ -225,7 +233,8 @@ const userSlice = createSlice({
             location_type: null,
             action_plan: null,
             notes: null,
-            keywords: null
+            keywords: null,
+            location_data_type: null
           }
         }
       }
@@ -270,6 +279,7 @@ export const {
   setCurrentLocationActionPlan,
   setCurrentLocationNotes,
   setCurrentLocationKeywords,
+  setCurrentLocationDataType,
   // clear state
   clearAuth
 } = userSlice.actions

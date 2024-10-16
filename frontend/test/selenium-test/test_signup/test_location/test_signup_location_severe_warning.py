@@ -62,7 +62,7 @@ def test_location_severe_warning_continue(get_browser):
     continue_button_xpath = f"//button[text()='Confirm you want this location']"
     continue_button = browser.find_element(By.XPATH, continue_button_xpath)
     browser.execute_script("arguments[0].click();", continue_button)
-    time.sleep(3)
+    time.sleep(4)
     assert browser.current_url == next_page
 
 def test_location_severe_warning_differentlocation(get_browser):

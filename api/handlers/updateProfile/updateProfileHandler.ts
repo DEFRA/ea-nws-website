@@ -11,9 +11,9 @@ async function getUpdateProfile(
   const { profile } = req.payload as { profile: Object }
 
   //not sure how to validate the profile data without doing hardcoded validation for each scenario
-  if (authToken === "MockAuthToken" && Object.keys(profile).length != 0) {
+  if (authToken && Object.keys(profile).length != 0) {
     return {
-      authToken: 'MockAuthToken',
+      authToken: authToken,
       profile: profile
     }
   } else {

@@ -15,36 +15,42 @@ export default function Popup({
   setTextInput,
   buttonClass = '',
   buttonText,
-  error,
+  error = '',
   setError,
-  charLimit,
-  validateInput
+  charLimit = 0,
+  validateInput = ''
 }) {
   const handleTextInputChange = (val) => {
-    setTextInput(val)
-    if (val.length > charLimit) {
-      setError(`${input} must be ${charLimit} characters or less`)
-    } else {
-      setError('')
-    }
-  }
-
-  const handleEditSubmit = () => {
-    if (error === '') {
-      const validationError = validateInput(textInput)
-      if (validationError) {
-        setError(validationError)
+    if (input) {
+      setTextInput(val)
+      if (val.length > charLimit) {
+        setError(`${input} must be ${charLimit} characters or less`)
       } else {
-        onAction()
+        setError('')
       }
     }
   }
 
+  const handleSubmit = () => {
+    if (input) {
+      if (error === '') {
+        const validationError = validateInput(textInput)
+        if (validationError) {
+          setError(validationError)
+        } else {
+          onAction()
+        }
+      }
+    } else {
+      onAction()
+    }
+  }
+
   useEffect(() => {
-    if (textInput.length <= charLimit) {
+    if (input && textInput.length <= charLimit) {
       setError('')
     }
-  }, [textInput, setError, charLimit])
+  }, [textInput, setError, charLimit, input])
 
   return (
     <div className='popup-dialog'>
@@ -70,7 +76,7 @@ export default function Popup({
             <Button
               text={buttonText}
               className={`dialog govuk-button ${buttonClass}`}
-              onClick={input ? handleEditSubmit : onAction}
+              onClick={handleSubmit}
             />
             <p className='govuk-body popup-dialog-link inline-link'>
               <Link onClick={onCancel} className='govuk-link'>

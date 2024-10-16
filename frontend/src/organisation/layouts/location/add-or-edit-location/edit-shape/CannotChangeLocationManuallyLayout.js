@@ -5,10 +5,16 @@ import OrganisationAccountNavigation from '../../../../../common/components/cust
 
 export default function CannotChangeLocationManuallyLayout ({ LocationType }) {
   const navigate = useNavigate()
+
   return (
     <>
       <OrganisationAccountNavigation />
-      <BackLink onClick={() => navigate(-1)} />
+      <BackLink
+        onClick={(e) => {
+          e.preventDefault()
+          navigate(-1)
+        }}
+      />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

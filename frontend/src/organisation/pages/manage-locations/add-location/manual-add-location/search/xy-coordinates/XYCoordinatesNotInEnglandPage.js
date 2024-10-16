@@ -6,9 +6,6 @@ export default function XYCoordinatesNotInEnglandPage () {
   const postCodeSearchUrl = orgManageLocationsUrls.add.search.postCodeSearch
   const addXyCoordinatesSearchUrl =
     orgManageLocationsUrls.add.search.xyCoordinatesSearch
-  const editXyCoordinatesSearchUrl =
-    orgManageLocationsUrls.edit.individualLocation.editLocationCoords
-      .xyCoordinatesSearch
   const manuallyFindMapUrl =
     orgManageLocationsUrls.unmatchedLocations.manuallyfind.map
 

@@ -8,6 +8,22 @@ def add_keyword(get_browser, keyword):
     enter_input_text(get_browser, 'govuk-text-input', keyword, 'id')
     click_button(get_browser, 'Add keyword', current_url)
 
+def add_keyword_success(get_browser, keyword):
+    add_keyword(get_browser, keyword)
+    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='id{keyword}']")
+    assert check_exists_by_xpath(get_browser, f"//input[@class='govuk-checkboxes__input' and @id='id{keyword}']")
+
+def add_keyword_fail(get_browser, keyword):
+    add_keyword(get_browser, keyword)
+    assert check_error_summary(get_browser)
+    assert 'This keyword already exists' in get_browser.page_source
+    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='id{keyword}']")
+    assert check_exists_by_xpath(get_browser, f"//input[@class='govuk-checkboxes__input' and @id='id{keyword}']")
+
+def check_keyword_added(get_browser, text):
+    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='id{text}']")
+    assert check_exists_by_xpath(get_browser, f"//input[@class='govuk-checkboxes__input' and @id='id{text}']")
+
 def test_render(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     assert check_h1_heading(get_browser, 'Keywords for this location (optional)')
@@ -24,8 +40,13 @@ def test_continue_empty(get_browser):
     click_button(get_browser, 'Continue', url_next_page)
     assert check_h1_heading(get_browser, 'Action plan (optional)')
 
-def test_add_keyword(get_browser):
+def test_add_multiple_keywords(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
-    add_keyword(get_browser, 'Midlands')
-    assert 'Midlands' in get_browser.page_source
+    add_keyword_success(get_browser, 'North')
+    add_keyword_success(get_browser, 'South')
+    add_keyword_success(get_browser, 'East')
+    add_keyword_success(get_browser, 'West')
+    add_keyword_fail(get_browser, 'South')
+    add_keyword_fail(get_browser, 'North')
+
 

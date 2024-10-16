@@ -63,7 +63,7 @@ export default function AddKeywordsLayout () {
   const handleAddKeyword = () => {
     if (keyword) {
       if (keywordsArray.includes(keyword)) {
-        setKeywordError('Duplicate keyword found')
+        setKeywordError('This keyword already exists')
         console.log('Duplicate found')
       } else {
         setKeywordsArray([...keywordsArray, keyword])
@@ -113,7 +113,7 @@ export default function AddKeywordsLayout () {
 
               {keywordsArray.length !== 0 &&
                 keywordsArray.map((keyword, index) => (
-                  <div className='govuk-checkboxes__item govuk-checkboxes--small'>
+                  <div className='govuk-checkboxes--small'>
                     <Checkbox
                       label={keyword}
                       checked={isCheckboxCheckedArray[index]}

@@ -32,6 +32,8 @@ import ProvideAreaNamePage from '../../pages/manage-locations/add-location/uploa
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
 import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/edit-individual-location/EditLocationSearchOptionsPage'
 import LocationDropPinEditPage from '../../pages/manage-locations/edit-location/edit-individual-location/drop-pin/LocationDropPinEditPage'
+import CannotChangeLocationLinePage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-line/CannotChangeLocationLinePage'
+import CannotChangeLocationPolygonPage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-polygon/CannotChangeLocationPolygonPage'
 import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/edit-individual-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
 import LocationInformationPage from '../../pages/manage-locations/view-location/view-location-information/LocationInformationPage'
@@ -142,7 +144,8 @@ const orgManageLocationRoutes = [
     component: <LocationAddAddressInfoPage />
   },
   {
-    path: orgManageLocationsUrls.add.confirmManualSearchedLocation,
+    path: orgManageLocationsUrls.add.manualAddLocation
+      .confirmManualSearchedLocation,
     component: <ConfirmLocationPage />
   },
   {
@@ -265,10 +268,19 @@ const orgManageLocationRoutes = [
     path: urlManageOrgConfirmLocations,
     component: <ConfirmAddingLocationsPage />
   },
+  // edit
   {
     path: orgManageLocationsUrls.edit.individualLocation.editLocationCoords
       .SelectLocationOptions,
     component: <EditLocationOptionsPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.individualLocation.editShape.editLine,
+    component: <CannotChangeLocationLinePage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.individualLocation.editShape.editPolygon,
+    component: <CannotChangeLocationPolygonPage />
   },
   {
     path: orgManageLocationsUrls.edit.individualLocation.editLocationCoords

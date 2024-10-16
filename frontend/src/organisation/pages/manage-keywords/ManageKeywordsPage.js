@@ -16,7 +16,7 @@ import Button from '../../../common/components/gov-uk/Button'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import KeywordsTable from '../../components/custom/KeywordsTable'
 
-export default function ManageKeywordsPage() {
+export default function ManageKeywordsPage () {
   const navigate = useNavigate()
   const [keywords, setKeywords] = useState([])
   const dispatch = useDispatch()
@@ -126,44 +126,48 @@ export default function ManageKeywordsPage() {
   }
 
   const detailsText =
-    keywordType === 'location' ? (
-      <>
-        <p>
-          Adding keywords for each location can make it easier for you to filter
-          and create lists of locations you can link to contacts to get relevant
-          flood messages.
-        </p>
-        <p>
-          For example, you may want to add 'pumping station' or 'office' or
-          'Midlands' as a keyword, then show all of the locations with that
-          keyword in a list.
-        </p>
-        <p>
-          Once you use a keyword it will be saved so you can select it for any
-          other locations.
-        </p>
-      </>
-    ) : keywordType === 'contact' ? (
-      <>
-        <p>
-          Adding keywords for each contact can make it easier for you to filter
-          and create lists of people you can link to locations to get relevant
-          flood messages.
-        </p>
-        <p>
-          For example, you may want to add 'North' or 'South' as a keyword, then
-          show all of the contacts with that keyword in a list.
-        </p>
-        <p>
-          Once you use a keyword it will be saved so you can select it for any
-          other contacts.
-        </p>
-        <p>
-          You can add a maximum of 50 keywords and each keyword can be single or
-          multiple words, for example 'South' or 'South West'.
-        </p>
-      </>
-    ) : null
+    keywordType === 'location'
+      ? (
+        <>
+          <p>
+            Adding keywords for each location can make it easier for you to filter
+            and create lists of locations you can link to contacts to get relevant
+            flood messages.
+          </p>
+          <p>
+            For example, you may want to add 'pumping station' or 'office' or
+            'Midlands' as a keyword, then show all of the locations with that
+            keyword in a list.
+          </p>
+          <p>
+            Once you use a keyword it will be saved so you can select it for any
+            other locations.
+          </p>
+        </>
+        )
+      : keywordType === 'contact'
+        ? (
+          <>
+            <p>
+              Adding keywords for each contact can make it easier for you to filter
+              and create lists of people you can link to locations to get relevant
+              flood messages.
+            </p>
+            <p>
+              For example, you may want to add 'North' or 'South' as a keyword, then
+              show all of the contacts with that keyword in a list.
+            </p>
+            <p>
+              Once you use a keyword it will be saved so you can select it for any
+              other contacts.
+            </p>
+            <p>
+              You can add a maximum of 50 keywords and each keyword can be single or
+              multiple words, for example 'South' or 'South West'.
+            </p>
+          </>
+          )
+        : null
 
   return (
     <>

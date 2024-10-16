@@ -9,12 +9,15 @@ import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmLocationLayout () {
+export default function ConfirmLocationLayout() {
   const navigate = useNavigate()
   const { type } = useParams()
   const { flow } = useParams()
   const currentLocation = useSelector((state) => state.session.currentLocation)
-  const locationName = currentLocation.name
+  const locationName = useSelector(
+    (state) =>
+      state.session.currentLocation.meta_data.location_additional.location_name
+  )
   const formattedAddress =
     flow === 'postcode-search'
       ? currentLocation.meta_data.location_additional.full_address.split(',')

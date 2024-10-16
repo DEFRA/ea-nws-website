@@ -1,23 +1,19 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
 import NotInEnglandLayout from '../../../../../../layouts/location/unmatched-locations/NotInEnglandLayout'
+import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function XYCoordinatesNotInEnglandPage () {
-  const navigate = useNavigate()
-
-  const NavigateToPreviousPage = () => {
-    navigate(-1)
-  }
-
-  const NavigateToNextPage = () => {
-    // TODO: where should the Continue button navigate to?
-  }
+  const postCodeSearchUrl = orgManageLocationsUrls.add.search.postCodeSearch
+  const addXyCoordinatesSearchUrl =
+    orgManageLocationsUrls.add.search.xyCoordinatesSearch
+  const manuallyFindMapUrl =
+    orgManageLocationsUrls.unmatchedLocations.manuallyfind.map
 
   return (
     <NotInEnglandLayout
-      NavigateToNextPage={NavigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-      locationType='xyCoordinate'
+      postCodeSearchUrl={postCodeSearchUrl}
+      xyCoordinatesSearchUrl={addXyCoordinatesSearchUrl}
+      manuallyFindMapUrl={manuallyFindMapUrl}
     />
   )
 }

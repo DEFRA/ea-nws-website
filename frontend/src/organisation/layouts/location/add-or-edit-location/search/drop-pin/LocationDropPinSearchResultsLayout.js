@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
@@ -82,6 +83,7 @@ export default function LocationDropPinSearchLayout ({
                     type='drop'
                     showFloodWarningAreas={showFloodWarningAreas}
                     showFloodAlertAreas={showFloodAlertAreas}
+                    showMarker={!useLocation().pathname.includes('add')}
                   />
                 </div>
                 <div class='govuk-grid-column-one-third'>
@@ -105,11 +107,15 @@ export default function LocationDropPinSearchLayout ({
             </div>
             <Button
               className='govuk-button govuk-!-margin-top-4'
-              text='Add location'
+              text={
+                useLocation().pathname.includes('add')
+                  ? 'Add location'
+                  : 'Save location'
+              }
               onClick={handleSubmit}
             />
             <Link
-              to={NavigateToPreviousPage()}
+              onClick={navigateBack}
               className='govuk-body govuk-link inline-link govuk-!-margin-top-4 govuk-!-margin-left-2'
             >
               Cancel

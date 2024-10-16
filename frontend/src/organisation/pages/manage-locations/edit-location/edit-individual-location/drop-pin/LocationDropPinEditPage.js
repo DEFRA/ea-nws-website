@@ -1,9 +1,9 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import LocationDropPinSearchResultsLayout from '../../../../../../layouts/location/add-or-edit-location/search/drop-pin/LocationDropPinSearchResultsLayout'
-import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
+import LocationDropPinSearchResultsLayout from '../../../../../layouts/location/add-or-edit-location/search/drop-pin/LocationDropPinSearchResultsLayout'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationDropPinSearchResultsPage () {
+export default function LocationDropPinEditPage () {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {

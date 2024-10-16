@@ -1076,29 +1076,29 @@
   position: relative;
 }
 
-.search-container {
+.keyword-search-container {
   background: #f3f2f1;
 }
 
-.search-input-container {
+.keyword-search-input-container {
   display: flex;
   width: 100%;
 }
 
-.search-input {
+.keyword-search-input {
   position: relative;
   z-index: 1;
   white-space: nowrap;
 }
 
-.search-button-container {
+.keyword-search-button-container {
   vertical-align: top;
   position: relative;
   white-space: nowrap;
   width: 40px;
 }
 
-.search-button {
+.keyword-search-button {
   display: block;
   position: relative;
   width: 40px;
@@ -1112,7 +1112,7 @@
   color: #fff;
 }
 
-.search-button:hover {
+.keyword-search-button:hover {
   background-color: #005a30;
   border-color: #005a30;
 }
@@ -1162,6 +1162,7 @@
   fill: url(#alert-pattern);
 }
 
+/* flood risk banner */
 .map-error-container {
   display: flex;
   flex-direction: column;
@@ -1201,7 +1202,7 @@
 }
 
 [aria-sort] button:before {
-  content: " ▼";
+  content: ' ▼';
   position: absolute;
   right: -1px;
   top: 9px;
@@ -1209,30 +1210,82 @@
 }
 
 [aria-sort] button:after {
-  content: " ▲";
+  content: ' ▲';
   position: absolute;
   right: -1px;
   top: 1px;
   font-size: 0.5em;
 }
 
-[aria-sort=ascending] button:before,
-[aria-sort=descending] button:before {
+[aria-sort='ascending'] button:before,
+[aria-sort='descending'] button:before {
   content: none;
 }
 
-[aria-sort=ascending] button:after {
-  content: " ▲";
+[aria-sort='ascending'] button:after {
+  content: ' ▲';
   font-size: 0.8em;
   position: absolute;
   right: -5px;
   top: 2px;
 }
 
-[aria-sort=descending] button:after {
-  content: " ▼";
+[aria-sort='descending'] button:after {
+  content: ' ▼';
   font-size: 0.8em;
   position: absolute;
   right: -5px;
   top: 2px;
+}
+.flood-risk-banner {
+  display: flex;
+  align-items: center;
+  border: 1px solid #b1b4b6;
+  padding: 5px;
+  height: 100%;
+}
+
+.flood-risk-banner-item {
+  display: flex;
+  align-items: center;
+  margin-right: 30px;
+}
+
+.flood-risk-banner-title {
+  margin-right: 30px;
+  font-size: 16px;
+}
+
+.flood-risk-banner-label {
+  display: inline-block;
+}
+
+.flood-risk-container {
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-right: 30px;
+}
+
+.very-low-risk {
+  background-color: rgba(0, 112, 60, 0.2);
+}
+
+.low-risk {
+  background-color: rgba(255, 243, 176, 1);
+}
+
+.medium-risk {
+  background-color: rgba(244, 119, 56, 0.4);
+}
+
+.high-risk {
+  background-color: rgba(244, 153, 190, 0.6);
+}
+
+.unlikely-risk {
+  background-color: rgba(243, 242, 241, 1);
+}
+
+.possible-risk {
+  background-color: rgba(244, 153, 190, 0.6);
 }

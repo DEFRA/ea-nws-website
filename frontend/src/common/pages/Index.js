@@ -9,6 +9,7 @@ import {
   setAuthToken,
   setContactPreferences,
   setCurrentLocation,
+  setCurrentLocationCoordinates,
   setProfile,
   setRegistrations
 } from '../redux/userSlice'
@@ -359,6 +360,8 @@ export default function IndexPage() {
       dispatch(setContactPreferences(contactPreferences))
       dispatch(setProfile(profile))
       dispatch(setCurrentLocation(mockCurrentLocation))
+      const coordinates = { latitude: 50.84106, longitude: -1.05814 }
+      dispatch(setCurrentLocationCoordinates(coordinates))
       setmockSessionActive(true)
     } else {
       dispatch(clearAuth())
@@ -522,7 +525,7 @@ export default function IndexPage() {
                 </li>
                 <li>
                   <Link
-                    to='/organisation/manage-locations/edit/location-options'
+                    to='/organisation/manage-locations/edit/select-location-options'
                     className='govuk-link'
                   >
                     edit location

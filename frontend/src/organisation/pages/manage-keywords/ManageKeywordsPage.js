@@ -307,7 +307,7 @@ export default function ManageKeywordsPage() {
                   </li>
                 </ul>
               </nav>
-              <div className='search-container govuk-!-padding-bottom-5 govuk-!-padding-left-4 govuk-!-padding-top-7'>
+              <div className='keyword-search-container govuk-!-padding-bottom-5 govuk-!-margin-bottom-6 govuk-!-padding-left-4 govuk-!-padding-top-7'>
                 <div class='govuk-form-group govuk-!-margin-bottom-2'>
                   <label
                     class='govuk-label govuk-label--s'
@@ -315,18 +315,24 @@ export default function ManageKeywordsPage() {
                   >
                     Search for a {keywordType} keyword
                   </label>
-                  <div class='search-input-container' id='keyword-search'>
+                  <div
+                    class='keyword-search-input-container'
+                    id='keyword-search'
+                  >
                     <input
-                      className='govuk-input govuk-input--width-20 search-input'
+                      className='govuk-input govuk-input--width-20 keyword-search-input'
                       id='location-name'
                       type='text'
                       value={null}
                     />
-                    <div className='search-button-container'>
-                      <button className='search-button'>
+                    <div className='keyword-search-button-container'>
+                      <button
+                        className='keyword-search-button'
+                        onClick={() => handleSearch()}
+                      >
                         <FontAwesomeIcon
                           icon={faMagnifyingGlass}
-                          width={'20px'}
+                          width='20px'
                         />
                       </button>
                     </div>

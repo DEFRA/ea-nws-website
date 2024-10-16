@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
-import BackLink from '../../../../common/components/custom/BackLink'
-import Button from '../../../../common/components/gov-uk/Button'
-import Pagination from '../../../../common/components/gov-uk/Pagination'
+import BackLink from '../../../../../common/components/custom/BackLink'
+import Button from '../../../../../common/components/gov-uk/Button'
+import Pagination from '../../../../../common/components/gov-uk/Pagination'
+import LocationDataType from '../../../../../common/enums/LocationDataType'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import LocationsTable from './dashboard-components/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
@@ -17,82 +18,99 @@ export default function ViewLocationsDashboardPage () {
   useEffect(() => {
     const l = [
       {
-        name: 'Location_ID2',
-        address: 'some address',
-        coordinates: ['lat', 'lng'],
+        // address variant
+        name: 'UPRN',
+        address: '34 Hughenden Road, High Wycombe, LE2 7BB',
+        coordinates: { latitude: 50.84106, longitude: -1.05814 },
         alert_categories: ['Alert'],
         meta_data: {
           location_additional: {
+            location_name: 'Location_01',
             full_address: 'some address',
-            postcode: 'some postcode',
-            x_coordinate: 'lat',
-            y_coordinate: 'lng',
-            internal_reference: 'reference',
-            business_criticality: '-',
-            location_type: 'Retail space',
-            action_plan: 'action plan',
-            notes: 'some notes',
-            keywords: 'keywords'
-          }
-        }
-      },
-      {
-        name: 'Location_ID3',
-        address: 'some address',
-        coordinates: ['lat', 'lng'],
-        alert_categories: [],
-        meta_data: {
-          location_additional: {
-            full_address: 'some address',
-            postcode: 'some postcode',
-            x_coordinate: 'lat',
-            y_coordinate: 'lng',
-            internal_reference: 'reference',
+            postcode: 'LE2 7BB',
+            x_coordinate: 466413.18,
+            y_coordinate: 105037.31,
+            internal_reference: 'PS01, unit 57, HighW_07',
             business_criticality: 'Medium',
             location_type: 'Office',
-            action_plan: 'action plan',
-            notes: 'some notes',
-            keywords: 'keywords'
+            action_plan: '1. Dont panic!',
+            notes:
+              'John Smith has the flood plane for this location. His contact number is 01234 567 890',
+            keywords: 'Midlands',
+            location_data_type: LocationDataType.ADDRESS
           }
         }
       },
       {
-        name: 'Location_ID4',
-        address: 'some address',
-        coordinates: ['lat', 'lng'],
+        // x and y variant
+        name: 'UPRN',
+        address: '',
+        coordinates: { latitude: 54.197594, longitude: -3.089788 },
         alert_categories: ['Warning', 'Alert'],
         meta_data: {
           location_additional: {
-            full_address: 'some address',
-            postcode: 'some postcode',
-            x_coordinate: 'lat',
-            y_coordinate: 'lng',
-            internal_reference: 'reference',
-            business_criticality: 'Low',
-            location_type: 'Warehouse',
-            action_plan: 'action plan',
-            notes: 'some notes',
-            keywords: 'keywords'
+            location_name: 'Location_02',
+            full_address: '',
+            postcode: '',
+            x_coordinate: 329000.58,
+            y_coordinate: 478530.6,
+            internal_reference: '',
+            business_criticality: '',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            keywords: '',
+            location_data_type: LocationDataType.X_AND_Y_COORDS
           }
         }
       },
       {
-        name: 'Location_ID5',
-        address: 'some address',
-        coordinates: ['lat', 'lng'],
-        alert_categories: ['Warning'],
+        // shapefile (polygon) variant
+        name: 'UPRN',
+        address: '',
+        // coordinates should be empty for this and we instead use the geometry field instead
+        // using this for meantime
+        coordinates: { latitude: 50.84106, longitude: -1.05814 },
+        alert_categories: ['Warning', 'Alert'],
         meta_data: {
           location_additional: {
-            full_address: 'some address',
-            postcode: 'some postcode',
-            x_coordinate: 'lat',
-            y_coordinate: 'lng',
-            internal_reference: 'reference',
-            business_criticality: 'High',
-            location_type: 'Office',
-            action_plan: 'action plan',
-            notes: 'some notes',
-            keywords: 'keywords'
+            location_name: 'Location_03',
+            full_address: '',
+            postcode: '',
+            x_coordinate: '',
+            y_coordinate: '',
+            internal_reference: '',
+            business_criticality: '',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            keywords: '',
+            location_data_type: LocationDataType.SHAPE_POLYGON
+          }
+        }
+      },
+      {
+        // shapefile (line) variant
+        name: 'UPRN',
+        address: '',
+        // coordinates should be empty for this and we instead use the geometry field instead
+        // using this for meantime
+        coordinates: { latitude: 50.84106, longitude: -1.05814 },
+        alert_categories: ['Warning', 'Alert'],
+        meta_data: {
+          location_additional: {
+            location_name: 'Location_04',
+            full_address: '',
+            postcode: '',
+            x_coordinate: '',
+            y_coordinate: '',
+            internal_reference: '',
+            business_criticality: '',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            keywords: '',
+            location_data_type: LocationDataType.SHAPE_LINE
           }
         }
       },

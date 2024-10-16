@@ -5,8 +5,8 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
-import Button from '../../../../../common/components/gov-uk/Button'
-import CheckBox from '../../../../../common/components/gov-uk/CheckBox'
+import Button from '../../../../../../common/components/gov-uk/Button'
+import CheckBox from '../../../../../../common/components/gov-uk/CheckBox'
 
 export default function SearchFilter ({
   locations,

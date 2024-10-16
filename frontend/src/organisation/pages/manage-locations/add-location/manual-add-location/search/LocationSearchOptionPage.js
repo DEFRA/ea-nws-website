@@ -51,7 +51,7 @@ export default function LocationSearchOptionPage() {
   }
 
   const locationName = useSelector(
-    (state) => state.session.currentLocation.address
+    (state) => state.session.currentLocation.location_additional.location_name
   )
   return (
     <>

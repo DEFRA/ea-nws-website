@@ -80,7 +80,7 @@ export default function SearchFilter({
     // Apply Location name filter
     if (locationNameFilter) {
       filteredLocations = filteredLocations.filter((location) =>
-        location.address
+        location.location_additional.location_name
           .toLowerCase()
           .includes(locationNameFilter.toLowerCase())
       )

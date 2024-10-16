@@ -92,7 +92,9 @@ export default function LocationsTable({
                   </div>
                 </div>
               </th>
-              <td className='govuk-table__cell'>{location.address}</td>
+              <td className='govuk-table__cell'>
+                {location.location_additional.location_name}
+              </td>
               <td className='govuk-table__cell'>
                 {location.meta_data.location_additional.location_type}
               </td>

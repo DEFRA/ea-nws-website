@@ -7,9 +7,9 @@ import OrganisationAccountNavigation from '../../../../../../../common/component
 import Button from '../../../../../../../common/components/gov-uk/Button'
 import Pagination from '../../../../../../../common/components/gov-uk/Pagination'
 import {
+  setCurrentLocationAddress,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
-  setCurrentLocationFullAddress,
   setCurrentLocationNorthing,
   setCurrentLocationPostcode,
   setCurrentLocationUPRN
@@ -45,7 +45,7 @@ export default function LocationSearchResultsPage() {
     try {
       dispatch(setCurrentLocationUPRN(selectedLocation.name))
       dispatch(setCurrentLocationCoordinates(selectedLocation.coordinates))
-      dispatch(setCurrentLocationFullAddress(selectedLocation.address))
+      dispatch(setCurrentLocationAddress(selectedLocation.address))
       dispatch(setCurrentLocationPostcode(selectedLocation.postcode))
 
       const { northing, easting } = convertCoordinatesToEspg27700(

@@ -36,27 +36,11 @@ export default function AddKeywordsLayout () {
   ])
 
   const handleCheckboxChange = (isChecked, index) => {
-    console.log('isChecked[' + index + '] = ' + isChecked)
-    isCheckboxCheckedArray[index] = isChecked
-
     if (!isChecked) {
       isCheckboxCheckedArray.splice(index, 1)
       keywordsArray.splice(index, 1)
     }
-
-    console.log('- isCheckboxCheckedArray = ' + isCheckboxCheckedArray)
-    console.log('- keywordsArray = ' + keywordsArray)
-  }
-
-  const handleButton = () => {
-    if (
-      keywordsArray.length !== savedKeywords.length ||
-      !keywordsArray.every((val, idx) => val === savedKeywords[idx])
-    ) {
-      dispatch(setCurrentLocationKeywords(keywordsArray))
-    }
-
-    navigate(orgManageLocationsUrls.add.optionalInformation.addActionPlan)
+    setIsCheckboxCheckedArray([...isCheckboxCheckedArray])
   }
 
   const handleAddKeyword = () => {
@@ -67,13 +51,22 @@ export default function AddKeywordsLayout () {
         setKeywordError('You can add a maximum of 50 keywords')
       } else if (keywordsArray.includes(keyword)) {
         setKeywordError('This keyword already exists')
-        console.log('Duplicate found')
       } else {
         setKeywordsArray([...keywordsArray, keyword])
         setIsCheckboxCheckedArray([...isCheckboxCheckedArray, true])
         setKeyword('')
       }
     }
+  }
+
+  const handleButton = () => {
+    if (
+      keywordsArray.length !== savedKeywords.length ||
+      !keywordsArray.every((val, idx) => val === savedKeywords[idx])
+    ) {
+      dispatch(setCurrentLocationKeywords(keywordsArray))
+    }
+    navigate(orgManageLocationsUrls.add.optionalInformation.addActionPlan)
   }
 
   const navigateBack = (event) => {

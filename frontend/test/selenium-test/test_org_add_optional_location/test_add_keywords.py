@@ -54,6 +54,21 @@ def test_add_multiple_keywords(get_browser):
     click_button(get_browser, 'Continue', url_next_page)
     assert check_h1_heading(get_browser, 'Action plan (optional)')
 
+def test_delete_multiple_keywords(get_browser):
+    navigate_to_auth_page_via_index(get_browser,current_url)
+    add_keyword_success(get_browser, 'North')
+    add_keyword_success(get_browser, 'South')
+    add_keyword_success(get_browser, 'East')
+    add_keyword_success(get_browser, 'West')
+    click_checkbox(get_browser, 'idSouth')
+    click_checkbox(get_browser, 'idEast')
+    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idNorth']")
+    assert not check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idSouth']")
+    assert not check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idEast']")
+    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idWest']")
+    click_button(get_browser, 'Continue', url_next_page)
+    assert check_h1_heading(get_browser, 'Action plan (optional)')
+
 def test_max_keywords(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     for i in range(keywords_max):

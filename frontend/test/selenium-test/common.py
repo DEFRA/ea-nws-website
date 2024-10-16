@@ -167,6 +167,12 @@ def click_link_more_than_one_text(browser, link_text, link_text_iteration, url_l
     time.sleep(1)
     assert browser.current_url == url_link
 
+# Click checkbox
+def click_checkbox(browser, value, key='id'):
+    input_checkbox_xpath = f"//input[@class='govuk-checkboxes__input' and @{key}='{value}']"
+    input_checkbox_element = browser.find_element(By.XPATH, input_checkbox_xpath)
+    browser.execute_script("arguments[0].scrollIntoView(true); arguments[0].click();", input_checkbox_element)
+
 # Select input radio option
 def select_input_radio_option(browser, value, key='value'):
     input_radio_xpath = f"//input[@{key}='{value}']"

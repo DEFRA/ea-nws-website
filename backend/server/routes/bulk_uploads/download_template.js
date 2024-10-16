@@ -6,7 +6,7 @@ const {
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/download/template',
+    path: '/api/bulk_uploads/download_template',
     handler: async (request, h) => {
       try {
         if (!request.payload) {

@@ -56,6 +56,8 @@ url_org_signout = {
     'signout': url_org + '/signout',
     'auto': url_org + '/signout-auto'
 }
+# Manage keywords
+url_org_man_keywords_path = url_org + '/manage-keywords'
 # Manage locations
 url_org_man_loc_path = url_org + '/manage-locations'
 url_org_man_loc = {
@@ -100,10 +102,13 @@ url_org_man_loc = {
         'find_by_address': url_org_man_loc_path + '/unmatched-locations/manually-find/address',
     },
     'edit':{
+        'cannot_change_location_polygon': url_org_man_loc_path + '/edit/edit-polygon',
+        'cannot_change_location_line': url_org_man_loc_path + '/edit/edit-line',
         'options': url_org_man_loc_path + '/edit/select-location-options',
         'xyCoordinatesSearch': url_org_man_loc_path + '/edit/xy-coordinates-search',
         'locationInArea': url_org_man_loc_path + '/edit/location-in-area',
-        'notInEngland': url_org_man_loc_path + '/edit/xy-coordinates-not-in-england'
+        'notInEngland': url_org_man_loc_path + '/edit/xy-coordinates-not-in-england',
+        'dropPinEdit': url_org_man_loc_path + '/edit/drop-pin-edit'
     }
 }
 

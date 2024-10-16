@@ -32,6 +32,7 @@ const userSlice = createSlice({
       alert_categories: null,
       meta_data: {
         location_additional: {
+          location_name: null,
           full_address: null,
           postcode: null,
           // Easting EPSG: 27700
@@ -43,7 +44,8 @@ const userSlice = createSlice({
           location_type: null,
           action_plan: null,
           notes: null,
-          keywords: null
+          keywords: null,
+          location_data_type: null
         }
       }
     }
@@ -108,6 +110,8 @@ const userSlice = createSlice({
       state.currentLocation.address = action.payload.address
       state.currentLocation.coordinates = action.payload.coordinates
       state.currentLocation.alert_categories = action.payload.alert_categories
+      state.currentLocation.meta_data.location_additional.location_name =
+        action.payload.meta_data.location_additional.location_name
       state.currentLocation.meta_data.location_additional.full_address =
         action.payload.meta_data.location_additional.full_address
       state.currentLocation.meta_data.location_additional.postcode =
@@ -128,11 +132,13 @@ const userSlice = createSlice({
         action.payload.meta_data.location_additional.notes
       state.currentLocation.meta_data.location_additional.keywords =
         action.payload.meta_data.location_additional.keywords
-    },
-    setCurrentLocationName: (state, action) => {
-      state.currentLocation.name = action.payload
+      state.currentLocation.meta_data.location_additional.location_data_type =
+        action.payload.meta_data.location_additional.location_data_type
     },
     setCurrentLocationUPRN: (state, action) => {
+      state.currentLocation.name = action.payload
+    },
+    setCurrentLocationAddress: (state, action) => {
       state.currentLocation.address = action.payload
     },
     setCurrentLocationCoordinates: (state, action) => {
@@ -140,6 +146,10 @@ const userSlice = createSlice({
     },
     setCurrentLocationAlertCategories: (state, action) => {
       state.currentLocation.alert_categories = action.payload
+    },
+    setCurrentLocationName: (state, action) => {
+      state.currentLocation.meta_data.location_additional.location_name =
+        action.payload
     },
     setCurrentLocationFullAddress: (state, action) => {
       state.currentLocation.meta_data.location_additional.full_address =
@@ -180,6 +190,10 @@ const userSlice = createSlice({
       state.currentLocation.meta_data.location_additional.keywords =
         action.payload
     },
+    setCurrentLocationDataType: (state, action) => {
+      state.currentLocation.meta_data.location_additional.location_data_type =
+        action.payload
+    },
     // Clear state
     clearAuth: (state) => {
       state.authToken = null
@@ -207,6 +221,7 @@ const userSlice = createSlice({
         alert_categories: null,
         meta_data: {
           location_additional: {
+            location_name: null,
             full_address: null,
             postcode: null,
             x_coordinate: null,
@@ -216,7 +231,8 @@ const userSlice = createSlice({
             location_type: null,
             action_plan: null,
             notes: null,
-            keywords: null
+            keywords: null,
+            location_data_type: null
           }
         }
       }
@@ -246,10 +262,11 @@ export const {
   setNearbyTargetAreasFlow,
   // org location data
   setCurrentLocation,
-  setCurrentLocationName,
   setCurrentLocationUPRN,
+  setCurrentLocationAddress,
   setCurrentLocationCoordinates,
   setCurrentLocationAlertCategories,
+  setCurrentLocationName,
   setCurrentLocationFullAddress,
   setCurrentLocationPostcode,
   setCurrentLocationEasting,
@@ -260,6 +277,7 @@ export const {
   setCurrentLocationActionPlan,
   setCurrentLocationNotes,
   setCurrentLocationKeywords,
+  setCurrentLocationDataType,
   // clear state
   clearAuth
 } = userSlice.actions

@@ -1,9 +1,9 @@
 import React from 'react'
 import { useNavigate } from 'react-router'
-import LocationOptionsLayout from '../../../layouts/location/add-or-edit-location/search/LocationSearchOptionsLayout'
+import LocationSearchOptionsLayout from '../../../layouts/location/add-or-edit-location/search/LocationSearchOptionsLayout'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function EditLocationSearchOptionsPage () {
+export default function EditLocationSearchOptionsPage() {
   const navigate = useNavigate()
   const locationOptions = [
     { value: 'Coordinates', label: 'Use X and Y coordinates' },
@@ -26,7 +26,7 @@ export default function EditLocationSearchOptionsPage () {
   }
 
   return (
-    <LocationOptionsLayout
+    <LocationSearchOptionsLayout
       heading='How do you want to change the existing location?'
       searchOptions={locationOptions}
       navigateToNextPage={navigateToNextPage}

@@ -113,8 +113,7 @@ export default function ManageKeywordsPage () {
         console.log('input is empty')
         onClickEditDialog()
         // onClickRemove
-      } 
-      else {
+      } else {
         editKeyword()
         onClickEditDialog()
       }
@@ -122,7 +121,7 @@ export default function ManageKeywordsPage () {
   }
 
   const validateInput = () => {
-    return keywords.some((k) => updatedKeyword === k.name) ? 'This keyword already exists' : ''    
+    return keywords.some((k) => updatedKeyword === k.name) ? 'This keyword already exists' : ''
   }
 
   const handleSearch = () => {

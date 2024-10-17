@@ -6,7 +6,10 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 export default function LocationAlreadyExists () {
   const navigate = useNavigate()
-  const locationName = useSelector((state) => state.session.locationName)
+  const locationName = useSelector(
+    (state) =>
+      state.session.currentLocation.meta_data.location_additional.location_name
+  )
 
   return (
     <>

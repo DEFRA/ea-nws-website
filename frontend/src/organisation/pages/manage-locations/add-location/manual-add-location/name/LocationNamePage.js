@@ -41,6 +41,7 @@ export default function LocationNamePage () {
       dispatch(setCurrentLocationName(locationName))
       navigate(orgManageLocationsUrls.add.search.searchOption)
     } else if (!validationError && duplicateFound) {
+      dispatch(setCurrentLocationName(locationName))
       navigate(orgManageLocationsUrls.add.error.alreadyExists)
     } else {
       setError(validationError)

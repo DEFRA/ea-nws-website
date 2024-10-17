@@ -17,7 +17,6 @@ export default function LocationNamePage () {
   const [error, setError] = useState('')
   const authToken = useSelector((state) => state.session.authToken)
 
-  // This will need to be ToDo
   const locationNameUsedBefore = async () => {
     const locationName = name.trim()
     const dataToSend = { authToken, locationName }

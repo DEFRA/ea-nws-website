@@ -17,6 +17,8 @@ import KeywordsForThisLocationPage from '../../pages/manage-locations/add-locati
 import AddNotesPage from '../../pages/manage-locations/add-location/optional-information/AddNotesPage'
 import AddOptionalAddress from '../../pages/manage-locations/add-location/optional-information/AddOptionalAddress'
 import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-information/OptionalLocationInformationPage'
+import PredefinedBoundariesAddKeywordsPage from '../../pages/manage-locations/add-location/predefined-boundary/AddKeywordsPage'
+import PredefinedBoundariesOptionalInfoPage from '../../pages/manage-locations/add-location/predefined-boundary/OptionalInfoPage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirmPage'
 import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'
@@ -76,6 +78,11 @@ const orgManageLocationsUrls = {
       xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search',
       dropPinSearch: urlManageOrg + '/add/drop-pin-search',
       dropPinSearchResults: urlManageOrg + '/add/drop-pin-search-results'
+    },
+    predefinedBoundaries: {
+      optionalInfo:
+        urlManageOrgAddLocations + '/predefined-boundary/optional-info',
+      addKeywords: urlManageOrgAddLocations + '/predefined-boundary/keywords'
     },
     optionalInformation: {
       optionalInfo: urlManageOrgAddLocations + '/optional-information',
@@ -267,6 +274,15 @@ const orgManageLocationRoutes = [
   {
     path: urlManageOrgConfirmLocations,
     component: <ConfirmAddingLocationsPage />
+  },
+  // predefined boundary
+  {
+    path: orgManageLocationsUrls.add.predefinedBoundaries.optionalInfo,
+    component: <PredefinedBoundariesOptionalInfoPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.predefinedBoundaries.addKeywords,
+    component: <PredefinedBoundariesAddKeywordsPage />
   },
   // edit
   {

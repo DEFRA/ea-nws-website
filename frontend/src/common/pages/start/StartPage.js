@@ -19,38 +19,36 @@ export default function StartPage () {
           <div className='govuk-grid-column-two-thirds'>
             <div className='govuk-body'>
               <p>
-                You can get flood warnings if your home or business in
-                England is at risk of flooding.{' '}
+                You can get flood warnings if your home or business in England
+                is at risk of flooding.{' '}
               </p>
               <p>
-                These are sent by the Environment Agency, the offical source
-                of flood information in England. They help you:
+                These are sent by the Environment Agency, the offical source of
+                flood information in England. They help you:
               </p>
               <ul className='govuk-list govuk-list--bullet'>
                 <li>prepare for possible flooding</li>
                 <li>
-                  take action if needed, for exaple protecting or evacuating
+                  take action if needed, for example protecting or evacuating
                   your home
                 </li>
               </ul>
               <p>
-                This service sends messages about flooding from rivers, the
-                sea or groundwater, depending on your area.
+                This service sends messages about flooding from rivers, the sea
+                or groundwater, depending on your area.
               </p>
               <p>
                 You cannot get flood warnings for surface water flooding
                 (sometimes known as 'flash flooding').
               </p>
               <br />{' '}
-              <h2 className='govuk-heading-m'>
-                Sign up for the first time
-              </h2>
+              <h2 className='govuk-heading-m'>Sign up for the first time</h2>
               <p>You'll need:</p>
               <ul className='govuk-list govuk-list--bullet'>
                 <li>an email address to sign up with</li>
                 <li>
-                  a way to contact you at any time of the day or night - you
-                  can choose to get a call, text or email
+                  a way to contact you at any time of the day or night - you can
+                  choose to get a call, text or email
                 </li>
               </ul>
               <Button
@@ -59,9 +57,7 @@ export default function StartPage () {
                 onClick={() => navigate('/signup/register-location/search')}
               />
               <br />
-              <h2 className='govuk-heading-m'>
-                If you've already signed up
-              </h2>
+              <h2 className='govuk-heading-m'>If you've already signed up</h2>
               <p className='govuk-body'>
                 <Link to='/signin' className='govuk-link'>
                   Sign in
@@ -104,9 +100,8 @@ export default function StartPage () {
               </p>
               <h2 className='govuk-heading-m'>Other ways to register</h2>
               <p>
-                If you're in England, Scotland or Wales you can register,
-                update your details or cancel your account by calling
-                Floodline.
+                If you're in England, Scotland or Wales you can register, update
+                your details or cancel your account by calling Floodline.
               </p>
               <h3 className='govuk-heading-s'>Floodline</h3>
               <ul className='govuk-list'>
@@ -144,10 +139,7 @@ export default function StartPage () {
                 </a>
               </li>
               <li>
-                <a
-                  className='govuk-link'
-                  href='https://www.gov.uk/after-flood'
-                >
+                <a className='govuk-link' href='https://www.gov.uk/after-flood'>
                   What to do after a flood
                 </a>
               </li>

@@ -11,7 +11,3 @@ def test__render_page(get_browser):
     navigate_to_auth_page_via_index(browser, url)
     assert "Why do some locations not match?" in browser.page_source
     assert browser.current_url == url
-
-
-
-

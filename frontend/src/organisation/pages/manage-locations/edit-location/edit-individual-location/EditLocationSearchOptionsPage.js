@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router'
-import LocationSearchOptionsLayout from '../../../layouts/location/add-or-edit-location/search/LocationSearchOptionsLayout'
-import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
+import LocationSearchOptionsLayout from '../../../../layouts/location/add-or-edit-location/search/LocationSearchOptionsLayout'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function EditLocationSearchOptionsPage () {
   const navigate = useNavigate()
@@ -14,12 +14,15 @@ export default function EditLocationSearchOptionsPage () {
     switch (searchOption) {
       case 'Coordinates':
         navigate(
-          orgManageLocationsUrls.edit.editLocationCoords.xyCoordinatesSearch
+          orgManageLocationsUrls.edit.individualLocation.editLocationCoords
+            .xyCoordinatesSearch
         )
         break
-      case 'pinDrop':
-        // ToDo add in when pin drop pages added
-        navigate('/')
+      case 'PinDrop':
+        navigate(
+          orgManageLocationsUrls.edit.individualLocation.editLocationCoords
+            .dropPinEdit
+        )
         break
       default:
         break

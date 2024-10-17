@@ -14,7 +14,10 @@ export default function ConfirmLocationLayout () {
   const { type } = useParams()
   const { flow } = useParams()
   const currentLocation = useSelector((state) => state.session.currentLocation)
-  const locationName = currentLocation.name
+  const locationName = useSelector(
+    (state) =>
+      state.session.currentLocation.meta_data.location_additional.location_name
+  )
   const formattedAddress =
     flow === 'postcode-search'
       ? currentLocation.meta_data.location_additional.full_address.split(',')

@@ -1,11 +1,14 @@
 from common import *
 import time
+
 url_XYSearch = url_org_man_loc.get('edit').get('xyCoordinatesSearch')
 url = url_org_man_loc.get('edit').get('options')
 url_no_alert = url_org_man_loc.get('edit').get('locationInArea') + '/xy-coordinates-search/no-alerts'
 url_alerts = url_org_man_loc.get('edit').get('locationInArea') + '/xy-coordinates-search/alerts'
 url_all_alert = url_org_man_loc.get('edit').get('locationInArea') + '/xy-coordinates-search/all'
 url_not_in_england = url_org_man_loc.get('edit').get('notInEngland')
+url_next_page_drop_pin = url_org_man_loc.get('edit').get('dropPinEdit')
+
 def setup(browser):
     navigate_to_auth_page_via_index(browser,url)
     select_input_radio_option(browser,'idUse X and Y coordinates','id')
@@ -112,3 +115,10 @@ def test_not_in_england(get_browser):
     click_button(browser, 'Continue', url_not_in_england)
     time.sleep(3)
     assert 'This location is not in England and cannot be added to this account' in browser.page_source
+
+def test_next_page_drop_pin(get_browser):
+    browser =  get_browser
+    navigate_to_auth_page_via_index(browser, url)
+    select_input_radio_option(browser, 'idDrop a pin on a map','id')
+    click_button(browser, 'Continue', url_next_page_drop_pin)
+    assert 'Find location on a map' in browser.page_source

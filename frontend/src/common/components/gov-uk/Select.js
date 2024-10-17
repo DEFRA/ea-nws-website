@@ -44,13 +44,14 @@ export default function Select({
         onChange={handleSelectChange}
         value={selectedOption}
       >
-        <option value='' disabled selected>
-          {initialSelectOptionText}
-        </option>
-
+        {initialSelectOptionText && (
+          <option value='' disabled selected>
+            {initialSelectOptionText}
+          </option>
+        )}
         {options.map((option, index) => (
           <option key={index} value={option}>
-            {option.label}
+            {option}
           </option>
         ))}
       </select>

@@ -8,7 +8,7 @@ describe('WarningText component', () => {
     render(
       <WarningText text='This is the warning text.' />
     )
-    
+
     const textElement = screen.getByText(/This is the warning text./i)
     expect(textElement).toBeInTheDocument()
   })

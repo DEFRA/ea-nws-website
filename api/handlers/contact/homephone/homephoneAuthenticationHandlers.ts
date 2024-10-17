@@ -10,7 +10,7 @@ async function getHomephoneStart(
   const { authToken } = req.payload as { authToken: string }
   const { msisdn } = req.payload as { msisdn: string }
 
-  if (authToken === 'MockAuthToken') {
+  if (authToken !== 'WrongAuthToken') {
     if (msisdn === '+441000000000') {
       console.log('duplicate phone, responding 500')
       return res.response(responseCodes.DUPLICATE_PHONE).code(500)
@@ -62,7 +62,7 @@ async function getHomephoneValidate(
     return res.response(responseCodes.UNAUTHORIZED).code(500)
   }
   // 200 Success
-  if (authToken === 'MockAuthToken' && code !== '999999') {
+  if (authToken !== 'WrongAuthToken' && code !== '999999') {
     return {
       profile: profile
     }

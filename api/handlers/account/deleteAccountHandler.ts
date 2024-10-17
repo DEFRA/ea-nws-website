@@ -9,7 +9,7 @@ async function getDeleteAccount(
 ) {
   const { authToken } = req.payload as { authToken: string }
 
-  if (authToken !== 'MockAuthToken') {
+  if (authToken === 'WrongAuthToken') {
     console.log('invalid credentials, responding 101')
     return res.response(responseCodes.UNAUTHORIZED).code(500)
   }

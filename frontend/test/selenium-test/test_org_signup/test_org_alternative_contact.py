@@ -1,7 +1,7 @@
 from common import *
-
+import time
 url_alternative_contact = url_org_signup.get('alternativeContact')
-url_review = url_org_signup.get('review')
+url_declaration = url_org_signup.get('declaration')   
 
 def test_empty_input(get_browser):
     browser = navigate_to_unauth_page_via_index(get_browser, url_alternative_contact)
@@ -25,6 +25,6 @@ def test_invalid_input_telephone(get_browser):
 def test__valid_input(get_browser):
     browser = navigate_to_unauth_page_via_index(get_browser, url_alternative_contact)
     enter_input_text(browser, 'Full name', 'Cammy')
-    enter_input_text(browser, 'Email address', 'for@gmail.com')
     enter_input_text(browser, 'Telephone number', '07889668396')
-    click_button(browser, 'Continue', url_review)
+    enter_input_text(browser,'Email address', 'valid@email.com')
+    click_button(browser, 'Continue', url_declaration)

@@ -1,25 +1,19 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import NotInEnglandLayout from '../../../../../../layouts/add-location/unmatched-locations/NotInEnglandLayout'
+import NotInEnglandLayout from '../../../../../../layouts/location/unmatched-locations/NotInEnglandLayout'
+import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function XYCoordinatesNotInEnglandPage() {
-  const navigate = useNavigate()
-
-  const NavigateToPreviousPage = () => {
-    navigate(-1)
-  }
-
-  const NavigateToNextPage = () => {
-    // navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index, {
-    //  state: 'NotAdded'
-    // })
-  }
+export default function XYCoordinatesNotInEnglandPage () {
+  const postCodeSearchUrl = orgManageLocationsUrls.add.search.postCodeSearch
+  const addXyCoordinatesSearchUrl =
+    orgManageLocationsUrls.add.search.xyCoordinatesSearch
+  const manuallyFindMapUrl =
+    orgManageLocationsUrls.unmatchedLocations.manuallyfind.map
 
   return (
     <NotInEnglandLayout
-      NavigateToNextPage={NavigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
-      locationType={'xyCoordinate'}
+      postCodeSearchUrl={postCodeSearchUrl}
+      xyCoordinatesSearchUrl={addXyCoordinatesSearchUrl}
+      manuallyFindMapUrl={manuallyFindMapUrl}
     />
   )
 }

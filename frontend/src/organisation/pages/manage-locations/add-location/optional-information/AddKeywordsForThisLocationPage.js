@@ -1,6 +1,6 @@
 import { React } from 'react'
 import { useNavigate } from 'react-router-dom'
-import AddKeywordsLayout from '../../../../layouts/location/add-or-edit-location/AddKeywordsLayout'
+import AddKeywordsLayout from '../../../../layouts/location/add-or-edit-location/optional-information/AddKeywordsLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function KeywordsForThisLocationPage () {

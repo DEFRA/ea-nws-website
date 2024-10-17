@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import BackLink from '../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
-import Button from '../../../../common/components/gov-uk/Button'
-import Checkbox from '../../../../common/components/gov-uk/CheckBox'
-import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
-import Input from '../../../../common/components/gov-uk/Input'
-import { setCurrentLocationKeywords } from '../../../../common/redux/userSlice'
+import BackLink from '../../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
+import Button from '../../../../../common/components/gov-uk/Button'
+import Checkbox from '../../../../../common/components/gov-uk/CheckBox'
+import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
+import Input from '../../../../../common/components/gov-uk/Input'
+import { setCurrentLocationKeywords } from '../../../../../common/redux/userSlice'
 
 export default function AddKeywordsLayout ({
   pageHeading,

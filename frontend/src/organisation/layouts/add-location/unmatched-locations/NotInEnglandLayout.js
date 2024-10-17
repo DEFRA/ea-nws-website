@@ -1,6 +1,7 @@
 import { React } from 'react'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
+import Button from '../../../../common/components/gov-uk/Button'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function NotInEnglandLayout({
@@ -8,6 +9,10 @@ export default function NotInEnglandLayout({
   NavigateToPreviousPage,
   locationType
 }) {
+  const handleSubmit = () => {
+    NavigateToNextPage()
+  }
+
   const navigateBack = (event) => {
     event.preventDefault()
     NavigateToPreviousPage()
@@ -65,7 +70,6 @@ export default function NotInEnglandLayout({
                 {locationType === 'postcode' && (
                   <li>
                     <Link
-                      // TODO: need to remove these hardcoded URLs
                       to={orgManageLocationsUrls.add.search.postCodeSearch}
                       className='govuk-link inline-link'
                     >
@@ -76,7 +80,6 @@ export default function NotInEnglandLayout({
                 {locationType === 'xyCoordinate' && (
                   <li>
                     <Link
-                      // TODO: need to remove these hardcoded URLs
                       to={orgManageLocationsUrls.add.search.xyCoordinatesSearch}
                       className='govuk-link inline-link'
                     >
@@ -97,6 +100,13 @@ export default function NotInEnglandLayout({
               </ul>
             </div>
           </div>
+          {locationType === 'csvUpload' && (
+            <Button
+              className='govuk-button'
+              text='Continue'
+              onClick={handleSubmit}
+            />
+          )}
         </div>
       </main>
     </>

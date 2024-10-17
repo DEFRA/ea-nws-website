@@ -7,7 +7,7 @@ export default function AddKeywordsPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.add.optionalInformation.addActionPlan)
+    navigate(orgManageLocationsUrls.add.predefinedBoundary.addActionPlan)
   }
 
   const navigateToPreviousPage = () => {

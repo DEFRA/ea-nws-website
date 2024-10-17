@@ -1,20 +1,39 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
 import InsetText from '../../../../../../common/components/gov-uk/InsetText'
+import { backendCall } from '../../../../../../common/services/BackendService'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ConfirmLocationsPage () {
   const navigate = useNavigate()
+  const location = useLocation()
+  const locationsValid = location?.state.valid
+  const locationsInvalid = location?.state.invalid
+  const fileName = location?.state.fileName
+  const authToken = useSelector((state) => state.session.authToken)
 
   const handleLocations = async (event) => {
     event.preventDefault()
 
-    // add matched address locations
-    // navigate to decide if user wants to find unmatched locations
-    navigate(
-      '/organisation/manage-locations/unmatched-locations'
+    const dataToSend = { authToken, fileName }
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
+      'api/bulk_uploads/save_locations',
+      navigate
     )
+    if (!errorMessage) {
+      navigate(orgManageLocationsUrls.unmatchedLocations.index, {
+        state: {
+          added: data.valid,
+          notAdded: data.invalid
+        }
+      })
+    } else {
+      // got to some sort of error page
+    }
   }
 
   const handleCancel = async (event) => {
@@ -54,10 +73,10 @@ export default function ConfirmLocationsPage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
-              ? out of ? locations can be added
+              {locationsValid} out of {locationsInvalid + locationsValid} locations can be added
             </h1>
             <div className='govuk-body'>
-              <InsetText text='? locations need to be matched before they can be added. You can match them after you add the locations that have been found.' />
+              <InsetText text={locationsInvalid + ' locations need to be matched before they can be added. You can match them after you add the locations that have been found.'} />
               <Details
                 title='Why do some locations not match?'
                 text={detailsMessage}

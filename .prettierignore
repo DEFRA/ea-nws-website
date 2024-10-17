@@ -1,3 +1,4 @@
 helm
 .dockerignore
 frontend/src/pages/contact-details/ContactDetailsTable.js
+frontend/src/organisation/pages/manage-keywords/ManageKeywordsPage.js

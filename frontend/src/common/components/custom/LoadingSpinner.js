@@ -1,6 +1,6 @@
 import Spinner from 'react-bootstrap/Spinner'
 
-export default function LoadingSpinner ({ text }) {
+export default function LoadingSpinner ({ text, loadingText = 'loading...' }) {
   return (
     <>
       <div
@@ -18,7 +18,7 @@ export default function LoadingSpinner ({ text }) {
             style={{ width: '3rem', height: '3rem' }}
           />
         </div>
-        loading...
+        {loadingText}
       </div>
     </>
   )

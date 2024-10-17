@@ -14,14 +14,14 @@ module.exports = [
         if (request.payload.Message) {
           const fileName = request.payload.Message
           const elasticacheKey = 'bulk_upload:' + fileName.split('.')[0]
-          await setJsonData(elasticacheKey, { stage: 'processing', status: 'working' })
+          await setJsonData(elasticacheKey, { stage: 'Processing', status: 'working' })
           const response = await processLocations(request.payload.Message)
           if (response.errorMessage) {
-            await setJsonData(elasticacheKey, { stage: 'processing', status: 'rejected', error: response.errorMessage })
+            await setJsonData(elasticacheKey, { stage: 'Processing', status: 'rejected', error: response.errorMessage })
           } else if (response.data) {
-            await setJsonData(elasticacheKey, { stage: 'processing', status: 'complete', data: response.data })
+            await setJsonData(elasticacheKey, { stage: 'Processing', status: 'complete', data: response.data })
           } else {
-            await setJsonData(elasticacheKey, { stage: 'processing', status: 'rejected', data: 'Unknown error' })
+            await setJsonData(elasticacheKey, { stage: 'Processing', status: 'rejected', error: 'Unknown error' })
           }
 
           return h.response({ status: 200 })

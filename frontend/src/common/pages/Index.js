@@ -7,8 +7,11 @@ import NotificationBanner from '../components/gov-uk/NotificationBanner'
 import {
   clearAuth,
   setAuthToken,
+  setContactKeywords,
   setContactPreferences,
   setCurrentLocation,
+  setCurrentLocationCoordinates,
+  setLocationKeywords,
   setProfile,
   setRegistrations
 } from '../redux/userSlice'
@@ -291,6 +294,31 @@ export default function IndexPage () {
     )
   }
 
+  const mockLocationKeywords = [
+    {
+      name: 'Location Keyword 1',
+      linked_ids: ['id', 'id']
+    },
+    {
+      name: 'Location Keyword 2',
+      linked_ids: ['id']
+    },
+    {
+      name: 'Location Keyword 3',
+      linked_ids: []
+    }
+  ]
+  const mockContactKeywords = [
+    {
+      name: 'Contact Keyword 1',
+      linked_ids: ['id', 'id']
+    },
+    {
+      name: 'Contact Keyword 2',
+      linked_ids: ['id']
+    }
+  ]
+
   const mockCurrentLocation = {
     name: null,
     // address is the UPRN
@@ -359,6 +387,10 @@ export default function IndexPage () {
       dispatch(setContactPreferences(contactPreferences))
       dispatch(setProfile(profile))
       dispatch(setCurrentLocation(mockCurrentLocation))
+      const coordinates = { latitude: 50.84106, longitude: -1.05814 }
+      dispatch(setCurrentLocationCoordinates(coordinates))
+      dispatch(setLocationKeywords(mockLocationKeywords))
+      dispatch(setContactKeywords(mockContactKeywords))
       setmockSessionActive(true)
     } else {
       dispatch(clearAuth())
@@ -522,7 +554,7 @@ export default function IndexPage () {
                 </li>
                 <li>
                   <Link
-                    to='/organisation/manage-locations/edit/location-options'
+                    to='/organisation/manage-locations/edit/select-location-options'
                     className='govuk-link'
                   >
                     edit location

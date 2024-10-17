@@ -18,7 +18,7 @@ def setup_validateemail_test(get_browser):
     link_link = browser.find_element(By.XPATH, link_xpath)
     browser.execute_script("arguments[0].click();", link_link)
     time.sleep(3)
-    button_xpath = f"//button[text()='Add a email address']"
+    button_xpath = f"//button[text()='Add an email address']"
     add_email_link = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", add_email_link)
     time.sleep(3)

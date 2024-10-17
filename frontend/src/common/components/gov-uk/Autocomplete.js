@@ -11,10 +11,12 @@ export default function Autocomplete ({
   error = '',
   isNameBold = false,
   results,
-  onClick
+  onClick,
+  position,
+  showNotFound = true
 }) {
   const [options, setOptions] = useState(null)
-  const [, forceUpdate] = useReducer(x => x + 1, 0)
+  const [, forceUpdate] = useReducer((x) => x + 1, 0)
   useEffect(() => {
     setOptions(results)
     forceUpdate()
@@ -36,7 +38,8 @@ export default function Autocomplete ({
   const isPrintableKeyCode = (keyCode) => {
     return (
       (keyCode > 47 && keyCode < 58) || // number keys
-      keyCode === 32 || keyCode === 8 || // spacebar or backspace
+      keyCode === 32 ||
+      keyCode === 8 || // spacebar or backspace
       (keyCode > 64 && keyCode < 91) || // letter keys
       (keyCode > 95 && keyCode < 112) || // numpad keys
       (keyCode > 185 && keyCode < 193) || // ;=,-./` (in order)
@@ -111,7 +114,7 @@ export default function Autocomplete ({
     onClick(selectedOption)
   }
 
-  const showNoOptionsFound = options?.length === 0
+  const showNoOptionsFound = options?.length === 0 && showNotFound
 
   const handleOptionMouseEnter = (index) => {
     setHovered(index)
@@ -121,7 +124,9 @@ export default function Autocomplete ({
   const menuClassName = `${cssNamespace}__menu`
   const menuModifierDisplayMenu = `${menuClassName}--inline`
   const menuIsVisible = menuOpen || showNoOptionsFound
-  const menuModifierVisibility = `${menuClassName}--${(menuIsVisible) ? 'visible' : 'hidden'}`
+  const menuModifierVisibility = `${menuClassName}--${
+    menuIsVisible ? 'visible' : 'hidden'
+  }`
 
   const menuClassList = [
     menuClassName,
@@ -133,41 +138,52 @@ export default function Autocomplete ({
     options && setMenuOpen(true)
   }, [options])
 
-  const dropDown = useMemo(
-    () => {
-      return (
-        <>
-          {options?.map((option, index) => {
-            const showFocused = focused === -1 ? selected === index : focused === index
-            const optionModifierFocused = showFocused && hovered === null ? ' autocomplete__option--focused' : ''
-            const optionModifierOdd = (index % 2) ? ' autocomplete__option--odd' : ''
-            return (
-              <li
-                aria-selected={focused === index ? 'true' : 'false'}
-                className={`autocomplete__option${optionModifierFocused}${optionModifierOdd}`}
-                id={`option--${index}`}
-                key={index}
-                onClick={() => handleOptionClick(index)}
-                onMouseDown={(event) => event.preventDefault()}
-                onMouseEnter={() => handleOptionMouseEnter(index)}
-                ref={(optionEl) => { ref[index] = optionEl }}
-                role='option'
-                tabIndex='-1'
-                aria-posinset={index + 1}
-                aria-setsize={options.length}
-              >{option.name}
-              </li>
-            )
-          })}
+  const dropDown = useMemo(() => {
+    return (
+      <>
+        {options?.map((option, index) => {
+          const showFocused =
+            focused === -1 ? selected === index : focused === index
+          const optionModifierFocused =
+            showFocused && hovered === null
+              ? ' autocomplete__option--focused'
+              : ''
+          const optionModifierOdd =
+            index % 2 ? ' autocomplete__option--odd' : ''
+          return (
+            <li
+              aria-selected={focused === index ? 'true' : 'false'}
+              className={`autocomplete__option${optionModifierFocused}${optionModifierOdd}`}
+              id={`option--${index}`}
+              key={index}
+              onClick={() => handleOptionClick(index)}
+              onMouseDown={(event) => event.preventDefault()}
+              onMouseEnter={() => handleOptionMouseEnter(index)}
+              ref={(optionEl) => {
+                ref[index] = optionEl
+              }}
+              role='option'
+              tabIndex='-1'
+              aria-posinset={index + 1}
+              aria-setsize={options.length}
+            >
+              {option.name}
+            </li>
+          )
+        })}
 
-          {showNoOptionsFound && (
-            <li className='autocomplete__option autocomplete__option--no-results' role='option' aria-disabled='true'>No results found</li>
-          )}
-        </>
-      )
-    },
-    [options, focused, selected, hovered]
-  )
+        {showNoOptionsFound && (
+          <li
+            className='autocomplete__option autocomplete__option--no-results'
+            role='option'
+            aria-disabled='true'
+          >
+            No results found
+          </li>
+        )}
+      </>
+    )
+  }, [options, focused, selected, hovered])
 
   return (
     <>
@@ -178,20 +194,24 @@ export default function Autocomplete ({
             : 'govuk-form-group govuk-form-group--error'
         }
       >
-        <label
-          className={
+        {name &&
+          <label
+            className={
             isNameBold === true ? 'govuk-label govuk-label--m' : 'govuk-label'
           }
-          htmlFor='govuk-text-input'
-        >
-          {name}
-        </label>
+            htmlFor='govuk-text-input'
+          >
+            {name}
+          </label>}
         {error !== '' && (
           <p id='govuk-text-input-error' className='govuk-error-message'>
             <span className='govuk-visually-hidden'>Error:</span> {error}
           </p>
         )}
-        <div className='autocomplete_wrapper' onKeyDown={(event) => handleKeyDown(event)}>
+        <div
+          className='autocomplete__wrapper'
+          onKeyDown={(event) => handleKeyDown(event)}
+        >
           <input
             className={
               error === '' ? className : className + ' govuk-input--error'
@@ -200,10 +220,14 @@ export default function Autocomplete ({
             id='govuk-text-input'
             onClick={handleChange}
             onChange={handleChange}
+            onBlur={() => setMenuOpen(false)}
+            onFocus={() => setMenuOpen(true)}
             type={inputType}
             role='combobox'
             value={value}
-            ref={(inputElement) => { ref[-1] = inputElement }}
+            ref={(inputElement) => {
+              ref[-1] = inputElement
+            }}
             defaultValue={defaultValue}
             autoComplete='off'
           />
@@ -213,7 +237,9 @@ export default function Autocomplete ({
             role='listbox'
             className={menuClassList.join(' ')}
             onMouseLeave={handeListMouseLeave}
-          >{dropDown}
+            style={position && { position, zIndex: 1 }}
+          >
+            {dropDown}
           </ul>
         </div>
       </div>

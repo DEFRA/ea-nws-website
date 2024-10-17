@@ -1,5 +1,5 @@
-import React from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../../../common/components/gov-uk/NotificationBanner'
@@ -14,106 +14,29 @@ import { orgManageLocationsUrls } from '../../../../../../routes/manage-location
 export default function ManuallyFindLocationsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const authToken = useSelector((state) => state.session.authToken)
+  const [locations, setLocations] = useState(null)
   const location = useLocation()
 
-  // dumy data this will be updated to come from the upload.
-  const locations = [
-    {
-      Location_name: 'Location 1',
-      Full_address: '25a belgrave road',
-      Postcode: 'SO17 3EA',
-      X_coordinates: 'X coordinates',
-      Y_coordinates: 'Y coordinates',
-      Internal_reference: 'Internal reference',
-      Business_criticality: 'Business criticality',
-      Location_type: 'Location type',
-      Action_plan: 'Action plan',
-      Notes: 'Notes',
-      Keywords: [Array]
-    },
-    {
-      Location_name: 'Location 2',
-      Full_address: 'Bythesea Road',
-      Postcode: 'BA14 8JN',
-      X_coordinates: 'X coordinates',
-      Y_coordinates: 'Y coordinates',
-      Internal_reference: 'Internal reference',
-      Business_criticality: 'Business criticality',
-      Location_type: 'Location type',
-      Action_plan: 'Action plan',
-      Notes: 'Notes',
-      Keywords: [Array]
-    },
-    {
-      Location_name: 'Location 3',
-      Full_address: '1000 Parkwaye, Whiteley',
-      Postcode: 'PO15 7AA',
-      X_coordinates: 'X coordinates',
-      Y_coordinates: 'Y coordinates',
-      Internal_reference: 'Internal reference',
-      Business_criticality: 'Business criticality',
-      Location_type: 'Location type',
-      Action_plan: 'Action plan',
-      Notes: 'Notes',
-      Keywords: [Array]
-    },
-    {
-      Location_name: 'Location 4',
-      Full_address: 'Station Rd',
-      Postcode: 'SO51 7LP',
-      X_coordinates: 'X coordinates',
-      Y_coordinates: 'Y coordinates',
-      Internal_reference: 'Internal reference',
-      Business_criticality: 'Business criticality',
-      Location_type: 'Location type',
-      Action_plan: 'Action plan',
-      Notes: 'Notes',
-      Keywords: [Array]
-    },
-    {
-      Location_name: 'Location 5',
-      Full_address: 'Romsey Office, Cannal Walk, Romsey',
-      Postcode: 'SO51 8DU',
-      X_coordinates: 'X coordinates',
-      Y_coordinates: 'Y coordinates',
-      Internal_reference: 'Internal reference',
-      Business_criticality: 'Business criticality',
-      Location_type: 'Location type',
-      Action_plan: 'Action plan',
-      Notes: 'Notes',
-      Keywords: [Array]
+  useEffect(() => {
+    const getInvLocations = async () => {
+      const dataToSend = { authToken }
+      const { data } = await backendCall(
+        dataToSend,
+        'api/bulk_uploads/get_invalid_locations',
+        navigate
+      )
+      if (data) {
+        setLocations(data)
+      } else {
+        setLocations(null)
+      }
     }
-  ]
+    getInvLocations()
+  }, [])
 
   const handleSubmit = async () => {
     navigate('/organisation/manage-locations/view-locations')
-  }
-
-  const locationToPOI = (location) => {
-    return {
-      name: location.Location_name,
-      // address is the UPRN
-      address: null,
-      // Coordinates in dd (degrees decimal)
-      coordinates: null,
-      alert_categories: null,
-      meta_data: {
-        location_additional: {
-          full_address: location.Full_address,
-          postcode: location.Postcode,
-          // Easting EPSG: 27700
-          x_coordinate: location.X_coordinates,
-          // Northing EPSG: 27700
-          y_coordinate: location.Y_coordinates,
-          internal_reference: location.Internal_reference,
-          business_criticality: location.Business_criticality,
-          location_type: location.Location_type,
-          action_plan: location.Action_plan,
-          notes: location.Notes,
-          keywords: location.Keywords
-        }
-      }
-    }
   }
 
   const findAvailableAddresses = async (location) => {
@@ -138,7 +61,7 @@ export default function ManuallyFindLocationsPage () {
 
   const handleFind = async (event, location) => {
     event.preventDefault()
-    const poi = locationToPOI(location)
+    const poi = location
     dispatch(setCurrentLocation(poi))
     const isAddressValid = await findAvailableAddresses(
       poi.meta_data.location_additional.full_address +
@@ -188,7 +111,7 @@ export default function ManuallyFindLocationsPage () {
                 </>
               </p>
               <h2 className='govuk-heading-m govuk-!-margin-top-6'>
-                {locations.length} locations not matched
+                {locations?.length} locations not matched
               </h2>
 
               <table class='govuk-table govuk-table--small-text-until-tablet'>
@@ -207,26 +130,32 @@ export default function ManuallyFindLocationsPage () {
                   </tr>
                 </thead>
                 <tbody class='govuk-table__body'>
-                  {locations.map((location, index) => {
-                    return (
-                      <tr class='govuk-table__row' key={index}>
-                        <th scope='row' class='govuk-table__header'>
-                          {location.Location_name}
-                        </th>
-                        <td class='govuk-table__cell'>
-                          {location.Full_address}
-                        </td>
-                        <td class='govuk-table__cell'>{location.Postcode}</td>
-                        <td class='govuk-table__cell'>
-                          <Link
-                            onClick={(event) => handleFind(event, location)}
-                          >
-                            Find this location
-                          </Link>
-                        </td>
-                      </tr>
-                    )
-                  })}
+                  {locations &&
+                    locations.map((location, index) => {
+                      return (
+                        <tr class='govuk-table__row' key={index}>
+                          <th scope='row' class='govuk-table__header'>
+                            {location.name}
+                          </th>
+                          <td class='govuk-table__cell'>
+                            {
+                              location.meta_data.location_additional
+                                .full_address
+                            }
+                          </td>
+                          <td class='govuk-table__cell'>
+                            {location.meta_data.location_additional.postcode}
+                          </td>
+                          <td class='govuk-table__cell'>
+                            <Link
+                              onClick={(event) => handleFind(event, location)}
+                            >
+                              Find this location
+                            </Link>
+                          </td>
+                        </tr>
+                      )
+                    })}
                 </tbody>
               </table>
 

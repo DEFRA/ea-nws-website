@@ -32,11 +32,6 @@ export default function FindLocationByMatchedAddressesPage () {
     }
   }
 
-  const options = availableAddresses.map((item, index) => ({
-    value: index,
-    label: item.name
-  }))
-
   return (
     <>
       <BackLink onClick={() => navigate(-1)} />
@@ -58,11 +53,15 @@ export default function FindLocationByMatchedAddressesPage () {
               >
                 <Select
                   label='Select an address'
-                  options={options}
+                  options={availableAddresses}
                   name='availableAddressesDropDown'
-                  onChange={(e) => setSelectedAddressIndex(e.target.value)}
+                  onSelect={(e) => setSelectedAddressIndex(e.target.value)}
                   hint=''
                   error={error}
+                  initialSelectOptionText={`Select from ${
+                    availableAddresses.length
+                  } address${availableAddresses.lenght > 1 ? 'es' : ''} partly
+          matched`}
                 />
               </div>
             </div>

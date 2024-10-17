@@ -7,7 +7,7 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AddLocationOptionsPage () {
+export default function AddLocationOptionsPage() {
   const navigate = useNavigate()
   const [addLocationType, setAddLocationType] = useState('')
   const [addLocationTypeError, setAddLocationTypeError] = useState('')
@@ -18,7 +18,8 @@ export default function AddLocationOptionsPage () {
     },
     { value: 'BulkCoordinates', label: 'X and Y coordinates in a file (.csv)' },
     { value: 'BulkShapeFile', label: 'Shapefile (points, lines or areas)' },
-    { value: 'Manual', label: 'I want to add locations manually' }
+    { value: 'Manual', label: 'I want to add locations manually' },
+    { value: 'PredefinedBoundaries', label: 'Select predefined boundaries' }
   ]
 
   useEffect(() => {
@@ -43,6 +44,12 @@ export default function AddLocationOptionsPage () {
           break
         case addLocationOptions[3].value:
           navigate(orgManageLocationsUrls.add.name)
+          break
+        case addLocationOptions[4].value:
+          navigate(
+            orgManageLocationsUrls.add.predefinedBoundaries
+              .selectPredefinedBoundary
+          )
           break
       }
     }

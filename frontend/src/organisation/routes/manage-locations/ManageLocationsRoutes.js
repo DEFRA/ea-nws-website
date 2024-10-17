@@ -35,8 +35,6 @@ import LocationDropPinEditPage from '../../pages/manage-locations/edit-location/
 import CannotChangeLocationLinePage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-line/CannotChangeLocationLinePage'
 import CannotChangeLocationPolygonPage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-polygon/CannotChangeLocationPolygonPage'
 import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/edit-individual-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
-import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/EditLocationSearchOptionsPage'
-import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
 import LocationAlreadyExists from '../../pages/manage-locations/add-location/LocationAlreadyExists'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
 import LocationInformationPage from '../../pages/manage-locations/view-location/view-location-information/LocationInformationPage'

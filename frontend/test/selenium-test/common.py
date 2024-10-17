@@ -196,6 +196,7 @@ def enter_input_text(browser, value, input_text, key='name'):
     input_xpath = f"//input[@{key}='{value}']"
     input_element = browser.find_element(By.XPATH, input_xpath)
     browser.execute_script("arguments[0].scrollIntoView(true);", input_element)
+    time.sleep(1)
     input_element.clear()
     input_element.send_keys(input_text)
 

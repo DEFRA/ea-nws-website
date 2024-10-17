@@ -43,7 +43,7 @@ def test_continue_empty(get_browser):
     click_button(get_browser, 'Continue', url_next_page)
     assert check_h1_heading(get_browser, 'Action plan (optional)')
 
-def test_add_multiple_keywords(get_browser):
+def test_add_multiple_duplicate_keywords(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     add_keyword_success(get_browser, 'North')
     add_keyword_success(get_browser, 'South')
@@ -54,7 +54,7 @@ def test_add_multiple_keywords(get_browser):
     click_button(get_browser, 'Continue', url_next_page)
     assert check_h1_heading(get_browser, 'Action plan (optional)')
 
-def test_delete_multiple_keywords(get_browser):
+def test_remove_multiple_keywords(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     add_keyword_success(get_browser, 'North')
     add_keyword_success(get_browser, 'South')

@@ -74,7 +74,12 @@ url_org_man_loc = {
         'xyCoordinatesSearch': url_org_man_loc_path + '/add/xy-coordinates-search',
         'locationInArea': url_org_man_loc_path + '/add/location-in-area',
         'xyCoordinatesNotInEngland': url_org_man_loc_path + '/add/xy-coordinates-not-in-england',
-        'dropPinSearch': url_org_man_loc_path + '/add/drop-pin-search'
+        'dropPinSearch': url_org_man_loc_path + '/add/drop-pin-search',
+        'predefinedBoundary': {
+            'optionalInfo': url_org_man_loc_path + '/add/predefined-boundary/optional-info',
+            'addKeywords': url_org_man_loc_path + '/add/predefined-boundary/keywords',
+            'addActionPlan': url_org_man_loc_path + '/add/predefined-boundary/action-plan'
+        }
     },
     'optionalLocation':{
         'optionalInfo': url_org_man_loc_path + '/add/optional-information',

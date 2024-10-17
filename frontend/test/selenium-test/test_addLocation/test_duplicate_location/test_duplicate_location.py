@@ -14,7 +14,7 @@ def back_to_name_page(browser, method_of_backPage):
     if method_of_backPage == "backLink":
         click_link(browser,"Back", location_name_page_url)
     else:
-        click_link(browser, "use a differnt location name for this location", location_name_page_url)
+        click_link(browser, "use a different location name for this location", location_name_page_url)
     assert "What is the location name?" in browser.page_source
 
 

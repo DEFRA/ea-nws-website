@@ -18,7 +18,7 @@ module.exports = [
         if (locationName && authToken) {
           const duplicate = await searchLocations(authToken, 'name', locationName)
           if (duplicate.length !== 0) {
-            return h.response({ status: 200, data: 'duplicate location' })
+            return h.response({ status: 500, errorMessage: 'duplicate location' })
           } else {
             return h.response({ status: 200 })
           }

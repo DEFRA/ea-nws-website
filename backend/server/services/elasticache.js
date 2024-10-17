@@ -109,7 +109,6 @@ const listLocations = async (authToken) => {
 
 const searchLocations = async (authToken, searchKey, value) => {
   const locationKeys = await getLocationKeys(authToken)
-  console.log(locationKeys)
   const locationArr = []
   const searchKeyArr = searchKey.split('.')
   await Promise.all(locationKeys.map(async (key) => {

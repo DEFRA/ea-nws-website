@@ -1,9 +1,10 @@
 import React from 'react'
-import BackLink from '../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
+import BackLink from '../../../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 export default function LocationAlreadyExists () {
   const navigate = useNavigate()
   const locationName = useSelector(
@@ -24,10 +25,10 @@ export default function LocationAlreadyExists () {
           <ul className='govuk-list govuk-list--bullet'>
             <li>
               <Link
-                to='/organisation/manage-locations/add/name'
+                to={orgManageLocationsUrls.add.name}
                 className='govuk-link'
               >
-                use a differnt location name for this location
+                use a different location name for this location
               </Link>
             </li>
             <li>

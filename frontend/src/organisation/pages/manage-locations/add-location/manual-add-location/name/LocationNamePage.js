@@ -20,18 +20,20 @@ export default function LocationNamePage () {
   const locationNameUsedBefore = async () => {
     const locationName = name.trim()
     const dataToSend = { authToken, locationName }
-    const { data } = await backendCall(
+    const { errorMessage} = await backendCall(
       dataToSend,
       'api/locations/check_duplicate',
       navigate
     )
-    console.log(data)
-    if (data === 'duplicate location') {
+    
+    if (errorMessage) {
       return true
     }
     return false
   }
 
+
+  // change how this is done
   const handleSubmit = async () => {
     const locationName = name.trim()
     const validationError = locationNameValidation(locationName)
@@ -46,6 +48,8 @@ export default function LocationNamePage () {
       setError(validationError)
     }
   }
+
+
 
   const navigateBack = (event) => {
     event.preventDefault()

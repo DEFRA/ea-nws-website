@@ -109,7 +109,7 @@ export default function AddKeywordsLayout () {
 
               {keywordsArray.length !== 0 &&
                 keywordsArray.map((keyword, index) => (
-                  <div className='govuk-checkboxes--small'>
+                  <div className='govuk-checkboxes--small' key={index}>
                     <Checkbox
                       label={keyword}
                       checked={isCheckboxCheckedArray[index]}

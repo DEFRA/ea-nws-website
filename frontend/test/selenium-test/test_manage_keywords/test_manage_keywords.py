@@ -5,7 +5,7 @@ import time
 from common import *
 
 current_url = url_org_man_keywords_path
-'''
+
 def test_render(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     assert 'Manage keywords' in get_browser.page_source
@@ -192,7 +192,6 @@ def test_edit_contact_empty_opens_delete_dialog(get_browser):
     click_button(get_browser, 'Change keyword', current_url)
     assert 'Removing the keyword will delete it from this account.' in get_browser.page_source
     assert 'Delete keyword' in get_browser.page_source
-'''
 
 # DELETE location KEYWORD
 def test_delete_dialog_render_location_keyword_tab(get_browser):
@@ -230,6 +229,33 @@ def test_delete_cancel_dialog_render_location_keyword_tab(get_browser):
     assert 'Delete keyword' not in get_browser.page_source
     assert 'If you continue this keyword will be deleted from this account and' not in get_browser.page_source
 
+def test_delete_location_keyword_tab(get_browser):
+    navigate_to_auth_org_page_via_index(get_browser,current_url)
+    click_link(get_browser, "Locations keywords", current_url)
+    assert 'Location Keyword 1' in get_browser.page_source    
+    click_link(get_browser, "Delete", current_url)
+    time.sleep(1)
+    click_button(get_browser, 'Delete keyword', current_url)
+    time.sleep(1)
+    assert 'Location Keyword 1' not in get_browser.page_source     
+    assert 'Success' in get_browser.page_source  
+    assert 'Keyword deleted' in get_browser.page_source  
+
+def test_delete_from_edit_location(get_browser):
+    navigate_to_auth_org_page_via_index(get_browser,current_url)
+    click_link(get_browser, "Locations keywords", current_url)
+    assert 'Location Keyword 1' in get_browser.page_source    
+    click_link(get_browser, "Change", current_url)
+    time.sleep(1)
+    enter_input_text(get_browser, 'Keyword', '')
+    click_button(get_browser, 'Change keyword', current_url)
+    assert 'Removing the keyword will delete it from this account.' in get_browser.page_source
+    assert 'Delete keyword' in get_browser.page_source
+    click_button(get_browser, 'Delete keyword', current_url)
+    assert 'Location Keyword 1' not in get_browser.page_source     
+    assert 'Success' in get_browser.page_source  
+    assert 'Keyword deleted' in get_browser.page_source  
+
 # DELETE Contact KEYWORD
 def test_delete_dialog_render_contact_keyword_tab(get_browser):
     navigate_to_auth_org_page_via_index(get_browser,current_url)
@@ -265,3 +291,32 @@ def test_delete_cancel_dialog_render_contacts_keyword_tab(get_browser):
     time.sleep(1)
     assert 'Delete keyword' not in get_browser.page_source
     assert 'If you continue this keyword will be deleted from this account and' not in get_browser.page_source
+
+def test_delete_contact_keyword_tab(get_browser):
+    navigate_to_auth_org_page_via_index(get_browser,current_url)
+    click_link(get_browser, "Contacts keywords", current_url)
+    assert 'Contact Keyword 1' in get_browser.page_source    
+    click_link(get_browser, "Delete", current_url)
+    time.sleep(1)
+    click_button(get_browser, 'Delete keyword', current_url)
+    time.sleep(1)
+    assert 'Contact Keyword 1' not in get_browser.page_source     
+    assert 'Success' in get_browser.page_source  
+    assert 'Keyword deleted' in get_browser.page_source  
+
+def test_delete_from_edit_contact(get_browser):
+    navigate_to_auth_org_page_via_index(get_browser,current_url)
+    click_link(get_browser, "Contacts keywords", current_url)
+    assert 'Contact Keyword 1' in get_browser.page_source    
+    click_link(get_browser, "Change", current_url)
+    time.sleep(1)
+    enter_input_text(get_browser, 'Keyword', '')
+    click_button(get_browser, 'Change keyword', current_url)
+    assert 'Removing the keyword will delete it from this account.' in get_browser.page_source
+    assert 'Delete keyword' in get_browser.page_source
+    click_button(get_browser, 'Delete keyword', current_url)
+    assert 'Contact Keyword 1' not in get_browser.page_source     
+    assert 'Success' in get_browser.page_source  
+    assert 'Keyword deleted' in get_browser.page_source  
+
+# DELETE MULTIPLE

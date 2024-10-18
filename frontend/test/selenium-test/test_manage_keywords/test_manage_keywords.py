@@ -192,3 +192,39 @@ def test_edit_contact_empty_opens_delete_dialog(get_browser):
     click_button(get_browser, 'Change keyword', current_url)
     assert 'Removing the keyword will delete it from this account.' in get_browser.page_source
     assert 'Delete keyword' in get_browser.page_source
+
+# DELETE Contact KEYWORD
+def test_delete_dialog_render_contact_keyword_tab(get_browser):
+    navigate_to_auth_org_page_via_index(get_browser,current_url)
+    click_link(get_browser, "Contacts keywords", current_url)
+    click_link_more_than_one_text(get_browser, "Delete", 1, current_url)
+    time.sleep(1)
+    assert 'Delete keyword' in get_browser.page_source
+    assert 'Close' in get_browser.page_source
+    assert 'If you continue this keyword will be deleted from this account and' in get_browser.page_source
+
+def test_delete_close_dialog_render_contacts_keyword_tab(get_browser):
+    navigate_to_auth_org_page_via_index(get_browser,current_url)
+    click_link(get_browser, "Contacts keywords", current_url)
+    click_link_more_than_one_text(get_browser, "Delete", 1, current_url)
+    time.sleep(1)
+    assert 'Delete keyword' in get_browser.page_source
+    assert 'Close' in get_browser.page_source
+    assert 'If you continue this keyword will be deleted from this account and' in get_browser.page_source
+    click_span(get_browser, "×")
+    time.sleep(1)
+    assert 'Delete keyword' not in get_browser.page_source
+    assert 'If you continue this keyword will be deleted from this account and' not in get_browser.page_source
+
+def test_delete_cancel_dialog_render_contacts_keyword_tab(get_browser):
+    navigate_to_auth_org_page_via_index(get_browser,current_url)
+    click_link(get_browser, "Contacts keywords", current_url)
+    click_link_more_than_one_text(get_browser, "Delete", 1, current_url)
+    time.sleep(1)
+    assert 'Delete keyword' in get_browser.page_source
+    assert 'Close' in get_browser.page_source
+    assert 'If you continue this keyword will be deleted from this account and' in get_browser.page_source
+    click_link(get_browser, "Cancel", current_url)
+    time.sleep(1)
+    assert 'Delete keyword' not in get_browser.page_source
+    assert 'If you continue this keyword will be deleted from this account and' not in get_browser.page_source

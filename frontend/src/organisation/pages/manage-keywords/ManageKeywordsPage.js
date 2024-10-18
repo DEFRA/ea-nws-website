@@ -38,7 +38,6 @@ export default function ManageKeywordsPage() {
   const [results, setResults] = useState(null)
   const [searchInput, setSearchInput] = useState(null)
   const [editError, setEditError] = useState('')
-  const [associatedLocations, setAssociatedLocations] = useState(0)
   const keywordsPerPage = 10
 
   const setTab = (tab) => {
@@ -163,16 +162,17 @@ export default function ManageKeywordsPage() {
     const updatedKeywords = locationKeywords.filter(
       (k) => !selectedKeywords.includes(k))
     if (keywordType === 'location') {      
-      dispatch(setKeywords(updatedKeywords))
+      dispatch(setLocationKeywords(updatedKeywords))
     } else {
-      dispatch(setKeywords(updatedKeywords))
+      dispatch(setContactKeywords(updatedKeywords))
     }
+    setKeywords([...updatedKeywords])
   }
 
   const handleDelete = () => {
-      if (selectedKeywords.length > 0) {
+      if (selectedKeywords.length > 0 || targetKeyword) {
         removeKeywords()
-        if (selectedKeywords.length === 1) {
+        if (targetKeyword) {
           setNotificationText('Keyword deleted')
         } else {
           setNotificationText(`${selectedKeywords.length} keywords deleted`)
@@ -200,6 +200,9 @@ export default function ManageKeywordsPage() {
         )
         setDialogButtonText('Delete keyword')
       } else {
+        const associatedLocations = selectedKeywords.reduce((total, keyword) => {
+          return total + keyword.linked_ids.length;
+        }, 0)
         setDialogTitle(`Delete ${selectedKeywords.length} keywords`)
         setDialogText(
           <>
@@ -227,13 +230,14 @@ export default function ManageKeywordsPage() {
           them.
         </>
       )
+      setDialogButtonText('Delete keyword')
     }
     setShowDeleteDialog(!showDeleteDialog)
   }
 
 
   const handleDeleteButton = () => {
-    if (selectedKeywords) {
+    if (selectedKeywords.length > 0) {
       onClickDeleteDialog('deleteLink')
     }
   }
@@ -385,7 +389,6 @@ export default function ManageKeywordsPage() {
                         type={keywordType}
                         onEdit={onClickEditDialog}
                         onDelete={onClickDeleteDialog}
-                        setAssociatedLocation={setAssociatedLocations}
                         setTargetKeyword={setTargetKeyword}
                       />
                       <Pagination

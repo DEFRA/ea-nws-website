@@ -80,11 +80,13 @@ const orgManageLocationsUrls = {
       dropPinSearchResults: urlManageOrg + '/add/drop-pin-search-results'
     },
     predefinedBoundary: {
-      optionalInfo:
-        urlManageOrgAddLocations + '/predefined-boundary/optional-info',
-      addKeywords: urlManageOrgAddLocations + '/predefined-boundary/keywords',
-      addActionPlan:
-        urlManageOrgAddLocations + '/predefined-boundary/action-plan'
+      optional: {
+        info: urlManageOrgAddLocations + '/predefined-boundary/optional/info',
+        keywords:
+          urlManageOrgAddLocations + '/predefined-boundary/optional/keywords',
+        actionPlan:
+          urlManageOrgAddLocations + '/predefined-boundary/optional/action-plan'
+      }
     },
     optionalInformation: {
       optionalInfo: urlManageOrgAddLocations + '/optional-information',
@@ -279,11 +281,11 @@ const orgManageLocationRoutes = [
   },
   // predefined boundary
   {
-    path: orgManageLocationsUrls.add.predefinedBoundary.optionalInfo,
+    path: orgManageLocationsUrls.add.predefinedBoundary.optional.info,
     component: <PredefinedBoundariesOptionalInfoPage />
   },
   {
-    path: orgManageLocationsUrls.add.predefinedBoundary.addKeywords,
+    path: orgManageLocationsUrls.add.predefinedBoundary.optional.keywords,
     component: <PredefinedBoundariesAddKeywordsPage />
   },
   // edit

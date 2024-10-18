@@ -1,8 +1,8 @@
 from common import *
 
-url_previous = url_org_man_loc.get('add').get('predefinedBoundary').get('optionalInfo')
-url_current = url_org_man_loc.get('add').get('predefinedBoundary').get('addKeywords')
-url_next = url_org_man_loc.get('add').get('predefinedBoundary').get('addActionPlan')
+url_previous = url_org_man_loc.get('add').get('predefinedBoundary').get('optional').get('info')
+url_current = url_org_man_loc.get('add').get('predefinedBoundary').get('optional').get('keywords')
+url_next = url_org_man_loc.get('add').get('predefinedBoundary').get('optional').get('actionPlan')
 
 keywords_max = 50
 keyword_error_max = 'You can add a maximum of 50 keywords'

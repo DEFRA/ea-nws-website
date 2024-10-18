@@ -387,6 +387,7 @@ export default function ManageKeywordsPage() {
                         type={keywordType}
                         onEdit={onClickEditDialog}
                         onDelete={onClickDeleteDialog}
+                        targetKeyword={targetKeyword}
                         setTargetKeyword={setTargetKeyword}
                       />
                       <Pagination

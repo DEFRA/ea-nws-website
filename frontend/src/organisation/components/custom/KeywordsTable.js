@@ -11,16 +11,28 @@ export default function KeywordsTable({
   type,
   onEdit,
   onDelete,
+  targetKeyword,
   setTargetKeyword
 }) {
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
   const [keywordSort, setKeywordSort] = useState('none')
   const [associatedSort, setAssociatedSort] = useState('none')
+  const [action, setAction] = useState('')
 
   useEffect(() => {
     setKeywordSort('none')
     setAssociatedSort('none')
   }, [type])
+
+  useEffect(() => {
+    if (targetKeyword) {
+      if (action === 'edit') {
+        onEdit()
+      } else {
+        onDelete('deleteLink')
+      }
+    }
+  }, [action, targetKeyword])
 
   const sortKeywords = () => {
     if (keywordSort === 'none' || keywordSort === 'descending') {
@@ -81,12 +93,12 @@ export default function KeywordsTable({
 
   const handleDelete = (keyword) => {
     setTargetKeyword(keyword)
-    onDelete('deleteLink')
+    setAction('delete')
   }
 
   const handleEdit = (keyword) => {
     setTargetKeyword(keyword)
-    onEdit()
+    setAction('edit')
   }
 
   return (

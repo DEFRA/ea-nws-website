@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import NotInEnglandLayout from '../../../../../../../layouts/add-location/unmatched-locations/NotInEnglandLayout'
+import NotInEnglandLayout from '../../../../../../../layouts/location/unmatched-locations/NotInEnglandLayout'
 import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function NotInEnglandPage() {

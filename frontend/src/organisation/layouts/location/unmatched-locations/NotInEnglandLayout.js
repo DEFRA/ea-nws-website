@@ -1,10 +1,18 @@
 import { React } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
+import Button from '../../../../common/components/gov-uk/Button'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function NotInEnglandLayout ({ locationType }) {
+export default function NotInEnglandLayout({
+  NavigateToNextPage,
+  locationType
+}) {
   const navigate = useNavigate()
+
+  const handleSubmit = () => {
+    NavigateToNextPage()
+  }
 
   const navigateBack = (event) => {
     event.preventDefault()
@@ -103,6 +111,13 @@ export default function NotInEnglandLayout ({ locationType }) {
             </div>
           </div>
         </div>
+        {locationType === 'csvUpload' && (
+          <Button
+            className='govuk-button'
+            text='Continue'
+            onClick={handleSubmit}
+          />
+        )}
       </main>
     </>
   )

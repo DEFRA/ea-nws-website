@@ -17,8 +17,7 @@ export default function LocationNamePage () {
   const [error, setError] = useState('')
   const authToken = useSelector((state) => state.session.authToken)
 
-  const locationNameUsedBefore = async () => {
-    const locationName = name.trim()
+  const locationNameUsedBefore = async (locationName) => {
     const dataToSend = { authToken, locationName }
     const { errorMessage } = await backendCall(
       dataToSend,
@@ -40,7 +39,7 @@ export default function LocationNamePage () {
     if (validationError) {
       setError(validationError)
     } else {
-      const duplicateFound = await locationNameUsedBefore()
+      const duplicateFound = await locationNameUsedBefore(locationName)
       if (duplicateFound) {
         dispatch(setCurrentLocationName(locationName))
         navigate(orgManageLocationsUrls.add.error.alreadyExists)

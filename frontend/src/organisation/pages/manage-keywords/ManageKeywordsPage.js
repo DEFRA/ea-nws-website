@@ -9,13 +9,13 @@ import Popup from '../../../common/components/custom/Popup'
 import Autocomplete from '../../../common/components/gov-uk/Autocomplete'
 import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
+import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import {
   setContactKeywords,
   setLocationKeywords
 } from '../../../common/redux/userSlice'
 import KeywordsTable from '../../components/custom/KeywordsTable'
-
 export default function ManageKeywordsPage () {
   const navigate = useNavigate()
   const [keywords, setKeywords] = useState([])
@@ -35,6 +35,7 @@ export default function ManageKeywordsPage () {
   const [results, setResults] = useState(null)
   const [searchInput, setSearchInput] = useState(null)
   const [editError, setEditError] = useState('')
+  const [notificationText, setNotificationText] = useState('')
   const keywordsPerPage = 10
 
   const setTab = (tab) => {
@@ -105,6 +106,7 @@ export default function ManageKeywordsPage () {
       dispatch(setContactKeywords(updatedKeywords))
     }
     setKeywords([...updatedKeywords])
+    setNotificationText('Keyword edited')
   }
 
   const handleEdit = () => {
@@ -210,6 +212,13 @@ export default function ManageKeywordsPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
+          {notificationText && (
+              <NotificationBanner
+                className='govuk-notification-banner govuk-notification-banner--success'
+                title='Success'
+                text={notificationText}
+              />
+            )}
             <h1 className='govuk-heading-l'>Manage keywords</h1>
             <div className='govuk-body'>
               <p>

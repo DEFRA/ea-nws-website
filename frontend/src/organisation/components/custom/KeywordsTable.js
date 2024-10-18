@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function KeywordsTable({
+export default function KeywordsTable ({
   keywords,
   displayedKeywords,
   filteredKeywords,
@@ -188,8 +188,7 @@ export default function KeywordsTable({
                 <Link
                   className='govuk-link'
                   onClick={() =>
-                    handleDelete(keyword, keyword.linked_ids.length)
-                  }
+                    handleDelete(keyword, keyword.linked_ids.length)}
                 >
                   Delete
                 </Link>

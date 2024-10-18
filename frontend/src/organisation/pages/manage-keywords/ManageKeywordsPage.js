@@ -17,7 +17,7 @@ import {
 } from '../../../common/redux/userSlice'
 import KeywordsTable from '../../components/custom/KeywordsTable'
 
-export default function ManageKeywordsPage() {
+export default function ManageKeywordsPage () {
   const navigate = useNavigate()
   const [keywords, setKeywords] = useState([])
   const dispatch = useDispatch()
@@ -80,7 +80,6 @@ export default function ManageKeywordsPage() {
     navigate(-1)
   }
 
-
   const onClickEditDialog = () => {
     setDialogTitle('Change keyword')
     setDialogText(
@@ -113,8 +112,8 @@ export default function ManageKeywordsPage() {
 
   const handleEdit = () => {
     if (targetKeyword) {
-      if (updatedKeyword === '') {   
-        onClickEditDialog()   
+      if (updatedKeyword === '') {
+        onClickEditDialog()
         onClickDeleteDialog('changeLink')
       } else {
         editKeyword()
@@ -160,7 +159,7 @@ export default function ManageKeywordsPage() {
   const removeKeywords = (keywordsToRemove) => {
     const updatedKeywords = locationKeywords.filter(
       (k) => !keywordsToRemove.includes(k))
-    if (keywordType === 'location') {      
+    if (keywordType === 'location') {
       dispatch(setLocationKeywords(updatedKeywords))
     } else {
       dispatch(setContactKeywords(updatedKeywords))
@@ -179,7 +178,7 @@ export default function ManageKeywordsPage() {
       }
       onClickDeleteDialog()
     }
-  }  
+  }
 
   const onClickDeleteDialog = (from) => {
     if (from === 'deleteLink') {
@@ -199,7 +198,7 @@ export default function ManageKeywordsPage() {
         setDialogButtonText('Delete keyword')
       } else {
         const associatedLocations = selectedKeywords.reduce((total, keyword) => {
-          return total + keyword.linked_ids.length;
+          return total + keyword.linked_ids.length
         }, 0)
         setDialogTitle(`Delete ${selectedKeywords.length} keywords`)
         setDialogText(
@@ -232,7 +231,6 @@ export default function ManageKeywordsPage() {
     }
     setShowDeleteDialog(!showDeleteDialog)
   }
-
 
   const handleDeleteButton = () => {
     if (selectedKeywords.length > 0) {
@@ -420,16 +418,16 @@ export default function ManageKeywordsPage() {
                   </>
                 )}
                 {showDeleteDialog && (
-                <Popup
-                  onAction={handleDelete}
-                  onCancel={onClickDeleteDialog}
-                  onClose={onClickDeleteDialog}
-                  title={dialogTitle}
-                  popupText={dialogText}
-                  buttonText={dialogButtonText}
-                  buttonClass='govuk-button--warning'
-                />
-              )}
+                  <Popup
+                    onAction={handleDelete}
+                    onCancel={onClickDeleteDialog}
+                    onClose={onClickDeleteDialog}
+                    title={dialogTitle}
+                    popupText={dialogText}
+                    buttonText={dialogButtonText}
+                    buttonClass='govuk-button--warning'
+                  />
+                )}
               </div>
             </div>
           </div>

@@ -6,7 +6,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import Checkbox from '../../../../../common/components/gov-uk/CheckBox'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../../common/components/gov-uk/Input'
-import { setCurrentLocationKeywords } from '../../../../../common/redux/userSlice'
+import { setLocationKeywords } from '../../../../../common/redux/userSlice'
 
 export default function AddKeywordsLayout ({
   pageHeading,
@@ -17,19 +17,12 @@ export default function AddKeywordsLayout ({
   const dispatch = useDispatch()
 
   const savedKeywords = useSelector((state) =>
-    state.session.currentLocation.meta_data.location_additional.keywords !==
-    null
+    state.session.currentLocation.meta_data.location_additional.keywords
       ? state.session.currentLocation.meta_data.location_additional.keywords
       : []
   )
 
-  const checkboxArray = []
-  if (savedKeywords.length !== 0) {
-    for (let i = 0; i < savedKeywords.length; i++) {
-      checkboxArray.push(true)
-    }
-  }
-
+  const checkboxArray = Array(savedKeywords.length).fill(true)
   const [keywordError, setKeywordError] = useState('')
   const [keyword, setKeyword] = useState('')
   const [keywordsArray, setKeywordsArray] = useState([...savedKeywords])
@@ -37,22 +30,37 @@ export default function AddKeywordsLayout ({
     ...checkboxArray
   ])
 
+  const maxKeywordError = 'You can add a maximum of 50 keywords'
+  const maxKeywordCharError = 'Keywords must be 20 characters or less'
+  const duplicateKeywordError = 'This keyword already exists'
+
   const handleCheckboxChange = (isChecked, index) => {
-    if (!isChecked) {
-      isCheckboxCheckedArray.splice(index, 1)
-      keywordsArray.splice(index, 1)
+    isChecked
+      ? (isCheckboxCheckedArray[index] = true)
+      : (isCheckboxCheckedArray[index] = false)
+
+    if (
+      isCheckboxCheckedArray.filter((string) => string === true).length > 50
+    ) {
+      setKeywordError(maxKeywordError)
+      isCheckboxCheckedArray[index] = false
+    } else {
+      setKeywordError('')
     }
+
     setIsCheckboxCheckedArray([...isCheckboxCheckedArray])
   }
 
   const handleAddKeyword = () => {
     if (keyword) {
       if (keyword.length > 20) {
-        setKeywordError('Keywords must be 20 characters of less')
-      } else if (keywordsArray.length > 49) {
-        setKeywordError('You can add a maximum of 50 keywords')
+        setKeywordError(maxKeywordCharError)
+      } else if (
+        isCheckboxCheckedArray.filter((string) => string === true).length > 49
+      ) {
+        setKeywordError(maxKeywordError)
       } else if (keywordsArray.includes(keyword)) {
-        setKeywordError('This keyword already exists')
+        setKeywordError(duplicateKeywordError)
       } else {
         setKeywordsArray([...keywordsArray, keyword])
         setIsCheckboxCheckedArray([...isCheckboxCheckedArray, true])
@@ -62,12 +70,20 @@ export default function AddKeywordsLayout ({
   }
 
   const handleButton = () => {
-    if (
-      keywordsArray.length !== savedKeywords.length ||
-      !keywordsArray.every((val, idx) => val === savedKeywords[idx])
-    ) {
-      dispatch(setCurrentLocationKeywords(keywordsArray))
+    let keywordsArrayDispatch = []
+    for (const index in keywordsArray) {
+      if (isCheckboxCheckedArray[index] === true) {
+        keywordsArrayDispatch = [...keywordsArrayDispatch, keywordsArray[index]]
+      }
     }
+
+    if (
+      keywordsArrayDispatch.length !== savedKeywords.length ||
+      !keywordsArrayDispatch.every((val, idx) => val === savedKeywords[idx])
+    ) {
+      dispatch(setLocationKeywords(keywordsArrayDispatch))
+    }
+
     navigateToNextPage()
   }
 
@@ -119,10 +135,15 @@ export default function AddKeywordsLayout ({
               <div className='inline-button'>
                 <Input
                   inputType='text'
+                  value={keyword}
                   onChange={(val) => setKeyword(val)}
                   className='govuk-input govuk-input--width-20'
                 />
-                <Button text='Add keyword' onClick={handleAddKeyword} />
+                <Button
+                  text='Add keyword'
+                  onClick={handleAddKeyword}
+                  className='govuk-button govuk-button--secondary govuk-!-margin-top-0'
+                />
               </div>
 
               <Button

@@ -7,7 +7,7 @@ url_next_page = url_org_man_loc.get('optionalLocation').get('addActionPlan')
 keywords_max = 50
 keyword_error_max = 'You can add a maximum of 50 keywords'
 keyword_char_max = 20
-keyword_error_char_max = 'Keywords must be 20 characters of less'
+keyword_error_char_max = 'Keywords must be 20 characters or less'
 keyword_error_duplicate = 'This keyword already exists'
 
 def add_keyword(get_browser, keyword):
@@ -54,7 +54,7 @@ def test_add_multiple_duplicate_keywords(get_browser):
     click_button(get_browser, 'Continue', url_next_page)
     assert check_h1_heading(get_browser, 'Action plan (optional)')
 
-def test_remove_multiple_keywords(get_browser):
+def test_uncheck_keywords(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     add_keyword_success(get_browser, 'North')
     add_keyword_success(get_browser, 'South')
@@ -62,10 +62,8 @@ def test_remove_multiple_keywords(get_browser):
     add_keyword_success(get_browser, 'West')
     click_checkbox(get_browser, 'idSouth')
     click_checkbox(get_browser, 'idEast')
-    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idNorth']")
-    assert not check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idSouth']")
-    assert not check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idEast']")
-    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idWest']")
+    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idSouth']")
+    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idEast']")
     click_button(get_browser, 'Continue', url_next_page)
     assert check_h1_heading(get_browser, 'Action plan (optional)')
 

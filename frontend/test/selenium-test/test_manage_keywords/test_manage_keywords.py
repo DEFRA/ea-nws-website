@@ -93,6 +93,16 @@ def test_edit_location_failure_keywordalreadyexists_keyword_tab(get_browser):
     enter_input_text(get_browser, 'Keyword', 'Location Keyword 2')
     click_button(get_browser, 'Change keyword', current_url)
     assert 'This keyword already exists' in get_browser.page_source
+    
+def test_edit_location_empty_open_delete_dialog(get_browser):
+    navigate_to_auth_org_page_via_index(get_browser,current_url)
+    click_link(get_browser, "Locations keywords", current_url)
+    click_link(get_browser, "Change", current_url)
+    time.sleep(1)
+    enter_input_text(get_browser, 'Keyword', '')
+    click_button(get_browser, 'Change keyword', current_url)
+    assert 'Removing the keyword will delete it from this account.' in get_browser.page_source
+    assert 'Delete keyword' in get_browser.page_source
 
 def test_edit_dialog_render_contact_keyword_tab(get_browser):
     navigate_to_auth_org_page_via_index(get_browser,current_url)
@@ -165,3 +175,14 @@ def test_edit_contact_failure_keywordalreadyexists_keyword_tab(get_browser):
     enter_input_text(get_browser, 'Keyword', 'Contact Keyword 2')
     click_button(get_browser, 'Change keyword', current_url)
     assert 'This keyword already exists' in get_browser.page_source
+
+def test_edit_contact_empty_opens_delete_dialog(get_browser):
+    navigate_to_auth_org_page_via_index(get_browser,current_url)
+    click_link(get_browser, "Contacts keywords", current_url)
+    assert 'Contact Keyword 1' in get_browser.page_source    
+    click_link(get_browser, "Change", current_url)
+    time.sleep(1)
+    enter_input_text(get_browser, 'Keyword', '')
+    click_button(get_browser, 'Change keyword', current_url)
+    assert 'Removing the keyword will delete it from this account.' in get_browser.page_source
+    assert 'Delete keyword' in get_browser.page_source

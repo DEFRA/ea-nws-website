@@ -24,6 +24,7 @@ def test_locations_tab(get_browser):
     assert 'Search for a location keyword' in get_browser.page_source
     assert 'Associated locations' in get_browser.page_source
 
+# EDIT LOCATION
 def test_edit_dialog_render_location_keyword_tab(get_browser):
     navigate_to_auth_org_page_via_index(get_browser,current_url)
     click_link(get_browser, "Locations keywords", current_url)
@@ -70,6 +71,8 @@ def test_edit_location_keyword_tab(get_browser):
     time.sleep(1)
     assert 'Location Keyword 1' not in get_browser.page_source    
     assert 'updated_keyword' in get_browser.page_source    
+    assert 'Success' in get_browser.page_source  
+    assert 'Keyword edited' in get_browser.page_source  
 
 def test_edit_location_failure_inputtoolong_keyword_tab(get_browser):
     navigate_to_auth_org_page_via_index(get_browser,current_url)
@@ -104,6 +107,7 @@ def test_edit_location_empty_open_delete_dialog(get_browser):
     assert 'Removing the keyword will delete it from this account.' in get_browser.page_source
     assert 'Delete keyword' in get_browser.page_source
 
+# EDIT CONTACTS
 def test_edit_dialog_render_contact_keyword_tab(get_browser):
     navigate_to_auth_org_page_via_index(get_browser,current_url)
     click_link(get_browser, "Contacts keywords", current_url)
@@ -150,6 +154,8 @@ def test_edit_contact_keyword_tab(get_browser):
     time.sleep(1)
     assert 'Contact Keyword 1' not in get_browser.page_source    
     assert 'updated_keyword' in get_browser.page_source    
+    assert 'Success' in get_browser.page_source  
+    assert 'Keyword edited' in get_browser.page_source  
 
 def test_edit_contact_failure_inputtoolong_keyword_tab(get_browser):
     navigate_to_auth_org_page_via_index(get_browser,current_url)

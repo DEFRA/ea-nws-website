@@ -108,6 +108,7 @@ export default function ManageKeywordsPage() {
       dispatch(setContactKeywords(updatedKeywords))
     }
     setKeywords([...updatedKeywords])
+    setNotificationText('Keyword edited')
   }
 
   const handleEdit = () => {

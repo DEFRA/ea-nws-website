@@ -23,7 +23,7 @@ export default function Select ({
           : 'govuk-form-group govuk-form-group--error'
       }
     >
-      <label className='govuk-label' htmlFor={'id' + label}>
+      <label className='govuk-label' htmlFor={'id' + name}>
         {label}
       </label>
       <div htmlFor={'id' + hint} className='govuk-hint'>
@@ -45,7 +45,7 @@ export default function Select ({
         value={selectedOption}
       >
         {initialSelectOptionText && (
-          <option value='' disabled selected>
+          <option value='' disabled>
             {initialSelectOptionText}
           </option>
         )}

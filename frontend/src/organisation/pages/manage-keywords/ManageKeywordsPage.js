@@ -81,8 +81,7 @@ export default function ManageKeywordsPage() {
   }
 
 
-  const onClickEditDialog = (keyword) => {
-    setTargetKeyword(keyword)
+  const onClickEditDialog = () => {
     setDialogTitle('Change keyword')
     setDialogText(
       `Changing this keyword will change it for all the ${
@@ -113,9 +112,8 @@ export default function ManageKeywordsPage() {
 
   const handleEdit = () => {
     if (targetKeyword) {
-      if (updatedKeyword === '') {
-        onClickEditDialog()
-        setSelectedKeywords([updatedKeyword])
+      if (updatedKeyword === '') {   
+        onClickEditDialog()   
         onClickDeleteDialog('changeLink')
       } else {
         editKeyword()
@@ -158,9 +156,9 @@ export default function ManageKeywordsPage() {
     setResetPaging(!resetPaging)
   }
 
-  const removeKeywords = () => {
+  const removeKeywords = (keywordsToRemove) => {
     const updatedKeywords = locationKeywords.filter(
-      (k) => !selectedKeywords.includes(k))
+      (k) => !keywordsToRemove.includes(k))
     if (keywordType === 'location') {      
       dispatch(setLocationKeywords(updatedKeywords))
     } else {
@@ -170,18 +168,17 @@ export default function ManageKeywordsPage() {
   }
 
   const handleDelete = () => {
-      if (selectedKeywords.length > 0 || targetKeyword) {
-        removeKeywords()
-        if (targetKeyword) {
-          setNotificationText('Keyword deleted')
-        } else {
-          setNotificationText(`${selectedKeywords.length} keywords deleted`)
-        }
-        onClickDeleteDialog()
-        setSelectedKeywords([])
+    if (selectedKeywords.length > 0 || targetKeyword) {
+      const keywordsToRemove = selectedKeywords.length > 0 ? [...selectedKeywords] : [targetKeyword]
+      removeKeywords(keywordsToRemove)
+      if (targetKeyword) {
+        setNotificationText('Keyword deleted')
+      } else {
+        setNotificationText(`${selectedKeywords.length} keywords deleted`)
       }
+      onClickDeleteDialog()
     }
-  
+  }  
 
   const onClickDeleteDialog = (from) => {
     if (from === 'deleteLink') {

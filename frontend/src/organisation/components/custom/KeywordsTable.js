@@ -84,6 +84,11 @@ export default function KeywordsTable({
     onDelete('deleteLink')
   }
 
+  const handleEdit = (keyword) => {
+    setTargetKeyword(keyword)
+    onEdit()
+  }
+
   return (
     <>
       <p className='govuk-!-margin-bottom-6' style={{ color: '#505a5f' }}>
@@ -161,7 +166,10 @@ export default function KeywordsTable({
               <td className='govuk-table__cell'>{keyword.name}</td>
               <td className='govuk-table__cell'>{keyword.linked_ids.length}</td>
               <td className='govuk-table__cell'>
-                <Link className='govuk-link' onClick={() => onEdit(keyword)}>
+                <Link
+                  className='govuk-link'
+                  onClick={() => handleEdit(keyword)}
+                >
                   Change
                 </Link>{' '}
                 <span style={{ color: '#b1b4b6' }}>|</span>{' '}

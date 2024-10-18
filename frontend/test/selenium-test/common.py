@@ -235,10 +235,3 @@ def enter_input_text(browser, value, input_text, key='name'):
     input_element.clear()
     input_element.send_keys(input_text)
 
-#SETUP Mock Profile
-def activate_mock_org_1(get_browser):
-    browser = get_browser
-    browser.get(url_index)
-    click_button(browser, 'Activate/Deactivate Mock Org Session 1', url_index)
-    time.sleep(1)
-    return browser

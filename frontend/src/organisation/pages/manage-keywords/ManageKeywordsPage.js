@@ -17,12 +17,12 @@ import {
 } from '../../../common/redux/userSlice'
 import KeywordsTable from '../../components/custom/KeywordsTable'
 
-
 export default function ManageKeywordsPage() {
   const navigate = useNavigate()
   const [keywords, setKeywords] = useState([])
   const dispatch = useDispatch()
   const [keywordType, setKeywordType] = useState('location')
+  const [notificationText, setNotificationText] = useState('')
   const [selectedKeywords, setSelectedKeywords] = useState([])
   const [filteredKeywords, setFilteredKeywords] = useState([])
   const [targetKeyword, setTargetKeyword] = useState(null)
@@ -38,6 +38,7 @@ export default function ManageKeywordsPage() {
   const [results, setResults] = useState(null)
   const [searchInput, setSearchInput] = useState(null)
   const [editError, setEditError] = useState('')
+  const [associatedLocations, setAssociatedLocations] = useState(0)
   const keywordsPerPage = 10
 
   const setTab = (tab) => {
@@ -80,9 +81,6 @@ export default function ManageKeywordsPage() {
     navigate(-1)
   }
 
-  const setTab = (tab) => {
-    setKeywordType(tab)
-  }
 
   const onClickEditDialog = (keyword) => {
     setTargetKeyword(keyword)
@@ -117,9 +115,9 @@ export default function ManageKeywordsPage() {
   const handleEdit = () => {
     if (targetKeyword) {
       if (updatedKeyword === '') {
-        console.log('input is empty')
         onClickEditDialog()
-        // onClickRemove
+        setSelectedKeywords([updatedKeyword])
+        onClickDeleteDialog('changeLink')
       } else {
         editKeyword()
         onClickEditDialog()
@@ -161,9 +159,82 @@ export default function ManageKeywordsPage() {
     setResetPaging(!resetPaging)
   }
 
-  const handleButton = () => {
+  const removeKeywords = () => {
+    const updatedKeywords = locationKeywords.filter(
+      (k) => !selectedKeywords.includes(k))
+    if (keywordType === 'location') {      
+      dispatch(setKeywords(updatedKeywords))
+    } else {
+      dispatch(setKeywords(updatedKeywords))
+    }
+  }
+
+  const handleDelete = () => {
+      if (selectedKeywords.length > 0) {
+        removeKeywords()
+        if (selectedKeywords.length === 1) {
+          setNotificationText('Keyword deleted')
+        } else {
+          setNotificationText(`${selectedKeywords.length} keywords deleted`)
+        }
+        onClickDeleteDialog()
+        setSelectedKeywords([])
+      }
+    }
+  
+
+  const onClickDeleteDialog = (from) => {
+    if (from === 'deleteLink') {
+      if (selectedKeywords.length === 0 && targetKeyword) {
+        setDialogTitle('Delete keyword')
+        setDialogText(
+          <>
+            If you continue this keyword will be deleted from this account and
+            no longer associated with {targetKeyword.linked_ids.length} locations.
+            <br />
+            <br />
+            Deleting this keyword does not unlink contacts and locations. If you
+            no longer want contacts and locations to be linked you need to
+            unlink them.
+          </>
+        )
+        setDialogButtonText('Delete keyword')
+      } else {
+        setDialogTitle(`Delete ${selectedKeywords.length} keywords`)
+        setDialogText(
+          <>
+            If you continue these keywords will be deleted from this account and
+            no longer associated with {associatedLocations} locations.
+            <br />
+            <br />
+            Deleting these keywords does not unlink contacts and locations. If
+            you no longer want contacts and locations to be linked you need to
+            unlink them.
+          </>
+        )
+        setDialogButtonText('Delete keywords')
+      }
+    } else if (from === 'changeLink') {
+      setDialogText(
+        <>
+          Removing the keyword will delete it from this account. It will no
+          longer be in the keyword list and you will not be able to associate it
+          with any other locations.
+          <br />
+          <br />
+          Deleting this keyword does not unlink contacts and locations. If you
+          no longer want contacts and locations to be linked you need to unlink
+          them.
+        </>
+      )
+    }
+    setShowDeleteDialog(!showDeleteDialog)
+  }
+
+
+  const handleDeleteButton = () => {
     if (selectedKeywords) {
-      // TODO: delete keywords
+      onClickDeleteDialog('deleteLink')
     }
   }
 
@@ -301,7 +372,7 @@ export default function ManageKeywordsPage() {
                     <>
                       <Button
                         className='govuk-button govuk-button--secondary'
-                        onClick={handleButton}
+                        onClick={handleDeleteButton}
                         text='Delete selected keywords'
                       />
                       <KeywordsTable
@@ -313,6 +384,9 @@ export default function ManageKeywordsPage() {
                         setSelectedKeywords={setSelectedKeywords}
                         type={keywordType}
                         onEdit={onClickEditDialog}
+                        onDelete={onClickDeleteDialog}
+                        setAssociatedLocation={setAssociatedLocations}
+                        setTargetKeyword={setTargetKeyword}
                       />
                       <Pagination
                         totalPages={Math.ceil(
@@ -343,6 +417,17 @@ export default function ManageKeywordsPage() {
                     />
                   </>
                 )}
+                {showDeleteDialog && (
+                <Popup
+                  onAction={handleDelete}
+                  onCancel={onClickDeleteDialog}
+                  onClose={onClickDeleteDialog}
+                  title={dialogTitle}
+                  popupText={dialogText}
+                  buttonText={dialogButtonText}
+                  buttonClass='govuk-button--warning'
+                />
+              )}
               </div>
             </div>
           </div>

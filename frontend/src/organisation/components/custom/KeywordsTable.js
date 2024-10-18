@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function KeywordsTable ({
+export default function KeywordsTable({
   keywords,
   displayedKeywords,
   filteredKeywords,
@@ -9,7 +9,9 @@ export default function KeywordsTable ({
   selectedKeywords,
   setSelectedKeywords,
   type,
-  onEdit
+  onEdit,
+  onDelete,
+  setTargetKeyword
 }) {
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
   const [keywordSort, setKeywordSort] = useState('none')
@@ -75,6 +77,11 @@ export default function KeywordsTable ({
       updatedSelectedKeywords = [...selectedKeywords, keyword]
     }
     setSelectedKeywords(updatedSelectedKeywords)
+  }
+
+  const handleDelete = (keyword) => {
+    setTargetKeyword(keyword)
+    onDelete('deleteLink')
   }
 
   return (
@@ -158,7 +165,14 @@ export default function KeywordsTable ({
                   Change
                 </Link>{' '}
                 <span style={{ color: '#b1b4b6' }}>|</span>{' '}
-                <Link className='govuk-link'>Delete</Link>
+                <Link
+                  className='govuk-link'
+                  onClick={() =>
+                    handleDelete(keyword, keyword.linked_ids.length)
+                  }
+                >
+                  Delete
+                </Link>
               </td>
             </tr>
           ))}

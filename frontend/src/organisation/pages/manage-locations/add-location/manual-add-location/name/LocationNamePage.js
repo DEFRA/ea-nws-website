@@ -20,36 +20,36 @@ export default function LocationNamePage () {
   const locationNameUsedBefore = async () => {
     const locationName = name.trim()
     const dataToSend = { authToken, locationName }
-    const { errorMessage} = await backendCall(
+    const { errorMessage } = await backendCall(
       dataToSend,
       'api/locations/check_duplicate',
       navigate
     )
-    
+
     if (errorMessage) {
       return true
     }
     return false
   }
 
-
   // change how this is done
+
   const handleSubmit = async () => {
     const locationName = name.trim()
     const validationError = locationNameValidation(locationName)
-    const duplicateFound = await locationNameUsedBefore()
-    if (!validationError && !duplicateFound) {
-      dispatch(setCurrentLocationName(locationName))
-      navigate(orgManageLocationsUrls.add.search.searchOption)
-    } else if (!validationError && duplicateFound) {
-      dispatch(setCurrentLocationName(locationName))
-      navigate(orgManageLocationsUrls.add.error.alreadyExists)
-    } else {
+    if (validationError) {
       setError(validationError)
+    } else {
+      const duplicateFound = await locationNameUsedBefore()
+      if (duplicateFound) {
+        dispatch(setCurrentLocationName(locationName))
+        navigate(orgManageLocationsUrls.add.error.alreadyExists)
+      } else {
+        dispatch(setCurrentLocationName(locationName))
+        navigate(orgManageLocationsUrls.add.search.searchOption)
+      }
     }
   }
-
-
 
   const navigateBack = (event) => {
     event.preventDefault()

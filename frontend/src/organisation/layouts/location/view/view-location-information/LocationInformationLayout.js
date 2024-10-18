@@ -12,7 +12,7 @@ import Map from '../../../../components/custom/Map'
 import RiskCategoryLabel from '../../../../components/custom/RiskCategoryLabel'
 import ViewLocationSubNavigation from './location-information-components/ViewLocationSubNavigation'
 
-export default function LocationInformationLayout () {
+export default function LocationInformationLayout() {
   const navigate = useNavigate()
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = currentLocation.meta_data.location_additional
@@ -51,7 +51,7 @@ export default function LocationInformationLayout () {
         return <>0.5km (dummy data)</>
       case LocationDataType.BOUNDARY:
         // code to return boundary name
-        return <>Unitary Authority</>
+        return <>Unitary Authority (dummy data)</>
     }
   }
 
@@ -155,32 +155,32 @@ export default function LocationInformationLayout () {
         {(additionalData.location_data_type === LocationDataType.ADDRESS ||
           additionalData.location_data_type ===
             LocationDataType.X_AND_Y_COORDS) && (
-              <div class='govuk-grid-row'>
-                <div className='govuk-grid-column-full'>
-                  <div className='flood-risk-banner govuk-!-margin-top-2'>
-                    <div className='flood-risk-banner-item govuk-!-padding-2'>
-                      <h3 className='flood-risk-banner-title govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                        {RiskAreaType.RIVERS_AND_SEA}
-                      </h3>
-                      <div className='flood-risk-banner-label '>
-                        <RiskCategoryLabel
-                          riskAreaType={RiskAreaType.RIVERS_AND_SEA}
-                        />
-                      </div>
-                    </div>
-                    <div className='flood-risk-banner-item'>
-                      <h3 className='flood-risk-banner-title govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                        {RiskAreaType.GROUNDWATER}
-                      </h3>
-                      <div className='flood-risk-banner-label '>
-                        <RiskCategoryLabel
-                          riskAreaType={RiskAreaType.GROUNDWATER}
-                        />
-                      </div>
-                    </div>
+          <div class='govuk-grid-row'>
+            <div className='govuk-grid-column-full'>
+              <div className='flood-risk-banner govuk-!-margin-top-2'>
+                <div className='flood-risk-banner-item govuk-!-padding-2'>
+                  <h3 className='flood-risk-banner-title govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                    {RiskAreaType.RIVERS_AND_SEA}
+                  </h3>
+                  <div className='flood-risk-banner-label '>
+                    <RiskCategoryLabel
+                      riskAreaType={RiskAreaType.RIVERS_AND_SEA}
+                    />
+                  </div>
+                </div>
+                <div className='flood-risk-banner-item'>
+                  <h3 className='flood-risk-banner-title govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                    {RiskAreaType.GROUNDWATER}
+                  </h3>
+                  <div className='flood-risk-banner-label '>
+                    <RiskCategoryLabel
+                      riskAreaType={RiskAreaType.GROUNDWATER}
+                    />
                   </div>
                 </div>
               </div>
+            </div>
+          </div>
         )}
 
         {/* view location navigation */}
@@ -220,47 +220,50 @@ export default function LocationInformationLayout () {
             {/* Location details */}
             {locationDetails}
             {/* Key Information details */}
-            <div className='govuk-!-margin-top-7'>
-              <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
-                Key Information
-              </h2>
-              <Link
-                className='govuk-link govuk-!-display-inline-block'
-                style={{ float: 'right' }}
-                // to={}
-              >
-                Change
-              </Link>
-              <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-              <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                Location name
-              </h3>
-              <p>{additionalData.location_name}</p>
-              {additionalData.internal_reference && (
-                <>
-                  <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                    Internal reference
-                  </h3>
-                  <p>{additionalData.internal_reference}</p>
-                </>
-              )}
-              {additionalData.business_criticality && (
-                <>
-                  <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                    Business criticality
-                  </h3>
-                  <p>{additionalData.business_criticality}</p>
-                </>
-              )}
-              {additionalData.location_type && (
-                <>
-                  <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                    Location type
-                  </h3>
-                  <p>{additionalData.location_type}</p>
-                </>
-              )}
-            </div>
+            {additionalData.location_data_type !==
+              LocationDataType.BOUNDARY && (
+              <div className='govuk-!-margin-top-7'>
+                <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
+                  Key Information
+                </h2>
+                <Link
+                  className='govuk-link govuk-!-display-inline-block'
+                  style={{ float: 'right' }}
+                  // to={}
+                >
+                  Change
+                </Link>
+                <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+                <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                  Location name
+                </h3>
+                <p>{additionalData.location_name}</p>
+                {additionalData.internal_reference && (
+                  <>
+                    <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                      Internal reference
+                    </h3>
+                    <p>{additionalData.internal_reference}</p>
+                  </>
+                )}
+                {additionalData.business_criticality && (
+                  <>
+                    <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                      Business criticality
+                    </h3>
+                    <p>{additionalData.business_criticality}</p>
+                  </>
+                )}
+                {additionalData.location_type && (
+                  <>
+                    <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                      Location type
+                    </h3>
+                    <p>{additionalData.location_type}</p>
+                  </>
+                )}
+              </div>
+            )}
 
             {/* Keywords details */}
             {additionalData.keywords && (
@@ -321,31 +324,31 @@ export default function LocationInformationLayout () {
               {!currentLocation.address &&
                 additionalData.location_data_type !==
                   LocationDataType.BOUNDARY && (
-                    <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
-                      Add address
-                    </Link>
-              )}
+                  <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                    Add address
+                  </Link>
+                )}
               {!additionalData.internal_reference &&
                 additionalData.location_data_type !==
                   LocationDataType.BOUNDARY && (
-                    <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
-                      Add internal reference
-                    </Link>
-              )}
+                  <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                    Add internal reference
+                  </Link>
+                )}
               {!additionalData.business_criticality &&
                 additionalData.location_data_type !==
                   LocationDataType.BOUNDARY && (
-                    <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
-                      Add business criticality
-                    </Link>
-              )}
+                  <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                    Add business criticality
+                  </Link>
+                )}
               {!additionalData.location_type &&
                 additionalData.location_data_type !==
                   LocationDataType.BOUNDARY && (
-                    <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
-                      Add location type
-                    </Link>
-              )}
+                  <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                    Add location type
+                  </Link>
+                )}
               {!additionalData.keywords && (
                 <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
                   Add keywords

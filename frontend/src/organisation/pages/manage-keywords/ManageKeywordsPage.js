@@ -212,7 +212,7 @@ export default function ManageKeywordsPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-          {notificationText && (
+            {notificationText && (
               <NotificationBanner
                 className='govuk-notification-banner govuk-notification-banner--success'
                 title='Success'

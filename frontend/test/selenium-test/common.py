@@ -2,6 +2,21 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 import time
 
+#------------------------------------------------------------------------------
+# CONSTANTS
+#------------------------------------------------------------------------------
+
+# Keywords
+keywords_max = 50
+keyword_char_max = 20
+keyword_error_max = f'You can add a maximum of {keywords_max} keywords'
+keyword_error_char_max = f'Keywords must be {keyword_char_max} characters or less'
+keyword_error_duplicate = 'This keyword already exists'
+
+#------------------------------------------------------------------------------
+# URLS
+#------------------------------------------------------------------------------
+
 # Local host
 local_host = 'http://localhost:3000'
 
@@ -118,11 +133,13 @@ url_org_man_loc = {
         'dropPinEdit': url_org_man_loc_path + '/edit/drop-pin-edit'
     }
 }
-
 # org footer urls
 url_org_privacy_notice = url_org + '/privacy'
 
-# PAGE NAVIGATION
+#------------------------------------------------------------------------------
+# PAGE NAVIGATION FUNCTIONS
+#------------------------------------------------------------------------------
+
 # Navigate to authenticated page via index page and check url
 def navigate_to_auth_page_via_index(browser, url_target, mock_session=1):
     browser.get(url_index)
@@ -148,7 +165,10 @@ def activate_mock_org_1(get_browser):
     time.sleep(1)
     return browser
 
-# CLICK / SELECT
+#------------------------------------------------------------------------------
+# CLICK / SELECT FUNCTIONS
+#------------------------------------------------------------------------------
+
 # Click on a button and check url
 def click_button(browser, button_text, url_button):
     button_xpath = f"//button[text()='{button_text}']"
@@ -197,7 +217,10 @@ def select_dropdown_option(browser, dropdown_name, value, key='value'):
     option_element = browser.find_element(By.XPATH, option_xpath)
     browser.execute_script("arguments[0].click();", option_element)
 
-# ENTER TEXT
+#------------------------------------------------------------------------------
+# ENTER INPUT TEXT
+#------------------------------------------------------------------------------
+
 # Enter input in text box
 def enter_input_text(browser, value, input_text, key='name'):
     input_xpath = f"//input[@{key}='{value}']"
@@ -214,7 +237,10 @@ def enter_textarea_text(browser, value, input_text, key='name'):
     input_element.clear()
     input_element.send_keys(input_text)
 
-# CHECKS
+#------------------------------------------------------------------------------
+# CHECKS (RETURNS TRUE/FALSE)
+#------------------------------------------------------------------------------
+
 # Check if xpath exists
 def check_exists_by_xpath(browser, xpath):
     try:

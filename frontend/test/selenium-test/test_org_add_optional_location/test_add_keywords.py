@@ -4,12 +4,6 @@ previous_url= url_org_man_loc.get('optionalLocation').get('addKeyInformation')
 current_url  = url_org_man_loc.get('optionalLocation').get('addKeywords')
 url_next_page = url_org_man_loc.get('optionalLocation').get('addActionPlan')
 
-keywords_max = 50
-keyword_error_max = 'You can add a maximum of 50 keywords'
-keyword_char_max = 20
-keyword_error_char_max = 'Keywords must be 20 characters or less'
-keyword_error_duplicate = 'This keyword already exists'
-
 def add_keyword(get_browser, keyword):
     enter_input_text(get_browser, 'govuk-text-input', keyword, 'id')
     click_button(get_browser, 'Add keyword', current_url)

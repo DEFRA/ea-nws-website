@@ -16,7 +16,7 @@ import {
 } from '../../../common/services/ProfileServices'
 import { getCoordsOfFloodArea } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInAlertAreaLayout({
+export default function LocationInAlertAreaLayout ({
   continueToNextPage,
   continueToSearchResultsPage,
   canCancel

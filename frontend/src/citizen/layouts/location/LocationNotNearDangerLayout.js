@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import InsetText from '../../../common/components/gov-uk/InsetText'
 
-export default function LocationNotNearDangerLayout({
+export default function LocationNotNearDangerLayout ({
   continueToSearchResultsPage
 }) {
   const navigate = useNavigate()

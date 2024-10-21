@@ -9,7 +9,7 @@ import {
   updateOrganisationAdditionals
 } from '../../../common/services/ProfileServices'
 
-export default function SelectAddressLayout({
+export default function SelectAddressLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -74,8 +74,7 @@ export default function SelectAddressLayout({
                           <Link
                             className='govuk-link'
                             onClick={(event) =>
-                              handleSelectedLocation(event, location)
-                            }
+                              handleSelectedLocation(event, location)}
                           >
                             {location.address}
                           </Link>

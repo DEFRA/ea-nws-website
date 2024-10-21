@@ -35,8 +35,6 @@ export default function LocationNamePage () {
     }
   }
 
-  // change how this is done
-
   const handleSubmit = async () => {
     const locationName = name.trim()
     const validationError = locationNameValidation(locationName)

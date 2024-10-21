@@ -52,9 +52,6 @@ export default function LocationSearchOptionPage() {
     navigate(-1)
   }
 
-  const locationName = useSelector(
-    (state) => state.session.currentLocation.location_additional.location_name
-  )
   return (
     <>
       <OrganisationAccountNavigation />

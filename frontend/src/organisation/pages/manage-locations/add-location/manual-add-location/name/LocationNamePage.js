@@ -26,9 +26,13 @@ export default function LocationNamePage () {
     )
 
     if (errorMessage) {
-      return true
+      if (errorMessage === 'duplicate location') {
+        setError('')
+        return true
+      } else {
+        setError('Something went wrong, try again')
+      }
     }
-    return false
   }
 
   // change how this is done
@@ -40,12 +44,14 @@ export default function LocationNamePage () {
       setError(validationError)
     } else {
       const duplicateFound = await locationNameUsedBefore(locationName)
-      if (duplicateFound) {
-        dispatch(setCurrentLocationName(locationName))
-        navigate(orgManageLocationsUrls.add.error.alreadyExists)
-      } else {
-        dispatch(setCurrentLocationName(locationName))
-        navigate(orgManageLocationsUrls.add.search.searchOption)
+      if (error === '') {
+        if (duplicateFound) {
+          dispatch(setCurrentLocationName(locationName))
+          navigate(orgManageLocationsUrls.add.error.alreadyExists)
+        } else {
+          dispatch(setCurrentLocationName(locationName))
+          navigate(orgManageLocationsUrls.add.search.searchOption)
+        }
       }
     }
   }

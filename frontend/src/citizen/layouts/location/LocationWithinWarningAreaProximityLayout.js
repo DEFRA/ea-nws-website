@@ -144,23 +144,23 @@ export default function LocationWithinWarningAreaProximityLayout ({
                       {floodAreas
                         ? (
                             floodAreas.map((area, index) => (
-                      <Radio
-                              key={index}
-                              small
-                              label={`${index + 1}. ${area.properties.TA_NAME}`}
-                              name='floodAreas'
-                              onChange={() => setFloodArea(area)}
-                              checked={
+                              <Radio
+                                key={index}
+                                small
+                                label={`${index + 1}. ${area.properties.TA_NAME}`}
+                                name='floodAreas'
+                                onChange={() => setFloodArea(area)}
+                                checked={
                             (selectedFloodWarningArea &&
                               selectedFloodWarningArea.id === area.id) ||
                             (selectedFloodAlertArea &&
                               selectedFloodAlertArea.id === area.id)
                           }
-                            />
+                              />
                             ))
                           )
                         : (
-                  <LoadingSpinner />
+                          <LoadingSpinner />
                           )}
                     </fieldset>
                   </div>
@@ -175,11 +175,11 @@ export default function LocationWithinWarningAreaProximityLayout ({
                     {isMobile && (
                       <Link
                         onClick={(e) => {
-                  e.preventDefault()
-                  setShowMobileMap(true)
-                }}
+                          e.preventDefault()
+                          setShowMobileMap(true)
+                        }}
                       >
-                      View and select on map
+                        View and select on map
                       </Link>
                     )}
                   </div>

@@ -6,7 +6,7 @@ import OrganisationAccountNavigation from '../../../../../../common/components/c
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../../../common/components/gov-uk/Input'
-import { setCurrentLocation } from '../../../../../../common/redux/userSlice'
+import { setCurrentLocationName } from '../../../../../../common/redux/userSlice'
 import { locationNameValidation } from '../../../../../../common/services/validations/LocationNameValidation'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
@@ -20,7 +20,7 @@ export default function LocationNamePage () {
     const locationName = name.trim()
     const validationError = locationNameValidation(locationName)
     if (!validationError) {
-      dispatch(setCurrentLocation(locationName))
+      dispatch(setCurrentLocationName(locationName))
       navigate(orgManageLocationsUrls.add.search.searchOption)
     } else {
       setError(validationError)

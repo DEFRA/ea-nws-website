@@ -16,6 +16,7 @@ export default function LocationSearchOptionPage () {
     (state) =>
       state.session.currentLocation.meta_data.location_additional.location_name
   )
+
   // remove any errors if user changes search option
   useEffect(() => {
     setError('')

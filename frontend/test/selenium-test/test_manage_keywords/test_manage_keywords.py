@@ -319,4 +319,76 @@ def test_delete_from_edit_contact(get_browser):
     assert 'Success' in get_browser.page_source  
     assert 'Keyword deleted' in get_browser.page_source  
 
-# DELETE MULTIPLE
+# DELETE MULTIPLE locations
+def test_nothing_happen_delete_button_none_selected_locationtab(get_browser):
+    navigate_to_auth_org_page_via_index(get_browser,current_url)
+    click_link(get_browser, "Locations keywords", current_url)
+    assert 'Location Keyword 1' in get_browser.page_source
+    assert 'Location Keyword 2' in get_browser.page_source    
+    assert 'Location Keyword 3' in get_browser.page_source        
+    click_button(get_browser, "Delete selected keywords", current_url)
+    assert 'If you continue these keywords will be deleted from this account and no longer associated with' not in get_browser.page_source
+    assert 'Location Keyword 1' in get_browser.page_source
+    assert 'Location Keyword 2' in get_browser.page_source    
+    assert 'Location Keyword 3' in get_browser.page_source  
+
+def test_multi_delete_dialog_render_locations_tab(get_browser):
+    navigate_to_auth_org_page_via_index(get_browser,current_url)
+    click_link(get_browser, "Locations keywords", current_url)      
+    select_input_radio_option(get_browser, 'checkbox', 'type') 
+    click_button(get_browser, "Delete selected keywords", current_url)
+    assert 'Delete 3 keywords'
+    assert 'If you continue these keywords will be deleted from this account and' in get_browser.page_source
+    assert 'no longer associated with 3 locations.' in get_browser.page_source
+    assert 'Deleting these keywords does not unlink contacts and locations. If you no longer want contacts' in get_browser.page_source
+    assert 'and locations to be linked you need to unlink them.' in get_browser.page_source
+
+def test_multi_delete_success_locations_tab(get_browser):
+    navigate_to_auth_org_page_via_index(get_browser,current_url)
+    click_link(get_browser, "Locations keywords", current_url)  
+    assert 'Location Keyword 1' in get_browser.page_source
+    assert 'Location Keyword 2' in get_browser.page_source    
+    assert 'Location Keyword 3' in get_browser.page_source     
+    select_input_radio_option(get_browser, 'checkbox', 'type') 
+    click_button(get_browser, "Delete selected keywords", current_url)
+    click_button(get_browser, "Delete keywords", current_url)
+    assert 'Location Keyword 1' not in get_browser.page_source
+    assert 'Location Keyword 2' not in get_browser.page_source    
+    assert 'Location Keyword 3' not in get_browser.page_source
+    time.sleep(1)
+    assert '3 keywords deleted' in get_browser.page_source      
+
+# DELETE MULTIPLE contacts
+def test_nothing_happen_delete_button_none_selected_contactstab(get_browser):
+    navigate_to_auth_org_page_via_index(get_browser,current_url)
+    click_link(get_browser, "Contacts keywords", current_url)
+    assert 'Contact Keyword 1' in get_browser.page_source
+    assert 'Contact Keyword 2' in get_browser.page_source         
+    click_button(get_browser, "Delete selected keywords", current_url)
+    assert 'If you continue these keywords will be deleted from this account and no longer associated with' not in get_browser.page_source
+    assert 'Contact Keyword 1' in get_browser.page_source
+    assert 'Contact Keyword 2' in get_browser.page_source  
+
+def test_multi_delete_dialog_render_contacts_tab(get_browser):
+    navigate_to_auth_org_page_via_index(get_browser,current_url)
+    click_link(get_browser, "Contacts keywords", current_url)      
+    select_input_radio_option(get_browser, 'checkbox', 'type') 
+    click_button(get_browser, "Delete selected keywords", current_url)
+    assert 'Delete 2 keywords'
+    assert 'If you continue these keywords will be deleted from this account and' in get_browser.page_source
+    assert 'no longer associated with 3 locations.' in get_browser.page_source
+    assert 'Deleting these keywords does not unlink contacts and locations. If you no longer want contacts' in get_browser.page_source
+    assert 'and locations to be linked you need to unlink them.' in get_browser.page_source
+
+def test_multi_delete_success_contacts_tab(get_browser):
+    navigate_to_auth_org_page_via_index(get_browser,current_url)
+    click_link(get_browser, "Contacts keywords", current_url)  
+    assert 'Contact Keyword 1' in get_browser.page_source
+    assert 'Contact Keyword 2' in get_browser.page_source     
+    select_input_radio_option(get_browser, 'checkbox', 'type') 
+    click_button(get_browser, "Delete selected keywords", current_url)
+    click_button(get_browser, "Delete keywords", current_url)
+    assert 'Contact Keyword 1' not in get_browser.page_source
+    assert 'Contact Keyword 2' not in get_browser.page_source  
+    time.sleep(1)
+    assert '2 keywords deleted' in get_browser.page_source      

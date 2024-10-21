@@ -38,7 +38,7 @@ export default function ManageKeywordsPage () {
     action: null,
     textInput: '',
     setTextInput: '',
-    charLimit:0,
+    charLimit: 0,
     error: '',
     validateInput: null
   })
@@ -69,8 +69,8 @@ export default function ManageKeywordsPage () {
   }, [filteredKeywords, currentPage])
 
   const handleSetError = (val) => {
-    setDialog(dial => ({ ...dial, error: val }));
-  };
+    setDialog(dial => ({ ...dial, error: val }))
+  }
 
   const locationKeywords = useSelector((state) =>
     state.session.locationKeywords !== null
@@ -87,8 +87,8 @@ export default function ManageKeywordsPage () {
   }, [contactKeywords, keywordType, keywords, locationKeywords])
 
   const toggleDialogVisibility = () => {
-    setDialog(dial => ({ ...dial, show: !dial.show }));
-  };
+    setDialog(dial => ({ ...dial, show: !dial.show }))
+  }
 
   const navigateBack = (event) => {
     event.preventDefault()
@@ -105,11 +105,11 @@ export default function ManageKeywordsPage () {
         title: 'Change keyword',
         buttonText: 'Change keyword',
         buttonClass: '',
-        textInput:updatedKeyword,
-        setTextInput:setUpdatedKeyword,
-        charLimit:30,
-        error:'',
-        validateInput: validateInput,
+        textInput: updatedKeyword,
+        setTextInput: setUpdatedKeyword,
+        charLimit: 30,
+        error: '',
+        validateInput,
         action: handleEdit
       }
     )
@@ -133,7 +133,7 @@ export default function ManageKeywordsPage () {
     setKeywords([...updatedKeywords])
     setTargetKeyword(null)
     setNotificationText('Keyword edited')
-    setDialog(dial => ({...dial, show: !dial.show}))
+    setDialog(dial => ({ ...dial, show: !dial.show }))
   }
 
   const handleEdit = () => {
@@ -449,13 +449,13 @@ export default function ManageKeywordsPage () {
                       textInput={updatedKeyword}
                       setTextInput={setUpdatedKeyword}
                       charLimit={20}
-                      error={dialog.edit}
+                      error={dialog.error}
                       setError={handleSetError}
-                      validateInput={validateInput}
+                      validateInput={dialog.validateInput}
                     />
                   </>
                 )}
-                
+
               </div>
             </div>
           </div>

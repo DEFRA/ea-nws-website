@@ -29,15 +29,22 @@ export default function ManageKeywordsPage () {
   const [currentPage, setCurrentPage] = useState(1)
   const [resetPaging, setResetPaging] = useState(false)
   const [displayedKeywords, setDisplayedKeywords] = useState([])
-  const [showEditDialog, setShowEditDialog] = useState(false)
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
-  const [dialogText, setDialogText] = useState('')
-  const [dialogTitle, setDialogTitle] = useState('')
-  const [dialogButtonText, setDialogButtonText] = useState('')
+  const [dialog, setDialog] = useState({
+    show: false,
+    text: '',
+    title: '',
+    buttonText: '',
+    buttonClass: '',
+    action: null,
+    textInput: '',
+    setTextInput: '',
+    charLimit:0,
+    error: '',
+    validateInput: null
+  })
   const [updatedKeyword, setUpdatedKeyword] = useState('')
   const [results, setResults] = useState(null)
   const [searchInput, setSearchInput] = useState(null)
-  const [editError, setEditError] = useState('')
   const keywordsPerPage = 10
 
   const setTab = (tab) => {
@@ -61,6 +68,10 @@ export default function ManageKeywordsPage () {
     )
   }, [filteredKeywords, currentPage])
 
+  const handleSetError = (val) => {
+    setDialog(dial => ({ ...dial, error: val }));
+  };
+
   const locationKeywords = useSelector((state) =>
     state.session.locationKeywords !== null
       ? state.session.locationKeywords
@@ -75,20 +86,33 @@ export default function ManageKeywordsPage () {
     setFilteredKeywords(keywords)
   }, [contactKeywords, keywordType, keywords, locationKeywords])
 
+  const toggleDialogVisibility = () => {
+    setDialog(dial => ({ ...dial, show: !dial.show }));
+  };
+
   const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
   }
 
   const onClickEditDialog = () => {
-    setDialogTitle('Change keyword')
-    setDialogText(
-      `Changing this keyword will change it for all the ${
+    setDialog(
+      {
+        show: !dialog.show,
+        text: `Changing this keyword will change it for all the ${
         keywordType === 'location' ? 'locations' : 'contacts'
-      } it's associated with.`
+      } it's associated with.`,
+        title: 'Change keyword',
+        buttonText: 'Change keyword',
+        buttonClass: '',
+        textInput:updatedKeyword,
+        setTextInput:setUpdatedKeyword,
+        charLimit:30,
+        error:'',
+        validateInput: validateInput,
+        action: handleEdit
+      }
     )
-    setDialogButtonText('Change keyword')
-    setShowEditDialog(!showEditDialog)
   }
 
   const editKeyword = () => {
@@ -109,16 +133,15 @@ export default function ManageKeywordsPage () {
     setKeywords([...updatedKeywords])
     setTargetKeyword(null)
     setNotificationText('Keyword edited')
+    setDialog(dial => ({...dial, show: !dial.show}))
   }
 
   const handleEdit = () => {
     if (targetKeyword) {
       if (updatedKeyword === '') {
-        onClickEditDialog()
         onClickDeleteDialog('changeLink')
       } else {
         editKeyword()
-        onClickEditDialog()
       }
     }
   }
@@ -184,27 +207,32 @@ export default function ManageKeywordsPage () {
   }
 
   const onClickDeleteDialog = (from) => {
+    let dialogText
+    let dialogTitle
+    let dialogButtonText
     if (from === 'deleteLink') {
       if (selectedKeywords.length === 0 && targetKeyword) {
-        setDialogTitle('Delete keyword')
-        setDialogText(
-          <>
-            If you continue this keyword will be deleted from this account and
-            no longer associated with {targetKeyword.linked_ids.length} locations.
-            <br />
-            <br />
-            Deleting this keyword does not unlink contacts and locations. If you
-            no longer want contacts and locations to be linked you need to
-            unlink them.
-          </>
-        )
-        setDialogButtonText('Delete keyword')
+        dialogTitle = 'Delete keyword'
+        dialogText =
+          (
+            <>
+              If you continue this keyword will be deleted from this account and
+              no longer associated with {targetKeyword.linked_ids.length} locations.
+              <br />
+              <br />
+              Deleting this keyword does not unlink contacts and locations. If you
+              no longer want contacts and locations to be linked you need to
+              unlink them.
+            </>
+          )
+
+        dialogButtonText = ('Delete keyword')
       } else {
         const associatedLocations = selectedKeywords.reduce((total, keyword) => {
           return total + keyword.linked_ids.length
         }, 0)
-        setDialogTitle(`Delete ${selectedKeywords.length} keywords`)
-        setDialogText(
+        dialogTitle = (`Delete ${selectedKeywords.length} keywords`)
+        dialogText = (
           <>
             If you continue these keywords will be deleted from this account and
             no longer associated with {associatedLocations} locations.
@@ -215,10 +243,10 @@ export default function ManageKeywordsPage () {
             unlink them.
           </>
         )
-        setDialogButtonText('Delete keywords')
+        dialogButtonText = ('Delete keywords')
       }
     } else if (from === 'changeLink') {
-      setDialogText(
+      dialogText = (
         <>
           Removing the keyword will delete it from this account. It will no
           longer be in the keyword list and you will not be able to associate it
@@ -230,9 +258,18 @@ export default function ManageKeywordsPage () {
           them.
         </>
       )
-      setDialogButtonText('Delete keyword')
+      dialogButtonText = ('Delete keyword')
     }
-    setShowDeleteDialog(!showDeleteDialog)
+    setDialog(
+      {
+        show: !dialog.show,
+        text: dialogText,
+        title: dialogTitle,
+        buttonText: dialogButtonText,
+        buttonClass: 'govuk-button--warning',
+        action: handleDelete
+      }
+    )
   }
 
   const handleDeleteButton = () => {
@@ -399,36 +436,26 @@ export default function ManageKeywordsPage () {
                     </>
                     )
                   : <p>No results. Try searching with a different keyword.</p>}
-                {showEditDialog && (
+                {dialog.show && (
                   <>
                     <Popup
-                      onAction={handleEdit}
-                      onCancel={onClickEditDialog}
-                      onClose={onClickEditDialog}
-                      title={dialogTitle}
-                      popupText={dialogText}
-                      buttonText={dialogButtonText}
+                      onAction={dialog.action}
+                      onCancel={toggleDialogVisibility}
+                      onClose={toggleDialogVisibility}
+                      title={dialog.title}
+                      popupText={dialog.text}
+                      buttonText={dialog.buttonText}
                       input='Keyword'
                       textInput={updatedKeyword}
                       setTextInput={setUpdatedKeyword}
                       charLimit={20}
-                      error={editError}
-                      setError={setEditError}
+                      error={dialog.edit}
+                      setError={handleSetError}
                       validateInput={validateInput}
                     />
                   </>
                 )}
-                {showDeleteDialog && (
-                  <Popup
-                    onAction={handleDelete}
-                    onCancel={onClickDeleteDialog}
-                    onClose={onClickDeleteDialog}
-                    title={dialogTitle}
-                    popupText={dialogText}
-                    buttonText={dialogButtonText}
-                    buttonClass='govuk-button--warning'
-                  />
-                )}
+                
               </div>
             </div>
           </div>

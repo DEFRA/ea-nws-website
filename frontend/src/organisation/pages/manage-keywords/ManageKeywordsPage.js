@@ -107,6 +107,7 @@ export default function ManageKeywordsPage () {
       dispatch(setContactKeywords(updatedKeywords))
     }
     setKeywords([...updatedKeywords])
+    setTargetKeyword(null)
     setNotificationText('Keyword edited')
   }
 
@@ -165,17 +166,19 @@ export default function ManageKeywordsPage () {
       dispatch(setContactKeywords(updatedKeywords))
     }
     setKeywords([...updatedKeywords])
+    if (targetKeyword) {
+      setNotificationText('Keyword deleted')
+    } else {
+      setNotificationText(`${selectedKeywords.length} keywords deleted`)
+    }
+    setTargetKeyword(null)
+    setSelectedKeywords([])
   }
 
   const handleDelete = () => {
     if (selectedKeywords.length > 0 || targetKeyword) {
       const keywordsToRemove = selectedKeywords.length > 0 ? [...selectedKeywords] : [targetKeyword]
       removeKeywords(keywordsToRemove)
-      if (targetKeyword) {
-        setNotificationText('Keyword deleted')
-      } else {
-        setNotificationText(`${selectedKeywords.length} keywords deleted`)
-      }
       onClickDeleteDialog()
     }
   }

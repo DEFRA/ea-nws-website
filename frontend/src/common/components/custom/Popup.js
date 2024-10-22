@@ -24,7 +24,7 @@ export default function Popup ({
     if (input) {
       setTextInput(val)
       if (val.length > charLimit) {
-        setError(`${input} must be ${charLimit} characters or less`)
+        setError(`${input}s must be ${charLimit} characters or less`)
       } else {
         setError('')
       }

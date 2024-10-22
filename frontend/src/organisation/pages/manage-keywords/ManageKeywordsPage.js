@@ -108,7 +108,7 @@ export default function ManageKeywordsPage () {
         title: 'Change keyword',
         buttonText: 'Delete keyword',
         buttonClass: 'govuk-button--warning',
-        input:'',
+        input: '',
         action: handleDelete
       }
     )
@@ -127,12 +127,12 @@ export default function ManageKeywordsPage () {
           no longer want contacts and locations to be linked you need to
           unlink them.
         </>
-),
+        ),
         title: 'Delete keyword',
         buttonText: 'Delete keyword',
         buttonClass: 'govuk-button--warning',
         action: handleDelete,
-        input:''
+        input: ''
       }
     )
   }
@@ -144,7 +144,7 @@ export default function ManageKeywordsPage () {
     setDialog(
       {
         show: true,
-        text:(
+        text: (
           <>
             If you continue these keywords will be deleted from this account and
             no longer associated with {associatedLocations} locations.
@@ -158,7 +158,7 @@ export default function ManageKeywordsPage () {
         title: (`Delete ${selectedKeywords.length} keywords`),
         buttonText: 'Delete keywords',
         buttonClass: 'govuk-button--warning',
-        input:'',
+        input: '',
         action: handleDelete
       }
     )
@@ -202,10 +202,9 @@ export default function ManageKeywordsPage () {
   }
 
   const onAction = (actionType) => {
-    if(actionType === 'edit') {
+    if (actionType === 'edit') {
       onClickEditDialog()
-    }
-    else{
+    } else {
       onClickDeleteDialog('deleteLink')
     }
   }

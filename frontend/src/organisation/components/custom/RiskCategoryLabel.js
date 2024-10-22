@@ -11,6 +11,7 @@ export default function RiskCategoryLabel ({ riskAreaType }) {
     (state) => state.session.currentLocation.coordinates
   )
   const [riskRating, setRiskRating] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const getRiskRatings = async () => {
@@ -28,6 +29,7 @@ export default function RiskCategoryLabel ({ riskAreaType }) {
           longitude
         )
       }
+      setLoading(false)
       setRiskRating(riskCategory)
     }
     getRiskRatings()
@@ -44,11 +46,22 @@ export default function RiskCategoryLabel ({ riskAreaType }) {
     unavailble: { className: '', title: 'Unavailble' }
   }
 
-  const { className, title } = riskData[riskRating] || { className: '', title: 'Unavailble' }
+  const { className, title } = riskData[riskRating] || {
+    className: '',
+    title: 'Unavailble'
+  }
 
   return (
     <>
-      <span className={`flood-risk-container ${className}`}>{title}</span>
+      {loading
+        ? (
+          <>
+            <span className='flood-risk-container'>loading...</span>
+          </>
+          )
+        : (
+          <span className={`flood-risk-container ${className}`}>{title}</span>
+          )}
     </>
   )
 }

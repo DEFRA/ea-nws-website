@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function KeywordsTable ({
+export default function KeywordsTable({
   keywords,
   displayedKeywords,
   filteredKeywords,
@@ -9,8 +9,7 @@ export default function KeywordsTable ({
   selectedKeywords,
   setSelectedKeywords,
   type,
-  onEdit,
-  onDelete,
+  onAction,
   targetKeyword,
   setTargetKeyword
 }) {
@@ -26,13 +25,9 @@ export default function KeywordsTable ({
 
   useEffect(() => {
     if (targetKeyword) {
-      if (action === 'edit') {
-        onEdit()
-      } else {
-        onDelete('deleteLink')
-      }
+      onAction(action)
     }
-  }, [action, targetKeyword])
+  }, [action, onAction, targetKeyword])
 
   const sortKeywords = () => {
     if (keywordSort === 'none' || keywordSort === 'descending') {
@@ -91,14 +86,9 @@ export default function KeywordsTable ({
     setSelectedKeywords(updatedSelectedKeywords)
   }
 
-  const handleDelete = (keyword) => {
+  const handleAction = (actionType, keyword) => {
+    setAction(actionType)
     setTargetKeyword(keyword)
-    setAction('delete')
-  }
-
-  const handleEdit = (keyword) => {
-    setTargetKeyword(keyword)
-    setAction('edit')
   }
 
   return (
@@ -180,15 +170,14 @@ export default function KeywordsTable ({
               <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'
-                  onClick={() => handleEdit(keyword)}
+                  onClick={() => handleAction('edit', keyword)}
                 >
                   Change
                 </Link>{' '}
                 <span style={{ color: '#b1b4b6' }}>|</span>{' '}
                 <Link
                   className='govuk-link'
-                  onClick={() =>
-                    handleDelete(keyword, keyword.linked_ids.length)}
+                  onClick={() => handleAction('delete', keyword)}
                 >
                   Delete
                 </Link>

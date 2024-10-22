@@ -1,12 +1,12 @@
 import React from 'react'
 import BackLink from '../../../../common/components/custom/BackLink'
-//import MainAdministratorTable from '../../sign-up/review/MainAdministratorTable'
+// import MainAdministratorTable from '../../sign-up/review/MainAdministratorTable'
 import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
 import { useNavigate } from 'react-router'
 import { useSelector } from 'react-redux'
 export default function ManageAdmindetailsPage () {
   // WIP page
-  //const profile = useSelector((state) => state.session.profile)
+  // const profile = useSelector((state) => state.session.profile)
   const navigate = useNavigate()
 
   const navigateBack = (event) => {

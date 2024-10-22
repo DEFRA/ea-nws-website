@@ -1,7 +1,7 @@
 from common import *
 
-url_current = url_org_man_loc.get('add').get('predefinedBoundary').get('optional').get('info')
-url_next = url_org_man_loc.get('add').get('predefinedBoundary').get('optional').get('keywords')
+url_current = url_org_man_loc.get('add').get('predefinedBoundary').get('optionalInfo')
+url_next = url_org_man_loc.get('optionalLocation').get('addKeywords')
 
 def test_optional_loc_page_render(get_browser):
     navigate_to_auth_page_via_index(get_browser, url_current)

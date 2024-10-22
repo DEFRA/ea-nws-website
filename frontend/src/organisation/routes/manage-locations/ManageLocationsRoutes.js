@@ -13,11 +13,10 @@ import XYCoordinatesNotInEnglandPage from '../../pages/manage-locations/add-loca
 import AddLocationNotInEnglandPage from '../../pages/manage-locations/add-location/manual-add-location/unmatched-locations/NotInEnglandPage'
 import AddActionPlan from '../../pages/manage-locations/add-location/optional-information/AddActionPlanPage'
 import AddKeyInformationPage from '../../pages/manage-locations/add-location/optional-information/AddKeyInformationPage'
-import KeywordsForThisLocationPage from '../../pages/manage-locations/add-location/optional-information/AddKeywordsForThisLocationPage'
+import KeywordsForThisLocationPage from '../../pages/manage-locations/add-location/optional-information/AddKeywordsPage'
 import AddNotesPage from '../../pages/manage-locations/add-location/optional-information/AddNotesPage'
 import AddOptionalAddress from '../../pages/manage-locations/add-location/optional-information/AddOptionalAddress'
-import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-information/OptionalLocationInformationPage'
-import PredefinedBoundariesAddKeywordsPage from '../../pages/manage-locations/add-location/predefined-boundary/AddKeywordsPage'
+import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-information/OptionalInfoPage'
 import PredefinedBoundariesOptionalInfoPage from '../../pages/manage-locations/add-location/predefined-boundary/OptionalInfoPage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirmPage'
@@ -80,13 +79,8 @@ const orgManageLocationsUrls = {
       dropPinSearchResults: urlManageOrg + '/add/drop-pin-search-results'
     },
     predefinedBoundary: {
-      optional: {
-        info: urlManageOrgAddLocations + '/predefined-boundary/optional/info',
-        keywords:
-          urlManageOrgAddLocations + '/predefined-boundary/optional/keywords',
-        actionPlan:
-          urlManageOrgAddLocations + '/predefined-boundary/optional/action-plan'
-      }
+      optionalInfo:
+        urlManageOrgAddLocations + '/predefined-boundary/optional-information'
     },
     optionalInformation: {
       optionalInfo: urlManageOrgAddLocations + '/optional-information',
@@ -281,12 +275,8 @@ const orgManageLocationRoutes = [
   },
   // predefined boundary
   {
-    path: orgManageLocationsUrls.add.predefinedBoundary.optional.info,
+    path: orgManageLocationsUrls.add.predefinedBoundary.optionalInfo,
     component: <PredefinedBoundariesOptionalInfoPage />
-  },
-  {
-    path: orgManageLocationsUrls.add.predefinedBoundary.optional.keywords,
-    component: <PredefinedBoundariesAddKeywordsPage />
   },
   // edit
   {

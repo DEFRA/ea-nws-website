@@ -11,7 +11,7 @@ export default function OptionalInformationLayout () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.add.predefinedBoundary.optional.keywords)
+    navigate(orgManageLocationsUrls.add.optionalInformation.addKeywords)
   }
 
   const navigateBack = (event) => {

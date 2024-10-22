@@ -1,81 +1,10 @@
 from common import *
 
-url_previous = url_org_man_loc.get('add').get('predefinedBoundary').get('optional').get('info')
-url_current = url_org_man_loc.get('add').get('predefinedBoundary').get('optional').get('keywords')
-url_next = url_org_man_loc.get('add').get('predefinedBoundary').get('optional').get('actionPlan')
+url_previous = url_org_man_loc.get('add').get('predefinedBoundary').get('optionalInfo')
+url_current = url_org_man_loc.get('optionalLocation').get('addKeywords')
 
-def add_keyword(get_browser, keyword):
-    enter_input_text(get_browser, 'govuk-text-input', keyword, 'id')
-    click_button(get_browser, 'Add keyword', url_current)
-
-def add_keyword_success(get_browser, keyword):
-    add_keyword(get_browser, keyword)
-    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='id{keyword}']")
-    assert check_exists_by_xpath(get_browser, f"//input[@class='govuk-checkboxes__input' and @id='id{keyword}']")
-
-def add_keyword_fail(get_browser, keyword, error):
-    add_keyword(get_browser, keyword)
-    assert check_error_summary(get_browser)
-    assert error in get_browser.page_source
-    if error == keyword_error_duplicate:
-        assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='id{keyword}']")
-        assert check_exists_by_xpath(get_browser, f"//input[@class='govuk-checkboxes__input' and @id='id{keyword}']")
-
-def test_render(get_browser):
-    navigate_to_auth_page_via_index(get_browser, url_current)
-    assert check_h1_heading(get_browser, 'Keywords for this location (optional)')
-    assert 'You can add new keywords. Or you can remove existing keywords associated with this location by unticking the relevant box.' in get_browser.page_source
-    click_button(get_browser, 'Add keyword', url_current)
-
+# Only check back button as the rest of the functionality is tested in test_add_keywords.py
 def test_back_button(get_browser):
     navigate_to_auth_page_via_index(get_browser, url_previous)
     click_button(get_browser, 'Add useful information now', url_current)
     click_link(get_browser, "Back", url_previous)
-
-def test_continue_empty(get_browser):
-    navigate_to_auth_page_via_index(get_browser, url_current)
-    click_button(get_browser, 'Continue', url_next)
-
-def test_add_multiple_duplicate_keywords(get_browser):
-    navigate_to_auth_page_via_index(get_browser,url_current)
-    add_keyword_success(get_browser, 'North')
-    add_keyword_success(get_browser, 'South')
-    add_keyword_success(get_browser, 'East')
-    add_keyword_success(get_browser, 'West')
-    add_keyword_fail(get_browser, 'South', keyword_error_duplicate)
-    add_keyword_fail(get_browser, 'North', keyword_error_duplicate)
-    click_button(get_browser, 'Continue', url_next)
-
-def test_uncheck_keywords(get_browser):
-    navigate_to_auth_page_via_index(get_browser,url_current)
-    add_keyword_success(get_browser, 'North')
-    add_keyword_success(get_browser, 'South')
-    add_keyword_success(get_browser, 'East')
-    add_keyword_success(get_browser, 'West')
-    click_checkbox(get_browser, 'idSouth')
-    click_checkbox(get_browser, 'idEast')
-    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idSouth']")
-    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idEast']")
-    click_button(get_browser, 'Continue', url_next)
-
-def test_max_keywords_selected(get_browser):
-    navigate_to_auth_page_via_index(get_browser,url_current)
-    for i in range(keywords_max):
-        add_keyword_success(get_browser, 'keyword'+str(i))
-    # Untick 2 keywords
-    click_checkbox(get_browser, 'idkeyword1')
-    click_checkbox(get_browser, 'idkeyword49')
-    # Add 2 keywords
-    add_keyword_success(get_browser, 'keyword50')
-    add_keyword_success(get_browser, 'keyword51')
-    # Tick 1 keyword to exceed max
-    click_checkbox(get_browser, 'idkeyword49')
-    add_keyword_fail(get_browser, 'keyword51', keyword_error_max)
-    # Untick 1 keyword and add new keyword to exceed max
-    click_checkbox(get_browser, 'idkeyword49')
-    add_keyword_fail(get_browser, 'keyword52', keyword_error_max)
-
-def test_max_char_keyword(get_browser):
-    navigate_to_auth_page_via_index(get_browser,url_current)
-    long_keyword = "A" * (keyword_char_max+1)
-    add_keyword_fail(get_browser, long_keyword, keyword_error_char_max)

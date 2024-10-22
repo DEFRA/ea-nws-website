@@ -91,11 +91,7 @@ url_org_man_loc = {
         'xyCoordinatesNotInEngland': url_org_man_loc_path + '/add/xy-coordinates-not-in-england',
         'dropPinSearch': url_org_man_loc_path + '/add/drop-pin-search',
         'predefinedBoundary': {
-            'optional':{
-                'info': url_org_man_loc_path + '/add/predefined-boundary/optional/info',
-                'keywords': url_org_man_loc_path + '/add/predefined-boundary/optional/keywords',
-                'actionPlan': url_org_man_loc_path + '/add/predefined-boundary/optional/action-plan'
-            }
+            'optionalInfo': url_org_man_loc_path + '/add/predefined-boundary/optional-information',
         }
     },
     'optionalLocation':{

@@ -5,24 +5,24 @@ const urlOrg = '/organisation'
 const urlManageAdmin = urlOrg + '/manage-admin'
 
 const accountUrls = {
-  organisation:{
+  organisation: {
     orgDetails: urlOrg + '/manage-organisation-details'
   },
-  admin:{ 
+  admin: {
     details: urlManageAdmin + '/admin-details'
 
   }
 }
 
-const accountRoutes = [
+const orgManageAccountRoutes = [
   {
     path: accountUrls.organisation.orgDetails,
-    component: <ManageOrganisationDetailsPage/>
+    component: <ManageOrganisationDetailsPage />
   },
   {
     path: accountUrls.admin.details,
-    component: <ManageAdmindetailsPage/>
+    component: <ManageAdmindetailsPage />
   }
 ]
 
-export {accountRoutes,accountUrls}
+export { orgManageAccountRoutes, accountUrls }

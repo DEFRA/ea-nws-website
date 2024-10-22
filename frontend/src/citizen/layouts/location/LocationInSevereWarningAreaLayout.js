@@ -60,7 +60,7 @@ export default function LocationInSevereWarningAreaLayout ({
     if (isUserInNearbyTargetFlowpath) {
       await removeFloodWarningArea()
     } else {
-      await removeLocationWithFloodWarningAlerts()
+      removeLocationWithFloodWarningAlerts()
     }
 
     dispatch(setAdditionalAlerts(false))
@@ -74,12 +74,12 @@ export default function LocationInSevereWarningAreaLayout ({
       address: selectedFloodWarningArea.properties.TA_NAME,
       coordinates: getCoordsOfFloodArea(selectedFloodWarningArea)
     }
-    const updatedProfile = await addLocation(profile, warningArea)
+    const updatedProfile = addLocation(profile, warningArea)
     dispatch(setProfile(updatedProfile))
   }
 
   const removeFloodWarningArea = async () => {
-    const updatedProfile = await removeLocation(
+    const updatedProfile = removeLocation(
       profile,
       selectedFloodWarningArea.properties.TA_NAME
     )
@@ -107,15 +107,12 @@ export default function LocationInSevereWarningAreaLayout ({
       categories: ['severe']
     }
 
-    const updatedProfile = await addLocation(profile, locationWithAlertType)
+    const updatedProfile = addLocation(profile, locationWithAlertType)
     dispatch(setProfile(updatedProfile))
   }
 
   const removeLocationWithFloodWarningAlerts = async () => {
-    const updatedProfile = await removeLocation(
-      profile,
-      selectedLocation.address
-    )
+    const updatedProfile = removeLocation(profile, selectedLocation.address)
     dispatch(setProfile(updatedProfile))
   }
 
@@ -152,7 +149,7 @@ export default function LocationInSevereWarningAreaLayout ({
               These warnings tell you when flooding:
             </p>
             <ul className='govuk-list govuk-list--bullet'>
-              <li>is expected</li>
+              <li>is expected</li>f
               <li>could be a danger to life or property</li>
             </ul>
             <p>You'll need to act immediately.</p>

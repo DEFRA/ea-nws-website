@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import Select from '../../../../../common/components/gov-uk/Select'
+import {
+  setSelectedBoundary,
+  setSelectedBoundaryType
+} from '../../../../../common/redux/userSlice'
 import {
   getBoundaries,
   getBoundaryTypes
@@ -11,6 +16,7 @@ import {
 import Map from '../../../../components/custom/Map'
 
 export default function SelectPredefinedBoundaryPage() {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
 
   const [boundaryTypeError, setBoundaryTypeError] = useState('')
@@ -18,7 +24,7 @@ export default function SelectPredefinedBoundaryPage() {
   const [boundaryTypes, setBoundaryTypes] = useState([])
   const [boundaryType, setBoundaryType] = useState('')
   const [boundaries, setBoundaries] = useState([])
-  const [boundary, setBoundary] = useState('')
+  const [boundaryId, setBoundaryId] = useState('')
 
   // Get boundary types
   useEffect(() => {
@@ -34,15 +40,26 @@ export default function SelectPredefinedBoundaryPage() {
 
   useEffect(() => {
     setBoundaryError('')
-  }, [boundary])
+  }, [boundaryId])
 
   const onBoundaryTypeSelected = async (boundaryType) => {
     setBoundaryType(boundaryType)
-    setBoundaries(await getBoundaries(boundaryType))
+    dispatch(setSelectedBoundaryType(boundaryType))
+    const boundaries = await getBoundaries(boundaryType)
+    setBoundaries(
+      boundaries.features.map((feature) => {
+        return { name: feature.properties.layer, id: feature.id }
+      })
+    )
   }
 
-  const onBoundarySelected = (boundary) => {
-    setBoundary(boundary)
+  const onBoundaryNameSelected = (boundaryName) => {
+    boundaries.forEach((boundary) => {
+      if (boundary.name === boundaryName) {
+        setBoundaryId(boundary.id)
+        dispatch(setSelectedBoundary(boundary.id))
+      }
+    })
   }
 
   const handleSubmit = async () => {
@@ -50,12 +67,12 @@ export default function SelectPredefinedBoundaryPage() {
       setBoundaryTypeError('Select a boundary type')
     }
 
-    if (!boundary) {
+    if (!boundaryId) {
       setBoundaryError('Select a boundary')
     }
 
-    if (boundaryType && boundary) {
-      // TODO: What do we do now??? Navigate somewhere?
+    if (boundaryType && boundaryId) {
+      // TODO: navigate to next page
     }
   }
 
@@ -88,8 +105,10 @@ export default function SelectPredefinedBoundaryPage() {
                   />
                   <Select
                     label='Boundary'
-                    options={boundaries}
-                    onSelect={onBoundarySelected}
+                    options={boundaries.map((boundary) => {
+                      return boundary.name
+                    })}
+                    onSelect={onBoundaryNameSelected}
                     error={boundaryError}
                     initialSelectOptionText='Select boundary'
                   />
@@ -101,11 +120,9 @@ export default function SelectPredefinedBoundaryPage() {
                 </div>
                 <div class='govuk-grid-column-two-thirds'>
                   <Map
-                  // setCoordinates={setPinCoords}
-                  // type='drop'
-                  // showFloodWarningAreas={showFloodWarningAreas}
-                  // showFloodAlertAreas={showFloodAlertAreas}
-                  // showMarker={false}
+                    type='boundary'
+                    showFloodWarningAreas={false}
+                    showFloodAlertAreas={false}
                   />
                 </div>
               </div>

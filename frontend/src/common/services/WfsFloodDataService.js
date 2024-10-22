@@ -256,33 +256,23 @@ export const getBoundaryTypes = async () => {
 
   const { data: wfsFeatureTypes } = await backendCall(WFSParams, 'api/wfs')
 
-  var boundaryTypes = []
-  wfsFeatureTypes.featureTypes?.forEach((featureType) => {
-    boundaryTypes.push(featureType.typeName)
+  return wfsFeatureTypes.featureTypes.map((featureType) => {
+    return featureType.typeName
   })
-
-  return boundaryTypes
 }
 
-export const getBoundaries = async (Name) => {
-  // get features
+export const getBoundaries = async (name) => {
+  // get feature
   const WFSParams = {
     service: 'WFS',
     map: 'uk-ob.qgz',
     version: '1.1.0',
     request: 'GetFeature',
-    typename: Name,
+    typename: name,
     outputFormat: 'GEOJSON'
   }
 
   const { data: wfsBoundaries } = await backendCall(WFSParams, 'api/wfs')
 
-  console.log('boundaries', wfsBoundaries)
-
-  var boundaries = []
-  wfsBoundaries.features?.forEach((feature) => {
-    boundaries.push(feature.properties.layer)
-  })
-
-  return boundaries
+  return wfsBoundaries
 }

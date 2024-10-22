@@ -44,7 +44,7 @@ export default function SelectPredefinedBoundaryPage() {
 
   const onBoundaryTypeSelected = async (boundaryType) => {
     setBoundaryType(boundaryType)
-    dispatch(setSelectedBoundaryType(boundaryType))
+    await dispatch(setSelectedBoundaryType(boundaryType))
     const boundaries = await getBoundaries(boundaryType)
     setBoundaries(
       boundaries.features.map((feature) => {
@@ -53,11 +53,11 @@ export default function SelectPredefinedBoundaryPage() {
     )
   }
 
-  const onBoundaryNameSelected = (boundaryName) => {
-    boundaries.forEach((boundary) => {
+  const onBoundaryNameSelected = async (boundaryName) => {
+    boundaries.forEach(async (boundary) => {
       if (boundary.name === boundaryName) {
         setBoundaryId(boundary.id)
-        dispatch(setSelectedBoundary(boundary.id))
+        await dispatch(setSelectedBoundary(boundary.id))
       }
     })
   }

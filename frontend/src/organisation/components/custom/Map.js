@@ -42,13 +42,13 @@ export default function Map({
   const center = [latitude, longitude]
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
+  const [boundaries, setBoundaries] = useState(null)
   const selectedBoundaryType = useSelector(
     (state) => state.session.selectedBoundaryType
   )
   const selectedBoundary = useSelector(
     (state) => state.session.selectedBoundary
   )
-  const [boundaries, setBoundaries] = useState(null)
 
   // get flood area data
   useEffect(() => {
@@ -69,7 +69,6 @@ export default function Map({
       setBoundaries(await getBoundaries(selectedBoundaryType))
     }
     fetchBoundaries()
-    console.log('userEffect for selectedBoundaryType', selectedBoundaryType)
   }, [selectedBoundaryType])
 
   // reset the map to selected location
@@ -218,9 +217,8 @@ export default function Map({
   const onEachBoundaryFeature = (feature, layer) => {
     // TODO: use the correct colour/fill-style etc
 
-    console.log('onEachBoundaryFeature')
-
     setBoundaryStyle(layer)
+
     // if (layer.feature.id != selectedBoundary) {
     //   layer.setStyle({ opacity: 0, fillOpacity: 0 })
     // }
@@ -228,11 +226,11 @@ export default function Map({
     // if (feature.id === selectedBoundary) {
     //   layer.options.className = 'alert-area-pattern-fill'
 
-    //   layer.setStyle({
-    //     color: '#ffa200',
-    //     weight: 2,
-    //     fillOpacity: 0.5
-    //   })
+    // layer.setStyle({
+    //   color: '#ffa200',
+    //   weight: 2,
+    //   fillOpacity: 0.5
+    // })
     // } else {
     //   layer.setStyle({ opacity: 0, fillOpacity: 0 })
     // }
@@ -313,7 +311,6 @@ export default function Map({
   }, [showFloodWarningAreas, showFloodAlertAreas])
 
   const showSelectedBoundary = () => {
-    console.log('showSelectedBoundary', boundaryRefVisible, boundaryRef.current)
     if (boundaryRefVisible && boundaryRef.current) {
       boundaryRef.current.eachLayer((layer) => {
         setBoundaryStyle(layer)
@@ -337,7 +334,6 @@ export default function Map({
 
   useEffect(() => {
     showSelectedBoundary()
-    console.log('userEffect for selectedBoundary', selectedBoundary)
   }, [selectedBoundary])
 
   return (

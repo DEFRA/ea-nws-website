@@ -38,7 +38,8 @@ export default function AddKeywordsLayout () {
       : (isCheckboxCheckedArray[index] = false)
 
     if (
-      isCheckboxCheckedArray.filter((string) => string === true).length > 50
+      isCheckboxCheckedArray.filter((isChecked) => isChecked === true).length >
+      50
     ) {
       setKeywordError(maxKeywordError)
       isCheckboxCheckedArray[index] = false
@@ -54,7 +55,8 @@ export default function AddKeywordsLayout () {
       if (keyword.length > 20) {
         setKeywordError(maxKeywordCharError)
       } else if (
-        isCheckboxCheckedArray.filter((string) => string === true).length > 49
+        isCheckboxCheckedArray.filter((isChecked) => isChecked === true)
+          .length > 49
       ) {
         setKeywordError(maxKeywordError)
       } else if (keywordsArray.includes(keyword)) {

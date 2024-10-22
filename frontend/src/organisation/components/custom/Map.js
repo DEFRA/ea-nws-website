@@ -1,5 +1,6 @@
 import { faRotateLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+//import * as turf from '@turf/turf'
 import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import {
@@ -40,9 +41,9 @@ export default function Map({
   const { latitude, longitude } = useSelector(
     (state) => state.session.currentLocation.coordinates
   )
+  const [centre, setCentre] = useState([latitude, longitude])
   const [apiKey, setApiKey] = useState(null)
   const [marker, setMarker] = useState(null)
-  const center = [latitude, longitude]
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
 
@@ -288,7 +289,7 @@ export default function Map({
   // get boundary data
   useEffect(() => {
     async function fetchBoundaries() {
-      if (selectedBoundaryType) {
+      if (type === 'boundary' && selectedBoundaryType) {
         const data = await getBoundaries(selectedBoundaryType)
         if (data) {
           setBoundaries(data)
@@ -298,6 +299,19 @@ export default function Map({
               return { properties: feature.properties, id: feature.id }
             })
           )
+
+          // // zoom to centre of all boundaries
+          // const merged = turf.featureCollection(data.features)
+          // const centroid = turf.centroid(merged)
+          // // Reverse the order of the coordinates to [latitude, longitude] which leaflet requires
+          // const centerCoords = [
+          //   centroid.geometry.coordinates[1],
+          //   centroid.geometry.coordinates[0]
+          // ]
+
+          // setCentre(centerCoords)
+          // console.log(centerCoords)
+
           await dispatch(setSelectedBoundary(null))
         }
       }
@@ -314,8 +328,6 @@ export default function Map({
   }, [boundaries])
 
   const highlightSelectedBoundary = () => {
-    console.log('selected boundary', selectedBoundary)
-
     if (boundaryRefVisible && boundaryRef.current && selectedBoundary) {
       boundaryRef.current.eachLayer((layer) => {
         if (layer.feature.id === selectedBoundary.id) {
@@ -354,68 +366,72 @@ export default function Map({
   return (
     <div ref={ref}>
       <MapContainer
-        center={center}
+        key={centre}
+        center={centre}
         zoom={zoomLevel}
         zoomControl={false}
         attributionControl={false}
-        //minZoom={7}
+        minZoom={7}
         maxBounds={maxBounds}
         className='map-container'
       >
-        {apiKey &&
-          (apiKey !== 'error' ? (
-            <>
-              {tileLayerWithHeader}
-              {showMapControls && (
-                <>
-                  <ZoomControl position='bottomright' />
-                  <ResetMapButton />
-                </>
-              )}
-              {type === 'drop' ? (
-                <AddMarker />
-              ) : (
-                <Marker position={center} interactive={false} />
-              )}
-              {alertArea && (
-                <GeoJSON
-                  data={alertArea}
-                  onEachFeature={onEachAlertAreaFeature}
-                  ref={(el) => {
-                    alertAreaRef.current = el
-                    setAlertAreaRefVisible(true)
-                  }}
-                />
-              )}
-              {warningArea && (
-                <GeoJSON
-                  data={warningArea}
-                  onEachFeature={onEachWarningAreaFeature}
-                  ref={(el) => {
-                    warningAreaRef.current = el
-                    setWarningAreaRefVisible(true)
-                  }}
-                />
-              )}
-              {boundaries && type === 'boundary' && (
-                <GeoJSON
-                  data={boundaries}
-                  onEachFeature={onEachBoundaryFeature}
-                  ref={(el) => {
-                    boundaryRef.current = el
-                    setBoundaryRefVisible(true)
-                  }}
-                />
-              )}
-            </>
-          ) : (
-            <div className='map-error-container'>
-              <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
-              <Link className='govuk-body-s' onClick={() => getApiKey()}>
-                Reload map
-              </Link>
-            </div>
-          ))}
+        {apiKey && apiKey !== 'error' ? (
+          <>
+            {tileLayerWithHeader}
+            {showMapControls && (
+              <>
+                <ZoomControl position='bottomright' />
+                <ResetMapButton />
+              </>
+            )}
+            {type !== 'boundary' && (
+              <>
+                {type === 'drop' ? (
+                  <AddMarker />
+                ) : (
+                  <Marker position={centre} interactive={false} />
+                )}
+              </>
+            )}
+            {alertArea && (
+              <GeoJSON
+                data={alertArea}
+                onEachFeature={onEachAlertAreaFeature}
+                ref={(el) => {
+                  alertAreaRef.current = el
+                  setAlertAreaRefVisible(true)
+                }}
+              />
+            )}
+            {warningArea && (
+              <GeoJSON
+                data={warningArea}
+                onEachFeature={onEachWarningAreaFeature}
+                ref={(el) => {
+                  warningAreaRef.current = el
+                  setWarningAreaRefVisible(true)
+                }}
+              />
+            )}
+            {boundaries && type === 'boundary' && (
+              <GeoJSON
+                data={boundaries}
+                onEachFeature={onEachBoundaryFeature}
+                ref={(el) => {
+                  boundaryRef.current = el
+                  setBoundaryRefVisible(true)
+                }}
+              />
+            )}
+          </>
+        ) : (
+          <div className='map-error-container'>
+            <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
+            <Link className='govuk-body-s' onClick={() => getApiKey()}>
+              Reload map
+            </Link>
+          </div>
+        )}
       </MapContainer>
     </div>
   )

@@ -129,7 +129,7 @@ export default function SelectPredefinedBoundaryPage() {
                     type='boundary'
                     showFloodWarningAreas={false}
                     showFloodAlertAreas={false}
-                    zoomLevel={4}
+                    zoomLevel={1}
                     boundaryList={(val) => setBoundaries(val)}
                   />
                 </div>

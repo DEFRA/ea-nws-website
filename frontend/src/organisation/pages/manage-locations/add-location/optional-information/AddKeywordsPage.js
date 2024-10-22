@@ -14,6 +14,14 @@ export default function AddKeywordsLayout () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
+  const locationKeywords = useSelector((state) =>
+    state.session.locationKeywords ? state.session.locationKeywords : []
+  )
+
+  const locationName = useSelector(
+    (state) => state.session.currentLocation.name
+  )
+
   const savedKeywords = useSelector((state) =>
     state.session.currentLocation.meta_data.location_additional.keywords
       ? state.session.currentLocation.meta_data.location_additional.keywords
@@ -70,18 +78,42 @@ export default function AddKeywordsLayout () {
   }
 
   const handleButton = () => {
-    let keywordsArrayDispatch = []
+    // Get checked keywords for current location
+    const keywordsArrayChecked = []
     for (const index in keywordsArray) {
       if (isCheckboxCheckedArray[index] === true) {
-        keywordsArrayDispatch = [...keywordsArrayDispatch, keywordsArray[index]]
+        keywordsArrayChecked.push(keywordsArray[index])
+      }
+    }
+
+    // Loop over keywords for current location
+    for (const i in keywordsArrayChecked) {
+      const keyword = keywordsArrayChecked[i]
+      let keywordExists = false
+
+      // Loop over all location keywords
+      for (const j in locationKeywords) {
+        // Update linked-ids for existing keyword
+        if (locationKeywords[j].name == keyword) {
+          locationKeywords[j].linked_ids.push(locationName)
+          keywordExists = true
+        }
+      }
+
+      // Add keywords and linked_id
+      if (!keywordExists) {
+        locationKeywords.push({
+          name: keyword,
+          linked_ids: [locationName]
+        })
       }
     }
 
     if (
-      keywordsArrayDispatch.length !== savedKeywords.length ||
-      !keywordsArrayDispatch.every((val, idx) => val === savedKeywords[idx])
+      keywordsArrayChecked.length !== savedKeywords.length ||
+      !keywordsArrayChecked.every((val, idx) => val === savedKeywords[idx])
     ) {
-      dispatch(setLocationKeywords(keywordsArrayDispatch))
+      dispatch(setLocationKeywords(locationKeywords))
     }
 
     navigate(orgManageLocationsUrls.add.optionalInformation.addActionPlan)

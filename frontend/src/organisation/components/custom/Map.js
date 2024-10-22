@@ -65,7 +65,7 @@ export default function Map({
     const map = useMap()
 
     const handleClick = () => {
-      map.setView([latitude, longitude], 12)
+      map.setView(centre, 12)
     }
 
     return (

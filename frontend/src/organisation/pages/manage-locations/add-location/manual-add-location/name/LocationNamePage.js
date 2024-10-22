@@ -10,6 +10,7 @@ import { setCurrentLocationName } from '../../../../../../common/redux/userSlice
 import { locationNameValidation } from '../../../../../../common/services/validations/LocationNameValidation'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 import { backendCall } from '../../../../../../common/services/BackendService'
+
 export default function LocationNamePage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -32,6 +33,8 @@ export default function LocationNamePage () {
       } else {
         setError('Something went wrong, try again')
       }
+    } else {
+      return false
     }
   }
 

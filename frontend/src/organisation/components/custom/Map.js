@@ -15,9 +15,10 @@ import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import TileLayerWithHeader from '../../../common/components/custom/TileLayerWithHeader'
+import { setSelectedBoundary } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import {
   getBoundaries,
@@ -32,8 +33,10 @@ export default function Map({
   zoomLevel = 12,
   showFloodWarningAreas = true,
   showFloodAlertAreas = true,
-  showMarker = false
+  showMarker = false,
+  boundaryList
 }) {
+  const dispatch = useDispatch()
   const { latitude, longitude } = useSelector(
     (state) => state.session.currentLocation.coordinates
   )
@@ -42,13 +45,6 @@ export default function Map({
   const center = [latitude, longitude]
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
-  const [boundaries, setBoundaries] = useState(null)
-  const selectedBoundaryType = useSelector(
-    (state) => state.session.selectedBoundaryType
-  )
-  const selectedBoundary = useSelector(
-    (state) => state.session.selectedBoundary
-  )
 
   // get flood area data
   useEffect(() => {
@@ -62,14 +58,6 @@ export default function Map({
     }
     fetchFloodAreaData()
   }, [])
-
-  // get boundary data
-  useEffect(() => {
-    async function fetchBoundaries() {
-      setBoundaries(await getBoundaries(selectedBoundaryType))
-    }
-    fetchBoundaries()
-  }, [selectedBoundaryType])
 
   // reset the map to selected location
   const ResetMapButton = () => {
@@ -214,28 +202,6 @@ export default function Map({
     }
   }
 
-  const onEachBoundaryFeature = (feature, layer) => {
-    // TODO: use the correct colour/fill-style etc
-
-    setBoundaryStyle(layer)
-
-    // if (layer.feature.id != selectedBoundary) {
-    //   layer.setStyle({ opacity: 0, fillOpacity: 0 })
-    // }
-
-    // if (feature.id === selectedBoundary) {
-    //   layer.options.className = 'alert-area-pattern-fill'
-
-    // layer.setStyle({
-    //   color: '#ffa200',
-    //   weight: 2,
-    //   fillOpacity: 0.5
-    // })
-    // } else {
-    //   layer.setStyle({ opacity: 0, fillOpacity: 0 })
-    // }
-  }
-
   const alertAreaRef = useRef(null)
   const warningAreaRef = useRef(null)
   const boundaryRef = useRef(null)
@@ -310,31 +276,80 @@ export default function Map({
     showAreas()
   }, [showFloodWarningAreas, showFloodAlertAreas])
 
-  const showSelectedBoundary = () => {
-    if (boundaryRefVisible && boundaryRef.current) {
-      boundaryRef.current.eachLayer((layer) => {
-        setBoundaryStyle(layer)
-      })
-    }
-  }
+  // boundary functionality
+  const [boundaries, setBoundaries] = useState(null)
+  const selectedBoundaryType = useSelector(
+    (state) => state.session.selectedBoundaryType
+  )
+  const selectedBoundary = useSelector(
+    (state) => state.session.selectedBoundary
+  )
 
-  const setBoundaryStyle = (layer) => {
-    //layer.options.className = 'alert-area-pattern-fill'
-    if (layer.feature.id == selectedBoundary) {
-      layer.setStyle({
-        color: 'yellow',
-        weight: 2,
-        opacity: 1,
-        fillOpacity: 0.5
+  // get boundary data
+  useEffect(() => {
+    async function fetchBoundaries() {
+      if (selectedBoundaryType) {
+        const data = await getBoundaries(selectedBoundaryType)
+        if (data) {
+          setBoundaries(data)
+          // return list of boundaries for user to choose from
+          boundaryList(
+            data.features.map((feature) => {
+              return { properties: feature.properties, id: feature.id }
+            })
+          )
+          await dispatch(setSelectedBoundary(null))
+        }
+      }
+    }
+    fetchBoundaries()
+  }, [selectedBoundaryType])
+
+  useEffect(() => {
+    // loads new boundary layers onto map after user has updated boundary type
+    if (boundaryRefVisible && boundaryRef.current) {
+      boundaryRef.current.clearLayers()
+      boundaryRef.current.addData(boundaries)
+    }
+  }, [boundaries])
+
+  const highlightSelectedBoundary = () => {
+    console.log('selected boundary', selectedBoundary)
+
+    if (boundaryRefVisible && boundaryRef.current && selectedBoundary) {
+      boundaryRef.current.eachLayer((layer) => {
+        if (layer.feature.id === selectedBoundary.id) {
+          console.log('layer', layer)
+          layer.setStyle({
+            color: 'yellow',
+            weight: 2,
+            fillColor: 'yellow',
+            fillOpacity: 0.5
+          })
+        } else {
+          layer.setStyle({
+            color: '#003366',
+            weight: 2,
+            fillColor: '#3399ff',
+            fillOpacity: 0.5
+          })
+        }
       })
-    } else {
-      layer.setStyle({ opacity: 0, fillOpacity: 0 })
     }
   }
 
   useEffect(() => {
-    showSelectedBoundary()
+    highlightSelectedBoundary()
   }, [selectedBoundary])
+
+  const onEachBoundaryFeature = (feature, layer) => {
+    layer.setStyle({
+      color: '#003366',
+      weight: 2,
+      fillColor: '#3399ff',
+      fillOpacity: 0.5
+    })
+  }
 
   return (
     <div ref={ref}>
@@ -343,7 +358,7 @@ export default function Map({
         zoom={zoomLevel}
         zoomControl={false}
         attributionControl={false}
-        minZoom={7}
+        //minZoom={7}
         maxBounds={maxBounds}
         className='map-container'
       >

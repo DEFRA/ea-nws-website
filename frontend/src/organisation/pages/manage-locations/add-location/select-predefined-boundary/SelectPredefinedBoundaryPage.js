@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
@@ -9,75 +9,69 @@ import {
   setSelectedBoundary,
   setSelectedBoundaryType
 } from '../../../../../common/redux/userSlice'
-import {
-  getBoundaries,
-  getBoundaryTypes
-} from '../../../../../common/services/WfsFloodDataService'
+import { getBoundaryTypes } from '../../../../../common/services/WfsFloodDataService'
 import Map from '../../../../components/custom/Map'
 
 export default function SelectPredefinedBoundaryPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
   const [boundaryTypeError, setBoundaryTypeError] = useState('')
   const [boundaryError, setBoundaryError] = useState('')
   const [boundaryTypes, setBoundaryTypes] = useState([])
-  const [boundaryType, setBoundaryType] = useState('')
   const [boundaries, setBoundaries] = useState([])
-  const [boundaryId, setBoundaryId] = useState('')
+  const selectedBoundaryType = useSelector(
+    (state) => state.session.selectedBoundaryType
+  )
+  const selectedBoundary = useSelector(
+    (state) => state.session.selectedBoundary
+  )
 
   // Get boundary types
   useEffect(() => {
-    const asyncGetBoundaryTypes = async () => {
-      setBoundaryTypes(await getBoundaryTypes())
+    async function getBoundaryTypesList() {
+      const boundaryTypesList = await getBoundaryTypes()
+      setBoundaryTypes(boundaryTypesList)
     }
-    asyncGetBoundaryTypes()
+    getBoundaryTypesList()
   }, [])
 
   useEffect(() => {
     setBoundaryTypeError('')
-  }, [boundaryType])
+  }, [selectedBoundaryType])
 
   useEffect(() => {
     setBoundaryError('')
-  }, [boundaryId])
+  }, [selectedBoundary])
 
   const onBoundaryTypeSelected = async (boundaryType) => {
-    setBoundaryType(boundaryType)
     await dispatch(setSelectedBoundaryType(boundaryType))
-    const boundaries = await getBoundaries(boundaryType)
-    setBoundaries(
-      boundaries.features.map((feature) => {
-        return { name: feature.properties.layer, id: feature.id }
-      })
-    )
   }
 
-  const onBoundaryNameSelected = async (boundaryName) => {
-    boundaries.forEach(async (boundary) => {
-      if (boundary.name === boundaryName) {
-        setBoundaryId(boundary.id)
-        await dispatch(setSelectedBoundary(boundary.id))
-      }
-    })
+  const onBoundarySelected = async (boundaryName) => {
+    const boundarySelected = boundaries.find(
+      (boundary) => boundary.properties.NAME === boundaryName
+    )
+    console.log(boundarySelected)
+
+    await dispatch(setSelectedBoundary(boundarySelected))
   }
 
   const handleSubmit = async () => {
-    if (!boundaryType) {
+    if (!selectedBoundaryType) {
       setBoundaryTypeError('Select a boundary type')
     }
 
-    if (!boundaryId) {
+    if (!selectedBoundary) {
       setBoundaryError('Select a boundary')
     }
 
-    if (boundaryType && boundaryId) {
-      // TODO: navigate to next page
-    }
+    // update profile to add location and navigate
   }
 
   const navigateBack = (event) => {
     event.preventDefault()
+    dispatch(setSelectedBoundaryType(null))
+    dispatch(setSelectedBoundary(null))
     navigate(-1)
   }
 
@@ -101,16 +95,28 @@ export default function SelectPredefinedBoundaryPage() {
                     options={boundaryTypes}
                     onSelect={onBoundaryTypeSelected}
                     error={boundaryTypeError}
-                    initialSelectOptionText='Select type'
+                    initialSelectOptionText={
+                      selectedBoundaryType
+                        ? selectedBoundaryType
+                        : 'Select type'
+                    }
                   />
                   <Select
+                    // key forces the boundary select to re-render after the boundary type is changed
+                    // when boundary type is changed, the selected boundary is reset. we must force this
+                    // re-render for the intial text option to show correctly
+                    key={selectedBoundary}
                     label='Boundary'
                     options={boundaries.map((boundary) => {
-                      return boundary.name
+                      return boundary.properties.NAME
                     })}
-                    onSelect={onBoundaryNameSelected}
+                    onSelect={onBoundarySelected}
                     error={boundaryError}
-                    initialSelectOptionText='Select boundary'
+                    initialSelectOptionText={
+                      selectedBoundary
+                        ? selectedBoundary.properties.NAME
+                        : 'Select boundary'
+                    }
                   />
                   <Button
                     className='govuk-button govuk-!-margin-top-4'
@@ -123,6 +129,8 @@ export default function SelectPredefinedBoundaryPage() {
                     type='boundary'
                     showFloodWarningAreas={false}
                     showFloodAlertAreas={false}
+                    zoomLevel={4}
+                    boundaryList={(val) => setBoundaries(val)}
                   />
                 </div>
               </div>

@@ -7,7 +7,7 @@ export default function Select({
   onSelect,
   hint,
   error = '',
-  initialSelectOptionText = ''
+  initialSelectOptionText
 }) {
   const [selectedOption, setSelectedOption] = useState('')
   const handleSelectChange = (event) => {
@@ -15,6 +15,7 @@ export default function Select({
     setSelectedOption(selectedValue)
     onSelect(selectedValue)
   }
+
   return (
     <div
       className={

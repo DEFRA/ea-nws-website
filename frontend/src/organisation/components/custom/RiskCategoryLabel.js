@@ -43,12 +43,12 @@ export default function RiskCategoryLabel ({ riskAreaType }) {
     unlikely: { className: 'unlikely-risk', title: 'Unlikely' },
     possible: { className: 'possible-risk', title: 'Possible' },
     // incase the wfs returns no data
-    unavailble: { className: '', title: 'Unavailble' }
+    unavailable: { className: '', title: 'Unavailable' }
   }
 
   const { className, title } = riskData[riskRating] || {
     className: '',
-    title: 'Unavailble'
+    title: 'Unavailable'
   }
 
   return (

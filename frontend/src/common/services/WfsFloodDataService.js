@@ -205,7 +205,7 @@ export const getRiversAndSeaFloodRiskRatingOfLocation = async (lat, lng) => {
       return 'v.low'
     }
   } else {
-    return 'unavailble'
+    return 'unavailable'
   }
 }
 
@@ -223,7 +223,7 @@ export const getGroundwaterFloodRiskRatingOfLocation = async (lat, lng) => {
       return 'unlikely'
     }
   } else {
-    return 'unavailble'
+    return 'unavailable'
   }
 }
 

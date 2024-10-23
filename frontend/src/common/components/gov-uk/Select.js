@@ -1,13 +1,13 @@
 import React, { useState } from 'react'
 
-export default function Select ({
+export default function Select({
   label,
   options,
   name,
   onSelect,
   hint,
   error = '',
-  initialSelectOptionText = ''
+  initialSelectOptionText
 }) {
   const [selectedOption, setSelectedOption] = useState('')
   const handleSelectChange = (event) => {
@@ -44,11 +44,9 @@ export default function Select ({
         onChange={handleSelectChange}
         value={selectedOption}
       >
-        {initialSelectOptionText && (
-          <option value='' disabled>
-            {initialSelectOptionText}
-          </option>
-        )}
+        <option value='' disabled>
+          {initialSelectOptionText}
+        </option>
         {options.map((option, index) => (
           <option key={index} value={option}>
             {option}

@@ -312,7 +312,6 @@ export default function ManageKeywordsPage () {
     if (selectedKeywords.length > 0 || targetKeyword) {
       const keywordsToRemove = selectedKeywords.length > 0 ? [...selectedKeywords] : [targetKeyword]
       removeKeywords(keywordsToRemove)
-      showDeleteKeywordDialog()
     }
   }
 

@@ -270,7 +270,7 @@ export default function ManageKeywordsPage () {
                     </div>
                   </div>
                 </div>
-                <Link onClick={() => clearSearch()} className='govuk-link'>Clear Seach results</Link>
+                <Link onClick={() => clearSearch()} className='govuk-link'>Clear search results</Link>
               </div>
               <div className='govuk-grid-column-two-thirds'>
                 {filteredKeywords.length !== 0

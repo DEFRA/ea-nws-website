@@ -25,7 +25,7 @@ export default function ViewLocationsDashboardPage () {
         alert_categories: ['Alert'],
         meta_data: {
           location_additional: {
-            location_name: 'Location_01',
+            location_name: 'Location_01 - address variant',
             full_address: 'some address',
             postcode: 'LE2 7BB',
             x_coordinate: 466413.18,
@@ -49,7 +49,7 @@ export default function ViewLocationsDashboardPage () {
         alert_categories: ['Warning', 'Alert'],
         meta_data: {
           location_additional: {
-            location_name: 'Location_02',
+            location_name: 'Location_02 - xy coord variant',
             full_address: '',
             postcode: '',
             x_coordinate: 329000.58,
@@ -74,7 +74,7 @@ export default function ViewLocationsDashboardPage () {
         alert_categories: ['Warning', 'Alert'],
         meta_data: {
           location_additional: {
-            location_name: 'Location_03',
+            location_name: 'Location_03 - shapefile polygon variant',
             full_address: '',
             postcode: '',
             x_coordinate: '',
@@ -99,7 +99,7 @@ export default function ViewLocationsDashboardPage () {
         alert_categories: ['Warning', 'Alert'],
         meta_data: {
           location_additional: {
-            location_name: 'Location_04',
+            location_name: 'Location_04 - shapefile line variant',
             full_address: '',
             postcode: '',
             x_coordinate: '',
@@ -115,22 +115,27 @@ export default function ViewLocationsDashboardPage () {
         }
       },
       {
-        name: 'Location_ID6',
-        address: 'some address',
-        coordinates: ['lat', 'lng'],
-        alert_categories: ['Alert'],
+        // shapefile (line) variant
+        name: 'UPRN',
+        address: '',
+        // coordinates should be empty for this and we instead use the geometry field instead
+        // using this for meantime
+        coordinates: { latitude: 50.84106, longitude: -1.05814 },
+        alert_categories: ['Warning', 'Alert'],
         meta_data: {
           location_additional: {
-            full_address: 'some address',
-            postcode: 'some postcode',
-            x_coordinate: 'lat',
-            y_coordinate: 'lng',
-            internal_reference: 'reference',
-            business_criticality: 'Medium',
-            location_type: 'Retail space',
-            action_plan: 'action plan',
-            notes: 'some notes',
-            keywords: 'keywords'
+            location_name: 'Location_05 - boundary variant',
+            full_address: '',
+            postcode: '',
+            x_coordinate: '',
+            y_coordinate: '',
+            internal_reference: '',
+            business_criticality: '',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            keywords: '',
+            location_data_type: LocationDataType.BOUNDARY
           }
         }
       },

@@ -232,12 +232,16 @@ def test_delete_cancel_dialog_render_location_keyword_tab(get_browser):
 def test_delete_location_keyword_tab(get_browser):
     navigate_to_auth_org_page_via_index(get_browser,current_url)
     click_link(get_browser, "Locations keywords", current_url)
-    assert 'Location Keyword 1' in get_browser.page_source    
+    assert 'Location Keyword 1' in get_browser.page_source 
+    assert 'Location Keyword 2' in get_browser.page_source  
+    assert 'Location Keyword 3' in get_browser.page_source     
     click_link(get_browser, "Delete", current_url)
     time.sleep(1)
     click_button(get_browser, 'Delete keyword', current_url)
     time.sleep(1)
     assert 'Location Keyword 1' not in get_browser.page_source     
+    assert 'Location Keyword 2' in get_browser.page_source  
+    assert 'Location Keyword 3' in get_browser.page_source     
     assert 'Success' in get_browser.page_source  
     assert 'Keyword deleted' in get_browser.page_source  
 
@@ -295,12 +299,14 @@ def test_delete_cancel_dialog_render_contacts_keyword_tab(get_browser):
 def test_delete_contact_keyword_tab(get_browser):
     navigate_to_auth_org_page_via_index(get_browser,current_url)
     click_link(get_browser, "Contacts keywords", current_url)
-    assert 'Contact Keyword 1' in get_browser.page_source    
+    assert 'Contact Keyword 1' in get_browser.page_source 
+    assert 'Contact Keyword 2' in get_browser.page_source    
     click_link(get_browser, "Delete", current_url)
     time.sleep(1)
     click_button(get_browser, 'Delete keyword', current_url)
     time.sleep(1)
     assert 'Contact Keyword 1' not in get_browser.page_source     
+    assert 'Contact Keyword 2' in get_browser.page_source 
     assert 'Success' in get_browser.page_source  
     assert 'Keyword deleted' in get_browser.page_source  
 

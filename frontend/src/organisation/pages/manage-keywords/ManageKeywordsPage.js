@@ -209,7 +209,7 @@ export default function ManageKeywordsPage () {
         input: 'Keyword',
         charLimit: 30,
         error: '',
-        validateInput: validateInput,
+        validateInput,
         action: handleEdit
       }
     )
@@ -246,7 +246,7 @@ export default function ManageKeywordsPage () {
   }
 
   const removeKeywords = (keywordsToRemove) => {
-    const updatedKeywords = locationKeywords.filter(
+    const updatedKeywords = keywords.filter(
       (k) => !keywordsToRemove.includes(k))
     if (keywordType === 'location') {
       dispatch(setLocationKeywords(updatedKeywords))

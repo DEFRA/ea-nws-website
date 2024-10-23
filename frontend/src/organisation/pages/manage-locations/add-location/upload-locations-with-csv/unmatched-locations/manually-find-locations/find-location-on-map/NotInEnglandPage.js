@@ -20,7 +20,7 @@ export default function NotInEnglandPage() {
     <NotInEnglandLayout
       NavigateToNextPage={NavigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
-      locationType={'csvUpload'}
+      locationType='csvUpload'
     />
   )
 }

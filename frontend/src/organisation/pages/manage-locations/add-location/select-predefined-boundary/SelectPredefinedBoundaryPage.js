@@ -11,6 +11,7 @@ import {
 } from '../../../../../common/redux/userSlice'
 import { getBoundaryTypes } from '../../../../../common/services/WfsFloodDataService'
 import Map from '../../../../components/custom/Map'
+import PredefinedBoundaryKey from '../../../../components/custom/PredefinedBoundaryKey'
 
 export default function SelectPredefinedBoundaryPage() {
   const dispatch = useDispatch()
@@ -132,6 +133,9 @@ export default function SelectPredefinedBoundaryPage() {
                     zoomLevel={1}
                     boundaryList={(val) => setBoundaries(val)}
                   />
+                  <div>
+                    <PredefinedBoundaryKey />
+                  </div>
                 </div>
               </div>
             </div>

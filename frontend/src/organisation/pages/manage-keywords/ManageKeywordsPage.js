@@ -208,7 +208,7 @@ export default function ManageKeywordsPage () {
         input: 'Keyword',
         charLimit: 30,
         error: '',
-        validateInput: validateInput,
+        validateInput,
         action: handleEdit
       }
     )

@@ -37,7 +37,7 @@ export default function ManageKeywordsPage () {
     buttonClass: '',
     action: null,
     textInput: '',
-    setTextInput: '',
+    setTextInput: null,
     charLimit: 0,
     error: '',
     validateInput: null
@@ -70,6 +70,10 @@ export default function ManageKeywordsPage () {
 
   const handleSetError = (val) => {
     setDialog(dial => ({ ...dial, error: val }))
+  }
+
+  const toggleDialogVisibility = () => {
+    setDialog(dial => ({ ...dial, show: !dial.show }))
   }
 
   const locationKeywords = useSelector((state) =>
@@ -109,12 +113,19 @@ export default function ManageKeywordsPage () {
         buttonText: 'Delete keyword',
         buttonClass: 'govuk-button--warning',
         input: '',
-        action: handleDelete
+        action: handleDelete,
+        textInput: '',
+        setTextInput: '',
+        charLimit: 0,
+        error: '',
+        validateInput: null
       }
     )
+    console.log('dialog state: ', dialog)
   }
 
   const deleteDialog = () => {
+    console.log('dialog state: ', dialog)
     setDialog(
       {
         show: true,
@@ -132,9 +143,15 @@ export default function ManageKeywordsPage () {
         buttonText: 'Delete keyword',
         buttonClass: 'govuk-button--warning',
         action: handleDelete,
-        input: ''
+        input: '',
+        textInput: '',
+        setTextInput: '',
+        charLimit: 0,
+        error: '',
+        validateInput: null
       }
     )
+    console.log('dialog state: ', dialog)
   }
 
   const multiDeleteDialog = () => {
@@ -164,25 +181,25 @@ export default function ManageKeywordsPage () {
     )
   }
 
-  const onClickDeleteDialog = (from) => {
+  const showDeleteKeywordDialog = (from) => {
     if (from === 'deleteLink') {
       if (selectedKeywords.length === 0 && targetKeyword) {
         deleteDialog()
       } else {
         multiDeleteDialog()
       }
-    } else if (from === 'changeLink') {
+    } else {
       updateToEmptyDialog()
     }
   }
 
-  const onClickEditDialog = () => {
+  const showEditKeywordDialog = () => {
     setDialog(
       {
         show: true,
-        text: `Changing this keyword will change it for all the ${
+        text: (`Changing this keyword will change it for all the ${
         keywordType === 'location' ? 'locations' : 'contacts'
-      } it's associated with.`,
+        } it's associated with.`),
         title: 'Change keyword',
         buttonText: 'Change keyword',
         buttonClass: '',
@@ -191,21 +208,17 @@ export default function ManageKeywordsPage () {
         input: 'Keyword',
         charLimit: 30,
         error: '',
-        validateInput,
+        validateInput: validateInput,
         action: handleEdit
       }
     )
   }
 
-  const toggleDialogVisibility = (show = null) => {
-    setDialog(dial => ({ ...dial, show: show !== null ? show : !dial.show }))
-  }
-
   const onAction = (actionType) => {
     if (actionType === 'edit') {
-      onClickEditDialog()
+      showEditKeywordDialog()
     } else {
-      onClickDeleteDialog('deleteLink')
+      showDeleteKeywordDialog('deleteLink')
     }
   }
 
@@ -281,7 +294,7 @@ export default function ManageKeywordsPage () {
   const handleEdit = () => {
     if (targetKeyword) {
       if (updatedKeyword === '') {
-        onClickDeleteDialog('changeLink')
+        showDeleteKeywordDialog('changeLink')
       } else {
         editKeyword()
       }
@@ -297,13 +310,13 @@ export default function ManageKeywordsPage () {
     if (selectedKeywords.length > 0 || targetKeyword) {
       const keywordsToRemove = selectedKeywords.length > 0 ? [...selectedKeywords] : [targetKeyword]
       removeKeywords(keywordsToRemove)
-      onClickDeleteDialog()
+      showDeleteKeywordDialog()
     }
   }
 
   const handleDeleteButton = () => {
     if (selectedKeywords.length > 0) {
-      onClickDeleteDialog('deleteLink')
+      showDeleteKeywordDialog('deleteLink')
     }
   }
 
@@ -396,15 +409,15 @@ export default function ManageKeywordsPage () {
                 </ul>
               </nav>
               <div className='keyword-search-container govuk-!-padding-bottom-5 govuk-!-margin-bottom-6 govuk-!-padding-left-4 govuk-!-padding-top-7'>
-                <div class='govuk-form-group govuk-!-margin-bottom-2'>
+                <div className='govuk-form-group govuk-!-margin-bottom-2'>
                   <label
-                    class='govuk-label govuk-label--s'
-                    for='keyword-search'
+                    className='govuk-label govuk-label--s'
+                    forHtml='keyword-search'
                   >
                     Search for a {keywordType} keyword
                   </label>
                   <div
-                    class='keyword-search-input-container'
+                    className='keyword-search-input-container'
                     id='keyword-search'
                   >
                     <Autocomplete

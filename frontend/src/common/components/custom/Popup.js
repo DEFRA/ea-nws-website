@@ -4,7 +4,7 @@ import '../../css/custom.css'
 import Button from '../gov-uk/Button'
 import Input from '../gov-uk/Input'
 
-export default function Popup ({
+export default function Popup({
   onAction,
   onCancel,
   onClose,
@@ -20,6 +20,11 @@ export default function Popup ({
   charLimit = 0,
   validateInput = ''
 }) {
+  useEffect(() => {
+    if (input && textInput.length <= charLimit) {
+      setError('')
+    }
+  }, [textInput, setError, charLimit, input])
   const handleTextInputChange = (val) => {
     if (input) {
       setTextInput(val)
@@ -45,12 +50,6 @@ export default function Popup ({
       onAction()
     }
   }
-
-  useEffect(() => {
-    if (input && textInput.length <= charLimit) {
-      setError('')
-    }
-  }, [textInput, setError, charLimit, input])
 
   return (
     <div className='popup-dialog'>

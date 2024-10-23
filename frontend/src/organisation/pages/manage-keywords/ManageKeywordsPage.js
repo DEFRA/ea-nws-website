@@ -36,6 +36,7 @@ export default function ManageKeywordsPage () {
     buttonText: '',
     buttonClass: '',
     action: null,
+    input: '',
     textInput: '',
     setTextInput: null,
     charLimit: 0,
@@ -188,7 +189,7 @@ export default function ManageKeywordsPage () {
       } else {
         multiDeleteDialog()
       }
-    } else {
+    } else if (from === 'editLink') {
       updateToEmptyDialog()
     }
   }
@@ -208,7 +209,7 @@ export default function ManageKeywordsPage () {
         input: 'Keyword',
         charLimit: 30,
         error: '',
-        validateInput,
+        validateInput: validateInput,
         action: handleEdit
       }
     )
@@ -238,9 +239,10 @@ export default function ManageKeywordsPage () {
       dispatch(setContactKeywords(updatedKeywords))
     }
     setKeywords([...updatedKeywords])
+    setNotificationText('Keyword edited')
     toggleDialogVisibility(false)
     setTargetKeyword(null)
-    setNotificationText('Keyword edited')
+    setUpdatedKeyword('')
   }
 
   const removeKeywords = (keywordsToRemove) => {

@@ -122,7 +122,7 @@ export default function ConfirmLocationLayout () {
                 </Link>
                 <br />
                 <Link
-                  to={orgManageLocationsUrls.add.xyCoordinatesSearch}
+                  onClick={navigateBack}
                   className='govuk-link'
                 >
                   Use different X and Y coordinates

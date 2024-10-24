@@ -78,8 +78,8 @@ const orgManageLocationsUrls = {
       dropPinSearch: urlManageOrg + '/add/drop-pin-search',
       dropPinSearchResults: urlManageOrg + '/add/drop-pin-search-results'
     },
-    predefinedBoundaries: {
-      selectPredefinedBoundary: urlManageOrg + '/add/predefined-boundary'
+    predefinedBoundary: {
+      select: urlManageOrg + '/add/predefined-boundary'
     },
     optionalInformation: {
       optionalInfo: urlManageOrgAddLocations + '/optional-information',
@@ -207,8 +207,7 @@ const orgManageLocationRoutes = [
     component: <LocationDropPinSearchResultsPage />
   },
   {
-    path: orgManageLocationsUrls.add.predefinedBoundaries
-      .selectPredefinedBoundary,
+    path: orgManageLocationsUrls.add.predefinedBoundary.select,
     component: <SelectPredefinedBoundaryPage />
   },
   // unmatched locations

@@ -2,7 +2,7 @@ import React from 'react'
 import boundaryAlreadyAddedIcon from '../../../common/assets/images/boundary_already_added_icon.png'
 import boundarySelectedIcon from '../../../common/assets/images/boundary_selected_icon.png'
 
-export default function PredefinedBoundaryKey() {
+export default function PredefinedBoundaryKey () {
   return (
     <div className='org-flood-warning-key'>
       <div className='org-flood-warning-item'>

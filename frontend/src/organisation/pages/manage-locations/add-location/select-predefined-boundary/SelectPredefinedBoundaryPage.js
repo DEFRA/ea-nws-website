@@ -13,7 +13,7 @@ import { getBoundaryTypes } from '../../../../../common/services/WfsFloodDataSer
 import Map from '../../../../components/custom/Map'
 import PredefinedBoundaryKey from '../../../../components/custom/PredefinedBoundaryKey'
 
-export default function SelectPredefinedBoundaryPage() {
+export default function SelectPredefinedBoundaryPage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [boundaryTypeError, setBoundaryTypeError] = useState('')
@@ -29,7 +29,7 @@ export default function SelectPredefinedBoundaryPage() {
 
   // Get boundary types
   useEffect(() => {
-    async function getBoundaryTypesList() {
+    const getBoundaryTypesList = async () => {
       const boundaryTypesList = await getBoundaryTypes()
       setBoundaryTypes(boundaryTypesList)
     }
@@ -44,20 +44,19 @@ export default function SelectPredefinedBoundaryPage() {
     setBoundaryError('')
   }, [selectedBoundary])
 
-  const onBoundaryTypeSelected = async (boundaryType) => {
-    await dispatch(setSelectedBoundaryType(boundaryType))
+  const onBoundaryTypeSelected = (boundaryType) => {
+    dispatch(setSelectedBoundaryType(boundaryType))
   }
 
-  const onBoundarySelected = async (boundaryName) => {
+  const onBoundarySelected = (boundaryName) => {
     const boundarySelected = boundaries.find(
       (boundary) => boundary.properties.NAME === boundaryName
     )
-    console.log(boundarySelected)
 
-    await dispatch(setSelectedBoundary(boundarySelected))
+    dispatch(setSelectedBoundary(boundarySelected))
   }
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (!selectedBoundaryType) {
       setBoundaryTypeError('Select a boundary type')
     }
@@ -97,9 +96,7 @@ export default function SelectPredefinedBoundaryPage() {
                     onSelect={onBoundaryTypeSelected}
                     error={boundaryTypeError}
                     initialSelectOptionText={
-                      selectedBoundaryType
-                        ? selectedBoundaryType
-                        : 'Select type'
+                      selectedBoundaryType || 'Select type'
                     }
                   />
                   <Select

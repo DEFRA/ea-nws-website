@@ -1,0 +1,9 @@
+type: string
+description: |-
+  Define the size of a floating-point number.
+
+  Define the storage size of the floating-point number and as a consequence
+  the allowed range of values.
+enum:
+  - DOUBLE
+  - FLOAT

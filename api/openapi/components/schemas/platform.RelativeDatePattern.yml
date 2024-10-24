@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./platform.base.Date.yml
+  - type: object
+    description: |-
+      Date representing the next occurrence of a pattern in pattern period.
+
+      The occurrence will be computed relative to current time.
+    required:
+      - pattern
+    properties:
+      pattern:
+        $ref: ./platform.DatePattern.yml

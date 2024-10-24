@@ -1,0 +1,17 @@
+allOf:
+  - $ref: ./bigdata.base.CdrEvent.yml
+  - type: object
+    required:
+      - sponsor
+      - guest
+      - offerId
+    properties:
+      sponsor:
+        type: string
+        description: The entity that performed the action.
+      guest:
+        type: string
+        description: The entity that performed the action.
+      offerId:
+        type: string
+        description: The offer id with which the entity performed the operation.

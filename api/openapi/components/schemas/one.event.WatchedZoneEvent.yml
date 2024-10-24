@@ -1,0 +1,36 @@
+allOf:
+  - $ref: ./qre.RuleEvent.yml
+  - type: object
+    properties:
+      msisdn:
+        type: integer
+        format: uint64
+        minimum: 0
+      imei:
+        type: integer
+        format: uint64
+        minimum: 0
+      imsi:
+        type: integer
+        format: uint64
+        minimum: 0
+      placemarkId:
+        type: integer
+        format: uint32
+        minimum: 0
+      zoneId:
+        type: integer
+        format: uint64
+        minimum: 0
+      key:
+        $ref: ./platform.base.Value.yml
+      placemarkName:
+        type: string
+      cgi:
+        type: string
+      coord:
+        $ref: ./platform.base.Coordinates.yml
+      eventCode:
+        description: Network kind of the event.
+        allOf:
+          - $ref: ./bigdata.base.ProtocolEventCode.yml

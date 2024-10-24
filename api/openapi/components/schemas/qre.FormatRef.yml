@@ -1,0 +1,22 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: |-
+      Ref-formated string.
+
+      Reference a string formatted with values from refs.
+    required:
+      - format
+    properties:
+      format:
+        type: string
+        description: |-
+          Format of the string.
+
+          The format is the same as \ref one.base.Message.
+      refs:
+        description: Ordered sub-refs for filling the message.
+        oneOf:
+          - $ref: ./bigdata.ref.MultiRef.yml
+        discriminator:
+          propertyName: _class

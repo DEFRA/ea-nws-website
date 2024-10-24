@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./bigdata.base.Response.yml
+  - type: object
+    properties:
+      campLineNo:
+        type: integer
+        format: int32
+        description: Line of the campaign, starts at 0.
+      campId:
+        type: integer
+        format: int32
+        description: Id of the campaign, starts at 1.

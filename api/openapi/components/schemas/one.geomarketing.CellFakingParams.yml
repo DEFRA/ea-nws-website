@@ -1,0 +1,13 @@
+type: object
+properties:
+  fakeLac:
+    type: integer
+    format: uint32
+    default: 1
+    minimum: 0
+  fakeCi:
+    type: integer
+    format: uint32
+    default: 1
+    minimum: 0
+    maximum: 999

@@ -1,0 +1,15 @@
+allOf:
+  - $ref: ./bigdata.qrrd.Ref.yml
+  - type: object
+    description: |-
+      Wildcard reference.
+
+      Should be used only for extraction. It does not make sense to use this
+      reference if the \ref key is fully describing the source key.
+    required:
+      - index
+    properties:
+      index:
+        type: integer
+        format: int32
+        description: Position of the wildcard in the source key.

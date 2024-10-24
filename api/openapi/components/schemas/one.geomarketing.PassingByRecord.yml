@@ -1,0 +1,82 @@
+allOf:
+  - $ref: ./bigdata.base.CdrEvent.yml
+  - type: object
+    required:
+      - imsi
+      - zoneId
+      - placemark
+      - angleIn
+      - angleOut
+      - tsIn
+      - tsOut
+      - passagePointStart
+      - passagePointEnd
+      - tsStart
+      - tsEnd
+      - speed
+    properties:
+      imsi:
+        type: integer
+        format: uint64
+        minimum: 0
+      zoneId:
+        type: integer
+        format: uint64
+        minimum: 0
+      placemark:
+        type: string
+      angleIn:
+        type: integer
+        format: uint32
+        minimum: 0
+        maximum: 65535
+      angleOut:
+        type: integer
+        format: uint32
+        minimum: 0
+        maximum: 65535
+      tsIn:
+        type: integer
+        format: int64
+      tsOut:
+        type: integer
+        format: int64
+      passagePointStart:
+        $ref: ./platform.base.Coordinates.yml
+      passagePointEnd:
+        $ref: ./platform.base.Coordinates.yml
+      cuidStart:
+        type: integer
+        format: uint64
+        minimum: 0
+      cuidEnd:
+        type: integer
+        format: uint64
+        minimum: 0
+      tsStart:
+        type: integer
+        format: int64
+      tsEnd:
+        type: integer
+        format: int64
+      coordinatesStart:
+        $ref: ./platform.base.Coordinates.yml
+      coordinatesEnd:
+        $ref: ./platform.base.Coordinates.yml
+      speed:
+        type: number
+        format: double
+      dayDistance:
+        type: number
+        format: double
+      trajectory:
+        type: string
+      conveyance:
+        type: string
+      travelerType:
+        type: integer
+        format: uint32
+        minimum: 0
+      coeff:
+        type: number
+        format: double

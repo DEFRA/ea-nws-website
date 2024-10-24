@@ -1,0 +1,26 @@
+allOf:
+  - $ref: ./one.event.LpmEvent.yml
+  - type: object
+    required:
+      - success
+    properties:
+      success:
+        type: boolean
+        description: The status of the redemption action.
+      giftId:
+        type: integer
+        format: uint64
+        description: The id of the redeemed gift.
+        minimum: 0
+      redeemerCollection:
+        type: string
+        description: The collection of the entity which has redeemed the gift.
+      redeemerKey:
+        description: The key of the entity which has redeemed the gift.
+        allOf:
+          - $ref: ./platform.base.Value.yml
+      redemptionId:
+        type: integer
+        format: uint64
+        description: Id of the redemption.
+        minimum: 0

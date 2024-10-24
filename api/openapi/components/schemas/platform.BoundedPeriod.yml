@@ -1,0 +1,60 @@
+type: object
+description: |-
+  Bounded period.
+
+  A bounded period is defined by:
+
+  - an outer range between \p startDate and \p endDate, defining the range
+    of time in which the \p period can be defined.
+
+    Note that \p startDate and \p endDate are included in the interval,
+    and must be coherent with the \p period unit. For instance, such date
+    should be a \ref WeekDate for a \p period with a \ref WeekDatePattern.
+
+  - a period pattern defined by a date pattern and a duration.
+
+  - \p nbOccurrences is the number of successive occurrences of a period
+    which may be merged together to define a bigger period.
+    For instance, we can define a period as "each 2 hours between 10h and
+    20h" with \p nbOccurrences equal to 2. In this case, there are only 5
+    occurrences of this period in the defined range instead of 10.
+required:
+  - period
+properties:
+  startDate:
+    oneOf:
+      - $ref: ./platform.DayOfMonthDate.yml
+      - $ref: ./platform.DayOfWeekDate.yml
+      - $ref: ./platform.HourDate.yml
+      - $ref: ./platform.MinuteDate.yml
+      - $ref: ./platform.MonthDate.yml
+      - $ref: ./platform.RelativeDate.yml
+      - $ref: ./platform.RelativeDatePattern.yml
+      - $ref: ./platform.SecondDate.yml
+      - $ref: ./platform.TimestampDate.yml
+      - $ref: ./platform.WeekDate.yml
+      - $ref: ./platform.YearDate.yml
+    discriminator:
+      propertyName: _class
+  endDate:
+    oneOf:
+      - $ref: ./platform.DayOfMonthDate.yml
+      - $ref: ./platform.DayOfWeekDate.yml
+      - $ref: ./platform.HourDate.yml
+      - $ref: ./platform.MinuteDate.yml
+      - $ref: ./platform.MonthDate.yml
+      - $ref: ./platform.RelativeDate.yml
+      - $ref: ./platform.RelativeDatePattern.yml
+      - $ref: ./platform.SecondDate.yml
+      - $ref: ./platform.TimestampDate.yml
+      - $ref: ./platform.WeekDate.yml
+      - $ref: ./platform.YearDate.yml
+    discriminator:
+      propertyName: _class
+  period:
+    $ref: ./platform.PeriodPattern.yml
+  nbOccurrences:
+    type: integer
+    format: uint32
+    default: 1
+    minimum: 1

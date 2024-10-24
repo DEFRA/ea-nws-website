@@ -1,0 +1,18 @@
+allOf:
+  - $ref: ./bigdata.aggr.Aggregation.yml
+  - type: object
+    description: Count the number of times a given input field is set.
+    required:
+      - outputFieldName
+    properties:
+      inputFieldName:
+        type: string
+        description: |-
+          Field to count.
+
+          If set, the operation counts the number of times when this field is
+          set. Otherwise or if the field is mandatory, the operation becomes
+          similar to \ref CountRows.
+      outputFieldName:
+        type: string
+        description: Name of the output field containing the resulting count.

@@ -1,0 +1,263 @@
+allOf:
+  - $ref: ./bigdata.base.Event.yml
+  - type: object
+    description: |-
+      Multicast event.
+
+      This particular event type is used internally by QRE to send another event
+      to a group of matching entities.
+
+      Such events are automatically routed by the EP to all the QKV peers (and
+      only them).
+    required:
+      - event
+      - collectionId
+      - cond
+    properties:
+      event:
+        description: Original event to send.
+        oneOf:
+          - $ref: ./bigdata.base.Action.yml
+          - $ref: ./bigdata.base.ProtocolEvent.yml
+          - $ref: ./bigdata.base.Response.yml
+          - $ref: ./bigdata.event.MulticastEvent.yml
+          - $ref: ./bigdata.event.PlacemarkEvent.yml
+          - $ref: ./bigdata.event.UdrEvent.yml
+          - $ref: ./community.event.ContractCreateLog.yml
+          - $ref: ./community.event.GroupCreateEvent.yml
+          - $ref: ./community.event.GroupCreateLog.yml
+          - $ref: ./community.event.GroupGroupCreateLog.yml
+          - $ref: ./community.event.GroupLinkLog.yml
+          - $ref: ./community.event.GroupUnlinkLog.yml
+          - $ref: ./community.event.InviteNotification.yml
+          - $ref: ./community.event.InviteReceived.yml
+          - $ref: ./community.event.InviteSendLog.yml
+          - $ref: ./community.event.LinkEvent.yml
+          - $ref: ./community.event.LinkLog.yml
+          - $ref: ./community.event.UnlinkEvent.yml
+          - $ref: ./community.event.UnlinkLog.yml
+          - $ref: ./community.onboarding.LeafLinkedLog.yml
+          - $ref: ./community.onboarding.LeafUnlinkedLog.yml
+          - $ref: ./community.onboarding.NodeLinkedLog.yml
+          - $ref: ./community.onboarding.NodeUnlinkedLog.yml
+          - $ref: ./community.sponsorship.AcceptReceivedEvent.yml
+          - $ref: ./community.sponsorship.AcceptReceivedLog.yml
+          - $ref: ./community.sponsorship.AcceptSentEvent.yml
+          - $ref: ./community.sponsorship.AcceptSentLog.yml
+          - $ref: ./community.sponsorship.ClearSponsorship.yml
+          - $ref: ./community.sponsorship.DeclineReceivedEvent.yml
+          - $ref: ./community.sponsorship.DeclineReceivedLog.yml
+          - $ref: ./community.sponsorship.DeclineSentEvent.yml
+          - $ref: ./community.sponsorship.DeclineSentLog.yml
+          - $ref: ./community.sponsorship.InvitationReceivedEvent.yml
+          - $ref: ./community.sponsorship.InvitationReceivedLog.yml
+          - $ref: ./community.sponsorship.InvitationSentEvent.yml
+          - $ref: ./community.sponsorship.InvitationSentLog.yml
+          - $ref: ./dc.EnrichedEvent.yml
+          - $ref: ./geosafeea.alert.AlertReceptionNotification.yml
+          - $ref: ./geosafeea.alert.AlertSubmitNotification.yml
+          - $ref: ./geosafeea.alert.AlertValidateNotification.yml
+          - $ref: ./one.b2b.action.ActivateSim.yml
+          - $ref: ./one.b2b.action.Allocation.yml
+          - $ref: ./one.b2b.action.AskDetachment.yml
+          - $ref: ./one.b2b.action.AskLineAttachment.yml
+          - $ref: ./one.b2b.action.AskLineCreation.yml
+          - $ref: ./one.b2b.action.Block.yml
+          - $ref: ./one.b2b.action.CategoryUpdate.yml
+          - $ref: ./one.b2b.action.CompanyBalance.yml
+          - $ref: ./one.b2b.action.CompanyBalanceResponse.yml
+          - $ref: ./one.b2b.action.CompanyFieldUpdate.yml
+          - $ref: ./one.b2b.action.ConsumptionAlert.yml
+          - $ref: ./one.b2b.action.LineBalance.yml
+          - $ref: ./one.b2b.action.LineBalanceResponse.yml
+          - $ref: ./one.b2b.action.LineUpdate.yml
+          - $ref: ./one.b2b.action.ListAvailableEntitiesResponse.yml
+          - $ref: ./one.b2b.action.ListAvailableMsisdns.yml
+          - $ref: ./one.b2b.action.ListAvailableMsisdnsResponse.yml
+          - $ref: ./one.b2b.action.ListAvailableSims.yml
+          - $ref: ./one.b2b.action.ListAvailableSimsResponse.yml
+          - $ref: ./one.b2b.action.ListServicesForCompany.yml
+          - $ref: ./one.b2b.action.ListServicesForLine.yml
+          - $ref: ./one.b2b.action.ListServicesResponse.yml
+          - $ref: ./one.b2b.action.ListTariffPlans.yml
+          - $ref: ./one.b2b.action.ListTariffPlansResponse.yml
+          - $ref: ./one.b2b.action.ServiceUpdate.yml
+          - $ref: ./one.b2b.action.TariffPlanUpdate.yml
+          - $ref: ./one.b2b.action.Unblock.yml
+          - $ref: ./one.b2b.log.CompanyLog.yml
+          - $ref: ./one.b2b.log.CompanyUserLog.yml
+          - $ref: ./one.b2b.log.DepartmentLog.yml
+          - $ref: ./one.b2b.log.LineAttachmentLog.yml
+          - $ref: ./one.b2b.log.LineDetachmentLog.yml
+          - $ref: ./one.b2b.log.ProfileLog.yml
+          - $ref: ./one.b2b.log.SetDepartmentLog.yml
+          - $ref: ./one.b2b.log.SetProfileLog.yml
+          - $ref: ./one.b2b.notification.ActivateSim.yml
+          - $ref: ./one.b2b.notification.Allocation.yml
+          - $ref: ./one.b2b.notification.AskLineAttachment.yml
+          - $ref: ./one.b2b.notification.AskLineCreation.yml
+          - $ref: ./one.b2b.notification.AskLineDetachment.yml
+          - $ref: ./one.b2b.notification.Block.yml
+          - $ref: ./one.b2b.notification.CategoryUpdate.yml
+          - $ref: ./one.b2b.notification.LineUpdate.yml
+          - $ref: ./one.b2b.notification.ServiceUpdate.yml
+          - $ref: ./one.b2b.notification.TariffPlanUpdate.yml
+          - $ref: ./one.b2b.notification.Unblock.yml
+          - $ref: ./one.base.B2bAllocationResponse.yml
+          - $ref: ./one.base.CompanyFieldUpdateResponse.yml
+          - $ref: ./one.brandOptout.BrandOptoutAction.yml
+          - $ref: ./one.event.Audience.yml
+          - $ref: ./one.event.BudgetMessageAction.yml
+          - $ref: ./one.event.BudgetMessageResponse.yml
+          - $ref: ./one.event.CheckBudgetAction.yml
+          - $ref: ./one.event.DecrementBudgetAction.yml
+          - $ref: ./one.event.DrEvent.yml
+          - $ref: ./one.event.DrLog.yml
+          - $ref: ./one.event.EmailRrLog.yml
+          - $ref: ./one.event.FACampaignHits.yml
+          - $ref: ./one.event.FieldUpdate.yml
+          - $ref: ./one.event.FollowAnalyticsDR.yml
+          - $ref: ./one.event.GeomPassingByResult.yml
+          - $ref: ./one.event.GeomarketingResult.yml
+          - $ref: ./one.event.KeywordEvent.yml
+          - $ref: ./one.event.KeywordLog.yml
+          - $ref: ./one.event.LpmBonusLog.yml
+          - $ref: ./one.event.LpmConvergedRedemptionResult.yml
+          - $ref: ./one.event.LpmPointsAwardedEvent.yml
+          - $ref: ./one.event.LpmPointsBurned.yml
+          - $ref: ./one.event.LpmPointsTransferDest.yml
+          - $ref: ./one.event.LpmPointsTransferSource.yml
+          - $ref: ./one.event.LpmRedemptionAction.yml
+          - $ref: ./one.event.LpmRedemptionEvent.yml
+          - $ref: ./one.event.LpmRedemptionResponse.yml
+          - $ref: ./one.event.LpmRedemptionResult.yml
+          - $ref: ./one.event.ManualKeywordLog.yml
+          - $ref: ./one.event.ManualOptin.yml
+          - $ref: ./one.event.ManualOptout.yml
+          - $ref: ./one.event.MarkerLog.yml
+          - $ref: ./one.event.MsChzResult.yml
+          - $ref: ./one.event.NbaCustomOfferRequestedEvent.yml
+          - $ref: ./one.event.NbaManagedOfferBalanceFailEvent.yml
+          - $ref: ./one.event.NbaManagedOfferBonusFailEvent.yml
+          - $ref: ./one.event.NbaManagedOfferBonusSuccessEvent.yml
+          - $ref: ./one.event.NbaOfferAcceptedEvent.yml
+          - $ref: ./one.event.NbaOfferProposedEvent.yml
+          - $ref: ./one.event.OptinEvent.yml
+          - $ref: ./one.event.OptoutEvent.yml
+          - $ref: ./one.event.ProximityDetectionEvent.yml
+          - $ref: ./one.event.RefillBudgetAction.yml
+          - $ref: ./one.event.RefillOfferAction.yml
+          - $ref: ./one.event.RuleListEvent.yml
+          - $ref: ./one.event.SentEvent.yml
+          - $ref: ./one.event.SetOptinStatus.yml
+          - $ref: ./one.event.ShortcodeAction.yml
+          - $ref: ./one.event.SubscribedToLpm.yml
+          - $ref: ./one.event.TargetOptimLog.yml
+          - $ref: ./one.event.TopupPredictionReporting.yml
+          - $ref: ./one.event.TopupPredictionSamples.yml
+          - $ref: ./one.event.TrainedModels.yml
+          - $ref: ./one.event.UnsubscribedFromLpm.yml
+          - $ref: ./one.event.WatchedZoneEvent.yml
+          - $ref: ./one.event.WatchingPeriod.yml
+          - $ref: ./one.event.WorkspaceKeywordEvent.yml
+          - $ref: ./one.event.ZoneEntry.yml
+          - $ref: ./one.event.ZoneLeave.yml
+          - $ref: ./one.event.ZoneResponse.yml
+          - $ref: ./one.facebook.AddToExistingCustomAudience.yml
+          - $ref: ./one.facebook.AddToNewCustomAudience.yml
+          - $ref: ./one.geomarketing.IntermediateStep.yml
+          - $ref: ./one.geomarketing.MsChzRecord.yml
+          - $ref: ./one.geomarketing.PassingByRecord.yml
+          - $ref: ./one.geomarketing.StopSegmentEvent.yml
+          - $ref: ./one.geomarketing.StopSegmentMiningRecord.yml
+          - $ref: ./one.notification.AlreadyOptin.yml
+          - $ref: ./one.notification.AlreadyOptout.yml
+          - $ref: ./one.notification.AuthFailDeactivatedUser.yml
+          - $ref: ./one.notification.BelowZero.yml
+          - $ref: ./one.notification.CampaignAutoPauseNotif.yml
+          - $ref: ./one.notification.CampaignOverThreshold.yml
+          - $ref: ./one.notification.CampaignZeroBudgetNotification.yml
+          - $ref: ./one.notification.InvalidOptinKeyword.yml
+          - $ref: ./one.notification.NotTargetedKeyword.yml
+          - $ref: ./one.notification.OptinCampaignEnded.yml
+          - $ref: ./one.notification.OptinClosed.yml
+          - $ref: ./one.notification.OptinInProgress.yml
+          - $ref: ./one.notification.OverThreshold.yml
+          - $ref: ./one.notification.PqmBudgetExpired.yml
+          - $ref: ./one.notification.PqmBudgetExpiryClose.yml
+          - $ref: ./one.notification.PqmBudgetThresholdReached.yml
+          - $ref: ./one.notification.RejectAction.yml
+          - $ref: ./one.notification.RejectTestAction.yml
+          - $ref: ./one.notification.ResetPassword.yml
+          - $ref: ./one.notification.SubmitAction.yml
+          - $ref: ./one.notification.SubmitTestAction.yml
+          - $ref: ./one.notification.UnknownContract.yml
+          - $ref: ./one.notification.UnsubmitAction.yml
+          - $ref: ./one.notification.UnsubmitTestAction.yml
+          - $ref: ./one.notification.UserWillExpire.yml
+          - $ref: ./one.notification.ValidateAction.yml
+          - $ref: ./one.notification.ValidateTestAction.yml
+          - $ref: ./one.notification.WelcomeMessage.yml
+          - $ref: ./one.popdensity.PopDensityHistorizedEvent.yml
+          - $ref: ./one.rffingerprint.MeasurementEvent.yml
+          - $ref: ./one.rffingerprint.MeasurementEventFmt.yml
+          - $ref: ./one.rule.MsgResponse.yml
+          - $ref: ./one.rule.SendMsgAction.yml
+          - $ref: ./one.rule.SendRcsMsgAction.yml
+          - $ref: ./one.rule.SendVoiceSmsAction.yml
+          - $ref: ./one.scenario.ActionLimitReached.yml
+          - $ref: ./one.scenario.BudgetDecrementedLog.yml
+          - $ref: ./one.scenario.CounterEachState.yml
+          - $ref: ./one.scenario.EventDropped.yml
+          - $ref: ./qre.Bypassed.yml
+          - $ref: ./qre.EnterScenario.yml
+          - $ref: ./qre.ExitScenario.yml
+          - $ref: ./qre.ForcedEntry.yml
+          - $ref: ./qre.ForcedEvent.yml
+          - $ref: ./qre.InvalidAction.yml
+          - $ref: ./qre.LimitReached.yml
+          - $ref: ./qre.Matched.yml
+          - $ref: ./qre.NewEntity.yml
+          - $ref: ./qre.NoSlotAvailable.yml
+          - $ref: ./qre.Optout.yml
+          - $ref: ./qre.PressureLimitReached.yml
+          - $ref: ./qre.PressureLimitRecovered.yml
+          - $ref: ./qre.RoutingEvent.yml
+          - $ref: ./qre.SendEventStoredEvent.yml
+          - $ref: ./qre.ShardSplitDrafted.yml
+          - $ref: ./qre.Started.yml
+          - $ref: ./qre.Stimulated.yml
+          - $ref: ./qre.Timeout.yml
+          - $ref: ./qre.TimeoutAfterLastTick.yml
+          - $ref: ./qre.Truncated.yml
+          - $ref: ./qre.WorkspacePressureLimitReached.yml
+        discriminator:
+          propertyName: _class
+      collectionId:
+        type: integer
+        format: uint32
+        description: |-
+          The identification number of the collection in which the event will be
+           sent.
+
+          It must be an existing QKV collection ( \ref bigdata.db.Collection).
+        minimum: 0
+        maximum: 255
+      cond:
+        description: >-
+          Condition describing the recipient entities.
+
+
+          All the entities matching \ref cond in \ref collection will "receive"
+
+          the \ref event.
+
+          In practice, the running QRE scenarios will be executed for them with
+
+          the original event as trigger.
+
+
+          Note that the main.sc is not executed when processing a
+          MulticastEvent.
+        allOf:
+          - $ref: ./bigdata.query.BoolExpr.yml

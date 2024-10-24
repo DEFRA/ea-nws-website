@@ -1,0 +1,23 @@
+allOf:
+  - $ref: ./bigdata.base.Response.yml
+  - type: object
+    required:
+      - cost
+    properties:
+      cost:
+        type: integer
+        format: uint64
+        description: The cost of the bonus.
+        minimum: 0
+      giftId:
+        type: integer
+        format: uint64
+        description: The id of the gift.
+        minimum: 0
+      awardedEntityCollection:
+        type: string
+        description: The collection of the entity which receive the gift.
+      awardedEntityKey:
+        description: The key of the entity which receive the gift.
+        allOf:
+          - $ref: ./platform.base.Value.yml

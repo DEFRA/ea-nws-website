@@ -1,0 +1,23 @@
+allOf:
+  - $ref: ./bigdata.base.EventLog.yml
+  - type: object
+    required:
+      - nbPoints
+      - user
+    properties:
+      nbPoints:
+        type: integer
+        format: int64
+        description: The number of awarded points
+      user:
+        type: string
+      comment:
+        type: string
+      lpmPointsValidity:
+        type: integer
+        format: uint64
+        minimum: 0
+      lpmBalance:
+        type: integer
+        format: uint32
+        minimum: 0

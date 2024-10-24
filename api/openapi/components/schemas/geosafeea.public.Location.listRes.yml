@@ -1,0 +1,18 @@
+type: object
+required:
+  - total
+properties:
+  locations:
+    type: array
+    description: |-
+      the list of locations matching the list
+                                options
+    items:
+      $ref: ./geosafeea.contact.Poi.yml
+  total:
+    type: integer
+    format: uint32
+    description: |-
+      the total number of locations matching the
+                                list of options excluding offset and limit
+    minimum: 0

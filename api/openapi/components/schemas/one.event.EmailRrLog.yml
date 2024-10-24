@@ -1,0 +1,19 @@
+allOf:
+  - $ref: ./qre.base.EventLog.yml
+  - type: object
+    description: Entity log sent when a tracked email is opened.
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: uint64
+        description: >-
+          The related SendMsgAction identifier.
+
+
+          The field name must be the same as the one with attribute
+          "history:key"
+
+          in bigdata.base.Action for matching purpose.
+        minimum: 0

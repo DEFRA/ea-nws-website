@@ -1,0 +1,14 @@
+allOf:
+  - $ref: ./bigdata.query.ExtendedBoolExprSync.yml
+  - type: object
+    description: |-
+      True has reached success (see \p HasSuccessInAnyScenario) in any of the
+      given scenario.
+    properties:
+      scenarioIds:
+        type: array
+        description: IDs of the scenarios on which the condition applies.
+        items:
+          type: integer
+          format: uint64
+          minimum: 0

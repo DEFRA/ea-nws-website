@@ -1,0 +1,43 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: |-
+      Restriction to apply on schema.
+
+      This structure describes a list of restrictions to apply on a schema.
+      Restriction can be either whitelists: restrictive list of allowed
+      components, blacklist : list of forbidden components.
+
+      The restriction can be applied either at the collection level, allowing or
+      forbidding complete collections, or at the source level.
+    properties:
+      allowedCollections:
+        type: array
+        description: Names of allowed collections.
+        items:
+          type: string
+          minLength: 1
+          pattern: '[_0-9a-zA-Z]*'
+      forbiddenCollections:
+        type: array
+        description: Names of forbidden collections.
+        items:
+          type: string
+          minLength: 1
+          pattern: '[_0-9a-zA-Z]*'
+      allowedSources:
+        type: array
+        description: |-
+          Names of allowed sources in a collection.
+
+          For each collections, list of allowed sources' name.
+        items:
+          $ref: ./bigdata.schema.CollectionSources.yml
+      forbiddenSources:
+        type: array
+        description: |-
+          Names of allowed sources in a collection.
+
+          For each collections, list of forbidden sources' name.
+        items:
+          $ref: ./bigdata.schema.CollectionSources.yml

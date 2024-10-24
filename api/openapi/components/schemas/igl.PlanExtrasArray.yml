@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    properties:
+      extras:
+        type: array
+        items:
+          $ref: ./igl.PlanExtras.yml

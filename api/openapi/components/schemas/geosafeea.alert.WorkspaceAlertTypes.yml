@@ -1,0 +1,13 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: Defines which alert types can be used in this workspace and its children.
+    properties:
+      allowedTypes:
+        type: array
+        description: |-
+          List of allowed types for this workspace.
+
+          If the list is empty, all types are allowed.
+        items:
+          $ref: ./geosafeea.alert.AlertType.yml

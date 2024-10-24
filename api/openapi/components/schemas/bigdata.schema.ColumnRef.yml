@@ -1,0 +1,15 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: |-
+      Referencing a column of the database.
+
+      This field can be used to reference the column of a database by its
+      internal name. It is the normal form for a reference that points to
+      a single value stored in a database.
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: Name of the column.

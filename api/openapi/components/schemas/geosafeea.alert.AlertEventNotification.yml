@@ -1,0 +1,73 @@
+allOf:
+  - $ref: ./one.notification.UserNotification.yml
+  - type: object
+    description: Notification sent to administrators and users with ALERT_USE permission.
+    required:
+      - workspaceName
+      - alertName
+      - alertId
+      - mode
+      - state
+      - sender
+      - url
+    properties:
+      workspaceName:
+        type: string
+        description: |-
+          workspaceId exists in one.base.Notification.
+
+          Workspace name.
+      alertName:
+        type: string
+        description: Alert name.
+      alertId:
+        type: integer
+        format: uint64
+        description: Alert id.
+        minimum: 0
+      mode:
+        type: string
+        description: Alert mode.
+      state:
+        type: string
+        description: Alert state.
+      startDate:
+        description: Alert start date.
+        allOf:
+          - $ref: ./platform.base.Value.yml
+      stopDate:
+        description: Alert stop date.
+        allOf:
+          - $ref: ./platform.base.Value.yml
+      sender:
+        type: string
+        description: Sender (the CAP) field.
+      channels:
+        type: array
+        description: Channels kinds involved in the alert processing.
+        items:
+          type: string
+      url:
+        type: string
+        description: |-
+          URL to the alert details (the domaine name should be set in the
+          message, e.g. https://geo.safe/{$url}).
+      alertCategories:
+        type: array
+        description: The categories of the alert.
+        items:
+          type: string
+      alertType:
+        type: string
+        description: Alert type (the level as defined by the european standard).
+      alertEventType:
+        description: A text describing the type of an alert message.
+        allOf:
+          - $ref: ./platform.base.Labels.yml
+      alertZone:
+        type: string
+        description: |-
+          Name of the zone associated with the alert.
+
+          This field is only set for certain types of alarm that have a zone
+          associated to it.

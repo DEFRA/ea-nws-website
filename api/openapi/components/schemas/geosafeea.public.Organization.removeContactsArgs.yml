@@ -1,0 +1,15 @@
+type: object
+required:
+  - authToken
+properties:
+  authToken:
+    type: string
+    description: |-
+      a secured token retrieved during registration or
+                             signin
+  contactIds:
+    type: array
+    description: the list of contact identifiers to remove
+    items:
+      type: string
+    maxItems: 1000

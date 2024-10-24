@@ -1,0 +1,41 @@
+type: object
+description: |-
+  A selection condition.
+
+  Defines a selection on a collection.
+required:
+  - collection
+  - cond
+properties:
+  collection:
+    type: string
+    description: |-
+      Name of the collection.
+
+      Note that a query may be done on a particular region (shard).
+
+      To do that, the specified collection name can actually be the name
+      of the targeted shard. The name of a shard follows the pattern
+      "{collection_name}:{shard_identifier}" where the format of the
+      {shard_identifier} is database-engine dependent.
+
+      For QTS databases, the format is "{instanceId}@{hostId}"
+  cond:
+    description: The condition expression.
+    allOf:
+      - $ref: ./bigdata.query.QueryExpression.yml
+  limit:
+    type: integer
+    format: uint64
+    description: The maximum number of results to select.
+    minimum: 0
+  selectId:
+    type: string
+    description: |-
+      Select identifier.
+
+      This identifier can be used to keep track of the progress of a
+      selection, using the dedicated RPCs.
+
+      If provided, it must not be used by another selection in progress.
+      If not provided, a unique select identifier is generated.

@@ -1,0 +1,94 @@
+type: object
+description: |-
+  ListOptions for list RPC in IOP Interface.
+
+  This class defines base options to build a list RPC. The implementation of
+  such RPCs should use the associated \ref platform_apply_list_options
+  helper.
+
+  Use:
+  <code>
+      struct Obj;
+
+      interface Pipo {
+          list
+              in  (platform.ListOptions options)
+              out (Obj[] obj, uint total);
+      };
+  </code>
+  Where 'total' is the total number of matching entries.
+  It will be used for pagination
+properties:
+  _class:
+    type: string
+  sort:
+    type: array
+    description: |-
+      Sorting parameters.
+
+      For multiple sort, the parameters should be put in the order you want
+      them to be applied.
+    items:
+      $ref: ./platform.SortField.yml
+  offset:
+    type: integer
+    format: int32
+    description: |-
+      Offset.
+
+      After applying the different sorting algorithm if there are any:
+       the offset is the number of entries that will be skipped when
+       constructing the result array.
+    default: 0
+    minimum: 0
+  limit:
+    type: integer
+    format: int32
+    description: >-
+      Maximum of entries in the result array.
+
+
+      The maximum value for this parameter is RPC-specific ( \ref
+      platform_apply_list_options).
+    default: 1024
+    minimum: 0
+  filter:
+    type: array
+    description: |-
+      Filtering parameters.
+
+      \deprecated Use `filterExpr` instead.
+    items:
+      $ref: ./platform.FilterField.yml
+  filterOp:
+    description: |-
+      Operation on filter fields.
+
+      \deprecated Use `filterExpr` instead.
+    allOf:
+      - $ref: ./platform.FilterFieldOp.yml
+    default: 0
+  lighten:
+    type: boolean
+    description: |-
+      Lighten the listed IOP objects.
+
+      When this parameter is set, the fields tagged with the generic
+      attribute "platform:list:lighten" set to true are omitted. It makes
+      possible to list objects without heavy fields, e.g. scenarios without
+      their rules.
+
+      Warning: the mechanism triggered by this parameter is lossy, therefore
+      the objects obtained with this option should *not* be used for object
+      update. It is recommended to implement mechanisms to protect the
+      interface against such losses when using this option.
+    default: false
+  filterExpr:
+    description: Filtering expression.
+    allOf:
+      - $ref: ./platform.FilterFieldExpr.yml
+discriminator:
+  propertyName: _class
+  mapping:
+    geosafeea.public.OrganizationContactListOptions: ./geosafeea.public.OrganizationContactListOptions.yml
+    geosafeea.public.LocationListOptions: ./geosafeea.public.LocationListOptions.yml

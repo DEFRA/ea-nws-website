@@ -1,0 +1,21 @@
+type: object
+description: Tie-Breaker admin votes assignation state.
+required:
+  - term
+  - assignedAt
+properties:
+  serverId:
+    type: integer
+    format: uint32
+    description: External RAFT server ID owning the admin votes.
+    default: 0
+    minimum: 0
+  term:
+    type: integer
+    format: uint64
+    description: External RAFT term of the admin votes assignation.
+    minimum: 0
+  assignedAt:
+    type: integer
+    format: uint64
+    minimum: 0

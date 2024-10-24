@@ -1,0 +1,16 @@
+allOf:
+  - $ref: ./one.geomarketing.MsChzRecord.yml
+  - type: object
+    properties:
+      study:
+        type: string
+      taskTag:
+        type: string
+      taskExecId:
+        type: integer
+        format: uint64
+        minimum: 0
+      foreachBatchId:
+        type: integer
+        format: uint64
+        minimum: 0

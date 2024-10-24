@@ -1,0 +1,23 @@
+allOf:
+  - $ref: ./geosafeea.cfg.DestinationWsCfg.yml
+  - type: object
+    description: |-
+      Intersec destination configuration for a workspace.
+
+      The credentials passed to the connector are passed as
+      HTTP Basic Authorization and formatted as 'user:workspaceId:password'.
+    required:
+      - user
+      - password
+    properties:
+      user:
+        type: string
+        description: The user to be used.
+      password:
+        type: string
+        description: The password to be used in credentials.
+      workspaceId:
+        type: integer
+        format: uint64
+        description: The workspace id to be used in credentials.
+        minimum: 0

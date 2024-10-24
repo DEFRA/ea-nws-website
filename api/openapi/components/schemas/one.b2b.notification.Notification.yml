@@ -1,0 +1,25 @@
+allOf:
+  - $ref: ./one.notification.Notification.yml
+  - type: object
+    description: |-
+      B2B notification.
+
+      Those notification are used by the minion-b2b to inidicate that an action
+      should be done by the back office.
+
+      Each notification class should be referenced by an B2B action (see the
+      b2b/action.iop). The fields in the Notification class are the same than
+      those of the action class (same name and type).
+    properties:
+      companyId:
+        type: string
+      login:
+        type: string
+      comment:
+        type: string
+      msisdnStr:
+        type: string
+      keyId:
+        type: integer
+        format: uint32
+        minimum: 0

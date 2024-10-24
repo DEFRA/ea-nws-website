@@ -1,0 +1,22 @@
+allOf:
+  - $ref: ./one.notification.UserNotification.yml
+  - type: object
+    description: Notification sent when a scenario action is performed.
+    required:
+      - scenarioId
+      - scenarioName
+      - userLogin
+    properties:
+      scenarioId:
+        type: integer
+        format: uint64
+        description: Id of the affected scenario.
+        minimum: 0
+      scenarioName:
+        type: string
+        description: Name of the affected scenario.
+      userLogin:
+        type: string
+        description: Login of the user that triggered the action.
+      workspaceName:
+        type: string

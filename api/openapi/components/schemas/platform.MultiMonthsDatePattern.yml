@@ -1,0 +1,13 @@
+type: object
+description: A mutli-months date pattern .
+required:
+  - period
+properties:
+  period:
+    description: Length of the period.
+    allOf:
+      - $ref: ./platform.MultiMonthsPeriod.yml
+  first:
+    description: First month of the period.
+    allOf:
+      - $ref: ./platform.base.Month.yml

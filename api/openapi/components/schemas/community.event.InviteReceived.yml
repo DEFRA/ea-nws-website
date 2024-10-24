@@ -1,0 +1,11 @@
+allOf:
+  - $ref: ./bigdata.base.Response.yml
+  - type: object
+    required:
+      - host
+      - groupId
+    properties:
+      host:
+        type: string
+      groupId:
+        type: string

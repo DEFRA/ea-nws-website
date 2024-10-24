@@ -1,0 +1,48 @@
+post:
+  tags:
+    - organization
+  summary: Promote a contact to a new role.
+  description: >-
+    This RPC promotes a given contact to a new role in the organization. If
+
+    the contact has no role yet, an invitation is sent, and the role is
+
+    kept pending. If the contact already has a role, the update is
+
+    immediate. Changes from 'ADMIN' to 'READONLY' are supported by this
+
+    function.
+
+
+    role can be one of 'ADMIN' or 'READONLY', see \ref
+    geosafeea.contact.ContactRole.
+
+
+    The user must have the admin role in this organization.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/geosafeea.public.Organization.promoteContactArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: >-
+              ../components/schemas/geosafeea.public.Organization.promoteContactRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

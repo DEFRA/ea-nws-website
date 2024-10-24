@@ -1,0 +1,28 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    description: |-
+      Map the input values to their CRM representation 'crmKeyX;crmValX'.
+
+      This operations rewrites itself as a Projection(DimensionMapper(X)).
+    required:
+      - crmIndex
+      - dim
+    properties:
+      crmIndex:
+        type: integer
+        format: uint32
+        minimum: 0
+      dim:
+        oneOf:
+          - $ref: ./bigdata.relational.CategorizationDimension.yml
+          - $ref: ./bigdata.relational.PartitionDimension.yml
+          - $ref: ./bigdata.relational.PeriodDimension.yml
+          - $ref: ./bigdata.relational.PlacemarkDimension.yml
+          - $ref: ./bigdata.relational.RangeDimension.yml
+          - $ref: ./bigdata.relational.UniqueValueDimension.yml
+        discriminator:
+          propertyName: _class
+      generateTotals:
+        type: boolean
+        default: true

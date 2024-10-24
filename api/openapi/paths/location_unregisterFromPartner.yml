@@ -1,0 +1,36 @@
+post:
+  tags:
+    - location
+  summary: Unregister a location from an alert emitter organization.
+  description: |-
+    This RPC unregisters a location in the authenticated user's
+    organization from the given alert emitter organization.
+
+    The user must have the admin role in this organization.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/geosafeea.public.Location.unregisterFromPartnerArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: >-
+              ../components/schemas/geosafeea.public.Location.unregisterFromPartnerRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

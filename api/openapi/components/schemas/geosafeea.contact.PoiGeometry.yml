@@ -1,0 +1,17 @@
+description: POI Geometry supporting several formats.
+oneOf:
+  - type: object
+    required:
+      - geometry
+    properties:
+      geometry:
+        description: Geometry defined in Intersec format.
+        allOf:
+          - $ref: ./geoloc.Geometry.yml
+  - type: object
+    required:
+      - geoJson
+    properties:
+      geoJson:
+        type: string
+        description: Geometry defined in GeoJSON format.

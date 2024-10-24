@@ -1,0 +1,38 @@
+post:
+  tags:
+    - organization
+  summary: Register to an alert emitter organization.
+  description: |-
+    This RPC registers the authenticated user's organization to the given
+    alert emitter organization, with the associated registration
+    parameters. This RPC fails if the registration already exists, or if
+    too many registrations are already active.
+
+    The user must have the admin role in this organization.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/geosafeea.public.Organization.registerToPartnerArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: >-
+              ../components/schemas/geosafeea.public.Organization.registerToPartnerRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

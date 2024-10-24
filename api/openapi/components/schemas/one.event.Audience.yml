@@ -1,0 +1,64 @@
+allOf:
+  - $ref: ./bigdata.base.CdrEvent.yml
+  - type: object
+    required:
+      - channel
+      - startDate
+      - timeAggregationType
+      - count
+      - percentage
+      - globalPercentage
+      - avgDuration
+    properties:
+      channel:
+        type: string
+        description: Channel watched.
+      startDate:
+        type: integer
+        format: int64
+        description: |-
+          Aggregated date of the beginning of the observed slice.
+
+          The duration of the slice is set by the TimeClassification identified
+          by \ref timeAggregationType.
+      timeAggregationType:
+        type: string
+        description: Name of the time classification.
+      count:
+        type: integer
+        format: uint64
+        description: |-
+          Audience count.
+
+          Total number of users watching this channel during this period.
+        minimum: 0
+      percentage:
+        type: number
+        format: double
+        description: |-
+          Audience percentage on same period.
+
+          Percentage of user watching this channel during this period on users
+          watching any channel during the same period.
+        minimum: 0
+        maximum: 100
+      globalPercentage:
+        type: number
+        format: double
+        description: |-
+          Audience percentage relative to reference period.
+
+          Percentage of users watching this channel during this period on users
+          watching any channel during the reference period.
+        minimum: 0
+      avgDuration:
+        type: integer
+        format: uint64
+        description: Average time spent by the watchers represented in the count.
+        minimum: 0
+      taskTag:
+        type: string
+      taskExecId:
+        type: integer
+        format: uint64
+        minimum: 0

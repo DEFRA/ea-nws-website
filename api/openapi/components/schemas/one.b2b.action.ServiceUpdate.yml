@@ -1,0 +1,20 @@
+allOf:
+  - $ref: ./one.b2b.action.ContractUpdate.yml
+  - type: object
+    description: Action log class for update service subscribtion.
+    required:
+      - serviceId
+      - newValue
+    properties:
+      serviceId:
+        type: integer
+        format: uint64
+        minimum: 0
+      previousValue:
+        description: The previous value of the field
+        allOf:
+          - $ref: ./platform.base.Value.yml
+      newValue:
+        description: The new value of the field
+        allOf:
+          - $ref: ./platform.base.Value.yml

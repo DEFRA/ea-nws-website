@@ -1,0 +1,4 @@
+allOf:
+  - $ref: ./community.event.GroupGroupLog.yml
+  - type: object
+    description: Contract joined a group (group POV)

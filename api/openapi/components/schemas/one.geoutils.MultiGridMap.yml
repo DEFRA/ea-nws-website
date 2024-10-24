@@ -1,0 +1,47 @@
+allOf:
+  - $ref: ./one.geoutils.GridMapBase.yml
+  - type: object
+    description: |-
+      Map locations into a multi-level grid on Earth's surface.
+
+      Instead of mapping locations on a single-level grid (see \p GridMap), this
+      mapper applies the mapping at several levels of precision.
+
+      The output type is \p geoutils.MultiGridSquare.
+    required:
+      - baseSquareSide
+      - maxSquareSide
+    properties:
+      baseSquareSide:
+        type: integer
+        format: int32
+        description: >-
+          Side of a square of the grid at the base level of the grid (in meter).
+
+
+          This value gives the side of the smallest squares of the grid, at
+          level
+
+          zero.
+        minimum: 1
+      maxSquareSide:
+        type: integer
+        format: int32
+        description: >-
+          Maximum side of a square of the grid (in meter).
+
+
+          In order to create the different levels of the grid, the squares are
+
+          going to be merged together: 2x2 squares of level N will be merged to
+
+          create 1 square of level N+1.
+
+
+          This attribute fixes the limit where we cease creating new levels in
+
+          the grid. \note The square side is calculated near the origin of the
+          grid. Some
+
+          located nearer to the edge of the grid can possibly exceed this value.
+        minimum: 1

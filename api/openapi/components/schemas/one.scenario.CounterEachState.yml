@@ -1,0 +1,27 @@
+allOf:
+  - $ref: ./bigdata.base.Event.yml
+  - type: object
+    required:
+      - occurrences
+      - totalOccurrences
+      - value
+      - totalValue
+    properties:
+      occurrences:
+        type: integer
+        format: uint32
+        description: Number of execution of each we handle.
+        minimum: 0
+      totalOccurrences:
+        type: integer
+        format: uint32
+        description: Total number of occurrences since the activation of the counter.
+        minimum: 0
+      value:
+        type: number
+        format: double
+        description: Value accumulated for this each occurrences.
+      totalValue:
+        type: number
+        format: double
+        description: Value accumulated since the activation of the counter.

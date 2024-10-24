@@ -1,0 +1,15 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: |-
+      This reference allows to retrieve the next date before an entity can be
+       targeted again.
+    required:
+      - channel
+    properties:
+      workspaceId:
+        type: integer
+        format: uint64
+        minimum: 0
+      channel:
+        type: string

@@ -1,0 +1,8 @@
+type: string
+description: |-
+  Filter field operator.
+
+  \deprecated Use FilterFieldExpr instead.
+enum:
+  - AND
+  - OR

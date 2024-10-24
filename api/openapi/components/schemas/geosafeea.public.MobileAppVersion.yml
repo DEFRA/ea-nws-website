@@ -1,0 +1,27 @@
+type: object
+description: Version of a mobile application.
+required:
+  - major
+  - minor
+  - patch
+properties:
+  major:
+    type: integer
+    format: uint32
+    description: The major version of the application.
+    minimum: 0
+  minor:
+    type: integer
+    format: uint32
+    description: The minor version of the application.
+    minimum: 0
+  patch:
+    type: integer
+    format: uint32
+    description: The patch version of the application.
+    minimum: 0
+  build:
+    type: integer
+    format: uint32
+    description: The optional build version of the application.
+    minimum: 0

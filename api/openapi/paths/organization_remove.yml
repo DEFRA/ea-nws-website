@@ -1,0 +1,34 @@
+post:
+  tags:
+    - organization
+  summary: Remove an organization from the platform.
+  description: |-
+    This RPC removes the organization from the platform, all contacts are
+    disabled, and all related authentication tokens become unusable.
+
+    The user must have the admin role in this organization.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/geosafeea.public.Organization.removeArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Void.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

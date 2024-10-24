@@ -1,0 +1,14 @@
+type: object
+description: An amount of data.
+required:
+  - unit
+  - value
+properties:
+  unit:
+    description: Unit of data in which the amount is expressed.
+    allOf:
+      - $ref: ./platform.base.DataUnit.yml
+  value:
+    type: integer
+    format: int64
+    description: Number of \p unit.

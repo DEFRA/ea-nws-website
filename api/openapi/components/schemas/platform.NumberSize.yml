@@ -1,0 +1,15 @@
+type: string
+description: |-
+  Define the size of the integer.
+
+  Define the storage size of the integer and as a consequence the allowed
+  range of values.
+enum:
+  - INT8
+  - INT16
+  - INT32
+  - INT64
+  - UINT8
+  - UINT16
+  - UINT32
+  - UINT64

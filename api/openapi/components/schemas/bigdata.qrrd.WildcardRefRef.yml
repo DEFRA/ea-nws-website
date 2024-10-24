@@ -1,0 +1,13 @@
+allOf:
+  - $ref: ./bigdata.qrrd.RefRef.yml
+  - type: object
+    description: |-
+      Reference on a wildcard reference.
+
+      Should be used only for extraction.
+    required:
+      - index
+    properties:
+      index:
+        type: integer
+        format: int32

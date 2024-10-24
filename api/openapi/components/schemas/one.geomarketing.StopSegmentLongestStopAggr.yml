@@ -1,0 +1,18 @@
+type: object
+description: 'Aggregation rule: use the longest stop available.'
+properties:
+  minStopDuration:
+    type: integer
+    format: uint32
+    description: Under this value, a stop cannot be selected.
+    default: 0
+    minimum: 0
+  maxAggregatedMoveDuration:
+    type: integer
+    format: uint32
+    description: |-
+      Limitation for the duration of an aggregated move generated with this
+       rule (in second).
+
+      Note: single moves longer than this duration can be kept though.
+    minimum: 0

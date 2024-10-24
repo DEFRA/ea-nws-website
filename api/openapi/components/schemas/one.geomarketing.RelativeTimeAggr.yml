@@ -1,0 +1,21 @@
+type: object
+description: |-
+  Relative time classifier.
+
+  Transform a date into a relative time. Example: hour of the day, day of the
+  week, etc...
+required:
+  - level
+properties:
+  level:
+    description: Aggregation level.
+    allOf:
+      - $ref: ./one.geomarketing.RelativeTimeAggrLevel.yml
+  ranges:
+    type: array
+    description: Additional classification ranges.
+    items:
+      type: integer
+      format: uint32
+      minimum: 0
+      maximum: 65535

@@ -1,0 +1,20 @@
+allOf:
+  - $ref: ./bigdata.base.Action.yml
+  - type: object
+    properties:
+      companyId:
+        type: string
+      comment:
+        type: string
+        description: Optional comment for the customer backoffice.
+      msisdnStr:
+        type: string
+        description: |-
+          MSISDN of the associated line.
+
+          It is automatically filled, unless specified otherwise in a child
+          class.
+      keyId:
+        type: integer
+        format: uint32
+        minimum: 0

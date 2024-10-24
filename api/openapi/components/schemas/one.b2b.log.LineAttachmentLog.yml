@@ -1,0 +1,21 @@
+allOf:
+  - $ref: ./one.b2b.log.LineDepartmentLog.yml
+  - type: object
+    description: A specific class for line attachment
+    required:
+      - profileId
+      - profileName
+    properties:
+      profileId:
+        type: integer
+        format: uint64
+        description: profile unique identifier
+        minimum: 0
+      profileName:
+        type: string
+        description: Name of the profile
+      imsi:
+        type: integer
+        format: uint64
+        description: IMSI
+        minimum: 0

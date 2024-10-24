@@ -1,0 +1,45 @@
+allOf:
+  - $ref: ./bigdata.base.Event.yml
+  - type: object
+    description: Communication event created from the push.
+    required:
+      - entityId
+      - collection
+      - key
+    properties:
+      entityId:
+        description: Identifier of the recipient of the message.
+        allOf:
+          - $ref: ./platform.base.Value.yml
+      collection:
+        type: string
+        description: Collection of the entity.
+      key:
+        description: Value of the primary key of the row of the entity.
+        allOf:
+          - $ref: ./platform.base.Value.yml
+      ruleId:
+        type: integer
+        format: uint64
+        description: Identifier of the rule which sent the message.
+        minimum: 0
+      proto:
+        description: Protocol through which we received the message
+        allOf:
+          - $ref: ./inet.MetaProto.yml
+      campLineNo:
+        type: integer
+        format: int32
+        description: Line of the campaign, starts at 0.
+      campId:
+        type: integer
+        format: int32
+        description: Id of the campaign, starts at 1.
+      protoStr:
+        type: string
+        description: Replaces the inet.MetaProto field.
+      logGroupId:
+        type: integer
+        format: uint64
+        description: Log group id of the corresponding action, to perform matching.
+        minimum: 0

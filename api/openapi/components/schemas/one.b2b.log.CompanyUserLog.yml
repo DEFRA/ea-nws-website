@@ -1,0 +1,21 @@
+allOf:
+  - $ref: ./one.b2b.log.CompanyLog.yml
+  - type: object
+    description: A class to log events related with a company user.
+    required:
+      - userLogin
+      - userId
+      - userType
+    properties:
+      userLogin:
+        type: string
+        description: Login of the company user on which the action is performed.
+      userId:
+        type: integer
+        format: uint64
+        description: Internal id of the company user on which the action is performed.
+        minimum: 0
+      userType:
+        description: Type of the company user on which the action is performed.
+        allOf:
+          - $ref: ./one.b2b.CompanyUserType.yml

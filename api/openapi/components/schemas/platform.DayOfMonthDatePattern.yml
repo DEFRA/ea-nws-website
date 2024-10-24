@@ -1,0 +1,12 @@
+type: object
+description: A date pattern based on a particular day of a month.
+required:
+  - day
+properties:
+  day:
+    type: integer
+    format: uint32
+    minimum: 1
+    maximum: 31
+  date:
+    $ref: ./platform.DayDatePattern.yml

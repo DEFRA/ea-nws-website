@@ -1,0 +1,31 @@
+type: object
+description: Single message campaign of protocol in a workspace for a user.
+required:
+  - proto
+  - workspaceId
+  - dayOfMonth
+  - cid
+properties:
+  proto:
+    description: Protocol.
+    allOf:
+      - $ref: ./inet.MetaProto.yml
+  workspaceId:
+    type: integer
+    format: uint64
+    description: Workspace id.
+    minimum: 0
+  dayOfMonth:
+    type: integer
+    format: uint32
+    description: |-
+      Day of the month for this single message campaign.
+
+      A new single message campaign is created every day. This specifies the
+      day of validity of this single message campaign.
+    minimum: 0
+    maximum: 255
+  cid:
+    type: integer
+    format: int32
+    description: ID of the single message campaign.

@@ -1,0 +1,23 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: |-
+      Reference a field of a rule context within an entity context.
+
+      This reference allows getting the value of the field present at the
+      specified iop path of a rule context in an entity context.
+      The path can use dots to perform deep accesses within the rule.
+    required:
+      - ruleId
+      - fieldPath
+    properties:
+      ruleId:
+        type: integer
+        format: uint64
+        description: Id of the rule context.
+        minimum: 0
+      fieldPath:
+        type: string
+        description: Path to the field to fetch.
+        minLength: 1
+        pattern: '[_0-9a-zA-Z\.\[\]\*\-<>]*'

@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./one.notification.ScenarioAction.yml
+  - type: object
+    description: Notification sent to validators upon scenario submit.
+    properties:
+      targetSize:
+        type: integer
+        format: uint64
+        minimum: 0

@@ -1,0 +1,105 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    properties:
+      slir:
+        type: boolean
+        default: false
+      elir:
+        type: boolean
+        default: false
+      maxThroughput:
+        type: integer
+        format: int32
+        default: 0
+      maxRate:
+        type: integer
+        format: int32
+        default: 0
+      maxLocAge:
+        type: integer
+        format: int64
+        default: 0
+      gmlcValidity:
+        type: integer
+        format: int64
+        default: 0
+      maxRateMonth:
+        type: integer
+        format: int32
+        default: 0
+      deprecatedFlowControlMode:
+        allOf:
+          - $ref: ./igl.FlowControlMode.yml
+        default: 0
+      typology:
+        $ref: ./igl.ObjTarget.yml
+      allowCidGeoInfo:
+        type: boolean
+        default: true
+      proxyMode:
+        allOf:
+          - $ref: ./igl.MlpProxyMode.yml
+        default: 0
+      servingNodeDbLookup:
+        type: boolean
+        default: false
+      maxServingNodeAge:
+        type: integer
+        format: int32
+        default: 0
+      utcOffset:
+        type: integer
+        format: int32
+        default: 0
+        minimum: -840
+        maximum: 840
+      asyncAnswerTimeout:
+        type: integer
+        format: uint32
+        default: 600
+        minimum: 0
+        maximum: 86400
+      proxyAddr:
+        type: string
+      allowWifiInfo:
+        type: boolean
+        default: false
+      maxRateSoft:
+        type: integer
+        format: int32
+        default: 0
+      maxRateMonthSoft:
+        type: integer
+        format: int32
+        default: 0
+      lcsClientType:
+        $ref: ./igl.LcsClientType.yml
+      mlpExtension:
+        allOf:
+          - $ref: ./mlp.MlpExtension.yml
+        default: 1
+      privacyOverrideIndicator:
+        type: boolean
+        default: false
+      mlpShapeType:
+        allOf:
+          - $ref: ./igl.MlpShapeType.yml
+        default: 3
+      horizontalAccuracy:
+        type: integer
+        format: uint32
+        default: 0
+        minimum: 0
+      respReq:
+        allOf:
+          - $ref: ./mlp.RespReq.yml
+        default: 2
+      lcsServiceTypeId:
+        allOf:
+          - $ref: ./igl.LcsServiceTypeId.yml
+        default: 0
+      accQosClass:
+        allOf:
+          - $ref: ./mlp.QosClass.yml
+        default: 0

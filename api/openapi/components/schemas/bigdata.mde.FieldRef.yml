@@ -1,0 +1,24 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: |-
+      Reference on a field of an MDE data type.
+
+      Obtained when solving (preparing) a \p bigdata.relational.TableRef in an
+      MDE context.  The evaluation of this type of reference is specifically
+      optimized in MDE.
+
+      Should not be used at user level (in API calls for example).
+    required:
+      - fieldIndex
+    properties:
+      fieldIndex:
+        type: integer
+        format: uint32
+        description: Index of the field in the data type.
+        minimum: 0
+        maximum: 65535
+      weak:
+        type: boolean
+        description: Tell if the ref was obtained from a \p WeakRef.
+        default: false

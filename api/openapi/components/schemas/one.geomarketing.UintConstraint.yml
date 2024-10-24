@@ -1,0 +1,10 @@
+type: object
+properties:
+  min:
+    type: integer
+    format: uint32
+    minimum: 0
+  max:
+    type: integer
+    format: uint32
+    minimum: 0

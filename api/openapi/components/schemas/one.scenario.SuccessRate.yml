@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./bigdata.qrrd.ValueRef.yml
+  - type: object
+    required:
+      - scenarioId
+    properties:
+      scenarioId:
+        type: integer
+        format: uint64
+        minimum: 0

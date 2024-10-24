@@ -1,0 +1,26 @@
+allOf:
+  - $ref: ./bigdata.base.CdrEvent.yml
+  - type: object
+    required:
+      - entity
+      - topupKind
+      - incomingDuration
+      - predictionDate
+      - success
+      - targeted
+    properties:
+      entity:
+        $ref: ./platform.base.Value.yml
+      topupKind:
+        type: string
+      incomingDuration:
+        $ref: ./one.topupprediction.Duration.yml
+      predictionDate:
+        type: integer
+        format: int64
+      success:
+        type: boolean
+      targeted:
+        type: boolean
+      predicted:
+        type: boolean

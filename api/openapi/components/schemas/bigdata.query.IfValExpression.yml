@@ -1,0 +1,19 @@
+type: object
+description: |-
+  Parameters of a ternary conditional operator.
+
+  Describes the condition and the branching results of a ternary
+  conditional operator. When the \ref condition match the expectation
+  of the operator, the \ref ifTrue expression is evaluated, otherwise
+  the \ref ifFalse expression is evaluated if provided, or the result
+  of the \ref condition is returned.
+required:
+  - condition
+  - ifTrue
+properties:
+  condition:
+    $ref: ./bigdata.query.Expression.yml
+  ifTrue:
+    $ref: ./bigdata.query.Expression.yml
+  ifFalse:
+    $ref: ./bigdata.query.Expression.yml

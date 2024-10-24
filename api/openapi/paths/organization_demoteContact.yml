@@ -1,0 +1,38 @@
+post:
+  tags:
+    - organization
+  summary: Demote a contact.
+  description: |-
+    This RPC removes any role of a given contact in the organization. This
+    RPC can be used on a contact that has still a pending invitation, this
+    will prevent the contact from validating his invitation, effectively
+    cancelling the invitation.
+
+    The user must have the admin role in this organization.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/geosafeea.public.Organization.demoteContactArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: >-
+              ../components/schemas/geosafeea.public.Organization.demoteContactRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

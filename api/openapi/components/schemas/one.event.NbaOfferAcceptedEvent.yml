@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./one.event.NbaEvent.yml
+  - type: object
+    required:
+      - acceptedCount
+    properties:
+      acceptedCount:
+        type: integer
+        format: uint32
+        description: Count of accepted offers this event represents, should always be 1
+        minimum: 0
+        maximum: 255

@@ -1,0 +1,30 @@
+type: object
+required:
+  - zoneId
+properties:
+  zoneId:
+    type: integer
+    format: uint64
+    description: Id of the shared zone.
+    minimum: 0
+  placemarks:
+    type: array
+    description: |-
+      A list of the zone placemarks.
+
+      If this list is empty, all the zone placemarks are included.
+
+      If it is not empty, then:
+
+        * if \ref excludePlacemarks is false, only the given placemarks are
+          taken into account.
+        * if \ref excludePlacemarks is true, all the placemarks of the zone
+          except the given one are taken into account.
+    items:
+      type: integer
+      format: uint32
+      minimum: 0
+  excludePlacemarks:
+    type: boolean
+    description: Whether placemarks are included or excluded.
+    default: false

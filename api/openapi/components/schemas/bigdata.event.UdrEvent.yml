@@ -1,0 +1,21 @@
+allOf:
+  - $ref: ./bigdata.base.Event.yml
+  - type: object
+    required:
+      - collectionId
+    properties:
+      collectionId:
+        type: integer
+        format: uint32
+        description: The identification number of the schema collection.
+        minimum: 0
+        maximum: 255
+      key:
+        $ref: ./platform.base.Value.yml
+      data:
+        type: array
+        items:
+          $ref: ./bigdata.event.Data.yml
+      createIfUnknownKey:
+        type: boolean
+        default: true

@@ -1,0 +1,374 @@
+description: |-
+  An expression tree.
+
+  An expression tree describes an expression as the application
+  of operators on sub-expression that are expression trees by
+  themselves.
+oneOf:
+  - type: object
+    required:
+      - b
+    properties:
+      b:
+        description: A Boolean expression
+        allOf:
+          - $ref: ./bigdata.query.BoolExpr.yml
+  - type: object
+    required:
+      - min
+    properties:
+      min:
+        description: The minimum of the evaluation of the sub expressions.
+        allOf:
+          - $ref: ./bigdata.query.MultiExpression.yml
+  - type: object
+    required:
+      - max
+    properties:
+      max:
+        description: The maximum of the evaluation of the sub expressions.
+        allOf:
+          - $ref: ./bigdata.query.MultiExpression.yml
+  - type: object
+    required:
+      - sum
+    properties:
+      sum:
+        description: The sum of the evaluation of the sub expressions.
+        allOf:
+          - $ref: ./bigdata.query.MultiExpression.yml
+  - type: object
+    required:
+      - mean
+    properties:
+      mean:
+        description: The mean of the evaluation of the sub expressions.
+        allOf:
+          - $ref: ./bigdata.query.MultiExpression.yml
+  - type: object
+    required:
+      - mult
+    properties:
+      mult:
+        description: The multiplication of the evaluation of the sub expressions.
+        allOf:
+          - $ref: ./bigdata.query.MultiExpression.yml
+  - type: object
+    required:
+      - div
+    properties:
+      div:
+        description: |-
+          The result of the division of the left sub expression by
+          the right subexpression.
+
+          That is 'left / right'.
+        allOf:
+          - $ref: ./bigdata.query.BinaryExpression.yml
+  - type: object
+    required:
+      - sub
+    properties:
+      sub:
+        description: |-
+          The result of the subtraction of the right sub expression
+          from the left subexpression.
+
+          That is 'left - right'.
+        allOf:
+          - $ref: ./bigdata.query.BinaryExpression.yml
+  - type: object
+    required:
+      - mask
+    properties:
+      mask:
+        description: The result of the bitwise-and of the sub expressions.
+        allOf:
+          - $ref: ./bigdata.query.MultiExpression.yml
+  - type: object
+    required:
+      - if0
+    properties:
+      if0:
+        description: |-
+          Choose the subexpression depending on whether the condition
+          evaluates to 0 or non-0.
+        allOf:
+          - $ref: ./bigdata.query.IfValExpression.yml
+  - type: object
+    required:
+      - ifNan
+    properties:
+      ifNan:
+        description: |-
+          Choose the subexpression depending on whether the condition
+          evaluates to a number or not.
+        allOf:
+          - $ref: ./bigdata.query.IfValExpression.yml
+  - type: object
+    required:
+      - ifThen
+    properties:
+      ifThen:
+        description: |-
+          Choose the subexpression depending on whether the condition
+          evaluates to true or false.
+        allOf:
+          - $ref: ./bigdata.query.IfExpression.yml
+  - type: object
+    required:
+      - castToInt
+    properties:
+      castToInt:
+        description: Cast the result of the sub-expression to an integer.
+        allOf:
+          - $ref: ./bigdata.query.Expression.yml
+  - type: object
+    required:
+      - castToUint
+    properties:
+      castToUint:
+        description: Cast the result of the sub-expression to an unsigned integer.
+        allOf:
+          - $ref: ./bigdata.query.Expression.yml
+  - type: object
+    required:
+      - castToDouble
+    properties:
+      castToDouble:
+        description: |-
+          Cast the result of the sub-expression to a double-precision
+          floating point number.
+        allOf:
+          - $ref: ./bigdata.query.Expression.yml
+  - type: object
+    required:
+      - floor
+    properties:
+      floor:
+        description: |-
+          Returns the largest integral value not greater than the
+          result of the sub-expression.
+
+          - floor(1) == 1
+          - floor(1.7) == 1
+          - floor(1.5) == 1
+          - floor(-0.5) == -1
+        allOf:
+          - $ref: ./bigdata.query.Expression.yml
+  - type: object
+    required:
+      - ceil
+    properties:
+      ceil:
+        description: |-
+          Returns the smallest integral value not lower than the result
+          of the sub-expression.
+
+          - ceil(1) == 1
+          - ceil(1.2) == 2
+          - ceil(1.5) == 2
+          - ceil(-0.5) == 0
+        allOf:
+          - $ref: ./bigdata.query.Expression.yml
+  - type: object
+    required:
+      - round
+    properties:
+      round:
+        description: |-
+          Returns the nearest integral value.
+
+          Halfway cases are rounded
+          away from zero.
+          - round(1) == 1
+          - round(1.2) == 1
+          - round(1.7) == 2
+          - round(1.5) == 2
+          - round(-0.2) == 0
+          - round(-0.5) == -1
+        allOf:
+          - $ref: ./bigdata.query.Expression.yml
+  - type: object
+    required:
+      - length
+    properties:
+      length:
+        description: If the result of the expression is an array, returns its length.
+        allOf:
+          - $ref: ./bigdata.query.Expression.yml
+  - type: object
+    required:
+      - constant
+    properties:
+      constant:
+        description: Evaluate to a special constant.
+        allOf:
+          - $ref: ./bigdata.query.ConstantExpression.yml
+  - type: object
+    required:
+      - value
+    properties:
+      value:
+        description: Literal value.
+        allOf:
+          - $ref: ./platform.base.Value.yml
+  - type: object
+    required:
+      - ref
+    properties:
+      ref:
+        description: |-
+          Reference a value to be fetched from the storage.
+
+          In case the expression is used in a query, the field must
+          completely specify the element of the source to be used. That means
+          that in case the source is a set, the set element must be specified,
+          in case the source is an aggergation the period and the slot must
+          be specified.
+
+          In case the expression is used in a source, the field can be
+          only partially specialized.
+        oneOf:
+          - $ref: ./bigdata.db.GlobalVariableRef.yml
+          - $ref: ./bigdata.mde.FieldRef.yml
+          - $ref: ./bigdata.mde.WeakRef.yml
+          - $ref: ./bigdata.qrrd.SlotRef.yml
+          - $ref: ./bigdata.qrrd.ValueRef.yml
+          - $ref: ./bigdata.qrrd.ValueRefRef.yml
+          - $ref: ./bigdata.qrrd.WildcardRef.yml
+          - $ref: ./bigdata.qrrd.WildcardRefRef.yml
+          - $ref: ./bigdata.query.Age.yml
+          - $ref: ./bigdata.query.AggregationOperation.yml
+          - $ref: ./bigdata.query.BinToJson.yml
+          - $ref: ./bigdata.query.CgiToCuid.yml
+          - $ref: ./bigdata.query.CuidToCgi.yml
+          - $ref: ./bigdata.query.CutString.yml
+          - $ref: ./bigdata.query.DayOfWeek.yml
+          - $ref: ./bigdata.query.FormulaRef.yml
+          - $ref: ./bigdata.query.LocationCellInfo.yml
+          - $ref: ./bigdata.query.LocationCoords.yml
+          - $ref: ./bigdata.query.LocationGad.yml
+          - $ref: ./bigdata.query.LocationMlpBin.yml
+          - $ref: ./bigdata.query.LocationMlpJson.yml
+          - $ref: ./bigdata.query.LocationRadius.yml
+          - $ref: ./bigdata.query.RecnoRef.yml
+          - $ref: ./bigdata.ref.AutoRef.yml
+          - $ref: ./bigdata.ref.DealiasValue.yml
+          - $ref: ./bigdata.ref.MultiRef.yml
+          - $ref: ./bigdata.ref.NamedRef.yml
+          - $ref: ./bigdata.ref.ObjectField.yml
+          - $ref: ./bigdata.ref.ObjectIsA.yml
+          - $ref: ./bigdata.ref.ObjectType.yml
+          - $ref: ./bigdata.ref.ParametricRef.yml
+          - $ref: ./bigdata.ref.PlacemarkInfosRef.yml
+          - $ref: ./bigdata.ref.PressureNextAvailability.yml
+          - $ref: ./bigdata.ref.ServerTimezoneOffset.yml
+          - $ref: ./bigdata.ref.TestRef.yml
+          - $ref: ./bigdata.ref.ValueRef.yml
+          - $ref: ./bigdata.relational.TableRef.yml
+          - $ref: ./bigdata.relational.TypedValueRef.yml
+          - $ref: ./bigdata.schema.AggregationRef.yml
+          - $ref: ./bigdata.schema.ColumnRef.yml
+          - $ref: ./bigdata.schema.KeyRef.yml
+          - $ref: ./bigdata.schema.SourceRef.yml
+          - $ref: ./bigdata.schema.ValueRef.yml
+          - $ref: ./bigdata.schema.ZoneRef.yml
+          - $ref: ./bigdata.sql.SqlRef.yml
+          - $ref: ./bigdata.task.CacheRef.yml
+          - $ref: ./bigdata.task.TaskOutputRef.yml
+          - $ref: ./one.geomarketing.CgiToMccRef.yml
+          - $ref: ./one.geomarketing.FakeCgiRef.yml
+          - $ref: ./one.report.ExternalRef.yml
+          - $ref: ./one.report.LocationRadiusRef.yml
+          - $ref: ./one.report.LocationRef.yml
+          - $ref: ./one.scenario.ConstantRef.yml
+          - $ref: ./one.scenario.Exposure.yml
+          - $ref: ./one.scenario.PlacemarkInfosRef.yml
+          - $ref: ./one.scenario.SuccessRate.yml
+          - $ref: ./one.scenario.Successful.yml
+          - $ref: ./qre.ContextEvent.yml
+          - $ref: ./qre.CreateEventRef.yml
+          - $ref: ./qre.EnteredInScenario.yml
+          - $ref: ./qre.EntityRuleContextRef.yml
+          - $ref: ./qre.FormatRef.yml
+          - $ref: ./qre.IsInControlGroup.yml
+          - $ref: ./qre.IsInRule.yml
+          - $ref: ./qre.IsInScenario.yml
+          - $ref: ./qre.IsInUserRules.yml
+          - $ref: ./qre.ScenarioEnterTs.yml
+          - $ref: ./qre.ScenarioExitTs.yml
+          - $ref: ./qre.VariableRef.yml
+          - $ref: ./qts.ExtractRef.yml
+        discriminator:
+          propertyName: _class
+  - type: object
+    required:
+      - parameter
+    properties:
+      parameter:
+        type: string
+        description: |-
+          Named placeholder to be filled using a parametric field.
+
+          Placeholders are only allowed in case the expression is used
+          in a \ref FormulaSource.
+        minLength: 1
+        pattern: '[_0-9a-zA-Z]*'
+  - type: object
+    required:
+      - refPos
+    properties:
+      refPos:
+        type: integer
+        format: uint32
+        description: |-
+          Reference a field by its id in the computed list of a prepared
+          formula.
+
+          This field is private and should not be used directly.
+        minimum: 0
+  - type: object
+    required:
+      - mod
+    properties:
+      mod:
+        description: |-
+          The result of the modulo of the left sub expression
+          by the righ subexpression.
+
+          That is 'left % right'.
+        allOf:
+          - $ref: ./bigdata.query.BinaryExpression.yml
+  - type: object
+    required:
+      - typedValue
+    properties:
+      typedValue:
+        description: Typed literal value.
+        allOf:
+          - $ref: ./platform.TypedValue.yml
+  - type: object
+    required:
+      - castToString
+    properties:
+      castToString:
+        description: Cast the result of the sub-expression to a string.
+        allOf:
+          - $ref: ./bigdata.query.Expression.yml
+  - type: object
+    required:
+      - concat
+    properties:
+      concat:
+        description: Concatenate all sub-expressions in a single string.
+        allOf:
+          - $ref: ./bigdata.query.MultiExpression.yml
+  - type: object
+    required:
+      - drandRange
+    properties:
+      drandRange:
+        description: Random double generator between the evaluation of the sub expressions.
+        allOf:
+          - $ref: ./bigdata.query.BinaryExpression.yml

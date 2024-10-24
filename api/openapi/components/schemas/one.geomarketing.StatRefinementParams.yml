@@ -1,0 +1,17 @@
+type: object
+description: |-
+  Statistical refinement parameters.
+
+  Improve the relevance of the generated result by applying adjustment
+   coefficient depending on several pre-defined criteria.
+properties:
+  rules:
+    type: array
+    description: Decision tree for statistical refinement rules.
+    items:
+      $ref: ./one.geomarketing.StatRefinementRule.yml
+  defaultCoef:
+    type: number
+    format: double
+    description: If no match is found, the default coefficient will be used.
+    minimum: 0

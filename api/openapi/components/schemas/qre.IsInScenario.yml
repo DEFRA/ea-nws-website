@@ -1,0 +1,20 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    properties:
+      scenario:
+        description: |-
+          Id of the scenario.
+
+          If not set, will use the scenario in which the reference is used.
+        allOf:
+          - $ref: ./platform.Id.yml
+      user:
+        type: boolean
+        description: |-
+          Check presence in the user rules only.
+
+          If true, the reference will check that the entity is present in at
+          least one of the USER rules of the scenario. Otherwise, both USER
+          and CONTROL rules are taken into account.
+        default: false

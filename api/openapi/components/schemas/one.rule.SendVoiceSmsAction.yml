@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./qre.base.Action.yml
+  - type: object
+    required:
+      - dest
+    properties:
+      dest:
+        type: string
+        minLength: 1

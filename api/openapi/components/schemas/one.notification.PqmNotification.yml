@@ -1,0 +1,11 @@
+allOf:
+  - $ref: ./one.notification.WorkspaceNotification.yml
+  - type: object
+    required:
+      - workspace
+      - budgetName
+    properties:
+      workspace:
+        type: string
+      budgetName:
+        type: string

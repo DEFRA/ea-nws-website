@@ -1,0 +1,18 @@
+type: object
+required:
+  - total
+properties:
+  contacts:
+    type: array
+    description: |-
+      the list of contacts matching the list
+                                options
+    items:
+      $ref: ./geosafeea.contact.Contact.yml
+  total:
+    type: integer
+    format: uint32
+    description: |-
+      the total number of contacts matching the
+                                list of options excluding offset and limit
+    minimum: 0

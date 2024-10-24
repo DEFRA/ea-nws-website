@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./one.b2b.notification.Notification.yml
+  - type: object
+    properties:
+      departmentId:
+        type: integer
+        format: uint64
+        minimum: 0
+      profileId:
+        type: integer
+        format: uint64
+        minimum: 0

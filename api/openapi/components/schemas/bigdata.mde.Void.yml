@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./bigdata.mde.Operation.yml
+  - type: object
+    description: |-
+      Void operation: return no data.
+
+      Can be used as a mapper in map reduce operation to tell we want to ignore
+      an input.

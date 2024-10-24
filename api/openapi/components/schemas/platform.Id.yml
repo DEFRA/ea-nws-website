@@ -1,0 +1,23 @@
+description: |-
+  Reference of an item.
+
+  This is a generic referencing object that can be used for any object
+  that can be uniquely referenced by a textual idenfier or a numerical
+  identifier.
+oneOf:
+  - type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: References an item by name.
+  - type: object
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: uint64
+        description: References an item by id.
+        minimum: 0

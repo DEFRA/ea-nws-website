@@ -1,0 +1,18 @@
+type: string
+description: |-
+  Months of year.
+
+  Follow the <time.h> numbering (see localtime)
+enum:
+  - JANUARY
+  - FEBRUARY
+  - MARCH
+  - APRIL
+  - MAY
+  - JUNE
+  - JULY
+  - AUGUST
+  - SEPTEMBER
+  - OCTOBER
+  - NOVEMBER
+  - DECEMBER

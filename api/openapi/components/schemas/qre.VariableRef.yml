@@ -1,0 +1,30 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    required:
+      - variable
+    properties:
+      scenario:
+        description: |-
+          Id of the scenario containing the variable.
+
+          If not set, will use the scenario available in solver environment.
+        allOf:
+          - $ref: ./platform.Id.yml
+      rule:
+        description: |-
+          Id of the rule of the scenario containing the variable.
+
+          If not set, variable will be look up in scenario only.
+        allOf:
+          - $ref: ./platform.Id.yml
+      variable:
+        description: Variable reference
+        oneOf:
+          - $ref: ./bigdata.qrrd.ValueRef.yml
+          - $ref: ./bigdata.qrrd.WildcardRef.yml
+          - $ref: ./bigdata.schema.AggregationRef.yml
+          - $ref: ./bigdata.schema.SourceRef.yml
+          - $ref: ./one.scenario.SuccessRate.yml
+        discriminator:
+          propertyName: _class

@@ -1,0 +1,16 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    required:
+      - epoch
+      - hostid
+    properties:
+      epoch:
+        type: integer
+        format: uint64
+        minimum: 0
+      hostid:
+        type: integer
+        format: uint32
+        minimum: 0
+        maximum: 255

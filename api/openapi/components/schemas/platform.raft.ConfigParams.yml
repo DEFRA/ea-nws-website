@@ -1,0 +1,140 @@
+type: object
+description: RAFT configuration parameters
+properties:
+  heartbeatPeriodMs:
+    type: integer
+    format: uint32
+    description: |-
+      Defines the minimal period (in millisecond) between two
+      appendEntries().
+
+      Since a leader needs to send an appendEntries() to
+      maintain its leadership this timer must be at least two times lower
+      than the election timeout.
+    default: 500
+    minimum: 100
+  electionPeriodMs:
+    type: integer
+    format: uint32
+    description: |-
+      Defines the minimal period (in millisecond) before launching a new
+      election after the preceding election.
+
+      If the timeout is too large the
+      elections may take some time to converge.
+      The real period will be taken randomly in the range:
+      [electionPeriod; 2 * electionPeriod[
+    default: 250
+    minimum: 100
+  staleLeaderMs:
+    type: integer
+    format: uint32
+    description: |-
+      Defines the time before a server following a leader will consider the
+      leader as stale and starts a new election.
+
+      Also, a leader that cannot
+      reach the quorum during this amount of time will step down.
+    default: 30000
+    minimum: 500
+  staleForeignLeaderMs:
+    type: integer
+    format: uint32
+    description: |-
+      Defines the election timeout to use when the leader status is
+      expensive to get.
+
+      The purpose is to favor nodes that can take the leadership for free
+      over the ones for which it would imply an expensive swing.
+      In our case, the expensive cases are the ones in which the leadership
+      swings from a site to another one.
+
+      Supposed to be greater than staleLeaderMs.
+    default: 60000
+    minimum: 500
+  logMaxSz:
+    type: integer
+    format: uint32
+    description: Maximum file size before rotation of RAFT binlog in bytes.
+    default: 8388608
+    minimum: 10240
+  logMaxEntries:
+    type: integer
+    format: uint32
+    description: Maximum number of entries before rotation of RAFT binlog.
+    default: 102400
+    minimum: 1024
+  snapshotMaxFactor:
+    type: number
+    format: double
+    description: |-
+      Maximum size factor between logs and last snapshot before doing a new
+      snapshot
+    default: 3
+    minimum: 0.5
+  nbEntriesToKeep:
+    type: integer
+    format: uint32
+    description: |-
+      Number of replicated entries kept in RAM.
+
+      When the leader has replicated on all connected host it should free the
+      corresponding in-RAM entries to avoid to consume too much memory.
+      However if a disconnected server comes back it will be force to rsync
+      the leader spool in order to retrieve the freed entries. So if you want
+      to avoid to rsync the leader spool for every connection reset you
+      should kept enough in-RAM replicated entries.
+    default: 40960
+    minimum: 1024
+  nbEntriesMax:
+    type: integer
+    format: uint32
+    description: |-
+      Maximum number of entries sent by the leader in one appendEntries()
+      RPC call.
+    default: 255
+    minimum: 1
+    maximum: 65535
+  nbFlyingRequests:
+    type: integer
+    format: uint32
+    description: |-
+      Maximum number of flying appendEntries() between the leader and
+      a remote server.
+    default: 64
+    minimum: 1
+    maximum: 65535
+  nbAdminVotes:
+    type: integer
+    format: uint32
+    description: >-
+      Number of votes that can be attributed arbitrarily by an
+
+      administrator.
+
+
+      The admin votes can be used to force the result of an election and
+
+      reach the quorum even if half the nodes are missing (for example). \note
+      These votes count in the quorum size.
+    default: 0
+    minimum: 0
+    maximum: 65535
+  voterOwnerResetMs:
+    type: integer
+    format: uint32
+    description: |-
+      Defines the time after which a server will consider the admin votes of
+      another host not assigned anymore.
+
+      When a voter receive the admin votes, it will send them periodically to
+      all nodes. Each node use this information to know if the quorum is
+      available. If the server does not receive an update from the voter
+      having the admin votes for a too long time, it will reset these admin
+      votes.
+    default: 5000
+    minimum: 1000
+  tieBreaker:
+    description: Configuration parameter to use the RAFT Tie Breaker.
+    allOf:
+      - $ref: ./platform.raft.TieBreakerCfg.yml

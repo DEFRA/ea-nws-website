@@ -1,0 +1,36 @@
+allOf:
+  - $ref: ./bigdata.base.Event.yml
+  - type: object
+    required:
+      - redeemerCollection
+      - redeemerKey
+      - status
+      - cost
+      - gift
+      - lpmBalance
+    properties:
+      redeemerCollection:
+        type: string
+        description: The collection of the entity which has redeemed the gift.
+      redeemerKey:
+        description: The key of the entity which has redeemed the gift.
+        allOf:
+          - $ref: ./platform.base.Value.yml
+      status:
+        description: The status of the redemption.
+        allOf:
+          - $ref: ./one.event.RedemptionResult.yml
+      cost:
+        type: integer
+        format: uint32
+        description: The cost of the bonus.
+        minimum: 0
+      gift:
+        type: integer
+        format: uint64
+        description: The id of the redeemed gift.
+        minimum: 0
+      lpmBalance:
+        type: integer
+        format: uint32
+        minimum: 0

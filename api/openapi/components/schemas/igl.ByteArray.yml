@@ -1,0 +1,11 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    properties:
+      bytes:
+        type: array
+        items:
+          type: integer
+          format: uint32
+          minimum: 0
+          maximum: 255

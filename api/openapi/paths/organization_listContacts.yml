@@ -1,0 +1,36 @@
+post:
+  tags:
+    - organization
+  summary: List contacts of the organization
+  description: >-
+    The user must have the read-only or admin role in this organization.
+
+    Contacts are listed including their identifier, to be used in \ref
+    updateContact for example.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/geosafeea.public.Organization.listContactsArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: >-
+              ../components/schemas/geosafeea.public.Organization.listContactsRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

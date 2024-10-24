@@ -1,0 +1,31 @@
+type: object
+description: Decision tree for traveler classification.
+properties:
+  neighborhoodClasses:
+    type: array
+    description: List of neighborhood to match.
+    items:
+      $ref: ./one.geomarketing.SegmentNeighborhoodClass.yml
+  workersMinNbStops:
+    type: integer
+    format: uint32
+    description: |-
+      Above this limit, the subscriber will be considered as a worker (if
+       characterized as non-traveler).
+    minimum: 0
+  workersMinStopDuration:
+    type: integer
+    format: uint32
+    description: |-
+      When a subscriber that matches the criterion "workersMinNbStops" also
+       have a cumulated stop value above this one for the current day or has
+       his work place in the reference zone, then he's considered as a
+       worker.
+    minimum: 0
+  logNonTravelers:
+    type: boolean
+    description: |-
+      If set, each stop classified as 'nonTraveler' will be logged.
+
+      The log level used is "debug".
+    default: false

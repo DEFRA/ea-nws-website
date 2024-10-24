@@ -1,0 +1,15 @@
+allOf:
+  - $ref: ./one.event.LpmEvent.yml
+  - type: object
+    required:
+      - nbPoints
+      - newBalance
+    properties:
+      nbPoints:
+        type: integer
+        format: int64
+        description: Number of awarded points.
+      newBalance:
+        type: integer
+        format: uint64
+        minimum: 0

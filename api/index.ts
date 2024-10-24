@@ -14,7 +14,7 @@ const registerToPartnerHandler = require('./handlers/partner/registerToPartnerHa
 const deleteAccountHandler = require('./handlers/account/deleteAccountHandler')
 // define api
 const api = new OpenAPIBackend({
-  definition: './openapi/index.yaml',
+  definition: './openapi/openapi.yml',
   handlers: {
     //sign up routes
     getRegisterStart: registerHandlers.getRegisterStart,

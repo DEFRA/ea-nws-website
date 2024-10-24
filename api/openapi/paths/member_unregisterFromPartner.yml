@@ -1,0 +1,34 @@
+post:
+  tags:
+    - member
+  summary: Unregister from a GeoSafe partner.
+  description: |-
+    This RPC unregisters the authenticated user from the given GeoSafe
+    partner.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/geosafeea.public.Member.unregisterFromPartnerArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: >-
+              ../components/schemas/geosafeea.public.Member.unregisterFromPartnerRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

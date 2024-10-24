@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./one.geomarketing.PassingByRecord.yml
+  - type: object
+    properties:
+      taskTag:
+        type: string
+      taskExecId:
+        type: integer
+        format: uint64
+        minimum: 0

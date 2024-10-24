@@ -1,0 +1,56 @@
+type: object
+description: |-
+  Specify an aggregation condition.
+
+  Currently, this condition should be (and must be) used only when querying
+  a QRRD collection. It must be located at the root of the conditions tree
+  (and must not be located elsewhere).
+required:
+  - child
+  - granularity
+properties:
+  child:
+    description: Child expression.
+    allOf:
+      - $ref: ./bigdata.query.BoolExpr.yml
+  granularity:
+    description: The time frequence unit.
+    allOf:
+      - $ref: ./platform.base.TimeUnit.yml
+  startDate:
+    description: |-
+      Start date.
+
+      \ref startDate and \ref endDate define the period of the boolean
+      expression. They should be both expressed as relative dates or both as
+      absolute dates.
+    oneOf:
+      - $ref: ./platform.DayOfMonthDate.yml
+      - $ref: ./platform.DayOfWeekDate.yml
+      - $ref: ./platform.HourDate.yml
+      - $ref: ./platform.MinuteDate.yml
+      - $ref: ./platform.MonthDate.yml
+      - $ref: ./platform.RelativeDate.yml
+      - $ref: ./platform.RelativeDatePattern.yml
+      - $ref: ./platform.SecondDate.yml
+      - $ref: ./platform.TimestampDate.yml
+      - $ref: ./platform.WeekDate.yml
+      - $ref: ./platform.YearDate.yml
+    discriminator:
+      propertyName: _class
+  endDate:
+    description: End date.
+    oneOf:
+      - $ref: ./platform.DayOfMonthDate.yml
+      - $ref: ./platform.DayOfWeekDate.yml
+      - $ref: ./platform.HourDate.yml
+      - $ref: ./platform.MinuteDate.yml
+      - $ref: ./platform.MonthDate.yml
+      - $ref: ./platform.RelativeDate.yml
+      - $ref: ./platform.RelativeDatePattern.yml
+      - $ref: ./platform.SecondDate.yml
+      - $ref: ./platform.TimestampDate.yml
+      - $ref: ./platform.WeekDate.yml
+      - $ref: ./platform.YearDate.yml
+    discriminator:
+      propertyName: _class

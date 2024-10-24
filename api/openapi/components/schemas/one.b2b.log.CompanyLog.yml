@@ -1,0 +1,44 @@
+allOf:
+  - $ref: ./bigdata.base.EventLog.yml
+  - type: object
+    description: A class to log events related with a company.
+    required:
+      - b2bLogType
+      - companyId
+      - companyName
+    properties:
+      login:
+        type: string
+        description: |-
+          Login of the User performing the action.
+
+          If not specified, it corresponds to an automatic action.
+      b2bLogType:
+        description: Type of action performed on the entity
+        allOf:
+          - $ref: ./one.b2b.log.EntityLogType.yml
+      executorId:
+        type: integer
+        format: uint64
+        description: Id of the user performing the action.
+        minimum: 0
+      executorLastName:
+        type: string
+        description: Last name of the user performing the action.
+      executorFirstName:
+        type: string
+        description: First name of the user performing the action.
+      executorCompanyId:
+        type: string
+        description: Company of the user performing the action.
+      executorWorkspaceId:
+        type: integer
+        format: uint64
+        description: Company of the user performing the action.
+        minimum: 0
+      companyId:
+        type: string
+        description: Public id of the company on which the action is performed.
+      companyName:
+        type: string
+        description: Name of the company on which the action is performed.

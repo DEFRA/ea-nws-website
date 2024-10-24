@@ -1,0 +1,13 @@
+allOf:
+  - $ref: ./bigdata.query.ExtendedBoolExprSync.yml
+  - type: object
+    description: |-
+      True if the entity is in the target group (see \p IsInTargetGroup)
+      and reached a success state the given scenario.
+    required:
+      - scenarioId
+    properties:
+      scenarioId:
+        type: integer
+        format: uint64
+        minimum: 0

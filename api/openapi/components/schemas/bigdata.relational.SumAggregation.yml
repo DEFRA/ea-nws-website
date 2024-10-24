@@ -1,0 +1,7 @@
+allOf:
+  - $ref: ./bigdata.relational.RefSingleValAggregation.yml
+  - type: object
+    description: |-
+      Sum aggregation.
+
+      Return the sum of a column values.

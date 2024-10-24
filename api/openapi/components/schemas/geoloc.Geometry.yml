@@ -1,0 +1,14 @@
+type: object
+properties:
+  rings:
+    type: array
+    items:
+      $ref: ./geoloc.Ring.yml
+  circles:
+    type: array
+    items:
+      $ref: ./geoloc.Circle.yml
+  polygons:
+    type: array
+    items:
+      $ref: ./geoloc.Polygon.yml

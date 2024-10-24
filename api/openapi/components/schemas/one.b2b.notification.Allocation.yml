@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./one.b2b.notification.Notification.yml
+  - type: object
+    required:
+      - credit
+    properties:
+      credit:
+        type: number
+        format: double

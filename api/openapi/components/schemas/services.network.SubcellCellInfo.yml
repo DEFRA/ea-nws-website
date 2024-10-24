@@ -1,0 +1,119 @@
+type: object
+properties:
+  bsic:
+    type: integer
+    format: uint32
+    description: |-
+      Base Station Identity Code.
+
+      Range [0; 63].
+    minimum: 0
+    maximum: 255
+  psc:
+    type: integer
+    format: uint32
+    description: |-
+      Primary Scrambling Code.
+
+      Range [0; 511].
+    minimum: 0
+    maximum: 65535
+  pci:
+    type: integer
+    format: uint32
+    description: |-
+      E-UTRAN Physical Cell ID.
+
+      Range [0; 503].
+    minimum: 0
+    maximum: 65535
+  groundHeight:
+    type: integer
+    format: int32
+    description: |-
+      Height of the ground above or below the WGS 84 ellipsoid at the cell
+       site.
+
+      Defined in meters. Range [-1000; 10000].
+    minimum: -32768
+    maximum: 32767
+  antennaHeight:
+    type: integer
+    format: int32
+    description: |-
+      Height of the antenna above the ground (from groundHeight).
+
+      Defined in meters. Range [-100; 1000]
+    minimum: -32768
+    maximum: 32767
+  tilt:
+    type: integer
+    format: int32
+    description: |-
+      The tilt of the transmit antenna as specified by the radio coverage
+      plan for this cell.
+
+      In range [-90; 90] degrees (negative value indicates up, positive value
+      indicates down).
+    minimum: -128
+    maximum: 127
+  neighbors:
+    description: |-
+      Neighbor cells.
+
+      This usually contains the list of cells where a handover is possible.
+    allOf:
+      - $ref: ./services.network.CellNeighbors.yml
+  dlFrequency:
+    type: integer
+    format: uint32
+    description: |-
+      The frequency of the downlink operating band.
+
+      Defined in kHz.
+    minimum: 0
+  eirp:
+    type: integer
+    format: int32
+    description: |-
+      Effective Isotropic Radio Power (TxPower).
+
+      Defined in 10^-3 dBm. Range [-30; 81] * 1000.
+  bandwidth:
+    type: integer
+    format: uint32
+    description: |-
+      Carrier Bandwidth.
+
+      Defined in kHz.
+      Valid values are [1.4, 3, 5, 10, 15, 20] * 1000.
+    minimum: 0
+  arfcn:
+    type: integer
+    format: uint32
+    description: |-
+      The downlink (U/E/_)ARFCN.
+
+      Used to deduce the downlink frequency.
+    minimum: 0
+  environment:
+    description: |-
+      Environment.
+
+      Environment of the cell:
+      large city (includes medium) / small city / suburban / open
+    allOf:
+      - $ref: ./services.network.CellEnvironment.yml
+  radioControllerId:
+    type: integer
+    format: uint32
+    description: |-
+      Radio Controller Identifier.
+
+      This is the RNC (Radio Network Controller) Identifier in 3G.
+    minimum: 0
+    maximum: 65535
+  bscId:
+    type: string
+  subcellTraceIdentifier:
+    type: string

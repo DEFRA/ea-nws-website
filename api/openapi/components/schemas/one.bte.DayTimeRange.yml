@@ -1,0 +1,25 @@
+type: object
+required:
+  - start
+  - end
+properties:
+  start:
+    type: integer
+    format: uint32
+    description: |-
+      Lower bound representing the number of minutes since midnight.
+
+      This value is included in the range.
+    minimum: 0
+    maximum: 1440
+  end:
+    type: integer
+    format: uint32
+    description: |-
+      Upper bound representing the number of minutes since midnight.
+
+      This value is not included in the range.
+      If \ref start is greater than \ref end then this is a time in the next
+      day.
+    minimum: 0
+    maximum: 1440

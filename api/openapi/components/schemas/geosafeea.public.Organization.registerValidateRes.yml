@@ -1,0 +1,16 @@
+type: object
+required:
+  - organization
+properties:
+  authToken:
+    type: string
+    description: |-
+      if successful and if the organization
+                                    does not require validation, an
+                                    authentication token is provided to
+                                    perform other RPCs requiring an
+                                    authentication token.
+  organization:
+    description: the profile of the organization
+    allOf:
+      - $ref: ./geosafeea.public.Partner.yml

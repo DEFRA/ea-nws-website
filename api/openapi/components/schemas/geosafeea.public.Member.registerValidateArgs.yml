@@ -1,0 +1,19 @@
+type: object
+required:
+  - registerToken
+  - code
+properties:
+  registerToken:
+    type: string
+    description: a secured token retrieved in \ref registerStart.
+  code:
+    type: string
+    description: |-
+      a code provided by the user to verify its
+                                 email address.
+  deviceId:
+    type: string
+    description: |-
+      mobile device id, if the registration is
+                                 performed using the GeoSafe mobile app.
+example: '{"registerToken":"XXXXXXXXXX","code":"123456"}'

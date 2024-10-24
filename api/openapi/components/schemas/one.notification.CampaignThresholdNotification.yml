@@ -1,0 +1,19 @@
+allOf:
+  - $ref: ./one.notification.UserNotification.yml
+  - type: object
+    required:
+      - campaignName
+      - campaignId
+      - workspaceName
+    properties:
+      campaignName:
+        type: string
+        description: Name of the campaign.
+      campaignId:
+        type: integer
+        format: uint64
+        description: ID of the campaign.
+        minimum: 0
+      workspaceName:
+        type: string
+        description: Name of the workspace of the campaign.

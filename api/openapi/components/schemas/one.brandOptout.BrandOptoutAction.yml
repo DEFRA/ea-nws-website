@@ -1,0 +1,25 @@
+allOf:
+  - $ref: ./qre.base.Action.yml
+  - type: object
+    description: |-
+      Action to optin/optout an entity for a brand.
+
+      Brand status to change is identified by wsId or shortCode. Only one of
+      them must be set.
+    required:
+      - optin
+    properties:
+      optin:
+        type: boolean
+        description: Whether the entity wants to optin or optout the brand.
+      wsId:
+        type: integer
+        format: uint64
+        description: Id of the workspace.
+        minimum: 0
+      shortcode:
+        type: string
+        description: short code of the workspace.
+      shortcodeProto:
+        type: string
+        description: Channel used to received the shortcode.

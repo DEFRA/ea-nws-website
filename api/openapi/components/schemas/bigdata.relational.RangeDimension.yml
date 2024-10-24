@@ -1,0 +1,14 @@
+allOf:
+  - $ref: ./bigdata.relational.Dimension.yml
+  - type: object
+    description: |-
+      Range dimension.
+
+      Group the column values by ranges.
+      The ranges may overlap, or may not cover a value.
+    properties:
+      ranges:
+        type: array
+        description: List of ranges.
+        items:
+          $ref: ./bigdata.relational.Range.yml

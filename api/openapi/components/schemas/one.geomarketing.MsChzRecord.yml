@@ -1,0 +1,98 @@
+allOf:
+  - $ref: ./bigdata.base.CdrEvent.yml
+  - type: object
+    required:
+      - imsi
+    properties:
+      imsi:
+        type: integer
+        format: uint64
+        minimum: 0
+      homeCgi:
+        type: integer
+        format: uint64
+        minimum: 0
+      workCgi:
+        type: integer
+        format: uint64
+        minimum: 0
+      homeCuid:
+        type: integer
+        format: uint64
+        minimum: 0
+      workCuid:
+        type: integer
+        format: uint64
+        minimum: 0
+      imsiMcc:
+        type: integer
+        format: uint32
+        minimum: 0
+        maximum: 65535
+      imsiMnc:
+        type: integer
+        format: uint32
+        minimum: 0
+        maximum: 65535
+      entropy:
+        type: number
+        format: double
+      predictability:
+        type: number
+        format: double
+      avgDayDistance:
+        type: number
+        format: double
+      nbStops:
+        type: integer
+        format: uint32
+        minimum: 0
+      stopDuration:
+        type: integer
+        format: int32
+      homeLatitude:
+        type: integer
+        format: int32
+      homeLongitude:
+        type: integer
+        format: int32
+      workLatitude:
+        type: integer
+        format: int32
+      workLongitude:
+        type: integer
+        format: int32
+      subscriberClass:
+        type: string
+      homeNbDays:
+        type: integer
+        format: uint32
+        minimum: 0
+      homeStretchDays:
+        type: integer
+        format: uint32
+        minimum: 0
+      homeCumulatedDuration:
+        type: integer
+        format: uint32
+        minimum: 0
+      workNbDays:
+        type: integer
+        format: uint32
+        minimum: 0
+      nbWorkHomeMoves:
+        type: integer
+        format: uint32
+        minimum: 0
+      workCumulatedDuration:
+        type: integer
+        format: uint32
+        minimum: 0
+      censusPlacemark:
+        type: string
+      homePrecision:
+        type: integer
+        format: int32
+      workPrecision:
+        type: integer
+        format: int32

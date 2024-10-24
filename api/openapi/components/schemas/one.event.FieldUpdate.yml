@@ -1,0 +1,19 @@
+allOf:
+  - $ref: ./qre.base.EventLog.yml
+  - type: object
+    required:
+      - source
+      - value
+    properties:
+      source:
+        type: string
+      value:
+        $ref: ./platform.base.Value.yml
+      user:
+        type: string
+      setElement:
+        type: string
+      valueKeyVersion:
+        type: integer
+        format: uint32
+        minimum: 0

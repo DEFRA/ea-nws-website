@@ -1,0 +1,43 @@
+allOf:
+  - $ref: ./bigdata.mde.Map.yml
+  - type: object
+    description: |-
+      Transform a date into a relative time.
+
+      This operation supports only relative levels HOUR, WDAY, MDAY.
+      When \p ranges is not empty, the output field will contain a relative time
+      according to the relative level. Otherwise it will contain a time range.
+    required:
+      - inputDateField
+      - outputFieldName
+      - level
+    properties:
+      inputDateField:
+        type: string
+      outputFieldName:
+        type: string
+      level:
+        description: |-
+          Aggregation level.
+
+          Supports only HOUR, MDAY, WDAY levels.
+        allOf:
+          - $ref: ./one.geomarketing.RelativeTimeAggrLevel.yml
+      ranges:
+        type: array
+        description: Additional classification ranges.
+        items:
+          type: integer
+          format: uint32
+          minimum: 0
+          maximum: 65535
+      nightOffset:
+        type: integer
+        format: uint32
+        description: |-
+          The time of the day that separates 2 days.
+
+          Defaults to midnight if left null.
+          No effect on time units <= HOUR.
+        default: 0
+        minimum: 0

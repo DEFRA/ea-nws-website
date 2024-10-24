@@ -1,0 +1,13 @@
+allOf:
+  - $ref: ./bigdata.base.Action.yml
+  - type: object
+    description: Base class for action that can be emitted by a scenario.
+    properties:
+      scenarioId:
+        type: integer
+        format: uint64
+        minimum: 0
+      ruleId:
+        type: integer
+        format: uint64
+        minimum: 0

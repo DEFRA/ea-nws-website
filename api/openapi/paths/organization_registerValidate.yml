@@ -1,0 +1,43 @@
+post:
+  tags:
+    - organization
+  summary: Validate the registration of a new organization.
+  description: |-
+    The user registering a new organization should have received a code via
+    email or SMS. This function is then used to finalize the registration.
+    If the registration token is invalid (it has been falsified, it has
+    expired, etc), the registration is rejected.  Once the registration is
+    finalized, an authentication token is returned, as the user is
+    considered automatically signed in after registration using this token.
+
+    Depending on platform configuration, the new organization may require
+    additional validation by platform administrators. In this case, no
+    authToken is provided, and the new administrator will not be able to
+    sign in.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/geosafeea.public.Organization.registerValidateArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: >-
+              ../components/schemas/geosafeea.public.Organization.registerValidateRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

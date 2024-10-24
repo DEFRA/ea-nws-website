@@ -1,0 +1,26 @@
+type: object
+required:
+  - id
+  - allowAllActions
+properties:
+  id:
+    type: integer
+    format: uint64
+    description: Company id.
+    minimum: 0
+  allowAllActions:
+    type: boolean
+    description: |-
+      Allow all line actions
+
+      If true, user is allowed to perform all line actions.
+      This is only used if the user is not a company admin.
+  actions:
+    type: array
+    description: |-
+      Authorized line actions.
+
+      List of iop fullname of actions herited from LineAction iop.
+      example: `one.b2b.action.askLineAttachment`.
+    items:
+      type: string

@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./one.facebook.FacebookAction.yml
+  - type: object
+    required:
+      - customAudienceId
+    properties:
+      customAudienceId:
+        type: integer
+        format: uint64
+        minimum: 0

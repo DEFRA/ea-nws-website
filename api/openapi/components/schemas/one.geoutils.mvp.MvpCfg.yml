@@ -1,0 +1,33 @@
+type: object
+properties:
+  nightOffset:
+    type: integer
+    format: int32
+    description: |-
+      Night offset for unique days calculation (in second).
+
+      This parameters shifts the time of separation between two days.
+
+      By default, a new day starts at midnight; however, the time of the day
+      that marks the separation between the periods of usual human activity
+      can be different (eg. in Paris, the metro service closes at 1:15 AM and
+      resume at 5:30 AM, so it seems reasonable to use a night offset that
+      puts the day change around 3:00 AM).
+    default: 0
+    minimum: -86399
+    maximum: 86399
+  minStopDuration:
+    type: integer
+    format: uint32
+    description: |-
+      Minimum duration for STOPs (in second).
+
+      Stops with duration below this value are skipped. They are not
+      taken into account for the clustering step.
+    default: 3600
+    minimum: 0
+  periods:
+    type: array
+    description: List of periods on which the unique days should be counted.
+    items:
+      $ref: ./one.geoutils.mvp.MvpPeriod.yml

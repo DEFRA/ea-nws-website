@@ -1,0 +1,41 @@
+type: object
+description: |-
+  Filter field from a single constant value.
+
+  When the field is repeated, the expression evaluates to true if at least
+  one value of the array matches the comparison value.
+
+  For example:
+  field = [1, 2, 3] and between = [0, 1] => true.
+  field = [1, 2, 3] and between = ]3, 4] => false.
+required:
+  - fieldPath
+  - from
+  - fromIncluded
+  - to
+  - toIncluded
+properties:
+  fieldPath:
+    type: string
+    description: The iop field to filter.
+    minLength: 1
+    pattern: '[_0-9a-zA-Z\.\[\]\*\-<>]*'
+  from:
+    description: The lower bound of the range.
+    allOf:
+      - $ref: ./platform.base.Value.yml
+  fromIncluded:
+    type: boolean
+    description: True if the lower bound should be included in the range.
+  to:
+    description: The upper bound of the range.
+    allOf:
+      - $ref: ./platform.base.Value.yml
+  toIncluded:
+    type: boolean
+    description: True if the upper bound should be included in the range.
+  sensitivity:
+    description: The strictness of the comparisons.
+    allOf:
+      - $ref: ./platform.Sensitivity.yml
+    default: 2

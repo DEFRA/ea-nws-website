@@ -1,0 +1,26 @@
+allOf:
+  - $ref: ./one.workspaceOverview.Member.yml
+  - type: object
+    description: >-
+      External member.
+
+
+      An external member is a member that is not a user of the platform, and
+      that
+
+      was manually set as member by a workspace admin.
+
+
+      For example, it can be the judge that works on the case associated to a
+
+      GeoSafe-LI workspace.
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: Unique ID of the external member (in the workspace).
+      role:
+        type: string
+        description: Role of the external member.

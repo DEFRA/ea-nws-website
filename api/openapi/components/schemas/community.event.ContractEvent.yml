@@ -1,0 +1,11 @@
+allOf:
+  - $ref: ./bigdata.base.CdrEvent.yml
+  - type: object
+    required:
+      - msisdn
+    properties:
+      msisdn:
+        type: integer
+        format: uint64
+        description: The contract that performed the action.
+        minimum: 0

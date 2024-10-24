@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./qre.ManualOpEventLog.yml
+  - type: object
+    description: Event emitted when an event is forced into a scenario.
+    required:
+      - eventClassName
+    properties:
+      eventClassName:
+        type: string
+        description: Type of the event that has been sent.

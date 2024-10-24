@@ -13,6 +13,7 @@ import { addUnverifiedContact, addAccountName } from '../../../../common/service
 import { setCurrentContact, setProfile } from '../../../../common/redux/userSlice'
 export default function ChangeAdminDetailsPage () {
   const dispatch = useDispatch()
+  const navigate = useNavigate()
   const currentFirstName = useSelector(
     (state) => state.session.profile.firstname
   )
@@ -21,104 +22,99 @@ export default function ChangeAdminDetailsPage () {
   )
   const currentEmail = useSelector(
     (state) => state.session.profile.emails[0]
-  )
+  ) 
 
-  const [email, setEmail] = useState(currentEmail)
-  const [fullName, setFullName] = useState(currentFirstName + ' ' + currentLastName)
-  const navigate = useNavigate()
+  const currentFullName = currentFirstName + ' ' + currentLastName
+
+  const [email, setEmail] = useState(null)
+  const [fullName, setFullName] = useState(null)
   const [errorName, setErrorName] = useState('')
   const [errorEmail, setErrorEmail] = useState('')
-  const session = useSelector((state) => state.session)
-  const authToken = session.authToken
+  const [error,setError] = useState('')
+  const profile = useSelector((state) => state.session.profile)
+  const authToken = useSelector((state) => state.session.authToken)
 
-  useEffect(() => {
-    setErrorEmail('')
-  }, [errorEmail])
-
-  useEffect(() => {
-    setErrorName('')
-  }, [errorName])
 
   const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
   }
 
-  const hasNameChanged = () => {
-    if (fullName !== currentFirstName + ' ' + currentLastName) {
-      return true
-    } else {
-      return false
-    }
+  const updateProfile = async (profile, authToken) => {
+  const dataToSend = { profile, authToken }
+  const { errorMessage} = await backendCall(
+    dataToSend,
+    'api/profile/update',
+    navigate
+  )
+  if (errorMessage !== null) {
+    setError(errorMessage)
   }
+}
 
-  const hasEmailChanged = () => {
-    if (email !== currentEmail) {
-      return true
-    } else {
-      return false
-    }
-  }
-
-  const updateEmail = async () => {
-    const emailValidationError = emailValidation(email)
+const handleSubmit = async () => {
+  let emailValidationError = ''
+  if(email !== null){
+    emailValidationError = emailValidation(email)
     setErrorEmail(emailValidationError)
-    if (emailValidationError === '') {
-      const dataToSend = { email, authToken }
-      const profile = addUnverifiedContact(session.profile, 'email', email)
-      const profileDataToSend = { profile, authToken }
-      const { errorMessage, data } = await backendCall(
-        profileDataToSend,
-        'api/profile/update',
-        navigate
-      )
-      if (errorMessage !== null) {
-        setErrorEmail(errorMessage)
-      } else {
-        dispatch(setProfile(data.profile))
-        const { errorMessage } = await backendCall(
-          dataToSend,
-          'api/add_contact/email/add',
-          navigate
-        )
-        if (errorMessage !== null) {
-          setErrorEmail(errorMessage)
-        } else {
-          dispatch(setCurrentContact(email))
+  }
+  let fullNameValidationError = ''
+  if (fullName !== null){
+    fullNameValidationError = fullNameValidation(fullName)
+   setErrorName(fullNameValidationError)
+  }
+  
+
+  if(emailValidationError==='' && fullNameValidationError===''){
+    let updatedProfile = profile
+  if (fullName) {
+    const [firstname, ...lastnameParts] = fullName.trim().split(' ')
+    const lastname = lastnameParts.join(' ')
+    updatedProfile = addAccountName(updatedProfile, firstname, lastname)
+  }
+  if (email) {
+    updatedProfile = addUnverifiedContact(updatedProfile, 'email', email)
+  }
+  await updateProfile(updatedProfile, authToken)
+  if (email) {
+    const dataToSend = {email, authToken}  
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/add_contact/email/add',
+      navigate
+    )
+    if (errorMessage !== null) {
+      setError(errorMessage)
+    } else {
+      dispatch(setCurrentContact(email))
+    }
+  }
+  if (!error) {
+    dispatch(setProfile(updatedProfile))
+    if (email) {
+      navigate('/email verification page', {
+        state: {
+          changeName: fullName,
+          changeEmail: email
         }
-      }
+      })
+    } else if (fullName && !email) {
+      navigate('/account page', {
+        state: {
+          changeName: fullName,
+          changeEmail: currentEmail
+        }
+      })
+    }else{
+      navigate('/account page')
     }
+  }
   }
 
-  const updateName = () => {
-    const validationError = fullNameValidation(fullName)
-    setErrorName(validationError)
-    if (validationError === '') {
-      const [firstname, ...lastnameParts] = fullName.trim().split(' ')
-      const lastname = lastnameParts.join(' ')
-      const profile = addAccountName(session.profile, firstname, lastname)
-      dispatch(setProfile(profile))
-    }
-  }
-
-  const handleSubmit = async (event) => {
-    event.preventDefault()
-    // fix how the erros work here
-    if (errorEmail === '' || !errorName === '') {
-      if (hasEmailChanged() && hasNameChanged()) {
-        updateName()
-        updateEmail()
-      } else if (hasEmailChanged() && !hasNameChanged()) {
-        updateEmail()
-        navigate('To next page')
-      } else if (!hasEmailChanged() && hasNameChanged()) {
-        updateName()
-        navigate('To next page')
-      } else {
-        navigate('To next page')
-      }
-    }
-  }
+  
+}
+  
+    
   return (
     <>
       <OrganisationAccountNavigation />
@@ -126,9 +122,9 @@ export default function ChangeAdminDetailsPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half' />
-          {(errorEmail || errorName) && (
+          {(error||errorEmail||errorName) && (
             <ErrorSummary
-              errorList={[errorEmail, errorName]}
+              errorList={[error,errorEmail,errorName]}
             />
           )}
           <h1 className='govuk-heading-l'>
@@ -142,7 +138,7 @@ export default function ChangeAdminDetailsPage () {
             onChange={(val) => setFullName(val)}
             error={errorName}
             className='govuk-input govuk-input--width-20'
-            defaultValue={fullName}
+            defaultValue={currentFullName}
             isNameBold
           />
 
@@ -153,7 +149,7 @@ export default function ChangeAdminDetailsPage () {
             onChange={(val) => setEmail(val)}
             error={errorEmail}
             className='govuk-input govuk-input--width-20'
-            defaultValue={email}
+            defaultValue={currentEmail}
             isNameBold
           />
 

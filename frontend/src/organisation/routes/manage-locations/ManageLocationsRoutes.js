@@ -1,5 +1,6 @@
 import AddLocationOptionsPage from '../../pages/manage-locations/add-location/AddLocationOptionsPage'
 import ConfirmLocationPage from '../../pages/manage-locations/add-location/manual-add-location/confirm-location/ConfirmLocationPage'
+import LocationAlreadyExists from '../../pages/manage-locations/add-location/manual-add-location/name/LocationAlreadyExists'
 import LocationNamePage from '../../pages/manage-locations/add-location/manual-add-location/name/LocationNamePage'
 import LocationSearchOptionPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationSearchOptionPage'
 import DropPinNotInEnglandPage from '../../pages/manage-locations/add-location/manual-add-location/search/drop-pin/DropPinNotInEnglandPage'
@@ -68,7 +69,8 @@ const orgManageLocationsUrls = {
       cannotFindAddress: urlManageOrg + '/add/cannot-find-address',
       xyCoordinatesNotInEngland:
         urlManageOrg + '/add/xy-coordinates-not-in-england',
-      dropPinNotInEngland: urlManageOrg + '/add/drop-pin-not-in-england'
+      dropPinNotInEngland: urlManageOrg + '/add/drop-pin-not-in-england',
+      alreadyExists: urlManageOrg + '/add/location-already-exists'
     },
     search: {
       searchOption: urlManageOrg + '/add/search-option',
@@ -180,6 +182,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.error.dropPinNotInEngland,
     component: <DropPinNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.error.alreadyExists,
+    component: <LocationAlreadyExists />
   },
   // search
   {

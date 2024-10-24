@@ -15,6 +15,7 @@ const deleteAccountHandler = require('./handlers/account/deleteAccountHandler')
 // define api
 const api = new OpenAPIBackend({
   definition: './openapi/openapi.yml',
+  quick: true,
   handlers: {
     //sign up routes
     getRegisterStart: registerHandlers.getRegisterStart,

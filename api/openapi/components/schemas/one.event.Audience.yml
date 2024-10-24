@@ -26,7 +26,7 @@ allOf:
         description: Name of the time classification.
       count:
         type: integer
-        format: uint64
+        format: int64
         description: |-
           Audience count.
 
@@ -53,12 +53,12 @@ allOf:
         minimum: 0
       avgDuration:
         type: integer
-        format: uint64
+        format: int64
         description: Average time spent by the watchers represented in the count.
         minimum: 0
       taskTag:
         type: string
       taskExecId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0

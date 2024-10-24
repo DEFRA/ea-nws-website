@@ -6,32 +6,32 @@ allOf:
     properties:
       imsi:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       homeCgi:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       workCgi:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       homeCuid:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       workCuid:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       imsiMcc:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
         maximum: 65535
       imsiMnc:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
         maximum: 65535
       entropy:
@@ -45,7 +45,7 @@ allOf:
         format: double
       nbStops:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       stopDuration:
         type: integer
@@ -66,27 +66,27 @@ allOf:
         type: string
       homeNbDays:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       homeStretchDays:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       homeCumulatedDuration:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       workNbDays:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       nbWorkHomeMoves:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       workCumulatedDuration:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       censusPlacemark:
         type: string

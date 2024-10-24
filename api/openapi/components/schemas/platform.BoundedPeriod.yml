@@ -55,6 +55,6 @@ properties:
     $ref: ./platform.PeriodPattern.yml
   nbOccurrences:
     type: integer
-    format: uint32
+    format: int32
     default: 1
     minimum: 1

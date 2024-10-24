@@ -15,6 +15,6 @@ allOf:
         description: Login of the deactivated user.
       deactivatedUserId:
         type: integer
-        format: uint64
+        format: int64
         description: Id of the deactivated user.
         minimum: 0

@@ -56,7 +56,7 @@ allOf:
         maximum: 840
       asyncAnswerTimeout:
         type: integer
-        format: uint32
+        format: int32
         default: 600
         minimum: 0
         maximum: 86400
@@ -88,7 +88,7 @@ allOf:
         default: 3
       horizontalAccuracy:
         type: integer
-        format: uint32
+        format: int32
         default: 0
         minimum: 0
       respReq:

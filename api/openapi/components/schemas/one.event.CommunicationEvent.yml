@@ -20,7 +20,7 @@ allOf:
           - $ref: ./platform.base.Value.yml
       ruleId:
         type: integer
-        format: uint64
+        format: int64
         description: Identifier of the rule which sent the message.
         minimum: 0
       proto:
@@ -40,6 +40,6 @@ allOf:
         description: Replaces the inet.MetaProto field.
       logGroupId:
         type: integer
-        format: uint64
+        format: int64
         description: Log group id of the corresponding action, to perform matching.
         minimum: 0

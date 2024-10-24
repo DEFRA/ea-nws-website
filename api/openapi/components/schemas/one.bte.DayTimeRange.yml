@@ -5,7 +5,7 @@ required:
 properties:
   start:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       Lower bound representing the number of minutes since midnight.
 
@@ -14,7 +14,7 @@ properties:
     maximum: 1440
   end:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       Upper bound representing the number of minutes since midnight.
 

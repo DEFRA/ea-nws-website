@@ -6,21 +6,21 @@ allOf:
     properties:
       msisdn:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       imei:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       imsi:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       position:
         $ref: ./platform.base.Value.yml
       zoneId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       key:
         $ref: ./platform.base.Value.yml
@@ -41,7 +41,7 @@ allOf:
         type: string
       placemarkId:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       placemarkName:
         type: string

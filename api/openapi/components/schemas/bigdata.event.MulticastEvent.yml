@@ -235,7 +235,7 @@ allOf:
           propertyName: _class
       collectionId:
         type: integer
-        format: uint32
+        format: int32
         description: |-
           The identification number of the collection in which the event will be
            sent.

@@ -18,6 +18,6 @@ oneOf:
     properties:
       id:
         type: integer
-        format: uint64
+        format: int64
         description: References an item by id.
         minimum: 0

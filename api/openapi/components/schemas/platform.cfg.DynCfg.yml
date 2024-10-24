@@ -5,7 +5,7 @@ properties:
     type: string
   creationTs:
     type: integer
-    format: uint64
+    format: int64
     description: Timestamp of creation (initial push) by the provider, in milliseconds.
     default: 0
     minimum: 0

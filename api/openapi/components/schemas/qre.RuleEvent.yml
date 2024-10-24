@@ -11,11 +11,11 @@ allOf:
     properties:
       scenarioId:
         type: integer
-        format: uint64
+        format: int64
         description: The scenario id
         minimum: 0
       ruleId:
         type: integer
-        format: uint64
+        format: int64
         description: The rule id
         minimum: 0

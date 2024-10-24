@@ -7,7 +7,7 @@ allOf:
     properties:
       id:
         type: integer
-        format: uint32
+        format: int32
         description: The id of the custom state.
         minimum: 0
       tooltip:

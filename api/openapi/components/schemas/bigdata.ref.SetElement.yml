@@ -13,7 +13,7 @@ oneOf:
     properties:
       id:
         type: integer
-        format: uint64
+        format: int64
         description: The index of the set in the sets array.
         minimum: 0
   - type: object

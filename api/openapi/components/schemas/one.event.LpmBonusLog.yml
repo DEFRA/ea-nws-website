@@ -6,16 +6,16 @@ allOf:
     properties:
       points:
         type: integer
-        format: uint64
+        format: int64
         description: Number of awarded points.
         minimum: 0
       lpmPointsValidity:
         type: integer
-        format: uint64
+        format: int64
         description: Validity period.
         minimum: 0
       lpmBalance:
         type: integer
-        format: uint32
+        format: int32
         description: New balance.
         minimum: 0

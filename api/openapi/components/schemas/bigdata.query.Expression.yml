@@ -125,9 +125,9 @@ oneOf:
           - $ref: ./bigdata.query.Expression.yml
   - type: object
     required:
-      - castToUint
+      - castToint
     properties:
-      castToUint:
+      castToint:
         description: Cast the result of the sub-expression to an unsigned integer.
         allOf:
           - $ref: ./bigdata.query.Expression.yml
@@ -321,7 +321,7 @@ oneOf:
     properties:
       refPos:
         type: integer
-        format: uint32
+        format: int32
         description: |-
           Reference a field by its id in the computed list of a prepared
           formula.

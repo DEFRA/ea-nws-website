@@ -11,13 +11,13 @@ allOf:
     properties:
       imsi:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       coordinates:
         $ref: ./platform.base.Coordinates.yml
       cuid:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       stepTsStart:
         type: integer
@@ -33,12 +33,12 @@ allOf:
         description: The end timestamp of the move.
       imsiMcc:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
         maximum: 65535
       imsiMnc:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
         maximum: 65535
       trajectory:
@@ -50,5 +50,5 @@ allOf:
         type: string
       taskExecId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0

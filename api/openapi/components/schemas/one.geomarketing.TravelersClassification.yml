@@ -8,14 +8,14 @@ properties:
       $ref: ./one.geomarketing.SegmentNeighborhoodClass.yml
   workersMinNbStops:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       Above this limit, the subscriber will be considered as a worker (if
        characterized as non-traveler).
     minimum: 0
   workersMinStopDuration:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       When a subscriber that matches the criterion "workersMinNbStops" also
        have a cumulated stop value above this one for the current day or has

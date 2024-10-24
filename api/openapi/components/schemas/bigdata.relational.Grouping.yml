@@ -58,7 +58,7 @@ allOf:
           $ref: ./bigdata.relational.GroupingSet.yml
       inputSizeHardLimit:
         type: integer
-        format: uint64
+        format: int64
         description: >-
           Hard limit for the number of input rows.
 

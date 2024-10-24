@@ -9,12 +9,12 @@ allOf:
     properties:
       occurrences:
         type: integer
-        format: uint32
+        format: int32
         description: Number of execution of each we handle.
         minimum: 0
       totalOccurrences:
         type: integer
-        format: uint32
+        format: int32
         description: Total number of occurrences since the activation of the counter.
         minimum: 0
       value:

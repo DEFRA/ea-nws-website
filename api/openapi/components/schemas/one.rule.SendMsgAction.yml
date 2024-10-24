@@ -4,7 +4,7 @@ allOf:
     properties:
       campaignId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       dest:
         type: string
@@ -13,7 +13,7 @@ allOf:
         $ref: ./inet.MetaProto.yml
       tplId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       values:
         type: array
@@ -21,7 +21,7 @@ allOf:
           $ref: ./platform.base.Value.yml
       tplVersion:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       timezone:
         type: integer
@@ -31,7 +31,7 @@ allOf:
         default: false
       wsId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       language:
         type: string

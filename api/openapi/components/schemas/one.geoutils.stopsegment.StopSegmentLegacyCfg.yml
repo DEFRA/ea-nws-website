@@ -6,21 +6,21 @@ properties:
     default: 10
   adjacentCellTimeLimit:
     type: integer
-    format: uint32
+    format: int32
     default: 600
     minimum: 0
   stopMoveStopMergeTimeLimit:
     type: integer
-    format: uint32
+    format: int32
     default: 360
     minimum: 0
   moveStopMoveMergeTimeLimit:
     type: integer
-    format: uint32
+    format: int32
     default: 900
     minimum: 0
   deviceTimeout:
     type: integer
-    format: uint32
+    format: int32
     default: 28800
     minimum: 0

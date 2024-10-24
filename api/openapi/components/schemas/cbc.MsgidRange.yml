@@ -5,11 +5,11 @@ required:
 properties:
   from:
     type: integer
-    format: uint32
+    format: int32
     minimum: 0
     maximum: 65535
   to:
     type: integer
-    format: uint32
+    format: int32
     minimum: 0
     maximum: 65535

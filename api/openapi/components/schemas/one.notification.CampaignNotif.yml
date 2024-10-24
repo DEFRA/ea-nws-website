@@ -13,7 +13,7 @@ allOf:
         description: Name of the campaign.
       campaignId:
         type: integer
-        format: uint64
+        format: int64
         description: ID of the campaign.
         minimum: 0
       workspaceName:

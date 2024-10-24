@@ -6,6 +6,6 @@ allOf:
     properties:
       msisdn:
         type: integer
-        format: uint64
+        format: int64
         description: The contract that performed the action.
         minimum: 0

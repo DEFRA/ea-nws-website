@@ -7,6 +7,6 @@ allOf:
     properties:
       year:
         type: integer
-        format: uint32
+        format: int32
         minimum: 1900
         maximum: 2100

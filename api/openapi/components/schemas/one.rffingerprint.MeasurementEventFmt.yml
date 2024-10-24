@@ -6,17 +6,17 @@ allOf:
     properties:
       cellId:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
         maximum: 65535
       arfcn:
         type: integer
-        format: uint32
+        format: int32
         description: Downlink ARFCN/UARFCN/EARFCN.
         minimum: 0
       cgi:
         type: integer
-        format: uint64
+        format: int64
         description: |-
           For the serving cell, we use in priority cgi if it is set, or cellId +
           arfcn
@@ -26,72 +26,72 @@ allOf:
         format: double
       cellId2:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
         maximum: 65535
       arfcn2:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       powerMeasurement2:
         type: number
         format: double
       cellId3:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
         maximum: 65535
       arfcn3:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       powerMeasurement3:
         type: number
         format: double
       cellId4:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
         maximum: 65535
       arfcn4:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       powerMeasurement4:
         type: number
         format: double
       cellId5:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
         maximum: 65535
       arfcn5:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       powerMeasurement5:
         type: number
         format: double
       cellId6:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
         maximum: 65535
       arfcn6:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       powerMeasurement6:
         type: number
         format: double
       cellId7:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
         maximum: 65535
       arfcn7:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       powerMeasurement7:
         type: number

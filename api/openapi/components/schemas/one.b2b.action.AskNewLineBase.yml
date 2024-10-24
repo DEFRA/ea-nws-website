@@ -4,7 +4,7 @@ allOf:
     properties:
       departmentId:
         type: integer
-        format: uint64
+        format: int64
         description: |-
           Department in the company to attach the line to.
 
@@ -12,7 +12,7 @@ allOf:
         minimum: 0
       profileId:
         type: integer
-        format: uint64
+        format: int64
         description: |-
           Profile in the company for this contract.
 

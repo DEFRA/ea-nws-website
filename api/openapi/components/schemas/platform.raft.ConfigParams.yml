@@ -3,7 +3,7 @@ description: RAFT configuration parameters
 properties:
   heartbeatPeriodMs:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       Defines the minimal period (in millisecond) between two
       appendEntries().
@@ -15,7 +15,7 @@ properties:
     minimum: 100
   electionPeriodMs:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       Defines the minimal period (in millisecond) before launching a new
       election after the preceding election.
@@ -28,7 +28,7 @@ properties:
     minimum: 100
   staleLeaderMs:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       Defines the time before a server following a leader will consider the
       leader as stale and starts a new election.
@@ -39,7 +39,7 @@ properties:
     minimum: 500
   staleForeignLeaderMs:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       Defines the election timeout to use when the leader status is
       expensive to get.
@@ -54,13 +54,13 @@ properties:
     minimum: 500
   logMaxSz:
     type: integer
-    format: uint32
+    format: int32
     description: Maximum file size before rotation of RAFT binlog in bytes.
     default: 8388608
     minimum: 10240
   logMaxEntries:
     type: integer
-    format: uint32
+    format: int32
     description: Maximum number of entries before rotation of RAFT binlog.
     default: 102400
     minimum: 1024
@@ -74,7 +74,7 @@ properties:
     minimum: 0.5
   nbEntriesToKeep:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       Number of replicated entries kept in RAM.
 
@@ -88,7 +88,7 @@ properties:
     minimum: 1024
   nbEntriesMax:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       Maximum number of entries sent by the leader in one appendEntries()
       RPC call.
@@ -97,7 +97,7 @@ properties:
     maximum: 65535
   nbFlyingRequests:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       Maximum number of flying appendEntries() between the leader and
       a remote server.
@@ -106,7 +106,7 @@ properties:
     maximum: 65535
   nbAdminVotes:
     type: integer
-    format: uint32
+    format: int32
     description: >-
       Number of votes that can be attributed arbitrarily by an
 
@@ -122,7 +122,7 @@ properties:
     maximum: 65535
   voterOwnerResetMs:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       Defines the time after which a server will consider the admin votes of
       another host not assigned anymore.

@@ -10,7 +10,7 @@ allOf:
     properties:
       profileId:
         type: integer
-        format: uint64
+        format: int64
         description: Profile unique identifier.
         minimum: 0
       profileName:
@@ -18,7 +18,7 @@ allOf:
         description: Name of the profile.
       previousProfileId:
         type: integer
-        format: uint64
+        format: int64
         description: Previous profile unique identifier.
         minimum: 0
       previousProfileName:

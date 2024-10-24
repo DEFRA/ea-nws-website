@@ -10,5 +10,5 @@ allOf:
         description: IDs of the scenarios on which the condition applies.
         items:
           type: integer
-          format: uint64
+          format: int64
           minimum: 0

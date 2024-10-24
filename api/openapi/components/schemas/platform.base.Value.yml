@@ -28,7 +28,7 @@ oneOf:
     properties:
       u:
         type: integer
-        format: uint64
+        format: int64
         description: A 64bit unsigned integer.
         minimum: 0
   - type: object

@@ -6,7 +6,7 @@ oneOf:
     properties:
       minStopDuration:
         type: integer
-        format: uint32
+        format: int32
         description: Choose the first stop with a duration above this value.
         minimum: 0
   - type: object

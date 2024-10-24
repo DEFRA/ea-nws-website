@@ -4,9 +4,9 @@ allOf:
     properties:
       departmentId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       profileId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0

@@ -12,17 +12,17 @@ allOf:
           - $ref: ./bigdata.base.ProtocolEventCode.yml
       msisdn:
         type: integer
-        format: uint64
+        format: int64
         description: Mobile number.
         minimum: 0
       imsi:
         type: integer
-        format: uint64
+        format: int64
         description: IMSI.
         minimum: 0
       imei:
         type: integer
-        format: uint64
+        format: int64
         description: IMEI.
         minimum: 0
       state:

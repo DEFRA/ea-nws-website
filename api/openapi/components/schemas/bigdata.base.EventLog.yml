@@ -8,13 +8,13 @@ allOf:
         type: string
       logGroupId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       parentId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       workspaceId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0

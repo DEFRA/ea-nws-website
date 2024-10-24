@@ -8,7 +8,7 @@ allOf:
           - $ref: ./one.event.BudgetMessageError.yml
       insufficientBudgetWorkspace:
         type: integer
-        format: uint64
+        format: int64
         description: |-
           First workspace in hierarchy whose budget was insufficient.
 
@@ -20,5 +20,5 @@ allOf:
         format: double
       nbParts:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0

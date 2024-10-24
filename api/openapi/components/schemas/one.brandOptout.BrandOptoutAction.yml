@@ -14,7 +14,7 @@ allOf:
         description: Whether the entity wants to optin or optout the brand.
       wsId:
         type: integer
-        format: uint64
+        format: int64
         description: Id of the workspace.
         minimum: 0
       shortcode:

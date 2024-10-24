@@ -7,7 +7,7 @@ properties:
     type: string
   uid:
     type: integer
-    format: uint64
+    format: int64
     description: |-
       Id of the associated location, and NOT the identifier of the node.
 
@@ -16,13 +16,13 @@ properties:
     minimum: 0
   startTime:
     type: integer
-    format: uint64
+    format: int64
     description: Beginning of validity period.
     default: 0
     minimum: 0
   endTime:
     type: integer
-    format: uint64
+    format: int64
     description: End of validity period.
     default: 0
     minimum: 0

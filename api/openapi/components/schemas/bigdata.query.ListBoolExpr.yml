@@ -89,7 +89,7 @@ properties:
     nullable: true
   offset:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       Offset.
 
@@ -101,7 +101,7 @@ properties:
     minimum: 0
   limit:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       Maximum number of entries in the result array.
 

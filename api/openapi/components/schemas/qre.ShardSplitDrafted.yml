@@ -12,7 +12,7 @@ allOf:
     properties:
       selectSize:
         type: integer
-        format: uint64
+        format: int64
         description: Descriptive statistics of entities entering the operation.
         minimum: 0
       selectMean:
@@ -23,7 +23,7 @@ allOf:
         format: double
       splitSize:
         type: integer
-        format: uint64
+        format: int64
         description: Descriptive statistics of drafted entities.
         minimum: 0
       splitMean:

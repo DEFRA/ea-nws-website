@@ -6,7 +6,7 @@ allOf:
     properties:
       collectionId:
         type: integer
-        format: uint32
+        format: int32
         description: The identification number of the schema collection.
         minimum: 0
         maximum: 255

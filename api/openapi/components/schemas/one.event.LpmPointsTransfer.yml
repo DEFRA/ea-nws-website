@@ -11,5 +11,5 @@ allOf:
         description: Number of awarded points.
       newBalance:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0

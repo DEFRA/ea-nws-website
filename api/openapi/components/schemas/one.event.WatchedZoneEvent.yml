@@ -4,23 +4,23 @@ allOf:
     properties:
       msisdn:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       imei:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       imsi:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       placemarkId:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       zoneId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       key:
         $ref: ./platform.base.Value.yml

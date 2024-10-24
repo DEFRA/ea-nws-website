@@ -12,7 +12,7 @@ allOf:
           the logger "mde/tracing" is used instead.
       traceLevel:
         type: integer
-        format: uint32
+        format: int32
         description: |-
           Trace level for the trace operation.
 

@@ -12,12 +12,12 @@ properties:
       - $ref: ./inet.MetaProto.yml
   workspaceId:
     type: integer
-    format: uint64
+    format: int64
     description: Workspace id.
     minimum: 0
   dayOfMonth:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       Day of the month for this single message campaign.
 

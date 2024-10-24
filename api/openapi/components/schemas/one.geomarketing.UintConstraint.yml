@@ -2,9 +2,9 @@ type: object
 properties:
   min:
     type: integer
-    format: uint32
+    format: int32
     minimum: 0
   max:
     type: integer
-    format: uint32
+    format: int32
     minimum: 0

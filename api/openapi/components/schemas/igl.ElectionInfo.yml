@@ -8,11 +8,11 @@ allOf:
     properties:
       term:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       seqid:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       hostid:
         type: integer

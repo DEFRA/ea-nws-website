@@ -8,7 +8,7 @@ allOf:
     properties:
       profileId:
         type: integer
-        format: uint64
+        format: int64
         description: profile unique identifier
         minimum: 0
       profileName:
@@ -16,6 +16,6 @@ allOf:
         description: Name of the profile
       imsi:
         type: integer
-        format: uint64
+        format: int64
         description: IMSI
         minimum: 0

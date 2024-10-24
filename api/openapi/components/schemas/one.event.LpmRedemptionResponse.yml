@@ -6,12 +6,12 @@ allOf:
     properties:
       cost:
         type: integer
-        format: uint64
+        format: int64
         description: The cost of the bonus.
         minimum: 0
       giftId:
         type: integer
-        format: uint64
+        format: int64
         description: The id of the gift.
         minimum: 0
       awardedEntityCollection:

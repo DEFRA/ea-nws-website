@@ -13,7 +13,7 @@ allOf:
     properties:
       ruleId:
         type: integer
-        format: uint64
+        format: int64
         description: Id of the rule context.
         minimum: 0
       fieldPath:

@@ -4,23 +4,23 @@ allOf:
     properties:
       connMax:
         type: integer
-        format: uint32
+        format: int32
         default: 10
         minimum: 0
         maximum: 65535
       connTimeout:
         type: integer
-        format: uint32
+        format: int32
         default: 30000
         minimum: 0
       queriesMax:
         type: integer
-        format: uint32
+        format: int32
         default: 1024
         minimum: 0
       queriesWindow:
         type: integer
-        format: uint32
+        format: int32
         default: 32
         minimum: 0
         maximum: 65535

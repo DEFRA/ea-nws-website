@@ -10,7 +10,7 @@ allOf:
     properties:
       zoneId:
         type: integer
-        format: uint64
+        format: int64
         description: Id of the zone to select.
         minimum: 0
       placemarks:
@@ -22,5 +22,5 @@ allOf:
           above zoneId are allowed.
         items:
           type: integer
-          format: uint32
+          format: int32
           minimum: 0

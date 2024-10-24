@@ -23,7 +23,7 @@ oneOf:
     properties:
       u:
         type: integer
-        format: uint64
+        format: int64
         description: |-
           unsigned long format.
 

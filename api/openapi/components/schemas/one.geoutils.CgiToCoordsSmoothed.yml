@@ -34,7 +34,7 @@ allOf:
         default: coef
       resolution:
         type: integer
-        format: uint32
+        format: int32
         description: |-
           Distance between two neighboring points of the output.
 

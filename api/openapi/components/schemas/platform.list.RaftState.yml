@@ -7,10 +7,10 @@ allOf:
     properties:
       epoch:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       hostid:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
         maximum: 255

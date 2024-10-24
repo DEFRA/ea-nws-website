@@ -16,5 +16,5 @@ allOf:
           class.
       keyId:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0

@@ -3,11 +3,11 @@ description: A date pattern based on days.
 properties:
   hour:
     type: integer
-    format: uint32
+    format: int32
     minimum: 0
     maximum: 23
   minute:
     type: integer
-    format: uint32
+    format: int32
     minimum: 0
     maximum: 59

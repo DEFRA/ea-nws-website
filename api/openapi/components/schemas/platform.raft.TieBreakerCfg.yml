@@ -24,7 +24,7 @@ properties:
     description: The token assigned to this platform to connect to the Tie Breaker.
   leaderHeartbeatPeriod:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       Period (in second) between two heartbeats sent by the RAFT leader to
       the Tie Breaker.
@@ -32,7 +32,7 @@ properties:
     minimum: 0
   heartbeatPeriod:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       Period (in second) between two heartbeats sent by any RAFT server to
       the Tie Breaker.
@@ -40,14 +40,14 @@ properties:
     minimum: 0
   httpRequestTimeout:
     type: integer
-    format: uint32
+    format: int32
     description: Maximum time (in second) waiting for an HTTP request to be sent.
     default: 5
     minimum: 0
     maximum: 65535
   staleLeaderDelayMs:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       Additional delay to consider a foreign leader as stale.
 
@@ -58,7 +58,7 @@ properties:
     minimum: 0
   adminVotesRetryDelayMs:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       Delay between two admin votes requests in case of failure.
 

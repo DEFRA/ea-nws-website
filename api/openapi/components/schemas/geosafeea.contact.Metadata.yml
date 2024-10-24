@@ -7,7 +7,7 @@ properties:
     type: string
   workspaceId:
     type: integer
-    format: uint64
+    format: int64
     minimum: 0
   workspaceName:
     type: string

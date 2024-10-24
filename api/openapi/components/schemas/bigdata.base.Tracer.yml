@@ -15,7 +15,7 @@ properties:
       Unique string that identifies the event.
   epoch:
     type: integer
-    format: uint64
+    format: int64
     description: |-
       Strictly growing counter.
 

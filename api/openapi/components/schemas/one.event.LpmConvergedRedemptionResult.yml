@@ -9,7 +9,7 @@ allOf:
         description: The status of the redemption action.
       giftId:
         type: integer
-        format: uint64
+        format: int64
         description: The id of the redeemed gift.
         minimum: 0
       redeemerCollection:
@@ -21,6 +21,6 @@ allOf:
           - $ref: ./platform.base.Value.yml
       redemptionId:
         type: integer
-        format: uint64
+        format: int64
         description: Id of the redemption.
         minimum: 0

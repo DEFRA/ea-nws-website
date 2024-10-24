@@ -28,12 +28,12 @@ allOf:
         description: Additional classification ranges.
         items:
           type: integer
-          format: uint32
+          format: int32
           minimum: 0
           maximum: 65535
       nightOffset:
         type: integer
-        format: uint32
+        format: int32
         description: |-
           The time of the day that separates 2 days.
 

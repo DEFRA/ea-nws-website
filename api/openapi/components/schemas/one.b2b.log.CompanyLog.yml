@@ -19,7 +19,7 @@ allOf:
           - $ref: ./one.b2b.log.EntityLogType.yml
       executorId:
         type: integer
-        format: uint64
+        format: int64
         description: Id of the user performing the action.
         minimum: 0
       executorLastName:
@@ -33,7 +33,7 @@ allOf:
         description: Company of the user performing the action.
       executorWorkspaceId:
         type: integer
-        format: uint64
+        format: int64
         description: Company of the user performing the action.
         minimum: 0
       companyId:

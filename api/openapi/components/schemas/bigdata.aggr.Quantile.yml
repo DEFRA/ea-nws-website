@@ -10,11 +10,11 @@ required:
 properties:
   k:
     type: integer
-    format: uint32
+    format: int32
     minimum: 1
   q:
     type: integer
-    format: uint32
+    format: int32
     default: 100
     minimum: 2
   outputFieldName:

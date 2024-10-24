@@ -15,5 +15,5 @@ allOf:
         type: string
       cost:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0

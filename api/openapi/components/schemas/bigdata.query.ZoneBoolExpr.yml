@@ -99,7 +99,7 @@ properties:
           except the given one are taken into account.
     items:
       type: integer
-      format: uint32
+      format: int32
       minimum: 0
   excludePlacemarks:
     type: boolean

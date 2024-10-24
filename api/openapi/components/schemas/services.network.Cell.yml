@@ -26,7 +26,7 @@ allOf:
           CellKind.
       tac:
         type: integer
-        format: uint32
+        format: int32
         description: >-
           Tracking area code.
 

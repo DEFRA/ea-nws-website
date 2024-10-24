@@ -6,16 +6,16 @@ required:
 properties:
   serverId:
     type: integer
-    format: uint32
+    format: int32
     description: External RAFT server ID owning the admin votes.
     default: 0
     minimum: 0
   term:
     type: integer
-    format: uint64
+    format: int64
     description: External RAFT term of the admin votes assignation.
     minimum: 0
   assignedAt:
     type: integer
-    format: uint64
+    format: int64
     minimum: 0

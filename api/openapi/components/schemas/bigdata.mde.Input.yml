@@ -5,7 +5,7 @@ allOf:
     properties:
       index:
         type: integer
-        format: uint32
+        format: int32
         description: Index of the input in the context.
         default: 0
         minimum: 0

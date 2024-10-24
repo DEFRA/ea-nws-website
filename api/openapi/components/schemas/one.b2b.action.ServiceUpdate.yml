@@ -8,7 +8,7 @@ allOf:
     properties:
       serviceId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       previousValue:
         description: The previous value of the field

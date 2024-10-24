@@ -91,12 +91,12 @@ allOf:
           propertyName: _class
       cost:
         type: integer
-        format: uint64
+        format: int64
         description: The cost of the bonus.
         minimum: 0
       giftId:
         type: integer
-        format: uint64
+        format: int64
         description: The id of the gift.
         minimum: 0
       awardedEntityCollection:
@@ -114,7 +114,7 @@ allOf:
         description: User that initiated the redemption action.
       lpmBalance:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       redeemChannel:
         description: Channel origin of the redemption.

@@ -15,9 +15,9 @@ allOf:
         type: string
       lpmPointsValidity:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       lpmBalance:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0

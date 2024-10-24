@@ -8,7 +8,7 @@ allOf:
     properties:
       previousDepartmentId:
         type: integer
-        format: uint64
+        format: int64
         description: Previous department unique identifier.
         minimum: 0
       previousDepartmentName:

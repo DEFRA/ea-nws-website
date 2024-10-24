@@ -18,6 +18,6 @@ allOf:
         description: The password to be used in credentials.
       workspaceId:
         type: integer
-        format: uint64
+        format: int64
         description: The workspace id to be used in credentials.
         minimum: 0

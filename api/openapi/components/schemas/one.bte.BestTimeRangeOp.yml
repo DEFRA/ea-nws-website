@@ -99,12 +99,12 @@ allOf:
           propertyName: _class
       minNumTopup:
         type: integer
-        format: uint32
+        format: int32
         description: The minimum number of historical topups needed to select a best range.
         minimum: 0
       uniformDistribCoef:
         type: integer
-        format: uint32
+        format: int32
         description: |-
           The best range minimum multiplier coefficient.
 

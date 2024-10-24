@@ -88,11 +88,11 @@ allOf:
             propertyName: _class
       offset:
         type: integer
-        format: uint64
+        format: int64
         description: The number of rows to skip.
         minimum: 0
       limit:
         type: integer
-        format: uint64
+        format: int64
         description: The maximum number of results to return.
         minimum: 0

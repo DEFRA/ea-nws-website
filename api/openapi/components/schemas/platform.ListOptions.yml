@@ -13,7 +13,7 @@ description: |-
       interface Pipo {
           list
               in  (platform.ListOptions options)
-              out (Obj[] obj, uint total);
+              out (Obj[] obj, int total);
       };
   </code>
   Where 'total' is the total number of matching entries.

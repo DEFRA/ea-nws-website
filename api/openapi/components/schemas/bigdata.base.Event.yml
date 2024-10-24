@@ -37,7 +37,7 @@ properties:
       These correspond to the tag position in schema's eventTags list.
     items:
       type: integer
-      format: uint32
+      format: int32
       minimum: 0
       maximum: 255
   tracer:

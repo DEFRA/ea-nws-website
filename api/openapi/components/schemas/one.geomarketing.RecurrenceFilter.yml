@@ -171,14 +171,14 @@ allOf:
           propertyName: _class
       nightOffset:
         type: integer
-        format: uint32
+        format: int32
         description: |-
           Difference between midnight and the moment considered as the middle of
           the night by the operation (in second).
         minimum: 0
       minNightDuration:
         type: integer
-        format: uint32
+        format: int32
         description: |-
           Minimum duration of an "event" so it can be considered as a "night
           event" (in second).

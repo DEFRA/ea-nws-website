@@ -4,7 +4,7 @@ required:
 properties:
   zoneId:
     type: integer
-    format: uint64
+    format: int64
     description: Id of the shared zone.
     minimum: 0
   placemarks:
@@ -15,7 +15,7 @@ properties:
       \note Keeping it empty will select the whole zone.
     items:
       type: integer
-      format: uint32
+      format: int32
       minimum: 0
   excludePlacemarks:
     type: boolean

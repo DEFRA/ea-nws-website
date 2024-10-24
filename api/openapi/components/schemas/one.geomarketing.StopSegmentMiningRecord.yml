@@ -12,23 +12,23 @@ allOf:
         type: string
       origZoneId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       destZoneId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       homeZoneId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       workZoneId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       imsiMcc:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
         maximum: 65535
       roamerType:
@@ -41,11 +41,11 @@ allOf:
         $ref: ./one.geomarketing.TravelerType.yml
       duration:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       visitsRecurrence:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       timeAggregation:
         type: string
@@ -54,12 +54,12 @@ allOf:
         format: int64
       hourOfDay:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
         maximum: 255
       dayOfMonth:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
         maximum: 255
       dayOfWeek:
@@ -72,11 +72,11 @@ allOf:
         $ref: ./one.geomarketing.VisitEntryType.yml
       count:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       durationAvg:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       durationStddev:
         type: number
@@ -94,7 +94,7 @@ allOf:
         type: string
       visitedZoneId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       airportStart:
         type: string
@@ -102,11 +102,11 @@ allOf:
         type: string
       cuidStart:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       cuidEnd:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       crmKey1:
         type: string
@@ -124,7 +124,7 @@ allOf:
         type: string
       countWithCensus:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       stayDurationMayBeLonger:
         type: boolean

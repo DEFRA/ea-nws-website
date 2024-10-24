@@ -9,5 +9,5 @@ properties:
     description: Index of the dimension in the Grouping Operation.
     items:
       type: integer
-      format: uint32
+      format: int32
       minimum: 0

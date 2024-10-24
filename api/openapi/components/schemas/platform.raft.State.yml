@@ -13,27 +13,27 @@ properties:
       - $ref: ./platform.raft.Role.yml
   leaderId:
     type: integer
-    format: uint32
+    format: int32
     description: Known leader ID of RAFT server (0 if unknown)
     minimum: 0
   term:
     type: integer
-    format: uint64
+    format: int64
     description: Current term of the RAFT server
     minimum: 0
   commitIndex:
     type: integer
-    format: uint64
+    format: int64
     description: Current commitIndex of the RAFT server
     minimum: 0
   replicatedByAll:
     type: integer
-    format: uint64
+    format: int64
     description: Last known index replicated by all servers
     minimum: 0
   nbAdminVotesGranted:
     type: integer
-    format: uint32
+    format: int32
     description: Number of admin votes currently owned.
     minimum: 0
   leaderIsTimeouted:
@@ -49,19 +49,19 @@ properties:
     default: false
   spoolGen:
     type: integer
-    format: uint32
+    format: int32
     description: Current generation of the spool.
     default: 0
     minimum: 0
   nbConnectedRemotes:
     type: integer
-    format: uint32
+    format: int32
     description: Number of connected remotes.
     default: 0
     minimum: 0
   serverId:
     type: integer
-    format: uint32
+    format: int32
     description: RAFT server ID (host ID).
     default: 0
     minimum: 0

@@ -22,7 +22,7 @@ allOf:
         description: Alert name.
       alertId:
         type: integer
-        format: uint64
+        format: int64
         description: Alert id.
         minimum: 0
       mode:

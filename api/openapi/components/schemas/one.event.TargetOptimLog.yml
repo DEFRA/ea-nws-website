@@ -9,7 +9,7 @@ allOf:
         $ref: ./platform.base.Value.yml
       scenarioId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       category:
         type: string

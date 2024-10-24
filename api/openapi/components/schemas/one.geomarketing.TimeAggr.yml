@@ -17,7 +17,7 @@ allOf:
           - $ref: ./one.geomarketing.RelativeTimeAggr.yml
       absoluteLevelSlice:
         type: integer
-        format: uint32
+        format: int32
         description: |-
           The absolute level aggregation slice.
 

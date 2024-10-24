@@ -12,7 +12,7 @@ oneOf:
     properties:
       slot:
         type: integer
-        format: uint32
+        format: int32
         description: Relative slot.
         minimum: 0
   - type: object

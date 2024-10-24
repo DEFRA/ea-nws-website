@@ -17,22 +17,22 @@ allOf:
     properties:
       imsi:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       zoneId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       placemark:
         type: string
       angleIn:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
         maximum: 65535
       angleOut:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
         maximum: 65535
       tsIn:
@@ -47,11 +47,11 @@ allOf:
         $ref: ./platform.base.Coordinates.yml
       cuidStart:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       cuidEnd:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       tsStart:
         type: integer
@@ -75,7 +75,7 @@ allOf:
         type: string
       travelerType:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       coeff:
         type: number

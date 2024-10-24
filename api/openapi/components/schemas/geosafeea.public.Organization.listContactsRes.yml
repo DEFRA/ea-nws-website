@@ -11,7 +11,7 @@ properties:
       $ref: ./geosafeea.contact.Contact.yml
   total:
     type: integer
-    format: uint32
+    format: int32
     description: |-
       the total number of contacts matching the
                                 list of options excluding offset and limit

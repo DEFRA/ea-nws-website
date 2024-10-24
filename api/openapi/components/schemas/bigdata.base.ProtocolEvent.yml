@@ -10,27 +10,27 @@ allOf:
           - $ref: ./bigdata.base.ProtocolEventCode.yml
       msisdn:
         type: integer
-        format: uint64
+        format: int64
         description: Mobile number.
         minimum: 0
       imsi:
         type: integer
-        format: uint64
+        format: int64
         description: IMSI.
         minimum: 0
       cgi:
         type: integer
-        format: uint64
+        format: int64
         description: Cell Id.
         minimum: 0
       imei:
         type: integer
-        format: uint64
+        format: int64
         description: IMEI.
         minimum: 0
       msc:
         type: integer
-        format: uint64
+        format: int64
         description: MSC.
         minimum: 0
       ggsn:
@@ -41,7 +41,7 @@ allOf:
         default: 2
       mac:
         type: integer
-        format: uint64
+        format: int64
         description: MAC address on the 6 LSB bytes.
         minimum: 0
       ip:
@@ -58,7 +58,7 @@ allOf:
         description: in 10^-6 degrees
       cellRadius:
         type: integer
-        format: uint32
+        format: int32
         description: in meters
         minimum: 0
         maximum: 65535
@@ -78,7 +78,7 @@ allOf:
            call forwarding is enabled.
       countryCode:
         type: integer
-        format: uint32
+        format: int32
         description: Country code and national destination code.
         minimum: 0
         maximum: 65535
@@ -90,7 +90,7 @@ allOf:
           - $ref: ./bigdata.base.SmlcPosMethod.yml
       eventSeqId:
         type: integer
-        format: uint64
+        format: int64
         description: |-
           Event sequence ID.
 
@@ -109,7 +109,7 @@ allOf:
         description: RADIUS called station identifier.
       gtmsi:
         type: integer
-        format: uint64
+        format: int64
         description: |-
           Global TMSI
 
@@ -118,6 +118,6 @@ allOf:
         minimum: 0
       gtmsiTimestamp:
         type: integer
-        format: uint32
+        format: int32
         description: timestamp of the global TMSI
         minimum: 0

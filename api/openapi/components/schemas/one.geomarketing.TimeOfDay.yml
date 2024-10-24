@@ -4,18 +4,18 @@ required:
 properties:
   hour:
     type: integer
-    format: uint32
+    format: int32
     minimum: 0
     maximum: 23
   min:
     type: integer
-    format: uint32
+    format: int32
     default: 0
     minimum: 0
     maximum: 59
   sec:
     type: integer
-    format: uint32
+    format: int32
     default: 0
     minimum: 0
     maximum: 59

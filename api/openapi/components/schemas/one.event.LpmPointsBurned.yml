@@ -11,7 +11,7 @@ allOf:
     properties:
       redemptionId:
         type: integer
-        format: uint64
+        format: int64
         description: Id of the redemption.
         minimum: 0
       redeemerCollection:
@@ -30,15 +30,15 @@ allOf:
           - $ref: ./platform.base.Value.yml
       gift:
         type: integer
-        format: uint64
+        format: int64
         description: The id of the redeemed gift.
         minimum: 0
       burnedPoints:
         type: integer
-        format: uint64
+        format: int64
         description: Number of points burned on this line.
         minimum: 0
       newBalance:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0

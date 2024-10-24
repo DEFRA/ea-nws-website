@@ -26,7 +26,7 @@ properties:
       - $ref: ./bigdata.query.QueryExpression.yml
   limit:
     type: integer
-    format: uint64
+    format: int64
     description: The maximum number of results to select.
     minimum: 0
   selectId:

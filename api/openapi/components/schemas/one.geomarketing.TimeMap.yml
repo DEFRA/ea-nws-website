@@ -87,7 +87,7 @@ allOf:
           - $ref: ./platform.base.TimeUnit.yml
       slice:
         type: integer
-        format: uint32
+        format: int32
         description: |-
           If set, the date is floored to the nearest multiple of the given
           duration.
@@ -97,7 +97,7 @@ allOf:
         description: Name of the output field containing the floored date.
       nightOffset:
         type: integer
-        format: uint32
+        format: int32
         description: |-
           The time of the day that separates 2 days.
 

@@ -22,15 +22,15 @@ allOf:
           - $ref: ./one.event.RedemptionResult.yml
       cost:
         type: integer
-        format: uint32
+        format: int32
         description: The cost of the bonus.
         minimum: 0
       gift:
         type: integer
-        format: uint64
+        format: int64
         description: The id of the redeemed gift.
         minimum: 0
       lpmBalance:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0

@@ -8,7 +8,7 @@ allOf:
     properties:
       profileId:
         type: integer
-        format: uint64
+        format: int64
         description: Id of the profile on which the action is performed.
         minimum: 0
       profileName:

@@ -12,7 +12,7 @@ allOf:
         description: Login of the company user on which the action is performed.
       userId:
         type: integer
-        format: uint64
+        format: int64
         description: Internal id of the company user on which the action is performed.
         minimum: 0
       userType:

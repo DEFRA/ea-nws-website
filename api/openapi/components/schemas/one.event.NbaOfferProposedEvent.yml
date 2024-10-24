@@ -6,7 +6,7 @@ allOf:
     properties:
       proposedCount:
         type: integer
-        format: uint32
+        format: int32
         description: Count of proposed offers this event represents, should always be 1
         minimum: 0
         maximum: 255

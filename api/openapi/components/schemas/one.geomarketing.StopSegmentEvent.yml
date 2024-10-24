@@ -13,16 +13,16 @@ allOf:
     properties:
       imsi:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       imsiMcc:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
         maximum: 65535
       imsiMnc:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
         maximum: 65535
       segmentType:
@@ -50,7 +50,7 @@ allOf:
         description: Has event in reference zone.
       duration:
         type: integer
-        format: uint32
+        format: int32
         description: Duration
         minimum: 0
       speed:
@@ -63,27 +63,27 @@ allOf:
         description: Distance travelled the same day.
       cgiStart:
         type: integer
-        format: uint64
+        format: int64
         description: cellid start
         minimum: 0
       cgiEnd:
         type: integer
-        format: uint64
+        format: int64
         description: cellid end
         minimum: 0
       cuidStart:
         type: integer
-        format: uint64
+        format: int64
         description: cuid start
         minimum: 0
       cuidEnd:
         type: integer
-        format: uint64
+        format: int64
         description: cuid end
         minimum: 0
       nbEvents:
         type: integer
-        format: uint32
+        format: int32
         description: Number of events aggregated in this step
         default: 0
         minimum: 0
@@ -101,15 +101,15 @@ allOf:
         type: string
       taskExecId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       foreachBatchId:
         type: integer
-        format: uint64
+        format: int64
         minimum: 0
       maxSpeed:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       isFlight:
         type: boolean
@@ -134,7 +134,7 @@ allOf:
         format: int64
       flightDuration:
         type: integer
-        format: uint32
+        format: int32
         minimum: 0
       subFlights:
         type: string

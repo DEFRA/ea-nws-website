@@ -6,7 +6,7 @@ allOf:
     properties:
       scenario:
         type: integer
-        format: uint64
+        format: int64
         description: |-
           Scenario of the constant, if not set, The environment scenario will be
           used (if defined).

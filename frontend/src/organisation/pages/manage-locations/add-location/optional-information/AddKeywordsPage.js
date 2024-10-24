@@ -10,7 +10,7 @@ import Input from '../../../../../common/components/gov-uk/Input'
 import { setLocationKeywords } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AddKeywordsLayout () {
+export default function AddKeywordsPage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -87,12 +87,12 @@ export default function AddKeywordsLayout () {
     }
 
     // Loop over keywords for current location
-    for (const i in keywordsArrayChecked) {
+    for (let i in keywordsArrayChecked) {
       const keyword = keywordsArrayChecked[i]
       let keywordExists = false
 
       // Loop over all location keywords
-      for (const j in locationKeywords) {
+      for (let j in locationKeywords) {
         // Update linked-ids for existing keyword
         if (locationKeywords[j].name == keyword) {
           locationKeywords[j].linked_ids.push(locationName)

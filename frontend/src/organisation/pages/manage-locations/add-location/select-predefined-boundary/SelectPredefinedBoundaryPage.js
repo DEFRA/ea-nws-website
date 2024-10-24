@@ -91,6 +91,7 @@ export default function SelectPredefinedBoundaryPage () {
                 <div class='govuk-grid-column-one-third'>
                   <br />
                   <Select
+                    name='BoundaryType'
                     label='Boundary type'
                     options={boundaryTypes}
                     onSelect={onBoundaryTypeSelected}
@@ -103,6 +104,7 @@ export default function SelectPredefinedBoundaryPage () {
                     // key forces the boundary select to re-render after the boundary type is changed
                     // when boundary type is changed, the selected boundary is reset. we must force this
                     // re-render for the intial text option to show correctly
+                    name='Boundary'
                     key={selectedBoundary}
                     label='Boundary'
                     options={boundaries.map((boundary) => {

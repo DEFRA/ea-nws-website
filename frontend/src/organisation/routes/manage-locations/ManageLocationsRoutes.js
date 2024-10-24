@@ -35,6 +35,7 @@ import LocationDropPinEditPage from '../../pages/manage-locations/edit-location/
 import CannotChangeLocationLinePage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-line/CannotChangeLocationLinePage'
 import CannotChangeLocationPolygonPage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-polygon/CannotChangeLocationPolygonPage'
 import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/edit-individual-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
+import LocationAlreadyExists from '../../pages/manage-locations/add-location/manual-add-location/name/LocationAlreadyExists'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
 import LocationInformationPage from '../../pages/manage-locations/view-location/view-location-information/LocationInformationPage'
 
@@ -67,7 +68,8 @@ const orgManageLocationsUrls = {
       cannotFindAddress: urlManageOrg + '/add/cannot-find-address',
       xyCoordinatesNotInEngland:
         urlManageOrg + '/add/xy-coordinates-not-in-england',
-      dropPinNotInEngland: urlManageOrg + '/add/drop-pin-not-in-england'
+      dropPinNotInEngland: urlManageOrg + '/add/drop-pin-not-in-england',
+      alreadyExists: urlManageOrg + '/add/location-already-exists'
     },
     search: {
       searchOption: urlManageOrg + '/add/search-option',
@@ -201,6 +203,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.search.dropPinSearchResults,
     component: <LocationDropPinSearchResultsPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.error.alreadyExists,
+    component: <LocationAlreadyExists />
   },
   // unmatched locations
   {

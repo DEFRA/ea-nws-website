@@ -40,7 +40,7 @@ export default function Map ({
   const { latitude, longitude } = useSelector(
     (state) => state.session.currentLocation.coordinates
   )
-  const [centre, setCentre] = useState([latitude, longitude])
+  const centre = [latitude, longitude]
   const [apiKey, setApiKey] = useState(null)
   const [marker, setMarker] = useState(null)
   const [alertArea, setAlertArea] = useState(null)

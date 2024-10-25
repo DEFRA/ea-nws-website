@@ -43,7 +43,7 @@ export default function ManageKeywordsPage () {
     error: '',
     validateInput: null
   })
-  const [updatedKeyword, setUpdatedKeyword] = useState('')
+  const [updatedKeyword, setUpdatedKeyword] = useState(null)
   const [results, setResults] = useState(null)
   const [searchInput, setSearchInput] = useState(null)
   const keywordsPerPage = 10
@@ -204,8 +204,6 @@ export default function ManageKeywordsPage () {
         title: 'Change keyword',
         buttonText: 'Change keyword',
         buttonClass: '',
-        textInput: updatedKeyword,
-        setTextInput: setUpdatedKeyword,
         input: 'Keyword',
         charLimit: 30,
         error: '',
@@ -242,7 +240,7 @@ export default function ManageKeywordsPage () {
     setNotificationText('Keyword edited')
     toggleDialogVisibility(false)
     setTargetKeyword(null)
-    setUpdatedKeyword('')
+    setUpdatedKeyword(null)
   }
 
   const removeKeywords = (keywordsToRemove) => {
@@ -265,6 +263,9 @@ export default function ManageKeywordsPage () {
   }
 
   const validateInput = () => {
+    console.log('inValidate')
+    console.log('current', targetKeyword)
+    console.log('updated', updatedKeyword)
     return keywords.some((k) => updatedKeyword === k.name) ? 'This keyword already exists' : ''
   }
 
@@ -488,8 +489,8 @@ export default function ManageKeywordsPage () {
                       popupText={dialog.text}
                       buttonText={dialog.buttonText}
                       input={dialog.input}
-                      textInput={dialog.textInput}
-                      setTextInput={dialog.setTextInput}
+                      textInput={updatedKeyword}
+                      setTextInput={setUpdatedKeyword}
                       charLimit={dialog.charLimit}
                       error={dialog.error}
                       setError={handleSetError}

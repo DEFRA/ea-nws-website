@@ -18,13 +18,29 @@ export default function Popup ({
   error = '',
   setError,
   charLimit = 0,
-  validateInput = ''
+  validateInput = null
 }) {
+  let isSubmitted = false
+
   useEffect(() => {
-    if (input && textInput.length <= charLimit) {
+    if (input && textInput !== null && textInput.length <= charLimit) {
       setError('')
     }
   }, [textInput, setError, charLimit, input])
+
+  useEffect(() => {
+    if (input && textInput !== null && isSubmitted) {
+      if (error === '') {
+        const validationError = validateInput()
+        if (validationError) {
+          setError(validationError)
+        } else {
+          onAction()
+        }
+      }
+    }
+  }, [textInput, isSubmitted, input, error, validateInput, setError, onAction])
+
   const handleTextInputChange = (val) => {
     if (input) {
       setTextInput(val)
@@ -37,16 +53,8 @@ export default function Popup ({
   }
 
   const handleSubmit = () => {
-    if (input) {
-      if (error === '') {
-        const validationError = validateInput(textInput)
-        if (validationError) {
-          setError(validationError)
-        } else {
-          onAction()
-        }
-      }
-    } else {
+    isSubmitted = true
+    if (!input) {
       onAction()
     }
   }

@@ -21,7 +21,9 @@ const userSlice = createSlice({
     selectedFloodAlertArea: null,
     showOnlySelectedFloodArea: null,
     nearbyTargetAreaFlow: null,
-
+    // required for predefined boundary flow
+    selectedBoundaryType: null,
+    selectedBoundary: null,
     // org location data
     currentLocation: {
       name: null,
@@ -103,6 +105,13 @@ const userSlice = createSlice({
     },
     setNearbyTargetAreasFlow: (state, action) => {
       state.nearbyTargetAreaFlow = action.payload
+    },
+    // required for predefined boundary flow
+    setSelectedBoundaryType: (state, action) => {
+      state.selectedBoundaryType = action.payload
+    },
+    setSelectedBoundary: (state, action) => {
+      state.selectedBoundary = action.payload
     },
     // org location data
     setCurrentLocation: (state, action) => {
@@ -213,6 +222,9 @@ const userSlice = createSlice({
       state.selectedFloodAlertArea = null
       state.showOnlySelectedFloodArea = null
       state.nearbyTargetAreaFlow = null
+      // required for predefined boundary flow
+      state.selectedBoundaryType = null
+      state.selectedBoundary = null
       // org location data
       state.currentLocation = {
         name: null,
@@ -260,6 +272,9 @@ export const {
   setSelectedFloodAlertArea,
   setShowOnlySelectedFloodArea,
   setNearbyTargetAreasFlow,
+  // required for predefined boundary flow
+  setSelectedBoundaryType,
+  setSelectedBoundary,
   // org location data
   setCurrentLocation,
   setCurrentLocationUPRN,

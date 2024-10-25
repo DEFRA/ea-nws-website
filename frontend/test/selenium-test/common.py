@@ -75,7 +75,10 @@ url_org_man_loc = {
         'locationInArea': url_org_man_loc_path + '/add/location-in-area',
         'xyCoordinatesNotInEngland': url_org_man_loc_path + '/add/xy-coordinates-not-in-england',
         'dropPinNotInEngland': url_org_man_loc_path + '/add/drop-pin-not-in-england',
-        'dropPinSearch': url_org_man_loc_path + '/add/drop-pin-search'
+        'dropPinSearch': url_org_man_loc_path + '/add/drop-pin-search',
+        'predefinedBoundary': {
+            'add': url_org_man_loc_path + '/add/predefined-boundary'
+        }
     },
     'optionalLocation':{
         'optionalInfo': url_org_man_loc_path + '/add/optional-information',
@@ -87,6 +90,7 @@ url_org_man_loc = {
     },
     'error': {
         'cannotFindAddress': url_org_man_loc_path + '/add/cannot-find-address',
+        'alreadyExists': url_org_man_loc_path + '/add/location-already-exists'
     },
     'optional':{
         'optionalAddress': url_org_man_loc_path + '/add/optional-address/optional-location',

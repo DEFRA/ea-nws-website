@@ -5,7 +5,8 @@ import Button from '../gov-uk/Button'
 import Input from '../gov-uk/Input'
 
 export default function Popup ({
-  onAction,
+  onEdit,
+  onDelete,
   onCancel,
   onClose,
   title,
@@ -20,26 +21,11 @@ export default function Popup ({
   charLimit = 0,
   validateInput = null
 }) {
-  let isSubmitted = false
-
   useEffect(() => {
-    if (input && textInput !== null && textInput.length <= charLimit) {
+    if (input && textInput.length <= charLimit) {
       setError('')
     }
-  }, [textInput, setError, charLimit, input])
-
-  useEffect(() => {
-    if (input && textInput !== null && isSubmitted) {
-      if (error === '') {
-        const validationError = validateInput()
-        if (validationError) {
-          setError(validationError)
-        } else {
-          onAction()
-        }
-      }
-    }
-  }, [textInput, isSubmitted, input, error, validateInput, setError, onAction])
+  }, [textInput])
 
   const handleTextInputChange = (val) => {
     if (input) {
@@ -53,9 +39,17 @@ export default function Popup ({
   }
 
   const handleSubmit = () => {
-    isSubmitted = true
     if (!input) {
-      onAction()
+      onDelete()
+    } else {
+      if (error === '') {
+        const validationError = validateInput()
+        if (validationError) {
+          setError(validationError)
+        } else {
+          onEdit()
+        }
+      }
     }
   }
 

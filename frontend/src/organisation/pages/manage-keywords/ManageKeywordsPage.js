@@ -35,15 +35,11 @@ export default function ManageKeywordsPage () {
     title: '',
     buttonText: '',
     buttonClass: '',
-    action: null,
     input: '',
-    textInput: '',
-    setTextInput: null,
     charLimit: 0,
-    error: '',
-    validateInput: null
+    error: ''
   })
-  const [updatedKeyword, setUpdatedKeyword] = useState(null)
+  const [updatedKeyword, setUpdatedKeyword] = useState('')
   const [results, setResults] = useState(null)
   const [searchInput, setSearchInput] = useState(null)
   const keywordsPerPage = 10
@@ -114,19 +110,15 @@ export default function ManageKeywordsPage () {
         buttonText: 'Delete keyword',
         buttonClass: 'govuk-button--warning',
         input: '',
-        action: handleDelete,
         textInput: '',
         setTextInput: '',
         charLimit: 0,
-        error: '',
-        validateInput: null
+        error: ''
       }
     )
-    console.log('dialog state: ', dialog)
   }
 
   const deleteDialog = () => {
-    console.log('dialog state: ', dialog)
     setDialog(
       {
         show: true,
@@ -143,16 +135,13 @@ export default function ManageKeywordsPage () {
         title: 'Delete keyword',
         buttonText: 'Delete keyword',
         buttonClass: 'govuk-button--warning',
-        action: handleDelete,
         input: '',
         textInput: '',
         setTextInput: '',
         charLimit: 0,
-        error: '',
-        validateInput: null
+        error: ''
       }
     )
-    console.log('dialog state: ', dialog)
   }
 
   const multiDeleteDialog = () => {
@@ -176,8 +165,7 @@ export default function ManageKeywordsPage () {
         title: (`Delete ${selectedKeywords.length} keywords`),
         buttonText: 'Delete keywords',
         buttonClass: 'govuk-button--warning',
-        input: '',
-        action: handleDelete
+        input: ''
       }
     )
   }
@@ -206,9 +194,7 @@ export default function ManageKeywordsPage () {
         buttonClass: '',
         input: 'Keyword',
         charLimit: 30,
-        error: '',
-        validateInput,
-        action: handleEdit
+        error: ''
       }
     )
   }
@@ -240,7 +226,7 @@ export default function ManageKeywordsPage () {
     setNotificationText('Keyword edited')
     toggleDialogVisibility(false)
     setTargetKeyword(null)
-    setUpdatedKeyword(null)
+    setUpdatedKeyword('')
   }
 
   const removeKeywords = (keywordsToRemove) => {
@@ -263,9 +249,6 @@ export default function ManageKeywordsPage () {
   }
 
   const validateInput = () => {
-    console.log('inValidate')
-    console.log('current', targetKeyword)
-    console.log('updated', updatedKeyword)
     return keywords.some((k) => updatedKeyword === k.name) ? 'This keyword already exists' : ''
   }
 
@@ -295,8 +278,10 @@ export default function ManageKeywordsPage () {
   }
 
   const handleEdit = () => {
+    console.log('line281')
     if (targetKeyword) {
       if (updatedKeyword === '') {
+        console.log('updateKeyword was empty')
         showDeleteKeywordDialog('changeLink')
       } else {
         editKeyword()
@@ -482,7 +467,8 @@ export default function ManageKeywordsPage () {
                 {dialog.show && (
                   <>
                     <Popup
-                      onAction={dialog.action}
+                      onEdit={() => handleEdit()}
+                      onDelete={() => handleDelete()}
                       onCancel={toggleDialogVisibility}
                       onClose={toggleDialogVisibility}
                       title={dialog.title}
@@ -494,7 +480,7 @@ export default function ManageKeywordsPage () {
                       charLimit={dialog.charLimit}
                       error={dialog.error}
                       setError={handleSetError}
-                      validateInput={dialog.validateInput}
+                      validateInput={() => validateInput()}
                     />
                   </>
                 )}

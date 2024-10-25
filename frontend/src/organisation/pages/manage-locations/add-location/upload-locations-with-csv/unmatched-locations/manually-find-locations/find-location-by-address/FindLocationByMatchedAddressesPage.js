@@ -8,7 +8,7 @@ import InsetText from '../../../../../../../../common/components/gov-uk/InsetTex
 import Select from '../../../../../../../../common/components/gov-uk/Select'
 import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function FindLocationByMatchedAddressesPage () {
+export default function FindLocationByMatchedAddressesPage() {
   const navigate = useNavigate()
   const selectedLocation = useSelector(
     (state) =>
@@ -60,8 +60,9 @@ export default function FindLocationByMatchedAddressesPage () {
                   error={error}
                   initialSelectOptionText={`Select from ${
                     availableAddresses.length
-                  } address${availableAddresses.lenght > 1 ? 'es' : ''} partly
-          matched`}
+                  } address${
+                    availableAddresses.lenght > 1 ? 'es' : ''
+                  } partly matched`}
                 />
               </div>
             </div>

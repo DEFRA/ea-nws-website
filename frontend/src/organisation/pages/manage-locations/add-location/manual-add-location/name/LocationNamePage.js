@@ -1,5 +1,5 @@
 import { React, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
@@ -9,21 +9,51 @@ import Input from '../../../../../../common/components/gov-uk/Input'
 import { setCurrentLocationName } from '../../../../../../common/redux/userSlice'
 import { locationNameValidation } from '../../../../../../common/services/validations/LocationNameValidation'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
+import { backendCall } from '../../../../../../common/services/BackendService'
 
 export default function LocationNamePage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [name, setName] = useState('')
   const [error, setError] = useState('')
+  const authToken = useSelector((state) => state.session.authToken)
 
-  const handleSubmit = () => {
+  const locationNameUsedBefore = async (locationName) => {
+    const dataToSend = { authToken, locationName }
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/locations/check_duplicate',
+      navigate
+    )
+
+    if (errorMessage) {
+      if (errorMessage === 'duplicate location') {
+        setError('')
+        return true
+      } else {
+        setError('Something went wrong, try again')
+      }
+    } else {
+      return false
+    }
+  }
+
+  const handleSubmit = async () => {
     const locationName = name.trim()
     const validationError = locationNameValidation(locationName)
-    if (!validationError) {
-      dispatch(setCurrentLocationName(locationName))
-      navigate(orgManageLocationsUrls.add.search.searchOption)
-    } else {
+    if (validationError) {
       setError(validationError)
+    } else {
+      const duplicateFound = await locationNameUsedBefore(locationName)
+      if (error === '') {
+        if (duplicateFound) {
+          dispatch(setCurrentLocationName(locationName))
+          navigate(orgManageLocationsUrls.add.error.alreadyExists)
+        } else {
+          dispatch(setCurrentLocationName(locationName))
+          navigate(orgManageLocationsUrls.add.search.searchOption)
+        }
+      }
     }
   }
 

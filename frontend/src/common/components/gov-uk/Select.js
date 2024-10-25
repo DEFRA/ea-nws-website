@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export default function Select ({
+export default function Select({
   label,
   options,
   name,
@@ -15,6 +15,7 @@ export default function Select ({
     setSelectedOption(selectedValue)
     onSelect(selectedValue)
   }
+
   return (
     <div
       className={

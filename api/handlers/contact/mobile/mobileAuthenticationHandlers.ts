@@ -1,6 +1,7 @@
 const responseCodes = require('../../responseCodes')
 import Hapi from '@hapi/hapi'
 import type { Context } from 'openapi-backend'
+const mockResponses = require('../../mockResponses')
 
 async function getMobileStart(
   context: Context,
@@ -30,32 +31,9 @@ async function getMobileValidate(
   const { authToken } = req.payload as { authToken: string }
   const { msisdn } = req.payload as { msisdn: string }
   const { code } = req.payload as { code: string }
-  const profile = {
-    id: '1',
-    enabled: true,
-    firstname: 'John',
-    lastname: 'Smith',
-    emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
-    mobilePhones: ['07343454555', '07889668355', msisdn],
-    homePhones: ['01475721535'],
-    language: 'EN',
-    additionals: [],
-    unverified: {
-      emails: [],
-      mobilePhones: [],
-      homePhones: []
-    },
-    pois: [
-      {
-        name: 'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth,  NR30 1AA',
-        address: '10023463293',
-        coordinates: {
-          latitude: '52612444.5',
-          longitude: '1724640.5'
-        }
-      }
-    ]
-  }
+  let mockProfile = mockResponses.profile
+  mockProfile.mobilePhones.push(msisdn)
+
 
   if(code === '111111'){
     console.log("invalid credentials, responding 101")
@@ -64,7 +42,7 @@ async function getMobileValidate(
   // 200 Success
   if (authToken !== 'WrongAuthToken' && code !== '999999') {
     return {
-      profile: profile
+      profile: mockProfile
     }
   } else {
     return res.response(responseCodes.INVALID_CODE).code(500)

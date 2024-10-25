@@ -15,11 +15,15 @@ import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import TileLayerWithHeader from '../../../common/components/custom/TileLayerWithHeader'
+import { setSelectedBoundary } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import { getSurroundingFloodAreas } from '../../../common/services/WfsFloodDataService'
+import {
+  getBoundaries,
+  getSurroundingFloodAreas
+} from '../../../common/services/WfsFloodDataService'
 import { createAlertPattern, createWarningPattern } from './FloodAreaPatterns'
 
 export default function Map ({
@@ -29,14 +33,16 @@ export default function Map ({
   zoomLevel = 12,
   showFloodWarningAreas = true,
   showFloodAlertAreas = true,
-  showMarker = false
+  showMarker = false,
+  boundaryList
 }) {
+  const dispatch = useDispatch()
   const { latitude, longitude } = useSelector(
     (state) => state.session.currentLocation.coordinates
   )
+  const centre = [latitude, longitude]
   const [apiKey, setApiKey] = useState(null)
   const [marker, setMarker] = useState(null)
-  const center = [latitude, longitude]
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
 
@@ -58,7 +64,7 @@ export default function Map ({
     const map = useMap()
 
     const handleClick = () => {
-      map.setView([latitude, longitude], 12)
+      map.setView(centre, 12)
     }
 
     return (
@@ -198,8 +204,10 @@ export default function Map ({
 
   const alertAreaRef = useRef(null)
   const warningAreaRef = useRef(null)
+  const boundaryRef = useRef(null)
   const [alertAreaRefVisible, setAlertAreaRefVisible] = useState(false)
   const [warningAreaRefVisible, setWarningAreaRefVisible] = useState(false)
+  const [boundaryRefVisible, setBoundaryRefVisible] = useState(false)
 
   const showWarningAreas = () => {
     if (warningAreaRefVisible && warningAreaRef.current) {
@@ -268,10 +276,85 @@ export default function Map ({
     showAreas()
   }, [showFloodWarningAreas, showFloodAlertAreas])
 
+  // boundary functionality
+  const [boundaries, setBoundaries] = useState(null)
+  const selectedBoundaryType = useSelector(
+    (state) => state.session.selectedBoundaryType
+  )
+  const selectedBoundary = useSelector(
+    (state) => state.session.selectedBoundary
+  )
+
+  // get boundary data
+  useEffect(() => {
+    async function fetchBoundaries () {
+      if (type === 'boundary' && selectedBoundaryType) {
+        const data = await getBoundaries(selectedBoundaryType)
+        if (data) {
+          setBoundaries(data)
+          // return list of boundaries for user to choose from
+          boundaryList(
+            data.features.map((feature) => {
+              return { properties: feature.properties, id: feature.id }
+            })
+          )
+
+          await dispatch(setSelectedBoundary(null))
+        }
+      }
+    }
+    fetchBoundaries()
+  }, [selectedBoundaryType])
+
+  useEffect(() => {
+    // loads new boundary layers onto map after user has updated boundary type
+    if (boundaryRefVisible && boundaryRef.current) {
+      boundaryRef.current.clearLayers()
+      boundaryRef.current.addData(boundaries)
+    }
+  }, [boundaries])
+
+  const highlightSelectedBoundary = () => {
+    if (boundaryRefVisible && boundaryRef.current && selectedBoundary) {
+      boundaryRef.current.eachLayer((layer) => {
+        if (layer.feature.id === selectedBoundary.id) {
+          console.log('layer', layer)
+          layer.setStyle({
+            color: 'yellow',
+            weight: 2,
+            fillColor: 'yellow',
+            fillOpacity: 0.5
+          })
+        } else {
+          layer.setStyle({
+            color: '#003366',
+            weight: 2,
+            fillColor: '#3399ff',
+            fillOpacity: 0.5
+          })
+        }
+      })
+    }
+  }
+
+  useEffect(() => {
+    highlightSelectedBoundary()
+  }, [selectedBoundary])
+
+  const onEachBoundaryFeature = (feature, layer) => {
+    layer.setStyle({
+      color: '#003366',
+      weight: 2,
+      fillColor: '#3399ff',
+      fillOpacity: 0.5
+    })
+  }
+
   return (
     <div ref={ref}>
       <MapContainer
-        center={center}
+        key={centre}
+        center={centre}
         zoom={zoomLevel}
         zoomControl={false}
         attributionControl={false}
@@ -279,54 +362,67 @@ export default function Map ({
         maxBounds={maxBounds}
         className='map-container'
       >
-        {apiKey &&
-          (apiKey !== 'error'
-            ? (
-              <>
-                {tileLayerWithHeader}
-                {showMapControls && (
-                  <>
-                    <ZoomControl position='bottomright' />
-                    <ResetMapButton />
-                  </>
-                )}
-                {type === 'drop'
-                  ? (
-                    <AddMarker />
-                    )
-                  : (
-                    <Marker position={center} interactive={false} />
-                    )}
-                {alertArea && (
-                  <GeoJSON
-                    data={alertArea}
-                    onEachFeature={onEachAlertAreaFeature}
-                    ref={(el) => {
-                      alertAreaRef.current = el
-                      setAlertAreaRefVisible(true)
-                    }}
-                  />
-                )}
-                {warningArea && (
-                  <GeoJSON
-                    data={warningArea}
-                    onEachFeature={onEachWarningAreaFeature}
-                    ref={(el) => {
-                      warningAreaRef.current = el
-                      setWarningAreaRefVisible(true)
-                    }}
-                  />
-                )}
-              </>
-              )
-            : (
-              <div className='map-error-container'>
-                <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
-                <Link className='govuk-body-s' onClick={() => getApiKey()}>
-                  Reload map
-                </Link>
-              </div>
-              ))}
+        {apiKey && apiKey !== 'error'
+          ? (
+            <>
+              {tileLayerWithHeader}
+              {showMapControls && (
+                <>
+                  <ZoomControl position='bottomright' />
+                  <ResetMapButton />
+                </>
+              )}
+              {type !== 'boundary' && (
+                <>
+                  {type === 'drop'
+                    ? (
+                      <AddMarker />
+                      )
+                    : (
+                      <Marker position={centre} interactive={false} />
+                      )}
+                </>
+              )}
+              {alertArea && (
+                <GeoJSON
+                  data={alertArea}
+                  onEachFeature={onEachAlertAreaFeature}
+                  ref={(el) => {
+                    alertAreaRef.current = el
+                    setAlertAreaRefVisible(true)
+                  }}
+                />
+              )}
+              {warningArea && (
+                <GeoJSON
+                  data={warningArea}
+                  onEachFeature={onEachWarningAreaFeature}
+                  ref={(el) => {
+                    warningAreaRef.current = el
+                    setWarningAreaRefVisible(true)
+                  }}
+                />
+              )}
+              {boundaries && type === 'boundary' && (
+                <GeoJSON
+                  data={boundaries}
+                  onEachFeature={onEachBoundaryFeature}
+                  ref={(el) => {
+                    boundaryRef.current = el
+                    setBoundaryRefVisible(true)
+                  }}
+                />
+              )}
+            </>
+            )
+          : (
+            <div className='map-error-container'>
+              <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
+              <Link className='govuk-body-s' onClick={() => getApiKey()}>
+                Reload map
+              </Link>
+            </div>
+            )}
       </MapContainer>
     </div>
   )

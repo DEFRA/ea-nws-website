@@ -1,5 +1,6 @@
 import AddLocationOptionsPage from '../../pages/manage-locations/add-location/AddLocationOptionsPage'
 import ConfirmLocationPage from '../../pages/manage-locations/add-location/manual-add-location/confirm-location/ConfirmLocationPage'
+import LocationAlreadyExists from '../../pages/manage-locations/add-location/manual-add-location/name/LocationAlreadyExists'
 import LocationNamePage from '../../pages/manage-locations/add-location/manual-add-location/name/LocationNamePage'
 import LocationSearchOptionPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationSearchOptionPage'
 import DropPinNotInEnglandPage from '../../pages/manage-locations/add-location/manual-add-location/search/drop-pin/DropPinNotInEnglandPage'
@@ -17,6 +18,7 @@ import KeywordsForThisLocationPage from '../../pages/manage-locations/add-locati
 import AddNotesPage from '../../pages/manage-locations/add-location/optional-information/AddNotesPage'
 import AddOptionalAddress from '../../pages/manage-locations/add-location/optional-information/AddOptionalAddress'
 import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-information/OptionalLocationInformationPage'
+import SelectPredefinedBoundaryPage from '../../pages/manage-locations/add-location/select-predefined-boundary/SelectPredefinedBoundaryPage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirmPage'
 import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'
@@ -35,7 +37,6 @@ import LocationDropPinEditPage from '../../pages/manage-locations/edit-location/
 import CannotChangeLocationLinePage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-line/CannotChangeLocationLinePage'
 import CannotChangeLocationPolygonPage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-polygon/CannotChangeLocationPolygonPage'
 import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/edit-individual-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
-import LocationAlreadyExists from '../../pages/manage-locations/add-location/manual-add-location/name/LocationAlreadyExists'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
 import LocationInformationPage from '../../pages/manage-locations/view-location/view-location-information/LocationInformationPage'
 
@@ -78,6 +79,9 @@ const orgManageLocationsUrls = {
       xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search',
       dropPinSearch: urlManageOrg + '/add/drop-pin-search',
       dropPinSearchResults: urlManageOrg + '/add/drop-pin-search-results'
+    },
+    predefinedBoundary: {
+      select: urlManageOrg + '/add/predefined-boundary'
     },
     optionalInformation: {
       optionalInfo: urlManageOrgAddLocations + '/optional-information',
@@ -179,6 +183,10 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.add.error.dropPinNotInEngland,
     component: <DropPinNotInEnglandPage />
   },
+  {
+    path: orgManageLocationsUrls.add.error.alreadyExists,
+    component: <LocationAlreadyExists />
+  },
   // search
   {
     path: orgManageLocationsUrls.add.search.searchOption,
@@ -205,8 +213,8 @@ const orgManageLocationRoutes = [
     component: <LocationDropPinSearchResultsPage />
   },
   {
-    path: orgManageLocationsUrls.add.error.alreadyExists,
-    component: <LocationAlreadyExists />
+    path: orgManageLocationsUrls.add.predefinedBoundary.select,
+    component: <SelectPredefinedBoundaryPage />
   },
   // unmatched locations
   {

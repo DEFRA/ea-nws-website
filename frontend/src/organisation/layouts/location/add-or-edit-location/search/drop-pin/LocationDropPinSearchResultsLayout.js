@@ -24,7 +24,8 @@ export default function LocationDropPinSearchLayout ({
   const [showFloodAlertAreas, setShowFloodAlertAreas] = useState(true)
   const [showFloodExtents, setShowFloodExtents] = useState(true)
   const currentLocationName = useSelector(
-    (state) => state.session.currentLocation.name
+    (state) =>
+      state.session.currentLocation.meta_data.location_additional.location_name
   )
 
   // remove error if user drops a pin

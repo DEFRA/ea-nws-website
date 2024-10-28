@@ -278,11 +278,9 @@ export default function ManageKeywordsPage () {
   }
 
   const handleEdit = () => {
-    console.log('line281')
     if (targetKeyword) {
       if (updatedKeyword === '') {
-        console.log('updateKeyword was empty')
-        showDeleteKeywordDialog('changeLink')
+        showDeleteKeywordDialog('editLink')
       } else {
         editKeyword()
       }
@@ -474,6 +472,7 @@ export default function ManageKeywordsPage () {
                       title={dialog.title}
                       popupText={dialog.text}
                       buttonText={dialog.buttonText}
+                      buttonClass={dialog.buttonClass}
                       input={dialog.input}
                       textInput={updatedKeyword}
                       setTextInput={setUpdatedKeyword}

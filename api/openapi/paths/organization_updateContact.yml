@@ -1,4 +1,5 @@
 post:
+  operationId: getOrgUpdateContact
   tags:
     - organization
   summary: Update a contact of the organization.

@@ -1,5 +1,5 @@
 post:
-  operationId: getRegisterOrgStart
+  operationId: getOrgRegisterStart
   tags:
     - organization
   summary: Start the registration of a new organization.

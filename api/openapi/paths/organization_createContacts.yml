@@ -1,4 +1,5 @@
 post:
+  operationId: getOrgCreateContacts
   tags:
     - organization
   summary: Bulk insert new contacts in the organization.

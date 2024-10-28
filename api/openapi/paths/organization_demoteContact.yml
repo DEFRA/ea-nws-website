@@ -1,4 +1,5 @@
 post:
+  operationId: getOrgDemoteContact
   tags:
     - organization
   summary: Demote a contact.

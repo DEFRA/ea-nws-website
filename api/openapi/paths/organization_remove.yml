@@ -1,4 +1,5 @@
 post:
+  operationId: getOrgRemove
   tags:
     - organization
   summary: Remove an organization from the platform.

@@ -1,4 +1,5 @@
 post:
+  operationId: getOrgUpdate
   tags:
     - organization
   summary: Update an organization.

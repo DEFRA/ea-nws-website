@@ -1,4 +1,5 @@
 post:
+  operationId: getUpdateRegistration
   tags:
     - organization
   summary: Update the registration parameters to an alert emitter organization.

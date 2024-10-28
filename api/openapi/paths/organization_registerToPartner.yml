@@ -1,4 +1,5 @@
 post:
+  operationId: getRegisterToPartner
   tags:
     - organization
   summary: Register to an alert emitter organization.

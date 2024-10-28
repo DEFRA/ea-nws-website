@@ -1,4 +1,5 @@
 post:
+  operationId: getOrgPromoteContact
   tags:
     - organization
   summary: Promote a contact to a new role.

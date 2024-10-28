@@ -1,4 +1,5 @@
 post:
+  operationId: getOrgRegisterValidate
   tags:
     - organization
   summary: Validate the registration of a new organization.

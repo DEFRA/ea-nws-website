@@ -193,7 +193,7 @@ export default function ManageKeywordsPage () {
         buttonText: 'Change keyword',
         buttonClass: '',
         input: 'Keyword',
-        charLimit: 30,
+        charLimit: 20,
         error: ''
       }
     )

@@ -96,16 +96,18 @@ export default function ManageKeywordsPage () {
     setDialog(
       {
         show: true,
-        text: (<>
-          Removing the keyword will delete it from this account. It will no
-          longer be in the keyword list and you will not be able to associate it
-          with any other locations.
-          <br />
-          <br />
-          Deleting this keyword does not unlink contacts and locations. If you
-          no longer want contacts and locations to be linked you need to unlink
-          them.
-        </>),
+        text: (
+          <>
+            Removing the keyword will delete it from this account. It will no
+            longer be in the keyword list and you will not be able to associate it
+            with any other locations.
+            <br />
+            <br />
+            Deleting this keyword does not unlink contacts and locations. If you
+            no longer want contacts and locations to be linked you need to unlink
+            them.
+          </>
+        ),
         title: 'Change keyword',
         buttonText: 'Delete keyword',
         buttonClass: 'govuk-button--warning',
@@ -122,15 +124,16 @@ export default function ManageKeywordsPage () {
     setDialog(
       {
         show: true,
-        text: (<>
-          If you continue this keyword will be deleted from this account and
-          no longer associated with {targetKeyword.linked_ids.length} locations.
-          <br />
-          <br />
-          Deleting this keyword does not unlink contacts and locations. If you
-          no longer want contacts and locations to be linked you need to
-          unlink them.
-        </>
+        text: (
+          <>
+            If you continue this keyword will be deleted from this account and
+            no longer associated with {targetKeyword.linked_ids.length} locations.
+            <br />
+            <br />
+            Deleting this keyword does not unlink contacts and locations. If you
+            no longer want contacts and locations to be linked you need to
+            unlink them.
+          </>
         ),
         title: 'Delete keyword',
         buttonText: 'Delete keyword',

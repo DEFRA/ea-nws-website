@@ -1,4 +1,4 @@
-import AddNewContactPage from '../../pages/manage-contact/add-contact/AddNewContactPage'
+import AddContactDetailsPage from '../../pages/manage-contact/add-contact/AddContactDetailsPage'
 
 const urlManageContactsOrg = 'organisation/manage-contacts'
 
@@ -11,7 +11,7 @@ const orManageContactsUrls = {
 const orManageContactsRoutes = [
   {
     path: orManageContactsUrls.add.addNew,
-    component: <AddNewContactPage />
+    component: <AddContactDetailsPage />
   }
 ]
 

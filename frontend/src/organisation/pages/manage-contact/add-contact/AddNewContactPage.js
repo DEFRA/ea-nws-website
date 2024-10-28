@@ -12,7 +12,7 @@ import {
   setOrgCurrentContactPosition
 } from '../../../../common/redux/userSlice'
 
-export default function AddNewContactPage() {
+export default function AddNewContactPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [firstNameError, setFirstNameError] = useState('')
@@ -68,10 +68,7 @@ export default function AddNewContactPage() {
     if (!lastName) {
       setLastNameError('Enter last name')
     }
-    if (lastNameError || firstNameError || jobTitleError) {
-      return
-    } else {
-      //continue
+    if (!lastNameError && !firstNameError && !jobTitleError) {
       console.log('everything ok')
       dispatch(setOrgCurrentContactFirstName(firstName))
       dispatch(setOrgCurrentContactLastName(firstName))
@@ -105,11 +102,10 @@ export default function AddNewContactPage() {
                     setFirstName,
                     setFirstNameError,
                     'First name'
-                  )
-                }
+                  )}
                 error={firstNameError}
                 className='govuk-input govuk-input--width-20'
-                isNameBold={true}
+                isNameBold
               />
               <Input
                 name='Last name'
@@ -120,11 +116,10 @@ export default function AddNewContactPage() {
                     setLastName,
                     setLastNameError,
                     'Last name'
-                  )
-                }
+                  )}
                 error={lastNameError}
                 className='govuk-input govuk-input--width-20'
-                isNameBold={true}
+                isNameBold
               />
               <Input
                 name='Job title (optional)'
@@ -135,11 +130,10 @@ export default function AddNewContactPage() {
                     setJobTitle,
                     setJobTitleError,
                     'Job title'
-                  )
-                }
+                  )}
                 error={jobTitleError}
                 className='govuk-input govuk-input--width-20'
-                isNameBold={true}
+                isNameBold
               />
               <Button
                 text='Continue'

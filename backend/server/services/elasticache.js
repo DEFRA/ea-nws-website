@@ -111,10 +111,10 @@ const searchLocations = async (authToken, searchKey, value) => {
   const locationKeys = await getLocationKeys(authToken)
   const locationArr = []
   const searchKeyArr = searchKey.split('.')
-  locationKeys.forEach((key) => {
-    const location = getJsonData(key)
-    let jsonValue = searchKeyArr[0]
-    if (searchKeyArr.length < 1) {
+  await Promise.all(locationKeys.map(async (key) => {
+    const location = await getJsonData(key)
+    let jsonValue = location[searchKeyArr[0]]
+    if (searchKeyArr.length > 1) {
       for (let i = 1; i < searchKeyArr.length; i++) {
         jsonValue = jsonValue[searchKeyArr[i]]
       }
@@ -122,7 +122,7 @@ const searchLocations = async (authToken, searchKey, value) => {
     if (value === jsonValue) {
       locationArr.push(location)
     }
-  })
+  }))
   return locationArr
 }
 

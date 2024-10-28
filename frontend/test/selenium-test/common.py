@@ -92,6 +92,7 @@ url_org_man_loc = {
         'dropPinSearch': url_org_man_loc_path + '/add/drop-pin-search',
         'predefinedBoundary': {
             'optionalInfo': url_org_man_loc_path + '/add/predefined-boundary/optional-information',
+            'add': url_org_man_loc_path + '/add/predefined-boundary'
         }
     },
     'optionalLocation':{
@@ -104,6 +105,7 @@ url_org_man_loc = {
     },
     'error': {
         'cannotFindAddress': url_org_man_loc_path + '/add/cannot-find-address',
+        'alreadyExists': url_org_man_loc_path + '/add/location-already-exists'
     },
     'optional':{
         'optionalAddress': url_org_man_loc_path + '/add/optional-address/optional-location',

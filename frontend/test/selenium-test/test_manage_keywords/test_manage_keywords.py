@@ -5,6 +5,7 @@ import time
 from common import *
 
 current_url = url_org_man_keywords_path
+keyword_limit_reached_error = 'Keywords must be 20 characters or less'
 
 def test_render(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
@@ -80,13 +81,13 @@ def test_edit_location_failure_inputtoolong_keyword_tab(get_browser):
     click_link(get_browser, "Change", current_url)
     time.sleep(1)
     enter_input_text(get_browser, 'Keyword', 'this_is_too_long_to_update_the_location_keyword')
-    assert 'Keyword must be 20 characters or less' in get_browser.page_source
+    assert keyword_limit_reached_error in get_browser.page_source
     # nothing happens when continue clicked
     click_button(get_browser, 'Change keyword', current_url)
-    assert 'Keyword must be 20 characters or less' in get_browser.page_source
+    assert keyword_limit_reached_error in get_browser.page_source
     # the error is gone when keyword entered is right length
     enter_input_text(get_browser, 'Keyword', 'ok_length')
-    assert 'Keyword must be 20 characters or less' not in get_browser.page_source
+    assert keyword_limit_reached_error not in get_browser.page_source
 
 def test_edit_location_failure_keywordalreadyexists_keyword_tab(get_browser):
     navigate_to_auth_org_page_via_index(get_browser,current_url)
@@ -164,13 +165,13 @@ def test_edit_contact_failure_inputtoolong_keyword_tab(get_browser):
     click_link(get_browser, "Change", current_url)
     time.sleep(1)
     enter_input_text(get_browser, 'Keyword', 'this_is_too_long_to_update_the_contact_keyword')
-    assert 'Keyword must be 20 characters or less' in get_browser.page_source
+    assert keyword_limit_reached_error in get_browser.page_source
     # nothing happens when continue clicked
     click_button(get_browser, 'Change keyword', current_url)
-    assert 'Keyword must be 20 characters or less' in get_browser.page_source
+    assert keyword_limit_reached_error in get_browser.page_source
     # the error is gone when keyword entered is right length
     enter_input_text(get_browser, 'Keyword', 'ok_length')
-    assert 'Keyword must be 20 characters or less' not in get_browser.page_source
+    assert keyword_limit_reached_error not in get_browser.page_source
 
 def test_edit_contact_failure_keywordalreadyexists_keyword_tab(get_browser):
     navigate_to_auth_org_page_via_index(get_browser,current_url)

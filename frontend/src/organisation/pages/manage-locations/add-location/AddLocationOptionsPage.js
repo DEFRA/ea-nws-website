@@ -35,7 +35,7 @@ export default function AddLocationOptionsPage() {
     } else {
       switch (addLocationType) {
         case addLocationOptions[0].value:
-          // navigate(orgManageLocationsUrls.add.addressInfo)
+          navigate(orgManageLocationsUrls.add.addressInfo)
           break
         case addLocationOptions[1].value:
           navigate(orgManageLocationsUrls.add.addLocationsWithShapefile)

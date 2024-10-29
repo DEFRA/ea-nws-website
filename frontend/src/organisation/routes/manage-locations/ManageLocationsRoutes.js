@@ -22,7 +22,8 @@ import LocationAddConfirm from '../../pages/manage-locations/add-location/upload
 import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
 import ConfirmAddingLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
-import LocationAddShapefile from '../../pages/manage-locations/add-location/upload-locations-with-csv/shapefile-zip/LocationAddShapefile'
+import LocationAddShapefilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/shapefile-zip/LocationAddShapefileInfoPage'
+import LocationUploadShapeFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/shapefile-zip/LocationUploadShapeFilePage'
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/FindUnmatchedLocationsPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
@@ -58,6 +59,8 @@ const orgManageLocationsUrls = {
     },
     uploadLocationsWithCsv: {},
     addLocationsWithShapefile: urlManageOrgAddLocations + '/shapefile-info',
+    uploadLocationsWithShapefile:
+      urlManageOrgAddLocations + '/shapefile-upload',
     options: urlManageOrgAddLocations,
     addressInfo: urlManageOrgAddLocations + '/address-info',
     uploadFile: urlManageOrgAddLocations + '/upload-file',
@@ -146,7 +149,11 @@ const orgManageLocationRoutes = [
   },
   {
     path: orgManageLocationsUrls.add.addLocationsWithShapefile,
-    component: <LocationAddShapefile />
+    component: <LocationAddShapefilePage />
+  },
+  {
+    path: orgManageLocationsUrls.add.uploadLocationsWithShapefile,
+    component: <LocationUploadShapeFilePage />
   },
   {
     path: orgManageLocationsUrls.add.manualAddLocation

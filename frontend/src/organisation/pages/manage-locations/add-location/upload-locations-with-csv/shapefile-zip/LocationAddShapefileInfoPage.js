@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 
-export default function LocationAddShapefile() {
+export default function LocationAddShapefilePage() {
   const navigate = useNavigate()
 
   const handleButton = async () => {

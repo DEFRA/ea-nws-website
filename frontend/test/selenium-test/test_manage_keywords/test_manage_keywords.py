@@ -81,13 +81,13 @@ def test_edit_location_failure_inputtoolong_keyword_tab(get_browser):
     click_link(get_browser, "Change", current_url)
     time.sleep(1)
     enter_input_text(get_browser, 'Keyword', 'this_is_too_long_to_update_the_location_keyword')
-    assert keyword_limit_reached_error in get_browser.page_source
+    assert keyword_error_char_max in get_browser.page_source
     # nothing happens when continue clicked
     click_button(get_browser, 'Change keyword', current_url)
-    assert keyword_limit_reached_error in get_browser.page_source
+    assert keyword_error_char_max in get_browser.page_source
     # the error is gone when keyword entered is right length
     enter_input_text(get_browser, 'Keyword', 'ok_length')
-    assert keyword_limit_reached_error not in get_browser.page_source
+    assert keyword_error_char_max not in get_browser.page_source
 
 def test_edit_location_failure_keywordalreadyexists_keyword_tab(get_browser):
     navigate_to_auth_org_page_via_index(get_browser,current_url)
@@ -96,7 +96,7 @@ def test_edit_location_failure_keywordalreadyexists_keyword_tab(get_browser):
     time.sleep(1)
     enter_input_text(get_browser, 'Keyword', 'Location Keyword 2')
     click_button(get_browser, 'Change keyword', current_url)
-    assert 'This keyword already exists' in get_browser.page_source
+    assert keyword_error_duplicate in get_browser.page_source
     
 def test_edit_location_empty_open_delete_dialog(get_browser):
     navigate_to_auth_org_page_via_index(get_browser,current_url)
@@ -165,13 +165,13 @@ def test_edit_contact_failure_inputtoolong_keyword_tab(get_browser):
     click_link(get_browser, "Change", current_url)
     time.sleep(1)
     enter_input_text(get_browser, 'Keyword', 'this_is_too_long_to_update_the_contact_keyword')
-    assert keyword_limit_reached_error in get_browser.page_source
+    assert keyword_error_char_max in get_browser.page_source
     # nothing happens when continue clicked
     click_button(get_browser, 'Change keyword', current_url)
-    assert keyword_limit_reached_error in get_browser.page_source
+    assert keyword_error_char_max in get_browser.page_source
     # the error is gone when keyword entered is right length
     enter_input_text(get_browser, 'Keyword', 'ok_length')
-    assert keyword_limit_reached_error not in get_browser.page_source
+    assert keyword_error_char_max not in get_browser.page_source
 
 def test_edit_contact_failure_keywordalreadyexists_keyword_tab(get_browser):
     navigate_to_auth_org_page_via_index(get_browser,current_url)
@@ -181,7 +181,7 @@ def test_edit_contact_failure_keywordalreadyexists_keyword_tab(get_browser):
     time.sleep(1)
     enter_input_text(get_browser, 'Keyword', 'Contact Keyword 2')
     click_button(get_browser, 'Change keyword', current_url)
-    assert 'This keyword already exists' in get_browser.page_source
+    assert keyword_error_duplicate in get_browser.page_source
 
 def test_edit_contact_empty_opens_delete_dialog(get_browser):
     navigate_to_auth_org_page_via_index(get_browser,current_url)

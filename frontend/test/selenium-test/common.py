@@ -2,6 +2,13 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 import time
 
+# Keywords
+keywords_max = 50
+keyword_char_max = 20
+keyword_error_max = f'You can add a maximum of {keywords_max} keywords'
+keyword_error_char_max = f'Keywords must be {keyword_char_max} characters or less'
+keyword_error_duplicate = 'This keyword already exists'
+
 # Local host
 local_host = 'http://localhost:3000'
 

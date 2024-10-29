@@ -56,12 +56,20 @@ export default function AddContactDetailsPage () {
     return mandatoryMissing
   }
 
-  const handleSubmit = () => {
+  const validateData = () => {
+    let dataValid = true
     const mandatoryMissing = checkMandatory()
-    if (mandatoryMissing) return
-    if (!jobTitleError && !lastNameError && !firstNameError) {
+    if (firstNameError || lastNameError || jobTitleError || mandatoryMissing) {
+      dataValid = false
+    }
+    return dataValid
+  }
+
+  const handleSubmit = () => {
+    const dataValid = validateData()
+    if (dataValid) {
       dispatch(setOrgCurrentContactFirstName(firstName))
-      dispatch(setOrgCurrentContactLastName(firstName))
+      dispatch(setOrgCurrentContactLastName(lastName))
       if (jobTitle) {
         dispatch(setOrgCurrentContactPosition(jobTitle))
       }

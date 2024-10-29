@@ -21,26 +21,23 @@ export default function LocationAddShapefile() {
               How to upload a location as a shapefile in a ZIP
             </h1>
             <div className='govuk-body'>
-              Contents
+              <p>Contents</p>
               <p>
                 -{' '}
                 <a className='govuk-link ' href='#'>
                   How to upload a shapefile
-                </a>
-              </p>
-              <p>
-                -{' '}
+                </a>{' '}
+                <br />-{' '}
                 <a className='govuk-link ' href='#'>
                   Information you need to include
                 </a>
-              </p>
-              <p>
-                -{' '}
+                <br />-{' '}
                 <a className='govuk-link ' href='#'>
                   Useful information you can include to help easily identify
                   each location
                 </a>
               </p>
+              <br />
               <h2 className='govuk-heading-m'>How to upload a shapefile</h2>
               <p className='govuk-!-margin-bottom-6 govuk-!-margin-top-6'>
                 You cannot create a shapefile in this account. You need to
@@ -55,6 +52,104 @@ export default function LocationAddShapefile() {
                 has multiple parts along it.{' '}
               </p>
               <p>Each shapefile must be included in a single ZIP file.</p>
+              <p>
+                The ZIP file must contain the following files:
+                <br />
+                .shp (main file)
+                <br />
+                .shx (index file)
+                <br />
+                .dbf (database file)
+              </p>
+              <p>
+                Each file must have the same prefix, for example:
+                <br />
+                locations.shp
+                <br />
+                locations.shx
+                <br />
+                locations.dbf
+              </p>
+              <p>
+                If you have any problems uploading your shapefile, contact
+                getfloodwarnings@environment-agency.gov.uk to get some support.
+              </p>
+              <br />
+              <h2 className='govuk-heading-m'>
+                Information you need to include
+              </h2>
+              <p>
+                <b>Location name</b> <br />
+                How you refer to the location, for example: head office, Brayton
+                Water, pumping station. This needs to be unique so cannot be
+                used for multiple locations.
+              </p>
+              <br />
+              <h2 className='govuk-heading-m'>
+                Useful information you can include to help you easily identify
+                the location
+              </h2>
+              <p>
+                <b>Address</b>
+                <br />
+                If you add a location as a shapefile you can add an address.
+                This address will then be associated with the location.
+              </p>
+              <p>
+                <b>Key information</b>
+                <ul className='govuk-list govuk-list--bullet'>
+                  <li>
+                    <b>Internal reference</b> <br />
+                    Your internal reference, for example: PS01, unit 57,
+                    Brid_04. This can help you identify the location more
+                    easily.
+                  </li>
+                  <li>
+                    <b>Business criticality</b> <br />
+                    How important the location is to your business. For example,
+                    low or medium, business critical.
+                  </li>
+                  <li>
+                    <b>Location type</b> <br />
+                    For example, pumping stations, ground floor flat, office,
+                    retail unit.
+                  </li>
+                </ul>{' '}
+              </p>
+              <p>
+                <b>Keywords for locations</b>
+                <br />
+                Adding keywords for each location can make it easier for you to
+                filter and create lists of locations you can then link to the
+                people responsible for them (contacts). Contacts cannot get
+                flood messages for a location unless they are linked to it.
+              </p>
+              <p>
+                For example, you may want to add 'North' or 'Midlands' or 'Team
+                A' as keywords, then show all of the locations with that keyword
+                in a list.
+              </p>
+              <p>
+                You can add a maximum of 50 keywords and each keyword cna be
+                single or multiple words, for example 'South' or 'South West'.
+              </p>
+              <p>
+                <b>Action plan</b>
+                <br />
+                Use this section to indicate what you can do to reduce the
+                potential effects of flooding. For example, inspect the location
+                then move stock to the top floor and evacuate.
+              </p>
+              <p>You can add a maximum of 500 characters.</p>
+              <p>
+                <b>Notes</b>
+                <br />
+                Include any notes that could be helpful to someone not familiar
+                with the site. For example, John Smith has the flood plan for
+                this location and his contact number is 01234 567 890.
+              </p>
+              <p>You can add a maximum of 500 characters.</p>
+              <br />
               <Button
                 text='Continue'
                 className='govuk-button'

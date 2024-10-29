@@ -38,8 +38,7 @@ export default function AddLocationOptionsPage() {
           // navigate(orgManageLocationsUrls.add.addressInfo)
           break
         case addLocationOptions[1].value:
-          // Someone to update
-          // navigate(orgManageLocationsUrls.add.addressInfo)
+          navigate(orgManageLocationsUrls.add.addLocationsWithShapefile)
           break
         case addLocationOptions[2].value:
           // Someone to update

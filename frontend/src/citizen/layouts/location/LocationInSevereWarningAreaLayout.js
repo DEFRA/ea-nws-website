@@ -22,7 +22,7 @@ import {
   getCoordsOfFloodArea
 } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout ({
+export default function LocationInSevereWarningAreaLayout({
   continueToNextPage
 }) {
   const navigate = useNavigate()
@@ -149,7 +149,7 @@ export default function LocationInSevereWarningAreaLayout ({
               These warnings tell you when flooding:
             </p>
             <ul className='govuk-list govuk-list--bullet'>
-              <li>is expected</li>f
+              <li>is expected</li>
               <li>could be a danger to life or property</li>
             </ul>
             <p>You'll need to act immediately.</p>

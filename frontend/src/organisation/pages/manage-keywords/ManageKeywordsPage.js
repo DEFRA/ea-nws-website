@@ -165,7 +165,6 @@ export default function ManageKeywordsPage() {
     const associatedLocations = selectedKeywords.reduce((total, keyword) => {
       return total + keyword.linked_ids.length
     }, 0)
-    console.log(selectedKeywords)
     if (!selectedKeywords && selectedKeywords.length > 0) {
       setDialog({
         show: true,

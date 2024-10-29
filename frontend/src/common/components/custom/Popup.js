@@ -4,10 +4,9 @@ import '../../css/custom.css'
 import Button from '../gov-uk/Button'
 import Input from '../gov-uk/Input'
 
-export default function Popup ({
+export default function Popup({
   onEdit,
   onDelete,
-  onCancel,
   onClose,
   title,
   popupText,

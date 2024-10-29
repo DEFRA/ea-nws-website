@@ -79,6 +79,36 @@ export default function ManageKeywordsPage() {
     setFilteredKeywords(keywords)
   }, [contactKeywords, keywordType, keywords, locationKeywords])
 
+  const handleSearch = () => {
+    if (searchInput) {
+      const updatedFilter = keywords.filter((keyword) =>
+        keyword.name.toLowerCase().includes(searchInput.toLowerCase())
+      )
+      setFilteredKeywords(updatedFilter)
+    }
+  }
+
+  const handleOnClick = (value) => {
+    setSearchInput(value.name)
+  }
+
+  const handleOnChange = (value) => {
+    setSearchInput(value)
+    if (value) {
+      const updatedFilter = keywords.filter((keyword) =>
+        keyword.name.toLowerCase().includes(value.toLowerCase())
+      )
+      setResults(updatedFilter)
+    } else {
+      setResults(null)
+    }
+  }
+
+  const clearSearch = () => {
+    setFilteredKeywords(keywords)
+    setResetPaging(!resetPaging)
+  }
+
   const updateToDeleteEmptyKeyworkDialog = () => {
     setDialog({
       show: true,
@@ -233,31 +263,6 @@ export default function ManageKeywordsPage() {
       : ''
   }
 
-  const handleSearch = () => {
-    if (searchInput) {
-      const updatedFilter = keywords.filter((keyword) =>
-        keyword.name.toLowerCase().includes(searchInput.toLowerCase())
-      )
-      setFilteredKeywords(updatedFilter)
-    }
-  }
-
-  const handleOnClick = (value) => {
-    setSearchInput(value.name)
-  }
-
-  const handleOnChange = (value) => {
-    setSearchInput(value)
-    if (value) {
-      const updatedFilter = keywords.filter((keyword) =>
-        keyword.name.toLowerCase().includes(value.toLowerCase())
-      )
-      setResults(updatedFilter)
-    } else {
-      setResults(null)
-    }
-  }
-
   const handleEdit = () => {
     if (targetKeyword) {
       if (updatedKeyword === '') {
@@ -266,11 +271,6 @@ export default function ManageKeywordsPage() {
         editKeyword()
       }
     }
-  }
-
-  const clearSearch = () => {
-    setFilteredKeywords(keywords)
-    setResetPaging(!resetPaging)
   }
 
   const handleDelete = () => {

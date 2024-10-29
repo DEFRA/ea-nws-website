@@ -2,17 +2,17 @@ import AddContactDetailsPage from '../../pages/manage-contact/add-contact/AddCon
 
 const urlManageContactsOrg = 'organisation/manage-contacts'
 
-const orManageContactsUrls = {
+const orgManageContactsUrls = {
   add: {
     addNew: urlManageContactsOrg + '/add'
   }
 }
 
-const orManageContactsRoutes = [
+const orgManageContactsRoutes = [
   {
-    path: orManageContactsUrls.add.addNew,
+    path: orgManageContactsUrls.add.addNew,
     component: <AddContactDetailsPage />
   }
 ]
 
-export { orManageContactsRoutes, orManageContactsUrls }
+export { orgManageContactsRoutes, orgManageContactsUrls }

@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react'
+import { React, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -12,7 +12,7 @@ import {
   setOrgCurrentContactPosition
 } from '../../../../common/redux/userSlice'
 
-export default function AddContactDetailsPage() {
+export default function AddContactDetailsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [firstNameError, setFirstNameError] = useState('')
@@ -43,14 +43,23 @@ export default function AddContactDetailsPage() {
     }
   }
 
-  const handleSubmit = () => {
+  const checkMandatory = () => {
+    let mandatoryMissing = false
     if (!firstName) {
       setFirstNameError('Enter first name')
+      mandatoryMissing = true
     }
     if (!lastName) {
       setLastNameError('Enter last name')
+      mandatoryMissing = true
     }
-    if (lastName && firstName && !jobTitleError) {
+    return mandatoryMissing
+  }
+
+  const handleSubmit = () => {
+    const mandatoryMissing = checkMandatory()
+    if (mandatoryMissing) return
+    if (!jobTitleError && !lastNameError && !firstNameError) {
       dispatch(setOrgCurrentContactFirstName(firstName))
       dispatch(setOrgCurrentContactLastName(firstName))
       if (jobTitle) {
@@ -84,8 +93,7 @@ export default function AddContactDetailsPage() {
                     setFirstName,
                     setFirstNameError,
                     'First name'
-                  )
-                }
+                  )}
                 error={firstNameError}
                 className='govuk-input govuk-input--width-20'
                 isNameBold
@@ -99,8 +107,7 @@ export default function AddContactDetailsPage() {
                     setLastName,
                     setLastNameError,
                     'Last name'
-                  )
-                }
+                  )}
                 error={lastNameError}
                 className='govuk-input govuk-input--width-20'
                 isNameBold
@@ -114,8 +121,7 @@ export default function AddContactDetailsPage() {
                     setJobTitle,
                     setJobTitleError,
                     'Job title'
-                  )
-                }
+                  )}
                 error={jobTitleError}
                 className='govuk-input govuk-input--width-20'
                 isNameBold

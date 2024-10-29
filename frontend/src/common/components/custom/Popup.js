@@ -4,7 +4,7 @@ import '../../css/custom.css'
 import Button from '../gov-uk/Button'
 import Input from '../gov-uk/Input'
 
-export default function Popup ({
+export default function Popup({
   onEdit,
   onDelete,
   onCancel,
@@ -58,7 +58,7 @@ export default function Popup ({
       <div className='popup-dialog-container'>
         <div className='popup-dialog-header'>
           <p className='popup-close-txt'>Close</p>
-          <span className='popup-close-btn' onClick={onClose}>
+          <span className='popup-close-btn' onClick={() => onClose()}>
             &times;
           </span>
         </div>
@@ -80,7 +80,7 @@ export default function Popup ({
               onClick={handleSubmit}
             />
             <p className='govuk-body popup-dialog-link inline-link'>
-              <Link onClick={onCancel} className='govuk-link'>
+              <Link onClick={() => onClose()} className='govuk-link'>
                 Cancel
               </Link>
             </p>{' '}

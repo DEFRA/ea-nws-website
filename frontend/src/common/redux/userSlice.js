@@ -21,6 +21,9 @@ const userSlice = createSlice({
     selectedFloodAlertArea: null,
     showOnlySelectedFloodArea: null,
     nearbyTargetAreaFlow: null,
+    // keywords
+    locationKeywords: null,
+    contactKeywords: null,
     // required for predefined boundary flow
     selectedBoundaryType: null,
     selectedBoundary: null,
@@ -113,6 +116,13 @@ const userSlice = createSlice({
     },
     setSelectedBoundary: (state, action) => {
       state.selectedBoundary = action.payload
+    },
+    // keywords - temporary
+    setLocationKeywords: (state, action) => {
+      state.locationKeywords = action.payload
+    },
+    setContactKeywords: (state, action) => {
+      state.contactKeywords = action.payload
     },
     // org location data
     setCurrentLocation: (state, action) => {
@@ -226,6 +236,9 @@ const userSlice = createSlice({
       // required for predefined boundary flow
       state.selectedBoundaryType = null
       state.selectedBoundary = null
+      // keywords - temporary
+      state.locationKeywords = null
+      state.contactKeywords = null
       // org location data
       state.currentLocation = {
         name: null,
@@ -276,6 +289,9 @@ export const {
   // required for predefined boundary flow
   setSelectedBoundaryType,
   setSelectedBoundary,
+  // keywords - temporary
+  setLocationKeywords,
+  setContactKeywords,
   // org location data
   setCurrentLocation,
   setCurrentLocationUPRN,

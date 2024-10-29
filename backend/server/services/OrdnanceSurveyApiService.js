@@ -17,8 +17,8 @@ const osPostCodeApiCall = async (postCode) => {
       responseData = response.data.results.map((result) => {
         const formattedAddress = addressFormatter(result.DPA.ADDRESS)
         return {
-          name: formattedAddress,
-          address: result.DPA.UPRN,
+          name: result.DPA.UPRN,
+          address: formattedAddress,
           coordinates: { latitude: result.DPA.LAT, longitude: result.DPA.LNG },
           postcode: result.DPA.POSTCODE
         }
@@ -72,8 +72,8 @@ const osFindNameApiCall = async (name, filter) => {
         )
 
         return {
-          name: formattedLocationName,
-          address: '',
+          name: '',
+          address: formattedLocationName,
           coordinates: coordinates
         }
       })
@@ -120,8 +120,8 @@ const osFindApiCall = async (address, minmatch) => {
           result.DPA.Y_COORDINATE
         )
         return {
-          name: formattedAddress,
-          address: result.DPA.UPRN,
+          name: result.DPA.UPRN,
+          address: formattedAddress,
           coordinates: coordinates,
           postcode: result.DPA.POSTCODE
         }

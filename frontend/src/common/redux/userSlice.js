@@ -26,8 +26,9 @@ const userSlice = createSlice({
     selectedBoundary: null,
     // org location data
     currentLocation: {
+      // name is the UPRN
       name: null,
-      // address is the UPRN
+      // address is the human readable address or flood area name
       address: null,
       // Coordinates in dd (degrees decimal)
       coordinates: null,

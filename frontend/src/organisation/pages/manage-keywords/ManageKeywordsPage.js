@@ -17,7 +17,7 @@ import {
 } from '../../../common/redux/userSlice'
 import KeywordsTable from '../../components/custom/KeywordsTable'
 
-export default function ManageKeywordsPage () {
+export default function ManageKeywordsPage() {
   const navigate = useNavigate()
   const [keywords, setKeywords] = useState([])
   const dispatch = useDispatch()
@@ -66,11 +66,11 @@ export default function ManageKeywordsPage () {
   }, [filteredKeywords, currentPage])
 
   const handleSetError = (val) => {
-    setDialog(dial => ({ ...dial, error: val }))
+    setDialog((dial) => ({ ...dial, error: val }))
   }
 
   const toggleDialogVisibility = () => {
-    setDialog(dial => ({ ...dial, show: !dial.show }))
+    setDialog((dial) => ({ ...dial, show: !dial.show }))
   }
 
   const locationKeywords = useSelector((state) =>
@@ -93,84 +93,78 @@ export default function ManageKeywordsPage () {
   }
 
   const updateToEmptyDialog = () => {
-    setDialog(
-      {
-        show: true,
-        text: (
-          <>
-            Removing the keyword will delete it from this account. It will no
-            longer be in the keyword list and you will not be able to associate it
-            with any other locations.
-            <br />
-            <br />
-            Deleting this keyword does not unlink contacts and locations. If you
-            no longer want contacts and locations to be linked you need to unlink
-            them.
-          </>
-        ),
-        title: 'Change keyword',
-        buttonText: 'Delete keyword',
-        buttonClass: 'govuk-button--warning',
-        input: '',
-        textInput: '',
-        setTextInput: '',
-        charLimit: 0,
-        error: ''
-      }
-    )
+    setDialog({
+      show: true,
+      text: (
+        <>
+          Removing the keyword will delete it from this account. It will no
+          longer be in the keyword list and you will not be able to associate it
+          with any other locations.
+          <br />
+          <br />
+          Deleting this keyword does not unlink contacts and locations. If you
+          no longer want contacts and locations to be linked you need to unlink
+          them.
+        </>
+      ),
+      title: 'Change keyword',
+      buttonText: 'Delete keyword',
+      buttonClass: 'govuk-button--warning',
+      input: '',
+      textInput: '',
+      setTextInput: '',
+      charLimit: 0,
+      error: ''
+    })
   }
 
   const deleteDialog = () => {
-    setDialog(
-      {
-        show: true,
-        text: (
-          <>
-            If you continue this keyword will be deleted from this account and
-            no longer associated with {targetKeyword.linked_ids.length} locations.
-            <br />
-            <br />
-            Deleting this keyword does not unlink contacts and locations. If you
-            no longer want contacts and locations to be linked you need to
-            unlink them.
-          </>
-        ),
-        title: 'Delete keyword',
-        buttonText: 'Delete keyword',
-        buttonClass: 'govuk-button--warning',
-        input: '',
-        textInput: '',
-        setTextInput: '',
-        charLimit: 0,
-        error: ''
-      }
-    )
+    setDialog({
+      show: true,
+      text: (
+        <>
+          If you continue this keyword will be deleted from this account and no
+          longer associated with {targetKeyword.linked_ids.length} locations.
+          <br />
+          <br />
+          Deleting this keyword does not unlink contacts and locations. If you
+          no longer want contacts and locations to be linked you need to unlink
+          them.
+        </>
+      ),
+      title: 'Delete keyword',
+      buttonText: 'Delete keyword',
+      buttonClass: 'govuk-button--warning',
+      input: '',
+      textInput: '',
+      setTextInput: '',
+      charLimit: 0,
+      error: ''
+    })
   }
 
   const multiDeleteDialog = () => {
     const associatedLocations = selectedKeywords.reduce((total, keyword) => {
       return total + keyword.linked_ids.length
     }, 0)
-    setDialog(
-      {
-        show: true,
-        text: (
-          <>
-            If you continue these keywords will be deleted from this account and
-            no longer associated with {associatedLocations} locations.
-            <br />
-            <br />
-            Deleting these keywords does not unlink contacts and locations. If
-            you no longer want contacts and locations to be linked you need to
-            unlink them.
-          </>
-        ),
-        title: (`Delete ${selectedKeywords.length} keywords`),
-        buttonText: 'Delete keywords',
-        buttonClass: 'govuk-button--warning',
-        input: ''
-      }
-    )
+    setDialog({
+      show: true,
+      text: (
+        <>
+          If you continue these keywords will be deleted from this account and
+          no longer associated with {associatedLocations} locations.
+          <br />
+          <br />
+          Deleting these keywords does not unlink contacts and locations. If you
+          no longer want contacts and locations to be linked you need to unlink
+          them.
+        </>
+      ),
+      title: `Delete ${selectedKeywords.length} keywords`,
+      buttonText: 'Delete keywords',
+      buttonClass: 'govuk-button--warning',
+      input: ''
+    })
   }
 
   const showDeleteKeywordDialog = (from) => {
@@ -186,24 +180,23 @@ export default function ManageKeywordsPage () {
   }
 
   const showEditKeywordDialog = () => {
-    setDialog(
-      {
-        show: true,
-        text: (`Changing this keyword will change it for all the ${
+    setDialog({
+      show: true,
+      text: `Changing this keyword will change it for all the ${
         keywordType === 'location' ? 'locations' : 'contacts'
-        } it's associated with.`),
-        title: 'Change keyword',
-        buttonText: 'Change keyword',
-        buttonClass: '',
-        input: 'Keyword',
-        charLimit: 20,
-        error: ''
-      }
-    )
+      } it's associated with.`,
+      title: 'Change keyword',
+      buttonText: 'Change keyword',
+      buttonClass: '',
+      input: 'Keyword',
+      charLimit: 20,
+      error: ''
+    })
   }
 
-  const onAction = (actionType) => {
-    if (actionType === 'edit') {
+  const onAction = (action, keyword) => {
+    setTargetKeyword(keyword)
+    if (action === 'edit') {
       showEditKeywordDialog()
     } else {
       showDeleteKeywordDialog('deleteLink')
@@ -234,7 +227,8 @@ export default function ManageKeywordsPage () {
 
   const removeKeywords = (keywordsToRemove) => {
     const updatedKeywords = keywords.filter(
-      (k) => !keywordsToRemove.includes(k))
+      (k) => !keywordsToRemove.includes(k)
+    )
     if (keywordType === 'location') {
       dispatch(setLocationKeywords(updatedKeywords))
     } else {
@@ -252,7 +246,9 @@ export default function ManageKeywordsPage () {
   }
 
   const validateInput = () => {
-    return keywords.some((k) => updatedKeyword === k.name) ? 'This keyword already exists' : ''
+    return keywords.some((k) => updatedKeyword === k.name)
+      ? 'This keyword already exists'
+      : ''
   }
 
   const handleSearch = () => {
@@ -297,7 +293,8 @@ export default function ManageKeywordsPage () {
 
   const handleDelete = () => {
     if (selectedKeywords.length > 0 || targetKeyword) {
-      const keywordsToRemove = selectedKeywords.length > 0 ? [...selectedKeywords] : [targetKeyword]
+      const keywordsToRemove =
+        selectedKeywords.length > 0 ? [...selectedKeywords] : [targetKeyword]
       removeKeywords(keywordsToRemove)
     }
   }
@@ -309,48 +306,44 @@ export default function ManageKeywordsPage () {
   }
 
   const detailsText =
-    keywordType === 'location'
-      ? (
-        <>
-          <p>
-            Adding keywords for each location can make it easier for you to filter
-            and create lists of locations you can link to contacts to get relevant
-            flood messages.
-          </p>
-          <p>
-            For example, you may want to add 'pumping station' or 'office' or
-            'Midlands' as a keyword, then show all of the locations with that
-            keyword in a list.
-          </p>
-          <p>
-            Once you use a keyword it will be saved so you can select it for any
-            other locations.
-          </p>
-        </>
-        )
-      : keywordType === 'contact'
-        ? (
-          <>
-            <p>
-              Adding keywords for each contact can make it easier for you to filter
-              and create lists of people you can link to locations to get relevant
-              flood messages.
-            </p>
-            <p>
-              For example, you may want to add 'North' or 'South' as a keyword, then
-              show all of the contacts with that keyword in a list.
-            </p>
-            <p>
-              Once you use a keyword it will be saved so you can select it for any
-              other contacts.
-            </p>
-            <p>
-              You can add a maximum of 50 keywords and each keyword can be single or
-              multiple words, for example 'South' or 'South West'.
-            </p>
-          </>
-          )
-        : null
+    keywordType === 'location' ? (
+      <>
+        <p>
+          Adding keywords for each location can make it easier for you to filter
+          and create lists of locations you can link to contacts to get relevant
+          flood messages.
+        </p>
+        <p>
+          For example, you may want to add 'pumping station' or 'office' or
+          'Midlands' as a keyword, then show all of the locations with that
+          keyword in a list.
+        </p>
+        <p>
+          Once you use a keyword it will be saved so you can select it for any
+          other locations.
+        </p>
+      </>
+    ) : keywordType === 'contact' ? (
+      <>
+        <p>
+          Adding keywords for each contact can make it easier for you to filter
+          and create lists of people you can link to locations to get relevant
+          flood messages.
+        </p>
+        <p>
+          For example, you may want to add 'North' or 'South' as a keyword, then
+          show all of the contacts with that keyword in a list.
+        </p>
+        <p>
+          Once you use a keyword it will be saved so you can select it for any
+          other contacts.
+        </p>
+        <p>
+          You can add a maximum of 50 keywords and each keyword can be single or
+          multiple words, for example 'South' or 'South West'.
+        </p>
+      </>
+    ) : null
 
   return (
     <>
@@ -432,46 +425,47 @@ export default function ManageKeywordsPage () {
                     </div>
                   </div>
                 </div>
-                <Link onClick={() => clearSearch()} className='govuk-link'>Clear search results</Link>
+                <Link onClick={() => clearSearch()} className='govuk-link'>
+                  Clear search results
+                </Link>
               </div>
               <div className='govuk-grid-column-two-thirds'>
-                {filteredKeywords.length !== 0
-                  ? (
-                    <>
-                      <Button
-                        className='govuk-button govuk-button--secondary'
-                        onClick={handleDeleteButton}
-                        text='Delete selected keywords'
-                      />
-                      <KeywordsTable
-                        keywords={keywords}
-                        displayedKeywords={displayedKeywords}
-                        filteredKeywords={filteredKeywords}
-                        setFilteredKeywords={setFilteredKeywords}
-                        selectedKeywords={selectedKeywords}
-                        setSelectedKeywords={setSelectedKeywords}
-                        type={keywordType}
-                        onAction={onAction}
-                        targetKeyword={targetKeyword}
-                        setTargetKeyword={setTargetKeyword}
-                      />
-                      <Pagination
-                        totalPages={Math.ceil(
-                          filteredKeywords.length / keywordsPerPage
-                        )}
-                        onPageChange={(val) => setCurrentPage(val)}
-                        reset={resetPaging}
-                      />
-                    </>
-                    )
-                  : <p>No results. Try searching with a different keyword.</p>}
+                {filteredKeywords.length !== 0 ? (
+                  <>
+                    <Button
+                      className='govuk-button govuk-button--secondary'
+                      onClick={handleDeleteButton}
+                      text='Delete selected keywords'
+                    />
+                    <KeywordsTable
+                      keywords={keywords}
+                      displayedKeywords={displayedKeywords}
+                      filteredKeywords={filteredKeywords}
+                      setFilteredKeywords={setFilteredKeywords}
+                      selectedKeywords={selectedKeywords}
+                      setSelectedKeywords={setSelectedKeywords}
+                      type={keywordType}
+                      onAction={onAction}
+                      targetKeyword={targetKeyword}
+                      setTargetKeyword={setTargetKeyword}
+                    />
+                    <Pagination
+                      totalPages={Math.ceil(
+                        filteredKeywords.length / keywordsPerPage
+                      )}
+                      onPageChange={(val) => setCurrentPage(val)}
+                      reset={resetPaging}
+                    />
+                  </>
+                ) : (
+                  <p>No results. Try searching with a different keyword.</p>
+                )}
                 {dialog.show && (
                   <>
                     <Popup
                       onEdit={() => handleEdit()}
                       onDelete={() => handleDelete()}
-                      onCancel={toggleDialogVisibility}
-                      onClose={toggleDialogVisibility}
+                      onClose={() => setDialog({ ...dialog, show: false })}
                       title={dialog.title}
                       popupText={dialog.text}
                       buttonText={dialog.buttonText}
@@ -486,7 +480,6 @@ export default function ManageKeywordsPage () {
                     />
                   </>
                 )}
-
               </div>
             </div>
           </div>

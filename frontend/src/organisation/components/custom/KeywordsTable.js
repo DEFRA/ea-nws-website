@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 
-export default function KeywordsTable ({
+export default function KeywordsTable({
   keywords,
   displayedKeywords,
   filteredKeywords,
@@ -9,26 +9,16 @@ export default function KeywordsTable ({
   selectedKeywords,
   setSelectedKeywords,
   type,
-  onAction,
-  targetKeyword,
-  setTargetKeyword
+  onAction
 }) {
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
   const [keywordSort, setKeywordSort] = useState('none')
   const [associatedSort, setAssociatedSort] = useState('none')
-  const [action, setAction] = useState('')
 
   useEffect(() => {
     setKeywordSort('none')
     setAssociatedSort('none')
   }, [type])
-
-  useEffect(() => {
-    if (targetKeyword && action) {
-      onAction(action)
-      setAction('')
-    }
-  }, [targetKeyword, action])
 
   const sortKeywords = () => {
     if (keywordSort === 'none' || keywordSort === 'descending') {
@@ -85,11 +75,6 @@ export default function KeywordsTable ({
       updatedSelectedKeywords = [...selectedKeywords, keyword]
     }
     setSelectedKeywords(updatedSelectedKeywords)
-  }
-
-  const handleAction = (actionType, keyword) => {
-    setAction(actionType)
-    setTargetKeyword(keyword)
   }
 
   return (
@@ -171,14 +156,14 @@ export default function KeywordsTable ({
               <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'
-                  onClick={() => handleAction('edit', keyword)}
+                  onClick={() => onAction('edit', keyword)}
                 >
                   Change
                 </Link>{' '}
                 <span style={{ color: '#b1b4b6' }}>|</span>{' '}
                 <Link
                   className='govuk-link'
-                  onClick={() => handleAction('delete', keyword)}
+                  onClick={() => onAction('delete', keyword)}
                 >
                   Delete
                 </Link>

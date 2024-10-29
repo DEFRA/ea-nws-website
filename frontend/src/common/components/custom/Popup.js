@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import '../../css/custom.css'
 import Button from '../gov-uk/Button'
@@ -21,12 +21,6 @@ export default function Popup({
   charLimit = 0,
   validateInput = null
 }) {
-  useEffect(() => {
-    if (input && textInput.length <= charLimit) {
-      setError('')
-    }
-  }, [textInput])
-
   const handleTextInputChange = (val) => {
     if (input) {
       setTextInput(val)

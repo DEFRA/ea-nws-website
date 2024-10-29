@@ -83,11 +83,6 @@ export default function ManageKeywordsPage() {
     setFilteredKeywords(keywords)
   }, [contactKeywords, keywordType, keywords, locationKeywords])
 
-  const navigateBack = (event) => {
-    event.preventDefault()
-    navigate(-1)
-  }
-
   const updateToEmptyDialog = () => {
     setDialog({
       show: true,
@@ -225,7 +220,7 @@ export default function ManageKeywordsPage() {
 
   const removeKeywords = (keywordsToRemove) => {
     const updatedKeywords = keywords.filter(
-      (k) => !keywordsToRemove.includes(k)
+      (keyword) => !keywordsToRemove.includes(keyword)
     )
 
     if (keywordType === 'location') {
@@ -247,7 +242,7 @@ export default function ManageKeywordsPage() {
   }
 
   const validateInput = () => {
-    return keywords.some((k) => updatedKeyword === k.name)
+    return keywords.some((keyword) => updatedKeyword === keyword.name)
       ? 'This keyword already exists'
       : ''
   }
@@ -346,6 +341,11 @@ export default function ManageKeywordsPage() {
         </p>
       </>
     ) : null
+
+  const navigateBack = (event) => {
+    event.preventDefault()
+    navigate(-1)
+  }
 
   return (
     <>
@@ -477,7 +477,9 @@ export default function ManageKeywordsPage() {
                       setTextInput={setUpdatedKeyword}
                       charLimit={dialog.charLimit}
                       error={dialog.error}
-                      setError={handleSetError}
+                      setError={(val) =>
+                        setDialog((dial) => ({ ...dial, error: val }))
+                      }
                       validateInput={() => validateInput()}
                     />
                   </>

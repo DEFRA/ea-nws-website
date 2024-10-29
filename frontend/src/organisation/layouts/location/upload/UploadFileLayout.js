@@ -76,21 +76,17 @@ export default function UploadFileLayout({
           name: selectedFile.name,
           fileType: selectedFile.type
         }
-
         const { errorMessage, data } = await backendCall(
           dataToSend,
           backendRoute,
           navigate
         )
-
         if (errorMessage) {
           // Set to an error to be displayed when doing DoR11 work
           throw new Error(`Failed to get pre-signed URL: ${errorMessage}`)
         }
-
         const url = data.url
         const uniqFileName = data.fileName
-
         // Upload the file to S3 using generated URL
         const uploadResponse = await fetch(url, {
           mode: 'cors',
@@ -113,7 +109,8 @@ export default function UploadFileLayout({
         }
       }
       // Shapefile upload logic
-      else {
+      else if (uploadMethod === 'shape') {
+        const dataToSend = {}
       }
     } catch (err) {
       setUploading(false)

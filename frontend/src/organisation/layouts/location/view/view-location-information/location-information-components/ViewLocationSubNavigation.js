@@ -8,9 +8,10 @@ export default function ViewLocationSubNavigation ({ currentPage }) {
       link: orgManageLocationsUrls.view.viewLocation
     },
     {
-      title: 'Flood areas and messages',
+      title: 'Message settings and flood areas',
       link: orgManageLocationsUrls.view.viewMessages
-    }
+    },
+    { title: 'Linked contacts', link: '/' }
   ]
 
   return <SubNavigation pages={pages} currentPage={currentPage} />

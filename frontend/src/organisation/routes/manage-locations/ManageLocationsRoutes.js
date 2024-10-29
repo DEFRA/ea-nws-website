@@ -37,9 +37,9 @@ import LocationDropPinEditPage from '../../pages/manage-locations/edit-location/
 import CannotChangeLocationLinePage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-line/CannotChangeLocationLinePage'
 import CannotChangeLocationPolygonPage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-polygon/CannotChangeLocationPolygonPage'
 import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/edit-individual-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
+import LocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
+import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
-import LocationInformationPage from '../../pages/manage-locations/view-location/view-location-information/LocationInformationPage'
-import ViewMessagesDashboardPage from '../../pages/manage-locations/view-location/view-location-messages/ViewMessagesDashboardPage'
 
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgAddLocations = '/organisation/manage-locations/add'
@@ -144,7 +144,7 @@ const orgManageLocationRoutes = [
   },
   {
     path: orgManageLocationsUrls.view.viewMessages,
-    component: <ViewMessagesDashboardPage />
+    component: <ViewMessagesPage />
   },
   // add
   {

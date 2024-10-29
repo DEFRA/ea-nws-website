@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-export default function Select({
+export default function Select ({
   label,
   options,
   name,
@@ -50,15 +50,17 @@ export default function Select({
           {initialSelectOptionText}
         </option>
         {options.map((option, index) =>
-          disabledOptions.includes(option) ? (
-            <option key={index} value={option} disabled>
-              {option}
-            </option>
-          ) : (
-            <option key={index} value={option}>
-              {option}
-            </option>
-          )
+          disabledOptions.includes(option)
+            ? (
+              <option key={index} value={option} disabled>
+                {option}
+              </option>
+              )
+            : (
+              <option key={index} value={option}>
+                {option}
+              </option>
+              )
         )}
       </select>
     </div>

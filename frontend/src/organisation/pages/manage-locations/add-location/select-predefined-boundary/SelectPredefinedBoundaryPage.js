@@ -13,8 +13,9 @@ import {
 import { getBoundaryTypes } from '../../../../../common/services/WfsFloodDataService'
 import Map from '../../../../components/custom/Map'
 import PredefinedBoundaryKey from '../../../../components/custom/PredefinedBoundaryKey'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function SelectPredefinedBoundaryPage() {
+export default function SelectPredefinedBoundaryPage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [boundaryTypeError, setBoundaryTypeError] = useState('')
@@ -28,7 +29,7 @@ export default function SelectPredefinedBoundaryPage() {
   const selectedBoundary = useSelector(
     (state) => state.session.selectedBoundary
   )
-  var locationBoundaries = useSelector(
+  const locationBoundaries = useSelector(
     (state) => state.session.locationBoundaries
   )
 
@@ -88,15 +89,16 @@ export default function SelectPredefinedBoundaryPage() {
 
     // update profile to add location and navigate
     if (selectedBoundaryType && selectedBoundary) {
-      dispatch(
-        setLocationBoundaries([
-          ...locationBoundaries,
-          {
-            boundary_type: selectedBoundaryType,
-            boundary: selectedBoundary
-          }
-        ])
-      )
+      const locationBoundary = {
+        boundary_type: selectedBoundaryType,
+        boundary: selectedBoundary
+      }
+      locationBoundaries
+        ? dispatch(
+          setLocationBoundaries([...locationBoundaries, locationBoundary])
+        )
+        : dispatch(setLocationBoundaries([locationBoundary]))
+      navigate(orgManageLocationsUrls.add.predefinedBoundary.addAnother)
     }
   }
 

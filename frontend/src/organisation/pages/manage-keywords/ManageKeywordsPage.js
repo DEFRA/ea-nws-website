@@ -69,10 +69,6 @@ export default function ManageKeywordsPage() {
     setDialog((dial) => ({ ...dial, error: val }))
   }
 
-  const toggleDialogVisibility = () => {
-    setDialog((dial) => ({ ...dial, show: !dial.show }))
-  }
-
   const locationKeywords = useSelector((state) =>
     state.session.locationKeywords !== null
       ? state.session.locationKeywords
@@ -204,23 +200,25 @@ export default function ManageKeywordsPage() {
   }
 
   const editKeyword = () => {
-    const updatedKeywords = keywords.map((k) => {
-      if (targetKeyword === k) {
+    const updatedKeywords = keywords.map((keyword) => {
+      if (targetKeyword === keyword) {
         return {
-          ...k,
+          ...keyword,
           name: updatedKeyword
         }
       }
-      return k
+      return keyword
     })
+
     if (keywordType === 'location') {
       dispatch(setLocationKeywords(updatedKeywords))
     } else {
       dispatch(setContactKeywords(updatedKeywords))
     }
+
     setKeywords([...updatedKeywords])
     setNotificationText('Keyword edited')
-    toggleDialogVisibility(false)
+    setDialog({ ...dialog, show: false })
     setTargetKeyword(null)
     setUpdatedKeyword('')
   }
@@ -229,18 +227,21 @@ export default function ManageKeywordsPage() {
     const updatedKeywords = keywords.filter(
       (k) => !keywordsToRemove.includes(k)
     )
+
     if (keywordType === 'location') {
       dispatch(setLocationKeywords(updatedKeywords))
     } else {
       dispatch(setContactKeywords(updatedKeywords))
     }
     setKeywords([...updatedKeywords])
+
     if (targetKeyword) {
       setNotificationText('Keyword deleted')
     } else {
       setNotificationText(`${selectedKeywords.length} keywords deleted`)
     }
-    toggleDialogVisibility(false)
+
+    setDialog({ ...dialog, show: false })
     setTargetKeyword(null)
     setSelectedKeywords([])
   }
@@ -295,6 +296,7 @@ export default function ManageKeywordsPage() {
     if (selectedKeywords.length > 0 || targetKeyword) {
       const keywordsToRemove =
         selectedKeywords.length > 0 ? [...selectedKeywords] : [targetKeyword]
+      console.log(keywordsToRemove)
       removeKeywords(keywordsToRemove)
     }
   }

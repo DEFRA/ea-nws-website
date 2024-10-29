@@ -2,22 +2,22 @@
 import AddContactKeywordsPage from '../../pages/manage-contacts/add-contacts/AddContactKeywordsPage'
 const urlManageContactsOrg = 'organisation/manage-contacts'
 
-const orManageContactsUrls = {
+const orgManageContactsUrls = {
   add: {
     addNew: urlManageContactsOrg + '/add',
     keywords: urlManageContactsOrg + '/add/keywords'
   }
 }
 
-const orManageContactsRoutes = [
+const orgManageContactsRoutes = [
   /*{
     path: orManageContactsUrls.add.addNew,
     component: <AddContactDetailsPage />
   },*/
   {
-    path: orManageContactsUrls.add.keywords,
+    path: orgManageContactsUrls.add.keywords,
     component: <AddContactKeywordsPage />
   }
 ]
 
-export { orManageContactsRoutes, orManageContactsUrls }
+export { orgManageContactsRoutes, orgManageContactsUrls }

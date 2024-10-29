@@ -1,5 +1,5 @@
 import { React, useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
@@ -12,6 +12,12 @@ export default function AddContactKeywordsPage() {
   const dispatch = useDispatch()
   const [keywordError, setKeywordError] = useState('')
   const [keyword, setKeyword] = useState('')
+  const [keywordsArray, setKeywordsArray] = useState([])
+  const savedKeywords = useSelector((state) =>
+    state.session.currentContact.meta_data.location_additional.keywords
+      ? state.session.currentLocation.meta_data.location_additional.keywords
+      : []
+  )
 
   const charLimit = 20
 
@@ -54,12 +60,20 @@ export default function AddContactKeywordsPage() {
               <p>
                 Adding keywords for each contact can make it easier for you to
                 filter and create lists of people you can link to locations to
-                get relevant flood messages. For example, you may want to add
-                ‘North’ or ‘Midlands’ or ‘Team A’ as keywords, then show all of
-                the locations with that keyword in a list. You can add a maximum
-                of 50 keywords and each keyword can be single or multiple words,
-                for example ‘South’ or ‘Team 1’. Once you use a keyword it will
-                be saved so you can select it for any other contacts.
+                get relevant flood messages.
+                <br />
+                <br />
+                For example, you may want to add ‘North’ or ‘Midlands’ or ‘Team
+                A’ as keywords, then show all of the locations with that keyword
+                in a list.
+                <br />
+                <br />
+                You can add a maximum of 50 keywords and each keyword can be
+                single or multiple words, for example ‘South’ or ‘Team 1’.
+                <br />
+                <br />
+                Once you use a keyword it will be saved so you can select it for
+                any other contacts.
               </p>
               <Input
                 inputType='text'
@@ -69,7 +83,7 @@ export default function AddContactKeywordsPage() {
               />
               <Button
                 text='Add keyword'
-                className='govuk-button--secondary'
+                className='govuk-button govuk-button--secondary'
                 onClick={handleAddKeyword}
               />
               <Button

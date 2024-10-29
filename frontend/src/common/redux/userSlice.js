@@ -50,6 +50,17 @@ const userSlice = createSlice({
           location_data_type: null
         }
       }
+    },
+    // org contact data
+    orgCurrentContact: {
+      enabled: null,
+      firstName: null,
+      lastName: null,
+      emails: null,
+      mobilePhones: null,
+      homePhones: null,
+      position: null,
+      additionals: null
     }
   },
   reducers: {
@@ -203,6 +214,41 @@ const userSlice = createSlice({
       state.currentLocation.meta_data.location_additional.location_data_type =
         action.payload
     },
+    // org contact data
+    setOrgCurrentContact: (state, action) => {
+      state.orgCurrentContact.enabled = action.payload.enabled
+      state.orgCurrentContact.firstName = action.payload.firstName
+      state.orgCurrentContact.lastName = action.payload.lastName
+      state.orgCurrentContact.emails = action.payload.emails
+      state.orgCurrentContact.mobilePhones = action.payload.mobilePhones
+      state.orgCurrentContact.homePhones = action.payload.homePhones
+      state.orgCurrentContact.position = action.payload.position
+      state.orgCurrentContact.additionals = action.payload.additionals
+    },
+    setOrgCurrentContactEnabled: (state, action) => {
+      state.orgCurrentContact.enabled = action.payload
+    },
+    setOrgCurrentContactFirstName: (state, action) => {
+      state.orgCurrentContact.firstName = action.payload
+    },
+    setOrgCurrentContactLastName: (state, action) => {
+      state.orgCurrentContact.lastName = action.payload
+    },
+    setOrgCurrentContactEmails: (state, action) => {
+      state.orgCurrentContact.emails = action.payload
+    },
+    setOrgCurrentContactHomePhones: (state, action) => {
+      state.orgCurrentContact.homePhones = action.payload
+    },
+    setOrgCurrentContactMobilePhones: (state, action) => {
+      state.orgCurrentContact.mobilePhones = action.payload
+    },
+    setOrgCurrentContactPosition: (state, action) => {
+      state.orgCurrentContact.position = action.payload
+    },
+    setOrgCurrentContactAdditionals: (state, action) => {
+      state.orgCurrentContact.additionals = action.payload
+    },
     // Clear state
     clearAuth: (state) => {
       state.authToken = null
@@ -247,6 +293,16 @@ const userSlice = createSlice({
             location_data_type: null
           }
         }
+      }
+      state.orgCurrentContact = {
+        enabled: null,
+        firstName: null,
+        lastName: null,
+        emails: null,
+        mobilePhones: null,
+        homePhones: null,
+        position: null,
+        additionals: null
       }
     }
   }
@@ -293,6 +349,16 @@ export const {
   setCurrentLocationNotes,
   setCurrentLocationKeywords,
   setCurrentLocationDataType,
+  // org current contact
+  setOrgCurrentContact,
+  setOrgCurrentContactEnabled,
+  setOrgCurrentContactFirstName,
+  setOrgCurrentContactLastName,
+  setOrgCurrentContactEmails,
+  setOrgCurrentContactHomePhones,
+  setOrgCurrentContactMobilePhones,
+  setOrgCurrentContactPosition,
+  setOrgCurrentContactAdditionals,
   // clear state
   clearAuth
 } = userSlice.actions

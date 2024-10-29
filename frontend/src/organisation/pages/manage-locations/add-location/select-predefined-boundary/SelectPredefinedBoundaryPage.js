@@ -6,6 +6,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import Select from '../../../../../common/components/gov-uk/Select'
 import {
+  setLocationBoundaries,
   setSelectedBoundary,
   setSelectedBoundaryType
 } from '../../../../../common/redux/userSlice'
@@ -13,18 +14,22 @@ import { getBoundaryTypes } from '../../../../../common/services/WfsFloodDataSer
 import Map from '../../../../components/custom/Map'
 import PredefinedBoundaryKey from '../../../../components/custom/PredefinedBoundaryKey'
 
-export default function SelectPredefinedBoundaryPage () {
+export default function SelectPredefinedBoundaryPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [boundaryTypeError, setBoundaryTypeError] = useState('')
   const [boundaryError, setBoundaryError] = useState('')
   const [boundaryTypes, setBoundaryTypes] = useState([])
   const [boundaries, setBoundaries] = useState([])
+  const [boundariesAlreadyAdded, setBoundariesAlreadyAdded] = useState([])
   const selectedBoundaryType = useSelector(
     (state) => state.session.selectedBoundaryType
   )
   const selectedBoundary = useSelector(
     (state) => state.session.selectedBoundary
+  )
+  var locationBoundaries = useSelector(
+    (state) => state.session.locationBoundaries
   )
 
   // Get boundary types
@@ -44,13 +49,29 @@ export default function SelectPredefinedBoundaryPage () {
     setBoundaryError('')
   }, [selectedBoundary])
 
+  useEffect(() => {
+    if (locationBoundaries) {
+      setBoundariesAlreadyAdded(
+        locationBoundaries
+          .filter((locationBoundary) => {
+            return locationBoundary.boundary_type === selectedBoundaryType
+          })
+          .map((locationBoundary) => {
+            return locationBoundary.boundary
+          })
+      )
+    } else {
+      setBoundariesAlreadyAdded([])
+    }
+  }, [selectedBoundaryType, locationBoundaries])
+
   const onBoundaryTypeSelected = (boundaryType) => {
     dispatch(setSelectedBoundaryType(boundaryType))
   }
 
   const onBoundarySelected = (boundaryName) => {
     const boundarySelected = boundaries.find(
-      (boundary) => boundary.properties.NAME === boundaryName
+      (boundary) => boundary.properties.layer === boundaryName
     )
 
     dispatch(setSelectedBoundary(boundarySelected))
@@ -66,6 +87,18 @@ export default function SelectPredefinedBoundaryPage () {
     }
 
     // update profile to add location and navigate
+    if (selectedBoundaryType && selectedBoundary) {
+      dispatch(
+        setLocationBoundaries([
+          ...locationBoundaries,
+          {
+            location_ID: '',
+            boundary_type: selectedBoundaryType,
+            boundary: selectedBoundary
+          }
+        ])
+      )
+    }
   }
 
   const navigateBack = (event) => {
@@ -108,15 +141,18 @@ export default function SelectPredefinedBoundaryPage () {
                     key={selectedBoundary}
                     label='Boundary'
                     options={boundaries.map((boundary) => {
-                      return boundary.properties.NAME
+                      return boundary.properties.layer
                     })}
                     onSelect={onBoundarySelected}
                     error={boundaryError}
                     initialSelectOptionText={
                       selectedBoundary
-                        ? selectedBoundary.properties.NAME
+                        ? selectedBoundary.properties.layer
                         : 'Select boundary'
                     }
+                    disabledOptions={boundariesAlreadyAdded.map((boundary) => {
+                      return boundary.properties.layer
+                    })}
                   />
                   <Button
                     className='govuk-button govuk-!-margin-top-4'

@@ -24,6 +24,7 @@ const userSlice = createSlice({
     // required for predefined boundary flow
     selectedBoundaryType: null,
     selectedBoundary: null,
+    locationBoundaries: null,
     // org location data
     currentLocation: {
       name: null,
@@ -112,6 +113,9 @@ const userSlice = createSlice({
     },
     setSelectedBoundary: (state, action) => {
       state.selectedBoundary = action.payload
+    },
+    setLocationBoundaries: (state, action) => {
+      state.locationBoundaries = action.payload
     },
     // org location data
     setCurrentLocation: (state, action) => {
@@ -225,6 +229,7 @@ const userSlice = createSlice({
       // required for predefined boundary flow
       state.selectedBoundaryType = null
       state.selectedBoundary = null
+      state.locationBoundaries = null
       // org location data
       state.currentLocation = {
         name: null,
@@ -275,6 +280,7 @@ export const {
   // required for predefined boundary flow
   setSelectedBoundaryType,
   setSelectedBoundary,
+  setLocationBoundaries,
   // org location data
   setCurrentLocation,
   setCurrentLocationUPRN,

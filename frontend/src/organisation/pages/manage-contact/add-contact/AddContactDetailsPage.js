@@ -12,7 +12,7 @@ import {
   setOrgCurrentContactPosition
 } from '../../../../common/redux/userSlice'
 
-export default function AddContactDetailsPage () {
+export default function AddContactDetailsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [firstNameError, setFirstNameError] = useState('')
@@ -23,24 +23,6 @@ export default function AddContactDetailsPage () {
   const [jobTitle, setJobTitle] = useState('')
 
   const charLimit = 20
-
-  useEffect(() => {
-    if (firstName.length < charLimit) {
-      setFirstNameError('')
-    }
-  }, [firstName])
-
-  useEffect(() => {
-    if (lastName.length < charLimit) {
-      setLastNameError('')
-    }
-  }, [lastName])
-
-  useEffect(() => {
-    if (jobTitle.length < charLimit) {
-      setJobTitleError('')
-    }
-  }, [jobTitle])
 
   const navigateBack = (event) => {
     event.preventDefault()
@@ -74,6 +56,7 @@ export default function AddContactDetailsPage () {
       if (jobTitle) {
         dispatch(setOrgCurrentContactPosition(jobTitle))
       }
+      // TO DO - to keywords
       navigate(-1)
     }
   }
@@ -101,7 +84,8 @@ export default function AddContactDetailsPage () {
                     setFirstName,
                     setFirstNameError,
                     'First name'
-                  )}
+                  )
+                }
                 error={firstNameError}
                 className='govuk-input govuk-input--width-20'
                 isNameBold
@@ -115,7 +99,8 @@ export default function AddContactDetailsPage () {
                     setLastName,
                     setLastNameError,
                     'Last name'
-                  )}
+                  )
+                }
                 error={lastNameError}
                 className='govuk-input govuk-input--width-20'
                 isNameBold
@@ -129,7 +114,8 @@ export default function AddContactDetailsPage () {
                     setJobTitle,
                     setJobTitleError,
                     'Job title'
-                  )}
+                  )
+                }
                 error={jobTitleError}
                 className='govuk-input govuk-input--width-20'
                 isNameBold

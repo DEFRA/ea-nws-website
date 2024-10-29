@@ -65,10 +65,6 @@ export default function ManageKeywordsPage() {
     )
   }, [filteredKeywords, currentPage])
 
-  const handleSetError = (val) => {
-    setDialog((dial) => ({ ...dial, error: val }))
-  }
-
   const locationKeywords = useSelector((state) =>
     state.session.locationKeywords !== null
       ? state.session.locationKeywords
@@ -83,7 +79,7 @@ export default function ManageKeywordsPage() {
     setFilteredKeywords(keywords)
   }, [contactKeywords, keywordType, keywords, locationKeywords])
 
-  const updateToEmptyDialog = () => {
+  const updateToDeleteEmptyKeyworkDialog = () => {
     setDialog({
       show: true,
       text: (
@@ -109,13 +105,14 @@ export default function ManageKeywordsPage() {
     })
   }
 
-  const deleteDialog = () => {
+  const deleteDialog = (keywordToBeDeleted) => {
     setDialog({
       show: true,
       text: (
         <>
           If you continue this keyword will be deleted from this account and no
-          longer associated with {targetKeyword.linked_ids.length} locations.
+          longer associated with {keywordToBeDeleted.linked_ids.length}{' '}
+          locations.
           <br />
           <br />
           Deleting this keyword does not unlink contacts and locations. If you
@@ -158,19 +155,7 @@ export default function ManageKeywordsPage() {
     })
   }
 
-  const showDeleteKeywordDialog = (from) => {
-    if (from === 'deleteLink') {
-      if (selectedKeywords.length === 0 && targetKeyword) {
-        deleteDialog()
-      } else {
-        multiDeleteDialog()
-      }
-    } else if (from === 'editLink') {
-      updateToEmptyDialog()
-    }
-  }
-
-  const showEditKeywordDialog = () => {
+  const editDialog = () => {
     setDialog({
       show: true,
       text: `Changing this keyword will change it for all the ${
@@ -188,9 +173,10 @@ export default function ManageKeywordsPage() {
   const onAction = (action, keyword) => {
     setTargetKeyword(keyword)
     if (action === 'edit') {
-      showEditKeywordDialog()
+      editDialog()
     } else {
-      showDeleteKeywordDialog('deleteLink')
+      console.log('ya')
+      deleteDialog(keyword)
     }
   }
 
@@ -275,7 +261,7 @@ export default function ManageKeywordsPage() {
   const handleEdit = () => {
     if (targetKeyword) {
       if (updatedKeyword === '') {
-        showDeleteKeywordDialog('editLink')
+        updateToDeleteEmptyKeyworkDialog()
       } else {
         editKeyword()
       }
@@ -293,12 +279,6 @@ export default function ManageKeywordsPage() {
         selectedKeywords.length > 0 ? [...selectedKeywords] : [targetKeyword]
       console.log(keywordsToRemove)
       removeKeywords(keywordsToRemove)
-    }
-  }
-
-  const handleDeleteButton = () => {
-    if (selectedKeywords.length > 0) {
-      showDeleteKeywordDialog('deleteLink')
     }
   }
 
@@ -436,7 +416,7 @@ export default function ManageKeywordsPage() {
                   <>
                     <Button
                       className='govuk-button govuk-button--secondary'
-                      onClick={handleDeleteButton}
+                      onClick={() => multiDeleteDialog()}
                       text='Delete selected keywords'
                     />
                     <KeywordsTable
@@ -448,8 +428,6 @@ export default function ManageKeywordsPage() {
                       setSelectedKeywords={setSelectedKeywords}
                       type={keywordType}
                       onAction={onAction}
-                      targetKeyword={targetKeyword}
-                      setTargetKeyword={setTargetKeyword}
                     />
                     <Pagination
                       totalPages={Math.ceil(

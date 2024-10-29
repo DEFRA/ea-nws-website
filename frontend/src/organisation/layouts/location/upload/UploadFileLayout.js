@@ -8,6 +8,7 @@ import { backendCall } from '../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function UploadFileLayout({
+  uploadMethod, // Currently either "bulk" or "shape"
   allowedFileTypes,
   maxFileSize,
   fileTypeHint,
@@ -19,9 +20,10 @@ export default function UploadFileLayout({
   const [selectedFile, setSelectedFile] = useState(null)
   const [uploading, setUploading] = useState(false)
 
-  const fileTypeErrorMsg = allowedFileTypes.includes('text/csv')
-    ? 'The selected file must be .xls, .xlsx or .csv'
-    : 'The selected file must be .zip'
+  const fileTypeErrorMsg =
+    uploadMethod === 'bulk'
+      ? 'The selected file must be .xls, .xlsx or .csv'
+      : 'The selected file must be .zip'
 
   useEffect(() => {
     setErrorFileType(null)
@@ -67,45 +69,51 @@ export default function UploadFileLayout({
     setUploading(true)
 
     try {
-      // Get pre-signed URL from backend
-      const dataToSend = {
-        name: selectedFile.name,
-        fileType: selectedFile.type
-      }
+      // Bulk upload logic
+      if (uploadMethod === 'bulk') {
+        // Get pre-signed URL from backend
+        const dataToSend = {
+          name: selectedFile.name,
+          fileType: selectedFile.type
+        }
 
-      const { errorMessage, data } = await backendCall(
-        dataToSend,
-        backendRoute,
-        navigate
-      )
+        const { errorMessage, data } = await backendCall(
+          dataToSend,
+          backendRoute,
+          navigate
+        )
 
-      if (errorMessage) {
-        // Set to an error to be displayed when doing DoR11 work
-        throw new Error(`Failed to get pre-signed URL: ${errorMessage}`)
-      }
+        if (errorMessage) {
+          // Set to an error to be displayed when doing DoR11 work
+          throw new Error(`Failed to get pre-signed URL: ${errorMessage}`)
+        }
 
-      const url = data.url
-      const uniqFileName = data.fileName
+        const url = data.url
+        const uniqFileName = data.fileName
 
-      // Upload the file to S3 using generated URL
-      const uploadResponse = await fetch(url, {
-        mode: 'cors',
-        method: 'PUT',
-        headers: {
-          'Content-Type': selectedFile.type
-        },
-        body: selectedFile
-      })
-
-      if (!uploadResponse.ok) {
-        setUploading(false)
-        setErrorFileType('Error uploading file')
-      } else {
-        navigate(orgManageLocationsUrls.add.loadingPage, {
-          state: {
-            fileName: uniqFileName
-          }
+        // Upload the file to S3 using generated URL
+        const uploadResponse = await fetch(url, {
+          mode: 'cors',
+          method: 'PUT',
+          headers: {
+            'Content-Type': selectedFile.type
+          },
+          body: selectedFile
         })
+
+        if (!uploadResponse.ok) {
+          setUploading(false)
+          setErrorFileType('Error uploading file')
+        } else {
+          navigate(orgManageLocationsUrls.add.loadingPage, {
+            state: {
+              fileName: uniqFileName
+            }
+          })
+        }
+      }
+      // Shapefile upload logic
+      else {
       }
     } catch (err) {
       setUploading(false)

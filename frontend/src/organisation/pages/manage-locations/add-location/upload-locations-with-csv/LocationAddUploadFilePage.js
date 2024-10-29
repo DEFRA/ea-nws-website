@@ -2,6 +2,8 @@ import React from 'react'
 import UploadFileLayout from '../../../../layouts/location/upload/UploadFileLayout'
 
 export default function LocationAddUploadFilePage() {
+  // Prop values for the file upload
+  const uploadType = 'bulk'
   const allowedTypes = [
     'text/csv',
     'application/vnd.ms-excel',
@@ -13,6 +15,7 @@ export default function LocationAddUploadFilePage() {
 
   return (
     <UploadFileLayout
+      uploadMethod={uploadType}
       allowedFileTypes={allowedTypes}
       maxFileSize={fileSize}
       fileTypeHint={fileTypeMessage}

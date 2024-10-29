@@ -1,4 +1,5 @@
 post:
+  operationId: getLocationDetachContacts
   tags:
     - location
   summary: Detach organization contacts from a location.

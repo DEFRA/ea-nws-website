@@ -16,6 +16,9 @@ const orgContactsHandlers = require('./handlers/organisation/contactsHandlers')
 const orgRemoveHandler = require('./handlers/organisation/orgRemoveHandler')
 const orgUpdateHandler = require ('./handlers/organisation/orgUpdateHandler')
 const orgInvitationHandler = require('./handlers/organisation/orgInvitationHandler')
+const locationContactsHandlers = require('./handlers/location/locationContactsHandlers')
+const locationHandlers = require('./handlers/location/locationHandlers')
+const locationPartnerHandlers = require('./handlers/location/locationPartnerHandlers')
 // define api
 const api = new OpenAPIBackend({
   definition: './openapi/openapi.yml',
@@ -60,7 +63,22 @@ const api = new OpenAPIBackend({
     //update org
     getOrgUpdate: orgUpdateHandler.getOrgUpdate,
     // org invitation
-    getOrgValidateInvitation: orgInvitationHandler.getOrgValidateInvitation
+    getOrgValidateInvitation: orgInvitationHandler.getOrgValidateInvitation,
+    // Location routes
+    // Location contacts
+    getLocationAttachContacts: locationContactsHandlers.getLocationAttachContacts,
+    getLocationDetachContacts: locationContactsHandlers.getLocationDetachContacts,
+    // Location
+    getLocationCreate: locationHandlers.getLocationCreate,
+    getLocationList: locationHandlers.getLocationList,
+    getLocationRemove: locationHandlers.getLocationRemove,
+    getLocationUpdate: locationHandlers.getLocationUpdate,
+    // Location Partner
+    getLocationListRegistrations: locationPartnerHandlers.getLocationListRegistrations,
+    getLocationRegisterToPartner: locationPartnerHandlers.getLocationRegisterToPartner,
+    getLocationUnregisterFromPartner: locationPartnerHandlers.getLocationUnregisterFromPartner,
+    getLocationUpdateRegistration: locationPartnerHandlers.getLocationUpdateRegistration
+
   }
 })
 

@@ -1,4 +1,5 @@
 post:
+  operationId: getLocationAttachContacts
   tags:
     - location
   summary: Attach organization contacts to a location.

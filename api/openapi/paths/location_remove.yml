@@ -1,4 +1,5 @@
 post:
+  operationId: getLocationRemove
   tags:
     - location
   summary: Remove locations from the organization.

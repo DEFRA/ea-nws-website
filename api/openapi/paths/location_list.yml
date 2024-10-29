@@ -1,4 +1,5 @@
 post:
+  operationId: getLocationList
   tags:
     - location
   summary: List locations of an organization

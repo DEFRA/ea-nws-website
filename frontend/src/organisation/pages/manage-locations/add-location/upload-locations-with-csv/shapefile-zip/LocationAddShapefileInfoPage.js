@@ -1,13 +1,19 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationAddShapefilePage() {
   const navigate = useNavigate()
 
-  const handleButton = async () => {
-    navigate('#')
+  // References used to scroll to certain elements on page
+  const howToUploadRef = useRef(null)
+  const infoNeededRef = useRef(null)
+  const usefulInfoRef = useRef(null)
+
+  const scrollToSection = (ref) => {
+    ref.current?.scrollIntoView({ behavior: 'smooth' })
   }
 
   return (
@@ -17,6 +23,7 @@ export default function LocationAddShapefilePage() {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
+            {/* Contents section */}
             <h1 className='govuk-heading-l'>
               How to upload a location as a shapefile in a ZIP
             </h1>
@@ -24,21 +31,34 @@ export default function LocationAddShapefilePage() {
               <p>Contents</p>
               <p>
                 -{' '}
-                <a className='govuk-link ' href='#'>
+                <a
+                  className='govuk-link'
+                  onClick={() => scrollToSection(howToUploadRef)}
+                >
                   How to upload a shapefile
                 </a>{' '}
                 <br />-{' '}
-                <a className='govuk-link ' href='#'>
+                <a
+                  className='govuk-link '
+                  onClick={() => scrollToSection(infoNeededRef)}
+                >
                   Information you need to include
                 </a>
                 <br />-{' '}
-                <a className='govuk-link ' href='#'>
+                <a
+                  className='govuk-link '
+                  onClick={() => scrollToSection(usefulInfoRef)}
+                >
                   Useful information you can include to help easily identify
                   each location
                 </a>
               </p>
               <br />
-              <h2 className='govuk-heading-m'>How to upload a shapefile</h2>
+
+              {/* How to upload section */}
+              <h2 ref={howToUploadRef} className='govuk-heading-m'>
+                How to upload a shapefile
+              </h2>
               <p className='govuk-!-margin-bottom-6 govuk-!-margin-top-6'>
                 You cannot create a shapefile in this account. You need to
                 create a shapefile and then upload it.{' '}
@@ -75,7 +95,9 @@ export default function LocationAddShapefilePage() {
                 getfloodwarnings@environment-agency.gov.uk to get some support.
               </p>
               <br />
-              <h2 className='govuk-heading-m'>
+
+              {/* Information to include section */}
+              <h2 ref={infoNeededRef} className='govuk-heading-m'>
                 Information you need to include
               </h2>
               <p>
@@ -85,7 +107,9 @@ export default function LocationAddShapefilePage() {
                 used for multiple locations.
               </p>
               <br />
-              <h2 className='govuk-heading-m'>
+
+              {/* Useful information section */}
+              <h2 ref={usefulInfoRef} className='govuk-heading-m'>
                 Useful information you can include to help you easily identify
                 the location
               </h2>
@@ -153,7 +177,11 @@ export default function LocationAddShapefilePage() {
               <Button
                 text='Continue'
                 className='govuk-button'
-                onClick={handleButton}
+                onClick={() => {
+                  navigate(
+                    orgManageLocationsUrls.add.uploadLocationsWithShapefile
+                  )
+                }}
               />
             </div>
           </div>

@@ -92,7 +92,6 @@ export default function SelectPredefinedBoundaryPage() {
         setLocationBoundaries([
           ...locationBoundaries,
           {
-            location_ID: '',
             boundary_type: selectedBoundaryType,
             boundary: selectedBoundary
           }
@@ -167,6 +166,11 @@ export default function SelectPredefinedBoundaryPage() {
                     showFloodAlertAreas={false}
                     zoomLevel={1}
                     boundaryList={(val) => setBoundaries(val)}
+                    boundariesAlreadyAdded={boundariesAlreadyAdded.map(
+                      (boundary) => {
+                        return boundary.id
+                      }
+                    )}
                   />
                   <div>
                     <PredefinedBoundaryKey />

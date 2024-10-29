@@ -17,7 +17,6 @@ export default function Select({
     onSelect(selectedValue)
   }
 
-  console.log('disabledOptions', disabledOptions)
   return (
     <div
       className={

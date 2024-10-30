@@ -6,6 +6,8 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import Select from '../../../../../common/components/gov-uk/Select'
 import {
+  setCurrentLocationGeometry,
+  setCurrentLocationName,
   setLocationBoundaries,
   setSelectedBoundary,
   setSelectedBoundaryType
@@ -98,6 +100,9 @@ export default function SelectPredefinedBoundaryPage () {
           setLocationBoundaries([...locationBoundaries, locationBoundary])
         )
         : dispatch(setLocationBoundaries([locationBoundary]))
+      dispatch(setCurrentLocationGeometry({geoJson: JSON.stringify(locationBoundary.boundary)}))
+      // This might change at a later date, but store in the additional name field for now
+      dispatch(setCurrentLocationName(locationBoundary.boundary_type+', '+locationBoundary.boundary.properties.layer))
       navigate(orgManageLocationsUrls.add.predefinedBoundary.addAnother)
     }
   }

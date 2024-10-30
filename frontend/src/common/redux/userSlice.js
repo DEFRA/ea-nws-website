@@ -32,6 +32,7 @@ const userSlice = createSlice({
       address: null,
       // Coordinates in dd (degrees decimal)
       coordinates: null,
+      geometry: null,
       alert_categories: null,
       meta_data: {
         location_additional: {
@@ -122,6 +123,7 @@ const userSlice = createSlice({
       state.currentLocation.name = action.payload.name
       state.currentLocation.address = action.payload.address
       state.currentLocation.coordinates = action.payload.coordinates
+      state.currentLocation.geometry = action.payload.geometry
       state.currentLocation.alert_categories = action.payload.alert_categories
       state.currentLocation.meta_data.location_additional.location_name =
         action.payload.meta_data.location_additional.location_name
@@ -156,6 +158,9 @@ const userSlice = createSlice({
     },
     setCurrentLocationCoordinates: (state, action) => {
       state.currentLocation.coordinates = action.payload
+    },
+    setCurrentLocationGeometry: (state, action) => {
+      state.currentLocation.geometry = action.payload
     },
     setCurrentLocationAlertCategories: (state, action) => {
       state.currentLocation.alert_categories = action.payload
@@ -235,6 +240,7 @@ const userSlice = createSlice({
         name: null,
         address: null,
         coordinates: null,
+        geometry: null,
         alert_categories: null,
         meta_data: {
           location_additional: {
@@ -286,6 +292,7 @@ export const {
   setCurrentLocationUPRN,
   setCurrentLocationAddress,
   setCurrentLocationCoordinates,
+  setCurrentLocationGeometry,
   setCurrentLocationAlertCategories,
   setCurrentLocationName,
   setCurrentLocationFullAddress,

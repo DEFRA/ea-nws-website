@@ -1,10 +1,11 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import AddNotesLayout from '../../../../layouts/additional-info/AddNotesLayout'
+import AddNotesLayout from '../../../layouts/optional-info/AddNotesLayout'
 export default function AddContactNotesPage() {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {
+    // TODO navigate to link locations
     navigate('/')
   }
 

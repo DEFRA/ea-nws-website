@@ -305,6 +305,7 @@ export default function Map ({
       }
     }
     fetchBoundaries()
+    setBoundaryStyles()
   }, [selectedBoundaryType])
 
   useEffect(() => {

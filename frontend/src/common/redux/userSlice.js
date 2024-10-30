@@ -25,6 +25,7 @@ const userSlice = createSlice({
     selectedBoundaryType: null,
     selectedBoundary: null,
     locationBoundaries: null,
+    consecutiveBoundariesAdded: 0,
     // org location data
     currentLocation: {
       name: null,
@@ -117,6 +118,9 @@ const userSlice = createSlice({
     },
     setLocationBoundaries: (state, action) => {
       state.locationBoundaries = action.payload
+    },
+    setConsecutiveBoundariesAdded: (state, action) => {
+      state.consecutiveBoundariesAdded = action.payload
     },
     // org location data
     setCurrentLocation: (state, action) => {
@@ -235,6 +239,7 @@ const userSlice = createSlice({
       state.selectedBoundaryType = null
       state.selectedBoundary = null
       state.locationBoundaries = null
+      state.consecutiveBoundariesAdded = 0
       // org location data
       state.currentLocation = {
         name: null,
@@ -287,6 +292,7 @@ export const {
   setSelectedBoundaryType,
   setSelectedBoundary,
   setLocationBoundaries,
+  setConsecutiveBoundariesAdded,
   // org location data
   setCurrentLocation,
   setCurrentLocationUPRN,

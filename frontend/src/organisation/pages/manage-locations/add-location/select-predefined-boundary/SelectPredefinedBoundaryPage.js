@@ -6,6 +6,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import Select from '../../../../../common/components/gov-uk/Select'
 import {
+  setConsecutiveBoundariesAdded,
   setCurrentLocationGeometry,
   setCurrentLocationName,
   setLocationBoundaries,
@@ -33,6 +34,9 @@ export default function SelectPredefinedBoundaryPage () {
   )
   const locationBoundaries = useSelector(
     (state) => state.session.locationBoundaries
+  )
+  const consecutiveBoundariesAdded = useSelector(
+    (state) => state.session.consecutiveBoundariesAdded
   )
 
   // Get boundary types
@@ -100,9 +104,20 @@ export default function SelectPredefinedBoundaryPage () {
           setLocationBoundaries([...locationBoundaries, locationBoundary])
         )
         : dispatch(setLocationBoundaries([locationBoundary]))
-      dispatch(setCurrentLocationGeometry({geoJson: JSON.stringify(locationBoundary.boundary)}))
+      dispatch(
+        setCurrentLocationGeometry({
+          geoJson: JSON.stringify(locationBoundary.boundary)
+        })
+      )
       // This might change at a later date, but store in the additional name field for now
-      dispatch(setCurrentLocationName(locationBoundary.boundary_type+', '+locationBoundary.boundary.properties.layer))
+      dispatch(
+        setCurrentLocationName(
+          locationBoundary.boundary_type +
+            ', ' +
+            locationBoundary.boundary.properties.layer
+        )
+      )
+      dispatch(setConsecutiveBoundariesAdded(consecutiveBoundariesAdded + 1))
       navigate(orgManageLocationsUrls.add.predefinedBoundary.addAnother)
     }
   }

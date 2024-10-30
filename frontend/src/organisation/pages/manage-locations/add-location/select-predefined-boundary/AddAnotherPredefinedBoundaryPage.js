@@ -1,15 +1,35 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
+import { setConsecutiveBoundariesAdded } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function AddAnotherPredefinedBoundaryPage () {
+  const dispatch = useDispatch()
   const navigate = useNavigate()
+  const consecutiveBoundariesAdded = useSelector(
+    (state) => state.session.consecutiveBoundariesAdded
+  )
+
+  console.log('boundaries added', consecutiveBoundariesAdded)
 
   const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
+  }
+
+  const navigateToNextPage = (event) => {
+    event.preventDefault()
+
+    const multipleBoundariesAdded = consecutiveBoundariesAdded > 1
+
+    dispatch(setConsecutiveBoundariesAdded(0))
+
+    multipleBoundariesAdded
+      ? navigate(orgManageLocationsUrls.view.dashboard)
+      : navigate(orgManageLocationsUrls.view.viewLocation)
   }
 
   return (
@@ -27,7 +47,7 @@ export default function AddAnotherPredefinedBoundaryPage () {
                   navigate(orgManageLocationsUrls.add.predefinedBoundary.select)}
               />
               <Link
-                onClick={() => navigate(orgManageLocationsUrls.add.options)}
+                onClick={navigateToNextPage}
                 className='govuk-body govuk-link inline-link govuk-!-margin-left-2'
               >
                 I'm finished

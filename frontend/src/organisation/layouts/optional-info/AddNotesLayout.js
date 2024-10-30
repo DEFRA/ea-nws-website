@@ -10,7 +10,7 @@ import {
   setCurrentLocationNotes,
   setOrgCurrentContactNotes
 } from '../../../common/redux/userSlice'
-export default function AddNotesLayout({
+export default function AddNotesLayout ({
   NavigateToNextPage,
   KeywordType,
   InstructionText

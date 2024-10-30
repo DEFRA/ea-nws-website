@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import AddNotesLayout from '../../../../layouts/optional-info/AddNotesLayout'
-export default function AddNotesPage() {
+export default function AddNotesPage () {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {
@@ -18,7 +18,7 @@ export default function AddNotesPage() {
     <>
       <AddNotesLayout
         NavigateToNextPage={NavigateToNextPage}
-        KeywordType={'location'}
+        KeywordType='location'
         InstructionText={instructionText}
       />
     </>

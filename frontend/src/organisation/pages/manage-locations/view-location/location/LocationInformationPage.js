@@ -10,6 +10,7 @@ import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 import RiskCategoryLabel from '../../../../components/custom/RiskCategoryLabel'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import ViewLocationSubNavigation from './location-information-components/ViewLocationSubNavigation'
 
 export default function LocationInformationPage() {
@@ -229,6 +230,10 @@ export default function LocationInformationPage() {
                 <Link
                   className='govuk-link govuk-!-display-inline-block'
                   style={{ float: 'right' }}
+                  to={
+                    orgManageLocationsUrls.view.individualLocation
+                      .ammendLocationDetails.optionalInformation.keyInformation
+                  }
                 >
                   Change
                 </Link>
@@ -273,7 +278,10 @@ export default function LocationInformationPage() {
                 <Link
                   className='govuk-link govuk-!-display-inline-block'
                   style={{ float: 'right' }}
-                  // to={}
+                  to={
+                    orgManageLocationsUrls.view.individualLocation
+                      .ammendLocationDetails.optionalInformation.keywords
+                  }
                 >
                   Change
                 </Link>
@@ -291,7 +299,10 @@ export default function LocationInformationPage() {
                 <Link
                   className='govuk-link govuk-!-display-inline-block'
                   style={{ float: 'right' }}
-                  // to={}
+                  to={
+                    orgManageLocationsUrls.view.individualLocation
+                      .ammendLocationDetails.optionalInformation.actionPlan
+                  }
                 >
                   Change
                 </Link>
@@ -309,7 +320,10 @@ export default function LocationInformationPage() {
                 <Link
                   className='govuk-link govuk-!-display-inline-block'
                   style={{ float: 'right' }}
-                  // to={}
+                  to={
+                    orgManageLocationsUrls.view.individualLocation
+                      .ammendLocationDetails.optionalInformation.notes
+                  }
                 >
                   Change
                 </Link>
@@ -330,21 +344,42 @@ export default function LocationInformationPage() {
               {!additionalData.internal_reference &&
                 additionalData.location_data_type !==
                   LocationDataType.BOUNDARY && (
-                  <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                  <Link
+                    className='govuk-!-display-block govuk-!-margin-bottom-1'
+                    to={
+                      orgManageLocationsUrls.view.individualLocation
+                        .ammendLocationDetails.optionalInformation
+                        .keyInformation
+                    }
+                  >
                     Add internal reference
                   </Link>
                 )}
               {!additionalData.business_criticality &&
                 additionalData.location_data_type !==
                   LocationDataType.BOUNDARY && (
-                  <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                  <Link
+                    className='govuk-!-display-block govuk-!-margin-bottom-1'
+                    to={
+                      orgManageLocationsUrls.view.individualLocation
+                        .ammendLocationDetails.optionalInformation
+                        .keyInformation
+                    }
+                  >
                     Add business criticality
                   </Link>
                 )}
               {!additionalData.location_type &&
                 additionalData.location_data_type !==
                   LocationDataType.BOUNDARY && (
-                  <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                  <Link
+                    className='govuk-!-display-block govuk-!-margin-bottom-1'
+                    to={
+                      orgManageLocationsUrls.view.individualLocation
+                        .ammendLocationDetails.optionalInformation
+                        .keyInformation
+                    }
+                  >
                     Add location type
                   </Link>
                 )}

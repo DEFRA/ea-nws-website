@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { setCurrentLocation } from '../../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationsTable ({
+export default function LocationsTable({
   locations,
   displayedLocations,
   filteredLocations,
@@ -41,7 +41,7 @@ export default function LocationsTable ({
   const viewLocation = (e, location) => {
     e.preventDefault()
     dispatch(setCurrentLocation(location))
-    navigate(orgManageLocationsUrls.view.viewLocation)
+    navigate(orgManageLocationsUrls.view.individualLocation.view)
   }
 
   return (

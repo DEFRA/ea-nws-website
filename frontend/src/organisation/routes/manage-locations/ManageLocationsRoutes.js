@@ -36,10 +36,14 @@ import LocationDropPinEditPage from '../../pages/manage-locations/edit-location/
 import CannotChangeLocationLinePage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-line/CannotChangeLocationLinePage'
 import CannotChangeLocationPolygonPage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-polygon/CannotChangeLocationPolygonPage'
 import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/edit-individual-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
+import LocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
+import AddOrEditActionPlanPage from '../../pages/manage-locations/view-location/location/add-or-edit-individual-location-details/optionalInformation/action-plan/AddOrEditActionPlanPage'
+import AddOrEditKeyInformationPage from '../../pages/manage-locations/view-location/location/add-or-edit-individual-location-details/optionalInformation/key-information/AddOrEditKeyInformationPage'
+import AddOrEditNotesPage from '../../pages/manage-locations/view-location/location/add-or-edit-individual-location-details/optionalInformation/notes/AddOrEditNotes'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
-import LocationInformationPage from '../../pages/manage-locations/view-location/view-location-information/LocationInformationPage'
 
 const urlManageOrg = '/organisation/manage-locations'
+const urlManageOrgViewLocations = urlManageOrg + '/locations'
 const urlManageOrgAddLocations = '/organisation/manage-locations/add'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
 const urlManageOrgConfirmLocations = urlManageOrg + '/confirm'
@@ -47,8 +51,26 @@ const urlManageOrgConfirmLocations = urlManageOrg + '/confirm'
 // Manage location urls
 const orgManageLocationsUrls = {
   view: {
-    dashboard: urlManageOrg + '/view-locations',
-    viewLocation: urlManageOrg + '/location/view-location'
+    dashboard: urlManageOrgViewLocations,
+    individualLocation: {
+      view: urlManageOrgViewLocations + '/view',
+      ammendLocationDetails: {
+        location: {
+          edit: {
+            // options
+            // drop a pin or xy coord search
+          },
+          editPolygon: 'something',
+          editLine: 'something'
+        },
+        optionalInformation: {
+          actionPlan: urlManageOrgViewLocations + '/view/action-plan',
+          keyInformation: urlManageOrgViewLocations + '/view/key-information',
+          keywords: urlManageOrgViewLocations + '/view/keywords',
+          notes: urlManageOrgViewLocations + '/view/notes'
+        }
+      }
+    }
   },
   add: {
     addLocationWithinBoundaries: {},
@@ -136,8 +158,24 @@ const orgManageLocationRoutes = [
     component: <ViewLocationsDashboardPage />
   },
   {
-    path: orgManageLocationsUrls.view.viewLocation,
+    path: orgManageLocationsUrls.view.individualLocation.view,
     component: <LocationInformationPage />
+  },
+  // ammend location details
+  {
+    path: orgManageLocationsUrls.view.individualLocation.ammendLocationDetails
+      .optionalInformation.keyInformation,
+    component: <AddOrEditKeyInformationPage />
+  },
+  {
+    path: orgManageLocationsUrls.view.individualLocation.ammendLocationDetails
+      .optionalInformation.actionPlan,
+    component: <AddOrEditActionPlanPage />
+  },
+  {
+    path: orgManageLocationsUrls.view.individualLocation.ammendLocationDetails
+      .optionalInformation.notes,
+    component: <AddOrEditNotesPage />
   },
   // add
   {

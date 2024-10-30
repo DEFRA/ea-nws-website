@@ -11,7 +11,6 @@ import LocationPostCodeSearchPage from '../../pages/manage-locations/add-locatio
 import LocationPostCodeSearchResultsPage from '../../pages/manage-locations/add-location/manual-add-location/search/postcode/LocationPostCodeSearchResultsPage'
 import LocationXYCoordinatesSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/xy-coordinates/LocationXYCoordinatesSearchPage'
 import XYCoordinatesNotInEnglandPage from '../../pages/manage-locations/add-location/manual-add-location/search/xy-coordinates/XYCoordinatesNotInEnglandPage'
-import AddLocationNotInEnglandPage from '../../pages/manage-locations/add-location/manual-add-location/unmatched-locations/NotInEnglandPage'
 import AddActionPlan from '../../pages/manage-locations/add-location/optional-information/AddActionPlanPage'
 import AddKeyInformationPage from '../../pages/manage-locations/add-location/optional-information/AddKeyInformationPage'
 import KeywordsForThisLocationPage from '../../pages/manage-locations/add-location/optional-information/AddKeywordsForThisLocationPage'
@@ -240,10 +239,6 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.notInEngland,
     component: <NotInEnglandPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.notInEnglandLP,
-    component: <AddLocationNotInEnglandPage />
   },
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.selectHow,

@@ -7,7 +7,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function OptionalInformationLayout () {
+export default function OptionalInformationPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {

@@ -19,7 +19,7 @@ import AddNotesPage from '../../pages/manage-locations/add-location/optional-inf
 import AddOptionalAddress from '../../pages/manage-locations/add-location/optional-information/AddOptionalAddress'
 import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-information/OptionalInfoPage'
 import PredefinedBoundaryOptionalInfoPage from '../../pages/manage-locations/add-location/predefined-boundary/OptionalInfoPage'
-import SelectPredefinedBoundaryPage from '../../pages/manage-locations/add-location/select-predefined-boundary/SelectPredefinedBoundaryPage'
+import SelectPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/SelectPredefinedBoundaryPage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirmPage'
 import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'

@@ -2,6 +2,13 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
 import time
 
+# Keywords
+keywords_max = 50
+keyword_char_max = 20
+keyword_error_max = f'You can add a maximum of {keywords_max} keywords'
+keyword_error_char_max = f'Keywords must be {keyword_char_max} characters or less'
+keyword_error_duplicate = 'This keyword already exists'
+
 # Local host
 local_host = 'http://localhost:3000'
 
@@ -74,6 +81,7 @@ url_org_man_loc = {
         'xyCoordinatesSearch': url_org_man_loc_path + '/add/xy-coordinates-search',
         'locationInArea': url_org_man_loc_path + '/add/location-in-area',
         'xyCoordinatesNotInEngland': url_org_man_loc_path + '/add/xy-coordinates-not-in-england',
+        'dropPinNotInEngland': url_org_man_loc_path + '/add/drop-pin-not-in-england',
         'dropPinSearch': url_org_man_loc_path + '/add/drop-pin-search',
         'predefinedBoundary': {
             'add': url_org_man_loc_path + '/add/predefined-boundary'
@@ -116,6 +124,13 @@ url_org_man_loc = {
     }
 }
 
+url_org_man_cont_path = url_org + '/manage-contacts'
+url_org_man_cont = {
+    'add': {
+        'details': url_org_man_cont_path + '/add'
+    },
+}
+
 # org footer urls
 
 url_org_privacy_notice = url_org + '/privacy'
@@ -134,6 +149,14 @@ def navigate_to_unauth_page_via_index(browser, url_target):
     browser.get(url_index)
     button_text = 'Activate/Deactivate Empty profile - Used for sign up tests'
     click_button(browser, button_text, url_index)
+    browser.get(url_target)
+    assert browser.current_url == url_target
+    return browser
+
+# Navigate to authenticated page via index page and check url
+def navigate_to_auth_org_page_via_index(browser, url_target):
+    browser.get(url_index)
+    click_button(browser, 'Activate/Deactivate Mock Org Session 1', url_index)
     browser.get(url_target)
     assert browser.current_url == url_target
     return browser
@@ -223,18 +246,5 @@ def check_sign_back_in_page(browser):
     assert '/sign-back-in' in browser.current_url
     return check_h1_heading(browser, 'You need to sign back in to view this page')
 
-# ENTER TEXT
-# Enter input in text box
-def enter_input_text(browser, value, input_text, key='name'):
-    input_xpath = f"//input[@{key}='{value}']"
-    input_element = browser.find_element(By.XPATH, input_xpath)
-    input_element.clear()
-    input_element.send_keys(input_text)
 
-#SETUP Mock Profile
-def activate_mock_org_1(get_browser):
-    browser = get_browser
-    browser.get(url_index)
-    click_button(browser, 'Activate/Deactivate Mock Org Session 1', url_index)
-    time.sleep(1)
-    return browser
+

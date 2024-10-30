@@ -21,6 +21,9 @@ const userSlice = createSlice({
     selectedFloodAlertArea: null,
     showOnlySelectedFloodArea: null,
     nearbyTargetAreaFlow: null,
+    // keywords
+    locationKeywords: null,
+    contactKeywords: null,
     // required for predefined boundary flow
     selectedBoundaryType: null,
     selectedBoundary: null,
@@ -28,8 +31,9 @@ const userSlice = createSlice({
     consecutiveBoundariesAdded: 0,
     // org location data
     currentLocation: {
+      // name is the UPRN
       name: null,
-      // address is the UPRN
+      // address is the human readable address or flood area name
       address: null,
       // Coordinates in dd (degrees decimal)
       coordinates: null,
@@ -53,6 +57,16 @@ const userSlice = createSlice({
           location_data_type: null
         }
       }
+    },
+    // org contact data
+    orgCurrentContact: {
+      enabled: null,
+      firstName: null,
+      lastName: null,
+      emails: null,
+      mobilePhones: null,
+      homePhones: null,
+      position: null
     }
   },
   reducers: {
@@ -121,6 +135,13 @@ const userSlice = createSlice({
     },
     setConsecutiveBoundariesAdded: (state, action) => {
       state.consecutiveBoundariesAdded = action.payload
+    },
+    // keywords - temporary
+    setLocationKeywords: (state, action) => {
+      state.locationKeywords = action.payload
+    },
+    setContactKeywords: (state, action) => {
+      state.contactKeywords = action.payload
     },
     // org location data
     setCurrentLocation: (state, action) => {
@@ -216,6 +237,37 @@ const userSlice = createSlice({
       state.currentLocation.meta_data.location_additional.location_data_type =
         action.payload
     },
+    // org contact data
+    setOrgCurrentContact: (state, action) => {
+      state.orgCurrentContact.enabled = action.payload.enabled
+      state.orgCurrentContact.firstName = action.payload.firstName
+      state.orgCurrentContact.lastName = action.payload.lastName
+      state.orgCurrentContact.emails = action.payload.emails
+      state.orgCurrentContact.mobilePhones = action.payload.mobilePhones
+      state.orgCurrentContact.homePhones = action.payload.homePhones
+      state.orgCurrentContact.position = action.payload.position
+    },
+    setOrgCurrentContactEnabled: (state, action) => {
+      state.orgCurrentContact.enabled = action.payload
+    },
+    setOrgCurrentContactFirstName: (state, action) => {
+      state.orgCurrentContact.firstName = action.payload
+    },
+    setOrgCurrentContactLastName: (state, action) => {
+      state.orgCurrentContact.lastName = action.payload
+    },
+    setOrgCurrentContactEmails: (state, action) => {
+      state.orgCurrentContact.emails = action.payload
+    },
+    setOrgCurrentContactHomePhones: (state, action) => {
+      state.orgCurrentContact.homePhones = action.payload
+    },
+    setOrgCurrentContactMobilePhones: (state, action) => {
+      state.orgCurrentContact.mobilePhones = action.payload
+    },
+    setOrgCurrentContactPosition: (state, action) => {
+      state.orgCurrentContact.position = action.payload
+    },
     // Clear state
     clearAuth: (state) => {
       state.authToken = null
@@ -238,8 +290,9 @@ const userSlice = createSlice({
       // required for predefined boundary flow
       state.selectedBoundaryType = null
       state.selectedBoundary = null
-      state.locationBoundaries = null
-      state.consecutiveBoundariesAdded = 0
+      // keywords - temporary
+      state.locationKeywords = null
+      state.contactKeywords = null
       // org location data
       state.currentLocation = {
         name: null,
@@ -263,6 +316,15 @@ const userSlice = createSlice({
             location_data_type: null
           }
         }
+      }
+      state.orgCurrentContact = {
+        enabled: null,
+        firstName: null,
+        lastName: null,
+        emails: null,
+        mobilePhones: null,
+        homePhones: null,
+        position: null
       }
     }
   }
@@ -293,6 +355,9 @@ export const {
   setSelectedBoundary,
   setLocationBoundaries,
   setConsecutiveBoundariesAdded,
+  // keywords - temporary
+  setLocationKeywords,
+  setContactKeywords,
   // org location data
   setCurrentLocation,
   setCurrentLocationUPRN,
@@ -312,6 +377,15 @@ export const {
   setCurrentLocationNotes,
   setCurrentLocationKeywords,
   setCurrentLocationDataType,
+  // org current contact
+  setOrgCurrentContact,
+  setOrgCurrentContactEnabled,
+  setOrgCurrentContactFirstName,
+  setOrgCurrentContactLastName,
+  setOrgCurrentContactEmails,
+  setOrgCurrentContactHomePhones,
+  setOrgCurrentContactMobilePhones,
+  setOrgCurrentContactPosition,
   // clear state
   clearAuth
 } = userSlice.actions

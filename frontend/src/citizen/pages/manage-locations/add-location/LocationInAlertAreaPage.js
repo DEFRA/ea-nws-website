@@ -29,7 +29,7 @@ export default function LocationInAlertAreaPage () {
         name = selectedFloodAlertArea.properties.TA_NAME
       }
     } else {
-      name = selectedLocation.name
+      name = selectedLocation.address
     }
 
     navigate('/home', {

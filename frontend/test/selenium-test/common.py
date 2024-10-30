@@ -1,8 +1,13 @@
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 import time
+
+# Keywords
+keywords_max = 50
+keyword_char_max = 20
+keyword_error_max = f'You can add a maximum of {keywords_max} keywords'
+keyword_error_char_max = f'Keywords must be {keyword_char_max} characters or less'
+keyword_error_duplicate = 'This keyword already exists'
 
 # Local host
 local_host = 'http://localhost:3000'
@@ -147,6 +152,14 @@ def navigate_to_unauth_page_via_index(browser, url_target):
     assert browser.current_url == url_target
     return browser
 
+# Navigate to authenticated page via index page and check url
+def navigate_to_auth_org_page_via_index(browser, url_target):
+    browser.get(url_index)
+    click_button(browser, 'Activate/Deactivate Mock Org Session 1', url_index)
+    browser.get(url_target)
+    assert browser.current_url == url_target
+    return browser
+
 # CLICK / SELECT
 # Click on a button and check url
 def click_button(browser, button_text, url_button):
@@ -234,10 +247,3 @@ def check_sign_back_in_page(browser):
 
 
 
-#SETUP Mock Profile
-def activate_mock_org_1(get_browser):
-    browser = get_browser
-    browser.get(url_index)
-    click_button(browser, 'Activate/Deactivate Mock Org Session 1', url_index)
-    time.sleep(1)
-    return browser

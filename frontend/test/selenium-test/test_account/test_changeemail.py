@@ -50,7 +50,7 @@ def test_changeemail_empty(get_browser):
     browser.execute_script("arguments[0].click();", button_element)
     time.sleep(3)
     assert browser.current_url == url
-    assert " Enter your email address" in browser.page_source
+    assert "Enter your email address" in browser.page_source
     error_xpath = f"//div[contains(@class, 'govuk-error-summary')]"
     assert check_exists_by_xpath(browser, error_xpath)
 

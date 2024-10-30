@@ -1,4 +1,4 @@
-import { React, useEffect, useState } from 'react'
+import { React, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -24,24 +24,6 @@ export default function AddContactDetailsPage () {
 
   const charLimit = 20
 
-  useEffect(() => {
-    if (firstName.length < charLimit) {
-      setFirstNameError('')
-    }
-  }, [firstName])
-
-  useEffect(() => {
-    if (lastName.length < charLimit) {
-      setLastNameError('')
-    }
-  }, [lastName])
-
-  useEffect(() => {
-    if (jobTitle.length < charLimit) {
-      setJobTitleError('')
-    }
-  }, [jobTitle])
-
   const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
@@ -61,19 +43,37 @@ export default function AddContactDetailsPage () {
     }
   }
 
-  const handleSubmit = () => {
+  const checkMandatory = () => {
+    let mandatoryMissing = false
     if (!firstName) {
       setFirstNameError('Enter first name')
+      mandatoryMissing = true
     }
     if (!lastName) {
       setLastNameError('Enter last name')
+      mandatoryMissing = true
     }
-    if (lastName && firstName && !jobTitleError) {
+    return mandatoryMissing
+  }
+
+  const validateData = () => {
+    let dataValid = true
+    const mandatoryMissing = checkMandatory()
+    if (firstNameError || lastNameError || jobTitleError || mandatoryMissing) {
+      dataValid = false
+    }
+    return dataValid
+  }
+
+  const handleSubmit = () => {
+    const dataValid = validateData()
+    if (dataValid) {
       dispatch(setOrgCurrentContactFirstName(firstName))
-      dispatch(setOrgCurrentContactLastName(firstName))
+      dispatch(setOrgCurrentContactLastName(lastName))
       if (jobTitle) {
         dispatch(setOrgCurrentContactPosition(jobTitle))
       }
+      // TO DO - to keywords
       navigate(-1)
     }
   }

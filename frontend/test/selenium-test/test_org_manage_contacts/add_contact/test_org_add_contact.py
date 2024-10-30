@@ -1,5 +1,3 @@
-import pytest
-from selenium import webdriver
 from common import *
 
 url_add_contact_details = url_org_man_cont.get('add').get('details')

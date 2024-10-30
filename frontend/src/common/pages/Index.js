@@ -10,11 +10,12 @@ import {
   setContactPreferences,
   setCurrentLocation,
   setCurrentLocationCoordinates,
+  setOrgCurrentContact,
   setProfile,
   setRegistrations
 } from '../redux/userSlice'
 
-export default function IndexPage () {
+export default function IndexPage() {
   const dispatch = useDispatch()
   const [mockSessionActive, setmockSessionActive] = useState(false)
   const [emptyProfileActive, setEmptyProfileActive] = useState(false)
@@ -283,9 +284,12 @@ export default function IndexPage () {
     ]
   }
 
-  function uuidv4 () {
-    return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, c =>
-      (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+  function uuidv4() {
+    return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) =>
+      (
+        +c ^
+        (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))
+      ).toString(16)
     )
   }
 
@@ -314,7 +318,21 @@ export default function IndexPage () {
     }
   }
 
-  function mockSession (profile) {
+  const mockOrgCurrentContact = {
+    enabled: null,
+    firstName: null,
+    lastName: null,
+    emails: null,
+    mobilePhones: null,
+    homePhones: null,
+    position: null,
+    additionals: {
+      keywords: null,
+      notes: null
+    }
+  }
+
+  function mockSession(profile) {
     if (mockSessionActive === false) {
       const authToken = uuidv4()
       const contactPreferences = ['Text']
@@ -359,6 +377,7 @@ export default function IndexPage () {
       dispatch(setCurrentLocation(mockCurrentLocation))
       const coordinates = { latitude: 50.84106, longitude: -1.05814 }
       dispatch(setCurrentLocationCoordinates(coordinates))
+      dispatch(setOrgCurrentContact(mockOrgCurrentContact))
       setmockSessionActive(true)
     } else {
       dispatch(clearAuth())
@@ -366,7 +385,7 @@ export default function IndexPage () {
     }
   }
 
-  function mockEmptyProfileWithNoAuthentication () {
+  function mockEmptyProfileWithNoAuthentication() {
     if (!emptyProfileActive) {
       const emptyProfile = {
         id: '',

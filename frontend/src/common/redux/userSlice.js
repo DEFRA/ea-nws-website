@@ -61,7 +61,7 @@ const userSlice = createSlice({
       mobilePhones: null,
       homePhones: null,
       position: null,
-      additional: {
+      additionals: {
         keywords: null,
         notes: null
       }
@@ -227,7 +227,7 @@ const userSlice = createSlice({
       state.orgCurrentContact.mobilePhones = action.payload.mobilePhones
       state.orgCurrentContact.homePhones = action.payload.homePhones
       state.orgCurrentContact.position = action.payload.position
-      state.orgCurrentContact.additional = action.payload.additional
+      state.orgCurrentContact.additionals = action.payload.additionals
     },
     setOrgCurrentContactEnabled: (state, action) => {
       state.orgCurrentContact.enabled = action.payload
@@ -251,10 +251,10 @@ const userSlice = createSlice({
       state.orgCurrentContact.position = action.payload
     },
     setOrgCurrentContactKeywords: (state, action) => {
-      state.orgCurrentContact.additional.keywords = action.payload
+      state.orgCurrentContact.additionals.keywords = action.payload
     },
     setOrgCurrentContactNotes: (state, action) => {
-      state.orgCurrentContact.additional.notes = action.payload
+      state.orgCurrentContact.additionals.notes = action.payload
     },
     // Clear state
     clearAuth: (state) => {
@@ -309,7 +309,7 @@ const userSlice = createSlice({
         mobilePhones: null,
         homePhones: null,
         position: null,
-        additional: {
+        additionals: {
           keywords: null,
           notes: null
         }

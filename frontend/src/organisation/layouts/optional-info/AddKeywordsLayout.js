@@ -11,9 +11,8 @@ import {
   setCurrentLocationKeywords,
   setLocationKeywords
 } from '../../../common/redux/userSlice'
-import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AddKeywordsLayout ({ keywordType }) {
+export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -93,7 +92,7 @@ export default function AddKeywordsLayout ({ keywordType }) {
     }
   }
 
-  const handleButton = () => {
+  const handleSubmit = () => {
     const firstCheckedIndex = isCheckboxCheckedArray.indexOf(true)
     let keywordsString = ''
 
@@ -118,7 +117,7 @@ export default function AddKeywordsLayout ({ keywordType }) {
         if (currentKeyword === storedKeywords[j].name) {
           keywordExists = true
 
-          // Remove location if it exists but is unchecked
+          // Remove location if it exists but keyword is unchecked
           if (
             storedKeywords[j].linked_ids.includes(locationName) &&
             !currentKeywordChecked
@@ -134,7 +133,7 @@ export default function AddKeywordsLayout ({ keywordType }) {
             }
           }
 
-          // Add location if it doesn't exist and is checked
+          // Add location if it doesn't exist and keyword is checked
           if (
             !storedKeywords[j].linked_ids.includes(locationName) &&
             currentKeywordChecked
@@ -148,6 +147,7 @@ export default function AddKeywordsLayout ({ keywordType }) {
         }
       }
 
+      // Add keyword and location if it is checked and keyword doesn't exist
       if (!keywordExists && currentKeywordChecked) {
         storedKeywords = [
           ...storedKeywords,
@@ -161,7 +161,7 @@ export default function AddKeywordsLayout ({ keywordType }) {
 
     dispatch(setLocationKeywords(storedKeywords))
     dispatch(setCurrentLocationKeywords(keywordsString))
-    navigate(orgManageLocationsUrls.add.optionalInformation.addActionPlan)
+    NavigateToNextPage()
   }
 
   const navigateBack = (event) => {
@@ -248,7 +248,7 @@ export default function AddKeywordsLayout ({ keywordType }) {
               <Button
                 text='Continue'
                 className='govuk-button'
-                onClick={handleButton}
+                onClick={handleSubmit}
               />
             </div>
           </div>

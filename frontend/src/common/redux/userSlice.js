@@ -143,13 +143,6 @@ const userSlice = createSlice({
     setConsecutiveBoundariesAdded: (state, action) => {
       state.consecutiveBoundariesAdded = action.payload
     },
-    // keywords - temporary
-    setLocationKeywords: (state, action) => {
-      state.locationKeywords = action.payload
-    },
-    setContactKeywords: (state, action) => {
-      state.contactKeywords = action.payload
-    },
     // org location data
     setCurrentLocation: (state, action) => {
       state.currentLocation.name = action.payload.name
@@ -368,9 +361,6 @@ export const {
   setSelectedBoundary,
   setLocationBoundaries,
   setConsecutiveBoundariesAdded,
-  // keywords - temporary
-  setLocationKeywords,
-  setContactKeywords,
   // org location data
   setCurrentLocation,
   setCurrentLocationUPRN,

@@ -60,6 +60,11 @@ def test_uncheck_keywords(get_browser):
     assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idEast']")
     click_button(get_browser, 'Continue', url_next_page)
     assert check_h1_heading(get_browser, 'Action plan (optional)')
+    click_link(get_browser, "Back", current_url)
+    assert not check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idSouth']")
+    assert not check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idEast']")
+    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idNorth']")
+    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idWest']")
 
 def test_max_keywords(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)

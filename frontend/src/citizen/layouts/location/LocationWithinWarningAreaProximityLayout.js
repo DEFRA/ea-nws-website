@@ -118,7 +118,7 @@ export default function LocationWithinWarningAreaProximityLayout ({
                   <h1 className='govuk-heading-l govuk-!-margin-top-6'>
                     You can get flood messages near this location
                   </h1>
-                  <InsetText text={selectedLocation.name} />
+                  <InsetText text={selectedLocation.address} />
                   <p>
                     Flood message areas nearby are highlighted in{' '}
                     {type === 'severe' ? 'red' : 'orange'} on the map.

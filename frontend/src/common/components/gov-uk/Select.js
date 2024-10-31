@@ -1,14 +1,22 @@
-import React from 'react'
+import React, { useState } from 'react'
 
 export default function Select ({
   label,
   options,
   name,
-  onChange,
+  onSelect,
   hint,
-  error = ''
+  error = '',
+  initialSelectOptionText,
+  disabledOptions = []
 }) {
-  const optionsSize = options.length
+  const [selectedOption, setSelectedOption] = useState('')
+  const handleSelectChange = (event) => {
+    const selectedValue = event.target.value
+    setSelectedOption(selectedValue)
+    onSelect(selectedValue)
+  }
+
   return (
     <div
       className={
@@ -17,7 +25,7 @@ export default function Select ({
           : 'govuk-form-group govuk-form-group--error'
       }
     >
-      <label className='govuk-label' htmlFor={'id' + label}>
+      <label className='govuk-label' htmlFor={'id' + name}>
         {label}
       </label>
       <div htmlFor={'id' + hint} className='govuk-hint'>
@@ -25,7 +33,7 @@ export default function Select ({
       </div>
       {error !== '' && (
         <p id='govuk-text-input-error' className='govuk-error-message'>
-          <span className='govuk-visually-hidden'>Error:</span> {error}
+          {error}
         </p>
       )}
       <select
@@ -35,17 +43,25 @@ export default function Select ({
         id={'id' + name}
         name={name}
         aria-describedby={hint}
-        onChange={onChange}
+        onChange={handleSelectChange}
+        value={selectedOption}
       >
-        <option value='choose' selected>
-          Select from {optionsSize} address{optionsSize > 1 ? 'es' : ''} partly
-          matched
+        <option value='' disabled>
+          {initialSelectOptionText}
         </option>
-        {options.map((option, index) => (
-          <option key={index} value={option.value}>
-            {option.label}
-          </option>
-        ))}
+        {options.map((option, index) =>
+          disabledOptions.includes(option)
+            ? (
+              <option key={index} value={option} disabled>
+                {option}
+              </option>
+              )
+            : (
+              <option key={index} value={option}>
+                {option}
+              </option>
+              )
+        )}
       </select>
     </div>
   )

@@ -154,7 +154,74 @@
 }
 
 .inline-button button {
-  margin-top: -1.5rem; /* Adjust the value as needed */
+  margin-top: -1.5rem;
+}
+
+.popup-dialog {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #0b0c0c99;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.popup-dialog-container {
+  width: 80%;
+  max-width: 650px;
+  background-color: white;
+  border-style: solid;
+  border-width: medium;
+}
+
+.popup-dialog-header {
+  background-color: black;
+  color: white;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0.5rem 1rem;
+}
+
+/* Close button */
+.popup-close-btn {
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  padding-left: 1rem;
+}
+
+.popup-close-txt {
+  font-size: 20px;
+  color: white;
+  margin: 0;
+}
+
+.popup-dialog-body {
+  background-color: white;
+  padding: 1.5rem 1.5rem 0rem 1.5rem;
+}
+
+.popup-dialog-flex {
+  display: flex;
+  justify-content: start;
+  justify-items: start;
+  gap: 2rem;
+}
+
+.popup-dialog-link {
+  width: 100%;
+}
+
+@media (min-width: 40.0625em) {
+  .popup-dialog-link {
+    width: auto;
+  }
 }
 
 .timeout-dialog {
@@ -1046,8 +1113,8 @@
 }
 
 .keyword-search-button:hover {
-  background-color: #005a30;;
-  border-color: #005a30;;
+  background-color: #005a30;
+  border-color: #005a30;
 }
 
 .input-icon {
@@ -1061,7 +1128,6 @@
 .govuk-input-icon {
   padding-left: 35px;
 }
-
 
 .org-flood-warning-key {
   display: flex;
@@ -1136,7 +1202,7 @@
 }
 
 [aria-sort] button:before {
-  content: " ▼";
+  content: ' ▼';
   position: absolute;
   right: -1px;
   top: 9px;
@@ -1144,28 +1210,28 @@
 }
 
 [aria-sort] button:after {
-  content: " ▲";
+  content: ' ▲';
   position: absolute;
   right: -1px;
   top: 1px;
   font-size: 0.5em;
 }
 
-[aria-sort=ascending] button:before,
-[aria-sort=descending] button:before {
+[aria-sort='ascending'] button:before,
+[aria-sort='descending'] button:before {
   content: none;
 }
 
-[aria-sort=ascending] button:after {
-  content: " ▲";
+[aria-sort='ascending'] button:after {
+  content: ' ▲';
   font-size: 0.8em;
   position: absolute;
   right: -5px;
   top: 2px;
 }
 
-[aria-sort=descending] button:after {
-  content: " ▼";
+[aria-sort='descending'] button:after {
+  content: ' ▼';
   font-size: 0.8em;
   position: absolute;
   right: -5px;

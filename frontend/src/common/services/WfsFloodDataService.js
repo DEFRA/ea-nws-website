@@ -243,3 +243,36 @@ function getHighestRiskRating (areas, ratingOrder) {
 
   return highestRating
 }
+
+export const getBoundaryTypes = async () => {
+  // describe feature types
+  const WFSParams = {
+    service: 'WFS',
+    map: 'uk-ob.qgz',
+    version: '1.1.0',
+    request: 'DescribeFeatureType',
+    outputFormat: 'GEOJSON'
+  }
+
+  const { data: wfsFeatureTypes } = await backendCall(WFSParams, 'api/wfs')
+
+  return wfsFeatureTypes.featureTypes.map((featureType) => {
+    return featureType.typeName
+  })
+}
+
+export const getBoundaries = async (name) => {
+  // get feature
+  const WFSParams = {
+    service: 'WFS',
+    map: 'uk-ob.qgz',
+    version: '1.1.0',
+    request: 'GetFeature',
+    typename: name,
+    outputFormat: 'GEOJSON'
+  }
+
+  const { data: wfsBoundaries } = await backendCall(WFSParams, 'api/wfs')
+
+  return wfsBoundaries
+}

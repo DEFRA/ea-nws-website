@@ -53,17 +53,21 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
 
       const isError = !warningArea && !alertArea
 
-      const isInAlertArea = alertArea && isLocationInFloodArea(
-        selectedLocation.coordinates.latitude,
-        selectedLocation.coordinates.longitude,
-        alertArea
-      )
+      const isInAlertArea =
+        alertArea &&
+        isLocationInFloodArea(
+          selectedLocation.coordinates.latitude,
+          selectedLocation.coordinates.longitude,
+          alertArea
+        )
 
-      const isInWarningArea = warningArea && isLocationInFloodArea(
-        selectedLocation.coordinates.latitude,
-        selectedLocation.coordinates.longitude,
-        warningArea
-      )
+      const isInWarningArea =
+        warningArea &&
+        isLocationInFloodArea(
+          selectedLocation.coordinates.latitude,
+          selectedLocation.coordinates.longitude,
+          warningArea
+        )
 
       let isWithinWarningAreaProximity = false
       let isWithinAlertAreaProximity = false
@@ -138,7 +142,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
                                 onClick={(event) =>
                                   handleSelectedLocation(event, location)}
                               >
-                                {location.name}
+                                {location.address}
                               </Link>
                             </td>
                           </tr>
@@ -158,9 +162,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
                         </Link>
                         )}
                     <Pagination
-                      totalPages={Math.ceil(
-                        locations.length / locationsPerPage
-                      )}
+                      totalPages={Math.ceil(locations.length / locationsPerPage)}
                       onPageChange={(val) => setCurrentPage(val)}
                     />
                   </div>

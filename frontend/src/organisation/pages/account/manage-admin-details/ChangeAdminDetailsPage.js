@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import BackLink from '../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
@@ -23,7 +23,7 @@ export default function ChangeAdminDetailsPage () {
   )
   const currentEmail = useSelector(
     (state) => state.session.profile.emails[0]
-  ) 
+  )
 
   const currentFullName = currentFirstName + ' ' + currentLastName
 
@@ -31,10 +31,9 @@ export default function ChangeAdminDetailsPage () {
   const [fullName, setFullName] = useState(null)
   const [errorName, setErrorName] = useState('')
   const [errorEmail, setErrorEmail] = useState('')
-  const [error,setError] = useState('')
+  const [error, setError] = useState('')
   const profile = useSelector((state) => state.session.profile)
   const authToken = useSelector((state) => state.session.authToken)
-
 
   const navigateBack = (event) => {
     event.preventDefault()
@@ -42,80 +41,76 @@ export default function ChangeAdminDetailsPage () {
   }
 
   const updateProfile = async (profile, authToken) => {
-  const dataToSend = { profile, authToken }
-  const { errorMessage} = await backendCall(
-    dataToSend,
-    'api/profile/update',
-    navigate
-  )
-  if (errorMessage !== null) {
-    setError(errorMessage)
-  }
-}
-
-const handleSubmit = async () => {
-  let emailValidationError = ''
-  if(email !== null){
-    emailValidationError = emailValidation(email)
-    setErrorEmail(emailValidationError)
-  }
-  let fullNameValidationError = ''
-  if (fullName !== null){
-    fullNameValidationError = fullNameValidation(fullName)
-   setErrorName(fullNameValidationError)
-  }
-  
-
-  if(emailValidationError==='' && fullNameValidationError===''){
-    let updatedProfile = profile
-  if (fullName) {
-    const [firstname, ...lastnameParts] = fullName.trim().split(' ')
-    const lastname = lastnameParts.join(' ')
-    updatedProfile = addAccountName(updatedProfile, firstname, lastname)
-  }
-  if (email) {
-    updatedProfile = addUnverifiedContact(updatedProfile, 'email', email)
-  }
-  await updateProfile(updatedProfile, authToken)
-  if (email) {
-    const dataToSend = {email, authToken}  
+    const dataToSend = { profile, authToken }
     const { errorMessage } = await backendCall(
       dataToSend,
-      'api/add_contact/email/add',
+      'api/profile/update',
       navigate
     )
     if (errorMessage !== null) {
       setError(errorMessage)
-    } else {
-      dispatch(setCurrentContact(email))
     }
-  }
-  if (!error) {
-    dispatch(setProfile(updatedProfile))
-    if (email) {
-      navigate('/email verification page', {
-        state: {
-          changeName: fullName,
-          changeEmail: email
-        }
-      })
-    } else if (fullName && !email) {
-      navigate('/account page', {
-        state: {
-          changeName: fullName,
-          changeEmail: currentEmail
-        }
-      })
-    }else{
-      navigate(accountUrls.admin.details)
-    }
-  }
   }
 
-  
-}
-  
-    
+  const handleSubmit = async () => {
+    let emailValidationError = ''
+    if (email !== null) {
+      emailValidationError = emailValidation(email)
+      setErrorEmail(emailValidationError)
+    }
+    let fullNameValidationError = ''
+    if (fullName !== null) {
+      fullNameValidationError = fullNameValidation(fullName)
+      setErrorName(fullNameValidationError)
+    }
+
+    if (emailValidationError === '' && fullNameValidationError === '') {
+      let updatedProfile = { ...profile }
+      if (fullName) {
+        const [firstname, ...lastnameParts] = fullName.trim().split(' ')
+        const lastname = lastnameParts.join(' ')
+        updatedProfile = addAccountName(updatedProfile, firstname, lastname)
+      }
+      if (email) {
+        updatedProfile = addUnverifiedContact(updatedProfile, 'email', email)
+      }
+      await updateProfile(updatedProfile, authToken)
+      if (email) {
+        const dataToSend = { email, authToken }
+        const { errorMessage } = await backendCall(
+          dataToSend,
+          'api/add_contact/email/add',
+          navigate
+        )
+        if (errorMessage !== null) {
+          setError(errorMessage)
+        } else {
+          dispatch(setCurrentContact(email))
+        }
+      }
+      if (!error) {
+        dispatch(setProfile(updatedProfile))
+        if (email) {
+          navigate(accountUrls.admin.verifyEmail, {
+            state: {
+              changeName: fullName,
+              changeEmail: email
+            }
+          })
+        } else if (fullName && !email) {
+          navigate(accountUrls.admin.details, {
+            state: {
+              changeName: fullName,
+              changeEmail: currentEmail
+            }
+          })
+        } else {
+          navigate(accountUrls.admin.verifyEmail)
+        }
+      }
+    }
+  }
+
   return (
     <>
       <OrganisationAccountNavigation />
@@ -123,9 +118,9 @@ const handleSubmit = async () => {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half' />
-          {(error||errorEmail||errorName) && (
+          {(error || errorEmail || errorName) && (
             <ErrorSummary
-              errorList={[error,errorEmail,errorName]}
+              errorList={[error, errorEmail, errorName]}
             />
           )}
           <h1 className='govuk-heading-l'>

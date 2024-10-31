@@ -34,7 +34,9 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
       : []
   )
 
-  if (currentKeywords.length !== 0) { currentKeywords = currentKeywords.split(', ') }
+  if (currentKeywords.length !== 0) {
+    currentKeywords = currentKeywords.split(',')
+  }
   const checkboxArray = Array(currentKeywords.length).fill(true)
   const [keywordError, setKeywordError] = useState('')
   const [keywordsArray, setKeywordsArray] = useState([...currentKeywords])
@@ -135,7 +137,6 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
         if (currentKeyword === orgKeywords[j].name) {
           keywordExists = true
 
-          // Remove location if it exists but keyword is unchecked
           if (
             orgKeywords[j].linked_ids.includes(locationName) &&
             !currentKeywordChecked
@@ -143,19 +144,21 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
             const originalArray = orgKeywords[j].linked_ids
             const indexToDelete = originalArray.indexOf(locationName)
 
+            // Remove location if it exists but keyword is unchecked
             orgKeywords[j] = {
               name: currentKeyword,
               linked_ids: originalArray.filter(
                 (_, index) => index !== indexToDelete
               )
             }
-          }
 
-          // Add location if it doesn't exist and keyword is checked
-          if (
+            // Remove keyword if no linked ids found
+            if (orgKeywords[j].linked_ids.length === 0) orgKeywords.splice(j, 1)
+          } else if (
             !orgKeywords[j].linked_ids.includes(locationName) &&
             currentKeywordChecked
           ) {
+            // Add location if it doesn't exist and keyword is checked
             orgKeywords[j] = {
               name: currentKeyword,
               linked_ids: [...orgKeywords[j].linked_ids, locationName]
@@ -192,8 +195,8 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
   }, [searchInput])
 
   useEffect(() => {
-    setKeywords(orgKeywords)
-  }, [orgKeywords])
+    setKeywords(orgKeywordsOriginal)
+  }, [orgKeywordsOriginal])
 
   return (
     <>
@@ -263,6 +266,7 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
                   results={results}
                   position='absolute'
                   showNotFound={false}
+                  nameField='name'
                 />
                 <Button
                   text='Add keyword'

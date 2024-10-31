@@ -3,10 +3,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
+import Autocomplete from '../../../common/components/gov-uk/Autocomplete'
 import Button from '../../../common/components/gov-uk/Button'
 import Checkbox from '../../../common/components/gov-uk/CheckBox'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
-import Input from '../../../common/components/gov-uk/Input'
 import {
   setCurrentLocationKeywords,
   setLocationKeywords
@@ -16,32 +16,34 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const storedKeywordsOriginal = useSelector((state) =>
+  const orgKeywordsOriginal = useSelector((state) =>
     keywordType === 'location' && state.session.locationKeywords
       ? state.session.locationKeywords
       : []
   )
-  let storedKeywords = [...storedKeywordsOriginal]
+  let orgKeywords = [...orgKeywordsOriginal]
 
   const locationName = useSelector(
     (state) => state.session.currentLocation.name
   )
 
-  let savedKeywords = useSelector((state) =>
+  let currentKeywords = useSelector((state) =>
     keywordType === 'location' &&
     state.session.currentLocation.meta_data.location_additional.keywords
       ? state.session.currentLocation.meta_data.location_additional.keywords
       : []
   )
 
-  if (savedKeywords.length !== 0) savedKeywords = savedKeywords.split(', ')
-  const checkboxArray = Array(savedKeywords.length).fill(true)
+  if (currentKeywords.length !== 0) { currentKeywords = currentKeywords.split(', ') }
+  const checkboxArray = Array(currentKeywords.length).fill(true)
   const [keywordError, setKeywordError] = useState('')
-  const [keyword, setKeyword] = useState('')
-  const [keywordsArray, setKeywordsArray] = useState([...savedKeywords])
+  const [keywordsArray, setKeywordsArray] = useState([...currentKeywords])
   const [isCheckboxCheckedArray, setIsCheckboxCheckedArray] = useState([
     ...checkboxArray
   ])
+  const [results, setResults] = useState(null)
+  const [keywords, setKeywords] = useState([])
+  const [searchInput, setSearchInput] = useState(null)
 
   const maxKeywords = 50
   const maxKeywordChar = 20
@@ -70,11 +72,27 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
     setIsCheckboxCheckedArray([...isCheckboxCheckedArray])
   }
 
+  const handleOnClick = (value) => {
+    setSearchInput(value.name)
+  }
+
+  const handleOnChange = (value) => {
+    setSearchInput(value)
+    if (value) {
+      const updatedFilter = keywords.filter((keyword) =>
+        keyword.name.toLowerCase().includes(value.toLowerCase())
+      )
+      setResults(updatedFilter)
+    } else {
+      setResults(null)
+    }
+  }
+
   const handleAddKeyword = () => {
-    if (keyword) {
-      if (keyword.length > maxKeywordChar) {
+    if (searchInput) {
+      if (searchInput.length > maxKeywordChar) {
         setKeywordError(maxKeywordCharError)
-      } else if (keyword.includes(',')) {
+      } else if (searchInput.includes(',')) {
         setKeywordError(keywordInputError)
       } else if (
         isCheckboxCheckedArray.filter((isChecked) => isChecked === true)
@@ -82,12 +100,12 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
         maxKeywords - 1
       ) {
         setKeywordError(maxKeywordError)
-      } else if (keywordsArray.includes(keyword)) {
+      } else if (keywordsArray.includes(searchInput)) {
         setKeywordError(duplicateKeywordError)
       } else {
-        setKeywordsArray([...keywordsArray, keyword])
+        setKeywordsArray([...keywordsArray, searchInput])
         setIsCheckboxCheckedArray([...isCheckboxCheckedArray, true])
-        setKeyword('')
+        setSearchInput('')
       }
     }
   }
@@ -112,20 +130,20 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
 
       // Loop over organisation keywords
       let keywordExists = false
-      for (const j in storedKeywords) {
+      for (const j in orgKeywords) {
         // Keyword exists
-        if (currentKeyword === storedKeywords[j].name) {
+        if (currentKeyword === orgKeywords[j].name) {
           keywordExists = true
 
           // Remove location if it exists but keyword is unchecked
           if (
-            storedKeywords[j].linked_ids.includes(locationName) &&
+            orgKeywords[j].linked_ids.includes(locationName) &&
             !currentKeywordChecked
           ) {
-            const originalArray = storedKeywords[j].linked_ids
+            const originalArray = orgKeywords[j].linked_ids
             const indexToDelete = originalArray.indexOf(locationName)
 
-            storedKeywords[j] = {
+            orgKeywords[j] = {
               name: currentKeyword,
               linked_ids: originalArray.filter(
                 (_, index) => index !== indexToDelete
@@ -135,12 +153,12 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
 
           // Add location if it doesn't exist and keyword is checked
           if (
-            !storedKeywords[j].linked_ids.includes(locationName) &&
+            !orgKeywords[j].linked_ids.includes(locationName) &&
             currentKeywordChecked
           ) {
-            storedKeywords[j] = {
+            orgKeywords[j] = {
               name: currentKeyword,
-              linked_ids: [...storedKeywords[j].linked_ids, locationName]
+              linked_ids: [...orgKeywords[j].linked_ids, locationName]
             }
           }
           break
@@ -149,8 +167,8 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
 
       // Add keyword and location if it is checked and keyword doesn't exist
       if (!keywordExists && currentKeywordChecked) {
-        storedKeywords = [
-          ...storedKeywords,
+        orgKeywords = [
+          ...orgKeywords,
           {
             name: currentKeyword,
             linked_ids: [locationName]
@@ -159,7 +177,7 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
       }
     }
 
-    dispatch(setLocationKeywords(storedKeywords))
+    dispatch(setLocationKeywords(orgKeywords))
     dispatch(setCurrentLocationKeywords(keywordsString))
     NavigateToNextPage()
   }
@@ -171,7 +189,11 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
 
   useEffect(() => {
     setKeywordError('')
-  }, [keyword])
+  }, [searchInput])
+
+  useEffect(() => {
+    setKeywords(orgKeywords)
+  }, [orgKeywords])
 
   return (
     <>
@@ -232,11 +254,15 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
                 )}
               </div>
               <div className='inline-button'>
-                <Input
+                <Autocomplete
                   inputType='text'
-                  value={keyword}
-                  onChange={(val) => setKeyword(val)}
+                  value={searchInput}
+                  onChange={(val) => handleOnChange(val)}
+                  onClick={(val) => handleOnClick(val)}
                   className='govuk-input govuk-input--width-20'
+                  results={results}
+                  position='absolute'
+                  showNotFound={false}
                 />
                 <Button
                   text='Add keyword'

@@ -13,7 +13,8 @@ export default function Autocomplete ({
   results,
   onClick,
   position,
-  showNotFound = true
+  showNotFound = true,
+  nameField
 }) {
   const [options, setOptions] = useState(null)
   const [, forceUpdate] = useReducer((x) => x + 1, 0)
@@ -167,7 +168,7 @@ export default function Autocomplete ({
               aria-posinset={index + 1}
               aria-setsize={options.length}
             >
-              {option.name}
+              {option[nameField]}
             </li>
           )
         })}

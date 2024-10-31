@@ -7,11 +7,12 @@ import OrganisationAccountNavigation from '../../../../../../../common/component
 import Button from '../../../../../../../common/components/gov-uk/Button'
 import Pagination from '../../../../../../../common/components/gov-uk/Pagination'
 import {
+  setCurrentLocationAddress,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
-  setCurrentLocationFullAddress,
   setCurrentLocationNorthing,
-  setCurrentLocationPostcode
+  setCurrentLocationPostcode,
+  setCurrentLocationUPRN
 } from '../../../../../../../common/redux/userSlice'
 import { convertCoordinatesToEspg27700 } from '../../../../../../../common/services/CoordinatesFormatConverter'
 import {
@@ -42,10 +43,9 @@ export default function LocationSearchResultsPage () {
 
     setLoading(true)
     try {
-      // the below is being updated in another branch by Ronan
-      // dispatch(setCurrentLocationUPRN(selectedLocation.address))
+      dispatch(setCurrentLocationUPRN(selectedLocation.name))
       dispatch(setCurrentLocationCoordinates(selectedLocation.coordinates))
-      dispatch(setCurrentLocationFullAddress(selectedLocation.name))
+      dispatch(setCurrentLocationAddress(selectedLocation.address))
       dispatch(setCurrentLocationPostcode(selectedLocation.postcode))
 
       const { northing, easting } = convertCoordinatesToEspg27700(
@@ -146,7 +146,7 @@ export default function LocationSearchResultsPage () {
                                 onClick={(event) =>
                                   handleSelectedLocation(event, location)}
                               >
-                                {location.name}
+                                {location.address}
                               </Link>
                             </td>
                           </tr>

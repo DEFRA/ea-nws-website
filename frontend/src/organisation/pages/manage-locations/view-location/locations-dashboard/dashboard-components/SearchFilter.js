@@ -25,13 +25,23 @@ export default function SearchFilter ({
 
   const locationTypes = [
     ...new Set(
-      locations.map(
-        (location) => location.meta_data.location_additional.location_type
-      )
+      locations
+        .map((location) => location.meta_data.location_additional.location_type)
+        .filter((locationType) => locationType) // filters out undefined entries
     )
   ]
+  // the below probably needs updated unless it can only be Yes or No
   const floodMessagesAvailble = ['Yes', 'No']
-  const businessCriticality = ['High', 'Medium', 'Low']
+  const businessCriticality = [
+    ...new Set(
+      locations
+        .map(
+          (location) =>
+            location.meta_data.location_additional.business_criticality
+        )
+        .filter((businessCriticality) => businessCriticality) // filters out undefined entries
+    )
+  ]
 
   // search filters visibility
   const [locationNameVisible, setLocationNameVisible] = useState(true)
@@ -80,7 +90,9 @@ export default function SearchFilter ({
     // Apply Location name filter
     if (locationNameFilter) {
       filteredLocations = filteredLocations.filter((location) =>
-        location.name.toLowerCase().includes(locationNameFilter.toLowerCase())
+        location.location_additional.location_name
+          .toLowerCase()
+          .includes(locationNameFilter.toLowerCase())
       )
     }
 

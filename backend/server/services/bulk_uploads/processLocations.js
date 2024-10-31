@@ -5,14 +5,15 @@ const getSecretKeyValue = require('../SecretsManager')
 
 const convertToPois = (locations) => {
   const pois = []
-  locations.forEach(location => {
+  locations.forEach((location) => {
     const poi = {
-      name: location.Location_name,
+      name: null,
       address: location.address,
       coordinates: location.coordinates,
       alert_categories: null,
       meta_data: {
         location_additional: {
+          location_name: location.Location_name,
           full_address: location.Full_address,
           postcode: location.Postcode,
           x_coordinate: location.X_coordinates,

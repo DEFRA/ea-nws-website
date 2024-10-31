@@ -18,7 +18,8 @@ export default function AddLocationOptionsPage () {
     },
     { value: 'BulkCoordinates', label: 'X and Y coordinates in a file (.csv)' },
     { value: 'BulkShapeFile', label: 'Shapefile (points, lines or areas)' },
-    { value: 'Manual', label: 'I want to add locations manually' }
+    { value: 'Manual', label: 'I want to add locations manually' },
+    { value: 'PredefinedBoundaries', label: 'Select predefined boundaries' }
   ]
 
   useEffect(() => {
@@ -43,6 +44,9 @@ export default function AddLocationOptionsPage () {
           break
         case addLocationOptions[3].value:
           navigate(orgManageLocationsUrls.add.name)
+          break
+        case addLocationOptions[4].value:
+          navigate(orgManageLocationsUrls.add.predefinedBoundary.select)
           break
       }
     }

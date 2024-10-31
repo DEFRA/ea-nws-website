@@ -31,7 +31,7 @@ async function getMobileValidate(
   const { authToken } = req.payload as { authToken: string }
   const { msisdn } = req.payload as { msisdn: string }
   const { code } = req.payload as { code: string }
-  let mockProfile = mockResponses.profile
+  let mockProfile = mockResponses.citizenProfile
   mockProfile.mobilePhones.push(msisdn)
 
 

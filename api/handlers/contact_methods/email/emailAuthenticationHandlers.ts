@@ -30,7 +30,7 @@ async function getEmailValidate(
   const { authToken } = req.payload as { authToken: string }
   const { email } = req.payload as { email: string }
   const { code } = req.payload as { code: string }
-  let mockProfile = mockResponses.profile
+  let mockProfile = mockResponses.citizenProfile
   mockProfile.emails.push(email)
   
   if(code === '111111'){

@@ -31,7 +31,7 @@ async function getHomephoneValidate(
   const { code } = req.payload as { code: string }
   console.log('Received LandlineValidate request: ', req.payload)
   console.log(msisdn)
-  let mockProfile = mockResponses.profile
+  let mockProfile = mockResponses.citizenProfile
   mockProfile.homePhones.push(msisdn)
   
 

@@ -8,20 +8,19 @@ import Details from '../../../../../common/components/gov-uk/Details'
 import Input from '../../../../../common/components/gov-uk/Input'
 import { setCurrentLocationKeywords } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-export default function KeywordsForThisLocationPage () {
+export default function KeywordsForThisLocationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
   const [keyword, setKeyword] = useState('')
-  const savedKeywords = useSelector((state) =>
-    state.session.currentLocation.meta_data.location_additional.keywords !==
-    null
-      ? state.session.currentLocation.meta_data.location_additional.keywords
-      : []
+  const savedKeywords = useSelector(
+    (state) =>
+      state.session.currentLocation.meta_data.location_additional.keywords
   )
+  console.log('savedKeywords', savedKeywords)
   const [keywordsArray, setKeywordsArray] = useState([...savedKeywords])
 
-  const handleButton = () => {
+  const handleSubmit = () => {
     if (
       keywordsArray.length !== savedKeywords.length ||
       !keywordsArray.every((val, idx) => val === savedKeywords[idx])
@@ -86,7 +85,7 @@ export default function KeywordsForThisLocationPage () {
               <Button
                 text='Continue'
                 className='govuk-button'
-                onClick={handleButton}
+                onClick={handleSubmit}
               />
             </div>
           </div>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
@@ -11,12 +11,12 @@ import { locationInEngland } from '../../../../../../common/services/validations
 import Map from '../../../../../components/custom/Map'
 import MapInteractiveKey from '../../../../../components/custom/MapInteractiveKey'
 
-export default function LocationDropPinSearchLayout ({
-  NavigateToNextPage,
-  NavigateToPreviousPage,
-  NavigateToNotInEnglandPage,
-  DifferentSearchUrl
+export default function DropPinOnMapLayout({
+  navigateToNextPage,
+  navigateToNotInEnglandPage,
+  flow
 }) {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [pinCoords, setPinCoords] = useState('')
   const [error, setError] = useState('')
@@ -46,16 +46,16 @@ export default function LocationDropPinSearchLayout ({
       if (inEngland) {
         dispatch(setCurrentLocationCoordinates(pinCoords))
         // TODO: Send currentLocation object to elasticache and geosafe, then navigate
-        NavigateToNextPage()
+        navigateToNextPage()
       } else {
-        NavigateToNotInEnglandPage()
+        navigateToNotInEnglandPage()
       }
     }
   }
 
   const navigateBack = (event) => {
     event.preventDefault()
-    NavigateToPreviousPage()
+    navigate(-1)
   }
 
   return (
@@ -73,9 +73,11 @@ export default function LocationDropPinSearchLayout ({
               </p>
               <InsetText text={currentLocationName} />
               <div className='govuk-!-margin-bottom-4'>
-                <a className='govuk-link' href={DifferentSearchUrl}>
-                  Search with a different place name, town or postcode
-                </a>
+                {flow === 'add' && (
+                  <Link className='govuk-link' onClick={(e) => navigateBack(e)}>
+                    Search with a different place name, town or postcode
+                  </Link>
+                )}
               </div>
               <div class='govuk-grid-row'>
                 <div class='govuk-grid-column-two-thirds'>

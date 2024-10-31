@@ -7,7 +7,7 @@ export default function AddNotesPage() {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.view.individualLocation.view)
+    navigate(orgManageLocationsUrls.view.individualLocation)
   }
 
   return (

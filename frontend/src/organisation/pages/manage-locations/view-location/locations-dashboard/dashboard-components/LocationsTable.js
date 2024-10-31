@@ -41,7 +41,7 @@ export default function LocationsTable({
   const viewLocation = (e, location) => {
     e.preventDefault()
     dispatch(setCurrentLocation(location))
-    navigate(orgManageLocationsUrls.view.individualLocation.view)
+    navigate(orgManageLocationsUrls.view.individualLocation)
   }
 
   return (

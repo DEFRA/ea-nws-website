@@ -7,9 +7,8 @@ import OrganisationAccountNavigation from '../../../../../common/components/cust
 import Button from '../../../../../common/components/gov-uk/Button'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmLocationLayout () {
+export default function ConfirmLocationLayout({ navigateToNextPage }) {
   const navigate = useNavigate()
   const { type } = useParams()
   const { flow } = useParams()
@@ -61,8 +60,7 @@ export default function ConfirmLocationLayout () {
 
   const handleSubmit = () => {
     // do we need to do anything else here?
-
-    navigate(orgManageLocationsUrls.add.optionalInfo)
+    navigateToNextPage()
   }
 
   const navigateBack = (event) => {
@@ -121,10 +119,7 @@ export default function ConfirmLocationLayout () {
                   Move the pin on the map
                 </Link>
                 <br />
-                <Link
-                  onClick={navigateBack}
-                  className='govuk-link'
-                >
+                <Link onClick={navigateBack} className='govuk-link'>
                   Use different X and Y coordinates
                 </Link>
               </>

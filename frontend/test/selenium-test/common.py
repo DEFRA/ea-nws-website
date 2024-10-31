@@ -114,13 +114,13 @@ url_org_man_loc = {
         'find_by_address': url_org_man_loc_path + '/unmatched-locations/manually-find/address',
     },
     'edit':{
-        'cannot_change_location_polygon': url_org_man_loc_path + '/edit/edit-polygon',
-        'cannot_change_location_line': url_org_man_loc_path + '/edit/edit-line',
-        'options': url_org_man_loc_path + '/edit/select-location-options',
+        'cannot_change_location_polygon': url_org_man_loc_path + '/edit/polygon',
+        'cannot_change_location_line': url_org_man_loc_path + '/edit/line',
+        'options': url_org_man_loc_path + '/edit/search-options',
         'xyCoordinatesSearch': url_org_man_loc_path + '/edit/xy-coordinates-search',
         'locationInArea': url_org_man_loc_path + '/edit/location-in-area',
         'notInEngland': url_org_man_loc_path + '/edit/xy-coordinates-not-in-england',
-        'dropPinEdit': url_org_man_loc_path + '/edit/drop-pin-edit'
+        'dropPinEdit': url_org_man_loc_path + '/edit/drop-pin-search'
     }
 }
 

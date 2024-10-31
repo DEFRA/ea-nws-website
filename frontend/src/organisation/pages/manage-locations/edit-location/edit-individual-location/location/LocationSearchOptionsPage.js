@@ -1,9 +1,9 @@
 import React from 'react'
 import { useNavigate } from 'react-router'
-import LocationSearchOptionsLayout from '../../../../layouts/location/add-or-edit-location/search/LocationSearchOptionsLayout'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import LocationSearchOptionsLayout from '../../../../../layouts/location/add-or-edit-location/search/LocationSearchOptionsLayout'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function EditLocationSearchOptionsPage () {
+export default function LocationSearchOptionsPage() {
   const navigate = useNavigate()
   const locationOptions = [
     { value: 'Coordinates', label: 'Use X and Y coordinates' },
@@ -14,14 +14,12 @@ export default function EditLocationSearchOptionsPage () {
     switch (searchOption) {
       case 'Coordinates':
         navigate(
-          orgManageLocationsUrls.edit.individualLocation.editLocationCoords
-            .xyCoordinatesSearch
+          orgManageLocationsUrls.edit.individualLocation.location.xyCoords
         )
         break
       case 'PinDrop':
         navigate(
-          orgManageLocationsUrls.edit.individualLocation.editLocationCoords
-            .dropPinEdit
+          orgManageLocationsUrls.edit.individualLocation.location.dropPin
         )
         break
       default:

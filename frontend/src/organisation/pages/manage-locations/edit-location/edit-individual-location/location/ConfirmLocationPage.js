@@ -7,9 +7,8 @@ export default function ConfirmLocationPage() {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.add.optionalInfo)
+    navigate(orgManageLocationsUrls.view.individualLocation)
   }
-
   return (
     <>
       <ConfirmLocationLayout navigateToNextPage={navigateToNextPage} />

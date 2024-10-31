@@ -1,31 +1,24 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import LocationDropPinSearchResultsLayout from '../../../../../../layouts/location/add-or-edit-location/search/drop-pin/LocationDropPinSearchResultsLayout'
+import DropPinOnMapLayout from '../../../../../../layouts/location/add-or-edit-location/search/drop-pin/DropPinOnMapLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationDropPinSearchResultsPage () {
+export default function DropPinOnMapPage() {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {
     navigate(orgManageLocationsUrls.add.search.dropPinSearchResults)
   }
 
-  const NavigateToPreviousPage = () => {
-    navigate(-1)
-  }
-
   const NavigateToNotInEnglandPage = () => {
     navigate(orgManageLocationsUrls.add.error.dropPinNotInEngland)
   }
 
-  const differentSearchUrl = orgManageLocationsUrls.add.search.dropPinSearch
-
   return (
-    <LocationDropPinSearchResultsLayout
+    <DropPinOnMapLayout
       NavigateToNextPage={NavigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
       NavigateToNotInEnglandPage={NavigateToNotInEnglandPage}
-      DifferentSearchUrl={differentSearchUrl}
+      flow={'add'}
     />
   )
 }

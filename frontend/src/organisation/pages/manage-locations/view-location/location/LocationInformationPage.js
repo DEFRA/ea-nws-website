@@ -231,8 +231,8 @@ export default function LocationInformationPage() {
                   className='govuk-link govuk-!-display-inline-block'
                   style={{ float: 'right' }}
                   to={
-                    orgManageLocationsUrls.view.individualLocation
-                      .ammendLocationDetails.optionalInformation.keyInformation
+                    orgManageLocationsUrls.edit.individualLocation
+                      .optionalInformation.keyInformation
                   }
                 >
                   Change
@@ -279,8 +279,8 @@ export default function LocationInformationPage() {
                   className='govuk-link govuk-!-display-inline-block'
                   style={{ float: 'right' }}
                   to={
-                    orgManageLocationsUrls.view.individualLocation
-                      .ammendLocationDetails.optionalInformation.keywords
+                    orgManageLocationsUrls.edit.individualLocation
+                      .optionalInformation.keywords
                   }
                 >
                   Change
@@ -300,8 +300,8 @@ export default function LocationInformationPage() {
                   className='govuk-link govuk-!-display-inline-block'
                   style={{ float: 'right' }}
                   to={
-                    orgManageLocationsUrls.view.individualLocation
-                      .ammendLocationDetails.optionalInformation.actionPlan
+                    orgManageLocationsUrls.edit.individualLocation
+                      .optionalInformation.actionPlan
                   }
                 >
                   Change
@@ -321,8 +321,8 @@ export default function LocationInformationPage() {
                   className='govuk-link govuk-!-display-inline-block'
                   style={{ float: 'right' }}
                   to={
-                    orgManageLocationsUrls.view.individualLocation
-                      .ammendLocationDetails.optionalInformation.notes
+                    orgManageLocationsUrls.edit.individualLocation
+                      .optionalInformation.notes
                   }
                 >
                   Change
@@ -347,9 +347,8 @@ export default function LocationInformationPage() {
                   <Link
                     className='govuk-!-display-block govuk-!-margin-bottom-1'
                     to={
-                      orgManageLocationsUrls.view.individualLocation
-                        .ammendLocationDetails.optionalInformation
-                        .keyInformation
+                      orgManageLocationsUrls.edit.individualLocation
+                        .optionalInformation.keyInformation
                     }
                   >
                     Add internal reference
@@ -361,9 +360,8 @@ export default function LocationInformationPage() {
                   <Link
                     className='govuk-!-display-block govuk-!-margin-bottom-1'
                     to={
-                      orgManageLocationsUrls.view.individualLocation
-                        .ammendLocationDetails.optionalInformation
-                        .keyInformation
+                      orgManageLocationsUrls.edit.individualLocation
+                        .optionalInformation.keyInformation
                     }
                   >
                     Add business criticality
@@ -375,26 +373,45 @@ export default function LocationInformationPage() {
                   <Link
                     className='govuk-!-display-block govuk-!-margin-bottom-1'
                     to={
-                      orgManageLocationsUrls.view.individualLocation
-                        .ammendLocationDetails.optionalInformation
-                        .keyInformation
+                      orgManageLocationsUrls.edit.individualLocation
+                        .optionalInformation.keyInformation
                     }
                   >
                     Add location type
                   </Link>
                 )}
               {!additionalData.keywords && (
-                <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                <Link
+                  className='govuk-!-display-block govuk-!-margin-bottom-1'
+                  to={
+                    orgManageLocationsUrls.edit.individualLocation
+                      .optionalInformation.keywords
+                  }
+                >
                   Add keywords
                 </Link>
               )}
               {!additionalData.action_plan && (
-                <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                <Link
+                  className='govuk-!-display-block govuk-!-margin-bottom-1'
+                  to={
+                    orgManageLocationsUrls.edit.individualLocation
+                      .optionalInformation.actionPlan
+                  }
+                >
                   Add action plan
                 </Link>
               )}
               {!additionalData.notes && (
-                <Link className='govuk-!-display-block'>Add notes</Link>
+                <Link
+                  className='govuk-!-display-block'
+                  to={
+                    orgManageLocationsUrls.edit.individualLocation
+                      .optionalInformation.notes
+                  }
+                >
+                  Add notes
+                </Link>
               )}
             </div>
             {/* flood risk details */}

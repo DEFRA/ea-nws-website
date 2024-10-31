@@ -10,10 +10,7 @@ import Radio from '../../../../../../common/components/gov-uk/Radio'
 import { setCurrentLocationCoordinates } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 
-export default function LocationDropPinSearchLayout ({
-  NavigateToNextPage,
-  NavigateToPreviousPage
-}) {
+export default function LocationSearchLayout({ navigateToNextPage }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [searchOption, setSearchOption] = useState('')
@@ -116,13 +113,13 @@ export default function LocationDropPinSearchLayout ({
       placeNameTownOrPostcodeCoords
     ) {
       dispatch(setCurrentLocationCoordinates(placeNameTownOrPostcodeCoords))
-      NavigateToNextPage()
+      navigateToNextPage()
     }
   }
 
   const navigateBack = (event) => {
     event.preventDefault()
-    NavigateToPreviousPage()
+    navigate(-1)
   }
 
   return (

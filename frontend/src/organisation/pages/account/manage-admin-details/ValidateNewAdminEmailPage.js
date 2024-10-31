@@ -10,18 +10,9 @@ export default function ValidateNewAdminEmailPage () {
   const dispatch = useDispatch()
   const [error, setError] = useState('')
 
-  const NavigateToNextPage = () => {
-    navigate(accountUrls.admin.details)
-  }
-
-  const NavigateToPreviousPage = () => {
-    navigate(accountUrls.admin.changeDetails)
-  }
-
   const DifferentEmail = () => {
     navigate(accountUrls.admin.changeDetails)
   }
-
 
   const updateProfile = async (profile, authToken) => {
     // The sign in email is always the first one in the array
@@ -52,12 +43,12 @@ export default function ValidateNewAdminEmailPage () {
 
   return (
     <ValidateEmailLayout
-    DifferentEmail={DifferentEmail}
-    NavigateToPreviousPage={DifferentEmail}
-    buttonText='Continue'
-    changeSignIn
-    profileError={error}
-    updateProfile={updateProfile}
+      DifferentEmail={DifferentEmail}
+      NavigateToPreviousPage={DifferentEmail}
+      buttonText='Continue'
+      changeSignIn
+      profileError={error}
+      updateProfile={updateProfile}
     />
   )
 }

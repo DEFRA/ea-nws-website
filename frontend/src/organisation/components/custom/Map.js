@@ -34,7 +34,8 @@ export default function Map ({
   showFloodWarningAreas = true,
   showFloodAlertAreas = true,
   showMarker = false,
-  boundaryList
+  boundaryList,
+  boundariesAlreadyAdded = []
 }) {
   const dispatch = useDispatch()
   const { latitude, longitude } = useSelector(
@@ -304,6 +305,7 @@ export default function Map ({
       }
     }
     fetchBoundaries()
+    setBoundaryStyles()
   }, [selectedBoundaryType])
 
   useEffect(() => {
@@ -311,18 +313,25 @@ export default function Map ({
     if (boundaryRefVisible && boundaryRef.current) {
       boundaryRef.current.clearLayers()
       boundaryRef.current.addData(boundaries)
+      setBoundaryStyles()
     }
   }, [boundaries])
 
-  const highlightSelectedBoundary = () => {
-    if (boundaryRefVisible && boundaryRef.current && selectedBoundary) {
+  const setBoundaryStyles = () => {
+    if (boundaryRefVisible && boundaryRef.current) {
       boundaryRef.current.eachLayer((layer) => {
-        if (layer.feature.id === selectedBoundary.id) {
-          console.log('layer', layer)
+        if (selectedBoundary && layer.feature.id === selectedBoundary.id) {
           layer.setStyle({
-            color: 'yellow',
+            color: '#adbbc4',
             weight: 2,
-            fillColor: 'yellow',
+            fillColor: '#faf46b',
+            fillOpacity: 0.5
+          })
+        } else if (boundariesAlreadyAdded.includes(layer.feature.id)) {
+          layer.setStyle({
+            color: '#6e706a',
+            weight: 2,
+            fillColor: '#5a5c55',
             fillOpacity: 0.5
           })
         } else {
@@ -338,7 +347,7 @@ export default function Map ({
   }
 
   useEffect(() => {
-    highlightSelectedBoundary()
+    setBoundaryStyles()
   }, [selectedBoundary])
 
   const onEachBoundaryFeature = (feature, layer) => {

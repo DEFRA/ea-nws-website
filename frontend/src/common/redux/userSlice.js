@@ -27,6 +27,8 @@ const userSlice = createSlice({
     // required for predefined boundary flow
     selectedBoundaryType: null,
     selectedBoundary: null,
+    locationBoundaries: null,
+    consecutiveBoundariesAdded: 0,
     // org location data
     currentLocation: {
       // name is the UPRN
@@ -35,6 +37,7 @@ const userSlice = createSlice({
       address: null,
       // Coordinates in dd (degrees decimal)
       coordinates: null,
+      geometry: null,
       alert_categories: null,
       meta_data: {
         location_additional: {
@@ -54,6 +57,16 @@ const userSlice = createSlice({
           location_data_type: null
         }
       }
+    },
+    // org contact data
+    orgCurrentContact: {
+      enabled: null,
+      firstName: null,
+      lastName: null,
+      emails: null,
+      mobilePhones: null,
+      homePhones: null,
+      position: null
     }
   },
   reducers: {
@@ -124,11 +137,25 @@ const userSlice = createSlice({
     setSelectedBoundary: (state, action) => {
       state.selectedBoundary = action.payload
     },
+    setLocationBoundaries: (state, action) => {
+      state.locationBoundaries = action.payload
+    },
+    setConsecutiveBoundariesAdded: (state, action) => {
+      state.consecutiveBoundariesAdded = action.payload
+    },
+    // keywords - temporary
+    setLocationKeywords: (state, action) => {
+      state.locationKeywords = action.payload
+    },
+    setContactKeywords: (state, action) => {
+      state.contactKeywords = action.payload
+    },
     // org location data
     setCurrentLocation: (state, action) => {
       state.currentLocation.name = action.payload.name
       state.currentLocation.address = action.payload.address
       state.currentLocation.coordinates = action.payload.coordinates
+      state.currentLocation.geometry = action.payload.geometry
       state.currentLocation.alert_categories = action.payload.alert_categories
       state.currentLocation.meta_data.location_additional.location_name =
         action.payload.meta_data.location_additional.location_name
@@ -163,6 +190,9 @@ const userSlice = createSlice({
     },
     setCurrentLocationCoordinates: (state, action) => {
       state.currentLocation.coordinates = action.payload
+    },
+    setCurrentLocationGeometry: (state, action) => {
+      state.currentLocation.geometry = action.payload
     },
     setCurrentLocationAlertCategories: (state, action) => {
       state.currentLocation.alert_categories = action.payload
@@ -214,6 +244,37 @@ const userSlice = createSlice({
       state.currentLocation.meta_data.location_additional.location_data_type =
         action.payload
     },
+    // org contact data
+    setOrgCurrentContact: (state, action) => {
+      state.orgCurrentContact.enabled = action.payload.enabled
+      state.orgCurrentContact.firstName = action.payload.firstName
+      state.orgCurrentContact.lastName = action.payload.lastName
+      state.orgCurrentContact.emails = action.payload.emails
+      state.orgCurrentContact.mobilePhones = action.payload.mobilePhones
+      state.orgCurrentContact.homePhones = action.payload.homePhones
+      state.orgCurrentContact.position = action.payload.position
+    },
+    setOrgCurrentContactEnabled: (state, action) => {
+      state.orgCurrentContact.enabled = action.payload
+    },
+    setOrgCurrentContactFirstName: (state, action) => {
+      state.orgCurrentContact.firstName = action.payload
+    },
+    setOrgCurrentContactLastName: (state, action) => {
+      state.orgCurrentContact.lastName = action.payload
+    },
+    setOrgCurrentContactEmails: (state, action) => {
+      state.orgCurrentContact.emails = action.payload
+    },
+    setOrgCurrentContactHomePhones: (state, action) => {
+      state.orgCurrentContact.homePhones = action.payload
+    },
+    setOrgCurrentContactMobilePhones: (state, action) => {
+      state.orgCurrentContact.mobilePhones = action.payload
+    },
+    setOrgCurrentContactPosition: (state, action) => {
+      state.orgCurrentContact.position = action.payload
+    },
     // Clear state
     clearAuth: (state) => {
       state.authToken = null
@@ -239,11 +300,15 @@ const userSlice = createSlice({
       // required for predefined boundary flow
       state.selectedBoundaryType = null
       state.selectedBoundary = null
+      // keywords - temporary
+      state.locationKeywords = null
+      state.contactKeywords = null
       // org location data
       state.currentLocation = {
         name: null,
         address: null,
         coordinates: null,
+        geometry: null,
         alert_categories: null,
         meta_data: {
           location_additional: {
@@ -261,6 +326,15 @@ const userSlice = createSlice({
             location_data_type: null
           }
         }
+      }
+      state.orgCurrentContact = {
+        enabled: null,
+        firstName: null,
+        lastName: null,
+        emails: null,
+        mobilePhones: null,
+        homePhones: null,
+        position: null
       }
     }
   }
@@ -292,11 +366,17 @@ export const {
   // required for predefined boundary flow
   setSelectedBoundaryType,
   setSelectedBoundary,
+  setLocationBoundaries,
+  setConsecutiveBoundariesAdded,
+  // keywords - temporary
+  setLocationKeywords,
+  setContactKeywords,
   // org location data
   setCurrentLocation,
   setCurrentLocationUPRN,
   setCurrentLocationAddress,
   setCurrentLocationCoordinates,
+  setCurrentLocationGeometry,
   setCurrentLocationAlertCategories,
   setCurrentLocationName,
   setCurrentLocationFullAddress,
@@ -310,6 +390,15 @@ export const {
   setCurrentLocationNotes,
   setCurrentLocationKeywords,
   setCurrentLocationDataType,
+  // org current contact
+  setOrgCurrentContact,
+  setOrgCurrentContactEnabled,
+  setOrgCurrentContactFirstName,
+  setOrgCurrentContactLastName,
+  setOrgCurrentContactEmails,
+  setOrgCurrentContactHomePhones,
+  setOrgCurrentContactMobilePhones,
+  setOrgCurrentContactPosition,
   // clear state
   clearAuth
 } = userSlice.actions

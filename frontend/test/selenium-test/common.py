@@ -89,6 +89,7 @@ url_org_man_loc = {
         'xyCoordinatesSearch': url_org_man_loc_path + '/add/xy-coordinates-search',
         'locationInArea': url_org_man_loc_path + '/add/location-in-area',
         'xyCoordinatesNotInEngland': url_org_man_loc_path + '/add/xy-coordinates-not-in-england',
+        'dropPinNotInEngland': url_org_man_loc_path + '/add/drop-pin-not-in-england',
         'dropPinSearch': url_org_man_loc_path + '/add/drop-pin-search',
         'predefinedBoundary': {
             'optionalInfo': url_org_man_loc_path + '/add/predefined-boundary/optional-information',
@@ -131,6 +132,14 @@ url_org_man_loc = {
         'dropPinEdit': url_org_man_loc_path + '/edit/drop-pin-edit'
     }
 }
+
+url_org_man_cont_path = url_org + '/manage-contacts'
+url_org_man_cont = {
+    'add': {
+        'details': url_org_man_cont_path + '/add'
+    },
+}
+
 # org footer urls
 url_org_privacy_notice = url_org + '/privacy'
 
@@ -155,12 +164,12 @@ def navigate_to_unauth_page_via_index(browser, url_target):
     assert browser.current_url == url_target
     return browser
 
-# Setup mock profile
-def activate_mock_org_1(get_browser):
-    browser = get_browser
+# Navigate to authenticated page via index page and check url
+def navigate_to_auth_org_page_via_index(browser, url_target):
     browser.get(url_index)
     click_button(browser, 'Activate/Deactivate Mock Org Session 1', url_index)
-    time.sleep(1)
+    browser.get(url_target)
+    assert browser.current_url == url_target
     return browser
 
 #------------------------------------------------------------------------------

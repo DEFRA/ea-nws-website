@@ -7,11 +7,16 @@ import NotificationBanner from '../components/gov-uk/NotificationBanner'
 import {
   clearAuth,
   setAuthToken,
+  setContactKeywords,
   setContactPreferences,
   setCurrentLocation,
   setCurrentLocationCoordinates,
+  setLocationBoundaries,
+  setLocationKeywords,
   setProfile,
-  setRegistrations
+  setRegistrations,
+  setSelectedBoundary,
+  setSelectedBoundaryType
 } from '../redux/userSlice'
 
 export default function IndexPage () {
@@ -284,10 +289,38 @@ export default function IndexPage () {
   }
 
   function uuidv4 () {
-    return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, c =>
-      (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+    return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) =>
+      (
+        +c ^
+        (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))
+      ).toString(16)
     )
   }
+
+  const mockLocationKeywords = [
+    {
+      name: 'Location Keyword 1',
+      linked_ids: ['id', 'id']
+    },
+    {
+      name: 'Location Keyword 2',
+      linked_ids: ['id']
+    },
+    {
+      name: 'Location Keyword 3',
+      linked_ids: []
+    }
+  ]
+  const mockContactKeywords = [
+    {
+      name: 'Contact Keyword 1',
+      linked_ids: ['id', 'id']
+    },
+    {
+      name: 'Contact Keyword 2',
+      linked_ids: ['id']
+    }
+  ]
 
   const mockCurrentLocation = {
     name: null,
@@ -359,6 +392,11 @@ export default function IndexPage () {
       dispatch(setCurrentLocation(mockCurrentLocation))
       const coordinates = { latitude: 50.84106, longitude: -1.05814 }
       dispatch(setCurrentLocationCoordinates(coordinates))
+      dispatch(setSelectedBoundaryType(null))
+      dispatch(setSelectedBoundary(null))
+      dispatch(setLocationBoundaries([]))
+      dispatch(setLocationKeywords(mockLocationKeywords))
+      dispatch(setContactKeywords(mockContactKeywords))
       setmockSessionActive(true)
     } else {
       dispatch(clearAuth())

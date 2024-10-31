@@ -17,37 +17,34 @@ export default function AddKeywordsLayout ({ keywordType }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  let storedKeywords = useSelector((state) =>
-    // keywordType === 'location' &&
-    state.session.locationKeywords ? state.session.locationKeywords : []
+  const storedKeywordsOriginal = useSelector((state) =>
+    keywordType === 'location' && state.session.locationKeywords
+      ? state.session.locationKeywords
+      : []
+  )
+  let storedKeywords = [...storedKeywordsOriginal]
+
+  const locationName = useSelector(
+    (state) => state.session.currentLocation.name
   )
 
-  console.log('Initial stored keywords:', storedKeywords)
-
-  const locationName = 'loc5' // useSelector(
-  // (state) => state.session.currentLocation.name
-  // )
-
   let savedKeywords = useSelector((state) =>
+    keywordType === 'location' &&
     state.session.currentLocation.meta_data.location_additional.keywords
       ? state.session.currentLocation.meta_data.location_additional.keywords
       : []
   )
 
   if (savedKeywords.length !== 0) savedKeywords = savedKeywords.split(', ')
-
-  console.log('Initial saved keywords:', savedKeywords)
-
   const checkboxArray = Array(savedKeywords.length).fill(true)
   const [keywordError, setKeywordError] = useState('')
   const [keyword, setKeyword] = useState('')
-  const [isKeywordEntered, setIsKeywordEntered] = useState(false)
   const [keywordsArray, setKeywordsArray] = useState([...savedKeywords])
   const [isCheckboxCheckedArray, setIsCheckboxCheckedArray] = useState([
     ...checkboxArray
   ])
 
-  const maxKeywords = 10
+  const maxKeywords = 50
   const maxKeywordChar = 20
   const maxKeywordError =
     'You can add a maximum of ' + maxKeywords + ' keywords'
@@ -89,7 +86,6 @@ export default function AddKeywordsLayout ({ keywordType }) {
       } else if (keywordsArray.includes(keyword)) {
         setKeywordError(duplicateKeywordError)
       } else {
-        setIsKeywordEntered(true)
         setKeywordsArray([...keywordsArray, keyword])
         setIsCheckboxCheckedArray([...isCheckboxCheckedArray, true])
         setKeyword('')
@@ -111,31 +107,42 @@ export default function AddKeywordsLayout ({ keywordType }) {
       const currentKeywordChecked = isCheckboxCheckedArray[i] === true
 
       // Current location keyword string
-      if (currentKeywordChecked && i !== firstCheckedIndex) {
+      if (currentKeywordChecked && i !== String(firstCheckedIndex)) {
         keywordsString = keywordsString.concat(', ', currentKeyword)
       }
 
       // Loop over organisation keywords
       let keywordExists = false
       for (const j in storedKeywords) {
-        const orgKeyword = storedKeywords[j].name
-
         // Keyword exists
-        if (currentKeyword === orgKeyword) {
+        if (currentKeyword === storedKeywords[j].name) {
           keywordExists = true
-          const linkedIdsArray = storedKeywords[j].linked_ids
 
           // Remove location if it exists but is unchecked
-          if (linkedIdsArray.includes(locationName) && !currentKeywordChecked) {
-            linkedIdsArray.splice(linkedIdsArray.indexOf(locationName), 1)
+          if (
+            storedKeywords[j].linked_ids.includes(locationName) &&
+            !currentKeywordChecked
+          ) {
+            const originalArray = storedKeywords[j].linked_ids
+            const indexToDelete = originalArray.indexOf(locationName)
+
+            storedKeywords[j] = {
+              name: currentKeyword,
+              linked_ids: originalArray.filter(
+                (_, index) => index !== indexToDelete
+              )
+            }
           }
 
           // Add location if it doesn't exist and is checked
-          if (!linkedIdsArray.includes(locationName) && currentKeywordChecked) {
-            storedKeywords[j].linked_ids = [
-              ...storedKeywords[j].linked_ids,
-              locationName
-            ]
+          if (
+            !storedKeywords[j].linked_ids.includes(locationName) &&
+            currentKeywordChecked
+          ) {
+            storedKeywords[j] = {
+              name: currentKeyword,
+              linked_ids: [...storedKeywords[j].linked_ids, locationName]
+            }
           }
           break
         }
@@ -152,11 +159,8 @@ export default function AddKeywordsLayout ({ keywordType }) {
       }
     }
 
-    // console.log('Stored keywords for dispatch: ', storedKeywords)
     dispatch(setLocationKeywords(storedKeywords))
-    // console.log('Keyword string for dispatch: ', keywordsString)
     dispatch(setCurrentLocationKeywords(keywordsString))
-
     navigate(orgManageLocationsUrls.add.optionalInformation.addActionPlan)
   }
 
@@ -167,7 +171,7 @@ export default function AddKeywordsLayout ({ keywordType }) {
 
   useEffect(() => {
     setKeywordError('')
-  }, [isKeywordEntered])
+  }, [keyword])
 
   return (
     <>
@@ -178,7 +182,7 @@ export default function AddKeywordsLayout ({ keywordType }) {
           <div className='govuk-grid-column-two-thirds'>
             {keywordError && <ErrorSummary errorList={[keywordError]} />}
             <h1 className='govuk-heading-l'>
-              Keywords for this {keywordType} (optional)
+              {`Keywords for this ${keywordType} (optional)`}
             </h1>
             <div className='govuk-body'>
               <p>

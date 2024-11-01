@@ -12,6 +12,7 @@ keyword_char_max = 20
 keyword_error_max = f'You can add a maximum of {keywords_max} keywords'
 keyword_error_char_max = f'Keywords must be {keyword_char_max} characters or less'
 keyword_error_duplicate = 'This keyword already exists'
+keyword_error_comma = 'Keywords cannot include commas'
 
 #------------------------------------------------------------------------------
 # URLS

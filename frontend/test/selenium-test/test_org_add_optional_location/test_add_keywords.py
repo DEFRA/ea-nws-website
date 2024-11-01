@@ -54,8 +54,10 @@ def test_uncheck_keywords(get_browser):
     add_keyword_success(get_browser, 'South')
     add_keyword_success(get_browser, 'East')
     add_keyword_success(get_browser, 'West')
+    click_checkbox(get_browser, 'idNorth')
     click_checkbox(get_browser, 'idSouth')
     click_checkbox(get_browser, 'idEast')
+    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idNorth']")
     assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idSouth']")
     assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idEast']")
     click_button(get_browser, 'Continue', url_next_page)
@@ -63,7 +65,7 @@ def test_uncheck_keywords(get_browser):
     click_link(get_browser, "Back", current_url)
     assert not check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idSouth']")
     assert not check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idEast']")
-    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idNorth']")
+    assert not check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idNorth']")
     assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idWest']")
 
 def test_max_keywords(get_browser):
@@ -76,3 +78,8 @@ def test_max_char_keyword(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     long_keyword = "A" * (keyword_char_max+1)
     add_keyword_fail(get_browser, long_keyword, keyword_error_char_max)
+
+def test_keyword_with_comma(get_browser):
+    navigate_to_auth_page_via_index(get_browser,current_url)
+    comma_keyword = "keyword,"
+    add_keyword_fail(get_browser, comma_keyword, keyword_error_comma)

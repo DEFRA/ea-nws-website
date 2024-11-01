@@ -33,10 +33,8 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
       ? state.session.currentLocation.meta_data.location_additional.keywords
       : []
   )
+  if (currentKeywords.length > 0) currentKeywords = JSON.parse(currentKeywords)
 
-  if (currentKeywords.length !== 0) {
-    currentKeywords = currentKeywords.split(',')
-  }
   const checkboxArray = Array(currentKeywords.length).fill(true)
   const [keywordError, setKeywordError] = useState('')
   const [keywordsArray, setKeywordsArray] = useState([...currentKeywords])
@@ -113,21 +111,15 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
   }
 
   const handleSubmit = () => {
-    const firstCheckedIndex = isCheckboxCheckedArray.indexOf(true)
-    let keywordsString = ''
-
-    if (firstCheckedIndex > -1) {
-      keywordsString = keywordsArray[firstCheckedIndex]
-    }
+    const keywordsArrayChecked = []
 
     // Loop over keywords array
     for (const i in keywordsArray) {
       const currentKeyword = keywordsArray[i]
       const currentKeywordChecked = isCheckboxCheckedArray[i] === true
 
-      // Current location keyword string
-      if (currentKeywordChecked && i !== String(firstCheckedIndex)) {
-        keywordsString = keywordsString.concat(', ', currentKeyword)
+      if (currentKeywordChecked) {
+        keywordsArrayChecked.push(currentKeyword)
       }
 
       // Loop over organisation keywords
@@ -181,7 +173,7 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
     }
 
     dispatch(setLocationKeywords(orgKeywords))
-    dispatch(setCurrentLocationKeywords(keywordsString))
+    dispatch(setCurrentLocationKeywords(JSON.stringify(keywordsArrayChecked)))
     NavigateToNextPage()
   }
 

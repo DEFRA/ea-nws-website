@@ -15,11 +15,12 @@ export default function LocationSearchOptionsPage() {
       case 'Coordinates':
         navigate(
           orgManageLocationsUrls.edit.individualLocation.location.xyCoords
+            .search
         )
         break
       case 'PinDrop':
         navigate(
-          orgManageLocationsUrls.edit.individualLocation.location.dropPin
+          orgManageLocationsUrls.edit.individualLocation.location.dropPin.search
         )
         break
       default:
@@ -27,9 +28,22 @@ export default function LocationSearchOptionsPage() {
     }
   }
 
+  const additionalInfo = (
+    <p>
+      If you change the X and Y coordinates for this location the address
+      associated with it will still match the X and Y coordinates previously
+      provided.
+      <br />
+      <br />
+      If this is not the address you want associated with this location you'll
+      need to change the address manually.
+    </p>
+  )
+
   return (
     <LocationSearchOptionsLayout
       heading='How do you want to change the existing location?'
+      additionalInfo={additionalInfo}
       searchOptions={locationOptions}
       navigateToNextPage={navigateToNextPage}
     />

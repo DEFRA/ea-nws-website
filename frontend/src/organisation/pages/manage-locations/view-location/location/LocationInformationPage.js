@@ -1,10 +1,11 @@
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../common/components/gov-uk/Details'
+import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
@@ -15,13 +16,13 @@ import ViewLocationSubNavigation from './location-information-components/ViewLoc
 
 export default function LocationInformationPage() {
   const navigate = useNavigate()
+  const location = useLocation()
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = currentLocation.meta_data.location_additional
   const formattedAddress = currentLocation.address?.split(',')
 
   const LocationHeader = () => {
     switch (additionalData.location_data_type) {
-      case LocationDataType.ADDRESS:
       case LocationDataType.X_AND_Y_COORDS:
         return 'X and Y Coordinates'
       case LocationDataType.SHAPE_POLYGON:
@@ -35,7 +36,6 @@ export default function LocationInformationPage() {
 
   const LocationData = () => {
     switch (additionalData.location_data_type) {
-      case LocationDataType.ADDRESS:
       case LocationDataType.X_AND_Y_COORDS:
         return (
           <>
@@ -56,19 +56,40 @@ export default function LocationInformationPage() {
     }
   }
 
+  const navigateToChangeLocation = (event) => {
+    event.preventDefault()
+    switch (additionalData.location_data_type) {
+      case LocationDataType.X_AND_Y_COORDS:
+        navigate(orgManageLocationsUrls.edit.individualLocation.location.search)
+        break
+      case LocationDataType.SHAPE_POLYGON:
+        navigate(
+          orgManageLocationsUrls.edit.individualLocation.location.shape.polygon
+        )
+        break
+      case LocationDataType.SHAPE_LINE:
+        navigate(
+          orgManageLocationsUrls.edit.individualLocation.location.shape.line
+        )
+        break
+    }
+  }
+
   const locationDetails = (
     <>
       <div className={currentLocation.address ? 'govuk-!-margin-top-7' : ''}>
         <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
           Location
         </h2>
-        <Link
-          className='govuk-link govuk-!-display-inline-block'
-          style={{ float: 'right' }}
-          // to={}
-        >
-          Change
-        </Link>
+        {additionalData.location_data_type !== LocationDataType.BOUNDARY && (
+          <Link
+            className='govuk-link govuk-!-display-inline-block'
+            style={{ float: 'right' }}
+            onClick={(e) => navigateToChangeLocation(e)}
+          >
+            Change
+          </Link>
+        )}
         <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
         <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-0'>
           {LocationHeader()}
@@ -132,9 +153,17 @@ export default function LocationInformationPage() {
       <OrganisationAccountNavigation />
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-4'>
+        {location.state && (
+          <NotificationBanner
+            className={
+              'govuk-notification-banner govuk-notification-banner--success'
+            }
+            title={'Success'}
+            text={location.state.successMessage}
+          />
+        )}
         <div class='govuk-grid-row'>
           <div class='govuk-grid-column-one-half'>
-            <span class='govuk-caption-l'>View location</span>
             <h1 class='govuk-heading-l'>{additionalData.location_name}</h1>
           </div>
           <div
@@ -153,9 +182,8 @@ export default function LocationInformationPage() {
         </div>
 
         {/* flood risk bannner */}
-        {(additionalData.location_data_type === LocationDataType.ADDRESS ||
-          additionalData.location_data_type ===
-            LocationDataType.X_AND_Y_COORDS) && (
+        {additionalData.location_data_type ===
+          LocationDataType.X_AND_Y_COORDS && (
           <div class='govuk-grid-row'>
             <div className='govuk-grid-column-full'>
               <div className='flood-risk-banner govuk-!-margin-top-2'>
@@ -201,7 +229,10 @@ export default function LocationInformationPage() {
                 <Link
                   className='govuk-link govuk-!-display-inline-block'
                   style={{ float: 'right' }}
-                  // to={}
+                  to={
+                    orgManageLocationsUrls.edit.individualLocation
+                      .optionalInformation.address
+                  }
                 >
                   Change
                 </Link>
@@ -415,9 +446,8 @@ export default function LocationInformationPage() {
               )}
             </div>
             {/* flood risk details */}
-            {(additionalData.location_data_type === LocationDataType.ADDRESS ||
-              additionalData.location_data_type ===
-                LocationDataType.X_AND_Y_COORDS) && (
+            {additionalData.location_data_type ===
+              LocationDataType.X_AND_Y_COORDS && (
               <div className='govuk-!-margin-top-7'>
                 <Details
                   title='What is a flood risk?'

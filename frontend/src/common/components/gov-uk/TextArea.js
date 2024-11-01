@@ -1,9 +1,10 @@
 import React from 'react'
 
-export default function TextArea ({
+export default function TextArea({
   name,
   className,
   rows,
+  value,
   onChange,
   error = ''
 }) {
@@ -29,10 +30,13 @@ export default function TextArea ({
           </p>
         )}
         <textarea
-          className={error === '' ? className : 'govuk-textarea govuk-textarea--error'}
+          className={
+            error === '' ? className : 'govuk-textarea govuk-textarea--error'
+          }
           name={name}
           id='govuk-textarea'
           rows={rows}
+          value={value}
           onChange={handleChange}
         />
       </div>

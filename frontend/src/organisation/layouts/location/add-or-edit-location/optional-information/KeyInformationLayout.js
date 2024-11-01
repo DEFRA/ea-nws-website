@@ -75,8 +75,8 @@ export default function KeyInformationLayout({ flow, navigateToNextPage }) {
   const detailsText = (
     <>
       <p>
-        Adding optional information allows you to filter your organisation’s
-        locations and helps you identify them more easily.{' '}
+        Providing these details will allow you to filter your organisation’s
+        locations, making it quicker to find them.{' '}
       </p>
       <p>
         <h3 className='govuk-heading-s'>Internal reference</h3>
@@ -101,21 +101,15 @@ export default function KeyInformationLayout({ flow, navigateToNextPage }) {
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             {locationNameError && (
               <ErrorSummary errorList={[locationNameError]} />
             )}
-            {flow === 'edit' && (
-              <span class='govuk-caption-l'>Edit location</span>
-            )}
-            <h1 className='govuk-heading-l'>Key information</h1>
+            <h1 className='govuk-heading-l govuk-!-margin-top-3'>
+              Key information
+            </h1>
             <div className='govuk-body'>
-              {flow === 'add' && (
-                <Details
-                  title='Why add optional information?'
-                  text={detailsText}
-                />
-              )}
+              <Details title='Why add useful information?' text={detailsText} />
               {flow === 'edit' && (
                 <Input
                   inputType='text'

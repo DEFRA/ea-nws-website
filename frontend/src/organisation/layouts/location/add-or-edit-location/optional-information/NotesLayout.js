@@ -8,7 +8,7 @@ import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../../../common/components/gov-uk/TextArea'
 import { setCurrentLocationNotes } from '../../../../../common/redux/userSlice'
 
-export default function NotesLayout({ flow, navigateToNextPage }) {
+export default function NotesLayout({ navigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const currentNotes = useSelector(
@@ -49,11 +49,8 @@ export default function NotesLayout({ flow, navigateToNextPage }) {
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
-            {flow === 'edit' && (
-              <span class='govuk-caption-l'>Edit location</span>
-            )}
             <h1 className='govuk-heading-l'>Notes (optional)</h1>
             <div className='govuk-body'>
               <p>

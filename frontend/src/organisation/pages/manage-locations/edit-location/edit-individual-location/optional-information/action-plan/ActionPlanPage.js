@@ -12,7 +12,7 @@ export default function ActionPlanPage() {
 
   return (
     <>
-      <ActionPlanLayout flow={'edit'} navigateToNextPage={navigateToNextPage} />
+      <ActionPlanLayout navigateToNextPage={navigateToNextPage} />
     </>
   )
 }

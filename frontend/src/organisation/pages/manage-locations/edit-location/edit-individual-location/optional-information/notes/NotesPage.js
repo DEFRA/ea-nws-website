@@ -12,7 +12,7 @@ export default function NotesPage() {
 
   return (
     <>
-      <NotesLayout flow={'edit'} navigateToNextPage={navigateToNextPage} />
+      <NotesLayout navigateToNextPage={navigateToNextPage} />
     </>
   )
 }

@@ -8,7 +8,7 @@ import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../../../common/components/gov-uk/TextArea'
 import { setCurrentLocationActionPlan } from '../../../../../common/redux/userSlice'
 
-export default function ActionPlanLayout({ flow, navigateToNextPage }) {
+export default function ActionPlanLayout({ navigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const currentActionPlan = useSelector(
@@ -52,11 +52,8 @@ export default function ActionPlanLayout({ flow, navigateToNextPage }) {
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
-            {flow === 'edit' && (
-              <span class='govuk-caption-l'>Edit location</span>
-            )}
             <h1 className='govuk-heading-l'>Action plan (optional)</h1>
             <div className='govuk-body'>
               <p>

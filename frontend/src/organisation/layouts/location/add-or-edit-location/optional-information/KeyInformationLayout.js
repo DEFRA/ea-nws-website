@@ -13,10 +13,12 @@ import {
   setCurrentLocationReference,
   setCurrentLocationType
 } from '../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../common/services/BackendService'
 
 export default function KeyInformationLayout({ flow, navigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const authToken = useSelector((state) => state.session.authToken)
   const additionalData = useSelector(
     (state) => state.session.currentLocation.meta_data.location_additional
   )
@@ -41,11 +43,26 @@ export default function KeyInformationLayout({ flow, navigateToNextPage }) {
     setLocationNameError('')
   }, [locationName])
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // location name can be amended when a user is editing a locations key information
     if (flow === 'edit') {
       if (locationName) {
-        dispatch(setCurrentLocationName(locationName))
+        const dataToSend = { authToken, locationName }
+        const { errorMessage } = await backendCall(
+          dataToSend,
+          'api/locations/check_duplicate',
+          navigate
+        )
+
+        if (errorMessage) {
+          if (errorMessage === 'duplicate location') {
+            setLocationNameError('A location with this name exists')
+          } else {
+            setLocationNameError('Something went wrong, try again')
+          }
+        } else {
+          dispatch(setCurrentLocationName(locationName))
+        }
       } else {
         setLocationNameError('Enter a location name')
         return

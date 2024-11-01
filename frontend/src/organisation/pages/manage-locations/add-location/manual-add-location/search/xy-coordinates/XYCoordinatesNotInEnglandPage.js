@@ -4,17 +4,19 @@ import { orgManageLocationsUrls } from '../../../../../../routes/manage-location
 
 export default function XYCoordinatesNotInEnglandPage() {
   const postCodeSearchUrl = orgManageLocationsUrls.add.search.postCodeSearch
-  const addXyCoordinatesSearchUrl =
+
+  const xyCoordsSearchUrl =
     orgManageLocationsUrls.add.search.xyCoordinatesSearch
-  const manuallyFindMapUrl =
+
+  const dropPinSearchUrl =
     orgManageLocationsUrls.unmatchedLocations.manuallyfind.map
 
   return (
     <NotInEnglandLayout
       postCodeSearchUrl={postCodeSearchUrl}
-      xyCoordinatesSearchUrl={addXyCoordinatesSearchUrl}
-      manuallyFindMapUrl={manuallyFindMapUrl}
-      locationType='xyCoordinate'
+      xyCoordinatesSearchUrl={xyCoordsSearchUrl}
+      dropPinSearchUrl={dropPinSearchUrl}
+      flow='xyCoordinate'
     />
   )
 }

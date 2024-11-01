@@ -205,6 +205,7 @@ export default function ManageKeywordsPage () {
   const onAction = (action, keyword) => {
     setTargetKeyword(keyword)
     if (action === 'edit') {
+      setUpdatedKeyword(keyword.name)
       editDialog()
     } else {
       deleteDialog(keyword)
@@ -259,15 +260,21 @@ export default function ManageKeywordsPage () {
   }
 
   const validateInput = () => {
-    return keywords.some((keyword) => updatedKeyword === keyword.name)
-      ? 'This keyword already exists'
-      : ''
+    return (updatedKeyword === targetKeyword.name)
+      ? ''
+      : keywords.some((keyword) => updatedKeyword === keyword.name)
+        ? 'This keyword already exists'
+        : ''
   }
 
   const handleEdit = () => {
     if (targetKeyword) {
       if (updatedKeyword === '') {
         updateToDeleteEmptyKeyworkDialog()
+      } else if (updatedKeyword === targetKeyword.name) {
+        setDialog({ ...dialog, show: false })
+        setTargetKeyword(null)
+        setUpdatedKeyword('')
       } else {
         editKeyword()
       }
@@ -469,6 +476,7 @@ export default function ManageKeywordsPage () {
                       setError={(val) =>
                         setDialog((dial) => ({ ...dial, error: val }))}
                       validateInput={() => validateInput()}
+                      defaultValue={targetKeyword.name}
                     />
                   </>
                 )}

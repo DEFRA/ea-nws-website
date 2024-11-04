@@ -11,9 +11,12 @@ import {
   setContactPreferences,
   setCurrentLocation,
   setCurrentLocationCoordinates,
+  setLocationBoundaries,
   setLocationKeywords,
   setProfile,
-  setRegistrations
+  setRegistrations,
+  setSelectedBoundary,
+  setSelectedBoundaryType
 } from '../redux/userSlice'
 
 export default function IndexPage () {
@@ -389,6 +392,9 @@ export default function IndexPage () {
       dispatch(setCurrentLocation(mockCurrentLocation))
       const coordinates = { latitude: 50.84106, longitude: -1.05814 }
       dispatch(setCurrentLocationCoordinates(coordinates))
+      dispatch(setSelectedBoundaryType(null))
+      dispatch(setSelectedBoundary(null))
+      dispatch(setLocationBoundaries([]))
       dispatch(setLocationKeywords(mockLocationKeywords))
       dispatch(setContactKeywords(mockContactKeywords))
       setmockSessionActive(true)

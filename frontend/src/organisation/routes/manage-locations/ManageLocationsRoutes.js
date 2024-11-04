@@ -11,13 +11,13 @@ import LocationPostCodeSearchPage from '../../pages/manage-locations/add-locatio
 import LocationPostCodeSearchResultsPage from '../../pages/manage-locations/add-location/manual-add-location/search/postcode/LocationPostCodeSearchResultsPage'
 import LocationXYCoordinatesSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/xy-coordinates/LocationXYCoordinatesSearchPage'
 import XYCoordinatesNotInEnglandPage from '../../pages/manage-locations/add-location/manual-add-location/search/xy-coordinates/XYCoordinatesNotInEnglandPage'
-import AddLocationNotInEnglandPage from '../../pages/manage-locations/add-location/manual-add-location/unmatched-locations/NotInEnglandPage'
 import AddActionPlan from '../../pages/manage-locations/add-location/optional-information/AddActionPlanPage'
 import AddKeyInformationPage from '../../pages/manage-locations/add-location/optional-information/AddKeyInformationPage'
 import KeywordsForThisLocationPage from '../../pages/manage-locations/add-location/optional-information/AddKeywordsForThisLocationPage'
 import AddNotesPage from '../../pages/manage-locations/add-location/optional-information/AddNotesPage'
 import AddOptionalAddress from '../../pages/manage-locations/add-location/optional-information/AddOptionalAddress'
 import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-information/OptionalLocationInformationPage'
+import AddAnotherPredefinedBoundaryPage from '../../pages/manage-locations/add-location/select-predefined-boundary/AddAnotherPredefinedBoundaryPage'
 import SelectPredefinedBoundaryPage from '../../pages/manage-locations/add-location/select-predefined-boundary/SelectPredefinedBoundaryPage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirmPage'
@@ -81,7 +81,8 @@ const orgManageLocationsUrls = {
       dropPinSearchResults: urlManageOrg + '/add/drop-pin-search-results'
     },
     predefinedBoundary: {
-      select: urlManageOrg + '/add/predefined-boundary'
+      select: urlManageOrg + '/add/predefined-boundary',
+      addAnother: urlManageOrg + '/add/another-predefined-boundary'
     },
     optionalInformation: {
       optionalInfo: urlManageOrgAddLocations + '/optional-information',
@@ -216,6 +217,10 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.add.predefinedBoundary.select,
     component: <SelectPredefinedBoundaryPage />
   },
+  {
+    path: orgManageLocationsUrls.add.predefinedBoundary.addAnother,
+    component: <AddAnotherPredefinedBoundaryPage />
+  },
   // unmatched locations
   {
     path: orgManageLocationsUrls.unmatchedLocations.doNotAdd,
@@ -240,10 +245,6 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.notInEngland,
     component: <NotInEnglandPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.notInEnglandLP,
-    component: <AddLocationNotInEnglandPage />
   },
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.selectHow,

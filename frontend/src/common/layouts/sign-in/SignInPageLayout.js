@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -54,7 +54,7 @@ export default function SignInPageLayout ({ NavigateToNextPage }) {
                 onClick={handleSubmit}
               />
               <br />
-              <Link to='/signup' className='govuk-link'>
+              <Link to='/signup/register-location/search' className='govuk-link'>
                 Sign up if you do not have an account
               </Link>
             </div>

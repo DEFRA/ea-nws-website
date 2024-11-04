@@ -119,7 +119,10 @@ export default function SelectPredefinedBoundaryPage () {
       )
       dispatch(setConsecutiveBoundariesAdded(consecutiveBoundariesAdded + 1))
       // TODO: This needs to navigate to optional info page once it has been developed
-      navigate(orgManageLocationsUrls.add.predefinedBoundary.addAnother)
+      navigate(
+        orgManageLocationsUrls.add.predefinedBoundary.optionalInformation
+          .actionPlan
+      )
     }
   }
 

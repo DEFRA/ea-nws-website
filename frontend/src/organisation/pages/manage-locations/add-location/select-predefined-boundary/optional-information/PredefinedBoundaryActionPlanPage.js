@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom'
 import ActionPlanLayout from '../../../../../layouts/location/add-or-edit-location/optional-information/ActionPlanLayout'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function PredefinedBoundaryNotesPage() {
+export default function PredefinedBoundaryNotesPage () {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.add.search.dropPinSearchResults)
+    navigate(
+      orgManageLocationsUrls.add.predefinedBoundary.optionalInformation.notes
+    )
   }
 
-  return <ActionPlanLayout flow='' NavigateToNextPage={NavigateToNextPage} />
+  return <ActionPlanLayout flow='' navigateToNextPage={NavigateToNextPage} />
 }

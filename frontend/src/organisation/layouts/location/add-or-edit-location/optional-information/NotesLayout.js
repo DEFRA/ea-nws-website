@@ -8,13 +8,13 @@ import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../../../common/components/gov-uk/TextArea'
 import { setCurrentLocationNotes } from '../../../../../common/redux/userSlice'
 
-export default function NotesLayout({ flow, navigateToNextPage }) {
+export default function NotesLayout ({ flow, navigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const currentNotes = useSelector(
     (state) => state.session.currentLocation.meta_data.location_additional.notes
   )
-  const [notes, setNotes] = useState(currentNotes ? currentNotes : '')
+  const [notes, setNotes] = useState(currentNotes || '')
   const [error, setError] = useState('')
   const charLimit = 200
 

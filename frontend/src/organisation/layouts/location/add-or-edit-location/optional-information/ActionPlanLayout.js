@@ -8,7 +8,7 @@ import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../../../common/components/gov-uk/TextArea'
 import { setCurrentLocationActionPlan } from '../../../../../common/redux/userSlice'
 
-export default function ActionPlanLayout({ flow, navigateToNextPage }) {
+export default function ActionPlanLayout ({ flow, navigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const currentActionPlan = useSelector(
@@ -16,7 +16,7 @@ export default function ActionPlanLayout({ flow, navigateToNextPage }) {
       state.session.currentLocation.meta_data.location_additional.action_plan
   )
   const [actionPlan, setActionPlan] = useState(
-    currentActionPlan ? currentActionPlan : ''
+    currentActionPlan || ''
   )
   const [error, setError] = useState('')
   const charLimit = 200

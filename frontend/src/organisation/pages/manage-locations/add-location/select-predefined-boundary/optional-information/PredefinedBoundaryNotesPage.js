@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import NotesLayout from '../../../../../layouts/location/add-or-edit-location/optional-information/NotesLayout'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function PredefinedBoundaryNotesPage() {
+export default function PredefinedBoundaryNotesPage () {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.add.search.dropPinSearchResults)
+    navigate(orgManageLocationsUrls.add.predefinedBoundary.addAnother)
   }
 
-  return <NotesLayout flow='' NavigateToNextPage={NavigateToNextPage} />
+  return <NotesLayout flow='' navigateToNextPage={NavigateToNextPage} />
 }

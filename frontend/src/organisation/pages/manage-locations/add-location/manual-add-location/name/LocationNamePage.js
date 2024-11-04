@@ -29,12 +29,12 @@ export default function LocationNamePage () {
     if (errorMessage) {
       if (errorMessage === 'duplicate location') {
         setError('')
-        return true
+        return errorMessage
       } else {
         setError('Something went wrong, try again')
       }
-    } else {
-      return false
+    } else{
+      return
     }
   }
 

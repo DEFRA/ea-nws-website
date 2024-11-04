@@ -18,7 +18,8 @@ export default function Popup ({
   error = '',
   setError,
   charLimit = 0,
-  validateInput = null
+  validateInput = null,
+  defaultValue
 }) {
   const handleTextInputChange = (val) => {
     if (input) {
@@ -64,6 +65,7 @@ export default function Popup ({
               onChange={(val) => handleTextInputChange(val)}
               className='govuk-input govuk-input--width-20'
               error={error}
+              defaultValue={defaultValue}
             />
           )}
           <div className='popup-dialog-flex'>

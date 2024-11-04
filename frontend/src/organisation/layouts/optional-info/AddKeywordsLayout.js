@@ -12,7 +12,11 @@ import {
   setLocationKeywords
 } from '../../../common/redux/userSlice'
 
-export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) {
+export default function AddKeywordsLayout ({
+  keywordType,
+  NavigateToNextPage,
+  KeywordText
+}) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -53,6 +57,14 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
     'Keywords must be ' + maxKeywordChar + ' characters or less'
   const duplicateKeywordError = 'This keyword already exists'
   const keywordInputError = 'Keywords cannot include commas'
+
+  useEffect(() => {
+    setKeywordError('')
+  }, [searchInput])
+
+  useEffect(() => {
+    setKeywords(orgKeywordsOriginal)
+  }, [orgKeywordsOriginal])
 
   const handleCheckboxChange = (isChecked, index) => {
     isChecked
@@ -114,9 +126,9 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
     const keywordsArrayChecked = []
 
     // Loop over keywords array
-    for (const i in keywordsArray) {
-      const currentKeyword = keywordsArray[i]
-      const currentKeywordChecked = isCheckboxCheckedArray[i] === true
+    for (const keywordIdx in keywordsArray) {
+      const currentKeyword = keywordsArray[keywordIdx]
+      const currentKeywordChecked = isCheckboxCheckedArray[keywordIdx] === true
 
       if (currentKeywordChecked) {
         keywordsArrayChecked.push(currentKeyword)
@@ -124,20 +136,20 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
 
       // Loop over organisation keywords
       let keywordExists = false
-      for (const j in orgKeywords) {
+      for (const orgKeywordIdx in orgKeywords) {
         // Keyword exists
-        if (currentKeyword === orgKeywords[j].name) {
+        if (currentKeyword === orgKeywords[orgKeywordIdx].name) {
           keywordExists = true
 
           if (
-            orgKeywords[j].linked_ids.includes(locationName) &&
+            orgKeywords[orgKeywordIdx].linked_ids.includes(locationName) &&
             !currentKeywordChecked
           ) {
-            const originalArray = orgKeywords[j].linked_ids
+            const originalArray = orgKeywords[orgKeywordIdx].linked_ids
             const indexToDelete = originalArray.indexOf(locationName)
 
             // Remove location if it exists but keyword is unchecked
-            orgKeywords[j] = {
+            orgKeywords[orgKeywordIdx] = {
               name: currentKeyword,
               linked_ids: originalArray.filter(
                 (_, index) => index !== indexToDelete
@@ -145,15 +157,18 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
             }
 
             // Remove keyword if no linked ids found
-            if (orgKeywords[j].linked_ids.length === 0) orgKeywords.splice(j, 1)
+            if (orgKeywords[orgKeywordIdx].linked_ids.length === 0) { orgKeywords.splice(orgKeywordIdx, 1) }
           } else if (
-            !orgKeywords[j].linked_ids.includes(locationName) &&
+            !orgKeywords[orgKeywordIdx].linked_ids.includes(locationName) &&
             currentKeywordChecked
           ) {
             // Add location if it doesn't exist and keyword is checked
-            orgKeywords[j] = {
+            orgKeywords[orgKeywordIdx] = {
               name: currentKeyword,
-              linked_ids: [...orgKeywords[j].linked_ids, locationName]
+              linked_ids: [
+                ...orgKeywords[orgKeywordIdx].linked_ids,
+                locationName
+              ]
             }
           }
           break
@@ -182,14 +197,6 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
     navigate(-1)
   }
 
-  useEffect(() => {
-    setKeywordError('')
-  }, [searchInput])
-
-  useEffect(() => {
-    setKeywords(orgKeywordsOriginal)
-  }, [orgKeywordsOriginal])
-
   return (
     <>
       <OrganisationAccountNavigation />
@@ -202,27 +209,7 @@ export default function AddKeywordsLayout ({ keywordType, NavigateToNextPage }) 
               {`Keywords for this ${keywordType} (optional)`}
             </h1>
             <div className='govuk-body'>
-              <p>
-                You can add new keywords. Or you can remove existing keywords
-                associated with this location by unticking the relevant box.
-                <br /> <br />
-                <strong> Why add keywords </strong>
-                <br /> <br />
-                Adding keywords for each location can make it easier for you to
-                filter and create lists of locations you can then link to the
-                people responsible for them (contacts). Contacts cannot get
-                flood messages for a location unless they are linked to it.
-                <br /> <br />
-                For example, you may want to add ‘North’ or ‘Midlands’ or ‘Team
-                A’ as keywords, then show all of the locations with that keyword
-                in a list.
-                <br /> <br />
-                You can add a maximum of 50 keywords and each keyword can be
-                single or multiple words, for example ‘South’ or ‘South West’.
-                <br /> <br />
-                Once you use a keyword it will be saved so you can select it for
-                any other contacts.
-              </p>
+              {KeywordText()}
 
               {keywordsArray.length !== 0 &&
                 keywordsArray.map((keyword, index) => (

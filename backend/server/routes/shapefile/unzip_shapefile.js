@@ -14,59 +14,64 @@ const {
 
 // Unzips file in chunks and sends output to new folder within bucket
 async function unzipStreamToS3(client, zipStream, bucketName, folderName) {
-  for await (const entry of zipStream.pipe(unzipper.Parse())) {
-    const { path: entryName, type } = entry
+  try {
+    for await (const entry of zipStream.pipe(unzipper.Parse())) {
+      const { path: entryName, type } = entry
 
-    if (type === 'File') {
-      const uploadKey = `${folderName}${entryName}`
+      if (type === 'File') {
+        const uploadKey = `${folderName}${entryName}`
 
-      const createUploadParams = {
-        Bucket: bucketName,
-        Key: uploadKey,
-        ContentType: 'application/octet-stream'
-      }
-      const createUploadResponse = await client.send(
-        new CreateMultipartUploadCommand(createUploadParams)
-      )
-
-      const uploadID = createUploadResponse.UploadId
-      const partNum = 1
-      const passThroughStream = new PassThrough()
-      const uploadPartParams = {
-        Bucket: bucketName,
-        Key: uploadKey,
-        UploadId: uploadID,
-        PartNumber: partNum,
-        Body: passThroughStream
-      }
-
-      entry.pipe(passThroughStream)
-      const uploadPartResponse = await client.send(
-        new UploadPartCommand(uploadPartParams)
-      )
-
-      // Complete upload
-      const completeMutipartParams = {
-        Bucket: bucketName,
-        Key: uploadKey,
-        UploadId: uploadID,
-        MultipartUpload: {
-          Parts: [
-            {
-              ETag: uploadPartResponse.ETag,
-              PartNumber: partNum
-            }
-          ]
+        const createUploadParams = {
+          Bucket: bucketName,
+          Key: uploadKey,
+          ContentType: 'application/octet-stream'
         }
+        const createUploadResponse = await client.send(
+          new CreateMultipartUploadCommand(createUploadParams)
+        )
+
+        const uploadID = createUploadResponse.UploadId
+        const partNum = 1
+        const passThroughStream = new PassThrough()
+        const uploadPartParams = {
+          Bucket: bucketName,
+          Key: uploadKey,
+          UploadId: uploadID,
+          PartNumber: partNum,
+          Body: passThroughStream
+        }
+
+        entry.pipe(passThroughStream)
+        const uploadPartResponse = await client.send(
+          new UploadPartCommand(uploadPartParams)
+        )
+
+        // Complete upload
+        const completeMutipartParams = {
+          Bucket: bucketName,
+          Key: uploadKey,
+          UploadId: uploadID,
+          MultipartUpload: {
+            Parts: [
+              {
+                ETag: uploadPartResponse.ETag,
+                PartNumber: partNum
+              }
+            ]
+          }
+        }
+        await client.send(
+          new CompleteMultipartUploadCommand(completeMutipartParams)
+        )
       }
-      await client.send(
-        new CompleteMultipartUploadCommand(completeMutipartParams)
-      )
+      // Skip directories or non-file entries
+      else {
+        entry.autodrain()
+      }
     }
-    // Skip directories or non-file entries
-    else {
-      entry.autodrain()
-    }
+    return true
+  } catch (error) {
+    return error
   }
 }
 
@@ -104,17 +109,20 @@ module.exports = [
 
           const folderName = `zip-uploads/${fileName.replace('.zip', '')}/`
 
-          await unzipStreamToS3(
+          unzipResult = await unzipStreamToS3(
             client,
             zipStream.Body,
             s3BucketName,
             folderName
           )
-
-          return h.response({
-            status: 200,
-            message: 'File successfully unzipped and unloaded'
-          })
+          if (unzipResult === true) {
+            return h.response({
+              status: 200,
+              message: 'File successfully unzipped and uploaded'
+            })
+          } else {
+            return h.response({ status: 500, message: unzipResult })
+          }
         } else {
           return h.response({
             status: 500,

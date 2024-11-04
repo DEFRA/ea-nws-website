@@ -136,19 +136,18 @@ export default function UploadFileLayout({
         // Unzip the uploaded file and send output back to S3
         else if (uploadMethod === 'shape') {
           console.log('Attempting file unzip')
-          const { status, message } = await backendCall(
+          const unzipResponse = await backendCall(
             { fileName: uniqFileName },
             'api/shapefile/unzip',
             navigate
           )
-          if (status === 200) {
+          console.log(`${unzipResponse.status}: ${unzipResponse.message}`)
+          if (unzipResponse.status === 200) {
             // Proceed to next page
-            console.log('File unzipped')
-            console.log('Yay!')
+            console.log('File unzipped successfully')
           } else {
             // Proceed to error page
-            console.log('File unzip failure :(')
-            console.log(`Error: ${message}`)
+            console.log('File unzip failure')
           }
         }
       }

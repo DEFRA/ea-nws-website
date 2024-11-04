@@ -409,6 +409,7 @@ export default function ManageKeywordsPage () {
                       onClick={(val) => handleOnClick(val)}
                       position='absolute'
                       showNotFound={false}
+                      nameField='name'
                     />
                     <div className='keyword-search-button-container'>
                       <button
@@ -476,7 +477,7 @@ export default function ManageKeywordsPage () {
                       setError={(val) =>
                         setDialog((dial) => ({ ...dial, error: val }))}
                       validateInput={() => validateInput()}
-                      defaultValue={targetKeyword.name}
+                      defaultValue={dialog.input ? targetKeyword.name : ''}
                     />
                   </>
                 )}

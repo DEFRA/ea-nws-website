@@ -7,7 +7,7 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import { backendCall } from '../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function UploadFileLayout ({
+export default function UploadFileLayout({
   uploadMethod // Currently either "bulk" or "shape"
 }) {
   const navigate = useNavigate()
@@ -41,7 +41,7 @@ export default function UploadFileLayout ({
       maxFileSize = 5
       fileTypeHint = 'File must be .zip'
       fileTypeErrorMsg = 'The selected file must be .zip'
-      backendRoute = 'api/shapefile/parse'
+      backendRoute = 'api/shapefile/upload_file'
       break
     default:
       // Null values already set
@@ -92,48 +92,42 @@ export default function UploadFileLayout ({
     setUploading(true)
 
     try {
-      // Bulk upload logic
-      if (uploadMethod === 'bulk') {
-        // Get pre-signed URL from backend
-        const dataToSend = {
-          name: selectedFile.name,
-          fileType: selectedFile.type
-        }
-        const { errorMessage, data } = await backendCall(
-          dataToSend,
-          backendRoute,
-          navigate
-        )
-        if (errorMessage) {
-          // Set to an error to be displayed when doing DoR11 work
-          throw new Error(`Failed to get pre-signed URL: ${errorMessage}`)
-        }
-        const url = data.url
-        const uniqFileName = data.fileName
-        // Upload the file to S3 using generated URL
-        const uploadResponse = await fetch(url, {
-          mode: 'cors',
-          method: 'PUT',
-          headers: {
-            'Content-Type': selectedFile.type
-          },
-          body: selectedFile
-        })
-
-        if (!uploadResponse.ok) {
-          setUploading(false)
-          setErrorFileType('Error uploading file')
-        } else {
-          navigate(orgManageLocationsUrls.add.loadingPage, {
-            state: {
-              fileName: uniqFileName
-            }
-          })
-        }
+      // Get pre-signed URL from backend
+      const dataToSend = {
+        name: selectedFile.name,
+        fileType: selectedFile.type
       }
-      // Shapefile upload logic
-      else if (uploadMethod === 'shape') {
-        const dataToSend = {}
+      const { errorMessage, data } = await backendCall(
+        dataToSend,
+        backendRoute,
+        navigate
+      )
+      if (errorMessage) {
+        // Set to an error to be displayed when doing DoR11 work
+        throw new Error(`Failed to get pre-signed URL: ${errorMessage}`)
+      }
+      const url = data.url
+      const uniqFileName = data.fileName
+
+      // Upload the file to S3 using generated URL
+      const uploadResponse = await fetch(url, {
+        mode: 'cors',
+        method: 'PUT',
+        headers: {
+          'Content-Type': selectedFile.type
+        },
+        body: selectedFile
+      })
+
+      if (!uploadResponse.ok) {
+        setUploading(false)
+        setErrorFileType('Error uploading file')
+      } else {
+        navigate(orgManageLocationsUrls.add.loadingPage, {
+          state: {
+            fileName: uniqFileName
+          }
+        })
       }
     } catch (err) {
       setUploading(false)
@@ -147,65 +141,63 @@ export default function UploadFileLayout ({
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          {!uploading
-            ? (
-              <>
-                {(errorFileType || errorFileSize) && (
-                  <ErrorSummary errorList={[errorFileType, errorFileSize]} />
-                )}
-                <div className='govuk-grid-column-full'>
-                  <h1 className='govuk-heading-l'>Upload file</h1>
-                  <div
-                    className={
+          {!uploading ? (
+            <>
+              {(errorFileType || errorFileSize) && (
+                <ErrorSummary errorList={[errorFileType, errorFileSize]} />
+              )}
+              <div className='govuk-grid-column-full'>
+                <h1 className='govuk-heading-l'>Upload file</h1>
+                <div
+                  className={
                     errorFileSize || errorFileType
                       ? 'govuk-form-group govuk-form-group--error'
                       : 'govuk-form-group'
                   }
-                  >
-                    <p className='govuk-hint'>{fileTypeHint}</p>
-                    {errorFileType && (
-                      <p id='file-upload-1-error' className='govuk-error-message'>
-                        {errorFileType}
-                      </p>
-                    )}
-                    {errorFileSize && (
-                      <p id='file-upload-2-error' className='govuk-error-message'>
-                        {errorFileSize}
-                      </p>
-                    )}
-                    <input
-                      type='file'
-                      className={
+                >
+                  <p className='govuk-hint'>{fileTypeHint}</p>
+                  {errorFileType && (
+                    <p id='file-upload-1-error' className='govuk-error-message'>
+                      {errorFileType}
+                    </p>
+                  )}
+                  {errorFileSize && (
+                    <p id='file-upload-2-error' className='govuk-error-message'>
+                      {errorFileSize}
+                    </p>
+                  )}
+                  <input
+                    type='file'
+                    className={
                       errorFileSize || errorFileType
                         ? 'govuk-file-upload govuk-file-upload--error'
                         : 'govuk-file-upload'
                     }
-                      id='file-upload'
-                      onChange={setValidSelectedFile}
-                    />
-                  </div>
-                  <Button
-                    text='Upload'
-                    className='govuk-button'
-                    onClick={handleUpload}
+                    id='file-upload'
+                    onChange={setValidSelectedFile}
                   />
-                  <Link
-                    onClick={() => navigate(-1)}
-                    className='govuk-body govuk-link inline-link'
-                  >
-                    Cancel
-                  </Link>
                 </div>
-              </>
-              )
-            : (
-              <div className='govuk-!-text-align-centre'>
-                <h1 className='govuk-heading-l'>Uploading</h1>
-                <div className='govuk-body'>
-                  <Spinner size='75' />
-                </div>
+                <Button
+                  text='Upload'
+                  className='govuk-button'
+                  onClick={handleUpload}
+                />
+                <Link
+                  onClick={() => navigate(-1)}
+                  className='govuk-body govuk-link inline-link'
+                >
+                  Cancel
+                </Link>
               </div>
-              )}
+            </>
+          ) : (
+            <div className='govuk-!-text-align-centre'>
+              <h1 className='govuk-heading-l'>Uploading</h1>
+              <div className='govuk-body'>
+                <Spinner size='75' />
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </>

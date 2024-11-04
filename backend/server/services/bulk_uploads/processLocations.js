@@ -5,7 +5,7 @@ const getSecretKeyValue = require('../SecretsManager')
 
 const convertToPois = (locations) => {
   const pois = []
-  locations.forEach(location => {
+  locations.forEach((location) => {
     const poi = {
       name: location.Location_name,
       address: location.address,
@@ -37,7 +37,7 @@ const getCSV = async (fileName) => {
   const bucket = await getSecretKeyValue('nws/aws', 'bulkUploadBucket')
   const params = {
     Bucket: bucket,
-    Key: fileName
+    Key: `csv-uploads/${fileName}`
   }
   const command = new GetObjectCommand(params)
   let data = []

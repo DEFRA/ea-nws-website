@@ -8,7 +8,9 @@ const {
 const unzipper = require('unzipper')
 const stream = require('stream')
 const { CLIENT_RENEG_WINDOW } = require('tls')
-const { createGenericErrorResponse } = require('../../services/GenericErrorResponse')
+const {
+  createGenericErrorResponse
+} = require('../../services/GenericErrorResponse')
 
 module.exports = [
   {
@@ -50,16 +52,19 @@ module.exports = [
             }
 
             // Prepare for multipart upload to S3
-            const multipartUpload = await client.send(new CreateMultipartUploadCommand {
-              Bucket: s3BucketName,
-              Key: `unzipped/${fileName}`,
-              ContentType: 'application/octet-stream'
-            })
+            const multipartUpload = await client.send(
+              new CreateMultipartUploadCommand({
+                Bucket: s3BucketName,
+                Key: `unzipped/${fileName}`,
+                ContentType: 'application/octet-stream'
+              })
+            )
             let chunkNum = 1
-            const uploadPromises =[]
-            const bufferStream = new stream.PassThrough
+            const uploadPromises = []
+            const bufferStream = new stream.PassThrough()
 
-            entry.pipe(bufferStream)
+            entry
+              .pipe(bufferStream)
               .on('data', async (chunk) => {
                 const uploadPartParams = {
                   Bucket: s3BucketName,
@@ -68,7 +73,9 @@ module.exports = [
                   PartNumber: partNumber,
                   Body: chunk
                 }
-                uploadPromises.push(client.send(new UploadPartCommand(uploadPartParams)))
+                uploadPromises.push(
+                  client.send(new UploadPartCommand(uploadPartParams))
+                )
                 chunkNum += 1
               })
               .on('end', async () => {
@@ -82,15 +89,17 @@ module.exports = [
                       ETag: part.ETag,
                       PartNumber: i + 1
                     }))
-                }}
-                await client.send(new CompleteMultipartUploadCommand(completedParams))
+                  }
+                }
+                await client.send(
+                  new CompleteMultipartUploadCommand(completedParams)
+                )
               })
               .on('error', (err) => {
-                console.log("Error streaming zip: ", err)
+                console.log('Error streaming zip: ', err)
                 createGenericErrorResponse(h)
               })
           })
-
         } else {
           return h.response({
             status: 500,

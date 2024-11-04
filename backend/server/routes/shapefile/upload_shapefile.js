@@ -9,7 +9,7 @@ const { getSignedUrl } = require('@aws-sdk/s3-request-presigner')
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/bulk_uploads/upload_file',
+    path: '/api/shapefile/upload_file',
     handler: async (request, h) => {
       try {
         if (!request.payload) {
@@ -33,7 +33,7 @@ module.exports = [
 
           const params = {
             Bucket: s3BucketName,
-            Key: `csv-uploads/${uniqFileName}`,
+            Key: `zip-uploads/${uniqFileName}`,
             ContentType: fileType
           }
 

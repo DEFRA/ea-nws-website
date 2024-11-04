@@ -3,77 +3,14 @@ const {
   GetObjectCommand,
   CreateMultipartUploadCommand,
   UploadPartCommand,
-  CompleteMultipartUploadCommand
+  CompleteMultipartUploadCommand,
+  InventoryS3BucketDestinationFilterSensitiveLog
 } = require('@aws-sdk/client-s3')
 const unzipper = require('unzipper')
 const { PassThrough } = require('stream')
-const { CLIENT_RENEG_WINDOW } = require('tls')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
-
-// Unzips file in chunks and sends output to new folder within bucket
-async function unzipStreamToS3(client, zipStream, bucketName, folderName) {
-  try {
-    for await (const entry of zipStream.pipe(unzipper.Parse())) {
-      const { path: entryName, type } = entry
-
-      if (type === 'File') {
-        const uploadKey = `${folderName}${entryName}`
-
-        const createUploadParams = {
-          Bucket: bucketName,
-          Key: uploadKey,
-          ContentType: 'application/octet-stream'
-        }
-        const createUploadResponse = await client.send(
-          new CreateMultipartUploadCommand(createUploadParams)
-        )
-
-        const uploadID = createUploadResponse.UploadId
-        const partNum = 1
-        const passThroughStream = new PassThrough()
-        const uploadPartParams = {
-          Bucket: bucketName,
-          Key: uploadKey,
-          UploadId: uploadID,
-          PartNumber: partNum,
-          Body: passThroughStream
-        }
-
-        entry.pipe(passThroughStream)
-        const uploadPartResponse = await client.send(
-          new UploadPartCommand(uploadPartParams)
-        )
-
-        // Complete upload
-        const completeMutipartParams = {
-          Bucket: bucketName,
-          Key: uploadKey,
-          UploadId: uploadID,
-          MultipartUpload: {
-            Parts: [
-              {
-                ETag: uploadPartResponse.ETag,
-                PartNumber: partNum
-              }
-            ]
-          }
-        }
-        await client.send(
-          new CompleteMultipartUploadCommand(completeMutipartParams)
-        )
-      }
-      // Skip directories or non-file entries
-      else {
-        entry.autodrain()
-      }
-    }
-    return true
-  } catch (error) {
-    return error
-  }
-}
 
 module.exports = [
   {
@@ -82,7 +19,7 @@ module.exports = [
     handler: async (request, h) => {
       try {
         if (!request.payload) {
-          return h.response({ status: 500, message: 'Payload error' })
+          return createGenericErrorResponse(h)
         }
 
         const { fileName } = request.payload
@@ -99,36 +36,53 @@ module.exports = [
             return h.response({ status: 500, message: 'Secret error' })
           }
 
-          const getObjectParams = {
+          const zipFilePath = `zip-uploads/${fileName}`
+          const outputFolder = `zip-uploads/${fileName.replace('.zip', '')}/`
+
+          // Retrieve zip file from bucket
+          const getObjectCmd = new GetObjectCommand({
             Bucket: s3BucketName,
-            Key: `zip-uploads/${fileName}`
-          }
-          const zipStream = await client.send(
-            new GetObjectCommand(getObjectParams)
-          )
-
-          const folderName = `zip-uploads/${fileName.replace('.zip', '')}/`
-
-          unzipResult = await unzipStreamToS3(
-            client,
-            zipStream.Body,
-            s3BucketName,
-            folderName
-          )
-          if (unzipResult === true) {
-            return h.response({
-              status: 200,
-              message: 'File successfully unzipped and uploaded'
-            })
-          } else {
-            return h.response({ status: 500, message: unzipResult })
-          }
-        } else {
-          return h.response({
-            status: 500,
-            message: 'File name not provided'
+            Key: zipFilePath
           })
+          const zipFileStream = await client.send(getObjectCmd)
+
+          // Unzip and send each file back to bucket
+          const unzipStream = zipFileStream.Body.pipe(unzipper.Parse())
+          for await (const entry of unzipStream) {
+            const { path: filePath, type } = entry
+            if (type === 'File') {
+              // Create stream to upload each extracted file
+              const passThroughStream = new PassThrough()
+              const uploadParams = {
+                Bucket: s3BucketName,
+                Key: `${outputFolder}${filePath}`,
+                Body: passThroughStream
+              }
+
+              // Start multipart upload
+              const uploadCmd = new CreateMultipartUploadCommand(uploadParams)
+              const uploadResponse = await client.send(uploadCmd)
+              entry.pipe(passThroughStream)
+
+              // Complete upload
+              await client.send(
+                new CompleteMultipartUploadCommand({
+                  Bucket: s3BucketName,
+                  Key: `${outputFolder}${filePath}`,
+                  UploadId: uploadResponse.UploadId
+                })
+              )
+            } else {
+              // Skip non-files
+              entry.autodrain()
+            }
+          }
         }
+
+        return h.response({
+          status: 200,
+          message: 'Files unzipped and uploaded successfully'
+        })
       } catch (error) {
         return h.response({
           status: 500,

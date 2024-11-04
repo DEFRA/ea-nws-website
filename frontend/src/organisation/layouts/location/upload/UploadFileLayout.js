@@ -123,11 +123,34 @@ export default function UploadFileLayout({
         setUploading(false)
         setErrorFileType('Error uploading file')
       } else {
-        navigate(orgManageLocationsUrls.add.loadingPage, {
-          state: {
-            fileName: uniqFileName
+        console.log('File uploaded!')
+
+        // Take user to bulk upload scanning page
+        if (uploadMethod === 'bulk') {
+          navigate(orgManageLocationsUrls.add.loadingPage, {
+            state: {
+              fileName: uniqFileName
+            }
+          })
+        }
+        // Unzip the uploaded file and send output back to S3
+        else if (uploadMethod === 'shape') {
+          console.log('Attempting file unzip')
+          const { status, message } = await backendCall(
+            { fileName: uniqFileName },
+            'api/shapefile/unzip',
+            navigate
+          )
+          if (status === 200) {
+            // Proceed to next page
+            console.log('File unzipped')
+            console.log('Yay!')
+          } else {
+            // Proceed to error page
+            console.log('File unzip failure :(')
+            console.log(`Error: ${message}`)
           }
-        })
+        }
       }
     } catch (err) {
       setUploading(false)

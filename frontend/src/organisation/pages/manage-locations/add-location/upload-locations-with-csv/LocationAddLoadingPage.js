@@ -4,7 +4,7 @@ import { Spinner } from '../../../../../common/components/custom/Spinner'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddLoadingPage () {
+export default function LocationAddLoadingPage() {
   const navigate = useNavigate()
   const [status, setStatus] = useState('')
   const [stage, setStage] = useState('Scanning Upload')
@@ -14,7 +14,7 @@ export default function LocationAddLoadingPage () {
   const fileName = location.state?.fileName
 
   if (!fileName) {
-    // theres not fileName so naviagte back. will need to give an error
+    // theres not fileName so navigate back. will need to give an error
     navigate(-1)
   }
 

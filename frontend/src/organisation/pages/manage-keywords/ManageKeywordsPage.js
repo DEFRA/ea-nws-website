@@ -476,7 +476,7 @@ export default function ManageKeywordsPage () {
                       setError={(val) =>
                         setDialog((dial) => ({ ...dial, error: val }))}
                       validateInput={() => validateInput()}
-                      defaultValue={targetKeyword.name}
+                      defaultValue={dialog.input ? targetKeyword.name : ''}
                     />
                   </>
                 )}

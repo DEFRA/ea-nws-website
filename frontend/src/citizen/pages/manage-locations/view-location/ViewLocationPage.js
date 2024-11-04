@@ -45,7 +45,7 @@ export default function ViewLocationPage () {
 
   const removeLocation = () => {
     navigate('/manage-locations/remove', {
-      state: { name: selectedLocation.name }
+      state: { name: selectedLocation.address }
     })
   }
 
@@ -57,7 +57,7 @@ export default function ViewLocationPage () {
         <div className='govuk-body'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-three-quarters'>
-              <h1 className='govuk-heading-l'>{selectedLocation.name}</h1>
+              <h1 className='govuk-heading-l'>{selectedLocation.address}</h1>
 
               <Map types={areaAreas} />
               <FloodWarningKey type={type} />

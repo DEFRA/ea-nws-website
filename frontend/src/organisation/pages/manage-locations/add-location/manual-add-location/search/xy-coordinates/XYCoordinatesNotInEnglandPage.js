@@ -14,6 +14,7 @@ export default function XYCoordinatesNotInEnglandPage () {
       postCodeSearchUrl={postCodeSearchUrl}
       xyCoordinatesSearchUrl={addXyCoordinatesSearchUrl}
       manuallyFindMapUrl={manuallyFindMapUrl}
+      locationType='xyCoordinate'
     />
   )
 }

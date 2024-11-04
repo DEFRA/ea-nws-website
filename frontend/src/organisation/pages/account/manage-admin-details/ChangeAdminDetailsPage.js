@@ -66,13 +66,16 @@ export default function ChangeAdminDetailsPage () {
 
     if (emailValidationError === '' && fullNameValidationError === '') {
       let updatedProfile = { ...profile }
+      const successMessages = []
       if (fullName) {
         const [firstname, ...lastnameParts] = fullName.trim().split(' ')
         const lastname = lastnameParts.join(' ')
         updatedProfile = addAccountName(updatedProfile, firstname, lastname)
+        successMessages.push('full name change')
       }
       if (email) {
         updatedProfile = addUnverifiedContact(updatedProfile, 'email', email)
+        successMessages.push('Email address changed')
       }
       await updateProfile(updatedProfile, authToken)
       if (email) {
@@ -93,19 +96,15 @@ export default function ChangeAdminDetailsPage () {
         if (email) {
           navigate(accountUrls.admin.verifyEmail, {
             state: {
-              changeName: fullName,
-              changeEmail: email
-            }
-          })
-        } else if (fullName && !email) {
-          navigate(accountUrls.admin.details, {
-            state: {
-              changeName: fullName,
-              changeEmail: currentEmail
+              successMessages
             }
           })
         } else {
-          navigate(accountUrls.admin.verifyEmail)
+          navigate(accountUrls.admin.details, {
+            state: {
+              successMessages
+            }
+          })
         }
       }
     }

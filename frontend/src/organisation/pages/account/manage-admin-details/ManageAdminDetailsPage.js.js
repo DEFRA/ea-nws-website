@@ -1,20 +1,31 @@
 import React from 'react'
 import BackLink from '../../../../common/components/custom/BackLink'
-// import MainAdministratorTable from '../../sign-up/review/MainAdministratorTable'
 import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { accountUrls } from '../../../routes/account/AccountRoutes'
+import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
+
 export default function ManageAdmindetailsPage () {
   // WIP page
   const profile = useSelector((state) => state.session.profile)
   const navigate = useNavigate()
-
+  const location = useLocation()
   const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
   }
+
+  const successText = (
+    <>
+      {location.state?.successMessages.map((message) => (
+        <>
+          <p>{message}</p>
+        </>
+      ))}
+    </>
+  )
 
   return (
     <>
@@ -22,6 +33,14 @@ export default function ManageAdmindetailsPage () {
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row '>
+          {location?.state &&
+          (
+            <NotificationBanner
+              className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
+              title='Success'
+              text={successText}
+            />)}
+
           <h1 className='govuk-heading-l'>Manage administrator details</h1>
           <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
             Contact details

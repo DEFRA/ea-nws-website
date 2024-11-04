@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import BackLink from '../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
-import Button from '../../../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
-import TextArea from '../../../../../common/components/gov-uk/TextArea'
-import { setCurrentLocationNotes } from '../../../../../common/redux/userSlice'
+import BackLink from '../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
+import Button from '../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
+import TextArea from '../../../common/components/gov-uk/TextArea'
+import { setCurrentLocationNotes } from '../../../common/redux/userSlice'
 
 export default function NotesLayout ({ flow, navigateToNextPage }) {
   const navigate = useNavigate()

@@ -19,8 +19,6 @@ import AddOptionalAddress from '../../pages/manage-locations/add-location/option
 import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-information/OptionalLocationInformationPage'
 import AddAnotherPredefinedBoundaryPage from '../../pages/manage-locations/add-location/select-predefined-boundary/AddAnotherPredefinedBoundaryPage'
 import SelectPredefinedBoundaryPage from '../../pages/manage-locations/add-location/select-predefined-boundary/SelectPredefinedBoundaryPage'
-import PredefinedBoundaryActionPlanPage from '../../pages/manage-locations/add-location/select-predefined-boundary/optional-information/PredefinedBoundaryActionPlanPage'
-import PredefinedBoundaryNotesPage from '../../pages/manage-locations/add-location/select-predefined-boundary/optional-information/PredefinedBoundaryNotesPage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirmPage'
 import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'
@@ -84,14 +82,7 @@ const orgManageLocationsUrls = {
     },
     predefinedBoundary: {
       select: urlManageOrg + '/add/predefined-boundary',
-      addAnother: urlManageOrg + '/add/another-predefined-boundary',
-      optionalInformation: {
-        actionPlan:
-          urlManageOrg +
-          '/add/predefined-boundary/optional-information/action-plan',
-        notes:
-          urlManageOrg + '/add/predefined-boundary/optional-information/notes'
-      }
+      addAnother: urlManageOrg + '/add/another-predefined-boundary'
     },
     optionalInformation: {
       optionalInfo: urlManageOrgAddLocations + '/optional-information',
@@ -229,16 +220,6 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.predefinedBoundary.addAnother,
     component: <AddAnotherPredefinedBoundaryPage />
-  },
-  {
-    path: orgManageLocationsUrls.add.predefinedBoundary.optionalInformation
-      .actionPlan,
-    component: <PredefinedBoundaryActionPlanPage />
-  },
-  {
-    path: orgManageLocationsUrls.add.predefinedBoundary.optionalInformation
-      .notes,
-    component: <PredefinedBoundaryNotesPage />
   },
   // unmatched locations
   {

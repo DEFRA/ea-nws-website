@@ -1,4 +1,4 @@
-import { React, useState } from 'react'
+import { React, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -12,7 +12,7 @@ import {
 } from '../../../../common/redux/userSlice'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 
-export default function AddContactChannelsPage () {
+export default function AddContactChannelsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [emailError, setEmailError] = useState('')
@@ -34,6 +34,28 @@ export default function AddContactChannelsPage () {
     event.preventDefault()
     navigate(-1)
   }
+
+  useEffect(() => {
+    if (
+      error &&
+      (emailInput1 ||
+        emailInput2 ||
+        mobileInput1 ||
+        mobileInput2 ||
+        homeInput1 ||
+        homeInput2)
+    ) {
+      setError('')
+    }
+  }, [
+    emailInput1,
+    emailInput2,
+    error,
+    homeInput1,
+    homeInput2,
+    mobileInput1,
+    mobileInput2
+  ])
 
   const validateData = () => {
     let dataValid = true
@@ -84,6 +106,7 @@ export default function AddContactChannelsPage () {
       if (newHomePhones.length !== 0) {
         dispatch(setOrgCurrentContactMobilePhones(newHomePhones))
       }
+      setEmailError('')
       console.log(newEmails)
       console.log(newHomePhones)
       console.log(newMobilePhones)
@@ -103,8 +126,8 @@ export default function AddContactChannelsPage () {
               <ErrorSummary errorList={[emailError, error]} />
             )}
             <h1 className='govuk-heading-l'>
-              Choose how you want {firstName || 'first'}{' '}
-              {lastName || 'last'} to get flood messages
+              Choose how you want {firstName || 'first'} {lastName || 'last'} to
+              get flood messages
             </h1>
             <div className='govuk-body'>
               <div>
@@ -118,47 +141,61 @@ export default function AddContactChannelsPage () {
                 <br />
                 <br />
               </div>
-              <Input
-                name='Email addresses (optional)'
-                inputType='text'
-                onChange={(val) => setEmailInput1(val)}
-                error={emailError}
-                className='govuk-input govuk-input--width-20'
-                isNameBold
-                labelSize='s'
-              />
-              <Input
-                inputType='text'
-                onChange={(val) => setEmailInput2(val)}
-                error={emailError}
-                className='govuk-input govuk-input--width-20'
-              />
-              <Input
-                name='UK mobile numbers for text messages (optional)'
-                inputType='text'
-                onChange={(val) => setMobileInput1(val)}
-                className='govuk-input govuk-input--width-20'
-                isNameBold
-                labelSize='s'
-              />
-              <Input
-                inputType='text'
-                onChange={(val) => setMobileInput2(val)}
-                className='govuk-input govuk-input--width-20'
-              />
-              <Input
-                name='UK telephone numbers for voice messages (optional)'
-                inputType='text'
-                onChange={(val) => setHomeInput1(val)}
-                className='govuk-input govuk-input--width-20'
-                isNameBold
-                labelSize='s'
-              />
-              <Input
-                inputType='text'
-                onChange={(val) => setHomeInput2(val)}
-                className='govuk-input govuk-input--width-20'
-              />
+              <div
+                className={
+                  error === '' ? '' : 'govuk-form-group govuk-form-group--error'
+                }
+              >
+                {error !== '' && (
+                  <p
+                    id='govuk-text-input-error'
+                    className='govuk-error-message'
+                  >
+                    {error}
+                  </p>
+                )}
+                <Input
+                  name='Email addresses (optional)'
+                  inputType='text'
+                  onChange={(val) => setEmailInput1(val)}
+                  error={emailError}
+                  className='govuk-input govuk-input--width-20'
+                  isNameBold
+                  labelSize='s'
+                />
+                <Input
+                  inputType='text'
+                  onChange={(val) => setEmailInput2(val)}
+                  error={emailError}
+                  className='govuk-input govuk-input--width-20'
+                />
+                <Input
+                  name='UK mobile numbers for text messages (optional)'
+                  inputType='text'
+                  onChange={(val) => setMobileInput1(val)}
+                  className='govuk-input govuk-input--width-20'
+                  isNameBold
+                  labelSize='s'
+                />
+                <Input
+                  inputType='text'
+                  onChange={(val) => setMobileInput2(val)}
+                  className='govuk-input govuk-input--width-20'
+                />
+                <Input
+                  name='UK telephone numbers for voice messages (optional)'
+                  inputType='text'
+                  onChange={(val) => setHomeInput1(val)}
+                  className='govuk-input govuk-input--width-20'
+                  isNameBold
+                  labelSize='s'
+                />
+                <Input
+                  inputType='text'
+                  onChange={(val) => setHomeInput2(val)}
+                  className='govuk-input govuk-input--width-20'
+                />
+              </div>
               <Button
                 text='Continue'
                 className='govuk-button'

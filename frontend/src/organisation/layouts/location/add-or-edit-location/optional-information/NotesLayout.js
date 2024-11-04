@@ -49,7 +49,7 @@ export default function NotesLayout ({ flow, navigateToNextPage }) {
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
             {flow === 'edit' && (
               <span class='govuk-caption-l'>Edit location</span>

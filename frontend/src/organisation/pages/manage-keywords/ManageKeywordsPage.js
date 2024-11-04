@@ -165,7 +165,7 @@ export default function ManageKeywordsPage () {
     const associatedLocations = selectedKeywords.reduce((total, keyword) => {
       return total + keyword.linked_ids.length
     }, 0)
-    if (!selectedKeywords && selectedKeywords.length > 0) {
+    if (selectedKeywords && selectedKeywords.length > 0) {
       setDialog({
         show: true,
         text: (
@@ -205,6 +205,7 @@ export default function ManageKeywordsPage () {
   const onAction = (action, keyword) => {
     setTargetKeyword(keyword)
     if (action === 'edit') {
+      setUpdatedKeyword(keyword.name)
       editDialog()
     } else {
       deleteDialog(keyword)
@@ -259,15 +260,21 @@ export default function ManageKeywordsPage () {
   }
 
   const validateInput = () => {
-    return keywords.some((keyword) => updatedKeyword === keyword.name)
-      ? 'This keyword already exists'
-      : ''
+    return (updatedKeyword === targetKeyword.name)
+      ? ''
+      : keywords.some((keyword) => updatedKeyword === keyword.name)
+        ? 'This keyword already exists'
+        : ''
   }
 
   const handleEdit = () => {
     if (targetKeyword) {
       if (updatedKeyword === '') {
         updateToDeleteEmptyKeyworkDialog()
+      } else if (updatedKeyword === targetKeyword.name) {
+        setDialog({ ...dialog, show: false })
+        setTargetKeyword(null)
+        setUpdatedKeyword('')
       } else {
         editKeyword()
       }
@@ -275,10 +282,14 @@ export default function ManageKeywordsPage () {
   }
 
   const handleDelete = () => {
-    if (selectedKeywords.length > 0 || targetKeyword) {
-      const keywordsToRemove =
-        selectedKeywords.length > 0 ? [...selectedKeywords] : [targetKeyword]
-      console.log(keywordsToRemove)
+    if (targetKeyword) {
+      removeKeywords([targetKeyword])
+      if (selectedKeywords.length > 0) {
+        const updatedSelectedKeywords = selectedKeywords.filter(keyword => keyword !== targetKeyword)
+        setSelectedKeywords(updatedSelectedKeywords)
+      }
+    } else if (selectedKeywords.length > 0) {
+      const keywordsToRemove = [...selectedKeywords]
       removeKeywords(keywordsToRemove)
     }
   }
@@ -465,6 +476,7 @@ export default function ManageKeywordsPage () {
                       setError={(val) =>
                         setDialog((dial) => ({ ...dial, error: val }))}
                       validateInput={() => validateInput()}
+                      defaultValue={dialog.input ? targetKeyword.name : ''}
                     />
                   </>
                 )}

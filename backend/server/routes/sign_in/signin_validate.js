@@ -26,9 +26,13 @@ module.exports = [
             'member/signinValidate'
           )
           if (signinType === 'org') {
+            const locationRes = await apiCall(
+              { authToken: response.data.authToken},
+              'location/list'
+            )
             // Send the profile to elasticache
             console.log('Setting elasticache')
-            await orgSignIn(response.data.profile, response.data.organization, locations)
+            await orgSignIn(response.data.profile, response.data.organization, locationRes.locations)
           }
           return h.response(response)
         } else {

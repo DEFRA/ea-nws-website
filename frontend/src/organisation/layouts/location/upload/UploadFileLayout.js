@@ -16,12 +16,14 @@ export default function UploadFileLayout({
   const [selectedFile, setSelectedFile] = useState(null)
   const [uploading, setUploading] = useState(false)
 
+  const backendRoute = 'api/bulk_uploads/upload_file'
+
   // Switch case for dynamically setting parameters based off of uploadMethod prop
   let allowedFileTypes = []
   let maxFileSize = null
   let fileTypeHint = ''
   let fileTypeErrorMsg = ''
-  let backendRoute = ''
+  let bucketFolder = ''
   switch (uploadMethod) {
     // CSV file uploaded for bulk upload
     case 'bulk':
@@ -33,7 +35,7 @@ export default function UploadFileLayout({
       maxFileSize = 5
       fileTypeHint = 'File can be .xls, .xlsx or .csv'
       fileTypeErrorMsg = 'The selected file must be .xls, .xlsx or .csv'
-      backendRoute = 'api/bulk_uploads/upload_file'
+      bucketFolder = 'csv-uploads'
       break
     // ZIP file uploaded for shapefile parsing
     case 'shape':
@@ -41,7 +43,7 @@ export default function UploadFileLayout({
       maxFileSize = 5
       fileTypeHint = 'File must be .zip'
       fileTypeErrorMsg = 'The selected file must be .zip'
-      backendRoute = 'api/shapefile/upload_file'
+      bucketFolder = 'zip-uploads'
       break
     default:
       // Null values already set
@@ -95,7 +97,8 @@ export default function UploadFileLayout({
       // Get pre-signed URL from backend
       const dataToSend = {
         name: selectedFile.name,
-        fileType: selectedFile.type
+        fileType: selectedFile.type,
+        folder: bucketFolder
       }
       const { errorMessage, data } = await backendCall(
         dataToSend,

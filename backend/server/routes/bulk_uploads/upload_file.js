@@ -16,7 +16,7 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { name, fileType } = request.payload
+        const { name, fileType, folder } = request.payload
 
         if (name && fileType) {
           const uniqFileName = `${Date.now()}_${name}`
@@ -33,7 +33,7 @@ module.exports = [
 
           const params = {
             Bucket: s3BucketName,
-            Key: `csv-uploads/${uniqFileName}`,
+            Key: `${folder}/${uniqFileName}`,
             ContentType: fileType
           }
 

@@ -250,6 +250,7 @@ const userSlice = createSlice({
       state.orgCurrentContact.mobilePhones = action.payload.mobilePhones
       state.orgCurrentContact.homePhones = action.payload.homePhones
       state.orgCurrentContact.position = action.payload.position
+      state.orgCurrentContact.additionals = action.payload.additionals
       state.orgCurrentContact.additionals.keywords =
         action.payload.additionals.keywords
       state.orgCurrentContact.additionals.notes =

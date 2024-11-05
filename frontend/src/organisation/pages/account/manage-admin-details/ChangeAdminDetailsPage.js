@@ -71,7 +71,7 @@ export default function ChangeAdminDetailsPage () {
         const [firstname, ...lastnameParts] = fullName.trim().split(' ')
         const lastname = lastnameParts.join(' ')
         updatedProfile = addAccountName(updatedProfile, firstname, lastname)
-        successMessages.push('full name change')
+        successMessages.push('Name changed')
       }
       if (email) {
         updatedProfile = addUnverifiedContact(updatedProfile, 'email', email)

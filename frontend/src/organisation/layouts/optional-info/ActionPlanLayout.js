@@ -8,7 +8,7 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../common/components/gov-uk/TextArea'
 import { setCurrentLocationActionPlan } from '../../../common/redux/userSlice'
 
-export default function ActionPlanLayout ({ flow, navigateToNextPage }) {
+export default function ActionPlanLayout ({ navigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const currentActionPlan = useSelector(
@@ -17,11 +17,11 @@ export default function ActionPlanLayout ({ flow, navigateToNextPage }) {
   )
   const [actionPlan, setActionPlan] = useState(currentActionPlan || '')
   const [error, setError] = useState('')
-  const charLimit = 200
+  const charLimit = 500
 
   useEffect(() => {
     if (actionPlan.length > charLimit) {
-      setError('You can enter up to 200 characters')
+      setError('You can enter up to 500 characters')
     } else {
       setError('')
     }
@@ -52,15 +52,12 @@ export default function ActionPlanLayout ({ flow, navigateToNextPage }) {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
-            {flow === 'edit' && (
-              <span class='govuk-caption-l'>Edit location</span>
-            )}
             <h1 className='govuk-heading-l'>Action plan (optional)</h1>
             <div className='govuk-body'>
               <p>
-                What you can do to reduce the potential effects of flooding, for
-                example, inspect the location, use sandbags, move stock,
-                evacuate.
+                Use this section to indicate what you can do to reduce the
+                potential effects of flooding. For example, inspect the location
+                then move stock to the top floor and evacuate.
               </p>
               <TextArea
                 error={error}
@@ -69,7 +66,7 @@ export default function ActionPlanLayout ({ flow, navigateToNextPage }) {
                 onChange={(val) => setActionPlan(val)}
                 className='govuk-textarea'
               />
-              <p className='govuk-hint'>You can enter up to 200 characters.</p>
+              <p className='govuk-hint'>You can enter up to 500 characters.</p>
               <Button
                 text='Continue'
                 className='govuk-button'

@@ -12,9 +12,10 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { authToken } = request.payload
-        if (authToken) {
-          await deleteJsonData(authToken)
+        const { profileId, orgId } = request.payload
+        if (profileId && orgId) {
+          await deleteJsonData(profileId+':profile')
+          await deleteJsonData(orgId+':org_data')
           return h.response({
             status: 200
           })

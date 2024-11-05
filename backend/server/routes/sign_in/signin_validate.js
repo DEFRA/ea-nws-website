@@ -5,7 +5,7 @@ const {
 const {
   authCodeValidation
 } = require('../../services/validations/AuthCodeValidation')
-const { setJsonData } = require('../../services/elasticache')
+const { orgSignIn } = require('../../services/elasticache')
 
 module.exports = [
   {
@@ -28,7 +28,7 @@ module.exports = [
           if (signinType === 'org') {
             // Send the profile to elasticache
             console.log('Setting elasticache')
-            await setJsonData(response.data.authToken, { profile: response.data.profile })
+            await orgSignIn(response.data.profile, response.data.organization, locations)
           }
           return h.response(response)
         } else {

@@ -13,10 +13,10 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { authToken, locationName } = request.payload
+        const { orgId, locationName } = request.payload
 
-        if (locationName && authToken) {
-          const duplicate = await searchLocations(authToken, 'meta_data.location_additional.location_name', locationName)
+        if (locationName && orgId) {
+          const duplicate = await searchLocations(orgId, 'meta_data.location_additional.location_name', locationName)
           if (duplicate.length !== 0) {
             return h.response({ status: 500, errorMessage: 'duplicate location' })
           } else {

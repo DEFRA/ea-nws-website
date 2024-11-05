@@ -30,9 +30,13 @@ module.exports = [
               { authToken: response.data.authToken},
               'location/list'
             )
+            const contactRes = await apiCall(
+              { authToken: response.data.authToken},
+              'organization/listContacts'
+            )
             // Send the profile to elasticache
             console.log('Setting elasticache')
-            await orgSignIn(response.data.profile, response.data.organization, locationRes.locations)
+            await orgSignIn(response.data.profile, response.data.organization, locationRes.data.locations, contactRes.data.contacts)
           }
           return h.response(response)
         } else {

@@ -72,17 +72,60 @@ const removeFromList = async (key, value) => {
   await client.disconnect()
 }
 
+const addToJsonArr = async (key, value) => {
+  const arrExists = await checkKeyExists(key)
+  if (arrExists) {
+    const client = await connectToRedis()
+    await client.json.arrAppend(key, value)
+    await client.disconnect()
+  } else {
+    await setJsonData(key, [value])
+  }
+}
+
+const addToKeywordArr = async (key, value) => {
+  const arrExists = await checkKeyExists(key)
+  if (arrExists) {
+    const keywordArr = await getJsonData(key)
+    let keywordExists = false
+    keywordArr.forEach((keyword, index) => {
+      if (keyword.name === value.name) {
+        keywordExists = true
+        keyword.linked_ids.push(value.linked_ids)
+      }
+    })
+    if (keywordExists) {
+      await setJsonData(key, keywordArr)
+    } else {
+      await addToJsonArr(key, value)
+    }
+  } else {
+    await setJsonData(key, [value])
+  }
+}
+
+
 /*
 Functions for Valid locations to be used accross the
 entire site
 */
 
 const addLocation = async (orgId, location) => {
-  const locationID = location.meta_data.location_id
+  const locationID = location.id
   const key = orgId + ':t_POIS:' + locationID
   await setJsonData(key, location)
   // add location ID to list
   await addToList(orgId + ':t_POIS_locID', locationID)
+  const keywords = location.additionals.forEach((additional) => {
+    if (additional.id === 'keywords') {
+      return JSON.parse(additional.value.s)
+    }
+  })
+
+  await Promise.all(keywords.map(async (keyword) => {
+    await addToKeywordArr(orgId + ':t_Keywords_location', {name: keyword, linked_ids: [locationID]})
+  } ))
+
 }
 
 const removeLocation = async (orgId, locationID) => {
@@ -174,23 +217,63 @@ const listInvLocations = async (orgId) => {
   return locationArr
 }
 
-const orgSignIn = async (profile, organization, locations) => {
+const addContact = async (orgId, contact) => {
+  const contactID = contact.id
+  const key = orgId + ':t_Contacts:' + contactID
+  await setJsonData(key, contact)
+  // add Contact ID to list
+  await addToList(orgId + ':t_Contacts_ID', contactID)
+  const keywords = contact.additionals.forEach((additional) => {
+    if (additional.id === 'keywords') {
+      return JSON.parse(additional.value.s)
+    }
+  })
+
+  await Promise.all(keywords.map(async (keyword) => {
+    await addToKeywordArr(orgId + ':t_Keywords_contact', {name: keyword, linked_ids: [contactID]})
+  } ))
+}
+
+const getContactKeys = async (orgId) => {
+  // Contact keys are stored as a list
+  const ids = await getList(orgId + ':t_Contacts_ID')
+  const keys = []
+  ids.forEach((id) => {
+    keys.push(orgId + ':t_Contacts:' + id)
+  })
+  return keys
+}
+
+const orgSignIn = async (profile, organization, locations, contacts) => {
   await setJsonData(profile.id+':profile', profile)
-  const orgExists = await checkKeyExists(organization.id)
+  const orgExists = await checkKeyExists(organization.id+':org_data')
   if (orgExists) {
     const existingLocations = await getLocationKeys(organization.id)
     const existingLocationIds = existingLocations.forEach((location) => {
-      location = location.split(':')[0]
+      location = location.split(':')[-1]
     })
     await Promise.all(locations.map(async (location) => {
       if (!existingLocationIds.includes(location.id)) {
         await addLocation(organization.id, location)
       }
     }))
+
+    const existingContacts = await getContactKeys(organization.id)
+    const existingContactIds = existingContacts.forEach((contact) => {
+      contact = contact.split(':')[-1]
+    })
+    await Promise.all(contacts.map(async (contact) => {
+      if (!existingContactIds.includes(contact.id)) {
+        await addContact(organization.id, contact)
+      }
+    }))
   } else {
     await setJsonData(organization.id+':org_data', organization)
     await Promise.all(locations.map(async (location) => {
       await addLocation(organization.id, location)
+    }))
+    await Promise.all(contacts.map(async (contact) => {
+      await addContact(organization.id, contact)
     }))
   }
 }

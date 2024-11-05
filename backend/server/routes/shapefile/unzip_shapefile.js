@@ -1,10 +1,6 @@
 const {
   S3Client,
   GetObjectCommand,
-  CreateMultipartUploadCommand,
-  UploadPartCommand,
-  CompleteMultipartUploadCommand,
-  InventoryS3BucketDestinationFilterSensitiveLog,
   PutObjectCommand
 } = require('@aws-sdk/client-s3')
 const unzipper = require('unzipper')
@@ -67,7 +63,7 @@ module.exports = [
               }
             },
             (error) => {
-              if (error) reject(error)
+              if (error) reject(new Error(`Pipeline Error: ${error.message}`))
               else resolve()
             }
           )

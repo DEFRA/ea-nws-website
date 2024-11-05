@@ -18,7 +18,7 @@ export default function AddLocationOptionsPage () {
         'Upload locations using a postcode or X and Y coordinates in a CSV file'
     },
     {
-      value: 'BulkShapeFile',
+      value: 'BulkShapefile',
       label: 'Upload a location as a shapefile in a ZIP file'
     },
     { value: 'Manual', label: 'Manually add locations' },

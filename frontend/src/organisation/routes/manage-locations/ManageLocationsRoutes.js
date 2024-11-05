@@ -11,11 +11,11 @@ import LocationPostCodeSearchPage from '../../pages/manage-locations/add-locatio
 import LocationPostCodeSearchResultsPage from '../../pages/manage-locations/add-location/manual-add-location/search/postcode/LocationPostCodeSearchResultsPage'
 import LocationXYCoordinatesSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/xy-coordinates/LocationXYCoordinatesSearchPage'
 import XYCoordinatesNotInEnglandPage from '../../pages/manage-locations/add-location/manual-add-location/search/xy-coordinates/XYCoordinatesNotInEnglandPage'
-import AddActionPlan from '../../pages/manage-locations/add-location/optional-information/AddActionPlanPage'
+import ActionPlan from '../../pages/manage-locations/add-location/optional-information/ActionPlanPage'
 import AddKeyInformationPage from '../../pages/manage-locations/add-location/optional-information/AddKeyInformationPage'
 import KeywordsForThisLocationPage from '../../pages/manage-locations/add-location/optional-information/AddKeywordsPage'
-import AddNotesPage from '../../pages/manage-locations/add-location/optional-information/AddNotesPage'
 import AddOptionalAddress from '../../pages/manage-locations/add-location/optional-information/AddOptionalAddress'
+import NotesPage from '../../pages/manage-locations/add-location/optional-information/NotesPage'
 import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-information/OptionalInfoPage'
 import AddAnotherPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/AddAnotherPredefinedBoundaryPage'
 import PredefinedBoundaryOptionalInfoPage from '../../pages/manage-locations/add-location/predefined-boundary/OptionalInfoPage'
@@ -264,11 +264,11 @@ const orgManageLocationRoutes = [
   },
   {
     path: orgManageLocationsUrls.add.optionalInformation.addActionPlan,
-    component: <AddActionPlan />
+    component: <ActionPlan />
   },
   {
     path: orgManageLocationsUrls.add.optionalInformation.addNotes,
-    component: <AddNotesPage />
+    component: <NotesPage />
   },
   {
     path: orgManageLocationsUrls.add.optionalInformation.addKeywords,

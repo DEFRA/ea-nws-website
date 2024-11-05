@@ -94,7 +94,8 @@ url_org_man_loc = {
         'dropPinSearch': url_org_man_loc_path + '/add/drop-pin-search',
         'predefinedBoundary': {
             'optionalInfo': url_org_man_loc_path + '/add/predefined-boundary/optional-information',
-            'add': url_org_man_loc_path + '/add/predefined-boundary'
+            'add': url_org_man_loc_path + '/add/predefined-boundary',
+            'addAnother': url_org_man_loc_path + '/add/another-predefined-boundary'
         }
     },
     'optionalLocation':{

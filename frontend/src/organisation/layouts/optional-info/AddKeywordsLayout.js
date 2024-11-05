@@ -235,7 +235,7 @@ export default function AddKeywordsLayout ({
               {`Keywords for this ${keywordType} (optional)`}
             </h1>
             <div className='govuk-body'>
-              {KeywordText()}
+              {KeywordText}
 
               {keywordsArray.length !== 0 &&
                 keywordsArray.map((keyword, index) => (

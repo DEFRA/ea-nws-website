@@ -11,6 +11,7 @@ import {
   setOrgCurrentContactLastName,
   setOrgCurrentContactPosition
 } from '../../../../common/redux/userSlice'
+import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function AddContactDetailsPage () {
   const navigate = useNavigate()
@@ -73,8 +74,7 @@ export default function AddContactDetailsPage () {
       if (jobTitle) {
         dispatch(setOrgCurrentContactPosition(jobTitle))
       }
-      // TO DO - to keywords
-      navigate(-1)
+      navigate(orgManageContactsUrls.add.keywords)
     }
   }
 

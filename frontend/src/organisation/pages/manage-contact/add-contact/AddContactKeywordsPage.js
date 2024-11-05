@@ -1,12 +1,13 @@
 import { React } from 'react'
 import { useNavigate } from 'react-router'
 import AddKeywordsLayout from '../../../layouts/optional-info/AddKeywordsLayout'
+import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function AddContactKeywordsPage () {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {
-    navigate(-1)
+    navigate(orgManageContactsUrls.add.channels)
   }
 
   const KeywordText = (

@@ -45,6 +45,8 @@ def test_click_failure_input_invalid_mobile(get_browser):
 
 def test_click_failure_input_invalid_homephone(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
+    get_browser.execute_script("window.scrollTo(0, document.body.scrollHeight)")
+    time.sleep(2)
     enter_input_text(get_browser, 'UK telephone numbers for voice messages (optional)', '01631')
     click_button(get_browser, 'Continue', current_url) 
     assert 'There is a problem' in get_browser.page_source
@@ -59,6 +61,8 @@ def test_click_continue_valid_one_of_each_input(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     enter_input_text(get_browser, 'Email addresses (optional)', 'valid@email.com')
     enter_input_text(get_browser, 'UK mobile numbers for text messages (optional)', '07887766655')
+    get_browser.execute_script("window.scrollTo(0, document.body.scrollHeight)")
+    time.sleep(2)
     enter_input_text(get_browser, 'UK telephone numbers for voice messages (optional)', '01632960001')
     click_button(get_browser, 'Continue', next_url)   
 

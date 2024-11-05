@@ -8,8 +8,10 @@ import Button from '../../../common/components/gov-uk/Button'
 import Checkbox from '../../../common/components/gov-uk/CheckBox'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import {
+  setContactKeywords,
   setCurrentLocationKeywords,
-  setLocationKeywords
+  setLocationKeywords,
+  setOrgCurrentContactKeyword
 } from '../../../common/redux/userSlice'
 
 export default function AddKeywordsLayout ({
@@ -21,21 +23,38 @@ export default function AddKeywordsLayout ({
   const navigate = useNavigate()
 
   const orgKeywordsOriginal = useSelector((state) =>
-    keywordType === 'location' && state.session.locationKeywords
+    keywordType === 'location'
       ? state.session.locationKeywords
-      : []
+        ? state.session.locationKeywords
+        : []
+      : state.session.contactKeywords
+        ? state.session.contactKeywords
+        : []
   )
+
   let orgKeywords = [...orgKeywordsOriginal]
 
-  const locationName = useSelector(
-    (state) => state.session.currentLocation.name
+  const entryName = useSelector((state) =>
+    keywordType === 'location '
+      ? state.session.currentLocation.name
+        ? state.session.currentLocation.name
+        : ''
+      : state.session.orgCurrentContact.firstName &&
+        state.session.orgCurrentContact.lastName
+        ? state.session.orgCurrentContact.firstName +
+        ' ' +
+        state.session.orgCurrentContact.lastName
+        : ''
   )
 
   let currentKeywords = useSelector((state) =>
-    keywordType === 'location' &&
-    state.session.currentLocation.meta_data.location_additional.keywords
+    keywordType === 'location'
       ? state.session.currentLocation.meta_data.location_additional.keywords
-      : []
+        ? state.session.currentLocation.meta_data.location_additional.keywords
+        : []
+      : state.session.orgCurrentContact.additionals.keywords
+        ? state.session.orgCurrentContact.additionals.keywords
+        : []
   )
   if (currentKeywords.length > 0) currentKeywords = JSON.parse(currentKeywords)
 
@@ -142,11 +161,11 @@ export default function AddKeywordsLayout ({
           keywordExists = true
 
           if (
-            orgKeywords[orgKeywordIdx].linked_ids.includes(locationName) &&
+            orgKeywords[orgKeywordIdx].linked_ids.includes(entryName) &&
             !currentKeywordChecked
           ) {
             const originalArray = orgKeywords[orgKeywordIdx].linked_ids
-            const indexToDelete = originalArray.indexOf(locationName)
+            const indexToDelete = originalArray.indexOf(entryName)
 
             // Remove location if it exists but keyword is unchecked
             orgKeywords[orgKeywordIdx] = {
@@ -157,18 +176,17 @@ export default function AddKeywordsLayout ({
             }
 
             // Remove keyword if no linked ids found
-            if (orgKeywords[orgKeywordIdx].linked_ids.length === 0) { orgKeywords.splice(orgKeywordIdx, 1) }
+            if (orgKeywords[orgKeywordIdx].linked_ids.length === 0) {
+              orgKeywords.splice(orgKeywordIdx, 1)
+            }
           } else if (
-            !orgKeywords[orgKeywordIdx].linked_ids.includes(locationName) &&
+            !orgKeywords[orgKeywordIdx].linked_ids.includes(entryName) &&
             currentKeywordChecked
           ) {
             // Add location if it doesn't exist and keyword is checked
             orgKeywords[orgKeywordIdx] = {
               name: currentKeyword,
-              linked_ids: [
-                ...orgKeywords[orgKeywordIdx].linked_ids,
-                locationName
-              ]
+              linked_ids: [...orgKeywords[orgKeywordIdx].linked_ids, entryName]
             }
           }
           break
@@ -181,14 +199,22 @@ export default function AddKeywordsLayout ({
           ...orgKeywords,
           {
             name: currentKeyword,
-            linked_ids: [locationName]
+            linked_ids: [entryName]
           }
         ]
       }
     }
 
-    dispatch(setLocationKeywords(orgKeywords))
-    dispatch(setCurrentLocationKeywords(JSON.stringify(keywordsArrayChecked)))
+    if (keywordType === 'location') {
+      dispatch(setLocationKeywords(orgKeywords))
+      dispatch(setCurrentLocationKeywords(JSON.stringify(keywordsArrayChecked)))
+    } else {
+      dispatch(setContactKeywords(orgKeywords))
+      dispatch(
+        setOrgCurrentContactKeyword(JSON.stringify(keywordsArrayChecked))
+      )
+    }
+
     NavigateToNextPage()
   }
 

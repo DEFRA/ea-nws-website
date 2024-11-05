@@ -1,22 +1,17 @@
-//import AddContactDetailsPage from '../../pages/manage-contact/add-contact/AddContactDetailsPage'
-import AddContactKeywordsPage from '../../pages/manage-contacts/add-contacts/AddContactKeywordsPage'
+import AddContactDetailsPage from '../../pages/manage-contact/add-contact/AddContactDetailsPage'
+
 const urlManageContactsOrg = 'organisation/manage-contacts'
 
 const orgManageContactsUrls = {
   add: {
-    addNew: urlManageContactsOrg + '/add',
-    keywords: urlManageContactsOrg + '/add/keywords'
+    addNew: urlManageContactsOrg + '/add'
   }
 }
 
 const orgManageContactsRoutes = [
-  /*{
-    path: orManageContactsUrls.add.addNew,
-    component: <AddContactDetailsPage />
-  },*/
   {
-    path: orgManageContactsUrls.add.keywords,
-    component: <AddContactKeywordsPage />
+    path: orgManageContactsUrls.add.addNew,
+    component: <AddContactDetailsPage />
   }
 ]
 

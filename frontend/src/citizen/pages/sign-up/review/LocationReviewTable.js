@@ -14,7 +14,7 @@ export default function LocationReviewTable ({ locations }) {
                 Address
               </td>
               <td className='govuk-table__cell  govuk-!-width-full'>
-                {location.name}
+                {location.address}
               </td>
 
               <td className='govuk-table__cell'>

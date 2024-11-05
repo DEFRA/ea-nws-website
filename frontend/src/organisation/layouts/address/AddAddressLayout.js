@@ -46,7 +46,10 @@ export default function AddAddressLayout ({
         if (buildingNum) {
           const normalisedBuildingNum = buildingNum.toLowerCase().trim()
           const address = data.filter((location) =>
-            location.name.toLowerCase().trim().includes(normalisedBuildingNum)
+            location.address
+              .toLowerCase()
+              .trim()
+              .includes(normalisedBuildingNum)
           )
           if (address.length === 1) {
             const organisation = Object.assign(

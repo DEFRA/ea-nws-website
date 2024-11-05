@@ -10,9 +10,9 @@ import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/M
 export default function ConfirmLocationsPage () {
   const navigate = useNavigate()
   const location = useLocation()
-  const locationsValid = location?.state.valid
-  const locationsInvalid = location?.state.invalid
-  const fileName = location?.state.fileName
+  const locationsValid = location?.state?.valid || 0
+  const locationsInvalid = location?.state?.invalid || 0
+  const fileName = location?.state?.fileName || ''
   const authToken = useSelector((state) => state.session.authToken)
 
   const handleLocations = async (event) => {
@@ -73,10 +73,16 @@ export default function ConfirmLocationsPage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
-              {locationsValid} out of {locationsInvalid + locationsValid} locations can be added
+              {locationsValid} out of {locationsInvalid + locationsValid}{' '}
+              locations can be added
             </h1>
             <div className='govuk-body'>
-              <InsetText text={locationsInvalid + ' locations need to be matched before they can be added. You can match them after you add the locations that have been found.'} />
+              <InsetText
+                text={
+                  locationsInvalid +
+                  ' locations need to be matched before they can be added. You can match them after you add the locations that have been found.'
+                }
+              />
               <Details
                 title='Why do some locations not match?'
                 text={detailsMessage}

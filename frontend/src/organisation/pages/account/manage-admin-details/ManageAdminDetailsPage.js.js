@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { accountUrls } from '../../../routes/account/AccountRoutes'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
-
+import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 export default function ManageAdmindetailsPage () {
   // WIP page
   const profile = useSelector((state) => state.session.profile)
@@ -76,7 +76,7 @@ export default function ManageAdmindetailsPage () {
         <p>
           If you want to also get flood messages to a mobile or landline number,
           <a
-            href='ToDo navigate add new contact details page'
+            href={orgManageContactsUrls.add.addNew}
             classNAme='govuk-link'
           >
             {' '}

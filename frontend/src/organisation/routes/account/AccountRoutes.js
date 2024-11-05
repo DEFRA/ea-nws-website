@@ -12,7 +12,7 @@ const accountUrls = {
   admin: {
     details: urlManageAdmin + '/admin-details',
     changeDetails: urlManageAdmin + '/change-admin-details',
-    verifyEmail: urlManageAdmin + 'verify-email'
+    verifyEmail: urlManageAdmin + '/verify-email'
   }
 }
 

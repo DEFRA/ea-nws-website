@@ -17,6 +17,7 @@ export default function NotificationBanner ({
         role='alert'
         aria-labelledby='govuk-notification-banner-title'
         data-module='govuk-notification-banner'
+
       >
         <div className='govuk-notification-banner__header'>
           <h2

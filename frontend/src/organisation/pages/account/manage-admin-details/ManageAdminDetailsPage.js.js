@@ -19,10 +19,8 @@ export default function ManageAdmindetailsPage () {
 
   const successText = (
     <>
-      {location.state?.successMessages.map((message) => (
-        <>
-          <p>{message}</p>
-        </>
+      {location.state?.successMessages?.map((message, index) => (
+        <p key={index}>{message}</p>
       ))}
     </>
   )
@@ -36,7 +34,7 @@ export default function ManageAdmindetailsPage () {
           {location?.state &&
           (
             <NotificationBanner
-              className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
+              className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-5 govuk-!-margin-top-4'
               title='Success'
               text={successText}
             />)}

@@ -27,6 +27,8 @@ const userSlice = createSlice({
     // required for predefined boundary flow
     selectedBoundaryType: null,
     selectedBoundary: null,
+    locationBoundaries: null,
+    consecutiveBoundariesAdded: 0,
     // org location data
     currentLocation: {
       // name is the UPRN
@@ -35,6 +37,7 @@ const userSlice = createSlice({
       address: null,
       // Coordinates in dd (degrees decimal)
       coordinates: null,
+      geometry: null,
       alert_categories: null,
       meta_data: {
         location_additional: {
@@ -119,13 +122,6 @@ const userSlice = createSlice({
     setNearbyTargetAreasFlow: (state, action) => {
       state.nearbyTargetAreaFlow = action.payload
     },
-    // required for predefined boundary flow
-    setSelectedBoundaryType: (state, action) => {
-      state.selectedBoundaryType = action.payload
-    },
-    setSelectedBoundary: (state, action) => {
-      state.selectedBoundary = action.payload
-    },
     // keywords - temporary
     setLocationKeywords: (state, action) => {
       state.locationKeywords = action.payload
@@ -133,11 +129,25 @@ const userSlice = createSlice({
     setContactKeywords: (state, action) => {
       state.contactKeywords = action.payload
     },
+    // required for predefined boundary flow
+    setSelectedBoundaryType: (state, action) => {
+      state.selectedBoundaryType = action.payload
+    },
+    setSelectedBoundary: (state, action) => {
+      state.selectedBoundary = action.payload
+    },
+    setLocationBoundaries: (state, action) => {
+      state.locationBoundaries = action.payload
+    },
+    setConsecutiveBoundariesAdded: (state, action) => {
+      state.consecutiveBoundariesAdded = action.payload
+    },
     // org location data
     setCurrentLocation: (state, action) => {
       state.currentLocation.name = action.payload.name
       state.currentLocation.address = action.payload.address
       state.currentLocation.coordinates = action.payload.coordinates
+      state.currentLocation.geometry = action.payload.geometry
       state.currentLocation.alert_categories = action.payload.alert_categories
       state.currentLocation.meta_data.location_additional.location_name =
         action.payload.meta_data.location_additional.location_name
@@ -170,6 +180,9 @@ const userSlice = createSlice({
     },
     setCurrentLocationCoordinates: (state, action) => {
       state.currentLocation.coordinates = action.payload
+    },
+    setCurrentLocationGeometry: (state, action) => {
+      state.currentLocation.geometry = action.payload
     },
     setCurrentLocationAlertCategories: (state, action) => {
       state.currentLocation.alert_categories = action.payload
@@ -267,6 +280,9 @@ const userSlice = createSlice({
       state.selectedFloodAlertArea = null
       state.showOnlySelectedFloodArea = null
       state.nearbyTargetAreaFlow = null
+      // keywords - temporary
+      state.locationKeywords = null
+      state.contactKeywords = null
       // required for predefined boundary flow
       state.selectedBoundaryType = null
       state.selectedBoundary = null
@@ -278,6 +294,7 @@ const userSlice = createSlice({
         name: null,
         address: null,
         coordinates: null,
+        geometry: null,
         alert_categories: null,
         meta_data: {
           location_additional: {
@@ -329,17 +346,20 @@ export const {
   setSelectedFloodAlertArea,
   setShowOnlySelectedFloodArea,
   setNearbyTargetAreasFlow,
-  // required for predefined boundary flow
-  setSelectedBoundaryType,
-  setSelectedBoundary,
   // keywords - temporary
   setLocationKeywords,
   setContactKeywords,
+  // required for predefined boundary flow
+  setSelectedBoundaryType,
+  setSelectedBoundary,
+  setLocationBoundaries,
+  setConsecutiveBoundariesAdded,
   // org location data
   setCurrentLocation,
   setCurrentLocationUPRN,
   setCurrentLocationAddress,
   setCurrentLocationCoordinates,
+  setCurrentLocationGeometry,
   setCurrentLocationAlertCategories,
   setCurrentLocationName,
   setCurrentLocationPostcode,

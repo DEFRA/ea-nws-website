@@ -13,11 +13,13 @@ import LocationXYCoordinatesSearchPage from '../../pages/manage-locations/add-lo
 import XYCoordinatesNotInEnglandPage from '../../pages/manage-locations/add-location/manual-add-location/search/xy-coordinates/XYCoordinatesNotInEnglandPage'
 import AddActionPlan from '../../pages/manage-locations/add-location/optional-information/AddActionPlanPage'
 import AddKeyInformationPage from '../../pages/manage-locations/add-location/optional-information/AddKeyInformationPage'
-import KeywordsForThisLocationPage from '../../pages/manage-locations/add-location/optional-information/AddKeywordsForThisLocationPage'
+import KeywordsForThisLocationPage from '../../pages/manage-locations/add-location/optional-information/AddKeywordsPage'
 import AddNotesPage from '../../pages/manage-locations/add-location/optional-information/AddNotesPage'
 import AddOptionalAddress from '../../pages/manage-locations/add-location/optional-information/AddOptionalAddress'
-import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-information/OptionalLocationInformationPage'
-import SelectPredefinedBoundaryPage from '../../pages/manage-locations/add-location/select-predefined-boundary/SelectPredefinedBoundaryPage'
+import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-information/OptionalInfoPage'
+import AddAnotherPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/AddAnotherPredefinedBoundaryPage'
+import PredefinedBoundaryOptionalInfoPage from '../../pages/manage-locations/add-location/predefined-boundary/OptionalInfoPage'
+import SelectPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/SelectPredefinedBoundaryPage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirmPage'
 import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'
@@ -31,19 +33,24 @@ import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/add
 import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/NotInEnglandPage'
 import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
+
+// edit imports
 import EditConfirmLocationPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/ConfirmLocationPage'
 import EditLocationSearchOptionsPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/LocationSearchOptionsPage'
 import EditDropPinOnMapPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/drop-pin/DropPinOnMapPage'
 import EditDropPinOnMapNotInEnglandPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/drop-pin/NotInEnglandPage'
-import CannotChangeLocationLinePage from '../../pages/manage-locations/edit-location/edit-individual-location/location/edit-line/CannotChangeLocationLinePage'
-import CannotChangeLocationPolygonPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/edit-polygon/CannotChangeLocationPolygonPage'
+import EditLinePage from '../../pages/manage-locations/edit-location/edit-individual-location/location/edit-line/CannotChangeLocationLinePage'
+import EditPolygonPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/edit-polygon/CannotChangeLocationPolygonPage'
 import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/xy-coordinates/LocationXYCoordinatesSearchPage'
 import EditXyCoordinatesNotInEnglandPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/xy-coordinates/NotInEnglandPage'
 import EditActionPlanPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/action-plan/ActionPlanPage'
 import EditAddressPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/address/AddressPage'
 import EditKeyInformationPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/key-information/KeyInformationPage'
+import EditKeywordsPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/keywords/KeywordsPage'
 import EditNotesPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/notes/NotesPage'
-import LocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
+
+// view imports
+import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
 
 const urlManageOrg = '/organisation/manage-locations'
@@ -89,7 +96,10 @@ const orgManageLocationsUrls = {
       dropPinSearchResults: urlManageOrg + '/add/drop-pin-search-results'
     },
     predefinedBoundary: {
-      select: urlManageOrg + '/add/predefined-boundary'
+      optionalInfo:
+        urlManageOrgAddLocations + '/predefined-boundary/optional-information',
+      select: urlManageOrg + '/add/predefined-boundary',
+      addAnother: urlManageOrg + '/add/another-predefined-boundary'
     },
     optionalInformation: {
       optionalInfo: urlManageOrgAddLocations + '/optional-information',
@@ -154,7 +164,7 @@ const orgManageLocationRoutes = [
   },
   {
     path: orgManageLocationsUrls.view.individualLocation,
-    component: <LocationInformationPage />
+    component: <ViewLocationInformationPage />
   },
   // add
   {
@@ -232,6 +242,10 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.add.predefinedBoundary.select,
     component: <SelectPredefinedBoundaryPage />
   },
+  {
+    path: orgManageLocationsUrls.add.predefinedBoundary.addAnother,
+    component: <AddAnotherPredefinedBoundaryPage />
+  },
   // unmatched locations
   {
     path: orgManageLocationsUrls.unmatchedLocations.doNotAdd,
@@ -294,8 +308,12 @@ const orgManageLocationRoutes = [
     path: urlManageOrgConfirmLocations,
     component: <ConfirmAddingLocationsPage />
   },
-  // edit section
-  // edit location coordinates
+  // predefined boundary
+  {
+    path: orgManageLocationsUrls.add.predefinedBoundary.optionalInfo,
+    component: <PredefinedBoundaryOptionalInfoPage />
+  },
+  // edit
   {
     path: orgManageLocationsUrls.edit.individualLocation.location.search,
     component: <EditLocationSearchOptionsPage />
@@ -329,12 +347,12 @@ const orgManageLocationRoutes = [
   // edit shape - line
   {
     path: orgManageLocationsUrls.edit.individualLocation.location.shape.line,
-    component: <CannotChangeLocationLinePage />
+    component: <EditLinePage />
   },
   // edit shape - polygon
   {
     path: orgManageLocationsUrls.edit.individualLocation.location.shape.polygon,
-    component: <CannotChangeLocationPolygonPage />
+    component: <EditPolygonPage />
   },
   // optional information
   // edit location address
@@ -361,11 +379,11 @@ const orgManageLocationRoutes = [
       .keyInformation,
     component: <EditKeyInformationPage />
   }
-  // {
-  //   path: orgManageLocationsUrls.edit.individualLocation.optionalInformation
-  //     .keywords,
-  //   component: <EditKeyWordsPage />
-  // }
+  {
+    path: orgManageLocationsUrls.edit.individualLocation.optionalInformation
+      .keywords,
+    component: <EditKeywordsPage />
+  }
 ]
 
 export { orgManageLocationRoutes, orgManageLocationsUrls }

@@ -7,7 +7,8 @@ export default function Select ({
   onSelect,
   hint,
   error = '',
-  initialSelectOptionText
+  initialSelectOptionText,
+  disabledOptions = []
 }) {
   const [selectedOption, setSelectedOption] = useState('')
   const handleSelectChange = (event) => {
@@ -48,11 +49,19 @@ export default function Select ({
         <option value='' disabled>
           {initialSelectOptionText}
         </option>
-        {options.map((option, index) => (
-          <option key={index} value={option}>
-            {option}
-          </option>
-        ))}
+        {options.map((option, index) =>
+          disabledOptions.includes(option)
+            ? (
+              <option key={index} value={option} disabled>
+                {option}
+              </option>
+              )
+            : (
+              <option key={index} value={option}>
+                {option}
+              </option>
+              )
+        )}
       </select>
     </div>
   )

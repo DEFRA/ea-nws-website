@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import BackLink from '../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
-import Button from '../../../../../common/components/gov-uk/Button'
-import Details from '../../../../../common/components/gov-uk/Details'
-import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
-import Input from '../../../../../common/components/gov-uk/Input'
+import BackLink from '../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
+import Button from '../../../common/components/gov-uk/Button'
+import Details from '../../../common/components/gov-uk/Details'
+import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
+import Input from '../../../common/components/gov-uk/Input'
 import {
   setCurrentLocationCriticality,
   setCurrentLocationName,
   setCurrentLocationReference,
   setCurrentLocationType
-} from '../../../../../common/redux/userSlice'
-import { backendCall } from '../../../../../common/services/BackendService'
+} from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 
 export default function KeyInformationLayout({ flow, navigateToNextPage }) {
   const navigate = useNavigate()

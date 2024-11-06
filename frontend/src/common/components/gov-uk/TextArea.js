@@ -6,7 +6,8 @@ export default function TextArea({
   rows,
   value,
   onChange,
-  error = ''
+  error = '',
+  additionalInfo
 }) {
   const handleChange = (event) => {
     onChange(event.target.value)
@@ -39,6 +40,7 @@ export default function TextArea({
           value={value}
           onChange={handleChange}
         />
+        {additionalInfo && <p className='textarea-info'>{additionalInfo}</p>}
       </div>
     </>
   )

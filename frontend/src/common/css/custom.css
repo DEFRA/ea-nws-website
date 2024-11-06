@@ -1289,3 +1289,8 @@
 .possible-risk {
   background-color: rgba(244, 153, 190, 0.6);
 }
+
+.textarea-info {
+  margin-top: -28px;
+  color: #505a5f;
+}

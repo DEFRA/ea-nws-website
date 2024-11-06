@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import KeyInformationLayout from '../../../../layouts/location/add-or-edit-location/optional-information/KeyInformationLayout'
+import KeyInformationLayout from '../../../../layouts/optional-info/KeyInformationLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function AddKeyInformationPage() {

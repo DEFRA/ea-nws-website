@@ -4,7 +4,7 @@
     {id: 'signupComplete', value: {s: ''}},
     {id: 'lastAccessedUrl', value: {s: ''}},
     {id: 'businessName', value: {s: ''}},
-    {id: 'jobType', value: {s: ''}},
+    {id: 'jobTitle', value: {s: ''}},
     {id: 'keywords', value: {s: ''}},
   ]
 
@@ -12,7 +12,7 @@
     {id: 'signupComplete', value: {s: ''}},
     {id: 'lastAccessedUrl', value: {s: ''}},
     {id: 'businessName', value: {s: ''}},
-    {id: 'jobType', value: {s: ''}},
+    {id: 'jobTitle', value: {s: ''}},
     {id: 'keywords', value: {s: ''}},
   ]
 
@@ -95,10 +95,10 @@
     mobilePhones: ['07343454590', '07889668367'],
     homePhones: ['01475721535'],
     language: 'EN',
-    additionals: [{id: "lastAccessedUrl", value: "/signup/accountname/add"}, {id: "signUpComplete", value: true}],
+    additionals: [{id: "lastAccessedUrl", value: {s: "/signup/accountname/add"}}, {id: "signUpComplete", value: {s: 'true' }}],
     unverified: {
-      emails: [],
-      mobilePhones: [],
+      emails: [{address: ''}],
+      mobilePhones: [{address: ''}],
       homePhones: [{address : '01475721535'}]
     },
     pois: [
@@ -111,7 +111,8 @@
         }
       },
       {
-        address: 'Exmouth, United Kingdom',
+        name: 'Exmouth, United Kingdom',
+        address: '',
         coordinates: {
           latitude: '50621091',
           longitude: '-3412665'

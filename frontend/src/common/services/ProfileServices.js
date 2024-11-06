@@ -4,18 +4,18 @@ const addUnverifiedContact = (profile, type, contact) => {
 
   switch (type) {
     case 'email':
-      unverifiedContactList = profile.unverified.emails
+      unverifiedContactList = profile.unverified?.emails
       break
     case 'mobile':
-      unverifiedContactList = profile.unverified.mobilePhones
+      unverifiedContactList = profile.unverified?.mobilePhones
       break
     case 'homePhones':
-      unverifiedContactList = profile.unverified.homePhones
+      unverifiedContactList = profile.unverified?.homePhones
       break
   }
 
   // Check for duplicates
-  if (
+  if (unverifiedContactList &&
     !unverifiedContactList.some(
       (unverifiedContact) => unverifiedContact.address === contact
     )
@@ -152,7 +152,7 @@ const addAccountName = (profile, firstname, lastname) => {
 const getAdditionals = (profile, id) => {
   for (let i = 0; i < profile.additionals.length; i++) {
     if (profile.additionals[i].id === id) {
-      return profile.additionals[i].value
+      return profile.additionals[i].value.s
     }
   }
   return ''

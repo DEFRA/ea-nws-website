@@ -33,12 +33,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [{ id: 'signUpComplete', value: true }],
-    unverified: {
-      emails: [],
-      mobilePhones: [],
-      homePhones: []
-    },
+    additionals: [{ id: 'signUpComplete', value: {s: 'true'} }],
     pois: [
       {
         name: 'House Of Commons, Houses Of Parliament, London, SW1A 0AA',
@@ -61,12 +56,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [{ id: 'signUpComplete', value: true }],
-    unverified: {
-      emails: [],
-      mobilePhones: [],
-      homePhones: []
-    },
+    additionals: [{ id: 'signUpComplete', value: {s: 'true'} }],
     pois: [
       {
         name: 'Big Ben, London, SW1A 0AA',
@@ -96,12 +86,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [{ id: 'signUpComplete', value: true }],
-    unverified: {
-      emails: [],
-      mobilePhones: [],
-      homePhones: []
-    },
+    additionals: [{ id: 'signUpComplete', value: {s: 'true'} }],
     pois: [
       {
         name: 'Big Ben, London, SW1A 0AA',
@@ -261,13 +246,8 @@ export default function IndexPage () {
           }
         }
       },
-      { id: 'signUpComplete', value: false }
+      { id: 'signUpComplete', value: {s: 'false'} }
     ],
-    unverified: {
-      emails: [],
-      mobilePhones: [],
-      homePhones: []
-    },
     pois: [
       {
         name: 'Big Ben, London, SW1A 0AA',
@@ -416,11 +396,6 @@ export default function IndexPage () {
         homePhones: [],
         language: 'EN', // [TODO] is this always english?
         additionals: [],
-        unverified: {
-          emails: [],
-          mobilePhones: [],
-          homePhones: []
-        },
         pois: []
       }
 

@@ -51,7 +51,7 @@ export default function DeclarationOfAgreementPage () {
       }
       dispatch(setRegistrations(registrations))
       const updatedProfile = updateAdditionals(session.profile, [
-        { id: 'lastAccessedUrl', value: '/home' }
+        { id: 'lastAccessedUrl', value: {s: '/home' }}
       ])
       dispatch(setProfile(updatedProfile))
       updateBackendProfile(updatedProfile)

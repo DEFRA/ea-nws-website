@@ -13,7 +13,7 @@ import {
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 import { phoneValidation } from '../../../../common/services/validations/PhoneValidation'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
-export default function AddContactChannelsPage() {
+export default function AddContactChannelsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [email1Error, setEmail1Error] = useState('')
@@ -91,11 +91,11 @@ export default function AddContactChannelsPage() {
         if (emailValid) {
           first
             ? setEmail1Error(
-                'Enter email address 1 in the correct format, like name@example.com'
-              )
+              'Enter email address 1 in the correct format, like name@example.com'
+            )
             : setEmail2Error(
-                'Enter email address 2 in the correct format, like name@example.com'
-              )
+              'Enter email address 2 in the correct format, like name@example.com'
+            )
         }
         return emailValid === ''
       }
@@ -109,19 +109,19 @@ export default function AddContactChannelsPage() {
           if (type === 'mobile') {
             first
               ? setMobilePhone1Error(
-                  'Enter 1st UK mobile telephone number in the correct format,  like 07700 900 982'
-                )
+                'Enter 1st UK mobile telephone number in the correct format,  like 07700 900 982'
+              )
               : setMobilePhone2Error(
-                  'Enter 2nd UK mobile telephone number in the correct format,  like 07700 900 982'
-                )
+                'Enter 2nd UK mobile telephone number in the correct format,  like 07700 900 982'
+              )
           } else {
             first
               ? setHomePhone1Error(
-                  'Enter 1st UK telephone number in the correct format, like 01632 960 001 or  07700 900 982'
-                )
+                'Enter 1st UK telephone number in the correct format, like 01632 960 001 or  07700 900 982'
+              )
               : setHomePhone2Error(
-                  'Enter 2nd UK telephone number in the correct format, like 01632 960 001 or  07700 900 982'
-                )
+                'Enter 2nd UK telephone number in the correct format, like 01632 960 001 or  07700 900 982'
+              )
           }
         }
         return phoneValid === ''
@@ -200,17 +200,17 @@ export default function AddContactChannelsPage() {
               email2Error ||
               homePhone2Error ||
               mobilePhone2Error) && (
-              <ErrorSummary
-                errorList={[
-                  email1Error,
-                  email2Error,
-                  error,
-                  mobilePhone1Error,
-                  homePhone1Error,
-                  mobilePhone2Error,
-                  homePhone2Error
-                ]}
-              />
+                <ErrorSummary
+                  errorList={[
+                    email1Error,
+                    email2Error,
+                    error,
+                    mobilePhone1Error,
+                    homePhone1Error,
+                    mobilePhone2Error,
+                    homePhone2Error
+                  ]}
+                />
             )}
             <h1 className='govuk-heading-l'>
               Choose how you want {firstName || 'first'} {lastName || 'last'} to

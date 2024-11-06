@@ -129,6 +129,7 @@ export default function SelectPredefinedBoundaryPage () {
     event.preventDefault()
     dispatch(setSelectedBoundaryType(null))
     dispatch(setSelectedBoundary(null))
+    dispatch(setPredefinedBoundaryFlow(false))
     navigate(-1)
   }
 

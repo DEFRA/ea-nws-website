@@ -34,14 +34,14 @@ def test_click_failure_input_invalid_email(get_browser):
     enter_input_text(get_browser, 'Email addresses (optional)', 'invalid')
     click_button(get_browser, 'Continue', current_url) 
     assert 'There is a problem' in get_browser.page_source
-    assert 'Enter an email address in the correct format, like name@example.com' in get_browser.page_source
+    assert 'Enter email address 1 in the correct format, like name@example.com' in get_browser.page_source
 
 def test_click_failure_input_invalid_mobile(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     enter_input_text(get_browser, 'UK mobile numbers for text messages (optional)', '0796857')
     click_button(get_browser, 'Continue', current_url) 
     assert 'There is a problem' in get_browser.page_source
-    assert 'Enter a valid UK mobile telephone number' in get_browser.page_source
+    assert 'Enter 1st UK mobile telephone number in the correct format' in get_browser.page_source
 
 def test_click_failure_input_invalid_homephone(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
@@ -50,7 +50,7 @@ def test_click_failure_input_invalid_homephone(get_browser):
     enter_input_text(get_browser, 'UK telephone numbers for voice messages (optional)', '01631')
     click_button(get_browser, 'Continue', current_url) 
     assert 'There is a problem' in get_browser.page_source
-    assert 'Enter a UK landline or mobile telephone number, like 01632 960 001 or 07700 900 982' in get_browser.page_source
+    assert 'Enter 1st UK telephone number in the correct format' in get_browser.page_source
 
 def test_click_continue_valid_1_input(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)

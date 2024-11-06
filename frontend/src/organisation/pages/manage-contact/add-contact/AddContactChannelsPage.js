@@ -13,7 +13,7 @@ import {
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 import { phoneValidation } from '../../../../common/services/validations/PhoneValidation'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
-export default function AddContactChannelsPage () {
+export default function AddContactChannelsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [email1Error, setEmail1Error] = useState('')
@@ -63,6 +63,25 @@ export default function AddContactChannelsPage () {
     mobileInput2
   ])
 
+  useEffect(() => {
+    setEmail1Error('')
+  }, [emailInput1])
+  useEffect(() => {
+    setEmail2Error('')
+  }, [emailInput2])
+  useEffect(() => {
+    setHomePhone1Error('')
+  }, [homeInput1])
+  useEffect(() => {
+    setHomePhone2Error('')
+  }, [homeInput2])
+  useEffect(() => {
+    setMobilePhone1Error('')
+  }, [mobileInput1])
+  useEffect(() => {
+    setMobilePhone2Error('')
+  }, [mobileInput2])
+
   const validateData = () => {
     let dataValid = true
 
@@ -72,11 +91,11 @@ export default function AddContactChannelsPage () {
         if (emailValid) {
           first
             ? setEmail1Error(
-              'Enter email address 1 in the correct format, like name@example.com'
-            )
+                'Enter email address 1 in the correct format, like name@example.com'
+              )
             : setEmail2Error(
-              'Enter email address 2 in the correct format, like name@example.com'
-            )
+                'Enter email address 2 in the correct format, like name@example.com'
+              )
         }
         return emailValid === ''
       }
@@ -89,12 +108,20 @@ export default function AddContactChannelsPage () {
         if (phoneValid) {
           if (type === 'mobile') {
             first
-              ? setMobilePhone1Error(phoneValid)
-              : setMobilePhone2Error(phoneValid)
+              ? setMobilePhone1Error(
+                  'Enter 1st UK mobile telephone number in the correct format,  like 07700 900 982'
+                )
+              : setMobilePhone2Error(
+                  'Enter 2nd UK mobile telephone number in the correct format,  like 07700 900 982'
+                )
           } else {
             first
-              ? setHomePhone1Error(phoneValid)
-              : setHomePhone1Error(phoneValid)
+              ? setHomePhone1Error(
+                  'Enter 1st UK telephone number in the correct format, like 01632 960 001 or  07700 900 982'
+                )
+              : setHomePhone2Error(
+                  'Enter 2nd UK telephone number in the correct format, like 01632 960 001 or  07700 900 982'
+                )
           }
         }
         return phoneValid === ''
@@ -116,11 +143,11 @@ export default function AddContactChannelsPage () {
       return false
     }
 
-    dataValid &= validateEmail(emailInput1)
+    dataValid &= validateEmail(emailInput1, true)
     dataValid &= validateEmail(emailInput2)
-    dataValid &= validatePhone(mobileInput1, 'mobile')
+    dataValid &= validatePhone(mobileInput1, 'mobile', true)
     dataValid &= validatePhone(mobileInput2, 'mobile')
-    dataValid &= validatePhone(homeInput1, 'mobileAndLandline')
+    dataValid &= validatePhone(homeInput1, 'mobileAndLandline', true)
     dataValid &= validatePhone(homeInput2, 'mobileAndLandline')
     return dataValid
   }
@@ -173,17 +200,17 @@ export default function AddContactChannelsPage () {
               email2Error ||
               homePhone2Error ||
               mobilePhone2Error) && (
-                <ErrorSummary
-                  errorList={[
-                    email1Error,
-                    email2Error,
-                    error,
-                    mobilePhone1Error,
-                    homePhone1Error,
-                    mobilePhone2Error,
-                    homePhone2Error
-                  ]}
-                />
+              <ErrorSummary
+                errorList={[
+                  email1Error,
+                  email2Error,
+                  error,
+                  mobilePhone1Error,
+                  homePhone1Error,
+                  mobilePhone2Error,
+                  homePhone2Error
+                ]}
+              />
             )}
             <h1 className='govuk-heading-l'>
               Choose how you want {firstName || 'first'} {lastName || 'last'} to

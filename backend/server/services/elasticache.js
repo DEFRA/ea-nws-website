@@ -21,6 +21,14 @@ const checkKeyExists = async (key) => {
   return keyExists
 }
 
+const deleteData = async (key) => {
+  const client = await connectToRedis()
+  // send the data
+  await client.del(key)
+  // disconnect as we don't need the connection open anymore
+  await client.disconnect()
+}
+
 const setJsonData = async (key, json) => {
   // only store data for 24 hours in the event the browser is closed without signing out
   const time = 60 * 60 * 24
@@ -63,6 +71,8 @@ const getList = async (key) => {
 const addToList = async (key, value) => {
   const client = await connectToRedis()
   await client.lPush(key, value)
+  const time = 60 * 60 * 24
+  await client.expire(key, time)
   await client.disconnect()
 }
 
@@ -88,7 +98,7 @@ const addToKeywordArr = async (key, value) => {
   if (arrExists) {
     const keywordArr = await getJsonData(key)
     let keywordExists = false
-    keywordArr.forEach((keyword, index) => {
+    keywordArr.forEach((keyword) => {
       if (keyword.name === value.name) {
         keywordExists = true
         keyword.linked_ids.push(value.linked_ids)
@@ -278,6 +288,31 @@ const orgSignIn = async (profile, organization, locations, contacts) => {
   }
 }
 
+const orgSignOut = async (profileId, orgId) => {
+  // delete all data from elasticache
+  // delete profile
+  await deleteJsonData(profileId+':profile')
+  // delete org
+  await deleteJsonData(orgId+':org_data')
+  // delete locations
+  // delete contacts
+  const locationKeys = await getLocationKeys(orgId)
+  const contactKeys = await getContactKeys(orgId)
+  await Promise.all(locationKeys.map(async (key) => {
+    await deleteJsonData(key)
+  }))
+  await Promise.all(contactKeys.map(async (key) => {
+    await deleteJsonData(key)
+  }))
+
+  await deleteData(orgId + ':t_POIS_locID')
+  await deleteData(orgId + ':t_Contacts_ID')
+  // delete contact and location keywords
+  await deleteJsonData(orgId + ':t_Keywords_location')
+  await deleteJsonData(orgId + ':t_Keywords_contact')
+
+}
+
 module.exports = {
   setJsonData,
   getJsonData,
@@ -290,5 +325,6 @@ module.exports = {
   addInvLocation,
   removeInvLocation,
   listInvLocations,
-  orgSignIn
+  orgSignIn,
+  orgSignOut
 }

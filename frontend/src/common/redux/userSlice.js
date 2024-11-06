@@ -5,6 +5,8 @@ const userSlice = createSlice({
   initialState: {
     authToken: null,
     registerToken: null,
+    profileId: null,
+    orgId: null,
     profile: null,
     contactPreferences: null,
     registrations: null,
@@ -75,6 +77,12 @@ const userSlice = createSlice({
     },
     setRegisterToken: (state, action) => {
       state.registerToken = action.payload
+    },
+    setProfileId: (state, action) => {
+      state.profileId = action.payload
+    },
+    setOrgId: (state, action) => {
+      state.orgId = action.payload
     },
     setProfile: (state, action) => {
       state.profile = action.payload
@@ -272,6 +280,8 @@ const userSlice = createSlice({
     clearAuth: (state) => {
       state.authToken = null
       state.registerToken = null
+      state.profileId = null
+      state.orgId = null
       state.profile = null
       state.contactPreferences = null
       state.registrations = null
@@ -333,6 +343,8 @@ const userSlice = createSlice({
 export const {
   setAuthToken,
   setRegisterToken,
+  setProfileId,
+  setOrgId,
   setProfile,
   setRegistrations,
   setContactPreferences,

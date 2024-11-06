@@ -12,7 +12,9 @@ import NotificationBanner from '../../../common/components/gov-uk/NotificationBa
 import {
   setAuthToken,
   setContactPreferences,
+  setOrgId,
   setProfile,
+  setProfileId,
   setRegistrations
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
@@ -64,6 +66,10 @@ export default function SignInValidatePageLayout ({
       } else {
         dispatch(setAuthToken(data.authToken))
         dispatch(setProfile(data.profile))
+        if (signinType === 'org') {
+          dispatch(setProfileId(data.profile.id))
+          dispatch(setOrgId(data.organization.id))
+        }
         dispatch(setRegistrations(data.registrations))
         dispatch(
           setContactPreferences([

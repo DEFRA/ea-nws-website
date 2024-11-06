@@ -8,16 +8,14 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../common/components/gov-uk/TextArea'
 import { setCurrentLocationActionPlan } from '../../../common/redux/userSlice'
 
-export default function ActionPlanLayout ({ navigateToNextPage }) {
+export default function ActionPlanLayout({ navigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const currentActionPlan = useSelector(
     (state) =>
       state.session.currentLocation.meta_data.location_additional.action_plan
   )
-  const [actionPlan, setActionPlan] = useState(
-    currentActionPlan || ''
-  )
+  const [actionPlan, setActionPlan] = useState(currentActionPlan || '')
   const [error, setError] = useState('')
   const charLimit = 200
 
@@ -32,10 +30,7 @@ export default function ActionPlanLayout ({ navigateToNextPage }) {
   const handleSubmit = () => {
     if (error) return
 
-    if (actionPlan) {
-      dispatch(setCurrentLocationActionPlan(actionPlan))
-    }
-
+    dispatch(setCurrentLocationActionPlan(actionPlan))
     // should update the geosafe profile here?
 
     navigateToNextPage()
@@ -50,7 +45,7 @@ export default function ActionPlanLayout ({ navigateToNextPage }) {
     <>
       <OrganisationAccountNavigation />
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
@@ -66,9 +61,10 @@ export default function ActionPlanLayout ({ navigateToNextPage }) {
                 inputType='text'
                 rows='5'
                 onChange={(val) => setActionPlan(val)}
+                value={actionPlan}
                 className='govuk-textarea'
+                additionalInfo={'You can enter up to 200 characters.'}
               />
-              <p className='govuk-hint'>You can enter up to 200 characters.</p>
               <Button
                 text='Continue'
                 className='govuk-button'

@@ -15,7 +15,7 @@ import {
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 
-export default function KeyInformationLayout ({ flow, navigateToNextPage }) {
+export default function KeyInformationLayout({ flow, navigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
@@ -46,42 +46,39 @@ export default function KeyInformationLayout ({ flow, navigateToNextPage }) {
   const handleSubmit = async () => {
     // location name can be amended when a user is editing a locations key information
     if (flow === 'edit') {
-      if (locationName) {
-        const dataToSend = { authToken, locationName }
-        const { errorMessage } = await backendCall(
-          dataToSend,
-          'api/locations/check_duplicate',
-          navigate
-        )
+      // only execute if location name has been changed
+      if (locationName != additionalData.location_name) {
+        if (locationName) {
+          const dataToSend = { authToken, locationName }
+          const { errorMessage } = await backendCall(
+            dataToSend,
+            'api/locations/check_duplicate',
+            navigate
+          )
 
-        if (errorMessage) {
-          if (errorMessage === 'duplicate location') {
-            setLocationNameError('A location with this name exists')
+          if (errorMessage) {
+            if (errorMessage === 'duplicate location') {
+              setLocationNameError('A location with this name exists')
+            } else {
+              setLocationNameError('Something went wrong, try again')
+            }
           } else {
-            setLocationNameError('Something went wrong, try again')
+            dispatch(setCurrentLocationName(locationName))
           }
         } else {
-          dispatch(setCurrentLocationName(locationName))
+          setLocationNameError('Enter a location name')
+          return
         }
-      } else {
-        setLocationNameError('Enter a location name')
-        return
       }
     }
 
-    if (internalReference) {
-      dispatch(setCurrentLocationReference(internalReference))
-    }
-    if (businessCriticality) {
-      dispatch(setCurrentLocationCriticality(businessCriticality))
-    }
-    if (locationType) {
-      dispatch(setCurrentLocationType(locationType))
-    }
+    dispatch(setCurrentLocationReference(internalReference))
+    dispatch(setCurrentLocationCriticality(businessCriticality))
+    dispatch(setCurrentLocationType(locationType))
 
     // should update the geosafe profile here?
 
-    navigateToNextPage()
+    navigateToNextPage(locationName)
   }
 
   const navigateBack = (event) => {
@@ -116,7 +113,7 @@ export default function KeyInformationLayout ({ flow, navigateToNextPage }) {
     <>
       <OrganisationAccountNavigation />
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {locationNameError && (

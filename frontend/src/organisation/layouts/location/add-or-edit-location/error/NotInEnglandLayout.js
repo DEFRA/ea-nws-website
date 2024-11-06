@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 
-export default function NotInEnglandLayout ({
+export default function NotInEnglandLayout({
   navigateToNextPage,
   flow,
   postCodeSearchUrl,
@@ -85,7 +85,7 @@ export default function NotInEnglandLayout ({
                     href='https://naturalresources.wales/splash?orig=%2fflooding%2fsign-up-to-receive-flood-warnings%2f&lang=cy'
                     className='govuk-link'
                   >
-                    flood warnings in Wales.
+                    Natural Resources Wales
                   </a>{' '}
                   for flood messages in Wales
                 </li>

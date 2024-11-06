@@ -29,6 +29,12 @@ export default function LocationMessagesPage () {
     alertCategories?.includes(allAlertCategories[2])
   ])
 
+  const alertCategoriesEnabledOriginal = [
+    alertCategories?.includes(allAlertCategories[0]),
+    alertCategories?.includes(allAlertCategories[1]),
+    alertCategories?.includes(allAlertCategories[2])
+  ]
+
   const messageSettings = [
     'Severe flood warnings',
     'Flood warnings',
@@ -36,18 +42,26 @@ export default function LocationMessagesPage () {
   ]
 
   const handleSumbit = () => {
-    setIsBannerDisplayed(true)
-
-    const alertCategoriesDispatch = []
-    alertCategoriesEnabled.forEach((enabled, index) => {
-      if (enabled) alertCategoriesDispatch.push(allAlertCategories[index])
-    })
-
-    dispatch(
-      setCurrentLocationAlertCategories(
-        alertCategoriesDispatch.length === 0 ? null : alertCategoriesDispatch
+    if (
+      alertCategoriesEnabledOriginal.every(
+        (value, index) => value === alertCategoriesEnabled[index]
       )
-    )
+    ) {
+      return null
+    } else {
+      setIsBannerDisplayed(true)
+
+      const alertCategoriesDispatch = []
+      alertCategoriesEnabled.forEach((enabled, index) => {
+        if (enabled) alertCategoriesDispatch.push(allAlertCategories[index])
+      })
+
+      dispatch(
+        setCurrentLocationAlertCategories(
+          alertCategoriesDispatch.length === 0 ? null : alertCategoriesDispatch
+        )
+      )
+    }
   }
 
   const handleChangeRadio = (index, value) => {
@@ -113,6 +127,7 @@ export default function LocationMessagesPage () {
                       <Radio
                         label='On'
                         small
+                        value={'Radio_On_' + index}
                         name={'Radio_' + index}
                         checked={alertCategoriesEnabled[index]}
                         onChange={() => handleChangeRadio(index, true)}
@@ -122,6 +137,7 @@ export default function LocationMessagesPage () {
                       <Radio
                         label='Off'
                         small
+                        value={'Radio_Off_' + index}
                         name={'Radio_' + index}
                         checked={!alertCategoriesEnabled[index]}
                         onChange={() => handleChangeRadio(index, false)}
@@ -285,7 +301,7 @@ export default function LocationMessagesPage () {
 
   const navigateBack = (e) => {
     e.preventDefault()
-    navigate(-1)
+    navigate(orgManageLocationsUrls.view.dashboard)
   }
 
   return (

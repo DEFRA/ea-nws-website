@@ -131,6 +131,12 @@ url_org_man_loc = {
         'locationInArea': url_org_man_loc_path + '/edit/location-in-area',
         'notInEngland': url_org_man_loc_path + '/edit/xy-coordinates-not-in-england',
         'dropPinEdit': url_org_man_loc_path + '/edit/drop-pin-edit'
+    },
+    'view':{
+        'dashboard': url_org_man_loc_path + '/view-locations',
+        'details': url_org_man_loc_path + '/location/view-location',
+        'messages': url_org_man_loc_path + '/location/view-messages',
+        'floodAreasInfo': url_org_man_loc_path + '/flood-areas-info'
     }
 }
 
@@ -267,6 +273,11 @@ def check_h1_heading(browser, page_heading):
 # Check for error summary
 def check_error_summary(browser):
     error_xpath = f"//div[contains(@class, 'govuk-error-summary')]"
+    return check_exists_by_xpath(browser, error_xpath)
+
+# Check for success banner
+def check_success_banner(browser):
+    error_xpath = f"//div[contains(@class, 'govuk-notification-banner--success')]"
     return check_exists_by_xpath(browser, error_xpath)
 
 # Check for sign back in page for unauthenticated access

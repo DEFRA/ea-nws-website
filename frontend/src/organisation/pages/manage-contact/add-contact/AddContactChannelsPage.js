@@ -16,9 +16,12 @@ import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageCon
 export default function AddContactChannelsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [emailError, setEmailError] = useState('')
-  const [homePhoneError, setHomePhoneError] = useState('')
-  const [mobilePhoneError, setMobilePhoneError] = useState('')
+  const [email1Error, setEmail1Error] = useState('')
+  const [email2Error, setEmail2Error] = useState('')
+  const [homePhone1Error, setHomePhone1Error] = useState('')
+  const [homePhone2Error, setHomePhone2Error] = useState('')
+  const [mobilePhone1Error, setMobilePhone1Error] = useState('')
+  const [mobilePhone2Error, setMobilePhone2Error] = useState('')
   const [error, setError] = useState('')
   const [emailInput1, setEmailInput1] = useState('')
   const [emailInput2, setEmailInput2] = useState('')
@@ -63,24 +66,37 @@ export default function AddContactChannelsPage () {
   const validateData = () => {
     let dataValid = true
 
-    const validateEmail = (email) => {
+    const validateEmail = (email, first) => {
       if (email) {
         const emailValid = emailValidation(email)
-        setEmailError(emailValid)
+        if (emailValid) {
+          first
+            ? setEmail1Error(
+              'Enter email address 1 in the correct format, like name@example.com'
+            )
+            : setEmail2Error(
+              'Enter email address 2 in the correct format, like name@example.com'
+            )
+        }
         return emailValid === ''
       }
       return true
     }
 
-    const validatePhone = (phone, type) => {
+    const validatePhone = (phone, type, first) => {
       if (phone) {
         const phoneValid = phoneValidation(phone, type)
-        if (type === 'mobile') {
-          setMobilePhoneError(phoneValid)
-        } else {
-          setHomePhoneError(phoneValid)
+        if (phoneValid) {
+          if (type === 'mobile') {
+            first
+              ? setMobilePhone1Error(phoneValid)
+              : setMobilePhone2Error(phoneValid)
+          } else {
+            first
+              ? setHomePhone1Error(phoneValid)
+              : setHomePhone1Error(phoneValid)
+          }
         }
-
         return phoneValid === ''
       }
       return true
@@ -130,9 +146,12 @@ export default function AddContactChannelsPage () {
       if (newHomePhones.length !== 0) {
         dispatch(setOrgCurrentContactMobilePhones(newHomePhones))
       }
-      setEmailError('')
-      setHomePhoneError('')
-      setMobilePhoneError('')
+      setEmail1Error('')
+      setHomePhone1Error('')
+      setMobilePhone1Error('')
+      setEmail2Error('')
+      setHomePhone2Error('')
+      setMobilePhone2Error('')
       setError('')
 
       // TO DO - to notes
@@ -147,15 +166,24 @@ export default function AddContactChannelsPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {(error || emailError || homePhoneError || mobilePhoneError) && (
-              <ErrorSummary
-                errorList={[
-                  emailError,
-                  error,
-                  mobilePhoneError,
-                  homePhoneError
-                ]}
-              />
+            {(error ||
+              email1Error ||
+              homePhone1Error ||
+              mobilePhone1Error ||
+              email2Error ||
+              homePhone2Error ||
+              mobilePhone2Error) && (
+                <ErrorSummary
+                  errorList={[
+                    email1Error,
+                    email2Error,
+                    error,
+                    mobilePhone1Error,
+                    homePhone1Error,
+                    mobilePhone2Error,
+                    homePhone2Error
+                  ]}
+                />
             )}
             <h1 className='govuk-heading-l'>
               Choose how you want {firstName || 'first'} {lastName || 'last'} to
@@ -190,7 +218,7 @@ export default function AddContactChannelsPage () {
                   name='Email addresses (optional)'
                   inputType='text'
                   onChange={(val) => setEmailInput1(val)}
-                  error={emailError}
+                  error={email1Error}
                   className='govuk-input govuk-input--width-20'
                   isNameBold
                   labelSize='s'
@@ -198,7 +226,7 @@ export default function AddContactChannelsPage () {
                 <Input
                   inputType='text'
                   onChange={(val) => setEmailInput2(val)}
-                  error={emailError}
+                  error={email2Error}
                   className='govuk-input govuk-input--width-20'
                 />
                 <Input
@@ -208,13 +236,13 @@ export default function AddContactChannelsPage () {
                   className='govuk-input govuk-input--width-20'
                   isNameBold
                   labelSize='s'
-                  error={mobilePhoneError}
+                  error={mobilePhone1Error}
                 />
                 <Input
                   inputType='text'
                   onChange={(val) => setMobileInput2(val)}
                   className='govuk-input govuk-input--width-20'
-                  error={mobilePhoneError}
+                  error={mobilePhone2Error}
                 />
                 <Input
                   name='UK telephone numbers for voice messages (optional)'
@@ -223,13 +251,13 @@ export default function AddContactChannelsPage () {
                   className='govuk-input govuk-input--width-20'
                   isNameBold
                   labelSize='s'
-                  error={homePhoneError}
+                  error={homePhone1Error}
                 />
                 <Input
                   inputType='text'
                   onChange={(val) => setHomeInput2(val)}
                   className='govuk-input govuk-input--width-20'
-                  error={homePhoneError}
+                  error={homePhone2Error}
                 />
               </div>
               <Button

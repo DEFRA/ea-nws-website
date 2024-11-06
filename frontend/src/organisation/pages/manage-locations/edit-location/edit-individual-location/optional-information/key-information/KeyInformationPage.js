@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import KeyInformationLayout from '../../../../../../layouts/optional-info/KeyInformationLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function KeyInformationPage() {
+export default function KeyInformationPage () {
   const navigate = useNavigate()
   const locationName = useSelector(
     (state) =>
@@ -19,7 +19,7 @@ export default function KeyInformationPage() {
   return (
     <>
       <KeyInformationLayout
-        flow={'edit'}
+        flow='edit'
         navigateToNextPage={navigateToNextPage}
       />
     </>

@@ -5,7 +5,7 @@ import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locat
 
 // TODO - REVIEWER - PLEASE REMIND ME ABOUT THIS PAGE
 
-export default function NotInEnglandPage() {
+export default function NotInEnglandPage () {
   const navigate = useNavigate()
 
   const NavigateToPreviousPage = () => {

@@ -7,7 +7,7 @@ import Button from '../../../common/components/gov-uk/Button'
 import TextArea from '../../../common/components/gov-uk/TextArea'
 import { setCurrentLocationAddress } from '../../../common/redux/userSlice'
 
-export default function AddressLayout({
+export default function AddressLayout ({
   navigateToNextPage,
   additionalInfo = ''
 }) {
@@ -15,7 +15,7 @@ export default function AddressLayout({
   const currentAddress = useSelector(
     (state) => state.session.currentLocation.address
   )
-  const [address, setAddress] = useState(currentAddress ? currentAddress : '')
+  const [address, setAddress] = useState(currentAddress || '')
   const dispatch = useDispatch()
 
   const handleSubmit = (event) => {
@@ -43,7 +43,7 @@ export default function AddressLayout({
               rows={5}
               value={address}
               onChange={(val) => setAddress(val)}
-              additionalInfo={'You can add up to 200 characters'}
+              additionalInfo='You can add up to 200 characters'
             />
             <Button
               className='govuk-button'

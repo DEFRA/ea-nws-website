@@ -11,7 +11,7 @@ import { locationInEngland } from '../../../../../../common/services/validations
 import Map from '../../../../../components/custom/Map'
 import MapInteractiveKey from '../../../../../components/custom/MapInteractiveKey'
 
-export default function DropPinOnMapLayout({
+export default function DropPinOnMapLayout ({
   navigateToNextPage,
   navigateToNotInEnglandPage,
   flow

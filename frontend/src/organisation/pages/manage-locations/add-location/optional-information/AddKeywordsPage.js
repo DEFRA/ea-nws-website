@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router-dom'
-import AddKeywordsLayout from '../../../../layouts/optional-info/AddKeywordsLayout'
+import KeywordsLayout from '../../../../layouts/optional-info/KeywordsLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AddKeywordsPage() {
+export default function AddKeywordsPage () {
   const navigate = useNavigate()
 
   const keywordText = () => {
@@ -36,7 +36,7 @@ export default function AddKeywordsPage() {
 
   return (
     <>
-      <AddKeywordsLayout
+      <KeywordsLayout
         navigateToNextPage={navigateToNextPage}
         keywordType='location'
         keywordText={keywordText}

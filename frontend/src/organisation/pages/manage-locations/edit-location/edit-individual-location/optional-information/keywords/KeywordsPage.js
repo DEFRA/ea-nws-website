@@ -1,9 +1,9 @@
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import AddKeywordsLayout from '../../../../layouts/optional-info/AddKeywordsLayout'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import KeywordsLayout from '../../../../../../layouts/optional-info/KeywordsLayout'
+import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function KeywordsPage() {
+export default function KeywordsPage () {
   const navigate = useNavigate()
   const locationName = useSelector(
     (state) =>
@@ -43,7 +43,7 @@ export default function KeywordsPage() {
 
   return (
     <>
-      <AddKeywordsLayout
+      <KeywordsLayout
         navigateToNextPage={navigateToNextPage}
         keywordType='location'
         keywordText={keywordText}

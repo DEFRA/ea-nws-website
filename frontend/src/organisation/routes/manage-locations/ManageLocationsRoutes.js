@@ -378,7 +378,7 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.edit.individualLocation.optionalInformation
       .keyInformation,
     component: <EditKeyInformationPage />
-  }
+  },
   {
     path: orgManageLocationsUrls.edit.individualLocation.optionalInformation
       .keywords,

@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import DropPinOnMapLayout from '../../../../../../layouts/location/add-or-edit-location/search/drop-pin/DropPinOnMapLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DropPinOnMapPage() {
+export default function DropPinOnMapPage () {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {
@@ -18,7 +18,7 @@ export default function DropPinOnMapPage() {
     <DropPinOnMapLayout
       NavigateToNextPage={NavigateToNextPage}
       NavigateToNotInEnglandPage={NavigateToNotInEnglandPage}
-      flow={'add'}
+      flow='add'
     />
   )
 }

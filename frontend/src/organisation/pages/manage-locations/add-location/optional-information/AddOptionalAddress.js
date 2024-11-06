@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 import AddressLayout from '../../../../layouts/optional-info/AddressLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AddOptionalAddress() {
+export default function AddOptionalAddress () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {

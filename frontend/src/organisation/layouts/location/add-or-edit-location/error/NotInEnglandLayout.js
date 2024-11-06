@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 
-export default function NotInEnglandLayout({
+export default function NotInEnglandLayout ({
   navigateToNextPage,
   flow,
   postCodeSearchUrl,
@@ -20,29 +20,25 @@ export default function NotInEnglandLayout({
     postcode: postCodeSearchUrl && (
       <li key='postcode'>
         <Link to={postCodeSearchUrl} className='govuk-link inline-link'>
-          {(flow = 'postcode' ? 'use a different postcode' : 'use a postcode')}
+          {flow === 'postcode' ? 'use a different postcode' : 'use a postcode'}
         </Link>
       </li>
     ),
     xyCoordinate: xyCoordinatesSearchUrl && (
       <li key='xyCoordinate'>
         <Link to={xyCoordinatesSearchUrl} className='govuk-link inline-link'>
-          {
-            (flow = 'xyCoordinate'
-              ? 'use a different set of X and Y coordinates'
-              : 'use X and Y coordinates')
-          }
+          {flow === 'xyCoordinate'
+            ? 'use a different set of X and Y coordinates'
+            : 'use X and Y coordinates'}
         </Link>
       </li>
     ),
     dropPin: dropPinSearchUrl && (
       <li key='dropPin'>
         <Link to={dropPinSearchUrl} className='govuk-link inline-link'>
-          {
-            (flow = 'dropPin'
-              ? 'drop a pin on a different place on a map'
-              : 'find the location on a map')
-          }
+          {flow === 'dropPin'
+            ? 'drop a pin on a different place on a map'
+            : 'find the location on a map'}
         </Link>
       </li>
     )

@@ -8,7 +8,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 
-export default function ConfirmLocationLayout({ navigateToNextPage }) {
+export default function ConfirmLocationLayout ({ navigateToNextPage }) {
   const navigate = useNavigate()
   const { type } = useParams()
   const { flow } = useParams()

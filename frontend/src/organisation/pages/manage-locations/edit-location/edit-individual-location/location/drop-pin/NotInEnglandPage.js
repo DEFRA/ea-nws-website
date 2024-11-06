@@ -2,7 +2,7 @@ import React from 'react'
 import NotInEnglandLayout from '../../../../../../layouts/location/add-or-edit-location/error/NotInEnglandLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function NotInEnglandPage() {
+export default function NotInEnglandPage () {
   const xyCoordsSearchUrl =
     orgManageLocationsUrls.edit.individualLocation.location.xyCoords.search
 
@@ -14,7 +14,7 @@ export default function NotInEnglandPage() {
       xyCoordinatesSearchUrl={xyCoordsSearchUrl}
       dropPinSearchUrl={dropPinSearchUrl}
       flow='dropPin'
-      //navigateToNextPage find out from Alex where this goes
+      // navigateToNextPage find out from Alex where this goes
     />
   )
 }

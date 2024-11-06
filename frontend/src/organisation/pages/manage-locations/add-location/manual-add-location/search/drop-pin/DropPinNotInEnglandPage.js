@@ -2,7 +2,7 @@ import React from 'react'
 import NotInEnglandLayout from '../../../../../../layouts/location/add-or-edit-location/error/NotInEnglandLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DropPinNotInEnglandPage() {
+export default function DropPinNotInEnglandPage () {
   const postCodeSearchUrl = orgManageLocationsUrls.add.search.postCodeSearch
 
   const xyCoordsSearchUrl =

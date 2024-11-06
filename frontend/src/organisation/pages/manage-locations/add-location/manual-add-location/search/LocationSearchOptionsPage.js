@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router'
 import LocationOptionsLayout from '../../../../../layouts/location/add-or-edit-location/search/LocationSearchOptionsLayout'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationSearchOptionsPage() {
+export default function LocationSearchOptionsPage () {
   const navigate = useNavigate()
 
   const locationName = useSelector(

@@ -12,10 +12,10 @@ import {
   setLocationKeywords
 } from '../../../common/redux/userSlice'
 
-export default function AddKeywordsLayout ({
+export default function KeywordsLayout ({
   keywordType,
-  NavigateToNextPage,
-  KeywordText
+  navigateToNextPage,
+  keywordText
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -157,7 +157,9 @@ export default function AddKeywordsLayout ({
             }
 
             // Remove keyword if no linked ids found
-            if (orgKeywords[orgKeywordIdx].linked_ids.length === 0) { orgKeywords.splice(orgKeywordIdx, 1) }
+            if (orgKeywords[orgKeywordIdx].linked_ids.length === 0) {
+              orgKeywords.splice(orgKeywordIdx, 1)
+            }
           } else if (
             !orgKeywords[orgKeywordIdx].linked_ids.includes(locationName) &&
             currentKeywordChecked
@@ -189,7 +191,7 @@ export default function AddKeywordsLayout ({
 
     dispatch(setLocationKeywords(orgKeywords))
     dispatch(setCurrentLocationKeywords(JSON.stringify(keywordsArrayChecked)))
-    NavigateToNextPage()
+    navigateToNextPage()
   }
 
   const navigateBack = (event) => {
@@ -209,7 +211,7 @@ export default function AddKeywordsLayout ({
               {`Keywords for this ${keywordType} (optional)`}
             </h1>
             <div className='govuk-body'>
-              {KeywordText()}
+              {keywordText()}
 
               {keywordsArray.length !== 0 &&
                 keywordsArray.map((keyword, index) => (

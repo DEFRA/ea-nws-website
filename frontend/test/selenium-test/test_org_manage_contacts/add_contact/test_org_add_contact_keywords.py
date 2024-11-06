@@ -15,14 +15,6 @@ def add_keyword_success(get_browser, keyword):
     assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='id{keyword}']")
     assert check_exists_by_xpath(get_browser, f"//input[@class='govuk-checkboxes__input' and @id='id{keyword}']")
 
-def add_keyword_fail(get_browser, keyword, error):
-    add_keyword(get_browser, keyword)
-    assert check_error_summary(get_browser)
-    assert error in get_browser.page_source
-    if error == keyword_error_duplicate:
-        assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='id{keyword}']")
-        assert check_exists_by_xpath(get_browser, f"//input[@class='govuk-checkboxes__input' and @id='id{keyword}']")
-
 def test_render(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     assert check_h1_heading(get_browser, 'Keywords for this contact (optional)')
@@ -43,53 +35,14 @@ def test_continue_empty(get_browser):
     # TODO assert next page
     # assert check_h1_heading(get_browser, 'Choose how you want')
 
-def test_add_multiple_duplicate_keywords(get_browser):
+def test_add_multiple_keywords(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     add_keyword_success(get_browser, 'North')
     add_keyword_success(get_browser, 'South')
     add_keyword_success(get_browser, 'East')
     add_keyword_success(get_browser, 'West')
-    add_keyword_fail(get_browser, 'South', keyword_error_duplicate)
-    add_keyword_fail(get_browser, 'North', keyword_error_duplicate)
     click_button(get_browser, 'Continue', next_url)
     # TODO assert next page
     # assert check_h1_heading(get_browser, 'Choose how you want')
-
-def test_uncheck_keywords(get_browser):
-    navigate_to_auth_page_via_index(get_browser,current_url)
-    add_keyword_success(get_browser, 'North')
-    add_keyword_success(get_browser, 'South')
-    add_keyword_success(get_browser, 'East')
-    add_keyword_success(get_browser, 'West')
-    click_checkbox(get_browser, 'idNorth')
-    click_checkbox(get_browser, 'idSouth')
-    click_checkbox(get_browser, 'idEast')
-    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idNorth']")
-    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idSouth']")
-    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idEast']")
-    click_button(get_browser, 'Continue', next_url)
-    # TODO assert next page
-    # assert check_h1_heading(get_browser, 'Choose how you want')
-    '''
-    click_link(get_browser, "Back", current_url)
-    assert not check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idSouth']")
-    assert not check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idEast']")
-    assert not check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idNorth']")
-    assert check_exists_by_xpath(get_browser, f"//label[@class='govuk-label govuk-checkboxes__label' and @for='idWest']")
-    '''
-
-def test_max_keywords(get_browser):
-    navigate_to_auth_page_via_index(get_browser,current_url)
-    for i in range(keywords_max):
-        add_keyword_success(get_browser, 'keyword'+str(i))
-    add_keyword_fail(get_browser, 'keyword51', keyword_error_max)
-
-def test_max_char_keyword(get_browser):
-    navigate_to_auth_page_via_index(get_browser,current_url)
-    long_keyword = "A" * (keyword_char_max+1)
-    add_keyword_fail(get_browser, long_keyword, keyword_error_char_max)
-
-def test_keyword_with_comma(get_browser):
-    navigate_to_auth_page_via_index(get_browser,current_url)
-    comma_keyword = "keyword,"
-    add_keyword_fail(get_browser, comma_keyword, keyword_error_comma)
+    
+# The AddKeywordLayout is tested extensively in test_add_keywords.py

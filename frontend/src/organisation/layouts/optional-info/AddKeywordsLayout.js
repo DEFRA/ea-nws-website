@@ -232,7 +232,7 @@ export default function AddKeywordsLayout ({
           <div className='govuk-grid-column-two-thirds'>
             {keywordError && <ErrorSummary errorList={[keywordError]} />}
             <h1 className='govuk-heading-l'>
-              {`Keywords for this ${keywordType} (optional)`}
+              {`Add keywords for this ${keywordType} (optional)`}
             </h1>
             <div className='govuk-body'>
               {KeywordText}

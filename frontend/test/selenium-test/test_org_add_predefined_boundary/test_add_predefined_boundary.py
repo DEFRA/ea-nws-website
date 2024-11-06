@@ -32,7 +32,4 @@ def test_add_predefined_boundary_no_boundary_selected(get_browser):
     select_input_radio_option(browser, 'PredefinedBoundaries')
     click_button(browser, 'Continue', url_add_predefined_boundary)
     click_button(browser, 'Add predefined boundary', url_add_predefined_boundary)
-    # TODO:
-    # Need to fix this function because it does not appear to select the option
-    select_dropdown_option(browser, 'BoundaryType', 'aoi-county')
     assert check_error_summary(browser)

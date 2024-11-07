@@ -7,7 +7,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Radio from '../../../../../common/components/gov-uk/Radio'
 import { setCurrentLocationAlertCategories } from '../../../../../common/redux/userSlice'
-import { infoUrls } from '../../../../../common/routes/info/InfoRoutes'
+import { infoUrls } from '../../../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationHeader from './LocationHeader'
 

@@ -44,10 +44,17 @@ def test_changes(get_browser):
         assert not is_radio_checked(get_browser, 'Radio_On_0')
         assert is_radio_checked(get_browser, 'Radio_Off_0')
 
-
 def test_links(get_browser):
     go_to_messages(get_browser)
     click_link(get_browser, "Back", url_dashboard)
     click_link(get_browser, "View or edit", url_details)
     click_link(get_browser, "Message settings and flood areas", url_current)
-    click_link(get_browser, "What are flood areas?", url_flood_areas)
+
+    click_link(get_browser, "What are the different types of flood messages?", url_org_flood_types)
+    check_h1_heading(get_browser, "What are the different types of flood messages?")
+    click_link(get_browser, "Back", url_current)
+
+    click_link(get_browser, "What are flood areas?", url_org_flood_areas)
+    # TODO: Add once the page is created
+    # check_h1_heading(get_browser, "What are flood areas?")
+    # click_link(get_browser, "Back", url_current)

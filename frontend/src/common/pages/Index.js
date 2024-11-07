@@ -333,9 +333,12 @@ export default function IndexPage () {
     homePhones: null,
     position: null,
     comments: null,
-    additionals: {
-      keywords: null
-    }
+    additionals: [
+      {
+        id: 'keywords',
+        value: null
+      }
+    ]
   }
 
   const mockCurrentLocation = {

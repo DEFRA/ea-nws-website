@@ -201,12 +201,14 @@ const setOrganisationAdditionals = (profile) => {
   return updateOrganisationAdditionals(profile, orgJson)
 }
 const getOrganisationAdditionals = (profile) => {
-  return getAdditionals(profile, 'organisation')
+  const orgAdditionals = getAdditionals(profile, 'organisation')
+
+  return JSON.parse(orgAdditionals === '' ? '{}' : orgAdditionals)
 }
 
 const updateOrganisationAdditionals = (profile, updatedOrganisation) => {
   return updateAdditionals(profile, [
-    { id: 'organisation', value: updatedOrganisation }
+    { id: 'organisation', value: {s: JSON.stringify(updatedOrganisation)} }
   ])
 }
 

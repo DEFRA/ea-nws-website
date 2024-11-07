@@ -8,7 +8,7 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../common/components/gov-uk/TextArea'
 import { setCurrentLocationAddress } from '../../../common/redux/userSlice'
 
-export default function AddressLayout({
+export default function AddressLayout ({
   navigateToNextPage,
   additionalInfo = ''
 }) {

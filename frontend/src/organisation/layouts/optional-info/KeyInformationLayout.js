@@ -15,7 +15,7 @@ import {
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 
-export default function KeyInformationLayout({ flow, navigateToNextPage }) {
+export default function KeyInformationLayout ({ flow, navigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
@@ -47,7 +47,7 @@ export default function KeyInformationLayout({ flow, navigateToNextPage }) {
     // location name can be amended when a user is editing a locations key information
     if (flow === 'edit') {
       // only execute if location name has been changed
-      if (locationName != additionalData.location_name) {
+      if (locationName !== additionalData.location_name) {
         if (locationName) {
           const dataToSend = { authToken, locationName }
           const { errorMessage } = await backendCall(

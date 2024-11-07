@@ -15,7 +15,7 @@ import {
   removeVerifiedContact
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
-import ExpiredCodeLayout from '../../../citizen/layouts/expired-code/ExpiredCodeLayout'
+import ExpiredCodeLayout from './ExpiredCodeLayout'
 
 export default function ValidateEmailLayout ({
   NavigateToNextPage,

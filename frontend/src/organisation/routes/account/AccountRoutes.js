@@ -1,7 +1,7 @@
 import ManageOrganisationDetailsPage from '../../pages/account/ManageOrganisationDetailsPage'
-import ManageAdmindetailsPage from '../../pages/account/manage-admin-details/ManageAdminDetailsPage.js.js'
-import ChangeAdminDetailsPage from '../../pages/account/manage-admin-details/ChangeAdminDetailsPage.js'
-import ValidateNewAdminEmailPage from '../../pages/account/manage-admin-details/ValidateNewAdminEmailPage.js'
+import ManageAdminDetailsPage from '../../pages/account/manage-admin-details/ManageAdminDetailsPage'
+import ChangeAdminDetailsPage from '../../pages/account/manage-admin-details/ChangeAdminDetailsPage'
+import ValidateNewAdminEmailPage from '../../pages/account/manage-admin-details/ValidateNewAdminEmailPage'
 const urlOrg = '/organisation'
 const urlManageAdmin = urlOrg + '/manage-admin'
 
@@ -24,7 +24,7 @@ const orgManageAccountRoutes = [
   // admin
   {
     path: orgAccountUrls.admin.details,
-    component: <ManageAdmindetailsPage />
+    component: <ManageAdminDetailsPage />
   },
   {
     path: orgAccountUrls.admin.changeDetails,

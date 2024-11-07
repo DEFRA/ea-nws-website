@@ -149,7 +149,7 @@ export default function ChangeAdminDetailsPage () {
           />
 
           <Button
-            text='Save'
+            text='Continue'
             className='govuk-button'
             onClick={handleSubmit}
           />

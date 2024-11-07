@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router-dom'
-import BackLink from '../../../common/components/custom/BackLink'
-import Button from '../../../common/components/gov-uk/Button'
+import BackLink from '../../components/custom/BackLink'
+import Button from '../../components/gov-uk/Button'
 
 export default function ExpiredCodeLayout ({ getNewCode }) {
   const navigate = useNavigate()

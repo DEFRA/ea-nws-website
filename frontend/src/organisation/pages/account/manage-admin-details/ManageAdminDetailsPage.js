@@ -1,21 +1,14 @@
 import React from 'react'
-import BackLink from '../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
-import { useLocation, useNavigate } from 'react-router'
+import { useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
 import { orgAccountUrls } from '../../../routes/account/AccountRoutes'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
-export default function ManageAdmindetailsPage () {
-  // WIP page
+export default function ManageAdminDetailsPage () {
   const profile = useSelector((state) => state.session.profile)
-  const navigate = useNavigate()
   const location = useLocation()
-  const navigateBack = (event) => {
-    event.preventDefault()
-    navigate(-1)
-  }
 
   const successText = (
     <>
@@ -28,7 +21,6 @@ export default function ManageAdmindetailsPage () {
   return (
     <>
       <OrganisationAccountNavigation />
-      <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row '>
           {location?.state &&
@@ -74,12 +66,11 @@ export default function ManageAdmindetailsPage () {
           <p />
         </div>
         <p>
-          If you want to also get flood messages to a mobile or landline number,
+          If you want to also get flood messages to a mobile or landline number,{' '}
           <a
             href={orgManageContactsUrls.add.addNew}
             classNAme='govuk-link'
           >
-            {' '}
             add yourself as a contact.
           </a>
         </p>

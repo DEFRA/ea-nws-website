@@ -324,6 +324,7 @@ export default function IndexPage () {
   ]
 
   const mockOrgCurrentContact = {
+    id: null,
     enabled: null,
     firstName: null,
     lastName: null,
@@ -331,9 +332,9 @@ export default function IndexPage () {
     mobilePhones: null,
     homePhones: null,
     position: null,
+    comments: null,
     additionals: {
-      keywords: null,
-      notes: null
+      keywords: null
     }
   }
 

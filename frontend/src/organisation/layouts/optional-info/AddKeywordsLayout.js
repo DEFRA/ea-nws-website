@@ -11,8 +11,12 @@ import {
   setContactKeywords,
   setCurrentLocationKeywords,
   setLocationKeywords,
-  setOrgCurrentContactKeyword
+  setOrgCurrentContactAdditionals
 } from '../../../common/redux/userSlice'
+import {
+  getAdditionals,
+  updateAdditionals
+} from '../../../common/services/ProfileServices'
 
 export default function AddKeywordsLayout ({
   keywordType,
@@ -30,6 +34,16 @@ export default function AddKeywordsLayout ({
       : state.session.contactKeywords
         ? state.session.contactKeywords
         : []
+  )
+
+  const currentObject = useSelector((state) =>
+    keywordType === 'location '
+      ? state.session.currentLocation
+        ? state.session.currentLocation
+        : null
+      : state.session.orgCurrentContact
+        ? state.session.orgCurrentContact
+        : null
   )
 
   let orgKeywords = [...orgKeywordsOriginal]
@@ -51,10 +65,10 @@ export default function AddKeywordsLayout ({
     keywordType === 'location'
       ? state.session.currentLocation.meta_data.location_additional.keywords
         ? state.session.currentLocation.meta_data.location_additional.keywords
-        : []
-      : state.session.orgCurrentContact.additionals.keywords
-        ? state.session.orgCurrentContact.additionals.keywords
-        : []
+        : ''
+      : getAdditionals(currentObject, 'keywords')
+        ? getAdditionals(currentObject, 'keywords')
+        : ''
   )
   if (currentKeywords.length > 0) currentKeywords = JSON.parse(currentKeywords)
 
@@ -209,10 +223,12 @@ export default function AddKeywordsLayout ({
       dispatch(setLocationKeywords(orgKeywords))
       dispatch(setCurrentLocationKeywords(JSON.stringify(keywordsArrayChecked)))
     } else {
+      const updatedContact = updateAdditionals(currentObject, {
+        id: 'keywords',
+        value: JSON.stringify(orgKeywords)
+      })
       dispatch(setContactKeywords(orgKeywords))
-      dispatch(
-        setOrgCurrentContactKeyword(JSON.stringify(keywordsArrayChecked))
-      )
+      dispatch(setOrgCurrentContactAdditionals(getAdditionals(updatedContact)))
     }
 
     NavigateToNextPage()

@@ -17,7 +17,7 @@ def add_keyword_success(get_browser, keyword):
 
 def test_render(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
-    assert check_h1_heading(get_browser, 'Keywords for this contact (optional)')
+    assert check_h1_heading(get_browser, 'Add keywords for this contact (optional)')
     assert 'You can add new keywords. Or you can remove existing keywords by unticking the relevant box.' in get_browser.page_source
     assert 'Adding keywords for each contact can make it easier for you to filter and create lists of people you can link to locations to get relevant flood messages.' in get_browser.page_source
     click_button(get_browser, 'Add keyword', current_url)

@@ -60,6 +60,7 @@ const userSlice = createSlice({
     },
     // org contact data
     orgCurrentContact: {
+      id: null,
       enabled: null,
       firstName: null,
       lastName: null,
@@ -67,10 +68,13 @@ const userSlice = createSlice({
       mobilePhones: null,
       homePhones: null,
       position: null,
-      additionals: {
-        keywords: null,
-        notes: null
-      }
+      comments: null,
+      additionals: [
+        {
+          id: 'keywords',
+          value: null
+        }
+      ]
     }
   },
   reducers: {
@@ -243,6 +247,7 @@ const userSlice = createSlice({
     },
     // org contact data
     setOrgCurrentContact: (state, action) => {
+      state.orgCurrentContact.id = action.payload.id
       state.orgCurrentContact.enabled = action.payload.enabled
       state.orgCurrentContact.firstName = action.payload.firstName
       state.orgCurrentContact.lastName = action.payload.lastName
@@ -251,10 +256,10 @@ const userSlice = createSlice({
       state.orgCurrentContact.homePhones = action.payload.homePhones
       state.orgCurrentContact.position = action.payload.position
       state.orgCurrentContact.additionals = action.payload.additionals
-      state.orgCurrentContact.additionals.keywords =
-        action.payload.additionals.keywords
-      state.orgCurrentContact.additionals.notes =
-        action.payload.additionals.notes
+      state.orgCurrentContact.comments = action.payload.comments
+    },
+    setOrgCurrentContactId: (state, action) => {
+      state.orgCurrentContact.id = action.payload
     },
     setOrgCurrentContactEnabled: (state, action) => {
       state.orgCurrentContact.enabled = action.payload
@@ -278,10 +283,10 @@ const userSlice = createSlice({
       state.orgCurrentContact.position = action.payload
     },
     setOrgCurrentContactNotes: (state, action) => {
-      state.orgCurrentContact.additionals.notes = action.payload
+      state.orgCurrentContact.comments = action.payload
     },
-    setOrgCurrentContactKeyword: (state, action) => {
-      state.orgCurrentContact.additionals.keywords = action.payload
+    setOrgCurrentContactAdditionals: (state, action) => {
+      state.orgCurrentContact.additionals = action.payload
     },
     // Clear state
     clearAuth: (state) => {
@@ -302,9 +307,6 @@ const userSlice = createSlice({
       state.selectedFloodAlertArea = null
       state.showOnlySelectedFloodArea = null
       state.nearbyTargetAreaFlow = null
-      // keywords - temporary
-      state.locationKeywords = null
-      state.contactKeywords = null
       // required for predefined boundary flow
       state.selectedBoundaryType = null
       state.selectedBoundary = null
@@ -336,6 +338,7 @@ const userSlice = createSlice({
         }
       }
       state.orgCurrentContact = {
+        id: null,
         enabled: null,
         firstName: null,
         lastName: null,
@@ -343,10 +346,13 @@ const userSlice = createSlice({
         mobilePhones: null,
         homePhones: null,
         position: null,
-        additionals: {
-          keywords: null,
-          notes: null
-        }
+        comments: null,
+        additionals: [
+          {
+            id: 'keywords',
+            value: null
+          }
+        ]
       }
     }
   }
@@ -401,6 +407,7 @@ export const {
   setCurrentLocationDataType,
   // org current contact
   setOrgCurrentContact,
+  setOrgCurrentContactId,
   setOrgCurrentContactEnabled,
   setOrgCurrentContactFirstName,
   setOrgCurrentContactLastName,
@@ -408,7 +415,7 @@ export const {
   setOrgCurrentContactHomePhones,
   setOrgCurrentContactMobilePhones,
   setOrgCurrentContactPosition,
-  setOrgCurrentContactKeyword,
+  setOrgCurrentContactAdditionals,
   setOrgCurrentContactNotes,
   // clear state
   clearAuth

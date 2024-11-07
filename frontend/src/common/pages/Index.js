@@ -12,7 +12,6 @@ import {
   setCurrentLocation,
   setCurrentLocationCoordinates,
   setLocationBoundaries,
-  setOrgCurrentContact,
   setLocationKeywords,
   setOrgCurrentContact,
   setProfile,
@@ -324,21 +323,6 @@ export default function IndexPage () {
     }
   ]
 
-  const mockOrgCurrentContact = {
-    id: null,
-    enabled: null,
-    firstName: null,
-    lastName: null,
-    emails: null,
-    mobilePhones: null,
-    homePhones: null,
-    position: null,
-    comments: null,
-    additionals: {
-      keywords: null
-    }
-  }
-
   const mockCurrentLocation = {
     name: null,
     // address is the UPRN
@@ -365,6 +349,7 @@ export default function IndexPage () {
   }
 
   const mockOrgCurrentContact = {
+    id: null,
     enabled: null,
     firstName: null,
     lastName: null,
@@ -372,10 +357,13 @@ export default function IndexPage () {
     mobilePhones: null,
     homePhones: null,
     position: null,
-    additionals: {
-      keywords: null,
-      notes: null
-    }
+    comments: null,
+    additionals: [
+      {
+        id: 'keywords',
+        value: null
+      }
+    ]
   }
 
   function mockSession (profile) {
@@ -429,7 +417,6 @@ export default function IndexPage () {
       dispatch(setOrgCurrentContact(mockOrgCurrentContact))
       dispatch(setLocationKeywords(mockLocationKeywords))
       dispatch(setContactKeywords(mockContactKeywords))
-      dispatch(setOrgCurrentContact(mockOrgCurrentContact))
       setmockSessionActive(true)
     } else {
       dispatch(clearAuth())

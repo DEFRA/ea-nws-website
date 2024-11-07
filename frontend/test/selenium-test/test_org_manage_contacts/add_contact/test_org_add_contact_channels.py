@@ -1,8 +1,7 @@
 from common import *
 
 current_url = url_org_man_cont.get('add').get('channels')
-#TODO update previous and next pages
-previous_url = ''
+previous_url = url_org_man_cont.get('add').get('keywords')
 next_url = url_org_man_cont.get('add').get('notes')
 
 def test_render(get_browser):
@@ -56,6 +55,7 @@ def test_click_continue_valid_1_input(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     enter_input_text(get_browser, 'Email addresses (optional)', 'valid@email.com')
     click_button(get_browser, 'Continue', next_url)
+    assert 'Notes (optional)' in get_browser.page_source
 
 def test_click_continue_valid_one_of_each_input(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
@@ -65,5 +65,6 @@ def test_click_continue_valid_one_of_each_input(get_browser):
     time.sleep(2)
     enter_input_text(get_browser, 'UK telephone numbers for voice messages (optional)', '01632960001')
     click_button(get_browser, 'Continue', next_url)   
+    assert 'Notes (optional)' in get_browser.page_source
 
 

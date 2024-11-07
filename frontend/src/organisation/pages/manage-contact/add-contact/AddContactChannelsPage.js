@@ -181,7 +181,6 @@ export default function AddContactChannelsPage () {
       setMobilePhone2Error('')
       setError('')
 
-      // TO DO - to notes
       navigate(orgManageContactsUrls.add.notes)
     }
   }

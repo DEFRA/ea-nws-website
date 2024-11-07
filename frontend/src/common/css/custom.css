@@ -1294,12 +1294,3 @@
   border-bottom: 0.05rem solid black;
   opacity: 1;
 }
-
-.custom-hint {
-  color: #505a5f;
-  margin-top: -1.5rem;
-}
-
-.muted-text {
-  color: #505a5f;
-}

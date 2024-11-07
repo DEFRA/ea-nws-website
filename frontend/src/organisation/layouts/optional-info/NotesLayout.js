@@ -71,7 +71,7 @@ export default function NotesLayout ({
             <br />
             <h1 className='govuk-heading-l'>Notes (optional)</h1>
             <div className='govuk-body'>
-              <p className='muted-text'>{instructionText}</p>
+              <p className='govuk-hint'>{instructionText}</p>
               <TextArea
                 error={error}
                 inputType='text'
@@ -79,7 +79,7 @@ export default function NotesLayout ({
                 onChange={(val) => setNotes(val)}
                 className='govuk-textarea'
               />
-              <p className='custom-hint'>
+              <p className='govuk-hint' style={{ marginTop: '-1.5rem' }}>
                 You can enter up to {charLimit} characters.
               </p>
               <br />

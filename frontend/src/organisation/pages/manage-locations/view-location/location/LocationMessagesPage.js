@@ -14,13 +14,14 @@ export default function LocationMessagesPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  const currentLocation = useSelector((state) => state.session.currentLocation)
   const alertCategories = useSelector(
     (state) => state.session.currentLocation.alert_categories
   )
 
   const [isBannerDisplayed, setIsBannerDisplayed] = useState(false)
-  const additionalData = currentLocation.meta_data.location_additional
+  const additionalData = useSelector(
+    (state) => state.session.currentLocation.meta_data.location_additional
+  )
 
   const allAlertCategories = ['Severe warning', 'Warning', 'Alert']
   const [alertCategoriesEnabled, setAlertCategoriesEnabled] = useState([
@@ -56,11 +57,9 @@ export default function LocationMessagesPage () {
         if (enabled) alertCategoriesDispatch.push(allAlertCategories[index])
       })
 
-      dispatch(
-        setCurrentLocationAlertCategories(
-          alertCategoriesDispatch.length === 0 ? null : alertCategoriesDispatch
-        )
-      )
+      if (alertCategoriesDispatch.length > 0) {
+        dispatch(setCurrentLocationAlertCategories(alertCategoriesDispatch))
+      }
     }
   }
 
@@ -201,8 +200,7 @@ export default function LocationMessagesPage () {
       {alertCategories
         ? (
           <p>
-            {additionalData.location_name} can get flood messages for these areas.{' '}
-            <br />
+            {additionalData.location_name} can get flood messages for these areas.
             You may be also able to link {additionalData.location_name} to nearby
             flood areas that get flood messages.
           </p>

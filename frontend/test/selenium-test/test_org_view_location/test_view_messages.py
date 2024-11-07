@@ -4,7 +4,6 @@ from selenium.webdriver.common.by import By
 url_dashboard= url_org_man_loc.get('view').get('dashboard')
 url_details= url_org_man_loc.get('view').get('details')
 url_current= url_org_man_loc.get('view').get('messages')
-url_flood_areas= url_org_man_loc.get('view').get('floodAreasInfo')
 
 def go_to_messages(get_browser):
     navigate_to_auth_page_via_index(get_browser,url_dashboard)

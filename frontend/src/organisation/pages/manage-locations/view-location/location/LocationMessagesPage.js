@@ -7,6 +7,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Radio from '../../../../../common/components/gov-uk/Radio'
 import { setCurrentLocationAlertCategories } from '../../../../../common/redux/userSlice'
+import { infoUrls } from '../../../../../common/routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationHeader from './LocationHeader'
 
@@ -103,7 +104,7 @@ export default function LocationMessagesPage () {
           </>
           )}
       <p>
-        <Link to='/' className='govuk-link'>
+        <Link to={infoUrls.floodTypes} className='govuk-link'>
           What are the different types of flood messages?
         </Link>
       </p>
@@ -214,10 +215,7 @@ export default function LocationMessagesPage () {
           )}
       <br />
       <p>
-        <Link
-          to={orgManageLocationsUrls.view.floodAreasInfo}
-          className='govuk-link'
-        >
+        <Link to={infoUrls.floodAreas} className='govuk-link'>
           What are flood areas?
         </Link>
       </p>
@@ -292,7 +290,7 @@ export default function LocationMessagesPage () {
       <Button
         text='Link to nearby flood areas'
         className='govuk-button govuk-button--secondary'
-        onClick={() => navigate('/home/')}
+        onClick={() => navigate('/')}
       />
     </>
   )

@@ -28,6 +28,8 @@ url_flood = 'https://www.gov.uk/browse/environment-countryside/flooding-extreme-
 url_contact = local_host + '/contact'
 url_feedback = local_host + '/signup/feedback'
 url_index = local_host + '/index'
+url_flood_areas = local_host + '/info/flood-areas'
+url_flood_types = local_host + '/info/flood-types'
 
 # Citizen URLs
 url_cit_contacts = local_host + '/managecontacts'
@@ -135,8 +137,7 @@ url_org_man_loc = {
     'view':{
         'dashboard': url_org_man_loc_path + '/view-locations',
         'details': url_org_man_loc_path + '/location/view-location',
-        'messages': url_org_man_loc_path + '/location/view-messages',
-        'floodAreasInfo': url_org_man_loc_path + '/flood-areas-info'
+        'messages': url_org_man_loc_path + '/location/view-messages'
     }
 }
 

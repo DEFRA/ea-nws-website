@@ -12,6 +12,7 @@ import {
   setCurrentLocation,
   setCurrentLocationCoordinates,
   setLocationBoundaries,
+  setOrgCurrentContact,
   setLocationKeywords,
   setProfile,
   setRegistrations,
@@ -347,6 +348,20 @@ export default function IndexPage () {
     }
   }
 
+  const mockOrgCurrentContact = {
+    enabled: null,
+    firstName: null,
+    lastName: null,
+    emails: null,
+    mobilePhones: null,
+    homePhones: null,
+    position: null,
+    additionals: {
+      keywords: null,
+      notes: null
+    }
+  }
+
   function mockSession (profile) {
     if (mockSessionActive === false) {
       const authToken = uuidv4()
@@ -395,6 +410,7 @@ export default function IndexPage () {
       dispatch(setSelectedBoundaryType(null))
       dispatch(setSelectedBoundary(null))
       dispatch(setLocationBoundaries([]))
+      dispatch(setOrgCurrentContact(mockOrgCurrentContact))
       dispatch(setLocationKeywords(mockLocationKeywords))
       dispatch(setContactKeywords(mockContactKeywords))
       setmockSessionActive(true)

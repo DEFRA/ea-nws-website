@@ -1,5 +1,6 @@
 import AddContactChannelsPage from '../../pages/manage-contact/add-contact/AddContactChannelsPage'
 import AddContactDetailsPage from '../../pages/manage-contact/add-contact/AddContactDetailsPage'
+import AddContactNotesPage from '../../pages/manage-contact/add-contact/AddContactNotesPage'
 
 const urlManageContactsOrg = '/organisation/manage-contacts'
 
@@ -17,9 +18,8 @@ const orgManageContactsRoutes = [
     component: <AddContactDetailsPage />
   },
   {
-    // TODO UPDATE
     path: orgManageContactsUrls.add.notes,
-    component: null
+    component: AddContactNotesPage
   },
   {
     path: orgManageContactsUrls.add.channels,

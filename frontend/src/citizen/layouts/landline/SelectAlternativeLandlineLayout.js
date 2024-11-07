@@ -28,8 +28,9 @@ export default function SelectAlternativeLandlineLayout ({
   const dispatch = useDispatch()
   const profile = useSelector((state) => state.session.profile)
   const authToken = useSelector((state) => state.session.authToken)
-
-  const unverifiedMobileNumbers = profile.unverified.mobilePhones
+  
+  let unverifiedMobileNumbers = []
+  profile.unverified.mobilePhones.forEach((entry) => {unverifiedMobileNumbers.push(entry.address)})
   const verifiedMobileNumbers = profile.mobilePhones
   const mobileNumbers = [...unverifiedMobileNumbers, ...verifiedMobileNumbers]
 

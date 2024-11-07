@@ -1,6 +1,6 @@
 import { useNavigate, useLocation } from 'react-router'
 import ValidateEmailLayout from '../../../../common/layouts/email/ValidateEmailLayout'
-import { accountUrls } from '../../../routes/account/AccountRoutes'
+import { orgAccountUrls } from '../../../routes/account/AccountRoutes'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { backendCall } from '../../../../common/services/BackendService'
@@ -12,7 +12,7 @@ export default function ValidateNewAdminEmailPage () {
   const [error, setError] = useState('')
 
   const DifferentEmail = () => {
-    navigate(accountUrls.admin.changeDetails)
+    navigate(orgAccountUrls.admin.changeDetails)
   }
 
   const updateProfile = async (profile, authToken) => {
@@ -34,7 +34,7 @@ export default function ValidateNewAdminEmailPage () {
     } else {
       dispatch(setProfile(profile))
 
-      navigate(accountUrls.admin.details, {
+      navigate(orgAccountUrls.admin.details, {
         state: {
           email: profile.emails[0],
           successMessages: location.state.successMessages

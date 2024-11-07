@@ -5,7 +5,7 @@ import ValidateNewAdminEmailPage from '../../pages/account/manage-admin-details/
 const urlOrg = '/organisation'
 const urlManageAdmin = urlOrg + '/manage-admin'
 
-const accountUrls = {
+const orgAccountUrls = {
   organisation: {
     orgDetails: urlOrg + '/manage-organisation-details'
   },
@@ -18,22 +18,22 @@ const accountUrls = {
 
 const orgManageAccountRoutes = [
   {
-    path: accountUrls.organisation.orgDetails,
+    path: orgAccountUrls.organisation.orgDetails,
     component: <ManageOrganisationDetailsPage />
   },
   // admin
   {
-    path: accountUrls.admin.details,
+    path: orgAccountUrls.admin.details,
     component: <ManageAdmindetailsPage />
   },
   {
-    path: accountUrls.admin.changeDetails,
+    path: orgAccountUrls.admin.changeDetails,
     component: <ChangeAdminDetailsPage />
   },
   {
-    path: accountUrls.admin.verifyEmail,
+    path: orgAccountUrls.admin.verifyEmail,
     component: <ValidateNewAdminEmailPage />
   }
 ]
 
-export { orgManageAccountRoutes, accountUrls }
+export { orgManageAccountRoutes, orgAccountUrls }

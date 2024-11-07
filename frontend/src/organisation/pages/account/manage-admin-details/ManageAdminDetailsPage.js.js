@@ -4,7 +4,7 @@ import OrganisationAccountNavigation from '../../../../common/components/custom/
 import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import { useSelector } from 'react-redux'
-import { accountUrls } from '../../../routes/account/AccountRoutes'
+import { orgAccountUrls } from '../../../routes/account/AccountRoutes'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 export default function ManageAdmindetailsPage () {
@@ -46,7 +46,7 @@ export default function ManageAdmindetailsPage () {
           <Link
             className='govuk-link govuk-!-display-inline-block'
             style={{ float: 'right' }}
-            to={accountUrls.admin.changeDetails}
+            to={orgAccountUrls.admin.changeDetails}
           >
             Change
           </Link>

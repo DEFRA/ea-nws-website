@@ -11,7 +11,7 @@ import { fullNameValidation } from '../../../../common/services/validations/Full
 import { backendCall } from '../../../../common/services/BackendService'
 import { addUnverifiedContact, addAccountName } from '../../../../common/services/ProfileServices'
 import { setCurrentContact, setProfile } from '../../../../common/redux/userSlice'
-import { accountUrls } from '../../../routes/account/AccountRoutes'
+import { orgAccountUrls } from '../../../routes/account/AccountRoutes'
 export default function ChangeAdminDetailsPage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -94,13 +94,13 @@ export default function ChangeAdminDetailsPage () {
       if (!error) {
         dispatch(setProfile(updatedProfile))
         if (email) {
-          navigate(accountUrls.admin.verifyEmail, {
+          navigate(orgAccountUrls.admin.verifyEmail, {
             state: {
               successMessages
             }
           })
         } else {
-          navigate(accountUrls.admin.details, {
+          navigate(orgAccountUrls.admin.details, {
             state: {
               successMessages
             }

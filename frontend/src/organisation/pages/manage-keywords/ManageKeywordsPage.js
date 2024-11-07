@@ -409,6 +409,7 @@ export default function ManageKeywordsPage () {
                       onClick={(val) => handleOnClick(val)}
                       position='absolute'
                       showNotFound={false}
+                      nameField='name'
                     />
                     <div className='keyword-search-button-container'>
                       <button

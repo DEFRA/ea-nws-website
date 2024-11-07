@@ -3,7 +3,10 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
-import { setConsecutiveBoundariesAdded } from '../../../../../common/redux/userSlice'
+import {
+  setConsecutiveBoundariesAdded,
+  setPredefinedBoundaryFlow
+} from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function AddAnotherPredefinedBoundaryPage () {
@@ -12,8 +15,6 @@ export default function AddAnotherPredefinedBoundaryPage () {
   const consecutiveBoundariesAdded = useSelector(
     (state) => state.session.consecutiveBoundariesAdded
   )
-
-  console.log('boundaries added', consecutiveBoundariesAdded)
 
   const navigateBack = (event) => {
     event.preventDefault()
@@ -26,6 +27,7 @@ export default function AddAnotherPredefinedBoundaryPage () {
     const multipleBoundariesAdded = consecutiveBoundariesAdded > 1
 
     dispatch(setConsecutiveBoundariesAdded(0))
+    dispatch(setPredefinedBoundaryFlow(false))
 
     multipleBoundariesAdded
       ? navigate(orgManageLocationsUrls.view.dashboard)

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import ValidateEmailLayout from '../../layouts/email/ValidateEmailLayout'
+import ValidateEmailLayout from '../../../common/layouts/email/ValidateEmailLayout'
 
 export default function ChangeEmailValidationPage () {
   const navigate = useNavigate()

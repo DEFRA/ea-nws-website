@@ -11,7 +11,7 @@ import Index from './common/pages/Index'
 import commonFooterRoutes from './common/routes/footer/FooterRoutes'
 import commonSignOutRoutes from './common/routes/sign-out/SignOutRoutes'
 import commonStartRoutes from './common/routes/start/StartRoutes'
-import orgManageAccountRoutes from './organisation/routes/account/AccountRoutes'
+import { orgManageAccountRoutes } from './organisation/routes/account/AccountRoutes'
 import orgFooterRoutes from './organisation/routes/footer/FooterRoutes'
 import orgHomeRoutes from './organisation/routes/home/HomeRoutes'
 import { orgManageContactsRoutes } from './organisation/routes/manage-contacts/ManageContactsRoutes'
@@ -43,8 +43,8 @@ export const authenticatedRoutes = [
   ...citizenAccountRoutes,
   ...citizenManageLocationRoutes,
   ...orgHomeRoutes,
-  ...orgManageAccountRoutes,
   ...orgManageLocationRoutes,
   ...orgManageKeywordsRoutes,
-  ...orgManageContactsRoutes
+  ...orgManageContactsRoutes,
+  ...orgManageAccountRoutes
 ]

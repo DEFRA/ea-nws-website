@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import AddNotesLayout from '../../../layouts/optional-info/AddNotesLayout'
+import NotesLayout from '../../../layouts/optional-info/NotesLayout'
 export default function AddContactNotesPage () {
   const navigate = useNavigate()
 
@@ -18,10 +18,10 @@ export default function AddContactNotesPage () {
 
   return (
     <>
-      <AddNotesLayout
-        NavigateToNextPage={NavigateToNextPage}
-        KeywordType='contact'
-        InstructionText={instructionText}
+      <NotesLayout
+        navigateToNextPage={NavigateToNextPage}
+        keywordType='contact'
+        instructionText={instructionText}
       />
     </>
   )

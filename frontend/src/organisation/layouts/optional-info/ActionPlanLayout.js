@@ -8,7 +8,7 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../common/components/gov-uk/TextArea'
 import { setCurrentLocationActionPlan } from '../../../common/redux/userSlice'
 
-export default function ActionPlanLayout ({ navigateToNextPage }) {
+export default function ActionPlanLayout({ navigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const currentActionPlan = useSelector(

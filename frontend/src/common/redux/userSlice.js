@@ -29,6 +29,7 @@ const userSlice = createSlice({
     selectedBoundary: null,
     locationBoundaries: null,
     consecutiveBoundariesAdded: 0,
+    predefinedBoundaryFlow: null,
     // org location data
     currentLocation: {
       // name is the UPRN
@@ -141,6 +142,9 @@ const userSlice = createSlice({
     },
     setConsecutiveBoundariesAdded: (state, action) => {
       state.consecutiveBoundariesAdded = action.payload
+    },
+    setPredefinedBoundaryFlow: (state, action) => {
+      state.predefinedBoundaryFlow = action.payload
     },
     // org location data
     setCurrentLocation: (state, action) => {
@@ -354,6 +358,7 @@ export const {
   setSelectedBoundary,
   setLocationBoundaries,
   setConsecutiveBoundariesAdded,
+  setPredefinedBoundaryFlow,
   // org location data
   setCurrentLocation,
   setCurrentLocationUPRN,

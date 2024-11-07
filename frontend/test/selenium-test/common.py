@@ -73,6 +73,13 @@ url_org_signout = {
     'signout': url_org + '/signout',
     'auto': url_org + '/signout-auto'
 }
+# Change admin URLS
+url_org_man_admin_path = url_org + '/manage-admin'
+url_org_man_admin = {
+    'details': url_org_man_admin_path + '/admin-details',
+    'changeDetails': url_org_man_admin_path + '/change-admin-details',
+    'verifyEmail': url_org_man_admin_path + '/verify-email'
+}
 # Manage keywords
 url_org_man_keywords_path = url_org + '/manage-keywords'
 # Manage locations

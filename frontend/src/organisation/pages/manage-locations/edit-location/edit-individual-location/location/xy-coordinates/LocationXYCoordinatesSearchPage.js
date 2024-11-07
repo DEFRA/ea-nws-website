@@ -3,43 +3,22 @@ import { useNavigate } from 'react-router'
 import LocationXYCoordinatesSearchLayout from '../../../../../../layouts/location/add-or-edit-location/search/xy-coords/LocationXYCoordinatesSearchLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationXYCoordinatesSearchPage () {
+export default function LocationXYCoordinatesSearchPage() {
   const navigate = useNavigate()
 
   const navigateToNotInEngland = () => {
-    navigate(orgManageLocationsUrls.edit.individualLocation.location.error)
-  }
-
-  const allFloodAreasAvailable = () => {
     navigate(
-      orgManageLocationsUrls.edit.individualLocation.location.confirm
-        .replace(':flow', 'xy-coordinates-search')
-        .replace(':type', 'all')
+      orgManageLocationsUrls.edit.individualLocation.location.xyCoords.error
     )
   }
-
-  const floodAlertAreasAvailableOnly = () => {
-    navigate(
-      orgManageLocationsUrls.edit.individualLocation.location.confirm
-        .replace(':flow', 'xy-coordinates-search')
-        .replace(':type', 'alerts')
-    )
-  }
-
-  const noFloodAreasAvailable = () => {
-    navigate(
-      orgManageLocationsUrls.edit.individualLocation.location.confirm
-        .replace(':flow', 'xy-coordinates-search')
-        .replace(':type', 'no-alerts')
-    )
+  const navigateToNextPage = () => {
+    navigate(orgManageLocationsUrls.edit.individualLocation.location.confirm)
   }
 
   return (
     <>
       <LocationXYCoordinatesSearchLayout
-        allFloodAreasAvailable={allFloodAreasAvailable}
-        floodAlertAreasAvailableOnly={floodAlertAreasAvailableOnly}
-        noFloodAreasAvailable={noFloodAreasAvailable}
+        navigateToNextPage={navigateToNextPage}
         navigateToNotInEngland={navigateToNotInEngland}
       />
     </>

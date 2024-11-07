@@ -7,9 +7,12 @@ export default function LocationSearchPage() {
   const navigate = useNavigate()
 
   const navigateToNextPage = (mapArea) => {
-    navigate(orgManageLocationsUrls.add.search.dropPinSearchResults, {
-      state: { mapArea }
-    })
+    navigate(
+      orgManageLocationsUrls.edit.individualLocation.location.dropPin.drop,
+      {
+        state: { mapArea }
+      }
+    )
   }
 
   return <LocationSearchLayout navigateToNextPage={navigateToNextPage} />

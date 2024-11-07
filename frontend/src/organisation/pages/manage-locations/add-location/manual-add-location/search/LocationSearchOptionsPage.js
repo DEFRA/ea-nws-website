@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router'
 import LocationOptionsLayout from '../../../../../layouts/location/add-or-edit-location/search/LocationSearchOptionsLayout'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationSearchOptionsPage () {
+export default function LocationSearchOptionsPage() {
   const navigate = useNavigate()
 
   const locationName = useSelector(
@@ -39,12 +39,17 @@ export default function LocationSearchOptionsPage () {
     </p>
   )
 
+  const navigateToPreviousPage = () => {
+    navigate(orgManageLocationsUrls.add.name)
+  }
+
   return (
     <LocationOptionsLayout
       heading={`How do you want to find ${locationName}?`}
       info={info}
       searchOptions={searchOptions}
       navigateToNextPage={navigateToNextPage}
+      navigateToPreviousPage={navigateToPreviousPage}
     />
   )
 }

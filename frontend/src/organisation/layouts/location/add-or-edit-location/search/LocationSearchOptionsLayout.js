@@ -6,11 +6,12 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../../common/components/gov-uk/Radio'
 
-export default function LocationSearchOptionsLayout ({
+export default function LocationSearchOptionsLayout({
   heading,
   additionalInfo,
   searchOptions,
-  navigateToNextPage
+  navigateToNextPage,
+  navigateToPreviousPage
 }) {
   const navigate = useNavigate()
   const [searchOption, setSearchOption] = useState('')
@@ -36,7 +37,7 @@ export default function LocationSearchOptionsLayout ({
 
   const navigateBack = (event) => {
     event.preventDefault()
-    navigate(-1)
+    navigateToPreviousPage()
   }
   return (
     <>

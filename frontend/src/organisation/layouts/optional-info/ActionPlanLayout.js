@@ -17,11 +17,11 @@ export default function ActionPlanLayout({ navigateToNextPage }) {
   )
   const [actionPlan, setActionPlan] = useState(currentActionPlan || '')
   const [error, setError] = useState('')
-  const charLimit = 200
+  const charLimit = 500
 
   useEffect(() => {
     if (actionPlan.length > charLimit) {
-      setError('You can enter up to 200 characters')
+      setError(`You can enter up to ${charLimit} characters`)
     } else {
       setError('')
     }
@@ -63,7 +63,7 @@ export default function ActionPlanLayout({ navigateToNextPage }) {
                 onChange={(val) => setActionPlan(val)}
                 value={actionPlan}
                 className='govuk-textarea'
-                additionalInfo={'You can enter up to 200 characters.'}
+                additionalInfo={`You can enter up to ${charLimit} characters`}
               />
               <Button
                 text='Continue'

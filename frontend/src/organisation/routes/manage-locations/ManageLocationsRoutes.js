@@ -2,7 +2,7 @@ import AddLocationOptionsPage from '../../pages/manage-locations/add-location/Ad
 import ConfirmLocationPage from '../../pages/manage-locations/add-location/manual-add-location/confirm-location/ConfirmLocationPage'
 import LocationAlreadyExists from '../../pages/manage-locations/add-location/manual-add-location/name/LocationAlreadyExists'
 import LocationNamePage from '../../pages/manage-locations/add-location/manual-add-location/name/LocationNamePage'
-import LocationSearchOptionPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationSearchOptionPage'
+import LocationSearchOptionPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationSearchOptionsPage'
 import DropPinNotInEnglandPage from '../../pages/manage-locations/add-location/manual-add-location/search/drop-pin/DropPinNotInEnglandPage'
 import DropPinOnMapPage from '../../pages/manage-locations/add-location/manual-add-location/search/drop-pin/DropPinOnMapPage'
 import LocationSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/drop-pin/LocationSearchPage'
@@ -38,6 +38,7 @@ import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-lo
 import EditConfirmLocationPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/ConfirmLocationPage'
 import EditLocationSearchOptionsPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/LocationSearchOptionsPage'
 import EditDropPinOnMapPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/drop-pin/DropPinOnMapPage'
+import EditDropPinLocationSearchPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/drop-pin/LocationSearchPage'
 import EditDropPinOnMapNotInEnglandPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/drop-pin/NotInEnglandPage'
 import EditLinePage from '../../pages/manage-locations/edit-location/edit-individual-location/location/edit-line/CannotChangeLocationLinePage'
 import EditPolygonPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/edit-polygon/CannotChangeLocationPolygonPage'
@@ -69,8 +70,7 @@ const orgManageLocationsUrls = {
   add: {
     addLocationWithinBoundaries: {},
     manualAddLocation: {
-      confirmManualSearchedLocation:
-        urlManageOrg + '/add/location-in-area/:flow/:type'
+      confirmManualSearchedLocation: urlManageOrg + '/add/confirm'
     },
     uploadLocationsWithCsv: {},
     addLocationsWithShapefile: {},
@@ -117,13 +117,14 @@ const orgManageLocationsUrls = {
     individualLocation: {
       location: {
         search: urlManageOrgEditLocations + '/search-options',
-        confirm: urlManageOrgEditLocations + '/location-in-area/:flow/:type',
+        confirm: urlManageOrgEditLocations + '/confirm-location',
         xyCoords: {
           search: urlManageOrgEditLocations + '/xy-coordinates-search',
           error: urlManageOrgEditLocations + '/xy-coordinates-not-in-england'
         },
         dropPin: {
-          search: urlManageOrgEditLocations + '/drop-pin-search',
+          search: urlManageOrgEditLocations + '/location-search',
+          drop: urlManageOrgEditLocations + '/drop-pin',
           error: urlManageOrgEditLocations + '/pin-not-in-england'
         },
         shape: {
@@ -325,13 +326,18 @@ const orgManageLocationRoutes = [
     component: <EditLocationXYCoordinatesSearchPage />
   },
   {
-    path: orgManageLocationsUrls.edit.individualLocation.location.error,
+    path: orgManageLocationsUrls.edit.individualLocation.location.xyCoords
+      .error,
     component: <EditXyCoordinatesNotInEnglandPage />
   },
   // pin drop
   {
     path: orgManageLocationsUrls.edit.individualLocation.location.dropPin
       .search,
+    component: <EditDropPinLocationSearchPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.individualLocation.location.dropPin.drop,
     component: <EditDropPinOnMapPage />
   },
   {

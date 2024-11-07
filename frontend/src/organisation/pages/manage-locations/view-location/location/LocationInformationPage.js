@@ -19,6 +19,10 @@ export default function LocationInformationPage() {
   const location = useLocation()
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = currentLocation.meta_data.location_additional
+  const keywords = additionalData.keywords
+    ? JSON.parse(additionalData.keywords)
+    : []
+
   const formattedAddress = currentLocation.address?.split(',')
 
   const LocationHeader = () => {
@@ -145,7 +149,7 @@ export default function LocationInformationPage() {
 
   const navigateBack = (e) => {
     e.preventDefault()
-    navigate(-1)
+    navigate(orgManageLocationsUrls.view.dashboard)
   }
 
   return (
@@ -315,7 +319,7 @@ export default function LocationInformationPage() {
                   Change
                 </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p>{additionalData.keywords}</p>
+                <p>{keywords.join(', ')}</p>
               </div>
             )}
 

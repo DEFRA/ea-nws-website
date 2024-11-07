@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 import LocationSearchOptionsLayout from '../../../../../layouts/location/add-or-edit-location/search/LocationSearchOptionsLayout'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationSearchOptionsPage () {
+export default function LocationSearchOptionsPage() {
   const navigate = useNavigate()
   const locationOptions = [
     { value: 'Coordinates', label: 'Use X and Y coordinates' },
@@ -20,7 +20,7 @@ export default function LocationSearchOptionsPage () {
         break
       case 'PinDrop':
         navigate(
-          orgManageLocationsUrls.edit.individualLocation.location.dropPin.search
+          orgManageLocationsUrls.edit.individualLocation.location.dropPin.drop
         )
         break
       default:
@@ -40,12 +40,17 @@ export default function LocationSearchOptionsPage () {
     </p>
   )
 
+  const navigateToPreviousPage = () => {
+    navigate(orgManageLocationsUrls.view.individualLocation)
+  }
+
   return (
     <LocationSearchOptionsLayout
       heading='How do you want to change the existing location?'
       additionalInfo={additionalInfo}
       searchOptions={locationOptions}
       navigateToNextPage={navigateToNextPage}
+      navigateToPreviousPage={navigateToPreviousPage}
     />
   )
 }

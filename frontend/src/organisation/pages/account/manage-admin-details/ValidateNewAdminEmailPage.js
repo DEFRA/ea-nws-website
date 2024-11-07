@@ -1,17 +1,18 @@
+import { useNavigate, useLocation } from 'react-router'
+import ValidateEmailLayout from '../../../../common/layouts/email/ValidateEmailLayout'
+import { orgAccountUrls } from '../../../routes/account/AccountRoutes'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { setProfile } from '../../../../../common/redux/userSlice'
-import { backendCall } from '../../../../../common/services/BackendService'
-import ValidateEmailLayout from '../../../../../common/layouts/email/ValidateEmailLayout'
-
-export default function ChangeAccountEmailValidationPage () {
+import { backendCall } from '../../../../common/services/BackendService'
+import { setProfile } from '../../../../common/redux/userSlice'
+export default function ValidateNewAdminEmailPage () {
   const navigate = useNavigate()
+  const location = useLocation()
   const dispatch = useDispatch()
   const [error, setError] = useState('')
 
   const DifferentEmail = () => {
-    navigate('/signup/review/change-account-email')
+    navigate(orgAccountUrls.admin.changeDetails)
   }
 
   const updateProfile = async (profile, authToken) => {
@@ -32,10 +33,11 @@ export default function ChangeAccountEmailValidationPage () {
       setError(errorMessage)
     } else {
       dispatch(setProfile(profile))
-      navigate('/signup/review', {
+
+      navigate(orgAccountUrls.admin.details, {
         state: {
-          changeEmail: true,
-          email: profile.emails[0]
+          email: profile.emails[0],
+          successMessages: location.state.successMessages
         }
       })
     }
@@ -45,7 +47,7 @@ export default function ChangeAccountEmailValidationPage () {
     <ValidateEmailLayout
       DifferentEmail={DifferentEmail}
       NavigateToPreviousPage={DifferentEmail}
-      buttonText='Confirm email address'
+      buttonText='Continue'
       changeSignIn
       profileError={error}
       updateProfile={updateProfile}

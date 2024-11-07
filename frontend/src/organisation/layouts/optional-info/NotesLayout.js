@@ -1,33 +1,41 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import BackLink from '../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
-import Button from '../../../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
-import TextArea from '../../../../../common/components/gov-uk/TextArea'
-import { setCurrentLocationNotes } from '../../../../../common/redux/userSlice'
-export default function AddNotesPage () {
+import BackLink from '../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
+import Button from '../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
+import TextArea from '../../../common/components/gov-uk/TextArea'
+import { setCurrentLocationNotes } from '../../../common/redux/userSlice'
+
+export default function NotesLayout ({ navigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const charLimit = 200
-  const [notes, setNotes] = useState('')
+  const currentNotes = useSelector(
+    (state) => state.session.currentLocation.meta_data.location_additional.notes
+  )
+  const [notes, setNotes] = useState(currentNotes || '')
   const [error, setError] = useState('')
+  const charLimit = 500
 
   useEffect(() => {
     if (notes.length > charLimit) {
-      setError('You can enter up to 200 characters')
+      setError('You can enter up to 500 characters')
     } else {
       setError('')
     }
   }, [notes])
 
-  const handleButton = () => {
+  const handleSubmit = () => {
     if (error) return
+
     if (notes) {
       dispatch(setCurrentLocationNotes(notes))
     }
-    navigate('/') // View Location page
+
+    // should we update geosafe profile here?
+
+    navigateToNextPage()
   }
 
   const navigateBack = (event) => {
@@ -39,10 +47,9 @@ export default function AddNotesPage () {
     <>
       <OrganisationAccountNavigation />
       <BackLink onClick={navigateBack} />
-
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>Notes (optional)</h1>
             <div className='govuk-body'>
@@ -57,11 +64,11 @@ export default function AddNotesPage () {
                 onChange={(val) => setNotes(val)}
                 className='govuk-textarea'
               />
-              <p className='govuk-hint'>You can enter up to 200 characters.</p>
+              <p className='govuk-hint'>You can enter up to 500 characters.</p>
               <Button
                 text='Continue'
                 className='govuk-button'
-                onClick={handleButton}
+                onClick={handleSubmit}
               />
             </div>
           </div>

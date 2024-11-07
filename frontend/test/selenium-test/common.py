@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import Select
 import time
 
 #------------------------------------------------------------------------------
@@ -94,7 +95,8 @@ url_org_man_loc = {
         'dropPinSearch': url_org_man_loc_path + '/add/drop-pin-search',
         'predefinedBoundary': {
             'optionalInfo': url_org_man_loc_path + '/add/predefined-boundary/optional-information',
-            'add': url_org_man_loc_path + '/add/predefined-boundary'
+            'add': url_org_man_loc_path + '/add/predefined-boundary',
+            'addAnother': url_org_man_loc_path + '/add/another-predefined-boundary'
         }
     },
     'optionalLocation':{
@@ -220,10 +222,9 @@ def select_input_radio_option(browser, value, key='value'):
     browser.execute_script("arguments[0].click();", input_radio_element)
 
 # Select input dropdown option
-def select_dropdown_option(browser, dropdown_name, value, key='value'):
-    option_xpath = f"//select[@name='{dropdown_name}']/option[@value='{value}']"
-    option_element = browser.find_element(By.XPATH, option_xpath)
-    browser.execute_script("arguments[0].click();", option_element)
+def select_dropdown_option(browser, dropdown_name, value):
+    select = Select(browser.find_element(By.NAME, dropdown_name))
+    select.select_by_value(value)
 
 #------------------------------------------------------------------------------
 # ENTER INPUT TEXT

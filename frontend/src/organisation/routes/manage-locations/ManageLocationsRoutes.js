@@ -18,7 +18,6 @@ import AddOptionalAddress from '../../pages/manage-locations/add-location/option
 import AddNotesPage from '../../pages/manage-locations/add-location/optional-information/NotesPage'
 import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-information/OptionalInfoPage'
 import AddAnotherPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/AddAnotherPredefinedBoundaryPage'
-import PredefinedBoundaryOptionalInfoPage from '../../pages/manage-locations/add-location/predefined-boundary/OptionalInfoPage'
 import SelectPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/SelectPredefinedBoundaryPage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirmPage'
@@ -82,8 +81,6 @@ const orgManageLocationsUrls = {
       dropPinSearchResults: urlManageOrg + '/add/drop-pin-search-results'
     },
     predefinedBoundary: {
-      optionalInfo:
-        urlManageOrgAddLocations + '/predefined-boundary/optional-information',
       select: urlManageOrg + '/add/predefined-boundary',
       addAnother: urlManageOrg + '/add/another-predefined-boundary'
     },
@@ -285,11 +282,6 @@ const orgManageLocationRoutes = [
   {
     path: urlManageOrgConfirmLocations,
     component: <ConfirmAddingLocationsPage />
-  },
-  // predefined boundary
-  {
-    path: orgManageLocationsUrls.add.predefinedBoundary.optionalInfo,
-    component: <PredefinedBoundaryOptionalInfoPage />
   },
   // edit
   {

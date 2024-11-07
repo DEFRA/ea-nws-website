@@ -13,12 +13,13 @@ import LocationXYCoordinatesSearchPage from '../../pages/manage-locations/add-lo
 import XYCoordinatesNotInEnglandPage from '../../pages/manage-locations/add-location/manual-add-location/search/xy-coordinates/XYCoordinatesNotInEnglandPage'
 import AddActionPlan from '../../pages/manage-locations/add-location/optional-information/AddActionPlanPage'
 import AddKeyInformationPage from '../../pages/manage-locations/add-location/optional-information/AddKeyInformationPage'
-import KeywordsForThisLocationPage from '../../pages/manage-locations/add-location/optional-information/AddKeywordsForThisLocationPage'
+import KeywordsForThisLocationPage from '../../pages/manage-locations/add-location/optional-information/AddKeywordsPage'
 import AddNotesPage from '../../pages/manage-locations/add-location/optional-information/AddNotesPage'
 import AddOptionalAddress from '../../pages/manage-locations/add-location/optional-information/AddOptionalAddress'
-import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-information/OptionalLocationInformationPage'
-import AddAnotherPredefinedBoundaryPage from '../../pages/manage-locations/add-location/select-predefined-boundary/AddAnotherPredefinedBoundaryPage'
-import SelectPredefinedBoundaryPage from '../../pages/manage-locations/add-location/select-predefined-boundary/SelectPredefinedBoundaryPage'
+import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-information/OptionalInfoPage'
+import AddAnotherPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/AddAnotherPredefinedBoundaryPage'
+import PredefinedBoundaryOptionalInfoPage from '../../pages/manage-locations/add-location/predefined-boundary/OptionalInfoPage'
+import SelectPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/SelectPredefinedBoundaryPage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirmPage'
 import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'
@@ -81,6 +82,8 @@ const orgManageLocationsUrls = {
       dropPinSearchResults: urlManageOrg + '/add/drop-pin-search-results'
     },
     predefinedBoundary: {
+      optionalInfo:
+        urlManageOrgAddLocations + '/predefined-boundary/optional-information',
       select: urlManageOrg + '/add/predefined-boundary',
       addAnother: urlManageOrg + '/add/another-predefined-boundary'
     },
@@ -282,6 +285,11 @@ const orgManageLocationRoutes = [
   {
     path: urlManageOrgConfirmLocations,
     component: <ConfirmAddingLocationsPage />
+  },
+  // predefined boundary
+  {
+    path: orgManageLocationsUrls.add.predefinedBoundary.optionalInfo,
+    component: <PredefinedBoundaryOptionalInfoPage />
   },
   // edit
   {

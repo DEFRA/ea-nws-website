@@ -123,6 +123,13 @@ const userSlice = createSlice({
     setNearbyTargetAreasFlow: (state, action) => {
       state.nearbyTargetAreaFlow = action.payload
     },
+    // keywords - temporary
+    setLocationKeywords: (state, action) => {
+      state.locationKeywords = action.payload
+    },
+    setContactKeywords: (state, action) => {
+      state.contactKeywords = action.payload
+    },
     // required for predefined boundary flow
     setSelectedBoundaryType: (state, action) => {
       state.selectedBoundaryType = action.payload
@@ -135,13 +142,6 @@ const userSlice = createSlice({
     },
     setConsecutiveBoundariesAdded: (state, action) => {
       state.consecutiveBoundariesAdded = action.payload
-    },
-    // keywords - temporary
-    setLocationKeywords: (state, action) => {
-      state.locationKeywords = action.payload
-    },
-    setContactKeywords: (state, action) => {
-      state.contactKeywords = action.payload
     },
     // org location data
     setCurrentLocation: (state, action) => {
@@ -287,6 +287,9 @@ const userSlice = createSlice({
       state.selectedFloodAlertArea = null
       state.showOnlySelectedFloodArea = null
       state.nearbyTargetAreaFlow = null
+      // keywords - temporary
+      state.locationKeywords = null
+      state.contactKeywords = null
       // required for predefined boundary flow
       state.selectedBoundaryType = null
       state.selectedBoundary = null
@@ -350,14 +353,14 @@ export const {
   setSelectedFloodAlertArea,
   setShowOnlySelectedFloodArea,
   setNearbyTargetAreasFlow,
+  // keywords - temporary
+  setLocationKeywords,
+  setContactKeywords,
   // required for predefined boundary flow
   setSelectedBoundaryType,
   setSelectedBoundary,
   setLocationBoundaries,
   setConsecutiveBoundariesAdded,
-  // keywords - temporary
-  setLocationKeywords,
-  setContactKeywords,
   // org location data
   setCurrentLocation,
   setCurrentLocationUPRN,

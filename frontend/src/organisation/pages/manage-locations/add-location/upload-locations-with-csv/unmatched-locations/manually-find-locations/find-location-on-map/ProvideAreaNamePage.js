@@ -51,7 +51,7 @@ export default function ProvideAreaNamePage () {
   }
 
   const handleOnClick = async (value) => {
-    setAreaName(value.name)
+    setAreaName(value.address)
     setAreaCoords(value.coordinates)
   }
 
@@ -95,6 +95,7 @@ export default function ProvideAreaNamePage () {
                 menuOpen
                 value={areaName}
                 onClick={(val) => handleOnClick(val)}
+                nameField='address'
               />
             </div>
             <Button

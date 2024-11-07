@@ -11,7 +11,6 @@ export default function ConfirmLocationPage() {
   }
 
   const navigateToPinDropFlow = () => {
-    console.log('hit')
     navigate(
       orgManageLocationsUrls.edit.individualLocation.location.dropPin.drop
     )

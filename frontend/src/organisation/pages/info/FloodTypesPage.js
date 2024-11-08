@@ -1,7 +1,7 @@
 import { useNavigate } from 'react-router-dom'
-import floodAlertIcon from '../../../common/assets/images/flood_alert.png'
-import floodWarningIcon from '../../../common/assets/images/flood_warning.png'
-import severeFloodWarningIcon from '../../../common/assets/images/severe_flood_warning.png'
+import floodAlertIcon from '../../../common/assets/images/flood_alert.svg'
+import floodWarningIcon from '../../../common/assets/images/flood_warning.svg'
+import severeFloodWarningIcon from '../../../common/assets/images/severe_flood_warning.svg'
 import BackLink from '../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 
@@ -46,7 +46,7 @@ export default function FloodTypesPage () {
               <img
                 src={floodAlertIcon}
                 alt='Flood alert icon'
-                style={{ height: '40px' }}
+                style={{ height: '50px' }}
               />
               <strong>Flood alert</strong>
             </h4>
@@ -75,7 +75,7 @@ export default function FloodTypesPage () {
               <img
                 src={floodWarningIcon}
                 alt='Flood warning icon'
-                style={{ height: '40px' }}
+                style={{ height: '50px' }}
               />
               <strong>Flood warning</strong>
             </h4>
@@ -103,7 +103,7 @@ export default function FloodTypesPage () {
               <img
                 src={severeFloodWarningIcon}
                 alt='Severe flood warning icon'
-                style={{ height: '40px' }}
+                style={{ height: '50px' }}
               />
               <strong>Severe flood warning</strong>
             </h4>

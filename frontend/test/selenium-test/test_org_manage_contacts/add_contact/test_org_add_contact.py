@@ -1,7 +1,7 @@
 from common import *
 
 url_add_contact_details = url_org_man_cont.get('add').get('details')
-url_next_page = 'http://localhost:3000/index'
+url_next_page = url_org_man_cont.get('add').get('keywords')
 too_long_input = 'this input s too long'
 right_input = 'this input is justok'
 

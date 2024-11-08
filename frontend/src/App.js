@@ -107,9 +107,9 @@ export default function App () {
               key={index}
               path={route.path}
               element={
-                 (route.path ==='/signin' || route.path === '/signup/register-location/search') && auth
-                  ? <Navigate to='/home' />
-                  : route.component
+                 (route.path === '/signin' || route.path === '/signup/register-location/search') && auth
+                   ? <Navigate to='/home' replace />
+                   : route.component
               }
             />
           ))}

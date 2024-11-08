@@ -11,7 +11,7 @@ import {
   setContactKeywords,
   setCurrentLocationKeywords,
   setLocationKeywords,
-  setOrgCurrentContactAdditionals
+  setOrgCurrentContact
 } from '../../../common/redux/userSlice'
 import {
   getAdditionals,
@@ -48,16 +48,13 @@ export default function AddKeywordsLayout ({
 
   let orgKeywords = [...orgKeywordsOriginal]
 
-  const entryName = useSelector((state) =>
+  const entryId = useSelector((state) =>
     keywordType === 'location '
-      ? state.session.currentLocation.name
-        ? state.session.currentLocation.name
+      ? state.session.currentLocation.id
+        ? state.session.currentLocation.id
         : ''
-      : state.session.orgCurrentContact.firstName &&
-        state.session.orgCurrentContact.lastName
-        ? state.session.orgCurrentContact.firstName +
-        ' ' +
-        state.session.orgCurrentContact.lastName
+      : state.session.orgCurrentContact.id
+        ? state.session.orgCurrentContact.id
         : ''
   )
 
@@ -175,11 +172,11 @@ export default function AddKeywordsLayout ({
           keywordExists = true
 
           if (
-            orgKeywords[orgKeywordIdx].linked_ids.includes(entryName) &&
+            orgKeywords[orgKeywordIdx].linked_ids.includes(entryId) &&
             !currentKeywordChecked
           ) {
             const originalArray = orgKeywords[orgKeywordIdx].linked_ids
-            const indexToDelete = originalArray.indexOf(entryName)
+            const indexToDelete = originalArray.indexOf(entryId)
 
             // Remove location if it exists but keyword is unchecked
             orgKeywords[orgKeywordIdx] = {
@@ -194,13 +191,13 @@ export default function AddKeywordsLayout ({
               orgKeywords.splice(orgKeywordIdx, 1)
             }
           } else if (
-            !orgKeywords[orgKeywordIdx].linked_ids.includes(entryName) &&
+            !orgKeywords[orgKeywordIdx].linked_ids.includes(entryId) &&
             currentKeywordChecked
           ) {
             // Add location if it doesn't exist and keyword is checked
             orgKeywords[orgKeywordIdx] = {
               name: currentKeyword,
-              linked_ids: [...orgKeywords[orgKeywordIdx].linked_ids, entryName]
+              linked_ids: [...orgKeywords[orgKeywordIdx].linked_ids, entryId]
             }
           }
           break
@@ -213,7 +210,7 @@ export default function AddKeywordsLayout ({
           ...orgKeywords,
           {
             name: currentKeyword,
-            linked_ids: [entryName]
+            linked_ids: [entryId]
           }
         ]
       }
@@ -223,12 +220,14 @@ export default function AddKeywordsLayout ({
       dispatch(setLocationKeywords(orgKeywords))
       dispatch(setCurrentLocationKeywords(JSON.stringify(keywordsArrayChecked)))
     } else {
-      const updatedContact = updateAdditionals(currentObject, {
-        id: 'keywords',
-        value: JSON.stringify(orgKeywords)
-      })
+      const updatedContact = updateAdditionals(currentObject, [
+        {
+          id: 'keywords',
+          value: JSON.stringify(keywordsArrayChecked)
+        }
+      ])
       dispatch(setContactKeywords(orgKeywords))
-      dispatch(setOrgCurrentContactAdditionals(getAdditionals(updatedContact)))
+      dispatch(setOrgCurrentContact(updatedContact))
     }
 
     NavigateToNextPage()

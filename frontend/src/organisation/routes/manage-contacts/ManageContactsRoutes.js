@@ -21,16 +21,16 @@ const orgManageContactsRoutes = [
     component: <AddContactDetailsPage />
   },
   {
-    path: orgManageContactsUrls.add.notes,
-    component: <AddContactNotesPage />
+    path: orgManageContactsUrls.add.keywords,
+    component: <AddContactKeywordsPage />
   },
   {
     path: orgManageContactsUrls.add.channels,
     component: <AddContactChannelsPage />
   },
   {
-    path: orgManageContactsUrls.add.keywords,
-    component: <AddContactKeywordsPage />
+    path: orgManageContactsUrls.add.notes,
+    component: <AddContactNotesPage />
   }
 ]
 

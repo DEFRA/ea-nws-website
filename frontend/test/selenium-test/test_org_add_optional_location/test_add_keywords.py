@@ -23,7 +23,7 @@ def add_keyword_fail(get_browser, keyword, error):
 
 def test_render(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
-    assert check_h1_heading(get_browser, 'Keywords for this location (optional)')
+    assert check_h1_heading(get_browser, 'Add keywords for this location (optional)')
     assert 'You can add new keywords. Or you can remove existing keywords associated with this location by unticking the relevant box.' in get_browser.page_source
     click_button(get_browser, 'Add keyword', current_url)
 

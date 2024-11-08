@@ -8,7 +8,7 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../common/components/gov-uk/TextArea'
 import { setCurrentLocationNotes } from '../../../common/redux/userSlice'
 
-export default function NotesLayout({ navigateToNextPage }) {
+export default function NotesLayout ({ navigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const currentNotes = useSelector(

@@ -66,7 +66,7 @@ export default function ValidateEmailLayout ({
       } else {
         dispatch(setAuthToken(data.authToken))
         const updatedProfile = updateAdditionals(profile, [
-          { id: 'lastAccessedUrl', value: {s: '/signup/accountname/add' }}
+          { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } }
         ])
         dispatch(setProfile(updatedProfile))
         NavigateToNextPage()

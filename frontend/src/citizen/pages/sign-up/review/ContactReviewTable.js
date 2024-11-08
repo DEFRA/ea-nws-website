@@ -109,10 +109,10 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
         <br />
       </table>
       <Button
-          className='govuk-button govuk-button--secondary'
-          onClick={handleButton}
-          text='Add another email or phone number'
-        />
+        className='govuk-button govuk-button--secondary'
+        onClick={handleButton}
+        text='Add another email or phone number'
+      />
     </div>
   )
 }

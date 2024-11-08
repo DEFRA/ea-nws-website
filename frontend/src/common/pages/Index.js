@@ -33,7 +33,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [{ id: 'signUpComplete', value: {s: 'true'} }],
+    additionals: [{ id: 'signUpComplete', value: { s: 'true' } }],
     pois: [
       {
         address: 'House Of Commons, Houses Of Parliament, London, SW1A 0AA',
@@ -56,7 +56,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [{ id: 'signUpComplete', value: {s: 'true'} }],
+    additionals: [{ id: 'signUpComplete', value: { s: 'true' } }],
     pois: [
       {
         address: 'Big Ben, London, SW1A 0AA',
@@ -86,7 +86,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [{ id: 'signUpComplete', value: {s: 'true'} }],
+    additionals: [{ id: 'signUpComplete', value: { s: 'true' } }],
     pois: [
       {
         address: 'Big Ben, London, SW1A 0AA',
@@ -246,7 +246,7 @@ export default function IndexPage () {
           }
         }
       },
-      { id: 'signUpComplete', value: {s: 'false'} }
+      { id: 'signUpComplete', value: { s: 'false' } }
     ],
     pois: [
       {

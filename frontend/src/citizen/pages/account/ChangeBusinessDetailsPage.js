@@ -28,7 +28,7 @@ export default function ChangeBusinessDetailsPage () {
     setJobTitleError(validationErrorJob)
     const updatedProfile = updateAdditionals(
       profile,
-      [{ id: 'businessName', value: {s: businessName} }, { id: 'jobTitle', value: {s: jobTitle} }]
+      [{ id: 'businessName', value: { s: businessName } }, { id: 'jobTitle', value: { s: jobTitle } }]
     )
 
     const dataToSend = { profile: updatedProfile, authToken }

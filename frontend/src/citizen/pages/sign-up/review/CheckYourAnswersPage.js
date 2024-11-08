@@ -23,8 +23,8 @@ export default function CheckYourAnswersPage () {
   const handleButton = async () => {
     if (signUpAccountValidation) {
       const updatedProfile = updateAdditionals(profile, [
-        { id: 'signUpComplete', value: {s: 'true' }},
-        { id: 'lastAccessedUrl', value: {s: '/signup/review'}}
+        { id: 'signUpComplete', value: { s: 'true' } },
+        { id: 'lastAccessedUrl', value: { s: '/signup/review' } }
       ])
       dispatch(setProfile(updatedProfile))
       const dataToSend = {

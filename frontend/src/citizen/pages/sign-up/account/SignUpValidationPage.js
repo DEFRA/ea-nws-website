@@ -55,7 +55,7 @@ export default function SignUpValidationPage () {
         }
       } else {
         dispatch(setAuthToken(data.authToken))
-        const updatedProfile = updateAdditionals(profile, [{ id: 'lastAccessedUrl', value: {s: '/signup/accountname/add' }}])
+        const updatedProfile = updateAdditionals(profile, [{ id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } }])
         dispatch(setProfile(updatedProfile))
         navigate('/signup/contactpreferences')
       }

@@ -52,7 +52,7 @@ const removeUnverifiedContact = (profile, contact) => {
       )
     ) {
       unverifiedContactListKey = 'mobilePhones'
-    } else if ( profile.unverified.homePhones &&
+    } else if (profile.unverified.homePhones &&
       profile.unverified.homePhones.some(
         (homePhone) => homePhone.address === contact
       )
@@ -68,7 +68,7 @@ const removeUnverifiedContact = (profile, contact) => {
       unverifiedContactListKey
     ].filter((c) => c.address !== contact)
 
-    let updatedUnverified = {
+    const updatedUnverified = {
       ...profile.unverified,
       [unverifiedContactListKey]: newUnverifiedContactList
     }
@@ -76,8 +76,8 @@ const removeUnverifiedContact = (profile, contact) => {
     // We need to remove contactlist from unverified if it's empty now
     updatedUnverified[unverifiedContactListKey].length === 0 &&
       delete updatedUnverified[unverifiedContactListKey]
-    
-    let updatedProfile = {
+
+    const updatedProfile = {
       ...profile,
       unverified: updatedUnverified
     }
@@ -89,7 +89,6 @@ const removeUnverifiedContact = (profile, contact) => {
   } else {
     return profile
   }
-
 }
 
 const addVerifiedContact = (profile, type, contact) => {
@@ -223,7 +222,7 @@ const getOrganisationAdditionals = (profile) => {
 
 const updateOrganisationAdditionals = (profile, updatedOrganisation) => {
   return updateAdditionals(profile, [
-    { id: 'organisation', value: {s: JSON.stringify(updatedOrganisation)} }
+    { id: 'organisation', value: { s: JSON.stringify(updatedOrganisation) } }
   ])
 }
 

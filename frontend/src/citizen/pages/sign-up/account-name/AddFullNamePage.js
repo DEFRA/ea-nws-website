@@ -9,7 +9,7 @@ export default function AddFullNamePage () {
   const dispatch = useDispatch()
 
   const NavigateToNextPage = (profile) => {
-    const updatedProfile = updateAdditionals(profile, [{ id: 'lastAccessedUrl', value: {s: '/declaration' }}])
+    const updatedProfile = updateAdditionals(profile, [{ id: 'lastAccessedUrl', value: { s: '/declaration' } }])
     dispatch(setProfile(updatedProfile))
     navigate('/declaration')
   }

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import linkIcon from '../../../../../common/assets/images/link.svg'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../common/components/gov-uk/Button'
@@ -260,6 +261,13 @@ export default function LocationMessagesPage () {
                     className='govuk-table__cell'
                     style={{ verticalAlign: 'middle' }}
                   >
+                    {detail.areaType === 'Flood alert' && (
+                      <img
+                        src={linkIcon}
+                        alt='Link icon'
+                        style={{ marginRight: '10px' }}
+                      />
+                    )}
                     {detail.areaType}
                   </td>
                   <td
@@ -288,6 +296,7 @@ export default function LocationMessagesPage () {
       )}
 
       <Button
+        imageSrc={linkIcon}
         text='Link to nearby flood areas'
         className='govuk-button govuk-button--secondary'
         onClick={() => navigate('/')}

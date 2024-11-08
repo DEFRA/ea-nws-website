@@ -1,4 +1,7 @@
 import { useNavigate } from 'react-router-dom'
+import floodAlertIcon from '../../../common/assets/images/flood_alert.png'
+import floodWarningIcon from '../../../common/assets/images/flood_warning.png'
+import severeFloodWarningIcon from '../../../common/assets/images/severe_flood_warning.png'
 import BackLink from '../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 
@@ -40,6 +43,11 @@ export default function FloodTypesPage () {
             <br />
             {/* Flood Alert */}
             <h4>
+              <img
+                src={floodAlertIcon}
+                alt='Flood alert icon'
+                style={{ height: '40px' }}
+              />
               <strong>Flood alert</strong>
             </h4>
             <p className='govuk-!-margin-top-6'>
@@ -64,6 +72,11 @@ export default function FloodTypesPage () {
             <br />
             {/* Flood Warning */}
             <h4>
+              <img
+                src={floodWarningIcon}
+                alt='Flood warning icon'
+                style={{ height: '40px' }}
+              />
               <strong>Flood warning</strong>
             </h4>
             <p className='govuk-!-margin-top-6'>
@@ -78,7 +91,6 @@ export default function FloodTypesPage () {
               <li>coastal areas affected by spray or waves overtopping</li>
               <li>flood plains, including caravans park and campsites</li>
               <li>major tourist and leisure attractions</li>
-              <li />
             </ul>
             <p className='govuk-!-margin-top-6'>
               Flood warnings are usually sent 30 minutes to 2 hours before
@@ -88,6 +100,11 @@ export default function FloodTypesPage () {
             <br />
             {/* Severe flood warning */}
             <h4>
+              <img
+                src={severeFloodWarningIcon}
+                alt='Severe flood warning icon'
+                style={{ height: '40px' }}
+              />
               <strong>Severe flood warning</strong>
             </h4>
             <p className='govuk-!-margin-top-6'>

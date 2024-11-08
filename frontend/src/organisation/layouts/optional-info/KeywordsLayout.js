@@ -18,7 +18,7 @@ import {
   updateAdditionals
 } from '../../../common/services/ProfileServices'
 
-export default function AddKeywordsLayout({
+export default function AddKeywordsLayout ({
   keywordType,
   navigateToNextPage,
   keywordText
@@ -32,8 +32,8 @@ export default function AddKeywordsLayout({
         ? state.session.locationKeywords
         : []
       : state.session.contactKeywords
-      ? state.session.contactKeywords
-      : []
+        ? state.session.contactKeywords
+        : []
   )
 
   const currentObject = useSelector((state) =>
@@ -42,8 +42,8 @@ export default function AddKeywordsLayout({
         ? state.session.currentLocation
         : null
       : state.session.orgCurrentContact
-      ? state.session.orgCurrentContact
-      : null
+        ? state.session.orgCurrentContact
+        : null
   )
 
   let orgKeywords = [...orgKeywordsOriginal]
@@ -54,8 +54,8 @@ export default function AddKeywordsLayout({
         ? state.session.currentLocation.id
         : ''
       : state.session.orgCurrentContact.id
-      ? state.session.orgCurrentContact.id
-      : ''
+        ? state.session.orgCurrentContact.id
+        : ''
   )
 
   let currentKeywords = useSelector((state) =>
@@ -64,8 +64,8 @@ export default function AddKeywordsLayout({
         ? state.session.currentLocation.meta_data.location_additional.keywords
         : ''
       : getAdditionals(currentObject, 'keywords')
-      ? getAdditionals(currentObject, 'keywords')
-      : ''
+        ? getAdditionals(currentObject, 'keywords')
+        : ''
   )
   if (currentKeywords.length > 0) currentKeywords = JSON.parse(currentKeywords)
 

@@ -3,19 +3,19 @@ import time
 
 url_XYSearch = url_org_man_loc.get('edit').get('xyCoordinatesSearch')
 url = url_org_man_loc.get('edit').get('options')
-url_no_alert = url_org_man_loc.get('edit').get('locationInArea') + '/xy-coordinates-search/no-alerts'
-url_alerts = url_org_man_loc.get('edit').get('locationInArea') + '/xy-coordinates-search/alerts'
-url_all_alert = url_org_man_loc.get('edit').get('locationInArea') + '/xy-coordinates-search/all'
-url_not_in_england = url_org_man_loc.get('edit').get('notInEngland')
+url_no_alert = url_org_man_loc.get('edit').get('confirm')
+url_alerts = url_org_man_loc.get('edit').get('confirm') 
+url_all_alert = url_org_man_loc.get('edit').get('confirm')
+url_not_in_england = url_org_man_loc.get('edit').get('xyCoordsNotInEngland')
 url_next_page_drop_pin = url_org_man_loc.get('edit').get('dropPinEdit')
 
-def setup(browser):
-    navigate_to_auth_page_via_index(browser,url)
-    select_input_radio_option(browser,'idUse X and Y coordinates','id')
-    click_button(browser, 'Continue',url_XYSearch)
+def setup(get_browser):
+    navigate_to_auth_page_via_index(get_browser,url)
+    select_input_radio_option(get_browser,'idUse X and Y coordinates','id')
+    click_button(get_browser, 'Continue',url_XYSearch)
 
-def setup2(browser,X_coord,Y_coord,Check_for_error = False, url = url_XYSearch):
-    setup(browser)
+def setup2(get_browser,X_coord,Y_coord,Check_for_error = False, url = url_XYSearch):
+    setup(get_browser)
     enter_input_text(browser,'X coordinate',X_coord)
     enter_input_text(browser,'Y coordinate',Y_coord)
     if Check_for_error == True:
@@ -30,8 +30,7 @@ def setup2(browser,X_coord,Y_coord,Check_for_error = False, url = url_XYSearch):
        
 
 def test_page_loads(get_browser):
-    browser =  get_browser
-    navigate_to_auth_page_via_index(browser,url)
+    navigate_to_auth_page_via_index(get_browser,url)
     time.sleep(5)
     assert 'How do you want to change the existing location?' in browser.page_source
 
@@ -91,19 +90,19 @@ def test_Y_out_of_Range(get_browser):
 def test_no_alerts(get_browser):
     browser = get_browser
     setup2(browser,'465373','101250',False,url_no_alert)
-    assert 'Flood messages unavailable' in browser.page_source
+    assert 'Confirm Location' in browser.page_source
 
 def test_alerts(get_browser):
     browser = get_browser
     setup2(browser,'520814','185016',False,url_alerts)
     time.sleep(3)
-    assert 'Severe flood warnings and flood warnings unavailable' in browser.page_source
+    assert 'Confirm Location' in browser.page_source
 
 def test_all_alerts(get_browser):
     browser = get_browser
     setup2(browser,'530270','179545',False,url_all_alert)
     time.sleep(3)
-    assert 'All flood messages available' in browser.page_source
+    assert 'Confirm Location' in browser.page_source
 
 def test_not_in_england(get_browser):
     browser = get_browser

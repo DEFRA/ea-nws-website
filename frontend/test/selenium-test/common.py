@@ -136,10 +136,12 @@ url_org_man_loc = {
         'cannot_change_location_polygon': url_org_man_loc_path + '/edit/polygon',
         'cannot_change_location_line': url_org_man_loc_path + '/edit/line',
         'options': url_org_man_loc_path + '/edit/search-options',
+        'confirm': url_org_man_loc_path + '/edit/confirm-location',
         'xyCoordinatesSearch': url_org_man_loc_path + '/edit/xy-coordinates-search',
-        'locationInArea': url_org_man_loc_path + '/edit/location-in-area',
-        'notInEngland': url_org_man_loc_path + '/edit/xy-coordinates-not-in-england',
-        'dropPinEdit': url_org_man_loc_path + '/edit/drop-pin-search'
+        'xyCoordsNotInEngland': url_org_man_loc_path + '/edit/xy-coordinates-not-in-england',
+        'dropPinLocationSearch': url_org_man_loc_path + '/edit/location-search',
+        'dropPinEdit': url_org_man_loc_path + '/edit/drop-pin',
+        'dropPinNotInEngland': url_org_man_loc_path + '/edit/pin-not-in-england',
     }
 }
 

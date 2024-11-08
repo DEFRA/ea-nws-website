@@ -32,7 +32,7 @@ def test_proceed_with_no_optional_info(get_browser):
 def test_postcode_error(get_browser):
 
     setup(get_browser)
-    element = get_browser.find_element(By.NAME,'Postcode (optional)')
+    element = get_browser.find_element(By.CLASS_NAME,'govuk-textarea')
     get_browser.execute_script("arguments[0].scrollIntoView(true);",element)
     element.send_keys("kt3")
     click_button(get_browser, 'Continue', current_url)
@@ -40,7 +40,7 @@ def test_postcode_error(get_browser):
 
 def test_valid_postcode(get_browser):
     setup(get_browser)
-    element = get_browser.find_element(By.NAME,'Postcode (optional)')
+    element = get_browser.find_element(By.CLASS_NAME,'govuk-textarea')
     get_browser.execute_script("arguments[0].scrollIntoView(true);",element)
     element.send_keys("kt3 3qq")
     click_button(get_browser, 'Continue', url_next_page)

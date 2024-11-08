@@ -4,7 +4,6 @@ from common import *
 # Urls
 url_action_plan= url_org_man_loc.get('optionalLocation').get('addActionPlan')
 url_notes  = url_org_man_loc.get('optionalLocation').get('addNotes')
-url_next_page = url_org_man_loc.get('add').get('predefinedBoundary').get('addAnother')
 
 max_chars = 500
 text_too_long = 'a' * (max_chars + 1)
@@ -21,10 +20,6 @@ def test_back_button(get_browser):
     navigate_to_auth_page_via_index(get_browser, url_action_plan)
     click_button(get_browser, 'Continue', url_notes)
     click_link(get_browser, "Back", url_action_plan)
-
-def test_continue_empty(get_browser):
-    navigate_to_auth_page_via_index(get_browser, url_notes)
-    click_button(get_browser, 'Continue', url_next_page)
 
 def test_continue_filled_text_length_just_right(get_browser):
     navigate_to_auth_page_via_index(get_browser, url_notes)

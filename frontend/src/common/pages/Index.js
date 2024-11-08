@@ -11,6 +11,8 @@ import {
   setContactPreferences,
   setCurrentLocation,
   setCurrentLocationCoordinates,
+  setCurrentLocationEasting,
+  setCurrentLocationNorthing,
   setLocationBoundaries,
   setLocationKeywords,
   setProfile,
@@ -231,19 +233,20 @@ export default function IndexPage () {
     additionals: [
       {
         id: 'organisation',
-        value: {
-          name: 'THE 123 GROUP LIMITED',
-          address: 'Boulton House 17-21 Chorlton Street, Manchester, M1 3HY',
-          compHouseNum: '05897191',
-          emergencySector: false,
-          isAdminRegistering: true,
-          alternativeContact: {
-            firstName: 'Julia Joyce',
-            lastName: 'Breen',
-            email: 'julia@email.com',
-            telephone: '01339944433',
-            jobTitle: 'Director'
-          }
+        value: { s: JSON.stringify({
+            name: 'THE 123 GROUP LIMITED',
+            address: 'Boulton House 17-21 Chorlton Street, Manchester, M1 3HY',
+            compHouseNum: '05897191',
+            emergencySector: false,
+            isAdminRegistering: true,
+            alternativeContact: {
+              firstName: 'Julia Joyce',
+              lastName: 'Breen',
+              email: 'julia@email.com',
+              telephone: '01339944433',
+              jobTitle: 'Director'
+            }
+          })
         }
       },
       { id: 'signUpComplete', value: { s: 'false' } }
@@ -377,6 +380,8 @@ export default function IndexPage () {
       dispatch(setLocationBoundaries([]))
       dispatch(setLocationKeywords(mockLocationKeywords))
       dispatch(setContactKeywords(mockContactKeywords))
+      dispatch(setCurrentLocationEasting('520814'))
+      dispatch(setCurrentLocationNorthing('185016'))
       setmockSessionActive(true)
     } else {
       dispatch(clearAuth())

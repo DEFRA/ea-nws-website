@@ -8,15 +8,16 @@ previous_url= url_org_man_loc.get('optionalLocation').get('addKeywords')
 current_url  = url_org_man_loc.get('optionalLocation').get('addActionPlan')
 url_next_page = url_org_man_loc.get('optionalLocation').get('addNotes')
 
-text_too_long = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec qua'
-text_just_right = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec qu'
-text_under_req = 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes'
+max_chars = 500
+text_too_long = 'a' * (max_chars + 1)
+text_just_right = 'b' * max_chars
+text_under_req  = 'c' * (max_chars - 1)
 
 def test_render(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     assert 'Action plan (optional)' in get_browser.page_source
-    assert 'What you can do to reduce the potential effects of flooding, for example, inspect the location, use sandbags, move stock, evacuate.' in get_browser.page_source
-    assert 'You can enter up to 200 characters' in get_browser.page_source
+    assert 'Use this section to indicate what you can do to reduce the potential effects of flooding. For example, inspect the location then move stock to the top floor and evacuate.' in get_browser.page_source
+    assert 'You can enter up to 500 characters' in get_browser.page_source
 
 def test_back_button(get_browser):
     navigate_to_auth_page_via_index(get_browser,previous_url)

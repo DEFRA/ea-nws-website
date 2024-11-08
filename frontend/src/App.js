@@ -103,8 +103,17 @@ export default function App () {
             />
           ))}
           {routes.map((route, index) => (
-            <Route key={index} path={route.path} element={route.component} />
+            <Route
+              key={index}
+              path={route.path}
+              element={
+                 (route.path === '/signin' || route.path === '/signup/register-location/search') && auth
+                   ? <Navigate to='/home' replace />
+                   : route.component
+              }
+            />
           ))}
+
         </Route>
       </Routes>
       {isInactive && <InactivityPopup onStayLoggedIn={handleStayLoggedIn} />}

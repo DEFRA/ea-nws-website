@@ -15,6 +15,7 @@ import {
   setCurrentLocationNorthing,
   setLocationBoundaries,
   setLocationKeywords,
+  setOrgCurrentContact,
   setProfile,
   setRegistrations,
   setSelectedBoundary,
@@ -305,6 +306,24 @@ export default function IndexPage () {
     }
   ]
 
+  const mockOrgCurrentContact = {
+    id: null,
+    enabled: null,
+    firstName: null,
+    lastName: null,
+    emails: null,
+    mobilePhones: null,
+    homePhones: null,
+    position: null,
+    comments: null,
+    additionals: [
+      {
+        id: 'keywords',
+        value: null
+      }
+    ]
+  }
+
   const mockCurrentLocation = {
     name: null,
     // address is the UPRN
@@ -382,6 +401,7 @@ export default function IndexPage () {
       dispatch(setContactKeywords(mockContactKeywords))
       dispatch(setCurrentLocationEasting('520814'))
       dispatch(setCurrentLocationNorthing('185016'))
+      dispatch(setOrgCurrentContact(mockOrgCurrentContact))
       setmockSessionActive(true)
     } else {
       dispatch(clearAuth())

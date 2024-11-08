@@ -11,8 +11,7 @@ import { setAuthToken, setProfile, setRegisterToken } from '../../../../common/r
 import { backendCall } from '../../../../common/services/BackendService'
 import { updateAdditionals } from '../../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../../common/services/validations/AuthCodeValidation'
-import ExpiredCodeLayout from '../../../layouts/expired-code/ExpiredCodeLayout'
-
+import ExpiredCodeLayout from '../../../../common/layouts/email/ExpiredCodeLayout'
 export default function SignUpValidationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()

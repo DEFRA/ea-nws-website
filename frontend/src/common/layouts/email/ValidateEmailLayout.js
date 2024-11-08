@@ -1,21 +1,21 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import BackLink from '../../../common/components/custom/BackLink'
-import Button from '../../../common/components/gov-uk/Button'
-import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
-import Input from '../../../common/components/gov-uk/Input'
-import InsetText from '../../../common/components/gov-uk/InsetText'
-import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
-import { setProfile } from '../../../common/redux/userSlice'
-import { backendCall } from '../../../common/services/BackendService'
+import BackLink from '../../components/custom/BackLink'
+import Button from '../../components/gov-uk/Button'
+import ErrorSummary from '../../components/gov-uk/ErrorSummary'
+import Input from '../../components/gov-uk/Input'
+import InsetText from '../../components/gov-uk/InsetText'
+import NotificationBanner from '../../components/gov-uk/NotificationBanner'
+import { setProfile } from '../../redux/userSlice'
+import { backendCall } from '../../services/BackendService'
 import {
   addUnverifiedContact,
   removeUnverifiedContact,
   removeVerifiedContact
-} from '../../../common/services/ProfileServices'
-import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
-import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
+} from '../../services/ProfileServices'
+import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
+import ExpiredCodeLayout from './ExpiredCodeLayout'
 
 export default function ValidateEmailLayout ({
   NavigateToNextPage,

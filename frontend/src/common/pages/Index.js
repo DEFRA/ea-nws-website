@@ -36,8 +36,8 @@ export default function IndexPage () {
     additionals: [{ id: 'signUpComplete', value: {s: 'true'} }],
     pois: [
       {
-        name: 'House Of Commons, Houses Of Parliament, London, SW1A 0AA',
-        address: '10033540874',
+        address: 'House Of Commons, Houses Of Parliament, London, SW1A 0AA',
+        name: '10033540874',
         coordinates: {
           latitude: 51.4998415,
           longitude: -0.1246377
@@ -59,16 +59,16 @@ export default function IndexPage () {
     additionals: [{ id: 'signUpComplete', value: {s: 'true'} }],
     pois: [
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
@@ -89,128 +89,128 @@ export default function IndexPage () {
     additionals: [{ id: 'signUpComplete', value: {s: 'true'} }],
     pois: [
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
         }
       },
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
         }
       },
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
         }
       },
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
         }
       },
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
         }
       },
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
         }
       },
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
         }
       },
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
@@ -250,16 +250,16 @@ export default function IndexPage () {
     ],
     pois: [
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635

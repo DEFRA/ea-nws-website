@@ -96,16 +96,16 @@
     },
     pois: [
       {
-        name: 'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth,  NR30 1AA',
-        address: '10023463293',
+        address: 'Royal Mail, Great Yarmouth Delivery Office, 6, North Quay, Great Yarmouth,  NR30 1AA',
+        name: '10023463293',
         coordinates: {
           latitude: '52612444.5',
           longitude: '1724640.5'
         }
       },
       {
-        name: 'Exmouth, United Kingdom',
-        address: '',
+        address: 'Exmouth, United Kingdom',
+        name: '',
         coordinates: {
           latitude: '50621091',
           longitude: '-3412665'

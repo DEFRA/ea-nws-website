@@ -18,7 +18,7 @@ import {
   updateAdditionals
 } from '../../../common/services/ProfileServices'
 
-export default function AddKeywordsLayout ({
+export default function KeywordsLayout ({
   keywordType,
   navigateToNextPage,
   keywordText

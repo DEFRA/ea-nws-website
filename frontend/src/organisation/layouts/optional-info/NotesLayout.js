@@ -19,6 +19,7 @@ export default function NotesLayout ({ navigateToNextPage }) {
   const charLimit = 500
 
   useEffect(() => {
+    console.log(notes.length)
     if (notes.length > charLimit) {
       setError(`You can enter up to ${charLimit} characters`)
     } else {

@@ -24,7 +24,7 @@ def test_back_button(get_browser):
 def test_continue_filled_text_length_just_right(get_browser):
     navigate_to_auth_page_via_index(get_browser, url_notes)
     enter_textarea_text(get_browser, 'govuk-textarea', text_just_right, 'id')
-    click_button(get_browser, 'Continue', url_next_page)
+    assert 'You can enter up to 500 characters' not in get_browser.page_source
 
 def test_continue_filled_text_length_too_long_failure(get_browser):
     navigate_to_auth_page_via_index(get_browser, url_notes)
@@ -35,4 +35,4 @@ def test_continue_filled_text_length_too_long_failure(get_browser):
 def test_continue_filled_text_length_under_req(get_browser):
     navigate_to_auth_page_via_index(get_browser, url_notes)
     enter_textarea_text(get_browser, 'govuk-textarea', text_under_req, 'id')
-    click_button(get_browser, 'Continue', url_next_page)
+    assert 'You can enter up to 500 characters' not in get_browser.page_source

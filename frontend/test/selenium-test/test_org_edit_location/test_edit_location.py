@@ -9,13 +9,13 @@ url_all_alert = url_org_man_loc.get('edit').get('confirm')
 url_not_in_england = url_org_man_loc.get('edit').get('xyCoordsNotInEngland')
 url_next_page_drop_pin = url_org_man_loc.get('edit').get('dropPinEdit')
 
-def setup(get_browser):
-    navigate_to_auth_page_via_index(get_browser,url)
-    select_input_radio_option(get_browser,'idUse X and Y coordinates','id')
-    click_button(get_browser, 'Continue',url_XYSearch)
+def setup(browser):
+    navigate_to_auth_page_via_index(browser,url)
+    select_input_radio_option(browser,'idUse X and Y coordinates','id')
+    click_button(browser, 'Continue',url_XYSearch)
 
-def setup2(get_browser,X_coord,Y_coord,Check_for_error = False, url = url_XYSearch):
-    setup(get_browser)
+def setup2(browser,X_coord,Y_coord,Check_for_error = False, url = url_XYSearch):
+    setup(browser)
     enter_input_text(browser,'X coordinate',X_coord)
     enter_input_text(browser,'Y coordinate',Y_coord)
     if Check_for_error == True:
@@ -30,7 +30,8 @@ def setup2(get_browser,X_coord,Y_coord,Check_for_error = False, url = url_XYSear
        
 
 def test_page_loads(get_browser):
-    navigate_to_auth_page_via_index(get_browser,url)
+    browser =  get_browser
+    navigate_to_auth_page_via_index(browser,url)
     time.sleep(5)
     assert 'How do you want to change the existing location?' in browser.page_source
 

@@ -71,11 +71,6 @@
     service: '',
     comments: '',
     additionals: citizenContactAdditionals,
-    unverified: {
-      emails: [{address: ''}],
-      mobilePhones: [{address: ''}],
-      homePhones: [{address: ''}],
-    },
     metadata: {
       _Class: '', 
       workspaceID: 1, 
@@ -97,8 +92,6 @@
     language: 'EN',
     additionals: [{id: "lastAccessedUrl", value: {s: "/signup/accountname/add"}}, {id: "signUpComplete", value: {s: 'true' }}],
     unverified: {
-      emails: [{address: ''}],
-      mobilePhones: [{address: ''}],
       homePhones: [{address : '01475721535'}]
     },
     pois: [

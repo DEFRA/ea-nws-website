@@ -4,18 +4,18 @@ const addUnverifiedContact = (profile, type, contact) => {
 
   switch (type) {
     case 'email':
-      unverifiedContactList = profile.unverified?.emails
+      unverifiedContactList = profile.unverified?.emails || []
       break
     case 'mobile':
-      unverifiedContactList = profile.unverified?.mobilePhones
+      unverifiedContactList = profile.unverified?.mobilePhones || []
       break
     case 'homePhones':
-      unverifiedContactList = profile.unverified?.homePhones
+      unverifiedContactList = profile.unverified?.homePhones || []
       break
   }
 
   // Check for duplicates
-  if (unverifiedContactList &&
+  if (
     !unverifiedContactList.some(
       (unverifiedContact) => unverifiedContact.address === contact
     )
@@ -42,39 +42,54 @@ const addUnverifiedContact = (profile, type, contact) => {
 const removeUnverifiedContact = (profile, contact) => {
   let unverifiedContactListKey
 
-  if (profile.unverified.emails.some((email) => email.address === contact)) {
-    unverifiedContactListKey = 'emails'
-  } else if (
-    profile.unverified.mobilePhones.some(
-      (mobilePhone) => mobilePhone.address === contact
-    )
-  ) {
-    unverifiedContactListKey = 'mobilePhones'
-  } else if (
-    profile.unverified.homePhones.some(
-      (homePhone) => homePhone.address === contact
-    )
-  ) {
-    unverifiedContactListKey = 'homePhones'
-  } else {
-    // contact not found in any unverified contacts list
-    return profile
-  }
+  // need to check if there are any unverified
+  if (profile.unverified) {
+    if (profile.unverified.emails && profile.unverified.emails.some((email) => email.address === contact)) {
+      unverifiedContactListKey = 'emails'
+    } else if (profile.unverified.mobilePhones &&
+      profile.unverified.mobilePhones.some(
+        (mobilePhone) => mobilePhone.address === contact
+      )
+    ) {
+      unverifiedContactListKey = 'mobilePhones'
+    } else if ( profile.unverified.homePhones &&
+      profile.unverified.homePhones.some(
+        (homePhone) => homePhone.address === contact
+      )
+    ) {
+      unverifiedContactListKey = 'homePhones'
+    } else {
+      // contact not found in any unverified contacts list
+      return profile
+    }
 
-  // eslint-disable-next-line no-self-compare
-  const newUnverifiedContactList = profile.unverified[
-    unverifiedContactListKey
-  ].filter((c) => c.address !== contact)
+    // eslint-disable-next-line no-self-compare
+    const newUnverifiedContactList = profile.unverified[
+      unverifiedContactListKey
+    ].filter((c) => c.address !== contact)
 
-  const updatedProfile = {
-    ...profile,
-    unverified: {
+    let updatedUnverified = {
       ...profile.unverified,
       [unverifiedContactListKey]: newUnverifiedContactList
     }
+
+    // We need to remove contactlist from unverified if it's empty now
+    updatedUnverified[unverifiedContactListKey].length === 0 &&
+      delete updatedUnverified[unverifiedContactListKey]
+    
+    let updatedProfile = {
+      ...profile,
+      unverified: updatedUnverified
+    }
+
+    // We need to delete the unverifieed object if it's now empty
+    updatedProfile.unverified.length === 0 && delete updatedProfile.unverified
+
+    return updatedProfile
+  } else {
+    return profile
   }
 
-  return updatedProfile
 }
 
 const addVerifiedContact = (profile, type, contact) => {

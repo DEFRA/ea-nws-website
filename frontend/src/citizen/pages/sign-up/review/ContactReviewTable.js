@@ -10,7 +10,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
     return (
       <>
         {(profile.emails.length > 0 ||
-          profile.unverified.emails.length > 0) && (
+          profile.unverified?.emails?.length > 0) && (
             <tbody className='govuk-table__body'>
               {profile.emails.map((email, index) => (
                 <ContactReviewRow
@@ -39,7 +39,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
     return (
       <>
         {(profile.mobilePhones.length > 0 ||
-          profile.unverified.mobilePhones.length > 0) && (
+          profile.unverified?.mobilePhones?.length > 0) && (
             <tbody className='govuk-table__body'>
               {profile.mobilePhones.map((mobilePhone, index) => (
                 <ContactReviewRow
@@ -69,7 +69,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
     return (
       <>
         {(profile.homePhones.length > 0 ||
-          profile.unverified.homePhones.length > 0) && (
+          profile.unverified?.homePhones?.length > 0) && (
             <tbody className='govuk-table__body'>
               {profile.homePhones.map((homePhone, index) => (
                 <ContactReviewRow

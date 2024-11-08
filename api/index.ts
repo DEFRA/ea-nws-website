@@ -23,6 +23,7 @@ const locationPartnerHandlers = require('./handlers/location/locationPartnerHand
 const api = new OpenAPIBackend({
   definition: './openapi/openapi.yml',
   quick: true,
+  validate: false,
   handlers: {
     //sign up routes
     getRegisterStart: registerHandlers.getRegisterStart,

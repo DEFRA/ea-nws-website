@@ -55,6 +55,5 @@ def test_links(get_browser):
     click_link(get_browser, "Back", url_current)
 
     click_link(get_browser, "What are flood areas?", url_org_flood_areas)
-    # TODO: Add once the page is created
-    # check_h1_heading(get_browser, "What are flood areas?")
-    # click_link(get_browser, "Back", url_current)
+    check_h1_heading(get_browser, "What are flood areas?")
+    click_link(get_browser, "Back", url_current)

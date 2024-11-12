@@ -141,11 +141,11 @@ url_org_man_loc = {
         'notInEngland': url_org_man_loc_path + '/edit/xy-coordinates-not-in-england',
         'dropPinEdit': url_org_man_loc_path + '/edit/drop-pin-edit'
     },
-    'location': {
-        'viewLocation': url_org_man_loc_path + '/location/view-location'
-    },
-    'view_locations': url_org_man_loc_path + '/view-locations'
-
+   'view':{
+        'dashboard': url_org_man_loc_path + '/view-locations',
+        'details': url_org_man_loc_path + '/location/view-location',
+        'messages': url_org_man_loc_path + '/location/view-messages'
+    }
 }
 
 url_org_man_cont_path = url_org + '/manage-contacts'

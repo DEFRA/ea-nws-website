@@ -6,8 +6,8 @@ url_add_predefined_boundary = url_org_man_loc.get('add').get('predefinedBoundary
 url_add_optional_information_action_plan = url_org_man_loc.get('optionalLocation').get('addActionPlan')
 url_add_optional_information_notes = url_org_man_loc.get('optionalLocation').get('addNotes')
 url_add_another_predefined_boundary = url_org_man_loc.get('add').get('predefinedBoundary').get('addAnother')
-url_location_view_location = url_org_man_loc.get('location').get('viewLocation')
-url_view_locations = url_org_man_loc.get('view_locations')
+url_view_details = url_org_man_loc.get('view').get('details')
+url_view_dashboard = url_org_man_loc.get('view').get('dashboard')
 
 # Render add location page
 def render_add_loc_page(browser):
@@ -56,7 +56,7 @@ def test_add_predefined_boundary_single(get_browser):
     click_button(browser, 'Add predefined boundary', url_add_optional_information_action_plan)
     click_button(browser, 'Continue', url_add_optional_information_notes)
     click_button(browser, 'Continue', url_add_another_predefined_boundary)
-    click_link(browser, "I'm finished", url_location_view_location)
+    click_link(browser, "I'm finished", url_view_details)
     assert boundary_type + ', ' + boundary in browser.page_source
 
 # Test add predefined boundary with multiple boundaries selected (same type)
@@ -83,7 +83,7 @@ def test_add_predefined_boundary_multiple_same_type(get_browser):
     click_button(browser, 'Add predefined boundary', url_add_optional_information_action_plan)
     click_button(browser, 'Continue', url_add_optional_information_notes)
     click_button(browser, 'Continue', url_add_another_predefined_boundary)
-    click_link(browser, "I'm finished", url_view_locations)
+    click_link(browser, "I'm finished", url_view_dashboard)
     assert "Your organisation's locations" in browser.page_source
 
 # Test add predefined boundary with multiple boundaries selected (different types)
@@ -113,5 +113,5 @@ def test_add_predefined_boundary_multiple_different_types(get_browser):
     click_button(browser, 'Add predefined boundary', url_add_optional_information_action_plan)
     click_button(browser, 'Continue', url_add_optional_information_notes)
     click_button(browser, 'Continue', url_add_another_predefined_boundary)
-    click_link(browser, "I'm finished", url_view_locations)
+    click_link(browser, "I'm finished", url_view_dashboard)
     assert "Your organisation's locations" in browser.page_source

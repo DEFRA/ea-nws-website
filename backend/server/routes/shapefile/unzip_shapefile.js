@@ -19,10 +19,7 @@ module.exports = [
 
         const { zipFileName } = request.payload
         if (!zipFileName) {
-          return h.response({
-            status: 500,
-            message: 'No zip file provided'
-          })
+          createGenericErrorResponse(h)
         }
         const zipFileKey = `zip-uploads/${zipFileName}`
         const s3Client = new S3Client()
@@ -31,7 +28,6 @@ module.exports = [
           'bulkUploadBucket'
         )
 
-        console.log(`Attempting to retrieve ${zipFileKey}`)
         // Retrieve zip file from S3
         const zipFileStream = await s3Client.send(
           new GetObjectCommand({
@@ -39,18 +35,12 @@ module.exports = [
             Key: zipFileKey
           })
         )
-        console.log(`Retrieved! zipFileStream: ${zipFileStream}`)
-
         if (!zipFileStream) {
-          console.log(`No zip stream`)
-          return h.response({
-            status: 500,
-            message: 'Zip file could not be retrieved from bucket'
-          })
+          createGenericErrorResponse(h)
         }
 
+        // Subfolder to store new files in bucket, named after zip file
         const outputFolder = `${zipFileKey.replace('.zip', '/')}`
-        console.log(`New output folder is ${outputFolder}`)
 
         await new Promise((resolve, reject) => {
           const entryPromises = []
@@ -61,7 +51,7 @@ module.exports = [
               const filePath = `${outputFolder}${entry.path}`
               const uploadStream = new PassThrough()
 
-              // Stream the file back to the bucket, stored in the new subfolder
+              // Stream the file back to the bucket, stored in the subfolder
               try {
                 const uploadPromise = new Upload({
                   client: s3Client,
@@ -73,13 +63,9 @@ module.exports = [
                 })
                 entry.pipe(uploadStream)
 
-                entryPromises.push(
-                  uploadPromise.done().then(() => {
-                    console.log(`Uploaded ${filePath} successfully`)
-                  })
-                )
+                entryPromises.push(uploadPromise.done().then(() => {}))
               } catch (err) {
-                console.log(`Error uploading ${filePath}: ${err}`)
+                throw new Error(err)
               }
             })
             .on('finish', async () => {
@@ -88,7 +74,7 @@ module.exports = [
                 .then(() => resolve())
                 .catch((error) => reject(error))
             })
-            .on('error', (err) => reject(new Error(`Pipeline Error: ${err}`)))
+            .on('error', (err) => reject(new Error(err)))
         })
 
         return h.response({
@@ -96,7 +82,6 @@ module.exports = [
           data: 'Files unzipped and uploaded successfully'
         })
       } catch (error) {
-        console.log(error)
         return h.response({
           status: 500,
           errorMessage: error

@@ -8,7 +8,8 @@ export default function LocationSearchOptionsPage () {
   const navigate = useNavigate()
 
   const locationName = useSelector(
-    (state) => state.session.currentLocation.name
+    (state) =>
+      state.session.currentLocation.meta_data.location_additional.location_name
   )
   const searchOptions = [
     { label: 'Use a postcode', value: 'UseAPostcode' },

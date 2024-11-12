@@ -234,7 +234,8 @@ export default function IndexPage () {
     additionals: [
       {
         id: 'organisation',
-        value: { s: JSON.stringify({
+        value: {
+          s: JSON.stringify({
             name: 'THE 123 GROUP LIMITED',
             address: 'Boulton House 17-21 Chorlton Street, Manchester, M1 3HY',
             compHouseNum: '05897191',

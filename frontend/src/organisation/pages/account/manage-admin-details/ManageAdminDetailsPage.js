@@ -6,7 +6,7 @@ import OrganisationAccountNavigation from '../../../../common/components/custom/
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import { orgAccountUrls } from '../../../routes/account/AccountRoutes'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
-export default function ManageAdminDetailsPage() {
+export default function ManageAdminDetailsPage () {
   const profile = useSelector((state) => state.session.profile)
   const location = useLocation()
 

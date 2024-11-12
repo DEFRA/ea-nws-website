@@ -28,15 +28,12 @@ export default function LocationXYCoordinatesSearchLayout ({
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  // ToDo uncomment these and remove the hard coded coords once dashboard page has been created, for edititing xy coords
-  let currentXCoordinate = useSelector(
+  const currentXCoordinate = useSelector(
     (state) => state.session.currentLocation.meta_data.x_coordinate
   )
-  let currentYCoordinate = useSelector(
+  const currentYCoordinate = useSelector(
     (state) => state.session.currentLocation.meta_data.y_coordinate
   )
-  currentXCoordinate = '520814'
-  currentYCoordinate = '185016'
 
   const [xCoordinate, setXCoordinate] = useState(currentXCoordinate || '')
   const [xCoordinateError, setXCoordinateError] = useState('')

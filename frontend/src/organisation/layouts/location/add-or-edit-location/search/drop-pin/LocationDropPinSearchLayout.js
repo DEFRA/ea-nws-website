@@ -92,7 +92,7 @@ export default function LocationDropPinSearchLayout ({
   }
 
   const handleOnClick = (value) => {
-    setPlaceNameTownOrPostcode(value.name)
+    setPlaceNameTownOrPostcode(value.address)
     setPlaceNameTownOrPostcodeCoords(value.coordinates)
   }
 
@@ -185,6 +185,7 @@ export default function LocationDropPinSearchLayout ({
                 menuOpen
                 value={placeNameTownOrPostcode}
                 onClick={(val) => handleOnClick(val)}
+                nameField='address'
               />
             </div>
             <Button

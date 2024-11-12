@@ -37,7 +37,7 @@ export default function Input ({
         )}
         {error !== '' && (
           <p id='govuk-text-input-error' className='govuk-error-message'>
-            <span className='govuk-visually-hidden'>Error:</span> {error}
+            {error}
           </p>
         )}
         <input

@@ -11,6 +11,10 @@ export default function FindUnmatchedLocationsPage () {
   const [error, setError] = useState('')
   const location = useLocation()
 
+  // Default values for null location.state
+  const addedLocations = location?.state?.added || 0
+  const notAddedLocations = location?.state?.notAdded || 0
+
   const unmatchedLocationsOptions = [
     { value: 'ManuallyFindLocations', label: 'Manually find locations' },
     { value: 'DoNotAddLocations', label: 'Do not add locations' }
@@ -38,14 +42,15 @@ export default function FindUnmatchedLocationsPage () {
       <NotificationBanner
         className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-10 govuk-!-margin-top-5'
         title='Success'
-        text={location?.state.added + ' locations added'}
+        text={`${addedLocations} locations added`}
       />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>
-              What do you want to do with the {location?.state.notAdded} locations not matched?
+              What do you want to do with the {notAddedLocations} locations not
+              matched?
             </h1>
             <div className='govuk-body'>
               <div

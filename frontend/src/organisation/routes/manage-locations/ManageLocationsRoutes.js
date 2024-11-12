@@ -1,5 +1,6 @@
 import AddLocationOptionsPage from '../../pages/manage-locations/add-location/AddLocationOptionsPage'
 import ConfirmLocationPage from '../../pages/manage-locations/add-location/manual-add-location/confirm-location/ConfirmLocationPage'
+import LocationAlreadyExists from '../../pages/manage-locations/add-location/manual-add-location/name/LocationAlreadyExists'
 import LocationNamePage from '../../pages/manage-locations/add-location/manual-add-location/name/LocationNamePage'
 import LocationSearchOptionPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationSearchOptionPage'
 import DropPinNotInEnglandPage from '../../pages/manage-locations/add-location/manual-add-location/search/drop-pin/DropPinNotInEnglandPage'
@@ -10,13 +11,15 @@ import LocationPostCodeSearchPage from '../../pages/manage-locations/add-locatio
 import LocationPostCodeSearchResultsPage from '../../pages/manage-locations/add-location/manual-add-location/search/postcode/LocationPostCodeSearchResultsPage'
 import LocationXYCoordinatesSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/xy-coordinates/LocationXYCoordinatesSearchPage'
 import XYCoordinatesNotInEnglandPage from '../../pages/manage-locations/add-location/manual-add-location/search/xy-coordinates/XYCoordinatesNotInEnglandPage'
-import AddLocationNotInEnglandPage from '../../pages/manage-locations/add-location/manual-add-location/unmatched-locations/NotInEnglandPage'
-import AddActionPlan from '../../pages/manage-locations/add-location/optional-information/AddActionPlanPage'
+import AddActionPlan from '../../pages/manage-locations/add-location/optional-information/ActionPlanPage'
 import AddKeyInformationPage from '../../pages/manage-locations/add-location/optional-information/AddKeyInformationPage'
-import KeywordsForThisLocationPage from '../../pages/manage-locations/add-location/optional-information/AddKeywordsForThisLocationPage'
-import AddNotesPage from '../../pages/manage-locations/add-location/optional-information/AddNotesPage'
+import KeywordsForThisLocationPage from '../../pages/manage-locations/add-location/optional-information/AddKeywordsPage'
 import AddOptionalAddress from '../../pages/manage-locations/add-location/optional-information/AddOptionalAddress'
-import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-information/OptionalLocationInformationPage'
+import AddNotesPage from '../../pages/manage-locations/add-location/optional-information/NotesPage'
+import OptionalLocationInformationPage from '../../pages/manage-locations/add-location/optional-information/OptionalInfoPage'
+import AddAnotherPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/AddAnotherPredefinedBoundaryPage'
+import PredefinedBoundaryOptionalInfoPage from '../../pages/manage-locations/add-location/predefined-boundary/OptionalInfoPage'
+import SelectPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/SelectPredefinedBoundaryPage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirmPage'
 import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'
@@ -71,7 +74,8 @@ const orgManageLocationsUrls = {
       cannotFindAddress: urlManageOrg + '/add/cannot-find-address',
       xyCoordinatesNotInEngland:
         urlManageOrg + '/add/xy-coordinates-not-in-england',
-      dropPinNotInEngland: urlManageOrg + '/add/drop-pin-not-in-england'
+      dropPinNotInEngland: urlManageOrg + '/add/drop-pin-not-in-england',
+      alreadyExists: urlManageOrg + '/add/location-already-exists'
     },
     search: {
       searchOption: urlManageOrg + '/add/search-option',
@@ -80,6 +84,12 @@ const orgManageLocationsUrls = {
       xyCoordinatesSearch: urlManageOrg + '/add/xy-coordinates-search',
       dropPinSearch: urlManageOrg + '/add/drop-pin-search',
       dropPinSearchResults: urlManageOrg + '/add/drop-pin-search-results'
+    },
+    predefinedBoundary: {
+      optionalInfo:
+        urlManageOrgAddLocations + '/predefined-boundary/optional-information',
+      select: urlManageOrg + '/add/predefined-boundary',
+      addAnother: urlManageOrg + '/add/another-predefined-boundary'
     },
     optionalInformation: {
       optionalInfo: urlManageOrgAddLocations + '/optional-information',
@@ -189,6 +199,10 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.add.error.dropPinNotInEngland,
     component: <DropPinNotInEnglandPage />
   },
+  {
+    path: orgManageLocationsUrls.add.error.alreadyExists,
+    component: <LocationAlreadyExists />
+  },
   // search
   {
     path: orgManageLocationsUrls.add.search.searchOption,
@@ -214,6 +228,14 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.add.search.dropPinSearchResults,
     component: <LocationDropPinSearchResultsPage />
   },
+  {
+    path: orgManageLocationsUrls.add.predefinedBoundary.select,
+    component: <SelectPredefinedBoundaryPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.predefinedBoundary.addAnother,
+    component: <AddAnotherPredefinedBoundaryPage />
+  },
   // unmatched locations
   {
     path: orgManageLocationsUrls.unmatchedLocations.doNotAdd,
@@ -238,10 +260,6 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.notInEngland,
     component: <NotInEnglandPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.notInEnglandLP,
-    component: <AddLocationNotInEnglandPage />
   },
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.selectHow,
@@ -279,6 +297,11 @@ const orgManageLocationRoutes = [
   {
     path: urlManageOrgConfirmLocations,
     component: <ConfirmAddingLocationsPage />
+  },
+  // predefined boundary
+  {
+    path: orgManageLocationsUrls.add.predefinedBoundary.optionalInfo,
+    component: <PredefinedBoundaryOptionalInfoPage />
   },
   // edit
   {

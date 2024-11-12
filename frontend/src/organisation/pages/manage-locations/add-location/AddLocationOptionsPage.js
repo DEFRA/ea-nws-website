@@ -7,7 +7,7 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AddLocationOptionsPage () {
+export default function AddLocationOptionsPage() {
   const navigate = useNavigate()
   const [addLocationType, setAddLocationType] = useState('')
   const [addLocationTypeError, setAddLocationTypeError] = useState('')
@@ -22,7 +22,7 @@ export default function AddLocationOptionsPage () {
       label: 'Upload a location as a shapefile in a ZIP file'
     },
     { value: 'Manual', label: 'Manually add locations' },
-    { value: 'Boundaries', label: 'Select predefined boundaries' }
+    { value: 'PredefinedBoundaries', label: 'Select predefined boundaries' }
   ]
 
   useEffect(() => {
@@ -41,11 +41,10 @@ export default function AddLocationOptionsPage () {
           navigate(orgManageLocationsUrls.add.addLocationsWithShapefile)
           break
         case addLocationOptions[2].value:
-          // Someone to update
-          // navigate(orgManageLocationsUrls.add.addressInfo)
+          navigate(orgManageLocationsUrls.add.name)
           break
         case addLocationOptions[3].value:
-          navigate(orgManageLocationsUrls.add.name)
+          navigate(orgManageLocationsUrls.add.predefinedBoundary.select)
           break
       }
     }

@@ -76,7 +76,7 @@ export default function SelectAddressLayout ({
                             onClick={(event) =>
                               handleSelectedLocation(event, location)}
                           >
-                            {location.name}
+                            {location.address}
                           </Link>
                         </td>
                       </tr>

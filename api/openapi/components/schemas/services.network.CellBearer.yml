@@ -1,0 +1,26 @@
+type: string
+enum:
+  - UNKNOWN
+  - G900
+  - U900
+  - G1800
+  - UMTS
+  - FEMTO
+  - DISCONNECTED
+  - L800
+  - L1800
+  - L2600
+  - WIFI
+  - L2100
+  - L700
+  - L1500
+  - L3500
+  - N700
+  - N800
+  - N900
+  - N1400
+  - N1800
+  - N2100
+  - N2600
+  - N3500
+  - N26G

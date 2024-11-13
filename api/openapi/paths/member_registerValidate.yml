@@ -1,0 +1,43 @@
+post:
+  operationId: getRegisterValidate
+  tags:
+    - member
+  summary: Validate the registration of a new user.
+  description: |-
+    The user registering a new account should have received a code via
+    email or SMS. This RPC is then used to finalize the registration. If
+    the registration token is invalid (it has been falsified, it has
+    expired, etc), the registration is rejected.
+    Once the registration is finalized, an authentication token is
+    returned, as the user is considered automatically signed in after
+    registration using this token.
+    If a device id is provided, a mobile subscription is created if not
+    already existing, and the newly created member is linked to this device
+    id.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/geosafeea.public.Member.registerValidateArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: >-
+              ../components/schemas/geosafeea.public.Member.registerValidateRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

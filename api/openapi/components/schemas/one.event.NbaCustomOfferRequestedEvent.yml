@@ -1,0 +1,16 @@
+allOf:
+  - $ref: ./bigdata.base.CdrEvent.yml
+  - type: object
+    required:
+      - msisdn
+      - nbaOfferIdStr
+      - technicalCode
+    properties:
+      msisdn:
+        type: string
+        description: msisdn of the subscriber
+      nbaOfferIdStr:
+        type: string
+        description: Id of the proposed/accepted offer (as a string).
+      technicalCode:
+        type: string

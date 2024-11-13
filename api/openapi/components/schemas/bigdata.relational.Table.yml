@@ -1,0 +1,15 @@
+type: object
+description: |-
+  Table.
+
+  A table is either an \ref InputTable or the result of
+  an \ref Operation.
+properties:
+  _class:
+    type: string
+discriminator:
+  propertyName: _class
+  mapping:
+    bigdata.relational.Operation: ./bigdata.relational.Operation.yml
+    bigdata.relational.InputTable: ./bigdata.relational.InputTable.yml
+    bigdata.relational.NamedTableReference: ./bigdata.relational.NamedTableReference.yml

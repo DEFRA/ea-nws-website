@@ -1,0 +1,28 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: >-
+      Allowed message identifiers in a workspace.
+
+
+      In any case, a workspace cannot use a message identifier if it is not
+
+      allowed in its parent.
+
+
+      By default (ie. if the AVP is not present) then all the message
+      identifiers
+
+      are allowed.
+    properties:
+      list:
+        type: array
+        items:
+          type: integer
+          format: int32
+          minimum: 0
+          maximum: 65535
+      rangeList:
+        type: array
+        items:
+          $ref: ./cbc.MsgidRange.yml

@@ -1,0 +1,24 @@
+allOf:
+  - $ref: ./bigdata.aggr.Aggregation.yml
+  - type: object
+    description: |-
+      Compute the average value for a given input field.
+
+      Only the rows where the field is present are taken into account.
+      Accepted input types: boolean, integer, double.
+      Output type: always double (optional if the input field is optional or if
+      the minimum input length is zero).
+    required:
+      - inputFieldName
+      - outputFieldName
+    properties:
+      inputFieldName:
+        type: string
+        description: |-
+          Name of the field for which the average should be calculated.
+
+          When the input field is optional, only the rows where the field is set
+          are used for average calculation (IOW, AVG(NULL, 3) == 3).
+      outputFieldName:
+        type: string
+        description: Name of the output field for the average value.

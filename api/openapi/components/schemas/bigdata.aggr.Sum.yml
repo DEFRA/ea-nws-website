@@ -1,0 +1,22 @@
+allOf:
+  - $ref: ./bigdata.aggr.Aggregation.yml
+  - type: object
+    description: |-
+      Sum the values of a given input field.
+
+      It supports booleans, unsigned integers (output type: ulong),
+      signed integers (output type: long), and double (output type: double).
+
+      The output field is always set. It is left null if no input value is
+      passed to the aggregation, either because there is no input row or because
+      the input field is optional and its value is absent from each row.
+    required:
+      - inputFieldName
+      - outputFieldName
+    properties:
+      inputFieldName:
+        type: string
+        description: Name of the field to sum.
+      outputFieldName:
+        type: string
+        description: Name of the output field containing the resulting sum.

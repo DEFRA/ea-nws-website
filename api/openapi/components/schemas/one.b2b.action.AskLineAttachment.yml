@@ -1,0 +1,19 @@
+allOf:
+  - $ref: ./one.b2b.action.AskNewLineBase.yml
+  - type: object
+    description: |-
+      Ask to attach a line to a company.
+
+      The company is identified by the workspace in which the request is made.
+
+      The msisdn must be manually filled when sending such an action with the
+      one.b2b.LineManagement::sendActions RPC.
+    properties:
+      fileContent:
+        description: |-
+          Attached file, to send with the notification.
+
+          It won't be sent as a real attachment, but as a link to download it
+          (if the notification is properly configured for that).
+        allOf:
+          - $ref: ./services.FileContent.yml

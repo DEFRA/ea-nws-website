@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./qre.EnteredInScenario.yml
+  - type: object
+    description: |-
+      Specific case for exposure and success marker.
+
+      Was used to make difference between advanced and exposure/success marker.
+       Now just used in migration code.

@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./one.event.PushEvent.yml
+  - type: object
+    description: Delivery report.
+    properties:
+      drErrorCode:
+        type: string
+      duration:
+        type: integer
+        format: int32
+        description: Message duration
+        minimum: 0

@@ -1,0 +1,13 @@
+type: object
+required:
+  - authToken
+  - contactId
+properties:
+  authToken:
+    type: string
+    description: |-
+      a secured token retrieved during
+                                 registration or signin
+  contactId:
+    type: string
+    description: id of the contact to update

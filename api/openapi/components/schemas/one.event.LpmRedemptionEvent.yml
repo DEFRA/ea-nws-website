@@ -1,0 +1,19 @@
+allOf:
+  - $ref: ./bigdata.base.Event.yml
+  - type: object
+    required:
+      - collection
+      - entity
+      - event
+      - cost
+    properties:
+      collection:
+        type: string
+      entity:
+        $ref: ./platform.base.Value.yml
+      event:
+        type: string
+      cost:
+        type: integer
+        format: int64
+        minimum: 0

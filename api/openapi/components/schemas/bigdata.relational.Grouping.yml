@@ -1,0 +1,77 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    description: |-
+      Grouping operation.
+
+      Group and aggregate columns values.
+    properties:
+      dimensions:
+        type: array
+        description: Define grouping dimensions.
+        items:
+          oneOf:
+            - $ref: ./bigdata.relational.CategorizationDimension.yml
+            - $ref: ./bigdata.relational.PartitionDimension.yml
+            - $ref: ./bigdata.relational.PeriodDimension.yml
+            - $ref: ./bigdata.relational.PlacemarkDimension.yml
+            - $ref: ./bigdata.relational.RangeDimension.yml
+            - $ref: ./bigdata.relational.UniqueValueDimension.yml
+          discriminator:
+            propertyName: _class
+      aggregations:
+        type: array
+        description: Define grouping aggregations.
+        items:
+          oneOf:
+            - $ref: ./bigdata.relational.AverageAggregation.yml
+            - $ref: ./bigdata.relational.CountAggregation.yml
+            - $ref: ./bigdata.relational.CountUniqAggregation.yml
+            - $ref: ./bigdata.relational.MaxAggregation.yml
+            - $ref: ./bigdata.relational.MinAggregation.yml
+            - $ref: ./bigdata.relational.QuantileAggregation.yml
+            - $ref: ./bigdata.relational.SumAggregation.yml
+          discriminator:
+            propertyName: _class
+      sets:
+        type: array
+        description: |-
+          Define grouping sets.
+
+          Sets allows grouping across some dimensions. For example, if two
+          dimensions are declared, and sets contains [[0, 1], [0]], then
+          aggregations will be computed both on all dimensions and across the
+          second dimension:
+
+           +------+------+-----+
+           | DIM0 | DIM1 | SUM |
+           +------+------+-----+
+           |  A   |  x   |  5  |
+           +------+------+-----+
+           |  A   |  y   |  3  |
+           +------+------+-----+
+           |  A   |      |  8  |
+           +------+------+-----+
+
+          If empty, only the set containing all dimensions is considered.
+        items:
+          $ref: ./bigdata.relational.GroupingSet.yml
+      inputSizeHardLimit:
+        type: integer
+        format: int64
+        description: >-
+          Hard limit for the number of input rows.
+
+
+          If the number of input rows is above this limit, then the computation
+
+          is going to fail. The purpose of this parameter is to make the
+          grouping
+
+          fail early, during or after the selection and before launching the QMR
+
+          job. This way, we don't start extracting data for a calculation that
+          we
+
+          already have considered as too big.
+        minimum: 1

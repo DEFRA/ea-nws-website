@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: List of workspace custom field.
+    properties:
+      customFields:
+        type: array
+        items:
+          $ref: ./geosafeea.contact.WorkspaceCustomField.yml

@@ -1,0 +1,13 @@
+type: object
+required:
+  - authToken
+  - partnerId
+properties:
+  authToken:
+    type: string
+    description: |-
+      a secured token retrieved during
+                                 registration or signin
+  partnerId:
+    type: string
+    description: id of the alert emitter organization

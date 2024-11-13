@@ -1,0 +1,14 @@
+type: object
+required:
+  - authToken
+properties:
+  authToken:
+    type: string
+    description: |-
+      a secured token retrieved during registration or
+                             signin
+  deviceId:
+    type: string
+    description: |-
+      mobile device id, if the signin verification is
+                             performed using the GeoSafe mobile app.

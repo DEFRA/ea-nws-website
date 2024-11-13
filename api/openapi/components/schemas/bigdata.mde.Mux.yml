@@ -1,0 +1,3 @@
+allOf:
+  - $ref: ./bigdata.relational.Mux.yml
+  - type: object

@@ -1,0 +1,38 @@
+post:
+  operationId: getEmailValidate
+  tags:
+    - member
+  summary: Validate verification code of an email.
+  description: |-
+    This RPC verifies if the auth token is valid, and if the currently
+    authenticated user has the provided email as an unverified email
+    address, and if the code matches the expected code. Then the email
+    is moved to the list of email addresses and removed from the
+    unverified addresses.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/geosafeea.public.Member.verifyEmailValidateArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: >-
+              ../components/schemas/geosafeea.public.Member.verifyEmailValidateRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./bigdata.relational.RefAggregation.yml
+  - type: object
+    description: |-
+      Ref aggregation single result.
+
+      Aggregation which produce one result, based on a column.
+    properties:
+      param:
+        description: Parameter.
+        allOf:
+          - $ref: ./bigdata.relational.GroupingOperationParam.yml

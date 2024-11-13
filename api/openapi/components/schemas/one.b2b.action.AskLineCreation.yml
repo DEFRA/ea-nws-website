@@ -1,0 +1,28 @@
+allOf:
+  - $ref: ./one.b2b.action.AskNewLineBase.yml
+  - type: object
+    description: |-
+      Ask to create a line in a company.
+
+      The msisdn must be manually filled when sending such an action with the
+      one.b2b.LineManagement::sendActions RPC.
+    required:
+      - tariffPlan
+      - sim
+    properties:
+      tariffPlan:
+        type: string
+        description: The tariff plan of the contract.
+        minLength: 1
+        pattern: '[_0-9a-zA-Z]*'
+      activatedServices:
+        type: array
+        description: Activated service (shared object id or name).
+        items:
+          $ref: ./platform.base.Value.yml
+      sim:
+        type: string
+        description: SIM of the line.
+      fleetId:
+        type: string
+        description: The fleet ID associated to the company (useful for TMF).

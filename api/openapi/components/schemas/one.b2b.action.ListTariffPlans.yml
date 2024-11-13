@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./bigdata.base.Action.yml
+  - type: object
+    properties:
+      currentTariffPlan:
+        type: string
+        minLength: 1
+        pattern: '[_0-9a-zA-Z]*'

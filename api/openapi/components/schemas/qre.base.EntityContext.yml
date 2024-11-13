@@ -1,0 +1,13 @@
+type: object
+description: |-
+  Context of an entity in a scenario.
+
+  This context will be passed all along the progress of an entity in a
+  scenario.
+properties:
+  ruleContexts:
+    type: array
+    description: Contexts of the rules in the scenario.
+    items:
+      discriminator:
+        propertyName: _class

@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    properties:
+      list:
+        type: array
+        items:
+          $ref: ./igl.ExtPullCfg.yml

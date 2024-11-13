@@ -1,0 +1,14 @@
+type: object
+description: |-
+  A set of boolean expressions.
+
+  Describes a set of boolean expressions for conditions that can apply
+  on an undefined number of sub-boolean expressions.
+required:
+  - conditions
+properties:
+  conditions:
+    type: array
+    items:
+      $ref: ./bigdata.query.BoolExpr.yml
+    minItems: 1

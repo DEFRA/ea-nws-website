@@ -1,0 +1,6 @@
+type: string
+description: Contact role within an organization.
+enum:
+  - SELF
+  - ADMIN
+  - READONLY

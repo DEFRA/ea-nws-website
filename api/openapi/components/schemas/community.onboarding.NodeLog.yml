@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./community.onboarding.Log.yml
+  - type: object
+    description: |-
+      Onboarding operation log received by a Node.
+
+      When recieving this event, otherEntity and otherCollection are the ones of
+      the leaf.

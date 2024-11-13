@@ -1,0 +1,24 @@
+type: object
+description: Rule for statistical refinement decision tree.
+properties:
+  travelerTypes:
+    type: array
+    description: |-
+      Most reprentative (higher) traveler type found for this subscriber and
+       for this set of moves.
+    items:
+      $ref: ./one.geomarketing.TravelerType.yml
+  imsiPfxTree:
+    type: array
+    description: |-
+      Longest-matching decision tree.
+
+      The coefficient to be applied is the one with the prefix matching the
+       subscriber IMSI with the bigger number of digits.
+    items:
+      $ref: ./one.geomarketing.StatRefinementNode.yml
+  coef:
+    type: number
+    format: double
+    description: Default coefficient for these traveler types.
+    minimum: 0

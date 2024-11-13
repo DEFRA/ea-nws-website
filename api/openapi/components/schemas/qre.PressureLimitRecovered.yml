@@ -1,0 +1,15 @@
+allOf:
+  - $ref: ./bigdata.base.EventLog.yml
+  - type: object
+    description: |-
+      Event log emitted when a entity goes below maximum pressure.
+
+      This event is emitted when an entity that had previously reached its
+      pressure limit goes below that limit again.
+    properties:
+      channel:
+        type: string
+        description: |-
+          Affected pressure channel.
+
+          If empty, legacy EventLog, using the scenario channel.

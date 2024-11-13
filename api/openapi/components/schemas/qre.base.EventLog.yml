@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./bigdata.base.EventLog.yml
+  - type: object
+    properties:
+      scenarioId:
+        type: integer
+        format: int64
+        minimum: 0
+      ruleId:
+        type: integer
+        format: int64
+        minimum: 0

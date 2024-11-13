@@ -1,0 +1,39 @@
+post:
+  operationId: getSignInStart
+  tags:
+    - member
+  summary: Start authentication of a member.
+  description: |-
+    This RPC is used to authenticate a member based on his email or his
+    phone number. Either \ref email or \ref mobilePhone should be set. If
+    both are set, \ref mobilePhone is ignored.
+
+    If the email or mobile phone is known, a code is sent to the email
+    address, or mobile phone by SMS, and a temporary signin token is
+    provided. This token is only valid in \ref signinValidate, to transform
+    this signin token into an auth token.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/geosafeea.public.Member.signinStartArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/geosafeea.public.Member.signinStartRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

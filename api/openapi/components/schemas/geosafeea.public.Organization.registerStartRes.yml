@@ -1,0 +1,11 @@
+type: object
+required:
+  - orgRegisterToken
+properties:
+  orgRegisterToken:
+    type: string
+    description: |-
+      a secured token that identifies the
+                                    organization registration session. This
+                                    token must then be used in the \ref registerValidate RPC to finalize the
+                                    registration procedure.

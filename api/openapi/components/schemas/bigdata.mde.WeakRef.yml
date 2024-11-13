@@ -1,0 +1,17 @@
+allOf:
+  - $ref: ./bigdata.relational.TableRef.yml
+  - type: object
+    description: >-
+      Indicate that the operation containing the ref should not depend of this
+
+      ref.
+
+
+      This reference type inhibits \p mde_op_add_dependency. This is useful when
+
+      implementing operations with rewrites: when referencing fields that
+
+      would otherwise be implicit. It allows the input optimizer to remove
+      fields
+
+      even if they are explicitly mentioned in the rewritten expression.

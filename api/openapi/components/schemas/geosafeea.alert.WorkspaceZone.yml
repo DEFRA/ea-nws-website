@@ -1,0 +1,11 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: Restrict the alert zone in a workspace.
+    required:
+      - zone
+    properties:
+      zone:
+        description: Area the workspace alerts will be restricted to.
+        allOf:
+          - $ref: ./services.geoloc.ZoneParams.yml

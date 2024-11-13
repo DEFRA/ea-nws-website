@@ -1,0 +1,9 @@
+type: object
+required:
+  - southWest
+  - northEast
+properties:
+  southWest:
+    $ref: ./geoloc.Coord.yml
+  northEast:
+    $ref: ./geoloc.Coord.yml

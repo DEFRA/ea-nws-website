@@ -1,0 +1,25 @@
+allOf:
+  - $ref: ./one.b2b.notification.AskNewLineBase.yml
+  - type: object
+    required:
+      - tariffPlan
+      - sim
+    properties:
+      tariffPlan:
+        type: string
+        description: The tariff plan of the contract
+        minLength: 1
+        pattern: '[_0-9a-zA-Z]*'
+      category:
+        type: string
+        description: The category of the contract
+        minLength: 1
+        pattern: '[_0-9a-zA-Z]*'
+      activatedServices:
+        type: array
+        description: Activated service
+        items:
+          $ref: ./platform.base.Value.yml
+      sim:
+        type: string
+        description: SIM of the line.

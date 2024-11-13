@@ -1,0 +1,13 @@
+type: object
+properties:
+  allowLai:
+    type: boolean
+    description: Allow LAI format.
+  kind:
+    description: |-
+      The kind of node identifier.
+
+      This defines the kind of node and what is actually stored. The default
+      value is CGI (field is optional for backward compatibility reasons).
+    allOf:
+      - $ref: ./platform.NodeKind.yml

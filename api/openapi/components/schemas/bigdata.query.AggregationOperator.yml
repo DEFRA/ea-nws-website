@@ -1,0 +1,17 @@
+type: string
+description: |-
+  Operator to apply to an aggregation when selecting or extracting data.
+
+  Those operator let you specify how to merge a set of aggregation slot
+  into a single value during queries.
+enum:
+  - MIN
+  - MAX
+  - SUM
+  - MEAN
+  - DIFF
+  - RELATIVE_INCREASE
+  - ALL_OF
+  - SOME_OF
+  - COUNT
+  - COUNT_UNIQUE

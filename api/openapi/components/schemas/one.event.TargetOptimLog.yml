@@ -1,0 +1,23 @@
+allOf:
+  - $ref: ./bigdata.base.CdrEvent.yml
+  - type: object
+    required:
+      - scenarioId
+      - status
+    properties:
+      entity:
+        $ref: ./platform.base.Value.yml
+      scenarioId:
+        type: integer
+        format: int64
+        minimum: 0
+      category:
+        type: string
+      conversionBoostProba:
+        type: number
+        format: double
+      naturalTakersProba:
+        type: number
+        format: double
+      status:
+        $ref: ./one.event.TargetOptimStatus.yml

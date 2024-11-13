@@ -1,0 +1,3 @@
+allOf:
+  - $ref: ./community.sponsorship.OfferEvent.yml
+  - type: object

@@ -1,0 +1,18 @@
+type: object
+description: |-
+  Grouping operation param
+
+  Allow to give a name to a Dimension/Aggregation.
+properties:
+  name:
+    type: string
+    description: |-
+      Define the name of grouping operation result.
+
+      This field is useful if the result of an aggregation is the input of
+      an other operation.
+  sensitivity:
+    description: Sensitivity of comparisons.
+    allOf:
+      - $ref: ./platform.Sensitivity.yml
+    default: 0

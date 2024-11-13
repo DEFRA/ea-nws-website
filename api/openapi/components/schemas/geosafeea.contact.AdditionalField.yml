@@ -1,0 +1,23 @@
+type: object
+description: |-
+  Custom fields in a contact.
+
+  In the platform configuration, or in some workspaces, there may be custom
+  fields configured for a contact. These fields are provided based on this
+  structure, when listing or getting a contact, but also when updating a
+  contact.
+required:
+  - id
+  - value
+properties:
+  id:
+    type: string
+    description: |-
+      Field identifier.
+
+      This field should match one of the identifiers of the custom fields for
+      this workspace.
+  value:
+    description: Additional field value.
+    allOf:
+      - $ref: ./platform.base.Value.yml

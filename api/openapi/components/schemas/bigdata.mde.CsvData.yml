@@ -1,0 +1,19 @@
+allOf:
+  - $ref: ./bigdata.mde.Operation.yml
+  - type: object
+    description: |-
+      Constant table defined using CSV data.
+
+      Quite the same as \p StaticData but the column types are detected from the
+      CSV content.
+    properties:
+      rows:
+        type: array
+        description: |-
+          Output CSV rows.
+
+          The first row should be the header of the CSV. The CSV rows should use
+          the semicolon as a delimiter.
+        items:
+          type: string
+          minLength: 1

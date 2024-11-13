@@ -1,0 +1,19 @@
+allOf:
+  - $ref: ./platform.cfg.DynConfSetElem.yml
+  - type: object
+    description: Subscribers classifications rules.
+    properties:
+      marginStartPeriod:
+        $ref: ./platform.base.Time.yml
+      marginEndPeriod:
+        $ref: ./platform.base.Time.yml
+      nightOffset:
+        $ref: ./platform.DayDatePattern.yml
+      counters:
+        type: array
+        items:
+          $ref: ./one.geomarketing.Counter.yml
+      rules:
+        type: array
+        items:
+          $ref: ./one.geomarketing.SubscriberClassificationRule.yml

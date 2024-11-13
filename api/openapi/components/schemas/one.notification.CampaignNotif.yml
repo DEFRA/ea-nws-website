@@ -1,0 +1,28 @@
+allOf:
+  - $ref: ./one.notification.UserNotification.yml
+  - type: object
+    description: Base class for notifications about a campaign.
+    required:
+      - campaignName
+      - campaignId
+      - workspaceName
+      - nbRows
+    properties:
+      campaignName:
+        type: string
+        description: Name of the campaign.
+      campaignId:
+        type: integer
+        format: int64
+        description: ID of the campaign.
+        minimum: 0
+      workspaceName:
+        type: string
+        description: |-
+          Name of the workspace of the campaign.
+
+          workspaceId is present in parent bigdata.base.EventLog.
+      nbRows:
+        type: integer
+        format: int32
+        description: Number of rows in the campaign.

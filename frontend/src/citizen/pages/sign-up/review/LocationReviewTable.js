@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export default function LocationReviewTable ({ locations }) {
   return (
-    <>
+    <div className='govuk-!-padding-bottom-4'>
       <h3 className='govuk-heading-m'>Location you selected</h3>
       {locations.map && (
         <table className='govuk-table'>
@@ -29,6 +29,6 @@ export default function LocationReviewTable ({ locations }) {
           ))}
         </table>
       )}
-    </>
+    </div>
   )
 }

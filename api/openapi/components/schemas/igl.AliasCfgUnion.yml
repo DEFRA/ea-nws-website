@@ -1,0 +1,13 @@
+oneOf:
+  - type: object
+    required:
+      - sis
+    properties:
+      sis:
+        $ref: ./igl.AliasSisCfg.yml
+  - type: object
+    required:
+      - internal
+    properties:
+      internal:
+        $ref: ./igl.AliasInternalCfg.yml

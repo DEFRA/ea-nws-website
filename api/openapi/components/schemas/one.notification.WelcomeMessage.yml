@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./one.notification.ResetPassword.yml
+  - type: object
+    description: |-
+      Welcome message.
+
+      Message sent either automatically when a user is created (accordingly to
+      the one configuration), or manually by an administrator.

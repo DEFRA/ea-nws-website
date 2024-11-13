@@ -1,0 +1,16 @@
+allOf:
+  - $ref: ./bigdata.qrrd.Ref.yml
+  - type: object
+    description: >-
+      Value reference.
+
+
+      Could be used for both selection and extraction.
+
+
+      When extracting a value, the expected type should be of the type of the
+
+      associated source. The only exception is when using an average operator
+      for
+
+      aggregating or for merging. In that case, the expected type is double.

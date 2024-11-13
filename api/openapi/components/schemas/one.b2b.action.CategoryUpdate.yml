@@ -1,0 +1,7 @@
+allOf:
+  - $ref: ./one.b2b.action.TariffPlanUpdate.yml
+  - type: object
+    description: |-
+      Action log class for changing contract category.
+
+      XXX: We cannot change the category without changing the tariff plan

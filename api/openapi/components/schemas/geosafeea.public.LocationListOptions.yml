@@ -1,0 +1,14 @@
+allOf:
+  - $ref: ./platform.ListOptions.yml
+  - type: object
+    description: |-
+      Options for location.list.
+
+      Only the following fields from platform.ListOptions are supported:
+       - offset
+       - limit
+       - filterExpr on field \ref name in \ref geosafeea.contact.Location
+    properties:
+      contactId:
+        type: string
+        description: List locations that this contact is attached to.

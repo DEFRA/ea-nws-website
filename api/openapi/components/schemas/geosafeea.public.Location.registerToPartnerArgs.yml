@@ -1,0 +1,22 @@
+type: object
+required:
+  - authToken
+  - locationId
+  - partnerId
+  - params
+properties:
+  authToken:
+    type: string
+    description: |-
+      a secured token retrieved during
+                                 registration or signin
+  locationId:
+    type: string
+    description: the location identifier
+  partnerId:
+    type: string
+    description: id of the alert emitter organization
+  params:
+    description: parameters of the new registration
+    allOf:
+      - $ref: ./geosafeea.public.RegistrationParams.yml

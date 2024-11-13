@@ -1,0 +1,4 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    description: Return the input if not empty or a default table otherwise.

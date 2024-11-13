@@ -1,0 +1,37 @@
+post:
+  operationId: getSignInValidate
+  tags:
+    - member
+  summary: Validate the signin of a user.
+  description: |-
+    This RPC transforms a signin token into an authentication token if the
+    code provided matches the expected code, and provides the profile of
+    the authenticated member.
+    If a device id is provided, a mobile subscription is created if not
+    already existing, and the member is linked to this device id.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/geosafeea.public.Member.signinValidateArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: >-
+              ../components/schemas/geosafeea.public.Member.signinValidateRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

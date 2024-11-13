@@ -1,0 +1,16 @@
+allOf:
+  - $ref: ./bigdata.relational.Union.yml
+  - type: object
+    description: >-
+      Union between tables of different data types.
+
+
+      When a given field is present in a table but absent in another, then the
+
+      field is kept but becomes optional.
+
+
+      Two fields with the same names but different types will still be refused
+      by
+
+      MDE.

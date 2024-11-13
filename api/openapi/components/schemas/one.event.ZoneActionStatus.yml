@@ -1,0 +1,6 @@
+type: string
+enum:
+  - UNRESOLVED
+  - ACCEPTED
+  - TIMEOUT
+  - LIMIT_REACHED

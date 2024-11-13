@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./bigdata.aggr.Aggregation.yml
+  - type: object
+    description: |-
+      Empty aggregation, generates an empty row whatever the input is.
+
+      Can be used as a reducer for \ref bigdata.relational.MapReduce to build a
+      'Unique' macro-operation for instance.

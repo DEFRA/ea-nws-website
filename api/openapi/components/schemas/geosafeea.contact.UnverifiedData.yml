@@ -1,0 +1,19 @@
+type: object
+description: |-
+  User-provided contact data that is not verified yet.
+
+  As data provided by end-users is not trusted by default, it is stored in
+  this structure while the verification process is ongoing.
+properties:
+  emails:
+    type: array
+    items:
+      $ref: ./geosafeea.contact.UnverifiedAddress.yml
+  mobilePhones:
+    type: array
+    items:
+      $ref: ./geosafeea.contact.UnverifiedAddress.yml
+  homePhones:
+    type: array
+    items:
+      $ref: ./geosafeea.contact.UnverifiedAddress.yml

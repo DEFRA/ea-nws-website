@@ -1,0 +1,11 @@
+allOf:
+  - $ref: ./qre.base.Action.yml
+  - type: object
+    required:
+      - technicalCode
+    properties:
+      nbaOfferIdStr:
+        type: string
+        description: Id of the proposed/accepted offer (as a string).
+      technicalCode:
+        type: string

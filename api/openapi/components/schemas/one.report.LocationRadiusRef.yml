@@ -1,0 +1,3 @@
+allOf:
+  - $ref: ./one.report.LocationRef.yml
+  - type: object

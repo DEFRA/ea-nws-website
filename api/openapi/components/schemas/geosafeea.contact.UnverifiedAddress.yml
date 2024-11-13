@@ -1,0 +1,13 @@
+type: object
+description: |-
+  User-provided contact address.
+
+  This address can be an email or a phone number. When the verification
+  process is ongoing, a code is sent to the address. We store the expected
+  code in this structure. The code and expiry must be kept private and should
+  never be returned in RPCs.
+required:
+  - address
+properties:
+  address:
+    type: string

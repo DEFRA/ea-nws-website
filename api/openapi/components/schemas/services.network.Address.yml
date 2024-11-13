@@ -1,0 +1,15 @@
+type: object
+description: Structure to store the address of a network location.
+properties:
+  address:
+    type: string
+  city:
+    type: string
+  landmark:
+    type: string
+  dept:
+    type: string
+  zipCode:
+    type: string
+  routingLocation:
+    type: string

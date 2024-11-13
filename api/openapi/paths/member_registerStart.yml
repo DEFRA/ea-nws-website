@@ -1,0 +1,40 @@
+post:
+  operationId: getRegisterStart
+  tags:
+    - member
+  summary: Start the registration of a new user.
+  description: >-
+    A new user is identified using its email address or mobile phone.
+
+    Either \ref email or \ref mobilePhone should be set. If both are set, \ref
+    mobilePhone is ignored.
+
+
+    This RPC creates a new registration session and sends an email or SMS
+
+    containing a verification code to the email address or mobile phone.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/geosafeea.public.Member.registerStartArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/geosafeea.public.Member.registerStartRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

@@ -1,0 +1,3 @@
+allOf:
+  - $ref: ./one.notification.CampaignThresholdNotification.yml
+  - type: object

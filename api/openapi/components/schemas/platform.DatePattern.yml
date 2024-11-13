@@ -1,0 +1,68 @@
+description: Date pattern.
+oneOf:
+  - type: object
+    required:
+      - second
+    properties:
+      second:
+        $ref: ./platform.SecondDatePattern.yml
+  - type: object
+    required:
+      - minute
+    properties:
+      minute:
+        $ref: ./platform.MinuteDatePattern.yml
+  - type: object
+    required:
+      - hour
+    properties:
+      hour:
+        $ref: ./platform.HourDatePattern.yml
+  - type: object
+    required:
+      - day
+    properties:
+      day:
+        $ref: ./platform.DayDatePattern.yml
+  - type: object
+    required:
+      - dayOfWeek
+    properties:
+      dayOfWeek:
+        $ref: ./platform.DayOfWeekDatePattern.yml
+  - type: object
+    required:
+      - dayOfMonth
+    properties:
+      dayOfMonth:
+        $ref: ./platform.DayOfMonthDatePattern.yml
+  - type: object
+    required:
+      - week
+    properties:
+      week:
+        $ref: ./platform.WeekDatePattern.yml
+  - type: object
+    required:
+      - month
+    properties:
+      month:
+        $ref: ./platform.MonthDatePattern.yml
+  - type: object
+    required:
+      - year
+    properties:
+      year:
+        $ref: ./platform.YearDatePattern.yml
+  - type: object
+    required:
+      - multiMonths
+    properties:
+      multiMonths:
+        $ref: ./platform.MultiMonthsDatePattern.yml
+  - type: object
+    required:
+      - minuteOfYear
+    properties:
+      minuteOfYear:
+        $ref: ./platform.MinuteOfYearDatePattern.yml

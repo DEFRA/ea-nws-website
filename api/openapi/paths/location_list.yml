@@ -1,0 +1,35 @@
+post:
+  operationId: getLocationList
+  tags:
+    - location
+  summary: List locations of an organization
+  description: >-
+    The user must have the read-only or admin role in an organization.
+
+    Locations are listed including their identifier, to be used in \ref update
+    for example.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/geosafeea.public.Location.listArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/geosafeea.public.Location.listRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

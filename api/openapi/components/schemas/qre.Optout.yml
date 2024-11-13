@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./qre.ManualOpEventLog.yml
+  - type: object
+    description: |-
+      Event emitted when an entity exists the scenario through optout.
+
+      Optout can be either from user input or manual by calling the ExitScenario
+      RPC.

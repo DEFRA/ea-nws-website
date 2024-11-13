@@ -1,0 +1,7 @@
+allOf:
+  - $ref: ./one.base.LimitedAction.yml
+  - type: object
+    properties:
+      amount:
+        type: number
+        format: double

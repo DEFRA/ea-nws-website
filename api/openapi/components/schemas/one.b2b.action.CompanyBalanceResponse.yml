@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./bigdata.base.Response.yml
+  - type: object
+    description: Response class to get the balance of a company.
+    required:
+      - cmpyBalance
+    properties:
+      cmpyBalance:
+        type: number
+        format: double

@@ -1,0 +1,20 @@
+type: object
+description: |-
+  Provides the value of a placeholder in a parametric formula.
+
+  This class is a key-value pair that specifies the value to be used for
+  the named placeholder when evaluating a query that references a source
+  defined as a parametric formula.
+required:
+  - name
+  - value
+properties:
+  name:
+    type: string
+    description: The name of the placeholder.
+    minLength: 1
+    pattern: '[_0-9a-zA-Z]*'
+  value:
+    description: The substitution value for the placeholder.
+    allOf:
+      - $ref: ./platform.base.Value.yml

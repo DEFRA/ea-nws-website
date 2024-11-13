@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    properties:
+      maxRate:
+        type: integer
+        format: int32
+        default: 0
+      maxThroughput:
+        type: integer
+        format: int32
+        default: 0

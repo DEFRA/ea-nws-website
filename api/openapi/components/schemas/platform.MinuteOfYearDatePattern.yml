@@ -1,0 +1,25 @@
+type: object
+description: A date pattern based on a specific minute of the year.
+required:
+  - month
+  - day
+  - hour
+  - minute
+properties:
+  month:
+    $ref: ./platform.base.Month.yml
+  day:
+    type: integer
+    format: int32
+    minimum: 1
+    maximum: 31
+  hour:
+    type: integer
+    format: int32
+    minimum: 0
+    maximum: 23
+  minute:
+    type: integer
+    format: int32
+    minimum: 0
+    maximum: 59

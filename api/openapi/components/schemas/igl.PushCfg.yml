@@ -1,0 +1,73 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    properties:
+      connMax:
+        type: integer
+        format: int32
+        default: 10
+        minimum: 0
+        maximum: 65535
+      connTimeout:
+        type: integer
+        format: int32
+        default: 30000
+        minimum: 0
+      queriesMax:
+        type: integer
+        format: int32
+        default: 1024
+        minimum: 0
+      queriesWindow:
+        type: integer
+        format: int32
+        default: 32
+        minimum: 0
+        maximum: 65535
+      queriesRate:
+        type: integer
+        format: int32
+        default: 0
+      url:
+        type: string
+        default: ''
+      proxyAddr:
+        type: string
+      maxZoneIds:
+        type: integer
+        format: int32
+        default: 0
+      maxZoneNames:
+        type: integer
+        format: int32
+        default: 0
+      httpAuth:
+        $ref: ./igl.HttpAuth.yml
+      api:
+        allOf:
+          - $ref: ./igl.PushApi.yml
+        default: 3
+      useGzip:
+        type: boolean
+        default: false
+      maxThroughput:
+        type: integer
+        format: int32
+        default: 0
+      format:
+        allOf:
+          - $ref: ./igl.PushFormat.yml
+        default: 0
+      tlsCert:
+        type: string
+        format: byte
+      urls:
+        type: array
+        items:
+          $ref: ./igl.PushCfgUrl.yml
+      strategy:
+        allOf:
+          - $ref: ./igl.PushStrategy.yml
+        default: 0
+      enableEventSeqId:
+        type: boolean

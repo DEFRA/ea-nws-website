@@ -1,0 +1,4 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    description: Root class for all bigdata aggregations.

@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: Store all items that user has read (like initial tutorial, CGU, ...)
+    properties:
+      items:
+        type: array
+        items:
+          type: string

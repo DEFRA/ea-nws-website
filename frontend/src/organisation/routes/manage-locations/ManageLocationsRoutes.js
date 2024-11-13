@@ -41,7 +41,11 @@ import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/ed
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
 import LocationInformationPage from '../../pages/manage-locations/view-location/view-location-information/LocationInformationPage'
 
+// Monitoring
+import MonitoringLiveFLoodWarningsPage from '../../pages/manage-locations/live-monitoring/LiveFloodMonitoringPage'
+
 const urlManageOrg = '/organisation/manage-locations'
+const urlManageOrgLiveMonitoring = urlManageOrg + '/live-monitoring'
 const urlManageOrgAddLocations = '/organisation/manage-locations/add'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
 const urlManageOrgConfirmLocations = urlManageOrg + '/confirm'
@@ -51,6 +55,9 @@ const orgManageLocationsUrls = {
   view: {
     dashboard: urlManageOrg + '/view-locations',
     viewLocation: urlManageOrg + '/location/view-location'
+  },
+  monitoring: {
+    view: urlManageOrgLiveMonitoring + '/view'
   },
   add: {
     addLocationWithinBoundaries: {},
@@ -143,6 +150,11 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.view.viewLocation,
     component: <LocationInformationPage />
+  },
+  // monitoring
+  {
+    path: orgManageLocationsUrls.monitoring.view,
+    component: <MonitoringLiveFLoodWarningsPage />
   },
   // add
   {

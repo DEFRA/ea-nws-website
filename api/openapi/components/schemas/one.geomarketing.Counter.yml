@@ -1,0 +1,100 @@
+type: object
+description: |-
+  Definition of the conditions of a counter.
+
+  In order for a stop segment step to be counted, it must match all set
+  fields of this structure.
+required:
+  - name
+properties:
+  name:
+    type: string
+    minLength: 1
+    pattern: '[_0-9a-zA-Z]*'
+  hasEventInReferenceZone:
+    type: boolean
+    description: |-
+      Step has an event in the reference zone.
+
+      The step is counted if it has an event in the reference zone.
+  duringBusinessHours:
+    type: boolean
+    description: |-
+      Step occurred during business hours.
+
+      The step is counted if it began during business hours, ended during
+      business hours and didn't overlap with non-business hours.
+  outsideBusinessHours:
+    type: boolean
+    description: |-
+      Step occurred outside of business hours.
+
+      The step is counted if it didn't begin during business hours, didn't
+      end during business hours and didn't overlap with business hours.
+  overlapBusinessHours:
+    type: boolean
+    description: |-
+      Step overlaps with business hours.
+
+      The step is counted if:
+      - it started during business hours
+      - and ended outside of business hours
+      or vice versa.
+  overlapNightOffset:
+    type: boolean
+    description: Step overlaps with \p nightOffset.
+  durationConstraint:
+    description: |-
+      Step has a specific duration.
+
+      Evaluated against a duration expressed in seconds.
+    allOf:
+      - $ref: ./one.geomarketing.UintConstraint.yml
+  hasEvtInRefZoneBeforeBH:
+    type: boolean
+    description: >-
+      Step has an event in the reference zone before the business hours.
+
+
+      The step is counted if either its \ref firstEventInReferenceZone or \ref
+      lastEventInReferenceZone value belongs to the
+
+      [ \ref nightOffset ; "beginning of business hours" ] range.
+  hasEvtInRefZoneAfterBH:
+    type: boolean
+    description: >-
+      Step has an event in the reference zone after the business hours.
+
+
+      The step is counted if either its \ref firstEventInReferenceZone or \ref
+      lastEventInReferenceZone value belongs to the
+
+      [ "end of business hours" ; \ref nightOffset ] range.
+  segmentType:
+    type: array
+    description: |-
+      Segment types.
+
+      If not empty, the step is counted if its type is in this array.
+    items:
+      $ref: ./one.geomarketing.SegmentType.yml
+  insideRefZone:
+    type: boolean
+    description: |-
+      Step completely inside the reference zone.
+
+      The step is counted if it starts and ends inside the reference zone.
+  outsideRefZone:
+    type: boolean
+    description: |-
+      Step completely outside the reference zone.
+
+      The step is counted if it starts and ends outside the reference zone.
+  crossRefZone:
+    type: boolean
+    description: |-
+      Step crossing the reference zone.
+
+      The step is counted if:
+      - it either starts inside and ends outside the reference zone
+      - or starts outside and ends inside the reference zone.

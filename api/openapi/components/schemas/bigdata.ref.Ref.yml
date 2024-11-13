@@ -1,0 +1,64 @@
+type: object
+description: |-
+  Base class to express a reference to a computed value.
+
+  A reference declares how data should be loaded/stored or computed.
+properties:
+  _class:
+    type: string
+  component:
+    description: |-
+      Express the fact that the Ref references a subfield and not the
+       entire field.
+    allOf:
+      - $ref: ./platform.TypeComponent.yml
+discriminator:
+  propertyName: _class
+  mapping:
+    bigdata.db.GlobalVariableRef: ./bigdata.db.GlobalVariableRef.yml
+    bigdata.mde.FieldRef: ./bigdata.mde.FieldRef.yml
+    bigdata.relational.TableRef: ./bigdata.relational.TableRef.yml
+    bigdata.qrrd.SlotRef: ./bigdata.qrrd.SlotRef.yml
+    bigdata.qrrd.RefRef: ./bigdata.qrrd.RefRef.yml
+    bigdata.query.RecnoRef: ./bigdata.query.RecnoRef.yml
+    bigdata.ref.AutoRef: ./bigdata.ref.AutoRef.yml
+    bigdata.ref.ObjectField: ./bigdata.ref.ObjectField.yml
+    bigdata.ref.ObjectIsA: ./bigdata.ref.ObjectIsA.yml
+    bigdata.ref.ObjectType: ./bigdata.ref.ObjectType.yml
+    bigdata.ref.PressureNextAvailability: ./bigdata.ref.PressureNextAvailability.yml
+    bigdata.ref.ServerTimezoneOffset: ./bigdata.ref.ServerTimezoneOffset.yml
+    bigdata.ref.TestRef: ./bigdata.ref.TestRef.yml
+    bigdata.ref.ValueRef: ./bigdata.ref.ValueRef.yml
+    bigdata.schema.ColumnRef: ./bigdata.schema.ColumnRef.yml
+    bigdata.schema.KeyRef: ./bigdata.schema.KeyRef.yml
+    bigdata.schema.ZoneRef: ./bigdata.schema.ZoneRef.yml
+    bigdata.sql.SqlRef: ./bigdata.sql.SqlRef.yml
+    bigdata.task.CacheRef: ./bigdata.task.CacheRef.yml
+    bigdata.task.TaskOutputRef: ./bigdata.task.TaskOutputRef.yml
+    one.scenario.ConstantRef: ./one.scenario.ConstantRef.yml
+    qre.EnteredInScenario: ./qre.EnteredInScenario.yml
+    one.scenario.Successful: ./one.scenario.Successful.yml
+    qre.ContextEvent: ./qre.ContextEvent.yml
+    qre.EntityRuleContextRef: ./qre.EntityRuleContextRef.yml
+    qre.FormatRef: ./qre.FormatRef.yml
+    qre.IsInControlGroup: ./qre.IsInControlGroup.yml
+    qre.IsInRule: ./qre.IsInRule.yml
+    qre.IsInScenario: ./qre.IsInScenario.yml
+    qre.IsInUserRules: ./qre.IsInUserRules.yml
+    qre.ScenarioEnterTs: ./qre.ScenarioEnterTs.yml
+    qre.ScenarioExitTs: ./qre.ScenarioExitTs.yml
+    qre.VariableRef: ./qre.VariableRef.yml
+    qts.ExtractRef: ./qts.ExtractRef.yml
+    qre.CreateEventRef: ./qre.CreateEventRef.yml
+    one.scenario.PlacemarkInfosRef: ./one.scenario.PlacemarkInfosRef.yml
+    one.report.LocationRef: ./one.report.LocationRef.yml
+    one.report.ExternalRef: ./one.report.ExternalRef.yml
+    bigdata.query.ConvertRef: ./bigdata.query.ConvertRef.yml
+    bigdata.ref.PlacemarkInfosRef: ./bigdata.ref.PlacemarkInfosRef.yml
+    bigdata.ref.ParametricRef: ./bigdata.ref.ParametricRef.yml
+    bigdata.ref.RefWrapper: ./bigdata.ref.RefWrapper.yml
+    bigdata.ref.MultiRef: ./bigdata.ref.MultiRef.yml
+    bigdata.ref.DealiasValue: ./bigdata.ref.DealiasValue.yml
+    bigdata.query.FormulaRef: ./bigdata.query.FormulaRef.yml
+    bigdata.query.AggregationOperation: ./bigdata.query.AggregationOperation.yml
+    bigdata.schema.SourceRef: ./bigdata.schema.SourceRef.yml

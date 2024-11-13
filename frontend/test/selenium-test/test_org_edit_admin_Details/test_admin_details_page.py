@@ -11,7 +11,7 @@ def test_page_loads(get_browser):
 def test_change_link(get_browser):
     browser = get_browser
     navigate_to_auth_page_via_index(browser,url_current_page)
-    click_link(browser,'Change',url_next_page)
+    click_link(browser,'Continue',url_next_page)
 
 def test_contactDetails_link(get_browser):
     browser = get_browser

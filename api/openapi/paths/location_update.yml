@@ -1,0 +1,31 @@
+post:
+  operationId: getLocationUpdate
+  tags:
+    - location
+  summary: Update a location of an organization
+  description: The user must have the admin role in an organization.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/geosafeea.public.Location.updateArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/geosafeea.public.Location.updateRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

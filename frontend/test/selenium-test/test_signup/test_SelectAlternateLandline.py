@@ -3,6 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 import time
+from common import *
 
 index = "http://localhost:3000/index"
 signup_url = "http://localhost:3000/signup/"
@@ -42,7 +43,9 @@ def test_page_load(get_browser):
 
 def test_errors_render(get_browser):
     browser = setup_validate_test(get_browser)
-    browser.find_element(By.CLASS_NAME,"govuk-button").click()
+    button_xpath = f"//button[text()='Continue']"
+    button_link = browser.find_element(By.XPATH, button_xpath)
+    browser.execute_script("arguments[0].click();", button_link)
     assert browser.find_element(By.CLASS_NAME,"govuk-error-message").is_displayed()
 
 def test_check_mobile_entered_is_option(get_browser):
@@ -51,20 +54,20 @@ def test_check_mobile_entered_is_option(get_browser):
 
 def test_enter_new_number(get_browser):
     browser = setup_validate_test(get_browser)
-    browser.find_element(By.ID,"idA different number").click()
-    browser.find_element(By.ID,"govuk-text-input").send_keys("+441411111111")
+    select_input_radio_option(browser, 'otherNumber')
+    enter_input_text(browser, 'UK landline or mobile telephone number', '+441411111111')
     button_xpath = f"//button[text()='Continue']"
-    button_button =browser.find_element(By.XPATH,button_xpath)
+    button_button = browser.find_element(By.XPATH,button_xpath)
     browser.execute_script("arguments[0].click();",button_button)
     time.sleep(3)
     assert browser.current_url == next_url
 
 def test_new_number_validate_page(get_browser):
     browser = setup_validate_test(get_browser)
-    browser.find_element(By.ID,"idA different number").click()
-    browser.find_element(By.ID,"govuk-text-input").send_keys("+441411111111")
+    select_input_radio_option(browser, 'otherNumber')
+    enter_input_text(browser, 'UK landline or mobile telephone number', '+441411111111')
     button_xpath = f"//button[text()='Continue']"
-    button_button =browser.find_element(By.XPATH,button_xpath)
+    button_button = browser.find_element(By.XPATH,button_xpath)
     browser.execute_script("arguments[0].click();",button_button)
     time.sleep(3)
     assert "+441411111111" in browser.page_source

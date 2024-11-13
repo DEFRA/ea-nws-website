@@ -1,0 +1,13 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: |-
+      Specialized reference that contains a \ref platform.base.Value.
+
+      The ValueRef is the normal form for any reference for which a value is
+      known.
+    required:
+      - value
+    properties:
+      value:
+        $ref: ./platform.base.Value.yml

@@ -1,0 +1,4 @@
+allOf:
+  - $ref: ./bigdata.query.LocationRef.yml
+  - type: object
+    description: Convert a location to the binary encoding of a GAD shape (ellipsoid arc).

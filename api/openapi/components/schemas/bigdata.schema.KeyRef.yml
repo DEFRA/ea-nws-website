@@ -1,0 +1,4 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: References the key attribute of the collection.

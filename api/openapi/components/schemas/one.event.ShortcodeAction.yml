@@ -1,0 +1,13 @@
+allOf:
+  - $ref: ./qre.base.Action.yml
+  - type: object
+    required:
+      - shortcode
+      - keyword
+    properties:
+      shortcodeProto:
+        type: string
+      shortcode:
+        type: string
+      keyword:
+        type: string

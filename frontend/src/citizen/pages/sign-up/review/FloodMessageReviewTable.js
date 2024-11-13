@@ -13,7 +13,7 @@ export default function FloodMessageReviewTable ({ registration }) {
   )
 
   return (
-    <>
+    <div className='govuk-!-padding-bottom-4'>
       <h3 className='govuk-heading-m'>Flood messages you'll get</h3>
       {registration.params.categories.length > 0
         ? (
@@ -72,6 +72,6 @@ export default function FloodMessageReviewTable ({ registration }) {
           </table>
           )
         : null}
-    </>
+    </div>
   )
 }

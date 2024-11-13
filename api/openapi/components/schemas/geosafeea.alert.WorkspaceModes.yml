@@ -1,0 +1,13 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: Defines which alert modes can be used in this workspace and its children.
+    properties:
+      allowedModes:
+        type: array
+        description: |-
+          List of allowed modes for this workspace.
+
+          If the list is empty, all modes are allowed.
+        items:
+          $ref: ./geosafeea.alert.AlertModeKind.yml

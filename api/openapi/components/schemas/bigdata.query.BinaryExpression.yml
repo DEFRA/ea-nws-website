@@ -1,0 +1,13 @@
+type: object
+description: |-
+  A pair of expressions.
+
+  Describes a pair of expression for binary operators.
+required:
+  - left
+  - right
+properties:
+  left:
+    $ref: ./bigdata.query.Expression.yml
+  right:
+    $ref: ./bigdata.query.Expression.yml

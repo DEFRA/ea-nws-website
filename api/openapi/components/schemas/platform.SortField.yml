@@ -1,0 +1,41 @@
+type: object
+description: Sorting parameters.
+required:
+  - fieldName
+properties:
+  fieldName:
+    type: string
+    description: |-
+      Name of the field the sort will be applied to.
+
+      It can contain:
+
+       - Subfields: 'foo.bar'.
+       - Array indexes: 'elts[0].v', 'a.array[-1]' (negative indexes means
+       that the array is indexed backward: the index '-1' is for the last
+       element).
+       - Wildcard indexes: 'elts[*].v', 'a.array[*]', 'structs[*].fields[*]':
+       can be used when wanting to iterate on all elements of an array.
+       - Class name: 'obj._class': use the class fullname of the object
+       specified by the field. Can only be used on class and at the end of
+       the field path.
+       - Array length: 'array.len': use the array length.
+       - Explicit class cast: 'item.<iop.Type>obj': cast the object to the
+       specified class before getting the field of the object.
+    minLength: 1
+    pattern: '[_0-9a-zA-Z\.\[\]\*\-<>]*'
+  order:
+    description: Sorting order.
+    allOf:
+      - $ref: ./platform.SortOrder.yml
+    default: 0
+  nullValues:
+    description: |-
+      Place of null values.
+
+      Null values are not found or not set values when doing the sort.
+      By default, the null values are always placed last regardless of the
+      sorting order.
+    allOf:
+      - $ref: ./platform.SortNullValues.yml
+    default: 0

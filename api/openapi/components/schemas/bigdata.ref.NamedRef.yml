@@ -1,0 +1,14 @@
+allOf:
+  - $ref: ./bigdata.ref.RefWrapper.yml
+  - type: object
+    description: |-
+      Ref wrapper that allows to name or rename a field.
+
+      Can be used to rename a named field or to put a name on a field that would
+      otherwise be unnamed and would then get a generated name.
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: Named to use for the field created by the ref.

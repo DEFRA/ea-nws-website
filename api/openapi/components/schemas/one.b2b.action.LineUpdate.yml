@@ -1,0 +1,22 @@
+allOf:
+  - $ref: ./one.b2b.action.ContractUpdate.yml
+  - type: object
+    description: Action log class to update line details.
+    properties:
+      firstname:
+        type: string
+        description: New firstname of the line.
+      lastname:
+        type: string
+        description: New lastname of the line.
+      email:
+        type: string
+        description: New email of the line.
+      fileContent:
+        description: |-
+          Attached file, to send with the notification.
+
+          It won't be sent as a real attachment, but as a link to download it
+          (if the notification is properly configured for that).
+        allOf:
+          - $ref: ./services.FileContent.yml

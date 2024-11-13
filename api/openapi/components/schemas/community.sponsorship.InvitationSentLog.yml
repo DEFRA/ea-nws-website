@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./community.sponsorship.OfferLog.yml
+  - type: object
+    description: Sponsor invited guest.
+    required:
+      - guestId
+    properties:
+      guestId:
+        type: string

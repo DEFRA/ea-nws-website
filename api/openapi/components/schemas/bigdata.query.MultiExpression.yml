@@ -1,0 +1,14 @@
+type: object
+description: |-
+  A set of expressions.
+
+  Describes a set of expressions for operators that can have
+  an undefined number of operands.
+required:
+  - exprs
+properties:
+  exprs:
+    type: array
+    items:
+      $ref: ./bigdata.query.Expression.yml
+    minItems: 1

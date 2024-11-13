@@ -1,0 +1,29 @@
+allOf:
+  - $ref: ./bigdata.relational.Dimension.yml
+  - type: object
+    description: |-
+      Categorization dimension.
+
+      Group the column values by a restrictive set of categories.
+      It works only for discrete set of values. Rows with non-matching values
+      are discarded.
+    properties:
+      categories:
+        type: array
+        description: >-
+          Categories group.
+
+
+          Example: For an enumeration (A, B, C):
+
+          categories: [
+            allowedValues: [A],
+            allowedValues: [B, C]
+          ]
+
+          It will group the column values in two groups, the first one with all
+          A
+
+          values, the second with B and C values.
+        items:
+          $ref: ./bigdata.relational.Category.yml

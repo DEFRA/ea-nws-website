@@ -1,0 +1,15 @@
+type: string
+description: The category of an alert as per CAP12 specifications.
+enum:
+  - GEO
+  - MET
+  - SAFETY
+  - SECURITY
+  - RESCUE
+  - FIRE
+  - HEALTH
+  - ENV
+  - TRANSPORT
+  - INFRA
+  - CBRNE
+  - OTHER

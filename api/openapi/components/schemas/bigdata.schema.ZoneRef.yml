@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: Name of the column.

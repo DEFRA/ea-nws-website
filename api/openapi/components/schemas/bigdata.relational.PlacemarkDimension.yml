@@ -1,0 +1,26 @@
+allOf:
+  - $ref: ./bigdata.relational.Dimension.yml
+  - type: object
+    description: |-
+      Placemark dimension.
+
+      Group the column values by the placemarks of a zone.
+    required:
+      - zoneId
+    properties:
+      zoneId:
+        type: integer
+        format: int64
+        description: Id of the zone to select.
+        minimum: 0
+      placemarks:
+        type: array
+        description: |-
+          Array of allowed placemarks.
+
+          If empty all placemarks attached to the zone identified by the
+          above zoneId are allowed.
+        items:
+          type: integer
+          format: int32
+          minimum: 0

@@ -1,0 +1,15 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: AVP value for custom user state.
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int32
+        description: The id of the custom state.
+        minimum: 0
+      tooltip:
+        type: string
+        description: Optional tooltip associated with the state.

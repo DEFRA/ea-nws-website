@@ -1,0 +1,13 @@
+allOf:
+  - $ref: ./platform.ListOptions.yml
+  - type: object
+    description: |-
+      Options for organization.listContacts.
+
+      Only the following fields from platform.ListOptions are supported:
+       - offset
+       - limit
+    properties:
+      locationId:
+        type: string
+        description: List contact attached to this location id.

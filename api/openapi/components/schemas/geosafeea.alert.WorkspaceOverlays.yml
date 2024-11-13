@@ -1,0 +1,14 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    properties:
+      allowedOverlays:
+        type: array
+        description: >-
+          List of allowed overlays for this workspace.
+
+
+          If the list is empty, all overlays of the parent workspace are
+          allowed.
+        items:
+          type: string

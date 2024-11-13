@@ -1,0 +1,15 @@
+allOf:
+  - $ref: ./bigdata.relational.Table.yml
+  - type: object
+    description: |-
+      A table reference on a named table.
+
+      This kind of table can only be used inside the "main" table of a
+      WithNamedTables operation, and evaluates to the namd table of this
+      operation whose name is \ref name.
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: Name of the referenced named table to use.

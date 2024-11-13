@@ -1,0 +1,16 @@
+type: string
+enum:
+  - ERROR
+  - SMS
+  - MMS
+  - USSD
+  - EMAIL
+  - WPUSH
+  - OTA
+  - VOICESMS
+  - VIDEOM
+  - CELLBC
+  - SMARTSMS
+  - FACEBOOK
+  - CUSTOM
+  - COUNT

@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: |-
+      Defines which Categories can be used in this workspace.
+
+      XXX: this AVP does not trickle down into children workspaces.
+    properties:
+      allowedCategories:
+        type: array
+        items:
+          $ref: ./geosafeea.alert.AlertCategory.yml

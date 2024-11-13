@@ -1,0 +1,14 @@
+allOf:
+  - $ref: ./one.event.LpmPointsTransfer.yml
+  - type: object
+    required:
+      - destCollection
+      - destKey
+    properties:
+      destCollection:
+        type: string
+        description: The collection of the entity which was awarded the points.
+      destKey:
+        description: The key of the entity which was awarded the points.
+        allOf:
+          - $ref: ./platform.base.Value.yml

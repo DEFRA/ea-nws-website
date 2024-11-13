@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./qre.RuleEvent.yml
+  - type: object
+    required:
+      - entity
+    properties:
+      entity:
+        type: string
+        description: The entity that shall get out of the scenario
+      userLogin:
+        type: string
+        description: Login of the user that triggered the operation emitting the event.

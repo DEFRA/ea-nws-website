@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./one.notification.CampaignThresholdNotification.yml
+  - type: object
+    required:
+      - remainingBudget
+    properties:
+      remainingBudget:
+        type: number
+        format: double

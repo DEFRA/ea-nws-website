@@ -1,0 +1,37 @@
+allOf:
+  - $ref: ./bigdata.base.CdrEvent.yml
+  - type: object
+    required:
+      - event
+      - state
+      - placemark
+    properties:
+      event:
+        description: Network kind of the event.
+        allOf:
+          - $ref: ./bigdata.base.ProtocolEventCode.yml
+      msisdn:
+        type: integer
+        format: int64
+        description: Mobile number.
+        minimum: 0
+      imsi:
+        type: integer
+        format: int64
+        description: IMSI.
+        minimum: 0
+      imei:
+        type: integer
+        format: int64
+        description: IMEI.
+        minimum: 0
+      state:
+        description: Placemark state.
+        allOf:
+          - $ref: ./bigdata.event.PmState.yml
+      placemark:
+        type: string
+        description: Name of the placemark.
+      presence:
+        type: string
+        description: Presence information.

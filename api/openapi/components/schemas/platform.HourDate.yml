@@ -1,0 +1,15 @@
+allOf:
+  - $ref: ./platform.DayOfMonthDate.yml
+  - type: object
+    description: |-
+      A date with an hour granularity.
+
+      Note that this day is defined in the context of a day of a month.
+    required:
+      - hour
+    properties:
+      hour:
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 23

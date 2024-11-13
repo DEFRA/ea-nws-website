@@ -1,0 +1,8 @@
+type: object
+description: A date pattern based on minutes.
+properties:
+  second:
+    type: integer
+    format: int32
+    minimum: 0
+    maximum: 59

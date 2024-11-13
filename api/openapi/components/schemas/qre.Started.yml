@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./bigdata.base.Event.yml
+  - type: object
+    description: |-
+      Event emitted when an entity enters the scenario.
+
+      This event is not supposed to be filtered-in since its delivery is mostly
+      hidden within QRE. If your scenario has a start date or dynamic targeting
+      no USER rule will receive this event.

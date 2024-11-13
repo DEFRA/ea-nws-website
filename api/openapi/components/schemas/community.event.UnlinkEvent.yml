@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./community.event.GroupContractEvent.yml
+  - type: object
+    description: |-
+      Event sent to all contracts of a group when a contract leaves it.
+
+      The unlinked contract also receives the event.
+      This event is sent after a successful call to
+      community.sdk.Contract.unlink.

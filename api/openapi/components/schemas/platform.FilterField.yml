@@ -1,0 +1,48 @@
+type: object
+description: |-
+  Filtering parameters.
+
+  \deprecated Use FilterFieldExpr instead.
+required:
+  - fieldName
+properties:
+  fieldName:
+    type: string
+    description: Name of the field the filter will be applied to.
+    minLength: 1
+    pattern: '[_0-9a-zA-Z\.\[\]\*\-<>]*'
+  acceptedValues:
+    type: array
+    description: Match the IOP field value with these values.
+    items:
+      $ref: ./platform.base.Value.yml
+  sqlLikeMatching:
+    type: boolean
+    description: |-
+      Perform a SQL-like matching when values are strings.
+
+      If set to true, the matching of strings is done as the SQL LIKE
+      matching. If false, it is done in a case-insensitive way.
+    default: false
+  isSet:
+    type: boolean
+    description: >-
+      Filter an optional or repeated field based on its presence.
+
+
+      If this parameter is filled, the IOP objects will be filtered according
+
+      to the field presence (if true) or absence (if false).
+
+
+      It applies to optional and repeated fields only, and if provided the \ref
+      acceptedValues array must be empty.
+  invertMatch:
+    type: boolean
+    description: |-
+      Filter out the object when field does match the values.
+
+      Instead of filter out the object when the field does not match any
+      values in \ref acceptedValues, filter out the object when the field
+      does match some values in \ref acceptedValues.
+    default: false

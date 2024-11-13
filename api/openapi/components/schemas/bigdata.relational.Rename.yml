@@ -1,0 +1,23 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    description: |-
+      Rename operation.
+
+      Used to rename the columns of a table. This operation can be useful before
+      relation operation involving two or more tables:
+      - auto-join,
+      - union or equi-join on a collection and a list with the same name.
+      It allows to avoid ambiguity on table and collection names.
+
+      For example with input x y z
+
+      rename (renaming=[mapping=[{ref=x, name=toto},
+                                 {ref=z, name=tata}]])
+          outputs toto, y, tata
+    properties:
+      mapping:
+        type: array
+        description: Rename Parameters.
+        items:
+          $ref: ./bigdata.relational.RefRenaming.yml

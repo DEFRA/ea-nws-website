@@ -1,0 +1,13 @@
+type: object
+description: The content of a bundle balance
+required:
+  - name
+  - unit
+  - balance
+properties:
+  name:
+    type: string
+  unit:
+    type: string
+  balance:
+    $ref: ./platform.base.Value.yml

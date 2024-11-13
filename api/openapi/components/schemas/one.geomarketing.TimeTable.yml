@@ -1,0 +1,9 @@
+type: object
+required:
+  - start
+  - end
+properties:
+  start:
+    $ref: ./one.geomarketing.TimeOfDay.yml
+  end:
+    $ref: ./one.geomarketing.TimeOfDay.yml

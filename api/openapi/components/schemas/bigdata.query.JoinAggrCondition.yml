@@ -1,0 +1,9 @@
+type: object
+required:
+  - op
+  - cond
+properties:
+  op:
+    $ref: ./bigdata.query.AggregationOperator.yml
+  cond:
+    $ref: ./bigdata.query.BoolExpr.yml

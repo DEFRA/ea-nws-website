@@ -1,0 +1,56 @@
+allOf:
+  - $ref: ./bigdata.aggr.Aggregation.yml
+  - type: object
+    description: >-
+      Approximate quantile aggregation.
+
+
+      Use the t-digest data structure to calculate approximate values of
+
+      quantiles of a given field.
+
+
+      Output fields: one field per quantile. The type of the output fields is
+      the
+
+      same as the type of the input fields.
+
+
+      Quantiles are very expensive in term of memory. With the default
+               value of sigma, the tdigest buffer is going to consume 64
+               kilobytes. If it becomes an issue, the user may consider changing
+               the value of sigma or ask for a gradual implementation of the
+               aggregation that would use a O(n) exact method and switch to the
+               approximate one only when the memory consumption reaches a given
+               threshold. This is already what is done for the unique count
+               implementation.
+    required:
+      - inputFieldName
+      - quantiles
+    properties:
+      inputFieldName:
+        type: string
+        description: |-
+          Name of the input field.
+
+          Only integer and double types are supported. We expect them to be
+          quantitative (nominative and ordinal fields are rejected).
+
+          When the field is optional, the absent values are not taken into
+          account in the quantile calculation. IOW, the median of { 1, 2, 3 } is
+          2, and the median of { NULL, NULL, NULL, 1, 2, 3 } is still 2.
+      quantiles:
+        type: array
+        description: |-
+          Quantile to compute.
+
+          More quantiles does not means more memory or CPU cost: the expensive
+          thing is the t-digest data structure but the quantiles list has no
+          impact on it. We can extract as many quantiles we want from it.
+        items:
+          $ref: ./bigdata.aggr.Quantile.yml
+        minItems: 1
+      cfg:
+        description: Tdigest configuration.
+        allOf:
+          - $ref: ./tdigest.Cfg.yml

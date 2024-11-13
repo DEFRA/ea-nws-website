@@ -41,8 +41,8 @@ import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/ed
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
 import LocationInformationPage from '../../pages/manage-locations/view-location/view-location-information/LocationInformationPage'
 
-const urlManageOrg = '/organisation/manage-locations'
-const urlManageOrgAddLocations = '/organisation/manage-locations/add'
+export const urlManageOrg = '/organisation/manage-locations'
+export const urlManageOrgAddLocations = '/organisation/manage-locations/add'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
 const urlManageOrgConfirmLocations = urlManageOrg + '/confirm'
 

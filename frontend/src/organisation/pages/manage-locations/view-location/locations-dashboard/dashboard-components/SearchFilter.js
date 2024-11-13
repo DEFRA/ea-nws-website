@@ -15,8 +15,8 @@ export default function SearchFilter ({
   setResetPaging,
   selectedLocationTypeFilters,
   setSelectedLocationTypeFilters,
-  selectedFloodMessagesAvailbleFilters,
-  setSelectedFloodMessagesAvailbleFilters,
+  selectedFloodMessagesAvailableFilters,
+  setSelectedFloodMessagesAvailableFilters,
   selectedBusinessCriticalityFilters,
   setSelectedBusinessCriticalityFilters
 }) {
@@ -31,7 +31,7 @@ export default function SearchFilter ({
     )
   ]
   // the below probably needs updated unless it can only be Yes or No
-  const floodMessagesAvailble = ['Yes', 'No']
+  const floodMessagesAvailable = ['Yes', 'No']
   const businessCriticality = [
     ...new Set(
       locations
@@ -62,9 +62,9 @@ export default function SearchFilter ({
     })
   }
 
-  const handleFloodMessagesAvailbleFilterChange = (event) => {
+  const handleFloodMessagesAvailableFilterChange = (event) => {
     const { value } = event.target
-    setSelectedFloodMessagesAvailbleFilters((prev) => {
+    setSelectedFloodMessagesAvailableFilters((prev) => {
       if (prev.includes(value)) {
         return prev.filter((preference) => preference !== value)
       } else {
@@ -106,17 +106,17 @@ export default function SearchFilter ({
     }
 
     // Apply Flood Messages filter
-    if (selectedFloodMessagesAvailbleFilters.length > 0) {
+    if (selectedFloodMessagesAvailableFilters.length > 0) {
       filteredLocations = filteredLocations.filter((location) => {
         if (
-          selectedFloodMessagesAvailbleFilters.includes('Yes') &&
-          selectedFloodMessagesAvailbleFilters.includes('No')
+          selectedFloodMessagesAvailableFilters.includes('Yes') &&
+          selectedFloodMessagesAvailableFilters.includes('No')
         ) {
           // return all locations
           return true
-        } else if (selectedFloodMessagesAvailbleFilters.includes('Yes')) {
+        } else if (selectedFloodMessagesAvailableFilters.includes('Yes')) {
           return location.alert_categories.length > 0
-        } else if (selectedFloodMessagesAvailbleFilters.includes('No')) {
+        } else if (selectedFloodMessagesAvailableFilters.includes('No')) {
           return location.alert_categories.length === 0
         }
 
@@ -223,13 +223,13 @@ export default function SearchFilter ({
       </div>
       {floodMessagesVisible && (
         <div className='govuk-checkboxes govuk-checkboxes--small'>
-          {floodMessagesAvailble.map((option) => (
+          {floodMessagesAvailable.map((option) => (
             <CheckBox
               key={option}
               label={option}
               value={option}
-              checked={selectedFloodMessagesAvailbleFilters.includes(option)}
-              onChange={handleFloodMessagesAvailbleFilterChange}
+              checked={selectedFloodMessagesAvailableFilters.includes(option)}
+              onChange={handleFloodMessagesAvailableFilterChange}
             />
           ))}
         </div>

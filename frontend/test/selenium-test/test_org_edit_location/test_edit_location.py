@@ -25,10 +25,8 @@ def setup2(browser,X_coord,Y_coord,Check_for_error = False, url = url_XYSearch):
        click_button(browser, 'Continue', url)
        assert 'Confirm Location' in browser.page_source
        assert X_coord + ', ' + Y_coord in browser.page_source
-       assert 'Move the pin on the map' in browser.page_source
-       assert 'Use different X and Y coordinates' in browser.page_source
+       assert 'Move pin position' in browser.page_source
        
-
 def test_page_loads(get_browser):
     browser =  get_browser
     navigate_to_auth_page_via_index(browser,url)

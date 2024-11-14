@@ -11,9 +11,7 @@ export default function AddFullNamePage () {
   const dispatch = useDispatch()
   const [error, setError] = useState()
 
-  const NavigateToNextPage = (profile) => {
-    const updatedProfile = updateAdditionals(profile, [{ id: 'lastAccessedUrl', value: '/declaration' }])
-    dispatch(setProfile(updatedProfile))
+  const NavigateToNextPage = () => {
     navigate('/declaration')
   }
 
@@ -23,7 +21,8 @@ export default function AddFullNamePage () {
 
   const updateProfile = async (profile, authToken) => {
     const updatedProfile = updateAdditionals(profile, [{ id: 'lastAccessedUrl', value: '/declaration' }])
-    const dataToSend = { updatedProfile, authToken }
+    const dataToSend = { profile: updatedProfile, authToken }
+    console.log(dataToSend)
     const { errorMessage, data } = await backendCall(
       dataToSend,
       'api/profile/update',

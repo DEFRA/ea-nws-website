@@ -22,24 +22,24 @@ def test_render(get_browser):
 '''
 def test_back_button(get_browser):
     navigate_to_auth_page_via_index(get_browser,previous_url)
-    click_button(get_browser, 'Continue', current_url)
+    click_button(get_browser, 'Add contact', current_url)
     click_link(get_browser, "Back", previous_url)
 '''
 def test_continue_empty(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
-    click_button(get_browser, 'Continue', url_next_page)
+    click_button(get_browser, 'Add contact', url_next_page)
 
 def test_continue_filled_text_length_just_right(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     enter_textarea_text(get_browser, 'govuk-textarea', text_just_right, 'id')
-    click_button(get_browser, 'Continue', url_next_page)
+    click_button(get_browser, 'Add contact', url_next_page)
 
 def test_continue_filled_text_length_too_long_failure(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     enter_textarea_text(get_browser, 'govuk-textarea', text_too_long, 'id')
-    click_button(get_browser, 'Continue', current_url)
+    click_button(get_browser, 'Add contact', current_url)
 
 def test_continue_filled_text_length_under_req(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     enter_textarea_text(get_browser, 'govuk-textarea', text_under_req, 'id')
-    click_button(get_browser, 'Continue', url_next_page)
+    click_button(get_browser, 'Add contact', url_next_page)

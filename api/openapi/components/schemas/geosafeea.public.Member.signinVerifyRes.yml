@@ -1,0 +1,20 @@
+type: object
+required:
+  - profile
+properties:
+  profile:
+    description: the current profile of the member
+    allOf:
+      - $ref: ./geosafeea.contact.Contact.yml
+  registrations:
+    type: array
+    description: current registrations
+    items:
+      $ref: ./geosafeea.public.Registration.yml
+  organization:
+    description: |-
+      the profile of the member's organization if
+                                 the member is part of an organization. If
+                                 not, no organization is returned.
+    allOf:
+      - $ref: ./geosafeea.public.Partner.yml

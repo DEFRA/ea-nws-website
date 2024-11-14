@@ -1,0 +1,22 @@
+type: object
+description: Constraint of a mobile application for a version and platform.
+required:
+  - blocking
+  - updateAvailable
+properties:
+  blocking:
+    type: boolean
+    description: |-
+      The constraint is blocking and should block the utilisation of the
+       mobile application is set.
+  updateAvailable:
+    type: boolean
+    description: |-
+      Is there a new version of the mobile application available?
+
+      If set, a pop-up is shown to the user to invite him to download the new
+      version.
+  reason:
+    description: The reason of the constraint shown to the user.
+    allOf:
+      - $ref: ./platform.base.Labels.yml

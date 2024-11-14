@@ -1,0 +1,67 @@
+type: object
+description: Contact.
+required:
+  - id
+properties:
+  id:
+    type: string
+  enabled:
+    type: boolean
+    default: false
+  firstname:
+    type: string
+  lastname:
+    type: string
+  emails:
+    type: array
+    items:
+      type: string
+  mobilePhones:
+    type: array
+    items:
+      type: string
+  homePhones:
+    type: array
+    items:
+      type: string
+  language:
+    type: string
+  position:
+    type: string
+  unit:
+    type: string
+  service:
+    type: string
+  comments:
+    type: string
+  additionals:
+    type: array
+    items:
+      $ref: ./geosafeea.contact.AdditionalField.yml
+  unverified:
+    $ref: ./geosafeea.contact.UnverifiedData.yml
+  metadata:
+    oneOf:
+      - $ref: ./geosafeea.contact.ContactMetadata.yml
+    discriminator:
+      propertyName: _class
+  pois:
+    type: array
+    items:
+      $ref: ./geosafeea.contact.Poi.yml
+  role:
+    description: |-
+      Role of this contact in his organization.
+
+      If not set (default state), this contact has no role and cannot sign in
+      on the public API.
+    allOf:
+      - $ref: ./geosafeea.contact.ContactRole.yml
+  pendingRole:
+    description: |-
+      Pending role of this contact in his organization.
+
+      If set, this contact has currently an invitation to have this
+      pending role in his organization.
+    allOf:
+      - $ref: ./geosafeea.contact.ContactRole.yml

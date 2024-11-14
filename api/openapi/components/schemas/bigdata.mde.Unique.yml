@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    description: |-
+      Remove all duplicate elements from the input table.
+
+      Remove the duplicate from a table and keep the order for the elements that
+      stay.

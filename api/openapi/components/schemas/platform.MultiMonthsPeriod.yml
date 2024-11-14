@@ -1,0 +1,6 @@
+type: string
+enum:
+  - TWO_MONTHS
+  - QUARTER
+  - FOUR_MONTHS
+  - SEMESTER

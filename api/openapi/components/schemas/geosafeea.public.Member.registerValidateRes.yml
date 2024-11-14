@@ -1,0 +1,11 @@
+type: object
+required:
+  - authToken
+properties:
+  authToken:
+    type: string
+    description: |-
+      if successful, an authentication token is
+                                 provided to perform other RPCs requiring an
+                                 authentication token.
+example: '{"authToken":"XXXXXXXXXX"}'

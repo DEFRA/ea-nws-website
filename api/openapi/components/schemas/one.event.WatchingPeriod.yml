@@ -1,0 +1,35 @@
+allOf:
+  - $ref: ./bigdata.base.CdrEvent.yml
+  - type: object
+    required:
+      - startDate
+      - endDate
+      - channel
+      - userId
+      - isTimedOut
+    properties:
+      startDate:
+        type: integer
+        format: int64
+        description: Time the user has begun watching the channel (timestamp).
+      endDate:
+        type: integer
+        format: int64
+        description: Time the user has stopped watching the channel (timestamp).
+      channel:
+        type: string
+        description: Watched channel.
+      userId:
+        type: integer
+        format: int64
+        description: Unique identifier for the user's box.
+        minimum: 0
+      isTimedOut:
+        type: boolean
+        description: true if the watching period has been generated based on timeout.
+      taskTag:
+        type: string
+      taskExecId:
+        type: integer
+        format: int64
+        minimum: 0

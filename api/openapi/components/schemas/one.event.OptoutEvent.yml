@@ -1,0 +1,4 @@
+allOf:
+  - $ref: ./qre.EntityRuleEvent.yml
+  - type: object
+    description: Event watched by the OptoutWatcher rule.

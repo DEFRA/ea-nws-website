@@ -1,0 +1,6 @@
+type: string
+enum:
+  - USSD
+  - IVR
+  - CUSTOMER_CARE
+  - AUTO

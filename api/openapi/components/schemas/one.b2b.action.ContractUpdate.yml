@@ -1,0 +1,4 @@
+allOf:
+  - $ref: ./one.b2b.action.LineAction.yml
+  - type: object
+    description: Action log class for all external contract update.

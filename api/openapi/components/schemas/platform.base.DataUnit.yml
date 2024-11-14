@@ -1,0 +1,12 @@
+type: string
+description: Unit of data.
+enum:
+  - BYTE
+  - KILOBYTE
+  - MEGABYTE
+  - GIGABYTE
+  - TERABYTE
+  - KIBIBYTE
+  - MEBIBYTE
+  - GIBIBYTE
+  - TEBIBYTE

@@ -1,0 +1,56 @@
+allOf:
+  - $ref: ./one.rffingerprint.MeasurementEventBase.yml
+  - type: object
+    required:
+      - cgi
+      - powerMeasurement
+    properties:
+      cgi:
+        type: integer
+        format: int64
+        minimum: 0
+      powerMeasurement:
+        type: number
+        format: double
+      cgi2:
+        type: integer
+        format: int64
+        minimum: 0
+      powerMeasurement2:
+        type: number
+        format: double
+      cgi3:
+        type: integer
+        format: int64
+        minimum: 0
+      powerMeasurement3:
+        type: number
+        format: double
+      cgi4:
+        type: integer
+        format: int64
+        minimum: 0
+      powerMeasurement4:
+        type: number
+        format: double
+      cgi5:
+        type: integer
+        format: int64
+        minimum: 0
+      powerMeasurement5:
+        type: number
+        format: double
+      cgi6:
+        type: integer
+        format: int64
+        minimum: 0
+      powerMeasurement6:
+        type: number
+        format: double
+      cgi7:
+        type: integer
+        format: int64
+        minimum: 0
+      powerMeasurement7:
+        type: number
+        format: double

@@ -1,0 +1,37 @@
+post:
+  operationId: getOrgRemoveContacts
+  tags:
+    - organization
+  summary: Remove contacts from the organization.
+  description: |-
+    The removal of contacts is authorized for any contact role, but the
+    whole removal is rejected if it would remove the last organization
+    administrator.
+
+    The user must have the admin role in this organization.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/geosafeea.public.Organization.removeContactsArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Void.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

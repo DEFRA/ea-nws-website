@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    description: Skip the <offset> first rows of the input table.
+    required:
+      - offset
+    properties:
+      offset:
+        type: integer
+        format: int32
+        description: The number of rows to skip.
+        minimum: 0

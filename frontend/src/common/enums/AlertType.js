@@ -1,8 +1,7 @@
 const AlertType = {
-  SEVERE_FLOOD_WARNING: 0,
-  FLOOD_WARNING: 1,
-  FLOOD_ALERT: 2
-  //is there a 4th?
+  SEVERE_FLOOD_WARNING: 'ALERT_LVL_1',
+  FLOOD_WARNING: 'ALERT_LVL_2',
+  FLOOD_ALERT: 'ALERT_LVL_3'
 }
 
 export default AlertType

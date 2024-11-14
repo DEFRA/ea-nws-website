@@ -1,0 +1,5 @@
+type: object
+description: A date pattern based on weeks.
+properties:
+  day:
+    $ref: ./platform.base.DayOfWeek.yml

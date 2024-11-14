@@ -1,0 +1,13 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: Custom value to store the destination workspace configurations.
+    properties:
+      destinationWsCfgs:
+        type: array
+        description: The list of destination configuration for a workspace.
+        items:
+          oneOf:
+            - $ref: ./geosafeea.cfg.IntersecDestinationWsCfg.yml
+          discriminator:
+            propertyName: _class

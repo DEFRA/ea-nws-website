@@ -1,0 +1,32 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: >-
+      Allowed groups of service centers in a workspace.
+
+
+      In any case, a workspace cannot use a group of service centers if it is
+      not
+
+      allowed in its parent.
+
+
+      By default (ie. if the AVP is not present) then all the groups are
+      allowed.
+    required:
+      - allowAll
+    properties:
+      allowAll:
+        type: boolean
+        description: |-
+          Allow all SC groups for all protocols.
+
+          If true, \ref protocols is ignored and all the SC groups are allowed.
+
+          This is the default behavior for a workspace that do not have the AVP
+          set.
+      protocols:
+        type: array
+        description: SC groups allowed by protocol.
+        items:
+          $ref: ./mcms.ProtocolAllowedScGroups.yml

@@ -6,13 +6,23 @@ import OrganisationAccountNavigation from '../../../common/components/custom/Org
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../common/components/gov-uk/TextArea'
-import { setCurrentLocationNotes } from '../../../common/redux/userSlice'
+import {
+  setCurrentLocationNotes,
+  setOrgCurrentContactNotes
+} from '../../../common/redux/userSlice'
 
-export default function NotesLayout ({ navigateToNextPage }) {
+export default function NotesLayout ({
+  navigateToNextPage,
+  keywordType,
+  instructionText,
+  buttonText = 'Continue'
+}) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const currentNotes = useSelector(
-    (state) => state.session.currentLocation.meta_data.location_additional.notes
+  const currentNotes = useSelector((state) =>
+    keywordType === 'location'
+      ? state.session.currentLocation.meta_data.location_additional.notes
+      : state.session.orgCurrentContact.comments
   )
   const [notes, setNotes] = useState(currentNotes || '')
   const [error, setError] = useState('')
@@ -20,7 +30,7 @@ export default function NotesLayout ({ navigateToNextPage }) {
 
   useEffect(() => {
     if (notes.length > charLimit) {
-      setError('You can enter up to 500 characters')
+      setError(`You can enter up to ${charLimit} characters`)
     } else {
       setError('')
     }
@@ -28,9 +38,17 @@ export default function NotesLayout ({ navigateToNextPage }) {
 
   const handleSubmit = () => {
     if (error) return
-
     if (notes) {
-      dispatch(setCurrentLocationNotes(notes))
+      switch (keywordType) {
+        case 'location':
+          dispatch(setCurrentLocationNotes(notes))
+          break
+        case 'contact':
+          dispatch(setOrgCurrentContactNotes(notes))
+          break
+        default:
+          break
+      }
     }
 
     // should we update geosafe profile here?
@@ -51,12 +69,10 @@ export default function NotesLayout ({ navigateToNextPage }) {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
+            <br />
             <h1 className='govuk-heading-l'>Notes (optional)</h1>
             <div className='govuk-body'>
-              <p>
-                Any notes that may be helpful to someone not familiar with this
-                location.
-              </p>
+              <p className='govuk-hint'>{instructionText}</p>
               <TextArea
                 error={error}
                 inputType='text'
@@ -64,9 +80,12 @@ export default function NotesLayout ({ navigateToNextPage }) {
                 onChange={(val) => setNotes(val)}
                 className='govuk-textarea'
               />
-              <p className='govuk-hint'>You can enter up to 500 characters.</p>
+              <p className='govuk-hint' style={{ marginTop: '-1.5rem' }}>
+                You can enter up to {charLimit} characters.
+              </p>
+              <br />
               <Button
-                text='Continue'
+                text={buttonText}
                 className='govuk-button'
                 onClick={handleSubmit}
               />

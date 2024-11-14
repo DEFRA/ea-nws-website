@@ -1,0 +1,15 @@
+type: object
+description: Base-class to support dynamic configurations
+properties:
+  _class:
+    type: string
+  creationTs:
+    type: integer
+    format: int64
+    description: Timestamp of creation (initial push) by the provider, in milliseconds.
+    default: 0
+    minimum: 0
+discriminator:
+  propertyName: _class
+  mapping:
+    platform.cfg.DynConfSet: ./platform.cfg.DynConfSet.yml

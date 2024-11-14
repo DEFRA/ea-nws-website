@@ -1,0 +1,19 @@
+type: object
+required:
+  - signinToken
+  - code
+properties:
+  signinToken:
+    type: string
+    description: a secured token retrieved in \ref signinStart.
+  code:
+    type: string
+    description: |-
+      a code provided by the user to verify its
+                               email address.
+  deviceId:
+    type: string
+    description: |-
+      mobile device id, if the signin is
+                               performed using the GeoSafe mobile app.
+example: '{"signinToken":"XXXXXXXXXX","code":"123456"}'

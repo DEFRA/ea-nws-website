@@ -1,0 +1,16 @@
+type: object
+required:
+  - hierarchy
+properties:
+  hierarchy:
+    type: string
+    description: Hierarchy name.
+  tags:
+    type: array
+    description: List of allowed tags (empty means allow all).
+    items:
+      type: string
+  recursive:
+    type: boolean
+    description: If true, all tag children will be added too.
+    default: true

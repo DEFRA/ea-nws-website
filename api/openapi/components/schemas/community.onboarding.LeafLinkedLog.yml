@@ -1,0 +1,4 @@
+allOf:
+  - $ref: ./community.onboarding.NodeLog.yml
+  - type: object
+    description: Log received when linked to a leaf as a node.

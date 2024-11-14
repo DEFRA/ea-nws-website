@@ -1,0 +1,11 @@
+type: object
+description: Wheighted cell for trajectory definition.
+required:
+  - cell
+properties:
+  cell:
+    type: string
+  weight:
+    type: number
+    format: double
+    default: 1

@@ -22,7 +22,7 @@ async function getRegisterStart(
   return { registerToken: '123456' }
 }
 
-async function getRegisterOrgStart(
+async function getOrgRegisterStart(
   context: Context,
   req: Hapi.Request,
   res: Hapi.ResponseToolkit
@@ -34,7 +34,7 @@ async function getRegisterOrgStart(
     return res.response(responseCodes.DUPLICATE_ORG).code(500)
   }
   console.log('Valid organisation, responding 200')
-  return res.response(responseCodes.SUCCESS)
+  return { orgRegisterToken: '123456' }
 }
 
 async function getRegisterValidate(
@@ -61,4 +61,28 @@ async function getRegisterValidate(
   return { authToken: uuidv4() }
 }
 
-module.exports = { getRegisterStart, getRegisterOrgStart, getRegisterValidate }
+async function getOrgRegisterValidate(
+  context: Context,
+  req: Hapi.Request,
+  res: Hapi.ResponseToolkit
+) {
+  console.log('Received register request --  ', req.payload)
+  const { code, orgRegisterToken } = req.payload as {
+    code: string
+    orgRegisterToken: string
+  }
+  if (code === '111111') {
+    console.log('invalid credentials, responding 101')
+    return res.response(responseCodes.UNAUTHORIZED).code(500)
+  }
+
+  if (code === '999999' || orgRegisterToken === '') {
+    console.log('Invalid token')
+    return res.response(responseCodes.INVALID_CODE).code(500)
+  }
+  console.log('Valid token')
+
+  return { authToken: uuidv4() }
+}
+
+module.exports = { getRegisterStart, getOrgRegisterStart, getRegisterValidate, getOrgRegisterValidate }

@@ -1,0 +1,15 @@
+type: object
+required:
+  - clusterRadius
+properties:
+  clusterRadius:
+    type: number
+    format: double
+    description: Maximum radius for the output clusters (in meters).
+    minimum: 0
+  maxIterationNumber:
+    type: integer
+    format: int32
+    description: Maximum number of iteration for the leader algorithm.
+    default: 10
+    minimum: 1

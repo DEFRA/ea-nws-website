@@ -1,0 +1,15 @@
+type: object
+required:
+  - name
+properties:
+  name:
+    type: string
+    description: name of the new organization
+    minLength: 1
+    maxLength: 200
+  email:
+    type: string
+    description: user email
+  mobilePhone:
+    type: string
+    description: user mobile phone

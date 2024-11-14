@@ -1,0 +1,17 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: |-
+      Specifies a references to a field within an IOP object.
+
+      This reference allows getting the value of the field present at the
+      specified iop path. The path can use dots to perform deep accesses
+      within the object.
+    required:
+      - fieldPath
+    properties:
+      fieldPath:
+        type: string
+        description: Path to the field to fetch.
+        minLength: 1
+        pattern: '[_0-9a-zA-Z\.\[\]\*\-<>]*'

@@ -1,0 +1,13 @@
+allOf:
+  - $ref: ./bigdata.base.Event.yml
+  - type: object
+    description: Event emitted when a timer times out.
+    properties:
+      timerId:
+        type: integer
+        format: int64
+        description: |-
+          ID of the Timer that created this event.
+
+          This is set if the corresponding field is set in the Timer rule.
+        minimum: 0

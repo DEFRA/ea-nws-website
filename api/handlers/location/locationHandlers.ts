@@ -1,0 +1,77 @@
+const responseCodes = require('../responseCodes')
+import Hapi from '@hapi/hapi'
+import type { Context } from 'openapi-backend'
+import uuidv4 from '../generateAuthToken'
+
+async function getLocationCreate(
+  context: Context,
+  req: Hapi.Request,
+  res: Hapi.ResponseToolkit
+) {
+  const { authToken, location } = req.payload as { authToken: string, location: any }
+
+  if (authToken !== 'WrongAuthToken' && location) {
+    let updatedLocation = location
+    updatedLocation.id = uuidv4()
+
+    return {
+      location: updatedLocation
+    }
+  } else {
+    return res.response(responseCodes.INVALID_TOKEN).code(500)
+  }
+}
+
+async function getLocationList(
+  context: Context,
+  req: Hapi.Request,
+  res: Hapi.ResponseToolkit
+) {
+  const { authToken, options } = req.payload as { authToken: string, options: {contactId: string} }
+
+  if (authToken !== 'WrongAuthToken') {
+    if (options.contactId) {
+      // Geosafe returns all locations linked to contactId#
+      console.log('there is a contact ID')
+    } else {
+      // Geosafe returns all locations
+      // {locations: [{poi},...], total: int}
+      console.log('no contact ID returning all locations')
+    }
+    return res.response(responseCodes.SUCCESS)
+  } else {
+    return res.response(responseCodes.INVALID_TOKEN).code(500)
+  }
+}
+
+async function getLocationRemove(
+  context: Context,
+  req: Hapi.Request,
+  res: Hapi.ResponseToolkit
+) {
+  const { authToken, locationIds } = req.payload as { authToken: string, locationIds: Array<string> }
+
+  if (authToken !== 'WrongAuthToken' && locationIds) {
+    return res.response(responseCodes.SUCCESS)
+  } else {
+    return res.response(responseCodes.INVALID_TOKEN).code(500)
+  }
+}
+
+async function getLocationUpdate(
+  context: Context,
+  req: Hapi.Request,
+  res: Hapi.ResponseToolkit
+) {
+  const { authToken, location } = req.payload as { authToken: string, location: Object }
+  //location object must already contain location.id 
+  if (authToken !== 'WrongAuthToken' && location) {
+    return {
+      location: location
+    }
+  } else {
+    return res.response(responseCodes.INVALID_TOKEN).code(500)
+  }
+}
+
+module.exports = { getLocationCreate, getLocationList, getLocationRemove, getLocationUpdate }

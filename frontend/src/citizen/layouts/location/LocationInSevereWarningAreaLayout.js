@@ -7,6 +7,7 @@ import FloodWarningKey from '../../../common/components/custom/FloodWarningKey'
 import Map from '../../../common/components/custom/Map'
 import Button from '../../../common/components/gov-uk/Button'
 import InsetText from '../../../common/components/gov-uk/InsetText'
+import AlertType from '../../../common/enums/AlertType'
 import {
   setAdditionalAlerts,
   setProfile,
@@ -72,7 +73,12 @@ export default function LocationInSevereWarningAreaLayout({
     const warningArea = {
       name: '',
       address: selectedFloodWarningArea.properties.TA_NAME,
-      coordinates: getCoordsOfFloodArea(selectedFloodWarningArea)
+      coordinates: getCoordsOfFloodArea(selectedFloodWarningArea),
+      meta_data: {
+        location_additional: {
+          alert_types: [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
+        }
+      }
     }
     const updatedProfile = addLocation(profile, warningArea)
     dispatch(setProfile(updatedProfile))
@@ -104,7 +110,11 @@ export default function LocationInSevereWarningAreaLayout({
     // update location to recieve severe alert warnings
     const locationWithAlertType = {
       ...locationWithoutPostcode,
-      categories: ['severe']
+      meta_data: {
+        location_additional: {
+          alert_types: [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
+        }
+      }
     }
 
     const updatedProfile = addLocation(profile, locationWithAlertType)
@@ -118,12 +128,7 @@ export default function LocationInSevereWarningAreaLayout({
 
   const updateGeosafeProfile = async () => {
     const dataToSend = { authToken, profile }
-    const { errorMessage } = await backendCall(
-      dataToSend,
-      'api/profile/update',
-      navigate
-    )
-    console.log('error', errorMessage)
+    await backendCall(dataToSend, 'api/profile/update', navigate)
   }
 
   return (

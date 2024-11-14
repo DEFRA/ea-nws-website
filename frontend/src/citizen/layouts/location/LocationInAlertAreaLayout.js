@@ -7,16 +7,17 @@ import Map from '../../../common/components/custom/Map'
 import Button from '../../../common/components/gov-uk/Button'
 import CheckBox from '../../../common/components/gov-uk/CheckBox'
 import InsetText from '../../../common/components/gov-uk/InsetText'
+import AlertType from '../../../common/enums/AlertType'
 import { setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import {
   addLocation,
   removeLocation,
-  updateLocationsFloodCategory
+  updateLocationsAlertTypes
 } from '../../../common/services/ProfileServices'
 import { getCoordsOfFloodArea } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInAlertAreaLayout ({
+export default function LocationInAlertAreaLayout({
   continueToNextPage,
   continueToSearchResultsPage,
   canCancel
@@ -44,20 +45,29 @@ export default function LocationInAlertAreaLayout ({
     if (additionalAlerts && isChecked) {
       if (isUserInNearbyTargetFlowpath) {
         await addFloodAlertArea()
+        //await updateExistingLocationAlertTypes([AlertType.FLOOD_ALERT])
       } else {
-        await updateExistingLocationCategories(['severe', 'alert'])
+        await updateExistingLocationAlertTypes([
+          AlertType.SEVERE_FLOOD_WARNING,
+          AlertType.FLOOD_WARNING,
+          AlertType.FLOOD_ALERT
+        ])
       }
     } else if (additionalAlerts && !isChecked) {
       // scenario where user has pressed back and un-checked to get notifications for alert areas
       if (isUserInNearbyTargetFlowpath) {
         await removeFloodAlertArea()
       } else {
-        await updateExistingLocationCategories(['severe'])
+        await updateExistingLocationAlertTypes([
+          AlertType.SEVERE_FLOOD_WARNING,
+          AlertType.FLOOD_WARNING
+        ])
       }
     } else {
       // location only has flood alerts availble or user has selected a nearby flood alert area
       if (isUserInNearbyTargetFlowpath) {
         await addFloodAlertArea()
+        await updateExistingLocationAlertTypes([AlertType.FLOOD_ALERT])
       } else {
         await addLocationWithOnlyFloodAlerts()
       }
@@ -73,7 +83,10 @@ export default function LocationInAlertAreaLayout ({
       if (isUserInNearbyTargetFlowpath) {
         await removeFloodAlertArea()
       } else {
-        await updateExistingLocationCategories(['severe'])
+        await updateExistingLocationAlertTypes([
+          AlertType.SEVERE_FLOOD_WARNING,
+          AlertType.FLOOD_WARNING
+        ])
       }
     } else {
       // location only has flood alerts availble or user has selected a nearby flood alert area
@@ -92,7 +105,12 @@ export default function LocationInAlertAreaLayout ({
     const alertArea = {
       name: '',
       address: selectedFloodAlertArea.properties.TA_NAME,
-      coordinates: getCoordsOfFloodArea(selectedFloodAlertArea)
+      coordinates: getCoordsOfFloodArea(selectedFloodAlertArea),
+      meta_data: {
+        location_additional: {
+          alert_types: [AlertType.FLOOD_ALERT]
+        }
+      }
     }
     const updatedProfile = await addLocation(profile, alertArea)
     dispatch(setProfile(updatedProfile))
@@ -111,7 +129,11 @@ export default function LocationInAlertAreaLayout ({
 
     const locationWithAlertType = {
       ...locationWithoutPostcode,
-      categories: ['alert']
+      meta_data: {
+        location_additional: {
+          alert_types: [AlertType.FLOOD_ALERT]
+        }
+      }
     }
     const updatedProfile = await addLocation(profile, locationWithAlertType)
     dispatch(setProfile(updatedProfile))
@@ -125,17 +147,17 @@ export default function LocationInAlertAreaLayout ({
     dispatch(setProfile(updatedProfile))
   }
 
-  const updateExistingLocationCategories = async (categories) => {
-    const updatedProfile = await updateLocationsFloodCategory(
+  const updateExistingLocationAlertTypes = async (alertTypes) => {
+    const updatedProfile = await updateLocationsAlertTypes(
       profile,
       selectedLocation,
-      categories
+      alertTypes
     )
     dispatch(setProfile(updatedProfile))
   }
 
   const updateGeosafeProfile = async () => {
-    const dataToSend = { authToken, profile }
+    const dataToSend = { authToken: authToken, profile: profile }
     await backendCall(dataToSend, 'api/profile/update', navigate)
   }
 

@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./platform.YearDate.yml
+  - type: object
+    description: A date with month granularity.
+    required:
+      - month
+    properties:
+      month:
+        $ref: ./platform.base.Month.yml

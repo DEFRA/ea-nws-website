@@ -1,0 +1,14 @@
+allOf:
+  - $ref: ./one.notification.Notification.yml
+  - type: object
+    required:
+      - host
+      - guest
+      - groupId
+    properties:
+      host:
+        type: string
+      guest:
+        type: string
+      groupId:
+        type: string

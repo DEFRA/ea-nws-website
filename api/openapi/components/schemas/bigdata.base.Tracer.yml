@@ -1,0 +1,25 @@
+type: object
+description: |-
+  Tracing mark of the event.
+
+  This structure defines the tracing context of an event. This structure is
+  mostly defined for internal by the product.
+required:
+  - id
+properties:
+  id:
+    type: string
+    description: |-
+      Identifier of the event.
+
+      Unique string that identifies the event.
+  epoch:
+    type: integer
+    format: int64
+    description: |-
+      Strictly growing counter.
+
+      Used by the tracing mechanism in order to ensure the traces can always
+      be reordered.
+    default: 0
+    minimum: 0

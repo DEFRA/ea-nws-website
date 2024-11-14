@@ -19,8 +19,6 @@ def render_add_xy_coordinates_search_page(browser):
     navigate_to_auth_page_via_index(browser, url_add_xy_coordinates_search)
     assert check_h1_heading(browser, 'What are the X and Y coordinates?')
 
-
-
 # Test add xy coordinate search page with no coordinates
 def test_add_xy_coordinate_search_no_coordinates(get_browser):
     browser = get_browser

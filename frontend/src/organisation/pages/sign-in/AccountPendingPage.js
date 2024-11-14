@@ -19,8 +19,9 @@ export default function AccountPendingPage () {
           </p>
           <h2 class='govuk-heading-m'>If you do not have an account</h2>
           <h3 class='govuk-heading-s govuk-!-margin-bottom-1'>Personal sign up</h3>
-          <Link to='/signup'
-          className='govuk-link'
+          <Link
+            to='/signup'
+            className='govuk-link'
           >
             Get flood warnings by text, email or phone
           </Link>

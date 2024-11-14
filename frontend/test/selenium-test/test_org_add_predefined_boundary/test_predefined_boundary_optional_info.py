@@ -16,4 +16,4 @@ def test_do_later_link(get_browser):
 def test_add_useful_info_button(get_browser):
     navigate_to_auth_page_via_index(get_browser, url_current)
     click_button(get_browser,"Add useful information now", url_next)
-    assert check_h1_heading(get_browser, 'Keywords for this location (optional)')
+    assert check_h1_heading(get_browser, 'Add keywords for this location (optional)')

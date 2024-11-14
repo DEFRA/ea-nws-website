@@ -1,0 +1,360 @@
+allOf:
+  - $ref: ./bigdata.mde.Map.yml
+  - type: object
+    description: >-
+      Converts a location into placemark name(s) of a given shared zone.
+
+
+      If both cell (CGI or UID) and coordinates refs are provided, the way they
+
+      are going to be used depends on the matching mode \p mode. \note A single
+      location may match several placemarks.
+    properties:
+      uid:
+        description: UID to use to match the location.
+        oneOf:
+          - $ref: ./bigdata.db.GlobalVariableRef.yml
+          - $ref: ./bigdata.mde.FieldRef.yml
+          - $ref: ./bigdata.mde.WeakRef.yml
+          - $ref: ./bigdata.qrrd.SlotRef.yml
+          - $ref: ./bigdata.qrrd.ValueRef.yml
+          - $ref: ./bigdata.qrrd.ValueRefRef.yml
+          - $ref: ./bigdata.qrrd.WildcardRef.yml
+          - $ref: ./bigdata.qrrd.WildcardRefRef.yml
+          - $ref: ./bigdata.query.Age.yml
+          - $ref: ./bigdata.query.AggregationOperation.yml
+          - $ref: ./bigdata.query.BinToJson.yml
+          - $ref: ./bigdata.query.CgiToCuid.yml
+          - $ref: ./bigdata.query.CuidToCgi.yml
+          - $ref: ./bigdata.query.CutString.yml
+          - $ref: ./bigdata.query.DayOfWeek.yml
+          - $ref: ./bigdata.query.FormulaRef.yml
+          - $ref: ./bigdata.query.LocationCellInfo.yml
+          - $ref: ./bigdata.query.LocationCoords.yml
+          - $ref: ./bigdata.query.LocationGad.yml
+          - $ref: ./bigdata.query.LocationMlpBin.yml
+          - $ref: ./bigdata.query.LocationMlpJson.yml
+          - $ref: ./bigdata.query.LocationRadius.yml
+          - $ref: ./bigdata.query.RecnoRef.yml
+          - $ref: ./bigdata.ref.AutoRef.yml
+          - $ref: ./bigdata.ref.DealiasValue.yml
+          - $ref: ./bigdata.ref.MultiRef.yml
+          - $ref: ./bigdata.ref.NamedRef.yml
+          - $ref: ./bigdata.ref.ObjectField.yml
+          - $ref: ./bigdata.ref.ObjectIsA.yml
+          - $ref: ./bigdata.ref.ObjectType.yml
+          - $ref: ./bigdata.ref.ParametricRef.yml
+          - $ref: ./bigdata.ref.PlacemarkInfosRef.yml
+          - $ref: ./bigdata.ref.PressureNextAvailability.yml
+          - $ref: ./bigdata.ref.ServerTimezoneOffset.yml
+          - $ref: ./bigdata.ref.TestRef.yml
+          - $ref: ./bigdata.ref.ValueRef.yml
+          - $ref: ./bigdata.relational.TableRef.yml
+          - $ref: ./bigdata.relational.TypedValueRef.yml
+          - $ref: ./bigdata.schema.AggregationRef.yml
+          - $ref: ./bigdata.schema.ColumnRef.yml
+          - $ref: ./bigdata.schema.KeyRef.yml
+          - $ref: ./bigdata.schema.SourceRef.yml
+          - $ref: ./bigdata.schema.ValueRef.yml
+          - $ref: ./bigdata.schema.ZoneRef.yml
+          - $ref: ./bigdata.sql.SqlRef.yml
+          - $ref: ./bigdata.task.CacheRef.yml
+          - $ref: ./bigdata.task.TaskOutputRef.yml
+          - $ref: ./one.geomarketing.CgiToMccRef.yml
+          - $ref: ./one.geomarketing.FakeCgiRef.yml
+          - $ref: ./one.report.ExternalRef.yml
+          - $ref: ./one.report.LocationRadiusRef.yml
+          - $ref: ./one.report.LocationRef.yml
+          - $ref: ./one.scenario.ConstantRef.yml
+          - $ref: ./one.scenario.Exposure.yml
+          - $ref: ./one.scenario.PlacemarkInfosRef.yml
+          - $ref: ./one.scenario.SuccessRate.yml
+          - $ref: ./one.scenario.Successful.yml
+          - $ref: ./qre.ContextEvent.yml
+          - $ref: ./qre.CreateEventRef.yml
+          - $ref: ./qre.EnteredInScenario.yml
+          - $ref: ./qre.EntityRuleContextRef.yml
+          - $ref: ./qre.FormatRef.yml
+          - $ref: ./qre.IsInControlGroup.yml
+          - $ref: ./qre.IsInRule.yml
+          - $ref: ./qre.IsInScenario.yml
+          - $ref: ./qre.IsInUserRules.yml
+          - $ref: ./qre.ScenarioEnterTs.yml
+          - $ref: ./qre.ScenarioExitTs.yml
+          - $ref: ./qre.VariableRef.yml
+          - $ref: ./qts.ExtractRef.yml
+        discriminator:
+          propertyName: _class
+      coords:
+        description: Coordinates to use to match the location.
+        oneOf:
+          - $ref: ./bigdata.db.GlobalVariableRef.yml
+          - $ref: ./bigdata.mde.FieldRef.yml
+          - $ref: ./bigdata.mde.WeakRef.yml
+          - $ref: ./bigdata.qrrd.SlotRef.yml
+          - $ref: ./bigdata.qrrd.ValueRef.yml
+          - $ref: ./bigdata.qrrd.ValueRefRef.yml
+          - $ref: ./bigdata.qrrd.WildcardRef.yml
+          - $ref: ./bigdata.qrrd.WildcardRefRef.yml
+          - $ref: ./bigdata.query.Age.yml
+          - $ref: ./bigdata.query.AggregationOperation.yml
+          - $ref: ./bigdata.query.BinToJson.yml
+          - $ref: ./bigdata.query.CgiToCuid.yml
+          - $ref: ./bigdata.query.CuidToCgi.yml
+          - $ref: ./bigdata.query.CutString.yml
+          - $ref: ./bigdata.query.DayOfWeek.yml
+          - $ref: ./bigdata.query.FormulaRef.yml
+          - $ref: ./bigdata.query.LocationCellInfo.yml
+          - $ref: ./bigdata.query.LocationCoords.yml
+          - $ref: ./bigdata.query.LocationGad.yml
+          - $ref: ./bigdata.query.LocationMlpBin.yml
+          - $ref: ./bigdata.query.LocationMlpJson.yml
+          - $ref: ./bigdata.query.LocationRadius.yml
+          - $ref: ./bigdata.query.RecnoRef.yml
+          - $ref: ./bigdata.ref.AutoRef.yml
+          - $ref: ./bigdata.ref.DealiasValue.yml
+          - $ref: ./bigdata.ref.MultiRef.yml
+          - $ref: ./bigdata.ref.NamedRef.yml
+          - $ref: ./bigdata.ref.ObjectField.yml
+          - $ref: ./bigdata.ref.ObjectIsA.yml
+          - $ref: ./bigdata.ref.ObjectType.yml
+          - $ref: ./bigdata.ref.ParametricRef.yml
+          - $ref: ./bigdata.ref.PlacemarkInfosRef.yml
+          - $ref: ./bigdata.ref.PressureNextAvailability.yml
+          - $ref: ./bigdata.ref.ServerTimezoneOffset.yml
+          - $ref: ./bigdata.ref.TestRef.yml
+          - $ref: ./bigdata.ref.ValueRef.yml
+          - $ref: ./bigdata.relational.TableRef.yml
+          - $ref: ./bigdata.relational.TypedValueRef.yml
+          - $ref: ./bigdata.schema.AggregationRef.yml
+          - $ref: ./bigdata.schema.ColumnRef.yml
+          - $ref: ./bigdata.schema.KeyRef.yml
+          - $ref: ./bigdata.schema.SourceRef.yml
+          - $ref: ./bigdata.schema.ValueRef.yml
+          - $ref: ./bigdata.schema.ZoneRef.yml
+          - $ref: ./bigdata.sql.SqlRef.yml
+          - $ref: ./bigdata.task.CacheRef.yml
+          - $ref: ./bigdata.task.TaskOutputRef.yml
+          - $ref: ./one.geomarketing.CgiToMccRef.yml
+          - $ref: ./one.geomarketing.FakeCgiRef.yml
+          - $ref: ./one.report.ExternalRef.yml
+          - $ref: ./one.report.LocationRadiusRef.yml
+          - $ref: ./one.report.LocationRef.yml
+          - $ref: ./one.scenario.ConstantRef.yml
+          - $ref: ./one.scenario.Exposure.yml
+          - $ref: ./one.scenario.PlacemarkInfosRef.yml
+          - $ref: ./one.scenario.SuccessRate.yml
+          - $ref: ./one.scenario.Successful.yml
+          - $ref: ./qre.ContextEvent.yml
+          - $ref: ./qre.CreateEventRef.yml
+          - $ref: ./qre.EnteredInScenario.yml
+          - $ref: ./qre.EntityRuleContextRef.yml
+          - $ref: ./qre.FormatRef.yml
+          - $ref: ./qre.IsInControlGroup.yml
+          - $ref: ./qre.IsInRule.yml
+          - $ref: ./qre.IsInScenario.yml
+          - $ref: ./qre.IsInUserRules.yml
+          - $ref: ./qre.ScenarioEnterTs.yml
+          - $ref: ./qre.ScenarioExitTs.yml
+          - $ref: ./qre.VariableRef.yml
+          - $ref: ./qts.ExtractRef.yml
+        discriminator:
+          propertyName: _class
+      cgi:
+        description: |-
+          CGI to use to match the location.
+
+          If both CGI and UID are used, the CGI will be used only if the UID is
+          missing.
+        oneOf:
+          - $ref: ./bigdata.db.GlobalVariableRef.yml
+          - $ref: ./bigdata.mde.FieldRef.yml
+          - $ref: ./bigdata.mde.WeakRef.yml
+          - $ref: ./bigdata.qrrd.SlotRef.yml
+          - $ref: ./bigdata.qrrd.ValueRef.yml
+          - $ref: ./bigdata.qrrd.ValueRefRef.yml
+          - $ref: ./bigdata.qrrd.WildcardRef.yml
+          - $ref: ./bigdata.qrrd.WildcardRefRef.yml
+          - $ref: ./bigdata.query.Age.yml
+          - $ref: ./bigdata.query.AggregationOperation.yml
+          - $ref: ./bigdata.query.BinToJson.yml
+          - $ref: ./bigdata.query.CgiToCuid.yml
+          - $ref: ./bigdata.query.CuidToCgi.yml
+          - $ref: ./bigdata.query.CutString.yml
+          - $ref: ./bigdata.query.DayOfWeek.yml
+          - $ref: ./bigdata.query.FormulaRef.yml
+          - $ref: ./bigdata.query.LocationCellInfo.yml
+          - $ref: ./bigdata.query.LocationCoords.yml
+          - $ref: ./bigdata.query.LocationGad.yml
+          - $ref: ./bigdata.query.LocationMlpBin.yml
+          - $ref: ./bigdata.query.LocationMlpJson.yml
+          - $ref: ./bigdata.query.LocationRadius.yml
+          - $ref: ./bigdata.query.RecnoRef.yml
+          - $ref: ./bigdata.ref.AutoRef.yml
+          - $ref: ./bigdata.ref.DealiasValue.yml
+          - $ref: ./bigdata.ref.MultiRef.yml
+          - $ref: ./bigdata.ref.NamedRef.yml
+          - $ref: ./bigdata.ref.ObjectField.yml
+          - $ref: ./bigdata.ref.ObjectIsA.yml
+          - $ref: ./bigdata.ref.ObjectType.yml
+          - $ref: ./bigdata.ref.ParametricRef.yml
+          - $ref: ./bigdata.ref.PlacemarkInfosRef.yml
+          - $ref: ./bigdata.ref.PressureNextAvailability.yml
+          - $ref: ./bigdata.ref.ServerTimezoneOffset.yml
+          - $ref: ./bigdata.ref.TestRef.yml
+          - $ref: ./bigdata.ref.ValueRef.yml
+          - $ref: ./bigdata.relational.TableRef.yml
+          - $ref: ./bigdata.relational.TypedValueRef.yml
+          - $ref: ./bigdata.schema.AggregationRef.yml
+          - $ref: ./bigdata.schema.ColumnRef.yml
+          - $ref: ./bigdata.schema.KeyRef.yml
+          - $ref: ./bigdata.schema.SourceRef.yml
+          - $ref: ./bigdata.schema.ValueRef.yml
+          - $ref: ./bigdata.schema.ZoneRef.yml
+          - $ref: ./bigdata.sql.SqlRef.yml
+          - $ref: ./bigdata.task.CacheRef.yml
+          - $ref: ./bigdata.task.TaskOutputRef.yml
+          - $ref: ./one.geomarketing.CgiToMccRef.yml
+          - $ref: ./one.geomarketing.FakeCgiRef.yml
+          - $ref: ./one.report.ExternalRef.yml
+          - $ref: ./one.report.LocationRadiusRef.yml
+          - $ref: ./one.report.LocationRef.yml
+          - $ref: ./one.scenario.ConstantRef.yml
+          - $ref: ./one.scenario.Exposure.yml
+          - $ref: ./one.scenario.PlacemarkInfosRef.yml
+          - $ref: ./one.scenario.SuccessRate.yml
+          - $ref: ./one.scenario.Successful.yml
+          - $ref: ./qre.ContextEvent.yml
+          - $ref: ./qre.CreateEventRef.yml
+          - $ref: ./qre.EnteredInScenario.yml
+          - $ref: ./qre.EntityRuleContextRef.yml
+          - $ref: ./qre.FormatRef.yml
+          - $ref: ./qre.IsInControlGroup.yml
+          - $ref: ./qre.IsInRule.yml
+          - $ref: ./qre.IsInScenario.yml
+          - $ref: ./qre.IsInUserRules.yml
+          - $ref: ./qre.ScenarioEnterTs.yml
+          - $ref: ./qre.ScenarioExitTs.yml
+          - $ref: ./qre.VariableRef.yml
+          - $ref: ./qts.ExtractRef.yml
+        discriminator:
+          propertyName: _class
+      date:
+        description: |-
+          Date to use to find the UID associated to the CGI.
+
+          If not provided, current date will be used instead.
+
+          Should not be provided if the CGI is.
+        oneOf:
+          - $ref: ./bigdata.db.GlobalVariableRef.yml
+          - $ref: ./bigdata.mde.FieldRef.yml
+          - $ref: ./bigdata.mde.WeakRef.yml
+          - $ref: ./bigdata.qrrd.SlotRef.yml
+          - $ref: ./bigdata.qrrd.ValueRef.yml
+          - $ref: ./bigdata.qrrd.ValueRefRef.yml
+          - $ref: ./bigdata.qrrd.WildcardRef.yml
+          - $ref: ./bigdata.qrrd.WildcardRefRef.yml
+          - $ref: ./bigdata.query.Age.yml
+          - $ref: ./bigdata.query.AggregationOperation.yml
+          - $ref: ./bigdata.query.BinToJson.yml
+          - $ref: ./bigdata.query.CgiToCuid.yml
+          - $ref: ./bigdata.query.CuidToCgi.yml
+          - $ref: ./bigdata.query.CutString.yml
+          - $ref: ./bigdata.query.DayOfWeek.yml
+          - $ref: ./bigdata.query.FormulaRef.yml
+          - $ref: ./bigdata.query.LocationCellInfo.yml
+          - $ref: ./bigdata.query.LocationCoords.yml
+          - $ref: ./bigdata.query.LocationGad.yml
+          - $ref: ./bigdata.query.LocationMlpBin.yml
+          - $ref: ./bigdata.query.LocationMlpJson.yml
+          - $ref: ./bigdata.query.LocationRadius.yml
+          - $ref: ./bigdata.query.RecnoRef.yml
+          - $ref: ./bigdata.ref.AutoRef.yml
+          - $ref: ./bigdata.ref.DealiasValue.yml
+          - $ref: ./bigdata.ref.MultiRef.yml
+          - $ref: ./bigdata.ref.NamedRef.yml
+          - $ref: ./bigdata.ref.ObjectField.yml
+          - $ref: ./bigdata.ref.ObjectIsA.yml
+          - $ref: ./bigdata.ref.ObjectType.yml
+          - $ref: ./bigdata.ref.ParametricRef.yml
+          - $ref: ./bigdata.ref.PlacemarkInfosRef.yml
+          - $ref: ./bigdata.ref.PressureNextAvailability.yml
+          - $ref: ./bigdata.ref.ServerTimezoneOffset.yml
+          - $ref: ./bigdata.ref.TestRef.yml
+          - $ref: ./bigdata.ref.ValueRef.yml
+          - $ref: ./bigdata.relational.TableRef.yml
+          - $ref: ./bigdata.relational.TypedValueRef.yml
+          - $ref: ./bigdata.schema.AggregationRef.yml
+          - $ref: ./bigdata.schema.ColumnRef.yml
+          - $ref: ./bigdata.schema.KeyRef.yml
+          - $ref: ./bigdata.schema.SourceRef.yml
+          - $ref: ./bigdata.schema.ValueRef.yml
+          - $ref: ./bigdata.schema.ZoneRef.yml
+          - $ref: ./bigdata.sql.SqlRef.yml
+          - $ref: ./bigdata.task.CacheRef.yml
+          - $ref: ./bigdata.task.TaskOutputRef.yml
+          - $ref: ./one.geomarketing.CgiToMccRef.yml
+          - $ref: ./one.geomarketing.FakeCgiRef.yml
+          - $ref: ./one.report.ExternalRef.yml
+          - $ref: ./one.report.LocationRadiusRef.yml
+          - $ref: ./one.report.LocationRef.yml
+          - $ref: ./one.scenario.ConstantRef.yml
+          - $ref: ./one.scenario.Exposure.yml
+          - $ref: ./one.scenario.PlacemarkInfosRef.yml
+          - $ref: ./one.scenario.SuccessRate.yml
+          - $ref: ./one.scenario.Successful.yml
+          - $ref: ./qre.ContextEvent.yml
+          - $ref: ./qre.CreateEventRef.yml
+          - $ref: ./qre.EnteredInScenario.yml
+          - $ref: ./qre.EntityRuleContextRef.yml
+          - $ref: ./qre.FormatRef.yml
+          - $ref: ./qre.IsInControlGroup.yml
+          - $ref: ./qre.IsInRule.yml
+          - $ref: ./qre.IsInScenario.yml
+          - $ref: ./qre.IsInUserRules.yml
+          - $ref: ./qre.ScenarioEnterTs.yml
+          - $ref: ./qre.ScenarioExitTs.yml
+          - $ref: ./qre.VariableRef.yml
+          - $ref: ./qts.ExtractRef.yml
+        discriminator:
+          propertyName: _class
+      outputFieldName:
+        type: string
+        description: Name of the output field containing the matched placemark name.
+        default: place
+      conds:
+        type: array
+        description: Zones and placemarks to match.
+        items:
+          $ref: ./one.geomarketing.ZoneCondition.yml
+      mode:
+        description: |-
+          Matching mode.
+
+          The way the cell and coordinates are matched with cell coverage and/or
+          placemarks geometries depends on this mode.
+        allOf:
+          - $ref: ./one.geomarketing.OdPoiMatchMode.yml
+        default: 0
+      zoneIdFieldName:
+        type: string
+        description: |-
+          If set, a new output column will be added with the zone ID of the
+          matching placemark (if any).
+      defaultPlaceName:
+        type: string
+        description: |-
+          If set, a default place name will be used when the provided one
+          doesn't match any.
+      generateTotals:
+        type: boolean
+        description: |-
+          If enabled, an additional key will be generate with a generic place
+          name.
+        default: false
+      wildcardForTotals:
+        type: string
+        description: Place name to use for totals.
+        default: '*'
+        minLength: 1

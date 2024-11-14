@@ -1,0 +1,36 @@
+post:
+  operationId: getUpdateProfile
+  tags:
+    - member
+  summary: Update the profile of a user.
+  description: |-
+    This RPC updates the profile of the currently authenticated member,
+    defined by its authentication token. Only publicly visible contact
+    fields (fields marked with the attribute geosafeea:public) are updated,
+    the other fields are ignored if set. The updated profile is then
+    returned.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/geosafeea.public.Member.updateProfileArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/geosafeea.public.Member.updateProfileRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

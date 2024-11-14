@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./one.notification.Notification.yml
+  - type: object
+    required:
+      - keyword
+    properties:
+      keyword:
+        type: string

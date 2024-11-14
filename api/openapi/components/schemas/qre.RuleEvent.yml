@@ -1,0 +1,21 @@
+allOf:
+  - $ref: ./bigdata.base.Event.yml
+  - type: object
+    description: |-
+      Base class for event to be sent to a specific rule.
+
+      This class can be used to build events that can be waited by a wait event
+      and that is guaranteed to be received by only a single rule.
+    required:
+      - scenarioId
+    properties:
+      scenarioId:
+        type: integer
+        format: int64
+        description: The scenario id
+        minimum: 0
+      ruleId:
+        type: integer
+        format: int64
+        description: The rule id
+        minimum: 0

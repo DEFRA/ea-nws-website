@@ -10,7 +10,7 @@ url_not_in_england = url_org_man_loc.get('edit').get('notInEngland')
 url_next_page_drop_pin = url_org_man_loc.get('edit').get('dropPinEdit')
 
 def setup(browser):
-    navigate_to_auth_page_via_index(browser,url)
+    navigate_to_auth_org_page_via_index(browser,url)
     select_input_radio_option(browser,'idUse X and Y coordinates','id')
     click_button(browser, 'Continue',url_XYSearch)
 

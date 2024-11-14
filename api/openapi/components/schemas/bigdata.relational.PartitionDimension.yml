@@ -1,0 +1,59 @@
+allOf:
+  - $ref: ./bigdata.relational.Dimension.yml
+  - type: object
+    description: |-
+      Partition dimension.
+
+      Group the column values by segments.
+    properties:
+      edges:
+        type: array
+        description: >-
+          Partition edges.
+
+
+          Example: for a column containing integer values, defining a partition
+
+          [10, 30, 70] will create 4 segments:
+
+
+          - segment 0: ]-infinite, 10[
+
+          - segment 1: [10, 30[
+
+          - segment 2: [30, 70[
+
+          - segment 3: [70, +infinite[
+
+
+          The edges must have all have the same type, and be strictly
+          increasing.
+        items:
+          $ref: ./platform.base.Value.yml
+      modulo:
+        description: >-
+          Modulo applied to the values before looking for their segment.
+
+
+          For example, if the defined partition is [10, 30, 70], and the modulo
+
+          is set to 100, it will create 3 segments in which the values modulo
+          100
+
+          are classified:
+
+
+          - segment 0: [10, 30[
+
+          - segment 1: [30, 70[
+
+          - segment 2: [0, 10[ U [70, 100[
+
+
+          The modulo must be of the same type as the edges, and be greater than
+
+          the last one.
+
+          The edges must be positive.
+        allOf:
+          - $ref: ./platform.base.Value.yml

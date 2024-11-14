@@ -1,0 +1,4 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    description: Make all the input fields optional.

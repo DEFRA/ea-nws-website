@@ -1,0 +1,7 @@
+type: string
+enum:
+  - UNDEFINED
+  - LARGE_CITY
+  - SMALL_CITY
+  - SUBURBAN
+  - OPEN

@@ -1,0 +1,14 @@
+type: object
+description: Registration of a member to a partner.
+required:
+  - partner
+  - registrationDate
+  - params
+properties:
+  partner:
+    $ref: ./geosafeea.public.Partner.yml
+  registrationDate:
+    type: integer
+    format: int64
+  params:
+    $ref: ./geosafeea.public.RegistrationParams.yml

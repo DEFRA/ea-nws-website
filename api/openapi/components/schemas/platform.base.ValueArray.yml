@@ -1,0 +1,6 @@
+type: object
+properties:
+  values:
+    type: array
+    items:
+      $ref: ./platform.base.Value.yml

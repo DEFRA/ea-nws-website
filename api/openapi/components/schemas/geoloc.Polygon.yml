@@ -1,0 +1,9 @@
+type: object
+description: a polygon with holes.
+properties:
+  boundary:
+    $ref: ./geoloc.Ring.yml
+  holes:
+    type: array
+    items:
+      $ref: ./geoloc.Ring.yml

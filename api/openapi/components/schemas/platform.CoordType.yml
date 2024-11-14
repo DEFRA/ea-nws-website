@@ -1,0 +1,11 @@
+type: object
+description: Parameters of a source of geometric coordinates.
+properties:
+  storeAltitude:
+    type: boolean
+    description: If true, store the altitude field in the databases.
+    default: false
+  storePrecision:
+    type: boolean
+    description: If true, store the precision field in the databases.
+    default: false

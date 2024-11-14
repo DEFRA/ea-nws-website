@@ -1,0 +1,43 @@
+allOf:
+  - $ref: ./one.geoutils.CgiToCoords.yml
+  - type: object
+    description: >-
+      Map cells into coordinates + probability.
+
+
+      This operation is quite similar to \p CgiToCoords but instead of
+      converting
+
+      each cell into a single location, it spreads its output on the whole cell
+
+      coverage.
+
+
+      For each input cell, it outputs N (coef, coords) couples for which the
+      coef
+
+      sum is 1.
+
+
+      It is recommanded to regroup the data per CGI before applying the
+      operation
+
+      because it may produce many points (depending on the resolution), so it
+
+      must be used wisely in order not to produce too much intermediated data.
+    required:
+      - resolution
+    properties:
+      presenceProbabilityFieldName:
+        type: string
+        description: Name of the presence probability output field.
+        default: coef
+      resolution:
+        type: integer
+        format: int32
+        description: |-
+          Distance between two neighboring points of the output.
+
+          This distance is also the side of an equilateral triangle in the
+          triangle sieve that is applied on the circular sector.
+        minimum: 1

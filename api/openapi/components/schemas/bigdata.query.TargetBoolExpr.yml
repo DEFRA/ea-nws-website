@@ -1,0 +1,10 @@
+type: object
+description: Specify a condition on a target.
+required:
+  - targetId
+properties:
+  targetId:
+    type: integer
+    format: int64
+    description: The selected target id.
+    minimum: 0

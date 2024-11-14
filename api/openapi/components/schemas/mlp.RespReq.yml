@@ -1,0 +1,5 @@
+type: string
+enum:
+  - NO_DELAY
+  - LOW_DELAY
+  - DELAY_TOL

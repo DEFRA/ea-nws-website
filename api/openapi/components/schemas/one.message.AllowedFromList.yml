@@ -1,0 +1,14 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    properties:
+      protocols:
+        type: array
+        description: |-
+          List of allowed originators by protocol.
+
+          If a protocol is not listed here, no restriction applies.
+          If a protocol is listed with zero originators, no originator is
+          available.
+        items:
+          $ref: ./one.message.ProtocolAllowedFrom.yml

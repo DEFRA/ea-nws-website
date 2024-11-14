@@ -1,0 +1,14 @@
+type: object
+required:
+  - zoneId
+  - placemarks
+properties:
+  zoneId:
+    type: integer
+    format: int64
+    minimum: 0
+  placemarks:
+    type: array
+    items:
+      $ref: ./one.geomarketing.PlacemarkCoef.yml
+    minItems: 1

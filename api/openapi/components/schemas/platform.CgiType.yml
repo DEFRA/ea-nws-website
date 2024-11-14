@@ -1,0 +1,13 @@
+type: object
+description: Parameters of a source of CGIs.
+properties:
+  allowLai:
+    type: boolean
+    description: Allow LAI format.
+    default: false
+  allowFuzzy:
+    type: boolean
+    description: |-
+      Allow fuzzy format.
+
+      The fuzzy format allow receiving only LAI, PLMN or just MCC.

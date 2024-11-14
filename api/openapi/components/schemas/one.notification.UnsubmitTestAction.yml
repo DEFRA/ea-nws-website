@@ -1,0 +1,4 @@
+allOf:
+  - $ref: ./one.notification.ScenarioAction.yml
+  - type: object
+    description: Notification sent at test to validators upon scenario unsubmit.

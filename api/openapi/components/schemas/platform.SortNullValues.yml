@@ -1,0 +1,10 @@
+type: string
+description: |-
+  Place order of null values.
+
+  Null values are not found or not set values when doing the sort.
+enum:
+  - ALWAYS_LAST
+  - ALWAYS_FIRST
+  - BEFORE
+  - AFTER

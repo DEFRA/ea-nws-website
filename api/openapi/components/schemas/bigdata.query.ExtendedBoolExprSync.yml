@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./bigdata.query.ExtendedBoolExpr.yml
+  - type: object
+    description: |-
+      Extended boolean expressions Sync.
+
+      Define an extended boolean expression that can be translate into generic
+      boolean expression synchronously.

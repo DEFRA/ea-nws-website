@@ -1,0 +1,5 @@
+type: string
+enum:
+  - SUCCESS
+  - NOT_ENOUGH_POINTS
+  - ACTION_FAIL

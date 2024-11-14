@@ -1,0 +1,32 @@
+type: object
+description: Describe a range.
+required:
+  - leftIncluded
+  - rightIncluded
+properties:
+  left:
+    description: |-
+      Left bound of the range.
+
+      If unset, no bound is used (ie ']-inf' is the bound)
+    allOf:
+      - $ref: ./platform.base.Value.yml
+  leftIncluded:
+    type: boolean
+    description: |-
+      True if the left bound is included in the range.
+
+      Useless if \p left is unset.
+  right:
+    description: |-
+      Right bound of the range.
+
+      If unset, no bound is used (ie '+inf[' is the bound)
+    allOf:
+      - $ref: ./platform.base.Value.yml
+  rightIncluded:
+    type: boolean
+    description: |-
+      True if the right bound is included in the range.
+
+      Useless if \p right is unset.

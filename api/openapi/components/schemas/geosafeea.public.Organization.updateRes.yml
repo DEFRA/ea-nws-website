@@ -1,0 +1,8 @@
+type: object
+required:
+  - organization
+properties:
+  organization:
+    description: the new organization profile after update
+    allOf:
+      - $ref: ./geosafeea.public.Partner.yml

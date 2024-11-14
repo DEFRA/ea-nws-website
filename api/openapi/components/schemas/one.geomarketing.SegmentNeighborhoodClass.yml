@@ -1,0 +1,28 @@
+type: object
+description: |-
+  Decision tree for stops neighborhood.
+
+  The neighborhood of a stop is the set of segments before or after the
+   stop.
+
+   The neigborhoods are matched following their order of declaration.
+   The final traveler type depends on the types of the neighborhood
+   before and after the reference stop:
+       UNKNOWN              + UNKNOWN              -> NON_TRAVELER
+       UNKNOWN              + NATIONAL_FLIGHT      -> NATIONAL
+       UNKNOWN              + INTERNATIONAL_FLIGHT -> INTERNATIONAL
+       NATIONAL_FLIGHT      + NATIONAL_FLIGHT      -> TRANSIT_TRAVELER
+       NATIONAL_FLIGHT      + INTERNATIONAL_FLIGHT -> TRANSIT_TRAVELER
+       INTERNATIONAL_FLIGHT + INTERNATIONAL_FLIGHT -> TRANSIT_TRAVELER
+required:
+  - type
+properties:
+  neighbors:
+    type: array
+    description: Reference segment neighbors, from the closest to the farthest.
+    items:
+      $ref: ./one.geomarketing.SegmentClass.yml
+  type:
+    description: Type to set in case of positive match.
+    allOf:
+      - $ref: ./one.geomarketing.SegmentNeighborhoodType.yml

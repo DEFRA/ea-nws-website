@@ -1,0 +1,22 @@
+type: object
+description: |-
+  Store the quantile ratio
+
+  The k-th q-quantile
+  The k/q ratio must be in interval [0, 1].
+required:
+  - k
+  - outputFieldName
+properties:
+  k:
+    type: integer
+    format: int32
+    minimum: 1
+  q:
+    type: integer
+    format: int32
+    default: 100
+    minimum: 2
+  outputFieldName:
+    type: string
+    description: Name of the output field where the k-th q-quantile is written.

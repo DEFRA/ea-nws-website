@@ -1,0 +1,36 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    description: |-
+      Get rid of short stops in stop segment legacy output.
+
+      First step: merge MOVE-SHORT_STOP-MOVE in a single MOVE.
+
+      Second step: merge MOVE-SHORT_STOP / SHORT_STOP-MOVE in a single MOVE.
+
+      Third step: (optional; iff \ref skipUnmergeableShortStops is set) skip
+      STOPs in these sequences:
+
+        - EXTRACT_START-SHORT_STOP-ABSENT
+        - ABSENT-SHORT_STOP-ABSENT
+        - ABSENT-SHORT_STOP-EXTRACT_END
+        - EXTRACT_START-SHORT_STOP-EXTRACT_END
+
+      Input/output: instances of the IOP struct \ref StopSegmentLegacyOutputRow.
+    required:
+      - minStopDuration
+      - skipUnmergeableShortStops
+    properties:
+      minStopDuration:
+        type: integer
+        format: int32
+        description: |-
+          Minimum duration we want for stops.
+
+          This value identifies short stops.
+        minimum: 0
+      skipUnmergeableShortStops:
+        type: boolean
+        description: |-
+          If set, skip the short stops that cannot be merged with surrounding
+          moves.

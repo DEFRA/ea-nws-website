@@ -1,0 +1,16 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: Custom value returned when using \ref LocationCellInfo.
+    required:
+      - cell
+    properties:
+      cell:
+        oneOf:
+          - $ref: ./services.network.Cell.yml
+        discriminator:
+          propertyName: _class
+      geom:
+        $ref: ./geoloc.Geometry.yml
+      address:
+        $ref: ./services.network.Address.yml

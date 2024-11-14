@@ -1,0 +1,15 @@
+allOf:
+  - $ref: ./one.notification.UserNotification.yml
+  - type: object
+    required:
+      - toDeactivateUserLogin
+      - toDeactivateUserId
+    properties:
+      toDeactivateUserLogin:
+        type: string
+        description: Login of the user that will be deactivated.
+      toDeactivateUserId:
+        type: integer
+        format: int64
+        description: Id of the user that will be deactivated.
+        minimum: 0

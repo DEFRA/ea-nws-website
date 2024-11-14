@@ -1,0 +1,62 @@
+type: object
+description: |-
+  Place of interest data of a contact.
+
+  POI stands for Points Of Interests. Points Of Interests is how we refer
+  to locations associated to contacts. The collection "locations" store the
+  locations of contacts (then called Points Of Interests) and locations of
+  organisations.
+properties:
+  name:
+    type: string
+    description: Name of the POI.
+  address:
+    type: string
+    description: Address of the POI.
+  coordinates:
+    description: |-
+      Coordinates of the POI.
+
+      It should be set when the POI can be represented by a point on a map,
+      usually by geocoding the address into a set of coordinates.
+
+      Only one of \ref coordinates, \ref geometry or \ref geocode should be
+      set.
+    allOf:
+      - $ref: ./platform.base.Coordinates.yml
+  id:
+    type: string
+    description: Identifier of the POI.
+  enabled:
+    type: boolean
+    description: Enabled flag.
+  geometry:
+    description: |-
+      Geometry of the POI.
+
+      It should be set when the POI is represented by an arbitrary set of
+      polygons.
+
+      Only one of \ref coordinates, \ref geometry or \ref geocode should be
+      set.
+    allOf:
+      - $ref: ./geosafeea.contact.PoiGeometry.yml
+  geocode:
+    type: string
+    description: |-
+      Geocode of the POI.
+
+      It should be set when the POI is represented by the identifier of a
+      geocode in the geocodes database.
+
+      Only one of \ref coordinates, \ref geometry or \ref geocode should be
+      set.
+  metadata:
+    oneOf:
+      - $ref: ./geosafeea.contact.LocationMetadata.yml
+    discriminator:
+      propertyName: _class
+  additionals:
+    type: array
+    items:
+      $ref: ./geosafeea.contact.AdditionalField.yml

@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
-import Map from '../../../components/custom/Map'
+import ContactMap from './contact-information-components/ContactMap'
 import ViewContactSubNavigation from './contact-information-components/ViewContactSubNavigation'
 
 export default function ContactInformationLayout () {
@@ -24,12 +24,12 @@ export default function ContactInformationLayout () {
       <OrganisationAccountNavigation />
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-4'>
-        <div class='govuk-grid-row'>
-          <div class='govuk-grid-column-one-half'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-one-half'>
             <strong className='govuk-tag govuk-tag--green govuk-!-margin-bottom-3'>
               Contact
             </strong>
-            <h1 class='govuk-heading-l govuk-!-margin-bottom-1'>
+            <h1 className='govuk-heading-l govuk-!-margin-bottom-1'>
               {contactName}
             </h1>
           </div>
@@ -163,7 +163,7 @@ export default function ContactInformationLayout () {
           </div>
           {/* other half - map */}
           <div className='govuk-grid-column-one-half'>
-            <Map showMapControls={false} zoomLevel={14} />
+            <ContactMap zoomLevel={14} />
 
             <div className=' govuk-!-margin-top-4'>
               <RoomOutlinedIcon style={{ fontSize: 30 }} />

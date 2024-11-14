@@ -70,6 +70,7 @@ const userSlice = createSlice({
       homePhones: null,
       position: null,
       comments: null,
+      pois: null,
       additionals: [
         {
           id: 'keywords',
@@ -261,6 +262,7 @@ const userSlice = createSlice({
       state.orgCurrentContact.position = action.payload.position
       state.orgCurrentContact.additionals = action.payload.additionals
       state.orgCurrentContact.comments = action.payload.comments
+      state.orgCurrentContact.pois = action.payload.pois
     },
     setOrgCurrentContactId: (state, action) => {
       state.orgCurrentContact.id = action.payload
@@ -288,6 +290,9 @@ const userSlice = createSlice({
     },
     setOrgCurrentContactNotes: (state, action) => {
       state.orgCurrentContact.comments = action.payload
+    },
+    setOrgCurrentContactPois: (state, action) => {
+      state.orgCurrentContact.pois = action.payload
     },
     setOrgCurrentContactAdditionals: (state, action) => {
       state.orgCurrentContact.additionals = action.payload
@@ -351,6 +356,7 @@ const userSlice = createSlice({
         homePhones: null,
         position: null,
         comments: null,
+        pois: null,
         additionals: [
           {
             id: 'keywords',
@@ -422,6 +428,7 @@ export const {
   setOrgCurrentContactPosition,
   setOrgCurrentContactAdditionals,
   setOrgCurrentContactNotes,
+  setOrgCurrentContactPois,
   // clear state
   clearAuth
 } = userSlice.actions

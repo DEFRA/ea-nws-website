@@ -318,10 +318,28 @@ export default function IndexPage () {
     position: 'Admin',
     comments:
       'responsible for of all the petrol stations in the Midlands when Robert Bridge is on holiday.',
+    pois: [
+      {
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
+        coordinates: {
+          latitude: 51.5007,
+          longitude: 0.1246
+        }
+      },
+      {
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
+        coordinates: {
+          latitude: 51.550738,
+          longitude: -0.257635
+        }
+      }
+    ],
     additionals: [
       {
         id: 'keywords',
-        value: 'this, are, the, keywords'
+        value: 'north, west, east'
       }
     ]
   }

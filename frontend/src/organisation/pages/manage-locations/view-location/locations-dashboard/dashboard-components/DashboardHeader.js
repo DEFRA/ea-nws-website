@@ -55,14 +55,61 @@ export default function DashboardHeader ({
     </>
   )
 
-  const handleFloodAreas = async (event) => {
+  const handleFloodAreas = (event) => {
     event.preventDefault()
     navigate('/organisation/info/flood-areas')
   }
 
-  const nFloodMessages = locations.filter(
-    (item) => item.alert_categories.length > 0
-  ).length
+  const FloodBanner = ({ type }) => {
+    let count = 0
+    let message = ''
+    let heading = ''
+
+    if (type === 'floodMessages') {
+      heading = 'Locations that will get flood messages'
+      count = locations.filter(
+        (item) => item.alert_categories.length > 0
+      ).length
+      message = 'in flood areas'
+    } else if (type === 'noContacts') {
+      heading = 'Locations not linked to contacts'
+      message = 'not linked to contacts'
+    }
+
+    return (
+      <div
+        className='govuk-!-margin-top-3'
+        style={{
+          paddingBottom: '10px',
+          width: '50%',
+          paddingRight: '2%'
+        }}
+      >
+        <p>
+          <strong>{heading}</strong>
+        </p>
+        <div
+          style={{
+            border: '2px solid lightGrey',
+            padding: '30px 0px 50px 20px',
+            width: '100%'
+          }}
+        >
+          <h1 style={{ color: type === 'noContacts' ? 'crimson' : 'black' }}>
+            <strong>{count}</strong>
+          </h1>
+          <Link className='govuk-link'>
+            {count === 1 ? 'location' : 'locations'} {message}
+          </Link>
+        </div>
+        <p className='govuk-!-margin-top-2'>
+          <Link className='govuk-link' onClick={handleFloodAreas}>
+            What are flood areas?
+          </Link>
+        </p>
+      </div>
+    )
+  }
 
   return (
     <>
@@ -89,31 +136,10 @@ export default function DashboardHeader ({
           </div>
         </div>
 
-        {/* <div style={{ display: 'flex' }}> */}
-        <div className='govuk-!-margin-top-3' style={{ paddingBottom: '10px' }}>
-          <p>
-            <strong>Locations that will get flood messages</strong>
-          </p>
-          <div
-            style={{
-              border: '2px solid lightGrey',
-              padding: '30px 0px 50px 20px',
-              width: '100%'
-            }}
-          >
-            <h1>
-              <strong>{nFloodMessages}</strong>
-            </h1>
-            <Link className='govuk-link'>
-              {' '}
-              {nFloodMessages === 1 ? 'location' : 'locations'} in flood areas
-            </Link>
-          </div>
+        <div style={{ display: 'flex' }}>
+          <FloodBanner type='floodMessages' />
+          <FloodBanner type='noContacts' />
         </div>
-        <Link className='govuk-link' onClick={handleFloodAreas}>
-          What are flood areas?
-        </Link>
-        {/* </div> */}
       </div>
 
       <div className='govuk-grid-column-one-half govuk-!-margin-top-6'>

@@ -2,15 +2,11 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 frontend:
-  replicaCount: 3
+  replicaCount: 1
   imagePullSecrets: []
   nameOverride: ""
   fullnameOverride: ""
-  serviceAccount:
-    create: false
-    automount: true
-    annotations: {}
-    name: "nonprd-public-website-s3-service-account"
+  serviceAccount: {}
   podAnnotations: {}
   podLabels: {}
   podSecurityContext: {}
@@ -18,9 +14,9 @@ frontend:
     - name: frontend
       securityContext: {}
       image:
-        repository: 590183962451.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
-        pullPolicy: Always
-        tag: "frontend-0.1.4"
+        repository: ea_nws_website
+        pullPolicy: IfNotPresent
+        tag: "frontend-1.0"
       livenessProbe:
         httpGet:
           path: /
@@ -46,22 +42,17 @@ frontend:
   volumes: []
   ingress:
     enabled: false
-  nodeSelector:
-    eks.amazonaws.com/nodegroup: public-website-test-20240913090529127900000005
+  nodeSelector: {}
   tolerations: []
   affinity: {}
   dnsPolicy: ClusterFirst
 
 backend:
-  replicaCount: 3
+  replicaCount: 1
   imagePullSecrets: []
   nameOverride: ""
   fullnameOverride: ""
-  serviceAccount:
-    create: false
-    automount: true
-    annotations: {}
-    name: "nonprd-public-website-s3-service-account"
+  serviceAccount: {}
   podAnnotations: {}
   podLabels: {}
   podSecurityContext: {}
@@ -69,9 +60,9 @@ backend:
     - name: backend
       securityContext: {}
       image:
-        repository: 590183962451.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
-        pullPolicy: Always
-        tag: "backend-0.1.4"
+        repository: ea_nws_website
+        pullPolicy: IfNotPresent
+        tag: "backend-1.0"
       livenessProbe:
         httpGet:
           path: /liveness
@@ -97,8 +88,7 @@ backend:
   volumes: []
   ingress:
     enabled: false
-  nodeSelector:
-    eks.amazonaws.com/nodegroup: public-website-test-20240913090529127900000005
+  nodeSelector: {}
   tolerations: []
   affinity: {}
   dnsPolicy: ClusterFirst

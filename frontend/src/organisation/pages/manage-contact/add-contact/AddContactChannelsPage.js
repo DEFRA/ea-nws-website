@@ -143,6 +143,21 @@ export default function AddContactChannelsPage () {
       return false
     }
 
+    if (emailInput1 && emailInput1 === emailInput2) {
+      setEmail2Error('Enter a different email')
+      return false
+    }
+
+    if (mobileInput1 && mobileInput1 === mobileInput2) {
+      setMobilePhone2Error('Enter a different telephone number')
+      return false
+    }
+
+    if (homeInput1 && homeInput1 === homeInput2) {
+      setHomePhone2Error('Enter a different telephone number')
+      return false
+    }
+
     dataValid &= validateEmail(emailInput1, true)
     dataValid &= validateEmail(emailInput2)
     dataValid &= validatePhone(mobileInput1, 'mobile', true)

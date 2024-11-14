@@ -42,13 +42,13 @@ export default function FloodTypesPage () {
 
             <br />
             {/* Flood Alert */}
-            <h4>
+            <h4 className='govuk-heading-m'>
               <img
                 src={floodAlertIcon}
                 alt='Flood alert icon'
                 style={{ height: '50px' }}
               />
-              <strong>Flood alert</strong>
+              Flood alert
             </h4>
             <p className='govuk-!-margin-top-6'>
               These are early alerts of possible flooding to help you be
@@ -71,13 +71,13 @@ export default function FloodTypesPage () {
 
             <br />
             {/* Flood Warning */}
-            <h4>
+            <h4 className='govuk-heading-m'>
               <img
                 src={floodWarningIcon}
                 alt='Flood warning icon'
                 style={{ height: '50px' }}
               />
-              <strong>Flood warning</strong>
+              Flood warning
             </h4>
             <p className='govuk-!-margin-top-6'>
               These warnings tell you flooding is expected and you'll need to
@@ -99,13 +99,13 @@ export default function FloodTypesPage () {
 
             <br />
             {/* Severe flood warning */}
-            <h4>
+            <h4 className='govuk-heading-m'>
               <img
                 src={severeFloodWarningIcon}
                 alt='Severe flood warning icon'
                 style={{ height: '50px' }}
               />
-              <strong>Severe flood warning</strong>
+              Severe flood warning
             </h4>
             <p className='govuk-!-margin-top-6'>
               These warnings tell you there is a risk of severe flooding and

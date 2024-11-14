@@ -224,7 +224,9 @@ export default function LocationMessagesPage () {
 
       {alertCategories && (
         <>
-          <span class='govuk-caption-m'>4 flood areas</span>
+          <span class='govuk-caption-m'>
+            {floodAreasInputs.length} flood areas
+          </span>
 
           <table className='govuk-table govuk-table--small-text-until-tablet'>
             <thead className='govuk-table__head'>
@@ -247,11 +249,10 @@ export default function LocationMessagesPage () {
                 <tr
                   key={index}
                   className='govuk-table__row'
-                  style={{ padding: '25px' }}
                 >
                   <td
                     className='govuk-table__cell'
-                    style={{ verticalAlign: 'middle', padding: '30px 0px' }}
+                    style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
                   >
                     <Link to='/' className='govuk-link'>
                       {detail.areaName}
@@ -259,20 +260,19 @@ export default function LocationMessagesPage () {
                   </td>
                   <td
                     className='govuk-table__cell'
-                    style={{ verticalAlign: 'middle' }}
+                    style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
                   >
-                    {detail.areaType === 'Flood alert' && (
-                      <img
-                        src={linkIcon}
-                        alt='Link icon'
-                        style={{ marginRight: '10px' }}
-                      />
-                    )}
+                    {/* TODO: Add link icon if location is already linked */}
+                    {/* <img
+                      src={linkIcon}
+                      alt='Link icon'
+                      style={{ marginRight: '10px' }}
+                    /> */}
                     {detail.areaType}
                   </td>
                   <td
                     className='govuk-table__cell'
-                    style={{ verticalAlign: 'middle' }}
+                    style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
                   >
                     {detail.messagesSent.map((message, idx) => (
                       <div key={idx}>{message}</div>
@@ -280,13 +280,12 @@ export default function LocationMessagesPage () {
                   </td>
                   <td
                     className='govuk-table__cell'
-                    style={{ verticalAlign: 'middle' }}
+                    style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
                   >
-                    {detail.areaType === 'Flood alert'
-                      ? (
-                        <Link className='govuk-link'>Unlink</Link>
-                        )
-                      : null}
+                    {detail.areaType === 'Flood alert' ? (
+                      // TODO: Add functionality to unlink
+                      <Link className='govuk-link'>Unlink</Link>
+                    ) : null}
                   </td>
                 </tr>
               ))}
@@ -299,6 +298,7 @@ export default function LocationMessagesPage () {
         imageSrc={linkIcon}
         text='Link to nearby flood areas'
         className='govuk-button govuk-button--secondary'
+        // TODO: Add link to nearby flood areas
         onClick={() => navigate('/')}
       />
     </>

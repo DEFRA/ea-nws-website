@@ -11,10 +11,9 @@ export default function LocationHeader ({ currentPage }) {
 
   return (
     <>
-      <div class='govuk-grid-row'>
-        <div class='govuk-grid-column-one-half'>
-          <span class='govuk-caption-l'>View location</span>
-          <h1 class='govuk-heading-l'>{additionalData.location_name}</h1>
+      <div className='govuk-grid-row'>
+        <div className='govuk-grid-column-one-half'>
+          <h1 className='govuk-heading-l'>{additionalData.location_name}</h1>
         </div>
         <div
           class='govuk-grid-column-one-half right'

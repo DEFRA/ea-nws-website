@@ -64,18 +64,14 @@ export default function FloodAreasPage () {
               text={detailsMessage}
             />
 
-            <h5>
-              <strong>Flood warning areas</strong>
-            </h5>
+            <h5 className='govuk-heading-s'>Flood warning areas</h5>
             <p>
               Flood warning areas usually cover smaller areas where people live
               or work, such as cities, towns or villages.
             </p>
 
             <br />
-            <h5>
-              <strong>Flood alert areas</strong>
-            </h5>
+            <h5 className='govuk-heading-s'>Flood alert areas</h5>
             <p>
               Flood alert areas tend to be larger than flood warning areas. They
               can overlap several flood warning areas.
@@ -86,18 +82,14 @@ export default function FloodAreasPage () {
             </p>
 
             <br />
-            <h5>
-              <strong>No flood messages</strong>
-            </h5>
+            <h5 className='govuk-heading-s'>No flood messages</h5>
             <p>
               Not all locations are in places that can get flood warnings or
               flood alerts.
             </p>
             <WarningText text='Your locations may still be at risk even if there are no warnings sent in that area.' />
 
-            <h5>
-              <strong>Flood extent</strong>
-            </h5>
+            <h5 className='govuk-heading-s'>Flood extent</h5>
             <p>
               Flood extent shows the area that could be affected by flooding.
               This may extend beyond the flood warning or flood alert area a
@@ -105,9 +97,7 @@ export default function FloodAreasPage () {
             </p>
 
             <br />
-            <h5>
-              <strong>Flood risk</strong>
-            </h5>
+            <h5 className='govuk-heading-s'>Flood risk</h5>
             <p>
               Flood risk is based on a combination of likelihood and impact –
               how likely it is that flooding will happen and the effect that

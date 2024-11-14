@@ -27,7 +27,11 @@ paths:
     $ref: './paths/contact/email/verifyEmailStart.yaml'
   /member/verifyEmailValidate:
     $ref: './paths/contact/email/verifyEmailValidate.yaml'
-  /member/registerToPartner:
-    $ref: './paths/partner/registerToPartner.yaml'
+  /member/registerLocationToPartner:
+    $ref: './paths/partner/registerLocationToPartner.yaml'
+  /member/updateLocationRegistration:
+    $ref: './paths/partner/updateLocationRegistration.yaml'
+  /member/unregisterLocationFromPartner:
+    $ref: './paths/partner/unregisterLocationFromPartner.yaml'
   /member/deleteAccount:
     $ref: './paths/account/deleteAccount.yaml'

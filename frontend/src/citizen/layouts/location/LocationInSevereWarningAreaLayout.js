@@ -22,7 +22,7 @@ import {
   getCoordsOfFloodArea
 } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout ({
+export default function LocationInSevereWarningAreaLayout({
   continueToNextPage
 }) {
   const navigate = useNavigate()
@@ -60,7 +60,7 @@ export default function LocationInSevereWarningAreaLayout ({
     if (isUserInNearbyTargetFlowpath) {
       await removeFloodWarningArea()
     } else {
-      removeLocationWithFloodWarningAlerts()
+      await removeLocationWithFloodWarningAlerts()
     }
 
     dispatch(setAdditionalAlerts(false))
@@ -118,7 +118,12 @@ export default function LocationInSevereWarningAreaLayout ({
 
   const updateGeosafeProfile = async () => {
     const dataToSend = { authToken, profile }
-    await backendCall(dataToSend, 'api/profile/update', navigate)
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/profile/update',
+      navigate
+    )
+    console.log('error', errorMessage)
   }
 
   return (

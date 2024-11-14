@@ -1,4 +1,5 @@
-import { useSelector } from 'react-redux'
+import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import CitizenAccountNavigation from '../../../../common/components/custom/CitizenAccountNavigation'
@@ -6,6 +7,15 @@ import FloodWarningKey from '../../../../common/components/custom/FloodWarningKe
 import Map from '../../../../common/components/custom/Map'
 import Button from '../../../../common/components/gov-uk/Button'
 import Details from '../../../../common/components/gov-uk/Details'
+import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
+import AlertType from '../../../../common/enums/AlertType'
+import { setProfile } from '../../../../common/redux/userSlice'
+import { backendCall } from '../../../../common/services/BackendService'
+import {
+  getRegistrationParams,
+  removeLocation,
+  updateLocationsAlertTypes
+} from '../../../../common/services/ProfileServices'
 
 const floodWarningCardDetails = (
   <>
@@ -34,31 +44,116 @@ const floodAlertCardDetails = (
   </>
 )
 
-export default function ViewLocationPage () {
+export default function ViewLocationPage() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const { type } = useParams()
+  const [successMessage, setSuccessMessage] = useState('')
+  const authToken = useSelector((state) => state.session.authToken)
+  const profile = useSelector((state) => state.session.profile)
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
+  )
+  let alertTypes = selectedLocation.meta_data.location_additional.alert_types
+  const [optionalAlerts, setOptionalAlerts] = useState(
+    alertTypes.includes(AlertType.FLOOD_ALERT)
   )
 
   const areaAreas = type === 'both' ? ['severe', 'alert'] : [type]
 
-  const removeLocation = () => {
-    navigate('/manage-locations/remove', {
-      state: { name: selectedLocation.address }
-    })
+  const deleteLocation = async () => {
+    const data = {
+      authToken: authToken,
+      locationId: selectedLocation.id,
+      partnerId: 1 // this is currently a hardcoded value - geosafe to update us
+    }
+
+    const { errorMessage } = await backendCall(
+      data,
+      'api/partner/unregister_location_from_partner',
+      navigate
+    )
+
+    if (!errorMessage) {
+      const updatedProfile = removeLocation(profile, selectedLocation.address)
+      await dispatch(setProfile(updatedProfile))
+
+      await updateGeosafeProfile()
+
+      navigate('/manage-locations/remove', {
+        state: { name: selectedLocation.address }
+      })
+    }
+  }
+
+  const handleOptionalAlertSave = async (e) => {
+    e.preventDefault()
+
+    if (optionalAlerts) {
+      if (!alertTypes.includes(AlertType.FLOOD_ALERT)) {
+        alertTypes = alertTypes.push(AlertType.FLOOD_ALERT)
+      }
+    } else {
+      alertTypes = alertTypes.filter((type) => type !== AlertType.FLOOD_ALERT)
+    }
+
+    const data = {
+      authToken: authToken,
+      locationId: selectedLocation.id,
+      partnerId: 1, // this is currently a hardcoded value - geosafe to update us on what it is
+      params: getRegistrationParams(profile, alertTypes)
+    }
+
+    const { errorMessage } = await backendCall(
+      data,
+      'api/partner/update_location_registration',
+      navigate
+    )
+
+    if (!errorMessage) {
+      await updateLocationAlerts(alertTypes)
+
+      await updateGeosafeProfile()
+
+      const message = `You've turned ${
+        optionalAlerts ? 'on' : 'off'
+      } early flood alerts`
+      setSuccessMessage(message)
+    }
+  }
+
+  const updateLocationAlerts = async (alertTypes) => {
+    const updatedProfile = updateLocationsAlertTypes(
+      profile,
+      selectedLocation,
+      alertTypes
+    )
+    dispatch(setProfile(updatedProfile))
+  }
+
+  const updateGeosafeProfile = async () => {
+    const dataToSend = { authToken: authToken, profile: profile }
+    await backendCall(dataToSend, 'api/profile/update', navigate)
   }
 
   return (
     <>
       <CitizenAccountNavigation currentPage='/home' />
-      <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-three-quarters'>
+              <BackLink onClick={() => navigate(-1)} />
+              {successMessage && (
+                <NotificationBanner
+                  className={
+                    'govuk-notification-banner govuk-notification-banner--success govuk-!-margin-top-4'
+                  }
+                  title={'Success'}
+                  text={successMessage}
+                />
+              )}
               <h1 className='govuk-heading-l'>{selectedLocation.address}</h1>
-
               <Map types={areaAreas} />
               <FloodWarningKey type={type} />
               <h2 className='govuk-heading-m govuk-!-margin-top-5 govuk-!-margin-bottom-5'>
@@ -121,8 +216,9 @@ export default function ViewLocationPage () {
                               id='alert-on'
                               name='alert'
                               type='radio'
-                              checked
                               value='on'
+                              checked={optionalAlerts === true}
+                              onChange={() => setOptionalAlerts(true)}
                             />
                             <label
                               className='govuk-label govuk-radios__label'
@@ -138,6 +234,8 @@ export default function ViewLocationPage () {
                               name='alert'
                               type='radio'
                               value='off'
+                              checked={optionalAlerts === false}
+                              onChange={() => setOptionalAlerts(false)}
                             />
                             <label
                               className='govuk-label govuk-radios__label'
@@ -149,7 +247,7 @@ export default function ViewLocationPage () {
                         </div>
 
                         <Link
-                          to='/home'
+                          onClick={(e) => handleOptionalAlertSave(e)}
                           className='govuk-body govuk-link inline-link govuk-!-margin-bottom-0'
                         >
                           Save
@@ -159,7 +257,9 @@ export default function ViewLocationPage () {
                   </div>
                   <div className='govuk-summary-card__content'>
                     <p className='govuk-body'>
-                      You turned these early flood alerts off.
+                      {optionalAlerts
+                        ? 'You currently get these early flood alerts.'
+                        : 'You turned these early flood alerts off.'}
                     </p>
                     <p className='govuk-body'>
                       Sent in last year: <b>27</b>
@@ -176,7 +276,7 @@ export default function ViewLocationPage () {
                 To stop all flood messages for this location
               </h2>
               <Button
-                onClick={removeLocation}
+                onClick={deleteLocation}
                 className='govuk-button govuk-button--warning'
                 text='Remove location'
               />

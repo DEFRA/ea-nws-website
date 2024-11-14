@@ -10,7 +10,9 @@ const updateProfileHandler = require('./handlers/updateProfile/updateProfileHand
 const mobileAuthenticationHandler = require('./handlers/contact/mobile/mobileAuthenticationHandlers')
 const homePhoneAuthenticationHandlers = require('./handlers/contact/homephone/homephoneAuthenticationHandlers')
 const emailAuthenticationHandlers = require('./handlers/contact/email/emailAuthenticationHandlers')
-const registerToPartnerHandler = require('./handlers/partner/registerToPartnerHandler')
+const registerLocationToPartnerHandler = require('./handlers/partner/registerLocationToPartnerHandler')
+const updateLocationRegistrationHandler = require('./handlers/partner/updateLocationRegistration')
+const unregisterLocationFromPartnerHandler = require('./handlers/partner/unregisterLocationFromPartner')
 const deleteAccountHandler = require('./handlers/account/deleteAccountHandler')
 // define api
 const api = new OpenAPIBackend({
@@ -35,7 +37,12 @@ const api = new OpenAPIBackend({
     //update profile routes
     getUpdateProfile: updateProfileHandler.getUpdateProfile,
     //partner routes
-    getRegisterToPartner: registerToPartnerHandler.getRegisterToPartner,
+    getRegisterLocationToPartner:
+      registerLocationToPartnerHandler.getRegisterLocationToPartner,
+    getUpdateLocationRegistration:
+      updateLocationRegistrationHandler.getUpdateLocationRegistration,
+    getUnregisterLocationFromPartner:
+      unregisterLocationFromPartnerHandler.getUnregisterLocationFromPartner,
     //account deletion
     getDeleteAccount: deleteAccountHandler.getDeleteAccount
   }

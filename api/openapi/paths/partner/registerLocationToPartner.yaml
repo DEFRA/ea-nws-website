@@ -2,7 +2,7 @@ post:
   tags:
     - Member
   summary: Register to a Partner
-  operationId: 'getRegisterToPartner'
+  operationId: 'getRegisterLocationToPartner'
   description: >-
     This RPC registers the authenticated user to the given Partner, with the
     associated registration parameters.

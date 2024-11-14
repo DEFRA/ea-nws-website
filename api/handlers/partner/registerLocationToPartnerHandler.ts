@@ -2,12 +2,13 @@ const responseCodes = require('../responseCodes')
 import Hapi from '@hapi/hapi'
 import type { Context } from 'openapi-backend'
 
-async function getRegisterToPartner(
+async function getRegisterLocationToPartner(
   context: Context,
   req: Hapi.Request,
   res: Hapi.ResponseToolkit
 ) {
   const { authToken } = req.payload as { authToken: string }
+  const { locationId } = req.payload as { locationId: string }
   const { partnerId } = req.payload as { partnerId: string }
   const { params } = req.payload as { params: Object }
 
@@ -18,4 +19,4 @@ async function getRegisterToPartner(
   }
 }
 
-module.exports = { getRegisterToPartner }
+module.exports = { getRegisterLocationToPartner }

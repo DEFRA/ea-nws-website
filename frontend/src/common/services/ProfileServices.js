@@ -28,8 +28,8 @@ const addUnverifiedContact = (profile, type, contact) => {
         [type === 'email'
           ? 'emails'
           : type === 'mobile'
-            ? 'mobilePhones'
-            : 'homePhones']: [...unverifiedContactList, formattedContact]
+          ? 'mobilePhones'
+          : 'homePhones']: [...unverifiedContactList, formattedContact]
       }
     }
     return updatedProfile
@@ -100,8 +100,8 @@ const addVerifiedContact = (profile, type, contact) => {
       [type === 'email'
         ? 'emails'
         : type === 'mobile'
-          ? 'mobilePhones'
-          : 'homePhones']: [...verifiedContactList, contact]
+        ? 'mobilePhones'
+        : 'homePhones']: [...verifiedContactList, contact]
     }
     return updatedProfile
   } else {
@@ -241,20 +241,37 @@ const removeLocation = (profile, address) => {
   return updatedProfile
 }
 
-const updateLocationsFloodCategory = (profile, location, updatedCategories) => {
+const updateLocationsAlertTypes = (profile, location, updatedAlertTypes) => {
   const parsedProfile = JSON.parse(JSON.stringify(profile))
 
   const locationIndex = parsedProfile.pois.findIndex(
     (poi) => poi.address === location.address
   )
+
   if (locationIndex !== -1) {
-    parsedProfile.pois[locationIndex].categories = updatedCategories
+    parsedProfile.pois[
+      locationIndex
+    ].meta_data.location_additional.alert_types = updatedAlertTypes
   }
 
   return parsedProfile
 }
 
+const getRegistrationParams = (profile, alertTypes) => {
+  const channelVoiceEnabled = profile.homePhones.length > 0
+  const channelSmsEnabled = profile.mobilePhones.length > 0
+  const channelEmailEnabled = true // always true as user will have primary email
+
+  return {
+    channelVoiceEnabled: channelVoiceEnabled,
+    channelSmsEnabled: channelSmsEnabled,
+    channelEmailEnabled: channelEmailEnabled,
+    alertTypes: alertTypes
+  }
+}
+
 module.exports = {
+  getRegistrationParams,
   addUnverifiedContact,
   removeUnverifiedContact,
   addVerifiedContact,
@@ -264,7 +281,7 @@ module.exports = {
   updateAdditionals,
   addLocation,
   removeLocation,
-  updateLocationsFloodCategory,
+  updateLocationsAlertTypes,
   setOrganisationAdditionals,
   getOrganisationAdditionals,
   updateOrganisationAdditionals

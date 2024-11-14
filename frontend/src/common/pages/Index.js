@@ -22,7 +22,7 @@ import {
   setSelectedBoundaryType
 } from '../redux/userSlice'
 
-export default function IndexPage() {
+export default function IndexPage () {
   const dispatch = useDispatch()
   const [mockSessionActive, setmockSessionActive] = useState(false)
   const [emptyProfileActive, setEmptyProfileActive] = useState(false)
@@ -273,7 +273,7 @@ export default function IndexPage() {
     ]
   }
 
-  function uuidv4() {
+  function uuidv4 () {
     return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) =>
       (
         +c ^
@@ -350,7 +350,7 @@ export default function IndexPage() {
     }
   }
 
-  function mockSession(profile) {
+  function mockSession (profile) {
     if (mockSessionActive === false) {
       const authToken = uuidv4()
       const contactPreferences = ['Text']
@@ -410,7 +410,7 @@ export default function IndexPage() {
     }
   }
 
-  function mockEmptyProfileWithNoAuthentication() {
+  function mockEmptyProfileWithNoAuthentication () {
     if (!emptyProfileActive) {
       const emptyProfile = {
         id: '',

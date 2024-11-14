@@ -1,0 +1,47 @@
+type: object
+description: Parameters of a source of integral values.
+required:
+  - size
+properties:
+  size:
+    description: Storage size of the integers.
+    allOf:
+      - $ref: ./platform.NumberSize.yml
+  format:
+    description: Formatting of the integers.
+    allOf:
+      - $ref: ./platform.NumberFormat.yml
+    default: 0
+  unit:
+    type: string
+    description: Unit to be used when displaying the integer.
+    minLength: 1
+  measurement:
+    description: Measurement type.
+    allOf:
+      - $ref: ./platform.MeasurementType.yml
+    default: 2
+  noThousandSeparator:
+    type: boolean
+    description: |-
+      No thousand separator.
+
+      Do not use a separator character for every thousands.
+      For example, the number "7654321" in a 8-digits fixed size will be
+      formatted as:
+       - "07654321" if true
+       - "07,654,321" otherwise
+    default: false
+  fixedNbDigits:
+    type: integer
+    format: int32
+    description: |-
+      Fixed number of digits.
+
+      If set, the number is padded with 0 when formatted to have the right
+      number of digits.
+      For example, 43 with 3 digits will be formatted as "043".
+
+      If set, the format must be NumberFormat::NUMBER.
+    minimum: 1
+    maximum: 19

@@ -1,0 +1,17 @@
+allOf:
+  - $ref: ./geosafeea.alert.AlertEventNotification.yml
+  - type: object
+    description: |-
+      Notification sent to administrators and users with ALERT_VALIDATE
+       permission on alert submit.
+    required:
+      - submitterLogin
+      - submitterFirstName
+      - submitterLastName
+    properties:
+      submitterLogin:
+        type: string
+      submitterFirstName:
+        type: string
+      submitterLastName:
+        type: string

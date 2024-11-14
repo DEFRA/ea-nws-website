@@ -17,7 +17,7 @@ module.exports = [
         if (name != null) {
           const response = await apiCall(
             { name: name },
-            'member/registerOrgStart'
+            'organization/registerStart'
           )
           return h.response(response)
         } else {

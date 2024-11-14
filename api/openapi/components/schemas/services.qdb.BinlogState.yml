@@ -1,0 +1,47 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: >-
+      State of the binlog.
+
+
+      For active/passive services, the QDB master will push its binlog state in
+
+      RAFT at each commit (or transaction).
+
+
+      When starting as a master, the QDB library will check its local state
+
+      against the RAFT state. If it is too much in the past
+
+      ( \ref MasterCfg.lateCommitsTolerance), it will refuse to start.
+
+
+      This prevents an obsolete passive spool to become active, and thus
+      override
+
+      up-to-date spools.
+    required:
+      - stamp
+      - size
+      - commitId
+    properties:
+      stamp:
+        type: integer
+        format: int64
+      size:
+        type: integer
+        format: int64
+      commitId:
+        type: integer
+        format: int64
+        minimum: 0
+      hostid:
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 255
+      crc32:
+        type: integer
+        format: int32
+        minimum: 0

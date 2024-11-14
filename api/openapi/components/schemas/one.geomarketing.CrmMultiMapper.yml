@@ -1,0 +1,30 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    description: |-
+      Generate a product of the CRM value representations like:
+      'crmKeyX;crmValX;crmKeyY;crmValY;[...]'.
+
+      This operations rewrites itself as a Product(CrmMapper(X, dimension_1),
+                                                   CrmMapper(X, dimension_2),
+                                                   ...
+                                                   CrmMapper(X, dimension_n))
+    required:
+      - dimensions
+    properties:
+      dimensions:
+        type: array
+        items:
+          oneOf:
+            - $ref: ./bigdata.relational.CategorizationDimension.yml
+            - $ref: ./bigdata.relational.PartitionDimension.yml
+            - $ref: ./bigdata.relational.PeriodDimension.yml
+            - $ref: ./bigdata.relational.PlacemarkDimension.yml
+            - $ref: ./bigdata.relational.RangeDimension.yml
+            - $ref: ./bigdata.relational.UniqueValueDimension.yml
+          discriminator:
+            propertyName: _class
+        minItems: 1
+      generateTotals:
+        type: boolean
+        default: true

@@ -1,0 +1,16 @@
+allOf:
+  - $ref: ./platform.cfg.DynConfSetElem.yml
+  - type: object
+    description: |-
+      Trajectories to look for in the segments.
+
+      A trajectory is represented by a set of cells. A move is assimilated to
+      a trajectory depending on the Jaccard distance between the cells
+      crossed by the move and the cells of the trajectory. The trajectory
+      asssociated to the move is the one which have the highest similarity
+      with the move.
+    properties:
+      trajectories:
+        type: array
+        items:
+          $ref: ./one.geomarketing.Trajectory.yml

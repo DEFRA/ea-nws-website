@@ -1,0 +1,3 @@
+allOf:
+  - $ref: ./one.b2b.action.DummyAction.yml
+  - type: object

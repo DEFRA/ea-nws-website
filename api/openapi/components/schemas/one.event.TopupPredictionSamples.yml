@@ -1,0 +1,20 @@
+allOf:
+  - $ref: ./bigdata.base.CdrEvent.yml
+  - type: object
+    required:
+      - entity
+      - topupKind
+      - incomingDuration
+    properties:
+      entity:
+        $ref: ./platform.base.Value.yml
+      topupKind:
+        type: string
+      incomingDuration:
+        $ref: ./one.topupprediction.Duration.yml
+      predictedLowerBound:
+        type: number
+        format: double
+      predictedUpperBound:
+        type: number
+        format: double

@@ -1,0 +1,69 @@
+type: object
+description: RAFT Tie Breaker configuration.
+required:
+  - platformId
+  - token
+properties:
+  address:
+    type: string
+    description: Address of the Tie Breaker HTTPS service.
+    default: tie-breaker.intersec.com:443
+    minLength: 1
+  platformId:
+    type: string
+    description: |-
+      The unique identifier of the platform advertised to the Tie Breaker.
+
+      This identifier must uniquely identified the cluster on the Tie Breaker
+      side. Once set it must never be changed, and must not conflict with
+      another cluster identifier.
+    minLength: 8
+    pattern: '[_0-9a-zA-Z\.\-]*'
+  token:
+    type: string
+    description: The token assigned to this platform to connect to the Tie Breaker.
+  leaderHeartbeatPeriod:
+    type: integer
+    format: int32
+    description: |-
+      Period (in second) between two heartbeats sent by the RAFT leader to
+      the Tie Breaker.
+    default: 10
+    minimum: 0
+  heartbeatPeriod:
+    type: integer
+    format: int32
+    description: |-
+      Period (in second) between two heartbeats sent by any RAFT server to
+      the Tie Breaker.
+    default: 300
+    minimum: 0
+  httpRequestTimeout:
+    type: integer
+    format: int32
+    description: Maximum time (in second) waiting for an HTTP request to be sent.
+    default: 5
+    minimum: 0
+    maximum: 65535
+  staleLeaderDelayMs:
+    type: integer
+    format: int32
+    description: |-
+      Additional delay to consider a foreign leader as stale.
+
+      The Tie Breaker uses the staleLeaderMs of a foreign platform to allow
+      the relocation of the admin votes. To avoid to consider a leader as
+      stale before the foreign platform we wait a small additional delay.
+    default: 5000
+    minimum: 0
+  adminVotesRetryDelayMs:
+    type: integer
+    format: int32
+    description: |-
+      Delay between two admin votes requests in case of failure.
+
+      Without enforcing a delay between two admin votes requests, the RAFT
+      election process could retry several times per second in case of
+      rejection, putting too much pressure on the Tie-Breaker server.
+    default: 2000
+    minimum: 0

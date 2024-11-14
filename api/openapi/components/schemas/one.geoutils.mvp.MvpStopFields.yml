@@ -1,0 +1,11 @@
+type: object
+properties:
+  coordinates:
+    type: string
+    default: coordinatesStart
+  tsStart:
+    type: string
+    default: tsStart
+  tsEnd:
+    type: string
+    default: tsEnd

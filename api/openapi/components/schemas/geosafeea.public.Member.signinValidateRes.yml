@@ -1,0 +1,34 @@
+type: object
+required:
+  - authToken
+  - profile
+properties:
+  authToken:
+    type: string
+    description: |-
+      if successful, an authentication token is
+                               provided to perform other RPCs requiring an
+                               authentication token.
+  profile:
+    description: the current profile of the member
+    allOf:
+      - $ref: ./geosafeea.contact.Contact.yml
+  registrations:
+    type: array
+    description: current registrations
+    items:
+      $ref: ./geosafeea.public.Registration.yml
+  organization:
+    description: |-
+      the profile of the member's organization if
+                                 any.
+    allOf:
+      - $ref: ./geosafeea.public.Partner.yml
+example: >-
+  {"authToken":"XXXXXXXXXX","profile":{"id":"","additionals":[],"emails":["test
+  \test
+  .com"],"enabled":true,"homePhones":[],"language":"FR","mobilePhones":["+33611223344"],"pois":[{"additionals":[{"id":"testCustom","value":{"s":"test"}}],"address":"1
+  rue des lapins, 75014
+  Paris","enabled":true,"id":"c:id:SL24-CaJQGag5RSmvuwb_g-0","name":"My
+  home"}],"role":"SELF"},"registrations":[{"params":{"alertTypes":["ALERT_LVL_2"],"categories":[{"domain":"TEST","code":"TEST"}],"channelEmailEnabled":true,"channelMobileAppEnabled":true,"channelSmsEnabled":true,"channelVoiceEnabled":true},"partner":{"id":"2","name":"Test
+  alert emitter"},"registrationDate":1728635244}]}

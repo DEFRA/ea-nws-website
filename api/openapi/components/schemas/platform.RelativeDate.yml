@@ -1,0 +1,55 @@
+allOf:
+  - $ref: ./platform.base.Date.yml
+  - type: object
+    description: |-
+      Structure used to represent a date relative to a precise time.
+
+      Time offset represents the base for relative date calculation. It helps to
+      align a timestamp to the beginning of the current time unit. Then, 'count'
+      time unit will be added (or subtracted) to the timestamp, and 'seconds'
+      seconds will be added (or subtracted).
+
+      Examples:
+
+      - beginning of past hour: timeOffset = HOUR ; count = -1
+
+      - mid-day yesterday: timeOffset = DAY ; count = 0; seconds = -3600 * 12
+
+      - beginning of last 'floating' minute: timeOffset = SECOND ; seconds = -60
+
+      - beginning of the week before last week: timeOffset = WEEK ; count = -2
+    properties:
+      timeOffset:
+        description: |-
+          Base time offset.
+
+          'timeOffset' represents the base time used for calculation of the
+          relative time. The base time will be the last 'timeOffset' unit start
+          (beginning of the current time unit).
+        allOf:
+          - $ref: ./platform.base.TimeUnit.yml
+        default: 0
+      count:
+        type: integer
+        format: int32
+        description: |-
+          Date adjustment using timeOffset timeUnit.
+
+          'count' time units can be added (or subtracted) from timeOffset. The
+          time unit used is the same as the one for timeOffset.
+        default: 0
+      seconds:
+        type: integer
+        format: int32
+        description: |-
+          Date adjustment using seconds.
+
+          'seconds' seconds can be added (or subtracted) from timeOffset.
+        default: 0
+      referenceTs:
+        type: integer
+        format: int64
+        description: |-
+          The reference timestamp used to compute the relative time.
+
+          If not set, the current time will be used instead.

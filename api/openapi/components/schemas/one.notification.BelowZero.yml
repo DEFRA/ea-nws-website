@@ -1,0 +1,3 @@
+allOf:
+  - $ref: ./one.notification.ThresholdNotification.yml
+  - type: object

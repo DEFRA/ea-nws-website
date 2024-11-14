@@ -1,0 +1,7 @@
+allOf:
+  - $ref: ./bigdata.qrrd.RefRef.yml
+  - type: object
+    description: |-
+      Reference on a value reference.
+
+      Should be used only for extraction.

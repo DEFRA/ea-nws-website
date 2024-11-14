@@ -1,0 +1,9 @@
+type: string
+enum:
+  - NONE
+  - AVG
+  - SUM
+  - MIN
+  - MAX
+  - FIRST
+  - LAST

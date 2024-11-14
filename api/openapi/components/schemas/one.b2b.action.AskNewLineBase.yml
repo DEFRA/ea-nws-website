@@ -1,0 +1,32 @@
+allOf:
+  - $ref: ./one.b2b.action.LineAction.yml
+  - type: object
+    properties:
+      departmentId:
+        type: integer
+        format: int64
+        description: |-
+          Department in the company to attach the line to.
+
+          If not set, the contract will have the company default department.
+        minimum: 0
+      profileId:
+        type: integer
+        format: int64
+        description: |-
+          Profile in the company for this contract.
+
+          If not set, the contract will have the company default profile.
+        minimum: 0
+      departmentName:
+        type: string
+        description: |-
+          Department name in the company to attach the line to.
+
+          If not set, the contract will have the company default department.
+      profileName:
+        type: string
+        description: |-
+          Profile name in the company for this contract.
+
+          If not set, the contract will have the company default profile.

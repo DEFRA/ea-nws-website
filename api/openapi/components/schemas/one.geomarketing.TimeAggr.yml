@@ -1,0 +1,31 @@
+allOf:
+  - $ref: ./platform.cfg.DynConfSetElem.yml
+  - type: object
+    description: |-
+      Time aggregation: time classifier.
+
+      Classify a date as an absolute time or a relative time or a combination of
+      the two.
+    properties:
+      absoluteLevel:
+        description: Absolute level of aggregation.
+        allOf:
+          - $ref: ./platform.base.TimeUnit.yml
+      relative:
+        description: Relative level of aggregation.
+        allOf:
+          - $ref: ./one.geomarketing.RelativeTimeAggr.yml
+      absoluteLevelSlice:
+        type: integer
+        format: int32
+        description: |-
+          The absolute level aggregation slice.
+
+          This is used for finer time slice aggregations.
+           For example, if we want to request an aggregation for each 15 minutes,
+           the below settings are needed:
+             {
+                 "absoluteLevel": "MINUTE",
+                 "absoluteLevelSlice": 15
+             }
+        minimum: 2

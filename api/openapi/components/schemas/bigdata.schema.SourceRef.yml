@@ -1,0 +1,25 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: Reference a value issued from a source declared in a schema.
+    required:
+      - source
+      - state
+    properties:
+      source:
+        description: Reference to the source to be used.
+        allOf:
+          - $ref: ./platform.Id.yml
+      setElement:
+        description: |-
+          Reference to the set element to be used.
+
+          The set element must be provided in queries when the source is a set.
+          must not be provided if the source is not a set. In source formulas,
+          it may be omitted for formulas that must inherit the set of the
+          referenced source.
+        allOf:
+          - $ref: ./bigdata.ref.SetElement.yml
+      state:
+        type: boolean
+        nullable: true

@@ -1,0 +1,21 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: Tie-Breaker external platform configuration.
+    required:
+      - platformId
+      - token
+    properties:
+      platformId:
+        type: string
+        description: External platform identifier.
+        minLength: 8
+        pattern: '[_0-9a-zA-Z\.\-]*'
+      token:
+        type: string
+        description: External platform token.
+        minLength: 12
+      enabled:
+        type: boolean
+        description: Wether the platform is enabled or not.
+        default: true

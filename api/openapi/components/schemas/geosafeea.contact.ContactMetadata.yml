@@ -1,0 +1,23 @@
+allOf:
+  - $ref: ./geosafeea.contact.Metadata.yml
+  - type: object
+    description: Contact metadata.
+    required:
+      - remoteCanEdit
+    properties:
+      memberships:
+        type: array
+        description: |-
+          List of groups this contact is attached to.
+
+          This is a read-only property, only set when \ref fetchMemberships is
+          set.
+        items:
+          $ref: ./geosafeea.contact.Group.yml
+      remoteCanEdit:
+        type: boolean
+        description: |-
+          Can the current user edit this remote contact.
+
+          Only set if this contact is a remote contact of the current workspace
+        nullable: true

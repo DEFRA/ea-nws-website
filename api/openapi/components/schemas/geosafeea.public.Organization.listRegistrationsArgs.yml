@@ -1,0 +1,9 @@
+type: object
+required:
+  - authToken
+properties:
+  authToken:
+    type: string
+    description: |-
+      a secured token retrieved during
+                                 registration or signin

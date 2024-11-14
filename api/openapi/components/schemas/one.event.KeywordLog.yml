@@ -1,0 +1,17 @@
+allOf:
+  - $ref: ./bigdata.base.EventLog.yml
+  - type: object
+    description: Entity log sent when a \ref KeywordEvent is received.
+    required:
+      - payload
+    properties:
+      proto:
+        description: Protocol through which we received the message
+        allOf:
+          - $ref: ./inet.MetaProto.yml
+      payload:
+        type: string
+        description: Message payload
+      to:
+        type: string
+        description: Destination of the keyword (shortcode).

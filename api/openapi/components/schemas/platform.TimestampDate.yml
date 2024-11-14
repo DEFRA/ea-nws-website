@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./platform.base.Date.yml
+  - type: object
+    description: Timestamp representation of a date.
+    required:
+      - ts
+    properties:
+      ts:
+        type: integer
+        format: int64

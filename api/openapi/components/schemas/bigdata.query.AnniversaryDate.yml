@@ -1,0 +1,16 @@
+type: object
+description: |-
+  Anniversary date.
+
+  An anniversary date is defined by a couple ( \ref day, \ref month).
+required:
+  - day
+  - month
+properties:
+  day:
+    type: integer
+    format: int32
+    minimum: 1
+    maximum: 31
+  month:
+    $ref: ./platform.base.Month.yml

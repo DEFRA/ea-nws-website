@@ -1,0 +1,14 @@
+type: object
+required:
+  - authToken
+  - organization
+properties:
+  authToken:
+    type: string
+    description: |-
+      a secured token retrieved during registration
+                                or signin
+  organization:
+    description: the updated organization profile to apply
+    allOf:
+      - $ref: ./geosafeea.public.Partner.yml

@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./bigdata.base.EventLog.yml
+  - type: object
+    description: Group operation from the member point-of-view
+    required:
+      - groupId
+    properties:
+      groupId:
+        type: string

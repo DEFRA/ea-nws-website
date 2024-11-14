@@ -1,0 +1,7 @@
+allOf:
+  - $ref: ./one.b2b.action.Action.yml
+  - type: object
+    properties:
+      login:
+        type: string
+        description: The login of the user requesting the action.

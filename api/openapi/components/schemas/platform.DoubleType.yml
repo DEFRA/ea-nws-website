@@ -1,0 +1,28 @@
+type: object
+description: Parameters of a source of decimal values.
+properties:
+  precision:
+    type: integer
+    format: int32
+    description: Number of digit to be kept in the decimal part.
+    minimum: 1
+    maximum: 15
+  format:
+    description: Formatting of the number.
+    allOf:
+      - $ref: ./platform.NumberFormat.yml
+    default: 0
+  unit:
+    type: string
+    description: Unit to be used when displaying the number.
+    minLength: 1
+  measurement:
+    description: Measurement type.
+    allOf:
+      - $ref: ./platform.MeasurementType.yml
+    default: 2
+  size:
+    description: Size of the floating-point number.
+    allOf:
+      - $ref: ./platform.FloatingPointSize.yml
+    default: 0

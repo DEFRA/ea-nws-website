@@ -1,0 +1,6 @@
+type: string
+enum:
+  - ELLIPTICAL_AREA
+  - CIRCULAR_ARC_AREA
+  - CIRCULAR_AREA
+  - ORIGINAL

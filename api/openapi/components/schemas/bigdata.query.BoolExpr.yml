@@ -1,0 +1,316 @@
+description: Defines a condition.
+oneOf:
+  - type: object
+    required:
+      - andOp
+    properties:
+      andOp:
+        description: A conjunction of the sub-boolean expressions.
+        allOf:
+          - $ref: ./bigdata.query.MultiBoolExpr.yml
+  - type: object
+    required:
+      - orOp
+    properties:
+      orOp:
+        description: A disjunction of the sub-boolean expressions.
+        allOf:
+          - $ref: ./bigdata.query.MultiBoolExpr.yml
+  - type: object
+    required:
+      - notOp
+    properties:
+      notOp:
+        description: A negation of the sub-condition.
+        allOf:
+          - $ref: ./bigdata.query.BoolExpr.yml
+  - type: object
+    required:
+      - trivial
+    properties:
+      trivial:
+        type: boolean
+        description: A trivial condition (always true or always false).
+  - type: object
+    required:
+      - isNull
+    properties:
+      isNull:
+        description: True if the result of the evaluation of the field is NULL.
+        oneOf:
+          - $ref: ./bigdata.db.GlobalVariableRef.yml
+          - $ref: ./bigdata.mde.FieldRef.yml
+          - $ref: ./bigdata.mde.WeakRef.yml
+          - $ref: ./bigdata.qrrd.SlotRef.yml
+          - $ref: ./bigdata.qrrd.ValueRef.yml
+          - $ref: ./bigdata.qrrd.ValueRefRef.yml
+          - $ref: ./bigdata.qrrd.WildcardRef.yml
+          - $ref: ./bigdata.qrrd.WildcardRefRef.yml
+          - $ref: ./bigdata.query.Age.yml
+          - $ref: ./bigdata.query.AggregationOperation.yml
+          - $ref: ./bigdata.query.BinToJson.yml
+          - $ref: ./bigdata.query.CgiToCuid.yml
+          - $ref: ./bigdata.query.CuidToCgi.yml
+          - $ref: ./bigdata.query.CutString.yml
+          - $ref: ./bigdata.query.DayOfWeek.yml
+          - $ref: ./bigdata.query.FormulaRef.yml
+          - $ref: ./bigdata.query.LocationCellInfo.yml
+          - $ref: ./bigdata.query.LocationCoords.yml
+          - $ref: ./bigdata.query.LocationGad.yml
+          - $ref: ./bigdata.query.LocationMlpBin.yml
+          - $ref: ./bigdata.query.LocationMlpJson.yml
+          - $ref: ./bigdata.query.LocationRadius.yml
+          - $ref: ./bigdata.query.RecnoRef.yml
+          - $ref: ./bigdata.ref.AutoRef.yml
+          - $ref: ./bigdata.ref.DealiasValue.yml
+          - $ref: ./bigdata.ref.MultiRef.yml
+          - $ref: ./bigdata.ref.NamedRef.yml
+          - $ref: ./bigdata.ref.ObjectField.yml
+          - $ref: ./bigdata.ref.ObjectIsA.yml
+          - $ref: ./bigdata.ref.ObjectType.yml
+          - $ref: ./bigdata.ref.ParametricRef.yml
+          - $ref: ./bigdata.ref.PlacemarkInfosRef.yml
+          - $ref: ./bigdata.ref.PressureNextAvailability.yml
+          - $ref: ./bigdata.ref.ServerTimezoneOffset.yml
+          - $ref: ./bigdata.ref.TestRef.yml
+          - $ref: ./bigdata.ref.ValueRef.yml
+          - $ref: ./bigdata.relational.TableRef.yml
+          - $ref: ./bigdata.relational.TypedValueRef.yml
+          - $ref: ./bigdata.schema.AggregationRef.yml
+          - $ref: ./bigdata.schema.ColumnRef.yml
+          - $ref: ./bigdata.schema.KeyRef.yml
+          - $ref: ./bigdata.schema.SourceRef.yml
+          - $ref: ./bigdata.schema.ValueRef.yml
+          - $ref: ./bigdata.schema.ZoneRef.yml
+          - $ref: ./bigdata.sql.SqlRef.yml
+          - $ref: ./bigdata.task.CacheRef.yml
+          - $ref: ./bigdata.task.TaskOutputRef.yml
+          - $ref: ./one.geomarketing.CgiToMccRef.yml
+          - $ref: ./one.geomarketing.FakeCgiRef.yml
+          - $ref: ./one.report.ExternalRef.yml
+          - $ref: ./one.report.LocationRadiusRef.yml
+          - $ref: ./one.report.LocationRef.yml
+          - $ref: ./one.scenario.ConstantRef.yml
+          - $ref: ./one.scenario.Exposure.yml
+          - $ref: ./one.scenario.PlacemarkInfosRef.yml
+          - $ref: ./one.scenario.SuccessRate.yml
+          - $ref: ./one.scenario.Successful.yml
+          - $ref: ./qre.ContextEvent.yml
+          - $ref: ./qre.CreateEventRef.yml
+          - $ref: ./qre.EnteredInScenario.yml
+          - $ref: ./qre.EntityRuleContextRef.yml
+          - $ref: ./qre.FormatRef.yml
+          - $ref: ./qre.IsInControlGroup.yml
+          - $ref: ./qre.IsInRule.yml
+          - $ref: ./qre.IsInScenario.yml
+          - $ref: ./qre.IsInUserRules.yml
+          - $ref: ./qre.ScenarioEnterTs.yml
+          - $ref: ./qre.ScenarioExitTs.yml
+          - $ref: ./qre.VariableRef.yml
+          - $ref: ./qts.ExtractRef.yml
+        discriminator:
+          propertyName: _class
+  - type: object
+    required:
+      - equal
+    properties:
+      equal:
+        description: Check the equality between a field and a constant.
+        allOf:
+          - $ref: ./bigdata.query.SingleValueBoolExpr.yml
+  - type: object
+    required:
+      - notEqual
+    properties:
+      notEqual:
+        description: |-
+          Check that a field is different from a constant.
+
+          This operation is the complement to \ref equal:
+             A notEqual B == notOp (A equal B)
+        allOf:
+          - $ref: ./bigdata.query.SingleValueBoolExpr.yml
+  - type: object
+    required:
+      - lt
+    properties:
+      lt:
+        description: Check that a field is less than a constant.
+        allOf:
+          - $ref: ./bigdata.query.SingleValueBoolExpr.yml
+  - type: object
+    required:
+      - le
+    properties:
+      le:
+        description: Check that a field is less than or equal to a constant.
+        allOf:
+          - $ref: ./bigdata.query.SingleValueBoolExpr.yml
+  - type: object
+    required:
+      - gt
+    properties:
+      gt:
+        description: Check that a field is greater than a constant.
+        allOf:
+          - $ref: ./bigdata.query.SingleValueBoolExpr.yml
+  - type: object
+    required:
+      - ge
+    properties:
+      ge:
+        description: Check that a field is greater than or equal to a constant.
+        allOf:
+          - $ref: ./bigdata.query.SingleValueBoolExpr.yml
+  - type: object
+    required:
+      - between
+    properties:
+      between:
+        description: Check that a field is in a constant range.
+        allOf:
+          - $ref: ./bigdata.query.BetweenBoolExpr.yml
+  - type: object
+    required:
+      - notBetween
+    properties:
+      notBetween:
+        description: |-
+          Check that a field is not in a constant range.
+
+          This operation is the complement to \ref between:
+             A notBetween B == notOp (A between B)
+        allOf:
+          - $ref: ./bigdata.query.BetweenBoolExpr.yml
+  - type: object
+    required:
+      - startsWith
+    properties:
+      startsWith:
+        description: Check that a field is prefixed by a constant.
+        allOf:
+          - $ref: ./bigdata.query.StringValueBoolExpr.yml
+  - type: object
+    required:
+      - endsWith
+    properties:
+      endsWith:
+        description: Check that a field is suffixed by a constant.
+        allOf:
+          - $ref: ./bigdata.query.StringValueBoolExpr.yml
+  - type: object
+    required:
+      - isIn
+    properties:
+      isIn:
+        description: Check that a field is in a set of values.
+        allOf:
+          - $ref: ./bigdata.query.ValueSetBoolExpr.yml
+  - type: object
+    required:
+      - isNotIn
+    properties:
+      isNotIn:
+        description: |-
+          Check that a field is not in a set of values.
+
+          This operation is the complement to \ref isIn:
+             A isNotIn B == notOp (A isIn B)
+        allOf:
+          - $ref: ./bigdata.query.ValueSetBoolExpr.yml
+  - type: object
+    required:
+      - anniversary
+    properties:
+      anniversary:
+        description: Check that a date field matches a recurring condition.
+        allOf:
+          - $ref: ./bigdata.query.AnniversaryBoolExpr.yml
+  - type: object
+    required:
+      - join
+    properties:
+      join:
+        description: Perform a join query.
+        allOf:
+          - $ref: ./bigdata.query.JoinBoolExpr.yml
+  - type: object
+    required:
+      - isInList
+    properties:
+      isInList:
+        description: Check that a field is in a List.
+        allOf:
+          - $ref: ./bigdata.query.ListBoolExpr.yml
+  - type: object
+    required:
+      - isInZone
+    properties:
+      isInZone:
+        description: Check that a field is in a Zone.
+        allOf:
+          - $ref: ./bigdata.query.ZoneBoolExpr.yml
+  - type: object
+    required:
+      - isInAggregation
+    properties:
+      isInAggregation:
+        description: Check that a field is in an Aggregation.
+        allOf:
+          - $ref: ./bigdata.query.AggregationBoolExpr.yml
+  - type: object
+    required:
+      - isInTarget
+    properties:
+      isInTarget:
+        description: |-
+          Check that a target is matched.
+
+          \ref isInTarget should be a target id.
+        allOf:
+          - $ref: ./bigdata.query.TargetBoolExpr.yml
+  - type: object
+    required:
+      - isInGeometry
+    properties:
+      isInGeometry:
+        description: Check that a field is in a Geometry.
+        allOf:
+          - $ref: ./bigdata.query.GeometryBoolExpr.yml
+  - type: object
+    required:
+      - contains
+    properties:
+      contains:
+        description: >-
+          Check that a repeated field contains a value.
+
+
+          If the ref evaluates to an array of values, it checks if this array
+
+          contains the value (following the same conversion rules as \ref
+          isEqual).
+
+          Otherwise, the condition is always false.
+
+
+          This expression is supported only for IOP, not QTS or QKV.
+        allOf:
+          - $ref: ./bigdata.query.SingleValueBoolExpr.yml
+  - type: object
+    required:
+      - extended
+    properties:
+      extended:
+        description: |-
+          User-specific boolean expression that will be rewritten into a generic
+          one.
+        oneOf:
+          - $ref: ./bigdata.relational.IsInTable.yml
+          - $ref: ./mcms.IsInMcmsCampaign.yml
+          - $ref: ./one.scenario.HasSuccessInAnyScenario.yml
+          - $ref: ./one.scenario.HasSuccessInScenario.yml
+          - $ref: ./one.scenario.IsInAnyTargetGroup.yml
+          - $ref: ./one.scenario.IsInTargetGroup.yml
+        discriminator:
+          propertyName: _class

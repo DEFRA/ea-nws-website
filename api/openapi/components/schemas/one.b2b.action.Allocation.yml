@@ -1,0 +1,11 @@
+allOf:
+  - $ref: ./one.b2b.action.ContractUpdate.yml
+  - type: object
+    description: Action log class for credit allocation.
+    required:
+      - credit
+    properties:
+      credit:
+        type: number
+        format: double
+        description: Amount allocated.

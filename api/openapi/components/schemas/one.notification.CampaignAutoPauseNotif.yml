@@ -1,0 +1,6 @@
+allOf:
+  - $ref: ./one.notification.CampaignNotif.yml
+  - type: object
+    description: |-
+      Notification sent when a campaign is automatically paused because of
+      errors.

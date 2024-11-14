@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./platform.cfg.DynConfSetElem.yml
+  - type: object
+    description: |-
+      Class for basic information of a dynamic conf set element.
+
+      We're not supposed to store elements of this class just like we
+      would do for any dynamic configuration set type.

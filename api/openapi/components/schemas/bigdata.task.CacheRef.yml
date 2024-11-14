@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: Reference to a column in the cache.
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: Name of the column.

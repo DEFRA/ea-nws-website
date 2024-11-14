@@ -1,0 +1,37 @@
+allOf:
+  - $ref: ./one.base.MsgAction.yml
+  - type: object
+    properties:
+      campaignId:
+        type: integer
+        format: int64
+        minimum: 0
+      dest:
+        type: string
+        minLength: 1
+      proto:
+        $ref: ./inet.MetaProto.yml
+      tplId:
+        type: integer
+        format: int64
+        minimum: 0
+      values:
+        type: array
+        items:
+          $ref: ./platform.base.Value.yml
+      tplVersion:
+        type: integer
+        format: int32
+        minimum: 0
+      timezone:
+        type: integer
+        format: int32
+      isNotification:
+        type: boolean
+        default: false
+      wsId:
+        type: integer
+        format: int64
+        minimum: 0
+      language:
+        type: string

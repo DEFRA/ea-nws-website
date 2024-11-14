@@ -14,7 +14,8 @@ import {
 export default function NotesLayout ({
   navigateToNextPage,
   keywordType,
-  instructionText
+  instructionText,
+  buttonText = 'Continue'
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -84,7 +85,7 @@ export default function NotesLayout ({
               </p>
               <br />
               <Button
-                text='Continue'
+                text={buttonText}
                 className='govuk-button'
                 onClick={handleSubmit}
               />

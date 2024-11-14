@@ -22,6 +22,7 @@ export default function AddContactNotesPage () {
         navigateToNextPage={NavigateToNextPage}
         keywordType='contact'
         instructionText={instructionText}
+        buttonText='Add contact'
       />
     </>
   )

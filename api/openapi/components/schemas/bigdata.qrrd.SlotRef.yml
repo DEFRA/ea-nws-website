@@ -1,0 +1,7 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: |-
+      Slot reference (timestamp).
+
+      Should be used only for extraction.

@@ -1,0 +1,20 @@
+type: object
+required:
+  - name
+  - type
+properties:
+  name:
+    type: string
+    description: Name of the field.
+    minLength: 1
+  type:
+    description: Type of the field.
+    allOf:
+      - $ref: ./platform.DataType.yml
+  optional:
+    type: boolean
+    description: |-
+      Whether the field is optional.
+
+      If true, the field may contain nil values.
+    default: false

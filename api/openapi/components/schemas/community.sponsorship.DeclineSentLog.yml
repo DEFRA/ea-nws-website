@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./community.sponsorship.OfferLog.yml
+  - type: object
+    description: Guest declined invitation.
+    required:
+      - sponsorId
+    properties:
+      sponsorId:
+        type: string

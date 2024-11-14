@@ -1,0 +1,15 @@
+type: object
+required:
+  - authToken
+properties:
+  authToken:
+    type: string
+    description: |-
+      a secured token retrieved during registration
+                                or signin
+  location:
+    description: |-
+      the location to create, the location
+                                identifier is ignored if set
+    allOf:
+      - $ref: ./geosafeea.contact.Poi.yml

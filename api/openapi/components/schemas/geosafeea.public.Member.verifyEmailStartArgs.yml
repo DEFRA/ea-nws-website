@@ -1,0 +1,13 @@
+type: object
+required:
+  - authToken
+  - email
+properties:
+  authToken:
+    type: string
+    description: |-
+      a secured token retrieved during registration or
+                             signin
+  email:
+    type: string
+    description: email to verify

@@ -25,7 +25,7 @@ def test_back_button(get_browser):
 def test_continue_empty(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     click_button(get_browser, 'Continue', url_next_page)
-    assert 'Keywords for this location' in get_browser.page_source
+    assert 'Add keywords for this location' in get_browser.page_source
 
 def test_continue_filled(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
@@ -33,10 +33,10 @@ def test_continue_filled(get_browser):
     enter_input_text(get_browser, 'Business criticality (optional)', 'Medium')
     enter_input_text(get_browser, 'Location type (optional)', 'Office')
     click_button(get_browser, 'Continue', url_next_page)
-    assert 'Keywords for this location' in get_browser.page_source
+    assert 'Add keywords for this location' in get_browser.page_source
 
 def test_continue_1_field_filled(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     enter_input_text(get_browser, 'Business criticality (optional)', 'Low')
     click_button(get_browser, 'Continue', url_next_page)
-    assert 'Keywords for this location' in get_browser.page_source
+    assert 'Add keywords for this location' in get_browser.page_source

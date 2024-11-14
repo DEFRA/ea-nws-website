@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./platform.cfg.DynConfSetElem.yml
+  - type: object
+    properties:
+      customPois:
+        type: array
+        items:
+          $ref: ./one.geomarketing.TagCells.yml
+      tagFilters:
+        type: array
+        items:
+          $ref: ./one.geomarketing.TagFilter.yml

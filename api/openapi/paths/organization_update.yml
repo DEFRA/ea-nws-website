@@ -1,0 +1,35 @@
+post:
+  operationId: getOrgUpdate
+  tags:
+    - organization
+  summary: Update an organization.
+  description: |-
+    The user must have the admin role in this organization.
+
+    The updated organization profile is returned, that reflects what have
+    been truely updated in the platform.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/geosafeea.public.Organization.updateArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/geosafeea.public.Organization.updateRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

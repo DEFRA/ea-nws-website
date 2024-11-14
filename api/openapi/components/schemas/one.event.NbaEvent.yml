@@ -1,0 +1,34 @@
+allOf:
+  - $ref: ./bigdata.base.EventLog.yml
+  - type: object
+    required:
+      - priority
+      - nbaOfferId
+      - nbaOfferIdStr
+    properties:
+      priority:
+        type: integer
+        format: int32
+        description: Priority of the offer.
+        minimum: 0
+        maximum: 255
+      nbaOfferId:
+        type: integer
+        format: int64
+        description: Id of the proposed/accepted offer (as an integer).
+        minimum: 0
+      segmentId:
+        type: integer
+        format: int64
+        description: Id of the segment the offer was found in.
+        minimum: 0
+      nbaOfferIdStr:
+        type: string
+        description: Id of the proposed/accepted offer (as a string).
+      technicalCode:
+        type: string
+      userLogin:
+        type: string
+        description: Login of the user that triggered the action.
+      channel:
+        type: string

@@ -1,0 +1,15 @@
+allOf:
+  - $ref: ./bigdata.base.Action.yml
+  - type: object
+    description: |-
+      Notification data.
+
+      Subclasses may add fields, which will be included as template values for
+      the notification content.
+      Each NotificationAction subclass has an associated one.sdk.NotificationCfg
+      shared object to configure the message template.
+    required:
+      - recipient
+    properties:
+      recipient:
+        $ref: ./platform.base.Value.yml

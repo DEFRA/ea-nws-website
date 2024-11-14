@@ -1,0 +1,16 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: |-
+      Companies permissions.
+
+      This class contains a list of companies containing each lineAction
+      permission for this company.
+      If a company is not in the list, the user has all permissions for this
+      company.
+      This is only used if the user is not a company admin.
+    properties:
+      companyUserActionsPerms:
+        type: array
+        items:
+          $ref: ./one.b2b.CompanyUserActionsPerms.yml

@@ -132,7 +132,7 @@ url_org_man_loc = {
         'select_how': url_org_man_loc_path + '/unmatched-locations/manually-find/select-how',
         'find_by_address': url_org_man_loc_path + '/unmatched-locations/manually-find/address',
     },
-    'edit':{
+    'edit': {
         'cannot_change_location_polygon': url_org_man_loc_path + '/edit/edit-polygon',
         'cannot_change_location_line': url_org_man_loc_path + '/edit/edit-line',
         'options': url_org_man_loc_path + '/edit/select-location-options',
@@ -140,6 +140,11 @@ url_org_man_loc = {
         'locationInArea': url_org_man_loc_path + '/edit/location-in-area',
         'notInEngland': url_org_man_loc_path + '/edit/xy-coordinates-not-in-england',
         'dropPinEdit': url_org_man_loc_path + '/edit/drop-pin-edit'
+    },
+   'view':{
+        'dashboard': url_org_man_loc_path + '/view-locations',
+        'details': url_org_man_loc_path + '/location/view-location',
+        'messages': url_org_man_loc_path + '/location/view-messages'
     }
 }
 
@@ -194,7 +199,7 @@ def click_button(browser, button_text, url_button):
     button_xpath = f"//button[text()='{button_text}']"
     button_element = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", button_element)
-    time.sleep(1)
+    time.sleep(2)
     assert browser.current_url == url_button
 
 # Click on link text and check url

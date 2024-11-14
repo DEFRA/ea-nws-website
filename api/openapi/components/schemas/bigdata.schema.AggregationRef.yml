@@ -1,0 +1,38 @@
+allOf:
+  - $ref: ./bigdata.schema.SourceRef.yml
+  - type: object
+    description: >-
+      Specialized \ref SourceRef to target a specific aggregation slot.
+
+
+      As for the \ref SourceRef::setElement field for sets, this class can be
+
+      used in case you want to extract a specific slot of an aggregation. It
+      must
+
+      not be used if the \ref SourceRef::source is not an aggregation and must
+
+      be used in queries that target aggregation sources. It may or may not be
+
+      used in formula source description.
+    required:
+      - period
+      - slot
+    properties:
+      period:
+        description: |-
+          The targeted aggregation period.
+
+          Ignored if \ref customPeriod is set.
+        allOf:
+          - $ref: ./bigdata.query.AggregationPeriod.yml
+      slot:
+        description: The targeted aggregation slot within the specified period.
+        allOf:
+          - $ref: ./bigdata.query.AggregationSlot.yml
+      customPeriod:
+        type: string
+        description: |-
+          The targeted custom aggregation period.
+
+          If set, it is used instead of \ref period.

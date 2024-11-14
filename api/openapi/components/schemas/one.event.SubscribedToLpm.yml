@@ -1,0 +1,14 @@
+allOf:
+  - $ref: ./one.event.LpmEvent.yml
+  - type: object
+    description: Emitted when an entity subscribed to LPM.
+    properties:
+      initialPoints:
+        type: integer
+        format: int64
+        description: Initial number of points.
+        minimum: 0
+      subscriptionChannel:
+        description: Channel used for subscription.
+        allOf:
+          - $ref: ./community.onboarding.Channel.yml

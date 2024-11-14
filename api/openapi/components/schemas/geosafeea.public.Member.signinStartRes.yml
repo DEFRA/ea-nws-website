@@ -1,0 +1,12 @@
+type: object
+required:
+  - signinToken
+properties:
+  signinToken:
+    type: string
+    description: |-
+      a secured token that identifies the
+                               signin session. This token must then
+                               be used in the \ref signinValidate RPC to
+                               finalize the signin process.
+example: '{"signinToken":"XXXXXXXXXX"}'

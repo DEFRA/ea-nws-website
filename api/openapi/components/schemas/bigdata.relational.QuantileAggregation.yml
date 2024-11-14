@@ -1,0 +1,31 @@
+allOf:
+  - $ref: ./bigdata.relational.RefAggregation.yml
+  - type: object
+    description: |-
+      Quantile aggregation.
+
+      Return a quantile of a column values.
+    required:
+      - quantiles
+    properties:
+      quantiles:
+        type: array
+        description: Quantile table values to compute.
+        items:
+          $ref: ./bigdata.relational.QuantileValue.yml
+        minItems: 1
+      autoSequence:
+        type: boolean
+        description: |-
+          Ask to generate a sequence automatically.
+
+          It takes the first element X of quantile table and generate results
+          for all value between 0.0001 and 1 of X multiple (X, 2*X, 3*X, ...).
+          Note that it does not make sense to use this parameter with a X larger
+          than 0.5
+        default: false
+      param:
+        type: array
+        description: Parameters.
+        items:
+          $ref: ./bigdata.relational.GroupingOperationParam.yml

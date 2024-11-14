@@ -1,0 +1,6 @@
+type: object
+required:
+  - authToken
+properties:
+  authToken:
+    type: string

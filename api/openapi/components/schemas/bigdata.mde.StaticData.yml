@@ -1,0 +1,24 @@
+allOf:
+  - $ref: ./bigdata.mde.Operation.yml
+  - type: object
+    description: |-
+      Constant table.
+
+      Represents a given amount of rows. Can be use for testing or for diverse
+      real life use cases (example: use a static data operation with an EquiJoin
+      to create a translation table).
+    properties:
+      columns:
+        type: array
+        description: Output columns descriptions.
+        items:
+          $ref: ./platform.TypedField.yml
+      rows:
+        type: array
+        description: |-
+          Output rows (JSON or CSV).
+
+          The output rows will be parsed as JSON if the first encountered
+          character is a '{' and as CSV otherwise, using semicolon as delimiter.
+        items:
+          type: string

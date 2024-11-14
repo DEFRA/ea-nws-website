@@ -1,0 +1,8 @@
+type: string
+description: The response code for an action.
+enum:
+  - ACK
+  - NACK
+  - TEMPORARY_NACK
+  - IN_PROGRESS
+  - CANCELED

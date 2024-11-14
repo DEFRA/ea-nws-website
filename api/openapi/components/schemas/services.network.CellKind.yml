@@ -1,0 +1,12 @@
+type: string
+enum:
+  - ANY
+  - C2G
+  - C3G
+  - FEMTO
+  - UNKNOWN
+  - MACRO_FEMTO
+  - C4G
+  - MCC
+  - PLMN
+  - C5G

@@ -1,0 +1,19 @@
+type: object
+description: |-
+  Geographic coordinates.
+
+  Reference system: EPSG:4326 (WGS84 in degree)
+  6 decimals precision is supported according to
+  https://wiki.openstreetmap.org/wiki/Precision_of_coordinates
+required:
+  - latitude
+  - longitude
+properties:
+  latitude:
+    type: integer
+    format: int32
+    description: latitude in 10-6 degrees (WGS 84 format).
+  longitude:
+    type: integer
+    format: int32
+    description: longitude in 10-6 degrees (WGS 84 format).

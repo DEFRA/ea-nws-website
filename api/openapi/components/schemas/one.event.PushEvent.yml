@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./one.event.CommunicationEvent.yml
+  - type: object
+    required:
+      - status
+    properties:
+      status:
+        $ref: ./one.event.CommStatus.yml

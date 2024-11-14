@@ -1,0 +1,6 @@
+allOf:
+  - $ref: ./geosafeea.alert.AlertEventNotification.yml
+  - type: object
+    description: |-
+      Notification sent to administrators and users with ALERT_USE_PERM
+       permission on alert reception.

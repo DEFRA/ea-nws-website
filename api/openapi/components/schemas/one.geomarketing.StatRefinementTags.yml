@@ -1,0 +1,12 @@
+type: object
+required:
+  - hierarchy
+  - tags
+properties:
+  hierarchy:
+    type: string
+  tags:
+    type: array
+    items:
+      $ref: ./one.geomarketing.TagCoef.yml
+    minItems: 1

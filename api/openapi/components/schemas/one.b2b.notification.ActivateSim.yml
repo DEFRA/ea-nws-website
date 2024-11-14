@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./one.b2b.notification.Notification.yml
+  - type: object
+    required:
+      - sim
+    properties:
+      sim:
+        type: string

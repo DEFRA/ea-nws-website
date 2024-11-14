@@ -1,0 +1,14 @@
+allOf:
+  - $ref: ./bigdata.relational.Dimension.yml
+  - type: object
+    description: |-
+      Period dimension.
+
+      Group the column values by periods.
+    required:
+      - period
+    properties:
+      period:
+        description: Pattern used to define the period slots.
+        allOf:
+          - $ref: ./platform.BoundedPeriod.yml

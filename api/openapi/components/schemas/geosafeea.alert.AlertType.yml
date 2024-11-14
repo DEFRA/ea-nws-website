@@ -1,0 +1,13 @@
+type: string
+description: Alert type, as defined in ETSI EU-ALERT standard (TS 102 900)
+enum:
+  - ALERT_LVL_1
+  - ALERT_LVL_2
+  - ALERT_LVL_3
+  - ALERT_LVL_4
+  - INFO
+  - AMBER
+  - MONTHLY
+  - TEST
+  - EXERCISE
+  - RESERVED

@@ -1,0 +1,38 @@
+type: object
+required:
+  - start
+  - end
+  - nbDaysFieldName
+properties:
+  start:
+    type: integer
+    format: int64
+    description: |-
+      Start of the period (included).
+
+      Supposedly the beginning of a day, so we expect the time to be midnight
+      in local time.
+  end:
+    type: integer
+    format: int64
+    description: |-
+      End of the period (excluded).
+
+      Supposedly the beginning of the first day out of the period.
+      The time should be midnight as well.
+  nbDaysFieldName:
+    type: string
+    description: |-
+      Output field name for the number of distinct days for the period.
+
+      This field will contain the number of distinct days of presence in a
+      given cluster for the following period:
+
+          [ start + nightOffset, end + nightOffset [.
+
+      The device is counted as present on a given day if it has at least one
+      stop included in or overlapping the day. The period of time associated
+      to a given day DAY is the following:
+
+          [ DAY at 00:00:00 + nightOffset,
+            DAY + 1 at 00:00:00 + nightOffset [

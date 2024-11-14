@@ -1,0 +1,11 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: Store last workspaces visited.
+    properties:
+      lasts:
+        type: array
+        items:
+          type: integer
+          format: int64
+          minimum: 0

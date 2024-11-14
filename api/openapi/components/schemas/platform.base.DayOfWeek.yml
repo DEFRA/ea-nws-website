@@ -1,0 +1,13 @@
+type: string
+description: |-
+  Day of week.
+
+  Follow the <time.h> numbering (see localtime)
+enum:
+  - SUNDAY
+  - MONDAY
+  - TUESDAY
+  - WEDNESDAY
+  - THURSDAY
+  - FRIDAY
+  - SATURDAY

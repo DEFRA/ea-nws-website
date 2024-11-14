@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    required:
+      - eventCode
+    properties:
+      eventCode:
+        description: Event type ID as defined in conf
+        allOf:
+          - $ref: ./geosafeea.alert.EventCode.yml

@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./bigdata.base.Event.yml
+  - type: object
+    description: |-
+      Event emitted when an enabler truncates its stream.
+
+      This event is delivered when the enabler-based rule (such as ForwardEvent)
+      transmits an event to the acquisition chained and that event has been
+      synced by the databases.

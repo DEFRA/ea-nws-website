@@ -1,0 +1,22 @@
+allOf:
+  - $ref: ./bigdata.query.LocationRef.yml
+  - type: object
+    description: Convert a location to the coordinates of its centroid (or its antenna).
+    properties:
+      useAntenna:
+        type: boolean
+        description: Return antenna position rather than centroid.
+        default: false
+      setPrecision:
+        type: boolean
+        description: >-
+          Enable the precision in the output coordinates coordinates.
+
+
+          If \ref useAntenna is set, then the precision is the \p radius of the
+
+          circle associated to the antenna coverage, otherwise, it is the \p
+          dmax
+
+          of the centroid.
+        default: false

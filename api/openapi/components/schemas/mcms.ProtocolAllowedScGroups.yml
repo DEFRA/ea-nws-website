@@ -1,0 +1,26 @@
+type: object
+description: Allowed service center groups for a given protocol.
+required:
+  - proto
+  - allowAll
+properties:
+  proto:
+    description: Protocol.
+    allOf:
+      - $ref: ./inet.MetaProto.yml
+  allowAll:
+    type: boolean
+    description: |-
+      Allow all SC groups for this protocol.
+
+      If true, \ref scGroups is ignored and all the SC groups are allowed for
+      this protocol.
+
+      This is the default behavior if the protocol is not present in the
+      protocols list.
+  scGroups:
+    type: array
+    description: List of ids of allowed SC groups.
+    items:
+      type: integer
+      format: int32

@@ -1,0 +1,27 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    description: >-
+      Merge all the rows of a given input table in a single one.
+
+
+      The output type is the same as the input type.
+
+
+      The operation keeps the first present value of each field.
+
+
+      The operation stops scanning the input rows as soon as a value has been
+
+      found for each optional field.
+
+
+      If, for a given field, no value has been found after scanning all the
+      input
+
+      rows, then the field is left unset.
+
+
+      If there is no input row, then there is no output row either, hence the
+
+      number of output rows can be either 0 or 1.

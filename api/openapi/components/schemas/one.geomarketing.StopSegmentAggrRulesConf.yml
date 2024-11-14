@@ -1,0 +1,17 @@
+allOf:
+  - $ref: ./platform.cfg.DynConfSetElem.yml
+  - type: object
+    description: |-
+      Set of aggregation rules for segments.
+
+      In the first step of stop segment mining algorithm, it is sometimes
+       necessary to merge some moves or stop together depending on various
+       criterion.
+
+       For example, we can be interested in merging consecutive moves together
+       to join a stop in a place we find more significant for our study.
+    properties:
+      aggrRules:
+        type: array
+        items:
+          $ref: ./one.geomarketing.StopSegmentAggrRule.yml

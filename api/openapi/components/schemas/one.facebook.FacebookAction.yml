@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./qre.base.Action.yml
+  - type: object
+    required:
+      - msisdn
+    properties:
+      msisdn:
+        type: integer
+        format: int64
+        minimum: 0

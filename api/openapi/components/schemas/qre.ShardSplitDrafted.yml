@@ -1,0 +1,34 @@
+allOf:
+  - $ref: ./qre.base.EventLog.yml
+  - type: object
+    description: Event emitted after draft from a \ref SplitBooleanFloat operation.
+    required:
+      - selectSize
+      - selectMean
+      - selectVariance
+      - splitSize
+      - splitMean
+      - splitVariance
+    properties:
+      selectSize:
+        type: integer
+        format: int64
+        description: Descriptive statistics of entities entering the operation.
+        minimum: 0
+      selectMean:
+        type: number
+        format: double
+      selectVariance:
+        type: number
+        format: double
+      splitSize:
+        type: integer
+        format: int64
+        description: Descriptive statistics of drafted entities.
+        minimum: 0
+      splitMean:
+        type: number
+        format: double
+      splitVariance:
+        type: number
+        format: double

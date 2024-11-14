@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./community.sponsorship.SponsorOfferEvent.yml
+  - type: object
+    description: |-
+      Event sent to the sponsor when he invites a guest.
+
+      The event is sent to both the guest and the sponsor.
+      This event is sent after a successful call to community.sdk.Sponsor.refer.

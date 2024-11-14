@@ -1,0 +1,8 @@
+type: object
+properties:
+  min:
+    type: number
+    format: double
+  max:
+    type: number
+    format: double

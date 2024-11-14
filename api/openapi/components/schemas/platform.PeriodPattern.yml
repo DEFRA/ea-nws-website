@@ -1,0 +1,22 @@
+type: object
+description: |-
+  Period pattern.
+
+  It is a period which is defined in the context of a bigger period.
+  For example, a range [12:30-14:30] is a day period pattern, in
+  this case:
+   - \p date is \ref DayDatePattern, having 12 as hour, and 30 as minute.
+   - \p duration is a \ref Time, having 2 as value and HOUR as unit.
+
+  Note that \p date must be coherent with \p duration unit.
+  For instance for a \ref MinuteDatePattern, the \p duration unit
+  should be lower than MINUTE, consequently SECOND, or could be MINUTE with a
+  duration of 1.
+required:
+  - date
+  - duration
+properties:
+  date:
+    $ref: ./platform.DatePattern.yml
+  duration:
+    $ref: ./platform.base.Time.yml

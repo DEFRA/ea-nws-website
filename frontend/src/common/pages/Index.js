@@ -308,19 +308,20 @@ export default function IndexPage () {
   ]
 
   const mockOrgCurrentContact = {
-    id: null,
-    enabled: null,
-    firstName: null,
-    lastName: null,
-    emails: null,
+    id: 1,
+    enabled: true,
+    firstName: 'Mary',
+    lastName: 'Test',
+    emails: ['test@email.com', 'jok@email.com'],
     mobilePhones: null,
-    homePhones: null,
-    position: null,
-    comments: null,
+    homePhones: ['0131223344', '014122334455'],
+    position: 'Admin',
+    comments:
+      'responsible for of all the petrol stations in the Midlands when Robert Bridge is on holiday.',
     additionals: [
       {
         id: 'keywords',
-        value: null
+        value: 'this, are, the, keywords'
       }
     ]
   }

@@ -12,7 +12,7 @@ const orgManageContactsUrls = {
     channels: urlManageContactsAdd + '/channels'
   },
   view: {
-    viewContact: urlManageContactsOrg + '/view-contact'
+    viewContact: urlManageContactsOrg + '/contact/view-contact'
   }
 }
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import locationPin from '../../../../../../common/assets/images/location_pin.svg'
 import Popup from '../../../../../../common/components/custom/Popup'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../../common/enums/RiskAreaType'
@@ -236,6 +237,7 @@ export default function LocationsTable ({
         {selectedLocations.length}{' '}
         {selectedLocations.length === 1 ? 'location' : 'locations'} selected{' '}
         <span style={{ margin: '0 20px' }}>|</span>
+        <img src={locationPin} alt='Location pin icon' />
         <Link>View on map</Link>
       </p>
       <table className='govuk-table govuk-table--small-text-until-tablet'>

@@ -12,15 +12,13 @@ export default function DashboardHeader ({
 }) {
   const navigate = useNavigate()
 
-  const detailsMessage = (
+  const floodRiskDetails = (
     <>
       Flood risk is based on a combination of likelihood and impact – how likely
       it is that flooding will happen and the effect that flooding will have on
       people, buildings and services. Flood risk can fall into the following
       categories:
-      <h4 className='govuk-!-margin-top-6'>
-        <strong>Rivers and sea</strong>
-      </h4>
+      <h4 className='govuk-heading-m govuk-!-margin-top-6'>Rivers and sea</h4>
       <p className='govuk-!-margin-top-4'>
         <strong>High risk</strong>
         <br />
@@ -39,9 +37,7 @@ export default function DashboardHeader ({
         Each year there's a chance of flooding from rivers and the sea of
         between 1 in 1000 and 1 in 100.
       </p>
-      <h4 className='govuk-!-margin-top-6'>
-        <strong>Groundwater</strong>
-      </h4>
+      <h4 className='govuk-heading-m  govuk-!-margin-top-6'>Groundwater</h4>
       <p className='govuk-!-margin-top-4'>
         <strong>Possible</strong>
         <br />
@@ -55,34 +51,74 @@ export default function DashboardHeader ({
     </>
   )
 
+  const noFloodMessagesDetails = (
+    <>
+      {/* TODO: Update this text */}
+      <p>
+        If no flood warnings or flood alerts are available for a location you
+        may be able to link to nearby flood areas that get them.
+      </p>
+
+      <p>
+        To link locations to nearby flood areas, go to an individual location
+        screen then link to nearby flood areas in the Flood areas and message
+        setting section.
+      </p>
+    </>
+  )
+
+  const noContactsDetails = (
+    <>
+      <p>
+        If no flood warnings or flood alerts are available for a location you
+        may be able to link to nearby flood areas that get them.
+      </p>
+
+      <p>
+        To link locations to nearby flood areas, go to an individual location
+        screen then link to nearby flood areas in the Flood areas and message
+        setting section.
+      </p>
+    </>
+  )
+
   const handleFloodAreas = (event) => {
     event.preventDefault()
     navigate('/organisation/info/flood-areas')
   }
 
   const FloodBanner = ({ type }) => {
-    let count = 0
-    let message = ''
-    let heading = ''
+    const count = []
+    const message = []
+    const heading = []
 
     if (type === 'floodMessages') {
-      heading = 'Locations that will get flood messages'
-      count = locations.filter(
-        (item) => item.alert_categories.length > 0
-      ).length
-      message = 'in flood areas'
+      heading[0] = 'Locations that will get flood messages'
+      count.push(
+        locations.filter((item) => item.alert_categories.length > 0).length
+      )
+      message[0] = 'in flood areas'
+    } else if (type === 'noFloodMessages') {
+      heading[0] = 'Locations that do not currently get flood messages'
+      count.push(0)
+      message[0] = 'at medium or high flood risk'
+      count.push(0)
+      message.push('at low flood risk')
     } else if (type === 'noContacts') {
-      heading = 'Locations not linked to contacts'
-      message = 'not linked to contacts'
+      heading[0] = 'Locations not linked to contacts'
+      count.push(0)
+      message[0] = 'not linked to contacts'
     }
 
     return (
       <div
-        className='govuk-!-margin-top-3'
+        className='govuk-!-margin-top-1'
         style={{
-          paddingBottom: '10px',
-          width: '50%',
-          paddingRight: '2%'
+          width: '100%',
+          padding: '0.5rem 0.5rem'
+          // Set a minimum height for the outer container
+          // display: 'flex', // Use flexbox to handle inner content better
+          // flexDirection: 'column' // Ensure the inner content is stacked vertically
         }}
       >
         <p>
@@ -91,21 +127,67 @@ export default function DashboardHeader ({
         <div
           style={{
             border: '2px solid lightGrey',
-            padding: '30px 0px 50px 20px',
-            width: '100%'
+            padding: '1.5rem 1.5rem'
           }}
         >
-          <h1 style={{ color: type === 'noContacts' ? 'crimson' : 'black' }}>
-            <strong>{count}</strong>
-          </h1>
-          <Link className='govuk-link'>
-            {count === 1 ? 'location' : 'locations'} {message}
-          </Link>
+          {(type === 'floodMessages' || type === 'noContacts') && (
+            <>
+              <h1
+                style={{ color: type === 'noContacts' ? 'crimson' : 'black' }}
+              >
+                <strong>{count[0]}</strong>
+              </h1>
+              <Link className='govuk-link'>
+                {count[0] === 1 ? 'location' : 'locations'} {message[0]}
+              </Link>
+            </>
+          )}
+          {type === 'noFloodMessages' && (
+            <div style={{ display: 'flex' }}>
+              <div
+                style={{
+                  borderRight: '2px solid lightGrey',
+                  width: '100%',
+                  padding: '0rem 1rem 0rem 0rem'
+                }}
+              >
+                <h1 style={{ color: 'coral' }}>
+                  <strong>{count[0]}</strong>
+                </h1>
+                <Link className='govuk-link'>
+                  {count[0] === 1 ? 'location' : 'locations'} {message[0]}
+                </Link>
+              </div>
+              <div style={{ width: '100%', padding: '0rem 1.5rem' }}>
+                <h1>
+                  <strong>{count[1]}</strong>
+                </h1>
+                <Link className='govuk-link'>
+                  {count[1] === 1 ? 'location' : 'locations'} {message[1]}
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
+
         <p className='govuk-!-margin-top-2'>
-          <Link className='govuk-link' onClick={handleFloodAreas}>
-            What are flood areas?
-          </Link>
+          {type === 'floodMessages' && (
+            <Link className='govuk-link' onClick={handleFloodAreas}>
+              What are flood areas?
+            </Link>
+          )}
+          {type === 'noFloodMessages' && (
+            <Details
+              title='Link these locations to nearby flood areas to get flood messages'
+              text={noFloodMessagesDetails}
+            />
+          )}
+          {type === 'noContacts' && (
+            <Details
+              title='Linking locations to contacts so that they can get flood messages'
+              text={noContactsDetails}
+            />
+          )}
         </p>
       </div>
     )
@@ -113,13 +195,10 @@ export default function DashboardHeader ({
 
   return (
     <>
-      <div
-        className='govuk-grid-column-full govuk-body govuk-!-margin-top-6'
-        style={{ fontSize: '18px' }}
-      >
+      <div className='govuk-grid-column-full govuk-body govuk-!-margin-top-6'>
         <div style={{ display: 'flex' }}>
           <h1 className='govuk-heading-l'>
-            Manage your organisation's locations
+            Manage your organisation's {locations.length} locations
           </h1>
           <div style={{ marginLeft: 'auto' }}>
             <Button
@@ -136,14 +215,15 @@ export default function DashboardHeader ({
           </div>
         </div>
 
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'flex', fontSize: '18px' }}>
           <FloodBanner type='floodMessages' />
+          <FloodBanner type='noFloodMessages' />
           <FloodBanner type='noContacts' />
         </div>
       </div>
 
-      <div className='govuk-grid-column-one-half govuk-!-margin-top-6'>
-        <Details title='What is flood risk?' text={detailsMessage} />
+      <div className='govuk-grid-column-one-half'>
+        <Details title='What is flood risk?' text={floodRiskDetails} />
       </div>
     </>
   )

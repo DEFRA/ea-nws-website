@@ -1,0 +1,21 @@
+allOf:
+  - $ref: ./bigdata.base.Event.yml
+  - type: object
+    required:
+      - key
+      - collection
+      - workspaceId
+      - keyword
+    properties:
+      key:
+        description: Primary key of the row of the entity.
+        allOf:
+          - $ref: ./platform.base.Value.yml
+      collection:
+        type: string
+        description: Collection of the entity.
+      workspaceId:
+        type: string
+        description: Workspace the entity wants to opt-out of.
+      keyword:
+        type: string

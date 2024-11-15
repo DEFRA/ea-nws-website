@@ -1,0 +1,5 @@
+type: string
+enum:
+  - COVERAGE
+  - COVERAGE_N_GEOMETRY
+  - GEOMETRY

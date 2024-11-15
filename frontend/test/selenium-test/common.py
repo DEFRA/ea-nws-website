@@ -1,6 +1,11 @@
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException
+from selenium.webdriver.support.ui import Select
 import time
+
+#------------------------------------------------------------------------------
+# CONSTANTS
+#------------------------------------------------------------------------------
 
 # Keywords
 keywords_max = 50
@@ -8,6 +13,11 @@ keyword_char_max = 20
 keyword_error_max = f'You can add a maximum of {keywords_max} keywords'
 keyword_error_char_max = f'Keywords must be {keyword_char_max} characters or less'
 keyword_error_duplicate = 'This keyword already exists'
+keyword_error_comma = 'Keywords cannot include commas'
+
+#------------------------------------------------------------------------------
+# URLS
+#------------------------------------------------------------------------------
 
 # Local host
 local_host = 'http://localhost:3000'
@@ -63,6 +73,13 @@ url_org_signout = {
     'signout': url_org + '/signout',
     'auto': url_org + '/signout-auto'
 }
+# Change admin URLS
+url_org_man_admin_path = url_org + '/manage-admin'
+url_org_man_admin = {
+    'details': url_org_man_admin_path + '/admin-details',
+    'changeDetails': url_org_man_admin_path + '/change-admin-details',
+    'verifyEmail': url_org_man_admin_path + '/verify-email'
+}
 # Manage keywords
 url_org_man_keywords_path = url_org + '/manage-keywords'
 # Manage locations
@@ -84,7 +101,9 @@ url_org_man_loc = {
         'dropPinNotInEngland': url_org_man_loc_path + '/add/drop-pin-not-in-england',
         'dropPinSearch': url_org_man_loc_path + '/add/drop-pin-search',
         'predefinedBoundary': {
-            'add': url_org_man_loc_path + '/add/predefined-boundary'
+            'optionalInfo': url_org_man_loc_path + '/add/predefined-boundary/optional-information',
+            'add': url_org_man_loc_path + '/add/predefined-boundary',
+            'addAnother': url_org_man_loc_path + '/add/another-predefined-boundary'
         }
     },
     'optionalLocation':{
@@ -92,7 +111,7 @@ url_org_man_loc = {
         'optionalAddress': url_org_man_loc_path + '/add/optional-information/address',
         'addKeyInformation': url_org_man_loc_path + '/add/optional-information/key-information',
         'addKeywords': url_org_man_loc_path + '/add/optional-information/keywords',
-        'addActionPlan': url_org_man_loc_path + '/add/optional-information/action-plan', 
+        'addActionPlan': url_org_man_loc_path + '/add/optional-information/action-plan',
         'addNotes': url_org_man_loc_path + '/add/optional-information/notes'
     },
     'error': {
@@ -113,7 +132,7 @@ url_org_man_loc = {
         'select_how': url_org_man_loc_path + '/unmatched-locations/manually-find/select-how',
         'find_by_address': url_org_man_loc_path + '/unmatched-locations/manually-find/address',
     },
-    'edit':{
+    'edit': {
         'cannot_change_location_polygon': url_org_man_loc_path + '/edit/edit-polygon',
         'cannot_change_location_line': url_org_man_loc_path + '/edit/edit-line',
         'options': url_org_man_loc_path + '/edit/select-location-options',
@@ -121,21 +140,31 @@ url_org_man_loc = {
         'locationInArea': url_org_man_loc_path + '/edit/location-in-area',
         'notInEngland': url_org_man_loc_path + '/edit/xy-coordinates-not-in-england',
         'dropPinEdit': url_org_man_loc_path + '/edit/drop-pin-edit'
+    },
+   'view':{
+        'dashboard': url_org_man_loc_path + '/view-locations',
+        'details': url_org_man_loc_path + '/location/view-location',
+        'messages': url_org_man_loc_path + '/location/view-messages'
     }
 }
 
 url_org_man_cont_path = url_org + '/manage-contacts'
 url_org_man_cont = {
     'add': {
-        'details': url_org_man_cont_path + '/add'
+        'details': url_org_man_cont_path + '/add',
+        'notes':url_org_man_cont_path + '/add/notes',
+        'keywords': url_org_man_cont_path + '/add/keywords',
+        'channels': url_org_man_cont_path + '/add/channels'
     },
 }
 
 # org footer urls
-
 url_org_privacy_notice = url_org + '/privacy'
 
-# PAGE NAVIGATION
+#------------------------------------------------------------------------------
+# PAGE NAVIGATION FUNCTIONS
+#------------------------------------------------------------------------------
+
 # Navigate to authenticated page via index page and check url
 def navigate_to_auth_page_via_index(browser, url_target, mock_session=1):
     browser.get(url_index)
@@ -161,13 +190,16 @@ def navigate_to_auth_org_page_via_index(browser, url_target):
     assert browser.current_url == url_target
     return browser
 
-# CLICK / SELECT
+#------------------------------------------------------------------------------
+# CLICK / SELECT FUNCTIONS
+#------------------------------------------------------------------------------
+
 # Click on a button and check url
 def click_button(browser, button_text, url_button):
     button_xpath = f"//button[text()='{button_text}']"
     button_element = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", button_element)
-    time.sleep(1)
+    time.sleep(2)
     assert browser.current_url == url_button
 
 # Click on link text and check url
@@ -192,6 +224,12 @@ def click_link_more_than_one_text(browser, link_text, link_text_iteration, url_l
     time.sleep(1)
     assert browser.current_url == url_link
 
+# Click checkbox
+def click_checkbox(browser, value, key='id'):
+    input_checkbox_xpath = f"//input[@class='govuk-checkboxes__input' and @{key}='{value}']"
+    input_checkbox_element = browser.find_element(By.XPATH, input_checkbox_xpath)
+    browser.execute_script("arguments[0].scrollIntoView(true); arguments[0].click();", input_checkbox_element)
+
 # Select input radio option
 def select_input_radio_option(browser, value, key='value'):
     input_radio_xpath = f"//input[@{key}='{value}']"
@@ -199,20 +237,23 @@ def select_input_radio_option(browser, value, key='value'):
     browser.execute_script("arguments[0].click();", input_radio_element)
 
 # Select input dropdown option
-def select_dropdown_option(browser, dropdown_name, value, key='value'):
-    option_xpath = f"//select[@name='{dropdown_name}']/option[@value='{value}']"
-    option_element = browser.find_element(By.XPATH, option_xpath)
-    browser.execute_script("arguments[0].click();", option_element)
+def select_dropdown_option(browser, dropdown_name, value):
+    select = Select(browser.find_element(By.NAME, dropdown_name))
+    select.select_by_value(value)
 
-# ENTER TEXT
+#------------------------------------------------------------------------------
+# ENTER INPUT TEXT
+#------------------------------------------------------------------------------
+
 # Enter input in text box
 def enter_input_text(browser, value, input_text, key='name'):
     input_xpath = f"//input[@{key}='{value}']"
     input_element = browser.find_element(By.XPATH, input_xpath)
+    browser.execute_script("arguments[0].scrollIntoView(true);", input_element)
+    time.sleep(1)
     input_element.clear()
     input_element.send_keys(input_text)
 
-# ENTER TEXT
 # Enter input in text box
 def enter_textarea_text(browser, value, input_text, key='name'):
     input_xpath = f"//textarea[@{key}='{value}']"
@@ -220,7 +261,10 @@ def enter_textarea_text(browser, value, input_text, key='name'):
     input_element.clear()
     input_element.send_keys(input_text)
 
-# CHECKS
+#------------------------------------------------------------------------------
+# CHECKS (RETURNS TRUE/FALSE)
+#------------------------------------------------------------------------------
+
 # Check if xpath exists
 def check_exists_by_xpath(browser, xpath):
     try:
@@ -245,6 +289,3 @@ def check_error_summary(browser):
 def check_sign_back_in_page(browser):
     assert '/sign-back-in' in browser.current_url
     return check_h1_heading(browser, 'You need to sign back in to view this page')
-
-
-

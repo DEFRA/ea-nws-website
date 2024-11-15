@@ -1,0 +1,27 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: |-
+      Returns a boolean value checking if an object inherits from a type.
+
+      This reference can be used to check the type of an object or one of its
+      fields. It is evaluated to a boolean value.
+    required:
+      - typeName
+    properties:
+      typeName:
+        type: string
+        description: |-
+          Name of the type.
+
+          The typename can be either the name of a class, struct, union or enum,
+          or the name of a native type (byte, ubyte, string, ...).
+      fieldPath:
+        type: string
+        description: |-
+          Optional path to the field whose type is to be checked.
+
+          If specified, the reference checks the type of the pointed field,
+          otherwise, it checks the type of the top-level object.
+        minLength: 1
+        pattern: '[_0-9a-zA-Z\.\[\]\*\-<>]*'

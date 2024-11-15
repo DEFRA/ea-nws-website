@@ -1,0 +1,14 @@
+description: Anniversary period.
+oneOf:
+  - type: object
+    required:
+      - absolute
+    properties:
+      absolute:
+        $ref: ./bigdata.query.AbsoluteAnniversaryPeriod.yml
+  - type: object
+    required:
+      - relative
+    properties:
+      relative:
+        $ref: ./bigdata.query.RelativeAnniversaryPeriod.yml

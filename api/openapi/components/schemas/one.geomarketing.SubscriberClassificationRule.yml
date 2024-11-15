@@ -1,0 +1,22 @@
+type: object
+properties:
+  counters:
+    type: array
+    items:
+      $ref: ./one.geomarketing.CounterConstraint.yml
+  recurrence:
+    description: Number of days the subscriber stopped in the reference zone.
+    allOf:
+      - $ref: ./one.geomarketing.UintConstraint.yml
+  homePlaceIsInRefZone:
+    type: boolean
+  workPlaceIsInRefZone:
+    type: boolean
+  subRules:
+    type: array
+    items:
+      $ref: ./one.geomarketing.SubscriberClassificationRule.yml
+  subscriberClass:
+    type: string
+    minLength: 1
+    pattern: '[_0-9a-zA-Z]*'

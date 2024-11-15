@@ -1,0 +1,14 @@
+type: object
+description: Parameters of a source of blob values.
+properties:
+  iop:
+    description: |-
+      Description of an IOP data stored as a blob.
+
+      If the source is used to store an IOP value as a blob, this field
+      can be set to provide details on this storage (IOP type and type of
+      storage). Those details might be used in some parts of the product,
+      and can be used to validate the data before storing it in the source.
+      If unset, no details about what the blob source is storing is provided.
+    allOf:
+      - $ref: ./platform.BlobIopType.yml

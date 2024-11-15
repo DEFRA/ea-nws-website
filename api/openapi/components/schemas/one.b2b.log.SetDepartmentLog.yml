@@ -1,0 +1,16 @@
+allOf:
+  - $ref: ./one.b2b.log.LineDepartmentLog.yml
+  - type: object
+    description: A specific class for set department event
+    required:
+      - previousDepartmentId
+      - previousDepartmentName
+    properties:
+      previousDepartmentId:
+        type: integer
+        format: int64
+        description: Previous department unique identifier.
+        minimum: 0
+      previousDepartmentName:
+        type: string
+        description: Name of the previous department.

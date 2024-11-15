@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./bigdata.relational.InputTable.yml
+  - type: object
+    description: Collection table.
+    required:
+      - collection
+    properties:
+      collection:
+        type: string
+        description: Identifier of the collection.

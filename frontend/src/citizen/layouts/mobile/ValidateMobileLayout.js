@@ -15,7 +15,7 @@ import {
   removeVerifiedContact
 } from '../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
-import ExpiredCodeLayout from '../expired-code/ExpiredCodeLayout'
+import ExpiredCodeLayout from '../../../common/layouts/email/ExpiredCodeLayout'
 
 export default function ValidateMobileLayout ({
   NavigateToNextPage,
@@ -159,6 +159,7 @@ export default function ValidateMobileLayout ({
                     Use the code within 4 hours or it will expire.
                     <br /> <br />
                     <Input
+                      className='govuk-input govuk-input--width-10'
                       name='Enter code'
                       inputType='text'
                       error={error}

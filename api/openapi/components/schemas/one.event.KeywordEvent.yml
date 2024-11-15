@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./one.event.CommunicationEvent.yml
+  - type: object
+    required:
+      - payload
+    properties:
+      payload:
+        type: string
+      from:
+        type: string
+      to:
+        type: string

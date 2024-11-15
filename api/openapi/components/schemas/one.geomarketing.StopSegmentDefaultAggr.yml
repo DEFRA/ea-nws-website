@@ -1,0 +1,18 @@
+type: object
+description: 'Aggregation rule: simulate a stop in a relevant place.'
+properties:
+  useForeignPlace:
+    type: boolean
+    description: |-
+      Sequences starting/ending with a move or absent from/towards a foreign
+       location will be aggregated even with no stop.
+
+      The place is considered as foreign if the MCC of the associated CGI is
+       different from 'localMcc'.
+    default: true
+  useHomePlace:
+    type: boolean
+    description: |-
+      When the sequence ends with a move or with a non significant stop,
+       generate a fake move from or towards the life place of the MS.
+    default: true

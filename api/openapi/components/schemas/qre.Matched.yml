@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./bigdata.base.Event.yml
+  - type: object
+    description: |-
+      Event emitted when an entity reached a condition.
+
+      This event is emitted by WaitCondition when the condition is verified for
+      an entity.

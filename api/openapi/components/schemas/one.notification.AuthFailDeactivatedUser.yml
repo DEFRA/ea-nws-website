@@ -1,0 +1,20 @@
+allOf:
+  - $ref: ./one.notification.UserNotification.yml
+  - type: object
+    description: |-
+      Deactivated user on authentication failure.
+
+      This notification is sent to all admin users of the platform when a user
+      is deactivated after too many authentication failure.
+    required:
+      - deactivatedUserLogin
+      - deactivatedUserId
+    properties:
+      deactivatedUserLogin:
+        type: string
+        description: Login of the deactivated user.
+      deactivatedUserId:
+        type: integer
+        format: int64
+        description: Id of the deactivated user.
+        minimum: 0

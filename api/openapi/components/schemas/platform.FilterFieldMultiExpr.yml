@@ -1,0 +1,11 @@
+type: object
+description: A list of filter field expressions.
+required:
+  - expressions
+properties:
+  expressions:
+    type: array
+    description: The list of expressions.
+    items:
+      $ref: ./platform.FilterFieldExpr.yml
+    minItems: 1

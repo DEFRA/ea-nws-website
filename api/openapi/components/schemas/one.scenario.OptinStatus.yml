@@ -1,0 +1,9 @@
+type: string
+description: Opt in status of an entity in a scenario.
+enum:
+  - NOT_OPTED_IN
+  - IN_PROGRESS
+  - FAILURE
+  - OPTED_IN
+  - OPTED_OUT
+  - EXPIRED

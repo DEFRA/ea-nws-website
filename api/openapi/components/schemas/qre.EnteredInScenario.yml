@@ -1,0 +1,14 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: |-
+      This reference allow to check if an entity has entered in a given
+       scenario.
+    properties:
+      scenario:
+        description: |-
+          Id of the scenario.
+
+          If not set, will use the scenario in which the reference is used.
+        allOf:
+          - $ref: ./platform.Id.yml

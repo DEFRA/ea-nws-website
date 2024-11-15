@@ -1,0 +1,15 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: |-
+      Custom value containing a dyn conf set for RAFT.
+
+      Used to replicate the dyn conf sets in the cluster.
+    required:
+      - conf
+    properties:
+      conf:
+        oneOf:
+          - $ref: ./platform.cfg.DynConfSet.yml
+        discriminator:
+          propertyName: _class

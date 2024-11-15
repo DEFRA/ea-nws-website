@@ -29,10 +29,10 @@ export default function LocationXYCoordinatesSearchLayout ({
   const navigate = useNavigate()
 
   const currentXCoordinate = useSelector(
-    (state) => state.session.currentLocation.meta_data.x_coordinate
+    (state) => state.session.currentLocation.meta_data.location_additional.x_coordinate
   )
   const currentYCoordinate = useSelector(
-    (state) => state.session.currentLocation.meta_data.y_coordinate
+    (state) => state.session.currentLocation.meta_data.location_additional.y_coordinate
   )
 
   const [xCoordinate, setXCoordinate] = useState(currentXCoordinate || '')

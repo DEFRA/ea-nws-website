@@ -1,0 +1,6 @@
+allOf:
+  - $ref: ./platform.cfg.DynConfSetElem.yml
+  - type: object
+    properties:
+      statRefinementParams:
+        $ref: ./one.geomarketing.StatRefinementParams.yml

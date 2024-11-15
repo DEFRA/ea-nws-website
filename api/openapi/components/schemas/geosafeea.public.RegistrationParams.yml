@@ -1,0 +1,49 @@
+type: object
+description: |-
+  Registration parameters of a member to a partner.
+
+  This structure stores the parameters related to the registration of GeoSafe
+  members to GeoSafe partners.
+required:
+  - channelVoiceEnabled
+  - channelSmsEnabled
+  - channelEmailEnabled
+  - channelMobileAppEnabled
+  - partnerCanView
+  - partnerCanEdit
+properties:
+  channelVoiceEnabled:
+    type: boolean
+    description: Is the Voice channel enabled.
+  channelSmsEnabled:
+    type: boolean
+    description: Is the SMS channel enabled.
+  channelEmailEnabled:
+    type: boolean
+    description: Is the Email channel enabled.
+  channelMobileAppEnabled:
+    type: boolean
+    description: Is the Mobile app channel enabled.
+  partnerCanView:
+    type: boolean
+    nullable: true
+  partnerCanEdit:
+    type: boolean
+    nullable: true
+  categories:
+    type: array
+    description: |-
+      list of registered category ids.
+
+      If none is defined, only alerts without any event code defined will be
+      received.
+    items:
+      $ref: ./geosafeea.alert.EventCode.yml
+  alertTypes:
+    type: array
+    description: |-
+      list of registered alert types.
+
+      If none is defined, no alert is received.
+    items:
+      $ref: ./geosafeea.alert.AlertType.yml

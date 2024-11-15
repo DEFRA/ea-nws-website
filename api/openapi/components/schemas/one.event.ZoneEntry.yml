@@ -1,0 +1,3 @@
+allOf:
+  - $ref: ./qre.base.Action.yml
+  - type: object

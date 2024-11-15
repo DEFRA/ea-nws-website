@@ -1,0 +1,4 @@
+allOf:
+  - $ref: ./one.notification.ScenarioAction.yml
+  - type: object
+    description: Notification sent to scenario submitter upon scenario rejection.

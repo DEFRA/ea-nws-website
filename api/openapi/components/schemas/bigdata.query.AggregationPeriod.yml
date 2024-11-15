@@ -1,0 +1,17 @@
+type: string
+description: |-
+  Bigdata query interface.
+
+  Note that all the sensitivity fields of this file actually depend on the
+  underlying database management system. For example with a QKV the
+  sensitivity will be used as expected, but with a QTS all operations will be
+  performed case insensitively.
+  Specify the targeted periodicity of an aggregation.
+  This enumeration can be used to specify the periodicity of an aggregation
+  that is being used by a field.
+enum:
+  - DAY
+  - WEEK
+  - MONTH
+  - HOUR
+  - MINUTE

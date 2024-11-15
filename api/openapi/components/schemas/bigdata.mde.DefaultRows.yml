@@ -1,0 +1,13 @@
+allOf:
+  - $ref: ./bigdata.mde.Default.yml
+  - type: object
+    description: Similar to \p DefaultTable but the default value is constant.
+    properties:
+      defaultRows:
+        type: array
+        description: |-
+          Default table value, same type as the primary table.
+
+          In JSON or CSV (same as in \p StaticData).
+        items:
+          type: string

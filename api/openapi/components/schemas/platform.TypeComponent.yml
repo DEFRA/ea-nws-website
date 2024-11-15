@@ -1,0 +1,13 @@
+type: string
+enum:
+  - IMSI_MCC
+  - IMSI_MNC
+  - IMSI_OC
+  - IMEI_TAC
+  - CGI_LAC
+  - CGI_MNC
+  - CGI_MCC
+  - COORD_LATITUDE
+  - COORD_LONGITUDE
+  - COORD_ALTITUDE
+  - COORD_PRECISION

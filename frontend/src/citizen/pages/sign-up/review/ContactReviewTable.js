@@ -10,7 +10,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
     return (
       <>
         {(profile.emails.length > 0 ||
-          profile.unverified.emails.length > 0) && (
+          profile.unverified?.emails) && (
             <tbody className='govuk-table__body'>
               {profile.emails.map((email, index) => (
                 <ContactReviewRow
@@ -21,7 +21,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
                   emailIndex={index}
                 />
               ))}
-              {profile.unverified.emails.map((unregisteredEmail, index) => (
+              {profile.unverified?.emails?.map((unregisteredEmail, index) => (
                 <ContactReviewRow
                   contact={unregisteredEmail.address}
                   contactType='email'
@@ -39,7 +39,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
     return (
       <>
         {(profile.mobilePhones.length > 0 ||
-          profile.unverified.mobilePhones.length > 0) && (
+          profile.unverified?.mobilePhones) && (
             <tbody className='govuk-table__body'>
               {profile.mobilePhones.map((mobilePhone, index) => (
                 <ContactReviewRow
@@ -49,7 +49,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
                   key={index}
                 />
               ))}
-              {profile.unverified.mobilePhones.map(
+              {profile.unverified?.mobilePhones?.map(
                 (unregisteredMobilePhone, index) => (
                   <ContactReviewRow
                     contact={unregisteredMobilePhone.address}
@@ -69,7 +69,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
     return (
       <>
         {(profile.homePhones.length > 0 ||
-          profile.unverified.homePhones.length > 0) && (
+          profile.unverified?.homePhones) && (
             <tbody className='govuk-table__body'>
               {profile.homePhones.map((homePhone, index) => (
                 <ContactReviewRow
@@ -79,7 +79,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
                   key={index}
                 />
               ))}
-              {profile.unverified.homePhones.map(
+              {profile.unverified?.homePhones?.map(
                 (unregisteredHomePhone, index) => (
                   <ContactReviewRow
                     contact={unregisteredHomePhone.address}
@@ -100,19 +100,19 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
   }
 
   return (
-    <>
+    <div className='govuk-!-padding-bottom-4'>
       <h3 className='govuk-heading-m'>How you'll get flood messages</h3>
-      <table className='govuk-table'>
+      <table className='govuk-table govuk-!-margin-bottom-0'>
         <EmailAddressesSection />
         {contactPreferences.includes('Text') && <MobileNumbersSection />}
         {contactPreferences.includes('PhoneCall') && <HomePhonesSection />}
         <br />
-        <Button
-          className='govuk-button--secondary'
-          onClick={handleButton}
-          text='Add another email or phone number'
-        />{' '}
       </table>
-    </>
+      <Button
+        className='govuk-button govuk-button--secondary'
+        onClick={handleButton}
+        text='Add another email or phone number'
+      />
+    </div>
   )
 }

@@ -1,0 +1,11 @@
+allOf:
+  - $ref: ./qre.ManualOpEventLog.yml
+  - type: object
+    description: >-
+      Event emitted when an entity enters the scenario forcefully.
+
+
+      This event is emited when an entity that previously didn't pass the
+
+      (dynamic) targeting phase enters the scenario due to a call to \ref
+      forceEntityEntry.

@@ -1,0 +1,13 @@
+type: object
+required:
+  - orgRegisterToken
+  - code
+properties:
+  orgRegisterToken:
+    type: string
+    description: a secured token retrieved in \ref registerStart.
+  code:
+    type: string
+    description: |-
+      a code provided by the user to verify its
+                                    email address.

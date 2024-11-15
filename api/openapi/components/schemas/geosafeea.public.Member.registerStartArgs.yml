@@ -1,0 +1,9 @@
+type: object
+properties:
+  email:
+    type: string
+    description: user email
+  mobilePhone:
+    type: string
+    description: user mobile phone
+example: '{"email":"test \test .com"}'

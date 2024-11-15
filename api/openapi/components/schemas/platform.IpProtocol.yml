@@ -1,0 +1,6 @@
+type: string
+description: Define IP protocol version.
+enum:
+  - IPV4
+  - IPV6
+  - BOTH

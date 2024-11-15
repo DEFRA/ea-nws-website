@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    description: Keep the <limit> first rows of the input table.
+    required:
+      - limit
+    properties:
+      limit:
+        type: integer
+        format: int32
+        description: The maximum number of results to return.
+        minimum: 0

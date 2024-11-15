@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./one.notification.Notification.yml
+  - type: object
+    description: Notification sent to a one user.
+    required:
+      - login
+    properties:
+      login:
+        type: string
+        description: Login of the recipient.

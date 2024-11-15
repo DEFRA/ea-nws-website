@@ -1,0 +1,4 @@
+allOf:
+  - $ref: ./community.onboarding.NodeLog.yml
+  - type: object
+    description: Log received when unlinked from a leaf as a node.

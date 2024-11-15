@@ -101,7 +101,7 @@ export default function ManageContactsPage () {
             <InsetText text='You must confirm each address and number before we can send flood messages to them.' />
             <ContactDetailsTable
               contacts={profile.emails}
-              unregisteredContact={profile.unverified.emails}
+              unregisteredContact={profile.unverified?.emails || []}
               contactTitle='Emails'
               contactType='email address'
               primaryContact={primaryEmail}
@@ -116,14 +116,14 @@ export default function ManageContactsPage () {
             )}
             <ContactDetailsTable
               contacts={profile.mobilePhones}
-              unregisteredContact={profile.unverified.mobilePhones}
+              unregisteredContact={profile.unverified?.mobilePhones || []}
               contactTitle='Texts'
               contactType='mobile telephone number'
               primaryContact={null}
             />
             <ContactDetailsTable
               contacts={profile.homePhones}
-              unregisteredContact={profile.unverified.homePhones}
+              unregisteredContact={profile.unverified?.homePhones || []}
               contactTitle='Phone call warnings'
               contactType='telephone number'
               primaryContact={null}

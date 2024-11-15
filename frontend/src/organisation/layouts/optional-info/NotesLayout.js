@@ -1,0 +1,98 @@
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router-dom'
+import BackLink from '../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
+import Button from '../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
+import TextArea from '../../../common/components/gov-uk/TextArea'
+import {
+  setCurrentLocationNotes,
+  setOrgCurrentContactNotes
+} from '../../../common/redux/userSlice'
+
+export default function NotesLayout ({
+  navigateToNextPage,
+  keywordType,
+  instructionText,
+  buttonText = 'Continue'
+}) {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const currentNotes = useSelector((state) =>
+    keywordType === 'location'
+      ? state.session.currentLocation.meta_data.location_additional.notes
+      : state.session.orgCurrentContact.comments
+  )
+  const [notes, setNotes] = useState(currentNotes || '')
+  const [error, setError] = useState('')
+  const charLimit = 500
+
+  useEffect(() => {
+    if (notes.length > charLimit) {
+      setError(`You can enter up to ${charLimit} characters`)
+    } else {
+      setError('')
+    }
+  }, [notes])
+
+  const handleSubmit = () => {
+    if (error) return
+    if (notes) {
+      switch (keywordType) {
+        case 'location':
+          dispatch(setCurrentLocationNotes(notes))
+          break
+        case 'contact':
+          dispatch(setOrgCurrentContactNotes(notes))
+          break
+        default:
+          break
+      }
+    }
+
+    // should we update geosafe profile here?
+
+    navigateToNextPage()
+  }
+
+  const navigateBack = (event) => {
+    event.preventDefault()
+    navigate(-1)
+  }
+
+  return (
+    <>
+      <OrganisationAccountNavigation />
+      <BackLink onClick={navigateBack} />
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-one-half'>
+            {error && <ErrorSummary errorList={[error]} />}
+            <br />
+            <h1 className='govuk-heading-l'>Notes (optional)</h1>
+            <div className='govuk-body'>
+              <p className='govuk-hint'>{instructionText}</p>
+              <TextArea
+                error={error}
+                inputType='text'
+                rows='5'
+                onChange={(val) => setNotes(val)}
+                className='govuk-textarea'
+              />
+              <p className='govuk-hint' style={{ marginTop: '-1.5rem' }}>
+                You can enter up to {charLimit} characters.
+              </p>
+              <br />
+              <Button
+                text={buttonText}
+                className='govuk-button'
+                onClick={handleSubmit}
+              />
+            </div>
+          </div>
+        </div>
+      </main>
+    </>
+  )
+}

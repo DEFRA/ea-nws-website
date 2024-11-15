@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import ExpiredCodeLayout from '../../../citizen/layouts/expired-code/ExpiredCodeLayout'
+import ExpiredCodeLayout from '../email/ExpiredCodeLayout'
 import NotCompletedSigningUpLayout from '../../../citizen/layouts/sign-up/NotCompletedSignUpLayout'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
@@ -19,6 +19,7 @@ import {
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
+import { getAdditionals } from '../../services/ProfileServices'
 
 export default function SignInValidatePageLayout ({
   NavigateToNextPage,
@@ -79,15 +80,11 @@ export default function SignInValidatePageLayout ({
           ])
         )
 
-        const isSignUpComplete = data.profile.additionals.filter(
-          (c) => c.id === 'signUpComplete'
-        )[0]?.value
-        const lastAccessedUrl = data.profile.additionals.filter(
-          (c) => c.id === 'lastAccessedUrl'
-        )[0]?.value
+        const isSignUpComplete = getAdditionals(data.profile, 'signUpComplete')
+        const lastAccessedUrl = getAdditionals(data.profile, 'lastAccessedUrl')
         setLastAccessedUrl(lastAccessedUrl)
 
-        if (!isSignUpComplete && lastAccessedUrl !== undefined) {
+        if (isSignUpComplete !== 'true' && lastAccessedUrl !== undefined) {
           setSignUpNotComplete(true)
         } else {
           NavigateToNextPage()

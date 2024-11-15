@@ -1,0 +1,8 @@
+type: object
+required:
+  - contact
+properties:
+  contact:
+    description: the new profile after update
+    allOf:
+      - $ref: ./geosafeea.contact.Contact.yml

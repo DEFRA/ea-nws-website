@@ -1,0 +1,65 @@
+type: object
+description: |-
+  Organization.
+
+  This structure represents an organization in the platform, as an entity
+  that can have contacts, that can emit and/or receive alerts, etc.
+required:
+  - id
+  - name
+properties:
+  id:
+    type: string
+    description: Organization identifier.
+  name:
+    type: string
+    description: Organization name.
+    minLength: 1
+    maxLength: 200
+  description:
+    type: string
+    description: Organization description.
+  postalCode:
+    type: string
+    description: |-
+      Postal code associated to the organization.
+
+      Some organization may be linked to a postal code, this enables to look
+      up an organization by its postal code.
+  longName:
+    type: string
+    description: Long name describing the organization.
+  logoUrl:
+    type: string
+    description: |-
+      URL to the image used for the organization logo.
+
+      When displaying an organization, an application can use this logo
+      image in its design.
+  backgroundUrl:
+    type: string
+    description: |-
+      URL to the image used for the organization background.
+
+      When displaying an organization, an application can use this background
+      image in its design.
+  alertDiffusionZone:
+    description: |-
+      Area where an organization may emit alerts from.
+
+      read-only in the public API.
+    allOf:
+      - $ref: ./geoloc.Geometry.yml
+  alertDiffusionZoneBoundingBox:
+    description: |-
+      Bounding box of the alert diffusion area.
+
+      read-only in the public API.
+    allOf:
+      - $ref: ./geoloc.Box.yml
+  urlSlug:
+    type: string
+    description: |-
+      short URL parameter to identify the organization.
+
+      read-only in the public API.

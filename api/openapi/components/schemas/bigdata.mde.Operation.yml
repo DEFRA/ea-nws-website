@@ -1,0 +1,3 @@
+allOf:
+  - $ref: ./bigdata.relational.Operation.yml
+  - type: object

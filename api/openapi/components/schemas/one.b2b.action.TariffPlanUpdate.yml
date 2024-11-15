@@ -1,0 +1,17 @@
+allOf:
+  - $ref: ./one.b2b.action.ContractUpdate.yml
+  - type: object
+    description: |-
+      Action log class for a contract tariff plan update.
+
+      This is a specific contract update case
+       In some cases a tariff plan change may also induce a category change
+       when this is the case this class is specialized in CategoryChange
+    required:
+      - newTariffPlan
+    properties:
+      newTariffPlan:
+        type: string
+        description: The new tariff plan of the contract
+        minLength: 1
+        pattern: '[_0-9a-zA-Z]*'

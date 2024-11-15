@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: Single message campaigns of a user.
+    properties:
+      campaigns:
+        type: array
+        items:
+          $ref: ./mcms.SingleMessageCampaign.yml

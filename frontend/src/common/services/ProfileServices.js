@@ -295,7 +295,12 @@ const getRegistrationParams = (profile, alertTypes) => {
   }
 }
 
+function findPOIByAddress(profile, address) {
+  return profile.pois.find((poi) => poi.address === address)
+}
+
 module.exports = {
+  findPOIByAddress,
   getRegistrationParams,
   addUnverifiedContact,
   removeUnverifiedContact,

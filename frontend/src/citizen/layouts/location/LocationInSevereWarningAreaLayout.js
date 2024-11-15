@@ -16,6 +16,8 @@ import {
 import { backendCall } from '../../../common/services/BackendService'
 import {
   addLocation,
+  findPOIByAddress,
+  getRegistrationParams,
   removeLocation
 } from '../../../common/services/ProfileServices'
 import {
@@ -53,8 +55,30 @@ export default function LocationInSevereWarningAreaLayout({
 
     // we must always show user the optional flood alert areas
     dispatch(setAdditionalAlerts(true))
-    await updateGeosafeProfile()
+    const updatedProfile = await updateGeosafeProfile()
+    // if user is in sign up flow, then profile returned will be undefined
+    if (updatedProfile) {
+      await registerLocationToPartner(updatedProfile)
+    }
     continueToNextPage()
+  }
+
+  const registerLocationToPartner = async (profile) => {
+    const location = findPOIByAddress(profile)
+    const alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
+
+    const data = {
+      authToken: authToken,
+      locationId: location.id,
+      partnerId: 1, // this is currently a hardcoded value - geosafe to update us on what it is
+      params: getRegistrationParams(profile, alertTypes)
+    }
+
+    const { errorMessage } = await backendCall(
+      data,
+      'api/partner/register_location_to_partner',
+      navigate
+    )
   }
 
   const handleUserNavigatingBack = async () => {
@@ -128,7 +152,13 @@ export default function LocationInSevereWarningAreaLayout({
 
   const updateGeosafeProfile = async () => {
     const dataToSend = { authToken, profile }
-    await backendCall(dataToSend, 'api/profile/update', navigate)
+    const { data } = await backendCall(
+      dataToSend,
+      'api/profile/update',
+      navigate
+    )
+
+    return data
   }
 
   return (

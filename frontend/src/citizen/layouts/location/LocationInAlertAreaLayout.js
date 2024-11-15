@@ -12,6 +12,8 @@ import { setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import {
   addLocation,
+  findPOIByAddress,
+  getRegistrationParams,
   removeLocation,
   updateLocationsAlertTypes
 } from '../../../common/services/ProfileServices'
@@ -73,8 +75,40 @@ export default function LocationInAlertAreaLayout({
       }
     }
 
-    await updateGeosafeProfile()
+    const updatedProfile = await updateGeosafeProfile()
+    if (updatedProfile) {
+      await registerLocationToPartner(updatedProfile)
+    }
     continueToNextPage()
+  }
+
+  const registerLocationToPartner = async (profile) => {
+    const location = findPOIByAddress(profile)
+
+    let alertTypes = additionalAlerts
+      ? [
+          AlertType.SEVERE_FLOOD_WARNING,
+          AlertType.FLOOD_WARNING,
+          AlertType.FLOOD_ALERT
+        ]
+      : [AlertType.FLOOD_ALERT]
+
+    if (isUserInNearbyTargetFlowpath) {
+      alertTypes = [AlertType.FLOOD_ALERT]
+    }
+
+    const data = {
+      authToken: authToken,
+      locationId: location.id,
+      partnerId: 1, // this is currently a hardcoded value - geosafe to update us on what it is
+      params: getRegistrationParams(profile, alertTypes)
+    }
+
+    const { errorMessage } = await backendCall(
+      data,
+      'api/partner/register_location_to_partner',
+      navigate
+    )
   }
 
   // remove newly added location/location updates
@@ -97,7 +131,7 @@ export default function LocationInAlertAreaLayout({
       }
     }
 
-    await updateGeosafeProfile()
+    const profile = await updateGeosafeProfile()
     navigate(-1)
   }
 
@@ -158,7 +192,12 @@ export default function LocationInAlertAreaLayout({
 
   const updateGeosafeProfile = async () => {
     const dataToSend = { authToken: authToken, profile: profile }
-    await backendCall(dataToSend, 'api/profile/update', navigate)
+    const { data } = await backendCall(
+      dataToSend,
+      'api/profile/update',
+      navigate
+    )
+    return data
   }
 
   return (

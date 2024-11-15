@@ -1,0 +1,11 @@
+type: object
+description: Parameters of a source of date values.
+properties:
+  timeUnit:
+    description: |-
+      Display unit.
+
+      Unit to be used when displaying the date on the WUI.
+    allOf:
+      - $ref: ./platform.base.TimeUnit.yml
+    default: 0

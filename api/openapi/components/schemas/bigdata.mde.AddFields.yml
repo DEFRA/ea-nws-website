@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./bigdata.relational.Projection.yml
+  - type: object
+    description: |-
+      Copy input fields with additional rows.
+
+      Same as \p Projection but the input fields are implicitly copied to the
+      output.

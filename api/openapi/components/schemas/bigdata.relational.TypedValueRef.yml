@@ -1,0 +1,25 @@
+allOf:
+  - $ref: ./bigdata.ref.ValueRef.yml
+  - type: object
+    description: Ref wrapper that allows to force the data type of the reference.
+    required:
+      - type
+    properties:
+      type:
+        description: >-
+          Type of the reference.
+
+
+          Different from field \p dataType, which is a private field. This field
+
+          allows the user to fix the data type for the reference he's writing.
+
+
+          This can be practical to wrap value refs for instance: the type
+          deduced
+
+          from a \p platform.base.Value is less accurate than what we can
+
+          describe with a data type.
+        allOf:
+          - $ref: ./platform.DataType.yml

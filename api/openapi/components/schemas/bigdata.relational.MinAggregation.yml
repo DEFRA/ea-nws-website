@@ -1,0 +1,7 @@
+allOf:
+  - $ref: ./bigdata.relational.RefSingleValAggregation.yml
+  - type: object
+    description: |-
+      Min aggregation.
+
+      Return the minimal value of a column values.

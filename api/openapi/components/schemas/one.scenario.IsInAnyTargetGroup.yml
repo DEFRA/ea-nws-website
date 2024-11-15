@@ -1,0 +1,16 @@
+allOf:
+  - $ref: ./bigdata.query.ExtendedBoolExprSync.yml
+  - type: object
+    description: |-
+      True if the entity is in the target group of at least one of the given
+      scenarios.
+
+      \see \p IsInTargetGroup.
+    properties:
+      scenarioIds:
+        type: array
+        description: IDs of the scenarios on which the condition applies.
+        items:
+          type: integer
+          format: int64
+          minimum: 0

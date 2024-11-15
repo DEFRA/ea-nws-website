@@ -1,0 +1,15 @@
+allOf:
+  - $ref: ./one.geoutils.EventFilter.yml
+  - type: object
+    description: >-
+      Same as event filter but lists the recnos of the events to remove.
+
+
+      All the recnos in the rows that would have been missing after \p
+      EventField
+
+      are listed, including the ones with missing coordinates.
+
+
+      Output: recnos to remove (ulong).
+              The recno field name is the same as the one in input.

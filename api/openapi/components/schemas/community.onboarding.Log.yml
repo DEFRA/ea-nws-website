@@ -1,0 +1,14 @@
+allOf:
+  - $ref: ./bigdata.base.EventLog.yml
+  - type: object
+    description: Onboarding operation log.
+    required:
+      - otherEntity
+      - otherCollection
+    properties:
+      otherEntity:
+        type: string
+      otherCollection:
+        type: string
+      operationChannel:
+        $ref: ./community.onboarding.Channel.yml

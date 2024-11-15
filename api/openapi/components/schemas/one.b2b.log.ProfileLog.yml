@@ -1,0 +1,16 @@
+allOf:
+  - $ref: ./one.b2b.log.CompanyLog.yml
+  - type: object
+    description: A class to log events related with a profile.
+    required:
+      - profileId
+      - profileName
+    properties:
+      profileId:
+        type: integer
+        format: int64
+        description: Id of the profile on which the action is performed.
+        minimum: 0
+      profileName:
+        type: string
+        description: Name of the profile on which the action is performed.

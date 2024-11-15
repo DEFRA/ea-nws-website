@@ -1,0 +1,4 @@
+allOf:
+  - $ref: ./one.b2b.log.LineCompanyLog.yml
+  - type: object
+    description: A specific class for detach request on a line

@@ -1,0 +1,7 @@
+allOf:
+  - $ref: ./bigdata.relational.RefSingleValAggregation.yml
+  - type: object
+    description: |-
+      Average aggregation.
+
+      Return the average value of a column values.

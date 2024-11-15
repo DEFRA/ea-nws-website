@@ -44,6 +44,9 @@ url_cit_signout_auto = local_host + '/signout-auto'
 # ORGANISATION URLS
 url_org = local_host + '/organisation'
 url_org_home = url_org + '/home'
+# Info urls
+url_org_flood_areas = url_org + '/info/flood-areas'
+url_org_flood_types = url_org + '/info/flood-types'
 # Signup urls
 url_org_signup_path = url_org + '/sign-up'
 url_org_signup = {
@@ -140,6 +143,11 @@ url_org_man_loc = {
         'locationInArea': url_org_man_loc_path + '/edit/location-in-area',
         'notInEngland': url_org_man_loc_path + '/edit/xy-coordinates-not-in-england',
         'dropPinEdit': url_org_man_loc_path + '/edit/drop-pin-edit'
+    },
+    'view':{
+        'dashboard': url_org_man_loc_path + '/view-locations',
+        'details': url_org_man_loc_path + '/location/view-location',
+        'messages': url_org_man_loc_path + '/location/view-messages'
     }
 }
 
@@ -147,6 +155,7 @@ url_org_man_cont_path = url_org + '/manage-contacts'
 url_org_man_cont = {
     'add': {
         'details': url_org_man_cont_path + '/add',
+        'notes':url_org_man_cont_path + '/add/notes',
         'keywords': url_org_man_cont_path + '/add/keywords',
         'channels': url_org_man_cont_path + '/add/channels'
     },
@@ -193,7 +202,7 @@ def click_button(browser, button_text, url_button):
     button_xpath = f"//button[text()='{button_text}']"
     button_element = browser.find_element(By.XPATH, button_xpath)
     browser.execute_script("arguments[0].click();", button_element)
-    time.sleep(1)
+    time.sleep(2)
     assert browser.current_url == url_button
 
 # Click on link text and check url
@@ -277,6 +286,11 @@ def check_h1_heading(browser, page_heading):
 # Check for error summary
 def check_error_summary(browser):
     error_xpath = f"//div[contains(@class, 'govuk-error-summary')]"
+    return check_exists_by_xpath(browser, error_xpath)
+
+# Check for success banner
+def check_success_banner(browser):
+    error_xpath = f"//div[contains(@class, 'govuk-notification-banner--success')]"
     return check_exists_by_xpath(browser, error_xpath)
 
 # Check for sign back in page for unauthenticated access

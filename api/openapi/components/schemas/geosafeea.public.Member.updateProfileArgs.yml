@@ -1,0 +1,14 @@
+type: object
+required:
+  - authToken
+  - profile
+properties:
+  authToken:
+    type: string
+    description: |-
+      a secured token retrieved during registration or
+                             signin
+  profile:
+    description: the updated profile of the member to apply
+    allOf:
+      - $ref: ./geosafeea.contact.Contact.yml

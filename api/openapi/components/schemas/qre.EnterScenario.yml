@@ -1,0 +1,7 @@
+allOf:
+  - $ref: ./qre.EntityRuleEvent.yml
+  - type: object
+    description: |-
+      Event emitted to the scenario when \ref forceEntityEntry is called.
+
+      The ruleId of this event must be QRE_FORCE_ENTRY_RULE_ID.

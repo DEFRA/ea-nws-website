@@ -1,0 +1,123 @@
+allOf:
+  - $ref: ./bigdata.base.CdrEvent.yml
+  - type: object
+    required:
+      - event
+    properties:
+      event:
+        description: Network kind of the event.
+        allOf:
+          - $ref: ./bigdata.base.ProtocolEventCode.yml
+      msisdn:
+        type: integer
+        format: int64
+        description: Mobile number.
+        minimum: 0
+      imsi:
+        type: integer
+        format: int64
+        description: IMSI.
+        minimum: 0
+      cgi:
+        type: integer
+        format: int64
+        description: Cell Id.
+        minimum: 0
+      imei:
+        type: integer
+        format: int64
+        description: IMEI.
+        minimum: 0
+      msc:
+        type: integer
+        format: int64
+        description: MSC.
+        minimum: 0
+      ggsn:
+        type: string
+      src:
+        allOf:
+          - $ref: ./bigdata.base.EventSource.yml
+        default: 2
+      mac:
+        type: integer
+        format: int64
+        description: MAC address on the 6 LSB bytes.
+        minimum: 0
+      ip:
+        type: string
+        format: byte
+        description: 'IP address bytes in big endian order length : 4 (IPv4) or 16 (IPv6)'
+      cellLon:
+        type: integer
+        format: int32
+        description: Cell location in 10^-6 degrees
+      cellLat:
+        type: integer
+        format: int32
+        description: in 10^-6 degrees
+      cellRadius:
+        type: integer
+        format: int32
+        description: in meters
+        minimum: 0
+        maximum: 65535
+      mlpShape:
+        type: string
+        format: byte
+        description: MLP geographical shape stored as a binary packed mlpShape structure.
+      coordinates:
+        description: Location
+        allOf:
+          - $ref: ./platform.base.Coordinates.yml
+      transactionId:
+        type: string
+        description: |-
+          Unique temporary identifier to link the events of a subscriber's phone
+           to the events of the phones to which a call is redirected when the
+           call forwarding is enabled.
+      countryCode:
+        type: integer
+        format: int32
+        description: Country code and national destination code.
+        minimum: 0
+        maximum: 65535
+      ndc:
+        type: string
+      posMethod:
+        description: SMLC position method.
+        allOf:
+          - $ref: ./bigdata.base.SmlcPosMethod.yml
+      eventSeqId:
+        type: integer
+        format: int64
+        description: |-
+          Event sequence ID.
+
+          Sequence number optionally provided by the event emitter, for the
+          purpose of tracking out-of-order events for example.
+
+          For instance, when the eventSeqId is emitted by Igloo, it is a
+          monotonically increasing integer in the context of the involved IMSI.
+          So it can only be compared for events matching the same IMSI. Also,
+          since a single event can trigger several push events, the same event
+          sequence ID may be shared between multiple events even for the same
+          IMSI.
+        minimum: 0
+      calledStation:
+        type: string
+        description: RADIUS called station identifier.
+      gtmsi:
+        type: integer
+        format: int64
+        description: |-
+          Global TMSI
+
+          This 64 bits integer can contain all kind of TMSI. the format is the
+          one of global_tmsi_t.
+        minimum: 0
+      gtmsiTimestamp:
+        type: integer
+        format: int32
+        description: timestamp of the global TMSI
+        minimum: 0

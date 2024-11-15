@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./qre.base.EventLog.yml
+  - type: object
+    required:
+      - value
+    properties:
+      value:
+        $ref: ./platform.base.Value.yml
+      budget:
+        type: string

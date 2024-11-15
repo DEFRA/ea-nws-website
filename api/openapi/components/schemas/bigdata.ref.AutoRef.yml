@@ -1,0 +1,14 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: >-
+      Automatically resolved ref.
+
+
+      Can be used for typed reference fields (fields of type 'Ref' with generic
+
+      attributes that define their their expected type like \ref DateRef or \ref
+      CoordRef).
+
+
+      Only supported in MDE (for now).

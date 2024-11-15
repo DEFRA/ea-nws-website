@@ -1,0 +1,23 @@
+allOf:
+  - $ref: ./one.b2b.notification.Notification.yml
+  - type: object
+    required:
+      - oldFirstname
+      - firstname
+      - oldLastname
+      - lastname
+      - oldEmail
+      - email
+    properties:
+      oldFirstname:
+        type: string
+      firstname:
+        type: string
+      oldLastname:
+        type: string
+      lastname:
+        type: string
+      oldEmail:
+        type: string
+      email:
+        type: string

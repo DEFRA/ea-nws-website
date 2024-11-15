@@ -1,0 +1,20 @@
+allOf:
+  - $ref: ./bigdata.base.Event.yml
+  - type: object
+    properties:
+      entity:
+        $ref: ./platform.base.Value.yml
+      collection:
+        type: string
+      logGroupId:
+        type: integer
+        format: int64
+        minimum: 0
+      parentId:
+        type: integer
+        format: int64
+        minimum: 0
+      workspaceId:
+        type: integer
+        format: int64
+        minimum: 0

@@ -1,0 +1,35 @@
+post:
+  operationId: getEmailStart
+  tags:
+    - member
+  summary: Start verification of an email address.
+  description: |-
+    This RPC verifies if the auth token is valid, and if the currently
+    authenticated user has the provided email address as an unverified
+    address. Then a new random code is generated and sent by email.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/geosafeea.public.Member.verifyEmailStartArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Void.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

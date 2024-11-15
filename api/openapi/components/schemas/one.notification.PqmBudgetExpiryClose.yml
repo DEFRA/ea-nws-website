@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./one.notification.PqmNotification.yml
+  - type: object
+    required:
+      - expiryDate
+    properties:
+      expiryDate:
+        $ref: ./platform.base.Value.yml

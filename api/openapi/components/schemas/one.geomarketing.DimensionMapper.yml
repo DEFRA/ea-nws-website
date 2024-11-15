@@ -1,0 +1,30 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    description: |-
+      Map the input values to their representations inside the CRM dimension.
+
+      Only two dimension types are supported for now:
+      - UniqueValueDimension: values will be the same as input, expected for
+                              enum values which are converted to full string.
+      - PartitionDimension: values will be resolved against the partition.
+    required:
+      - outputFieldName
+      - dim
+    properties:
+      outputFieldName:
+        type: string
+        minLength: 1
+      dim:
+        oneOf:
+          - $ref: ./bigdata.relational.CategorizationDimension.yml
+          - $ref: ./bigdata.relational.PartitionDimension.yml
+          - $ref: ./bigdata.relational.PeriodDimension.yml
+          - $ref: ./bigdata.relational.PlacemarkDimension.yml
+          - $ref: ./bigdata.relational.RangeDimension.yml
+          - $ref: ./bigdata.relational.UniqueValueDimension.yml
+        discriminator:
+          propertyName: _class
+      generateTotals:
+        type: boolean
+        default: true

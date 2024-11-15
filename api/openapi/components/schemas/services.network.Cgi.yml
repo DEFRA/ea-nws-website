@@ -1,0 +1,31 @@
+description: Cell Global Indentifier
+oneOf:
+  - type: object
+    required:
+      - str
+    properties:
+      str:
+        type: string
+        description: |-
+          string format.
+
+          In the case of GSM networks (2G, 3G, Femto), the format is
+          "MCC-MNC-LAC-CI".
+
+          In the case of an LTE/4G network, the format is
+          "4G:MCC-MNC-eNodeB-CI".
+
+          In the case of an 5G network, the format is
+          "5G:MCC-MNC-NCI".
+  - type: object
+    required:
+      - u
+    properties:
+      u:
+        type: integer
+        format: int64
+        description: |-
+          unsigned long format.
+
+          For internal use, allows optimal queries.
+        minimum: 0

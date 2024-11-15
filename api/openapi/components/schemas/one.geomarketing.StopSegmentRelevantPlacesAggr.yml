@@ -1,0 +1,10 @@
+type: object
+description: 'Aggregation rule: use a stop in a relevant place like home or work.'
+properties:
+  distanceThreshold:
+    type: number
+    format: double
+    description: |-
+      A stop is assimilated to a relevant place if the distance to this
+       place is below this value.
+    default: 0

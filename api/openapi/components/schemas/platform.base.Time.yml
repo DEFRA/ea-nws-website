@@ -1,0 +1,14 @@
+type: object
+description: An amount of time.
+required:
+  - unit
+  - value
+properties:
+  unit:
+    description: Unit of time in which the amount is expressed.
+    allOf:
+      - $ref: ./platform.base.TimeUnit.yml
+  value:
+    type: integer
+    format: int64
+    description: Number of \p unit.

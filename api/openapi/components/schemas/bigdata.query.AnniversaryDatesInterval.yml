@@ -1,0 +1,18 @@
+type: object
+description: |-
+  Anniversary dates interval.
+
+  If \ref end is not set, the period is defined as the date \ref start.
+  Otherwise, the interval is defined as between \ref start and \ref end
+  (both dates are included).
+required:
+  - start
+properties:
+  start:
+    description: Starting anniversary date interval.
+    allOf:
+      - $ref: ./bigdata.query.AnniversaryDate.yml
+  end:
+    description: Ending anniversary date interval.
+    allOf:
+      - $ref: ./bigdata.query.AnniversaryDate.yml

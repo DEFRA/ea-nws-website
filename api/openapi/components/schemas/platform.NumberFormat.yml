@@ -1,0 +1,7 @@
+type: string
+description: Define the kind of formatting to be used when outputting the number.
+enum:
+  - NUMBER
+  - TIME
+  - DATA_SIZE
+  - CURRENCY

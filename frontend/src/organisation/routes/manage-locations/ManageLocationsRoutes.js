@@ -38,8 +38,9 @@ import LocationDropPinEditPage from '../../pages/manage-locations/edit-location/
 import CannotChangeLocationLinePage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-line/CannotChangeLocationLinePage'
 import CannotChangeLocationPolygonPage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-polygon/CannotChangeLocationPolygonPage'
 import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/edit-individual-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
+import LocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
+import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
-import LocationInformationPage from '../../pages/manage-locations/view-location/view-location-information/LocationInformationPage'
 
 export const urlManageOrg = '/organisation/manage-locations'
 export const urlManageOrgAddLocations = '/organisation/manage-locations/add'
@@ -50,7 +51,8 @@ const urlManageOrgConfirmLocations = urlManageOrg + '/confirm'
 const orgManageLocationsUrls = {
   view: {
     dashboard: urlManageOrg + '/view-locations',
-    viewLocation: urlManageOrg + '/location/view-location'
+    viewLocation: urlManageOrg + '/location/view-location',
+    viewMessages: urlManageOrg + '/location/view-messages'
   },
   add: {
     addLocationWithinBoundaries: {},
@@ -143,6 +145,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.view.viewLocation,
     component: <LocationInformationPage />
+  },
+  {
+    path: orgManageLocationsUrls.view.viewMessages,
+    component: <ViewMessagesPage />
   },
   // add
   {

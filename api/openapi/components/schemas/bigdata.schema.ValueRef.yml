@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./bigdata.ref.ValueRef.yml
+  - type: object
+    description: |-
+      Alias to \ref bigdata.ref.ValueRef, kept for backward compatibility.
+
+      This class is provided in order to preserve backward compatibility after
+      ValueRef has been moved to \ref bigdata.ref.ValueRef. This class ensures
+      previous ValueRef objects can be unserialized from XML and JSON.

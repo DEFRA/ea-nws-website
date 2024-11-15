@@ -1,0 +1,36 @@
+allOf:
+  - $ref: ./services.network.Node.yml
+  - type: object
+    description: Cell definition
+    required:
+      - cgi
+    properties:
+      cgi:
+        $ref: ./services.network.Cgi.yml
+      kind:
+        $ref: ./services.network.CellKind.yml
+      bearer:
+        $ref: ./services.network.CellBearer.yml
+      site:
+        type: string
+      name:
+        type: string
+      subcell:
+        $ref: ./services.network.SubcellCellInfo.yml
+      cbcNode:
+        type: string
+        description: |-
+          Only used by CBC for now.
+
+          This field can contain the BSC, RNC or MME name depending on the
+          CellKind.
+      tac:
+        type: integer
+        format: int32
+        description: >-
+          Tracking area code.
+
+
+          The TAC identifies a tracking area (4G/5G location area) within a
+          PLMN.
+        minimum: 0

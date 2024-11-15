@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: |-
+      Ref into which sourceRefs referring to globalVariables can be resolved.
+
+      Those cannot be resolved into anything else.
+    required:
+      - name
+    properties:
+      name:
+        type: string

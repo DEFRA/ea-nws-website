@@ -1,0 +1,37 @@
+type: object
+description: |-
+  Filter field from a set of constant values.
+
+  When the field is repeated, the expression evaluates to true if at least
+  one value of the array matches the comparison value.
+
+  For example:
+  field = [1, 2, 3] and values = [3, 4] => true.
+  field = [1, 2, 3] and values = [4, 5] => false.
+
+  However, if the values is an array of values, we will match the whole field
+  array as a single value of the set.
+
+  For example:
+  field = [1, 2, 3] and values = [[1], [1, 2]] => false.
+  field = [1, 2, 3] and values = [[1], [1, 2], [1, 2, 3]] => true.
+required:
+  - fieldPath
+  - values
+properties:
+  fieldPath:
+    type: string
+    description: The iop field to filter.
+    minLength: 1
+    pattern: '[_0-9a-zA-Z\.\[\]\*\-<>]*'
+  values:
+    type: array
+    description: The set of constants.
+    items:
+      $ref: ./platform.base.Value.yml
+    minItems: 1
+  sensitivity:
+    description: The strictness of the comparisons.
+    allOf:
+      - $ref: ./platform.Sensitivity.yml
+    default: 2

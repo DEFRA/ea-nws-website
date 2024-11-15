@@ -1,0 +1,16 @@
+allOf:
+  - $ref: ./bigdata.relational.RefSingleValAggregation.yml
+  - type: object
+    description: |-
+      Unique values count aggregation.
+
+      Return the count of a column unique values.
+    properties:
+      exact:
+        type: boolean
+        description: |-
+          Exact count unique flag.
+
+          If set to true, return the exact count of unique values. Else, return
+          an approximative count of unique values.
+        default: false

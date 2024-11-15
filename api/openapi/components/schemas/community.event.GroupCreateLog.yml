@@ -1,0 +1,4 @@
+allOf:
+  - $ref: ./community.event.MemberGroupLog.yml
+  - type: object
+    description: Contract created and joined a group

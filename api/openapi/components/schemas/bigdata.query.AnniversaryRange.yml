@@ -1,0 +1,19 @@
+type: object
+description: >-
+  Anniversary range.
+
+
+  Target people that will celebrate their \ref lower th up to their \ref upper
+  th birthday.
+required:
+  - lower
+  - upper
+properties:
+  lower:
+    type: integer
+    format: int32
+    minimum: 0
+  upper:
+    type: integer
+    format: int32
+    minimum: 0

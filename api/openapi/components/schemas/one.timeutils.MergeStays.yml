@@ -1,0 +1,28 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    description: >-
+      Merge contiguous "stays" together.
+
+
+      Merges stays together while they are contiguous (which means the next
+      event
+
+      `startDate` is same as the current `endDate`).
+
+
+      The inputs of this operation have to be be of type `Nights` and sorted by
+
+      date.
+    properties:
+      studyPeriod:
+        description: |-
+          Study period: used to generate stayDurationMayBeLonger.
+
+          When set, this operation fills the stayDurationMayBeLonger field.
+          This field is used to identify if stays may have been truncated
+          because they overlapped with the study period.
+          It is set to true when a stay starts or ends respectively on the first
+          or last day of the study period.
+        allOf:
+          - $ref: ./one.geomarketing.TimePeriod.yml

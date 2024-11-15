@@ -1,0 +1,35 @@
+description: Aggregation rule for stop segments.
+oneOf:
+  - type: object
+    required:
+      - minStopDuration
+    properties:
+      minStopDuration:
+        type: integer
+        format: int32
+        description: Choose the first stop with a duration above this value.
+        minimum: 0
+  - type: object
+    required:
+      - longestStop
+    properties:
+      longestStop:
+        description: Choose the longest possible stop.
+        allOf:
+          - $ref: ./one.geomarketing.StopSegmentLongestStopAggr.yml
+  - type: object
+    required:
+      - relevantPlaces
+    properties:
+      relevantPlaces:
+        description: Choose the first stop in a  relevant place (home, work).
+        allOf:
+          - $ref: ./one.geomarketing.StopSegmentRelevantPlacesAggr.yml
+  - type: object
+    required:
+      - defaultAggregation
+    properties:
+      defaultAggregation:
+        description: Use a default aggregation.
+        allOf:
+          - $ref: ./one.geomarketing.StopSegmentDefaultAggr.yml

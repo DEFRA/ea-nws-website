@@ -34,6 +34,14 @@ def test_changes(get_browser):
     click_button(get_browser, 'Save message settings', url_current)
     assert check_success_banner(get_browser)
 
+    # Check success banner disappears when radio options are changed
+    if is_radio_checked(get_browser, 'Radio_On_0'):
+        select_input_radio_option(get_browser, 'Radio_Off_0')
+    else:
+        onSelected = True
+        select_input_radio_option(get_browser, 'Radio_On_0')
+    assert not check_success_banner(get_browser)
+
     # Navigate back to check the saved setting
     click_link(get_browser, "Location details", url_details)
     click_link(get_browser, "Message settings and flood areas", url_current)

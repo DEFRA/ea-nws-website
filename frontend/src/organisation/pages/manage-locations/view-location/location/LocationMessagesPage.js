@@ -44,6 +44,30 @@ export default function LocationMessagesPage () {
     'Flood alerts'
   ]
 
+  const floodAreasInputs = [
+    {
+      areaName:
+        'Properties closest to the River Thames from All Saints Church, Bisham to Little Marlow',
+      areaType: 'Severe and flood warning',
+      messagesSent: ['1 severe flood warning', '5 flood warnings']
+    },
+    {
+      areaName: 'River Thames at Bisham village and Marlow town',
+      areaType: 'Severe and flood warning',
+      messagesSent: ['0 severe flood warnings', '2 flood warnings']
+    },
+    {
+      areaName: 'River Thames at Hurley and Harleyford',
+      areaType: 'Severe and flood warning',
+      messagesSent: ['0 severe flood warnings', '2 flood warnings']
+    },
+    {
+      areaName: 'River Thames from Hurley to Cookham',
+      areaType: 'Flood alert',
+      messagesSent: ['15 flood alerts']
+    }
+  ]
+
   const handleSumbit = () => {
     if (
       alertCategoriesEnabledOriginal.every(
@@ -69,6 +93,7 @@ export default function LocationMessagesPage () {
     const newAlertCategoriesEnabled = [...alertCategoriesEnabled]
     newAlertCategoriesEnabled[index] = value
     setAlertCategoriesEnabled(newAlertCategoriesEnabled)
+    setIsBannerDisplayed(false)
   }
 
   const messageSettingsSection = (
@@ -77,7 +102,7 @@ export default function LocationMessagesPage () {
         Message settings
       </h2>
       <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-      {alertCategories
+      {floodAreasInputs.length > 0
         ? (
           <p>
             You can choose which flood messages to get for each location if
@@ -121,7 +146,7 @@ export default function LocationMessagesPage () {
               >
                 <strong>{message}</strong>
               </td>
-              {alertCategories
+              {floodAreasInputs.length > 0 && alertCategories
                 ? (
                   <>
                     <td className='govuk-table__cell'>
@@ -169,37 +194,13 @@ export default function LocationMessagesPage () {
     </>
   )
 
-  const floodAreasInputs = [
-    {
-      areaName:
-        'Properties closest to the River Thames from All Saints Church, Bisham to Little Marlow',
-      areaType: 'Severe and flood warning',
-      messagesSent: ['1 severe flood warning', '5 flood warnings']
-    },
-    {
-      areaName: 'River Thames at Bisham village and Marlow town',
-      areaType: 'Severe and flood warning',
-      messagesSent: ['0 severe flood warnings', '2 flood warnings']
-    },
-    {
-      areaName: 'River Thames at Hurley and Harleyford',
-      areaType: 'Severe and flood warning',
-      messagesSent: ['0 severe flood warnings', '2 flood warnings']
-    },
-    {
-      areaName: 'River Thames from Hurley to Cookham',
-      areaType: 'Flood alert',
-      messagesSent: ['15 flood alerts']
-    }
-  ]
-
   const floodAreasSection = (
     <>
       <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
         Flood areas
       </h2>
       <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-      {alertCategories
+      {floodAreasInputs.length > 0
         ? (
           <p>
             {additionalData.location_name} can get flood messages for these areas.
@@ -222,7 +223,7 @@ export default function LocationMessagesPage () {
       </p>
       <br />
 
-      {alertCategories && (
+      {floodAreasInputs.length > 0 && (
         <>
           <span class='govuk-caption-m'>
             {floodAreasInputs.length} flood areas
@@ -246,10 +247,7 @@ export default function LocationMessagesPage () {
             </thead>
             <tbody className='govuk-table__body'>
               {floodAreasInputs.map((detail, index) => (
-                <tr
-                  key={index}
-                  className='govuk-table__row'
-                >
+                <tr key={index} className='govuk-table__row'>
                   <td
                     className='govuk-table__cell'
                     style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
@@ -284,7 +282,7 @@ export default function LocationMessagesPage () {
                   >
                     {detail.areaType === 'Flood alert'
                       ? (
-                        // TODO: Add functionality to unlink
+                    // TODO: Add functionality to unlink
                         <Link className='govuk-link'>Unlink</Link>
                         )
                       : null}

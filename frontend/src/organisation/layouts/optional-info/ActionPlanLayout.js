@@ -52,9 +52,9 @@ export default function ActionPlanLayout ({ navigateToNextPage }) {
             <h1 className='govuk-heading-l'>Action plan (optional)</h1>
             <div className='govuk-body'>
               <p>
-                What you can do to reduce the potential effects of flooding, for
-                example, inspect the location, use sandbags, move stock,
-                evacuate.
+                Use this section to indicate what you can do to reduce the
+                potential effects of flooding. For example, inspect the location
+                then move stock to the top floor and evacuate.
               </p>
               <TextArea
                 error={error}

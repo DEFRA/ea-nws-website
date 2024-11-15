@@ -99,7 +99,6 @@ url_org_man_loc = {
         'postcodeSearch': url_org_man_loc_path + '/add/postcode-search',
         'postcodeSearchResults': url_org_man_loc_path + '/add/postcode-search-results',
         'xyCoordinatesSearch': url_org_man_loc_path + '/add/xy-coordinates-search',
-        'locationInArea': url_org_man_loc_path + '/add/location-in-area',
         'xyCoordinatesNotInEngland': url_org_man_loc_path + '/add/xy-coordinates-not-in-england',
         'dropPinNotInEngland': url_org_man_loc_path + '/add/drop-pin-not-in-england',
         'dropPinSearch': url_org_man_loc_path + '/add/drop-pin-search',
@@ -107,7 +106,9 @@ url_org_man_loc = {
             'optionalInfo': url_org_man_loc_path + '/add/predefined-boundary/optional-information',
             'add': url_org_man_loc_path + '/add/predefined-boundary',
             'addAnother': url_org_man_loc_path + '/add/another-predefined-boundary'
-        }
+        },
+        'confirm': url_org_man_loc_path + '/add/confirm'
+
     },
     'optionalLocation':{
         'optionalInfo': url_org_man_loc_path + '/add/optional-information',

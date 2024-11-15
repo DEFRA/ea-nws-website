@@ -10,7 +10,7 @@ import {
   updateOrganisationAdditionals
 } from '../../../common/services/ProfileServices'
 
-export default function SectorLayout({
+export default function SectorLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {

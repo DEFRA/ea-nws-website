@@ -17,7 +17,7 @@ import {
 } from '../../../common/services/ProfileServices'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
-export default function AddAddressLayout({
+export default function AddAddressLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {

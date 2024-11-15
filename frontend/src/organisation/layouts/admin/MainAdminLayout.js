@@ -10,7 +10,7 @@ import {
   updateOrganisationAdditionals
 } from '../../../common/services/ProfileServices'
 
-export default function MainAdminLayout({
+export default function MainAdminLayout ({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {

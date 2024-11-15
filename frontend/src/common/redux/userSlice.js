@@ -1,5 +1,53 @@
 import { createSlice } from '@reduxjs/toolkit'
 
+const setAdditional = (additionals, id, value) => {
+  let idFound = false
+  for (let i = 0; i < additionals.length; i++) {
+    if (additionals[i].id === id) {
+      additionals[i].value = {s: value}
+      idFound = true
+    }
+  }
+  if (!idFound) {
+    additionals.push({ id, value: {s: value }})
+  }
+}
+
+const getAdditional = (additionals, id) => {
+    for (let i = 0; i < additionals.length; i++) {
+      if (additionals[i].id === id) {
+        return profile.additionals[i].value?.s
+      }
+    }
+  return ''
+}
+
+const setLocationOtherAdditionals = (additionals, id, value) => {
+  let idFound = false
+  let otherAdditionals = {}
+  for (let i = 0; i < additionals.length; i++) {
+    if (additionals[i].id === 'other') {
+      idFound = true
+      otherAdditionals = JSON.parse(additionals[i].value?.s)
+      otherAdditionals[id] = value
+      additionals[i].value = {s: JSON.stringify(otherAdditionals)}
+    }
+  }
+  if (!idFound) {
+    additionals.push({ id: 'other', value: {s: JSON.stringify({id: value})} })
+  }
+}
+
+const getLocationOtherAdditional = (additionals, id) => {
+  for (let i = 0; i < additionals.length; i++) {
+    if (additionals[i].id === 'other') {
+      otherAdditionals = JSON.parse(additionals[i].value?.s)
+      return otherAdditionals[id]
+    }
+  }
+  return ''
+}
+
 const userSlice = createSlice({
   name: 'session',
   initialState: {
@@ -34,6 +82,8 @@ const userSlice = createSlice({
     predefinedBoundaryFlow: null,
     // org location data
     currentLocation: {
+      id: null,
+      enabled: true,
       // name is the UPRN
       name: null,
       // address is the human readable address or flood area name
@@ -41,25 +91,29 @@ const userSlice = createSlice({
       // Coordinates in dd (degrees decimal)
       coordinates: null,
       geometry: null,
-      alert_categories: null,
-      meta_data: {
-        location_additional: {
-          location_name: null,
-          full_address: null,
-          postcode: null,
-          // Easting EPSG: 27700
-          x_coordinate: null,
-          // Northing EPSG: 27700
-          y_coordinate: null,
-          internal_reference: null,
-          business_criticality: null,
-          location_type: null,
-          action_plan: null,
-          notes: null,
-          keywords: null,
-          location_data_type: null
-        }
-      }
+      geocode: null,
+      additionals: [
+        {id: 'locationName', value: {s: ''}},
+        {id: 'parentID', value: {s: ''}},
+        {id: 'targetAreas', value: {s: ''}},
+        {id: 'keywords', value: {s: ''}},
+        {id: 'other', value: {s: JSON.stringify(
+          {
+            full_address: null,
+            postcode: null,
+            // Easting EPSG: 27700
+            x_coordinate: null,
+            // Northing EPSG: 27700
+            y_coordinate: null,
+            internal_reference: null,
+            business_criticality: null,
+            location_type: null,
+            action_plan: null,
+            notes: null,
+            location_data_type: null
+          }
+        )}}
+      ]
     },
     // org contact data
     orgCurrentContact: {
@@ -165,35 +219,20 @@ const userSlice = createSlice({
     },
     // org location data
     setCurrentLocation: (state, action) => {
+      state.currentLocation.id = action.payload.id
+      state.currentLocation.enabled = action.payload.enabled
       state.currentLocation.name = action.payload.name
       state.currentLocation.address = action.payload.address
       state.currentLocation.coordinates = action.payload.coordinates
       state.currentLocation.geometry = action.payload.geometry
-      state.currentLocation.alert_categories = action.payload.alert_categories
-      state.currentLocation.meta_data.location_additional.location_name =
-        action.payload.meta_data.location_additional.location_name
-      state.currentLocation.meta_data.location_additional.full_address =
-        action.payload.meta_data.location_additional.full_address
-      state.currentLocation.meta_data.location_additional.postcode =
-        action.payload.meta_data.location_additional.postcode
-      state.currentLocation.meta_data.location_additional.x_coordinate =
-        action.payload.meta_data.location_additional.x_coordinate
-      state.currentLocation.meta_data.location_additional.y_coordinate =
-        action.payload.meta_data.location_additional.y_coordinate
-      state.currentLocation.meta_data.location_additional.internal_reference =
-        action.payload.meta_data.location_additional.internal_reference
-      state.currentLocation.meta_data.location_additional.business_criticality =
-        action.payload.meta_data.location_additional.business_criticality
-      state.currentLocation.meta_data.location_additional.location_type =
-        action.payload.meta_data.location_additional.location_type
-      state.currentLocation.meta_data.location_additional.action_plan =
-        action.payload.meta_data.location_additional.action_plan
-      state.currentLocation.meta_data.location_additional.notes =
-        action.payload.meta_data.location_additional.notes
-      state.currentLocation.meta_data.location_additional.keywords =
-        action.payload.meta_data.location_additional.keywords
-      state.currentLocation.meta_data.location_additional.location_data_type =
-        action.payload.meta_data.location_additional.location_data_type
+      state.currentLocation.geocode = action.payload.geocode
+      state.currentLocation.additionals = action.payload.additionalsc
+    },
+    setCurrentLocationId: (state, action) => {
+      state.currentLocation.id = action.payload
+    },
+    setCurrentLocationEnabled: (state, action) => {
+      state.currentLocation.enabled = action.payload
     },
     setCurrentLocationUPRN: (state, action) => {
       state.currentLocation.name = action.payload
@@ -207,55 +246,50 @@ const userSlice = createSlice({
     setCurrentLocationGeometry: (state, action) => {
       state.currentLocation.geometry = action.payload
     },
-    setCurrentLocationAlertCategories: (state, action) => {
-      state.currentLocation.alert_categories = action.payload
+    setCurrentLocationGeocode: (state, action) => {
+      state.currentLocation.geocode = action.payload
     },
     setCurrentLocationName: (state, action) => {
-      state.currentLocation.meta_data.location_additional.location_name =
-        action.payload
+      setAdditional(state.currentLocation.additionals, 'locationName', action.payload)
     },
-    setCurrentLocationFullAddress: (state, action) => {
-      state.currentLocation.meta_data.location_additional.full_address =
-        action.payload
+    setCurrentLocationParentID: (state, action) => {
+      setAdditional(state.currentLocation.additionals, 'parentID', action.payload)
     },
-    setCurrentLocationPostcode: (state, action) => {
-      state.currentLocation.meta_data.location_additional.postcode =
-        action.payload
-    },
-    setCurrentLocationEasting: (state, action) => {
-      state.currentLocation.meta_data.location_additional.x_coordinate =
-        action.payload
-    },
-    setCurrentLocationNorthing: (state, action) => {
-      state.currentLocation.meta_data.location_additional.y_coordinate =
-        action.payload
-    },
-    setCurrentLocationReference: (state, action) => {
-      state.currentLocation.meta_data.location_additional.internal_reference =
-        action.payload
-    },
-    setCurrentLocationCriticality: (state, action) => {
-      state.currentLocation.meta_data.location_additional.business_criticality =
-        action.payload
-    },
-    setCurrentLocationType: (state, action) => {
-      state.currentLocation.meta_data.location_additional.location_type =
-        action.payload
-    },
-    setCurrentLocationActionPlan: (state, action) => {
-      state.currentLocation.meta_data.location_additional.action_plan =
-        action.payload
-    },
-    setCurrentLocationNotes: (state, action) => {
-      state.currentLocation.meta_data.location_additional.notes = action.payload
+    setCurrentLocationTargetAreas: (state, action) => {
+      setAdditional(state.currentLocation.additionals, 'targetAreas', action.payload)
     },
     setCurrentLocationKeywords: (state, action) => {
-      state.currentLocation.meta_data.location_additional.keywords =
-        action.payload
+      setAdditional(state.currentLocation.additionals, 'keywords', action.payload)
+    },
+    setCurrentLocationFullAddress: (state, action) => {
+      setLocationOtherAdditionals(state.currentLocation.additionals, 'full_address', action.payload)
+    },
+    setCurrentLocationPostcode: (state, action) => {
+      setLocationOtherAdditionals(state.currentLocation.additionals, 'postcode', action.payload)
+    },
+    setCurrentLocationEasting: (state, action) => {
+      setLocationOtherAdditionals(state.currentLocation.additionals, 'x_coordinate', action.payload)
+    },
+    setCurrentLocationNorthing: (state, action) => {
+      setLocationOtherAdditionals(state.currentLocation.additionals, 'y_coordinate', action.payload)
+    },
+    setCurrentLocationReference: (state, action) => {
+      setLocationOtherAdditionals(state.currentLocation.additionals, 'internal_reference', action.payload)
+    },
+    setCurrentLocationCriticality: (state, action) => {
+      setLocationOtherAdditionals(state.currentLocation.additionals, 'business_criticality', action.payload)
+    },
+    setCurrentLocationType: (state, action) => {
+      setLocationOtherAdditionals(state.currentLocation.additionals, 'location_type', action.payload)
+    },
+    setCurrentLocationActionPlan: (state, action) => {
+      setLocationOtherAdditionals(state.currentLocation.additionals, 'action_plan', action.payload)
+    },
+    setCurrentLocationNotes: (state, action) => {
+      setLocationOtherAdditionals(state.currentLocation.additionals, 'notes', action.payload)
     },
     setCurrentLocationDataType: (state, action) => {
-      state.currentLocation.meta_data.location_additional.location_data_type =
-        action.payload
+      setLocationOtherAdditionals(state.currentLocation.additionals, 'location_data_type', action.payload)
     },
     // org contact data
     setOrgCurrentContact: (state, action) => {
@@ -329,27 +363,38 @@ const userSlice = createSlice({
       state.contactKeywords = null
       // org location data
       state.currentLocation = {
+        id: null,
+        enabled: true,
+        // name is the UPRN
         name: null,
+        // address is the human readable address or flood area name
         address: null,
+        // Coordinates in dd (degrees decimal)
         coordinates: null,
         geometry: null,
-        alert_categories: null,
-        meta_data: {
-          location_additional: {
-            location_name: null,
-            full_address: null,
-            postcode: null,
-            x_coordinate: null,
-            y_coordinate: null,
-            internal_reference: null,
-            business_criticality: null,
-            location_type: null,
-            action_plan: null,
-            notes: null,
-            keywords: null,
-            location_data_type: null
-          }
-        }
+        geocode: null,
+        additionals: [
+          {id: 'locationName', value: {s: ''}},
+          {id: 'parentID', value: {s: ''}},
+          {id: 'targetAreas', value: {s: ''}},
+          {id: 'keywords', value: {s: ''}},
+          {id: 'other', value: {s: JSON.stringify(
+            {
+              full_address: null,
+              postcode: null,
+              // Easting EPSG: 27700
+              x_coordinate: null,
+              // Northing EPSG: 27700
+              y_coordinate: null,
+              internal_reference: null,
+              business_criticality: null,
+              location_type: null,
+              action_plan: null,
+              notes: null,
+              location_data_type: null
+            }
+          )}}
+        ]
       }
       state.orgCurrentContact = {
         id: null,
@@ -369,6 +414,14 @@ const userSlice = createSlice({
         ]
       }
     }
+  },
+  selectors: {
+    getLocationAdditional: (state, key) => {
+      return getAdditional(state.currentLocation.additionals, key)
+    },
+    getLocationOtherAdditional: (state, key) => {
+      return getLocationOtherAdditional(state.currentLocation.additionals, key)
+    },
   }
 })
 

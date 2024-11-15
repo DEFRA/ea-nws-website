@@ -1,0 +1,35 @@
+post:
+  tags:
+    - member
+  summary: Verify if the authentication token is still valid.
+  description: |-
+    This RPC allows verifying if an authentication token is still valid,
+    and if valid, returns the profile of the currently authenticated
+    member.
+    If a device id is provided and the mobile subscription already exists,
+    the subscription last seen date is updated.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/geosafeea.public.Member.signinVerifyArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/geosafeea.public.Member.signinVerifyRes.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

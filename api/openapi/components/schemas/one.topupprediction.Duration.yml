@@ -1,0 +1,10 @@
+type: string
+description: |-
+  The length of the period to come for which we predict if there will be a
+   topup or not.
+enum:
+  - THREE_DAYS
+  - SEVEN_DAYS
+  - FIFTEEN_DAYS
+  - TWENTY_ONE_DAYS
+  - ONE_MONTH

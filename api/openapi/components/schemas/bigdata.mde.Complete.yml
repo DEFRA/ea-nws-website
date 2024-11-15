@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./bigdata.mde.FlexibleUnion.yml
+  - type: object
+    description: |-
+      Concatenate a table with other tables only if the first one is not empty.
+
+      Complete a table with other tables like a \p FlexibleUnion would do, but
+      do it only if the first input table is not empty.

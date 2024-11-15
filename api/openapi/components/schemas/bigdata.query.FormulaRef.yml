@@ -1,0 +1,18 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: |-
+      Field that express a value as the result of a formula.
+
+      This class provides a way to define selection and extraction
+      values as a complex expression.
+
+      The formula used in that field must be self-contained (which means NOT
+      parameter).
+    required:
+      - formula
+    properties:
+      formula:
+        description: The formula.
+        allOf:
+          - $ref: ./bigdata.query.Formula.yml

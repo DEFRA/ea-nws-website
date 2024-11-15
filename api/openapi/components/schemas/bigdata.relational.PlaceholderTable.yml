@@ -1,0 +1,25 @@
+allOf:
+  - $ref: ./bigdata.relational.InputTable.yml
+  - type: object
+    description: >-
+      Placeholder table.
+
+
+      Can be used to represent a computation to be done on top of a dynamically
+
+      generated one.
+
+      This table should only be used in IOP, but replaced as soon as the table
+      is
+
+      to be interpreted.
+    required:
+      - name
+    properties:
+      name:
+        type: string
+        description: |-
+          Name of the placeholder
+
+          Used to find & replace the placeholder with another table. Must be
+          unique in a table expression.

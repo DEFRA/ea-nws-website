@@ -3,6 +3,7 @@ const routes = [].concat(
   require('../routes/sign_in/signin_start'),
   require('../routes/sign_in/signin_validate'),
   require('../routes/sign_up/signup_start'),
+  require('../routes/sign_up/org_start'),
   require('../routes/sign_up/signup_validate'),
   require('../routes/sign_up/signup_feedback'),
   require('../routes/update_profile/update_profile'),
@@ -17,7 +18,15 @@ const routes = [].concat(
   require('../routes/ordnance_survey/name_search'),
   require('../routes/ordnance_survey/oauth_2'),
   require('../routes/qgis/qgis'),
-  require('../routes/account/account_delete')
+  require('../routes/account/account_delete'),
+  require('../routes/bulk_uploads/download_template'),
+  require('../routes/bulk_uploads/upload_file'),
+  require('../routes/bulk_uploads/process_file'),
+  require('../routes/sign_out/sign_out'),
+  require('../routes/bulk_uploads/process_status'),
+  require('../routes/bulk_uploads/save_locations'),
+  require('../routes/bulk_uploads/get_invalid_locations'),
+  require('../routes/add_location/duplicate_location')
 )
 
 module.exports = {

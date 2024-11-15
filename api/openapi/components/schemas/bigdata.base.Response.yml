@@ -1,0 +1,58 @@
+allOf:
+  - $ref: ./bigdata.base.EventLog.yml
+  - type: object
+    description: The base class to reply to an action.
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: The id of the corresponding action.
+        minimum: 0
+      code:
+        description: |-
+          The response \ref Code.
+
+          Default is set to IN_PROGRESS in order to reduce storage overhead
+          of in-progress actions.
+        allOf:
+          - $ref: ./bigdata.base.Code.yml
+        default: 3
+      nextRetryIn:
+        type: integer
+        format: int64
+        description: Next retry.
+        minimum: 0
+      scenarioId:
+        type: integer
+        format: int64
+        description: >-
+          The scenario of the corresponding action.
+
+
+          It will automatically be set when the minion is unpacking the
+          response.
+        minimum: 0
+      ruleId:
+        type: integer
+        format: int64
+        description: >-
+          The rule of the scenario of the corresponding action.
+
+
+          It will automatically be set when the minion is unpacking the
+          response.
+        minimum: 0
+      timedOut:
+        type: boolean
+        description: |-
+          Indicate that the action was timed out.
+
+          An action can time out if it take too long to retrieve its result.
+          While the code will always be NACK, the action might be successful.
+        default: false
+      forceStoreTemporaryResponse:
+        type: boolean
+        description: Indicate if temporary responses have to be stored in the DB.
+        default: false

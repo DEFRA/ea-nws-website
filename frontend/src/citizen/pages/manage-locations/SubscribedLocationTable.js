@@ -56,11 +56,11 @@ export default function SubscribedLocationTable () {
       0.5
     )
     const locationIsWarningArea = isSavedLocationTargetArea(
-      location.name,
+      location.address,
       warningArea.features
     )
     const locationIsAlertArea = isSavedLocationTargetArea(
-      location.name,
+      location.address,
       alertArea.features
     )
     if (
@@ -111,7 +111,7 @@ export default function SubscribedLocationTable () {
           <Link
             to='/manage-locations/remove'
             state={{
-              name: location.name
+              name: location.address
             }}
             className='govuk-link'
           >
@@ -124,15 +124,15 @@ export default function SubscribedLocationTable () {
     const addressColumn = (location) => {
       return (
         <td className='govuk-table__cell govuk-!-width-full'>
-          {location.name}
+          {location.address}
         </td>
       )
     }
 
     return (
       <table className='govuk-table'>
-        <thead class='govuk-table__head'>
-          <tr class='govuk-table__row'>
+        <thead className='govuk-table__head'>
+          <tr className='govuk-table__row'>
             <th colspan='3' scope='colspan' className='govuk-table__header'>
               {'Your locations (' + locations.length + ')'}
             </th>

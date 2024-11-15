@@ -1,0 +1,11 @@
+type: string
+description: |-
+  The sensitivity of the comparison.
+
+  In case the condition is a comparison, defines the strictness of the
+  comparison.
+enum:
+  - BINARY
+  - CASE_SENSITIVE
+  - CASE_INSENSITIVE
+  - SQL_LIKE

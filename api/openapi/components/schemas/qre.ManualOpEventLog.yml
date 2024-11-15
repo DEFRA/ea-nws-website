@@ -1,0 +1,11 @@
+allOf:
+  - $ref: ./qre.base.EventLog.yml
+  - type: object
+    description: |-
+      Event emitted on a manual user operation.
+
+      This kind of event is emitted on a manual user operation.
+    properties:
+      userLogin:
+        type: string
+        description: Login of the user that triggered the operation emitting the event.

@@ -1,0 +1,47 @@
+allOf:
+  - $ref: ./qre.RuleEvent.yml
+  - type: object
+    required:
+      - entities
+    properties:
+      msisdn:
+        type: integer
+        format: int64
+        minimum: 0
+      imei:
+        type: integer
+        format: int64
+        minimum: 0
+      imsi:
+        type: integer
+        format: int64
+        minimum: 0
+      position:
+        $ref: ./platform.base.Value.yml
+      zoneId:
+        type: integer
+        format: int64
+        minimum: 0
+      key:
+        $ref: ./platform.base.Value.yml
+      entities:
+        type: array
+        items:
+          $ref: ./platform.base.Value.yml
+        minItems: 1
+      proximityType:
+        allOf:
+          - $ref: ./one.event.ProximityEventType.yml
+        default: 0
+      eventCode:
+        description: Network kind of the event.
+        allOf:
+          - $ref: ./bigdata.base.ProtocolEventCode.yml
+      cgi:
+        type: string
+      placemarkId:
+        type: integer
+        format: int32
+        minimum: 0
+      placemarkName:
+        type: string

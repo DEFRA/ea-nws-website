@@ -1,0 +1,7 @@
+type: object
+properties:
+  registrations:
+    type: array
+    description: the current list of registrations
+    items:
+      $ref: ./geosafeea.public.Registration.yml

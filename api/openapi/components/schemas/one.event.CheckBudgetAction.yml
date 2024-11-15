@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./one.event.BudgetAction.yml
+  - type: object
+    required:
+      - amount
+    properties:
+      amount:
+        type: number
+        format: double
+        description: Channel to use to compute the price to check from the budget.

@@ -1,0 +1,21 @@
+allOf:
+  - $ref: ./bigdata.base.Response.yml
+  - type: object
+    description: The Response class for company field update request.
+    required:
+      - companyId
+      - key
+      - newValue
+    properties:
+      companyId:
+        type: string
+        description: Id of the company (unique).
+      key:
+        type: string
+        description: The name of the field to be updated.
+        minLength: 1
+        pattern: '[_0-9a-zA-Z]*'
+      newValue:
+        description: The new value of the field
+        allOf:
+          - $ref: ./platform.base.Value.yml

@@ -1,0 +1,5 @@
+type: string
+description: Platform of a mobile application.
+enum:
+  - IOS
+  - ANDROID

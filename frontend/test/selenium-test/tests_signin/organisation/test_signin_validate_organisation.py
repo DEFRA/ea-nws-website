@@ -2,10 +2,11 @@ import pytest
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
+from common import *
 
-url = "http://localhost:3000/organisation/signin/validate"
-previous_url = "http://localhost:3000/organisation/signin"
-next_page = "http://localhost:3000/home"
+url = url_org_signin.get('validate')
+previous_url = url_org_signin.get('signin')
+next_page = url_org_home
 
 def test_SignInValidate_render(get_browser):
     browser = get_browser

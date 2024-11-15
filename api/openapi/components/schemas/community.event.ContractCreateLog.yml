@@ -1,0 +1,3 @@
+allOf:
+  - $ref: ./bigdata.base.EventLog.yml
+  - type: object

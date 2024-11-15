@@ -1,0 +1,27 @@
+type: object
+description: |-
+  Filter field from a string constant value.
+
+  When the field is repeated, the expression evaluates to true if at least
+  one value of the array matches the comparison value.
+
+  For example:
+  field = ['foo', 'bar'] and value = 'foo' => true.
+  field = ['foo', 'bar'] and value = 'baz' => false.
+required:
+  - fieldPath
+  - value
+properties:
+  fieldPath:
+    type: string
+    description: The iop field to filter.
+    minLength: 1
+    pattern: '[_0-9a-zA-Z\.\[\]\*\-<>]*'
+  value:
+    type: string
+    description: The comparison value.
+  sensitivity:
+    description: The strictness of the comparison.
+    allOf:
+      - $ref: ./platform.Sensitivity.yml
+    default: 2

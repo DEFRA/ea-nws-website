@@ -1,0 +1,18 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    required:
+      - eventClassName
+    properties:
+      eventClassName:
+        type: string
+        description: Fullname of the class of object built by the operation.
+      eventFields:
+        type: array
+        description: |-
+          List of fields built from the context.
+
+          Those fields are filled using the value fetched from the provided
+          reference in the context of the event that triggered the operation.
+        items:
+          $ref: ./qre.Parameter.yml

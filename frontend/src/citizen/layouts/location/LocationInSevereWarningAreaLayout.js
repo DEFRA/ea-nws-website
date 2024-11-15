@@ -13,7 +13,10 @@ import {
   setSelectedFloodAlertArea
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import { addLocation, removeLocation } from '../../../common/services/ProfileServices'
+import {
+  addLocation,
+  removeLocation
+} from '../../../common/services/ProfileServices'
 import {
   getAssociatedAlertArea,
   getCoordsOfFloodArea
@@ -57,7 +60,7 @@ export default function LocationInSevereWarningAreaLayout ({
     if (isUserInNearbyTargetFlowpath) {
       await removeFloodWarningArea()
     } else {
-      await removeLocationWithFloodWarningAlerts()
+      removeLocationWithFloodWarningAlerts()
     }
 
     dispatch(setAdditionalAlerts(false))
@@ -67,16 +70,16 @@ export default function LocationInSevereWarningAreaLayout ({
 
   const addFloodWarningArea = async () => {
     const warningArea = {
-      name: selectedFloodWarningArea.properties.TA_NAME,
-      address: '',
+      name: '',
+      address: selectedFloodWarningArea.properties.TA_NAME,
       coordinates: getCoordsOfFloodArea(selectedFloodWarningArea)
     }
-    const updatedProfile = await addLocation(profile, warningArea)
+    const updatedProfile = addLocation(profile, warningArea)
     dispatch(setProfile(updatedProfile))
   }
 
   const removeFloodWarningArea = async () => {
-    const updatedProfile = await removeLocation(
+    const updatedProfile = removeLocation(
       profile,
       selectedFloodWarningArea.properties.TA_NAME
     )
@@ -104,12 +107,12 @@ export default function LocationInSevereWarningAreaLayout ({
       categories: ['severe']
     }
 
-    const updatedProfile = await addLocation(profile, locationWithAlertType)
+    const updatedProfile = addLocation(profile, locationWithAlertType)
     dispatch(setProfile(updatedProfile))
   }
 
   const removeLocationWithFloodWarningAlerts = async () => {
-    const updatedProfile = await removeLocation(profile, selectedLocation.name)
+    const updatedProfile = removeLocation(profile, selectedLocation.address)
     dispatch(setProfile(updatedProfile))
   }
 
@@ -122,16 +125,17 @@ export default function LocationInSevereWarningAreaLayout ({
     <>
       <BackLink onClick={() => handleUserNavigatingBack()} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        <div className='govuk-grid-row'>
+        <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
               You can get severe flood warnings and flood warnings for this
               location
             </h1>
-            <InsetText text={
-              isUserInNearbyTargetFlowpath
-                ? selectedFloodWarningArea.properties.TA_NAME
-                : selectedLocation.name
+            <InsetText
+              text={
+                isUserInNearbyTargetFlowpath
+                  ? selectedFloodWarningArea.properties.TA_NAME
+                  : selectedLocation.address
               }
             />
           </div>
@@ -171,7 +175,7 @@ export default function LocationInSevereWarningAreaLayout ({
               className='govuk-button'
               onClick={handleSubmit}
             />
-                &nbsp; &nbsp;
+            &nbsp; &nbsp;
             <Link
               onClick={() => navigate(-1)}
               className='govuk-link'

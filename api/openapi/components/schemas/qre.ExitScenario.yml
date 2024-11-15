@@ -1,0 +1,7 @@
+allOf:
+  - $ref: ./qre.EntityRuleEvent.yml
+  - type: object
+    description: |-
+      Event emitted to the scenario when \ref forceEntityExit is called.
+
+      The ruleId of this event must be QRE_OPTOUT_RULE_ID.

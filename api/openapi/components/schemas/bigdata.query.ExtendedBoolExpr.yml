@@ -1,0 +1,15 @@
+type: object
+description: |-
+  Extended boolean expressions.
+
+  These boolean expressions can be defined at foreign library level or
+  product level. They should be completed with user-defined methods that
+  translate them into generic boolean expressions.
+properties:
+  _class:
+    type: string
+discriminator:
+  propertyName: _class
+  mapping:
+    bigdata.query.ExtendedBoolExprAsync: ./bigdata.query.ExtendedBoolExprAsync.yml
+    bigdata.query.ExtendedBoolExprSync: ./bigdata.query.ExtendedBoolExprSync.yml

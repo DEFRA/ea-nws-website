@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./community.event.MemberGroupLog.yml
+  - type: object
+    description: Contract invited a guest (host POV)
+    required:
+      - guest
+    properties:
+      guest:
+        $ref: ./platform.base.Value.yml

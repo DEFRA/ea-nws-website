@@ -1,0 +1,15 @@
+type: object
+description: |-
+  Unique pair describing the event type of the alert.
+
+  This corresponds to CAP12 `eventCode`.
+required:
+  - domain
+  - code
+properties:
+  domain:
+    type: string
+    description: Domain of the code.
+  code:
+    type: string
+    description: Code of the event type.

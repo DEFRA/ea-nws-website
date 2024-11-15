@@ -1,0 +1,4 @@
+allOf:
+  - $ref: ./bigdata.base.Event.yml
+  - type: object
+    description: Event emitted when a new entity enters the scenario.

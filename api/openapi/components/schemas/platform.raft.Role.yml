@@ -1,0 +1,7 @@
+type: string
+description: Different roles of a RAFT server.
+enum:
+  - FOLLOWER
+  - CANDIDATE
+  - LEADER
+  - VOTER

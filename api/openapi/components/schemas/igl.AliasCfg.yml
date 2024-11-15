@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    required:
+      - cfg
+    properties:
+      cfg:
+        $ref: ./igl.AliasCfgUnion.yml

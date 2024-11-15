@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: |-
+      Reference to row numbers (recnos).
+
+      Private, for internal use only.
+      Implemented only for QTS collections.

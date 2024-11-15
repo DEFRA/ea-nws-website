@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./bigdata.base.CdrEvent.yml
+  - type: object
+    required:
+      - modelType
+      - model
+    properties:
+      modelType:
+        type: string
+      model:
+        type: string
+        format: byte

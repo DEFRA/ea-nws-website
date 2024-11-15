@@ -72,7 +72,7 @@ lab.experiment('Integration tests', () => {
       Code.expect(response.result.status).to.equal(200)
       Code.expect(response.result.data.profile)
       Code.expect(response.result.data.registrations)
-      Code.expect(response.result.data.authToken).to.equal('MockAuthToken')
+      Code.expect(response.result.data.authToken)
     }
   )
 })

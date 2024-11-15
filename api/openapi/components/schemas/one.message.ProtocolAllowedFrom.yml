@@ -1,0 +1,14 @@
+type: object
+required:
+  - proto
+properties:
+  proto:
+    type: string
+  allowedFrom:
+    type: array
+    description: |-
+      List of allowed originators for the given protocol.
+
+      Empty if nothing is allowed.
+    items:
+      type: string

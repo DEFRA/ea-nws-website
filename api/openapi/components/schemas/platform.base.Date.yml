@@ -1,0 +1,27 @@
+type: object
+description: >-
+  Date.
+
+
+  Representation of a date. There are three categories of supported date
+
+  representations:
+
+
+  - absolute dates expressed as a year, a month, etc; this is the branch from
+  \ref platform.YearDate to \ref platform.SecondDate, depending on the
+       desired granularity.
+  - absolute dates, whose actual value depends on the time it is evaluated;
+    this is the \ref platform.RelativeDate class.
+  - timestamp date, which is the simplest representation of a point of time;
+    this is the \ref platform.TimestampDate class.
+properties:
+  _class:
+    type: string
+discriminator:
+  propertyName: _class
+  mapping:
+    platform.YearDate: ./platform.YearDate.yml
+    platform.RelativeDate: ./platform.RelativeDate.yml
+    platform.RelativeDatePattern: ./platform.RelativeDatePattern.yml
+    platform.TimestampDate: ./platform.TimestampDate.yml

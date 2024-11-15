@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import ValidateEmailLayout from '../../../layouts/email/ValidateEmailLayout'
+import ValidateEmailLayout from '../../../../common/layouts/email/ValidateEmailLayout'
 
 export default function ValidateEmailPage () {
   const navigate = useNavigate()

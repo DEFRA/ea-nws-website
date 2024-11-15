@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import AccountNavigation from '../../../../common/components/custom/AccountNavigation'
 import BackLink from '../../../../common/components/custom/BackLink'
+import CitizenAccountNavigation from '../../../../common/components/custom/CitizenAccountNavigation'
 import FloodWarningKey from '../../../../common/components/custom/FloodWarningKey'
 import Map from '../../../../common/components/custom/Map'
 import Button from '../../../../common/components/gov-uk/Button'
@@ -45,19 +45,19 @@ export default function ViewLocationPage () {
 
   const removeLocation = () => {
     navigate('/manage-locations/remove', {
-      state: { name: selectedLocation.name }
+      state: { name: selectedLocation.address }
     })
   }
 
   return (
     <>
-      <AccountNavigation currentPage='/home' />
+      <CitizenAccountNavigation currentPage='/home' />
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-three-quarters'>
-              <h1 className='govuk-heading-l'>{selectedLocation.name}</h1>
+              <h1 className='govuk-heading-l'>{selectedLocation.address}</h1>
 
               <Map types={areaAreas} />
               <FloodWarningKey type={type} />

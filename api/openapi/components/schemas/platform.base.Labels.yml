@@ -1,0 +1,18 @@
+type: object
+description: |-
+  Multi language label.
+
+  This structure stores localized strings in multiple languages, typically
+  used on the web interface.
+properties:
+  en:
+    type: string
+    description: English wording.
+  fr:
+    type: string
+    description: French wording.
+  additionalLabels:
+    type: array
+    description: Wordings in additional languages.
+    items:
+      $ref: ./platform.base.AdditionalLabel.yml

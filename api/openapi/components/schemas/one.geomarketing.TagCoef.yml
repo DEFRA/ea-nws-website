@@ -1,0 +1,11 @@
+type: object
+required:
+  - tag
+  - coef
+properties:
+  tag:
+    type: string
+  coef:
+    type: number
+    format: double
+    minimum: 0

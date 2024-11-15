@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
@@ -8,9 +8,13 @@ import Input from '../../../common/components/gov-uk/Input'
 import {
   setLocationPostCode,
   setLocationSearchResults,
-  setOrgAddress
+  setProfile
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
+import {
+  getOrganisationAdditionals,
+  updateOrganisationAdditionals
+} from '../../../common/services/ProfileServices'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
 export default function AddAddressLayout ({
@@ -22,12 +26,12 @@ export default function AddAddressLayout ({
   const [postCode, setPostCode] = useState('')
   const [buildingNum, setBuildingNum] = useState('')
   const [error, setError] = useState('')
+  const profile = useSelector((state) => state.session.profile)
 
   const handleSubmit = async () => {
     const validationError = postCodeValidation(postCode)
 
     if (!validationError) {
-      // Normalise postcode, then search locations and store results in session
       const dataToSend = {
         postCode: postCode.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
       }
@@ -39,27 +43,38 @@ export default function AddAddressLayout ({
       if (!errorMessage) {
         dispatch(setLocationPostCode(data[0].postcode))
 
-        // if buildingNum provided (and exactly one address is found) then navigate straight to confirmation
         if (buildingNum) {
           const normalisedBuildingNum = buildingNum.toLowerCase().trim()
           const address = data.filter((location) =>
-            location.name.toLowerCase().trim().includes(normalisedBuildingNum)
+            location.address
+              .toLowerCase()
+              .trim()
+              .includes(normalisedBuildingNum)
           )
           if (address.length === 1) {
-            dispatch(setOrgAddress(address[0]))
-            navigate('/organisation/register/address-confirm')
+            const organisation = Object.assign(
+              {},
+              getOrganisationAdditionals(profile)
+            )
+            organisation.address = address[0]
+
+            const updatedProfile = updateOrganisationAdditionals(
+              profile,
+              organisation
+            )
+            dispatch(setProfile(updatedProfile))
+
+            navigate('/organisation/sign-up/address-confirm')
             return // Ensure none of the following code is executed
           } else {
             // Multiple addresses with buildingNum returned, take them to pagination to confirm
             dispatch(setLocationSearchResults(address))
           }
         } else {
-          // otherwise, send all results to pagination page where user will confirm
           dispatch(setLocationSearchResults(data))
         }
         NavigateToNextPage()
       } else {
-        // show error message from OS Api postcode search
         setError(errorMessage)
       }
     } else {
@@ -86,7 +101,7 @@ export default function AddAddressLayout ({
               <Input
                 inputType='text'
                 value={postCode}
-                name='Organisation postcode'
+                name='Postcode'
                 onChange={(val) => setPostCode(val)}
                 error={error}
                 className='govuk-input govuk-input--width-20'

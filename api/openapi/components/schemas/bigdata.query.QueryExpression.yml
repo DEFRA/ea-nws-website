@@ -1,0 +1,17 @@
+description: Defines either a condition tree or a query text.
+oneOf:
+  - type: object
+    required:
+      - query
+    properties:
+      query:
+        type: string
+        description: A textual query.
+  - type: object
+    required:
+      - expr
+    properties:
+      expr:
+        description: A condition tree.
+        allOf:
+          - $ref: ./bigdata.query.BoolExpr.yml

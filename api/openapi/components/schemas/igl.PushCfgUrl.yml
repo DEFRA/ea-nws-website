@@ -1,0 +1,11 @@
+type: object
+required:
+  - url
+properties:
+  url:
+    type: string
+  proxyAddr:
+    type: string
+  tlsCert:
+    type: string
+    format: byte

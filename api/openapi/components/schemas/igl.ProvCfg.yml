@@ -1,0 +1,72 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    properties:
+      maxRate:
+        type: integer
+        format: int32
+        default: 0
+      maxThroughput:
+        type: integer
+        format: int32
+        default: 0
+      maxMsisdnList:
+        type: integer
+        format: int32
+        default: 0
+      maxAliasList:
+        type: integer
+        format: int32
+        default: 0
+      maxImeiList:
+        type: integer
+        format: int32
+        default: 0
+      maxCellsList:
+        type: integer
+        format: int32
+        default: 0
+      maxFilter:
+        type: integer
+        format: int32
+        default: 0
+      maxFilterLife:
+        type: integer
+        format: int32
+        default: 0
+      maxMsisdnInList:
+        type: integer
+        format: int32
+        default: 0
+      maxAliasInList:
+        type: integer
+        format: int32
+        default: 0
+      maxImeiInList:
+        type: integer
+        format: int32
+        default: 0
+      maxCellsInList:
+        type: integer
+        format: int32
+        default: 0
+      maxCellsInPmark:
+        type: integer
+        format: int32
+        default: 0
+      maxImsiList:
+        type: integer
+        format: int32
+        default: 0
+      maxImsiInList:
+        type: integer
+        format: int32
+        default: 0
+      maxPgList:
+        type: integer
+        format: int32
+        default: 0
+      maxPgInList:
+        type: integer
+        format: int32
+        default: 0

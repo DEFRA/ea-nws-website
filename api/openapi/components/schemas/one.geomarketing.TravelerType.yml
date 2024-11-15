@@ -1,0 +1,12 @@
+type: string
+description: Classes for transportation studies.
+enum:
+  - UNKNOWN
+  - WORKER
+  - RESIDENT
+  - INTERNATIONAL_HOTEL
+  - NON_TRAVELER
+  - TRAIN
+  - NATIONAL
+  - INTERNATIONAL
+  - TRANSIT_TRAVELER

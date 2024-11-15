@@ -1,0 +1,16 @@
+type: object
+required:
+  - counterNames
+properties:
+  counterNames:
+    type: array
+    description: The names of the counters to sum.
+    items:
+      type: string
+      minLength: 1
+      pattern: '[_0-9a-zA-Z]*'
+    minItems: 1
+  constraint:
+    description: The constraint to check.
+    allOf:
+      - $ref: ./one.geomarketing.UintConstraint.yml

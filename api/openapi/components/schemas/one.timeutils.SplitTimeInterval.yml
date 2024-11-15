@@ -1,0 +1,34 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    description: |-
+      Split time intervals into "ticks".
+
+      Split time intervals from \p startDate to \p endDate into temporal "ticks"
+      according to the time level \p level.
+    required:
+      - startDate
+      - endDate
+      - level
+      - outputFieldName
+    properties:
+      startDate:
+        type: string
+        description: Date of the start of an "event".
+      endDate:
+        type: string
+        description: Date of the end of an "event".
+      level:
+        description: Unit of time at which "ticks" should be generated
+        allOf:
+          - $ref: ./platform.base.TimeUnit.yml
+      studyPeriod:
+        description: |-
+          Study period to apply.
+
+          If set "ticks" outside of this study period are filtered.
+        allOf:
+          - $ref: ./one.geomarketing.TimePeriod.yml
+      outputFieldName:
+        type: string
+        description: Name of the output field containing time ticks.

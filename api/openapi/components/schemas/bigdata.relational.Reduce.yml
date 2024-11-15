@@ -1,0 +1,28 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    description: |-
+      Aggregate several rows into a single one following a list of aggregations.
+
+      Can be executed on-the-fly (combined mode) in a QMR reducer if the
+      following conditions are checked:
+
+      - It is used in the reducer of a \ref bigdate.relational.MapReduce.
+      - It consumes the input(0) of the reducer (reduce.table == mde.Input(0)).
+      - The map-reduce is executed in QMR (eg. not already inside another
+        MapReduce).
+      - The map-reduce has only one mapper AND/OR has a pre-reducer.
+    properties:
+      aggregations:
+        type: array
+        items:
+          oneOf:
+            - $ref: ./bigdata.relational.AverageAggregation.yml
+            - $ref: ./bigdata.relational.CountAggregation.yml
+            - $ref: ./bigdata.relational.CountUniqAggregation.yml
+            - $ref: ./bigdata.relational.MaxAggregation.yml
+            - $ref: ./bigdata.relational.MinAggregation.yml
+            - $ref: ./bigdata.relational.QuantileAggregation.yml
+            - $ref: ./bigdata.relational.SumAggregation.yml
+          discriminator:
+            propertyName: _class

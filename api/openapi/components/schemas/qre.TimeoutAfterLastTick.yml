@@ -1,0 +1,7 @@
+allOf:
+  - $ref: ./qre.Timeout.yml
+  - type: object
+    description: |-
+      Event emitted enter a fixed timestamp timer after it has ticked.
+
+      Only emmited if timer's \ref blockAfterLastTick is set to false.

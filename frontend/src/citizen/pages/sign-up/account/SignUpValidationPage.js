@@ -11,8 +11,7 @@ import { setAuthToken, setProfile, setRegisterToken } from '../../../../common/r
 import { backendCall } from '../../../../common/services/BackendService'
 import { updateAdditionals } from '../../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../../common/services/validations/AuthCodeValidation'
-import ExpiredCodeLayout from '../../../layouts/expired-code/ExpiredCodeLayout'
-
+import ExpiredCodeLayout from '../../../../common/layouts/email/ExpiredCodeLayout'
 export default function SignUpValidationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -55,7 +54,7 @@ export default function SignUpValidationPage () {
         }
       } else {
         dispatch(setAuthToken(data.authToken))
-        const updatedProfile = updateAdditionals(profile, [{ id: 'lastAccessedUrl', value: '/signup/accountname/add' }])
+        const updatedProfile = updateAdditionals(profile, [{ id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } }])
         dispatch(setProfile(updatedProfile))
         navigate('/signup/contactpreferences')
       }

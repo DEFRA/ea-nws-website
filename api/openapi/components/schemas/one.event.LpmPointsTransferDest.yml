@@ -1,0 +1,18 @@
+allOf:
+  - $ref: ./one.event.LpmPointsTransfer.yml
+  - type: object
+    required:
+      - sourceCollection
+      - sourceKey
+    properties:
+      sourceCollection:
+        type: string
+        description: The collection of the source entity.
+      sourceKey:
+        description: The key of the source entity.
+        allOf:
+          - $ref: ./platform.base.Value.yml
+      validity:
+        type: integer
+        format: int32
+        minimum: 0

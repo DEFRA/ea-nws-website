@@ -1,0 +1,10 @@
+type: string
+enum:
+  - IN_ZONE
+  - AREA_ENTRY
+  - AREA_LEAVE
+  - FOLLOW_UP
+  - SUBSCRIBER_BASE
+  - ABROAD
+  - PAST_LOCATION
+  - CONTACTS

@@ -1,0 +1,13 @@
+type: object
+description: |-
+  Grouping set.
+
+  Specify on which dimensions the aggregations must be done.
+properties:
+  dimensions:
+    type: array
+    description: Index of the dimension in the Grouping Operation.
+    items:
+      type: integer
+      format: int32
+      minimum: 0

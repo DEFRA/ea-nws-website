@@ -1,0 +1,9 @@
+type: object
+properties:
+  expiry:
+    type: integer
+    format: int32
+    default: 1
+    minimum: 1
+  prefix:
+    type: string

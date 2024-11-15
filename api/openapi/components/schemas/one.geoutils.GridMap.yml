@@ -1,0 +1,37 @@
+allOf:
+  - $ref: ./one.geoutils.GridMapBase.yml
+  - type: object
+    description: >-
+      Map locations into a grid on Earth's surface.
+
+
+      A grid is defined by its boundaries and a target square side. Its
+      'squares'
+
+      have a constant angular height and a constant angular width but because
+
+      they are not applied on a flat surface, their metric widths (and then
+
+      surface) depends on the latitude.
+
+
+      Input: location coordinates.
+
+
+      Output: boundaries of the matched grid square corresponding to the
+      location
+              (if matched). The output type is \p geoutils.GridSquare. \note The grid is convenient to use for limited areas (country with
+      reasonable size). An improved version should be developed and used if we
+
+      start working on bigger areas (continent or continent-like countries).
+    required:
+      - squareSide
+    properties:
+      squareSide:
+        type: integer
+        format: int32
+        description: |-
+          Target side of a square of the grid (in meter).
+
+          Side of a square in the center of the grid.
+        minimum: 1

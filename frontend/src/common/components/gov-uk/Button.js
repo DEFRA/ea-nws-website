@@ -1,6 +1,12 @@
 import React from 'react'
 
-export default function Button ({ text, className, onClick }) {
+export default function Button ({
+  text,
+  className,
+  onClick,
+  imageSrc = null,
+  imageHgt = '20px'
+}) {
   return (
     <>
       <button
@@ -9,6 +15,13 @@ export default function Button ({ text, className, onClick }) {
         onClick={onClick}
         data-module='govuk-button'
       >
+        {imageSrc && (
+          <img
+            src={imageSrc}
+            alt='link'
+            style={{ marginRight: '10px', height: imageHgt }}
+          />
+        )}
         {text}
       </button>
     </>

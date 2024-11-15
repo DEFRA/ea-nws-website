@@ -76,6 +76,8 @@ export default function LocationInAlertAreaLayout({
     }
 
     const updatedProfile = await updateGeosafeProfile()
+    // if user is in sign up flow, then profile returned will be undefined
+    console.log('updated profile', updatedProfile)
     if (updatedProfile) {
       await registerLocationToPartner(updatedProfile)
     }
@@ -83,7 +85,7 @@ export default function LocationInAlertAreaLayout({
   }
 
   const registerLocationToPartner = async (profile) => {
-    const location = findPOIByAddress(profile)
+    const location = findPOIByAddress(profile, selectedLocation.address)
 
     let alertTypes = additionalAlerts
       ? [
@@ -197,7 +199,7 @@ export default function LocationInAlertAreaLayout({
       'api/profile/update',
       navigate
     )
-    return data
+    return data.profile
   }
 
   return (

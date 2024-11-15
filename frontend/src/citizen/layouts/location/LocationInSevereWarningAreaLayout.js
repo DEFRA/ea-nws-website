@@ -64,7 +64,11 @@ export default function LocationInSevereWarningAreaLayout({
   }
 
   const registerLocationToPartner = async (profile) => {
-    const location = findPOIByAddress(profile)
+    const addressToUse = isUserInNearbyTargetFlowpath
+      ? selectedFloodWarningArea.properties.TA_NAME
+      : selectedLocation.address
+
+    const location = findPOIByAddress(profile, addressToUse)
     const alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
 
     const data = {
@@ -79,6 +83,7 @@ export default function LocationInSevereWarningAreaLayout({
       'api/partner/register_location_to_partner',
       navigate
     )
+    console.log(errorMessage)
   }
 
   const handleUserNavigatingBack = async () => {
@@ -151,14 +156,14 @@ export default function LocationInSevereWarningAreaLayout({
   }
 
   const updateGeosafeProfile = async () => {
-    const dataToSend = { authToken, profile }
+    console.log('profile', profile)
+    const dataToSend = { authToken: authToken, profile: profile }
     const { data } = await backendCall(
       dataToSend,
       'api/profile/update',
       navigate
     )
-
-    return data
+    return data.profile
   }
 
   return (

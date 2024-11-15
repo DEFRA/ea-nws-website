@@ -296,7 +296,11 @@ const getRegistrationParams = (profile, alertTypes) => {
 }
 
 function findPOIByAddress(profile, address) {
-  return profile.pois.find((poi) => poi.address === address)
+  const parsedProfile = JSON.parse(JSON.stringify(profile))
+
+  console.log(parsedProfile)
+  console.log(address)
+  return parsedProfile.pois.find((poi) => poi.address === address)
 }
 
 module.exports = {

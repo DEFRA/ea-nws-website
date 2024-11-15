@@ -11,12 +11,12 @@ import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
-export default function ContactMap () {
+export default function ContactMap() {
   const pois = useSelector((state) => state.session.orgCurrentContact.pois)
   const [apiKey, setApiKey] = useState(null)
   const [markers, setMarkers] = useState([])
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { errorMessage, data } = await backendCall(
       'data',
       'api/os-api/oauth2'
@@ -75,6 +75,7 @@ export default function ContactMap () {
     return null
   }
 
+  // The center of the map should be the centroid of all the positions on the map
   const findCentroid = () => {
     if (pois.length === 0) return null
     let totalLat = 0
@@ -141,26 +142,24 @@ export default function ContactMap () {
         maxBounds={maxBounds}
         className='map-container'
       >
-        {apiKey && apiKey !== 'error'
-          ? (
-            <>
-              {tileLayerWithHeader}
-              {markers.map((marker, index) => {
-                return (
-                  <Marker key={index} position={marker} interactive={false} />
-                )
-              })}
-              <FitBounds />
-            </>
-            )
-          : (
-            <div className='map-error-container'>
-              <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
-              <Link className='govuk-body-s' onClick={() => getApiKey()}>
-                Reload map
-              </Link>
-            </div>
-            )}
+        {apiKey && apiKey !== 'error' ? (
+          <>
+            {tileLayerWithHeader}
+            {markers.map((marker, index) => {
+              return (
+                <Marker key={index} position={marker} interactive={false} />
+              )
+            })}
+            <FitBounds />
+          </>
+        ) : (
+          <div className='map-error-container'>
+            <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
+            <Link className='govuk-body-s' onClick={() => getApiKey()}>
+              Reload map
+            </Link>
+          </div>
+        )}
       </MapContainer>
     </div>
   )

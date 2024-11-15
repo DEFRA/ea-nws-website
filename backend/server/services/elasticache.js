@@ -5,7 +5,7 @@ const connectToRedis = async () => {
   const redisEndpoint = await getSecretKeyValue('nws/aws', 'redisEndpoint')
   // Create the client
   const client = redis.createClient({ url: 'rediss://' + redisEndpoint })
-  client.on('error', err => console.log('Redis Client Error', err))
+  client.on('error', (err) => console.log('Redis Client Error', err))
   // Connect to the redis elasticache
   await client.connect()
   return client
@@ -111,18 +111,20 @@ const searchLocations = async (authToken, searchKey, value) => {
   const locationKeys = await getLocationKeys(authToken)
   const locationArr = []
   const searchKeyArr = searchKey.split('.')
-  await Promise.all(locationKeys.map(async (key) => {
-    const location = await getJsonData(key)
-    let jsonValue = location[searchKeyArr[0]]
-    if (searchKeyArr.length > 1) {
-      for (let i = 1; i < searchKeyArr.length; i++) {
-        jsonValue = jsonValue[searchKeyArr[i]]
+  await Promise.all(
+    locationKeys.map(async (key) => {
+      const location = await getJsonData(key)
+      let jsonValue = location[searchKeyArr[0]]
+      if (searchKeyArr.length > 1) {
+        for (let i = 1; i < searchKeyArr.length; i++) {
+          jsonValue = jsonValue[searchKeyArr[i]]
+        }
       }
-    }
-    if (value === jsonValue) {
-      locationArr.push(location)
-    }
-  }))
+      if (value === jsonValue) {
+        locationArr.push(location)
+      }
+    })
+  )
   return locationArr
 }
 
@@ -132,7 +134,7 @@ for manually matching locations to coordinates
 */
 
 const addInvLocation = async (authToken, location) => {
-  const locationID = location.meta_data.location_id
+  const locationID = location.location.meta_data.location_id
   const key = authToken + ':t_invPOIS:' + locationID
   await setJsonData(key, location)
   await addToList(authToken + ':t_invPOIS_locID', locationID)
@@ -157,10 +159,12 @@ const getInvLocationKeys = async (authToken) => {
 const listInvLocations = async (authToken) => {
   const locationKeys = await getInvLocationKeys(authToken)
   const locationArr = []
-  await Promise.all(locationKeys.map(async (key) => {
-    const location = await getJsonData(key)
-    locationArr.push(location)
-  }))
+  await Promise.all(
+    locationKeys.map(async (key) => {
+      const location = await getJsonData(key)
+      locationArr.push(location)
+    })
+  )
   return locationArr
 }
 

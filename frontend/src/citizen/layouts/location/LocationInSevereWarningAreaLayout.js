@@ -42,20 +42,26 @@ export default function LocationInSevereWarningAreaLayout({
   const selectedFloodWarningArea = useSelector(
     (state) => state.session.selectedFloodWarningArea
   )
+  // address to use for registering and unregistering partner
+  const addressToUse = isUserInNearbyTargetFlowpath
+    ? selectedFloodWarningArea.properties.TA_NAME
+    : selectedLocation.address
 
   const handleSubmit = async () => {
+    let updatedProfile
+
     if (isUserInNearbyTargetFlowpath) {
-      await addFloodWarningArea()
+      updatedProfile = await addFloodWarningArea()
 
       // load associated flood alert area
       await findAssociatedFloodAlertArea()
     } else {
-      await addLocationWithFloodWarningAlerts()
+      updatedProfile = await addLocationWithFloodWarningAlerts()
     }
 
     // we must always show user the optional flood alert areas
     dispatch(setAdditionalAlerts(true))
-    const updatedProfile = await updateGeosafeProfile()
+    updatedProfile = await updateGeosafeProfile()
     // if user is in sign up flow, then profile returned will be undefined
     if (updatedProfile) {
       await registerLocationToPartner(updatedProfile)
@@ -64,10 +70,6 @@ export default function LocationInSevereWarningAreaLayout({
   }
 
   const registerLocationToPartner = async (profile) => {
-    const addressToUse = isUserInNearbyTargetFlowpath
-      ? selectedFloodWarningArea.properties.TA_NAME
-      : selectedLocation.address
-
     const location = findPOIByAddress(profile, addressToUse)
     const alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
 
@@ -83,7 +85,6 @@ export default function LocationInSevereWarningAreaLayout({
       'api/partner/register_location_to_partner',
       navigate
     )
-    console.log(errorMessage)
   }
 
   const handleUserNavigatingBack = async () => {
@@ -94,8 +95,28 @@ export default function LocationInSevereWarningAreaLayout({
     }
 
     dispatch(setAdditionalAlerts(false))
-    await updateGeosafeProfile()
+    const updatedProfile = await updateGeosafeProfile()
+    // if user is in sign up flow, then profile returned will be undefined
+    if (updatedProfile) {
+      unregisterLocationFromPartner(updatedProfile)
+    }
     navigate(-1)
+  }
+
+  const unregisterLocationFromPartner = async (updatedProfile) => {
+    const location = findPOIByAddress(updatedProfile, addressToUse)
+
+    const data = {
+      authToken: authToken,
+      locationId: location.id,
+      partnerId: 1 // this is currently a hardcoded value - geosafe to update us
+    }
+
+    const { errorMessage } = await backendCall(
+      data,
+      'api/partner/unregister_location_from_partner',
+      navigate
+    )
   }
 
   const addFloodWarningArea = async () => {
@@ -111,6 +132,8 @@ export default function LocationInSevereWarningAreaLayout({
     }
     const updatedProfile = addLocation(profile, warningArea)
     dispatch(setProfile(updatedProfile))
+
+    return updatedProfile
   }
 
   const removeFloodWarningArea = async () => {
@@ -148,6 +171,8 @@ export default function LocationInSevereWarningAreaLayout({
 
     const updatedProfile = addLocation(profile, locationWithAlertType)
     dispatch(setProfile(updatedProfile))
+
+    return updatedProfile
   }
 
   const removeLocationWithFloodWarningAlerts = async () => {
@@ -156,7 +181,6 @@ export default function LocationInSevereWarningAreaLayout({
   }
 
   const updateGeosafeProfile = async () => {
-    console.log('profile', profile)
     const dataToSend = { authToken: authToken, profile: profile }
     const { data } = await backendCall(
       dataToSend,

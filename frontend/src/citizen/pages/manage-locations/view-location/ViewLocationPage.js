@@ -76,9 +76,9 @@ export default function ViewLocationPage() {
 
     if (!errorMessage) {
       const updatedProfile = removeLocation(profile, selectedLocation.address)
-      await dispatch(setProfile(updatedProfile))
+      dispatch(setProfile(updatedProfile))
 
-      await updateGeosafeProfile()
+      await updateGeosafeProfile(updatedProfile)
 
       navigate('/manage-locations/remove', {
         state: { name: selectedLocation.address }
@@ -88,6 +88,7 @@ export default function ViewLocationPage() {
 
   const handleOptionalAlertSave = async (e) => {
     e.preventDefault()
+    let updatedProfile
 
     if (optionalAlerts) {
       if (!alertTypes.includes(AlertType.FLOOD_ALERT)) {
@@ -111,9 +112,9 @@ export default function ViewLocationPage() {
     )
 
     if (!errorMessage) {
-      await updateLocationAlerts(alertTypes)
+      updatedProfile = await updateLocationAlerts(alertTypes)
 
-      await updateGeosafeProfile()
+      await updateGeosafeProfile(updatedProfile)
 
       const message = `You've turned ${
         optionalAlerts ? 'on' : 'off'
@@ -129,10 +130,12 @@ export default function ViewLocationPage() {
       alertTypes
     )
     dispatch(setProfile(updatedProfile))
+
+    return updatedProfile
   }
 
-  const updateGeosafeProfile = async () => {
-    const dataToSend = { authToken: authToken, profile: profile }
+  const updateGeosafeProfile = async (updatedProfile) => {
+    const dataToSend = { authToken: authToken, profile: updatedProfile }
     await backendCall(dataToSend, 'api/profile/update', navigate)
   }
 

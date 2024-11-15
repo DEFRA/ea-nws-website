@@ -3,7 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 
-export default function NotInEnglandLayout({
+export default function NotInEnglandLayout ({
   navigateToNextPage,
   flow,
   postCodeSearchUrl,

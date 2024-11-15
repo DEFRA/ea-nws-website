@@ -1,7 +1,7 @@
 import SubNavigation from '../../../../../../common/components/custom/SubNavigation'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ViewLocationSubNavigation({ currentPage }) {
+export default function ViewLocationSubNavigation ({ currentPage }) {
   const pages = [
     {
       title: 'Location details',

@@ -11,7 +11,7 @@ import {
   setOrgCurrentContactNotes
 } from '../../../common/redux/userSlice'
 
-export default function NotesLayout({
+export default function NotesLayout ({
   navigateToNextPage,
   keywordType,
   instructionText,

@@ -1,0 +1,17 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: |-
+      Reference an existing ref.
+
+      Should be used only for extraction.
+    required:
+      - id
+    properties:
+      id:
+        type: string
+        description: |-
+          Reference identifier.
+
+          This \ref id must match an existing identifier defined in a class
+          inheriting from \ref Ref (within a query).

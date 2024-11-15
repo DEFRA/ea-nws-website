@@ -1,0 +1,8 @@
+type: object
+description: Support application specific type of values.
+required:
+  - iopClass
+properties:
+  iopClass:
+    type: string
+    description: IOP class name that inherits from CustomValue.

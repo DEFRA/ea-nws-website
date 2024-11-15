@@ -1,0 +1,47 @@
+allOf:
+  - $ref: ./platform.cfg.DynCfg.yml
+  - type: object
+    description: >-
+      DynConfSet container for all DynConfSetElem.
+
+
+      A DynConfSet is a particular version of a \ref DynConf object:
+
+      - the dynamic configuration type name is defined by the field \p
+      confTypeName. It must be equal to the static field confTypeName of the
+        elements.
+      - a DynConfSet contains a set of \ref DynConfSetElem that are the possible
+        configurations for the configuration type.
+      - each element must have a unique name.
+
+      - a unique provider, usually the core, stores the configurations in files
+        and loads them at startup.
+    required:
+      - confTypeName
+    properties:
+      confTypeName:
+        type: string
+        description: |-
+          The configuration elements type name.
+
+          Must be equal to the confTypeName of the elements.
+      elements:
+        type: array
+        description: |-
+          The configuration elements.
+
+          They must be all of the same type.
+        items:
+          oneOf:
+            - $ref: ./one.geomarketing.ConveyanceParamsConf.yml
+            - $ref: ./one.geomarketing.CrmClassification.yml
+            - $ref: ./one.geomarketing.GeolocTarget.yml
+            - $ref: ./one.geomarketing.StatRefinementParamsConf.yml
+            - $ref: ./one.geomarketing.StopSegmentAggrRulesConf.yml
+            - $ref: ./one.geomarketing.SubscriberClassificationDynConf.yml
+            - $ref: ./one.geomarketing.TimeAggr.yml
+            - $ref: ./one.geomarketing.TrajectoriesConf.yml
+            - $ref: ./one.geomarketing.TravelersClassificationConf.yml
+            - $ref: ./platform.cfg.DynConfSetElemInfo.yml
+          discriminator:
+            propertyName: _class

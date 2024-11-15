@@ -1,0 +1,26 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    properties:
+      recnoField:
+        type: string
+        description: Name of the recno field.
+        default: recno
+      dateField:
+        type: string
+        description: Name of the input date field.
+        default: date
+      coordsField:
+        type: string
+        description: Name of the input coordinates field.
+        default: coords
+      timeWindow:
+        type: integer
+        format: int32
+        description: |-
+          Time window for the search of the next event to keep.
+
+          During each iteration of the algorithm, we look for the next event to
+          keep. The time difference between the previous kept event and the
+          current event will not exceed this value.
+        default: 900

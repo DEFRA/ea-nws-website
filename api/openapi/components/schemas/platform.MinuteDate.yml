@@ -1,0 +1,15 @@
+allOf:
+  - $ref: ./platform.HourDate.yml
+  - type: object
+    description: |-
+      A date with a minute granularity.
+
+      Note that this day is defined in the context of a day of a month.
+    required:
+      - minute
+    properties:
+      minute:
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 59

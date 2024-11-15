@@ -1,0 +1,18 @@
+type: object
+required:
+  - authToken
+  - contactId
+  - role
+properties:
+  authToken:
+    type: string
+    description: |-
+      a secured token retrieved during
+                                 registration or signin
+  contactId:
+    type: string
+    description: id of the contact to update
+  role:
+    description: new role of the contact
+    allOf:
+      - $ref: ./geosafeea.contact.ContactRole.yml

@@ -1,0 +1,16 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    required:
+      - name
+    properties:
+      scenario:
+        type: integer
+        format: int64
+        description: |-
+          Scenario of the constant, if not set, The environment scenario will be
+          used (if defined).
+        minimum: 0
+      name:
+        type: string
+        description: Name of the constant.

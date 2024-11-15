@@ -1,0 +1,20 @@
+allOf:
+  - $ref: ./platform.cfg.DynConfSetElem.yml
+  - type: object
+    required:
+      - dimension
+    properties:
+      dimension:
+        description: |-
+          A dimension to be used in \ref CrmConfig.
+
+          The constraints described in \ref CrmConfig also apply here.
+        oneOf:
+          - $ref: ./bigdata.relational.CategorizationDimension.yml
+          - $ref: ./bigdata.relational.PartitionDimension.yml
+          - $ref: ./bigdata.relational.PeriodDimension.yml
+          - $ref: ./bigdata.relational.PlacemarkDimension.yml
+          - $ref: ./bigdata.relational.RangeDimension.yml
+          - $ref: ./bigdata.relational.UniqueValueDimension.yml
+        discriminator:
+          propertyName: _class

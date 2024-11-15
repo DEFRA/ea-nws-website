@@ -1,0 +1,34 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: >-
+      Reference evaluated to the presence of the entity in the control group.
+
+
+      This reference can be used to check if an entity is present in the control
+
+      group of a scenario or not.
+
+
+      In case the scenario has no specified control group, the reference always
+
+      evaluates to false.
+
+
+      In case the scenario has a specified control group, the reference
+      evaluates
+
+      to:
+           - nil for entities that didn't enter the scenario,
+           - true for entities that entered the scenario and are part of the
+             control group.
+           - false for entities that entered the scenario and are not part of the
+             control group.
+    properties:
+      scenario:
+        description: |-
+          Id of the scenario.
+
+          If not set, will use the scenario in which the reference is used.
+        allOf:
+          - $ref: ./platform.Id.yml

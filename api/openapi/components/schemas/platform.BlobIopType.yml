@@ -1,0 +1,16 @@
+type: object
+description: Describe an IOP stored as a BLOB.
+required:
+  - fullname
+  - encoding
+properties:
+  fullname:
+    type: string
+    description: |-
+      Fullname of the IOP type.
+
+      Only struct or union types are allowed.
+  encoding:
+    description: Encoding type of the data.
+    allOf:
+      - $ref: ./platform.BlobIopEncoding.yml

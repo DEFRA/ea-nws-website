@@ -1,0 +1,17 @@
+type: object
+required:
+  - authToken
+  - msisdn
+  - code
+properties:
+  authToken:
+    type: string
+    description: |-
+      a secured token retrieved during registration or
+                             signin
+  msisdn:
+    type: string
+    description: MSISDN to verify
+  code:
+    type: string
+    description: Verification code

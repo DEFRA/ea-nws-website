@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./qre.base.EventLog.yml
+  - type: object
+    properties:
+      global:
+        type: boolean
+        default: false
+      budget:
+        type: string

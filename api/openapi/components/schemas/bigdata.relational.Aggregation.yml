@@ -1,0 +1,17 @@
+type: object
+description: |-
+  Aggregation.
+
+  Used by the grouping operation to define aggregation on column's values.
+
+  This class and all its children are deprecated. The new
+  aggregations definitions are written in package \p bigdata.relational.aggr.
+  New child classes should not be added.
+properties:
+  _class:
+    type: string
+discriminator:
+  propertyName: _class
+  mapping:
+    bigdata.relational.RefAggregation: ./bigdata.relational.RefAggregation.yml
+    bigdata.relational.CountAggregation: ./bigdata.relational.CountAggregation.yml

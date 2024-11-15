@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./platform.base.Date.yml
+  - type: object
+    description: A date with year granularity.
+    required:
+      - year
+    properties:
+      year:
+        type: integer
+        format: int32
+        minimum: 1900
+        maximum: 2100

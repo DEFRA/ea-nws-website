@@ -33,25 +33,9 @@ import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/add
 import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/NotInEnglandPage'
 import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
-
-// edit imports
-import EditConfirmLocationPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/ConfirmLocationPage'
-import EditLocationSearchOptionsPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/LocationSearchOptionsPage'
-import EditDropPinOnMapPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/drop-pin/DropPinOnMapPage'
-import EditDropPinLocationSearchPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/drop-pin/LocationSearchPage'
-import EditDropPinOnMapNotInEnglandPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/drop-pin/NotInEnglandPage'
-import EditLinePage from '../../pages/manage-locations/edit-location/edit-individual-location/location/edit-line/CannotChangeLocationLinePage'
-import EditPolygonPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/edit-polygon/CannotChangeLocationPolygonPage'
-import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/xy-coordinates/LocationXYCoordinatesSearchPage'
-import EditXyCoordinatesNotInEnglandPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/xy-coordinates/NotInEnglandPage'
-import EditActionPlanPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/action-plan/ActionPlanPage'
-import EditAddressPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/address/AddressPage'
-import EditKeyInformationPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/key-information/KeyInformationPage'
-import EditKeywordsPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/keywords/KeywordsPage'
-import EditNotesPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/notes/NotesPage'
-
-// view imports
-import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
+import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/edit-individual-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
+import LocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
+import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
 
 const urlManageOrg = '/organisation/manage-locations'
@@ -65,7 +49,8 @@ const urlManageOrgConfirmLocations = urlManageOrg + '/confirm'
 const orgManageLocationsUrls = {
   view: {
     dashboard: urlManageOrgViewLocations,
-    individualLocation: urlManageOrgViewLocations + '/view'
+    viewLocation: urlManageOrgViewLocations + '/view',
+    viewMessages: urlManageOrg + '/view-messages'
   },
   add: {
     addLocationWithinBoundaries: {},
@@ -165,7 +150,11 @@ const orgManageLocationRoutes = [
   },
   {
     path: orgManageLocationsUrls.view.individualLocation,
-    component: <ViewLocationInformationPage />
+    component: <LocationInformationPage />
+  },
+  {
+    path: orgManageLocationsUrls.view.viewMessages,
+    component: <ViewMessagesPage />
   },
   // add
   {

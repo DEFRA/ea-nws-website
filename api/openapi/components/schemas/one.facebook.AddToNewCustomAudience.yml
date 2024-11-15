@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./one.facebook.FacebookAction.yml
+  - type: object
+    required:
+      - customAudienceName
+    properties:
+      customAudienceName:
+        type: string

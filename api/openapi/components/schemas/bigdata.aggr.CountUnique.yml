@@ -1,0 +1,32 @@
+allOf:
+  - $ref: ./bigdata.aggr.Aggregation.yml
+  - type: object
+    description: >-
+      Count unique values for a given input field.
+
+
+      Despite the apparent similarity between \p Count and \p CountUnique, the
+
+      two implementations are very different: when \p Count increments a
+      counter, \p CountUnique has to figure out if the value was seen before
+      first. In
+
+      order to do this check, it accumulates the unique values in a tree and
+
+      switches to a statistical approach (hyperloglog) if the memory footprint
+      of
+
+      the tree reaches a threshold. As a consequence, the memory footprint of a
+      \ref Count is 8 bytes per key while \ref CountUnique can reach several KiB
+
+      per key.
+    required:
+      - inputFieldName
+      - outputFieldName
+    properties:
+      inputFieldName:
+        type: string
+        description: Field for which we should count the unique values.
+      outputFieldName:
+        type: string
+        description: Name of the output field containing the resulting count.

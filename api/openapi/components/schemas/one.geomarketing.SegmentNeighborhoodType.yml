@@ -1,0 +1,7 @@
+type: string
+description: Neighborhood classes for stops.
+enum:
+  - UNKNOWN
+  - TRAIN
+  - NATIONAL_FLIGHT
+  - INTERNATIONAL_FLIGHT

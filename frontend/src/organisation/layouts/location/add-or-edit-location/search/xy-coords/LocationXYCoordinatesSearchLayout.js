@@ -16,7 +16,7 @@ import { locationInEngland } from '../../../../../../common/services/validations
 import { xCoordinateValidation } from '../../../../../../common/services/validations/XCoordinateValidation'
 import { yCoordinateValidation } from '../../../../../../common/services/validations/YCoordinateValidation'
 
-export default function LocationXYCoordinatesSearchLayout ({
+export default function LocationXYCoordinatesSearchLayout({
   navigateToNextPage,
   navigateToNotInEngland
 }) {

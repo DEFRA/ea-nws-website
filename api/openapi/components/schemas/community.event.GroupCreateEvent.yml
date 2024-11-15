@@ -1,0 +1,11 @@
+allOf:
+  - $ref: ./community.event.GroupContractEvent.yml
+  - type: object
+    description: >-
+      Event sent to a contract when a new associated group is created.
+
+
+      This event can only be received by the first contract of the group when
+      the
+
+      group is created.

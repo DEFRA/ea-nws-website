@@ -1,0 +1,12 @@
+type: string
+description: |-
+  Relative time aggregation.
+
+  Works the same as in struct tm from libc.
+enum:
+  - MIN
+  - HOUR
+  - WDAY
+  - MDAY
+  - MON
+  - YDAY

@@ -1,0 +1,21 @@
+allOf:
+  - $ref: ./qre.base.EventLog.yml
+  - type: object
+    required:
+      - campaignIdentifier
+      - statusCode
+      - statusDetails
+      - channel
+    properties:
+      campaignIdentifier:
+        type: string
+        description: Camapign identifier.
+      statusCode:
+        type: string
+        description: Status of the camapign.
+      statusDetails:
+        type: string
+        description: Details about the status.
+      channel:
+        type: string
+        description: Channel.

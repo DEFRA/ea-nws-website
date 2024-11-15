@@ -1,0 +1,6 @@
+type: string
+description: Print format for MDE data.
+enum:
+  - TABLE
+  - CSV
+  - JSON

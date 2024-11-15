@@ -1,0 +1,16 @@
+type: object
+description: Labels in an additional language.
+required:
+  - languageId
+  - label
+properties:
+  languageId:
+    type: string
+    description: |-
+      Identifier of the language.
+
+      Identifier of the language, as defined in the configuration
+      ( \ref platform.cfg.AdditionalLanguage).
+  label:
+    type: string
+    description: Wording in this language.

@@ -1,0 +1,6 @@
+type: object
+properties:
+  conds:
+    type: array
+    items:
+      $ref: ./one.geomarketing.ZoneCondition.yml

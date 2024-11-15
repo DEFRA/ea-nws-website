@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./bigdata.base.Response.yml
+  - type: object
+    description: The Response class for line balance request.
+    properties:
+      bundles:
+        type: array
+        description: The bundles of a line in the company.
+        items:
+          $ref: ./one.b2b.LineBundle.yml

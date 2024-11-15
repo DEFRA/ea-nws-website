@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./one.b2b.action.ContractUpdate.yml
+  - type: object
+    description: Action log class for Activating a SIM.
+    required:
+      - sim
+    properties:
+      sim:
+        type: string
+        description: The id of the activated sim.

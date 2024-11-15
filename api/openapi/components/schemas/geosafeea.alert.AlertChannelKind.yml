@@ -1,0 +1,14 @@
+type: string
+enum:
+  - SMS
+  - CELL_BROADCAST
+  - LED_SIGNS
+  - SIREN
+  - MOBILE_APP
+  - TWITTER
+  - WEBSITE_CHANNEL
+  - FACEBOOK
+  - EMAIL
+  - DAILYMOTION
+  - VOICE
+  - SATELLITE

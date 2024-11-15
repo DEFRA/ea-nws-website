@@ -1,0 +1,7 @@
+allOf:
+  - $ref: ./qre.base.EventLog.yml
+  - type: object
+    properties:
+      userLogin:
+        type: string
+        description: Login of the user that triggered the action.

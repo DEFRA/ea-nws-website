@@ -1,0 +1,7 @@
+oneOf:
+  - type: object
+    required:
+      - basic
+    properties:
+      basic:
+        $ref: ./igl.Credentials.yml

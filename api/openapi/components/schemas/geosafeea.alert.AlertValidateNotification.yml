@@ -1,0 +1,44 @@
+allOf:
+  - $ref: ./geosafeea.alert.AlertEventNotification.yml
+  - type: object
+    description: |-
+      Notification sent when an alert is validated to the alert owner, the last
+       user that updated the alert and the alert submitter.
+
+      The validator is
+       never notified (even if they updated, submitted or created the alert).
+    required:
+      - ownerLogin
+      - ownerFirstName
+      - ownerLastName
+    properties:
+      submitterLogin:
+        type: string
+        description: |-
+          Login of the user that have submitted this alert.
+
+          Users can validate without submitting so the field is optional.
+      submitterFirstName:
+        type: string
+        description: |-
+          First name of the user that have submitted this alert.
+
+          Users can validate without submitting so the field is optional.
+      submitterLastName:
+        type: string
+        description: |-
+          Last name of the user that have submitted this alert.
+
+          Users can validate without submitting so the field is optional.
+      ownerLogin:
+        type: string
+      ownerFirstName:
+        type: string
+      ownerLastName:
+        type: string
+      lastUpdaterLogin:
+        type: string
+      lastUpdaterFirstName:
+        type: string
+      lastUpdaterLastName:
+        type: string

@@ -1,0 +1,19 @@
+type: object
+description: Metadata.
+required:
+  - workspaceId
+properties:
+  _class:
+    type: string
+  workspaceId:
+    type: integer
+    format: int64
+    minimum: 0
+  workspaceName:
+    type: string
+discriminator:
+  propertyName: _class
+  mapping:
+    geosafeea.contact.GroupMetadata: ./geosafeea.contact.GroupMetadata.yml
+    geosafeea.contact.ContactMetadata: ./geosafeea.contact.ContactMetadata.yml
+    geosafeea.contact.LocationMetadata: ./geosafeea.contact.LocationMetadata.yml

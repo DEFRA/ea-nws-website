@@ -1,0 +1,4 @@
+type: string
+description: Define the list of special constants.
+enum:
+  - NOW

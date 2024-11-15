@@ -1,0 +1,13 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: Defines which Channels can be used in this workspace and its children.
+    properties:
+      allowedChannels:
+        type: array
+        description: |-
+          List of allowed channels for this workspace.
+
+          If the list is empty, all channels are allowed.
+        items:
+          $ref: ./geosafeea.alert.AlertChannelKind.yml

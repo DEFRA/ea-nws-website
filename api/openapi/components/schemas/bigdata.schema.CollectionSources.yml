@@ -1,0 +1,16 @@
+type: object
+description: Structure to handle sources related to one collection.
+required:
+  - collection
+properties:
+  collection:
+    type: string
+    description: Name of the collection.
+    minLength: 1
+    pattern: '[_0-9a-zA-Z]*'
+  sources:
+    type: array
+    items:
+      type: string
+      minLength: 1
+      pattern: '[_0-9a-zA-Z]*'

@@ -9,7 +9,7 @@ import {
 } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AddAnotherPredefinedBoundaryPage () {
+export default function AddAnotherPredefinedBoundaryPage() {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const consecutiveBoundariesAdded = useSelector(
@@ -31,7 +31,7 @@ export default function AddAnotherPredefinedBoundaryPage () {
 
     multipleBoundariesAdded
       ? navigate(orgManageLocationsUrls.view.dashboard)
-      : navigate(orgManageLocationsUrls.view.viewLocation)
+      : navigate(orgManageLocationsUrls.view.individualLocation)
   }
 
   return (
@@ -46,7 +46,8 @@ export default function AddAnotherPredefinedBoundaryPage () {
                 className='govuk-button'
                 text='Add predefined boundary'
                 onClick={() =>
-                  navigate(orgManageLocationsUrls.add.predefinedBoundary.select)}
+                  navigate(orgManageLocationsUrls.add.predefinedBoundary.select)
+                }
               />
               <Link
                 onClick={navigateToNextPage}

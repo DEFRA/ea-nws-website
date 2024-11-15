@@ -1,0 +1,33 @@
+allOf:
+  - $ref: ./bigdata.aggr.Aggregation.yml
+  - type: object
+    description: |-
+      Apply several aggregations at once.
+
+      This aggregation allows us to apply operations like the following without
+      having to run several map-reducer or build a dedicated aggregation:
+
+          SELECT SUM(a), COUNT(a), AVG(b) FROM table WHERE conditions
+
+      Its output is the accumulation of output fields of its sub-aggregation, in
+      their respective order.
+    required:
+      - aggrs
+    properties:
+      aggrs:
+        type: array
+        items:
+          oneOf:
+            - $ref: ./bigdata.aggr.Average.yml
+            - $ref: ./bigdata.aggr.Count.yml
+            - $ref: ./bigdata.aggr.CountRows.yml
+            - $ref: ./bigdata.aggr.CountUnique.yml
+            - $ref: ./bigdata.aggr.Empty.yml
+            - $ref: ./bigdata.aggr.Max.yml
+            - $ref: ./bigdata.aggr.Min.yml
+            - $ref: ./bigdata.aggr.MultiAggregation.yml
+            - $ref: ./bigdata.aggr.Quantiles.yml
+            - $ref: ./bigdata.aggr.Sum.yml
+          discriminator:
+            propertyName: _class
+        minItems: 1

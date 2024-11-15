@@ -1,0 +1,13 @@
+allOf:
+  - $ref: ./bigdata.query.ExtendedBoolExpr.yml
+  - type: object
+    description: >-
+      Extended boolean expressions Async.
+
+
+      Define an extended boolean expression that cannot be translate into
+      generic
+
+      boolean expression synchronously. User-defined methods provide a callback
+
+      upon translation is done.

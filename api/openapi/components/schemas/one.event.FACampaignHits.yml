@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./qre.base.EventLog.yml
+  - type: object
+    required:
+      - campaignIdentifier
+    properties:
+      campaignIdentifier:
+        type: string
+        description: Camapign identifier.

@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./one.event.LpmEvent.yml
+  - type: object
+    description: Emitted when an entity unsubscribed to LPM.
+    properties:
+      unsubscriptionChannel:
+        description: Channel used for unsubscription.
+        allOf:
+          - $ref: ./community.onboarding.Channel.yml

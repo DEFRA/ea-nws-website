@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./bigdata.base.EventLog.yml
+  - type: object
+    description: Offer operation log.
+    required:
+      - offerId
+    properties:
+      offerId:
+        type: string
+      userLogin:
+        type: string
+        description: Login of the user that triggered the action.

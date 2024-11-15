@@ -1,0 +1,10 @@
+type: object
+required:
+  - planName
+properties:
+  planName:
+    type: string
+  extras:
+    type: array
+    items:
+      type: string

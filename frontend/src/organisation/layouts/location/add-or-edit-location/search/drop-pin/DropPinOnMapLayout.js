@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import { setCurrentLocationCoordinates } from '../../../../../../common/redux/userSlice'
+import { convertCoordinatesToEspg27700 } from '../../../../../../common/services/CoordinatesFormatConverter'
 import { locationInEngland } from '../../../../../../common/services/validations/LocationInEngland'
 import Map from '../../../../../components/custom/Map'
 import MapInteractiveKey from '../../../../../components/custom/MapInteractiveKey'
 
-export default function DropPinOnMapLayout ({
+export default function DropPinOnMapLayout({
   navigateToNextPage,
   navigateToDropPinLocationSearchPage,
   navigateToNotInEnglandPage
@@ -19,11 +20,34 @@ export default function DropPinOnMapLayout ({
   const dispatch = useDispatch()
   const location = useLocation()
   const showMarkerIntially = location?.state?.mapArea == null
-  const [pinCoords, setPinCoords] = useState('')
+  let { latitude, longitude } = useSelector(
+    (state) => state.session.currentLocation.coordinates
+  )
+  const [displayCoords, setDisplayCoords] = useState('')
+  const [pinCoords, setPinCoords] = useState(null)
   const [error, setError] = useState('')
   const [showFloodWarningAreas, setShowFloodWarningAreas] = useState(true)
   const [showFloodAlertAreas, setShowFloodAlertAreas] = useState(true)
   const [showFloodExtents, setShowFloodExtents] = useState(true)
+
+  const pinDropCoordsDisplay = () => {
+    console.log(pinCoords)
+    if (pinCoords) {
+      latitude = pinCoords.latitude
+      longitude = pinCoords.longitude
+    }
+
+    const { northing, easting } = convertCoordinatesToEspg27700(
+      longitude,
+      latitude
+    )
+
+    return `${Math.trunc(northing)}, ${Math.trunc(easting)}`
+  }
+
+  useEffect(() => {
+    setDisplayCoords(pinDropCoordsDisplay())
+  }, [pinCoords, latitude, longitude])
 
   // remove error if user drops a pin
   useEffect(() => {
@@ -113,13 +137,30 @@ export default function DropPinOnMapLayout ({
                   />
                 </div>
               </div>
-              <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
-                This is not a live flood map
-              </span>
-              <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-margin-top-1'>
-                It shows fixed areas that we provide flood warnings and alerts
-                for.
-              </span>
+
+              <div class='govuk-grid-row'>
+                <div class='govuk-grid-column-two-thirds'>
+                  <div
+                    className='govuk-caption-container'
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between'
+                    }}
+                  >
+                    <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
+                      This is not a live flood map
+                    </span>
+                    <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-margin-top-1'>
+                      X and Y {displayCoords}
+                    </span>
+                  </div>
+                  <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-margin-top-1'>
+                    It shows fixed areas that we provide flood warnings and
+                    alerts for.
+                  </span>
+                </div>
+              </div>
             </div>
             <Button
               className='govuk-button govuk-!-margin-top-4'

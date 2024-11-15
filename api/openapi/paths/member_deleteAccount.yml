@@ -1,0 +1,34 @@
+post:
+  operationId: getDeleteAccount
+  tags:
+    - member
+  summary: Delete account.
+  description: |-
+    This RPC deletes an account if an authentication token is still valid.
+    The authentication token should be discarded on client side after this
+    operation.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: ../components/schemas/geosafeea.public.Member.deleteAccountArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Void.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

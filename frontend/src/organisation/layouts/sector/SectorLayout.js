@@ -10,7 +10,7 @@ import {
   updateOrganisationAdditionals
 } from '../../../common/services/ProfileServices'
 
-export default function SectorLayout ({
+export default function SectorLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -35,7 +35,7 @@ export default function SectorLayout ({
     NavigateToNextPage()
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     NavigateToPreviousPage()
   }

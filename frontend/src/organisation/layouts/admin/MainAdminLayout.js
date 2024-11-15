@@ -10,7 +10,7 @@ import {
   updateOrganisationAdditionals
 } from '../../../common/services/ProfileServices'
 
-export default function MainAdminLayout ({
+export default function MainAdminLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -19,7 +19,7 @@ export default function MainAdminLayout ({
   const [error, setError] = useState('')
   const profile = useSelector((state) => state.session.profile)
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (adminDetails === null) {
       setError('Select whether you will be the main administrator or not')
       return
@@ -33,7 +33,7 @@ export default function MainAdminLayout ({
     NavigateToNextPage()
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     NavigateToPreviousPage()
   }

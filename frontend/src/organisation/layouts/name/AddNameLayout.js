@@ -14,7 +14,7 @@ import {
 } from '../../../common/services/ProfileServices'
 import { orgNameValidation } from '../../../common/services/validations/OrgNameValidation'
 
-export default function AddNameLayout ({
+export default function AddNameLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -63,7 +63,7 @@ export default function AddNameLayout ({
     }
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     NavigateToPreviousPage()
   }

@@ -19,7 +19,7 @@ import {
 import { locationInEngland } from '../../../../../../common/services/validations/LocationInEngland'
 import { xCoordinateValidation } from '../../../../../../common/services/validations/XCoordinateValidation'
 import { yCoordinateValidation } from '../../../../../../common/services/validations/YCoordinateValidation'
-export default function LocationXYCoordinatesSearchLayout ({
+export default function LocationXYCoordinatesSearchLayout({
   allFloodAreasAvailable,
   floodAlertAreasAvailableOnly,
   noFloodAreasAvailable,
@@ -29,10 +29,12 @@ export default function LocationXYCoordinatesSearchLayout ({
   const navigate = useNavigate()
 
   const currentXCoordinate = useSelector(
-    (state) => state.session.currentLocation.meta_data.location_additional.x_coordinate
+    (state) =>
+      state.session.currentLocation.meta_data.location_additional.x_coordinate
   )
   const currentYCoordinate = useSelector(
-    (state) => state.session.currentLocation.meta_data.location_additional.y_coordinate
+    (state) =>
+      state.session.currentLocation.meta_data.location_additional.y_coordinate
   )
 
   const [xCoordinate, setXCoordinate] = useState(currentXCoordinate || '')
@@ -104,7 +106,7 @@ export default function LocationXYCoordinatesSearchLayout ({
     }
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
   }

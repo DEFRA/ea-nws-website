@@ -17,7 +17,7 @@ import {
 } from '../../../common/services/ProfileServices'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
-export default function AddAddressLayout ({
+export default function AddAddressLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -82,7 +82,7 @@ export default function AddAddressLayout ({
     }
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     NavigateToPreviousPage()
   }

@@ -19,7 +19,7 @@ import {
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 
-export default function AdminDetailsLayout ({
+export default function AdminDetailsLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -94,7 +94,7 @@ export default function AdminDetailsLayout ({
     }
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     NavigateToPreviousPage()
   }
@@ -108,31 +108,27 @@ export default function AdminDetailsLayout ({
             {(errorFullName || errorEmail) && (
               <ErrorSummary errorList={[errorFullName, errorEmail]} />
             )}
-            {isAdmin
-              ? (
-                <h1 className='govuk-heading-l'>Enter your details</h1>
-                )
-              : (
-                <h1 className='govuk-heading-l'>
-                  Enter details for main administrator
-                </h1>
-                )}
+            {isAdmin ? (
+              <h1 className='govuk-heading-l'>Enter your details</h1>
+            ) : (
+              <h1 className='govuk-heading-l'>
+                Enter details for main administrator
+              </h1>
+            )}
             <div className='govuk-body'>
-              {isAdmin
-                ? (
-                  <p className='govuk-hint'>
-                    You'll be able to set up flood warnings, locations and users.
-                    You will also receive flood messages for every locations you
-                    set up.
-                  </p>
-                  )
-                : (
-                  <p className='govuk-hint'>
-                    An administrator can set up flood warning, locations and
-                    users. They will also receive flood messages for every
-                    locations they set up.
-                  </p>
-                  )}
+              {isAdmin ? (
+                <p className='govuk-hint'>
+                  You'll be able to set up flood warnings, locations and users.
+                  You will also receive flood messages for every locations you
+                  set up.
+                </p>
+              ) : (
+                <p className='govuk-hint'>
+                  An administrator can set up flood warning, locations and
+                  users. They will also receive flood messages for every
+                  locations they set up.
+                </p>
+              )}
               <Input
                 name='Full name'
                 inputType='text'

@@ -11,7 +11,7 @@ import {
 } from '../../../common/services/ProfileServices'
 import { compHouseNumberValidation } from '../../../common/services/validations/CompHouseNumValidation'
 
-export default function CompaniesHouseNumLayout ({
+export default function CompaniesHouseNumLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -22,7 +22,7 @@ export default function CompaniesHouseNumLayout ({
   const [numberError, setNumberError] = useState('')
   const profile = useSelector((state) => state.session.profile)
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (companyNum === null) {
       setError(
         'Select whether your organisation has a Companies House number or not'
@@ -62,7 +62,7 @@ export default function CompaniesHouseNumLayout ({
     }
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     NavigateToPreviousPage()
   }

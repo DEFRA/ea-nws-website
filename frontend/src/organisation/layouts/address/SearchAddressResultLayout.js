@@ -9,7 +9,7 @@ import {
   updateOrganisationAdditionals
 } from '../../../common/services/ProfileServices'
 
-export default function SelectAddressLayout ({
+export default function SelectAddressLayout({
   NavigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -27,7 +27,7 @@ export default function SelectAddressLayout ({
     currentPage * locationsPerPage
   )
 
-  const handleSelectedLocation = async (event, selectedLocation) => {
+  const handleSelectedLocation = (event, selectedLocation) => {
     event.preventDefault()
     const organisation = Object.assign({}, getOrganisationAdditionals(profile))
     organisation.address = selectedLocation
@@ -37,7 +37,7 @@ export default function SelectAddressLayout ({
     NavigateToNextPage()
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     NavigateToPreviousPage()
   }
@@ -74,7 +74,8 @@ export default function SelectAddressLayout ({
                           <Link
                             className='govuk-link'
                             onClick={(event) =>
-                              handleSelectedLocation(event, location)}
+                              handleSelectedLocation(event, location)
+                            }
                           >
                             {location.address}
                           </Link>

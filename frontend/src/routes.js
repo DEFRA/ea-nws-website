@@ -14,6 +14,7 @@ import commonStartRoutes from './common/routes/start/StartRoutes'
 import { orgManageAccountRoutes } from './organisation/routes/account/AccountRoutes'
 import orgFooterRoutes from './organisation/routes/footer/FooterRoutes'
 import orgHomeRoutes from './organisation/routes/home/HomeRoutes'
+import { infoRoutes } from './organisation/routes/info/InfoRoutes'
 import { orgManageContactsRoutes } from './organisation/routes/manage-contacts/ManageContactsRoutes'
 import { orgManageKeywordsRoutes } from './organisation/routes/manage-keywords/ManageKeywordsRoutes'
 import { orgManageLocationRoutes } from './organisation/routes/manage-locations/ManageLocationsRoutes'
@@ -33,7 +34,8 @@ export const routes = [
   ...commonFooterRoutes,
   ...orgSignupRoutes,
   ...orgSigninRoutes,
-  ...orgFooterRoutes
+  ...orgFooterRoutes,
+  ...infoRoutes
 ]
 
 export const authenticatedRoutes = [

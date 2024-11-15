@@ -40,16 +40,12 @@ export default function AddAccountNameLayout ({
       const profile = addAccountName(session.profile, firstname, lastname)
       dispatch(setProfile(profile))
 
-      if (changeName) {
-        updateProfile(profile, authToken)
-        if (profileError) setError(profileError)
-      } else {
-        NavigateToNextPage(profile)
-      }
+      updateProfile(profile, authToken)
+      if (profileError) setError(profileError)
     }
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     NavigateToPreviousPage()
   }

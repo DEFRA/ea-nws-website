@@ -417,6 +417,7 @@ export default function IndexPage () {
       dispatch(setSelectedBoundaryType(null))
       dispatch(setSelectedBoundary(null))
       dispatch(setLocationBoundaries([]))
+      dispatch(setOrgCurrentContact(mockOrgCurrentContact))
       dispatch(setLocationKeywords(mockLocationKeywords))
       dispatch(setContactKeywords(mockContactKeywords))
       dispatch(setCurrentLocationEasting('520814'))

@@ -67,16 +67,20 @@ export default function SignUpValidationPage() {
         let updatedProfile = updateAdditionals(profile, [
           { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } }
         ])
+        console.log('profile 1', updatedProfile)
 
         updatedProfile = updateGeosafeProfile(data.authToken, updatedProfile)
-        await registerAllLocations()
-        dispatch(setProfile(data.authToken, updatedProfile))
+        console.log('profile 2', updatedProfile)
+        await registerAllLocations(data.authToken, updatedProfile)
+
+        console.log('profile 3', updatedProfile)
+        dispatch(setProfile(updatedProfile))
       }
     }
   }
 
   const registerAllLocations = async (authToken, profile) => {
-    profile.pois.map(async (poi) => {
+    profile.pois.map(async (poi, index) => {
       let alertTypes = poi.meta_data.location_additional.alert_types
 
       const data = {
@@ -85,12 +89,15 @@ export default function SignUpValidationPage() {
         partnerId: 1, // this is currently a hardcoded value - geosafe to update us on what it is
         params: getRegistrationParams(profile, alertTypes)
       }
+      console.log(`loop ${index} data `, data)
 
       const { errorMessage } = await backendCall(
         data,
         'api/partner/register_location_to_partner',
         navigate
       )
+
+      console.log(`loop ${index} error`, errorMessage)
     })
   }
 

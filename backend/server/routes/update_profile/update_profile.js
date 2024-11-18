@@ -16,10 +16,12 @@ module.exports = [
         const { authToken, profile } = request.payload
 
         if (Object.keys(profile).length !== 0 && authToken) {
+          console.log('hit')
           const response = await apiCall(
             { authToken: authToken, profile: profile },
             'member/updateProfile'
           )
+          console.log(response)
           return h.response(response)
         } else {
           return createGenericErrorResponse(h)

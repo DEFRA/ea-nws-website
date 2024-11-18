@@ -7,8 +7,11 @@ async function getUpdateProfile(
   req: Hapi.Request,
   res: Hapi.ResponseToolkit
 ) {
+  console.log('hit')
   const { authToken } = req.payload as { authToken: string }
   const { profile } = req.payload as { profile: { pois: Array<Object> } }
+
+  console.log('req.payload', req.payload)
 
   //not sure how to validate the profile data without doing hardcoded validation for each scenario
   if (authToken && Object.keys(profile).length != 0) {
@@ -18,6 +21,8 @@ async function getUpdateProfile(
         id: index + 1
       }))
     }
+
+    console.log('profile', profile)
 
     return {
       authToken: authToken,

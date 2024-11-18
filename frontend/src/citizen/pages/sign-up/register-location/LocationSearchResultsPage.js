@@ -1,10 +1,13 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { setAdditionalAlerts, setProfile } from '../../../../common/redux/userSlice'
+import {
+  setAdditionalAlerts,
+  setProfile
+} from '../../../../common/redux/userSlice'
 import LocationSearchResultsLayout from '../../../layouts/location/LocationSearchResultsLayout'
 
-export default function LocationSearchResultsPage () {
+export default function LocationSearchResultsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -34,6 +37,7 @@ export default function LocationSearchResultsPage () {
       },
       pois: []
     }
+
     dispatch(setProfile(profile))
 
     if (isInWarningArea) {

@@ -59,9 +59,13 @@ export default function LocationInSevereWarningAreaLayout({
       updatedProfile = await addLocationWithFloodWarningAlerts()
     }
 
+    console.log('profile 1', updatedProfile)
+
     // we must always show user the optional flood alert areas
     dispatch(setAdditionalAlerts(true))
     updatedProfile = await updateGeosafeProfile()
+
+    console.log('profile 2', updatedProfile)
     // if user is in sign up flow, then profile returned will be undefined
     if (updatedProfile) {
       await registerLocationToPartner(updatedProfile)
@@ -80,11 +84,14 @@ export default function LocationInSevereWarningAreaLayout({
       params: getRegistrationParams(profile, alertTypes)
     }
 
+    console.log('data ', data)
+
     const { errorMessage } = await backendCall(
       data,
       'api/partner/register_location_to_partner',
       navigate
     )
+    console.log('register error', errorMessage)
   }
 
   const handleUserNavigatingBack = async () => {
@@ -187,6 +194,7 @@ export default function LocationInSevereWarningAreaLayout({
       'api/profile/update',
       navigate
     )
+    console.log('data', data)
     return data.profile
   }
 

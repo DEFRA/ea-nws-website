@@ -80,7 +80,11 @@ export default function LocationInAlertAreaLayout({
       }
     }
 
+    console.log('profile 1', updatedProfile)
+
     updatedProfile = await updateGeosafeProfile()
+
+    console.log('profile 2', updatedProfile)
     // if user is in sign up flow, then profile returned will be undefined
     if (updatedProfile) {
       await registerLocationToPartner(updatedProfile)
@@ -110,11 +114,14 @@ export default function LocationInAlertAreaLayout({
       params: getRegistrationParams(profile, alertTypes)
     }
 
+    console.log('data ', data)
+
     const { errorMessage } = await backendCall(
       data,
       'api/partner/register_location_to_partner',
       navigate
     )
+    console.log('register error', errorMessage)
   }
 
   // remove newly added location/location updates

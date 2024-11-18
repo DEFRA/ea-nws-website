@@ -1,6 +1,7 @@
 const handleResponse = (response, navigate) => {
   switch (response.status) {
     case 200:
+      console.log('hit', response)
       return { data: response.data, errorMessage: null }
     case 400:
       return { data: null, errorMessage: 'Bad request, please try again' }

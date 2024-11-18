@@ -6,7 +6,7 @@ import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import InsetText from '../../../../../../common/components/gov-uk/InsetText'
-import { setCurrentLocationCoordinates } from '../../../../../../common/redux/userSlice'
+import { getLocationAdditional, setCurrentLocationCoordinates } from '../../../../../../common/redux/userSlice'
 import { locationInEngland } from '../../../../../../common/services/validations/LocationInEngland'
 import Map from '../../../../../components/custom/Map'
 import MapInteractiveKey from '../../../../../components/custom/MapInteractiveKey'
@@ -24,8 +24,7 @@ export default function LocationDropPinSearchLayout ({
   const [showFloodAlertAreas, setShowFloodAlertAreas] = useState(true)
   const [showFloodExtents, setShowFloodExtents] = useState(true)
   const currentLocationName = useSelector(
-    (state) =>
-      state.session.currentLocation.meta_data.location_additional.location_name
+    (state) => getLocationAdditional(state, 'locationName')
   )
 
   // remove error if user drops a pin

@@ -7,6 +7,7 @@ import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../common/components/gov-uk/TextArea'
 import {
+  getLocationOther,
   setCurrentLocationNotes,
   setOrgCurrentContactNotes
 } from '../../../common/redux/userSlice'
@@ -21,7 +22,7 @@ export default function NotesLayout ({
   const dispatch = useDispatch()
   const currentNotes = useSelector((state) =>
     keywordType === 'location'
-      ? state.session.currentLocation.meta_data.location_additional.notes
+      ? getLocationOther(state, 'notes')
       : state.session.orgCurrentContact.comments
   )
   const [notes, setNotes] = useState(currentNotes || '')

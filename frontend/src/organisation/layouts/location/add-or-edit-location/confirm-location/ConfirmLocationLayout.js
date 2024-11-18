@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../common/components/gov-uk/Button'
+import { getLocationAdditional, getLocationOther } from '../../../../../common/redux/userSlice'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -13,14 +14,14 @@ export default function ConfirmLocationLayout () {
   const navigate = useNavigate()
   const { type } = useParams()
   const { flow } = useParams()
-  const currentLocation = useSelector((state) => state.session.currentLocation)
   const locationName = useSelector(
-    (state) =>
-      state.session.currentLocation.meta_data.location_additional.location_name
+    (state) => getLocationAdditional(state, 'locationName')
   )
   const formattedAddress =
     flow === 'postcode-search'
-      ? currentLocation.meta_data.location_additional.full_address.split(',')
+      ? useSelector(
+        (state) => getLocationOther(state, 'full_address')
+      ).split(',')
       : ''
 
   const getFloodMessage = (type) => {
@@ -107,11 +108,15 @@ export default function ConfirmLocationLayout () {
             </h3>
             <p>
               {Math.round(
-                currentLocation.meta_data.location_additional.x_coordinate
+                useSelector(
+                  (state) => getLocationOther(state, 'x_coordinate')
+                )
               )}
               {', '}
               {Math.round(
-                currentLocation.meta_data.location_additional.y_coordinate
+                useSelector(
+                  (state) => getLocationOther(state, 'y_coordinate')
+                )
               )}
             </p>
 

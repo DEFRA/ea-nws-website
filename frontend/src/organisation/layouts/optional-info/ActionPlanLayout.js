@@ -6,14 +6,14 @@ import OrganisationAccountNavigation from '../../../common/components/custom/Org
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../common/components/gov-uk/TextArea'
-import { setCurrentLocationActionPlan } from '../../../common/redux/userSlice'
+import { getLocationOther, setCurrentLocationActionPlan } from '../../../common/redux/userSlice'
 
 export default function ActionPlanLayout ({ navigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const currentActionPlan = useSelector(
     (state) =>
-      state.session.currentLocation.meta_data.location_additional.action_plan
+      getLocationOther(state, 'action_plan')
   )
   const [actionPlan, setActionPlan] = useState(currentActionPlan || '')
   const [error, setError] = useState('')

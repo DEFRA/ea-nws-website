@@ -41,7 +41,7 @@ const setLocationOtherAdditionals = (additionals, id, value) => {
 const getLocationOtherAdditional = (additionals, id) => {
   for (let i = 0; i < additionals.length; i++) {
     if (additionals[i].id === 'other') {
-      otherAdditionals = JSON.parse(additionals[i].value?.s)
+      const otherAdditionals = JSON.parse(additionals[i].value?.s)
       return otherAdditionals[id]
     }
   }
@@ -416,10 +416,28 @@ const userSlice = createSlice({
     }
   },
   selectors: {
+    getLocationAdditionals: (state) => {
+      return {
+        locationName: getAdditional(state.currentLocation.additionals, 'locationName'),
+        parentID: getAdditional(state.currentLocation.additionals, 'parentID'),
+        targetAreas: getAdditional(state.currentLocation.additionals, 'targetAreas'),
+        keywords: getAdditional(state.currentLocation.additionals, 'keywords'),
+        full_address: getLocationOtherAdditional(state.currentLocation.additionals, 'full_address'),
+        postcode: getLocationOtherAdditional(state.currentLocation.additionals, 'postcode'),
+        x_coordinate: getLocationOtherAdditional(state.currentLocation.additionals, 'x_coordinate'),
+        y_coordinate: getLocationOtherAdditional(state.currentLocation.additionals, 'y_coordinate'),
+        internal_reference: getLocationOtherAdditional(state.currentLocation.additionals, 'internal_reference'),
+        business_criticality: getLocationOtherAdditional(state.currentLocation.additionals, 'business_criticality'),
+        location_type: getLocationOtherAdditional(state.currentLocation.additionals, 'location_type'),
+        action_plan: getLocationOtherAdditional(state.currentLocation.additionals, 'action_plan'),
+        notes: getLocationOtherAdditional(state.currentLocation.additionals, 'notes'),
+        location_data_type: getLocationOtherAdditional(state.currentLocation.additionals, 'location_data_type')
+      }
+    },
     getLocationAdditional: (state, key) => {
       return getAdditional(state.currentLocation.additionals, key)
     },
-    getLocationOtherAdditional: (state, key) => {
+    getLocationOther: (state, key) => {
       return getLocationOtherAdditional(state.currentLocation.additionals, key)
     },
   }
@@ -458,12 +476,16 @@ export const {
   setPredefinedBoundaryFlow,
   // org location data
   setCurrentLocation,
+  setCurrentLocationId,
+  setCurrentLocationEnabled,
   setCurrentLocationUPRN,
   setCurrentLocationAddress,
   setCurrentLocationCoordinates,
   setCurrentLocationGeometry,
-  setCurrentLocationAlertCategories,
+  setCurrentLocationGeocode,
   setCurrentLocationName,
+  setCurrentLocationParentID,
+  setCurrentLocationTargetAreas,
   setCurrentLocationFullAddress,
   setCurrentLocationPostcode,
   setCurrentLocationEasting,
@@ -488,7 +510,13 @@ export const {
   setOrgCurrentContactAdditionals,
   setOrgCurrentContactNotes,
   // clear state
-  clearAuth
+  clearAuth,
 } = userSlice.actions
+
+export const {
+  getLocationAdditionals,
+  getLocationAdditional,
+  getLocationOther
+} = userSlice.selectors
 
 export default userSlice.reducer

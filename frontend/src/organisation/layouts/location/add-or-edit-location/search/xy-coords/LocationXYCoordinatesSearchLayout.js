@@ -7,6 +7,7 @@ import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../../../common/components/gov-uk/Input'
 import {
+  getLocationOther,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
   setCurrentLocationNorthing
@@ -29,10 +30,10 @@ export default function LocationXYCoordinatesSearchLayout ({
   const navigate = useNavigate()
 
   const currentXCoordinate = useSelector(
-    (state) => state.session.currentLocation.meta_data.location_additional.x_coordinate
+    (state) => getLocationOther(state, 'x_coordinate')
   )
   const currentYCoordinate = useSelector(
-    (state) => state.session.currentLocation.meta_data.location_additional.y_coordinate
+    (state) => getLocationOther(state, 'y_coordinate')
   )
 
   const [xCoordinate, setXCoordinate] = useState(currentXCoordinate || '')

@@ -7,6 +7,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../common/components/gov-uk/Details'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
+import { getLocationAdditionals } from '../../../../../common/redux/userSlice'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 import RiskCategoryLabel from '../../../../components/custom/RiskCategoryLabel'
@@ -15,7 +16,7 @@ import ViewLocationSubNavigation from './location-information-components/ViewLoc
 export default function LocationInformationLayout () {
   const navigate = useNavigate()
   const currentLocation = useSelector((state) => state.session.currentLocation)
-  const additionalData = currentLocation.meta_data.location_additional
+  const additionalData = useSelector((state) => getLocationAdditionals(state))
   const formattedAddress = currentLocation.address?.split(',')
 
   const LocationHeader = () => {
@@ -134,7 +135,7 @@ export default function LocationInformationLayout () {
         <div class='govuk-grid-row'>
           <div class='govuk-grid-column-one-half'>
             <span class='govuk-caption-l'>View location</span>
-            <h1 class='govuk-heading-l'>{additionalData.location_name}</h1>
+            <h1 class='govuk-heading-l'>{additionalData.locationName}</h1>
           </div>
           <div
             class='govuk-grid-column-one-half right'
@@ -152,8 +153,8 @@ export default function LocationInformationLayout () {
         </div>
 
         {/* flood risk bannner */}
-        {(additionalData.location_data_type === LocationDataType.ADDRESS ||
-          additionalData.location_data_type ===
+        {(locationDataType === LocationDataType.ADDRESS ||
+          locationDataType ===
             LocationDataType.X_AND_Y_COORDS) && (
               <div class='govuk-grid-row'>
                 <div className='govuk-grid-column-full'>
@@ -220,7 +221,7 @@ export default function LocationInformationLayout () {
             {/* Location details */}
             {locationDetails}
             {/* Key Information details */}
-            {additionalData.location_data_type !==
+            {locationDataType !==
               LocationDataType.BOUNDARY && (
                 <div className='govuk-!-margin-top-7'>
                   <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
@@ -236,7 +237,7 @@ export default function LocationInformationLayout () {
                   <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                     Location name
                   </h3>
-                  <p>{additionalData.location_name}</p>
+                  <p>{additionalData.locationName}</p>
                   {additionalData.internal_reference && (
                     <>
                       <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>

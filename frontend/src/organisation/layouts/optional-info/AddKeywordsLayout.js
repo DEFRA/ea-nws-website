@@ -8,6 +8,7 @@ import Button from '../../../common/components/gov-uk/Button'
 import Checkbox from '../../../common/components/gov-uk/CheckBox'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import {
+  getLocationAdditional,
   setContactKeywords,
   setCurrentLocationKeywords,
   setLocationKeywords,
@@ -60,8 +61,8 @@ export default function AddKeywordsLayout ({
 
   let currentKeywords = useSelector((state) =>
     keywordType === 'location'
-      ? state.session.currentLocation.meta_data.location_additional.keywords
-        ? state.session.currentLocation.meta_data.location_additional.keywords
+      ? getLocationAdditional(state, 'keywords')
+        ? getLocationAdditional(state, 'keywords')
         : ''
       : getAdditionals(currentObject, 'keywords')
         ? getAdditionals(currentObject, 'keywords')

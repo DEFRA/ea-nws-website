@@ -6,6 +6,7 @@ import OrganisationAccountNavigation from '../../../../../../common/components/c
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../../../common/components/gov-uk/Radio'
+import { getLocationAdditional } from '../../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationSearchOptionPage () {
@@ -14,7 +15,7 @@ export default function LocationSearchOptionPage () {
   const [error, setError] = useState('')
   const locationName = useSelector(
     (state) =>
-      state.session.currentLocation.meta_data.location_additional.location_name
+      getLocationAdditional(state, 'locationName')
   )
 
   // remove any errors if user changes search option

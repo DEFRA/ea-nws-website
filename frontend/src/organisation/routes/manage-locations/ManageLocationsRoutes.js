@@ -67,7 +67,7 @@ const orgManageLocationsUrls = {
   view: {
     dashboard: urlManageOrgViewLocations,
     viewLocation: urlManageOrgViewLocations + '/view',
-    viewMessages: urlManageOrg + '/view-messages'
+    viewMessages: urlManageOrgViewLocations + '/view-messages'
   },
   add: {
     addLocationWithinBoundaries: {},

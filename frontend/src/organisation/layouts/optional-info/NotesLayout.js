@@ -29,7 +29,6 @@ export default function NotesLayout ({
   const charLimit = 500
 
   useEffect(() => {
-    console.log(notes.length)
     if (notes.length > charLimit) {
       setError(`You can enter up to ${charLimit} characters`)
     } else {
@@ -83,9 +82,6 @@ export default function NotesLayout ({
                 className='govuk-textarea'
                 additionalInfo={`You can enter up to ${charLimit} characters`}
               />
-              <p className='govuk-hint' style={{ marginTop: '-1.5rem' }}>
-                You can enter up to {charLimit} characters.
-              </p>
               <br />
               <Button
                 text={buttonText}

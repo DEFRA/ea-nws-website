@@ -31,9 +31,7 @@ export default function AddressLayout ({
 
   const handleSubmit = () => {
     if (error) return
-
     dispatch(setCurrentLocationAddress(address))
-
     navigateToNextPage()
   }
 

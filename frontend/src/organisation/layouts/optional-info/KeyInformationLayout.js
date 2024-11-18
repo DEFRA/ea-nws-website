@@ -62,6 +62,7 @@ export default function KeyInformationLayout ({ flow, navigateToNextPage }) {
             } else {
               setLocationNameError('Something went wrong, try again')
             }
+            return
           } else {
             dispatch(setCurrentLocationName(locationName))
           }

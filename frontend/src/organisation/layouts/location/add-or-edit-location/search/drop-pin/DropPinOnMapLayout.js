@@ -19,7 +19,7 @@ export default function DropPinOnMapLayout ({
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
-  const showMarkerIntially = location?.state?.mapArea == null
+  const showMarkerInitially = location?.state?.mapArea == null
   let { latitude, longitude } = useSelector(
     (state) => state.session.currentLocation.coordinates
   )
@@ -31,7 +31,6 @@ export default function DropPinOnMapLayout ({
   const [showFloodExtents, setShowFloodExtents] = useState(true)
 
   const pinDropCoordsDisplay = () => {
-    console.log(pinCoords)
     if (pinCoords) {
       latitude = pinCoords.latitude
       longitude = pinCoords.longitude
@@ -123,7 +122,7 @@ export default function DropPinOnMapLayout ({
                     type='drop'
                     showFloodWarningAreas={showFloodWarningAreas}
                     showFloodAlertAreas={showFloodAlertAreas}
-                    showMarker={showMarkerIntially}
+                    showMarker={showMarkerInitially}
                   />
                 </div>
                 <div class='govuk-grid-column-one-third'>

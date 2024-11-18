@@ -44,7 +44,7 @@ const floodAlertCardDetails = (
   </>
 )
 
-export default function ViewLocationPage() {
+export default function ViewLocationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { type } = useParams()
@@ -63,7 +63,7 @@ export default function ViewLocationPage() {
 
   const deleteLocation = async () => {
     const data = {
-      authToken: authToken,
+      authToken,
       locationId: selectedLocation.id,
       partnerId: 1 // this is currently a hardcoded value - geosafe to update us
     }
@@ -99,7 +99,7 @@ export default function ViewLocationPage() {
     }
 
     const data = {
-      authToken: authToken,
+      authToken,
       locationId: selectedLocation.id,
       partnerId: 1, // this is currently a hardcoded value - geosafe to update us on what it is
       params: getRegistrationParams(profile, alertTypes)
@@ -135,7 +135,7 @@ export default function ViewLocationPage() {
   }
 
   const updateGeosafeProfile = async (updatedProfile) => {
-    const dataToSend = { authToken: authToken, profile: updatedProfile }
+    const dataToSend = { authToken, profile: updatedProfile }
     await backendCall(dataToSend, 'api/profile/update', navigate)
   }
 
@@ -149,10 +149,8 @@ export default function ViewLocationPage() {
               <BackLink onClick={() => navigate(-1)} />
               {successMessage && (
                 <NotificationBanner
-                  className={
-                    'govuk-notification-banner govuk-notification-banner--success govuk-!-margin-top-4'
-                  }
-                  title={'Success'}
+                  className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-top-4'
+                  title='Success'
                   text={successMessage}
                 />
               )}

@@ -7,7 +7,7 @@ import {
 } from '../../../../common/redux/userSlice'
 import LocationSearchResultsLayout from '../../../layouts/location/LocationSearchResultsLayout'
 
-export default function LocationSearchResultsPage() {
+export default function LocationSearchResultsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 

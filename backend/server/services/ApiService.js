@@ -16,7 +16,10 @@ const getErrorMessage = (path, errorMessage) => {
 const apiCall = async (data, path) => {
   const apiUrl = await getSecretKeyValue('nws/geosafe', 'apiUrl')
   const url = apiUrl + '/' + path
+  let webProfile = null
+
   if (data.profile) {
+    webProfile = JSON.parse(JSON.stringify(data.profile))
     data.profile = convertWebProfile(data.profile)
   }
 
@@ -30,10 +33,12 @@ const apiCall = async (data, path) => {
       }),
       withCredentials: false
     })
-    console.log('response', response)
 
     if (response.data.profile) {
-      response.data.profile = convertGeoSafeProfile(response.data.profile)
+      response.data.profile = convertGeoSafeProfile(
+        response.data.profile,
+        webProfile
+      )
     }
 
     return { status: response.status, data: response.data }

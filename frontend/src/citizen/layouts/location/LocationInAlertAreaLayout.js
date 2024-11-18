@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import FloodWarningKey from '../../../common/components/custom/FloodWarningKey'
 import Map from '../../../common/components/custom/Map'
@@ -19,13 +19,14 @@ import {
 } from '../../../common/services/ProfileServices'
 import { getCoordsOfFloodArea } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInAlertAreaLayout({
+export default function LocationInAlertAreaLayout ({
   continueToNextPage,
   continueToSearchResultsPage,
   canCancel
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const location = useLocation()
   const [isChecked, setIsChecked] = useState(false)
   const authToken = useSelector((state) => state.session.authToken)
   const profile = useSelector((state) => state.session.profile)
@@ -46,6 +47,7 @@ export default function LocationInAlertAreaLayout({
   const addressToUse = isUserInNearbyTargetFlowpath
     ? selectedFloodAlertArea.properties.TA_NAME
     : selectedLocation.address
+  const isSignUpFlow = location.pathname.includes('signup')
 
   const handleSubmit = async () => {
     let updatedProfile
@@ -53,7 +55,6 @@ export default function LocationInAlertAreaLayout({
     if (additionalAlerts && isChecked) {
       if (isUserInNearbyTargetFlowpath) {
         updatedProfile = await addFloodAlertArea()
-        //await updateExistingLocationAlertTypes([AlertType.FLOOD_ALERT])
       } else {
         updatedProfile = await updateExistingLocationAlertTypes([
           AlertType.SEVERE_FLOOD_WARNING,
@@ -80,48 +81,48 @@ export default function LocationInAlertAreaLayout({
       }
     }
 
-    console.log('profile 1', updatedProfile)
+    if (!isSignUpFlow) {
+      updatedProfile = await updateGeosafeProfile(updatedProfile)
 
-    updatedProfile = await updateGeosafeProfile()
-
-    console.log('profile 2', updatedProfile)
-    // if user is in sign up flow, then profile returned will be undefined
-    if (updatedProfile) {
-      await registerLocationToPartner(updatedProfile)
+      // if user is in sign up flow, then profile returned will be undefined
+      if (updatedProfile) {
+        await registerLocationToPartner(updatedProfile)
+      }
     }
+
     continueToNextPage()
   }
 
   const registerLocationToPartner = async (profile) => {
     const location = findPOIByAddress(profile, addressToUse)
 
-    let alertTypes = additionalAlerts
-      ? [
-          AlertType.SEVERE_FLOOD_WARNING,
-          AlertType.FLOOD_WARNING,
-          AlertType.FLOOD_ALERT
-        ]
-      : [AlertType.FLOOD_ALERT]
+    // accomodates additional alerts path incase user chooses not to select the additional alerts
+    if (location) {
+      let alertTypes = additionalAlerts
+        ? [
+            AlertType.SEVERE_FLOOD_WARNING,
+            AlertType.FLOOD_WARNING,
+            AlertType.FLOOD_ALERT
+          ]
+        : [AlertType.FLOOD_ALERT]
 
-    if (isUserInNearbyTargetFlowpath) {
-      alertTypes = [AlertType.FLOOD_ALERT]
+      if (isUserInNearbyTargetFlowpath) {
+        alertTypes = [AlertType.FLOOD_ALERT]
+      }
+
+      const data = {
+        authToken,
+        locationId: location.id,
+        partnerId: 1, // this is currently a hardcoded value - geosafe to update us on what it is
+        params: getRegistrationParams(profile, alertTypes)
+      }
+
+      await backendCall(
+        data,
+        'api/partner/register_location_to_partner',
+        navigate
+      )
     }
-
-    const data = {
-      authToken: authToken,
-      locationId: location.id,
-      partnerId: 1, // this is currently a hardcoded value - geosafe to update us on what it is
-      params: getRegistrationParams(profile, alertTypes)
-    }
-
-    console.log('data ', data)
-
-    const { errorMessage } = await backendCall(
-      data,
-      'api/partner/register_location_to_partner',
-      navigate
-    )
-    console.log('register error', errorMessage)
   }
 
   // remove newly added location/location updates
@@ -146,10 +147,12 @@ export default function LocationInAlertAreaLayout({
       }
     }
 
-    updatedProfile = await updateGeosafeProfile()
-    // if user has added flood alert area, then we need to unregister from that
-    if (isUserInNearbyTargetFlowpath && updatedProfile) {
-      unregisterLocationFromPartner()
+    if (!isSignUpFlow) {
+      updatedProfile = await updateGeosafeProfile(updatedProfile)
+      // if user has added flood alert area, then we need to unregister from that
+      if (isUserInNearbyTargetFlowpath && updatedProfile) {
+        unregisterLocationFromPartner(updatedProfile)
+      }
     }
 
     navigate(-1)
@@ -158,17 +161,19 @@ export default function LocationInAlertAreaLayout({
   const unregisterLocationFromPartner = async (updatedProfile) => {
     const location = findPOIByAddress(updatedProfile, addressToUse)
 
-    const data = {
-      authToken: authToken,
-      locationId: location.id,
-      partnerId: 1 // this is currently a hardcoded value - geosafe to update us
-    }
+    if (location) {
+      const data = {
+        authToken,
+        locationId: location.id,
+        partnerId: 1 // this is currently a hardcoded value - geosafe to update us
+      }
 
-    const { errorMessage } = await backendCall(
-      data,
-      'api/partner/unregister_location_from_partner',
-      navigate
-    )
+      await backendCall(
+        data,
+        'api/partner/unregister_location_from_partner',
+        navigate
+      )
+    }
   }
 
   const addFloodAlertArea = async () => {
@@ -236,13 +241,14 @@ export default function LocationInAlertAreaLayout({
     return updatedProfile
   }
 
-  const updateGeosafeProfile = async () => {
-    const dataToSend = { authToken: authToken, profile: profile }
+  const updateGeosafeProfile = async (updatedProfile) => {
+    const dataToSend = { authToken, profile: updatedProfile }
     const { data } = await backendCall(
       dataToSend,
       'api/profile/update',
       navigate
     )
+
     return data.profile
   }
 

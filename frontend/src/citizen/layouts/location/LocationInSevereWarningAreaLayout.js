@@ -1,7 +1,7 @@
 import 'leaflet/dist/leaflet.css'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import FloodWarningKey from '../../../common/components/custom/FloodWarningKey'
 import Map from '../../../common/components/custom/Map'
@@ -25,11 +25,12 @@ import {
   getCoordsOfFloodArea
 } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout({
+export default function LocationInSevereWarningAreaLayout ({
   continueToNextPage
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const location = useLocation()
   const authToken = useSelector((state) => state.session.authToken)
   const profile = useSelector((state) => state.session.profile)
   const selectedLocation = useSelector(
@@ -46,6 +47,7 @@ export default function LocationInSevereWarningAreaLayout({
   const addressToUse = isUserInNearbyTargetFlowpath
     ? selectedFloodWarningArea.properties.TA_NAME
     : selectedLocation.address
+  const isSignUpFlow = location.pathname.includes('signup')
 
   const handleSubmit = async () => {
     let updatedProfile
@@ -59,17 +61,18 @@ export default function LocationInSevereWarningAreaLayout({
       updatedProfile = await addLocationWithFloodWarningAlerts()
     }
 
-    console.log('profile 1', updatedProfile)
-
     // we must always show user the optional flood alert areas
     dispatch(setAdditionalAlerts(true))
-    updatedProfile = await updateGeosafeProfile()
 
-    console.log('profile 2', updatedProfile)
-    // if user is in sign up flow, then profile returned will be undefined
-    if (updatedProfile) {
-      await registerLocationToPartner(updatedProfile)
+    if (!isSignUpFlow) {
+      updatedProfile = await updateGeosafeProfile(updatedProfile)
+
+      // if user is in sign up flow, then profile returned will be undefined
+      if (updatedProfile) {
+        await registerLocationToPartner(updatedProfile)
+      }
     }
+
     continueToNextPage()
   }
 
@@ -78,31 +81,29 @@ export default function LocationInSevereWarningAreaLayout({
     const alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
 
     const data = {
-      authToken: authToken,
+      authToken,
       locationId: location.id,
       partnerId: 1, // this is currently a hardcoded value - geosafe to update us on what it is
       params: getRegistrationParams(profile, alertTypes)
     }
 
-    console.log('data ', data)
-
-    const { errorMessage } = await backendCall(
+    await backendCall(
       data,
       'api/partner/register_location_to_partner',
       navigate
     )
-    console.log('register error', errorMessage)
   }
 
   const handleUserNavigatingBack = async () => {
+    let updatedProfile
     if (isUserInNearbyTargetFlowpath) {
-      await removeFloodWarningArea()
+      updatedProfile = await removeFloodWarningArea()
     } else {
-      await removeLocationWithFloodWarningAlerts()
+      updatedProfile = await removeLocationWithFloodWarningAlerts()
     }
 
     dispatch(setAdditionalAlerts(false))
-    const updatedProfile = await updateGeosafeProfile()
+    updatedProfile = await updateGeosafeProfile(profile)
     // if user is in sign up flow, then profile returned will be undefined
     if (updatedProfile) {
       unregisterLocationFromPartner(updatedProfile)
@@ -113,17 +114,20 @@ export default function LocationInSevereWarningAreaLayout({
   const unregisterLocationFromPartner = async (updatedProfile) => {
     const location = findPOIByAddress(updatedProfile, addressToUse)
 
-    const data = {
-      authToken: authToken,
-      locationId: location.id,
-      partnerId: 1 // this is currently a hardcoded value - geosafe to update us
-    }
+    // accomodates situation where user presses back before the location is stored in the profile
+    if (location) {
+      const data = {
+        authToken,
+        locationId: location.id,
+        partnerId: 1 // this is currently a hardcoded value - geosafe to update us
+      }
 
-    const { errorMessage } = await backendCall(
-      data,
-      'api/partner/unregister_location_from_partner',
-      navigate
-    )
+      await backendCall(
+        data,
+        'api/partner/unregister_location_from_partner',
+        navigate
+      )
+    }
   }
 
   const addFloodWarningArea = async () => {
@@ -149,6 +153,8 @@ export default function LocationInSevereWarningAreaLayout({
       selectedFloodWarningArea.properties.TA_NAME
     )
     dispatch(setProfile(updatedProfile))
+
+    return updatedProfile
   }
 
   const findAssociatedFloodAlertArea = async () => {
@@ -185,16 +191,18 @@ export default function LocationInSevereWarningAreaLayout({
   const removeLocationWithFloodWarningAlerts = async () => {
     const updatedProfile = removeLocation(profile, selectedLocation.address)
     dispatch(setProfile(updatedProfile))
+
+    return updatedProfile
   }
 
-  const updateGeosafeProfile = async () => {
-    const dataToSend = { authToken: authToken, profile: profile }
+  const updateGeosafeProfile = async (updatedProfile) => {
+    const dataToSend = { authToken, profile: updatedProfile }
     const { data } = await backendCall(
       dataToSend,
       'api/profile/update',
       navigate
     )
-    console.log('data', data)
+
     return data.profile
   }
 

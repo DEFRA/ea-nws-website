@@ -44,7 +44,7 @@ const floodAlertCardDetails = (
   </>
 )
 
-export default function ViewLocationPage () {
+export default function ViewLocationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { type } = useParams()
@@ -92,7 +92,7 @@ export default function ViewLocationPage () {
 
     if (optionalAlerts) {
       if (!alertTypes.includes(AlertType.FLOOD_ALERT)) {
-        alertTypes = alertTypes.push(AlertType.FLOOD_ALERT)
+        alertTypes = [...alertTypes, AlertType.FLOOD_ALERT]
       }
     } else {
       alertTypes = alertTypes.filter((type) => type !== AlertType.FLOOD_ALERT)

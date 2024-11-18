@@ -131,9 +131,8 @@ export default function UploadFileLayout ({
               fileName: uniqFileName
             }
           })
-        }
-        // Unzip the uploaded file and send output back to S3
-        else if (uploadMethod === 'shape') {
+        } else if (uploadMethod === 'shape') {
+          // Unzip the uploaded file and send output back to S3
           const { data, errorMessage } = await backendCall(
             { zipFileName: uniqFileName },
             'api/shapefile/unzip',

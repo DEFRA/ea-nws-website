@@ -19,6 +19,7 @@ const orgInvitationHandler = require('./handlers/organisation/orgInvitationHandl
 const locationContactsHandlers = require('./handlers/location/locationContactsHandlers')
 const locationHandlers = require('./handlers/location/locationHandlers')
 const locationPartnerHandlers = require('./handlers/location/locationPartnerHandlers')
+const memberLocationPartnerHandlers = require('./handlers/member_register_location_to_partner/memberLocationPartnerHandlers')
 // define api
 const api = new OpenAPIBackend({
   definition: './openapi/openapi.yml',
@@ -51,11 +52,11 @@ const api = new OpenAPIBackend({
     getOrgListRegistrations: partnerHandler.getOrgListRegistrations,
     //register location to partner
     getRegisterLocationToPartner:
-      locationPartnerHandlers.getRegisterLocationToPartner,
+      memberLocationPartnerHandlers.getRegisterLocationToPartner,
     getUnregisterLocationFromPartner:
-      locationPartnerHandlers.getUnregisterLocationFromPartner,
+      memberLocationPartnerHandlers.getUnregisterLocationFromPartner,
     getUpdateLocationRegistration:
-      locationPartnerHandlers.getUpdateLocationRegistration,
+      memberLocationPartnerHandlers.getUpdateLocationRegistration,
     //account deletion
     getDeleteAccount: deleteAccountHandler.getDeleteAccount,
     // Org Specific Routes

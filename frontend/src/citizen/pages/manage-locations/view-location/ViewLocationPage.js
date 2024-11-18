@@ -12,6 +12,7 @@ import AlertType from '../../../../common/enums/AlertType'
 import { setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
+  getLocationOtherAdditional,
   getRegistrationParams,
   removeLocation,
   updateLocationsAlertTypes
@@ -54,7 +55,11 @@ export default function ViewLocationPage() {
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
-  let alertTypes = selectedLocation.meta_data.location_additional.alert_types
+  let alertTypes = getLocationOtherAdditional(
+    selectedLocation.additionals,
+    'alertTypes'
+  )
+
   const [optionalAlerts, setOptionalAlerts] = useState(
     alertTypes.includes(AlertType.FLOOD_ALERT)
   )

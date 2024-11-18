@@ -11,7 +11,7 @@ post:
       application/json:
         schema:
           $ref: >-
-            ../components/schemas/geosafeea.public.Member.registerLocationToPartner.yml
+            ../components/schemas/geosafeea.public.Member.registerLocationToPartnerArgs.yml
   responses:
     '200':
       description: RPC success
@@ -19,7 +19,7 @@ post:
         application/json:
           schema:
             $ref: >-
-              ../components/schemas/geosafeea.public.Member.registerLocationToPartner.yml
+              ../components/schemas/geosafeea.public.Member.registerLocationToPartnerRes.yml
     '500':
       description: RPC error
       content:

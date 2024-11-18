@@ -28,8 +28,8 @@ const addUnverifiedContact = (profile, type, contact) => {
         [type === 'email'
           ? 'emails'
           : type === 'mobile'
-            ? 'mobilePhones'
-            : 'homePhones']: [...unverifiedContactList, formattedContact]
+          ? 'mobilePhones'
+          : 'homePhones']: [...unverifiedContactList, formattedContact]
       }
     }
     return updatedProfile
@@ -119,8 +119,8 @@ const addVerifiedContact = (profile, type, contact) => {
       [type === 'email'
         ? 'emails'
         : type === 'mobile'
-          ? 'mobilePhones'
-          : 'homePhones']: [...verifiedContactList, contact]
+        ? 'mobilePhones'
+        : 'homePhones']: [...verifiedContactList, contact]
     }
     return updatedProfile
   } else {
@@ -272,9 +272,11 @@ const updateLocationsAlertTypes = (profile, location, updatedAlertTypes) => {
   )
 
   if (locationIndex !== -1) {
-    parsedProfile.pois[
-      locationIndex
-    ].meta_data.location_additional.alert_types = updatedAlertTypes
+    parsedProfile.pois[locationIndex].additionals = setLocationOtherAdditionals(
+      [],
+      'alertTypes',
+      updatedAlertTypes
+    )
   }
 
   return parsedProfile
@@ -295,13 +297,46 @@ const getRegistrationParams = (profile, alertTypes) => {
   }
 }
 
-function findPOIByAddress (profile, address) {
+function findPOIByAddress(profile, address) {
   const parsedProfile = JSON.parse(JSON.stringify(profile))
 
   return parsedProfile.pois.find((poi) => poi.address === address)
 }
 
+const setLocationOtherAdditionals = (additionals, id, value) => {
+  let idFound = false
+  let otherAdditionals = {}
+  for (let i = 0; i < additionals.length; i++) {
+    if (additionals[i].id === 'other') {
+      idFound = true
+      otherAdditionals = JSON.parse(additionals[i].value?.s)
+      otherAdditionals[id] = value
+      additionals[i].value = { s: JSON.stringify(otherAdditionals) }
+    }
+  }
+  if (!idFound) {
+    additionals.push({
+      id: 'other',
+      value: { s: JSON.stringify({ [id]: value }) }
+    })
+  }
+
+  return additionals
+}
+
+const getLocationOtherAdditional = (additionals, id) => {
+  for (let i = 0; i < additionals.length; i++) {
+    if (additionals[i].id === 'other') {
+      const otherAdditionals = JSON.parse(additionals[i].value?.s)
+      return otherAdditionals[id]
+    }
+  }
+  return ''
+}
+
 module.exports = {
+  setLocationOtherAdditionals,
+  getLocationOtherAdditional,
   findPOIByAddress,
   getRegistrationParams,
   addUnverifiedContact,

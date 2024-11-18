@@ -15,11 +15,12 @@ import {
   findPOIByAddress,
   getRegistrationParams,
   removeLocation,
+  setLocationOtherAdditionals,
   updateLocationsAlertTypes
 } from '../../../common/services/ProfileServices'
 import { getCoordsOfFloodArea } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInAlertAreaLayout ({
+export default function LocationInAlertAreaLayout({
   continueToNextPage,
   continueToSearchResultsPage,
   canCancel
@@ -181,11 +182,9 @@ export default function LocationInAlertAreaLayout ({
       name: '',
       address: selectedFloodAlertArea.properties.TA_NAME,
       coordinates: getCoordsOfFloodArea(selectedFloodAlertArea),
-      meta_data: {
-        location_additional: {
-          alert_types: [AlertType.FLOOD_ALERT]
-        }
-      }
+      additionals: setLocationOtherAdditionals([], 'alertTypes', [
+        AlertType.FLOOD_ALERT
+      ])
     }
     const updatedProfile = await addLocation(profile, alertArea)
     dispatch(setProfile(updatedProfile))
@@ -208,11 +207,9 @@ export default function LocationInAlertAreaLayout ({
 
     const locationWithAlertType = {
       ...locationWithoutPostcode,
-      meta_data: {
-        location_additional: {
-          alert_types: [AlertType.FLOOD_ALERT]
-        }
-      }
+      additionals: setLocationOtherAdditionals([], 'alertTypes', [
+        AlertType.FLOOD_ALERT
+      ])
     }
     const updatedProfile = await addLocation(profile, locationWithAlertType)
     dispatch(setProfile(updatedProfile))

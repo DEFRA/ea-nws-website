@@ -18,14 +18,15 @@ import {
   addLocation,
   findPOIByAddress,
   getRegistrationParams,
-  removeLocation
+  removeLocation,
+  setLocationOtherAdditionals
 } from '../../../common/services/ProfileServices'
 import {
   getAssociatedAlertArea,
   getCoordsOfFloodArea
 } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout ({
+export default function LocationInSevereWarningAreaLayout({
   continueToNextPage
 }) {
   const navigate = useNavigate()
@@ -135,11 +136,10 @@ export default function LocationInSevereWarningAreaLayout ({
       name: '',
       address: selectedFloodWarningArea.properties.TA_NAME,
       coordinates: getCoordsOfFloodArea(selectedFloodWarningArea),
-      meta_data: {
-        location_additional: {
-          alert_types: [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
-        }
-      }
+      additionals: setLocationOtherAdditionals([], 'alertTypes', [
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.FLOOD_WARNING
+      ])
     }
     const updatedProfile = addLocation(profile, warningArea)
     dispatch(setProfile(updatedProfile))
@@ -175,11 +175,10 @@ export default function LocationInSevereWarningAreaLayout ({
     // update location to recieve severe alert warnings
     const locationWithAlertType = {
       ...locationWithoutPostcode,
-      meta_data: {
-        location_additional: {
-          alert_types: [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
-        }
-      }
+      additionals: setLocationOtherAdditionals([], 'alertTypes', [
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.FLOOD_WARNING
+      ])
     }
 
     const updatedProfile = addLocation(profile, locationWithAlertType)

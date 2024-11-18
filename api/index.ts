@@ -49,6 +49,13 @@ const api = new OpenAPIBackend({
     getUnregisterFromPartner: partnerHandler.getUnregisterFromPartner,
     getUpdateRegistration: partnerHandler.getUpdateRegistration,
     getOrgListRegistrations: partnerHandler.getOrgListRegistrations,
+    //register location to partner
+    getRegisterLocationToPartner:
+      locationPartnerHandlers.getRegisterLocationToPartner,
+    getUnregisterLocationFromPartner:
+      locationPartnerHandlers.getUnregisterLocationFromPartner,
+    getUpdateLocationRegistration:
+      locationPartnerHandlers.getUpdateLocationRegistration,
     //account deletion
     getDeleteAccount: deleteAccountHandler.getDeleteAccount,
     // Org Specific Routes

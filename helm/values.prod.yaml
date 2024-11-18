@@ -10,7 +10,7 @@ frontend:
     create: false
     automount: true
     annotations: {}
-    name: "nonprd-public-website-s3-service-account"
+    name: "prd-public-website-s3-service-account"
   podAnnotations: {}
   podLabels: {}
   podSecurityContext: {}
@@ -18,7 +18,7 @@ frontend:
     - name: frontend
       securityContext: {}
       image:
-        repository: 590183962451.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
+        repository: 533267401207.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
         pullPolicy: Always
         tag: "frontend-0.1.4"
       livenessProbe:
@@ -47,7 +47,8 @@ frontend:
   ingress:
     enabled: false
   nodeSelector:
-    eks.amazonaws.com/nodegroup: public-website-test-20240913090529127900000005
+    eks.amazonaws.com/nodegroup: public-website-20241017151108856800000015
+
   tolerations: []
   affinity: {}
   dnsPolicy: ClusterFirst
@@ -61,7 +62,7 @@ backend:
     create: false
     automount: true
     annotations: {}
-    name: "nonprd-public-website-s3-service-account"
+    name: "prd-public-website-s3-service-account"
   podAnnotations: {}
   podLabels: {}
   podSecurityContext: {}
@@ -69,7 +70,7 @@ backend:
     - name: backend
       securityContext: {}
       image:
-        repository: 590183962451.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
+        repository: 533267401207.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
         pullPolicy: Always
         tag: "backend-0.1.4"
       livenessProbe:
@@ -98,7 +99,7 @@ backend:
   ingress:
     enabled: false
   nodeSelector:
-    eks.amazonaws.com/nodegroup: public-website-test-20240913090529127900000005
+    eks.amazonaws.com/nodegroup: public-website-20241017151108856800000015
   tolerations: []
   affinity: {}
   dnsPolicy: ClusterFirst

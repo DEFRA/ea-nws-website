@@ -280,10 +280,11 @@ export default function LocationMessagesPage () {
                     className='govuk-table__cell'
                     style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
                   >
-                    {detail.areaType === 'Flood alert' ? (
-                      // TODO: Add functionality to unlink
-                      <Link className='govuk-link'>Unlink</Link>
-                    ) : null}
+                    {detail.areaType === 'Flood alert'
+                      ? (
+                        <Link className='govuk-link'>Unlink</Link>
+                        )
+                      : null}
                   </td>
                 </tr>
               ))}

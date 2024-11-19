@@ -84,7 +84,7 @@ module.exports = [
       } catch (error) {
         return h.response({
           status: 500,
-          errorMessage: error
+          errorMessage: error.message
         })
       }
     }

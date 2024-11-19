@@ -27,6 +27,7 @@ const routes = [].concat(
   require('../routes/bulk_uploads/save_locations'),
   require('../routes/bulk_uploads/get_invalid_locations'),
   require('../routes/shapefile/unzip_shapefile'),
+  require('../routes/shapefile/validate_shapefile'),
   require('../routes/add_location/duplicate_location')
 )
 

@@ -51,22 +51,6 @@ export default function DashboardHeader ({
     </>
   )
 
-  const noFloodMessagesDetails = (
-    <>
-      {/* TODO: Update this text */}
-      <p>
-        If no flood warnings or flood alerts are available for a location you
-        may be able to link to nearby flood areas that get them.
-      </p>
-
-      <p>
-        To link locations to nearby flood areas, go to an individual location
-        screen then link to nearby flood areas in the Flood areas and message
-        setting section.
-      </p>
-    </>
-  )
-
   const noContactsDetails = (
     <>
       <p>

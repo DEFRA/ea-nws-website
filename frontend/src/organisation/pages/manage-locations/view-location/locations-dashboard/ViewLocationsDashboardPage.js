@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../common/components/gov-uk/Button'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
@@ -10,7 +9,6 @@ import LocationsTable from './dashboard-components/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
 
 export default function ViewLocationsDashboardPage () {
-  const navigate = useNavigate()
   const [locations, setLocations] = useState([])
   const [selectedLocations, setSelectedLocations] = useState([])
   const [filteredLocations, setFilteredLocations] = useState([])
@@ -665,7 +663,6 @@ export default function ViewLocationsDashboardPage () {
                   <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 locations-filter-container'>
                     <SearchFilter
                       locations={locations}
-                      filteredLocations={filteredLocations}
                       setFilteredLocations={setFilteredLocations}
                       resetPaging={resetPaging}
                       setResetPaging={setResetPaging}

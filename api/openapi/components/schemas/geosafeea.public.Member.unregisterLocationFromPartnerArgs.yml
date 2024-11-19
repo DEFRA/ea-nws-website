@@ -1,0 +1,15 @@
+type: object
+required:
+  - authToken
+  - partnerId
+properties:
+  authToken:
+    type: string
+    description: |-
+      a secured token retrieved during registration or signin
+  locationId:
+    type: string
+    description: the location identifier.
+  partnerId:
+    type: string
+    description: id of the partner

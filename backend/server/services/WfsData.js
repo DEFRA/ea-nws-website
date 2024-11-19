@@ -8,7 +8,6 @@ const getWfsData = async (WFSParams) => {
     const wfsData = await fetch(wfsURL).then((response) => response.json())
     return { status: 200, data: wfsData }
   } catch (error) {
-    console.log('error', error)
     return { status: 500, data: null }
   }
 }

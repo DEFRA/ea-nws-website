@@ -8,7 +8,7 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import { setContactPreferences } from '../../../../common/redux/userSlice'
 
-export default function WarningContactsPreferencePage () {
+export default function WarningContactsPreferencePage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const loginEmail = useSelector((state) => state.session.profile.emails[0])
@@ -48,22 +48,20 @@ export default function WarningContactsPreferencePage () {
 
   return (
     <>
-      <BackLink to='signup/validate' />
+      <BackLink to='/signup/validate' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {error
-              ? (
-                <ErrorSummary errorList={[error]} />
-                )
-              : (
-                <NotificationBanner
-                  className='govuk-notification-banner govuk-notification-banner--success'
-                  title='Success'
-                  heading='Email address confirmed'
-                  text={loginEmail + ' is your sign in email'}
-                />
-                )}
+            {error ? (
+              <ErrorSummary errorList={[error]} />
+            ) : (
+              <NotificationBanner
+                className='govuk-notification-banner govuk-notification-banner--success'
+                title='Success'
+                heading='Email address confirmed'
+                text={loginEmail + ' is your sign in email'}
+              />
+            )}
             <h1 className='govuk-heading-l'>
               How would you like to get messages about flooding?
             </h1>

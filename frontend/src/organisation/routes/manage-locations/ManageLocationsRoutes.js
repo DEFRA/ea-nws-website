@@ -166,7 +166,7 @@ const orgManageLocationRoutes = [
     component: <ViewLocationsDashboardPage />
   },
   {
-    path: orgManageLocationsUrls.view.individualLocation,
+    path: orgManageLocationsUrls.view.viewLocation,
     component: <ViewLocationInformationPage />
   },
   {

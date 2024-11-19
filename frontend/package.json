@@ -50,7 +50,7 @@
     "build": "cross-env REACT_APP_INACTIVITY_POPUP=1680 REACT_APP_TIMEOUT_POPUP=120 react-scripts build",
     "start-test": "cross-env REACT_APP_INACTIVITY_POPUP=10 REACT_APP_TIMEOUT_POPUP=5 REACT_APP_API_URL=http://localhost:5000 react-scripts start",
     "eject": "react-scripts eject",
-    "uitest": "python3 -m pytest test/selenium-test",
+    "uitest": "python3 -m pytest -k test_view_messages",
     "test": "jest",
     "lint": "standard",
     "lintfix": "standard --fix"

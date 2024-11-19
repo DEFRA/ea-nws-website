@@ -1,3 +1,4 @@
+const path = require('path')
 const {
   S3Client,
   ListObjectsV2Command,
@@ -54,13 +55,28 @@ module.exports = [
         /*** Check 2: all prefixes match ***/
         const prefixes = Contents.map((item) => {
           const fileName = item.Key.replace(bucketFolder, '')
-          return fileName.substring(0, fileName.lastIndexOf('.'))
+          return fileName.split('.')[0]
         })
         const uniquePrefixes = new Set(prefixes)
+        console.log(`uniquePrefixes: ${Array.from(uniquePrefixes)}`)
         if (uniquePrefixes.size > 1) {
           throw new Error(
             'Each file in the ZIP must have the same prefix, for example, locations.shp, locations.shx or locations.dbf'
           )
+        }
+
+        /*** Check 3: required files ***/
+        const requiredFilesTypes = ['.shp', '.shx', '.dbf']
+        const presentFileTypes = Contents.map((item) => {
+          const fileType = item.Key.slice(item.Key.lastIndexOf('.'))
+          return fileType
+        })
+        for (let required of requiredFilesTypes) {
+          if (!presentFileTypes.includes(required)) {
+            throw new Error(
+              'The ZIP file must contain .shp (main file), .shx (index file) and .dbf (database file)'
+            )
+          }
         }
       } catch (error) {
         // An invalid shapefile (and the original zip) should be deleted from the bucket and the user will be asked to upload a correct one

@@ -55,7 +55,8 @@ const userSlice = createSlice({
           action_plan: null,
           notes: null,
           keywords: null,
-          location_data_type: null
+          location_data_type: null,
+          alert_types: null
         }
       }
     },

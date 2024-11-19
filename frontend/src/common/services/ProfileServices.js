@@ -44,15 +44,20 @@ const removeUnverifiedContact = (profile, contact) => {
 
   // need to check if there are any unverified
   if (profile.unverified) {
-    if (profile.unverified.emails && profile.unverified.emails.some((email) => email.address === contact)) {
+    if (
+      profile.unverified.emails &&
+      profile.unverified.emails.some((email) => email.address === contact)
+    ) {
       unverifiedContactListKey = 'emails'
-    } else if (profile.unverified.mobilePhones &&
+    } else if (
+      profile.unverified.mobilePhones &&
       profile.unverified.mobilePhones.some(
         (mobilePhone) => mobilePhone.address === contact
       )
     ) {
       unverifiedContactListKey = 'mobilePhones'
-    } else if (profile.unverified.homePhones &&
+    } else if (
+      profile.unverified.homePhones &&
       profile.unverified.homePhones.some(
         (homePhone) => homePhone.address === contact
       )
@@ -259,20 +264,83 @@ const removeLocation = (profile, address) => {
   return updatedProfile
 }
 
-const updateLocationsFloodCategory = (profile, location, updatedCategories) => {
+const updateLocationsAlertTypes = (profile, location, updatedAlertTypes) => {
   const parsedProfile = JSON.parse(JSON.stringify(profile))
 
   const locationIndex = parsedProfile.pois.findIndex(
     (poi) => poi.address === location.address
   )
+
   if (locationIndex !== -1) {
-    parsedProfile.pois[locationIndex].categories = updatedCategories
+    parsedProfile.pois[locationIndex].additionals = setLocationOtherAdditionals(
+      [],
+      'alertTypes',
+      updatedAlertTypes
+    )
   }
 
   return parsedProfile
 }
 
+const getRegistrationParams = (profile, alertTypes) => {
+  const channelVoiceEnabled = profile.homePhones.length > 0
+  const channelSmsEnabled = profile.mobilePhones.length > 0
+  const channelEmailEnabled = true // always true as user will have primary email
+  const channelMobileAppEnabled = false
+
+  return {
+    channelVoiceEnabled,
+    channelSmsEnabled,
+    channelEmailEnabled,
+    channelMobileAppEnabled,
+    partnerCanView: true,
+    partnerCanEdit: true,
+    alertTypes
+  }
+}
+
+function findPOIByAddress (profile, address) {
+  const parsedProfile = JSON.parse(JSON.stringify(profile))
+
+  return parsedProfile.pois.find((poi) => poi.address === address)
+}
+
+const setLocationOtherAdditionals = (additionals, id, value) => {
+  let idFound = false
+  let otherAdditionals = {}
+  for (let i = 0; i < additionals.length; i++) {
+    if (additionals[i].id === 'other') {
+      idFound = true
+      otherAdditionals = JSON.parse(additionals[i].value?.s)
+      otherAdditionals[id] = value
+      additionals[i].value = { s: JSON.stringify(otherAdditionals) }
+    }
+  }
+  if (!idFound) {
+    additionals.push({
+      id: 'other',
+      value: { s: JSON.stringify({ [id]: value }) }
+    })
+  }
+
+  return additionals
+}
+
+const getLocationOtherAdditional = (additionals, id) => {
+  for (let i = 0; i < additionals.length; i++) {
+    if (additionals[i].id === 'other') {
+      const otherAdditionals = JSON.parse(additionals[i].value?.s)
+      return otherAdditionals[id]
+    }
+  }
+  return ''
+}
+
 module.exports = {
+  setLocationOtherAdditionals,
+  getLocationOtherAdditional,
+  findPOIByAddress,
+  getRegistrationParams,
   addUnverifiedContact,
   removeUnverifiedContact,
   addVerifiedContact,
@@ -282,7 +350,7 @@ module.exports = {
   updateAdditionals,
   addLocation,
   removeLocation,
-  updateLocationsFloodCategory,
+  updateLocationsAlertTypes,
   setOrganisationAdditionals,
   getOrganisationAdditionals,
   updateOrganisationAdditionals

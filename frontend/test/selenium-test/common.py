@@ -44,6 +44,9 @@ url_cit_signout_auto = local_host + '/signout-auto'
 # ORGANISATION URLS
 url_org = local_host + '/organisation'
 url_org_home = url_org + '/home'
+# Info urls
+url_org_flood_areas = url_org + '/info/flood-areas'
+url_org_flood_types = url_org + '/info/flood-types'
 # Signup urls
 url_org_signup_path = url_org + '/sign-up'
 url_org_signup = {
@@ -133,7 +136,7 @@ url_org_man_loc = {
         'select_how': url_org_man_loc_path + '/unmatched-locations/manually-find/select-how',
         'find_by_address': url_org_man_loc_path + '/unmatched-locations/manually-find/address',
     },
-    'edit': {
+    'edit':{
         'cannot_change_location_polygon': url_org_man_loc_path + '/edit/edit-polygon',
         'cannot_change_location_line': url_org_man_loc_path + '/edit/edit-line',
         'options': url_org_man_loc_path + '/edit/select-location-options',
@@ -142,7 +145,7 @@ url_org_man_loc = {
         'notInEngland': url_org_man_loc_path + '/edit/xy-coordinates-not-in-england',
         'dropPinEdit': url_org_man_loc_path + '/edit/drop-pin-edit'
     },
-   'view':{
+    'view':{
         'dashboard': url_org_man_loc_path + '/view-locations',
         'details': url_org_man_loc_path + '/location/view-location',
         'messages': url_org_man_loc_path + '/location/view-messages'
@@ -284,6 +287,11 @@ def check_h1_heading(browser, page_heading):
 # Check for error summary
 def check_error_summary(browser):
     error_xpath = f"//div[contains(@class, 'govuk-error-summary')]"
+    return check_exists_by_xpath(browser, error_xpath)
+
+# Check for success banner
+def check_success_banner(browser):
+    error_xpath = f"//div[contains(@class, 'govuk-notification-banner--success')]"
     return check_exists_by_xpath(browser, error_xpath)
 
 # Check for sign back in page for unauthenticated access

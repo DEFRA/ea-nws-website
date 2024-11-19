@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Button from '../components/gov-uk/Button'
 import NotificationBanner from '../components/gov-uk/NotificationBanner'
+import AlertType from '../enums/AlertType'
 import {
   clearAuth,
   setAuthToken,
@@ -39,13 +40,27 @@ export default function IndexPage () {
     additionals: [{ id: 'signUpComplete', value: { s: 'true' } }],
     pois: [
       {
+        id: 1,
+        name: '12094563',
         address: 'House Of Commons, Houses Of Parliament, London, SW1A 0AA',
-        name: '10033540874',
         coordinates: {
           latitude: 51.4998415,
           longitude: -0.1246377
         },
-        categories: ['severe', 'alert']
+        additionals: [
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify({
+                alertTypes: [
+                  AlertType.SEVERE_FLOOD_WARNING,
+                  AlertType.FLOOD_WARNING,
+                  AlertType.FLOOD_ALERT
+                ]
+              })
+            }
+          }
+        ]
       }
     ]
   }
@@ -369,6 +384,7 @@ export default function IndexPage () {
           channelVoiceEnabled: true,
           channelSmsEnabled: true,
           channelEmailEnabled: true,
+          channelMobileAppEnabled: false,
           partnerCanView: false,
           partnerCanEdit: false,
           categories: [

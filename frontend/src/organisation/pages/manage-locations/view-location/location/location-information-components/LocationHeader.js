@@ -1,16 +1,27 @@
 import { useSelector } from 'react-redux'
-import Button from '../../../../../common/components/gov-uk/Button'
-import LocationDataType from '../../../../../common/enums/LocationDataType'
-import RiskAreaType from '../../../../../common/enums/RiskAreaType'
-import RiskCategoryLabel from '../../../../components/custom/RiskCategoryLabel'
-import ViewLocationSubNavigation from '../../../../layouts/location/view/view-location-information/location-information-components/ViewLocationSubNavigation'
+import { useLocation } from 'react-router'
+import Button from '../../../../../../common/components/gov-uk/Button'
+import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
+import LocationDataType from '../../../../../../common/enums/LocationDataType'
+import RiskAreaType from '../../../../../../common/enums/RiskAreaType'
+import RiskCategoryLabel from '../../../../../components/custom/RiskCategoryLabel'
+import ViewLocationSubNavigation from './ViewLocationSubNavigation'
 
 export default function LocationHeader ({ currentPage }) {
-  const currentLocation = useSelector((state) => state.session.currentLocation)
-  const additionalData = currentLocation.meta_data.location_additional
+  const location = useLocation()
+  const additionalData = useSelector(
+    (state) => state.session.currentLocation.meta_data.location_additional
+  )
 
   return (
     <>
+      {location.state && (
+        <NotificationBanner
+          className='govuk-notification-banner govuk-notification-banner--success'
+          title='Success'
+          text={location.state.successMessage}
+        />
+      )}
       <div className='govuk-grid-row'>
         <div className='govuk-grid-column-one-half'>
           <h1 className='govuk-heading-l'>{additionalData.location_name}</h1>

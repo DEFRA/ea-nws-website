@@ -578,10 +578,10 @@ export default function IndexPage () {
                 </li>
                 <li>
                   <Link
-                    to='/organisation/manage-locations/edit/select-location-options'
+                    to='/organisation/manage-locations/edit/search-options'
                     className='govuk-link'
                   >
-                    edit location
+                    edit locations xy coordinates
                   </Link>
                 </li>
               </ul>

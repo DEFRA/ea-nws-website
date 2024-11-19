@@ -2,21 +2,19 @@ import React from 'react'
 import NotInEnglandLayout from '../../../../../../layouts/location/add-or-edit-location/error/NotInEnglandLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DropPinNotInEnglandPage () {
-  const postCodeSearchUrl = orgManageLocationsUrls.add.search.postCodeSearch
-
+export default function NotInEnglandPage () {
   const xyCoordsSearchUrl =
-    orgManageLocationsUrls.add.search.xyCoordinatesSearch
+    orgManageLocationsUrls.edit.individualLocation.location.xyCoords.search
 
   const dropPinSearchUrl =
-    orgManageLocationsUrls.unmatchedLocations.manuallyfind.map
+    orgManageLocationsUrls.edit.individualLocation.location.dropPin.drop
 
   return (
     <NotInEnglandLayout
-      postCodeSearchUrl={postCodeSearchUrl}
       xyCoordinatesSearchUrl={xyCoordsSearchUrl}
       dropPinSearchUrl={dropPinSearchUrl}
-      flow='dropPin'
+      flow='xyCoordinate'
+      // navigateToNextPage find out from Alex where this goes
     />
   )
 }

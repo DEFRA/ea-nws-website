@@ -10,7 +10,7 @@ import Radio from '../../../../../common/components/gov-uk/Radio'
 import { setCurrentLocationAlertCategories } from '../../../../../common/redux/userSlice'
 import { infoUrls } from '../../../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-import LocationHeader from './LocationHeader'
+import LocationHeader from './location-information-components/LocationHeader'
 
 export default function LocationMessagesPage () {
   const navigate = useNavigate()
@@ -282,7 +282,6 @@ export default function LocationMessagesPage () {
                   >
                     {detail.areaType === 'Flood alert'
                       ? (
-                    // TODO: Add functionality to unlink
                         <Link className='govuk-link'>Unlink</Link>
                         )
                       : null}

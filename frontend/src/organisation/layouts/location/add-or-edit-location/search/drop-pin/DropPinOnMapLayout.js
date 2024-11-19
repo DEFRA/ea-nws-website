@@ -1,32 +1,52 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useLocation } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
-import InsetText from '../../../../../../common/components/gov-uk/InsetText'
 import { setCurrentLocationCoordinates } from '../../../../../../common/redux/userSlice'
+import { convertCoordinatesToEspg27700 } from '../../../../../../common/services/CoordinatesFormatConverter'
 import { locationInEngland } from '../../../../../../common/services/validations/LocationInEngland'
 import Map from '../../../../../components/custom/Map'
 import MapInteractiveKey from '../../../../../components/custom/MapInteractiveKey'
 
-export default function LocationDropPinSearchLayout ({
-  NavigateToNextPage,
-  NavigateToPreviousPage,
-  NavigateToNotInEnglandPage,
-  DifferentSearchUrl
+export default function DropPinOnMapLayout ({
+  navigateToNextPage,
+  navigateToDropPinLocationSearchPage,
+  navigateToNotInEnglandPage
 }) {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [pinCoords, setPinCoords] = useState('')
+  const location = useLocation()
+  const showMarkerInitially = location?.state?.mapArea == null
+  let { latitude, longitude } = useSelector(
+    (state) => state.session.currentLocation.coordinates
+  )
+  const [displayCoords, setDisplayCoords] = useState('')
+  const [pinCoords, setPinCoords] = useState(null)
   const [error, setError] = useState('')
   const [showFloodWarningAreas, setShowFloodWarningAreas] = useState(true)
   const [showFloodAlertAreas, setShowFloodAlertAreas] = useState(true)
   const [showFloodExtents, setShowFloodExtents] = useState(true)
-  const currentLocationName = useSelector(
-    (state) =>
-      state.session.currentLocation.meta_data.location_additional.location_name
-  )
+
+  const pinDropCoordsDisplay = () => {
+    if (pinCoords) {
+      latitude = pinCoords.latitude
+      longitude = pinCoords.longitude
+    }
+
+    const { northing, easting } = convertCoordinatesToEspg27700(
+      longitude,
+      latitude
+    )
+
+    return `${Math.trunc(northing)}, ${Math.trunc(easting)}`
+  }
+
+  useEffect(() => {
+    setDisplayCoords(pinDropCoordsDisplay())
+  }, [pinCoords, latitude, longitude])
 
   // remove error if user drops a pin
   useEffect(() => {
@@ -46,16 +66,21 @@ export default function LocationDropPinSearchLayout ({
       if (inEngland) {
         dispatch(setCurrentLocationCoordinates(pinCoords))
         // TODO: Send currentLocation object to elasticache and geosafe, then navigate
-        NavigateToNextPage()
+        navigateToNextPage()
       } else {
-        NavigateToNotInEnglandPage()
+        navigateToNotInEnglandPage()
       }
     }
   }
 
+  const navigateToLocationSearch = (event) => {
+    event.preventDefault()
+    navigateToDropPinLocationSearchPage()
+  }
+
   const navigateBack = (event) => {
     event.preventDefault()
-    NavigateToPreviousPage()
+    navigate(-1)
   }
 
   return (
@@ -71,11 +96,24 @@ export default function LocationDropPinSearchLayout ({
                 Click on the map to drop a pin where you think this location is.
                 You can then add the location to this account.
               </p>
-              <InsetText text={currentLocationName} />
               <div className='govuk-!-margin-bottom-4'>
-                <a className='govuk-link' href={DifferentSearchUrl}>
-                  Search with a different place name, town or postcode
-                </a>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  {location.state && (
+                    <>
+                      {' '}
+                      <span style={{ marginRight: '8px' }}>Map area:</span>
+                      <span style={{ marginRight: '16px' }}>
+                        {location.state?.mapArea}
+                      </span>
+                    </>
+                  )}
+                  <Link
+                    className='govuk-link'
+                    onClick={(e) => navigateToLocationSearch(e)}
+                  >
+                    Search with a different place name, town or postcode
+                  </Link>
+                </div>
               </div>
               <div class='govuk-grid-row'>
                 <div class='govuk-grid-column-two-thirds'>
@@ -84,7 +122,7 @@ export default function LocationDropPinSearchLayout ({
                     type='drop'
                     showFloodWarningAreas={showFloodWarningAreas}
                     showFloodAlertAreas={showFloodAlertAreas}
-                    showMarker={!useLocation().pathname.includes('add')}
+                    showMarker={showMarkerInitially}
                   />
                 </div>
                 <div class='govuk-grid-column-one-third'>
@@ -98,13 +136,30 @@ export default function LocationDropPinSearchLayout ({
                   />
                 </div>
               </div>
-              <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
-                This is not a live flood map
-              </span>
-              <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-margin-top-1'>
-                It shows fixed areas that we provide flood warnings and alerts
-                for.
-              </span>
+
+              <div class='govuk-grid-row'>
+                <div class='govuk-grid-column-two-thirds'>
+                  <div
+                    className='govuk-caption-container'
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between'
+                    }}
+                  >
+                    <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
+                      This is not a live flood map
+                    </span>
+                    <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-margin-top-1'>
+                      X and Y {displayCoords}
+                    </span>
+                  </div>
+                  <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-margin-top-1'>
+                    It shows fixed areas that we provide flood warnings and
+                    alerts for.
+                  </span>
+                </div>
+              </div>
             </div>
             <Button
               className='govuk-button govuk-!-margin-top-4'

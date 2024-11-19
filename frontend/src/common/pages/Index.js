@@ -384,6 +384,7 @@ export default function IndexPage () {
           channelVoiceEnabled: true,
           channelSmsEnabled: true,
           channelEmailEnabled: true,
+          channelMobileAppEnabled: false,
           partnerCanView: false,
           partnerCanEdit: false,
           categories: [

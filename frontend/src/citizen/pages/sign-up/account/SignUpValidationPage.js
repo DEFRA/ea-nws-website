@@ -92,7 +92,7 @@ export default function SignUpValidationPage () {
       const data = {
         authToken,
         locationId: poi.id,
-        partnerId: 1, // this is currently a hardcoded value - geosafe to update us on what it is
+        partnerId: '1', // this is currently a hardcoded value - geosafe to update us on what it is
         params: getRegistrationParams(profile, alertTypes)
       }
 

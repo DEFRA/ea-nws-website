@@ -229,13 +229,15 @@ export default function LocationsTable ({
   return (
     <>
       <p
-        className='govuk-!-margin-bottom-6'
+        className='govuk-!-margin-bottom-3'
         style={{ display: 'flex', color: '#505a5f' }}
       >
-        {locations.length} {locations.length === 1 ? 'location' : 'locations'}{' '}
+        {locations.length !== displayedLocations.length &&
+          'Showing ' + displayedLocations.length + ' of '}
+        {locations.length} {locations.length === 1 ? 'location' : 'locations'}
         <span style={{ margin: '0 20px' }}>|</span>
         {selectedLocations.length}{' '}
-        {selectedLocations.length === 1 ? 'location' : 'locations'} selected{' '}
+        {selectedLocations.length === 1 ? 'location' : 'locations'} selected
         <span style={{ margin: '0 20px' }}>|</span>
         <img src={locationPin} alt='Location pin icon' />
         <Link>View on map</Link>

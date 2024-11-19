@@ -116,9 +116,6 @@ export default function DashboardHeader ({
         style={{
           width: '100%',
           padding: '0.5rem 0.5rem'
-          // Set a minimum height for the outer container
-          // display: 'flex', // Use flexbox to handle inner content better
-          // flexDirection: 'column' // Ensure the inner content is stacked vertically
         }}
       >
         <p>
@@ -127,7 +124,8 @@ export default function DashboardHeader ({
         <div
           style={{
             border: '2px solid lightGrey',
-            padding: '1.5rem 1.5rem'
+            padding: '1.5rem 1.5rem',
+            height: '10rem'
           }}
         >
           {(type === 'floodMessages' || type === 'noContacts') && (
@@ -177,10 +175,10 @@ export default function DashboardHeader ({
             </Link>
           )}
           {type === 'noFloodMessages' && (
-            <Details
-              title='Link these locations to nearby flood areas to get flood messages'
-              text={noFloodMessagesDetails}
-            />
+            // TODO: Add route to link locations
+            <Link className='govuk-link'>
+              Link these locations to nearby flood areas to get flood messages
+            </Link>
           )}
           {type === 'noContacts' && (
             <Details
@@ -215,11 +213,11 @@ export default function DashboardHeader ({
           </div>
         </div>
 
-        <div style={{ display: 'flex', fontSize: '18px' }}>
+        <span style={{ display: 'flex', fontSize: '18px' }}>
           <FloodBanner type='floodMessages' />
           <FloodBanner type='noFloodMessages' />
           <FloodBanner type='noContacts' />
-        </div>
+        </span>
       </div>
 
       <div className='govuk-grid-column-one-half'>

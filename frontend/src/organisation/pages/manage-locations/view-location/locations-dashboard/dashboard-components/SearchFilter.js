@@ -1,7 +1,8 @@
 import {
   faAngleDown,
   faAngleUp,
-  faMagnifyingGlass
+  faMagnifyingGlass,
+  faXmark
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
@@ -10,6 +11,7 @@ import CheckBox from '../../../../../../common/components/gov-uk/CheckBox'
 
 export default function SearchFilter ({
   locations,
+  filteredLocations,
   setFilteredLocations,
   resetPaging,
   setResetPaging,
@@ -21,7 +23,13 @@ export default function SearchFilter ({
   setSelectedBusinessCriticalityFilters
 }) {
   // filters
+  const [selectedFilters, setSelectedFilters] = useState([])
   const [locationNameFilter, setLocationNameFilter] = useState('')
+
+  // useEffect(() => {
+  //   console.log('Filter changed: ', selectedLocationTypeFilters)
+  //   setSelectedFilters([...selectedLocationTypeFilters])
+  // }, selectedLocationTypeFilters)
 
   const locationTypes = [
     ...new Set(
@@ -55,8 +63,10 @@ export default function SearchFilter ({
     const { value } = event.target
     setSelectedLocationTypeFilters((prev) => {
       if (prev.includes(value)) {
+        setSelectedFilters(...prev.filter((preference) => preference !== value))
         return prev.filter((preference) => preference !== value)
       } else {
+        setSelectedFilters([...prev, value])
         return [...prev, value]
       }
     })
@@ -134,24 +144,22 @@ export default function SearchFilter ({
       )
     }
 
+    // Apply Groundwater flood risk filter
+    // if (selectedGroundwaterFlooRiskFilters.length > 0) {
+    //   filteredLocations = filteredLocations.filter((location) =>
+    //     selectedGroundwaterFlooRiskFilters.includes(
+    //       location.meta_data.location_additional.business_criticality
+    //     )
+    //   )
+    // }
+
     setResetPaging(!resetPaging)
     setFilteredLocations(filteredLocations)
   }
 
-  return (
+  const locationNameSearchFilter = (
     <>
-      <div className='govuk-heading-m locations-filter-header'>
-        <h1 className='govuk-heading-m'>Filter</h1>
-      </div>
-
-      <Button
-        text='Apply Filter'
-        className='govuk-button govuk-button--primary'
-        onClick={() => filterLocations()}
-      />
       <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3' />
-
-      {/* Location name filter */}
       <div
         className='locations-filter-section'
         onClick={() => setLocationNameVisible(!locationNameVisible)}
@@ -178,9 +186,12 @@ export default function SearchFilter ({
           </div>
         </div>
       )}
-      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3' />
+    </>
+  )
 
-      {/* Location type filter */}
+  const locationTypeFilter = (
+    <>
+      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3' />
       <div
         className='locations-filter-section'
         onClick={() => {
@@ -206,37 +217,12 @@ export default function SearchFilter ({
           ))}
         </div>
       )}
-      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3' />
+    </>
+  )
 
-      {/* Flood messages available filter */}
-      <div
-        className='locations-filter-section'
-        onClick={() => {
-          setFloodMessagesVisible(!floodMessagesVisible)
-        }}
-      >
-        <FontAwesomeIcon
-          icon={floodMessagesVisible ? faAngleUp : faAngleDown}
-          size='lg'
-        />
-        <p className='locations-filter-title'>Flood messages available</p>
-      </div>
-      {floodMessagesVisible && (
-        <div className='govuk-checkboxes govuk-checkboxes--small'>
-          {floodMessagesAvailable.map((option) => (
-            <CheckBox
-              key={option}
-              label={option}
-              value={option}
-              checked={selectedFloodMessagesAvailableFilters.includes(option)}
-              onChange={handleFloodMessagesAvailableFilterChange}
-            />
-          ))}
-        </div>
-      )}
+  const businessCriticalityFilter = (
+    <>
       <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3' />
-
-      {/* Business criticality filter */}
       <div
         className='locations-filter-section'
         onClick={() => {
@@ -262,6 +248,132 @@ export default function SearchFilter ({
           ))}
         </div>
       )}
+    </>
+  )
+
+  // const groundWaterFloodRiskFilter = (
+  //   <>
+  //     <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3' />
+  //     <div
+  //       className='locations-filter-section'
+  //       onClick={() => {
+  //         setGroundWaterFloodRiskVisible(!groundWaterFloodRiskVisible)
+  //       }}
+  //     >
+  //       <FontAwesomeIcon
+  //         icon={groundWaterFloodRiskVisible ? faAngleUp : faAngleDown}
+  //         size='lg'
+  //       />
+  //       <p className='locations-filter-title'>Groundwater flood risk</p>
+  //     </div>
+  //     {groundWaterFloodRiskVisible && (
+  //       <div className='govuk-checkboxes govuk-checkboxes--small'>
+  //         {groundWaterFloodRisk.map((option) => (
+  //           <CheckBox
+  //             key={option}
+  //             label={option}
+  //             value={option}
+  //             checked={selectedGroundWaterFloodRiskFilters.includes(option)}
+  //             onChange={handleGroundWaterFloodRiskFilterChange}
+  //           />
+  //         ))}
+  //       </div>
+  //     )}
+  //   </>
+  // )
+
+  const floodMessagesAvailableFilter = (
+    <>
+      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3' />
+      <div
+        className='locations-filter-section'
+        onClick={() => {
+          setFloodMessagesVisible(!floodMessagesVisible)
+        }}
+      >
+        <FontAwesomeIcon
+          icon={floodMessagesVisible ? faAngleUp : faAngleDown}
+          size='lg'
+        />
+        <p className='locations-filter-title'>Flood messages available</p>
+      </div>
+      {floodMessagesVisible && (
+        <div className='govuk-checkboxes govuk-checkboxes--small'>
+          {floodMessagesAvailable.map((option) => (
+            <CheckBox
+              key={option}
+              label={option}
+              value={option}
+              checked={selectedFloodMessagesAvailableFilters.includes(option)}
+              onChange={handleFloodMessagesAvailableFilterChange}
+            />
+          ))}
+        </div>
+      )}
+    </>
+  )
+
+  const selectedFilterContents = (filterName, filterArray, setFilterArray) => {
+    return (
+      <>
+        <h3 className='govuk-heading-s govuk-!-margin-bottom-2'>
+          {filterName}
+        </h3>
+        {filterArray.map((filter) => (
+          <>
+            <div className='filter'>
+              {filter}
+
+              <button
+                className='filter-button'
+                onClick={() => {
+                  setFilterArray(filterArray.filter((item) => item !== filter))
+                }}
+              >
+                <FontAwesomeIcon icon={faXmark} />
+              </button>
+            </div>
+          </>
+        ))}
+      </>
+    )
+  }
+
+  return (
+    <>
+      <div className='locations-filter-header'>
+        <h1 className='govuk-heading-m govuk-!-margin-bottom-2'>Filter</h1>
+      </div>
+
+      {selectedFilters?.length > 0 && (
+        <div className='locations-filter-selected govuk-!-margin-bottom-2'>
+          <h2 className='govuk-heading-s'>Selected filters</h2>
+          {selectedFilterContents(
+            'Location type',
+            selectedLocationTypeFilters,
+            setSelectedLocationTypeFilters
+          )}
+          {/* {selectedBusinessCriticalityFilters.length > 0 && (
+            <h3 className='govuk-heading-s'>Business criticality</h3>
+          )}
+          {selectedFloodMessagesAvailableFilters.length > 0 && (
+            <h3 className='govuk-heading-s'>Rivers and sea flood risk</h3>
+          )} */}
+        </div>
+      )}
+
+      <div className=' govuk-!-margin-top-6'>
+        <Button
+          text='Apply Filter'
+          className='govuk-button govuk-button--primary'
+          onClick={() => filterLocations()}
+        />
+      </div>
+
+      {locationNameSearchFilter}
+      {locationTypeFilter}
+      {businessCriticalityFilter}
+      {floodMessagesAvailableFilter}
     </>
   )
 }

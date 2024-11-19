@@ -37,7 +37,7 @@ export default function ViewLocationsDashboardPage () {
             action_plan: '1. Dont panic!',
             notes:
               'John Smith has the flood plane for this location. His contact number is 01234 567 890',
-            keywords: 'Midlands',
+            keywords: '["Midlands"]',
             location_data_type: LocationDataType.ADDRESS
           }
         }
@@ -610,6 +610,42 @@ export default function ViewLocationsDashboardPage () {
     setSelectedBusinessCriticalityFilters
   ] = useState([])
 
+  const table = (
+    <>
+      <Button
+        text={isFilterVisible ? 'Close filter' : 'Open filter'}
+        className='govuk-button govuk-button--secondary inline-block'
+        onClick={() => setIsFilterVisible(!isFilterVisible)}
+      />
+      &nbsp; &nbsp;
+      <Button
+        text='More actions'
+        className='govuk-button govuk-button--secondary inline-block'
+        // onClick={() => setIsFilterVisible(!isFilterVisible)}
+      />
+      &nbsp; &nbsp;
+      <Button
+        text='Print'
+        className='govuk-button govuk-button--secondary inline-block'
+        // onClick={() => setIsFilterVisible(!isFilterVisible)}
+      />
+      <LocationsTable
+        locations={locations}
+        displayedLocations={displayedLocations}
+        filteredLocations={filteredLocations}
+        selectedLocations={selectedLocations}
+        setSelectedLocations={setSelectedLocations}
+        setFilteredLocations={setFilteredLocations}
+        resetPaging={resetPaging}
+        setResetPaging={setResetPaging}
+      />
+      <Pagination
+        totalPages={Math.ceil(filteredLocations.length / locationsPerPage)}
+        onPageChange={(val) => setCurrentPage(val)}
+      />
+    </>
+  )
+
   return (
     <>
       <OrganisationAccountNavigation
@@ -620,95 +656,43 @@ export default function ViewLocationsDashboardPage () {
         <div className='govuk-grid-row'>
           <DashboardHeader locations={locations} />
           <div className='govuk-grid-column-full govuk-body'>
-            {!isFilterVisible ? (
-              <>
-                <Button
-                  text='Open filter'
-                  className='govuk-button govuk-button--secondary inline-block'
-                  onClick={() => setIsFilterVisible(!isFilterVisible)}
-                />
-                &nbsp; &nbsp;
-                <Button
-                  text='More actions'
-                  className='govuk-button govuk-button--secondary inline-block'
-                  // onClick={() => setIsFilterVisible(!isFilterVisible)}
-                />
-                &nbsp; &nbsp;
-                <Button
-                  text='Print'
-                  className='govuk-button govuk-button--secondary inline-block'
-                  // onClick={() => setIsFilterVisible(!isFilterVisible)}
-                />
-                <LocationsTable
-                  locations={locations}
-                  displayedLocations={displayedLocations}
-                  filteredLocations={filteredLocations}
-                  selectedLocations={selectedLocations}
-                  setSelectedLocations={setSelectedLocations}
-                  setFilteredLocations={setFilteredLocations}
-                  resetPaging={resetPaging}
-                  setResetPaging={setResetPaging}
-                />
-                <Pagination
-                  totalPages={Math.ceil(
-                    filteredLocations.length / locationsPerPage
-                  )}
-                  onPageChange={(val) => setCurrentPage(val)}
-                />
-              </>
-            ) : (
-              <div className='govuk-grid-row'>
-                <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 locations-filter-container'>
-                  <SearchFilter
-                    locations={locations}
-                    setFilteredLocations={setFilteredLocations}
-                    resetPaging={resetPaging}
-                    setResetPaging={setResetPaging}
-                    selectedLocationTypeFilters={selectedLocationTypeFilters}
-                    setSelectedLocationTypeFilters={
+            {!isFilterVisible
+              ? (
+                <>{table}</>
+                )
+              : (
+                <div className='govuk-grid-row'>
+                  <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 locations-filter-container'>
+                    <SearchFilter
+                      locations={locations}
+                      filteredLocations={filteredLocations}
+                      setFilteredLocations={setFilteredLocations}
+                      resetPaging={resetPaging}
+                      setResetPaging={setResetPaging}
+                      selectedLocationTypeFilters={selectedLocationTypeFilters}
+                      setSelectedLocationTypeFilters={
                       setSelectedLocationTypeFilters
                     }
-                    selectedFloodMessagesAvailableFilters={
+                      selectedFloodMessagesAvailableFilters={
                       selectedFloodMessagesAvailableFilters
                     }
-                    setSelectedFloodMessagesAvailableFilters={
+                      setSelectedFloodMessagesAvailableFilters={
                       setSelectedFloodMessagesAvailableFilters
                     }
-                    selectedBusinessCriticalityFilters={
+                      selectedBusinessCriticalityFilters={
                       selectedBusinessCriticalityFilters
                     }
-                    setSelectedBusinessCriticalityFilters={
+                      setSelectedBusinessCriticalityFilters={
                       setSelectedBusinessCriticalityFilters
                     }
-                  />
-                </div>
+                    />
+                  </div>
 
-                <div className='govuk-grid-column-three-quarters'>
-                  <Button
-                    text='Close Filter'
-                    className='govuk-button govuk-button--secondary'
-                    onClick={() => setIsFilterVisible(!isFilterVisible)}
-                  />
-                  <LocationsTable
-                    locations={locations}
-                    displayedLocations={displayedLocations}
-                    filteredLocations={filteredLocations}
-                    selectedLocations={selectedLocations}
-                    setSelectedLocations={setSelectedLocations}
-                    setFilteredLocations={setFilteredLocations}
-                    resetPaging={resetPaging}
-                    setResetPaging={setResetPaging}
-                  />
-                  <Pagination
-                    totalPages={Math.ceil(
-                      filteredLocations.length / locationsPerPage
-                    )}
-                    onPageChange={(val) => setCurrentPage(val)}
-                    reset={resetPaging}
-                  />
+                  <div className='govuk-grid-column-three-quarters'>
+                    <>{table}</>
+                  </div>
                 </div>
-              </div>
-            )}
+                )}
           </div>
         </div>
       </main>

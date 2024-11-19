@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import AddressLayout from '../../../../../../layouts/optional-info/AddressLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AddressPage () {
+export default function AddressPage() {
   const navigate = useNavigate()
   const locationName = useSelector(
     (state) =>
@@ -12,7 +12,7 @@ export default function AddressPage () {
   )
 
   const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.view.individualLocation, {
+    navigate(orgManageLocationsUrls.view.viewLocation, {
       state: { successMessage: `${locationName} address changed` }
     })
   }

@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router'
 import NotesLayout from '../../../../../../layouts/optional-info/NotesLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function NotesPage () {
+export default function NotesPage() {
   const navigate = useNavigate()
   const locationName = useSelector(
     (state) =>
@@ -12,7 +12,7 @@ export default function NotesPage () {
   )
 
   const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.view.individualLocation, {
+    navigate(orgManageLocationsUrls.view.viewLocation, {
       state: { successMessage: `${locationName} notes changed` }
     })
   }

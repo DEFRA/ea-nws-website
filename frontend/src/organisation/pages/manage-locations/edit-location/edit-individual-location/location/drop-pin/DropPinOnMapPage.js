@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import DropPinOnMapLayout from '../../../../../../layouts/location/add-or-edit-location/search/drop-pin/DropPinOnMapLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DropPinOnMapPage () {
+export default function DropPinOnMapPage() {
   const navigate = useNavigate()
   const locationName = useSelector(
     (state) =>
@@ -12,7 +12,7 @@ export default function DropPinOnMapPage () {
   )
 
   const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.view.individualLocation, {
+    navigate(orgManageLocationsUrls.view.viewLocation, {
       state: { successMessage: `${locationName} location changed` }
     })
   }

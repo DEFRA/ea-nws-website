@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router'
 import ActionPlanLayout from '../../../../../../layouts/optional-info/ActionPlanLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ActionPlanPage () {
+export default function ActionPlanPage() {
   const navigate = useNavigate()
   const locationName = useSelector(
     (state) =>
@@ -12,7 +12,7 @@ export default function ActionPlanPage () {
   )
 
   const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.view.individualLocation, {
+    navigate(orgManageLocationsUrls.view.viewLocation, {
       state: { successMessage: `${locationName} action plan changed` }
     })
   }

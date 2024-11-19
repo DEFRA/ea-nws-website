@@ -45,7 +45,7 @@ const floodAlertCardDetails = (
   </>
 )
 
-export default function ViewLocationPage() {
+export default function ViewLocationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { type } = useParams()

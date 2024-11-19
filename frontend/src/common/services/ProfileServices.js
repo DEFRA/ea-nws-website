@@ -28,8 +28,8 @@ const addUnverifiedContact = (profile, type, contact) => {
         [type === 'email'
           ? 'emails'
           : type === 'mobile'
-          ? 'mobilePhones'
-          : 'homePhones']: [...unverifiedContactList, formattedContact]
+            ? 'mobilePhones'
+            : 'homePhones']: [...unverifiedContactList, formattedContact]
       }
     }
     return updatedProfile
@@ -119,8 +119,8 @@ const addVerifiedContact = (profile, type, contact) => {
       [type === 'email'
         ? 'emails'
         : type === 'mobile'
-        ? 'mobilePhones'
-        : 'homePhones']: [...verifiedContactList, contact]
+          ? 'mobilePhones'
+          : 'homePhones']: [...verifiedContactList, contact]
     }
     return updatedProfile
   } else {
@@ -297,7 +297,7 @@ const getRegistrationParams = (profile, alertTypes) => {
   }
 }
 
-function findPOIByAddress(profile, address) {
+function findPOIByAddress (profile, address) {
   const parsedProfile = JSON.parse(JSON.stringify(profile))
 
   return parsedProfile.pois.find((poi) => poi.address === address)

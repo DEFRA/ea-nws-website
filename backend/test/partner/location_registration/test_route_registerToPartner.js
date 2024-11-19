@@ -2,8 +2,8 @@ const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
 const lab = (exports.lab = Lab.script())
 const createServer = require('../../../server')
-const { startApiServer, apiServerStarted } = require('./../../test_api_setup')
-const uuidv4 = require('./../../generateAuthToken')
+const { startApiServer, apiServerStarted } = require('../../test_api_setup')
+const uuidv4 = require('../../generateAuthToken')
 
 lab.experiment('Integration tests', () => {
   let server
@@ -21,7 +21,7 @@ lab.experiment('Integration tests', () => {
     async () => {
       const options = {
         method: 'POST',
-        url: '/api/partner/register'
+        url: '/api/partner/register_location_to_partner'
       }
       const response = await server.inject(options)
       Code.expect(response.result.status).to.equal(500)
@@ -31,7 +31,7 @@ lab.experiment('Integration tests', () => {
   lab.test('GET / sending a GET instead of POST', async () => {
     const options = {
       method: 'GET',
-      url: '/api/partner/register'
+      url: '/api/partner/register_location_to_partner'
     }
     const response = await server.inject(options)
     Code.expect(response.statusCode).to.equal(404)
@@ -40,7 +40,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / Response status is 200 if everything is ok', async () => {
     const options = {
       method: 'POST',
-      url: '/api/partner/register',
+      url: '/api/partner/register_location_to_partner',
       payload: {
         authToken: uuidv4(),
         partnerId: '1',

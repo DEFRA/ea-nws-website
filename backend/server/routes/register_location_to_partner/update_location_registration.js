@@ -6,7 +6,7 @@ const {
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/partner/register',
+    path: '/api/partner/update_location_registration',
 
     handler: async (request, h) => {
       try {
@@ -14,12 +14,17 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { authToken, partnerId, params } = request.payload
+        const { authToken, locationId, partnerId, params } = request.payload
 
         if (authToken && partnerId && Object.keys(params).length > 0) {
           const response = await apiCall(
-            { authToken: authToken, partnerId: partnerId, params: params },
-            'member/registerToPartner'
+            {
+              authToken: authToken,
+              locationId: locationId,
+              partnerId: partnerId,
+              params: params
+            },
+            'member/updateLocationRegistration'
           )
           return h.response(response)
         } else {

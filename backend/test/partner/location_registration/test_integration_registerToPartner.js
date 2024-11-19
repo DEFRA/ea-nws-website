@@ -2,8 +2,8 @@ const Lab = require('@hapi/lab')
 const Code = require('@hapi/code')
 const lab = (exports.lab = Lab.script())
 const createServer = require('../../../server')
-const { startApiServer, apiServerStarted } = require('./../../test_api_setup')
-const uuidv4 = require('./../../generateAuthToken')
+const { startApiServer, apiServerStarted } = require('../../test_api_setup')
+const uuidv4 = require('../../generateAuthToken')
 
 lab.experiment('Integration tests', () => {
   let server
@@ -19,7 +19,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with missing authtoken', async () => {
     const options = {
       method: 'POST',
-      url: '/api/partner/register',
+      url: '/api/partner/register_location_to_partner',
       payload: {
         authToken: null,
         partnerId: '1',
@@ -33,7 +33,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with missing partnerId', async () => {
     const options = {
       method: 'POST',
-      url: '/api/partner/register',
+      url: '/api/partner/register_location_to_partner',
       payload: {
         authToken: uuidv4(),
         partnerId: '',
@@ -47,7 +47,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with missing params', async () => {
     const options = {
       method: 'POST',
-      url: '/api/partner/register',
+      url: '/api/partner/register_location_to_partner',
       payload: {
         authToken: uuidv4(),
         partnerId: '1',
@@ -61,7 +61,7 @@ lab.experiment('Integration tests', () => {
   lab.test('POST / route runs with all parameters', async () => {
     const options = {
       method: 'POST',
-      url: '/api/partner/register',
+      url: '/api/partner/register_location_to_partner',
       payload: {
         authToken: uuidv4(),
         partnerId: '1',

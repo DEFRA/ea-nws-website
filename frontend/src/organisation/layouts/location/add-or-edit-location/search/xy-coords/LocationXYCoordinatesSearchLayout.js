@@ -16,7 +16,7 @@ import { locationInEngland } from '../../../../../../common/services/validations
 import { xCoordinateValidation } from '../../../../../../common/services/validations/XCoordinateValidation'
 import { yCoordinateValidation } from '../../../../../../common/services/validations/YCoordinateValidation'
 
-export default function LocationXYCoordinatesSearchLayout ({
+export default function LocationXYCoordinatesSearchLayout({
   navigateToNextPage,
   navigateToNotInEngland
 }) {
@@ -61,12 +61,12 @@ export default function LocationXYCoordinatesSearchLayout ({
         Number(yCoordinate)
       )
 
-      const coordinates = { latitude, longitude }
-      dispatch(setCurrentLocationCoordinates(coordinates))
-      dispatch(setCurrentLocationEasting(Number(xCoordinate)))
-      dispatch(setCurrentLocationNorthing(Number(yCoordinate)))
-
       if (await locationInEngland(latitude, longitude)) {
+        const coordinates = { latitude, longitude }
+        dispatch(setCurrentLocationCoordinates(coordinates))
+        dispatch(setCurrentLocationEasting(Number(xCoordinate)))
+        dispatch(setCurrentLocationNorthing(Number(yCoordinate)))
+
         navigateToNextPage()
       } else {
         navigateToNotInEngland()

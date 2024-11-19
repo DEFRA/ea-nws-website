@@ -19,7 +19,10 @@ export default function NotesPage() {
 
   return (
     <>
-      <NotesLayout navigateToNextPage={navigateToNextPage} />
+      <NotesLayout
+        navigateToNextPage={navigateToNextPage}
+        keywordType={'location'}
+      />
     </>
   )
 }

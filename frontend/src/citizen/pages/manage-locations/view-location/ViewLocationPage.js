@@ -45,7 +45,7 @@ const floodAlertCardDetails = (
   </>
 )
 
-export default function ViewLocationPage () {
+export default function ViewLocationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { type } = useParams()
@@ -70,7 +70,7 @@ export default function ViewLocationPage () {
     const data = {
       authToken,
       locationId: selectedLocation.id,
-      partnerId: 1 // this is currently a hardcoded value - geosafe to update us
+      partnerId: '1' // this is currently a hardcoded value - geosafe to update us
     }
 
     const { errorMessage } = await backendCall(
@@ -106,7 +106,7 @@ export default function ViewLocationPage () {
     const data = {
       authToken,
       locationId: selectedLocation.id,
-      partnerId: 1, // this is currently a hardcoded value - geosafe to update us on what it is
+      partnerId: '1', // this is currently a hardcoded value - geosafe to update us on what it is
       params: getRegistrationParams(profile, alertTypes)
     }
 

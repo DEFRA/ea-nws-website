@@ -26,7 +26,7 @@ import {
   getCoordsOfFloodArea
 } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout ({
+export default function LocationInSevereWarningAreaLayout({
   continueToNextPage
 }) {
   const navigate = useNavigate()
@@ -84,7 +84,7 @@ export default function LocationInSevereWarningAreaLayout ({
     const data = {
       authToken,
       locationId: location.id,
-      partnerId: 1, // this is currently a hardcoded value - geosafe to update us on what it is
+      partnerId: '1', // this is currently a hardcoded value - geosafe to update us on what it is
       params: getRegistrationParams(profile, alertTypes)
     }
 
@@ -120,7 +120,7 @@ export default function LocationInSevereWarningAreaLayout ({
       const data = {
         authToken,
         locationId: location.id,
-        partnerId: 1 // this is currently a hardcoded value - geosafe to update us
+        partnerId: '1' // this is currently a hardcoded value - geosafe to update us
       }
 
       await backendCall(

@@ -20,7 +20,7 @@ import {
 } from '../../../common/services/ProfileServices'
 import { getCoordsOfFloodArea } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInAlertAreaLayout ({
+export default function LocationInAlertAreaLayout({
   continueToNextPage,
   continueToSearchResultsPage,
   canCancel
@@ -114,7 +114,7 @@ export default function LocationInAlertAreaLayout ({
       const data = {
         authToken,
         locationId: location.id,
-        partnerId: 1, // this is currently a hardcoded value - geosafe to update us on what it is
+        partnerId: '1', // this is currently a hardcoded value - geosafe to update us on what it is
         params: getRegistrationParams(profile, alertTypes)
       }
 
@@ -166,7 +166,7 @@ export default function LocationInAlertAreaLayout ({
       const data = {
         authToken,
         locationId: location.id,
-        partnerId: 1 // this is currently a hardcoded value - geosafe to update us
+        partnerId: '1' // this is currently a hardcoded value - geosafe to update us
       }
 
       await backendCall(

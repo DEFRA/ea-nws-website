@@ -1,68 +1,35 @@
 import { React } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate, useParams } from 'react-router'
+import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../common/components/gov-uk/Button'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmLocationLayout () {
+export default function ConfirmLocationLayout ({
+  navigateToNextPage,
+  navigateToPinDropFlow
+}) {
   const navigate = useNavigate()
-  const { type } = useParams()
-  const { flow } = useParams()
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const locationName = useSelector(
     (state) =>
       state.session.currentLocation.meta_data.location_additional.location_name
   )
-  const formattedAddress =
-    flow === 'postcode-search'
-      ? currentLocation.meta_data.location_additional.full_address.split(',')
-      : ''
-
-  const getFloodMessage = (type) => {
-    switch (type) {
-      case 'all':
-        return {
-          floodMessagesAvailableHeader: 'All flood messages available',
-
-          floodInfoMessage: `You can get all flood messages for ${locationName} as it is in a flood warning and a flood alert area.`
-        }
-
-      case 'alerts':
-        return {
-          floodMessagesAvailableHeader:
-            'Severe flood warnings and flood warnings unavailable',
-
-          floodInfoMessage: `You cannot get flood warnings for ${locationName} as it is not in a flood warning area. But you may be able to link this location to any nearby locations that can get severe flood warnings and flood warnings.`
-        }
-
-      case 'no-alerts':
-        return {
-          floodMessagesAvailableHeader: 'Flood messages unavailable',
-
-          floodInfoMessage: `You cannot get flood messages for ${locationName} as it is not in a flood area. But you may be able to link this location to any nearby locations that can get flood messages.`
-        }
-
-      default:
-        return {
-          floodMessagesAvailableHeader: 'Unknown flood status',
-
-          floodInfoMessage: `Flood message status for ${locationName} is unknown.`
-        }
-    }
-  }
-
-  const { floodMessagesAvailableHeader, floodInfoMessage } =
-    getFloodMessage(type)
+  const currentAddress =
+    currentLocation.meta_data.location_additional?.full_address
+  const formattedAddress = currentAddress ? currentAddress.split(',') : ''
 
   const handleSubmit = () => {
     // do we need to do anything else here?
+    navigateToNextPage()
+  }
 
-    navigate(orgManageLocationsUrls.add.optionalInfo)
+  const handleNavigateToPinDropFlow = (event) => {
+    event.preventDefault()
+    navigateToPinDropFlow()
   }
 
   const navigateBack = (event) => {
@@ -85,7 +52,7 @@ export default function ConfirmLocationLayout () {
             </h2>
             <hr />
 
-            {flow === 'postcode-search' && (
+            {currentAddress && (
               <>
                 <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                   Address
@@ -115,37 +82,12 @@ export default function ConfirmLocationLayout () {
               )}
             </p>
 
-            {flow === 'xy-coordinates-search' && (
-              <>
-                <Link to='TODO: add link to move pin' className='govuk-link'>
-                  Move the pin on the map
-                </Link>
-                <br />
-                <Link
-                  onClick={navigateBack}
-                  className='govuk-link'
-                >
-                  Use different X and Y coordinates
-                </Link>
-              </>
-            )}
-
-            {type === 'alerts' && (
-              <>
-                <h3 className='govuk-heading-s govuk-!-margin-top-8'>
-                  {locationName} gets flood alerts
-                </h3>
-                <p>
-                  This location is in a flood alert area and will get flood
-                  alerts.
-                </p>
-              </>
-            )}
-
-            <h3 className='govuk-heading-s govuk-!-margin-top-8'>
-              {floodMessagesAvailableHeader}
-            </h3>
-            <p>{floodInfoMessage}</p>
+            <Link
+              onClick={(e) => handleNavigateToPinDropFlow(e)}
+              className='govuk-link'
+            >
+              Move pin position
+            </Link>
 
             <div className='govuk-!-margin-top-8'>
               <Button

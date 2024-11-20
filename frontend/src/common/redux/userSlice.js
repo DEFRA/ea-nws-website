@@ -43,7 +43,6 @@ const userSlice = createSlice({
       meta_data: {
         location_additional: {
           location_name: null,
-          full_address: null,
           postcode: null,
           // Easting EPSG: 27700
           x_coordinate: null,
@@ -55,7 +54,8 @@ const userSlice = createSlice({
           action_plan: null,
           notes: null,
           keywords: null,
-          location_data_type: null
+          location_data_type: null,
+          alert_types: null
         }
       }
     },
@@ -165,8 +165,6 @@ const userSlice = createSlice({
       state.currentLocation.alert_categories = action.payload.alert_categories
       state.currentLocation.meta_data.location_additional.location_name =
         action.payload.meta_data.location_additional.location_name
-      state.currentLocation.meta_data.location_additional.full_address =
-        action.payload.meta_data.location_additional.full_address
       state.currentLocation.meta_data.location_additional.postcode =
         action.payload.meta_data.location_additional.postcode
       state.currentLocation.meta_data.location_additional.x_coordinate =
@@ -205,10 +203,6 @@ const userSlice = createSlice({
     },
     setCurrentLocationName: (state, action) => {
       state.currentLocation.meta_data.location_additional.location_name =
-        action.payload
-    },
-    setCurrentLocationFullAddress: (state, action) => {
-      state.currentLocation.meta_data.location_additional.full_address =
         action.payload
     },
     setCurrentLocationPostcode: (state, action) => {
@@ -405,7 +399,6 @@ export const {
   setCurrentLocationGeometry,
   setCurrentLocationAlertCategories,
   setCurrentLocationName,
-  setCurrentLocationFullAddress,
   setCurrentLocationPostcode,
   setCurrentLocationEasting,
   setCurrentLocationNorthing,

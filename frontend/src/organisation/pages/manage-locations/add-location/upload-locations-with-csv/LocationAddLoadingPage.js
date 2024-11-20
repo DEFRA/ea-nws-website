@@ -5,7 +5,7 @@ import { Spinner } from '../../../../../common/components/custom/Spinner'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddLoadingPage () {
+export default function LocationAddLoadingPage() {
   const navigate = useNavigate()
   const [status, setStatus] = useState('')
   const [stage, setStage] = useState('Scanning Upload')
@@ -59,14 +59,14 @@ export default function LocationAddLoadingPage () {
         }
         if (data?.status !== status) {
           if (data?.data) {
-            setValidLocations(data.data?.valid.length)
+            setValidLocations(data.data.valid.length)
             setInvalidLocations(
-              data.data?.invalid.filter(
-                (invalid) => invalid.error === 'invalid'
+              data.data.invalid.filter(
+                (invalid) => invalid.error !== 'duplicate'
               ).length
             )
             setDuplicateLocations(
-              data.data?.invalid.filter(
+              data.data.invalid.filter(
                 (invalid) => invalid.error === 'duplicate'
               ).length
             )

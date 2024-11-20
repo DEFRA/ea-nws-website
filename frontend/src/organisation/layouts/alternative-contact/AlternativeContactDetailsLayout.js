@@ -62,7 +62,7 @@ export default function AlternativeContactDetailsLayout ({
       'api/sign_up_start',
       navigate
     )
-    console.log('errormessage', errorMessage)
+
     if (errorMessage === 'email already registered') {
       setErrorEmail(
         'The email address you entered is already being used. Enter a different email address.'

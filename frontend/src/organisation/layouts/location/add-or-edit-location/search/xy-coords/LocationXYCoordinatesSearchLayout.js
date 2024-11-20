@@ -12,29 +12,24 @@ import {
   setCurrentLocationNorthing
 } from '../../../../../../common/redux/userSlice'
 import { convertCoordinatesToEspg4326 } from '../../../../../../common/services/CoordinatesFormatConverter'
-import {
-  getSurroundingFloodAreas,
-  isLocationInFloodArea
-} from '../../../../../../common/services/WfsFloodDataService'
 import { locationInEngland } from '../../../../../../common/services/validations/LocationInEngland'
 import { xCoordinateValidation } from '../../../../../../common/services/validations/XCoordinateValidation'
 import { yCoordinateValidation } from '../../../../../../common/services/validations/YCoordinateValidation'
+
 export default function LocationXYCoordinatesSearchLayout ({
-  allFloodAreasAvailable,
-  floodAlertAreasAvailableOnly,
-  noFloodAreasAvailable,
+  navigateToNextPage,
   navigateToNotInEngland
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
   const currentXCoordinate = useSelector(
-    (state) => state.session.currentLocation.meta_data.location_additional.x_coordinate
+    (state) =>
+      state.session.currentLocation.meta_data.location_additional.x_coordinate
   )
   const currentYCoordinate = useSelector(
-    (state) => state.session.currentLocation.meta_data.location_additional.y_coordinate
+    (state) =>
+      state.session.currentLocation.meta_data.location_additional.y_coordinate
   )
-
   const [xCoordinate, setXCoordinate] = useState(currentXCoordinate || '')
   const [xCoordinateError, setXCoordinateError] = useState('')
   const [yCoordinate, setYCoordinate] = useState(currentYCoordinate || '')
@@ -66,41 +61,16 @@ export default function LocationXYCoordinatesSearchLayout ({
         Number(yCoordinate)
       )
 
-      const coordinates = { latitude, longitude }
-      dispatch(setCurrentLocationCoordinates(coordinates))
-      dispatch(setCurrentLocationEasting(Number(xCoordinate)))
-      dispatch(setCurrentLocationNorthing(Number(yCoordinate)))
-
       if (await locationInEngland(latitude, longitude)) {
-        const { warningArea, alertArea } = await getSurroundingFloodAreas(
-          latitude,
-          longitude
-        )
+        const coordinates = { latitude, longitude }
+        dispatch(setCurrentLocationCoordinates(coordinates))
+        dispatch(setCurrentLocationEasting(Number(xCoordinate)))
+        dispatch(setCurrentLocationNorthing(Number(yCoordinate)))
 
-        const isError = !warningArea && !alertArea
-
-        const isInAlertArea =
-          alertArea && isLocationInFloodArea(latitude, longitude, alertArea)
-
-        const isInWarningArea =
-          warningArea && isLocationInFloodArea(latitude, longitude, warningArea)
-
-        navigateToNextPage(isInAlertArea, isInWarningArea, isError)
+        navigateToNextPage()
       } else {
         navigateToNotInEngland()
       }
-    }
-  }
-
-  const navigateToNextPage = (isInAlertArea, isInWarningArea, isError) => {
-    if (isInAlertArea && isInWarningArea) {
-      allFloodAreasAvailable()
-    } else if (isInAlertArea) {
-      floodAlertAreasAvailableOnly()
-    } else if (!isInAlertArea && !isInWarningArea) {
-      noFloodAreasAvailable()
-    } else if (isError) {
-      navigate('/error')
     }
   }
 

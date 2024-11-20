@@ -36,7 +36,7 @@ export default function ViewLocationsDashboardPage () {
             notes:
               'John Smith has the flood plane for this location. His contact number is 01234 567 890',
             keywords: '["Midlands"]',
-            location_data_type: LocationDataType.ADDRESS
+            location_data_type: LocationDataType.X_AND_Y_COORDS
           }
         }
       },

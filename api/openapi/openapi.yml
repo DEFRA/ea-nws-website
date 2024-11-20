@@ -32,6 +32,12 @@ paths:
     $ref: paths/member_updateRegistration.yml
   /member/unregisterFromPartner:
     $ref: paths/member_unregisterFromPartner.yml
+  /member/registerLocationToPartner:
+    $ref: paths/member_registerLocationToPartner.yml
+  /member/updateLocationRegistration:
+    $ref: paths/member_updateLocationRegistration.yml
+  /member/unregisterLocationFromPartner:
+    $ref: paths/member_unregisterLocationFromPartner.yml
   /member/deleteAccount:
     $ref: paths/member_deleteAccount.yml
   /member/mobileRegister:

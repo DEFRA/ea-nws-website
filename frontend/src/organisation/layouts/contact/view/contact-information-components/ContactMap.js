@@ -1,6 +1,6 @@
 import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
-import { MapContainer, Marker, useMap } from 'react-leaflet'
+import { GeoJSON, MapContainer, Marker, useMap } from 'react-leaflet'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import TileLayerWithHeader from '../../../../../common/components/custom/TileLayerWithHeader'
@@ -11,10 +11,12 @@ import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
-export default function ContactMap () {
+export default function ContactMap ({ mobileView }) {
   const pois = useSelector((state) => state.session.orgCurrentContact.pois)
   const [apiKey, setApiKey] = useState(null)
   const [markers, setMarkers] = useState([])
+  const [geometries, setGeometries] = useState([])
+  // const [geocodes, setGeocodes] = useState([])
 
   async function getApiKey () {
     const { errorMessage, data } = await backendCall(
@@ -51,14 +53,23 @@ export default function ContactMap () {
 
   // transform all the pois into markers
   useEffect(() => {
-    const populateMarkers = () => {
-      return pois.map((poi) => [
-        poi.coordinates.latitude,
-        poi.coordinates.longitude
-      ])
-    }
-
-    setMarkers(populateMarkers)
+    pois.forEach((poi) => {
+      if (poi.coordinates) {
+        setMarkers((prevMarkers) => [
+          ...prevMarkers,
+          [poi.coordinates.latitude, poi.coordinates.longitude]
+        ])
+      }
+      if (poi.geometry) {
+        setGeometries((prevGeometries) => [
+          ...prevGeometries,
+          [poi.geometry.geoJson]
+        ])
+      }
+      /* if (poi.geocode) {
+        setGeocodes((prevGeocodes) => [...prevGeocodes, [poi.geocode]])
+      } */
+    })
   }, [pois])
 
   // update map zoom so all markers are visible at once
@@ -140,7 +151,7 @@ export default function ContactMap () {
         attributionControl={false}
         minZoom={7}
         maxBounds={maxBounds}
-        className='map-container'
+        className={mobileView ? 'map-mobile-view' : 'map-container'}
       >
         {apiKey && apiKey !== 'error'
           ? (
@@ -150,6 +161,9 @@ export default function ContactMap () {
                 return (
                   <Marker key={index} position={marker} interactive={false} />
                 )
+              })}
+              {geometries.map((geometry, index) => {
+                return <GeoJSON key={index} data={geometry} />
               })}
               <FitBounds />
             </>

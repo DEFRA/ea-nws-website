@@ -39,19 +39,12 @@ module.exports = [
           const invalid = convertToPois(result.data.invalid)
           // add unique location ID and add to elsaticache
           valid.forEach(async (location) => {
-            const duplicate = await isDuplicate(
-              authToken,
-              location.meta_data.location_additional.location_name
-            )
             location.meta_data.location_id = uuidv4()
             await addLocation(authToken, location)
           })
           invalid.forEach(async (location) => {
             location.meta_data.location_id = uuidv4()
-            await addInvLocation(authToken, {
-              location: location,
-              reason: 'invalid'
-            })
+            await addInvLocation(authToken, location)
           })
 
           // TODO: call geosafe API to add locations to geosafe as well

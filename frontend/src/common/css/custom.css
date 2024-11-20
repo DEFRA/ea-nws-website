@@ -194,7 +194,7 @@
   color: white;
   cursor: pointer;
   padding-left: 1rem;
-  line-height: 2.25rem
+  line-height: 2.25rem;
 }
 
 .popup-close-txt {
@@ -1290,7 +1290,12 @@
 .possible-risk {
   background-color: rgba(244, 153, 190, 0.6);
 }
-.section-break-bold{
+.section-break-bold {
   border-bottom: 0.05rem solid black;
   opacity: 1;
+}
+
+.textarea-info {
+  margin-top: -28px;
+  color: #505a5f;
 }

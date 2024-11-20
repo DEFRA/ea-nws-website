@@ -44,6 +44,9 @@ url_cit_signout_auto = local_host + '/signout-auto'
 # ORGANISATION URLS
 url_org = local_host + '/organisation'
 url_org_home = url_org + '/home'
+# Info urls
+url_org_flood_areas = url_org + '/info/flood-areas'
+url_org_flood_types = url_org + '/info/flood-types'
 # Signup urls
 url_org_signup_path = url_org + '/sign-up'
 url_org_signup = {
@@ -96,7 +99,6 @@ url_org_man_loc = {
         'postcodeSearch': url_org_man_loc_path + '/add/postcode-search',
         'postcodeSearchResults': url_org_man_loc_path + '/add/postcode-search-results',
         'xyCoordinatesSearch': url_org_man_loc_path + '/add/xy-coordinates-search',
-        'locationInArea': url_org_man_loc_path + '/add/location-in-area',
         'xyCoordinatesNotInEngland': url_org_man_loc_path + '/add/xy-coordinates-not-in-england',
         'dropPinNotInEngland': url_org_man_loc_path + '/add/drop-pin-not-in-england',
         'dropPinSearch': url_org_man_loc_path + '/add/drop-pin-search',
@@ -104,7 +106,9 @@ url_org_man_loc = {
             'optionalInfo': url_org_man_loc_path + '/add/predefined-boundary/optional-information',
             'add': url_org_man_loc_path + '/add/predefined-boundary',
             'addAnother': url_org_man_loc_path + '/add/another-predefined-boundary'
-        }
+        },
+        'confirm': url_org_man_loc_path + '/add/confirm'
+
     },
     'optionalLocation':{
         'optionalInfo': url_org_man_loc_path + '/add/optional-information',
@@ -132,19 +136,21 @@ url_org_man_loc = {
         'select_how': url_org_man_loc_path + '/unmatched-locations/manually-find/select-how',
         'find_by_address': url_org_man_loc_path + '/unmatched-locations/manually-find/address',
     },
-    'edit': {
-        'cannot_change_location_polygon': url_org_man_loc_path + '/edit/edit-polygon',
-        'cannot_change_location_line': url_org_man_loc_path + '/edit/edit-line',
-        'options': url_org_man_loc_path + '/edit/select-location-options',
+    'edit':{
+        'cannot_change_location_polygon': url_org_man_loc_path + '/edit/polygon',
+        'cannot_change_location_line': url_org_man_loc_path + '/edit/line',
+        'options': url_org_man_loc_path + '/edit/search-options',
+        'confirm': url_org_man_loc_path + '/edit/confirm-location',
         'xyCoordinatesSearch': url_org_man_loc_path + '/edit/xy-coordinates-search',
-        'locationInArea': url_org_man_loc_path + '/edit/location-in-area',
-        'notInEngland': url_org_man_loc_path + '/edit/xy-coordinates-not-in-england',
-        'dropPinEdit': url_org_man_loc_path + '/edit/drop-pin-edit'
+        'xyCoordsNotInEngland': url_org_man_loc_path + '/edit/xy-coordinates-not-in-england',
+        'dropPinLocationSearch': url_org_man_loc_path + '/edit/location-search',
+        'dropPinEdit': url_org_man_loc_path + '/edit/drop-pin',
+        'dropPinNotInEngland': url_org_man_loc_path + '/edit/pin-not-in-england',
     },
-   'view':{
-        'dashboard': url_org_man_loc_path + '/view-locations',
-        'details': url_org_man_loc_path + '/location/view-location',
-        'messages': url_org_man_loc_path + '/location/view-messages'
+    'view':{
+        'dashboard': url_org_man_loc_path + '/locations',
+        'details': url_org_man_loc_path + '/locations/view',
+        'messages': url_org_man_loc_path + '/locations/view-messages'
     }
 }
 
@@ -152,6 +158,7 @@ url_org_man_cont_path = url_org + '/manage-contacts'
 url_org_man_cont = {
     'add': {
         'details': url_org_man_cont_path + '/add',
+        'notes':url_org_man_cont_path + '/add/notes',
         'keywords': url_org_man_cont_path + '/add/keywords',
         'channels': url_org_man_cont_path + '/add/channels'
     },
@@ -282,6 +289,11 @@ def check_h1_heading(browser, page_heading):
 # Check for error summary
 def check_error_summary(browser):
     error_xpath = f"//div[contains(@class, 'govuk-error-summary')]"
+    return check_exists_by_xpath(browser, error_xpath)
+
+# Check for success banner
+def check_success_banner(browser):
+    error_xpath = f"//div[contains(@class, 'govuk-notification-banner--success')]"
     return check_exists_by_xpath(browser, error_xpath)
 
 # Check for sign back in page for unauthenticated access

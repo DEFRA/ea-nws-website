@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -12,12 +12,13 @@ import {
   setSelectedLocation,
   setShowOnlySelectedFloodArea
 } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
+import { csvToJson } from '../../../common/services/CsvToJson'
 import {
   getSurroundingFloodAreas,
   isLocationInFloodArea
 } from '../../../common/services/WfsFloodDataService'
-
-export default function LocationSearchResultsLayout ({ continueToNextPage }) {
+export default function LocationSearchResultsLayout({ continueToNextPage }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
@@ -31,6 +32,29 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
     (currentPage - 1) * locationsPerPage,
     currentPage * locationsPerPage
   )
+
+  const [floodHistoryUrl, setHistoryUrl] = useState(null)
+  const [floodHistoryData, setFloodHistoryData] = useState(null)
+
+  async function getHistoryUrl() {
+    const { data } = await backendCall(
+      'data',
+      'api/locations/download_flood_history'
+    )
+    setHistoryUrl(data)
+  }
+
+  useEffect(() => {
+    getHistoryUrl()
+  })
+  console.log('LAURENT FloodHistory file URL: ' + floodHistoryUrl)
+
+  console.log('Laurent attempting to read flood file from url')
+  fetch(floodHistoryUrl)
+    .then((response) => response.text())
+    .then((data) => {
+      setFloodHistoryData(csvToJson(data))
+    })
 
   const handleSelectedLocation = async (event, selectedLocation) => {
     event.preventDefault()
@@ -53,6 +77,16 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
 
       const isError = !warningArea && !alertArea
 
+      console.log(
+        'LAURENT - LocationPostCodeSearchResultsPage - warningArea is'
+      )
+      console.log(warningArea)
+      console.log('LAURENT - LocationPostCodeSearchResultsPage - alertArea is')
+      console.log(alertArea)
+      console.log('LAURENT FloodHistory file URL: ' + floodHistoryUrl)
+
+      console.log('LAURENT - Flood data unconverted: ')
+      console.log(floodHistoryData)
       const isInAlertArea =
         alertArea &&
         isLocationInFloodArea(
@@ -78,6 +112,14 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
         isWithinAlertAreaProximity = alertArea?.features.length > 0
       }
 
+      console.log('Laurent area results:')
+      console.log('isInWarningArea ' + isInWarningArea)
+      console.log('isInAlertArea ' + isInAlertArea)
+      console.log(
+        'isWithinWarningAreaProximity ' + isWithinWarningAreaProximity
+      )
+      console.log('isWithinAlertAreaProximity ' + isWithinAlertAreaProximity)
+      console.log('isError ' + isError)
       continueToNextPage(
         isInWarningArea,
         isInAlertArea,
@@ -105,69 +147,66 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>
           <div className='govuk-grid-row'>
-            {loading
-              ? (
-                <LoadingSpinner />
-                )
-              : (
-                <div className='govuk-grid-column-two-thirds'>
-                  <div className='govuk-body'>
-                    <h1 className='govuk-heading-l'>
-                      {locationPostCode
-                        ? 'Select an address'
-                        : 'Select a location'}
-                    </h1>
-                    {locationPostCode && (
-                      <p className='govuk-body'>
-                        Postcode: {locationPostCode}
-                        {'   '}
-                        <Link
-                          onClick={() => navigate(-1)}
-                          className='govuk-link govuk-!-padding-left-5'
-                        >
-                          Change postcode
-                        </Link>
-                      </p>
-                    )}
-                    <table className='govuk-table'>
-                      <tbody className='govuk-table__body'>
-                        <tr className='govuk-table__row'>
-                          <td className='govuk-table__cell' />
-                        </tr>
-                        {displayedLocations.map((location, index) => (
-                          <tr key={index} className='govuk-table__row'>
-                            <td className='govuk-table__cell'>
-                              <Link
-                                className='govuk-link'
-                                onClick={(event) =>
-                                  handleSelectedLocation(event, location)}
-                              >
-                                {location.address}
-                              </Link>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+            {loading ? (
+              <LoadingSpinner />
+            ) : (
+              <div className='govuk-grid-column-two-thirds'>
+                <div className='govuk-body'>
+                  <h1 className='govuk-heading-l'>
                     {locationPostCode
-                      ? (
-                        <Details
-                          title='I cannot find my address here'
-                          text={detailsMessage}
-                        />
-                        )
-                      : (
-                        <Link onClick={() => navigate(-1)} className='govuk-link'>
-                          Search using a different location
-                        </Link>
-                        )}
-                    <Pagination
-                      totalPages={Math.ceil(locations.length / locationsPerPage)}
-                      onPageChange={(val) => setCurrentPage(val)}
+                      ? 'Select an address'
+                      : 'Select a location'}
+                  </h1>
+                  {locationPostCode && (
+                    <p className='govuk-body'>
+                      Postcode: {locationPostCode}
+                      {'   '}
+                      <Link
+                        onClick={() => navigate(-1)}
+                        className='govuk-link govuk-!-padding-left-5'
+                      >
+                        Change postcode
+                      </Link>
+                    </p>
+                  )}
+                  <table className='govuk-table'>
+                    <tbody className='govuk-table__body'>
+                      <tr className='govuk-table__row'>
+                        <td className='govuk-table__cell' />
+                      </tr>
+                      {displayedLocations.map((location, index) => (
+                        <tr key={index} className='govuk-table__row'>
+                          <td className='govuk-table__cell'>
+                            <Link
+                              className='govuk-link'
+                              onClick={(event) =>
+                                handleSelectedLocation(event, location)
+                              }
+                            >
+                              {location.address}
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                  {locationPostCode ? (
+                    <Details
+                      title='I cannot find my address here'
+                      text={detailsMessage}
                     />
-                  </div>
+                  ) : (
+                    <Link onClick={() => navigate(-1)} className='govuk-link'>
+                      Search using a different location
+                    </Link>
+                  )}
+                  <Pagination
+                    totalPages={Math.ceil(locations.length / locationsPerPage)}
+                    onPageChange={(val) => setCurrentPage(val)}
+                  />
                 </div>
-                )}
+              </div>
+            )}
           </div>
         </div>
       </main>

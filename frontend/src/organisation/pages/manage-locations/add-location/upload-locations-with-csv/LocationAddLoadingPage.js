@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Spinner } from '../../../../../common/components/custom/Spinner'
 import { backendCall } from '../../../../../common/services/BackendService'
@@ -10,7 +11,9 @@ export default function LocationAddLoadingPage () {
   const [stage, setStage] = useState('Scanning Upload')
   const [validLocations, setValidLocations] = useState(null)
   const [invalidLocations, setInvalidLocations] = useState(null)
+  const [duplicateLocations, setDuplicateLocations] = useState(null)
   const location = useLocation()
+  const authToken = useSelector((state) => state.session.authToken)
   const fileName = location.state?.fileName
 
   if (!fileName) {
@@ -30,7 +33,8 @@ export default function LocationAddLoadingPage () {
           state: {
             fileName,
             valid: validLocations,
-            invalid: invalidLocations
+            invalid: invalidLocations,
+            duplicate: duplicateLocations
           }
         })
       }
@@ -43,7 +47,7 @@ export default function LocationAddLoadingPage () {
   // Check the status of the processing and update state
   useEffect(() => {
     const interval = setInterval(async () => {
-      const dataToSend = { fileName }
+      const dataToSend = { authToken, fileName }
       const { data, errorMessage } = await backendCall(
         dataToSend,
         'api/bulk_uploads/process_status',
@@ -56,7 +60,16 @@ export default function LocationAddLoadingPage () {
         if (data?.status !== status) {
           if (data?.data) {
             setValidLocations(data.data?.valid.length)
-            setInvalidLocations(data.data?.invalid.length)
+            setInvalidLocations(
+              data.data?.invalid.filter(
+                (invalid) => invalid.error === 'invalid'
+              ).length
+            )
+            setDuplicateLocations(
+              data.data?.invalid.filter(
+                (invalid) => invalid.error === 'duplicate'
+              ).length
+            )
           }
           setStatus(data.status)
         }

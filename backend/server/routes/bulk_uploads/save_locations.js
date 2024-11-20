@@ -11,7 +11,6 @@ const {
   convertToPois
 } = require('../../services/bulk_uploads/processLocations')
 const crypto = require('node:crypto')
-const { searchLocations } = require('../../services/elasticache')
 
 function uuidv4() {
   return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) =>
@@ -20,15 +19,6 @@ function uuidv4() {
       (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))
     ).toString(16)
   )
-}
-
-const isDuplicate = async (authToken, locationName) => {
-  const locationArr = await searchLocations(
-    authToken,
-    'meta_data.location_additional.location_name',
-    locationName
-  )
-  return locationArr.length !== 0
 }
 
 module.exports = [
@@ -53,15 +43,8 @@ module.exports = [
               authToken,
               location.meta_data.location_additional.location_name
             )
-            if (duplicate) {
-              await addInvLocation(authToken, {
-                location: location,
-                reason: 'duplicate'
-              })
-            } else {
-              location.meta_data.location_id = uuidv4()
-              await addLocation(authToken, location)
-            }
+            location.meta_data.location_id = uuidv4()
+            await addLocation(authToken, location)
           })
           invalid.forEach(async (location) => {
             location.meta_data.location_id = uuidv4()

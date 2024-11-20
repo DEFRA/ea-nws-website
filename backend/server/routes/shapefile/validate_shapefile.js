@@ -2,12 +2,15 @@ const path = require('path')
 const {
   S3Client,
   ListObjectsV2Command,
-  DeleteObjectsCommand
+  DeleteObjectsCommand,
+  GetObjectCommand,
+  S3LocationFilterSensitiveLog
 } = require('@aws-sdk/client-s3')
 const getSecretKeyValue = require('../../services/SecretsManager')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
+const DBFReader = require('dbf-reader')
 
 module.exports = [
   {
@@ -78,8 +81,38 @@ module.exports = [
             )
           }
         }
+
+        console.log(Contents)
+
+        /*** Check 4: no location name ***/
+        // Retrieve dbf file from bucket (know it exists from Check 3)
+        const dbfResponse = await s3Client.send(
+          new GetObjectCommand({
+            Bucket: s3BucketName,
+            Key: Contents.find((item) => item.Key.endsWith('.dbf'))
+          })
+        )
+        const dbfBuffer = await dbfResponse.Body.transformToByteArray()
+        const dbfData = new DBFReader(dbfBuffer)
+
+        // Check if location name exists and has data
+        const records = dbfData.getRecords()
+        const hasValidLocation = records.some(
+          (record) => record.LocationName && record.LocationName.trim() !== ''
+        )
+        if (!hasValidLocation) {
+          throw new Error(
+            'The selected file could not be uploaded because the location name is missing'
+          )
+        }
+
+        /*** No errors thrown means a valid shapefile ***/
+        return h.response({
+          status: 200,
+          data: 'Valid'
+        })
       } catch (error) {
-        // An invalid shapefile (and the original zip) should be deleted from the bucket and the user will be asked to upload a correct one
+        // An invalid shapefile (and the original zip) should be deleted from the bucket (the user will be asked to upload a correct one)
         try {
           if (Contents.length > 0) {
             const objectsToDelete = [
@@ -99,6 +132,7 @@ module.exports = [
         } catch (err) {
           console.log(err)
         }
+        console.log(error)
         return h.response({
           status: 500,
           errorMessage: error.message

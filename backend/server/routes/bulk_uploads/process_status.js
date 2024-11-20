@@ -32,18 +32,15 @@ module.exports = [
           const result = await getJsonData(elasticacheKey)
           if (result) {
             if (result.data) {
-              console.log('BEFORE result.data', result.data)
-
               for (let i = 0; i < result.data.valid.length; i++) {
                 const location = result.data.valid[i]
-                if (await isDuplicate(location.Location_name)) {
+                if (await isDuplicate(authToken, location.Location_name)) {
                   result.data.valid.splice(i, 1)
                   location.error = 'duplicate'
                   result.data.invalid.push(location)
+                  --i
                 }
               }
-
-              console.log('AFTER result.data', result.data)
             }
             return h.response({ status: 200, data: result })
           } else {

@@ -7,13 +7,17 @@ import InsetText from '../../../../../../common/components/gov-uk/InsetText'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmLocationsPage () {
+export default function ConfirmLocationsPage() {
   const navigate = useNavigate()
   const location = useLocation()
   const locationsValid = location?.state?.valid || 0
   const locationsInvalid = location?.state?.invalid || 0
+  const locationsDuplicate = location?.state?.duplicate || 0
   const fileName = location?.state?.fileName || ''
   const authToken = useSelector((state) => state.session.authToken)
+
+  console.log('invalid', locationsInvalid)
+  console.log('duplicate', locationsDuplicate)
 
   const handleLocations = async (event) => {
     event.preventDefault()
@@ -73,20 +77,37 @@ export default function ConfirmLocationsPage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
-              {locationsValid} out of {locationsInvalid + locationsValid}{' '}
-              locations can be added
+              {locationsValid} out of{' '}
+              {locationsInvalid + locationsDuplicate + locationsValid} locations
+              can be added
             </h1>
             <div className='govuk-body'>
-              <InsetText
-                text={
-                  locationsInvalid +
-                  ' locations need to be matched before they can be added. You can match them after you add the locations that have been found.'
-                }
-              />
-              <Details
-                title='Why do some locations not match?'
-                text={detailsMessage}
-              />
+              {locationsInvalid > 0 && (
+                <div>
+                  <InsetText
+                    text={
+                      locationsInvalid +
+                      ' locations need to be matched before they can be added. You can match them after you add the locations that have been found.'
+                    }
+                  />
+                  <Details
+                    title='Why do some locations not match?'
+                    text={detailsMessage}
+                  />
+                </div>
+              )}
+              {locationsDuplicate > 0 && (
+                <div>
+                  <InsetText
+                    text={
+                      locationsDuplicate +
+                      ' locations already exist with the same name in this account. You can choose to keep the existing locations or replace them with the new locations uploaded.'
+                    }
+                  />
+                  You can do this after you add the {locationsValid} locations
+                  that can be added now.
+                </div>
+              )}
             </div>
             <Button
               text='Add and continue'

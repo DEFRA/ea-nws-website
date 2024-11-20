@@ -6,6 +6,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../../../common/components/gov-uk/CheckBox'
 
@@ -14,6 +15,8 @@ export default function SearchFilter ({
   setFilteredLocations,
   resetPaging,
   setResetPaging,
+  selectedFilters,
+  setSelectedFilters,
   selectedLocationTypeFilters,
   setSelectedLocationTypeFilters,
   selectedFloodMessagesAvailableFilters,
@@ -22,7 +25,6 @@ export default function SearchFilter ({
   setSelectedBusinessCriticalityFilters
 }) {
   // filters
-  const [selectedFilters, setSelectedFilters] = useState([])
   const [locationNameFilter, setLocationNameFilter] = useState('')
 
   const locationTypes = [
@@ -123,6 +125,15 @@ export default function SearchFilter ({
     setFilteredLocations(filteredLocations)
   }
 
+  // Clear all filters
+  const clearFilters = () => {
+    setFilteredLocations(locations)
+    setSelectedFilters([])
+    setSelectedLocationTypeFilters([])
+    setSelectedFloodMessagesAvailableFilters([])
+    setSelectedBusinessCriticalityFilters([])
+  }
+
   // Location name filter
   const locationNameSearchFilter = (
     <>
@@ -200,7 +211,7 @@ export default function SearchFilter ({
 
     return (
       <>
-        <h3 className='govuk-heading-s govuk-!-margin-top-6 govuk-!-margin-bottom-2'>
+        <h3 className='govuk-heading-s govuk-!-margin-top-5 govuk-!-margin-bottom-2'>
           {filterName}
         </h3>
         {filterArray.map((filter, index) => (
@@ -230,7 +241,23 @@ export default function SearchFilter ({
       {/* Selected filters */}
       {selectedFilters?.length > 0 && (
         <div className='locations-filter-selected'>
-          <h2 className='govuk-heading-s'>Selected filters</h2>
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center'
+            }}
+          >
+            <h2 className='govuk-heading-s' style={{ marginBottom: '0' }}>
+              Selected filters
+            </h2>
+            <Link
+              onClick={clearFilters}
+              className='govuk-body govuk-link inline-link'
+              style={{ marginLeft: 'auto', marginBottom: '0' }}
+            >
+              Clear filters
+            </Link>
+          </div>
           {selectedFilterContents(
             'Location type',
             selectedLocationTypeFilters,

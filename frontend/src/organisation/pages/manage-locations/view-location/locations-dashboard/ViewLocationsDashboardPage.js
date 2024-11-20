@@ -13,6 +13,7 @@ export default function ViewLocationsDashboardPage () {
   const [selectedLocations, setSelectedLocations] = useState([])
   const [filteredLocations, setFilteredLocations] = useState([])
   const [isFilterVisible, setIsFilterVisible] = useState(false)
+  const [selectedFilters, setSelectedFilters] = useState([])
 
   useEffect(() => {
     const l = [
@@ -666,6 +667,8 @@ export default function ViewLocationsDashboardPage () {
                       setFilteredLocations={setFilteredLocations}
                       resetPaging={resetPaging}
                       setResetPaging={setResetPaging}
+                      selectedFilters={selectedFilters}
+                      setSelectedFilters={setSelectedFilters}
                       selectedLocationTypeFilters={selectedLocationTypeFilters}
                       setSelectedLocationTypeFilters={
                       setSelectedLocationTypeFilters

@@ -134,7 +134,7 @@ for manually matching locations to coordinates
 */
 
 const addInvLocation = async (authToken, location) => {
-  const locationID = location.location.meta_data.location_id
+  const locationID = location.meta_data.location_id
   const key = authToken + ':t_invPOIS:' + locationID
   await setJsonData(key, location)
   await addToList(authToken + ':t_invPOIS_locID', locationID)

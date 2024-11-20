@@ -135,19 +135,16 @@ export default function ManuallyFindLocationsPage () {
                       return (
                         <tr class='govuk-table__row' key={index}>
                           <th scope='row' class='govuk-table__header'>
-                            {location.location.name}
+                            {location.name}
                           </th>
                           <td class='govuk-table__cell'>
                             {
-                              location.location.meta_data.location_additional
+                              location.meta_data.location_additional
                                 .full_address
                             }
                           </td>
                           <td class='govuk-table__cell'>
-                            {
-                              location.location.meta_data.location_additional
-                                .postcode
-                            }
+                            {location.meta_data.location_additional.postcode}
                           </td>
                           <td class='govuk-table__cell'>
                             <Link

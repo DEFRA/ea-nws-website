@@ -1,13 +1,15 @@
 import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined'
+import React from 'react'
+import { isMobile } from 'react-device-detect'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
 import ContactMap from './contact-information-components/ContactMap'
 import ViewContactSubNavigation from './contact-information-components/ViewContactSubNavigation'
-
 export default function ContactInformationLayout () {
   const navigate = useNavigate()
+
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const contactName = currentContact.firstName + ' ' + currentContact.lastName
   const keywords = currentContact.additionals.find(
@@ -139,7 +141,13 @@ export default function ContactInformationLayout () {
                   Change
                 </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p>{keywords.value}</p>
+                <p>
+                  {keywords.value
+                    .replace('[', '')
+                    .replace(']', '')
+                    .replace(/"/g, '')
+                    .replace(/,/g, ', ')}
+                </p>
               </div>
             )}
 
@@ -163,7 +171,7 @@ export default function ContactInformationLayout () {
           </div>
           {/* other half - map */}
           <div className='govuk-grid-column-one-half'>
-            <ContactMap zoomLevel={14} />
+            <ContactMap zoomLevel={14} mobileView={isMobile} />
 
             <div className=' govuk-!-margin-top-4'>
               <RoomOutlinedIcon style={{ fontSize: 30 }} />

@@ -7,13 +7,12 @@ export default function LocationXYCoordinatesSearchPage () {
   const navigate = useNavigate()
 
   const navigateToNotInEngland = () => {
-    navigate(orgManageLocationsUrls.add.error.xyCoordinatesNotInEngland)
-  }
-
-  const navigateToNextPage = () => {
     navigate(
-      orgManageLocationsUrls.add.manualAddLocation.confirmManualSearchedLocation
+      orgManageLocationsUrls.edit.individualLocation.location.xyCoords.error
     )
+  }
+  const navigateToNextPage = () => {
+    navigate(orgManageLocationsUrls.edit.individualLocation.location.confirm)
   }
 
   return (

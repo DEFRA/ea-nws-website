@@ -4,11 +4,12 @@ import { useNavigate } from 'react-router'
 import LocationOptionsLayout from '../../../../../layouts/location/add-or-edit-location/search/LocationSearchOptionsLayout'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AddLocationSearchOptionsPage () {
+export default function LocationSearchOptionsPage () {
   const navigate = useNavigate()
 
   const locationName = useSelector(
-    (state) => state.session.currentLocation.name
+    (state) =>
+      state.session.currentLocation.meta_data.location_additional.location_name
   )
   const searchOptions = [
     { label: 'Use a postcode', value: 'UseAPostcode' },
@@ -25,19 +26,31 @@ export default function AddLocationSearchOptionsPage () {
         navigate(orgManageLocationsUrls.add.search.xyCoordinatesSearch)
         break
       case 'DropAPinOnAMap':
-        // ToDo add in when pin drop URls made
-        navigate('/')
+        navigate(orgManageLocationsUrls.add.search.dropPinSearch)
         break
       default:
         break
     }
   }
 
+  const info = (
+    <p>
+      If your location is a polygon, or a line, your organization has created
+      you'll need to upload your location as a shapefile in a .zip file.
+    </p>
+  )
+
+  const navigateToPreviousPage = () => {
+    navigate(orgManageLocationsUrls.add.name)
+  }
+
   return (
     <LocationOptionsLayout
       heading={`How do you want to find ${locationName}?`}
+      info={info}
       searchOptions={searchOptions}
       navigateToNextPage={navigateToNextPage}
+      navigateToPreviousPage={navigateToPreviousPage}
     />
   )
 }

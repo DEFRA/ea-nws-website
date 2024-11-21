@@ -18,10 +18,10 @@ import {
   updateAdditionals
 } from '../../../common/services/ProfileServices'
 
-export default function AddKeywordsLayout ({
+export default function KeywordsLayout ({
   keywordType,
-  NavigateToNextPage,
-  KeywordText
+  navigateToNextPage,
+  keywordText
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -230,7 +230,7 @@ export default function AddKeywordsLayout ({
       dispatch(setOrgCurrentContact(updatedContact))
     }
 
-    NavigateToNextPage()
+    navigateToNextPage()
   }
 
   const navigateBack = (event) => {
@@ -250,7 +250,7 @@ export default function AddKeywordsLayout ({
               {`Add keywords for this ${keywordType} (optional)`}
             </h1>
             <div className='govuk-body'>
-              {KeywordText}
+              {keywordText}
 
               {keywordsArray.length !== 0 &&
                 keywordsArray.map((keyword, index) => (

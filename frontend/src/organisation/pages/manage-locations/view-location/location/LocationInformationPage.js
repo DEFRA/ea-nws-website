@@ -7,17 +7,21 @@ import Details from '../../../../../common/components/gov-uk/Details'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
-import ViewLocationHeader from './LocationHeader'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import LocationHeader from './location-information-components/LocationHeader'
 
 export default function LocationInformationPage () {
   const navigate = useNavigate()
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = currentLocation.meta_data.location_additional
+  const keywords = additionalData.keywords
+    ? JSON.parse(additionalData.keywords)
+    : []
+
   const formattedAddress = currentLocation.address?.split(',')
 
-  const LocationHeader = () => {
+  const LocationDetailsHeader = () => {
     switch (additionalData.location_data_type) {
-      case LocationDataType.ADDRESS:
       case LocationDataType.X_AND_Y_COORDS:
         return 'X and Y Coordinates'
       case LocationDataType.SHAPE_POLYGON:
@@ -31,7 +35,6 @@ export default function LocationInformationPage () {
 
   const LocationData = () => {
     switch (additionalData.location_data_type) {
-      case LocationDataType.ADDRESS:
       case LocationDataType.X_AND_Y_COORDS:
         return (
           <>
@@ -52,22 +55,43 @@ export default function LocationInformationPage () {
     }
   }
 
+  const navigateToChangeLocation = (event) => {
+    event.preventDefault()
+    switch (additionalData.location_data_type) {
+      case LocationDataType.X_AND_Y_COORDS:
+        navigate(orgManageLocationsUrls.edit.individualLocation.location.search)
+        break
+      case LocationDataType.SHAPE_POLYGON:
+        navigate(
+          orgManageLocationsUrls.edit.individualLocation.location.shape.polygon
+        )
+        break
+      case LocationDataType.SHAPE_LINE:
+        navigate(
+          orgManageLocationsUrls.edit.individualLocation.location.shape.line
+        )
+        break
+    }
+  }
+
   const locationDetails = (
     <>
       <div className={currentLocation.address ? 'govuk-!-margin-top-7' : ''}>
         <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
           Location
         </h2>
-        <Link
-          className='govuk-link govuk-!-display-inline-block'
-          style={{ float: 'right' }}
-          // to={}
-        >
-          Change
-        </Link>
+        {additionalData.location_data_type !== LocationDataType.BOUNDARY && (
+          <Link
+            className='govuk-link govuk-!-display-inline-block'
+            style={{ float: 'right' }}
+            onClick={(e) => navigateToChangeLocation(e)}
+          >
+            Change
+          </Link>
+        )}
         <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
         <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-0'>
-          {LocationHeader()}
+          {LocationDetailsHeader()}
         </h3>
         <p className='govuk-!-margin-top-1'>{LocationData()}</p>
       </div>
@@ -76,51 +100,46 @@ export default function LocationInformationPage () {
 
   const floodRiskDetails = (
     <>
-      <p>
-        Flood risk is based on a combination of likelihood and impact - how
-        likely it is that flooding will happen and the effect that flooding will
-        have on people, buildings and services. Flood risk can fall into the
-        following categories:
-      </p>
-      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-        High Risk
-      </h3>
-      <p>
-        Each year there’s a chance of flooding from rivers and the sea of
+      Flood risk is based on a combination of likelihood and impact – how likely
+      it is that flooding will happen and the effect that flooding will have on
+      people, buildings and services. Flood risk can fall into the following
+      categories:
+      <h4 className='govuk-heading-m govuk-!-margin-top-6'>Rivers and sea</h4>
+      <p className='govuk-!-margin-top-4'>
+        <strong>High risk</strong>
+        <br />
+        Each year there's a chance of flooding from rivers and the sea of
         greater than 1 in 30.
       </p>
-      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-        Medium Risk
-      </h3>
-      <p>
-        Each year there’s a chance of flooding from rivers and the sea of
+      <p className='govuk-!-margin-top-4'>
+        <strong>Medium risk</strong>
+        <br />
+        Each year there's a chance of flooding from rivers and the sea of
         between 1 in 100 and 1 in 30.
       </p>
-      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-        Low Risk
-      </h3>
-      <p>
-        Each year there’s a chance of flooding from rivers and the sea of
+      <p className='govuk-!-margin-top-4'>
+        <strong>Low risk</strong>
+        <br />
+        Each year there's a chance of flooding from rivers and the sea of
         between 1 in 1000 and 1 in 100.
       </p>
-      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-        Possible
-      </h3>
-      <p>
+      <h4 className='govuk-heading-m  govuk-!-margin-top-6'>Groundwater</h4>
+      <p className='govuk-!-margin-top-4'>
+        <strong>Possible</strong>
+        <br />
         Flooding is possible in the local area when groundwater levels are high.
       </p>
-      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-        Unlikely
-      </h3>
-      <p>
-        It’s unlikely the location will be affected by groundwater flooding.
+      <p className='govuk-!-margin-top-4'>
+        <strong>Unlikely</strong>
+        <br />
+        It's unlikely the location will be affected by groundwater flooding.
       </p>
     </>
   )
 
   const navigateBack = (e) => {
     e.preventDefault()
-    navigate(-1)
+    navigate(orgManageLocationsUrls.view.dashboard)
   }
 
   return (
@@ -128,7 +147,9 @@ export default function LocationInformationPage () {
       <OrganisationAccountNavigation />
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-4'>
-        <ViewLocationHeader currentPage='/organisation/manage-locations/location/view-location' />
+        <LocationHeader
+          currentPage={orgManageLocationsUrls.view.viewLocation}
+        />
         {/* details */}
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
@@ -141,7 +162,10 @@ export default function LocationInformationPage () {
                 <Link
                   className='govuk-link govuk-!-display-inline-block'
                   style={{ float: 'right' }}
-                  // to={}
+                  to={
+                    orgManageLocationsUrls.edit.individualLocation
+                      .optionalInformation.address
+                  }
                 >
                   Change
                 </Link>
@@ -170,6 +194,10 @@ export default function LocationInformationPage () {
                   <Link
                     className='govuk-link govuk-!-display-inline-block'
                     style={{ float: 'right' }}
+                    to={
+                    orgManageLocationsUrls.edit.individualLocation
+                      .optionalInformation.keyInformation
+                  }
                   >
                     Change
                   </Link>
@@ -214,12 +242,15 @@ export default function LocationInformationPage () {
                 <Link
                   className='govuk-link govuk-!-display-inline-block'
                   style={{ float: 'right' }}
-                  // to={}
+                  to={
+                    orgManageLocationsUrls.edit.individualLocation
+                      .optionalInformation.keywords
+                  }
                 >
                   Change
                 </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p>{additionalData.keywords}</p>
+                <p>{keywords.join(', ')}</p>
               </div>
             )}
 
@@ -232,7 +263,10 @@ export default function LocationInformationPage () {
                 <Link
                   className='govuk-link govuk-!-display-inline-block'
                   style={{ float: 'right' }}
-                  // to={}
+                  to={
+                    orgManageLocationsUrls.edit.individualLocation
+                      .optionalInformation.actionPlan
+                  }
                 >
                   Change
                 </Link>
@@ -250,7 +284,10 @@ export default function LocationInformationPage () {
                 <Link
                   className='govuk-link govuk-!-display-inline-block'
                   style={{ float: 'right' }}
-                  // to={}
+                  to={
+                    orgManageLocationsUrls.edit.individualLocation
+                      .optionalInformation.notes
+                  }
                 >
                   Change
                 </Link>
@@ -264,55 +301,98 @@ export default function LocationInformationPage () {
               {!currentLocation.address &&
                 additionalData.location_data_type !==
                   LocationDataType.BOUNDARY && (
-                    <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                    <Link
+                      className='govuk-!-display-block govuk-!-margin-bottom-1'
+                      to={
+                      orgManageLocationsUrls.edit.individualLocation
+                        .optionalInformation.address
+                    }
+                    >
                       Add address
                     </Link>
               )}
               {!additionalData.internal_reference &&
                 additionalData.location_data_type !==
                   LocationDataType.BOUNDARY && (
-                    <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                    <Link
+                      className='govuk-!-display-block govuk-!-margin-bottom-1'
+                      to={
+                      orgManageLocationsUrls.edit.individualLocation
+                        .optionalInformation.keyInformation
+                    }
+                    >
                       Add internal reference
                     </Link>
               )}
               {!additionalData.business_criticality &&
                 additionalData.location_data_type !==
                   LocationDataType.BOUNDARY && (
-                    <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                    <Link
+                      className='govuk-!-display-block govuk-!-margin-bottom-1'
+                      to={
+                      orgManageLocationsUrls.edit.individualLocation
+                        .optionalInformation.keyInformation
+                    }
+                    >
                       Add business criticality
                     </Link>
               )}
               {!additionalData.location_type &&
                 additionalData.location_data_type !==
                   LocationDataType.BOUNDARY && (
-                    <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                    <Link
+                      className='govuk-!-display-block govuk-!-margin-bottom-1'
+                      to={
+                      orgManageLocationsUrls.edit.individualLocation
+                        .optionalInformation.keyInformation
+                    }
+                    >
                       Add location type
                     </Link>
               )}
               {!additionalData.keywords && (
-                <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                <Link
+                  className='govuk-!-display-block govuk-!-margin-bottom-1'
+                  to={
+                    orgManageLocationsUrls.edit.individualLocation
+                      .optionalInformation.keywords
+                  }
+                >
                   Add keywords
                 </Link>
               )}
               {!additionalData.action_plan && (
-                <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                <Link
+                  className='govuk-!-display-block govuk-!-margin-bottom-1'
+                  to={
+                    orgManageLocationsUrls.edit.individualLocation
+                      .optionalInformation.actionPlan
+                  }
+                >
                   Add action plan
                 </Link>
               )}
               {!additionalData.notes && (
-                <Link className='govuk-!-display-block'>Add notes</Link>
+                <Link
+                  className='govuk-!-display-block'
+                  to={
+                    orgManageLocationsUrls.edit.individualLocation
+                      .optionalInformation.notes
+                  }
+                >
+                  Add notes
+                </Link>
               )}
             </div>
             {/* flood risk details */}
-            {(additionalData.location_data_type === LocationDataType.ADDRESS ||
-              additionalData.location_data_type ===
-                LocationDataType.X_AND_Y_COORDS) && (
-                  <div className='govuk-!-margin-top-7'>
-                    <Details
-                      title='What is a flood risk?'
-                      text={floodRiskDetails}
-                    />
-                  </div>
+            {additionalData.location_data_type ===
+              LocationDataType.X_AND_Y_COORDS && (
+                <div className='govuk-!-margin-top-7'>
+                  <Details
+                    title='What is a flood risk?'
+                    text={floodRiskDetails}
+                  />
+                </div>
             )}
           </div>
 

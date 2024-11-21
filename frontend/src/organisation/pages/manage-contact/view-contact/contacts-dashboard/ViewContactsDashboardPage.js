@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
+import { useDispatch, useSelector } from 'react-redux'
+import Popup from '../../../../../common/components/custom/Popup'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import Select from '../../../../../common/components/gov-uk/Select'
@@ -7,63 +9,62 @@ import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import ContactsTable from './dashboard-components/ContactsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
+import { setCurrentContact, setContacts } from '../../../../../common/redux/userSlice'
+import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function ViewContactsDashboardPage () {
   const navigate = useNavigate()
-  const [contacts, setContacts] = useState([])
+  const dispatch = useDispatch()
+  const [notificationText, setNotificationText] = useState('')
   const [selectedContacts, setSelectedContacts] = useState([])
   const [filteredContacts, setFilteredContacts] = useState([])
-  const [isFilterVisible, setIsFilterVisible] = useState(false)
-
-  useEffect(() => {
-    const c = [
-      {
-        name: 'Stephanie Beach',
-        job_title: 'Operations Director',
-        email: 'stephanie.beach@company.com',
-        linked_locations: ['Loc_1', 'Loc_2']
-      },
-      {
-        name: 'Mary Pepper',
-        job_title: 'Regional Manager',
-        email: 'mary.pepper@company.com',
-        linked_locations: []
-      },
-      {
-        name: 'Amanda Jordan',
-        job_title: 'Regional Manager',
-        email: 'amanda.jordan@company.com',
-        linked_locations: ['Loc_3', 'Loc_4']
-      },
-      {
-        name: 'Steve Binns',
-        job_title: 'Regional Manager',
-        email: 'steve.binns@company.com',
-        linked_locations: ['Loc_1']
-      },
-      {
-        name: 'Greg Swordy',
-        job_title: 'Site Manager',
-        email: 'greg.swordy@company.com',
-        linked_locations: ['Loc_1', 'Loc_2']
-      },
-    ]
-    setContacts(c)
-    setFilteredContacts(c)
-  }, [])
-
+  const [targetContact, setTargetContact] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [resetPaging, setResetPaging] = useState(false)
+  const [isFilterVisible, setIsFilterVisible] = useState(false)
+  const [displayedContacts, setDisplayedContacts] = useState([])
+  const [dialog, setDialog] = useState({
+    show: false,
+    text: '',
+    title: '',
+    buttonText: '',
+    buttonClass: '',
+    input: '',
+    charLimit: 0,
+    error: ''
+  })
+
+  const [updatedContact, setUpdatedContact] = useState('')
+  const [results, setResults] = useState(null)
+  const [searchInput, setSearchInput] = useState(null)
   const contactsPerPage = 10
-  const displayedContacts = filteredContacts.slice(
-    (currentPage - 1) * contactsPerPage,
-    currentPage * contactsPerPage
+
+  const contacts = useSelector((state) =>
+    state.session.contacts !== null
+      ? state.session.contacts
+      : []
   )
 
   useEffect(() => {
     setCurrentPage(1)
     setSelectedContacts([])
+    setResults(null)
+    setSearchInput('')
   }, [resetPaging])
+
+  useEffect(() => {
+    setDisplayedContacts(
+      filteredContacts.slice(
+        (currentPage - 1) * contactsPerPage,
+        currentPage * contactsPerPage
+      )
+    )
+  }, [filteredContacts, currentPage])
+
+  useEffect(() => {
+    setContacts(contacts)
+    setFilteredContacts(contacts)
+  }, [contacts])
 
   const moreActions = [
     'Link selected to locations', 
@@ -76,8 +77,86 @@ export default function ViewContactsDashboardPage () {
   const [selectedEmailFilters, setSelectedEmailFilters] =
     useState([])
 
+  const deleteDialog = (contactToBeDeleted) => {
+    setDialog({
+      show: true,
+      text: (
+        <>
+          If you continue {contactToBeDeleted.name} will be deleted from this account and will 
+          not get flood messages.
+        </>
+      ),
+      title: 'Delete contact',
+      buttonText: 'Delete contact',
+      buttonClass: 'govuk-button--warning',
+      input: ''
+    })
+  }
+
+  const multiDeleteDialog = () => {
+    if (selectedContacts && selectedContacts.length > 0) {
+      setDialog({
+        show: true,
+        text: (
+          <>
+            If you continue {selectedContacts.length} contacts will be deleted from this account and 
+            will not get flood messages.
+          </>
+        ),
+        title: `Delete ${selectedContacts.length} contacts`,
+        buttonText: 'Delete contacts',
+        buttonClass: 'govuk-button--warning',
+        input: ''
+      })
+    }
+  }
+
+  const onAction = (e, action, contact) => {
+    setTargetContact(contact)
+    if (action === 'view') {
+      e.preventDefault()
+      dispatch(setCurrentContact(contact))
+      navigate(orgManageContactsUrls.view.viewContact)
+    } else {
+      deleteDialog(contact)
+    }
+  }
+
   const onMoreActionSelected = (event) => {
-    
+    // if (event === 'Link selected to locations') {
+
+    // } else if (event === 'Delete selected') {
+      multiDeleteDialog()
+      handleDelete()
+    // }
+  }
+
+  const removeContacts = (contactsToRemove) => {
+    const updatedContacts = contacts.filter(
+      (contact) => !contactsToRemove.includes(contact)
+    )
+
+    dispatch(setContacts(updatedContacts))
+    setContacts([...updatedContacts])
+
+    setNotificationText('Contact deleted')
+
+    setDialog({ ...dialog, show: false })
+    setTargetContact(null)
+    setSelectedContacts([])
+  }
+
+  const handleDelete = () => {
+    if (targetContact) {
+      removeContacts([targetContact])
+      if (selectedContacts.length > 0) {
+        const updatedSelectedContacts = selectedContacts.filter(contact => contact !== targetContact)
+        setSelectedContacts(updatedSelectedContacts)
+      }
+    } else if (selectedContacts.length > 0) {
+      const contactsToRemove = [...selectedContacts]
+      removeContacts(contactsToRemove)
+    }
   }
 
   return (
@@ -100,7 +179,7 @@ export default function ViewContactsDashboardPage () {
                     name='MoreActions'
                     label=''
                     options={moreActions}
-                    onSelect={onMoreActionSelected}
+                    onSelect={() => multiDeleteDialog()}
                     initialSelectOptionText={
                       'More actions'
                     }
@@ -116,10 +195,12 @@ export default function ViewContactsDashboardPage () {
                   displayedContacts={displayedContacts}
                   filteredContacts={filteredContacts}
                   selectedContacts={selectedContacts}
+                  setContacts={setContacts}
                   setSelectedContacts={setSelectedContacts}
                   setFilteredContacts={setFilteredContacts}
                   resetPaging={resetPaging}
                   setResetPaging={setResetPaging}
+                  onAction={onAction}
                 />
                 <Pagination
                   totalPages={Math.ceil(
@@ -170,6 +251,7 @@ export default function ViewContactsDashboardPage () {
                     displayedContacts={displayedContacts}
                     filteredContacts={filteredContacts}
                     selectedContacts={selectedContacts}
+                    setContacts={setContacts}
                     setSelectedContacts={setSelectedContacts}
                     setFilteredContacts={setFilteredContacts}
                     resetPaging={resetPaging}
@@ -184,6 +266,26 @@ export default function ViewContactsDashboardPage () {
                   />
                 </div>
               </div>
+            )}
+            {dialog.show && (
+              <>
+                <Popup
+                  onDelete={() => handleDelete()}
+                  onClose={() => setDialog({ ...dialog, show: false })}
+                  title={dialog.title}
+                  popupText={dialog.text}
+                  buttonText={dialog.buttonText}
+                  buttonClass={dialog.buttonClass}
+                  input={dialog.input}
+                  textInput={updatedContact}
+                  setTextInput={setUpdatedContact}
+                  charLimit={dialog.charLimit}
+                  error={dialog.error}
+                  setError={(val) =>
+                    setDialog((dial) => ({ ...dial, error: val }))}
+                  defaultValue={dialog.input ? targetContact.name : ''}
+                />
+              </>
             )}
           </div>
         </div>

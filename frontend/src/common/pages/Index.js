@@ -16,6 +16,7 @@ import {
   setLocationBoundaries,
   setLocationKeywords,
   setOrgCurrentContact,
+  setContacts,
   setProfile,
   setRegistrations,
   setSelectedBoundary,
@@ -325,6 +326,39 @@ export default function IndexPage () {
     ]
   }
 
+  const mockContacts = [
+    {
+      name: 'Stephanie Beach',
+      job_title: 'Operations Director',
+      email: 'stephanie.beach@company.com',
+      linked_locations: ['Loc_1', 'Loc_2']
+    },
+    {
+      name: 'Mary Pepper',
+      job_title: 'Regional Manager',
+      email: 'mary.pepper@company.com',
+      linked_locations: []
+    },
+    {
+      name: 'Amanda Jordan',
+      job_title: 'Regional Manager',
+      email: 'amanda.jordan@company.com',
+      linked_locations: ['Loc_3', 'Loc_4']
+    },
+    {
+      name: 'Steve Binns',
+      job_title: 'Regional Manager',
+      email: 'steve.binns@company.com',
+      linked_locations: ['Loc_1']
+    },
+    {
+      name: 'Greg Swordy',
+      job_title: 'Site Manager',
+      email: 'greg.swordy@company.com',
+      linked_locations: ['Loc_1', 'Loc_2']
+    }
+  ]
+
   const mockCurrentLocation = {
     name: null,
     // address is the UPRN
@@ -404,6 +438,7 @@ export default function IndexPage () {
       dispatch(setCurrentLocationEasting('520814'))
       dispatch(setCurrentLocationNorthing('185016'))
       dispatch(setOrgCurrentContact(mockOrgCurrentContact))
+      dispatch(setContacts(mockContacts))
       setmockSessionActive(true)
     } else {
       dispatch(clearAuth())

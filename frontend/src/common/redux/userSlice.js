@@ -76,7 +76,8 @@ const userSlice = createSlice({
           value: null
         }
       ]
-    }
+    },
+    contacts: null
   },
   reducers: {
     setAuthToken: (state, action) => {
@@ -292,6 +293,9 @@ const userSlice = createSlice({
     setOrgCurrentContactAdditionals: (state, action) => {
       state.orgCurrentContact.additionals = action.payload
     },
+    setContacts: (state, action) => {
+      state.contacts = action.payload
+    },
     // Clear state
     clearAuth: (state) => {
       state.authToken = null
@@ -422,6 +426,7 @@ export const {
   setOrgCurrentContactPosition,
   setOrgCurrentContactAdditionals,
   setOrgCurrentContactNotes,
+  setContacts,
   // clear state
   clearAuth
 } = userSlice.actions

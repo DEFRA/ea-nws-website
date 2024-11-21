@@ -1299,3 +1299,16 @@
   margin-top: -28px;
   color: #505a5f;
 }
+
+.custom-tooltip {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+/* removes the arrow on the tooltip */
+.custom-tooltip .leaflet-tooltip-top:before,
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+  border: none !important;
+}

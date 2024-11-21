@@ -72,82 +72,36 @@ export default function LocationsTable ({
     setSelectedLocations(updatedSelectedLocations)
   }
 
-  const sortLocationNames = () => {
-    if (locationNameSort === 'none' || locationNameSort === 'descending') {
-      setLocationNameSort('ascending')
-      setFilteredLocations(
-        [...filteredLocations].sort((a, b) =>
-          a.meta_data.location_additional.location_name >
-          b.meta_data.location_additional.location_name
-            ? 1
-            : -1
-        )
-      )
+  // Sort standard data
+  const sortData = (sortType, setSort, data) => {
+    const getValue = (obj, path) => {
+      return path.split('.').reduce((acc, part) => acc && acc[part], obj)
     }
-    if (locationNameSort === 'ascending') {
-      setLocationNameSort('descending')
-      setFilteredLocations(
-        [...filteredLocations].sort((a, b) =>
-          a.meta_data.location_additional.location_name <
-          b.meta_data.location_additional.location_name
-            ? 1
-            : -1
-        )
-      )
-    }
-    setResetPaging(!resetPaging)
-  }
 
-  const sortLocationTypes = () => {
-    if (locationTypeSort === 'none' || locationTypeSort === 'descending') {
-      setLocationTypeSort('ascending')
+    if (sortType === 'none' || sortType === 'descending') {
+      setSort('ascending')
       setFilteredLocations(
-        [...filteredLocations].sort((a, b) =>
-          a.meta_data.location_additional.location_type >
-          b.meta_data.location_additional.location_type
-            ? 1
-            : -1
-        )
-      )
-    }
-    if (locationTypeSort === 'ascending') {
-      setLocationTypeSort('descending')
-      setFilteredLocations(
-        [...filteredLocations].sort((a, b) =>
-          a.meta_data.location_additional.location_type <
-          b.meta_data.location_additional.location_type
-            ? 1
-            : -1
-        )
-      )
-    }
-    setResetPaging(!resetPaging)
-  }
+        [...filteredLocations].sort((a, b) => {
+          const valueA = getValue(a, data)
+          const valueB = getValue(b, data)
 
-  const sortBusinessCriticalities = () => {
-    if (
-      businessCriticalitySort === 'none' ||
-      businessCriticalitySort === 'descending'
-    ) {
-      setBusinessCriticalitySort('ascending')
-      setFilteredLocations(
-        [...filteredLocations].sort((a, b) =>
-          a.meta_data.location_additional.business_criticality >
-          b.meta_data.location_additional.business_criticality
-            ? 1
-            : -1
-        )
+          // Place empty strings at the end
+          if (valueA === '' && valueB === '') return 0
+          if (valueA === '') return 1
+          if (valueB === '') return -1
+
+          return (valueA || '').localeCompare(valueB || '')
+        })
       )
     }
-    if (businessCriticalitySort === 'ascending') {
-      setBusinessCriticalitySort('descending')
+    if (sortType === 'ascending') {
+      setSort('descending')
       setFilteredLocations(
-        [...filteredLocations].sort((a, b) =>
-          a.meta_data.location_additional.business_criticality <
-          b.meta_data.location_additional.business_criticality
-            ? 1
-            : -1
-        )
+        [...filteredLocations].sort((a, b) => {
+          const valueA = getValue(a, data)
+          const valueB = getValue(b, data)
+          return (valueB || '').localeCompare(valueA || '')
+        })
       )
     }
     setResetPaging(!resetPaging)
@@ -266,7 +220,15 @@ export default function LocationsTable ({
               className='govuk-table__header'
               aria-sort={locationNameSort}
             >
-              <button type='button' onClick={() => sortLocationNames()}>
+              <button
+                type='button'
+                onClick={() =>
+                  sortData(
+                    locationNameSort,
+                    setLocationNameSort,
+                    'meta_data.location_additional.location_name'
+                  )}
+              >
                 Location name
               </button>
             </th>
@@ -275,7 +237,15 @@ export default function LocationsTable ({
               className='govuk-table__header'
               aria-sort={locationTypeSort}
             >
-              <button type='button' onClick={() => sortLocationTypes()}>
+              <button
+                type='button'
+                onClick={() =>
+                  sortData(
+                    locationTypeSort,
+                    setLocationTypeSort,
+                    'meta_data.location_additional.location_type'
+                  )}
+              >
                 Location type
               </button>
             </th>
@@ -284,7 +254,15 @@ export default function LocationsTable ({
               className='govuk-table__header'
               aria-sort={businessCriticalitySort}
             >
-              <button type='button' onClick={() => sortBusinessCriticalities()}>
+              <button
+                type='button'
+                onClick={() =>
+                  sortData(
+                    businessCriticalitySort,
+                    setBusinessCriticalitySort,
+                    'meta_data.location_additional.business_criticality'
+                  )}
+              >
                 Business
                 <br /> criticality
               </button>
@@ -351,26 +329,44 @@ export default function LocationsTable ({
                   </div>
                 </div>
               </th>
-              <td className='govuk-table__cell'>
+              <td
+                className='govuk-table__cell'
+                style={{ verticalAlign: 'middle' }}
+              >
                 <Link onClick={(e) => viewLocation(e, location)}>
                   {location.meta_data.location_additional.location_name}
                 </Link>
               </td>
-              <td className='govuk-table__cell'>
+              <td
+                className='govuk-table__cell'
+                style={{ verticalAlign: 'middle' }}
+              >
                 {location.meta_data.location_additional.location_type}
               </td>
-              <td className='govuk-table__cell'>
+              <td
+                className='govuk-table__cell'
+                style={{ verticalAlign: 'middle' }}
+              >
                 {location.meta_data.location_additional.business_criticality}
               </td>
-              <td className='govuk-table__cell'>
+              <td
+                className='govuk-table__cell'
+                style={{ verticalAlign: 'middle' }}
+              >
                 <Link onClick={(e) => updateMessageSettings(e, location)}>
                   {location.alert_categories.length > 0 ? 'Yes' : 'No'}
                 </Link>
               </td>
-              <td className='govuk-table__cell'>
+              <td
+                className='govuk-table__cell'
+                style={{ verticalAlign: 'middle' }}
+              >
                 <Link onClick={(e) => linkToContacts(e, location)}>0</Link>
               </td>
-              <td className='govuk-table__cell'>
+              <td
+                className='govuk-table__cell'
+                style={{ verticalAlign: 'middle' }}
+              >
                 {(location.meta_data.location_additional.location_data_type ===
                   LocationDataType.ADDRESS ||
                   location.meta_data.location_additional.location_data_type ===
@@ -383,7 +379,10 @@ export default function LocationsTable ({
                       </div>
                 )}
               </td>
-              <td className='govuk-table__cell'>
+              <td
+                className='govuk-table__cell'
+                style={{ verticalAlign: 'middle' }}
+              >
                 {(location.meta_data.location_additional.location_data_type ===
                   LocationDataType.ADDRESS ||
                   location.meta_data.location_additional.location_data_type ===
@@ -396,7 +395,10 @@ export default function LocationsTable ({
                       </div>
                 )}
               </td>
-              <td className='govuk-table__cell'>
+              <td
+                className='govuk-table__cell'
+                style={{ verticalAlign: 'middle' }}
+              >
                 <Link onClick={(e) => deleteLocation(e, location)}>Delete</Link>
               </td>
             </tr>

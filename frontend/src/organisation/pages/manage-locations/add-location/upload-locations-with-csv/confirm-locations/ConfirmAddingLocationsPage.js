@@ -3,21 +3,18 @@ import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
-import InsetText from '../../../../../../common/components/gov-uk/InsetText'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ConfirmLocationsPage() {
   const navigate = useNavigate()
   const location = useLocation()
-  const locationsValid = location?.state?.valid || 0
-  const locationsInvalid = location?.state?.invalid || 0
-  const locationsDuplicate = location?.state?.duplicate || 0
+  const validLocations = location?.state?.valid || 0
+  const duplicateLocations = location?.state?.duplicates || 0
+  const notInEnglandLocations = location?.state?.notInEngland || 0
+  const notFoundLocations = location?.state?.notFound || 0
   const fileName = location?.state?.fileName || ''
   const authToken = useSelector((state) => state.session.authToken)
-
-  console.log('invalid', locationsInvalid)
-  console.log('duplicate', locationsDuplicate)
 
   const handleLocations = async (event) => {
     event.preventDefault()
@@ -77,38 +74,53 @@ export default function ConfirmLocationsPage() {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
-              {locationsValid} out of{' '}
-              {locationsInvalid + locationsDuplicate + locationsValid} locations
-              can be added
+              {validLocations} of{' '}
+              {duplicateLocations + notFoundLocations + notInEnglandLocations}{' '}
+              locations can be added
             </h1>
             <div className='govuk-body'>
-              {locationsInvalid > 0 && (
-                <div>
-                  <InsetText
-                    text={
-                      locationsInvalid +
-                      ' locations need to be matched before they can be added. You can match them after you add the locations that have been found.'
-                    }
-                  />
-                  <Details
-                    title='Why do some locations not match?'
-                    text={detailsMessage}
-                  />
-                </div>
-              )}
-              {locationsDuplicate > 0 && (
-                <div>
-                  <InsetText
-                    text={
-                      locationsDuplicate +
-                      ' locations already exist with the same name in this account. You can choose to keep the existing locations or replace them with the new locations uploaded.'
-                    }
-                  />
-                  You can do this after you add the {locationsValid} locations
-                  that can be added now.
-                </div>
-              )}
+              <div className='govuk-inset-text'>
+                {duplicateLocations > 0 && (
+                  <div>
+                    <strong>{duplicateLocations}</strong> locations already
+                    exist with the same name in this account. You can choose to
+                    keep the existing locations or replace them with the new
+                    locations uploaded.
+                  </div>
+                )}
+                {notFoundLocations > 0 && (
+                  <div>
+                    {/* Only need a break if there is text above */}
+                    {duplicateLocations > 0 && <br />}
+                    <div>
+                      <strong>{notFoundLocations}</strong> locations need to be
+                      found manually in this account before they can be added.
+                    </div>
+                  </div>
+                )}
+                {notInEnglandLocations > 0 && (
+                  <div>
+                    {/* Only need a break if there is text above */}
+                    {(duplicateLocations > 0 || notFoundLocations > 0) && (
+                      <br />
+                    )}
+                    <div>
+                      <strong>{notInEnglandLocations}</strong> locations cannot
+                      be added because they are not in England. You can check
+                      each of the location's details and change them if you
+                      think this is not correct.
+                    </div>
+                  </div>
+                )}
+              </div>
+              <Details
+                title='Why are some locations not found?'
+                text={detailsMessage}
+              />
+              You can do this after you add the {validLocations} locations that
+              can be added now.
             </div>
+            <br />
             <Button
               text='Add and continue'
               className='govuk-button govuk-button'

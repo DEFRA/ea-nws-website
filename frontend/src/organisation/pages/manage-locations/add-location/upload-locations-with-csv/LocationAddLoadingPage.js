@@ -5,13 +5,14 @@ import { Spinner } from '../../../../../common/components/custom/Spinner'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddLoadingPage() {
+export default function LocationAddLoadingPage () {
   const navigate = useNavigate()
   const [status, setStatus] = useState('')
   const [stage, setStage] = useState('Scanning Upload')
   const [validLocations, setValidLocations] = useState(null)
-  const [invalidLocations, setInvalidLocations] = useState(null)
   const [duplicateLocations, setDuplicateLocations] = useState(null)
+  const [notFoundLocations, setNotFoundLocations] = useState(null)
+  const [notInEnglandLocations, setNotInEnglandLocations] = useState(null)
   const location = useLocation()
   const authToken = useSelector((state) => state.session.authToken)
   const fileName = location.state?.fileName
@@ -24,7 +25,10 @@ export default function LocationAddLoadingPage() {
   // Each time the status changes check if it's complete and save the locations to elasticache and geosafe
   useEffect(() => {
     const continueToNextPage = () => {
-      if (invalidLocations === 0) {
+      if (
+        duplicateLocations + notFoundLocations + notInEnglandLocations ===
+        0
+      ) {
         navigate(orgManageLocationsUrls.add.confirm, {
           state: { fileName, valid: validLocations }
         })
@@ -33,8 +37,9 @@ export default function LocationAddLoadingPage() {
           state: {
             fileName,
             valid: validLocations,
-            invalid: invalidLocations,
-            duplicate: duplicateLocations
+            duplicates: duplicateLocations,
+            notFound: notFoundLocations,
+            notInEngland: notInEnglandLocations
           }
         })
       }
@@ -60,15 +65,25 @@ export default function LocationAddLoadingPage() {
         if (data?.status !== status) {
           if (data?.data) {
             setValidLocations(data.data.valid.length)
-            setInvalidLocations(
-              data.data.invalid.filter(
-                (invalid) => invalid.error !== 'duplicate'
-              ).length
-            )
             setDuplicateLocations(
               data.data.invalid.filter(
-                (invalid) => invalid.error === 'duplicate'
+                (invalid) =>
+                  Array.isArray(invalid.error) &&
+                  invalid.error.includes('duplicate')
               ).length
+            )
+            setNotInEnglandLocations(
+              data.data.invalid.filter(
+                (invalid) =>
+                  Array.isArray(invalid.error) &&
+                  invalid.error.includes('not in england')
+              ).length
+            )
+            // Any other invalid locations are considered to be not found
+            setNotFoundLocations(
+              data.data.invalid.length -
+                duplicateLocations -
+                notInEnglandLocations
             )
           }
           setStatus(data.status)

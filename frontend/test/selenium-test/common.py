@@ -159,8 +159,8 @@ url_org_man_cont_path = url_org + '/manage-contacts'
 url_org_man_cont = {
     'add': {
         'details': url_org_man_cont_path + '/add',
-        'notes':url_org_man_cont_path + '/add/notes',
         'keywords': url_org_man_cont_path + '/add/keywords',
+        'notes': url_org_man_cont_path + '/add/notes',
         'channels': url_org_man_cont_path + '/add/channels'
     },
 }

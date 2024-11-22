@@ -22,7 +22,10 @@ export default function SearchFilter ({
   selectedFloodMessagesAvailableFilters,
   setSelectedFloodMessagesAvailableFilters,
   selectedBusinessCriticalityFilters,
-  setSelectedBusinessCriticalityFilters
+  setSelectedBusinessCriticalityFilters,
+  riskRating,
+  selectedRiskRatingFilters,
+  setSelectedRiskRatingFilters
 }) {
   // filters
   const [locationNameFilter, setLocationNameFilter] = useState('')
@@ -53,6 +56,7 @@ export default function SearchFilter ({
   const [floodMessagesVisible, setFloodMessagesVisible] = useState(false)
   const [businessCriticalityVisible, setBusinessCriticalityVisible] =
     useState(false)
+  const [riskRatingVisible, setRiskRatingVisible] = useState(false)
 
   // handle filters applied
   const handleFilterChange = (e, setFilters) => {
@@ -118,6 +122,15 @@ export default function SearchFilter ({
         selectedBusinessCriticalityFilters.includes(
           location.meta_data.location_additional.business_criticality
         )
+      )
+    }
+
+    // Apply risk rating filter
+    if (selectedRiskRatingFilters.length > 0) {
+      console.log('filtered locations: ', filteredLocations)
+      console.log('selected filters: ', selectedRiskRatingFilters)
+      filteredLocations = filteredLocations.filter((location) =>
+        selectedRiskRatingFilters.includes(riskRating)
       )
     }
 
@@ -312,6 +325,15 @@ export default function SearchFilter ({
         setSelectedFloodMessagesAvailableFilters,
         floodMessagesVisible,
         setFloodMessagesVisible
+      )}
+
+      {otherFilter(
+        'Rivers and sea flood risk',
+        riskRating,
+        selectedRiskRatingFilters,
+        setSelectedRiskRatingFilters,
+        riskRatingVisible,
+        setRiskRatingVisible
       )}
     </>
   )

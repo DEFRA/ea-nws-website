@@ -3,6 +3,11 @@ import OrganisationAccountNavigation from '../../../../../common/components/cust
 import Button from '../../../../../common/components/gov-uk/Button'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
+import RiskAreaType from '../../../../../common/enums/RiskAreaType'
+import {
+  getGroundwaterFloodRiskRatingOfLocation,
+  getRiversAndSeaFloodRiskRatingOfLocation
+} from '../../../../../common/services/WfsFloodDataService'
 import { orgManageLocationsUrls } from '../../../..//routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import LocationsTable from './dashboard-components/LocationsTable'
@@ -14,6 +19,7 @@ export default function ViewLocationsDashboardPage () {
   const [filteredLocations, setFilteredLocations] = useState([])
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [selectedFilters, setSelectedFilters] = useState([])
+  const [riskRating, setRiskRating] = useState(null)
 
   useEffect(() => {
     const l = [
@@ -35,7 +41,7 @@ export default function ViewLocationsDashboardPage () {
             location_type: 'Office',
             action_plan: '1. Dont panic!',
             notes:
-              'John Smith has the flood plane for this location. His contact number is 01234 567 890',
+              'John Smith has the flood plan for this location. His contact number is 01234 567 890',
             keywords: '["Midlands"]',
             location_data_type: LocationDataType.X_AND_Y_COORDS
           }
@@ -584,6 +590,61 @@ export default function ViewLocationsDashboardPage () {
     setFilteredLocations(l)
   }, [])
 
+  const getRiskCategory = async ({ riskAreaType, location }) => {
+    let riskCategory = null
+
+    const riskData = {
+      'v.low': { className: 'very-low-risk', title: 'Very low risk' },
+      low: { className: 'low-risk', title: 'Low risk' },
+      medium: { className: 'medium-risk', title: 'Medium risk' },
+      high: { className: 'high-risk', title: 'High risk' },
+      unlikely: { className: 'unlikely-risk', title: 'Unlikely' },
+      possible: { className: 'possible-risk', title: 'Possible' },
+      // incase the wfs returns no data
+      unavailable: { className: '', title: 'Unavailable' }
+    }
+
+    if (
+      location.meta_data.location_additional.location_data_type !==
+        LocationDataType.ADDRESS &&
+      location.meta_data.location_additional.location_data_type !==
+        LocationDataType.X_AND_Y_COORDS &&
+      location.coordinates != null
+    ) {
+      return null
+    }
+
+    if (riskAreaType === RiskAreaType.RIVERS_AND_SEA) {
+      riskCategory = await getRiversAndSeaFloodRiskRatingOfLocation(
+        location.coordinates.latitude,
+        location.coordinates.longitude
+      )
+    } else if (riskAreaType === RiskAreaType.GROUNDWATER) {
+      riskCategory = await getGroundwaterFloodRiskRatingOfLocation(
+        location.coordinates.latitude,
+        location.coordinates.longitude
+      )
+    }
+
+    return riskData[riskCategory].title
+  }
+
+  useEffect(() => {
+    const fetchRiskRatings = async () => {
+      const ratings = await Promise.all(
+        locations.map((location) =>
+          getRiskCategory({
+            riskAreaType: RiskAreaType.RIVERS_AND_SEA,
+            location
+          })
+        )
+      )
+      setRiskRating(ratings.filter((option) => option !== null))
+    }
+
+    fetchRiskRatings()
+  }, [locations])
+
   const [currentPage, setCurrentPage] = useState(1)
   const [resetPaging, setResetPaging] = useState(false)
   const locationsPerPage = 10
@@ -608,6 +669,7 @@ export default function ViewLocationsDashboardPage () {
     selectedBusinessCriticalityFilters,
     setSelectedBusinessCriticalityFilters
   ] = useState([])
+  const [selectedRiskRatingFilters, setSelectedRiskRatingFilters] = useState([])
 
   const table = (
     <>
@@ -620,12 +682,14 @@ export default function ViewLocationsDashboardPage () {
       <Button
         text='More actions'
         className='govuk-button govuk-button--secondary inline-block'
+        // TODO:
         // onClick={() => setIsFilterVisible(!isFilterVisible)}
       />
       &nbsp; &nbsp;
       <Button
         text='Print'
         className='govuk-button govuk-button--secondary inline-block'
+        // TODO:
         // onClick={() => setIsFilterVisible(!isFilterVisible)}
       />
       <LocationsTable
@@ -637,6 +701,7 @@ export default function ViewLocationsDashboardPage () {
         setFilteredLocations={setFilteredLocations}
         resetPaging={resetPaging}
         setResetPaging={setResetPaging}
+        riskRating={riskRating}
       />
       <Pagination
         totalPages={Math.ceil(filteredLocations.length / locationsPerPage)}
@@ -685,6 +750,9 @@ export default function ViewLocationsDashboardPage () {
                       setSelectedBusinessCriticalityFilters={
                       setSelectedBusinessCriticalityFilters
                     }
+                      riskRating={riskRating}
+                      selectedRiskRatingFilters={selectedRiskRatingFilters}
+                      setSelectedRiskRatingFilters={setSelectedRiskRatingFilters}
                     />
                   </div>
 

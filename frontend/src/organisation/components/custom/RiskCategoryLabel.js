@@ -1,32 +1,27 @@
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import RiskAreaType from '../../../common/enums/RiskAreaType'
 import {
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation
 } from '../../../common/services/WfsFloodDataService'
 
-export default function RiskCategoryLabel ({ riskAreaType }) {
-  const currentLocationCoordinates = useSelector(
-    (state) => state.session.currentLocation.coordinates
-  )
+export default function RiskCategoryLabel ({ riskAreaType, coordinates }) {
   const [riskRating, setRiskRating] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     const getRiskRatings = async () => {
       let riskCategory = null
-      const { latitude, longitude } = currentLocationCoordinates
 
       if (riskAreaType === RiskAreaType.RIVERS_AND_SEA) {
         riskCategory = await getRiversAndSeaFloodRiskRatingOfLocation(
-          latitude,
-          longitude
+          coordinates.latitude,
+          coordinates.longitude
         )
       } else if (riskAreaType === RiskAreaType.GROUNDWATER) {
         riskCategory = await getGroundwaterFloodRiskRatingOfLocation(
-          latitude,
-          longitude
+          coordinates.latitude,
+          coordinates.longitude
         )
       }
       setLoading(false)

@@ -2,14 +2,11 @@ import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
+import { infoUrls } from '../../../../../routes/info/InfoRoutes'
 import { urlManageKeywordsOrg } from '../../../../../routes/manage-keywords/ManageKeywordsRoutes'
 import { urlManageOrgAddLocations } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DashboardHeader ({
-  LocationsAdded,
-  LastUpdated,
-  locations
-}) {
+export default function DashboardHeader ({ locations }) {
   const navigate = useNavigate()
 
   const floodRiskDetails = (
@@ -68,7 +65,7 @@ export default function DashboardHeader ({
 
   const handleFloodAreas = (event) => {
     event.preventDefault()
-    navigate('/organisation/info/flood-areas')
+    navigate(infoUrls.floodAreas)
   }
 
   const FloodBanner = ({ type }) => {

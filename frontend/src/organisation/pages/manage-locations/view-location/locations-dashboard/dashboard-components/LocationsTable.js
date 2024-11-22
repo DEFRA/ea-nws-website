@@ -17,10 +17,12 @@ export default function LocationsTable ({
   setSelectedLocations,
   setFilteredLocations,
   resetPaging,
-  setResetPaging
+  setResetPaging,
+  riskRating
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
   const [locationNameSort, setLocationNameSort] = useState('none')
   const [locationTypeSort, setLocationTypeSort] = useState('none')
@@ -86,9 +88,14 @@ export default function LocationsTable ({
           const valueB = getValue(b, data)
 
           // Place empty strings at the end
-          if (valueA === '' && valueB === '') return 0
-          if (valueA === '') return 1
-          if (valueB === '') return -1
+          if (
+            (valueA === '' || valueA == null) &&
+            (valueB === '' || valueB == null)
+          ) {
+            return 0
+          }
+          if (valueA === '' || valueA == null) return 1
+          if (valueB === '' || valueB == null) return -1
 
           return (valueA || '').localeCompare(valueB || '')
         })
@@ -161,8 +168,8 @@ export default function LocationsTable ({
       show: true,
       text: (
         <>
-          If you continue Location_IDXX will be deleted from this account and
-          will not get flood messages.
+          If you continue {location.meta_data.location_additional.location_name}{' '}
+          will be deleted from this account and will not get flood messages.
         </>
       ),
       title: 'Delete location',
@@ -292,7 +299,15 @@ export default function LocationsTable ({
               className='govuk-table__header'
               aria-sort={riverSeaRisksSort}
             >
-              <button type='button' onClick={() => sortRiverSeaRisks()}>
+              <button
+                type='button'
+                onClick={() =>
+                  sortData(
+                    riverSeaRisksSort,
+                    setRiverSeaRisksSort,
+                    'meta_data.location_additional.river_sea_risk'
+                  )}
+              >
                 Rivers and sea
                 <br /> flood risk
               </button>
@@ -367,17 +382,19 @@ export default function LocationsTable ({
                 className='govuk-table__cell'
                 style={{ verticalAlign: 'middle' }}
               >
-                {(location.meta_data.location_additional.location_data_type ===
-                  LocationDataType.ADDRESS ||
-                  location.meta_data.location_additional.location_data_type ===
-                    LocationDataType.X_AND_Y_COORDS) && (
-                      <div className='flood-risk-banner-label '>
-                        <RiskCategoryLabel
-                          location={location}
-                          riskAreaType={RiskAreaType.RIVERS_AND_SEA}
-                        />
-                      </div>
-                )}
+                {
+                  // (location.meta_data.location_additional.location_data_type ===
+                  //   LocationDataType.ADDRESS ||
+                  //   location.meta_data.location_additional.location_data_type ===
+                  //     LocationDataType.X_AND_Y_COORDS) &&
+                  //   location?.coordinates != null &&
+                  //   <RiskCategoryLabel // <div className='flood-risk-banner-label '>
+                  //     coordinates={location.coordinates}
+                  //     riskAreaType={RiskAreaType.RIVERS_AND_SEA}
+                  //   />
+                  // </div>
+                  riskRating && riskRating[index]
+                }
               </td>
               <td
                 className='govuk-table__cell'
@@ -389,7 +406,7 @@ export default function LocationsTable ({
                     LocationDataType.X_AND_Y_COORDS) && (
                       <div className='flood-risk-banner-label '>
                         <RiskCategoryLabel
-                          location={location}
+                          coordinates={location.coordinates}
                           riskAreaType={RiskAreaType.GROUNDWATER}
                         />
                       </div>

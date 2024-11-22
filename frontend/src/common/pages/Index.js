@@ -17,6 +17,7 @@ import {
   setLocationBoundaries,
   setLocationKeywords,
   setOrgCurrentContact,
+  setOrgId,
   setProfile,
   setRegistrations,
   setSelectedBoundary,
@@ -238,7 +239,7 @@ export default function IndexPage () {
   }
 
   const mockOrgOne = {
-    id: '',
+    id: '1',
     enabled: true,
     firstname: 'John',
     lastname: 'Smith',
@@ -270,6 +271,7 @@ export default function IndexPage () {
     ],
     pois: [
       {
+        id: '1',
         address: 'Big Ben, London, SW1A 0AA',
         name: 'UPRN',
         coordinates: {
@@ -278,6 +280,7 @@ export default function IndexPage () {
         }
       },
       {
+        id: '2',
         address: 'Kingfisher Way, London, NW10 8TZ',
         name: 'UPRN',
         coordinates: {
@@ -428,6 +431,7 @@ export default function IndexPage () {
       dispatch(setOrgCurrentContact(mockOrgCurrentContact))
       dispatch(setLocationKeywords(mockLocationKeywords))
       dispatch(setContactKeywords(mockContactKeywords))
+      dispatch(setOrgId('1'))
       dispatch(setCurrentLocationEasting('520814'))
       dispatch(setCurrentLocationNorthing('185016'))
       setmockSessionActive(true)

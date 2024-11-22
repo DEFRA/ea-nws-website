@@ -26,12 +26,25 @@ export default function ConfirmLocationsPage() {
       navigate
     )
     if (!errorMessage) {
-      navigate(orgManageLocationsUrls.unmatchedLocations.index, {
-        state: {
-          added: data.valid,
-          notAdded: data.invalid
+      if (duplicateLocations > 0) {
+        if (duplicateLocations == 1) {
+          // TODO: go to page to handle single duplicate
+        } else {
+          navigate(orgManageLocationsUrls.add.duplicateLocationOptionsPage, {
+            state: {
+              duplicateLocations: duplicateLocations
+            }
+          })
         }
-      })
+      } else {
+        console.log('duplicateLocations', duplicateLocations)
+        navigate(orgManageLocationsUrls.unmatchedLocations.index, {
+          state: {
+            added: data.valid,
+            notAdded: data.invalid
+          }
+        })
+      }
     } else {
       // got to some sort of error page
     }

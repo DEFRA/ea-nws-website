@@ -25,6 +25,7 @@ import LocationAddConfirm from '../../pages/manage-locations/add-location/upload
 import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
 import ConfirmAddingLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
+import DuplicateLocationOptionsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/duplicate-locations/DuplicateLocationOptionsPage'
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/FindUnmatchedLocationsPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
@@ -64,6 +65,8 @@ const orgManageLocationsUrls = {
     addressInfo: urlManageOrgAddLocations + '/address-info',
     uploadFile: urlManageOrgAddLocations + '/upload-file',
     loadingPage: urlManageOrgAddLocations + '/upload-file/loading',
+    duplicateLocationOptionsPage:
+      urlManageOrgAddLocations + '/upload-file/duplicate-location-options',
     confirm: urlManageOrgAddLocations + '/confirm',
     name: urlManageOrg + '/add/name',
     error: {
@@ -165,6 +168,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.loadingPage,
     component: <LocationAddLoadingPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.duplicateLocationOptionsPage,
+    component: <DuplicateLocationOptionsPage />
   },
   {
     path: orgManageLocationsUrls.add.confirm,

@@ -101,7 +101,7 @@ const addToKeywordArr = async (key, value) => {
     keywordArr.forEach((keyword) => {
       if (keyword.name === value.name) {
         keywordExists = true
-        keyword.linked_ids.push(value.linked_ids)
+        keyword.linked_ids.push(value.linked_ids[0])
       }
     })
     if (keywordExists) {

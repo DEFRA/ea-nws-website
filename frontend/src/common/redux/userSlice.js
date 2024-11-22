@@ -34,7 +34,7 @@ const setLocationOtherAdditionals = (additionals, id, value) => {
     }
   }
   if (!idFound) {
-    additionals.push({ id: 'other', value: {s: JSON.stringify({id: value})} })
+    additionals.push({ id: 'other', value: {s: JSON.stringify({[id]: value})} })
   }
 }
 

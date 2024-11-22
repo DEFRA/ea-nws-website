@@ -9,9 +9,7 @@ import Checkbox from '../../../common/components/gov-uk/CheckBox'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import {
   getLocationAdditional,
-  setContactKeywords,
   setCurrentLocationKeywords,
-  setLocationKeywords,
   setOrgCurrentContact
 } from '../../../common/redux/userSlice'
 import {
@@ -26,16 +24,7 @@ export default function AddKeywordsLayout ({
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-
-  const orgKeywordsOriginal = useSelector((state) =>
-    keywordType === 'location'
-      ? state.session.locationKeywords
-        ? state.session.locationKeywords
-        : []
-      : state.session.contactKeywords
-        ? state.session.contactKeywords
-        : []
-  )
+  const orgId = useSelector((state) => state.session.orgId)
 
   const currentObject = useSelector((state) =>
     keywordType === 'location '
@@ -46,8 +35,6 @@ export default function AddKeywordsLayout ({
         ? state.session.orgCurrentContact
         : null
   )
-
-  let orgKeywords = [...orgKeywordsOriginal]
 
   const entryId = useSelector((state) =>
     keywordType === 'location '
@@ -94,8 +81,23 @@ export default function AddKeywordsLayout ({
   }, [searchInput])
 
   useEffect(() => {
-    setKeywords(orgKeywordsOriginal)
-  }, [orgKeywordsOriginal])
+    // const getOrgKeywordsOriginal = async() => {
+    //   const orgKeywords = await getJsonData(orgId + (keywordType === 'location' ? ':t_Keywords_location' : ':t_Keywords_contact'))
+    //   setKeywords(orgKeywords)
+    // }
+    // getOrgKeywordsOriginal()
+
+    const orgKeywords = useSelector((state) =>
+      keywordType === 'location'
+        ? state.session.locationKeywords
+          ? state.session.locationKeywords
+          : []
+        : state.session.contactKeywords
+          ? state.session.contactKeywords
+          : []
+    )
+    setKeywords(orgKeywords)
+  }, [keywordType])
 
   const handleCheckboxChange = (isChecked, index) => {
     isChecked
@@ -167,20 +169,20 @@ export default function AddKeywordsLayout ({
 
       // Loop over organisation keywords
       let keywordExists = false
-      for (const orgKeywordIdx in orgKeywords) {
+      for (const orgKeywordIdx in keywords) {
         // Keyword exists
-        if (currentKeyword === orgKeywords[orgKeywordIdx].name) {
+        if (currentKeyword === keywords[orgKeywordIdx].name) {
           keywordExists = true
 
           if (
-            orgKeywords[orgKeywordIdx].linked_ids.includes(entryId) &&
+            keywords[orgKeywordIdx].linked_ids.includes(entryId) &&
             !currentKeywordChecked
           ) {
-            const originalArray = orgKeywords[orgKeywordIdx].linked_ids
+            const originalArray = keywords[orgKeywordIdx].linked_ids
             const indexToDelete = originalArray.indexOf(entryId)
 
             // Remove location if it exists but keyword is unchecked
-            orgKeywords[orgKeywordIdx] = {
+            keywords[orgKeywordIdx] = {
               name: currentKeyword,
               linked_ids: originalArray.filter(
                 (_, index) => index !== indexToDelete
@@ -188,17 +190,17 @@ export default function AddKeywordsLayout ({
             }
 
             // Remove keyword if no linked ids found
-            if (orgKeywords[orgKeywordIdx].linked_ids.length === 0) {
-              orgKeywords.splice(orgKeywordIdx, 1)
+            if (keywords[orgKeywordIdx].linked_ids.length === 0) {
+              keywords.splice(orgKeywordIdx, 1)
             }
           } else if (
-            !orgKeywords[orgKeywordIdx].linked_ids.includes(entryId) &&
+            !keywords[orgKeywordIdx].linked_ids.includes(entryId) &&
             currentKeywordChecked
           ) {
             // Add location if it doesn't exist and keyword is checked
-            orgKeywords[orgKeywordIdx] = {
+            keywords[orgKeywordIdx] = {
               name: currentKeyword,
-              linked_ids: [...orgKeywords[orgKeywordIdx].linked_ids, entryId]
+              linked_ids: [...keywords[orgKeywordIdx].linked_ids, entryId]
             }
           }
           break
@@ -207,8 +209,8 @@ export default function AddKeywordsLayout ({
 
       // Add keyword and location if it is checked and keyword doesn't exist
       if (!keywordExists && currentKeywordChecked) {
-        orgKeywords = [
-          ...orgKeywords,
+        keywords = [
+          ...keywords,
           {
             name: currentKeyword,
             linked_ids: [entryId]
@@ -218,7 +220,6 @@ export default function AddKeywordsLayout ({
     }
 
     if (keywordType === 'location') {
-      dispatch(setLocationKeywords(orgKeywords))
       dispatch(setCurrentLocationKeywords(JSON.stringify(keywordsArrayChecked)))
     } else {
       const updatedContact = updateAdditionals(currentObject, [
@@ -227,7 +228,6 @@ export default function AddKeywordsLayout ({
           value: JSON.stringify(keywordsArrayChecked)
         }
       ])
-      dispatch(setContactKeywords(orgKeywords))
       dispatch(setOrgCurrentContact(updatedContact))
     }
 

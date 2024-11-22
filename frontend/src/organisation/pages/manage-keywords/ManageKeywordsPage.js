@@ -69,7 +69,7 @@ export default function ManageKeywordsPage () {
   const orgId = useSelector((state) => state.session.orgId)
 
   useEffect(() => {
-    const getKeywords = async() => {
+    const getKeywords = async () => {
       const key = orgId + (keywordType === 'location' ? ':t_Keywords_location' : ':t_Keywords_contact')
       const dataToSend = { key }
       const { data } = await backendCall(

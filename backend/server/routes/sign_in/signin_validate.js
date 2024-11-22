@@ -27,11 +27,11 @@ module.exports = [
           )
           if (signinType === 'org') {
             const locationRes = await apiCall(
-              { authToken: response.data.authToken},
+              { authToken: response.data.authToken },
               'location/list'
             )
             const contactRes = await apiCall(
-              { authToken: response.data.authToken},
+              { authToken: response.data.authToken },
               'organization/listContacts'
             )
             // Send the profile to elasticache

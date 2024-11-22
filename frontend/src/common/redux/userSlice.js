@@ -4,21 +4,21 @@ const setAdditional = (additionals, id, value) => {
   let idFound = false
   for (let i = 0; i < additionals.length; i++) {
     if (additionals[i].id === id) {
-      additionals[i].value = {s: value}
+      additionals[i].value = { s: value }
       idFound = true
     }
   }
   if (!idFound) {
-    additionals.push({ id, value: {s: value }})
+    additionals.push({ id, value: { s: value } })
   }
 }
 
 const getAdditional = (additionals, id) => {
-    for (let i = 0; i < additionals.length; i++) {
-      if (additionals[i].id === id) {
-        return additionals[i].value?.s
-      }
+  for (let i = 0; i < additionals.length; i++) {
+    if (additionals[i].id === id) {
+      return additionals[i].value?.s
     }
+  }
   return ''
 }
 
@@ -30,11 +30,11 @@ const setLocationOtherAdditionals = (additionals, id, value) => {
       idFound = true
       otherAdditionals = JSON.parse(additionals[i].value?.s)
       otherAdditionals[id] = value
-      additionals[i].value = {s: JSON.stringify(otherAdditionals)}
+      additionals[i].value = { s: JSON.stringify(otherAdditionals) }
     }
   }
   if (!idFound) {
-    additionals.push({ id: 'other', value: {s: JSON.stringify({[id]: value})} })
+    additionals.push({ id: 'other', value: { s: JSON.stringify({ [id]: value }) } })
   }
 }
 
@@ -93,27 +93,32 @@ const userSlice = createSlice({
       geometry: null,
       geocode: null,
       additionals: [
-        {id: 'locationName', value: {s: ''}},
-        {id: 'parentID', value: {s: ''}},
-        {id: 'targetAreas', value: {s: ''}},
-        {id: 'keywords', value: {s: ''}},
-        {id: 'other', value: {s: JSON.stringify(
-          {
-            full_address: null,
-            postcode: null,
-            // Easting EPSG: 27700
-            x_coordinate: null,
-            // Northing EPSG: 27700
-            y_coordinate: null,
-            internal_reference: null,
-            business_criticality: null,
-            location_type: null,
-            action_plan: null,
-            notes: null,
-            location_data_type: null,
-            alertTypes: null
+        { id: 'locationName', value: { s: '' } },
+        { id: 'parentID', value: { s: '' } },
+        { id: 'targetAreas', value: { s: '' } },
+        { id: 'keywords', value: { s: '' } },
+        {
+          id: 'other',
+          value: {
+            s: JSON.stringify(
+              {
+                full_address: null,
+                postcode: null,
+                // Easting EPSG: 27700
+                x_coordinate: null,
+                // Northing EPSG: 27700
+                y_coordinate: null,
+                internal_reference: null,
+                business_criticality: null,
+                location_type: null,
+                action_plan: null,
+                notes: null,
+                location_data_type: null,
+                alertTypes: null
+              }
+            )
           }
-        )}}
+        }
       ]
     },
     // org contact data
@@ -378,27 +383,32 @@ const userSlice = createSlice({
         geometry: null,
         geocode: null,
         additionals: [
-          {id: 'locationName', value: {s: ''}},
-          {id: 'parentID', value: {s: ''}},
-          {id: 'targetAreas', value: {s: ''}},
-          {id: 'keywords', value: {s: ''}},
-          {id: 'other', value: {s: JSON.stringify(
-            {
-              full_address: null,
-              postcode: null,
-              // Easting EPSG: 27700
-              x_coordinate: null,
-              // Northing EPSG: 27700
-              y_coordinate: null,
-              internal_reference: null,
-              business_criticality: null,
-              location_type: null,
-              action_plan: null,
-              notes: null,
-              location_data_type: null,
-              alertTypes: null
+          { id: 'locationName', value: { s: '' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                  full_address: null,
+                  postcode: null,
+                  // Easting EPSG: 27700
+                  x_coordinate: null,
+                  // Northing EPSG: 27700
+                  y_coordinate: null,
+                  internal_reference: null,
+                  business_criticality: null,
+                  location_type: null,
+                  action_plan: null,
+                  notes: null,
+                  location_data_type: null,
+                  alertTypes: null
+                }
+              )
             }
-          )}}
+          }
         ]
       }
       state.orgCurrentContact = {
@@ -437,7 +447,7 @@ const userSlice = createSlice({
         action_plan: getLocationOtherAdditional(state.currentLocation.additionals, 'action_plan'),
         notes: getLocationOtherAdditional(state.currentLocation.additionals, 'notes'),
         location_data_type: getLocationOtherAdditional(state.currentLocation.additionals, 'location_data_type'),
-        alertTypes: getLocationOtherAdditional(state.currentLocation.additionals, 'alertTypes'),
+        alertTypes: getLocationOtherAdditional(state.currentLocation.additionals, 'alertTypes')
       }
     },
     getLocationAdditional: (state, key) => {
@@ -445,7 +455,7 @@ const userSlice = createSlice({
     },
     getLocationOther: (state, key) => {
       return getLocationOtherAdditional(state.currentLocation.additionals, key)
-    },
+    }
   }
 })
 
@@ -517,7 +527,7 @@ export const {
   setOrgCurrentContactAdditionals,
   setOrgCurrentContactNotes,
   // clear state
-  clearAuth,
+  clearAuth
 } = userSlice.actions
 
 export const {

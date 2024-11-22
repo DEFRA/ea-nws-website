@@ -17,7 +17,7 @@ export default function ConfirmLocationLayout ({
   const locationName = useSelector(
     (state) => getLocationAdditional(state, 'locationName')
   )
-  
+
   const currentAddress = useSelector(
     (state) => getLocationOther(state, 'full_address')
   )

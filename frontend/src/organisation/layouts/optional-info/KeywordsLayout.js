@@ -29,7 +29,7 @@ export default function KeywordsLayout ({
 
   const [orgKeywordsOriginal, setOrgKeywordsOriginal] = useState([])
   useEffect(() => {
-    const getOrgKeywordsOriginal = async() => {
+    const getOrgKeywordsOriginal = async () => {
       const key = orgId + (keywordType === 'location' ? ':t_Keywords_location' : ':t_Keywords_contact')
       const dataToSend = { key }
       const { data } = await backendCall(
@@ -70,8 +70,8 @@ export default function KeywordsLayout ({
 
   let currentKeywords = useSelector((state) =>
     keywordType === 'location'
-  ? getLocationAdditional(state, 'keywords')
-  ? getLocationAdditional(state, 'keywords')
+      ? getLocationAdditional(state, 'keywords')
+        ? getLocationAdditional(state, 'keywords')
         : ''
       : getAdditionals(currentObject, 'keywords')
         ? getAdditionals(currentObject, 'keywords')

@@ -14,8 +14,7 @@ const connectToRedis = async () => {
 const checkKeyExists = async (key) => {
   const client = await connectToRedis()
   // send the data
-  await client.exists(key)
-  const keyExists = await client.expire(key, time)
+  const keyExists = await client.exists(key)
   // disconnect as we don't need the connection open anymore
   await client.disconnect()
   return keyExists
@@ -114,7 +113,6 @@ const addToKeywordArr = async (key, value) => {
   }
 }
 
-
 /*
 Functions for Valid locations to be used accross the
 entire site
@@ -133,9 +131,8 @@ const addLocation = async (orgId, location) => {
   })
 
   await Promise.all(keywords().map(async (keyword) => {
-    await addToKeywordArr(orgId + ':t_Keywords_location', {name: keyword, linked_ids: [locationID]})
-  } ))
-
+    await addToKeywordArr(orgId + ':t_Keywords_location', { name: keyword, linked_ids: [locationID] })
+  }))
 }
 
 const removeLocation = async (orgId, locationID) => {
@@ -240,8 +237,8 @@ const addContact = async (orgId, contact) => {
   })
 
   await Promise.all(keywords().map(async (keyword) => {
-    await addToKeywordArr(orgId + ':t_Keywords_contact', {name: keyword, linked_ids: [contactID]})
-  } ))
+    await addToKeywordArr(orgId + ':t_Keywords_contact', { name: keyword, linked_ids: [contactID] })
+  }))
 }
 
 const getContactKeys = async (orgId) => {
@@ -255,8 +252,8 @@ const getContactKeys = async (orgId) => {
 }
 
 const orgSignIn = async (profile, organization, locations, contacts) => {
-  await setJsonData(profile.id+':profile', profile)
-  const orgExists = await checkKeyExists(organization.id+':org_data')
+  await setJsonData(profile.id + ':profile', profile)
+  const orgExists = await checkKeyExists(organization.id + ':org_data')
   if (orgExists) {
     const existingLocations = await getLocationKeys(organization.id)
     const existingLocationIds = existingLocations.forEach((location) => {
@@ -278,7 +275,7 @@ const orgSignIn = async (profile, organization, locations, contacts) => {
       }
     }))
   } else {
-    await setJsonData(organization.id+':org_data', organization)
+    await setJsonData(organization.id + ':org_data', organization)
     await Promise.all(locations.map(async (location) => {
       await addLocation(organization.id, location)
     }))
@@ -291,9 +288,9 @@ const orgSignIn = async (profile, organization, locations, contacts) => {
 const orgSignOut = async (profileId, orgId) => {
   // delete all data from elasticache
   // delete profile
-  await deleteJsonData(profileId+':profile')
+  await deleteJsonData(profileId + ':profile')
   // delete org
-  await deleteJsonData(orgId+':org_data')
+  await deleteJsonData(orgId + ':org_data')
   // delete locations
   // delete contacts
   const locationKeys = await getLocationKeys(orgId)
@@ -310,7 +307,6 @@ const orgSignOut = async (profileId, orgId) => {
   // delete contact and location keywords
   await deleteJsonData(orgId + ':t_Keywords_location')
   await deleteJsonData(orgId + ':t_Keywords_contact')
-
 }
 
 module.exports = {

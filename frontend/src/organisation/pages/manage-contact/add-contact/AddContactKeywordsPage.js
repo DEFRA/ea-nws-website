@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 import KeywordsLayout from '../../../layouts/optional-info/KeywordsLayout'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function AddContactKeywordsPage() {
+export default function AddContactKeywordsPage () {
   const navigate = useNavigate()
 
   const NavigateToNextPage = () => {

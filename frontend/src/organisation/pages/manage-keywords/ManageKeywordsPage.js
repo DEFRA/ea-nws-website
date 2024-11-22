@@ -15,6 +15,7 @@ import {
   setContactKeywords,
   setLocationKeywords
 } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 import KeywordsTable from '../../components/custom/KeywordsTable'
 
 export default function ManageKeywordsPage () {
@@ -65,19 +66,26 @@ export default function ManageKeywordsPage () {
     )
   }, [filteredKeywords, currentPage])
 
-  const locationKeywords = useSelector((state) =>
-    state.session.locationKeywords !== null
-      ? state.session.locationKeywords
-      : []
-  )
-  const contactKeywords = useSelector((state) =>
-    state.session.contactKeywords !== null ? state.session.contactKeywords : []
-  )
+  const orgId = useSelector((state) => state.session.orgId)
 
   useEffect(() => {
-    setKeywords(keywordType === 'location' ? locationKeywords : contactKeywords)
-    setFilteredKeywords(keywords)
-  }, [contactKeywords, keywordType, keywords, locationKeywords])
+    const getKeywords = async() => {
+      const key = orgId + (keywordType === 'location' ? ':t_Keywords_location' : ':t_Keywords_contact')
+      const dataToSend = { key }
+      const { data } = await backendCall(
+        dataToSend,
+        'api/elasticache/get_data',
+        navigate
+      )
+      let orgKeywords = null
+      if (data) {
+        orgKeywords = data
+      }
+      setKeywords(orgKeywords)
+      setFilteredKeywords(keywords)
+    }
+    getKeywords()
+  }, [keywordType, keywords])
 
   const handleSearch = () => {
     if (searchInput) {

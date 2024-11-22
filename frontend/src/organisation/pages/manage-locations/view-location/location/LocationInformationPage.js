@@ -186,7 +186,7 @@ export default function LocationInformationPage () {
             {/* Location details */}
             {locationDetails}
             {/* Key Information details */}
-            {locationDataType !==
+            {additionalData.location_data_type !==
               LocationDataType.BOUNDARY && (
                 <div className='govuk-!-margin-top-7'>
                   <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>

@@ -1,12 +1,12 @@
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
+import Button from '../../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
-import Button from '../../../../../common/components/gov-uk/Button'
-import LocationDataType from '../../../../../common/enums/LocationDataType'
-import RiskAreaType from '../../../../../common/enums/RiskAreaType'
-import { getLocationAdditionals } from '../../../../../common/redux/userSlice'
-import RiskCategoryLabel from '../../../../components/custom/RiskCategoryLabel'
-import ViewLocationSubNavigation from '../../../../layouts/location/view/view-location-information/location-information-components/ViewLocationSubNavigation'
+import LocationDataType from '../../../../../../common/enums/LocationDataType'
+import RiskAreaType from '../../../../../../common/enums/RiskAreaType'
+import { getLocationAdditionals } from '../../../../../../common/redux/userSlice'
+import RiskCategoryLabel from '../../../../../components/custom/RiskCategoryLabel'
+import ViewLocationSubNavigation from './ViewLocationSubNavigation'
 
 export default function LocationHeader ({ currentPage }) {
   const location = useLocation()

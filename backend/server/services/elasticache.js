@@ -132,7 +132,7 @@ const addLocation = async (orgId, location) => {
     }
   })
 
-  await Promise.all(keywords.map(async (keyword) => {
+  await Promise.all(keywords().map(async (keyword) => {
     await addToKeywordArr(orgId + ':t_Keywords_location', {name: keyword, linked_ids: [locationID]})
   } ))
 
@@ -239,7 +239,7 @@ const addContact = async (orgId, contact) => {
     }
   })
 
-  await Promise.all(keywords.map(async (keyword) => {
+  await Promise.all(keywords().map(async (keyword) => {
     await addToKeywordArr(orgId + ':t_Keywords_contact', {name: keyword, linked_ids: [contactID]})
   } ))
 }

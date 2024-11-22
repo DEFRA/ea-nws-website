@@ -16,7 +16,7 @@ const setAdditional = (additionals, id, value) => {
 const getAdditional = (additionals, id) => {
     for (let i = 0; i < additionals.length; i++) {
       if (additionals[i].id === id) {
-        return profile.additionals[i].value?.s
+        return additionals[i].value?.s
       }
     }
   return ''
@@ -110,7 +110,8 @@ const userSlice = createSlice({
             location_type: null,
             action_plan: null,
             notes: null,
-            location_data_type: null
+            location_data_type: null,
+            alertTypes: null
           }
         )}}
       ]
@@ -226,7 +227,7 @@ const userSlice = createSlice({
       state.currentLocation.coordinates = action.payload.coordinates
       state.currentLocation.geometry = action.payload.geometry
       state.currentLocation.geocode = action.payload.geocode
-      state.currentLocation.additionals = action.payload.additionalsc
+      state.currentLocation.additionals = action.payload.additionals
     },
     setCurrentLocationId: (state, action) => {
       state.currentLocation.id = action.payload
@@ -290,6 +291,9 @@ const userSlice = createSlice({
     },
     setCurrentLocationDataType: (state, action) => {
       setLocationOtherAdditionals(state.currentLocation.additionals, 'location_data_type', action.payload)
+    },
+    setCurrentLocationAlertTypes: (state, action) => {
+      setLocationOtherAdditionals(state.currentLocation.additionals, 'alertTypes', action.payload)
     },
     // org contact data
     setOrgCurrentContact: (state, action) => {
@@ -391,7 +395,8 @@ const userSlice = createSlice({
               location_type: null,
               action_plan: null,
               notes: null,
-              location_data_type: null
+              location_data_type: null,
+              alertTypes: null
             }
           )}}
         ]
@@ -431,7 +436,8 @@ const userSlice = createSlice({
         location_type: getLocationOtherAdditional(state.currentLocation.additionals, 'location_type'),
         action_plan: getLocationOtherAdditional(state.currentLocation.additionals, 'action_plan'),
         notes: getLocationOtherAdditional(state.currentLocation.additionals, 'notes'),
-        location_data_type: getLocationOtherAdditional(state.currentLocation.additionals, 'location_data_type')
+        location_data_type: getLocationOtherAdditional(state.currentLocation.additionals, 'location_data_type'),
+        alertTypes: getLocationOtherAdditional(state.currentLocation.additionals, 'alertTypes'),
       }
     },
     getLocationAdditional: (state, key) => {
@@ -497,6 +503,7 @@ export const {
   setCurrentLocationNotes,
   setCurrentLocationKeywords,
   setCurrentLocationDataType,
+  setCurrentLocationAlertTypes,
   // org current contact
   setOrgCurrentContact,
   setOrgCurrentContactId,

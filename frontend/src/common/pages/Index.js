@@ -341,30 +341,41 @@ export default function IndexPage () {
   }
 
   const mockCurrentLocation = {
+    id: null,
+    enabled: true,
+    // name is the UPRN
     name: null,
-    // address is the UPRN
+    // address is the human readable address or flood area name
     address: null,
     // Coordinates in dd (degrees decimal)
     coordinates: null,
-    alert_categories: null,
-    meta_data: {
-      location_additional: {
-        full_address: null,
-        postcode: null,
-        // Easting EPSG: 27700
-        x_coordinate: null,
-        // Northing EPSG: 27700
-        y_coordinate: null,
-        internal_reference: null,
-        business_criticality: null,
-        location_type: null,
-        action_plan: null,
-        notes: null,
-        keywords: null
-      }
-    }
+    geometry: null,
+    geocode: null,
+    additionals: [
+      {id: 'locationName', value: {s: ''}},
+      {id: 'parentID', value: {s: ''}},
+      {id: 'targetAreas', value: {s: ''}},
+      {id: 'keywords', value: {s: ''}},
+      {id: 'other', value: {s: JSON.stringify(
+        {
+          full_address: null,
+          postcode: null,
+          // Easting EPSG: 27700
+          x_coordinate: null,
+          // Northing EPSG: 27700
+          y_coordinate: null,
+          internal_reference: null,
+          business_criticality: null,
+          location_type: null,
+          action_plan: null,
+          notes: null,
+          location_data_type: null,
+          alertTypes: null
+        }
+      )}}
+    ]
   }
-
+  
   function mockSession (profile) {
     if (mockSessionActive === false) {
       const authToken = uuidv4()

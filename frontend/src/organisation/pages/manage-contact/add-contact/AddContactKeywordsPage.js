@@ -41,8 +41,8 @@ export default function AddContactKeywordsPage () {
     <>
       <KeywordsLayout
         keywordType='contact'
-        KeywordText={KeywordText}
-        NavigateToNextPage={NavigateToNextPage}
+        keywordText={KeywordText}
+        navigateToNextPage={NavigateToNextPage}
       />
     </>
   )

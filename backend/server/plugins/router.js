@@ -28,7 +28,8 @@ const routes = [].concat(
   require('../routes/bulk_uploads/process_status'),
   require('../routes/bulk_uploads/save_locations'),
   require('../routes/bulk_uploads/get_invalid_locations'),
-  require('../routes/add_location/duplicate_location')
+  require('../routes/add_location/duplicate_location'),
+  require('../routes/elasticache/get_data')
 )
 
 module.exports = {

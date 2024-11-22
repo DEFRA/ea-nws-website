@@ -7,7 +7,8 @@ import OrganisationAccountNavigation from '../../../../../common/components/cust
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Radio from '../../../../../common/components/gov-uk/Radio'
-import { getLocationAdditionals, setCurrentLocationAlertCategories } from '../../../../../common/redux/userSlice'
+import AlertType from '../../../../../common/enums/AlertType'
+import { getLocationAdditionals, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
 import { infoUrls } from '../../../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationHeader from './location-information-components/LocationHeader'
@@ -21,19 +22,19 @@ export default function LocationMessagesPage () {
     (state) => getLocationAdditionals(state)
   )
 
-  const alertCategories = additionalData.alert_categories
+  const alertTypes = additionalData.alertTypes
+  const allAlertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
 
-  const allAlertCategories = ['Severe warning', 'Warning', 'Alert']
-  const [alertCategoriesEnabled, setAlertCategoriesEnabled] = useState([
-    alertCategories?.includes(allAlertCategories[0]),
-    alertCategories?.includes(allAlertCategories[1]),
-    alertCategories?.includes(allAlertCategories[2])
+  const [alertTypesEnabled, setAlertTypesEnabled] = useState([
+    alertTypes?.includes(allAlertTypes[0]),
+    alertTypes?.includes(allAlertTypes[1]),
+    alertTypes?.includes(allAlertTypes[2])
   ])
 
-  const alertCategoriesEnabledOriginal = [
-    alertCategories?.includes(allAlertCategories[0]),
-    alertCategories?.includes(allAlertCategories[1]),
-    alertCategories?.includes(allAlertCategories[2])
+  const alertTypesEnabledOriginal = [
+    alertTypes?.includes(allAlertTypes[0]),
+    alertTypes?.includes(allAlertTypes[1]),
+    alertTypes?.includes(allAlertTypes[2])
   ]
 
   const messageSettings = [
@@ -68,29 +69,29 @@ export default function LocationMessagesPage () {
 
   const handleSumbit = () => {
     if (
-      alertCategoriesEnabledOriginal.every(
-        (value, index) => value === alertCategoriesEnabled[index]
+      alertTypesEnabledOriginal.every(
+        (value, index) => value === alertTypesEnabled[index]
       )
     ) {
       return null
     } else {
       setIsBannerDisplayed(true)
 
-      const alertCategoriesDispatch = []
-      alertCategoriesEnabled.forEach((enabled, index) => {
-        if (enabled) alertCategoriesDispatch.push(allAlertCategories[index])
+      const alertTypesDispatch = []
+      alertTypesEnabled.forEach((enabled, index) => {
+        if (enabled) alertTypesDispatch.push(allAlertTypes[index])
       })
 
-      if (alertCategoriesDispatch.length > 0) {
-        dispatch(setCurrentLocationAlertCategories(alertCategoriesDispatch))
+      if (alertTypesDispatch.length > 0) {
+        dispatch(setCurrentLocationAlertTypes(alertTypesDispatch))
       }
     }
   }
 
   const handleChangeRadio = (index, value) => {
-    const newAlertCategoriesEnabled = [...alertCategoriesEnabled]
-    newAlertCategoriesEnabled[index] = value
-    setAlertCategoriesEnabled(newAlertCategoriesEnabled)
+    const newalertTypesEnabled = [...alertTypesEnabled]
+    newalertTypesEnabled[index] = value
+    setAlertTypesEnabled(newalertTypesEnabled)
     setIsBannerDisplayed(false)
   }
 
@@ -144,7 +145,7 @@ export default function LocationMessagesPage () {
               >
                 <strong>{message}</strong>
               </td>
-              {floodAreasInputs.length > 0 && alertCategories
+              {floodAreasInputs.length > 0 && alertTypes
                 ? (
                   <>
                     <td className='govuk-table__cell'>
@@ -153,7 +154,7 @@ export default function LocationMessagesPage () {
                         small
                         value={'Radio_On_' + index}
                         name={'Radio_' + index}
-                        checked={alertCategoriesEnabled[index]}
+                        checked={alertTypesEnabled[index]}
                         onChange={() => handleChangeRadio(index, true)}
                       />
                     </td>
@@ -163,7 +164,7 @@ export default function LocationMessagesPage () {
                         small
                         value={'Radio_Off_' + index}
                         name={'Radio_' + index}
-                        checked={!alertCategoriesEnabled[index]}
+                        checked={!alertTypesEnabled[index]}
                         onChange={() => handleChangeRadio(index, false)}
                       />
                     </td>
@@ -182,7 +183,7 @@ export default function LocationMessagesPage () {
         </tbody>
       </table>
 
-      {alertCategories && (
+      {alertTypes && (
         <Button
           text='Save message settings'
           className='govuk-button'

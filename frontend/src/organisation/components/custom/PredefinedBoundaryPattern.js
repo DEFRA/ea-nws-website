@@ -8,7 +8,7 @@ export const createExistingBoundaryPattern = () => {
     .attr('height', 0)
     .attr('id', 'svg-diagonal-pattern')
 
-  const existinBoundaryPattern = existingBoundaryAreaSvg
+  const existingBoundaryPattern = existingBoundaryAreaSvg
     .append('defs')
     .append('pattern')
     .attr('id', 'existing-boundary-pattern')
@@ -16,13 +16,9 @@ export const createExistingBoundaryPattern = () => {
     .attr('width', 10)
     .attr('height', 10)
 
-  existinBoundaryPattern
-    .append('rect')
-    .attr('width', 10)
-    .attr('height', 10)
-    .attr('fill', 'white')
+  // existinBoundaryPattern.append('rect').attr('width', 10).attr('height', 10)
 
-  existinBoundaryPattern
+  existingBoundaryPattern
     .append('path')
     .attr('d', 'M 0 10 L 10 0')
     .attr('stroke', '#9e9e9e')

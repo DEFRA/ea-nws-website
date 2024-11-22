@@ -324,15 +324,6 @@ export default function Map ({
     if (boundaryRefVisible && boundaryRef.current) {
       boundaryRef.current.eachLayer((layer) => {
         if (boundariesAlreadyAdded.includes(layer.feature.id)) {
-          layer.options.className = 'existing-boundary-area-pattern-fill'
-          layer.setStyle({
-            opacity: 1,
-            color: '#6d7475',
-            weight: 2,
-            fillOpacity: 0.8
-          })
-          layer.bringToFront()
-          // Prevent clicking on boundaries that have already been selected
           layer.options.interactive = false
         } else if (
           selectedBoundary &&
@@ -362,21 +353,34 @@ export default function Map ({
 
   const onEachBoundaryFeature = (feature, layer) => {
     // Prevent default colour being temporarily shown when map loads
-    layer.setStyle({
-      color: '#6d7475',
-      weight: 2,
-      fillOpacity: 0.5,
-      fillColor: '#e6e6e3'
-    })
 
-    // Allow boundaries to be selected by clicking on them
-    layer.on({
-      click: () => {
-        if (layer.options.interactive) {
-          dispatch(setSelectedBoundary(feature))
+    if (boundariesAlreadyAdded.includes(layer.feature.id)) {
+      console.log('A')
+      layer.options.className = 'existing-boundary-area-pattern-fill'
+      layer.setStyle({
+        opacity: 1,
+        color: '#6d7475',
+        weight: 2,
+        fillOpacity: 0.6
+      })
+      layer.bringToFront()
+    } else {
+      layer.setStyle({
+        color: '#6d7475',
+        weight: 2,
+        fillOpacity: 0.5,
+        fillColor: '#e6e6e3'
+      })
+
+      // Allow boundaries to be selected by clicking on them
+      layer.on({
+        click: () => {
+          if (layer.options.interactive) {
+            dispatch(setSelectedBoundary(feature))
+          }
         }
-      }
-    })
+      })
+    }
   }
 
   return (

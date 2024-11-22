@@ -69,7 +69,8 @@ url_org_signin_path = url_org + '/signin'
 url_org_signin = {
     'signin': url_org_signin_path,
     'validate': url_org_signin_path + '/validate',
-    'signBackIn': url_org + '/sign-back-in'
+    'signBackIn': url_org + '/sign-back-in',
+    'pending': url_org_signin_path + '/account-pending'
 }
 # Signout urls
 url_org_signout = {
@@ -99,7 +100,6 @@ url_org_man_loc = {
         'postcodeSearch': url_org_man_loc_path + '/add/postcode-search',
         'postcodeSearchResults': url_org_man_loc_path + '/add/postcode-search-results',
         'xyCoordinatesSearch': url_org_man_loc_path + '/add/xy-coordinates-search',
-        'locationInArea': url_org_man_loc_path + '/add/location-in-area',
         'xyCoordinatesNotInEngland': url_org_man_loc_path + '/add/xy-coordinates-not-in-england',
         'dropPinNotInEngland': url_org_man_loc_path + '/add/drop-pin-not-in-england',
         'dropPinSearch': url_org_man_loc_path + '/add/drop-pin-search',
@@ -107,7 +107,9 @@ url_org_man_loc = {
             'optionalInfo': url_org_man_loc_path + '/add/predefined-boundary/optional-information',
             'add': url_org_man_loc_path + '/add/predefined-boundary',
             'addAnother': url_org_man_loc_path + '/add/another-predefined-boundary'
-        }
+        },
+        'confirm': url_org_man_loc_path + '/add/confirm'
+
     },
     'optionalLocation':{
         'optionalInfo': url_org_man_loc_path + '/add/optional-information',
@@ -136,18 +138,20 @@ url_org_man_loc = {
         'find_by_address': url_org_man_loc_path + '/unmatched-locations/manually-find/address',
     },
     'edit':{
-        'cannot_change_location_polygon': url_org_man_loc_path + '/edit/edit-polygon',
-        'cannot_change_location_line': url_org_man_loc_path + '/edit/edit-line',
-        'options': url_org_man_loc_path + '/edit/select-location-options',
+        'cannot_change_location_polygon': url_org_man_loc_path + '/edit/polygon',
+        'cannot_change_location_line': url_org_man_loc_path + '/edit/line',
+        'options': url_org_man_loc_path + '/edit/search-options',
+        'confirm': url_org_man_loc_path + '/edit/confirm-location',
         'xyCoordinatesSearch': url_org_man_loc_path + '/edit/xy-coordinates-search',
-        'locationInArea': url_org_man_loc_path + '/edit/location-in-area',
-        'notInEngland': url_org_man_loc_path + '/edit/xy-coordinates-not-in-england',
-        'dropPinEdit': url_org_man_loc_path + '/edit/drop-pin-edit'
+        'xyCoordsNotInEngland': url_org_man_loc_path + '/edit/xy-coordinates-not-in-england',
+        'dropPinLocationSearch': url_org_man_loc_path + '/edit/location-search',
+        'dropPinEdit': url_org_man_loc_path + '/edit/drop-pin',
+        'dropPinNotInEngland': url_org_man_loc_path + '/edit/pin-not-in-england',
     },
     'view':{
-        'dashboard': url_org_man_loc_path + '/view-locations',
-        'details': url_org_man_loc_path + '/location/view-location',
-        'messages': url_org_man_loc_path + '/location/view-messages'
+        'dashboard': url_org_man_loc_path + '/locations',
+        'details': url_org_man_loc_path + '/locations/view',
+        'messages': url_org_man_loc_path + '/locations/view-messages'
     }
 }
 
@@ -155,8 +159,8 @@ url_org_man_cont_path = url_org + '/manage-contacts'
 url_org_man_cont = {
     'add': {
         'details': url_org_man_cont_path + '/add',
-        'notes':url_org_man_cont_path + '/add/notes',
         'keywords': url_org_man_cont_path + '/add/keywords',
+        'notes': url_org_man_cont_path + '/add/notes',
         'channels': url_org_man_cont_path + '/add/channels'
     },
 }

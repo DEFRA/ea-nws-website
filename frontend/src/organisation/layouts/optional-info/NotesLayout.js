@@ -66,7 +66,7 @@ export default function NotesLayout ({
     <>
       <OrganisationAccountNavigation />
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
@@ -79,11 +79,10 @@ export default function NotesLayout ({
                 inputType='text'
                 rows='5'
                 onChange={(val) => setNotes(val)}
+                value={notes}
                 className='govuk-textarea'
+                additionalInfo={`You can enter up to ${charLimit} characters`}
               />
-              <p className='govuk-hint' style={{ marginTop: '-1.5rem' }}>
-                You can enter up to {charLimit} characters.
-              </p>
               <br />
               <Button
                 text={buttonText}

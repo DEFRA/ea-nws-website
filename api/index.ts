@@ -14,11 +14,12 @@ const partnerHandler = require('./handlers/partner/partnerHandlers')
 const deleteAccountHandler = require('./handlers/account/deleteAccountHandler')
 const orgContactsHandlers = require('./handlers/organisation/contactsHandlers')
 const orgRemoveHandler = require('./handlers/organisation/orgRemoveHandler')
-const orgUpdateHandler = require ('./handlers/organisation/orgUpdateHandler')
+const orgUpdateHandler = require('./handlers/organisation/orgUpdateHandler')
 const orgInvitationHandler = require('./handlers/organisation/orgInvitationHandler')
 const locationContactsHandlers = require('./handlers/location/locationContactsHandlers')
 const locationHandlers = require('./handlers/location/locationHandlers')
 const locationPartnerHandlers = require('./handlers/location/locationPartnerHandlers')
+const memberLocationPartnerHandlers = require('./handlers/member_register_location_to_partner/memberLocationPartnerHandlers')
 // define api
 const api = new OpenAPIBackend({
   definition: './openapi/openapi.yml',
@@ -49,6 +50,13 @@ const api = new OpenAPIBackend({
     getUnregisterFromPartner: partnerHandler.getUnregisterFromPartner,
     getUpdateRegistration: partnerHandler.getUpdateRegistration,
     getOrgListRegistrations: partnerHandler.getOrgListRegistrations,
+    //register location to partner
+    getRegisterLocationToPartner:
+      memberLocationPartnerHandlers.getRegisterLocationToPartner,
+    getUnregisterLocationFromPartner:
+      memberLocationPartnerHandlers.getUnregisterLocationFromPartner,
+    getUpdateLocationRegistration:
+      memberLocationPartnerHandlers.getUpdateLocationRegistration,
     //account deletion
     getDeleteAccount: deleteAccountHandler.getDeleteAccount,
     // Org Specific Routes
@@ -67,19 +75,24 @@ const api = new OpenAPIBackend({
     getOrgValidateInvitation: orgInvitationHandler.getOrgValidateInvitation,
     // Location routes
     // Location contacts
-    getLocationAttachContacts: locationContactsHandlers.getLocationAttachContacts,
-    getLocationDetachContacts: locationContactsHandlers.getLocationDetachContacts,
+    getLocationAttachContacts:
+      locationContactsHandlers.getLocationAttachContacts,
+    getLocationDetachContacts:
+      locationContactsHandlers.getLocationDetachContacts,
     // Location
     getLocationCreate: locationHandlers.getLocationCreate,
     getLocationList: locationHandlers.getLocationList,
     getLocationRemove: locationHandlers.getLocationRemove,
     getLocationUpdate: locationHandlers.getLocationUpdate,
     // Location Partner
-    getLocationListRegistrations: locationPartnerHandlers.getLocationListRegistrations,
-    getLocationRegisterToPartner: locationPartnerHandlers.getLocationRegisterToPartner,
-    getLocationUnregisterFromPartner: locationPartnerHandlers.getLocationUnregisterFromPartner,
-    getLocationUpdateRegistration: locationPartnerHandlers.getLocationUpdateRegistration
-
+    getLocationListRegistrations:
+      locationPartnerHandlers.getLocationListRegistrations,
+    getLocationRegisterToPartner:
+      locationPartnerHandlers.getLocationRegisterToPartner,
+    getLocationUnregisterFromPartner:
+      locationPartnerHandlers.getLocationUnregisterFromPartner,
+    getLocationUpdateRegistration:
+      locationPartnerHandlers.getLocationUpdateRegistration
   }
 })
 

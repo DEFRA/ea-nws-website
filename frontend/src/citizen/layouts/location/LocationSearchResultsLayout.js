@@ -1,3 +1,4 @@
+import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -6,10 +7,12 @@ import LoadingSpinner from '../../../common/components/custom/LoadingSpinner'
 import Details from '../../../common/components/gov-uk/Details'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import {
+  setFloodAlertCount,
   setNearbyTargetAreasFlow,
   setSelectedFloodAlertArea,
   setSelectedFloodWarningArea,
   setSelectedLocation,
+  setSevereFloodWarningCount,
   setShowOnlySelectedFloodArea
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
@@ -46,16 +49,34 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
 
   useEffect(() => {
     getHistoryUrl()
+    fetch(floodHistoryUrl)
+      .then((response) => response.text())
+      .then((data) => {
+        setFloodHistoryData(csvToJson(data))
+      })
   })
-  console.log('LAURENT FloodHistory file URL: ' + floodHistoryUrl)
 
-  console.log('Laurent attempting to read flood file from url')
-  fetch(floodHistoryUrl)
-    .then((response) => response.text())
-    .then((data) => {
-      setFloodHistoryData(csvToJson(data))
-    })
+  const setHistoricalAlertNumber = (AlertArea) => {
+    let oneYearAgo = new moment().subtract(1, 'years')
 
+    const areaAlert = floodHistoryData.filter(
+      (alert) =>
+        alert.CODE === AlertArea &&
+        moment(alert.DATE, 'DD/MM/YYYY') > oneYearAgo
+    )
+    dispatch(setFloodAlertCount(areaAlert.length))
+  }
+
+  const setHistoricalWarningNumber = (WarningArea) => {
+    let oneYearAgo = new moment().subtract(1, 'years')
+
+    const areaWarning = floodHistoryData.filter(
+      (alert) =>
+        alert.CODE === WarningArea &&
+        moment(alert.DATE, 'DD/MM/YYYY') > oneYearAgo
+    )
+    dispatch(setSevereFloodWarningCount(areaWarning.length))
+  }
   const handleSelectedLocation = async (event, selectedLocation) => {
     event.preventDefault()
 
@@ -77,16 +98,6 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
 
       const isError = !warningArea && !alertArea
 
-      console.log(
-        'LAURENT - LocationPostCodeSearchResultsPage - warningArea is'
-      )
-      console.log(warningArea)
-      console.log('LAURENT - LocationPostCodeSearchResultsPage - alertArea is')
-      console.log(alertArea)
-      console.log('LAURENT FloodHistory file URL: ' + floodHistoryUrl)
-
-      console.log('LAURENT - Flood data unconverted: ')
-      console.log(floodHistoryData)
       const isInAlertArea =
         alertArea &&
         isLocationInFloodArea(
@@ -103,6 +114,15 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
           warningArea
         )
 
+      if (isInAlertArea) {
+        setHistoricalAlertNumber(alertArea.features[0].properties.FWS_TACODE)
+      }
+      if (isInAlertArea) {
+        setHistoricalWarningNumber(
+          warningArea.features[0].properties.FWS_TACODE
+        )
+      }
+
       let isWithinWarningAreaProximity = false
       let isWithinAlertAreaProximity = false
 
@@ -112,14 +132,6 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
         isWithinAlertAreaProximity = alertArea?.features.length > 0
       }
 
-      console.log('Laurent area results:')
-      console.log('isInWarningArea ' + isInWarningArea)
-      console.log('isInAlertArea ' + isInAlertArea)
-      console.log(
-        'isWithinWarningAreaProximity ' + isWithinWarningAreaProximity
-      )
-      console.log('isWithinAlertAreaProximity ' + isWithinAlertAreaProximity)
-      console.log('isError ' + isError)
       continueToNextPage(
         isInWarningArea,
         isInAlertArea,

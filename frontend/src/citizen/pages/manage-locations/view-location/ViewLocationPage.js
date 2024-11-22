@@ -45,7 +45,7 @@ const floodAlertCardDetails = (
   </>
 )
 
-export default function ViewLocationPage () {
+export default function ViewLocationPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { type } = useParams()
@@ -55,6 +55,10 @@ export default function ViewLocationPage () {
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+
+  console.log('LAURENT: View Location Page')
+  console.log(selectedLocation)
+
   let alertTypes = getLocationOtherAdditional(
     selectedLocation.additionals,
     'alertTypes'

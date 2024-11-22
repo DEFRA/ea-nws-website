@@ -21,6 +21,9 @@ const userSlice = createSlice({
     selectedFloodAlertArea: null,
     showOnlySelectedFloodArea: null,
     nearbyTargetAreaFlow: null,
+    // required for historical flood warnings and alerts
+    severeFloodWarningCount: null,
+    floodAlertCount: null,
     // keywords
     locationKeywords: null,
     contactKeywords: null,
@@ -131,6 +134,13 @@ const userSlice = createSlice({
     },
     setNearbyTargetAreasFlow: (state, action) => {
       state.nearbyTargetAreaFlow = action.payload
+    },
+    // required for historical flood warnings and alerts
+    setSevereFloodWarningCount: (state, action) => {
+      state.severeFloodWarningCount = action.payload
+    },
+    setFloodAlertCount: (state, action) => {
+      state.floodAlertCount = action.payload
     },
     // keywords - temporary
     setLocationKeywords: (state, action) => {
@@ -305,6 +315,9 @@ const userSlice = createSlice({
       state.selectedFloodAlertArea = null
       state.showOnlySelectedFloodArea = null
       state.nearbyTargetAreaFlow = null
+      // required for historical flood warnings and alerts
+      state.severeFloodWarningCount = null
+      state.floodAlertCount = null
       // required for predefined boundary flow
       state.selectedBoundaryType = null
       state.selectedBoundary = null
@@ -376,6 +389,9 @@ export const {
   setSelectedFloodAlertArea,
   setShowOnlySelectedFloodArea,
   setNearbyTargetAreasFlow,
+  // required for historical flood warnings and alerts
+  setSevereFloodWarningCount,
+  setFloodAlertCount,
   // keywords - temporary
   setLocationKeywords,
   setContactKeywords,

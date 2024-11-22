@@ -17,8 +17,7 @@ export default function LocationsTable ({
   setSelectedLocations,
   setFilteredLocations,
   resetPaging,
-  setResetPaging,
-  riskRating
+  setResetPaging
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -305,7 +304,7 @@ export default function LocationsTable ({
                   sortData(
                     riverSeaRisksSort,
                     setRiverSeaRisksSort,
-                    'meta_data.location_additional.river_sea_risk'
+                    'riverSeaRisk'
                   )}
               >
                 Rivers and sea
@@ -393,7 +392,7 @@ export default function LocationsTable ({
                   //     riskAreaType={RiskAreaType.RIVERS_AND_SEA}
                   //   />
                   // </div>
-                  riskRating && riskRating[index]
+                  location.riverSeaRisk
                 }
               </td>
               <td

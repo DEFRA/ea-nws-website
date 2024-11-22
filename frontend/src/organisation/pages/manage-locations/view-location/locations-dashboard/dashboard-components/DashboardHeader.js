@@ -76,14 +76,26 @@ export default function DashboardHeader ({ locations }) {
     if (type === 'floodMessages') {
       heading[0] = 'Locations that will get flood messages'
       count.push(
-        locations.filter((item) => item.alert_categories.length > 0).length
+        locations.filter((obj) => obj.alert_categories.length > 0).length
       )
       message[0] = 'in flood areas'
     } else if (type === 'noFloodMessages') {
       heading[0] = 'Locations that do not currently get flood messages'
-      count.push(0)
+
+      const mediumHighRisk = locations.filter(
+        (obj) =>
+          (obj.riverSeaRisk === 'Medium risk' ||
+            obj.riverSeaRisk === 'High risk') &&
+          obj.alert_categories.length === 0
+      ).length
+      count.push(mediumHighRisk)
       message[0] = 'at medium or high flood risk'
-      count.push(0)
+
+      const lowRisk = locations.filter(
+        (obj) =>
+          obj.riverSeaRisk === 'Low risk' && obj.alert_categories.length === 0
+      ).length
+      count.push(lowRisk)
       message.push('at low flood risk')
     } else if (type === 'noContacts') {
       heading[0] = 'Locations not linked to contacts'

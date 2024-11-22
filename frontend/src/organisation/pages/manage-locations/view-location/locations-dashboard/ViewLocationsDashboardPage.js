@@ -19,7 +19,6 @@ export default function ViewLocationsDashboardPage () {
   const [filteredLocations, setFilteredLocations] = useState([])
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [selectedFilters, setSelectedFilters] = useState([])
-  const [riskRating, setRiskRating] = useState(null)
 
   useEffect(() => {
     const l = [
@@ -28,7 +27,8 @@ export default function ViewLocationsDashboardPage () {
         name: 'UPRN',
         address: '34 Hughenden Road, High Wycombe, LE2 7BB',
         coordinates: { latitude: 50.84106, longitude: -1.05814 },
-        alert_categories: ['Alert'],
+        // alert_categories: ['Alert'],
+        alert_categories: [],
         meta_data: {
           location_additional: {
             location_name: 'Location_01 - address variant',
@@ -52,7 +52,8 @@ export default function ViewLocationsDashboardPage () {
         name: 'UPRN',
         address: '',
         coordinates: { latitude: 54.197594, longitude: -3.089788 },
-        alert_categories: ['Warning', 'Alert'],
+        // alert_categories: ['Warning', 'Alert'],
+        alert_categories: [],
         meta_data: {
           location_additional: {
             location_name: 'Location_02 - xy coord variant',
@@ -586,8 +587,26 @@ export default function ViewLocationsDashboardPage () {
       //   }
       // }
     ]
-    setLocations(l)
-    setFilteredLocations(l)
+
+    const updateLocationData = async () => {
+      const ratings = await Promise.all(
+        l.map((location) =>
+          getRiskCategory({
+            riskAreaType: RiskAreaType.RIVERS_AND_SEA,
+            location
+          })
+        )
+      )
+
+      const newLocations = l.map((location, idx) => ({
+        ...location,
+        riverSeaRisk: ratings[idx]
+      }))
+      setLocations(newLocations)
+      setFilteredLocations(newLocations)
+    }
+
+    updateLocationData()
   }, [])
 
   const getRiskCategory = async ({ riskAreaType, location }) => {
@@ -628,22 +647,6 @@ export default function ViewLocationsDashboardPage () {
 
     return riskData[riskCategory].title
   }
-
-  useEffect(() => {
-    const fetchRiskRatings = async () => {
-      const ratings = await Promise.all(
-        locations.map((location) =>
-          getRiskCategory({
-            riskAreaType: RiskAreaType.RIVERS_AND_SEA,
-            location
-          })
-        )
-      )
-      setRiskRating(ratings.filter((option) => option !== null))
-    }
-
-    fetchRiskRatings()
-  }, [locations])
 
   const [currentPage, setCurrentPage] = useState(1)
   const [resetPaging, setResetPaging] = useState(false)
@@ -701,7 +704,6 @@ export default function ViewLocationsDashboardPage () {
         setFilteredLocations={setFilteredLocations}
         resetPaging={resetPaging}
         setResetPaging={setResetPaging}
-        riskRating={riskRating}
       />
       <Pagination
         totalPages={Math.ceil(filteredLocations.length / locationsPerPage)}
@@ -750,7 +752,6 @@ export default function ViewLocationsDashboardPage () {
                       setSelectedBusinessCriticalityFilters={
                       setSelectedBusinessCriticalityFilters
                     }
-                      riskRating={riskRating}
                       selectedRiskRatingFilters={selectedRiskRatingFilters}
                       setSelectedRiskRatingFilters={setSelectedRiskRatingFilters}
                     />

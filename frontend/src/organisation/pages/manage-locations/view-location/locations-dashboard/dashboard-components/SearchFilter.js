@@ -23,7 +23,6 @@ export default function SearchFilter ({
   setSelectedFloodMessagesAvailableFilters,
   selectedBusinessCriticalityFilters,
   setSelectedBusinessCriticalityFilters,
-  riskRating,
   selectedRiskRatingFilters,
   setSelectedRiskRatingFilters
 }) {
@@ -127,10 +126,8 @@ export default function SearchFilter ({
 
     // Apply risk rating filter
     if (selectedRiskRatingFilters.length > 0) {
-      console.log('filtered locations: ', filteredLocations)
-      console.log('selected filters: ', selectedRiskRatingFilters)
       filteredLocations = filteredLocations.filter((location) =>
-        selectedRiskRatingFilters.includes(riskRating)
+        selectedRiskRatingFilters.includes(location.riverSeaRisk)
       )
     }
 
@@ -145,6 +142,7 @@ export default function SearchFilter ({
     setSelectedLocationTypeFilters([])
     setSelectedFloodMessagesAvailableFilters([])
     setSelectedBusinessCriticalityFilters([])
+    setSelectedRiskRatingFilters([])
   }
 
   // Location name filter
@@ -327,14 +325,14 @@ export default function SearchFilter ({
         setFloodMessagesVisible
       )}
 
-      {otherFilter(
+      {/* {otherFilter(
         'Rivers and sea flood risk',
         riskRating,
         selectedRiskRatingFilters,
         setSelectedRiskRatingFilters,
         riskRatingVisible,
         setRiskRatingVisible
-      )}
+      )} */}
     </>
   )
 }

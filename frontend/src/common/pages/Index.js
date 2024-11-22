@@ -438,7 +438,6 @@ export default function IndexPage () {
       dispatch(setContactKeywords(mockContactKeywords))
       dispatch(setCurrentLocationEasting('520814'))
       dispatch(setCurrentLocationNorthing('185016'))
-      dispatch(setOrgCurrentContact(mockOrgCurrentContact))
       setmockSessionActive(true)
     } else {
       dispatch(clearAuth())

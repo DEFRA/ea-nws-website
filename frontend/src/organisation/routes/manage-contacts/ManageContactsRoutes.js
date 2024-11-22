@@ -1,6 +1,7 @@
+import AddContactChannelsPage from '../../pages/manage-contact/add-contact/AddContactChannelsPage'
 import AddContactDetailsPage from '../../pages/manage-contact/add-contact/AddContactDetailsPage'
-import AddContactNotesPage from '../../pages/manage-contact/add-contact/AddContactNotesPage'
 import AddContactKeywordsPage from '../../pages/manage-contact/add-contact/AddContactKeywordsPage'
+import AddContactNotesPage from '../../pages/manage-contact/add-contact/AddContactNotesPage'
 
 const urlManageContactsOrg = '/organisation/manage-contacts'
 const urlManageContactsAdd = urlManageContactsOrg + '/add'
@@ -25,8 +26,7 @@ const orgManageContactsRoutes = [
   },
   {
     path: orgManageContactsUrls.add.channels,
-    // TODO update channels component
-    component: null
+    component: <AddContactChannelsPage />
   },
   {
     path: orgManageContactsUrls.add.notes,

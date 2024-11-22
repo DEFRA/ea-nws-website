@@ -69,7 +69,8 @@ url_org_signin_path = url_org + '/signin'
 url_org_signin = {
     'signin': url_org_signin_path,
     'validate': url_org_signin_path + '/validate',
-    'signBackIn': url_org + '/sign-back-in'
+    'signBackIn': url_org + '/sign-back-in',
+    'pending': url_org_signin_path + '/account-pending'
 }
 # Signout urls
 url_org_signout = {
@@ -158,8 +159,8 @@ url_org_man_cont_path = url_org + '/manage-contacts'
 url_org_man_cont = {
     'add': {
         'details': url_org_man_cont_path + '/add',
-        'notes':url_org_man_cont_path + '/add/notes',
         'keywords': url_org_man_cont_path + '/add/keywords',
+        'notes': url_org_man_cont_path + '/add/notes',
         'channels': url_org_man_cont_path + '/add/channels'
     },
 }

@@ -66,6 +66,13 @@ export default function ViewContactsDashboardPage () {
     setFilteredContacts(contacts)
   }, [contacts])
 
+  const [selectedOption, setSelectedOption] = useState([
+    {
+      label: "Banana",
+      value: "b",
+    },
+  ]);
+
   const moreActions = [
     'Link selected to locations', 
     'Delete selected'
@@ -93,17 +100,17 @@ export default function ViewContactsDashboardPage () {
     })
   }
 
-  const multiDeleteDialog = () => {
+  const selectDeleteDialog = () => {
     if (selectedContacts && selectedContacts.length > 0) {
       setDialog({
         show: true,
         text: (
           <>
-            If you continue {selectedContacts.length} contacts will be deleted from this account and 
+            If you continue {selectedContacts.length} {selectedContacts.length > 1 ? 'contacts' : 'contact'} will be deleted from this account and 
             will not get flood messages.
           </>
         ),
-        title: `Delete ${selectedContacts.length} contacts`,
+        title: `Delete ${selectedContacts.length} ${selectedContacts.length > 1 ? 'contacts' : 'contact'}`,
         buttonText: 'Delete contacts',
         buttonClass: 'govuk-button--warning',
         input: ''
@@ -122,13 +129,14 @@ export default function ViewContactsDashboardPage () {
     }
   }
 
-  const onMoreActionSelected = (event) => {
-    // if (event === 'Link selected to locations') {
+  const onMoreAction = (action) => {
+    if (action === 'Link selected to locations') {
 
-    // } else if (event === 'Delete selected') {
-      multiDeleteDialog()
-      handleDelete()
-    // }
+    }
+    else if (action === 'Delete selected') {
+      selectDeleteDialog()
+    }
+    
   }
 
   const removeContacts = (contactsToRemove) => {
@@ -179,7 +187,8 @@ export default function ViewContactsDashboardPage () {
                     name='MoreActions'
                     label=''
                     options={moreActions}
-                    onSelect={() => multiDeleteDialog()}
+                    // onSelect={() => selectDeleteDialog()}
+                    onSelect={(e) => onMoreAction(e)}
                     initialSelectOptionText={
                       'More actions'
                     }
@@ -235,7 +244,7 @@ export default function ViewContactsDashboardPage () {
                     name='MoreActions'
                     label=''
                     options={moreActions}
-                    onSelect={onMoreActionSelected}
+                    onSelect={() => selectDeleteDialog()}
                     initialSelectOptionText={
                       'More actions'
                     }

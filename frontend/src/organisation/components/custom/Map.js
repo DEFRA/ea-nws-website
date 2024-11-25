@@ -27,7 +27,7 @@ import {
 import { createAlertPattern, createWarningPattern } from './FloodAreaPatterns'
 import { createExistingBoundaryPattern } from './PredefinedBoundaryPattern'
 
-export default function Map({
+export default function Map ({
   type,
   setCoordinates,
   showMapControls = true,
@@ -50,7 +50,7 @@ export default function Map({
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData() {
+    async function fetchFloodAreaData () {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         latitude,
         longitude
@@ -87,7 +87,7 @@ export default function Map({
 
   L.Marker.prototype.options.icon = DefaultIcon
 
-  async function getApiKey() {
+  async function getApiKey () {
     const { errorMessage, data } = await backendCall(
       'data',
       'api/os-api/oauth2'
@@ -145,7 +145,7 @@ export default function Map({
   )
   const ref = useRef(null)
 
-  function AddMarker() {
+  function AddMarker () {
     useMapEvents({
       click: (e) => {
         const mapHeight = ref.current.clientHeight
@@ -290,7 +290,7 @@ export default function Map({
 
   // get boundary data
   useEffect(() => {
-    async function fetchBoundaries() {
+    async function fetchBoundaries () {
       if (type === 'boundary' && selectedBoundaryType) {
         const data = await getBoundaries(selectedBoundaryType)
         if (data) {
@@ -351,8 +351,23 @@ export default function Map({
     setBoundaryStyles()
   }, [selectedBoundary])
 
+  let selectedLayerId = null
+
   const onEachBoundaryFeature = (feature, layer) => {
-    // Prevent default colour being temporarily shown when map loads
+    layer.on({
+      mouseover: () => {
+        const text = feature.properties.NAME
+        layer
+          .bindTooltip(text, {
+            opacity: 1,
+            className: 'custom-tooltip'
+          })
+          .openTooltip()
+      },
+      mouseout: () => {
+        layer.unbindTooltip()
+      }
+    })
 
     if (boundariesAlreadyAdded.includes(layer.feature.id)) {
       layer.options.className = 'existing-boundary-area-pattern-fill'
@@ -363,7 +378,10 @@ export default function Map({
         fillOpacity: 0.6
       })
       layer.bringToFront()
-    } else {
+    } else if (
+      !selectedLayerId ||
+      (selectedLayerId && selectedLayerId !== layer.feature.id)
+    ) {
       layer.setStyle({
         color: '#6d7475',
         weight: 2,
@@ -374,19 +392,29 @@ export default function Map({
       // Allow boundaries to be selected by clicking on them
       layer.on({
         mouseover: () => {
-          const text = feature.properties.NAME
-          layer
-            .bindTooltip(text, {
-              opacity: 1,
-              className: 'custom-tooltip'
-            })
-            .openTooltip()
+          layer.setStyle({
+            color: '#6d7475',
+            weight: 2,
+            fillColor: '#7c8282',
+            fillOpacity: 0.8
+          })
         },
         mouseout: () => {
-          layer.unbindTooltip()
+          if (
+            !selectedLayerId ||
+            (selectedLayerId && selectedLayerId !== layer.feature.id)
+          ) {
+            layer.setStyle({
+              color: '#6d7475',
+              weight: 2,
+              fillOpacity: 0.5,
+              fillColor: '#e6e6e3'
+            })
+          }
         },
         click: () => {
           if (layer.options.interactive) {
+            selectedLayerId = layer.feature.id
             dispatch(setSelectedBoundary(feature))
           }
         }
@@ -406,63 +434,67 @@ export default function Map({
         maxBounds={maxBounds}
         className='map-container'
       >
-        {apiKey && apiKey !== 'error' ? (
-          <>
-            {tileLayerWithHeader}
-            {showMapControls && (
-              <>
-                <ZoomControl position='bottomright' />
-                <ResetMapButton />
-              </>
+        {apiKey && apiKey !== 'error'
+          ? (
+            <>
+              {tileLayerWithHeader}
+              {showMapControls && (
+                <>
+                  <ZoomControl position='bottomright' />
+                  <ResetMapButton />
+                </>
+              )}
+              {type !== 'boundary' && (
+                <>
+                  {type === 'drop'
+                    ? (
+                      <AddMarker />
+                      )
+                    : (
+                      <Marker position={centre} interactive={false} />
+                      )}
+                </>
+              )}
+              {alertArea && (
+                <GeoJSON
+                  data={alertArea}
+                  onEachFeature={onEachAlertAreaFeature}
+                  ref={(el) => {
+                    alertAreaRef.current = el
+                    setAlertAreaRefVisible(true)
+                  }}
+                />
+              )}
+              {warningArea && (
+                <GeoJSON
+                  data={warningArea}
+                  onEachFeature={onEachWarningAreaFeature}
+                  ref={(el) => {
+                    warningAreaRef.current = el
+                    setWarningAreaRefVisible(true)
+                  }}
+                />
+              )}
+              {boundaries && type === 'boundary' && (
+                <GeoJSON
+                  data={boundaries}
+                  onEachFeature={onEachBoundaryFeature}
+                  ref={(el) => {
+                    boundaryRef.current = el
+                    setBoundaryRefVisible(true)
+                  }}
+                />
+              )}
+            </>
+            )
+          : (
+            <div className='map-error-container'>
+              <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
+              <Link className='govuk-body-s' onClick={() => getApiKey()}>
+                Reload map
+              </Link>
+            </div>
             )}
-            {type !== 'boundary' && (
-              <>
-                {type === 'drop' ? (
-                  <AddMarker />
-                ) : (
-                  <Marker position={centre} interactive={false} />
-                )}
-              </>
-            )}
-            {alertArea && (
-              <GeoJSON
-                data={alertArea}
-                onEachFeature={onEachAlertAreaFeature}
-                ref={(el) => {
-                  alertAreaRef.current = el
-                  setAlertAreaRefVisible(true)
-                }}
-              />
-            )}
-            {warningArea && (
-              <GeoJSON
-                data={warningArea}
-                onEachFeature={onEachWarningAreaFeature}
-                ref={(el) => {
-                  warningAreaRef.current = el
-                  setWarningAreaRefVisible(true)
-                }}
-              />
-            )}
-            {boundaries && type === 'boundary' && (
-              <GeoJSON
-                data={boundaries}
-                onEachFeature={onEachBoundaryFeature}
-                ref={(el) => {
-                  boundaryRef.current = el
-                  setBoundaryRefVisible(true)
-                }}
-              />
-            )}
-          </>
-        ) : (
-          <div className='map-error-container'>
-            <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
-            <Link className='govuk-body-s' onClick={() => getApiKey()}>
-              Reload map
-            </Link>
-          </div>
-        )}
       </MapContainer>
     </div>
   )

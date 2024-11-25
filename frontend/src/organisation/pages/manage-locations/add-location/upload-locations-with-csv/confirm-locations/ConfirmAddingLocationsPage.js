@@ -6,7 +6,7 @@ import Details from '../../../../../../common/components/gov-uk/Details'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmLocationsPage() {
+export default function ConfirmLocationsPage () {
   const navigate = useNavigate()
   const location = useLocation()
   const bulkUploadData = location?.state?.bulkUploadData
@@ -34,8 +34,8 @@ export default function ConfirmLocationsPage() {
           navigate(orgManageLocationsUrls.add.duplicateLocationsOptionsPage, {
             state: {
               addedLocations: data.valid,
-              bulkUploadData: bulkUploadData,
-              duplicateLocations: duplicateLocations
+              bulkUploadData,
+              duplicateLocations
             }
           })
         }

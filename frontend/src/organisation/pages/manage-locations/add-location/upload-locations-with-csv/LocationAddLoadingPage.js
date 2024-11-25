@@ -5,7 +5,7 @@ import { Spinner } from '../../../../../common/components/custom/Spinner'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddLoadingPage() {
+export default function LocationAddLoadingPage () {
   const navigate = useNavigate()
   const [status, setStatus] = useState('')
   const [stage, setStage] = useState('Scanning Upload')
@@ -37,7 +37,7 @@ export default function LocationAddLoadingPage() {
         navigate('/organisation/manage-locations/confirm', {
           state: {
             fileName,
-            bulkUploadData: bulkUploadData,
+            bulkUploadData,
             valid: validLocations,
             duplicates: duplicateLocations,
             notFound: notFoundLocations,

@@ -9,7 +9,7 @@ import Radio from '../../../../../../common/components/gov-uk/Radio'
 import WarningText from '../../../../../../common/components/gov-uk/WarningText'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DuplicateLocationsOptionsPage() {
+export default function DuplicateLocationsOptionsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [option, setOption] = useState('')
@@ -55,7 +55,7 @@ export default function DuplicateLocationsOptionsPage() {
         case options[2].value: {
           navigate(orgManageLocationsUrls.add.manageDuplicateLocationsPage, {
             state: {
-              bulkUploadData: bulkUploadData
+              bulkUploadData
             }
           })
           break

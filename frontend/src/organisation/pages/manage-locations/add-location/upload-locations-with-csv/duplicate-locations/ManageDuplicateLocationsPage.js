@@ -6,7 +6,7 @@ import OrganisationAccountNavigation from '../../../../../../common/components/c
 import Button from '../../../../../../common/components/gov-uk/Button'
 import WarningText from '../../../../../../common/components/gov-uk/WarningText'
 
-export default function ManageDuplicateLocationsPage() {
+export default function ManageDuplicateLocationsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
@@ -94,8 +94,7 @@ export default function ManageDuplicateLocationsPage() {
                           <td class='govuk-table__cell'>
                             <Link
                               onClick={(event) =>
-                                handleCompareDetails(event, location)
-                              }
+                                handleCompareDetails(event, location)}
                             >
                               Compare details
                             </Link>

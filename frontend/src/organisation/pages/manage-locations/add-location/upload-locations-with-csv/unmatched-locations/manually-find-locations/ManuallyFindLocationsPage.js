@@ -11,7 +11,7 @@ import {
 import { backendCall } from '../../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ManuallyFindLocationsPage() {
+export default function ManuallyFindLocationsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)

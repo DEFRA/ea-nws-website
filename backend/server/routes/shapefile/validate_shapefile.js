@@ -9,8 +9,6 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 const { Dbf } = require('dbf-reader')
-const { Readable } = require('stream')
-const { error } = require('console')
 
 const streamToBuffer = async (stream) => {
   return new Promise((resolve, reject) => {
@@ -33,8 +31,6 @@ module.exports = [
       let zipFilePath = ''
 
       try {
-        console.log('Beginning shapefile validation')
-
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
@@ -65,7 +61,6 @@ module.exports = [
           return fileName.split('.')[0]
         })
         const uniquePrefixes = new Set(prefixes)
-        console.log(`uniquePrefixes: ${Array.from(uniquePrefixes)}`)
         if (uniquePrefixes.size > 1) {
           throw new Error(
             'Each file in the ZIP must have the same prefix, for example, locations.shp, locations.shx or locations.dbf'
@@ -138,7 +133,6 @@ module.exports = [
         } catch (err) {
           console.log(err)
         }
-        console.log(error)
         return h.response({
           status: 500,
           errorMessage: error.message

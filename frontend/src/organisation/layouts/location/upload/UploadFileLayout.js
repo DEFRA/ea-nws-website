@@ -107,8 +107,8 @@ export default function UploadFileLayout ({
         // Set to an error to be displayed when doing DoR11 work
         throw new Error(`Failed to get pre-signed URL: ${errorMessage}`)
       }
-      const url = data.url
-      const uniqFileName = data.fileName
+      const url = data?.url
+      const uniqFileName = data?.fileName
 
       // Upload the file to S3 using generated URL
       const uploadResponse = await fetch(url, {

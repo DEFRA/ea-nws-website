@@ -1,3 +1,4 @@
+import * as turf from '@turf/turf'
 import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { GeoJSON, MapContainer, Marker, useMap } from 'react-leaflet'
@@ -11,14 +12,15 @@ import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
-export default function ContactMap ({ mobileView }) {
+export default function ContactMap({ mobileView }) {
   const pois = useSelector((state) => state.session.orgCurrentContact.pois)
+  const [map, setMap] = useState(null)
   const [apiKey, setApiKey] = useState(null)
   const [markers, setMarkers] = useState([])
   const [geometries, setGeometries] = useState([])
   // const [geocodes, setGeocodes] = useState([])
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { errorMessage, data } = await backendCall(
       'data',
       'api/os-api/oauth2'
@@ -61,10 +63,17 @@ export default function ContactMap ({ mobileView }) {
         ])
       }
       if (poi.geometry) {
-        setGeometries((prevGeometries) => [
-          ...prevGeometries,
-          [poi.geometry.geoJson]
-        ])
+        if (isAreaVisible(poi.geometry)) {
+          setGeometries((prevGeometries) => [
+            ...prevGeometries,
+            turf.area([poi.geometry.geoJson])
+          ])
+        } else {
+          setMarkers((prevMarkers) => [
+            ...prevMarkers,
+            turf.centerOfMass(poi.geometry.geoJson)
+          ])
+        }
       }
       /* if (poi.geocode) {
         setGeocodes((prevGeocodes) => [...prevGeocodes, [poi.geocode]])
@@ -72,10 +81,24 @@ export default function ContactMap ({ mobileView }) {
     })
   }, [pois])
 
+  const isAreaVisible = (geometry) => {
+    if (pois.length === 1 && pois[0].geometry) return true
+    const area = turf.area(geometry.geoJson)
+    const metersPerPixel =
+      (156543.03392 * Math.cos(51.505 * (Math.PI / 180))) /
+      Math.pow(2, map.getZoom)
+    const mapWidthInMeters = map.getSize().x * metersPerPixel // Map width in meters
+    const mapHeightInMeters = map.getSize().y * metersPerPixel // Map height in meters
+    const visibleArea = mapWidthInMeters * mapHeightInMeters
+    const threshold = visibleArea * 0.1 // Show area only if it's larger than 10% of the visible area
+
+    return area >= threshold
+  }
+
   // update map zoom so all markers are visible at once
   const FitBounds = () => {
     const map = useMap()
-
+    setMap(map)
     useEffect(() => {
       if (markers.length > 0) {
         const markerBounds = L.latLngBounds(markers)
@@ -146,36 +169,32 @@ export default function ContactMap ({ mobileView }) {
       <MapContainer
         key={centre}
         center={centre}
-        zoom={12}
         zoomControl={false}
         attributionControl={false}
-        minZoom={7}
         maxBounds={maxBounds}
         className={mobileView ? 'map-mobile-view' : 'map-container'}
       >
-        {apiKey && apiKey !== 'error'
-          ? (
-            <>
-              {tileLayerWithHeader}
-              {markers.map((marker, index) => {
-                return (
-                  <Marker key={index} position={marker} interactive={false} />
-                )
-              })}
-              {geometries.map((geometry, index) => {
-                return <GeoJSON key={index} data={geometry} />
-              })}
-              <FitBounds />
-            </>
-            )
-          : (
-            <div className='map-error-container'>
-              <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
-              <Link className='govuk-body-s' onClick={() => getApiKey()}>
-                Reload map
-              </Link>
-            </div>
-            )}
+        {apiKey && apiKey !== 'error' ? (
+          <>
+            {tileLayerWithHeader}
+            {markers.map((marker, index) => {
+              return (
+                <Marker key={index} position={marker} interactive={false} />
+              )
+            })}
+            {geometries.map((geometry, index) => {
+              return <GeoJSON key={index} data={geometry} />
+            })}
+            <FitBounds />
+          </>
+        ) : (
+          <div className='map-error-container'>
+            <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
+            <Link className='govuk-body-s' onClick={() => getApiKey()}>
+              Reload map
+            </Link>
+          </div>
+        )}
       </MapContainer>
     </div>
   )

@@ -25,7 +25,8 @@ import LocationAddConfirm from '../../pages/manage-locations/add-location/upload
 import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
 import ConfirmAddingLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
-import DuplicateLocationOptionsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/duplicate-locations/DuplicateLocationOptionsPage'
+import DuplicateLocationsOptionsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/duplicate-locations/DuplicateLocationsOptionsPage'
+import ManageDuplicateLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/duplicate-locations/ManageDuplicateLocationsPage'
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/FindUnmatchedLocationsPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
@@ -65,8 +66,10 @@ const orgManageLocationsUrls = {
     addressInfo: urlManageOrgAddLocations + '/address-info',
     uploadFile: urlManageOrgAddLocations + '/upload-file',
     loadingPage: urlManageOrgAddLocations + '/upload-file/loading',
-    duplicateLocationOptionsPage:
-      urlManageOrgAddLocations + '/upload-file/duplicate-location-options',
+    duplicateLocationsOptionsPage:
+      urlManageOrgAddLocations + '/upload-file/duplicate-locations-options',
+    manageDuplicateLocationsPage:
+      urlManageOrgAddLocations + '/upload-file/manage-duplicate-locations',
     confirm: urlManageOrgAddLocations + '/confirm',
     name: urlManageOrg + '/add/name',
     error: {
@@ -170,8 +173,12 @@ const orgManageLocationRoutes = [
     component: <LocationAddLoadingPage />
   },
   {
-    path: orgManageLocationsUrls.add.duplicateLocationOptionsPage,
-    component: <DuplicateLocationOptionsPage />
+    path: orgManageLocationsUrls.add.duplicateLocationsOptionsPage,
+    component: <DuplicateLocationsOptionsPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.manageDuplicateLocationsPage,
+    component: <ManageDuplicateLocationsPage />
   },
   {
     path: orgManageLocationsUrls.add.confirm,

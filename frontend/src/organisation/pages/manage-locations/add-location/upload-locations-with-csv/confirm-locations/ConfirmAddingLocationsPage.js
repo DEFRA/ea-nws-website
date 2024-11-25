@@ -30,8 +30,9 @@ export default function ConfirmLocationsPage() {
         if (duplicateLocations == 1) {
           // TODO: go to page to handle single duplicate
         } else {
-          navigate(orgManageLocationsUrls.add.duplicateLocationOptionsPage, {
+          navigate(orgManageLocationsUrls.add.duplicateLocationsOptionsPage, {
             state: {
+              addedLocations: data.valid,
               duplicateLocations: duplicateLocations
             }
           })
@@ -88,7 +89,10 @@ export default function ConfirmLocationsPage() {
           <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
               {validLocations} of{' '}
-              {duplicateLocations + notFoundLocations + notInEnglandLocations}{' '}
+              {validLocations +
+                duplicateLocations +
+                notFoundLocations +
+                notInEnglandLocations}{' '}
               locations can be added
             </h1>
             <div className='govuk-body'>

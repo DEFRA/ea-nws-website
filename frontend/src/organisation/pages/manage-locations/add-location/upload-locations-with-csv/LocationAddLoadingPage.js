@@ -5,7 +5,7 @@ import { Spinner } from '../../../../../common/components/custom/Spinner'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddLoadingPage () {
+export default function LocationAddLoadingPage() {
   const navigate = useNavigate()
   const [status, setStatus] = useState('')
   const [stage, setStage] = useState('Scanning Upload')
@@ -65,20 +65,18 @@ export default function LocationAddLoadingPage () {
         if (data?.status !== status) {
           if (data?.data) {
             setValidLocations(data.data.valid.length)
-            setDuplicateLocations(
-              data.data.invalid.filter(
-                (invalid) =>
-                  Array.isArray(invalid.error) &&
-                  invalid.error.includes('duplicate')
-              ).length
-            )
-            setNotInEnglandLocations(
-              data.data.invalid.filter(
-                (invalid) =>
-                  Array.isArray(invalid.error) &&
-                  invalid.error.includes('not in england')
-              ).length
-            )
+            const duplicateLocations = data.data.invalid.filter(
+              (invalid) =>
+                Array.isArray(invalid.error) &&
+                invalid.error.includes('duplicate')
+            ).length
+            setDuplicateLocations(duplicateLocations)
+            const notInEnglandLocations = data.data.invalid.filter(
+              (invalid) =>
+                Array.isArray(invalid.error) &&
+                invalid.error.includes('not in england')
+            ).length
+            setNotInEnglandLocations(notInEnglandLocations)
             // Any other invalid locations are considered to be not found
             setNotFoundLocations(
               data.data.invalid.length -

@@ -4,15 +4,17 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
+import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
 import Radio from '../../../../../../common/components/gov-uk/Radio'
 import WarningText from '../../../../../../common/components/gov-uk/WarningText'
 
-export default function DuplicateLocationOptionsPage() {
+export default function DuplicateLocationsOptionsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [option, setOption] = useState('')
   const [error, setError] = useState('')
   const location = useLocation()
+  const addedLocations = location?.state?.addedLocations || 0
   const duplicateLocations = location?.state?.duplicateLocations || 0
 
   const options = [
@@ -49,6 +51,9 @@ export default function DuplicateLocationOptionsPage() {
           break
         }
         case options[2].value: {
+          navigate(
+            '/organisation/manage-locations/add/upload-file/manage-duplicate-locations'
+          )
           break
         }
         default:
@@ -60,6 +65,13 @@ export default function DuplicateLocationOptionsPage() {
   return (
     <>
       <BackLink onClick={() => navigate(-1)} />
+      {addedLocations > 0 && (
+        <NotificationBanner
+          className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-10 govuk-!-margin-top-5'
+          title='Success'
+          text={`${addedLocations} locations added`}
+        />
+      )}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-two-thirds'>

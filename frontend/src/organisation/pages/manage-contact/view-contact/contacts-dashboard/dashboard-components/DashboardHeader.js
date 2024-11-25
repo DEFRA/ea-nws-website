@@ -115,8 +115,12 @@ export default function DashboardHeader ({
         </div>
 
         <div style={{ display: 'flex', fontSize: '18px' }}>
-          <ContactsBanner type='linked' />
-          <ContactsBanner type='notLinked' />
+          {contacts.filter((item) => item.linked_locations.length > 0).length > 0 && (
+            <ContactsBanner type='linked' />
+          )}
+          {contacts.filter((item) => item.linked_locations.length == 0).length > 0 && (
+            <ContactsBanner type='notLinked' />
+          )}
         </div>
       </div>
     </>

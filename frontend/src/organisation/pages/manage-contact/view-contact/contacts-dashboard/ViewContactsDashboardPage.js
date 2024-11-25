@@ -23,6 +23,7 @@ export default function ViewContactsDashboardPage () {
   const [resetPaging, setResetPaging] = useState(false)
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [displayedContacts, setDisplayedContacts] = useState([])
+  const [selectedFilters, setSelectedFilters] = useState([])
   const [dialog, setDialog] = useState({
     show: false,
     text: '',
@@ -82,6 +83,8 @@ export default function ViewContactsDashboardPage () {
   const [selectedJobTitleFilters, setSelectedJobTitleFilters] =
     useState([])
   const [selectedEmailFilters, setSelectedEmailFilters] =
+    useState([])
+  const [selectedLinkedFilters, setSelectedLinkedFilters] =
     useState([])
 
   const deleteDialog = (contactToBeDeleted) => {
@@ -226,10 +229,14 @@ export default function ViewContactsDashboardPage () {
                   setFilteredContacts={setFilteredContacts}
                   resetPaging={resetPaging}
                   setResetPaging={setResetPaging}
+                  selectedFilters={selectedFilters}
+                  setSelectedFilters={setSelectedFilters}
                   selectedJobTitleFilters={selectedJobTitleFilters}
                   setSelectedJobTitleFilters={setSelectedJobTitleFilters}
                   selectedEmailFilters={selectedEmailFilters}
                   setSelectedEmailFilters={setSelectedEmailFilters}
+                  selectedLinkedFilters={selectedLinkedFilters}
+                  setSelectedLinkedFilters={setSelectedLinkedFilters}
                 />
                 </div>
 

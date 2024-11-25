@@ -7,6 +7,7 @@ import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummar
 import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
 import Radio from '../../../../../../common/components/gov-uk/Radio'
 import WarningText from '../../../../../../common/components/gov-uk/WarningText'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function DuplicateLocationsOptionsPage() {
   const navigate = useNavigate()
@@ -15,6 +16,7 @@ export default function DuplicateLocationsOptionsPage() {
   const [error, setError] = useState('')
   const location = useLocation()
   const addedLocations = location?.state?.addedLocations || 0
+  const bulkUploadData = location?.state?.bulkUploadData
   const duplicateLocations = location?.state?.duplicateLocations || 0
 
   const options = [
@@ -51,9 +53,11 @@ export default function DuplicateLocationsOptionsPage() {
           break
         }
         case options[2].value: {
-          navigate(
-            '/organisation/manage-locations/add/upload-file/manage-duplicate-locations'
-          )
+          navigate(orgManageLocationsUrls.add.manageDuplicateLocationsPage, {
+            state: {
+              bulkUploadData: bulkUploadData
+            }
+          })
           break
         }
         default:

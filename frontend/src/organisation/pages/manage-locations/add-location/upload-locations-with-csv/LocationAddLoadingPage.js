@@ -9,6 +9,7 @@ export default function LocationAddLoadingPage() {
   const navigate = useNavigate()
   const [status, setStatus] = useState('')
   const [stage, setStage] = useState('Scanning Upload')
+  const [bulkUploadData, setBulkUploadData] = useState(null)
   const [validLocations, setValidLocations] = useState(null)
   const [duplicateLocations, setDuplicateLocations] = useState(null)
   const [notFoundLocations, setNotFoundLocations] = useState(null)
@@ -36,6 +37,7 @@ export default function LocationAddLoadingPage() {
         navigate('/organisation/manage-locations/confirm', {
           state: {
             fileName,
+            bulkUploadData: bulkUploadData,
             valid: validLocations,
             duplicates: duplicateLocations,
             notFound: notFoundLocations,
@@ -64,6 +66,7 @@ export default function LocationAddLoadingPage() {
         }
         if (data?.status !== status) {
           if (data?.data) {
+            setBulkUploadData(data.data)
             setValidLocations(data.data.valid.length)
             const duplicateLocations = data.data.invalid.filter(
               (invalid) =>

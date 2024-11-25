@@ -1,94 +1,50 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
+import BackLink from '../../../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../../common/components/gov-uk/Button'
-import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
 import WarningText from '../../../../../../common/components/gov-uk/WarningText'
-import {
-  setCurrentLocation,
-  setLocationSearchResults
-} from '../../../../../../common/redux/userSlice'
-import { backendCall } from '../../../../../../common/services/BackendService'
-import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ManageDuplicateLocationsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
-  const [locations, setLocations] = useState(null)
   const location = useLocation()
+  const bulkUploadData = location?.state?.bulkUploadData
+  const [duplicateLocations, setDuplicateLocations] = useState([])
 
   useEffect(() => {
-    const getInvLocations = async () => {
-      const dataToSend = { authToken }
-      const { data } = await backendCall(
-        dataToSend,
-        'api/bulk_uploads/get_invalid_locations',
-        navigate
-      )
-      if (data) {
-
-        const duplicateLocations = data.data.invalid.filter(
-          (invalid) =>
-            Array.isArray(invalid.error) &&
-            invalid.error.includes('duplicate')
-        ).length
-
-
-        setLocations(data.)
-      } else {
-        setLocations(null)
-      }
-    }
-    getInvLocations()
+    const duplicateLocations = bulkUploadData.invalid.filter(
+      (invalid) =>
+        Array.isArray(invalid.error) && invalid.error.includes('duplicate')
+    )
+    setDuplicateLocations(duplicateLocations)
   }, [])
+
+  const handlePrint = () => {
+    // TODO
+  }
+
+  const handleCompareDetails = async (event, location) => {
+    event.preventDefault()
+  }
 
   const handleSubmit = async () => {
     navigate('/organisation/manage-locations/view-locations')
   }
 
-  const findAvailableAddresses = async (location) => {
-    const dataToSend = {
-      name: location,
-      minmatch: 0.7
-    }
-    const { data, errorMessage } = await backendCall(
-      dataToSend,
-      'api/os-api/name-minmatch-search',
-      navigate
-    )
-    if (errorMessage) {
-      // If there was an error message, return false
-      return false
-    } else {
-      // Otherwise, dispatch results and return true
-      dispatch(setLocationSearchResults(data))
-      return true
-    }
-  }
-
-  const handleFind = async (event, location) => {
+  const navigateBack = (event) => {
     event.preventDefault()
-    const poi = location
-    dispatch(setCurrentLocation(poi))
-    const isAddressValid = await findAvailableAddresses(
-      poi.meta_data.location_additional.full_address +
-        ', ' +
-        poi.meta_data.location_additional.postcode
-    )
-    // If there is results for the unmatched address, navigate to the radio screen
-    // where user can select how to find the address
-    if (isAddressValid) {
-      navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.selectHow)
-    } else {
-      // otherwise, navigate to find on map directly
-      navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName) // Link to map
-    }
+    navigate(-1)
   }
 
   return (
     <>
-      {location.state && (
+      <OrganisationAccountNavigation />
+      <BackLink onClick={navigateBack} />
+      {/* TODO: do we need something like this to show result of compare? */}
+      {/* {location.state && (
         <NotificationBanner
           className={`govuk-notification-banner ${
             location.state === 'Added' && 'govuk-notification-banner--success'
@@ -100,65 +56,48 @@ export default function ManageDuplicateLocationsPage() {
               : "1 location cannot be added because it's not in England"
           }
         />
-      )}
-
+      )} */}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
-            <h1 className='govuk-heading-l'>Manually find locations</h1>
-            <div className='govuk-body'>
-              <p>
-                <>
-                  <Link
-                    to='/' // link to download file of all locations not matched
-                    className='govuk-link'
-                  >
-                    Download a file of all the locations not matched
-                  </Link>
-                  , update it and reupload later.
-                </>
-              </p>
-              <h2 className='govuk-heading-m govuk-!-margin-top-6'>
-                {locations?.length} locations not matched
-              </h2>
-
+            <h1 className='govuk-heading-l'>
+              Manage {duplicateLocations.length} duplicate locations
+            </h1>
+            <div className='govuk-!-padding-bottom-4'>
+              You need to choose if you want to keep or replace all of them.
+            </div>
+            <WarningText text='Any new locations uploaded that are duplicates will not be saved to this account if you do not manage them now. The existing location with the same name will be kept in this account' />
+            <Button
+              className='govuk-button govuk-button--secondary'
+              text='Print duplicate locations'
+              onClick={handlePrint}
+            />
+            <div>{duplicateLocations.length} locations</div>
+            <div className='govuk-body govuk-!-padding-top-2'>
               <table class='govuk-table govuk-table--small-text-until-tablet'>
                 <thead class='govuk-table__head'>
                   <tr class='govuk-table__row'>
                     <th scope='col' class='govuk-table__header'>
                       Location name
                     </th>
-                    <th scope='col' class='govuk-table__header'>
-                      Address uploaded
-                    </th>
-                    <th scope='col' class='govuk-table__header'>
-                      Postcode
-                    </th>
                     <th scope='col' class='govuk-table__header' />
                   </tr>
                 </thead>
                 <tbody class='govuk-table__body'>
-                  {locations &&
-                    locations.map((location, index) => {
+                  {duplicateLocations &&
+                    duplicateLocations.map((location, index) => {
                       return (
                         <tr class='govuk-table__row' key={index}>
-                          <th scope='row' class='govuk-table__header'>
-                            {location.name}
-                          </th>
                           <td class='govuk-table__cell'>
-                            {
-                              location.meta_data.location_additional
-                                .full_address
-                            }
-                          </td>
-                          <td class='govuk-table__cell'>
-                            {location.meta_data.location_additional.postcode}
+                            {location.Location_name}
                           </td>
                           <td class='govuk-table__cell'>
                             <Link
-                              onClick={(event) => handleFind(event, location)}
+                              onClick={(event) =>
+                                handleCompareDetails(event, location)
+                              }
                             >
-                              Find this location
+                              Compare details
                             </Link>
                           </td>
                         </tr>
@@ -166,12 +105,10 @@ export default function ManageDuplicateLocationsPage() {
                     })}
                 </tbody>
               </table>
-
-              <WarningText text='Any locations not matched cannot be added to this account' />
             </div>
             <Button
               className='govuk-button'
-              text='Continue'
+              text='Finish managing duplicate locations'
               onClick={handleSubmit}
             />
           </div>

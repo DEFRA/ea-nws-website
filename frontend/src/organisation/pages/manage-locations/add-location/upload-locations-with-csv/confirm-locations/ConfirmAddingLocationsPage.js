@@ -9,6 +9,7 @@ import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/M
 export default function ConfirmLocationsPage() {
   const navigate = useNavigate()
   const location = useLocation()
+  const bulkUploadData = location?.state?.bulkUploadData
   const validLocations = location?.state?.valid || 0
   const duplicateLocations = location?.state?.duplicates || 0
   const notInEnglandLocations = location?.state?.notInEngland || 0
@@ -33,6 +34,7 @@ export default function ConfirmLocationsPage() {
           navigate(orgManageLocationsUrls.add.duplicateLocationsOptionsPage, {
             state: {
               addedLocations: data.valid,
+              bulkUploadData: bulkUploadData,
               duplicateLocations: duplicateLocations
             }
           })

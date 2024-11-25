@@ -11,7 +11,7 @@ import {
 import { backendCall } from '../../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ManuallyFindLocationsPage () {
+export default function ManuallyFindLocationsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
@@ -28,6 +28,7 @@ export default function ManuallyFindLocationsPage () {
       )
       if (data) {
         setLocations(data)
+        console.log(locations)
       } else {
         setLocations(null)
       }
@@ -135,7 +136,10 @@ export default function ManuallyFindLocationsPage () {
                       return (
                         <tr class='govuk-table__row' key={index}>
                           <th scope='row' class='govuk-table__header'>
-                            {location.name}
+                            {
+                              location.meta_data.location_additional
+                                .location_name
+                            }
                           </th>
                           <td class='govuk-table__cell'>
                             {

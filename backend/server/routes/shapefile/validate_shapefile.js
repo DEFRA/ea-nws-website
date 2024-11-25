@@ -1,16 +1,25 @@
-const path = require('path')
 const {
   S3Client,
   ListObjectsV2Command,
   DeleteObjectsCommand,
-  GetObjectCommand,
-  S3LocationFilterSensitiveLog
+  GetObjectCommand
 } = require('@aws-sdk/client-s3')
 const getSecretKeyValue = require('../../services/SecretsManager')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
-const DBFReader = require('dbf-reader')
+const { Dbf } = require('dbf-reader')
+const { Readable } = require('stream')
+const { error } = require('console')
+
+const streamToBuffer = async (stream) => {
+  return new Promise((resolve, reject) => {
+    const chunks = []
+    stream.on('data', (chunk) => chunks.push(chunk))
+    stream.on('end', () => resolve(Buffer.concat(chunks)))
+    stream.on('error', reject)
+  })
+}
 
 module.exports = [
   {
@@ -36,10 +45,6 @@ module.exports = [
         s3Client = new S3Client()
         s3BucketName = await getSecretKeyValue('nws/aws', 'bulkUploadBucket')
 
-        console.log(`Zip file: ${zipFileName}`)
-        console.log(`Zip path: ${zipFilePath}`)
-        console.log(`Bucket folder: ${bucketFolder}`)
-
         // List bucket folder contents
         const response = await s3Client.send(
           new ListObjectsV2Command({
@@ -48,14 +53,13 @@ module.exports = [
           })
         )
         Contents = response.Contents
-        console.log(Contents)
 
-        /*** Check 1: empty zip file ***/
+        // ***  Check 1: empty zip file *** //
         if (!Contents || Contents.length === 0) {
           throw new Error('The file is empty')
         }
 
-        /*** Check 2: all prefixes match ***/
+        // ***  Check 2: all prefixes match *** //
         const prefixes = Contents.map((item) => {
           const fileName = item.Key.replace(bucketFolder, '')
           return fileName.split('.')[0]
@@ -68,13 +72,13 @@ module.exports = [
           )
         }
 
-        /*** Check 3: required files ***/
+        // ***  Check 3: required files *** //
         const requiredFilesTypes = ['.shp', '.shx', '.dbf']
         const presentFileTypes = Contents.map((item) => {
           const fileType = item.Key.slice(item.Key.lastIndexOf('.'))
           return fileType
         })
-        for (let required of requiredFilesTypes) {
+        for (const required of requiredFilesTypes) {
           if (!presentFileTypes.includes(required)) {
             throw new Error(
               'The ZIP file must contain .shp (main file), .shx (index file) and .dbf (database file)'
@@ -82,31 +86,34 @@ module.exports = [
           }
         }
 
-        console.log(Contents)
-
-        /*** Check 4: no location name ***/
+        // ***  Check 4: no location name *** //
         // Retrieve dbf file from bucket (know it exists from Check 3)
         const dbfResponse = await s3Client.send(
           new GetObjectCommand({
             Bucket: s3BucketName,
-            Key: Contents.find((item) => item.Key.endsWith('.dbf'))
+            Key: Contents.find((item) => item.Key.endsWith('.dbf'))?.Key
           })
         )
-        const dbfBuffer = await dbfResponse.Body.transformToByteArray()
-        const dbfData = new DBFReader(dbfBuffer)
-
-        // Check if location name exists and has data
-        const records = dbfData.getRecords()
-        const hasValidLocation = records.some(
-          (record) => record.LocationName && record.LocationName.trim() !== ''
-        )
-        if (!hasValidLocation) {
-          throw new Error(
-            'The selected file could not be uploaded because the location name is missing'
+        const dbfBuffer = await streamToBuffer(dbfResponse.Body)
+        const dbfTable = Dbf.read(dbfBuffer)
+        if (dbfTable) {
+          // Find the index of the 'lrf15nm' column (which stores the location name)
+          const locationIndex = dbfTable.columns.findIndex(
+            (col) => col.name === 'lrf15nm'
           )
+          // Retrieve the location name value and ensure it is not null
+          const locationName =
+            dbfTable.rows[0][dbfTable.columns[locationIndex].name]
+          if (!locationName) {
+            throw new Error(
+              'The selected file could not be uploaded because the location name is missing'
+            )
+          }
         }
 
-        /*** No errors thrown means a valid shapefile ***/
+        // *** TODO: Implement virus scan after EAN-1122 is complete *** //
+
+        // No errors thrown means a valid shapefile
         return h.response({
           status: 200,
           data: 'Valid'
@@ -119,7 +126,6 @@ module.exports = [
               ...Contents.map((item) => ({ Key: item.Key })),
               { Key: zipFilePath }
             ]
-            console.log(`objectsToDelete: ${JSON.stringify(objectsToDelete)}`)
             await s3Client.send(
               new DeleteObjectsCommand({
                 Bucket: s3BucketName,

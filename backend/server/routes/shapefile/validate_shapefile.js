@@ -110,8 +110,7 @@ module.exports = [
 
         // No errors thrown means a valid shapefile
         return h.response({
-          status: 200,
-          data: 'Valid'
+          status: 200
         })
       } catch (error) {
         // An invalid shapefile (and the original zip) should be deleted from the bucket (the user will be asked to upload a correct one)

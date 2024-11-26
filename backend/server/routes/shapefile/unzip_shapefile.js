@@ -78,8 +78,7 @@ module.exports = [
         })
 
         return h.response({
-          status: 200,
-          data: 'Files unzipped and uploaded successfully'
+          status: 200
         })
       } catch (error) {
         return h.response({

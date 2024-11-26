@@ -178,479 +178,773 @@ const locations = [
       {
         id: '6',
         enabled: true,
-        name: 'Location_ID7',
+        name: 'UPRN',
         address: 'some address',
-        coordinates: { latitude: 50.84106, longitude: -1.05814 },
+        coordinates: { latitude: null, longitude: null },
         geometry: null,
         geocode: null,
         additionals: [
-          { id: 'locationName', value: { s: 'Location_05 - boundary variant' } },
+          { id: 'locationName', value: { s: 'Location_ID7' } },
           { id: 'parentID', value: { s: '' } },
           { id: 'targetAreas', value: { s: '' } },
-          { id: 'keywords', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
           {
             id: 'other',
             value: {
               s: JSON.stringify(
                 {
-                    full_address: '',
-                    postcode: '',
-                    x_coordinate: '',
-                    y_coordinate: '',
-                    internal_reference: '',
-                    business_criticality: '',
-                    location_type: '',
-                    action_plan: '',
-                    notes: '',          
-                  location_data_type: 'boundary',
-                  alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'Low',
+                    location_type: 'Office',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: []
                 }
               )
             }
           }
         ]
       },
-
-    {
-      name: 'Location_ID7',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: [],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'Low',
-          location_type: 'Office',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
+      {
+        id: '7',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID8' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'High',
+                    location_type: 'Warehouse',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: ['ALERT_LVL_2']
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '8',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID9' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'Medium',
+                    location_type: 'Retail space',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '9',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID10' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'Low',
+                    location_type: 'Warehouse',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: ['ALERT_LVL_2']
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '10',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID11' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'Medium',
+                    location_type: 'Office',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '11',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID12' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'High',
+                    location_type: 'Warehouse',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: ['ALERT_LVL_3']
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '12',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID13' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'Low',
+                    location_type: 'Retail space',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: ['ALERT_LVL_2']
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '13',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID14' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'Medium',
+                    location_type: 'Warehouse',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: []
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '14',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID15' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'Low',
+                    location_type: 'Office',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '15',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID16' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'High',
+                    location_type: 'Warehouse',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: []
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '16',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID17' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'Medium',
+                    location_type: 'Warehouse',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: ['ALERT_LVL_2']
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '17',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID18' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'Low',
+                    location_type: 'Retail space',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: ['ALERT_LVL_3']
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '18',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID19' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'Medium',
+                    location_type: 'Office',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: ['ALERT_LVL_2','ALERT_LVL_3']
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '19',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID20' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'High',
+                    location_type: 'Warehouse',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: ['ALERT_LVL_2']
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '20',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID21' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'Low',
+                    location_type: 'Retail space',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: []
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '21',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID22' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'High',
+                    location_type: 'Warehouse',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '22',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID23' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'Medium',
+                    location_type: 'Warehouse',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: ['ALERT_LVL_2']
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '23',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID24' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'Low',
+                    location_type: 'Office',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: ['ALERT_LVL_3']
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '24',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID25' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'Medium',
+                    location_type: 'Retail space',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '25',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID26' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'High',
+                    location_type: 'Warehouse',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: ['ALERT_LVL_3']
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '26',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID27' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'Low',
+                    location_type: 'Warehouse',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: ['ALERT_LVL_2']
+                }
+              )
+            }
+          }
+        ]
+      },
+      {
+        id: '27',
+        enabled: true,
+        name: 'UPRN',
+        address: 'some address',
+        coordinates: { latitude: null, longitude: null },
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: 'Location_ID28' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '["keywords"]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify(
+                {
+                    full_address: 'some address',
+                    postcode: 'some postcode',
+                    x_coordinate: 'lat',
+                    y_coordinate: 'long',
+                    internal_reference: 'reference',
+                    business_criticality: 'Medium',
+                    location_type: 'Office',
+                    action_plan: 'action plan',
+                    notes: 'some notes',          
+                  location_data_type: 'xycoords',
+                  alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+                }
+              )
+            }
+          }
+        ]
       }
-    },
-    {
-      name: 'Location_ID8',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: ['Warning'],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'High',
-          location_type: 'Warehouse',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID9',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: ['Warning', 'Alert'],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'Medium',
-          location_type: 'Retail space',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID10',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: ['Warning'],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'Low',
-          location_type: 'Warehouse',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID11',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: ['Warning', 'Alert'],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'Medium',
-          location_type: 'Office',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID12',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: ['Alert'],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'High',
-          location_type: 'Warehouse',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID13',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: ['Warning'],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'Low',
-          location_type: 'Retail space',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID14',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: [],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'Medium',
-          location_type: 'Warehouse',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID15',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: ['Warning', 'Alert'],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'Low',
-          location_type: 'Office',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID16',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: [],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'High',
-          location_type: 'Warehouse',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID17',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: ['Warning'],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'Medium',
-          location_type: 'Warehouse',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID18',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: ['Alert'],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'Low',
-          location_type: 'Retail space',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID19',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: ['Warning', 'Alert'],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'Medium',
-          location_type: 'Office',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID20',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: ['Warning'],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'High',
-          location_type: 'Warehouse',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID21',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: [],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'Low',
-          location_type: 'Retail space',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID22',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: ['Warning', 'Alert'],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'High',
-          location_type: 'Warehouse',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID23',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: ['Warning'],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'Medium',
-          location_type: 'Warehouse',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID24',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: ['Alert'],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'Low',
-          location_type: 'Office',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID25',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: ['Warning', 'Alert'],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'Medium',
-          location_type: 'Retail space',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID26',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: ['Alert'],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'High',
-          location_type: 'Warehouse',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID27',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: ['Warning'],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'Low',
-          location_type: 'Warehouse',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    },
-    {
-      name: 'Location_ID28',
-      address: 'some address',
-      coordinates: ['lat', 'lng'],
-      alert_categories: ['Warning', 'Alert'],
-      meta_data: {
-        location_additional: {
-          full_address: 'some address',
-          postcode: 'some postcode',
-          x_coordinate: 'lat',
-          y_coordinate: 'lng',
-          internal_reference: 'reference',
-          business_criticality: 'Medium',
-          location_type: 'Office',
-          action_plan: 'action plan',
-          notes: 'some notes',
-          keywords: 'keywords'
-        }
-      }
-    }
   ]
 
   module.exports = {

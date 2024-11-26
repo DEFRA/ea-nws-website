@@ -1,17 +1,19 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation, useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../../common/components/gov-uk/Radio'
 
-export default function LocationSearchOptionsLayout ({ heading, searchOptions, navigateToNextPage }) {
-  const navigate = useNavigate()
+export default function LocationSearchOptionsLayout ({
+  heading,
+  additionalInfo,
+  searchOptions,
+  navigateToNextPage,
+  navigateToPreviousPage
+}) {
   const [searchOption, setSearchOption] = useState('')
   const [error, setError] = useState('')
-  const location = useLocation()
-  const isAddingLocationFlow = location.pathname.includes('add')
 
   useEffect(() => {
     setError('')
@@ -22,7 +24,9 @@ export default function LocationSearchOptionsLayout ({ heading, searchOptions, n
       if (Object.keys(searchOptions).length > 2) {
         setError('Select how you want to find this location')
       } else {
-        setError('Select if you want to use X and Y coordinates or drop a pin on a map')
+        setError(
+          'Select if you want to use X and Y coordinates or drop a pin on a map'
+        )
       }
     } else {
       navigateToNextPage(searchOption)
@@ -31,7 +35,7 @@ export default function LocationSearchOptionsLayout ({ heading, searchOptions, n
 
   const navigateBack = (event) => {
     event.preventDefault()
-    navigate(-1)
+    navigateToPreviousPage()
   }
   return (
     <>
@@ -40,17 +44,9 @@ export default function LocationSearchOptionsLayout ({ heading, searchOptions, n
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {error && (
-              <ErrorSummary errorList={[error]} />
-            )}
+            {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>{heading}</h1>
-            {isAddingLocationFlow &&
-              <p>
-                If your location is a polygon, or a line, your organization has
-                created you'll need to upload your location as a shapefile in a
-                .zip file.
-              </p>}
-
+            {additionalInfo && <>{additionalInfo}</>}
             <div
               className={
                 error
@@ -81,7 +77,6 @@ export default function LocationSearchOptionsLayout ({ heading, searchOptions, n
           </div>
         </div>
       </main>
-
     </>
   )
 }

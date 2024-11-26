@@ -3,8 +3,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
 from common import *
-# TODO UPDATE PAGES
-#previous_url= url_org_man_loc.get('optionalLocation').get('addActionPlan')
+previous_url= url_org_man_cont.get('add').get('channels')
 url_next_page = local_host + '/' # TODO update when next page implemented
 current_url  = url_org_man_cont.get('add').get('notes')
 
@@ -18,13 +17,14 @@ def test_render(get_browser):
     assert 'Notes (optional)' in get_browser.page_source
     assert 'Any notes that may be helpful to someone not familiar with this person or why they need to get flood messages.' in get_browser.page_source
     assert 'You can enter up to 500 characters' in get_browser.page_source
-#TODO UPDATE WHEN PREVIOUS PAGE EXISTS
-'''
+
 def test_back_button(get_browser):
     navigate_to_auth_page_via_index(get_browser,previous_url)
-    click_button(get_browser, 'Add contact', current_url)
+    enter_input_text(get_browser, 'Email addresses (optional)', 'valid@email.com')
+    click_button(get_browser, 'Continue', current_url)
     click_link(get_browser, "Back", previous_url)
-'''
+    assert 'Choose how you want' in get_browser.page_source
+
 def test_continue_empty(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     click_button(get_browser, 'Add contact', url_next_page)

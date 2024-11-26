@@ -4,8 +4,10 @@ export default function TextArea ({
   name,
   className,
   rows,
+  value,
   onChange,
-  error = ''
+  error = '',
+  additionalInfo
 }) {
   const handleChange = (event) => {
     onChange(event.target.value)
@@ -29,12 +31,16 @@ export default function TextArea ({
           </p>
         )}
         <textarea
-          className={error === '' ? className : 'govuk-textarea govuk-textarea--error'}
+          className={
+            error === '' ? className : 'govuk-textarea govuk-textarea--error'
+          }
           name={name}
           id='govuk-textarea'
           rows={rows}
+          value={value}
           onChange={handleChange}
         />
+        {additionalInfo && <p className='textarea-info'>{additionalInfo}</p>}
       </div>
     </>
   )

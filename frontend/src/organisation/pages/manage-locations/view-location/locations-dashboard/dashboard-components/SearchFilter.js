@@ -23,8 +23,10 @@ export default function SearchFilter ({
   setSelectedFloodMessagesAvailableFilters,
   selectedBusinessCriticalityFilters,
   setSelectedBusinessCriticalityFilters,
-  selectedRiskRatingFilters,
-  setSelectedRiskRatingFilters
+  selectedRiverSeaRiskFilters,
+  setSelectedRiverSeaRiskFilters,
+  selectedGroundWaterRiskFilters,
+  setSelectedGroundWaterRiskFilters
 }) {
   // filters
   const [locationNameFilter, setLocationNameFilter] = useState('')
@@ -49,13 +51,30 @@ export default function SearchFilter ({
     )
   ]
 
+  const riverSeaRisk = [
+    ...new Set(
+      locations
+        .map((location) => location.riverSeaRisk?.title)
+        .filter((title) => title)
+    )
+  ]
+
+  const groundWaterRisk = [
+    ...new Set(
+      locations
+        .map((location) => location.groundWaterRisk?.title)
+        .filter((title) => title)
+    )
+  ]
+
   // search filters visibility
   const [locationNameVisible, setLocationNameVisible] = useState(false)
   const [locationTypeVisible, setLocationTypeVisible] = useState(false)
   const [floodMessagesVisible, setFloodMessagesVisible] = useState(false)
   const [businessCriticalityVisible, setBusinessCriticalityVisible] =
     useState(false)
-  const [riskRatingVisible, setRiskRatingVisible] = useState(false)
+  const [riverSeaRiskVisible, setRiverSeaRiskVisible] = useState(false)
+  const [groundWaterRiskVisible, setGroundWaterRiskVisible] = useState(false)
 
   // handle filters applied
   const handleFilterChange = (e, setFilters) => {
@@ -124,10 +143,17 @@ export default function SearchFilter ({
       )
     }
 
-    // Apply risk rating filter
-    if (selectedRiskRatingFilters.length > 0) {
+    // Apply river sea risk filter
+    if (selectedRiverSeaRiskFilters.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
-        selectedRiskRatingFilters.includes(location.riverSeaRisk)
+        selectedRiverSeaRiskFilters.includes(location.riverSeaRisk?.title)
+      )
+    }
+
+    // Apply ground water risk filter
+    if (selectedGroundWaterRiskFilters.length > 0) {
+      filteredLocations = filteredLocations.filter((location) =>
+        selectedGroundWaterRiskFilters.includes(location.groundWaterRisk.title)
       )
     }
 
@@ -142,7 +168,8 @@ export default function SearchFilter ({
     setSelectedLocationTypeFilters([])
     setSelectedFloodMessagesAvailableFilters([])
     setSelectedBusinessCriticalityFilters([])
-    setSelectedRiskRatingFilters([])
+    setSelectedRiverSeaRiskFilters([])
+    setSelectedGroundWaterRiskFilters([])
   }
 
   // Location name filter
@@ -280,6 +307,16 @@ export default function SearchFilter ({
             setSelectedBusinessCriticalityFilters
           )}
           {selectedFilterContents(
+            'Groundwater flood risk',
+            selectedGroundWaterRiskFilters,
+            setSelectedGroundWaterRiskFilters
+          )}
+          {selectedFilterContents(
+            'Rivers and sea flood risk',
+            selectedRiverSeaRiskFilters,
+            setSelectedRiverSeaRiskFilters
+          )}
+          {selectedFilterContents(
             'Flood messages available',
             selectedFloodMessagesAvailableFilters,
             setSelectedFloodMessagesAvailableFilters
@@ -317,6 +354,24 @@ export default function SearchFilter ({
       )}
 
       {otherFilter(
+        'Groundwater flood risk',
+        groundWaterRisk,
+        selectedGroundWaterRiskFilters,
+        setSelectedGroundWaterRiskFilters,
+        groundWaterRiskVisible,
+        setGroundWaterRiskVisible
+      )}
+
+      {otherFilter(
+        'Rivers and sea flood risk',
+        riverSeaRisk,
+        selectedRiverSeaRiskFilters,
+        setSelectedRiverSeaRiskFilters,
+        riverSeaRiskVisible,
+        setRiverSeaRiskVisible
+      )}
+
+      {otherFilter(
         'Flood messages available',
         floodMessagesAvailable,
         selectedFloodMessagesAvailableFilters,
@@ -324,15 +379,6 @@ export default function SearchFilter ({
         floodMessagesVisible,
         setFloodMessagesVisible
       )}
-
-      {/* {otherFilter(
-        'Rivers and sea flood risk',
-        riskRating,
-        selectedRiskRatingFilters,
-        setSelectedRiskRatingFilters,
-        riskRatingVisible,
-        setRiskRatingVisible
-      )} */}
     </>
   )
 }

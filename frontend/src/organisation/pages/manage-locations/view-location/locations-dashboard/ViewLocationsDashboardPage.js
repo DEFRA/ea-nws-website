@@ -588,8 +588,9 @@ export default function ViewLocationsDashboardPage () {
       // }
     ]
 
+    // TODO: There is some duplication in this function with RiskCategoryLabel. Combine when working
     const updateLocationData = async () => {
-      const ratings = await Promise.all(
+      const riverSeaRisks = await Promise.all(
         l.map((location) =>
           getRiskCategory({
             riskAreaType: RiskAreaType.RIVERS_AND_SEA,
@@ -597,13 +598,22 @@ export default function ViewLocationsDashboardPage () {
           })
         )
       )
+      const groundWaterRisks = await Promise.all(
+        l.map((location) =>
+          getRiskCategory({
+            riskAreaType: RiskAreaType.GROUNDWATER,
+            location
+          })
+        )
+      )
 
-      const newLocations = l.map((location, idx) => ({
+      const updatedLocations = l.map((location, idx) => ({
         ...location,
-        riverSeaRisk: ratings[idx]
+        riverSeaRisk: riverSeaRisks[idx],
+        groundWaterRisk: groundWaterRisks[idx]
       }))
-      setLocations(newLocations)
-      setFilteredLocations(newLocations)
+      setLocations(updatedLocations)
+      setFilteredLocations(updatedLocations)
     }
 
     updateLocationData()
@@ -645,7 +655,7 @@ export default function ViewLocationsDashboardPage () {
       )
     }
 
-    return riskData[riskCategory].title
+    return riskData[riskCategory]
   }
 
   const [currentPage, setCurrentPage] = useState(1)
@@ -672,7 +682,10 @@ export default function ViewLocationsDashboardPage () {
     selectedBusinessCriticalityFilters,
     setSelectedBusinessCriticalityFilters
   ] = useState([])
-  const [selectedRiskRatingFilters, setSelectedRiskRatingFilters] = useState([])
+  const [selectedRiverSeaRiskFilters, setSelectedRiverSeaRiskFilters] =
+    useState([])
+  const [selectedGroundWaterRiskFilters, setSelectedGroundWaterRiskFilters] =
+    useState([])
 
   const table = (
     <>
@@ -752,8 +765,16 @@ export default function ViewLocationsDashboardPage () {
                       setSelectedBusinessCriticalityFilters={
                       setSelectedBusinessCriticalityFilters
                     }
-                      selectedRiskRatingFilters={selectedRiskRatingFilters}
-                      setSelectedRiskRatingFilters={setSelectedRiskRatingFilters}
+                      selectedGroundWaterRiskFilters={
+                      selectedGroundWaterRiskFilters
+                    }
+                      setSelectedGroundWaterRiskFilters={
+                      setSelectedGroundWaterRiskFilters
+                    }
+                      selectedRiverSeaRiskFilters={selectedRiverSeaRiskFilters}
+                      setSelectedRiverSeaRiskFilters={
+                      setSelectedRiverSeaRiskFilters
+                    }
                     />
                   </div>
 

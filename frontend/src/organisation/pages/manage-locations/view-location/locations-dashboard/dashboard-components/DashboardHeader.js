@@ -84,8 +84,8 @@ export default function DashboardHeader ({ locations }) {
 
       const mediumHighRisk = locations.filter(
         (obj) =>
-          (obj.riverSeaRisk === 'Medium risk' ||
-            obj.riverSeaRisk === 'High risk') &&
+          (obj.riverSeaRisk?.title === 'Medium risk' ||
+            obj.riverSeaRisk?.title === 'High risk') &&
           obj.alert_categories.length === 0
       ).length
       count.push(mediumHighRisk)
@@ -93,7 +93,8 @@ export default function DashboardHeader ({ locations }) {
 
       const lowRisk = locations.filter(
         (obj) =>
-          obj.riverSeaRisk === 'Low risk' && obj.alert_categories.length === 0
+          obj.riverSeaRisk?.title === 'Low risk' &&
+          obj.alert_categories.length === 0
       ).length
       count.push(lowRisk)
       message.push('at low flood risk')
@@ -189,7 +190,8 @@ export default function DashboardHeader ({ locations }) {
       <div className='govuk-grid-column-full govuk-body govuk-!-margin-top-6'>
         <div style={{ display: 'flex' }}>
           <h1 className='govuk-heading-l'>
-            Manage your organisation's {locations.length} locations
+            Manage your organisation's{' '}
+            {locations.length > 1 ? locations.length : null} locations
           </h1>
           <div style={{ marginLeft: 'auto' }}>
             <Button

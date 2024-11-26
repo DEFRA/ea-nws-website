@@ -3,10 +3,7 @@ import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import locationPin from '../../../../../../common/assets/images/location_pin.svg'
 import Popup from '../../../../../../common/components/custom/Popup'
-import LocationDataType from '../../../../../../common/enums/LocationDataType'
-import RiskAreaType from '../../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../../common/redux/userSlice'
-import RiskCategoryLabel from '../../../../../components/custom/RiskCategoryLabel'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationsTable ({
@@ -140,14 +137,6 @@ export default function LocationsTable ({
     // TODO when linked contacts are available
   }
 
-  const sortRiverSeaRisks = () => {
-    // TODO
-  }
-
-  const sortGroundWaterRisks = () => {
-    // TODO
-  }
-
   const viewLocation = (e, location) => {
     e.preventDefault()
     dispatch(setCurrentLocation(location))
@@ -196,11 +185,13 @@ export default function LocationsTable ({
           'Showing ' + displayedLocations.length + ' of '}
         {locations.length} {locations.length === 1 ? 'location' : 'locations'}
         <span style={{ margin: '0 20px' }}>|</span>
-        {selectedLocations.length}{' '}
-        {selectedLocations.length === 1 ? 'location' : 'locations'} selected
+        <span style={{ color: '#1d70b8' }}>
+          {selectedLocations.length}{' '}
+          {selectedLocations.length === 1 ? 'location' : 'locations'} selected
+        </span>
         <span style={{ margin: '0 20px' }}>|</span>
         <img src={locationPin} alt='Location pin icon' />
-        <Link>View on map</Link>
+        <Link className='govuk-link'>View on map</Link>
       </p>
       <table className='govuk-table govuk-table--small-text-until-tablet'>
         <thead className='govuk-table__head'>
@@ -304,7 +295,7 @@ export default function LocationsTable ({
                   sortData(
                     riverSeaRisksSort,
                     setRiverSeaRisksSort,
-                    'riverSeaRisk'
+                    'riverSeaRisk.title'
                   )}
               >
                 Rivers and sea
@@ -316,7 +307,15 @@ export default function LocationsTable ({
               className='govuk-table__header'
               aria-sort={groundWaterRisksSort}
             >
-              <button type='button' onClick={() => sortGroundWaterRisks()}>
+              <button
+                type='button'
+                onClick={() =>
+                  sortData(
+                    groundWaterRisksSort,
+                    setGroundWaterRisksSort,
+                    'groundWaterRisk.title'
+                  )}
+              >
                 Groundwater
                 <br /> flood risk
               </button>
@@ -347,7 +346,10 @@ export default function LocationsTable ({
                 className='govuk-table__cell'
                 style={{ verticalAlign: 'middle' }}
               >
-                <Link onClick={(e) => viewLocation(e, location)}>
+                <Link
+                  className='govuk-link'
+                  onClick={(e) => viewLocation(e, location)}
+                >
                   {location.meta_data.location_additional.location_name}
                 </Link>
               </td>
@@ -367,7 +369,10 @@ export default function LocationsTable ({
                 className='govuk-table__cell'
                 style={{ verticalAlign: 'middle' }}
               >
-                <Link onClick={(e) => updateMessageSettings(e, location)}>
+                <Link
+                  className='govuk-link'
+                  onClick={(e) => updateMessageSettings(e, location)}
+                >
                   {location.alert_categories.length > 0 ? 'Yes' : 'No'}
                 </Link>
               </td>
@@ -375,47 +380,43 @@ export default function LocationsTable ({
                 className='govuk-table__cell'
                 style={{ verticalAlign: 'middle' }}
               >
-                <Link onClick={(e) => linkToContacts(e, location)}>0</Link>
+                <Link
+                  className='govuk-link'
+                  onClick={(e) => linkToContacts(e, location)}
+                >
+                  0
+                </Link>
               </td>
               <td
                 className='govuk-table__cell'
                 style={{ verticalAlign: 'middle' }}
               >
-                {
-                  // (location.meta_data.location_additional.location_data_type ===
-                  //   LocationDataType.ADDRESS ||
-                  //   location.meta_data.location_additional.location_data_type ===
-                  //     LocationDataType.X_AND_Y_COORDS) &&
-                  //   location?.coordinates != null &&
-                  //   <RiskCategoryLabel // <div className='flood-risk-banner-label '>
-                  //     coordinates={location.coordinates}
-                  //     riskAreaType={RiskAreaType.RIVERS_AND_SEA}
-                  //   />
-                  // </div>
-                  location.riverSeaRisk
-                }
+                <span
+                  className={`flood-risk-container ${location.riverSeaRisk?.className}`}
+                >
+                  {location.riverSeaRisk?.title}
+                </span>
               </td>
               <td
                 className='govuk-table__cell'
                 style={{ verticalAlign: 'middle' }}
               >
-                {(location.meta_data.location_additional.location_data_type ===
-                  LocationDataType.ADDRESS ||
-                  location.meta_data.location_additional.location_data_type ===
-                    LocationDataType.X_AND_Y_COORDS) && (
-                      <div className='flood-risk-banner-label '>
-                        <RiskCategoryLabel
-                          coordinates={location.coordinates}
-                          riskAreaType={RiskAreaType.GROUNDWATER}
-                        />
-                      </div>
-                )}
+                <span
+                  className={`flood-risk-container ${location.groundWaterRisk?.className}`}
+                >
+                  {location.groundWaterRisk?.title}
+                </span>
               </td>
               <td
                 className='govuk-table__cell'
                 style={{ verticalAlign: 'middle' }}
               >
-                <Link onClick={(e) => deleteLocation(e, location)}>Delete</Link>
+                <Link
+                  className='govuk-link'
+                  onClick={(e) => deleteLocation(e, location)}
+                >
+                  Delete
+                </Link>
               </td>
             </tr>
           ))}

@@ -27,14 +27,10 @@ export default function UploadFileLayout ({
   switch (uploadMethod) {
     // CSV file uploaded for bulk upload
     case 'csv':
-      allowedFileTypes = [
-        'text/csv',
-        'application/vnd.ms-excel',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      ]
+      allowedFileTypes = ['text/csv']
       maxFileSize = 5
-      fileTypeHint = 'File can be .xls, .xlsx or .csv'
-      fileTypeErrorMsg = 'The selected file must be .xls, .xlsx or .csv'
+      fileTypeHint = 'File must be .csv'
+      fileTypeErrorMsg = 'The selected file must be .csv'
       bucketFolder = 'csv-uploads'
       break
     // ZIP file uploaded for shapefile parsing

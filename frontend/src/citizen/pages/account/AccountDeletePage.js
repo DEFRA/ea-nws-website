@@ -72,7 +72,13 @@ export default function AccountDeletePage () {
     }
 
     if (isValidInput) {
-      const dataToSend = { authToken }
+      const dataToSend = {
+        authToken,
+        accountDeletionReason,
+        accountDeletionReasonText,
+        accountDeletionFurtherInfo
+      }
+
       const { errorMessage } = await backendCall(
         dataToSend,
         'api/account/delete',

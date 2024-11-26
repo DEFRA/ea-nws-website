@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -31,27 +31,27 @@ export default function LocationAddShapefilePage () {
               <p>Contents</p>
               <p>
                 -{' '}
-                <a
+                <Link
                   className='govuk-link'
                   onClick={() => scrollToSection(howToUploadRef)}
                 >
                   How to upload a shapefile
-                </a>{' '}
+                </Link>{' '}
                 <br />-{' '}
-                <a
+                <Link
                   className='govuk-link '
                   onClick={() => scrollToSection(infoNeededRef)}
                 >
                   Information you need to include
-                </a>
+                </Link>
                 <br />-{' '}
-                <a
+                <Link
                   className='govuk-link '
                   onClick={() => scrollToSection(usefulInfoRef)}
                 >
                   Useful information you can include to help easily identify
                   each location
-                </a>
+                </Link>
               </p>
               <br />
 

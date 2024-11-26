@@ -6,6 +6,7 @@ import OrganisationAccountNavigation from '../../../../common/components/custom/
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import { orgAccountUrls } from '../../../routes/account/AccountRoutes'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
+
 export default function ManageAdminDetailsPage () {
   const profile = useSelector((state) => state.session.profile)
   const location = useLocation()
@@ -69,9 +70,9 @@ export default function ManageAdminDetailsPage () {
         </div>
         <p>
           If you want to also get flood messages to a mobile or landline number,{' '}
-          <a href={orgManageContactsUrls.add.details} className='govuk-link'>
+          <Link to={orgManageContactsUrls.add.details} className='govuk-link'>
             add yourself as a contact.
-          </a>
+          </Link>
         </p>
       </main>
     </>

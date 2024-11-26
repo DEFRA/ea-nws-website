@@ -1294,3 +1294,8 @@
   border-bottom: 0.05rem solid black;
   opacity: 1;
 }
+
+.textarea-info {
+  margin-top: -28px;
+  color: #505a5f;
+}

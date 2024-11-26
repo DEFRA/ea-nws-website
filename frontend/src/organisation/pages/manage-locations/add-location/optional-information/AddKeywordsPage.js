@@ -1,11 +1,11 @@
 import { useNavigate } from 'react-router-dom'
-import AddKeywordsLayout from '../../../../layouts/optional-info/AddKeywordsLayout'
+import KeywordsLayout from '../../../../layouts/optional-info/KeywordsLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function AddKeywordsPage () {
   const navigate = useNavigate()
 
-  const KeywordText = (
+  const keywordText = (
     <p>
       You can add new keywords. Or you can remove existing keywords associated
       with this location by unticking the relevant box.
@@ -28,16 +28,16 @@ export default function AddKeywordsPage () {
     </p>
   )
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     navigate(orgManageLocationsUrls.add.optionalInformation.addActionPlan)
   }
 
   return (
     <>
-      <AddKeywordsLayout
-        NavigateToNextPage={NavigateToNextPage}
+      <KeywordsLayout
+        navigateToNextPage={navigateToNextPage}
         keywordType='location'
-        KeywordText={KeywordText}
+        keywordText={keywordText}
       />
     </>
   )

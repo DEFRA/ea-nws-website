@@ -7,7 +7,7 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import { backendCall } from '../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function UploadFileLayout ({
+export default function UploadFileLayout({
   uploadMethod // Currently either "csv" or "shape"
 }) {
   const navigate = useNavigate()
@@ -27,14 +27,10 @@ export default function UploadFileLayout ({
   switch (uploadMethod) {
     // CSV file uploaded for bulk upload
     case 'csv':
-      allowedFileTypes = [
-        'text/csv',
-        'application/vnd.ms-excel',
-        'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      ]
+      allowedFileTypes = ['text/csv']
       maxFileSize = 5
-      fileTypeHint = 'File can be .xls, .xlsx or .csv'
-      fileTypeErrorMsg = 'The selected file must be .xls, .xlsx or .csv'
+      fileTypeHint = 'File must be .csv'
+      fileTypeErrorMsg = 'The selected file must be .csv'
       bucketFolder = 'csv-uploads'
       break
     // ZIP file uploaded for shapefile parsing
@@ -107,9 +103,8 @@ export default function UploadFileLayout ({
       if (errorMessage) {
         throw new Error('Error uploading file')
       }
-
-      const url = data.url
-      const uniqFileName = data.fileName
+      const url = data?.url
+      const uniqFileName = data?.fileName
 
       // Upload the file to S3 using generated URL
       const uploadResponse = await fetch(url, {
@@ -169,65 +164,63 @@ export default function UploadFileLayout ({
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          {!uploading
-            ? (
-              <>
-                {(errorFileType || errorFileSize) && (
-                  <ErrorSummary errorList={[errorFileType, errorFileSize]} />
-                )}
-                <div className='govuk-grid-column-full'>
-                  <h1 className='govuk-heading-l'>Upload file</h1>
-                  <div
-                    className={
+          {!uploading ? (
+            <>
+              {(errorFileType || errorFileSize) && (
+                <ErrorSummary errorList={[errorFileType, errorFileSize]} />
+              )}
+              <div className='govuk-grid-column-full'>
+                <h1 className='govuk-heading-l'>Upload file</h1>
+                <div
+                  className={
                     errorFileSize || errorFileType
                       ? 'govuk-form-group govuk-form-group--error'
                       : 'govuk-form-group'
                   }
-                  >
-                    <p className='govuk-hint'>{fileTypeHint}</p>
-                    {errorFileType && (
-                      <p id='file-upload-1-error' className='govuk-error-message'>
-                        {errorFileType}
-                      </p>
-                    )}
-                    {errorFileSize && (
-                      <p id='file-upload-2-error' className='govuk-error-message'>
-                        {errorFileSize}
-                      </p>
-                    )}
-                    <input
-                      type='file'
-                      className={
+                >
+                  <p className='govuk-hint'>{fileTypeHint}</p>
+                  {errorFileType && (
+                    <p id='file-upload-1-error' className='govuk-error-message'>
+                      {errorFileType}
+                    </p>
+                  )}
+                  {errorFileSize && (
+                    <p id='file-upload-2-error' className='govuk-error-message'>
+                      {errorFileSize}
+                    </p>
+                  )}
+                  <input
+                    type='file'
+                    className={
                       errorFileSize || errorFileType
                         ? 'govuk-file-upload govuk-file-upload--error'
                         : 'govuk-file-upload'
                     }
-                      id='file-upload'
-                      onChange={setValidSelectedFile}
-                    />
-                  </div>
-                  <Button
-                    text='Upload'
-                    className='govuk-button'
-                    onClick={handleUpload}
+                    id='file-upload'
+                    onChange={setValidSelectedFile}
                   />
-                  <Link
-                    onClick={() => navigate(-1)}
-                    className='govuk-body govuk-link inline-link'
-                  >
-                    Cancel
-                  </Link>
                 </div>
-              </>
-              )
-            : (
-              <div className='govuk-!-text-align-centre'>
-                <h1 className='govuk-heading-l'>Uploading</h1>
-                <div className='govuk-body'>
-                  <Spinner size='75' />
-                </div>
+                <Button
+                  text='Upload'
+                  className='govuk-button'
+                  onClick={handleUpload}
+                />
+                <Link
+                  onClick={() => navigate(-1)}
+                  className='govuk-body govuk-link inline-link'
+                >
+                  Cancel
+                </Link>
               </div>
-              )}
+            </>
+          ) : (
+            <div className='govuk-!-text-align-centre'>
+              <h1 className='govuk-heading-l'>Uploading</h1>
+              <div className='govuk-body'>
+                <Spinner size='75' />
+              </div>
+            </div>
+          )}
         </div>
       </main>
     </>

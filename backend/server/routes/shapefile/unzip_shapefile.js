@@ -63,7 +63,7 @@ module.exports = [
                 })
                 entry.pipe(uploadStream)
 
-                entryPromises.push(uploadPromise.done().then(() => {}))
+                entryPromises.push(uploadPromise.done())
               } catch (err) {
                 throw new Error(err)
               }

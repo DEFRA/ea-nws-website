@@ -4,7 +4,7 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 
-const { getJsonData } = require('../../services/elasticache')
+const { getJsonData, setJsonData } = require('../../services/elasticache')
 
 const isDuplicate = async (authToken, locationName) => {
   const locationArr = await searchLocations(
@@ -61,6 +61,8 @@ module.exports = [
                   --i
                 }
               }
+              // Write any changes back to elasticache
+              await setJsonData(elasticacheKey, result)
             }
             return h.response({ status: 200, data: result })
           } else {

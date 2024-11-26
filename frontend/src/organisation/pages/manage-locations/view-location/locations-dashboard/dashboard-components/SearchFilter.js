@@ -19,14 +19,22 @@ export default function SearchFilter ({
   setSelectedFilters,
   selectedLocationTypeFilters,
   setSelectedLocationTypeFilters,
-  selectedFloodMessagesAvailableFilters,
-  setSelectedFloodMessagesAvailableFilters,
   selectedBusinessCriticalityFilters,
   setSelectedBusinessCriticalityFilters,
+  // TODO
+  // selectedKeywordsFilters,
+  // setSelectedKeywordsFilters,
+  selectedGroundWaterRiskFilters,
+  setSelectedGroundWaterRiskFilters,
   selectedRiverSeaRiskFilters,
   setSelectedRiverSeaRiskFilters,
-  selectedGroundWaterRiskFilters,
-  setSelectedGroundWaterRiskFilters
+  selectedFloodMessagesAvailableFilters,
+  setSelectedFloodMessagesAvailableFilters
+  // TODO
+  // selectedFloodMessagesSentFilters,
+  // setSelectedFloodMessagesSentFilters,
+  // selectedLinkedContactsFilters,
+  // setSelectedLinkedContactsFilters,
 }) {
   // filters
   const [locationNameFilter, setLocationNameFilter] = useState('')
@@ -67,7 +75,7 @@ export default function SearchFilter ({
     )
   ]
 
-  // search filters visibility
+  // Visibility filters
   const [locationNameVisible, setLocationNameVisible] = useState(false)
   const [locationTypeVisible, setLocationTypeVisible] = useState(false)
   const [floodMessagesVisible, setFloodMessagesVisible] = useState(false)
@@ -206,7 +214,7 @@ export default function SearchFilter ({
   )
 
   // All other filters
-  const otherFilter = (
+  const filter = (
     filterTitle,
     filterType,
     selectedFilterType,
@@ -252,7 +260,7 @@ export default function SearchFilter ({
         <h3 className='govuk-heading-s govuk-!-margin-top-5 govuk-!-margin-bottom-2'>
           {filterName}
         </h3>
-        {filterArray.map((filter, index) => (
+        {filterArray?.map((filter, index) => (
           <div key={index} className='filter'>
             {filter}
 
@@ -306,6 +314,12 @@ export default function SearchFilter ({
             selectedBusinessCriticalityFilters,
             setSelectedBusinessCriticalityFilters
           )}
+          {/* TODO */}
+          {/* {selectedFilterContents(
+            'Keywords',
+            selectedKeywordsFilters,
+            setSelectedKeywordsFilters
+          )} */}
           {selectedFilterContents(
             'Groundwater flood risk',
             selectedGroundWaterRiskFilters,
@@ -321,6 +335,17 @@ export default function SearchFilter ({
             selectedFloodMessagesAvailableFilters,
             setSelectedFloodMessagesAvailableFilters
           )}
+          {/* TODO */}
+          {/* {selectedFilterContents(
+            'Flood messages sent',
+            selectedFloodMessagesSentFilters,
+            setSelectedFloodMessagesSentFilters
+          )}
+          {selectedFilterContents(
+            'Linked to contact',
+            selectedLinkedContactsFilters,
+            setSelectedLinkedContactsFilters
+          )} */}
         </div>
       )}
 
@@ -335,7 +360,7 @@ export default function SearchFilter ({
       {/* Filters */}
       {locationNameSearchFilter}
 
-      {otherFilter(
+      {filter(
         'Location type',
         locationTypes,
         selectedLocationTypeFilters,
@@ -344,7 +369,7 @@ export default function SearchFilter ({
         setLocationTypeVisible
       )}
 
-      {otherFilter(
+      {filter(
         'Business criticality',
         businessCriticality,
         selectedBusinessCriticalityFilters,
@@ -353,7 +378,17 @@ export default function SearchFilter ({
         setBusinessCriticalityVisible
       )}
 
-      {otherFilter(
+      {/* TODO */}
+      {/* {filter(
+        'Keywords',
+        keywords,
+        selectedKeywordsFilters,
+        setSelectedKeywordsFilters,
+        keywordsVisible,
+        setKeywordsVisible
+      )} */}
+
+      {filter(
         'Groundwater flood risk',
         groundWaterRisk,
         selectedGroundWaterRiskFilters,
@@ -362,7 +397,7 @@ export default function SearchFilter ({
         setGroundWaterRiskVisible
       )}
 
-      {otherFilter(
+      {filter(
         'Rivers and sea flood risk',
         riverSeaRisk,
         selectedRiverSeaRiskFilters,
@@ -371,7 +406,7 @@ export default function SearchFilter ({
         setRiverSeaRiskVisible
       )}
 
-      {otherFilter(
+      {filter(
         'Flood messages available',
         floodMessagesAvailable,
         selectedFloodMessagesAvailableFilters,
@@ -379,6 +414,25 @@ export default function SearchFilter ({
         floodMessagesVisible,
         setFloodMessagesVisible
       )}
+
+      {/* TODO */}
+      {/* {filter(
+        'Flood messages sent',
+        floodMessagesSent,
+        selectedFloodMessagesSentFilters,
+        setSelectedFloodMessagesSentFilters,
+        floodMessagesSentVisible,
+        setFloodMessagesSentVisible
+      )}
+
+      {filter(
+        'Linked to contacts',
+        linkedContacts,
+        selectedLinkedContactsFilters,
+        setSelectedLinkedContactsFilters,
+        linkedContactsVisible,
+        setLinkedContactsVisible
+      )} */}
     </>
   )
 }

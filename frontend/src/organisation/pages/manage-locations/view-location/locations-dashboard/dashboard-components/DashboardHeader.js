@@ -176,6 +176,7 @@ export default function DashboardHeader ({ locations }) {
           )}
           {type === 'noContacts' && (
             <Details
+              // TODO: Reduce text font to match others
               title='Linking locations to contacts so that they can get flood messages'
               text={noContactsDetails}
             />

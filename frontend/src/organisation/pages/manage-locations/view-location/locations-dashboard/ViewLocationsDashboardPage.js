@@ -695,18 +695,17 @@ export default function ViewLocationsDashboardPage () {
         onClick={() => setIsFilterVisible(!isFilterVisible)}
       />
       &nbsp; &nbsp;
+      {/* TODO: Implement as dropdown */}
       <Button
         text='More actions'
         className='govuk-button govuk-button--secondary inline-block'
-        // TODO:
-        // onClick={() => setIsFilterVisible(!isFilterVisible)}
       />
       &nbsp; &nbsp;
       <Button
         text='Print'
         className='govuk-button govuk-button--secondary inline-block'
         // TODO:
-        // onClick={() => setIsFilterVisible(!isFilterVisible)}
+        onClick={() => window.print()}
       />
       <LocationsTable
         locations={locations}
@@ -735,54 +734,72 @@ export default function ViewLocationsDashboardPage () {
         <div className='govuk-grid-row'>
           <DashboardHeader locations={locations} />
           <div className='govuk-grid-column-full govuk-body'>
-            {!isFilterVisible
-              ? (
-                <>{table}</>
-                )
-              : (
-                <div className='govuk-grid-row'>
-                  <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 locations-filter-container'>
-                    <SearchFilter
-                      locations={locations}
-                      setFilteredLocations={setFilteredLocations}
-                      resetPaging={resetPaging}
-                      setResetPaging={setResetPaging}
-                      selectedFilters={selectedFilters}
-                      setSelectedFilters={setSelectedFilters}
-                      selectedLocationTypeFilters={selectedLocationTypeFilters}
-                      setSelectedLocationTypeFilters={
+            {!isFilterVisible ? (
+              <>{table}</>
+            ) : (
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 locations-filter-container'>
+                  <SearchFilter
+                    locations={locations}
+                    setFilteredLocations={setFilteredLocations}
+                    resetPaging={resetPaging}
+                    setResetPaging={setResetPaging}
+                    selectedFilters={selectedFilters}
+                    setSelectedFilters={setSelectedFilters}
+                    selectedLocationTypeFilters={selectedLocationTypeFilters}
+                    setSelectedLocationTypeFilters={
                       setSelectedLocationTypeFilters
                     }
-                      selectedFloodMessagesAvailableFilters={
-                      selectedFloodMessagesAvailableFilters
-                    }
-                      setSelectedFloodMessagesAvailableFilters={
-                      setSelectedFloodMessagesAvailableFilters
-                    }
-                      selectedBusinessCriticalityFilters={
+                    selectedBusinessCriticalityFilters={
                       selectedBusinessCriticalityFilters
                     }
-                      setSelectedBusinessCriticalityFilters={
+                    setSelectedBusinessCriticalityFilters={
                       setSelectedBusinessCriticalityFilters
                     }
-                      selectedGroundWaterRiskFilters={
+                    // TODO
+                    // selectedKeywordsFilters={
+                    //   selectedKeywordsFilters
+                    // }
+                    // setSelectedKeywordsFilters={
+                    //   setSelectedKeywordsFilters
+                    // }
+                    selectedGroundWaterRiskFilters={
                       selectedGroundWaterRiskFilters
                     }
-                      setSelectedGroundWaterRiskFilters={
+                    setSelectedGroundWaterRiskFilters={
                       setSelectedGroundWaterRiskFilters
                     }
-                      selectedRiverSeaRiskFilters={selectedRiverSeaRiskFilters}
-                      setSelectedRiverSeaRiskFilters={
+                    selectedRiverSeaRiskFilters={selectedRiverSeaRiskFilters}
+                    setSelectedRiverSeaRiskFilters={
                       setSelectedRiverSeaRiskFilters
                     }
-                    />
-                  </div>
-
-                  <div className='govuk-grid-column-three-quarters'>
-                    <>{table}</>
-                  </div>
+                    selectedFloodMessagesAvailableFilters={
+                      selectedFloodMessagesAvailableFilters
+                    }
+                    setSelectedFloodMessagesAvailableFilters={
+                      setSelectedFloodMessagesAvailableFilters
+                    }
+                    // TODO
+                    // selectedFloodMessagesSentFilters={
+                    //   selectedFloodMessagesSentFilters
+                    // }
+                    // setSelectedFloodMessagesSentFilters={
+                    //   setSelectedFloodMessagesSentFilters
+                    // }
+                    // selectedLinkedContactsFilters={
+                    //   selectedLinkedContactsFilters
+                    // }
+                    // setSelectedLinkedContactsFilters={
+                    //   setSelectedLinkedContactsFilters
+                    // }
+                  />
                 </div>
-                )}
+
+                <div className='govuk-grid-column-three-quarters'>
+                  <>{table}</>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </main>

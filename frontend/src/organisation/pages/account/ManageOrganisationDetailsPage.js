@@ -11,7 +11,7 @@ export default function ManageOrganisationDetailsPage () {
     dispatch(setSigninType('org'))
   })
 
-  const email = 'Getfloodwarnings@environment-agency.gov.uk'
+  const email = 'getfloodwarnings@environment-agency.gov.uk'
 
   return (
     <>
@@ -23,7 +23,7 @@ export default function ManageOrganisationDetailsPage () {
 
             <p className='govuk-!-margin-top-3'>
               To change these details, email us at{' '}
-              <Link className='govuk-link'>{email}</Link>
+              <Link className='govuk-link'>{email}.</Link>
             </p>
 
             <table className='govuk-table'>

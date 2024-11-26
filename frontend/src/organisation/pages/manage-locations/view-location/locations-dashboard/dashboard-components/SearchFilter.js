@@ -88,14 +88,13 @@ export default function SearchFilter ({
   const handleFilterChange = (e, setFilters) => {
     const { value } = e.target
     setFilters((prev) => {
-      if (prev.includes(value)) {
-        setSelectedFilters(
-          ...selectedFilters,
-          ...prev.filter((preference) => preference !== value)
-        )
+      if (selectedFilters.includes(value)) {
+        setSelectedFilters([
+          ...selectedFilters.filter((preference) => preference !== value)
+        ])
         return prev.filter((preference) => preference !== value)
       } else {
-        setSelectedFilters([...selectedFilters, ...prev, value])
+        setSelectedFilters([...selectedFilters, value])
         return [...prev, value]
       }
     })

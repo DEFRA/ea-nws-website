@@ -13,12 +13,15 @@ export default function AddLocationOptionsPage () {
   const [addLocationTypeError, setAddLocationTypeError] = useState('')
   const addLocationOptions = [
     {
-      value: 'BulkAddresses',
-      label: 'Addresses and postcodes in a file (.xls, .xlsx or .csv)'
+      value: 'BulkCoordinates',
+      label:
+        'Upload locations using a postcode or X and Y coordinates in a CSV file'
     },
-    { value: 'BulkCoordinates', label: 'X and Y coordinates in a file (.csv)' },
-    { value: 'BulkShapeFile', label: 'Shapefile (points, lines or areas)' },
-    { value: 'Manual', label: 'I want to add locations manually' },
+    {
+      value: 'BulkShapefile',
+      label: 'Upload a location as a shapefile in a ZIP file'
+    },
+    { value: 'Manual', label: 'Manually add locations' },
     { value: 'PredefinedBoundaries', label: 'Select predefined boundaries' }
   ]
 
@@ -35,17 +38,12 @@ export default function AddLocationOptionsPage () {
           navigate(orgManageLocationsUrls.add.addressInfo)
           break
         case addLocationOptions[1].value:
-          // Someone to update
-          // navigate(orgManageLocationsUrls.add.addressInfo)
+          navigate(orgManageLocationsUrls.add.addLocationsWithShapefile)
           break
         case addLocationOptions[2].value:
-          // Someone to update
-          // navigate(orgManageLocationsUrls.add.addressInfo)
-          break
-        case addLocationOptions[3].value:
           navigate(orgManageLocationsUrls.add.name)
           break
-        case addLocationOptions[4].value:
+        case addLocationOptions[3].value:
           navigate(orgManageLocationsUrls.add.predefinedBoundary.select)
           break
       }
@@ -67,6 +65,27 @@ export default function AddLocationOptionsPage () {
               How do you want to add locations?
             </h1>
             <div className='govuk-body'>
+              <p>
+                There are different ways you can add locations to this account.
+              </p>
+              <p>
+                If you want to add locations using a postcode or X and Y
+                coordinates you can either bulk upload these locations in a CSV
+                file or add the locations manually.
+              </p>
+              <p>
+                If you want to add your location as a polygon or a line your
+                organisation has created, you need to upload your location as a
+                shapefile in a ZIP file.
+              </p>
+              <p>
+                You can also add locations as boundaries, for example a county
+                or police boundary, so your organisation can get flood messages
+                for that area.
+                <br />
+                Boundaries are predefined areas so you need to select them
+                manually in this account.
+              </p>
               <div
                 className={
                   addLocationTypeError

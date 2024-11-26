@@ -364,6 +364,18 @@ export default function Map ({
 
     // Allow boundaries to be selected by clicking on them
     layer.on({
+      mouseover: () => {
+        const text = feature.properties.NAME
+        layer
+          .bindTooltip(text, {
+            opacity: 1,
+            className: 'custom-tooltip'
+          })
+          .openTooltip()
+      },
+      mouseout: () => {
+        layer.unbindTooltip()
+      },
       click: () => {
         if (layer.options.interactive) {
           dispatch(setSelectedBoundary(feature))

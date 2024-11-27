@@ -1,0 +1,14 @@
+type: object
+description: |-
+  Set of wheighted cells that represent a trajectory.
+
+  \note The order doesn't matter here.
+required:
+  - name
+properties:
+  name:
+    type: string
+  cells:
+    type: array
+    items:
+      $ref: ./one.geomarketing.WeightedCell.yml

@@ -17,7 +17,7 @@ export default function AddLandlinePhonePage () {
 
   return (
     <>
-      {profile.unverified.mobilePhones || profile.mobilePhones
+      {profile.unverified?.mobilePhones || profile.mobilePhones
         ? (
           <SelectAlternativeLandlineLayout
             NextPageWithoutValidation={NavigateToNextWithoutValidation}

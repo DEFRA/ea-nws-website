@@ -7,19 +7,30 @@ const server = new Hapi.Server({ port: 9000 })
 const signInHandlers = require('./handlers/signin/signinHandlers')
 const registerHandlers = require('./handlers/signup/registerHandlers')
 const updateProfileHandler = require('./handlers/updateProfile/updateProfileHandler')
-const mobileAuthenticationHandler = require('./handlers/contact/mobile/mobileAuthenticationHandlers')
-const homePhoneAuthenticationHandlers = require('./handlers/contact/homephone/homephoneAuthenticationHandlers')
-const emailAuthenticationHandlers = require('./handlers/contact/email/emailAuthenticationHandlers')
-const registerToPartnerHandler = require('./handlers/partner/registerToPartnerHandler')
+const mobileAuthenticationHandler = require('./handlers/contact_methods/mobile/mobileAuthenticationHandlers')
+const homePhoneAuthenticationHandlers = require('./handlers/contact_methods/homephone/homephoneAuthenticationHandlers')
+const emailAuthenticationHandlers = require('./handlers/contact_methods/email/emailAuthenticationHandlers')
+const partnerHandler = require('./handlers/partner/partnerHandlers')
 const deleteAccountHandler = require('./handlers/account/deleteAccountHandler')
+const orgContactsHandlers = require('./handlers/organisation/contactsHandlers')
+const orgRemoveHandler = require('./handlers/organisation/orgRemoveHandler')
+const orgUpdateHandler = require('./handlers/organisation/orgUpdateHandler')
+const orgInvitationHandler = require('./handlers/organisation/orgInvitationHandler')
+const locationContactsHandlers = require('./handlers/location/locationContactsHandlers')
+const locationHandlers = require('./handlers/location/locationHandlers')
+const locationPartnerHandlers = require('./handlers/location/locationPartnerHandlers')
+const memberLocationPartnerHandlers = require('./handlers/member_register_location_to_partner/memberLocationPartnerHandlers')
 // define api
 const api = new OpenAPIBackend({
-  definition: './openapi/index.yaml',
+  definition: './openapi/openapi.yml',
+  quick: true,
+  validate: false,
   handlers: {
     //sign up routes
     getRegisterStart: registerHandlers.getRegisterStart,
-    getRegisterOrgStart: registerHandlers.getRegisterOrgStart,
+    getOrgRegisterStart: registerHandlers.getOrgRegisterStart,
     getRegisterValidate: registerHandlers.getRegisterValidate,
+    getOrgRegisterValidate: registerHandlers.getOrgRegisterValidate,
     //mobile authentication
     getMobileStart: mobileAuthenticationHandler.getMobileStart,
     getMobileValidate: mobileAuthenticationHandler.getMobileValidate,
@@ -35,9 +46,53 @@ const api = new OpenAPIBackend({
     //update profile routes
     getUpdateProfile: updateProfileHandler.getUpdateProfile,
     //partner routes
-    getRegisterToPartner: registerToPartnerHandler.getRegisterToPartner,
+    getRegisterToPartner: partnerHandler.getRegisterToPartner,
+    getUnregisterFromPartner: partnerHandler.getUnregisterFromPartner,
+    getUpdateRegistration: partnerHandler.getUpdateRegistration,
+    getOrgListRegistrations: partnerHandler.getOrgListRegistrations,
+    //register location to partner
+    getRegisterLocationToPartner:
+      memberLocationPartnerHandlers.getRegisterLocationToPartner,
+    getUnregisterLocationFromPartner:
+      memberLocationPartnerHandlers.getUnregisterLocationFromPartner,
+    getUpdateLocationRegistration:
+      memberLocationPartnerHandlers.getUpdateLocationRegistration,
     //account deletion
-    getDeleteAccount: deleteAccountHandler.getDeleteAccount
+    getDeleteAccount: deleteAccountHandler.getDeleteAccount,
+    // Org Specific Routes
+    // Contacts routes
+    getOrgCreateContacts: orgContactsHandlers.getOrgCreateContacts,
+    getOrgDemoteContact: orgContactsHandlers.getOrgDemoteContact,
+    getOrgListContacts: orgContactsHandlers.getOrgListContacts,
+    getOrgRemoveContacts: orgContactsHandlers.getOrgRemoveContacts,
+    getOrgPromoteContact: orgContactsHandlers.etOrgPromoteContact,
+    getOrgUpdateContact: orgContactsHandlers.getOrgUpdateContact,
+    //remove org
+    getOrgRemove: orgRemoveHandler.getOrgRemove,
+    //update org
+    getOrgUpdate: orgUpdateHandler.getOrgUpdate,
+    // org invitation
+    getOrgValidateInvitation: orgInvitationHandler.getOrgValidateInvitation,
+    // Location routes
+    // Location contacts
+    getLocationAttachContacts:
+      locationContactsHandlers.getLocationAttachContacts,
+    getLocationDetachContacts:
+      locationContactsHandlers.getLocationDetachContacts,
+    // Location
+    getLocationCreate: locationHandlers.getLocationCreate,
+    getLocationList: locationHandlers.getLocationList,
+    getLocationRemove: locationHandlers.getLocationRemove,
+    getLocationUpdate: locationHandlers.getLocationUpdate,
+    // Location Partner
+    getLocationListRegistrations:
+      locationPartnerHandlers.getLocationListRegistrations,
+    getLocationRegisterToPartner:
+      locationPartnerHandlers.getLocationRegisterToPartner,
+    getLocationUnregisterFromPartner:
+      locationPartnerHandlers.getLocationUnregisterFromPartner,
+    getLocationUpdateRegistration:
+      locationPartnerHandlers.getLocationUpdateRegistration
   }
 })
 

@@ -1,0 +1,15 @@
+type: object
+description: |-
+  List of cells associated to a given tag.
+
+  XXX This structure is temporary and the code is expected to be migrated in
+      order to use *real* geoloc tags.
+required:
+  - name
+properties:
+  name:
+    type: string
+  cells:
+    type: array
+    items:
+      type: string

@@ -1,0 +1,11 @@
+allOf:
+  - $ref: ./one.b2b.notification.Notification.yml
+  - type: object
+    required:
+      - newCategory
+    properties:
+      newCategory:
+        type: string
+        description: The new category of the contract
+        minLength: 1
+        pattern: '[_0-9a-zA-Z]*'

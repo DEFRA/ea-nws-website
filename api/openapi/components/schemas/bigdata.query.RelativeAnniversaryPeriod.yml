@@ -1,0 +1,30 @@
+type: object
+description: |-
+  Relative anniversary period.
+
+  For instance, this period is used to target the anniversary of the
+  following periods:
+  - today, tomorrow, yesterday (by setting \ref type to 'DAY' and with
+    respectively \ref offset set to '0', '1' and '-1')
+  - this week (by \setting \ref type to 'WEEK')
+  - this month (by setting \ref type to 'MONTH')
+required:
+  - type
+properties:
+  type:
+    description: Period type.
+    allOf:
+      - $ref: ./platform.base.TimeUnit.yml
+  offset:
+    type: integer
+    format: int32
+    description: |-
+      Date offset.
+
+      The \ref offset is added to the \ref type to define the
+      relative anniversary period.
+
+      For instance if \ref type is set to DAY, the offset '0' defines today,
+      an offset of '-1' defines yesterday, and an offset of '1' defines
+      tomorrow.
+    default: 0

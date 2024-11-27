@@ -11,8 +11,8 @@ url_next_page = url_org_man_loc.get('optionalLocation').get('addKeywords')
 def test_render(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     assert 'Key information' in get_browser.page_source
-    click_span(get_browser, 'Why add optional information?')
-    assert 'Adding optional information allows you to filter your organisation’s locations and helps you identify them more easily.' in get_browser.page_source
+    click_span(get_browser, 'Why add useful information?')
+    assert 'Providing these details will allow you to filter your organisation’s locations, making it quicker to find them.' in get_browser.page_source
     assert 'Internal reference (optional)' in get_browser.page_source
     assert 'Business criticality (optional)' in get_browser.page_source
     assert 'Location type (optional)' in get_browser.page_source
@@ -25,7 +25,7 @@ def test_back_button(get_browser):
 def test_continue_empty(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     click_button(get_browser, 'Continue', url_next_page)
-    assert 'Keywords for this location' in get_browser.page_source
+    assert 'Add keywords for this location' in get_browser.page_source
 
 def test_continue_filled(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
@@ -33,10 +33,10 @@ def test_continue_filled(get_browser):
     enter_input_text(get_browser, 'Business criticality (optional)', 'Medium')
     enter_input_text(get_browser, 'Location type (optional)', 'Office')
     click_button(get_browser, 'Continue', url_next_page)
-    assert 'Keywords for this location' in get_browser.page_source
+    assert 'Add keywords for this location' in get_browser.page_source
 
 def test_continue_1_field_filled(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     enter_input_text(get_browser, 'Business criticality (optional)', 'Low')
     click_button(get_browser, 'Continue', url_next_page)
-    assert 'Keywords for this location' in get_browser.page_source
+    assert 'Add keywords for this location' in get_browser.page_source

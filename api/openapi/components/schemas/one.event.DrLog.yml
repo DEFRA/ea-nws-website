@@ -1,0 +1,30 @@
+allOf:
+  - $ref: ./bigdata.base.EventLog.yml
+  - type: object
+    description: Entity log sent when a delivery report event ( \ref DrEvent) is received.
+    required:
+      - status
+    properties:
+      proto:
+        description: Protocol through which we received the message
+        allOf:
+          - $ref: ./inet.MetaProto.yml
+      status:
+        description: Status of the DrEvent
+        allOf:
+          - $ref: ./one.event.CommStatus.yml
+      campLineNo:
+        type: integer
+        format: int32
+        description: Line of the campaign, starts at 0.
+      campId:
+        type: integer
+        format: int32
+        description: Id of the campaign, starts at 1.
+      drErrorCode:
+        type: string
+      duration:
+        type: integer
+        format: int32
+        description: Message duration
+        minimum: 0

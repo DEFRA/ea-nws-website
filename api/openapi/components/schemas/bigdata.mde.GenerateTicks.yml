@@ -1,0 +1,17 @@
+allOf:
+  - $ref: ./bigdata.mde.Map.yml
+  - type: object
+    required:
+      - startDateColumn
+      - endDateColumn
+      - granularity
+      - ticksColumn
+    properties:
+      startDateColumn:
+        type: string
+      endDateColumn:
+        type: string
+      granularity:
+        $ref: ./platform.base.TimeUnit.yml
+      ticksColumn:
+        type: string

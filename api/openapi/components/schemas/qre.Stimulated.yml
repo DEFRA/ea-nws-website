@@ -1,0 +1,7 @@
+allOf:
+  - $ref: ./qre.ManualOpEventLog.yml
+  - type: object
+    description: |-
+      Event emitted when an entity gets out of the control group.
+
+      This event is emmited after a successful call to \ref stimulateEntity.

@@ -1,0 +1,16 @@
+allOf:
+  - $ref: ./one.b2b.log.CompanyLog.yml
+  - type: object
+    description: A class to log events related with a department.
+    required:
+      - departmentId
+      - departmentName
+    properties:
+      departmentId:
+        type: integer
+        format: int64
+        description: Id of the department on which the action is performed.
+        minimum: 0
+      departmentName:
+        type: string
+        description: Name of the department on which the action is performed.

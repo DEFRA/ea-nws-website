@@ -1,0 +1,29 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    required:
+      - rule
+    properties:
+      scenario:
+        description: |-
+          Id of the scenario.
+
+          If not set, will use the scenario in which the reference is used.
+        allOf:
+          - $ref: ./platform.Id.yml
+      rule:
+        description: |-
+          Id of the rule of the scenario containing the variable.
+
+          If not set, variable will be look up in scenario only.
+        allOf:
+          - $ref: ./platform.Id.yml
+      includeAsyncOperations:
+        type: boolean
+        description: |-
+          Check if the entity is in an asynchronous operation as well.
+
+          In case the rule is inactive, but the entity is still waiting
+          for the completion of an asynchronous operation, the reference
+          will be evaluated to true.
+        default: false

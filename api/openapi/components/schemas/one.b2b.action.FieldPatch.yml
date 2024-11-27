@@ -1,0 +1,9 @@
+type: object
+required:
+  - fieldName
+  - value
+properties:
+  fieldName:
+    type: string
+  value:
+    $ref: ./platform.base.Value.yml

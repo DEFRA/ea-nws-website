@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: External members storage (in cerbere).
+    properties:
+      externalMembers:
+        type: array
+        items:
+          oneOf:
+            - $ref: ./one.workspaceOverview.ExternalMember.yml
+          discriminator:
+            propertyName: _class

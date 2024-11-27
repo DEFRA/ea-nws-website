@@ -1,0 +1,170 @@
+oneOf:
+  - type: object
+    required:
+      - nil
+    properties:
+      nil:
+        type: boolean
+        description: Missing value.
+        nullable: true
+  - type: object
+    required:
+      - b
+    properties:
+      b:
+        type: boolean
+        description: A boolean.
+  - type: object
+    required:
+      - i
+    properties:
+      i:
+        type: integer
+        format: int64
+        description: A 64bit signed integer.
+  - type: object
+    required:
+      - u
+    properties:
+      u:
+        type: integer
+        format: int64
+        description: A 64bit unsigned integer.
+        minimum: 0
+  - type: object
+    required:
+      - d
+    properties:
+      d:
+        type: number
+        format: double
+        description: A 64bit floating-point decimal number.
+  - type: object
+    required:
+      - ts
+    properties:
+      ts:
+        type: integer
+        format: int64
+        description: A unix timestamp.
+  - type: object
+    required:
+      - s
+    properties:
+      s:
+        type: string
+        description: A string.
+  - type: object
+    required:
+      - blob
+    properties:
+      blob:
+        type: string
+        format: byte
+        description: An opaque byte string.
+  - type: object
+    required:
+      - data
+    properties:
+      data:
+        description: An amount of data.
+        allOf:
+          - $ref: ./platform.base.Data.yml
+  - type: object
+    required:
+      - time
+    properties:
+      time:
+        description: An amount of time.
+        allOf:
+          - $ref: ./platform.base.Time.yml
+  - type: object
+    required:
+      - custom
+    properties:
+      custom:
+        description: |-
+          A custom value.
+
+          An instance of the \ref CustomValue class used to store some
+          applicative value.
+        oneOf:
+          - $ref: ./bigdata.query.CellInfo.yml
+          - $ref: ./bigdata.query.ParametricValue.yml
+          - $ref: ./bigdata.query.TargetRestriction.yml
+          - $ref: ./bigdata.schema.SchemaRestriction.yml
+          - $ref: ./cbc.AllowedMsgids.yml
+          - $ref: ./geosafeea.alert.MessageExtra.yml
+          - $ref: ./geosafeea.alert.WorkspaceAlertTypes.yml
+          - $ref: ./geosafeea.alert.WorkspaceCategories.yml
+          - $ref: ./geosafeea.alert.WorkspaceChannels.yml
+          - $ref: ./geosafeea.alert.WorkspaceModes.yml
+          - $ref: ./geosafeea.alert.WorkspaceOverlays.yml
+          - $ref: ./geosafeea.alert.WorkspaceZone.yml
+          - $ref: ./geosafeea.cfg.DestinationWsCfgAvp.yml
+          - $ref: ./geosafeea.contact.WorkspaceCustomFields.yml
+          - $ref: ./igl.AliasCfg.yml
+          - $ref: ./igl.ByteArray.yml
+          - $ref: ./igl.ElectionInfo.yml
+          - $ref: ./igl.ExtPullCfgList.yml
+          - $ref: ./igl.ExtPushCfgList.yml
+          - $ref: ./igl.MlpSrvCfg.yml
+          - $ref: ./igl.PlanExtrasArray.yml
+          - $ref: ./igl.PoiCfg.yml
+          - $ref: ./igl.ProvCfg.yml
+          - $ref: ./igl.PullCfg.yml
+          - $ref: ./igl.PushCfg.yml
+          - $ref: ./igl.StringArray.yml
+          - $ref: ./mcms.AllowedScGroups.yml
+          - $ref: ./mcms.SingleMessageCampaigns.yml
+          - $ref: ./one.b2b.CompaniesUserActionsPerms.yml
+          - $ref: ./one.message.AllowedFromList.yml
+          - $ref: ./one.workspaceOverview.ExternalMembers.yml
+          - $ref: ./platform.cfg.DynConfSetValue.yml
+          - $ref: ./platform.list.RaftState.yml
+          - $ref: ./qre.EventValue.yml
+          - $ref: ./services.cerbere.CustomStateValue.yml
+          - $ref: ./services.cerbere.HasRead.yml
+          - $ref: ./services.cerbere.LastWorkspaces.yml
+          - $ref: ./services.cerbere.WorkspaceTypes.yml
+          - $ref: ./services.qdb.BinlogState.yml
+          - $ref: ./services.tiebreaker.TieBreakerPlatform.yml
+          - $ref: ./services.tiebreaker.TieBreakerState.yml
+        discriminator:
+          propertyName: _class
+  - type: object
+    required:
+      - date
+    properties:
+      date:
+        description: A date.
+        oneOf:
+          - $ref: ./platform.DayOfMonthDate.yml
+          - $ref: ./platform.DayOfWeekDate.yml
+          - $ref: ./platform.HourDate.yml
+          - $ref: ./platform.MinuteDate.yml
+          - $ref: ./platform.MonthDate.yml
+          - $ref: ./platform.RelativeDate.yml
+          - $ref: ./platform.RelativeDatePattern.yml
+          - $ref: ./platform.SecondDate.yml
+          - $ref: ./platform.TimestampDate.yml
+          - $ref: ./platform.WeekDate.yml
+          - $ref: ./platform.YearDate.yml
+        discriminator:
+          propertyName: _class
+  - type: object
+    required:
+      - coords
+    properties:
+      coords:
+        description: Geographic coordinates.
+        allOf:
+          - $ref: ./platform.base.Coordinates.yml
+  - type: object
+    required:
+      - array
+    properties:
+      array:
+        description: An array of value.
+        allOf:
+          - $ref: ./platform.base.ValueArray.yml

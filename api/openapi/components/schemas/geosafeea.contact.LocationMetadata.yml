@@ -1,0 +1,12 @@
+allOf:
+  - $ref: ./geosafeea.contact.Metadata.yml
+  - type: object
+    description: Location metadata.
+    properties:
+      nbAttachedContacts:
+        type: integer
+        format: int32
+        description: |-
+          Number of contacts attached to this location.
+
+          This is a read-only property.

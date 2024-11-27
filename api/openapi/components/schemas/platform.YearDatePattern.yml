@@ -1,0 +1,5 @@
+type: object
+description: A date pattern based on years.
+properties:
+  month:
+    $ref: ./platform.base.Month.yml

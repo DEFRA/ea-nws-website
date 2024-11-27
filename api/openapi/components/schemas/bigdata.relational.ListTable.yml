@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./bigdata.relational.InputTable.yml
+  - type: object
+    description: List table.
+    required:
+      - list
+    properties:
+      list:
+        type: string
+        description: Identifier of the list ( \ref platform_list_type_t).

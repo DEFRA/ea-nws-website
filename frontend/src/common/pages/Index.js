@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Button from '../components/gov-uk/Button'
 import NotificationBanner from '../components/gov-uk/NotificationBanner'
+import AlertType from '../enums/AlertType'
 import {
   clearAuth,
   setAuthToken,
@@ -11,6 +12,8 @@ import {
   setContactPreferences,
   setCurrentLocation,
   setCurrentLocationCoordinates,
+  setCurrentLocationEasting,
+  setCurrentLocationNorthing,
   setLocationBoundaries,
   setLocationKeywords,
   setOrgCurrentContact,
@@ -34,21 +37,30 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [{ id: 'signUpComplete', value: true }],
-    unverified: {
-      emails: [],
-      mobilePhones: [],
-      homePhones: []
-    },
+    additionals: [{ id: 'signUpComplete', value: { s: 'true' } }],
     pois: [
       {
-        name: 'House Of Commons, Houses Of Parliament, London, SW1A 0AA',
-        address: '10033540874',
+        id: 1,
+        name: '12094563',
+        address: 'House Of Commons, Houses Of Parliament, London, SW1A 0AA',
         coordinates: {
           latitude: 51.4998415,
           longitude: -0.1246377
         },
-        categories: ['severe', 'alert']
+        additionals: [
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify({
+                alertTypes: [
+                  AlertType.SEVERE_FLOOD_WARNING,
+                  AlertType.FLOOD_WARNING,
+                  AlertType.FLOOD_ALERT
+                ]
+              })
+            }
+          }
+        ]
       }
     ]
   }
@@ -62,24 +74,19 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [{ id: 'signUpComplete', value: true }],
-    unverified: {
-      emails: [],
-      mobilePhones: [],
-      homePhones: []
-    },
+    additionals: [{ id: 'signUpComplete', value: { s: 'true' } }],
     pois: [
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
@@ -97,136 +104,131 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [{ id: 'signUpComplete', value: true }],
-    unverified: {
-      emails: [],
-      mobilePhones: [],
-      homePhones: []
-    },
+    additionals: [{ id: 'signUpComplete', value: { s: 'true' } }],
     pois: [
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
         }
       },
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
         }
       },
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
         }
       },
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
         }
       },
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
         }
       },
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
         }
       },
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
         }
       },
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
@@ -248,39 +250,36 @@ export default function IndexPage () {
       {
         id: 'organisation',
         value: {
-          name: 'THE 123 GROUP LIMITED',
-          address: 'Boulton House 17-21 Chorlton Street, Manchester, M1 3HY',
-          compHouseNum: '05897191',
-          emergencySector: false,
-          isAdminRegistering: true,
-          alternativeContact: {
-            firstName: 'Julia Joyce',
-            lastName: 'Breen',
-            email: 'julia@email.com',
-            telephone: '01339944433',
-            jobTitle: 'Director'
-          }
+          s: JSON.stringify({
+            name: 'THE 123 GROUP LIMITED',
+            address: 'Boulton House 17-21 Chorlton Street, Manchester, M1 3HY',
+            compHouseNum: '05897191',
+            emergencySector: false,
+            isAdminRegistering: true,
+            alternativeContact: {
+              firstName: 'Julia Joyce',
+              lastName: 'Breen',
+              email: 'julia@email.com',
+              telephone: '01339944433',
+              jobTitle: 'Director'
+            }
+          })
         }
       },
-      { id: 'signUpComplete', value: false }
+      { id: 'signUpComplete', value: { s: 'false' } }
     ],
-    unverified: {
-      emails: [],
-      mobilePhones: [],
-      homePhones: []
-    },
     pois: [
       {
-        name: 'Big Ben, London, SW1A 0AA',
-        address: 'UPRN',
+        address: 'Big Ben, London, SW1A 0AA',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
         }
       },
       {
-        name: 'Kingfisher Way, London, NW10 8TZ',
-        address: 'UPRN',
+        address: 'Kingfisher Way, London, NW10 8TZ',
+        name: 'UPRN',
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
@@ -385,6 +384,7 @@ export default function IndexPage () {
           channelVoiceEnabled: true,
           channelSmsEnabled: true,
           channelEmailEnabled: true,
+          channelMobileAppEnabled: false,
           partnerCanView: false,
           partnerCanEdit: false,
           categories: [
@@ -414,9 +414,11 @@ export default function IndexPage () {
       dispatch(setSelectedBoundaryType(null))
       dispatch(setSelectedBoundary(null))
       dispatch(setLocationBoundaries([]))
+      dispatch(setOrgCurrentContact(mockOrgCurrentContact))
       dispatch(setLocationKeywords(mockLocationKeywords))
       dispatch(setContactKeywords(mockContactKeywords))
-      dispatch(setOrgCurrentContact(mockOrgCurrentContact))
+      dispatch(setCurrentLocationEasting('520814'))
+      dispatch(setCurrentLocationNorthing('185016'))
       setmockSessionActive(true)
     } else {
       dispatch(clearAuth())
@@ -436,11 +438,6 @@ export default function IndexPage () {
         homePhones: [],
         language: 'EN', // [TODO] is this always english?
         additionals: [],
-        unverified: {
-          emails: [],
-          mobilePhones: [],
-          homePhones: []
-        },
         pois: []
       }
 
@@ -580,10 +577,10 @@ export default function IndexPage () {
                 </li>
                 <li>
                   <Link
-                    to='/organisation/manage-locations/edit/select-location-options'
+                    to='/organisation/manage-locations/edit/search-options'
                     className='govuk-link'
                   >
-                    edit location
+                    edit locations xy coordinates
                   </Link>
                 </li>
               </ul>

@@ -1,0 +1,39 @@
+type: object
+description: |-
+  Base-class for all DynConfSetElem.
+
+  Typically, DynConfSetElem is used like this:
+
+   class MyDynConf : 99999 : DynConfSetElem {
+       static string confTypeName = "MyDynConf";
+       int a;
+       double b;
+   };
+required:
+  - name
+properties:
+  _class:
+    type: string
+  name:
+    type: string
+    description: |-
+      Name of the element.
+
+      Must be unique within the \ref DynConfSet elements.
+  label:
+    description: Label to be displayed to describe the element.
+    allOf:
+      - $ref: ./platform.base.Labels.yml
+discriminator:
+  propertyName: _class
+  mapping:
+    one.geomarketing.ConveyanceParamsConf: ./one.geomarketing.ConveyanceParamsConf.yml
+    one.geomarketing.CrmClassification: ./one.geomarketing.CrmClassification.yml
+    one.geomarketing.GeolocTarget: ./one.geomarketing.GeolocTarget.yml
+    one.geomarketing.StatRefinementParamsConf: ./one.geomarketing.StatRefinementParamsConf.yml
+    one.geomarketing.StopSegmentAggrRulesConf: ./one.geomarketing.StopSegmentAggrRulesConf.yml
+    one.geomarketing.SubscriberClassificationDynConf: ./one.geomarketing.SubscriberClassificationDynConf.yml
+    one.geomarketing.TimeAggr: ./one.geomarketing.TimeAggr.yml
+    one.geomarketing.TrajectoriesConf: ./one.geomarketing.TrajectoriesConf.yml
+    one.geomarketing.TravelersClassificationConf: ./one.geomarketing.TravelersClassificationConf.yml
+    platform.cfg.DynConfSetElemInfo: ./platform.cfg.DynConfSetElemInfo.yml

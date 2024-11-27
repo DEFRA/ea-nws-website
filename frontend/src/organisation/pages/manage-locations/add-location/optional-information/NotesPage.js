@@ -12,9 +12,19 @@ export default function AddNotesPage () {
     navigate(orgManageLocationsUrls.add.predefinedBoundary.addAnother)
   }
 
+  const instructionText = (
+    <>
+      Any notes that may be helpful to someone not familiar with this location.
+    </>
+  )
+
   return (
     <>
-      <NotesLayout navigateToNextPage={navigateToNextPage} />
+      <NotesLayout
+        navigateToNextPage={navigateToNextPage}
+        keywordType='location'
+        instructionText={instructionText}
+      />
     </>
   )
 }

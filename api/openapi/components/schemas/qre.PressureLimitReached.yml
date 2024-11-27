@@ -1,0 +1,11 @@
+allOf:
+  - $ref: ./bigdata.base.EventLog.yml
+  - type: object
+    description: Event log emitted when a user reached the maximum pressure.
+    properties:
+      channel:
+        type: string
+        description: |-
+          Affected pressure channel.
+
+          If empty, legacy EventLog, using the scenario channel.

@@ -1,0 +1,13 @@
+allOf:
+  - $ref: ./geosafeea.contact.Metadata.yml
+  - type: object
+    description: Group metadata.
+    properties:
+      nbAvailableContacts:
+        type: integer
+        format: int32
+        description: |-
+          Number of contacts available in this group.
+
+          This is a read-only property. It includes both direct contacts and
+          indirect contacts (attached to a sub-group of this group.

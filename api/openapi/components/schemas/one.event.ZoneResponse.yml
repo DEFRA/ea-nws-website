@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./bigdata.base.Response.yml
+  - type: object
+    properties:
+      zoneStatus:
+        allOf:
+          - $ref: ./one.event.ZoneActionStatus.yml
+        default: 0

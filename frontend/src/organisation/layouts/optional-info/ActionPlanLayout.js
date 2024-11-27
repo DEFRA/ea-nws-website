@@ -21,7 +21,7 @@ export default function ActionPlanLayout ({ navigateToNextPage }) {
 
   useEffect(() => {
     if (actionPlan.length > charLimit) {
-      setError('You can enter up to 500 characters')
+      setError(`You can enter up to ${charLimit} characters`)
     } else {
       setError('')
     }
@@ -30,10 +30,7 @@ export default function ActionPlanLayout ({ navigateToNextPage }) {
   const handleSubmit = () => {
     if (error) return
 
-    if (actionPlan) {
-      dispatch(setCurrentLocationActionPlan(actionPlan))
-    }
-
+    dispatch(setCurrentLocationActionPlan(actionPlan))
     // should update the geosafe profile here?
 
     navigateToNextPage()
@@ -48,7 +45,7 @@ export default function ActionPlanLayout ({ navigateToNextPage }) {
     <>
       <OrganisationAccountNavigation />
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
@@ -64,9 +61,10 @@ export default function ActionPlanLayout ({ navigateToNextPage }) {
                 inputType='text'
                 rows='5'
                 onChange={(val) => setActionPlan(val)}
+                value={actionPlan}
                 className='govuk-textarea'
+                additionalInfo={`You can enter up to ${charLimit} characters`}
               />
-              <p className='govuk-hint'>You can enter up to 500 characters.</p>
               <Button
                 text='Continue'
                 className='govuk-button'

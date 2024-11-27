@@ -7,11 +7,19 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
 import InsetText from '../../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
-import { setAuthToken, setProfile, setRegisterToken } from '../../../../common/redux/userSlice'
-import { backendCall } from '../../../../common/services/BackendService'
-import { updateAdditionals } from '../../../../common/services/ProfileServices'
-import { authCodeValidation } from '../../../../common/services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from '../../../../common/layouts/email/ExpiredCodeLayout'
+import {
+  setAuthToken,
+  setProfile,
+  setRegisterToken
+} from '../../../../common/redux/userSlice'
+import { backendCall } from '../../../../common/services/BackendService'
+import {
+  getLocationOtherAdditional,
+  getRegistrationParams,
+  updateAdditionals
+} from '../../../../common/services/ProfileServices'
+import { authCodeValidation } from '../../../../common/services/validations/AuthCodeValidation'
 export default function SignUpValidationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -47,18 +55,63 @@ export default function SignUpValidationPage () {
       )
 
       if (errorMessage !== null) {
-        if (errorMessage === 'The code you have entered has expired - please request a new code') {
+        if (
+          errorMessage ===
+          'The code you have entered has expired - please request a new code'
+        ) {
           setCodeExpired(true)
         } else {
           setError(errorMessage)
         }
       } else {
         dispatch(setAuthToken(data.authToken))
-        const updatedProfile = updateAdditionals(profile, [{ id: 'lastAccessedUrl', value: '/signup/accountname/add' }])
+        let updatedProfile = updateAdditionals(profile, [
+          { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } }
+        ])
+
+        updatedProfile = await updateGeosafeProfile(
+          data.authToken,
+          updatedProfile
+        )
+
+        await registerAllLocations(data.authToken, updatedProfile)
+
         dispatch(setProfile(updatedProfile))
         navigate('/signup/contactpreferences')
       }
     }
+  }
+
+  const registerAllLocations = async (authToken, profile) => {
+    profile.pois.map(async (poi) => {
+      const alertTypes = getLocationOtherAdditional(
+        poi.additionals,
+        'alertTypes'
+      )
+
+      const data = {
+        authToken,
+        locationId: poi.id,
+        partnerId: '1', // this is currently a hardcoded value - geosafe to update us on what it is
+        params: getRegistrationParams(profile, alertTypes)
+      }
+
+      await backendCall(
+        data,
+        'api/partner/register_location_to_partner',
+        navigate
+      )
+    })
+  }
+
+  const updateGeosafeProfile = async (authToken, updatedProfile) => {
+    const dataToSend = { authToken, profile: updatedProfile }
+    const { data } = await backendCall(
+      dataToSend,
+      'api/profile/update',
+      navigate
+    )
+    return data.profile
   }
 
   const getNewCode = async (event) => {
@@ -83,24 +136,29 @@ export default function SignUpValidationPage () {
   return (
     <>
       {codeExpired
-        ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
+        ? (
+          <ExpiredCodeLayout getNewCode={getNewCode} />
+          )
         : (
           <>
             <BackLink to='/signup' />
             <main className='govuk-main-wrapper govuk-!-padding-top-4'>
               <div className='govuk-grid-row'>
                 <div className='govuk-grid-column-two-thirds'>
-                  {codeResent &&
+                  {codeResent && (
                     <NotificationBanner
                       className='govuk-notification-banner govuk-notification-banner--success'
                       title='Success'
                       text={'New code sent at ' + codeResentTime}
-                    />}
+                    />
+                  )}
                   {error && <ErrorSummary errorList={[error]} />}
                   <h2 className='govuk-heading-l'>Check your email</h2>
                   <div className='govuk-body'>
                     <p>You need to confirm your email address.</p>
-                    <p className='govuk-!-margin-top-6'>We've sent an email with a code to:</p>
+                    <p className='govuk-!-margin-top-6'>
+                      We've sent an email with a code to:
+                    </p>
                     <InsetText text={loginEmail} />
                     Enter the code within 4 hours or it will expire.
                     <div className='govuk-!-margin-top-6'>
@@ -118,7 +176,7 @@ export default function SignUpValidationPage () {
                       text='Confirm email address'
                       onClick={handleSubmit}
                     />
-                    &nbsp; &nbsp;
+                  &nbsp; &nbsp;
                     <Link
                       to='/signup'
                       className='govuk-link'

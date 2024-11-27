@@ -1,0 +1,141 @@
+description: Type of data.
+oneOf:
+  - type: object
+    required:
+      - b
+    properties:
+      b:
+        description: Boolean.
+        allOf:
+          - $ref: ./platform.BoolType.yml
+  - type: object
+    required:
+      - integer
+    properties:
+      integer:
+        description: Integer.
+        allOf:
+          - $ref: ./platform.IntType.yml
+  - type: object
+    required:
+      - dbl
+    properties:
+      dbl:
+        description: Floating-point number.
+        allOf:
+          - $ref: ./platform.DoubleType.yml
+  - type: object
+    required:
+      - date
+    properties:
+      date:
+        description: Date.
+        allOf:
+          - $ref: ./platform.DateType.yml
+  - type: object
+    required:
+      - str
+    properties:
+      str:
+        description: String.
+        allOf:
+          - $ref: ./platform.StringType.yml
+  - type: object
+    required:
+      - blob
+    properties:
+      blob:
+        description: Blob (Binary Large Object).
+        allOf:
+          - $ref: ./platform.BlobType.yml
+  - type: object
+    required:
+      - msisdn
+    properties:
+      msisdn:
+        description: MSISDN.
+        allOf:
+          - $ref: ./platform.MsisdnType.yml
+  - type: object
+    required:
+      - cellid
+    properties:
+      cellid:
+        description: |-
+          Cellid.
+
+          (deprecated)
+        allOf:
+          - $ref: ./platform.NodeType.yml
+  - type: object
+    required:
+      - enumeration
+    properties:
+      enumeration:
+        type: string
+        description: |-
+          Enumeration.
+
+          This references an already declared enumeration.
+        minLength: 1
+        pattern: '[_0-9a-zA-Z]*'
+  - type: object
+    required:
+      - custom
+    properties:
+      custom:
+        description: Custom IOP.
+        allOf:
+          - $ref: ./platform.CustomType.yml
+  - type: object
+    required:
+      - imei
+    properties:
+      imei:
+        description: IMEI.
+        allOf:
+          - $ref: ./platform.ImeiType.yml
+  - type: object
+    required:
+      - imsi
+    properties:
+      imsi:
+        description: IMSI.
+        allOf:
+          - $ref: ./platform.ImsiType.yml
+  - type: object
+    required:
+      - ip
+    properties:
+      ip:
+        description: IP.
+        allOf:
+          - $ref: ./platform.IpType.yml
+  - type: object
+    required:
+      - mac
+    properties:
+      mac:
+        description: MAC address.
+        allOf:
+          - $ref: ./platform.MacType.yml
+  - type: object
+    required:
+      - iopEnumeration
+    properties:
+      iopEnumeration:
+        type: string
+        description: |-
+          IOP enumeration.
+
+          Use this type to declare a source whose values are in an IOP
+          enumeration. The given string must be the fullname of the IOP
+          enumeration type (for example event.Category).
+  - type: object
+    required:
+      - location
+    properties:
+      location:
+        description: Source of location (cgi, uid or coordinates).
+        allOf:
+          - $ref: ./platform.LocationType.yml

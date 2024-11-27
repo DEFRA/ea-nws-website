@@ -1,0 +1,114 @@
+description: Filter field expression.
+oneOf:
+  - type: object
+    required:
+      - andOp
+    properties:
+      andOp:
+        description: A conjunction of sub-expressions.
+        allOf:
+          - $ref: ./platform.FilterFieldMultiExpr.yml
+  - type: object
+    required:
+      - orOp
+    properties:
+      orOp:
+        description: A disjunction of sub-expressions.
+        allOf:
+          - $ref: ./platform.FilterFieldMultiExpr.yml
+  - type: object
+    required:
+      - notOp
+    properties:
+      notOp:
+        description: A negation of the sub-expression.
+        allOf:
+          - $ref: ./platform.FilterFieldExpr.yml
+  - type: object
+    required:
+      - b
+    properties:
+      b:
+        type: boolean
+        description: A boolean condition (always true or always false).
+  - type: object
+    required:
+      - isSet
+    properties:
+      isSet:
+        type: string
+        description: True if the field is set.
+        minLength: 1
+        pattern: '[_0-9a-zA-Z\.\[\]\*\-<>]*'
+  - type: object
+    required:
+      - equal
+    properties:
+      equal:
+        description: Check the equality between a field and a constant.
+        allOf:
+          - $ref: ./platform.FilterFieldSingleValue.yml
+  - type: object
+    required:
+      - lt
+    properties:
+      lt:
+        description: Check that a field is less than a constant.
+        allOf:
+          - $ref: ./platform.FilterFieldSingleValue.yml
+  - type: object
+    required:
+      - le
+    properties:
+      le:
+        description: Check that a field is less than or equal to a constant.
+        allOf:
+          - $ref: ./platform.FilterFieldSingleValue.yml
+  - type: object
+    required:
+      - gt
+    properties:
+      gt:
+        description: Check that a field is greater than a constant.
+        allOf:
+          - $ref: ./platform.FilterFieldSingleValue.yml
+  - type: object
+    required:
+      - ge
+    properties:
+      ge:
+        description: Check that a field is greater than or equal to a constant.
+        allOf:
+          - $ref: ./platform.FilterFieldSingleValue.yml
+  - type: object
+    required:
+      - between
+    properties:
+      between:
+        description: Check that a field is in a constant range.
+        allOf:
+          - $ref: ./platform.FilterFieldBetween.yml
+  - type: object
+    required:
+      - startsWith
+    properties:
+      startsWith:
+        description: Check that a field is prefixed by a constant.
+        allOf:
+          - $ref: ./platform.FilterFieldStringValue.yml
+  - type: object
+    required:
+      - endsWith
+    properties:
+      endsWith:
+        description: Check that a field is suffixed by a constant.
+        allOf:
+          - $ref: ./platform.FilterFieldStringValue.yml
+  - type: object
+    required:
+      - isIn
+    properties:
+      isIn:
+        description: Check that a field is in a set of values.
+        allOf:
+          - $ref: ./platform.FilterFieldValueSet.yml

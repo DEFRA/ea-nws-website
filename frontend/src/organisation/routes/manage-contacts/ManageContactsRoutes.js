@@ -1,5 +1,7 @@
+import AddContactChannelsPage from '../../pages/manage-contact/add-contact/AddContactChannelsPage'
 import AddContactDetailsPage from '../../pages/manage-contact/add-contact/AddContactDetailsPage'
 import AddContactKeywordsPage from '../../pages/manage-contact/add-contact/AddContactKeywordsPage'
+import AddContactNotesPage from '../../pages/manage-contact/add-contact/AddContactNotesPage'
 
 const urlManageContactsOrg = '/organisation/manage-contacts'
 const urlManageContactsAdd = urlManageContactsOrg + '/add'
@@ -8,7 +10,8 @@ const orgManageContactsUrls = {
   add: {
     details: urlManageContactsAdd,
     keywords: urlManageContactsAdd + '/keywords',
-    channels: urlManageContactsAdd + '/channels'
+    channels: urlManageContactsAdd + '/channels',
+    notes: urlManageContactsAdd + '/notes'
   }
 }
 
@@ -23,8 +26,11 @@ const orgManageContactsRoutes = [
   },
   {
     path: orgManageContactsUrls.add.channels,
-    // TODO update channels component
-    component: null
+    component: <AddContactChannelsPage />
+  },
+  {
+    path: orgManageContactsUrls.add.notes,
+    component: <AddContactNotesPage />
   }
 ]
 

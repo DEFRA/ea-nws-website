@@ -1,0 +1,23 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    required:
+      - term
+      - seqid
+      - hostid
+    properties:
+      term:
+        type: integer
+        format: int64
+        minimum: 0
+      seqid:
+        type: integer
+        format: int64
+        minimum: 0
+      hostid:
+        type: integer
+        format: int32
+      instanceid:
+        type: integer
+        format: int32
+        default: 1

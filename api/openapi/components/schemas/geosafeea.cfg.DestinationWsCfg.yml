@@ -1,0 +1,25 @@
+type: object
+description: The configuration of the destination for a workspace.
+required:
+  - destinationId
+properties:
+  _class:
+    type: string
+  destinationId:
+    type: string
+    description: The id of the destination which the configuration applies to.
+  useWsAuth:
+    type: boolean
+    description: |-
+      Enable use per workspace authentication information.
+
+      If set, the workspace authentication information is used.
+      Otherwise, the global authentication information is used if
+      configured instead.
+      Default is false as the workspace authentication information
+      must be manually activated.
+    default: false
+discriminator:
+  propertyName: _class
+  mapping:
+    geosafeea.cfg.IntersecDestinationWsCfg: ./geosafeea.cfg.IntersecDestinationWsCfg.yml

@@ -159,6 +159,7 @@ export default function ValidateLandlineLayout ({
                     Use the code within 4 hours or it will expire.
                     <br /> <br />
                     <Input
+                      className='govuk-input govuk-input--width-10'
                       name='Enter code'
                       inputType='text'
                       error={error}

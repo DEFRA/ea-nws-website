@@ -3,7 +3,6 @@
 image_tags=(
     "frontend" 
     "backend" 
-    "nginx"
     )
 image_name="ea_nws_website"
 build_version=""

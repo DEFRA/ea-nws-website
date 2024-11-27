@@ -304,6 +304,7 @@ export default function Map ({
         }
       }
     }
+
     fetchBoundaries()
     setBoundaryStyles()
   }, [selectedBoundaryType])
@@ -334,6 +335,8 @@ export default function Map ({
             fillColor: '#5a5c55',
             fillOpacity: 0.5
           })
+          // Prevent clicking on boundaries that have already been selected
+          layer.options.interactive = false
         } else {
           layer.setStyle({
             color: '#003366',
@@ -351,11 +354,33 @@ export default function Map ({
   }, [selectedBoundary])
 
   const onEachBoundaryFeature = (feature, layer) => {
+    // Prevent default colour being temporarily shown when map loads
     layer.setStyle({
       color: '#003366',
       weight: 2,
       fillColor: '#3399ff',
       fillOpacity: 0.5
+    })
+
+    // Allow boundaries to be selected by clicking on them
+    layer.on({
+      mouseover: () => {
+        const text = feature.properties.NAME
+        layer
+          .bindTooltip(text, {
+            opacity: 1,
+            className: 'custom-tooltip'
+          })
+          .openTooltip()
+      },
+      mouseout: () => {
+        layer.unbindTooltip()
+      },
+      click: () => {
+        if (layer.options.interactive) {
+          dispatch(setSelectedBoundary(feature))
+        }
+      }
     })
   }
 

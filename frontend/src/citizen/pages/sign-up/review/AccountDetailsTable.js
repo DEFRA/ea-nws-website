@@ -3,9 +3,8 @@ import { Link } from 'react-router-dom'
 
 export default function AccountDetailsTable ({ profile }) {
   return (
-    <>
+    <div className='govuk-padding-bottom-4'>
       <h3 className='govuk-heading-m'>Your Account</h3>
-
       <table className='govuk-table'>
         <tbody className='govuk-table__body'>
           <tr className='govuk-table__row'>
@@ -44,6 +43,6 @@ export default function AccountDetailsTable ({ profile }) {
           </tr>
         </tbody>
       </table>
-    </>
+    </div>
   )
 }

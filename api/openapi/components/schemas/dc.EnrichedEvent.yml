@@ -1,0 +1,14 @@
+allOf:
+  - $ref: ./bigdata.base.ProtocolEvent.yml
+  - type: object
+    description: Class that supports extras columns (can be transformed into an IbpEvent).
+    properties:
+      extras:
+        type: array
+        items:
+          $ref: ./platform.base.KeyValue.yml
+      planId:
+        type: integer
+        format: int32
+        minimum: -128
+        maximum: 127

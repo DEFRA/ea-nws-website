@@ -1,0 +1,10 @@
+type: object
+properties:
+  cells:
+    type: array
+    description: |-
+      List of neighbor cells.
+
+      This is usually the list of cells where a handover is possible.
+    items:
+      $ref: ./services.network.Cgi.yml

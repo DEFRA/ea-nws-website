@@ -1,0 +1,24 @@
+description: |-
+  Formula.
+
+  A formula is an expression that can be represented either by a
+  a string or by an expression tree.
+oneOf:
+  - type: object
+    required:
+      - formula
+    properties:
+      formula:
+        type: string
+  - type: object
+    required:
+      - expr
+    properties:
+      expr:
+        $ref: ./bigdata.query.Expression.yml
+  - type: object
+    required:
+      - prepared
+    properties:
+      prepared:
+        $ref: ./bigdata.query.PreparedExpression.yml

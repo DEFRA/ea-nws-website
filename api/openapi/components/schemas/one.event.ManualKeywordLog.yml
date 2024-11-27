@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./qre.base.EventLog.yml
+  - type: object
+    required:
+      - username
+    properties:
+      username:
+        type: string
+        description: Login of the user that triggered the keyword.

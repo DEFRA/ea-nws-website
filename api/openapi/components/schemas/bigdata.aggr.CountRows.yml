@@ -1,0 +1,13 @@
+allOf:
+  - $ref: ./bigdata.aggr.Aggregation.yml
+  - type: object
+    description: |-
+      Count the input rows and put the count in an 'ulong' output field.
+
+      Similar to SQL "COUNT(*)".
+    required:
+      - outputFieldName
+    properties:
+      outputFieldName:
+        type: string
+        description: Name of the output field containing the resulting count.

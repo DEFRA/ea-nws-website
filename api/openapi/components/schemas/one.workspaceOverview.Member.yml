@@ -1,0 +1,17 @@
+type: object
+description: Member.
+properties:
+  _class:
+    type: string
+  firstname:
+    type: string
+  lastname:
+    type: string
+  email:
+    type: string
+  phone:
+    type: string
+discriminator:
+  propertyName: _class
+  mapping:
+    one.workspaceOverview.ExternalMember: ./one.workspaceOverview.ExternalMember.yml

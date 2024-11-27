@@ -1,0 +1,27 @@
+type: object
+description: Custom field configuration
+required:
+  - id
+  - sourceName
+properties:
+  id:
+    type: string
+    description: |-
+      Custom field identifier.
+
+      The custom field is identified by this parameter in the
+      geosafeea.contact.AdditionalField structure.
+  label:
+    description: |-
+      Custom field label.
+
+      When displayed on the GUI, this custom field uses this label.
+    allOf:
+      - $ref: ./platform.base.Labels.yml
+  sourceName:
+    type: string
+    description: |-
+      Custom field storage source name.
+
+      This custom field is stored in this source in the related collection
+      (for example, "contacts" for Contacts).

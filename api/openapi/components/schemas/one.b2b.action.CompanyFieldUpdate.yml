@@ -1,0 +1,17 @@
+allOf:
+  - $ref: ./bigdata.base.Action.yml
+  - type: object
+    description: Action log class for event related to updating company field.
+    required:
+      - key
+      - newValue
+    properties:
+      key:
+        type: string
+        description: The name of the field to be updated.
+        minLength: 1
+        pattern: '[_0-9a-zA-Z]*'
+      newValue:
+        description: The new value of the field
+        allOf:
+          - $ref: ./platform.base.Value.yml

@@ -2,10 +2,10 @@ import AddLocationOptionsPage from '../../pages/manage-locations/add-location/Ad
 import ConfirmLocationPage from '../../pages/manage-locations/add-location/manual-add-location/confirm-location/ConfirmLocationPage'
 import LocationAlreadyExists from '../../pages/manage-locations/add-location/manual-add-location/name/LocationAlreadyExists'
 import LocationNamePage from '../../pages/manage-locations/add-location/manual-add-location/name/LocationNamePage'
-import LocationSearchOptionPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationSearchOptionPage'
+import LocationSearchOptionPage from '../../pages/manage-locations/add-location/manual-add-location/search/LocationSearchOptionsPage'
 import DropPinNotInEnglandPage from '../../pages/manage-locations/add-location/manual-add-location/search/drop-pin/DropPinNotInEnglandPage'
-import LocationDropPinSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/drop-pin/LocationDropPinSearchPage'
-import LocationDropPinSearchResultsPage from '../../pages/manage-locations/add-location/manual-add-location/search/drop-pin/LocationDropPinSearchResultsPage'
+import DropPinOnMapPage from '../../pages/manage-locations/add-location/manual-add-location/search/drop-pin/DropPinOnMapPage'
+import LocationSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/drop-pin/LocationSearchPage'
 import CannotFindAddressPage from '../../pages/manage-locations/add-location/manual-add-location/search/error/CannotFindAddressPage'
 import LocationPostCodeSearchPage from '../../pages/manage-locations/add-location/manual-add-location/search/postcode/LocationPostCodeSearchPage'
 import LocationPostCodeSearchResultsPage from '../../pages/manage-locations/add-location/manual-add-location/search/postcode/LocationPostCodeSearchResultsPage'
@@ -20,6 +20,8 @@ import OptionalLocationInformationPage from '../../pages/manage-locations/add-lo
 import AddAnotherPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/AddAnotherPredefinedBoundaryPage'
 import PredefinedBoundaryOptionalInfoPage from '../../pages/manage-locations/add-location/predefined-boundary/OptionalInfoPage'
 import SelectPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/SelectPredefinedBoundaryPage'
+import LocationAddShapefilePage from '../../pages/manage-locations/add-location/shapefile-zip/LocationAddShapefileInfoPage'
+import LocationUploadShapeFilePage from '../../pages/manage-locations/add-location/shapefile-zip/LocationUploadShapeFilePage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirmPage'
 import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'
@@ -33,28 +35,42 @@ import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/add
 import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/NotInEnglandPage'
 import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
-import EditLocationOptionsPage from '../../pages/manage-locations/edit-location/edit-individual-location/EditLocationSearchOptionsPage'
-import LocationDropPinEditPage from '../../pages/manage-locations/edit-location/edit-individual-location/drop-pin/LocationDropPinEditPage'
-import CannotChangeLocationLinePage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-line/CannotChangeLocationLinePage'
-import CannotChangeLocationPolygonPage from '../../pages/manage-locations/edit-location/edit-individual-location/edit-polygon/CannotChangeLocationPolygonPage'
-import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/edit-individual-location/xy-coordinates/EditLocationXYCoordinatesSearchPage'
-import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
-import LocationInformationPage from '../../pages/manage-locations/view-location/view-location-information/LocationInformationPage'
 
-// Monitoring
-import MonitoringLiveFLoodWarningsPage from '../../pages/manage-locations/live-monitoring/LiveFloodMonitoringPage'
+// edit imports
+import EditConfirmLocationPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/ConfirmLocationPage'
+import EditLocationSearchOptionsPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/LocationSearchOptionsPage'
+import EditDropPinOnMapPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/drop-pin/DropPinOnMapPage'
+import EditDropPinLocationSearchPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/drop-pin/LocationSearchPage'
+import EditDropPinOnMapNotInEnglandPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/drop-pin/NotInEnglandPage'
+import EditLinePage from '../../pages/manage-locations/edit-location/edit-individual-location/location/edit-line/CannotChangeLocationLinePage'
+import EditPolygonPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/edit-polygon/CannotChangeLocationPolygonPage'
+import EditLocationXYCoordinatesSearchPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/xy-coordinates/LocationXYCoordinatesSearchPage'
+import EditXyCoordinatesNotInEnglandPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/xy-coordinates/NotInEnglandPage'
+import EditActionPlanPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/action-plan/ActionPlanPage'
+import EditAddressPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/address/AddressPage'
+import EditKeyInformationPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/key-information/KeyInformationPage'
+import EditKeywordsPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/keywords/KeywordsPage'
+import EditNotesPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/notes/NotesPage'
+
+// view imports
+import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
+import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
+import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
 
 const urlManageOrg = '/organisation/manage-locations'
+const urlManageOrgViewLocations = urlManageOrg + '/locations'
 const urlManageOrgLiveMonitoring = urlManageOrg + '/live-monitoring'
-const urlManageOrgAddLocations = '/organisation/manage-locations/add'
+const urlManageOrgAddLocations = urlManageOrg + '/add'
+const urlManageOrgEditLocations = urlManageOrg + '/edit'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
 const urlManageOrgConfirmLocations = urlManageOrg + '/confirm'
 
 // Manage location urls
 const orgManageLocationsUrls = {
   view: {
-    dashboard: urlManageOrg + '/view-locations',
-    viewLocation: urlManageOrg + '/location/view-location'
+    dashboard: urlManageOrgViewLocations,
+    viewLocation: urlManageOrgViewLocations + '/view',
+    viewMessages: urlManageOrgViewLocations + '/view-messages'
   },
   monitoring: {
     view: urlManageOrgLiveMonitoring + '/view'
@@ -62,11 +78,12 @@ const orgManageLocationsUrls = {
   add: {
     addLocationWithinBoundaries: {},
     manualAddLocation: {
-      confirmManualSearchedLocation:
-        urlManageOrg + '/add/location-in-area/:flow/:type'
+      confirmManualSearchedLocation: urlManageOrg + '/add/confirm'
     },
     uploadLocationsWithCsv: {},
-    addLocationsWithShapefile: {},
+    addLocationsWithShapefile: urlManageOrgAddLocations + '/shapefile-info',
+    uploadLocationsWithShapefile:
+      urlManageOrgAddLocations + '/shapefile-upload',
     options: urlManageOrgAddLocations,
     addressInfo: urlManageOrgAddLocations + '/address-info',
     uploadFile: urlManageOrgAddLocations + '/upload-file',
@@ -106,6 +123,34 @@ const orgManageLocationsUrls = {
       addNotes: urlManageOrgAddLocations + '/optional-information/notes'
     }
   },
+  edit: {
+    individualLocation: {
+      location: {
+        search: urlManageOrgEditLocations + '/search-options',
+        confirm: urlManageOrgEditLocations + '/confirm-location',
+        xyCoords: {
+          search: urlManageOrgEditLocations + '/xy-coordinates-search',
+          error: urlManageOrgEditLocations + '/xy-coordinates-not-in-england'
+        },
+        dropPin: {
+          search: urlManageOrgEditLocations + '/location-search',
+          drop: urlManageOrgEditLocations + '/drop-pin',
+          error: urlManageOrgEditLocations + '/pin-not-in-england'
+        },
+        shape: {
+          polygon: urlManageOrgEditLocations + '/polygon',
+          line: urlManageOrgEditLocations + '/line'
+        }
+      },
+      optionalInformation: {
+        address: urlManageOrgEditLocations + '/address',
+        actionPlan: urlManageOrgEditLocations + '/action-plan',
+        keyInformation: urlManageOrgEditLocations + '/key-information',
+        keywords: urlManageOrgEditLocations + '/keywords',
+        notes: urlManageOrgEditLocations + '/notes'
+      }
+    }
+  },
   unmatchedLocations: {
     index: urlManageOrgUnmatchedLocations,
     doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
@@ -117,25 +162,6 @@ const orgManageLocationsUrls = {
       map: urlManageOrgUnmatchedLocations + '/manually-find/map',
       notInEngland:
         urlManageOrgUnmatchedLocations + '/manually-find/not-in-england'
-    }
-  },
-  edit: {
-    individualLocation: {
-      editLocationCoords: {
-        SelectLocationOptions: urlManageOrg + '/edit/select-location-options',
-        xyCoordinatesSearch: urlManageOrg + '/edit/xy-coordinates-search',
-        ConfirmEditLocations:
-          urlManageOrg + '/edit/location-in-area/:flow/:type',
-        dropPinEdit: urlManageOrg + '/edit/drop-pin-edit'
-      },
-      editShape: {
-        editPolygon: urlManageOrg + '/edit/edit-polygon',
-        editLine: urlManageOrg + '/edit/edit-line'
-      }
-    },
-    error: {
-      xyCoordinatesNotInEngland:
-        urlManageOrg + '/edit/xy-coordinates-not-in-england'
     }
   }
 }
@@ -149,12 +175,11 @@ const orgManageLocationRoutes = [
   },
   {
     path: orgManageLocationsUrls.view.viewLocation,
-    component: <LocationInformationPage />
+    component: <ViewLocationInformationPage />
   },
-  // monitoring
   {
-    path: orgManageLocationsUrls.monitoring.view,
-    component: <MonitoringLiveFLoodWarningsPage />
+    path: orgManageLocationsUrls.view.viewMessages,
+    component: <ViewMessagesPage />
   },
   // add
   {
@@ -164,6 +189,14 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.addressInfo,
     component: <LocationAddAddressInfoPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.addLocationsWithShapefile,
+    component: <LocationAddShapefilePage />
+  },
+  {
+    path: orgManageLocationsUrls.add.uploadLocationsWithShapefile,
+    component: <LocationUploadShapeFilePage />
   },
   {
     path: orgManageLocationsUrls.add.manualAddLocation
@@ -222,11 +255,11 @@ const orgManageLocationRoutes = [
   },
   {
     path: orgManageLocationsUrls.add.search.dropPinSearch,
-    component: <LocationDropPinSearchPage />
+    component: <LocationSearchPage />
   },
   {
     path: orgManageLocationsUrls.add.search.dropPinSearchResults,
-    component: <LocationDropPinSearchResultsPage />
+    component: <DropPinOnMapPage />
   },
   {
     path: orgManageLocationsUrls.add.predefinedBoundary.select,
@@ -305,36 +338,79 @@ const orgManageLocationRoutes = [
   },
   // edit
   {
-    path: orgManageLocationsUrls.edit.individualLocation.editLocationCoords
-      .SelectLocationOptions,
-    component: <EditLocationOptionsPage />
+    path: orgManageLocationsUrls.edit.individualLocation.location.search,
+    component: <EditLocationSearchOptionsPage />
   },
+  // xy coords
   {
-    path: orgManageLocationsUrls.edit.individualLocation.editShape.editLine,
-    component: <CannotChangeLocationLinePage />
-  },
-  {
-    path: orgManageLocationsUrls.edit.individualLocation.editShape.editPolygon,
-    component: <CannotChangeLocationPolygonPage />
-  },
-  {
-    path: orgManageLocationsUrls.edit.individualLocation.editLocationCoords
-      .xyCoordinatesSearch,
+    path: orgManageLocationsUrls.edit.individualLocation.location.xyCoords
+      .search,
     component: <EditLocationXYCoordinatesSearchPage />
   },
   {
-    path: orgManageLocationsUrls.edit.individualLocation.editLocationCoords
-      .ConfirmEditLocations,
-    component: <ConfirmLocationPage />
+    path: orgManageLocationsUrls.edit.individualLocation.location.xyCoords
+      .error,
+    component: <EditXyCoordinatesNotInEnglandPage />
+  },
+  // pin drop
+  {
+    path: orgManageLocationsUrls.edit.individualLocation.location.dropPin
+      .search,
+    component: <EditDropPinLocationSearchPage />
   },
   {
-    path: orgManageLocationsUrls.edit.individualLocation.editLocationCoords
-      .dropPinEdit,
-    component: <LocationDropPinEditPage />
+    path: orgManageLocationsUrls.edit.individualLocation.location.dropPin.drop,
+    component: <EditDropPinOnMapPage />
   },
   {
-    path: orgManageLocationsUrls.edit.error.xyCoordinatesNotInEngland,
-    component: <XYCoordinatesNotInEnglandPage />
+    path: orgManageLocationsUrls.edit.individualLocation.location.dropPin.error,
+    component: <EditDropPinOnMapNotInEnglandPage />
+  },
+  // confirm
+  {
+    path: orgManageLocationsUrls.edit.individualLocation.location.confirm,
+    component: <EditConfirmLocationPage />
+  },
+
+  // edit shape - line
+  {
+    path: orgManageLocationsUrls.edit.individualLocation.location.shape.line,
+    component: <EditLinePage />
+  },
+  // edit shape - polygon
+  {
+    path: orgManageLocationsUrls.edit.individualLocation.location.shape.polygon,
+    component: <EditPolygonPage />
+  },
+  // optional information
+  // edit location address
+  {
+    path: orgManageLocationsUrls.edit.individualLocation.optionalInformation
+      .address,
+    component: <EditAddressPage />
+  },
+  // edit notes
+  {
+    path: orgManageLocationsUrls.edit.individualLocation.optionalInformation
+      .notes,
+    component: <EditNotesPage />
+  },
+  // edit action plan
+  {
+    path: orgManageLocationsUrls.edit.individualLocation.optionalInformation
+      .actionPlan,
+    component: <EditActionPlanPage />
+  },
+  // edit keywords
+  {
+    path: orgManageLocationsUrls.edit.individualLocation.optionalInformation
+      .keyInformation,
+    component: <EditKeyInformationPage />
+  },
+  {
+    path: orgManageLocationsUrls.edit.individualLocation.optionalInformation
+      .keywords,
+    component: <EditKeywordsPage />
   }
 ]
 

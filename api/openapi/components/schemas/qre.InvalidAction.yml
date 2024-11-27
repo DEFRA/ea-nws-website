@@ -1,0 +1,13 @@
+allOf:
+  - $ref: ./bigdata.base.Response.yml
+  - type: object
+    description: |-
+      Response which will be sent if the Action created by CreateAction is
+       invalid.
+
+      This can happen when the value of a required action field depend on an
+      optional value.
+    properties:
+      eventClassName:
+        type: string
+        description: The invalid event kind

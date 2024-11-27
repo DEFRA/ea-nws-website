@@ -1,0 +1,22 @@
+type: object
+properties:
+  sigma:
+    type: number
+    format: double
+    description: |-
+      Compression parameter, to control accuracy.
+
+      \ref sigma should be between 0 and 1.
+
+      To increase accuracy you should reduce this parameter. The centroids
+      vector length is computed from this value and the memory consumption
+      will directly depend on sigma.
+
+      This will also decrease the performance, particularly for ordered input
+      data.
+
+      Number of centroids in the buffer: 20 / sigma.
+      Size of a centroid: 16 bytes.
+      Size of the buffer: 16 * 20 / sigma = 320 / sigma.
+      Size of a buffer with default configuration = 64.000 bytes.
+    default: 0.005

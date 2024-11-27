@@ -1,0 +1,14 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    description: |-
+      Sigma operation(selection).
+
+      Filter a table using a condition applied on each row.
+    required:
+      - cond
+    properties:
+      cond:
+        description: Filter condition.
+        allOf:
+          - $ref: ./bigdata.query.BoolExpr.yml

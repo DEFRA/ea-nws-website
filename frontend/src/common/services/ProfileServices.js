@@ -4,13 +4,13 @@ const addUnverifiedContact = (profile, type, contact) => {
 
   switch (type) {
     case 'email':
-      unverifiedContactList = profile.unverified.emails
+      unverifiedContactList = profile.unverified?.emails || []
       break
     case 'mobile':
-      unverifiedContactList = profile.unverified.mobilePhones
+      unverifiedContactList = profile.unverified?.mobilePhones || []
       break
     case 'homePhones':
-      unverifiedContactList = profile.unverified.homePhones
+      unverifiedContactList = profile.unverified?.homePhones || []
       break
   }
 
@@ -42,39 +42,58 @@ const addUnverifiedContact = (profile, type, contact) => {
 const removeUnverifiedContact = (profile, contact) => {
   let unverifiedContactListKey
 
-  if (profile.unverified.emails.some((email) => email.address === contact)) {
-    unverifiedContactListKey = 'emails'
-  } else if (
-    profile.unverified.mobilePhones.some(
-      (mobilePhone) => mobilePhone.address === contact
-    )
-  ) {
-    unverifiedContactListKey = 'mobilePhones'
-  } else if (
-    profile.unverified.homePhones.some(
-      (homePhone) => homePhone.address === contact
-    )
-  ) {
-    unverifiedContactListKey = 'homePhones'
-  } else {
-    // contact not found in any unverified contacts list
-    return profile
-  }
+  // need to check if there are any unverified
+  if (profile.unverified) {
+    if (
+      profile.unverified.emails &&
+      profile.unverified.emails.some((email) => email.address === contact)
+    ) {
+      unverifiedContactListKey = 'emails'
+    } else if (
+      profile.unverified.mobilePhones &&
+      profile.unverified.mobilePhones.some(
+        (mobilePhone) => mobilePhone.address === contact
+      )
+    ) {
+      unverifiedContactListKey = 'mobilePhones'
+    } else if (
+      profile.unverified.homePhones &&
+      profile.unverified.homePhones.some(
+        (homePhone) => homePhone.address === contact
+      )
+    ) {
+      unverifiedContactListKey = 'homePhones'
+    } else {
+      // contact not found in any unverified contacts list
+      return profile
+    }
 
-  // eslint-disable-next-line no-self-compare
-  const newUnverifiedContactList = profile.unverified[
-    unverifiedContactListKey
-  ].filter((c) => c.address !== contact)
+    // eslint-disable-next-line no-self-compare
+    const newUnverifiedContactList = profile.unverified[
+      unverifiedContactListKey
+    ].filter((c) => c.address !== contact)
 
-  const updatedProfile = {
-    ...profile,
-    unverified: {
+    const updatedUnverified = {
       ...profile.unverified,
       [unverifiedContactListKey]: newUnverifiedContactList
     }
-  }
 
-  return updatedProfile
+    // We need to remove contactlist from unverified if it's empty now
+    updatedUnverified[unverifiedContactListKey].length === 0 &&
+      delete updatedUnverified[unverifiedContactListKey]
+
+    const updatedProfile = {
+      ...profile,
+      unverified: updatedUnverified
+    }
+
+    // We need to delete the unverifieed object if it's now empty
+    updatedProfile.unverified.length === 0 && delete updatedProfile.unverified
+
+    return updatedProfile
+  } else {
+    return profile
+  }
 }
 
 const addVerifiedContact = (profile, type, contact) => {
@@ -150,9 +169,11 @@ const addAccountName = (profile, firstname, lastname) => {
 }
 
 const getAdditionals = (profile, id) => {
-  for (let i = 0; i < profile.additionals.length; i++) {
-    if (profile.additionals[i].id === id) {
-      return profile.additionals[i].value
+  if (profile.additionals) {
+    for (let i = 0; i < profile.additionals.length; i++) {
+      if (profile.additionals[i].id === id) {
+        return profile.additionals[i].value?.s
+      }
     }
   }
   return ''
@@ -201,12 +222,14 @@ const setOrganisationAdditionals = (profile) => {
   return updateOrganisationAdditionals(profile, orgJson)
 }
 const getOrganisationAdditionals = (profile) => {
-  return getAdditionals(profile, 'organisation')
+  const orgAdditionals = getAdditionals(profile, 'organisation')
+
+  return JSON.parse(orgAdditionals === '' ? '{}' : orgAdditionals)
 }
 
 const updateOrganisationAdditionals = (profile, updatedOrganisation) => {
   return updateAdditionals(profile, [
-    { id: 'organisation', value: updatedOrganisation }
+    { id: 'organisation', value: { s: JSON.stringify(updatedOrganisation) } }
   ])
 }
 
@@ -241,20 +264,83 @@ const removeLocation = (profile, address) => {
   return updatedProfile
 }
 
-const updateLocationsFloodCategory = (profile, location, updatedCategories) => {
+const updateLocationsAlertTypes = (profile, location, updatedAlertTypes) => {
   const parsedProfile = JSON.parse(JSON.stringify(profile))
 
   const locationIndex = parsedProfile.pois.findIndex(
     (poi) => poi.address === location.address
   )
+
   if (locationIndex !== -1) {
-    parsedProfile.pois[locationIndex].categories = updatedCategories
+    parsedProfile.pois[locationIndex].additionals = setLocationOtherAdditionals(
+      [],
+      'alertTypes',
+      updatedAlertTypes
+    )
   }
 
   return parsedProfile
 }
 
+const getRegistrationParams = (profile, alertTypes) => {
+  const channelVoiceEnabled = profile.homePhones.length > 0
+  const channelSmsEnabled = profile.mobilePhones.length > 0
+  const channelEmailEnabled = true // always true as user will have primary email
+  const channelMobileAppEnabled = false
+
+  return {
+    channelVoiceEnabled,
+    channelSmsEnabled,
+    channelEmailEnabled,
+    channelMobileAppEnabled,
+    partnerCanView: true,
+    partnerCanEdit: true,
+    alertTypes
+  }
+}
+
+function findPOIByAddress (profile, address) {
+  const parsedProfile = JSON.parse(JSON.stringify(profile))
+
+  return parsedProfile.pois.find((poi) => poi.address === address)
+}
+
+const setLocationOtherAdditionals = (additionals, id, value) => {
+  let idFound = false
+  let otherAdditionals = {}
+  for (let i = 0; i < additionals.length; i++) {
+    if (additionals[i].id === 'other') {
+      idFound = true
+      otherAdditionals = JSON.parse(additionals[i].value?.s)
+      otherAdditionals[id] = value
+      additionals[i].value = { s: JSON.stringify(otherAdditionals) }
+    }
+  }
+  if (!idFound) {
+    additionals.push({
+      id: 'other',
+      value: { s: JSON.stringify({ [id]: value }) }
+    })
+  }
+
+  return additionals
+}
+
+const getLocationOtherAdditional = (additionals, id) => {
+  for (let i = 0; i < additionals.length; i++) {
+    if (additionals[i].id === 'other') {
+      const otherAdditionals = JSON.parse(additionals[i].value?.s)
+      return otherAdditionals[id]
+    }
+  }
+  return ''
+}
+
 module.exports = {
+  setLocationOtherAdditionals,
+  getLocationOtherAdditional,
+  findPOIByAddress,
+  getRegistrationParams,
   addUnverifiedContact,
   removeUnverifiedContact,
   addVerifiedContact,
@@ -264,7 +350,7 @@ module.exports = {
   updateAdditionals,
   addLocation,
   removeLocation,
-  updateLocationsFloodCategory,
+  updateLocationsAlertTypes,
   setOrganisationAdditionals,
   getOrganisationAdditionals,
   updateOrganisationAdditionals

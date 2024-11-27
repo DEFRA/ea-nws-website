@@ -1,0 +1,21 @@
+type: object
+required:
+  - hour
+properties:
+  hour:
+    type: integer
+    format: int32
+    minimum: 0
+    maximum: 23
+  min:
+    type: integer
+    format: int32
+    default: 0
+    minimum: 0
+    maximum: 59
+  sec:
+    type: integer
+    format: int32
+    default: 0
+    minimum: 0
+    maximum: 59

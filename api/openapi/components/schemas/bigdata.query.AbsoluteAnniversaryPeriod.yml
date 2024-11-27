@@ -1,0 +1,29 @@
+description: |-
+  Absolute anniversary period.
+
+  This period can be defined as a whole month (in that case, \ref month is
+  set accordingly). Otherwise, it can be defined as an interval of days (and
+  then, \ref interval should be correctly set).
+
+  For instance, this period is used to target the anniversary of the
+  following periods:
+  - the 13th of February (using \ref interval)
+  - between the 28th of January and the 13th of February (using \ref interval)
+  - in February (using \ref month)
+oneOf:
+  - type: object
+    required:
+      - interval
+    properties:
+      interval:
+        description: Interval of anniversary dates.
+        allOf:
+          - $ref: ./bigdata.query.AnniversaryDatesInterval.yml
+  - type: object
+    required:
+      - month
+    properties:
+      month:
+        description: Period defined as a whole month.
+        allOf:
+          - $ref: ./platform.base.Month.yml

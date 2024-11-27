@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./one.event.BudgetAction.yml
+  - type: object
+    required:
+      - amount
+    properties:
+      amount:
+        type: number
+        format: double
+        description: Amount to refill the budget with.

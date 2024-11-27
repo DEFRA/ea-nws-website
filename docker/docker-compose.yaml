@@ -26,20 +26,5 @@ services:
         aliases:
           - backend
 
-  nginx:
-    image: ea_nws_website:nginx-${BUILD_VERSION}
-    build:
-      context: ../
-      dockerfile: docker/nginx/Dockerfile
-    ports:
-      - '${NGINX_PORT}:${NGINX_PORT}'
-    environment:
-      - NGINX_PORT=${NGINX_PORT}
-      - NGINX_SERVER=${NGINX_SERVER}
-    networks:
-      main:
-        aliases:
-          - nginx
-
 networks:
   main:

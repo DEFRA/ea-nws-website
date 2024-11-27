@@ -52,6 +52,7 @@ def test_click_continue_valid_no_jobtitle(get_browser):
     enter_input_text(get_browser, 'First name', right_input)
     enter_input_text(get_browser, 'Last name', right_input)
     click_button(get_browser, 'Continue', url_next_page)
+    assert 'Add keywords for this contact' in get_browser.page_source
 
 def test_click_continue_valid_with_jobtitle(get_browser):
     navigate_to_auth_page_via_index(get_browser,url_add_contact_details)
@@ -59,3 +60,4 @@ def test_click_continue_valid_with_jobtitle(get_browser):
     enter_input_text(get_browser, 'Last name', right_input)
     enter_input_text(get_browser, 'Job title (optional)', right_input)
     click_button(get_browser, 'Continue', url_next_page)
+    assert 'Add keywords for this contact' in get_browser.page_source

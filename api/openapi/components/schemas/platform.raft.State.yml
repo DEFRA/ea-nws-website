@@ -1,0 +1,67 @@
+type: object
+required:
+  - role
+  - leaderId
+  - term
+  - commitIndex
+  - replicatedByAll
+  - nbAdminVotesGranted
+properties:
+  role:
+    description: Current role of the RAFT server
+    allOf:
+      - $ref: ./platform.raft.Role.yml
+  leaderId:
+    type: integer
+    format: int32
+    description: Known leader ID of RAFT server (0 if unknown)
+    minimum: 0
+  term:
+    type: integer
+    format: int64
+    description: Current term of the RAFT server
+    minimum: 0
+  commitIndex:
+    type: integer
+    format: int64
+    description: Current commitIndex of the RAFT server
+    minimum: 0
+  replicatedByAll:
+    type: integer
+    format: int64
+    description: Last known index replicated by all servers
+    minimum: 0
+  nbAdminVotesGranted:
+    type: integer
+    format: int32
+    description: Number of admin votes currently owned.
+    minimum: 0
+  leaderIsTimeouted:
+    type: boolean
+    description: |-
+      Whether the leader is considered unknown because of a timeout.
+
+      (Default to true to stay backward compatible until upgrade.)
+    default: true
+  leaderIsConnected:
+    type: boolean
+    description: Whether the leader host is reachable to send queries.
+    default: false
+  spoolGen:
+    type: integer
+    format: int32
+    description: Current generation of the spool.
+    default: 0
+    minimum: 0
+  nbConnectedRemotes:
+    type: integer
+    format: int32
+    description: Number of connected remotes.
+    default: 0
+    minimum: 0
+  serverId:
+    type: integer
+    format: int32
+    description: RAFT server ID (host ID).
+    default: 0
+    minimum: 0

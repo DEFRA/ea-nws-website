@@ -1,0 +1,18 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    description: |-
+      Returns the name of the effective type of an object.
+
+      This reference can be used to retrieve the type of an object or one of its
+      fields. It is evaluated to a string, or nil if the field does not exists.
+    properties:
+      fieldPath:
+        type: string
+        description: |-
+          Optional path to the field whose type is to be checked.
+
+          If specified, the reference checks the type of the pointed field,
+          otherwise, it checks the type of the top-level object.
+        minLength: 1
+        pattern: '[_0-9a-zA-Z\.\[\]\*\-<>]*'

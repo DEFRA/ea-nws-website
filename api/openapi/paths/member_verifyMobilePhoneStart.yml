@@ -1,0 +1,35 @@
+post:
+  operationId: getMobileStart
+  tags:
+    - member
+  summary: Start verification of a phone number.
+  description: |-
+    This RPC verifies if the auth token is valid, and if the currently
+    authenticated user has the provided MSISDN as an unverified phone
+    number. Then a new random code is generated and sent by SMS.
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: >-
+            ../components/schemas/geosafeea.public.Member.verifyMobilePhoneStartArgs.yml
+  responses:
+    '200':
+      description: RPC success
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/Void.yml
+    '500':
+      description: RPC error
+      content:
+        application/json:
+          schema:
+            $ref: ../components/schemas/platform.Exception.yml
+    default:
+      description: generic error
+      content:
+        text/html:
+          schema:
+            type: string

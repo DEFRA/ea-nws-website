@@ -1,7 +1,10 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { setAdditionalAlerts, setProfile } from '../../../../common/redux/userSlice'
+import {
+  setAdditionalAlerts,
+  setProfile
+} from '../../../../common/redux/userSlice'
 import LocationSearchResultsLayout from '../../../layouts/location/LocationSearchResultsLayout'
 
 export default function LocationSearchResultsPage () {
@@ -26,7 +29,7 @@ export default function LocationSearchResultsPage () {
       mobilePhones: [],
       homePhones: [],
       language: 'EN', // [TODO] is this always english?
-      additionals: [{ id: 'signUpComplete', value: false }],
+      additionals: [{ id: 'signUpComplete', value: { s: 'false' } }],
       unverified: {
         emails: [],
         mobilePhones: [],
@@ -34,6 +37,7 @@ export default function LocationSearchResultsPage () {
       },
       pois: []
     }
+
     dispatch(setProfile(profile))
 
     if (isInWarningArea) {

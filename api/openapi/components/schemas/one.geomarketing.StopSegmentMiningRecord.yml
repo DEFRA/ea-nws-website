@@ -1,0 +1,132 @@
+allOf:
+  - $ref: ./bigdata.base.CdrEvent.yml
+  - type: object
+    properties:
+      origPoi:
+        type: string
+      destPoi:
+        type: string
+      homePoi:
+        type: string
+      workPoi:
+        type: string
+      origZoneId:
+        type: integer
+        format: int64
+        minimum: 0
+      destZoneId:
+        type: integer
+        format: int64
+        minimum: 0
+      homeZoneId:
+        type: integer
+        format: int64
+        minimum: 0
+      workZoneId:
+        type: integer
+        format: int64
+        minimum: 0
+      imsiMcc:
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 65535
+      roamerType:
+        $ref: ./one.geomarketing.RoamerType.yml
+      trajectory:
+        type: string
+      conveyance:
+        type: string
+      travelerType:
+        $ref: ./one.geomarketing.TravelerType.yml
+      duration:
+        type: integer
+        format: int32
+        minimum: 0
+      visitsRecurrence:
+        type: integer
+        format: int32
+        minimum: 0
+      timeAggregation:
+        type: string
+      time:
+        type: integer
+        format: int64
+      hourOfDay:
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 255
+      dayOfMonth:
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 255
+      dayOfWeek:
+        $ref: ./platform.base.DayOfWeek.yml
+      hourRange:
+        type: string
+      timeRange:
+        type: string
+      visitEntryType:
+        $ref: ./one.geomarketing.VisitEntryType.yml
+      count:
+        type: integer
+        format: int32
+        minimum: 0
+      durationAvg:
+        type: integer
+        format: int32
+        minimum: 0
+      durationStddev:
+        type: number
+        format: double
+      durationDeltaCi95:
+        type: number
+        format: double
+      direction:
+        $ref: ./one.geomarketing.MoveDirection.yml
+      censusKey:
+        type: string
+      censusValue:
+        type: string
+      visitedPoi:
+        type: string
+      visitedZoneId:
+        type: integer
+        format: int64
+        minimum: 0
+      airportStart:
+        type: string
+      airportEnd:
+        type: string
+      cuidStart:
+        type: integer
+        format: int64
+        minimum: 0
+      cuidEnd:
+        type: integer
+        format: int64
+        minimum: 0
+      crmKey1:
+        type: string
+      crmVal1:
+        type: string
+      crmKey2:
+        type: string
+      crmVal2:
+        type: string
+      crmKey3:
+        type: string
+      crmVal3:
+        type: string
+      msClassif:
+        type: string
+      countWithCensus:
+        type: integer
+        format: int32
+        minimum: 0
+      stayDurationMayBeLonger:
+        type: boolean
+      stayOverlapType:
+        $ref: ./one.timeutils.TimeRangeOverlapType.yml

@@ -1,0 +1,131 @@
+openapi: 3.0.2
+info:
+  title: Public API
+  version: 2024.1.2024091901
+  description: This document provides a technical description of the Geosafe Public API.
+servers:
+  - url: /
+paths:
+  /member/registerStart:
+    $ref: paths/member_registerStart.yml
+  /member/registerValidate:
+    $ref: paths/member_registerValidate.yml
+  /member/signinStart:
+    $ref: paths/member_signinStart.yml
+  /member/signinValidate:
+    $ref: paths/member_signinValidate.yml
+  /member/updateProfile:
+    $ref: paths/member_updateProfile.yml
+  /member/signinVerify:
+    $ref: paths/member_signinVerify.yml
+  /member/verifyMobilePhoneStart:
+    $ref: paths/member_verifyMobilePhoneStart.yml
+  /member/verifyMobilePhoneValidate:
+    $ref: paths/member_verifyMobilePhoneValidate.yml
+  /member/verifyEmailStart:
+    $ref: paths/member_verifyEmailStart.yml
+  /member/verifyEmailValidate:
+    $ref: paths/member_verifyEmailValidate.yml
+  /member/registerToPartner:
+    $ref: paths/member_registerToPartner.yml
+  /member/updateRegistration:
+    $ref: paths/member_updateRegistration.yml
+  /member/unregisterFromPartner:
+    $ref: paths/member_unregisterFromPartner.yml
+  /member/registerLocationToPartner:
+    $ref: paths/member_registerLocationToPartner.yml
+  /member/updateLocationRegistration:
+    $ref: paths/member_updateLocationRegistration.yml
+  /member/unregisterLocationFromPartner:
+    $ref: paths/member_unregisterLocationFromPartner.yml
+  /member/deleteAccount:
+    $ref: paths/member_deleteAccount.yml
+  /member/mobileRegister:
+    $ref: paths/member_mobileRegister.yml
+  /member/verifyHomePhoneStart:
+    $ref: paths/member_verifyHomePhoneStart.yml
+  /member/verifyHomePhoneValidate:
+    $ref: paths/member_verifyHomePhoneValidate.yml
+  /organization/registerStart:
+    $ref: paths/organization_registerStart.yml
+  /organization/registerValidate:
+    $ref: paths/organization_registerValidate.yml
+  /organization/update:
+    $ref: paths/organization_update.yml
+  /organization/createContacts:
+    $ref: paths/organization_createContacts.yml
+  /organization/listContacts:
+    $ref: paths/organization_listContacts.yml
+  /organization/updateContact:
+    $ref: paths/organization_updateContact.yml
+  /organization/removeContacts:
+    $ref: paths/organization_removeContacts.yml
+  /organization/listRegistrations:
+    $ref: paths/organization_listRegistrations.yml
+  /organization/registerToPartner:
+    $ref: paths/organization_registerToPartner.yml
+  /organization/updateRegistration:
+    $ref: paths/organization_updateRegistration.yml
+  /organization/unregisterFromPartner:
+    $ref: paths/organization_unregisterFromPartner.yml
+  /organization/promoteContact:
+    $ref: paths/organization_promoteContact.yml
+  /organization/demoteContact:
+    $ref: paths/organization_demoteContact.yml
+  /organization/validateInvitation:
+    $ref: paths/organization_validateInvitation.yml
+  /organization/remove:
+    $ref: paths/organization_remove.yml
+  /location/list:
+    $ref: paths/location_list.yml
+  /location/create:
+    $ref: paths/location_create.yml
+  /location/update:
+    $ref: paths/location_update.yml
+  /location/remove:
+    $ref: paths/location_remove.yml
+  /location/attachContacts:
+    $ref: paths/location_attachContacts.yml
+  /location/detachContacts:
+    $ref: paths/location_detachContacts.yml
+  /location/listRegistrations:
+    $ref: paths/location_listRegistrations.yml
+  /location/registerToPartner:
+    $ref: paths/location_registerToPartner.yml
+  /location/updateRegistration:
+    $ref: paths/location_updateRegistration.yml
+  /location/unregisterFromPartner:
+    $ref: paths/location_unregisterFromPartner.yml
+  /mobileApp/checkVersion:
+    $ref: paths/mobileApp_checkVersion.yml
+components:
+  securitySchemes:
+    http:
+      type: http
+      scheme: basic
+security:
+  - http: []
+tags:
+  - name: member
+    description: |-
+      Member management interface.
+
+      This interface is used by applications used by users that are not GeoSafe
+      cerbere users, for example, a user registered on the mobile application or
+      the GeoSafe public website.
+  - name: organization
+    description: |-
+      Organization interface.
+
+      This interface is used by applications used by organization users. These
+      users are typically administrators of an organization restricted on the
+      platform.
+  - name: location
+    description: |-
+      Location interface.
+
+      This interface is used by applications used by organization users. These
+      users are typically administrators of an organization restricted on the
+      platform.
+  - name: mobileApp
+    description: Interface for the mobile application specific RPCs.

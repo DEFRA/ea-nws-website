@@ -1,0 +1,6 @@
+type: object
+properties:
+  points:
+    type: array
+    items:
+      $ref: ./geoloc.Coord.yml

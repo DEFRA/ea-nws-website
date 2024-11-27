@@ -193,12 +193,12 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
                           <tr key={index} className='govuk-table__row'>
                             <td className='govuk-table__cell'>
                               <Link
-                  className='govuk-link'
-                  onClick={(event) =>
-                                handleSelectedLocation(event, location)}
-                >
-                  {location.address}
-                </Link>
+                                className='govuk-link'
+                                onClick={(event) =>
+                                  handleSelectedLocation(event, location)}
+                              >
+                                {location.address}
+                              </Link>
                             </td>
                           </tr>
                         ))}

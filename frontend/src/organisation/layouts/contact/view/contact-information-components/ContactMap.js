@@ -12,17 +12,17 @@ import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 
-export default function ContactMap ({ mobileView }) {
+export default function ContactMap({ mobileView }) {
   const pois = useSelector((state) => state.session.orgCurrentContact.pois)
   const testGeo = useSelector((state) => state.session.currentLocation.geometry)
-  const parsed = JSON.parse(testGeo.geoJson)
+
   let visibleArea = 0
   const [apiKey, setApiKey] = useState(null)
   const [markers, setMarkers] = useState([])
   const [geometries, setGeometries] = useState([])
   // const [geocodes, setGeocodes] = useState([])
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { errorMessage, data } = await backendCall(
       'data',
       'api/os-api/oauth2'
@@ -67,10 +67,10 @@ export default function ContactMap ({ mobileView }) {
         if (isAreaVisible(poi.geometry)) {
           setGeometries((prevGeometries) => [
             ...prevGeometries,
-            turf.area([poi.geometry.geoJson])
+            poi.geometry.geoJson
           ])
         } else {
-          const centroid = turf.centerOfMass(parsed).geometry.coordinates
+          const centroid = turf.centerOfMass(poi.geometry).geometry.coordinates
           setMarkers((prevMarkers) => [
             ...prevMarkers,
             [centroid[1], centroid[0]]
@@ -84,7 +84,8 @@ export default function ContactMap ({ mobileView }) {
       } */
     })
 
-    if (parsed) {
+    if (testGeo) {
+      const parsed = JSON.parse(testGeo.geoJson)
       if (isAreaVisible(parsed)) {
         setGeometries((prevGeometries) => [...prevGeometries, parsed])
       } else {
@@ -99,9 +100,12 @@ export default function ContactMap ({ mobileView }) {
 
   const isAreaVisible = (geometry) => {
     if (pois.length === 1 && pois[0].geometry) return true
-    const area = turf.area(geometry)
-    const threshold = visibleArea * 0.1
-    return area > threshold
+    if (visibleArea > 0) {
+      const area = turf.area(geometry)
+      const threshold = visibleArea * 0.1
+      return area > threshold
+    }
+    return false
   }
 
   // update map zoom so all markers are visible at once
@@ -110,15 +114,17 @@ export default function ContactMap ({ mobileView }) {
     useEffect(() => {
       if (markers.length > 0 || geometries.length > 0) {
         let bounds = L.latLngBounds()
-
         // Add marker bounds
         if (markers.length > 0) {
+          console.log('markers', markers)
           const markerBounds = L.latLngBounds(markers)
           bounds = bounds.extend(markerBounds)
         }
-
+        map.fitBounds(bounds)
+        calculateVisibleArea(map)
         // Add geometry bounds
         if (geometries.length > 0) {
+          console.log('geometries')
           geometries.forEach((geometry) => {
             const feature = L.geoJson(geometry)
             if (feature.getBounds()) {
@@ -126,7 +132,6 @@ export default function ContactMap ({ mobileView }) {
             }
           })
         }
-        calculateVisibleArea(map)
         map.fitBounds(bounds)
       }
     }, [markers, geometries, map])
@@ -165,10 +170,10 @@ export default function ContactMap ({ mobileView }) {
 
   const url = 'https://api.os.uk/maps/raster/v1/wmts'
   const parameters = {
-    tileMatrixSet: encodeURI('EPSG:3857'),
+    tileMatrixSet: encodeURI('EPSG:27700'),
     version: '2.0.0',
     style: 'default',
-    layer: encodeURI('Outdoor_3857'),
+    layer: encodeURI('Outdoor_27700'),
     service: 'WMTS',
     request: 'GetTile',
     tileCol: '{x}',
@@ -211,29 +216,27 @@ export default function ContactMap ({ mobileView }) {
         maxBounds={maxBounds}
         className={mobileView ? 'map-mobile-view' : 'map-container'}
       >
-        {apiKey && apiKey !== 'error'
-          ? (
-            <>
-              {tileLayerWithHeader}
-              {markers.map((marker, index) => {
-                return (
-                  <Marker key={index} position={marker} interactive={false} />
-                )
-              })}
-              {geometries.map((geometry, index) => {
-                return <GeoJSON key={index} data={geometry} />
-              })}
-              <FitBounds />
-            </>
-            )
-          : (
-            <div className='map-error-container'>
-              <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
-              <Link className='govuk-body-s' onClick={() => getApiKey()}>
-                Reload map
-              </Link>
-            </div>
-            )}
+        {apiKey && apiKey !== 'error' ? (
+          <>
+            {tileLayerWithHeader}
+            {markers.map((marker, index) => {
+              return (
+                <Marker key={index} position={marker} interactive={false} />
+              )
+            })}
+            {geometries.map((geometry, index) => {
+              return <GeoJSON key={index} data={geometry} />
+            })}
+            <FitBounds />
+          </>
+        ) : (
+          <div className='map-error-container'>
+            <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
+            <Link className='govuk-body-s' onClick={() => getApiKey()}>
+              Reload map
+            </Link>
+          </div>
+        )}
       </MapContainer>
     </div>
   )

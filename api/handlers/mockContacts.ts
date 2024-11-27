@@ -13,15 +13,15 @@ const contacts = [
         service: null,
         comments: null,
         additionals: [
-            {id: "lastAccessedUrl", value: {s: "/signup/accountname/add"}}, 
-            {id: "signUpComplete", value: {s: 'true' }},
-            {id: "businessName", value: {s: "thatOne"}},
-            {id: "jobTitle", value: {s: "tech"}},
-            {id: "keywords", value: {s: "abc"}},
-        
+            { id: "lastAccessedUrl", value: { s: "/signup/accountname/add" } },
+            { id: "signUpComplete", value: { s: 'true' } },
+            { id: "businessName", value: { s: "thatOne" } },
+            { id: "jobTitle", value: { s: "tech" } },
+            { id: "keywords", value: { s: '["abc"]' } },
+
         ],
         unverified: {
-        homePhones: [{address : '01475721535'}]
+            homePhones: [{ address: '01475721535' }]
         },
         metatdata: null,
         pois: null,
@@ -42,15 +42,15 @@ const contacts = [
         service: null,
         comments: null,
         additionals: [
-            {id: "lastAccessedUrl", value: {s: "/signup/accountname/add"}}, 
-            {id: "signUpComplete", value: {s: 'true' }},
-            {id: "businessName", value: {s: "thatOne"}},
-            {id: "jobTitle", value: {s: "tech"}},
-            {id: "keywords", value: {s: "abc"}},
-        
+            { id: "lastAccessedUrl", value: { s: "/signup/accountname/add" } },
+            { id: "signUpComplete", value: { s: 'true' } },
+            { id: "businessName", value: { s: "thatOne" } },
+            { id: "jobTitle", value: { s: "tech" } },
+            { id: "keywords", value: { s: '["abc"]' } },
+
         ],
         unverified: {
-        homePhones: [{address : '01475721535'}]
+            homePhones: [{ address: '01475721535' }]
         },
         metatdata: null,
         pois: null,
@@ -71,15 +71,15 @@ const contacts = [
         service: null,
         comments: null,
         additionals: [
-            {id: "lastAccessedUrl", value: {s: "/signup/accountname/add"}}, 
-            {id: "signUpComplete", value: {s: 'true' }},
-            {id: "businessName", value: {s: "thatOne"}},
-            {id: "jobTitle", value: {s: "tech"}},
-            {id: "keywords", value: {s: "abc"}},
-        
+            { id: "lastAccessedUrl", value: { s: "/signup/accountname/add" } },
+            { id: "signUpComplete", value: { s: 'true' } },
+            { id: "businessName", value: { s: "thatOne" } },
+            { id: "jobTitle", value: { s: "tech" } },
+            { id: "keywords", value: { s: '["two"]' } },
+
         ],
         unverified: {
-        homePhones: [{address : '01475721535'}]
+            homePhones: [{ address: '01475721535' }]
         },
         metatdata: null,
         pois: null,
@@ -100,23 +100,23 @@ const contacts = [
         service: null,
         comments: null,
         additionals: [
-            {id: "lastAccessedUrl", value: {s: "/signup/accountname/add"}}, 
-            {id: "signUpComplete", value: {s: 'true' }},
-            {id: "businessName", value: {s: "thatOne"}},
-            {id: "jobTitle", value: {s: "tech"}},
-            {id: "keywords", value: {s: "abc"}},
-        
+            { id: "lastAccessedUrl", value: { s: "/signup/accountname/add" } },
+            { id: "signUpComplete", value: { s: 'true' } },
+            { id: "businessName", value: { s: "thatOne" } },
+            { id: "jobTitle", value: { s: "tech" } },
+            { id: "keywords", value: { s: '["abc", "one"]' } },
+
         ],
         unverified: {
-        homePhones: [{address : '01475721535'}]
+            homePhones: [{ address: '01475721535' }]
         },
         metatdata: null,
         pois: null,
         role: null,
         pendingRole: null
     }
-  ]
+]
 
-  module.exports = {
+module.exports = {
     allContacts: contacts
-  }
+}

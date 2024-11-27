@@ -30,11 +30,11 @@ module.exports = [
           const invalid = convertToPois(result.data.invalid)
           // add unique location ID and add to elsaticache
           valid.forEach(async (location) => {
-            location.meta_data.location_id = uuidv4()
+            location.id = uuidv4()
             await addLocation(orgId, location)
           })
           invalid.forEach(async (location) => {
-            location.meta_data.location_id = uuidv4()
+            location.id = uuidv4()
             await addInvLocation(orgId, location)
           })
 

@@ -200,13 +200,6 @@ const userSlice = createSlice({
     setNearbyTargetAreasFlow: (state, action) => {
       state.nearbyTargetAreaFlow = action.payload
     },
-    // keywords - temporary
-    setLocationKeywords: (state, action) => {
-      state.locationKeywords = action.payload
-    },
-    setContactKeywords: (state, action) => {
-      state.contactKeywords = action.payload
-    },
     // required for predefined boundary flow
     setSelectedBoundaryType: (state, action) => {
       state.selectedBoundaryType = action.payload
@@ -481,9 +474,6 @@ export const {
   setSelectedFloodAlertArea,
   setShowOnlySelectedFloodArea,
   setNearbyTargetAreasFlow,
-  // keywords - temporary
-  setLocationKeywords,
-  setContactKeywords,
   // required for predefined boundary flow
   setSelectedBoundaryType,
   setSelectedBoundary,

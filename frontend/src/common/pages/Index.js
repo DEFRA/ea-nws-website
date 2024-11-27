@@ -7,16 +7,12 @@ import NotificationBanner from '../components/gov-uk/NotificationBanner'
 import AlertType from '../enums/AlertType'
 import {
   clearAuth,
-  setAuthToken,
-  setContactKeywords,
-  setContactPreferences,
+  setAuthToken, setContactPreferences,
   setCurrentLocation,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
   setCurrentLocationNorthing,
-  setLocationBoundaries,
-  setLocationKeywords,
-  setOrgCurrentContact,
+  setLocationBoundaries, setOrgCurrentContact,
   setOrgId,
   setProfile,
   setRegistrations,
@@ -300,31 +296,6 @@ export default function IndexPage () {
     )
   }
 
-  const mockLocationKeywords = [
-    {
-      name: 'Location Keyword 1',
-      linked_ids: ['id', 'id']
-    },
-    {
-      name: 'Location Keyword 2',
-      linked_ids: ['id']
-    },
-    {
-      name: 'Location Keyword 3',
-      linked_ids: []
-    }
-  ]
-  const mockContactKeywords = [
-    {
-      name: 'Contact Keyword 1',
-      linked_ids: ['id', 'id']
-    },
-    {
-      name: 'Contact Keyword 2',
-      linked_ids: ['id']
-    }
-  ]
-
   const mockOrgCurrentContact = {
     id: null,
     enabled: null,
@@ -434,8 +405,6 @@ export default function IndexPage () {
       dispatch(setSelectedBoundary(null))
       dispatch(setLocationBoundaries([]))
       dispatch(setOrgCurrentContact(mockOrgCurrentContact))
-      dispatch(setLocationKeywords(mockLocationKeywords))
-      dispatch(setContactKeywords(mockContactKeywords))
       dispatch(setOrgId('1'))
       dispatch(setCurrentLocationEasting('520814'))
       dispatch(setCurrentLocationNorthing('185016'))

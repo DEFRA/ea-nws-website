@@ -186,13 +186,29 @@ const searchLocations = async (orgId, searchKey, value) => {
   return locationArr
 }
 
+const findLocationByName = async (orgId, locationName) => {
+  const locationKeys = await getLocationKeys(orgId)
+  const matchingLocations = []
+  await Promise.all(locationKeys.map(async (key) => {
+    const location = await getJsonData(key)
+    location.additionals.forEach((additional) => {
+      if (additional.id === 'locationName') {
+        if (additional.value.s === locationName) {
+          matchingLocations.push(location)
+        }
+      }
+    })
+  }))
+  return matchingLocations
+}
+
 /*
 Functions for invalid locations to be used during bulk upload
 for manually matching locations to coordinates
 */
 
 const addInvLocation = async (orgId, location) => {
-  const locationID = location.meta_data.location_id
+  const locationID = location.id
   const key = orgId + ':t_invPOIS:' + locationID
   await setJsonData(key, location)
   await addToList(orgId + ':t_invPOIS_locID', locationID)
@@ -317,6 +333,7 @@ module.exports = {
   removeLocation,
   updateLocation,
   searchLocations,
+  findLocationByName,
   listLocations,
   addInvLocation,
   removeInvLocation,

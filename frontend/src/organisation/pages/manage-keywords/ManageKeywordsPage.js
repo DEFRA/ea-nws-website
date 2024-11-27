@@ -1,7 +1,7 @@
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -11,17 +11,12 @@ import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../common/components/gov-uk/Pagination'
-import {
-  setContactKeywords,
-  setLocationKeywords
-} from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import KeywordsTable from '../../components/custom/KeywordsTable'
 
 export default function ManageKeywordsPage () {
   const navigate = useNavigate()
   const [keywords, setKeywords] = useState([])
-  const dispatch = useDispatch()
   const [keywordType, setKeywordType] = useState('location')
   const [notificationText, setNotificationText] = useState('')
   const [selectedKeywords, setSelectedKeywords] = useState([])
@@ -232,9 +227,9 @@ export default function ManageKeywordsPage () {
     })
 
     if (keywordType === 'location') {
-      dispatch(setLocationKeywords(updatedKeywords))
+      // TODO: geosafe call and logic to update keywords then elasticache
     } else {
-      dispatch(setContactKeywords(updatedKeywords))
+      // TODO: geosafe call and logic to update keywords then elasticache
     }
 
     setKeywords([...updatedKeywords])
@@ -250,9 +245,9 @@ export default function ManageKeywordsPage () {
     )
 
     if (keywordType === 'location') {
-      dispatch(setLocationKeywords(updatedKeywords))
+      // TODO: geosafe call and logic to update keywords then elasticache
     } else {
-      dispatch(setContactKeywords(updatedKeywords))
+      // TODO: geosafe call and logic to update keywords then elasticache
     }
     setKeywords([...updatedKeywords])
 

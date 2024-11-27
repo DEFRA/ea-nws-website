@@ -141,10 +141,12 @@ export default function ContactsTable ({
         className='govuk-!-margin-bottom-6'
         style={{ display: 'flex', color: '#505a5f' }}
       >
-        {contacts.length} {contacts.length === 1 ? 'contact' : 'contacts'}{' '}
+        {filteredContacts.length} {filteredContacts.length === 1 ? 'contact' : 'contacts'}{' '}
         <span style={{ margin: '0 20px' }}>|</span>
-        {selectedContacts.length}{' '}
-        {selectedContacts.length === 1 ? 'contact' : 'contacts'} selected{' '}
+        <span style={{ color: '#1d70b8' }}>
+          {selectedContacts.length}{' '}
+          {selectedContacts.length === 1 ? 'contact' : 'contacts'} selected{' '}
+        </span>
       </p>
       <table className='govuk-table govuk-table--small-text-until-tablet'>
         <thead className='govuk-table__head'>
@@ -167,7 +169,7 @@ export default function ContactsTable ({
             </th>
             <th scope='col' className='govuk-table__header' aria-sort={contactNameSort}>
               <button type='button' onClick={() => sortContactNames()}>
-                Contact name
+                Name
               </button>
             </th>
             <th scope='col' className='govuk-table__header' aria-sort={jobTitleSort}>

@@ -6,6 +6,7 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import Select from '../../../../../common/components/gov-uk/Select'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
+import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import ContactsTable from './dashboard-components/ContactsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
@@ -47,6 +48,10 @@ export default function ViewContactsDashboardPage () {
   )
 
   useEffect(() => {
+    setFilteredContacts(contacts)
+  }, [])
+
+  useEffect(() => {
     setCurrentPage(1)
     setSelectedContacts([])
     setResults(null)
@@ -62,24 +67,14 @@ export default function ViewContactsDashboardPage () {
     )
   }, [filteredContacts, currentPage])
 
-  useEffect(() => {
-    setContacts(contacts)
-    setFilteredContacts(contacts)
-  }, [contacts])
-
-  const [selectedOption, setSelectedOption] = useState([
-    {
-      label: "Banana",
-      value: "b",
-    },
-  ]);
-
   const moreActions = [
     'Link selected to locations', 
     'Delete selected'
   ]
 
   // selected filters
+  const [contactNameFilter, setContactNameFilter] =
+    useState([])
   const [selectedJobTitleFilters, setSelectedJobTitleFilters] =
     useState([])
   const [selectedEmailFilters, setSelectedEmailFilters] =
@@ -134,27 +129,53 @@ export default function ViewContactsDashboardPage () {
 
   const onMoreAction = (action) => {
     if (action === 'Link selected to locations') {
-
+      // TODO
     }
     else if (action === 'Delete selected') {
       selectDeleteDialog()
     }
-    
+  }
+
+  const onClickLinked = (type) => {
+    const updatedFilteredContacts = contacts.filter((contact) =>
+      (type === 'linked' && contact.linked_locations.length > 0) ||
+      (type === 'notLinked' && contact.linked_locations.length == 0)
+    )
+
+    let selectedFilterType = []
+    if (type === 'linked') {
+      selectedFilterType = 'Yes'
+    }
+    else {
+      selectedFilterType = 'No'
+    }
+
+    setSelectedLinkedFilters([selectedFilterType])
+    setSelectedFilters([selectedFilterType])
+    setIsFilterVisible(true)
+
+    setFilteredContacts([...updatedFilteredContacts])
   }
 
   const removeContacts = (contactsToRemove) => {
     const updatedContacts = contacts.filter(
       (contact) => !contactsToRemove.includes(contact)
     )
+    const updatedFilteredContacts = filteredContacts.filter(
+      (contact) => !contactsToRemove.includes(contact)
+    )
 
     dispatch(setContacts(updatedContacts))
     setContacts([...updatedContacts])
+    setFilteredContacts([...updatedFilteredContacts])
 
-    setNotificationText('Contact deleted')
+    setNotificationText(contactsToRemove.length > 1 ? 'Contacts deleted' : 'Contact deleted')
 
     setDialog({ ...dialog, show: false })
     setTargetContact(null)
     setSelectedContacts([])
+
+    setResetPaging(!resetPaging)
   }
 
   const handleDelete = () => {
@@ -176,7 +197,17 @@ export default function ViewContactsDashboardPage () {
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <DashboardHeader contacts={contacts} />
+          {notificationText && (
+            <NotificationBanner
+              className='govuk-notification-banner govuk-notification-banner--success'
+              title='Success'
+              text={notificationText}
+            />
+          )}
+          <DashboardHeader 
+            contacts={contacts}
+            onClickLinked={onClickLinked}
+          />
           <div className='govuk-grid-column-full govuk-body'>
             {!isFilterVisible ? (
               <>
@@ -190,7 +221,6 @@ export default function ViewContactsDashboardPage () {
                     name='MoreActions'
                     label=''
                     options={moreActions}
-                    // onSelect={() => selectDeleteDialog()}
                     onSelect={(e) => onMoreAction(e)}
                     initialSelectOptionText={
                       'More actions'
@@ -231,6 +261,8 @@ export default function ViewContactsDashboardPage () {
                   setResetPaging={setResetPaging}
                   selectedFilters={selectedFilters}
                   setSelectedFilters={setSelectedFilters}
+                  contactNameFilter={contactNameFilter}
+                  setContactNameFilter={setContactNameFilter}
                   selectedJobTitleFilters={selectedJobTitleFilters}
                   setSelectedJobTitleFilters={setSelectedJobTitleFilters}
                   selectedEmailFilters={selectedEmailFilters}
@@ -251,7 +283,7 @@ export default function ViewContactsDashboardPage () {
                     name='MoreActions'
                     label=''
                     options={moreActions}
-                    onSelect={() => selectDeleteDialog()}
+                    onSelect={(e) => onMoreAction(e)}
                     initialSelectOptionText={
                       'More actions'
                     }
@@ -272,6 +304,7 @@ export default function ViewContactsDashboardPage () {
                     setFilteredContacts={setFilteredContacts}
                     resetPaging={resetPaging}
                     setResetPaging={setResetPaging}
+                    onAction={onAction}
                   />
                   <Pagination
                     totalPages={Math.ceil(

@@ -8,7 +8,8 @@ import { urlManageContactsAdd } from '../../../../../routes/manage-contacts/Mana
 export default function DashboardHeader ({
   ContactsAdded,
   LastUpdated,
-  contacts
+  contacts,
+  onClickLinked
 }) {
   const navigate = useNavigate()
 
@@ -73,7 +74,7 @@ export default function DashboardHeader ({
               >
                 <strong>{count[0]}</strong>
               </h1>
-              <Link className='govuk-link'>
+              <Link className='govuk-link' onClick={() => onClickLinked(type)}>
                 {count[0] === 1 ? 'contact' : 'contacts'} {message[0]}
               </Link>
             </>

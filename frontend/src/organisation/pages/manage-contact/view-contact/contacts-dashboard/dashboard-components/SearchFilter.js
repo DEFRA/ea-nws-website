@@ -17,6 +17,8 @@ export default function SearchFilter ({
   setResetPaging,
   selectedFilters,
   setSelectedFilters,
+  contactNameFilter,
+  setContactNameFilter,
   selectedJobTitleFilters,
   setSelectedJobTitleFilters,
   selectedEmailFilters,
@@ -24,12 +26,6 @@ export default function SearchFilter ({
   selectedLinkedFilters,
   setSelectedLinkedFilters
 }) {
-  // filters
-  const [contactNameFilter, setContactNameFilter] = useState('')
-  const [jobTitleFilter, setJobTitleFilter] = useState('')
-  const [emailFilter, setEmailFilter] = useState('')
-  const [linkedFilter, setLinkedFilter] = useState('')
-
   const jobTitles = [
     ...new Set(
       contacts
@@ -51,10 +47,10 @@ export default function SearchFilter ({
   ]
 
   // search filters visibility
-  const [contactNameVisible, setContactNameVisible] = useState(true)
-  const [jobTitleVisible, setJobTitleVisible] = useState(true)
-  const [emailVisible, setEmailVisible] = useState(true)
-  const [linkedVisible, setLinkedVisible] = useState(true)
+  const [contactNameVisible, setContactNameVisible] = useState(false)
+  const [jobTitleVisible, setJobTitleVisible] = useState(false)
+  const [emailVisible, setEmailVisible] = useState(false)
+  const [linkedVisible, setLinkedVisible] = useState(false)
 
   // handle filters applied
   const handleFilterChange = (e, setFilters) => {
@@ -80,8 +76,7 @@ export default function SearchFilter ({
     if (contactNameFilter) {
       filteredContacts = filteredContacts.filter((contact) =>
         contact.name
-          .toLowerCase()
-          .includes(contactNameFilter.toLowerCase())
+          .includes(contactNameFilter)
       )
     }
 
@@ -127,7 +122,7 @@ export default function SearchFilter ({
   // Contact name filter
   const contactNameSearchFilter = (
     <>
-      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3' />
+      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 govuk-!-margin-left-3 govuk-!-margin-right-3' />
       <div
         className='contacts-filter-section'
         onClick={() => setContactNameVisible(!contactNameVisible)}
@@ -136,9 +131,14 @@ export default function SearchFilter ({
           icon={contactNameVisible ? faAngleUp : faAngleDown}
           size='lg'
         />
-        <p className='contacts-filter-title'>Contact name</p>
+        <label className='govuk-label'
+            style={{
+              color: '#1d70b8'
+            }}>
+            Contact name
+          </label>
       </div>
-      {contactNameVisible && (
+      {(contactNameVisible || contactNameFilter.length > 0) && (
         <div class='govuk-form-group'>
           <div class='input-with-icon'>
             <FontAwesomeIcon icon={faMagnifyingGlass} className='input-icon' />
@@ -168,7 +168,7 @@ export default function SearchFilter ({
   ) => {
     return (
       <>
-        <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3' />
+        <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3 govuk-!-margin-left-3 govuk-!-margin-right-3'/>
         <div
           className='contacts-filter-section'
           onClick={() => {
@@ -176,7 +176,13 @@ export default function SearchFilter ({
           }}
         >
           <FontAwesomeIcon icon={visible ? faAngleUp : faAngleDown} size='lg' />
-          <p className='contacts-filter-title'>{filterTitle}</p>
+          &nbsp;
+          <label className='govuk-label'
+            style={{
+              color: '#1d70b8'
+            }}>
+            {filterTitle}
+          </label>
         </div>
         {visible && (
           <div className='govuk-checkboxes govuk-checkboxes--small'>
@@ -201,108 +207,117 @@ export default function SearchFilter ({
 
     return (
       <>
+        <div className='selected-filter'>
         <h3 className='govuk-heading-s govuk-!-margin-top-5 govuk-!-margin-bottom-2'>
           {filterName}
         </h3>
         {filterArray.map((filter, index) => (
           <div key={index} className='filter'>
-            {filter}
-
-            <button
-              className='filter-button'
+            <label className='govuk-label'>
+              {filter}
+            </label>
+            <FontAwesomeIcon icon={faXmark} 
               onClick={() => {
                 setFilterArray(filterArray.filter((item) => item !== filter))
-              }}
-            >
-              <FontAwesomeIcon icon={faXmark} />
-            </button>
+              }}/>
           </div>
         ))}
+        </div>
       </>
     )
   }
 
   return (
     <>
-      <div className='contacts-filter-header'>
-        <h1 className='govuk-heading-m govuk-!-margin-bottom-2'>Filter</h1>
-      </div>
-
-      {/* Selected filters */}
-      {selectedFilters?.length > 0 && (
-        <div className='contacts-filter-selected'>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center'
-            }}
-          >
-            <h2 className='govuk-heading-s' style={{ marginBottom: '0' }}>
-              Selected filters
-            </h2>
-            <Link
-              onClick={clearFilters}
-              className='govuk-body govuk-link inline-link'
-              style={{ marginLeft: 'auto', marginBottom: '0' }}
-            >
-              Clear filters
-            </Link>
-          </div>
-          {selectedFilterContents(
-            'Job title',
-            selectedJobTitleFilters,
-            setSelectedJobTitleFilters
-          )}
-          {selectedFilterContents(
-            'Email',
-            selectedEmailFilters,
-            setSelectedEmailFilters
-          )}
-          {selectedFilterContents(
-            'Linked locations',
-            selectedLinkedFilters,
-            setSelectedLinkedFilters
-          )}
+      {/* <div className='dfe-card'> */}
+      <div className='contacts-filter-panel'
+        style={{
+          borderStyle: 'solid',
+          borderWidth: 'thin',
+          borderColor: '#b1b4b6',
+          gap: 15
+        }}>
+        <div className='contacts-filter-header'>
+          <h1 className='govuk-heading-m govuk-!-margin-bottom-2'>Filter</h1>
         </div>
-      )}
 
-      <div className=' govuk-!-margin-top-6'>
-        <Button
-          text='Apply Filter'
-          className='govuk-button govuk-button--primary'
-          onClick={() => filterContacts()}
-        />
-      </div>
+        {/* Selected filters */}
+        {selectedFilters?.length > 0 && (
+          <div className='contacts-filter-selected'
+            style={{
+              borderStyle: 'none none solid',
+              borderWidth: 'thin',
+              borderColor: '#b1b4b6'
+          }}>
+            <div>
+              <h2 className='govuk-heading-s' style={{ marginBottom: '0' }}>
+                Selected filters
+              </h2>
+              <Link
+                onClick={clearFilters}
+                className='govuk-body govuk-link inline-link'
+                style={{ marginLeft: 'auto', marginBottom: '0' }}
+              >
+                Clear filters
+              </Link>
+            </div>
+            {selectedFilterContents(
+              'Job title',
+              selectedJobTitleFilters,
+              setSelectedJobTitleFilters
+            )}
+            {selectedFilterContents(
+              'Email',
+              selectedEmailFilters,
+              setSelectedEmailFilters
+            )}
+            {selectedFilterContents(
+              'Linked locations',
+              selectedLinkedFilters,
+              setSelectedLinkedFilters
+            )}
+          </div>
+        )}
 
-      {/* Filters */}
-      {contactNameSearchFilter}
+        <div className=' govuk-!-margin-top-6'>
+          <Button
+            text='Apply filters'
+            className='govuk-button govuk-button--primary'
+            onClick={() => filterContacts()}
+          />
+        </div>
 
-      {otherFilter(
-        'Job title',
-        jobTitles,
-        selectedJobTitleFilters,
-        setSelectedJobTitleFilters,
-        jobTitleVisible,
-        setJobTitleVisible,
-      )}
+        {/* Filters */}
+        {contactNameSearchFilter}
 
-      {otherFilter(
-        'Email',
-        emails,
-        selectedEmailFilters,
-        setSelectedEmailFilters,
-        emailVisible,
-        setEmailVisible
-      )}
+        {otherFilter(
+          'Job title',
+          jobTitles,
+          selectedJobTitleFilters,
+          setSelectedJobTitleFilters,
+          (jobTitleVisible || selectedJobTitleFilters.length > 0),
+          setJobTitleVisible,
+        )}
 
-      {otherFilter(
-        'Linked locations',
-        linkedLocations,
-        selectedLinkedFilters,
-        setSelectedLinkedFilters,
-        linkedVisible,
-        setLinkedVisible
-      )}
+        {otherFilter(
+          'Email',
+          emails,
+          selectedEmailFilters,
+          setSelectedEmailFilters,
+          (emailVisible || selectedEmailFilters.length > 0),
+          setEmailVisible
+        )}
+
+        {otherFilter(
+          'Linked locations',
+          linkedLocations,
+          selectedLinkedFilters,
+          setSelectedLinkedFilters,
+          (linkedVisible || selectedLinkedFilters.length > 0),
+          setLinkedVisible
+        )}
+    {/* </div> */}
+    </div>
     </>
   )
 }

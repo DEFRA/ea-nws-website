@@ -21,7 +21,7 @@ import {
   getSurroundingFloodAreas,
   isLocationInFloodArea
 } from '../../../common/services/WfsFloodDataService'
-export default function LocationSearchResultsLayout({ continueToNextPage }) {
+export default function LocationSearchResultsLayout ({ continueToNextPage }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [currentPage, setCurrentPage] = useState(1)
@@ -40,7 +40,7 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
   const [floodHistoryData, setFloodHistoryData] = useState(null)
 
   useEffect(() => {
-    async function getHistoryUrl() {
+    async function getHistoryUrl () {
       const { data } = await backendCall(
         'data',
         'api/locations/download_flood_history'
@@ -57,7 +57,7 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
   }, [floodHistoryUrl])
 
   const setHistoricalAlertNumber = (AlertArea) => {
-    let oneYearAgo = new moment().subtract(1, 'years')
+    const oneYearAgo = new moment().subtract(1, 'years')
 
     const areaAlert = floodHistoryData.filter(
       (alert) =>
@@ -68,7 +68,7 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
   }
 
   const setHistoricalWarningNumber = (WarningArea) => {
-    let oneYearAgo = new moment().subtract(1, 'years')
+    const oneYearAgo = new moment().subtract(1, 'years')
 
     const areaWarning = floodHistoryData.filter(
       (alert) =>
@@ -160,66 +160,69 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>
           <div className='govuk-grid-row'>
-            {loading ? (
-              <LoadingSpinner />
-            ) : (
-              <div className='govuk-grid-column-two-thirds'>
-                <div className='govuk-body'>
-                  <h1 className='govuk-heading-l'>
-                    {locationPostCode
-                      ? 'Select an address'
-                      : 'Select a location'}
-                  </h1>
-                  {locationPostCode && (
-                    <p className='govuk-body'>
-                      Postcode: {locationPostCode}
-                      {'   '}
-                      <Link
-                        onClick={() => navigate(-1)}
-                        className='govuk-link govuk-!-padding-left-5'
-                      >
-                        Change postcode
-                      </Link>
-                    </p>
-                  )}
-                  <table className='govuk-table'>
-                    <tbody className='govuk-table__body'>
-                      <tr className='govuk-table__row'>
-                        <td className='govuk-table__cell' />
-                      </tr>
-                      {displayedLocations.map((location, index) => (
-                        <tr key={index} className='govuk-table__row'>
-                          <td className='govuk-table__cell'>
-                            <Link
-                              className='govuk-link'
-                              onClick={(event) =>
-                                handleSelectedLocation(event, location)
-                              }
-                            >
-                              {location.address}
-                            </Link>
-                          </td>
+            {loading
+              ? (
+                <LoadingSpinner />
+                )
+              : (
+                <div className='govuk-grid-column-two-thirds'>
+                  <div className='govuk-body'>
+                    <h1 className='govuk-heading-l'>
+                      {locationPostCode
+                        ? 'Select an address'
+                        : 'Select a location'}
+                    </h1>
+                    {locationPostCode && (
+                      <p className='govuk-body'>
+                        Postcode: {locationPostCode}
+                        {'   '}
+                        <Link
+                          onClick={() => navigate(-1)}
+                          className='govuk-link govuk-!-padding-left-5'
+                        >
+                          Change postcode
+                        </Link>
+                      </p>
+                    )}
+                    <table className='govuk-table'>
+                      <tbody className='govuk-table__body'>
+                        <tr className='govuk-table__row'>
+                          <td className='govuk-table__cell' />
                         </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  {locationPostCode ? (
-                    <Details
-                      title='I cannot find my address here'
-                      text={detailsMessage}
+                        {displayedLocations.map((location, index) => (
+                          <tr key={index} className='govuk-table__row'>
+                            <td className='govuk-table__cell'>
+                              <Link
+                  className='govuk-link'
+                  onClick={(event) =>
+                                handleSelectedLocation(event, location)}
+                >
+                  {location.address}
+                </Link>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                    {locationPostCode
+                      ? (
+                        <Details
+                          title='I cannot find my address here'
+                          text={detailsMessage}
+                        />
+                        )
+                      : (
+                        <Link onClick={() => navigate(-1)} className='govuk-link'>
+                          Search using a different location
+                        </Link>
+                        )}
+                    <Pagination
+                      totalPages={Math.ceil(locations.length / locationsPerPage)}
+                      onPageChange={(val) => setCurrentPage(val)}
                     />
-                  ) : (
-                    <Link onClick={() => navigate(-1)} className='govuk-link'>
-                      Search using a different location
-                    </Link>
-                  )}
-                  <Pagination
-                    totalPages={Math.ceil(locations.length / locationsPerPage)}
-                    onPageChange={(val) => setCurrentPage(val)}
-                  />
+                  </div>
                 </div>
-              </div>
-            )}
+                )}
           </div>
         </div>
       </main>

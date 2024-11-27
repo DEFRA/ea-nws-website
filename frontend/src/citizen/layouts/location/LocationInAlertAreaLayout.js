@@ -20,7 +20,7 @@ import {
 } from '../../../common/services/ProfileServices'
 import { getCoordsOfFloodArea } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInAlertAreaLayout({
+export default function LocationInAlertAreaLayout ({
   continueToNextPage,
   continueToSearchResultsPage,
   canCancel
@@ -294,7 +294,7 @@ export default function LocationInAlertAreaLayout({
             </ul>
             <p>
               Total sent in last year:{' '}
-              <b>{floodAlertCount ? floodAlertCount : 0}</b>
+              <b>{floodAlertCount || 0}</b>
             </p>
             {additionalAlerts && (
               <>

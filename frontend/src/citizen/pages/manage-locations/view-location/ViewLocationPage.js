@@ -48,7 +48,7 @@ const floodAlertCardDetails = (
   </>
 )
 
-export default function ViewLocationPage() {
+export default function ViewLocationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const { type } = useParams()
@@ -77,7 +77,7 @@ export default function ViewLocationPage() {
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData() {
+    async function fetchFloodAreaData () {
       const { alertArea, warningArea } = await getSurroundingFloodAreas(
         selectedLocation.coordinates.latitude,
         selectedLocation.coordinates.longitude
@@ -91,7 +91,7 @@ export default function ViewLocationPage() {
   // get flood history data
   useEffect(() => {
     const setHistoricalAlertNumber = () => {
-      let oneYearAgo = new moment().subtract(1, 'years')
+      const oneYearAgo = new moment().subtract(1, 'years')
       if (alertArea) {
         const taCodes = alertArea.features.map((el) => {
           return el.properties.FWS_TACODE
@@ -106,7 +106,7 @@ export default function ViewLocationPage() {
     }
 
     const setHistoricalWarningNumber = () => {
-      let oneYearAgo = new moment().subtract(1, 'years')
+      const oneYearAgo = new moment().subtract(1, 'years')
 
       if (warningArea) {
         const taCodes = warningArea.features.map((el) => {
@@ -121,7 +121,7 @@ export default function ViewLocationPage() {
       }
     }
 
-    async function getHistoryUrl() {
+    async function getHistoryUrl () {
       const { data } = await backendCall(
         'data',
         'api/locations/download_flood_history'
@@ -134,7 +134,7 @@ export default function ViewLocationPage() {
         })
     }
 
-    async function processFloodHist() {
+    async function processFloodHist () {
       await getHistoryUrl()
 
       if (floodHistoryData) {
@@ -267,7 +267,7 @@ export default function ViewLocationPage() {
                     <p className='govuk-body'>
                       Sent in last year:{' '}
                       <b>
-                        {severeFloodWarningCount ? severeFloodWarningCount : 0}
+                        {severeFloodWarningCount || 0}
                       </b>
                     </p>
                     <Details
@@ -355,7 +355,7 @@ export default function ViewLocationPage() {
                     </p>
                     <p className='govuk-body'>
                       Sent in last year:{' '}
-                      <b>{floodAlertCount ? floodAlertCount : 0}</b>
+                      <b>{floodAlertCount || 0}</b>
                     </p>
                     <Details
                       title='Risks when these are in force'

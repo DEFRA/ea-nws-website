@@ -26,7 +26,7 @@ import {
   getCoordsOfFloodArea
 } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout({
+export default function LocationInSevereWarningAreaLayout ({
   continueToNextPage
 }) {
   const navigate = useNavigate()
@@ -260,7 +260,7 @@ export default function LocationInSevereWarningAreaLayout({
             </p>
             <p>
               Total sent in last year:{' '}
-              <b>{severeFloodWarningCount ? severeFloodWarningCount : 0}</b>
+              <b>{severeFloodWarningCount || 0}</b>
             </p>
             <Button
               text='Confirm you want this location'

@@ -39,22 +39,22 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
   const [floodHistoryUrl, setHistoryUrl] = useState(null)
   const [floodHistoryData, setFloodHistoryData] = useState(null)
 
-  async function getHistoryUrl() {
-    const { data } = await backendCall(
-      'data',
-      'api/locations/download_flood_history'
-    )
-    setHistoryUrl(data)
-  }
-
   useEffect(() => {
+    async function getHistoryUrl() {
+      const { data } = await backendCall(
+        'data',
+        'api/locations/download_flood_history'
+      )
+      setHistoryUrl(data)
+    }
+
     getHistoryUrl()
     fetch(floodHistoryUrl)
       .then((response) => response.text())
       .then((data) => {
         setFloodHistoryData(csvToJson(data))
       })
-  })
+  }, [floodHistoryUrl])
 
   const setHistoricalAlertNumber = (AlertArea) => {
     let oneYearAgo = new moment().subtract(1, 'years')
@@ -77,6 +77,7 @@ export default function LocationSearchResultsLayout({ continueToNextPage }) {
     )
     dispatch(setSevereFloodWarningCount(areaWarning.length))
   }
+
   const handleSelectedLocation = async (event, selectedLocation) => {
     event.preventDefault()
 

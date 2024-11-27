@@ -15,6 +15,8 @@ const checkKeyExists = async (key) => {
   const client = await connectToRedis()
   // send the data
   const keyExists = await client.exists(key)
+  console.log('key exists')
+  console.log(keyExists)
   // disconnect as we don't need the connection open anymore
   await client.disconnect()
   return keyExists
@@ -85,7 +87,7 @@ const addToJsonArr = async (key, value) => {
   const arrExists = await checkKeyExists(key)
   if (arrExists) {
     const client = await connectToRedis()
-    await client.json.arrAppend(key, value)
+    await client.json.arrAppend(key, '.',value)
     await client.disconnect()
   } else {
     await setJsonData(key, [value])
@@ -124,15 +126,15 @@ const addLocation = async (orgId, location) => {
   await setJsonData(key, location)
   // add location ID to list
   await addToList(orgId + ':t_POIS_locID', locationID)
-  const keywords = location.additionals.forEach((additional) => {
+  let keywords = []
+  location.additionals.forEach((additional) => {
     if (additional.id === 'keywords') {
-      return JSON.parse(additional.value.s)
+      keywords = JSON.parse(additional.value?.s)
     }
   })
-
-  await Promise.all(keywords().map(async (keyword) => {
+  for (const keyword of keywords) {
     await addToKeywordArr(orgId + ':t_Keywords_location', { name: keyword, linked_ids: [locationID] })
-  }))
+  }
 }
 
 const removeLocation = async (orgId, locationID) => {
@@ -160,10 +162,10 @@ const getLocationKeys = async (orgId) => {
 const listLocations = async (orgId) => {
   const locationKeys = await getLocationKeys(orgId)
   const locationArr = []
-  locationKeys.forEach((key) => {
-    const location = getJsonData(key)
+  await Promise.all(locationKeys.map(async (key) => {
+    const location = await getJsonData(key)
     locationArr.push(location)
-  })
+  }))
   return locationArr
 }
 
@@ -246,15 +248,15 @@ const addContact = async (orgId, contact) => {
   await setJsonData(key, contact)
   // add Contact ID to list
   await addToList(orgId + ':t_Contacts_ID', contactID)
-  const keywords = contact.additionals.forEach((additional) => {
+  let keywords = []
+  contact.additionals.forEach((additional) => {
     if (additional.id === 'keywords') {
-      return JSON.parse(additional.value.s)
+      keywords = JSON.parse(additional.value?.s)
     }
   })
-
-  await Promise.all(keywords().map(async (keyword) => {
+  for (const keyword of keywords) {
     await addToKeywordArr(orgId + ':t_Keywords_contact', { name: keyword, linked_ids: [contactID] })
-  }))
+  }
 }
 
 const getContactKeys = async (orgId) => {
@@ -272,32 +274,29 @@ const orgSignIn = async (profile, organization, locations, contacts) => {
   const orgExists = await checkKeyExists(organization.id + ':org_data')
   if (orgExists) {
     const existingLocations = await getLocationKeys(organization.id)
-    const existingLocationIds = existingLocations.forEach((location) => {
-      location = location.split(':')[-1]
-    })
-    await Promise.all(locations.map(async (location) => {
+    const existingLocationIds = existingLocations.map(location => location.split(':').at(-1)
+    )
+    for (const location of locations) {
       if (!existingLocationIds.includes(location.id)) {
         await addLocation(organization.id, location)
       }
-    }))
-
+    }
     const existingContacts = await getContactKeys(organization.id)
-    const existingContactIds = existingContacts.forEach((contact) => {
-      contact = contact.split(':')[-1]
-    })
-    await Promise.all(contacts.map(async (contact) => {
+    const existingContactIds = existingContacts.map(contact => contact.split(':').at(-1)
+    )
+    for (const contact of contacts) {
       if (!existingContactIds.includes(contact.id)) {
         await addContact(organization.id, contact)
       }
-    }))
+    }
   } else {
     await setJsonData(organization.id + ':org_data', organization)
-    await Promise.all(locations.map(async (location) => {
+    for (const location of locations) {
       await addLocation(organization.id, location)
-    }))
-    await Promise.all(contacts.map(async (contact) => {
+    }
+    for (const contact of contacts) {
       await addContact(organization.id, contact)
-    }))
+    }
   }
 }
 

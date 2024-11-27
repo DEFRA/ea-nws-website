@@ -16,8 +16,8 @@ const geoSafeToWebLocation = (geoSafeLocation) => {
     }
   }
 
-  const additionals = geoSafeLocation.additionals
-  additionals.forEach(additional => {
+  const additionals = geoSafeLocation?.additionals
+  additionals?.forEach(additional => {
     if (additional.id === 'keywords') {
       location.additionals.keywords = JSON.parse(additional.value?.s)
     } else if (additional.id === 'other') {
@@ -26,6 +26,8 @@ const geoSafeToWebLocation = (geoSafeLocation) => {
       location.additionals[additional.id] = additional.value?.s
     }
   })
+
+  console.log(location)
 
   return location
 }

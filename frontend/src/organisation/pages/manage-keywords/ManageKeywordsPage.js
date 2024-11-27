@@ -1,6 +1,6 @@
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -16,6 +16,7 @@ import KeywordsTable from '../../components/custom/KeywordsTable'
 
 export default function ManageKeywordsPage () {
   const navigate = useNavigate()
+  const [cacheKeywords, setCacheKeywords] = useState([])
   const [keywords, setKeywords] = useState([])
   const [keywordType, setKeywordType] = useState('location')
   const [notificationText, setNotificationText] = useState('')
@@ -63,24 +64,31 @@ export default function ManageKeywordsPage () {
 
   const orgId = useSelector((state) => state.session.orgId)
 
-  useEffect(() => {
+  useMemo(() => {
     const getKeywords = async () => {
       const key = orgId + (keywordType === 'location' ? ':t_Keywords_location' : ':t_Keywords_contact')
+      console.log(key)
       const dataToSend = { key }
       const { data } = await backendCall(
         dataToSend,
         'api/elasticache/get_data',
         navigate
       )
-      let orgKeywords = null
+      console.log('kkeywords')
+      console.log(data)
+      let orgKeywords = []
       if (data) {
         orgKeywords = data
       }
-      setKeywords(orgKeywords)
-      setFilteredKeywords(keywords)
+      setCacheKeywords(orgKeywords)
     }
     getKeywords()
-  }, [keywordType, keywords])
+  }, [keywordType])
+
+  useEffect(() => {
+    setKeywords(cacheKeywords)
+    setFilteredKeywords(keywords)
+  }, [cacheKeywords, keywords])
 
   const handleSearch = () => {
     if (searchInput) {

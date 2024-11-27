@@ -28,6 +28,7 @@ export default function ViewLocationsDashboardPage () {
       )
       const l = []
       if (data) {
+        console.log(data)
         data.forEach((location) => {
           l.push(geoSafeToWebLocation(location))
         })

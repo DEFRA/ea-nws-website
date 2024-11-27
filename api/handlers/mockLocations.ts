@@ -47,7 +47,7 @@ const locations = [
       { id: 'locationName', value: { s: 'Location_02 - xy coord variant' } },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
-      { id: 'keywords', value: { s: '' } },
+      { id: 'keywords', value: { s: '[]' } },
       {
         id: 'other',
         value: {
@@ -82,7 +82,7 @@ const locations = [
       { id: 'locationName', value: { s: 'Location_03 - shapefile polygon variant' } },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
-      { id: 'keywords', value: { s: '' } },
+      { id: 'keywords', value: { s: '[]' } },
       {
         id: 'other',
         value: {
@@ -117,7 +117,7 @@ const locations = [
       { id: 'locationName', value: { s: 'Location_04 - shapefile line variant' } },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
-      { id: 'keywords', value: { s: '' } },
+      { id: 'keywords', value: { s: '[]' } },
       {
         id: 'other',
         value: {
@@ -152,7 +152,7 @@ const locations = [
       { id: 'locationName', value: { s: 'Location_05 - boundary variant' } },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
-      { id: 'keywords', value: { s: '["kkeyword 1". "keyword 2"]' } },
+      { id: 'keywords', value: { s: '["keyword 1", "keyword 2"]' } },
       {
         id: 'other',
         value: {

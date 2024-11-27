@@ -107,13 +107,13 @@ export default function LocationsTable ({
                 {location.additionals.locationName}
               </td>
               <td className='govuk-table__cell'>
-                {location.additionals.other.location_type}
+                {location.additionals.other?.location_type}
               </td>
               <td className='govuk-table__cell'>
-                {location.additionals.other.alertTypes > 0 ? 'Yes' : 'No'}
+                {location.additionals.other?.alertTypes > 0 ? 'Yes' : 'No'}
               </td>
               <td className='govuk-table__cell'>
-                {location.additionals.other.business_criticality}
+                {location.additionals.other?.business_criticality}
               </td>
               <td className='govuk-table__cell'>
                 <Link onClick={(e) => viewLocation(e, location)}>

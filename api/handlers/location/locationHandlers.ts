@@ -28,10 +28,10 @@ async function getLocationList(
   req: Hapi.Request,
   res: Hapi.ResponseToolkit
 ) {
-  const { authToken, options } = req.payload as { authToken: string, options: {contactId: string} }
+  const { authToken, options } = req.payload as { authToken: string, options: { contactId: string } }
 
   if (authToken !== 'WrongAuthToken') {
-    if (options.contactId) {
+    if (options?.contactId) {
       // Geosafe returns all locations linked to contactId#
       console.log('there is a contact ID')
     } else {

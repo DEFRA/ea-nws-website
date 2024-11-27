@@ -5,7 +5,7 @@ const citizenContactAdditionals = [
   { id: 'lastAccessedUrl', value: { s: '' } },
   { id: 'businessName', value: { s: '' } },
   { id: 'jobTitle', value: { s: '' } },
-  { id: 'keywords', value: { s: '' } },
+  { id: 'keywords', value: { s: '[]' } },
 ]
 
 const orgContactAdditionals = [
@@ -13,14 +13,14 @@ const orgContactAdditionals = [
   { id: 'lastAccessedUrl', value: { s: '' } },
   { id: 'businessName', value: { s: '' } },
   { id: 'jobTitle', value: { s: '' } },
-  { id: 'keywords', value: { s: '' } },
+  { id: 'keywords', value: { s: '[]' } },
 ]
 
 const locationAdditionals = [
   { id: 'locationName', value: { s: '' } },
   { id: 'parentID', value: { s: '' } },
   { id: 'targetAreas', value: { s: '' } },
-  { id: 'keywords', value: { s: '' } },
+  { id: 'keywords', value: { s: '[]' } },
   { id: 'other', value: { s: '' } },
 ]
 

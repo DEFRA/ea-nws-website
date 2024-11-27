@@ -16,8 +16,6 @@ export const createExistingBoundaryPattern = () => {
     .attr('width', 10)
     .attr('height', 10)
 
-  // existinBoundaryPattern.append('rect').attr('width', 10).attr('height', 10)
-
   existingBoundaryPattern
     .append('path')
     .attr('d', 'M 0 10 L 10 0')

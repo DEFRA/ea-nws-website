@@ -50,7 +50,7 @@ const getCSV = async (fileName) => {
   const bucket = await getSecretKeyValue('nws/aws', 'bulkUploadBucket')
   const params = {
     Bucket: bucket,
-    Key: fileName
+    Key: `csv-uploads/${fileName}`
   }
   const command = new GetObjectCommand(params)
   let data = []

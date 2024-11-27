@@ -57,7 +57,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
   }, [floodHistoryUrl])
 
   const setHistoricalAlertNumber = (AlertArea) => {
-    const oneYearAgo = new moment().subtract(1, 'years')
+    const oneYearAgo = moment().subtract(1, 'years')
 
     const areaAlert = floodHistoryData.filter(
       (alert) =>
@@ -68,7 +68,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
   }
 
   const setHistoricalWarningNumber = (WarningArea) => {
-    const oneYearAgo = new moment().subtract(1, 'years')
+    const oneYearAgo = moment().subtract(1, 'years')
 
     const areaWarning = floodHistoryData.filter(
       (alert) =>

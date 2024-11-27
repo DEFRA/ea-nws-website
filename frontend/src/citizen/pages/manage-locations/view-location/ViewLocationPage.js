@@ -91,7 +91,7 @@ export default function ViewLocationPage () {
   // get flood history data
   useEffect(() => {
     const setHistoricalAlertNumber = () => {
-      const oneYearAgo = new moment().subtract(1, 'years')
+      const oneYearAgo = moment().subtract(1, 'years')
       if (alertArea) {
         const taCodes = alertArea.features.map((el) => {
           return el.properties.FWS_TACODE
@@ -106,7 +106,7 @@ export default function ViewLocationPage () {
     }
 
     const setHistoricalWarningNumber = () => {
-      const oneYearAgo = new moment().subtract(1, 'years')
+      const oneYearAgo = moment().subtract(1, 'years')
 
       if (warningArea) {
         const taCodes = warningArea.features.map((el) => {
@@ -265,10 +265,7 @@ export default function ViewLocationPage () {
                   </div>
                   <div className='govuk-summary-card__content'>
                     <p className='govuk-body'>
-                      Sent in last year:{' '}
-                      <b>
-                        {severeFloodWarningCount || 0}
-                      </b>
+                      Sent in last year: <b>{severeFloodWarningCount || 0}</b>
                     </p>
                     <Details
                       title='Risks when these are in force'
@@ -354,8 +351,7 @@ export default function ViewLocationPage () {
                         : 'You turned these early flood alerts off.'}
                     </p>
                     <p className='govuk-body'>
-                      Sent in last year:{' '}
-                      <b>{floodAlertCount || 0}</b>
+                      Sent in last year: <b>{floodAlertCount || 0}</b>
                     </p>
                     <Details
                       title='Risks when these are in force'

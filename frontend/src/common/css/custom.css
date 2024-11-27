@@ -81,7 +81,7 @@
 }
 
 .sub-navigation__link[aria-current='page'] {
-  color: #0b0c0c;
+  color: #1d70b8;
   position: relative;
   text-decoration: none;
 }

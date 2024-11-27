@@ -316,6 +316,18 @@
   transform: translateX(-50%);
 }
 
+.org-location-information-header {
+  color: #ffffff;
+  background-color: #505a5f;
+  padding: 0.625rem;
+}
+
+.org-location-information-footer {
+  color: #000000;
+  background-color: #f3f2f1;
+  padding: 0.5rem;
+}
+
 .map-confirm-location-box-mobile-view {
   position: absolute;
   bottom: 0px;
@@ -1293,4 +1305,8 @@
 .section-break-bold {
   border-bottom: 0.05rem solid black;
   opacity: 1;
+}
+
+.outline-1px {
+  outline: 1px solid lightgray;
 }

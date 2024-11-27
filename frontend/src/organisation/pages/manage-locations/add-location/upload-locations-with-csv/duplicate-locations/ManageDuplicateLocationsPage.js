@@ -5,8 +5,9 @@ import BackLink from '../../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import WarningText from '../../../../../../common/components/gov-uk/WarningText'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ManageDuplicateLocationsPage () {
+export default function ManageDuplicateLocationsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
@@ -28,6 +29,17 @@ export default function ManageDuplicateLocationsPage () {
 
   const handleCompareDetails = async (event, location) => {
     event.preventDefault()
+
+    // TODO: get existing location with same name
+    //       use same location for now
+    const existingLocation = location
+
+    navigate(orgManageLocationsUrls.add.duplicateLocationComparisonPage, {
+      state: {
+        existingLocation: existingLocation,
+        newLocation: location
+      }
+    })
   }
 
   const handleSubmit = async () => {
@@ -94,7 +106,8 @@ export default function ManageDuplicateLocationsPage () {
                           <td class='govuk-table__cell'>
                             <Link
                               onClick={(event) =>
-                                handleCompareDetails(event, location)}
+                                handleCompareDetails(event, location)
+                              }
                             >
                               Compare details
                             </Link>

@@ -48,7 +48,7 @@ export default function WarningContactsPreferencePage () {
 
   return (
     <>
-      <BackLink to='signup/validate' />
+      <BackLink to='/signup/validate' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

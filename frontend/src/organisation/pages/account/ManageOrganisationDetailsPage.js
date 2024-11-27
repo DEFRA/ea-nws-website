@@ -11,6 +11,8 @@ export default function ManageOrganisationDetailsPage () {
     dispatch(setSigninType('org'))
   })
 
+  const email = 'getfloodwarnings@environment-agency.gov.uk'
+
   return (
     <>
       <OrganisationAccountNavigation />
@@ -21,7 +23,7 @@ export default function ManageOrganisationDetailsPage () {
 
             <p className='govuk-!-margin-top-3'>
               To change these details, email us at{' '}
-              <Link className='govuk-link'>sampleeemail@domain.com</Link>
+              <Link className='govuk-link'>{email}.</Link>
             </p>
 
             <table className='govuk-table'>
@@ -107,6 +109,17 @@ export default function ManageOrganisationDetailsPage () {
               </tr>
               <br />
             </table>
+            <h2 className='govuk-heading-m govuk-!-margin-top-9'>
+              Delete account
+            </h2>
+            <p>
+              You'll need to email us at{' '}
+              <Link className='govuk-link'>{email}</Link>
+              {' '} to delete your account.
+            </p>
+            <p>
+              Tell us the reason why you’d like to delete your account in your email.
+            </p>
           </div>
         </div>
       </main>

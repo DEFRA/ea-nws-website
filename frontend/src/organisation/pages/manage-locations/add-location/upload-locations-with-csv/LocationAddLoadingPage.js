@@ -14,7 +14,7 @@ export default function LocationAddLoadingPage () {
   const fileName = location.state?.fileName
 
   if (!fileName) {
-    // theres not fileName so naviagte back. will need to give an error
+    // theres not fileName so navigate back. will need to give an error
     navigate(-1)
   }
 

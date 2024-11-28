@@ -48,22 +48,21 @@ export default function SearchFilter ({
 
   // search filters visibility
   const [contactNameVisible, setContactNameVisible] = useState(false)
-  const [jobTitleVisible, setJobTitleVisible] = useState(false)
-  const [emailVisible, setEmailVisible] = useState(false)
-  const [linkedVisible, setLinkedVisible] = useState(false)
+  const [jobTitleVisible, setJobTitleVisible] = useState(selectedJobTitleFilters.length > 0)
+  const [emailVisible, setEmailVisible] = useState(selectedEmailFilters.length > 0)
+  const [linkedVisible, setLinkedVisible] = useState(selectedLinkedFilters.length > 0)
 
   // handle filters applied
   const handleFilterChange = (e, setFilters) => {
     const { value } = e.target
     setFilters((prev) => {
-      if (prev.includes(value)) {
-        setSelectedFilters(
-          ...selectedFilters,
-          ...prev.filter((preference) => preference !== value)
-        )
+      if (selectedFilters.includes(value)) {
+        setSelectedFilters([
+          ...selectedFilters.filter((preference) => preference !== value)
+        ])
         return prev.filter((preference) => preference !== value)
       } else {
-        setSelectedFilters([...selectedFilters, ...prev, value])
+        setSelectedFilters([...selectedFilters, value])
         return [...prev, value]
       }
     })
@@ -125,6 +124,15 @@ export default function SearchFilter ({
       <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 govuk-!-margin-left-3 govuk-!-margin-right-3' />
       <div
         className='contacts-filter-section'
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          paddingLeft: 20,
+          paddingRight: 20,
+          paddingTop: 1,
+          paddingBottom: 1,
+          gap: 15
+        }}
         onClick={() => setContactNameVisible(!contactNameVisible)}
       >
         <FontAwesomeIcon
@@ -139,7 +147,14 @@ export default function SearchFilter ({
           </label>
       </div>
       {(contactNameVisible || contactNameFilter.length > 0) && (
-        <div class='govuk-form-group'>
+        <div class='govuk-form-group'
+          style={{
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 1,
+            paddingBottom: 1,
+            gap: 15
+        } }>
           <div class='input-with-icon'>
             <FontAwesomeIcon icon={faMagnifyingGlass} className='input-icon' />
             <input
@@ -171,6 +186,15 @@ export default function SearchFilter ({
         <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3 govuk-!-margin-left-3 govuk-!-margin-right-3'/>
         <div
           className='contacts-filter-section'
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 1,
+            paddingBottom: 1,
+            gap: 6
+          }}
           onClick={() => {
             setVisible(!visible)
           }}
@@ -184,8 +208,19 @@ export default function SearchFilter ({
             {filterTitle}
           </label>
         </div>
-        {visible && (
-          <div className='govuk-checkboxes govuk-checkboxes--small'>
+        {(visible) && (
+          <div className='govuk-checkboxes govuk-checkboxes--small'
+            style={{
+              paddingLeft: 20,
+              paddingRight: 20,
+              paddingTop: 1,
+              paddingBottom: 1,
+              gap: 15,
+              display: 'flex',
+              flexDirection: 'column',
+              overflowY: 'scroll',
+              maxHeight: 160
+            }}>
             {filterType.map((option) => (
               <CheckBox
                 key={option}
@@ -207,12 +242,31 @@ export default function SearchFilter ({
 
     return (
       <>
-        <div className='selected-filter'>
+        <div className='selected-filter'
+          style={{
+            backgroundColor: '#f3f2f1',
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 1,
+            paddingBottom: 11
+          }}>
         <h3 className='govuk-heading-s govuk-!-margin-top-5 govuk-!-margin-bottom-2'>
           {filterName}
         </h3>
         {filterArray.map((filter, index) => (
-          <div key={index} className='filter'>
+          <div key={index} className='filter'
+            style={{
+              borderStyle: 'solid',
+              borderWidth: 'thin',
+              backgroundColor: '#ffffff',
+              display: 'flex',
+              alignItems: 'center',
+              width: 'fit-content',
+              height: 34,
+              paddingLeft: 10,
+              paddingRight: 10,
+              gap: 5
+            }}>
             <label className='govuk-label'>
               {filter}
             </label>
@@ -229,15 +283,23 @@ export default function SearchFilter ({
 
   return (
     <>
-      {/* <div className='dfe-card'> */}
       <div className='contacts-filter-panel'
         style={{
           borderStyle: 'solid',
           borderWidth: 'thin',
           borderColor: '#b1b4b6',
+          paddingBottom: 16,
           gap: 15
         }}>
-        <div className='contacts-filter-header'>
+        <div className='contacts-filter-header'
+          style={{
+            backgroundColor: '#b1b4b6',
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 11,
+            paddingBottom: 11,
+            gap: 15
+          }}>
           <h1 className='govuk-heading-m govuk-!-margin-bottom-2'>Filter</h1>
         </div>
 
@@ -249,7 +311,17 @@ export default function SearchFilter ({
               borderWidth: 'thin',
               borderColor: '#b1b4b6'
           }}>
-            <div>
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                backgroundColor: '#f3f2f1',
+                paddingLeft: 20,
+                paddingRight: 20,
+                paddingTop: 11,
+                paddingBottom: 11,
+                gap: 15
+              }}>
               <h2 className='govuk-heading-s' style={{ marginBottom: '0' }}>
                 Selected filters
               </h2>
@@ -279,7 +351,14 @@ export default function SearchFilter ({
           </div>
         )}
 
-        <div className=' govuk-!-margin-top-6'>
+        <div className=' govuk-!-margin-top-6'
+          style={{
+            paddingLeft: 20,
+            paddingRight: 20,
+            paddingTop: 1,
+            paddingBottom: 1,
+            gap: 15
+          }}>
           <Button
             text='Apply filters'
             className='govuk-button govuk-button--primary'
@@ -295,7 +374,7 @@ export default function SearchFilter ({
           jobTitles,
           selectedJobTitleFilters,
           setSelectedJobTitleFilters,
-          (jobTitleVisible || selectedJobTitleFilters.length > 0),
+          jobTitleVisible,
           setJobTitleVisible,
         )}
 
@@ -304,7 +383,7 @@ export default function SearchFilter ({
           emails,
           selectedEmailFilters,
           setSelectedEmailFilters,
-          (emailVisible || selectedEmailFilters.length > 0),
+          emailVisible,
           setEmailVisible
         )}
 
@@ -313,10 +392,9 @@ export default function SearchFilter ({
           linkedLocations,
           selectedLinkedFilters,
           setSelectedLinkedFilters,
-          (linkedVisible || selectedLinkedFilters.length > 0),
+          linkedVisible,
           setLinkedVisible
         )}
-    {/* </div> */}
     </div>
     </>
   )

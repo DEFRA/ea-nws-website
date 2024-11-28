@@ -397,12 +397,13 @@ export default function IndexPage () {
 
       if (type === 'org') {
         (async () => {
-          const dataToSend ={ signinToken: uuidv4(), code: 123456, signinType: 'org' }
-          
+          const dataToSend = { signinToken: uuidv4(), code: 123456, signinType: 'org' }
+
           await backendCall(
-          dataToSend,
-          'api/sign_in_validate'
-        )})()
+            dataToSend,
+            'api/sign_in_validate'
+          )
+        })()
       }
 
       dispatch(setAuthToken(authToken))

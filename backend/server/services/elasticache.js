@@ -87,7 +87,7 @@ const addToJsonArr = async (key, value) => {
   const arrExists = await checkKeyExists(key)
   if (arrExists) {
     const client = await connectToRedis()
-    await client.json.arrAppend(key, '.',value)
+    await client.json.arrAppend(key, '.', value)
     await client.disconnect()
   } else {
     await setJsonData(key, [value])

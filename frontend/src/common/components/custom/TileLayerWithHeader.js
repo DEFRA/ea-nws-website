@@ -6,16 +6,9 @@ import {
 } from '@react-leaflet/core'
 import L from 'leaflet'
 
-export default function TileLayerWithHeader({ url, token, bounds }) {
-  function calculateWithin(coords) {
+export default function TileLayerWithHeader ({ url, token, bounds }) {
+  function calculateWithin (coords) {
     const tileMatrixSetLimits = {
-      /*0: { x: [0, 6], y: [0, 4] },
-      1: { x: [1, 12], y: [1, 9] },
-      2: { x: [1, 24], y: [1, 19] },
-      3: { x: [1, 48], y: [1, 39] },
-      4: { x: [1, 97], y: [1, 79] },
-      6: { x: [1, 50], y: [1, 1397] },
-      5: { x: [190, 194], y: [1190, 1397] },*/
       7: { x: [60, 64], y: [36, 43] },
       8: { x: [120, 129], y: [71, 87] },
       9: { x: [240, 259], y: [143, 174] },
@@ -48,14 +41,13 @@ export default function TileLayerWithHeader({ url, token, bounds }) {
     return withinLimits()
   }
 
-  function CreateTileLayerWithHeader({ url, ...options }, context) {
+  function CreateTileLayerWithHeader ({ url, ...options }, context) {
     L.TileLayer.WithHeader = L.TileLayer.extend({
-      createTile(coords, done) {
+      createTile (coords, done) {
         const img = document.createElement('img')
         const withinLimits = calculateWithin(coords)
         if (withinLimits) {
           const url = this.getTileUrl(coords)
-          console.log(url)
           const token = this.options.token
           fetch(url, {
             headers: { Authorization: `Bearer ${token}` },
@@ -74,7 +66,7 @@ export default function TileLayerWithHeader({ url, token, bounds }) {
     return createElementObject(layer, context)
   }
 
-  function updateTileLayerWithHeader(layer, props, prevProps) {
+  function updateTileLayerWithHeader (layer, props, prevProps) {
     updateGridLayer(layer, props, prevProps)
     const { url } = props
     if (url != null && url !== prevProps.url) {

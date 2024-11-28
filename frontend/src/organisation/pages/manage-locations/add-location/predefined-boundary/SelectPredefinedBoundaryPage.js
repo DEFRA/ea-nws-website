@@ -110,7 +110,6 @@ export default function SelectPredefinedBoundaryPage () {
           geoJson: JSON.stringify(locationBoundary.boundary)
         })
       )
-      console.log(selectedBoundary)
       // This might change at a later date, but store in the additional name field for now
       dispatch(
         setCurrentLocationName(

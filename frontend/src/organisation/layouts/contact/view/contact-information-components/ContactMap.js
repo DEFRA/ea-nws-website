@@ -11,8 +11,8 @@ import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
-
-export default function ContactMap({ mobileView }) {
+import LocationDataType from '../../../../../common/enums/LocationDataType'
+export default function ContactMap ({ mobileView }) {
   const pois = useSelector((state) => state.session.orgCurrentContact.pois)
   const testGeo = useSelector((state) => state.session.currentLocation.geometry)
 
@@ -20,9 +20,10 @@ export default function ContactMap({ mobileView }) {
   const [apiKey, setApiKey] = useState(null)
   const [markers, setMarkers] = useState([])
   const [geometries, setGeometries] = useState([])
+  const [boundaries, setBoundaries] = useState([])
   // const [geocodes, setGeocodes] = useState([])
 
-  async function getApiKey() {
+  async function getApiKey () {
     const { errorMessage, data } = await backendCall(
       'data',
       'api/os-api/oauth2'
@@ -57,49 +58,57 @@ export default function ContactMap({ mobileView }) {
 
   useEffect(() => {
     pois.forEach((poi) => {
-      if (poi.coordinates) {
+      const dataType = poi.meta_data.location_additional.location_data_type
+
+      const addCentroidToMarkers = () => {
+        const centroid = turf.centerOfMass(poi.geometry.geoJson).geometry
+          .coordinates
         setMarkers((prevMarkers) => [
           ...prevMarkers,
-          [poi.coordinates.latitude, poi.coordinates.longitude]
+          [centroid[1], centroid[0]]
         ])
       }
-      if (poi.geometry) {
-        if (isAreaVisible(poi.geometry)) {
-          setGeometries((prevGeometries) => [
-            ...prevGeometries,
-            poi.geometry.geoJson
+
+      switch (dataType) {
+        case LocationDataType.SHAPE_POLYGON:
+        case LocationDataType.BOUNDARY:
+        case LocationDataType.SHAPE_LINE:
+          if (isAreaVisible(poi.geometry.geoJson)) {
+            const stateKey =
+              dataType === LocationDataType.SHAPE_POLYGON
+                ? setGeometries
+                : setBoundaries
+            stateKey((prevState) => [...prevState, poi.geometry.geoJson])
+          } else {
+            addCentroidToMarkers()
+          }
+          break
+        default:
+          setMarkers((prevMarkers) => [
+            ...prevMarkers,
+            [poi.coordinates.latitude, poi.coordinates.longitude]
           ])
+          break
+      }
+
+      if (testGeo) {
+        const parsed = JSON.parse(testGeo.geoJson)
+        console.log(parsed)
+        if (isAreaVisible(parsed)) {
+          setGeometries((prevGeometries) => [...prevGeometries, parsed])
         } else {
-          const centroid = turf.centerOfMass(poi.geometry).geometry.coordinates
+          const centroid = turf.centerOfMass(parsed).geometry.coordinates
           setMarkers((prevMarkers) => [
             ...prevMarkers,
             [centroid[1], centroid[0]]
           ])
         }
       }
-
-      /*
-       if (poi.geocode) {
-        setGeocodes((prevGeocodes) => [...prevGeocodes, [poi.geocode]])
-      } */
     })
-
-    if (testGeo) {
-      const parsed = JSON.parse(testGeo.geoJson)
-      if (isAreaVisible(parsed)) {
-        setGeometries((prevGeometries) => [...prevGeometries, parsed])
-      } else {
-        const centroid = turf.centerOfMass(parsed).geometry.coordinates
-        setMarkers((prevMarkers) => [
-          ...prevMarkers,
-          [centroid[1], centroid[0]]
-        ])
-      }
-    }
   }, [pois])
 
   const isAreaVisible = (geometry) => {
-    if (pois.length === 1 && pois[0].geometry) return true
+    if (pois.length === 1) return true
     if (visibleArea > 0) {
       const area = turf.area(geometry)
       const threshold = visibleArea * 0.1
@@ -112,21 +121,34 @@ export default function ContactMap({ mobileView }) {
   const FitBounds = () => {
     const map = useMap()
     useEffect(() => {
-      if (markers.length > 0 || geometries.length > 0) {
+      if (
+        markers.length > 0 ||
+        geometries.length > 0 ||
+        boundaries.length > 0
+      ) {
         let bounds = L.latLngBounds()
-        // Add marker bounds
         if (markers.length > 0) {
-          console.log('markers', markers)
+          // Add marker bounds
+
           const markerBounds = L.latLngBounds(markers)
           bounds = bounds.extend(markerBounds)
+
+          map.fitBounds(bounds)
+          calculateVisibleArea(map)
         }
-        map.fitBounds(bounds)
-        calculateVisibleArea(map)
         // Add geometry bounds
         if (geometries.length > 0) {
-          console.log('geometries')
+          console.log('geolenght', geometries.length)
           geometries.forEach((geometry) => {
             const feature = L.geoJson(geometry)
+            if (feature.getBounds()) {
+              bounds = bounds.extend(feature.getBounds())
+            }
+          })
+        }
+        if (boundaries.length > 0) {
+          boundaries.forEach((boundary) => {
+            const feature = L.geoJson(boundary)
             if (feature.getBounds()) {
               bounds = bounds.extend(feature.getBounds())
             }
@@ -156,8 +178,18 @@ export default function ContactMap({ mobileView }) {
     let totalLng = 0
 
     pois.forEach((poi) => {
-      totalLat += poi.coordinates.latitude
-      totalLng += poi.coordinates.longitude
+      if (
+        poi.meta_data.location_additional.location_data_type ===
+        LocationDataType.X_AND_Y_COORDS
+      ) {
+        totalLat += poi.coordinates.latitude
+        totalLng += poi.coordinates.longitude
+      } else {
+        const centroid = turf.centerOfMass(poi.geometry.geoJson).geometry
+          .coordinates
+        totalLat += centroid[1]
+        totalLng += centroid[0]
+      }
     })
 
     const avgLat = totalLat / pois.length
@@ -170,10 +202,10 @@ export default function ContactMap({ mobileView }) {
 
   const url = 'https://api.os.uk/maps/raster/v1/wmts'
   const parameters = {
-    tileMatrixSet: encodeURI('EPSG:27700'),
+    tileMatrixSet: encodeURI('EPSG:3857'),
     version: '2.0.0',
     style: 'default',
-    layer: encodeURI('Outdoor_27700'),
+    layer: encodeURI('Outdoor_3857'),
     service: 'WMTS',
     request: 'GetTile',
     tileCol: '{x}',
@@ -216,27 +248,32 @@ export default function ContactMap({ mobileView }) {
         maxBounds={maxBounds}
         className={mobileView ? 'map-mobile-view' : 'map-container'}
       >
-        {apiKey && apiKey !== 'error' ? (
-          <>
-            {tileLayerWithHeader}
-            {markers.map((marker, index) => {
-              return (
-                <Marker key={index} position={marker} interactive={false} />
-              )
-            })}
-            {geometries.map((geometry, index) => {
-              return <GeoJSON key={index} data={geometry} />
-            })}
-            <FitBounds />
-          </>
-        ) : (
-          <div className='map-error-container'>
-            <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
-            <Link className='govuk-body-s' onClick={() => getApiKey()}>
-              Reload map
-            </Link>
-          </div>
-        )}
+        {apiKey && apiKey !== 'error'
+          ? (
+            <>
+              {tileLayerWithHeader}
+              {markers.map((marker, index) => {
+                return (
+                  <Marker key={index} position={marker} interactive={false} />
+                )
+              })}
+              {geometries.map((geometry, index) => {
+                return <GeoJSON key={index} data={geometry} />
+              })}
+              {boundaries.map((boundary, index) => {
+                return <GeoJSON key={index} data={boundary} />
+              })}
+              <FitBounds />
+            </>
+            )
+          : (
+            <div className='map-error-container'>
+              <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
+              <Link className='govuk-body-s' onClick={() => getApiKey()}>
+                Reload map
+              </Link>
+            </div>
+            )}
       </MapContainer>
     </div>
   )

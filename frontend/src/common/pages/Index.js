@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom'
 import Button from '../components/gov-uk/Button'
 import NotificationBanner from '../components/gov-uk/NotificationBanner'
 import AlertType from '../enums/AlertType'
+import LocationDataType from '../enums/LocationDataType'
 import {
   clearAuth,
   setAuthToken,
@@ -340,6 +341,11 @@ export default function IndexPage () {
         coordinates: {
           latitude: 51.5007,
           longitude: 0.1246
+        },
+        meta_data: {
+          location_additional: {
+            location_data_type: LocationDataType.X_AND_Y_COORDS
+          }
         }
       },
       {
@@ -348,6 +354,60 @@ export default function IndexPage () {
         coordinates: {
           latitude: 51.550738,
           longitude: -0.257635
+        },
+        meta_data: {
+          location_additional: {
+            location_data_type: LocationDataType.X_AND_Y_COORDS
+          }
+        }
+      },
+      {
+        address: 'Ellesmere Crescent',
+        name: 'UPRN',
+        coordinates: {
+          latitude: 52.038247685799156,
+          longitude: -1.147584819157741
+        },
+        meta_data: {
+          location_additional: {
+            location_data_type: LocationDataType.X_AND_Y_COORDS
+          }
+        }
+      },
+      {
+        address: 'Mushroom Farm',
+        name: 'UPRN',
+        coordinates: {
+          latitude: 52.815995210291554,
+          longitude: -2.467525521069016
+        },
+        meta_data: {
+          location_additional: {
+            location_data_type: LocationDataType.X_AND_Y_COORDS
+          }
+        }
+      },
+      {
+        address: 'Oxford',
+        name: 'UPRN',
+        geometry: {
+          geoJson: {
+            coordinates: [
+              [
+                [-1.3310623, 51.7990615],
+                [-1.320076, 51.7312811],
+                [-1.2280655, 51.7302179],
+                [-1.2249756, 51.7965136],
+                [-1.3310623, 51.7990615]
+              ]
+            ],
+            type: 'Polygon'
+          }
+        },
+        meta_data: {
+          location_additional: {
+            location_data_type: LocationDataType.SHAPE_POLYGON
+          }
         }
       }
     ],

@@ -57,54 +57,56 @@ export default function ContactMap ({ mobileView }) {
   L.Marker.prototype.options.icon = DefaultIcon
 
   useEffect(() => {
-    pois.forEach((poi) => {
-      const dataType = poi.meta_data.location_additional.location_data_type
+    if (pois) {
+      pois.forEach((poi) => {
+        const dataType = poi.meta_data.location_additional.location_data_type
 
-      const addCentroidToMarkers = () => {
-        const centroid = turf.centerOfMass(poi.geometry.geoJson).geometry
-          .coordinates
-        setMarkers((prevMarkers) => [
-          ...prevMarkers,
-          [centroid[1], centroid[0]]
-        ])
-      }
-
-      switch (dataType) {
-        case LocationDataType.SHAPE_POLYGON:
-        case LocationDataType.BOUNDARY:
-        case LocationDataType.SHAPE_LINE:
-          if (isAreaVisible(poi.geometry.geoJson)) {
-            const stateKey =
-              dataType === LocationDataType.SHAPE_POLYGON
-                ? setGeometries
-                : setBoundaries
-            stateKey((prevState) => [...prevState, poi.geometry.geoJson])
-          } else {
-            addCentroidToMarkers()
-          }
-          break
-        default:
-          setMarkers((prevMarkers) => [
-            ...prevMarkers,
-            [poi.coordinates.latitude, poi.coordinates.longitude]
-          ])
-          break
-      }
-
-      if (testGeo) {
-        const parsed = JSON.parse(testGeo.geoJson)
-        console.log(parsed)
-        if (isAreaVisible(parsed)) {
-          setGeometries((prevGeometries) => [...prevGeometries, parsed])
-        } else {
-          const centroid = turf.centerOfMass(parsed).geometry.coordinates
+        const addCentroidToMarkers = () => {
+          const centroid = turf.centerOfMass(poi.geometry.geoJson).geometry
+            .coordinates
           setMarkers((prevMarkers) => [
             ...prevMarkers,
             [centroid[1], centroid[0]]
           ])
         }
-      }
-    })
+
+        switch (dataType) {
+          case LocationDataType.SHAPE_POLYGON:
+          case LocationDataType.BOUNDARY:
+          case LocationDataType.SHAPE_LINE:
+            if (isAreaVisible(poi.geometry.geoJson)) {
+              const stateKey =
+                dataType === LocationDataType.SHAPE_POLYGON
+                  ? setGeometries
+                  : setBoundaries
+              stateKey((prevState) => [...prevState, poi.geometry.geoJson])
+            } else {
+              addCentroidToMarkers()
+            }
+            break
+          default:
+            setMarkers((prevMarkers) => [
+              ...prevMarkers,
+              [poi.coordinates.latitude, poi.coordinates.longitude]
+            ])
+            break
+        }
+
+        if (testGeo) {
+          const parsed = JSON.parse(testGeo.geoJson)
+          console.log(parsed)
+          if (isAreaVisible(parsed)) {
+            setGeometries((prevGeometries) => [...prevGeometries, parsed])
+          } else {
+            const centroid = turf.centerOfMass(parsed).geometry.coordinates
+            setMarkers((prevMarkers) => [
+              ...prevMarkers,
+              [centroid[1], centroid[0]]
+            ])
+          }
+        }
+      })
+    }
   }, [pois])
 
   const isAreaVisible = (geometry) => {
@@ -173,7 +175,7 @@ export default function ContactMap ({ mobileView }) {
 
   // The center of the map should be the centroid of all the positions on the map
   const findCentroid = () => {
-    if (pois.length === 0) return null
+    if (!pois) return null
     let totalLat = 0
     let totalLng = 0
 
@@ -199,6 +201,16 @@ export default function ContactMap ({ mobileView }) {
   }
 
   const centre = findCentroid()
+
+  const onEachAlertAreaFeature = (feature, layer) => {
+    layer.options.className = 'alert-area-pattern-fill'
+
+    layer.setStyle({
+      color: '#ffa200',
+      weight: 2,
+      fillOpacity: 0.5
+    })
+  }
 
   const url = 'https://api.os.uk/maps/raster/v1/wmts'
   const parameters = {
@@ -258,7 +270,13 @@ export default function ContactMap ({ mobileView }) {
                 )
               })}
               {geometries.map((geometry, index) => {
-                return <GeoJSON key={index} data={geometry} />
+                return (
+                  <GeoJSON
+                    key={index}
+                    data={geometry}
+                    onEachFeature={onEachAlertAreaFeature}
+                  />
+                )
               })}
               {boundaries.map((boundary, index) => {
                 return <GeoJSON key={index} data={boundary} />

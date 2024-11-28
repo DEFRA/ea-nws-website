@@ -19,7 +19,7 @@ export default function AddMobileLayout ({
   const [mobile, setMobile] = useState('')
   const [error, setError] = useState('')
   const dispatch = useDispatch()
-  const session = useSelector((state) => state.session)
+  const sessionProfile = useSelector((state) => state.session.profile)
   const authToken = useSelector((state) => state.session.authToken)
 
   const handleSubmit = async (event) => {
@@ -29,7 +29,11 @@ export default function AddMobileLayout ({
     if (validationError === '') {
       const normalisedPhoneNumber = normalisePhoneNumber(mobile)
       const dataToSend = { msisdn: normalisedPhoneNumber, authToken }
-      const profile = addUnverifiedContact(session.profile, 'mobile', normalisedPhoneNumber)
+      const profile = addUnverifiedContact(
+        sessionProfile,
+        'mobile',
+        normalisedPhoneNumber
+      )
       const profileDataToSend = { profile, authToken }
       const { errorMessage, data } = await backendCall(
         profileDataToSend,
@@ -67,10 +71,10 @@ export default function AddMobileLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h2 class='govuk-heading-l'>
+            <h2 className='govuk-heading-l'>
               Enter a mobile number to get flood messages by text
             </h2>
-            <div class='govuk-body'>
+            <div className='govuk-body'>
               <p>
                 We recommend using a mobile number where we can reach you 24
                 hours a day.

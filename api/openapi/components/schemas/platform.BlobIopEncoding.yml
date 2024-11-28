@@ -1,0 +1,5 @@
+type: string
+description: Type of encoding for the IOP stored as a BLOB.
+enum:
+  - JSON
+  - BINARY

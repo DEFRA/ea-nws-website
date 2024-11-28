@@ -1,19 +1,26 @@
 import 'leaflet/dist/leaflet.css'
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import FloodWarningKey from '../../../common/components/custom/FloodWarningKey'
 import Map from '../../../common/components/custom/Map'
 import Button from '../../../common/components/gov-uk/Button'
 import InsetText from '../../../common/components/gov-uk/InsetText'
+import AlertType from '../../../common/enums/AlertType'
 import {
   setAdditionalAlerts,
   setProfile,
   setSelectedFloodAlertArea
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import { addLocation, removeLocation } from '../../../common/services/ProfileServices'
+import {
+  addLocation,
+  findPOIByAddress,
+  getRegistrationParams,
+  removeLocation,
+  setLocationOtherAdditionals
+} from '../../../common/services/ProfileServices'
 import {
   getAssociatedAlertArea,
   getCoordsOfFloodArea
@@ -24,6 +31,7 @@ export default function LocationInSevereWarningAreaLayout ({
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const location = useLocation()
   const authToken = useSelector((state) => state.session.authToken)
   const profile = useSelector((state) => state.session.profile)
   const selectedLocation = useSelector(
@@ -36,51 +44,117 @@ export default function LocationInSevereWarningAreaLayout ({
   const selectedFloodWarningArea = useSelector(
     (state) => state.session.selectedFloodWarningArea
   )
+  // address to use for registering and unregistering partner
+  const addressToUse = isUserInNearbyTargetFlowpath
+    ? selectedFloodWarningArea.properties.TA_NAME
+    : selectedLocation.address
+  const isSignUpFlow = location.pathname.includes('signup')
 
   const handleSubmit = async () => {
+    let updatedProfile
+
     if (isUserInNearbyTargetFlowpath) {
-      await addFloodWarningArea()
+      updatedProfile = await addFloodWarningArea()
 
       // load associated flood alert area
       await findAssociatedFloodAlertArea()
     } else {
-      await addLocationWithFloodWarningAlerts()
+      updatedProfile = await addLocationWithFloodWarningAlerts()
     }
 
     // we must always show user the optional flood alert areas
     dispatch(setAdditionalAlerts(true))
-    await updateGeosafeProfile()
+
+    if (!isSignUpFlow) {
+      updatedProfile = await updateGeosafeProfile(updatedProfile)
+
+      // if user is in sign up flow, then profile returned will be undefined
+      if (updatedProfile) {
+        await registerLocationToPartner(updatedProfile)
+      }
+    }
+
     continueToNextPage()
   }
 
+  const registerLocationToPartner = async (profile) => {
+    const location = findPOIByAddress(profile, addressToUse)
+    const alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
+
+    const data = {
+      authToken,
+      locationId: location.id,
+      partnerId: '1', // this is currently a hardcoded value - geosafe to update us on what it is
+      params: getRegistrationParams(profile, alertTypes)
+    }
+
+    await backendCall(
+      data,
+      'api/partner/register_location_to_partner',
+      navigate
+    )
+  }
+
   const handleUserNavigatingBack = async () => {
+    let updatedProfile
     if (isUserInNearbyTargetFlowpath) {
-      await removeFloodWarningArea()
+      updatedProfile = await removeFloodWarningArea()
     } else {
-      await removeLocationWithFloodWarningAlerts()
+      updatedProfile = await removeLocationWithFloodWarningAlerts()
     }
 
     dispatch(setAdditionalAlerts(false))
-    await updateGeosafeProfile()
+    updatedProfile = await updateGeosafeProfile(profile)
+    // if user is in sign up flow, then profile returned will be undefined
+    if (updatedProfile) {
+      unregisterLocationFromPartner(updatedProfile)
+    }
     navigate(-1)
+  }
+
+  const unregisterLocationFromPartner = async (updatedProfile) => {
+    const location = findPOIByAddress(updatedProfile, addressToUse)
+
+    // accomodates situation where user presses back before the location is stored in the profile
+    if (location) {
+      const data = {
+        authToken,
+        locationId: location.id,
+        partnerId: '1' // this is currently a hardcoded value - geosafe to update us
+      }
+
+      await backendCall(
+        data,
+        'api/partner/unregister_location_from_partner',
+        navigate
+      )
+    }
   }
 
   const addFloodWarningArea = async () => {
     const warningArea = {
-      name: selectedFloodWarningArea.properties.TA_NAME,
-      address: '',
-      coordinates: getCoordsOfFloodArea(selectedFloodWarningArea)
+      name: '',
+      address: selectedFloodWarningArea.properties.TA_NAME,
+      coordinates: getCoordsOfFloodArea(selectedFloodWarningArea),
+      additionals: setLocationOtherAdditionals([], 'alertTypes', [
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.FLOOD_WARNING
+      ])
     }
-    const updatedProfile = await addLocation(profile, warningArea)
+    const updatedProfile = addLocation(profile, warningArea)
     dispatch(setProfile(updatedProfile))
+
+    return updatedProfile
   }
 
   const removeFloodWarningArea = async () => {
-    const updatedProfile = await removeLocation(
+    const updatedProfile = removeLocation(
       profile,
       selectedFloodWarningArea.properties.TA_NAME
     )
     dispatch(setProfile(updatedProfile))
+
+    return updatedProfile
   }
 
   const findAssociatedFloodAlertArea = async () => {
@@ -101,37 +175,51 @@ export default function LocationInSevereWarningAreaLayout ({
     // update location to recieve severe alert warnings
     const locationWithAlertType = {
       ...locationWithoutPostcode,
-      categories: ['severe']
+      additionals: setLocationOtherAdditionals([], 'alertTypes', [
+        AlertType.SEVERE_FLOOD_WARNING,
+        AlertType.FLOOD_WARNING
+      ])
     }
 
-    const updatedProfile = await addLocation(profile, locationWithAlertType)
+    const updatedProfile = addLocation(profile, locationWithAlertType)
     dispatch(setProfile(updatedProfile))
+
+    return updatedProfile
   }
 
   const removeLocationWithFloodWarningAlerts = async () => {
-    const updatedProfile = await removeLocation(profile, selectedLocation.name)
+    const updatedProfile = removeLocation(profile, selectedLocation.address)
     dispatch(setProfile(updatedProfile))
+
+    return updatedProfile
   }
 
-  const updateGeosafeProfile = async () => {
-    const dataToSend = { authToken, profile }
-    await backendCall(dataToSend, 'api/profile/update', navigate)
+  const updateGeosafeProfile = async (updatedProfile) => {
+    const dataToSend = { authToken, profile: updatedProfile }
+    const { data } = await backendCall(
+      dataToSend,
+      'api/profile/update',
+      navigate
+    )
+
+    return data.profile
   }
 
   return (
     <>
       <BackLink onClick={() => handleUserNavigatingBack()} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        <div className='govuk-grid-row'>
+        <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
               You can get severe flood warnings and flood warnings for this
               location
             </h1>
-            <InsetText text={
-              isUserInNearbyTargetFlowpath
-                ? selectedFloodWarningArea.properties.TA_NAME
-                : selectedLocation.name
+            <InsetText
+              text={
+                isUserInNearbyTargetFlowpath
+                  ? selectedFloodWarningArea.properties.TA_NAME
+                  : selectedLocation.address
               }
             />
           </div>
@@ -171,7 +259,7 @@ export default function LocationInSevereWarningAreaLayout ({
               className='govuk-button'
               onClick={handleSubmit}
             />
-                &nbsp; &nbsp;
+            &nbsp; &nbsp;
             <Link
               onClick={() => navigate(-1)}
               className='govuk-link'

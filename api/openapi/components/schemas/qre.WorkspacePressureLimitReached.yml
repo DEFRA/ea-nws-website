@@ -1,0 +1,13 @@
+allOf:
+  - $ref: ./qre.base.EventLog.yml
+  - type: object
+    description: |-
+      Event emitted when the per workspace pressure will lock an entity.
+
+      We don't use the same event as the global pressure as the entity will
+      be locked by one specific scenario, so we want to known which one.
+    required:
+      - channel
+    properties:
+      channel:
+        type: string

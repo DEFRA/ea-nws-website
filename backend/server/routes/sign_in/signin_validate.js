@@ -5,6 +5,7 @@ const {
 const {
   authCodeValidation
 } = require('../../services/validations/AuthCodeValidation')
+const { setJsonData } = require('../../services/elasticache')
 
 module.exports = [
   {
@@ -16,7 +17,7 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { signinToken, code } = request.payload
+        const { signinToken, code, signinType } = request.payload
         const error = authCodeValidation(code)
 
         if (!error && signinToken) {
@@ -24,6 +25,13 @@ module.exports = [
             { signinToken: signinToken, code: code },
             'member/signinValidate'
           )
+          if (signinType === 'org') {
+            // Send the profile to elasticache
+            console.log('Setting elasticache')
+            await setJsonData(response.data.authToken, {
+              profile: response.data.profile
+            })
+          }
           return h.response(response)
         } else {
           return h.response({

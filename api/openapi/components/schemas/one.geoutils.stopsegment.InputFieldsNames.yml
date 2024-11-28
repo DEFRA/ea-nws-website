@@ -1,0 +1,33 @@
+type: object
+description: Name of the input fields used by the stop segment algorithm.
+properties:
+  timestamp:
+    type: string
+    description: Name of the input field containing the event date.
+    default: timestamp
+  coords:
+    type: string
+    description: |-
+      Name of the input field containing the coordinates of the event.
+
+      You should set at least one attribute between this one and \ref cellid.
+  cellid:
+    type: string
+    description: |-
+      Name of the input field containing the cell ID (CGI or CUID) of the
+      event.
+
+      You should set at least one attribute between this one and \ref coords.
+
+      If you set both \ref coords and \ref cellid, then the latter will be
+      used as a backup for the former. It will also allow as to associate a
+      CUID to the event, in addition to the coordinates.
+  eventType:
+    type: string
+    description: |-
+      Name of the input field containing the event type.
+
+      The field type is expected to be an enumeration.
+      Used for detection of event types that would mean that the device is
+      becoming absent ( \ref AbsentEventsCfg).
+    default: event

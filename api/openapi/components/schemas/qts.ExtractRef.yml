@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./bigdata.ref.Ref.yml
+  - type: object
+    required:
+      - pos
+    properties:
+      pos:
+        type: integer
+        format: int32
+        minimum: 0

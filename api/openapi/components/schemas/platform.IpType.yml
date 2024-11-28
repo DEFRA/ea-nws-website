@@ -1,0 +1,9 @@
+type: object
+description: Parameters of a source of IP values.
+required:
+  - protocol
+properties:
+  protocol:
+    description: Specifies IP protocol to use.
+    allOf:
+      - $ref: ./platform.IpProtocol.yml

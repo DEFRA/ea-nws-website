@@ -1,0 +1,11 @@
+allOf:
+  - $ref: ./one.b2b.log.DepartmentLog.yml
+  - type: object
+    properties:
+      msisdnStr:
+        type: string
+        description: MSISDN of the line.
+      keyId:
+        type: integer
+        format: int32
+        minimum: 0

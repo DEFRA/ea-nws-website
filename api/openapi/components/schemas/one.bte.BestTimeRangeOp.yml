@@ -1,0 +1,117 @@
+allOf:
+  - $ref: ./bigdata.relational.SingleTableOperation.yml
+  - type: object
+    description: |-
+      A custom MDE operation to compute the best time range to engage with a
+       subscriber.
+
+      The logic is based on the historical topups made by each subscriber.
+      This operation outputs a string representing the computed best range.
+    required:
+      - ranges
+      - minNumTopup
+      - uniformDistribCoef
+      - outputFieldName
+    properties:
+      ranges:
+        type: array
+        description: |-
+          The ranges from which the best range for a given entity is deduced.
+
+          The operation is invalid if two ranges overlap.
+        items:
+          $ref: ./one.bte.DayTimeRange.yml
+        minItems: 2
+      ts:
+        description: Reference to the timestamp column in input table.
+        oneOf:
+          - $ref: ./bigdata.db.GlobalVariableRef.yml
+          - $ref: ./bigdata.mde.FieldRef.yml
+          - $ref: ./bigdata.mde.WeakRef.yml
+          - $ref: ./bigdata.qrrd.SlotRef.yml
+          - $ref: ./bigdata.qrrd.ValueRef.yml
+          - $ref: ./bigdata.qrrd.ValueRefRef.yml
+          - $ref: ./bigdata.qrrd.WildcardRef.yml
+          - $ref: ./bigdata.qrrd.WildcardRefRef.yml
+          - $ref: ./bigdata.query.Age.yml
+          - $ref: ./bigdata.query.AggregationOperation.yml
+          - $ref: ./bigdata.query.BinToJson.yml
+          - $ref: ./bigdata.query.CgiToCuid.yml
+          - $ref: ./bigdata.query.CuidToCgi.yml
+          - $ref: ./bigdata.query.CutString.yml
+          - $ref: ./bigdata.query.DayOfWeek.yml
+          - $ref: ./bigdata.query.FormulaRef.yml
+          - $ref: ./bigdata.query.LocationCellInfo.yml
+          - $ref: ./bigdata.query.LocationCoords.yml
+          - $ref: ./bigdata.query.LocationGad.yml
+          - $ref: ./bigdata.query.LocationMlpBin.yml
+          - $ref: ./bigdata.query.LocationMlpJson.yml
+          - $ref: ./bigdata.query.LocationRadius.yml
+          - $ref: ./bigdata.query.RecnoRef.yml
+          - $ref: ./bigdata.ref.AutoRef.yml
+          - $ref: ./bigdata.ref.DealiasValue.yml
+          - $ref: ./bigdata.ref.MultiRef.yml
+          - $ref: ./bigdata.ref.NamedRef.yml
+          - $ref: ./bigdata.ref.ObjectField.yml
+          - $ref: ./bigdata.ref.ObjectIsA.yml
+          - $ref: ./bigdata.ref.ObjectType.yml
+          - $ref: ./bigdata.ref.ParametricRef.yml
+          - $ref: ./bigdata.ref.PlacemarkInfosRef.yml
+          - $ref: ./bigdata.ref.PressureNextAvailability.yml
+          - $ref: ./bigdata.ref.ServerTimezoneOffset.yml
+          - $ref: ./bigdata.ref.TestRef.yml
+          - $ref: ./bigdata.ref.ValueRef.yml
+          - $ref: ./bigdata.relational.TableRef.yml
+          - $ref: ./bigdata.relational.TypedValueRef.yml
+          - $ref: ./bigdata.schema.AggregationRef.yml
+          - $ref: ./bigdata.schema.ColumnRef.yml
+          - $ref: ./bigdata.schema.KeyRef.yml
+          - $ref: ./bigdata.schema.SourceRef.yml
+          - $ref: ./bigdata.schema.ValueRef.yml
+          - $ref: ./bigdata.schema.ZoneRef.yml
+          - $ref: ./bigdata.sql.SqlRef.yml
+          - $ref: ./bigdata.task.CacheRef.yml
+          - $ref: ./bigdata.task.TaskOutputRef.yml
+          - $ref: ./one.geomarketing.CgiToMccRef.yml
+          - $ref: ./one.geomarketing.FakeCgiRef.yml
+          - $ref: ./one.report.ExternalRef.yml
+          - $ref: ./one.report.LocationRadiusRef.yml
+          - $ref: ./one.report.LocationRef.yml
+          - $ref: ./one.scenario.ConstantRef.yml
+          - $ref: ./one.scenario.Exposure.yml
+          - $ref: ./one.scenario.PlacemarkInfosRef.yml
+          - $ref: ./one.scenario.SuccessRate.yml
+          - $ref: ./one.scenario.Successful.yml
+          - $ref: ./qre.ContextEvent.yml
+          - $ref: ./qre.CreateEventRef.yml
+          - $ref: ./qre.EnteredInScenario.yml
+          - $ref: ./qre.EntityRuleContextRef.yml
+          - $ref: ./qre.FormatRef.yml
+          - $ref: ./qre.IsInControlGroup.yml
+          - $ref: ./qre.IsInRule.yml
+          - $ref: ./qre.IsInScenario.yml
+          - $ref: ./qre.IsInUserRules.yml
+          - $ref: ./qre.ScenarioEnterTs.yml
+          - $ref: ./qre.ScenarioExitTs.yml
+          - $ref: ./qre.VariableRef.yml
+          - $ref: ./qts.ExtractRef.yml
+        discriminator:
+          propertyName: _class
+      minNumTopup:
+        type: integer
+        format: int32
+        description: The minimum number of historical topups needed to select a best range.
+        minimum: 0
+      uniformDistribCoef:
+        type: integer
+        format: int32
+        description: |-
+          The best range minimum multiplier coefficient.
+
+          The best range is returned only if the number of topups in the best
+          range is above \ref uniformDistribCoef times the number of topups per
+          range.
+        minimum: 0
+      outputFieldName:
+        type: string
+        description: Generated output column name.

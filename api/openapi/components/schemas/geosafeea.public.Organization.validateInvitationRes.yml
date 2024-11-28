@@ -1,0 +1,20 @@
+type: object
+required:
+  - authToken
+  - contact
+  - organization
+properties:
+  authToken:
+    type: string
+    description: |-
+      if successful, an authentication token is
+                                provided to perform other RPCs requiring an
+                                authentication token.
+  contact:
+    description: the profile of the contact
+    allOf:
+      - $ref: ./geosafeea.contact.Contact.yml
+  organization:
+    description: the profile of the organization
+    allOf:
+      - $ref: ./geosafeea.public.Partner.yml

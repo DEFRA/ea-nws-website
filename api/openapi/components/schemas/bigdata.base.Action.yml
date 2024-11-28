@@ -1,0 +1,15 @@
+allOf:
+  - $ref: ./bigdata.base.EventLog.yml
+  - type: object
+    description: Base class for Action.
+    required:
+      - id
+    properties:
+      id:
+        type: integer
+        format: int64
+        description: |-
+          The id of the action.
+
+          Must be unique during all the product life.
+        minimum: 0

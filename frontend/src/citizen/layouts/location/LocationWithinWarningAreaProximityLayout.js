@@ -78,45 +78,47 @@ export default function LocationWithinWarningAreaProximityLayout ({
       {showMobileMap
         ? (
           <>
-            <FontAwesomeIcon
-              icon={faArrowLeft}
-              className='back-map-button'
-              size='xl'
-              onClick={() => setShowMobileMap(false)}
-            />
-            <Map types={[type]} mobileView interactive />
-            {selectedFloodWarningArea || selectedFloodAlertArea
-              ? (
-                <div className='govuk-body map-confirm-location-box-mobile-view'>
-                  <p>
-                    {selectedFloodWarningArea?.properties.TA_NAME ||
-                  selectedFloodAlertArea?.properties.TA_NAME}
-                  </p>
-                  <Button
-                    text='Confirm this location'
-                    className='govuk-button custom-width-button govuk-!-margin-bottom-2'
-                    onClick={handleConfirm}
-                  />
-                </div>
-                )
-              : (
-                <div className='flood-warning-key-mobile-view'>
-                  <FloodWarningKey type={type} mobileView />
-                </div>
-                )}
+            <div className='govuk-body'>
+              <FontAwesomeIcon
+                icon={faArrowLeft}
+                className='back-map-button'
+                size='xl'
+                onClick={() => setShowMobileMap(false)}
+              />
+              <Map types={[type]} mobileView interactive />
+              {selectedFloodWarningArea || selectedFloodAlertArea
+                ? (
+                  <div className='govuk-body map-confirm-location-box-mobile-view'>
+                    <p>
+                      {selectedFloodWarningArea?.properties.TA_NAME ||
+                    selectedFloodAlertArea?.properties.TA_NAME}
+                    </p>
+                    <Button
+                      text='Confirm this location'
+                      className='govuk-button custom-width-button govuk-!-margin-bottom-2'
+                      onClick={handleConfirm}
+                    />
+                  </div>
+                  )
+                : (
+                  <div className='flood-warning-key-mobile-view'>
+                    <FloodWarningKey type={type} mobileView />
+                  </div>
+                  )}
+            </div>
           </>
           )
         : (
           <>
             <BackLink onClick={() => navigate(-1)} />
             <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-              <div className='govuk-grid-row'>
+              <div className='govuk-grid-row govuk-body'>
                 <div className='govuk-grid-column-two-thirds'>
                   {error && <ErrorSummary errorList={[error]} />}
                   <h1 className='govuk-heading-l govuk-!-margin-top-6'>
                     You can get flood messages near this location
                   </h1>
-                  <InsetText text={selectedLocation.name} />
+                  <InsetText text={selectedLocation.address} />
                   <p>
                     Flood message areas nearby are highlighted in{' '}
                     {type === 'severe' ? 'red' : 'orange'} on the map.
@@ -150,11 +152,9 @@ export default function LocationWithinWarningAreaProximityLayout ({
                                 onChange={() => setFloodArea(area)}
                                 checked={
                             (selectedFloodWarningArea &&
-                              selectedFloodWarningArea.id ===
-                                area.id) ||
+                              selectedFloodWarningArea.id === area.id) ||
                             (selectedFloodAlertArea &&
-                              selectedFloodAlertArea.id ===
-                                area.id)
+                              selectedFloodAlertArea.id === area.id)
                           }
                               />
                             ))
@@ -168,8 +168,8 @@ export default function LocationWithinWarningAreaProximityLayout ({
                     <Button
                       text='Confirm'
                       className={`govuk-button govuk-!-margin-top-5 ${
-                isMobile ? 'custom-width-button' : ''
-              }`}
+                      isMobile ? 'custom-width-button' : ''
+                    }`}
                       onClick={handleConfirm}
                     />
                     {isMobile && (
@@ -187,8 +187,8 @@ export default function LocationWithinWarningAreaProximityLayout ({
                     <Button
                       text='Skip to other areas nearby'
                       className={`govuk-button govuk-button--secondary ${
-                  isMobile ? 'custom-width-button' : ''
-                }`}
+                      isMobile ? 'custom-width-button' : ''
+                    }`}
                       onClick={continueToNearbyFloodAlertsPage}
                     />
                   )}
@@ -204,20 +204,15 @@ export default function LocationWithinWarningAreaProximityLayout ({
                 </div>
                 <div
                   className={
-            isMobile
-              ? 'govuk-visually-hidden'
-              : 'govuk-grid-column-two-thirds'
-          }
+                  isMobile
+                    ? 'govuk-visually-hidden'
+                    : 'govuk-grid-column-two-thirds'
+                }
                 >
-                  <Map
-                    types={[type]}
-                    setFloodAreas={setFloodAreas}
-                    interactive
-                  />
+                  <Map types={[type]} setFloodAreas={setFloodAreas} interactive />
                   <FloodWarningKey type={type} />
                 </div>
               </div>
-
             </main>
           </>
           )}

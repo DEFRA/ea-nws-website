@@ -8,11 +8,11 @@ import { authenticatedRoutes, routes } from './routes'
 
 export default function App () {
   const auth = useSelector((state) => state.session.authToken)
+  const signinType = useSelector((state) => state.session.signinType)
   const [isInactive, setIsInactive] = useState(false)
+  const [isPopUpOnScreen, setIsPopUpOnScreen] = useState(false)
   const inactivityTimer = useRef(null)
   const redirectTimer = useRef(null)
-  const [isPopUpOnScreen, setIsPopUpOnScreen] = useState(false)
-  const signinType = useSelector((state) => state.session.signinType)
   const currentRoute = window.location.pathname
 
   useEffect(() => {
@@ -75,7 +75,7 @@ export default function App () {
   }
 
   const SignBackInLink = () => {
-    if (currentRoute.includes('/organisation/')) {
+    if (currentRoute.includes('organisation')) {
       return '/organisation/sign-back-in'
     } else {
       return '/sign-back-in'
@@ -103,8 +103,17 @@ export default function App () {
             />
           ))}
           {routes.map((route, index) => (
-            <Route key={index} path={route.path} element={route.component} />
+            <Route
+              key={index}
+              path={route.path}
+              element={
+                 (route.path === '/signin' || route.path === '/signup/register-location/search') && auth
+                   ? <Navigate to='/home' replace />
+                   : route.component
+              }
+            />
           ))}
+
         </Route>
       </Routes>
       {isInactive && <InactivityPopup onStayLoggedIn={handleStayLoggedIn} />}

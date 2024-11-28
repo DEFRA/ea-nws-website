@@ -1,0 +1,7 @@
+type: string
+description: Roaming classes for mobile subscribers.
+enum:
+  - NON_ROAMER
+  - INTERNATIONAL_ROAMER
+  - ALL
+  - UNKNOWN

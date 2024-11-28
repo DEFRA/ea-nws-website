@@ -1,0 +1,11 @@
+allOf:
+  - $ref: ./bigdata.mde.Operation.yml
+  - type: object
+    description: Reference on a contextual input.
+    properties:
+      index:
+        type: integer
+        format: int32
+        description: Index of the input in the context.
+        default: 0
+        minimum: 0

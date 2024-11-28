@@ -1,0 +1,9 @@
+allOf:
+  - $ref: ./bigdata.base.Action.yml
+  - type: object
+    description: Action class to get the balance of a company.
+    required:
+      - company
+    properties:
+      company:
+        type: string

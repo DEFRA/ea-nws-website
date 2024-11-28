@@ -1,0 +1,20 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: |-
+      Restriction to apply on a query.
+
+      Contains a \ref Select for each collection.
+    properties:
+      targets:
+        type: array
+        description: >-
+          Restriction on values.
+
+
+          For each collection, a target is provided and is applied on all
+          queries
+
+          based on that collection.
+        items:
+          $ref: ./bigdata.query.Select.yml

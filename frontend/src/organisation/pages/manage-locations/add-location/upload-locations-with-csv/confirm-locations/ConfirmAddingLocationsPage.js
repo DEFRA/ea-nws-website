@@ -1,0 +1,107 @@
+import React from 'react'
+import { useSelector } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router-dom'
+import Button from '../../../../../../common/components/gov-uk/Button'
+import Details from '../../../../../../common/components/gov-uk/Details'
+import InsetText from '../../../../../../common/components/gov-uk/InsetText'
+import { backendCall } from '../../../../../../common/services/BackendService'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
+
+export default function ConfirmLocationsPage () {
+  const navigate = useNavigate()
+  const location = useLocation()
+  const locationsValid = location?.state?.valid || 0
+  const locationsInvalid = location?.state?.invalid || 0
+  const fileName = location?.state?.fileName || ''
+  const authToken = useSelector((state) => state.session.authToken)
+
+  const handleLocations = async (event) => {
+    event.preventDefault()
+
+    const dataToSend = { authToken, fileName }
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
+      'api/bulk_uploads/save_locations',
+      navigate
+    )
+    if (!errorMessage) {
+      navigate(orgManageLocationsUrls.unmatchedLocations.index, {
+        state: {
+          added: data.valid,
+          notAdded: data.invalid
+        }
+      })
+    } else {
+      // got to some sort of error page
+    }
+  }
+
+  const handleCancel = async (event) => {
+    event.preventDefault()
+    // cancel the upload and return to setting screen
+    navigate('/organisation/home')
+  }
+
+  const detailsMessage = (
+    <div className='govuk-body'>
+      <h1 className='govuk-heading-s'>Location partly matches an address</h1>
+      <p>
+        A location is recognised as an address but some of the information does
+        not match ours, for example the street name or postcode.
+      </p>
+      <p>
+        To find the correct address if it's partly matched, you can search from
+        a drop-down list, match it to an address and then add it to your
+        locations.
+      </p>
+      <h2 className='govuk-heading-s'>Address not found</h2>
+      <p>
+        A location is not recognised, for example it may be a new address or
+        uses a building name instead of a street address. Or it may be because
+        the information is incorrectly typed or formatted.
+      </p>
+      <p>
+        To find an address you can drop a pin on a map to select the address
+        location. This can then be added to your locations.
+      </p>
+    </div>
+  )
+
+  return (
+    <>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+        <div className='govuk-grid-row'>
+          <div className='govuk-grid-column-two-thirds'>
+            <h1 className='govuk-heading-l'>
+              {locationsValid} out of {locationsInvalid + locationsValid}{' '}
+              locations can be added
+            </h1>
+            <div className='govuk-body'>
+              <InsetText
+                text={
+                  locationsInvalid +
+                  ' locations need to be matched before they can be added. You can match them after you add the locations that have been found.'
+                }
+              />
+              <Details
+                title='Why do some locations not match?'
+                text={detailsMessage}
+              />
+            </div>
+            <Button
+              text='Add and continue'
+              className='govuk-button govuk-button'
+              onClick={handleLocations}
+            />
+            &nbsp; &nbsp;
+            <Button
+              text='Cancel upload'
+              className='govuk-button govuk-button--warning inline-block'
+              onClick={handleCancel}
+            />
+          </div>
+        </div>
+      </main>
+    </>
+  )
+}

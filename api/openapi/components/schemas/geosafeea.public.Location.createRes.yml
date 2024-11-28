@@ -1,0 +1,6 @@
+type: object
+properties:
+  location:
+    description: the new location as created in the platform
+    allOf:
+      - $ref: ./geosafeea.contact.Poi.yml

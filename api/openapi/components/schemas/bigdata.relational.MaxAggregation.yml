@@ -1,0 +1,7 @@
+allOf:
+  - $ref: ./bigdata.relational.RefSingleValAggregation.yml
+  - type: object
+    description: |-
+      Max aggregation.
+
+      Return the maximal value of a column values.

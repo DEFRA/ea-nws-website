@@ -1,0 +1,21 @@
+type: object
+description: Base classifier for traveler classification.
+properties:
+  segmentType:
+    $ref: ./one.geomarketing.SegmentType.yml
+  trajectory:
+    type: string
+  conveyance:
+    type: string
+  isInternational:
+    type: boolean
+    description: |-
+      The segment is considered as international if it joins cells with
+      different MCCs.
+  speed:
+    $ref: ./one.geomarketing.DoubleConstraint.yml
+  duration:
+    $ref: ./one.geomarketing.UintConstraint.yml
+  isUnknown:
+    type: boolean
+    description: True for generated ABSENT segments on the edges of the extract.

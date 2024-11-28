@@ -1,0 +1,37 @@
+allOf:
+  - $ref: ./platform.base.CustomValue.yml
+  - type: object
+    description: |-
+      Tie-Breaker state of an external platform.
+
+      When receiving heartbeats or admin votes requests, the Tie-Breaker will
+      update the state of the corresponding platform in its internal RAFT
+      key-value storage.
+    required:
+      - seenAt
+      - stateEpoch
+      - state
+      - adminVotes
+    properties:
+      seenAt:
+        type: integer
+        format: int64
+        description: Timestamp of the last state update (in ms).
+        minimum: 0
+      stateEpoch:
+        type: integer
+        format: int64
+        description: Timestamp of the last reported state (in ms).
+        minimum: 0
+      state:
+        description: RAFT state as reported by the external platform.
+        allOf:
+          - $ref: ./platform.raft.State.yml
+      config:
+        description: RAFT config as reported by the external platform.
+        allOf:
+          - $ref: ./platform.raft.ConfigParams.yml
+      adminVotes:
+        description: Tie-Breaker admin votes assignation state.
+        allOf:
+          - $ref: ./services.tiebreaker.TieBreakerVotes.yml

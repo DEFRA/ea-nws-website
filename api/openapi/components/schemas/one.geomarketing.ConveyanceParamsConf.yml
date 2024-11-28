@@ -1,0 +1,6 @@
+allOf:
+  - $ref: ./platform.cfg.DynConfSetElem.yml
+  - type: object
+    properties:
+      conveyanceParams:
+        $ref: ./one.geomarketing.ConveyanceParams.yml

@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./one.b2b.action.ListServices.yml
+  - type: object
+    required:
+      - tariffPlan
+    properties:
+      tariffPlan:
+        type: string
+        minLength: 1
+        pattern: '[_0-9a-zA-Z]*'

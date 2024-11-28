@@ -1,0 +1,4 @@
+allOf:
+  - $ref: ./bigdata.relational.Table.yml
+  - type: object
+    description: Table operation.

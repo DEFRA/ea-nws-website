@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
-import AccountNavigation from '../../../common/components/custom/AccountNavigation'
+import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
 import Details from '../../../common/components/gov-uk/Details'
 import InsetText from '../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
@@ -62,7 +62,7 @@ export default function ManageContactsPage () {
 
   return (
     <>
-      <AccountNavigation currentPage={useLocation().pathname} />
+      <CitizenAccountNavigation currentPage={useLocation().pathname} />
       {location.state !== null && location.state.removedContact
         ? (
           <NotificationBanner
@@ -79,10 +79,10 @@ export default function ManageContactsPage () {
             className='govuk-notification-banner govuk-!-margin-bottom-0 govuk-!-margin-top-4'
             title='Important'
             heading={
-                'We cannot send flood messages to ' +
-                location.state.unconfirmedvalue +
-                ' yet'
-              }
+            'We cannot send flood messages to ' +
+            location.state.unconfirmedvalue +
+            ' yet'
+          }
             text={unconfirmedMessage(location.state.unconfirmedtype)}
           />
           )
@@ -95,35 +95,35 @@ export default function ManageContactsPage () {
             </h2>
             <p className='govuk-body'>
               We'll send flood messages for all your location to all these
-              emails and numbers. You can add more for friends and family,
-              if you wish.
+              emails and numbers. You can add more for friends and family, if
+              you wish.
             </p>
             <InsetText text='You must confirm each address and number before we can send flood messages to them.' />
             <ContactDetailsTable
               contacts={profile.emails}
-              unregisteredContact={profile.unverified.emails}
+              unregisteredContact={profile.unverified?.emails || []}
               contactTitle='Emails'
               contactType='email address'
               primaryContact={primaryEmail}
             />
             {profile.emails.length === 1 &&
-                  profile.mobilePhones.length === 0 &&
-                  profile.homePhones.length === 0 && (
-                    <Details
-                      title='If you want to remove this contact'
-                      text={detailsMessage}
-                    />
+              profile.mobilePhones.length === 0 &&
+              profile.homePhones.length === 0 && (
+                <Details
+                  title='If you want to remove this contact'
+                  text={detailsMessage}
+                />
             )}
             <ContactDetailsTable
               contacts={profile.mobilePhones}
-              unregisteredContact={profile.unverified.mobilePhones}
+              unregisteredContact={profile.unverified?.mobilePhones || []}
               contactTitle='Texts'
               contactType='mobile telephone number'
               primaryContact={null}
             />
             <ContactDetailsTable
               contacts={profile.homePhones}
-              unregisteredContact={profile.unverified.homePhones}
+              unregisteredContact={profile.unverified?.homePhones || []}
               contactTitle='Phone call warnings'
               contactType='telephone number'
               primaryContact={null}

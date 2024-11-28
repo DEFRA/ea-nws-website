@@ -1,0 +1,10 @@
+allOf:
+  - $ref: ./one.b2b.action.Action.yml
+  - type: object
+    description: Action log class for get balances of a line.
+    required:
+      - contractId
+    properties:
+      contractId:
+        type: boolean
+        nullable: true

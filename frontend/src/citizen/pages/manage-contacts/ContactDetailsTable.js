@@ -152,7 +152,9 @@ export default function ContactDetailsTable ({
         ? (
           <Button
             className='govuk-button govuk-button--secondary'
-            text={'Add a ' + contactType}
+            text={`Add ${
+            contactType === 'email address' ? 'an' : 'a'
+          } ${contactType}`}
             onClick={handleButton}
           />
           )

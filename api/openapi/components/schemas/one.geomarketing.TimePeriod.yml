@@ -1,0 +1,33 @@
+type: object
+description: Represent the time interval [ startDate, endDate [.
+properties:
+  startDate:
+    oneOf:
+      - $ref: ./platform.DayOfMonthDate.yml
+      - $ref: ./platform.DayOfWeekDate.yml
+      - $ref: ./platform.HourDate.yml
+      - $ref: ./platform.MinuteDate.yml
+      - $ref: ./platform.MonthDate.yml
+      - $ref: ./platform.RelativeDate.yml
+      - $ref: ./platform.RelativeDatePattern.yml
+      - $ref: ./platform.SecondDate.yml
+      - $ref: ./platform.TimestampDate.yml
+      - $ref: ./platform.WeekDate.yml
+      - $ref: ./platform.YearDate.yml
+    discriminator:
+      propertyName: _class
+  endDate:
+    oneOf:
+      - $ref: ./platform.DayOfMonthDate.yml
+      - $ref: ./platform.DayOfWeekDate.yml
+      - $ref: ./platform.HourDate.yml
+      - $ref: ./platform.MinuteDate.yml
+      - $ref: ./platform.MonthDate.yml
+      - $ref: ./platform.RelativeDate.yml
+      - $ref: ./platform.RelativeDatePattern.yml
+      - $ref: ./platform.SecondDate.yml
+      - $ref: ./platform.TimestampDate.yml
+      - $ref: ./platform.WeekDate.yml
+      - $ref: ./platform.YearDate.yml
+    discriminator:
+      propertyName: _class

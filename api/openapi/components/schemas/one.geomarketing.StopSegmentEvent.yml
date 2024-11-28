@@ -1,0 +1,145 @@
+allOf:
+  - $ref: ./bigdata.base.CdrEvent.yml
+  - type: object
+    description: Class containing Stop segment steps
+    required:
+      - imsi
+      - imsiMcc
+      - imsiMnc
+      - segmentType
+      - tsStart
+      - tsEnd
+      - speed
+    properties:
+      imsi:
+        type: integer
+        format: int64
+        minimum: 0
+      imsiMcc:
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 65535
+      imsiMnc:
+        type: integer
+        format: int32
+        minimum: 0
+        maximum: 65535
+      segmentType:
+        description: STOP or MOVE
+        allOf:
+          - $ref: ./one.geomarketing.SegmentType.yml
+      tsStart:
+        type: integer
+        format: int64
+        description: Start date
+      tsEnd:
+        type: integer
+        format: int64
+        description: End date
+      referenceTs:
+        type: integer
+        format: int64
+        description: |-
+          Reference date.
+
+          Date of the first event in the reference zone or date of the first
+           event if the previous stop location is in reference zone.
+      hasEventInReferenceZone:
+        type: boolean
+        description: Has event in reference zone.
+      duration:
+        type: integer
+        format: int32
+        description: Duration
+        minimum: 0
+      speed:
+        type: number
+        format: double
+        description: MOVE speed
+      dayDistance:
+        type: number
+        format: double
+        description: Distance travelled the same day.
+      cgiStart:
+        type: integer
+        format: int64
+        description: cellid start
+        minimum: 0
+      cgiEnd:
+        type: integer
+        format: int64
+        description: cellid end
+        minimum: 0
+      cuidStart:
+        type: integer
+        format: int64
+        description: cuid start
+        minimum: 0
+      cuidEnd:
+        type: integer
+        format: int64
+        description: cuid end
+        minimum: 0
+      nbEvents:
+        type: integer
+        format: int32
+        description: Number of events aggregated in this step
+        default: 0
+        minimum: 0
+      trajectory:
+        type: string
+      conveyance:
+        type: string
+      coordinatesStart:
+        $ref: ./platform.base.Coordinates.yml
+      coordinatesEnd:
+        $ref: ./platform.base.Coordinates.yml
+      runName:
+        type: string
+      taskTag:
+        type: string
+      taskExecId:
+        type: integer
+        format: int64
+        minimum: 0
+      foreachBatchId:
+        type: integer
+        format: int64
+        minimum: 0
+      maxSpeed:
+        type: integer
+        format: int32
+        minimum: 0
+      isFlight:
+        type: boolean
+      airportStart:
+        type: string
+      airportEnd:
+        type: string
+      departureTime:
+        type: integer
+        format: int64
+      arrivalTime:
+        type: integer
+        format: int64
+      trajectorySimilarityScore:
+        type: number
+        format: double
+      firstEventInReferenceZone:
+        type: integer
+        format: int64
+      lastEventInReferenceZone:
+        type: integer
+        format: int64
+      flightDuration:
+        type: integer
+        format: int32
+        minimum: 0
+      subFlights:
+        type: string
+      hasSubFlights:
+        type: boolean
+      distance:
+        type: number
+        format: double

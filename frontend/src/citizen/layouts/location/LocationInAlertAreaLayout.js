@@ -1,27 +1,33 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import FloodWarningKey from '../../../common/components/custom/FloodWarningKey'
 import Map from '../../../common/components/custom/Map'
 import Button from '../../../common/components/gov-uk/Button'
 import CheckBox from '../../../common/components/gov-uk/CheckBox'
 import InsetText from '../../../common/components/gov-uk/InsetText'
+import AlertType from '../../../common/enums/AlertType'
 import { setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import {
   addLocation,
+  findPOIByAddress,
+  getRegistrationParams,
   removeLocation,
-  updateLocationsFloodCategory
+  setLocationOtherAdditionals,
+  updateLocationsAlertTypes
 } from '../../../common/services/ProfileServices'
 import { getCoordsOfFloodArea } from '../../../common/services/WfsFloodDataService'
 
 export default function LocationInAlertAreaLayout ({
-  continueToNextPage, continueToSearchResultsPage,
+  continueToNextPage,
+  continueToSearchResultsPage,
   canCancel
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const location = useLocation()
   const [isChecked, setIsChecked] = useState(false)
   const authToken = useSelector((state) => state.session.authToken)
   const profile = useSelector((state) => state.session.profile)
@@ -38,63 +44,152 @@ export default function LocationInAlertAreaLayout ({
   const selectedFloodAlertArea = useSelector(
     (state) => state.session.selectedFloodAlertArea
   )
+  // address to use for registering and unregistering partner
+  const addressToUse = isUserInNearbyTargetFlowpath
+    ? selectedFloodAlertArea.properties.TA_NAME
+    : selectedLocation.address
+  const isSignUpFlow = location.pathname.includes('signup')
 
   const handleSubmit = async () => {
+    let updatedProfile
+
     if (additionalAlerts && isChecked) {
       if (isUserInNearbyTargetFlowpath) {
-        await addFloodAlertArea()
+        updatedProfile = await addFloodAlertArea()
       } else {
-        await updateExistingLocationCategories(['severe', 'alert'])
+        updatedProfile = await updateExistingLocationAlertTypes([
+          AlertType.SEVERE_FLOOD_WARNING,
+          AlertType.FLOOD_WARNING,
+          AlertType.FLOOD_ALERT
+        ])
       }
     } else if (additionalAlerts && !isChecked) {
       // scenario where user has pressed back and un-checked to get notifications for alert areas
       if (isUserInNearbyTargetFlowpath) {
-        await removeFloodAlertArea()
+        updatedProfile = await removeFloodAlertArea()
       } else {
-        await updateExistingLocationCategories(['severe'])
+        updatedProfile = await updateExistingLocationAlertTypes([
+          AlertType.SEVERE_FLOOD_WARNING,
+          AlertType.FLOOD_WARNING
+        ])
       }
     } else {
       // location only has flood alerts availble or user has selected a nearby flood alert area
       if (isUserInNearbyTargetFlowpath) {
-        await addFloodAlertArea()
+        updatedProfile = await addFloodAlertArea()
       } else {
-        await addLocationWithOnlyFloodAlerts()
+        updatedProfile = await addLocationWithOnlyFloodAlerts()
       }
     }
 
-    await updateGeosafeProfile()
+    if (!isSignUpFlow) {
+      updatedProfile = await updateGeosafeProfile(updatedProfile)
+
+      // if user is in sign up flow, then profile returned will be undefined
+      if (updatedProfile) {
+        await registerLocationToPartner(updatedProfile)
+      }
+    }
+
     continueToNextPage()
+  }
+
+  const registerLocationToPartner = async (profile) => {
+    const location = findPOIByAddress(profile, addressToUse)
+
+    // accomodates additional alerts path incase user chooses not to select the additional alerts
+    if (location) {
+      let alertTypes = additionalAlerts
+        ? [
+            AlertType.SEVERE_FLOOD_WARNING,
+            AlertType.FLOOD_WARNING,
+            AlertType.FLOOD_ALERT
+          ]
+        : [AlertType.FLOOD_ALERT]
+
+      if (isUserInNearbyTargetFlowpath) {
+        alertTypes = [AlertType.FLOOD_ALERT]
+      }
+
+      const data = {
+        authToken,
+        locationId: location.id,
+        partnerId: '1', // this is currently a hardcoded value - geosafe to update us on what it is
+        params: getRegistrationParams(profile, alertTypes)
+      }
+
+      await backendCall(
+        data,
+        'api/partner/register_location_to_partner',
+        navigate
+      )
+    }
   }
 
   // remove newly added location/location updates
   const handleUserNavigatingBack = async () => {
+    let updatedProfile
+
     if (additionalAlerts) {
       if (isUserInNearbyTargetFlowpath) {
-        await removeFloodAlertArea()
+        updatedProfile = await removeFloodAlertArea()
       } else {
-        await updateExistingLocationCategories(['severe'])
+        updatedProfile = await updateExistingLocationAlertTypes([
+          AlertType.SEVERE_FLOOD_WARNING,
+          AlertType.FLOOD_WARNING
+        ])
       }
     } else {
       // location only has flood alerts availble or user has selected a nearby flood alert area
       if (isUserInNearbyTargetFlowpath) {
-        await removeFloodAlertArea()
+        updatedProfile = await removeFloodAlertArea()
       } else {
-        await removeLocationWithOnlyFloodAlerts()
+        updatedProfile = await removeLocationWithOnlyFloodAlerts()
       }
     }
 
-    await updateGeosafeProfile()
+    if (!isSignUpFlow) {
+      updatedProfile = await updateGeosafeProfile(updatedProfile)
+      // if user has added flood alert area, then we need to unregister from that
+      if (isUserInNearbyTargetFlowpath && updatedProfile) {
+        unregisterLocationFromPartner(updatedProfile)
+      }
+    }
+
     navigate(-1)
+  }
+
+  const unregisterLocationFromPartner = async (updatedProfile) => {
+    const location = findPOIByAddress(updatedProfile, addressToUse)
+
+    if (location) {
+      const data = {
+        authToken,
+        locationId: location.id,
+        partnerId: '1' // this is currently a hardcoded value - geosafe to update us
+      }
+
+      await backendCall(
+        data,
+        'api/partner/unregister_location_from_partner',
+        navigate
+      )
+    }
   }
 
   const addFloodAlertArea = async () => {
     const alertArea = {
-      name: selectedFloodAlertArea.properties.TA_NAME,
-      address: '',
-      coordinates: getCoordsOfFloodArea(selectedFloodAlertArea)
+      name: '',
+      address: selectedFloodAlertArea.properties.TA_NAME,
+      coordinates: getCoordsOfFloodArea(selectedFloodAlertArea),
+      additionals: setLocationOtherAdditionals([], 'alertTypes', [
+        AlertType.FLOOD_ALERT
+      ])
     }
     const updatedProfile = await addLocation(profile, alertArea)
     dispatch(setProfile(updatedProfile))
+
+    return updatedProfile
   }
 
   const removeFloodAlertArea = async () => {
@@ -103,6 +198,8 @@ export default function LocationInAlertAreaLayout ({
       selectedFloodAlertArea.properties.TA_NAME
     )
     dispatch(setProfile(updatedProfile))
+
+    return updatedProfile
   }
 
   const addLocationWithOnlyFloodAlerts = async () => {
@@ -110,36 +207,53 @@ export default function LocationInAlertAreaLayout ({
 
     const locationWithAlertType = {
       ...locationWithoutPostcode,
-      categories: ['alert']
+      additionals: setLocationOtherAdditionals([], 'alertTypes', [
+        AlertType.FLOOD_ALERT
+      ])
     }
     const updatedProfile = await addLocation(profile, locationWithAlertType)
     dispatch(setProfile(updatedProfile))
+
+    return updatedProfile
   }
 
   const removeLocationWithOnlyFloodAlerts = async () => {
-    const updatedProfile = await removeLocation(profile, selectedLocation.name)
-    dispatch(setProfile(updatedProfile))
-  }
-
-  const updateExistingLocationCategories = async (categories) => {
-    const updatedProfile = await updateLocationsFloodCategory(
+    const updatedProfile = await removeLocation(
       profile,
-      selectedLocation,
-      categories
+      selectedLocation.address
     )
     dispatch(setProfile(updatedProfile))
+
+    return updatedProfile
   }
 
-  const updateGeosafeProfile = async () => {
-    const dataToSend = { authToken, profile }
-    await backendCall(dataToSend, 'api/profile/update', navigate)
+  const updateExistingLocationAlertTypes = async (alertTypes) => {
+    const updatedProfile = await updateLocationsAlertTypes(
+      profile,
+      selectedLocation,
+      alertTypes
+    )
+    dispatch(setProfile(updatedProfile))
+
+    return updatedProfile
+  }
+
+  const updateGeosafeProfile = async (updatedProfile) => {
+    const dataToSend = { authToken, profile: updatedProfile }
+    const { data } = await backendCall(
+      dataToSend,
+      'api/profile/update',
+      navigate
+    )
+
+    return data.profile
   }
 
   return (
     <>
       <BackLink onClick={() => handleUserNavigatingBack()} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        <div className='govuk-grid-row'>
+        <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
               {additionalAlerts
@@ -150,7 +264,7 @@ export default function LocationInAlertAreaLayout ({
               text={
                 isUserInNearbyTargetFlowpath
                   ? selectedFloodAlertArea.properties.TA_NAME
-                  : selectedLocation.name
+                  : selectedLocation.address
               }
             />
           </div>
@@ -164,8 +278,7 @@ export default function LocationInAlertAreaLayout ({
               prepared.
             </p>
             <p>
-              They tell you when you should prepare and could pose a risk
-              to:
+              They tell you when you should prepare and could pose a risk to:
             </p>
             <ul className='govuk-list govuk-list--bullet'>
               <li>fields, recreational land and car parks</li>
@@ -190,10 +303,10 @@ export default function LocationInAlertAreaLayout ({
             <div className='govuk-!-margin-top-5'>
               <Button
                 text={
-                    additionalAlerts
-                      ? 'Continue'
-                      : 'Confirm you want this location'
-                  }
+                  additionalAlerts
+                    ? 'Continue'
+                    : 'Confirm you want this location'
+                }
                 className='govuk-button'
                 onClick={handleSubmit}
               />

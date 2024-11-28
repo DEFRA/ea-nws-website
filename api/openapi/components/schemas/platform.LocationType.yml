@@ -1,0 +1,20 @@
+description: Supported types of location sources.
+oneOf:
+  - type: object
+    required:
+      - uid
+    properties:
+      uid:
+        $ref: ./platform.UidType.yml
+  - type: object
+    required:
+      - cgi
+    properties:
+      cgi:
+        $ref: ./platform.CgiType.yml
+  - type: object
+    required:
+      - coord
+    properties:
+      coord:
+        $ref: ./platform.CoordType.yml

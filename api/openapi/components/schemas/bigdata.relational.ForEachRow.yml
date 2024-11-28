@@ -1,0 +1,8 @@
+allOf:
+  - $ref: ./bigdata.relational.Mux.yml
+  - type: object
+    description: |-
+      Apply a given operation to each input row.
+
+      Mostly a way to ensure that the whole operation is row-associative.
+      Same as \ref Mux except that the rows are provided one by one.

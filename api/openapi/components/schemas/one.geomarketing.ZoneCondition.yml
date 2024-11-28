@@ -1,0 +1,26 @@
+type: object
+required:
+  - zoneId
+properties:
+  zoneId:
+    type: integer
+    format: int64
+    description: Id of the shared zone.
+    minimum: 0
+  placemarks:
+    type: array
+    description: |-
+      Placemarks to use inside the zone.
+
+      \note Keeping it empty will select the whole zone.
+    items:
+      type: integer
+      format: int32
+      minimum: 0
+  excludePlacemarks:
+    type: boolean
+    description: |-
+      Whether placemarks are included or excluded.
+
+      \ref bigdata.query.ZoneBoolExpr for more details.
+    default: false

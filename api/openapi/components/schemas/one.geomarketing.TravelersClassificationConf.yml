@@ -1,0 +1,7 @@
+allOf:
+  - $ref: ./platform.cfg.DynConfSetElem.yml
+  - type: object
+    description: Container for traveler classification decision tree.
+    properties:
+      travelersClassification:
+        $ref: ./one.geomarketing.TravelersClassification.yml

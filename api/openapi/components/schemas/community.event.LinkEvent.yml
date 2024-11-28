@@ -1,0 +1,15 @@
+allOf:
+  - $ref: ./community.event.GroupContractEvent.yml
+  - type: object
+    description: >-
+      Event sent to all contracts of a group when a new contract joins it.
+
+
+      The new contract also receives the event.
+
+      This event is *not* sent to the first contract of a group when the group
+      is
+
+      created. a \ref GroupCreateEvent is sent instead.
+
+      This event is sent after a successful call to community.sdk.Contract.link.

@@ -1,0 +1,5 @@
+type: string
+description: Sorting order.
+enum:
+  - ASCENDING
+  - DESCENDING

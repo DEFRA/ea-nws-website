@@ -1,0 +1,26 @@
+allOf:
+  - $ref: ./one.b2b.log.LineCompanyLog.yml
+  - type: object
+    description: A specific class for set profile event
+    required:
+      - profileId
+      - profileName
+      - previousProfileId
+      - previousProfileName
+    properties:
+      profileId:
+        type: integer
+        format: int64
+        description: Profile unique identifier.
+        minimum: 0
+      profileName:
+        type: string
+        description: Name of the profile.
+      previousProfileId:
+        type: integer
+        format: int64
+        description: Previous profile unique identifier.
+        minimum: 0
+      previousProfileName:
+        type: string
+        description: Name of the previous profile.

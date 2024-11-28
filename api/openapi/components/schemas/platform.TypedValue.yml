@@ -1,0 +1,17 @@
+type: object
+description: |-
+  More accurate than a simple value with its selected field.
+
+  Can be used for declaration of constants.
+required:
+  - type
+  - value
+properties:
+  type:
+    description: Type of the value.
+    allOf:
+      - $ref: ./platform.DataType.yml
+  value:
+    description: The value.
+    allOf:
+      - $ref: ./platform.base.Value.yml

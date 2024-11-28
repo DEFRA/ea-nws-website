@@ -6,7 +6,10 @@ import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
 import InsetText from '../../../../common/components/gov-uk/InsetText'
-import { setProfile, setRegisterToken } from '../../../../common/redux/userSlice'
+import {
+  setProfile,
+  setRegisterToken
+} from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { addVerifiedContact } from '../../../../common/services/ProfileServices'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
@@ -55,12 +58,13 @@ export default function SignUpPage () {
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
             <h2 className='govuk-heading-l'>
-              Enter an email address - you'll use this to sign in to your account
+              Enter an email address - you'll use this to sign in to your
+              account
             </h2>
             <div className='govuk-body'>
               <p>
-                You'll be able to use your account to update your locations, flood
-                messages or contact details.{' '}
+                You'll be able to use your account to update your locations,
+                flood messages or contact details.{' '}
               </p>
               <InsetText text='We recommend using an email address you can access 24 hours a day.' />
               <Input

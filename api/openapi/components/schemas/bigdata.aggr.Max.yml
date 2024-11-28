@@ -1,0 +1,20 @@
+allOf:
+  - $ref: ./bigdata.aggr.Aggregation.yml
+  - type: object
+    description: |-
+      Find the maximum value for a given input field.
+
+      Supports boolean, number and string fields.
+
+      Output: same type as the input field. It is optional if the input field is
+      optional or if the input table can be empty.
+    required:
+      - inputFieldName
+      - outputFieldName
+    properties:
+      inputFieldName:
+        type: string
+        description: Field for which we should find the maximum value.
+      outputFieldName:
+        type: string
+        description: Name of the output field containing the resulting maximum.

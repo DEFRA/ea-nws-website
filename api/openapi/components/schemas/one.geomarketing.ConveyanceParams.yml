@@ -1,0 +1,12 @@
+type: object
+properties:
+  rules:
+    type: array
+    description: Rules to match for conveyance.
+    items:
+      $ref: ./one.geomarketing.ConveyanceRule.yml
+  deprecatedTagHierarchy:
+    type: string
+    description: Tag hierarchy for zone matching.
+  zones:
+    $ref: ./one.geomarketing.ComposedZone.yml

@@ -128,6 +128,27 @@ const searchLocations = async (authToken, searchKey, value) => {
   return locationArr
 }
 
+const searchInvLocations = async (authToken, searchKey, value) => {
+  const locationKeys = await getInvLocationKeys(authToken)
+  const locationArr = []
+  const searchKeyArr = searchKey.split('.')
+  await Promise.all(
+    locationKeys.map(async (key) => {
+      const location = await getJsonData(key)
+      let jsonValue = location[searchKeyArr[0]]
+      if (searchKeyArr.length > 1) {
+        for (let i = 1; i < searchKeyArr.length; i++) {
+          jsonValue = jsonValue[searchKeyArr[i]]
+        }
+      }
+      if (value === jsonValue) {
+        locationArr.push(location)
+      }
+    })
+  )
+  return locationArr
+}
+
 /*
 Functions for invalid locations to be used during bulk upload
 for manually matching locations to coordinates
@@ -176,6 +197,7 @@ module.exports = {
   removeLocation,
   updateLocation,
   searchLocations,
+  searchInvLocations,
   listLocations,
   addInvLocation,
   removeInvLocation,

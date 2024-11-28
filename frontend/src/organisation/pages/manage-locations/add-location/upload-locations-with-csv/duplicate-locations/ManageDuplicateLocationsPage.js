@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import WarningText from '../../../../../../common/components/gov-uk/WarningText'
+import { backendCall } from '../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ManageDuplicateLocationsPage() {
@@ -12,34 +13,50 @@ export default function ManageDuplicateLocationsPage() {
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
   const location = useLocation()
-  const bulkUploadData = location?.state?.bulkUploadData
-  const [duplicateLocations, setDuplicateLocations] = useState([])
-
-  useEffect(() => {
-    const duplicateLocations = bulkUploadData.invalid.filter(
-      (invalid) =>
-        Array.isArray(invalid.error) && invalid.error.includes('duplicate')
-    )
-    setDuplicateLocations(duplicateLocations)
-  }, [])
+  const duplicateLocations = location?.state?.duplicateLocations
 
   const handlePrint = () => {
     // TODO
   }
 
+  const getLocation = async (type, locationName) => {
+    const dataToSend = {
+      authToken,
+      type: type,
+      path: 'meta_data.location_additional.location_name',
+      value: locationName
+    }
+    const { data } = await backendCall(
+      dataToSend,
+      'api/locations/search',
+      navigate
+    )
+
+    if (data && data.length === 1) {
+      return data[0]
+    } else {
+      return null
+    }
+  }
+
   const handleCompareDetails = async (event, location) => {
     event.preventDefault()
 
-    // TODO: get existing location with same name
-    //       use same location for now
-    const existingLocation = location
+    // Get the existing location (note type is 'valid')
+    const existingLocation = await getLocation('valid', location.Location_name)
 
-    navigate(orgManageLocationsUrls.add.duplicateLocationComparisonPage, {
-      state: {
-        existingLocation: existingLocation,
-        newLocation: location
-      }
-    })
+    // Get the new, duplicate location (note type is 'invalid')
+    const newLocation = await getLocation('invalid', location.Location_name)
+
+    if (existingLocation && newLocation) {
+      // Now compare the two and let the use choose one
+      navigate(orgManageLocationsUrls.add.duplicateLocationComparisonPage, {
+        state: {
+          existingLocation: existingLocation,
+          newLocation: newLocation
+        }
+      })
+    }
   }
 
   const handleSubmit = async () => {

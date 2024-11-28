@@ -31,10 +31,14 @@ export default function ConfirmLocationsPage() {
         if (duplicateLocations == 1) {
           // TODO: go to page to handle single duplicate
         } else {
+          const duplicateLocations = bulkUploadData.invalid.filter(
+            (invalid) =>
+              Array.isArray(invalid.error) &&
+              invalid.error.includes('duplicate')
+          )
           navigate(orgManageLocationsUrls.add.duplicateLocationsOptionsPage, {
             state: {
               addedLocations: data.valid,
-              bulkUploadData,
               duplicateLocations
             }
           })

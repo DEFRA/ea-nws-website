@@ -9,15 +9,14 @@ import Radio from '../../../../../../common/components/gov-uk/Radio'
 import WarningText from '../../../../../../common/components/gov-uk/WarningText'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DuplicateLocationsOptionsPage () {
+export default function DuplicateLocationsOptionsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [option, setOption] = useState('')
   const [error, setError] = useState('')
   const location = useLocation()
   const addedLocations = location?.state?.addedLocations || 0
-  const bulkUploadData = location?.state?.bulkUploadData
-  const duplicateLocations = location?.state?.duplicateLocations || 0
+  const duplicateLocations = location?.state?.duplicateLocations
 
   const options = [
     {
@@ -55,7 +54,7 @@ export default function DuplicateLocationsOptionsPage () {
         case options[2].value: {
           navigate(orgManageLocationsUrls.add.manageDuplicateLocationsPage, {
             state: {
-              bulkUploadData
+              duplicateLocations
             }
           })
           break
@@ -81,8 +80,8 @@ export default function DuplicateLocationsOptionsPage () {
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>
-              {duplicateLocations} locations already exist with the same name in
-              this account
+              {duplicateLocations.length} locations already exist with the same
+              name in this account
             </h1>
             <div
               className={

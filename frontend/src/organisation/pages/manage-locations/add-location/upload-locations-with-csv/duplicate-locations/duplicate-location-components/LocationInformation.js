@@ -7,11 +7,14 @@ import FloodWarningKey from '../../../../../../components/custom/FloodWarningKey
 import Map from '../../../../../../components/custom/Map'
 import RiskCategoryLabel from '../../../../../../components/custom/RiskCategoryLabel'
 
-export default function LocationInformationLayout(location) {
+export default function LocationInformationLayout({ location }) {
   const navigate = useNavigate()
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = currentLocation.meta_data.location_additional
-  const formattedAddress = location.location.Full_address?.split(',')
+  const formattedAddress = location.Full_address?.split(',')
+
+  console.log('location', location)
+  console.log('address', location.Full_address)
 
   const LocationHeader = () => {
     switch (additionalData.location_data_type) {
@@ -52,7 +55,7 @@ export default function LocationInformationLayout(location) {
 
   const locationDetails = (
     <>
-      <div className={currentLocation.address ? 'govuk-!-margin-top-7' : ''}>
+      <div className={location.Full_address ? 'govuk-!-margin-top-7' : ''}>
         <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
           Location
         </h2>
@@ -291,7 +294,7 @@ export default function LocationInformationLayout(location) {
                   Change
                 </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p>{additionalData.notes}</p>
+                <p>{location.Notes}</p>
               </div>
             )}
 

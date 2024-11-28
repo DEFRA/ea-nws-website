@@ -212,6 +212,16 @@ export default function ContactMap ({ mobileView }) {
     })
   }
 
+  const onEachBoundaryFeature = (feauture, layer) => {
+    layer.options.className = 'existing-boundary-area-pattern-fill'
+    layer.setStyle({
+      opacity: 1,
+      color: '#6d7475',
+      weight: 2,
+      fillOpacity: 0.6
+    })
+  }
+
   const url = 'https://api.os.uk/maps/raster/v1/wmts'
   const parameters = {
     tileMatrixSet: encodeURI('EPSG:3857'),
@@ -279,7 +289,13 @@ export default function ContactMap ({ mobileView }) {
                 )
               })}
               {boundaries.map((boundary, index) => {
-                return <GeoJSON key={index} data={boundary} />
+                return (
+                  <GeoJSON
+                    key={index}
+                    data={boundary}
+                    onEachFeature={onEachBoundaryFeature}
+                  />
+                )
               })}
               <FitBounds />
             </>

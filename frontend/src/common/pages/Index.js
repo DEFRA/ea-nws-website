@@ -19,6 +19,7 @@ import {
   setSelectedBoundary,
   setSelectedBoundaryType
 } from '../redux/userSlice'
+import { backendCall } from '../services/BackendService'
 
 export default function IndexPage () {
   const dispatch = useDispatch()
@@ -355,7 +356,7 @@ export default function IndexPage () {
     ]
   }
 
-  function mockSession (profile) {
+  function mockSession (profile, type) {
     if (mockSessionActive === false) {
       const authToken = uuidv4()
       const contactPreferences = ['Text']
@@ -392,6 +393,16 @@ export default function IndexPage () {
             }
           ]
         }
+      }
+
+      if (type === 'org') {
+        (async () => {
+          const dataToSend ={ signinToken: uuidv4(), code: 123456, signinType: 'org' }
+          
+          await backendCall(
+          dataToSend,
+          'api/sign_in_validate'
+        )})()
       }
 
       dispatch(setAuthToken(authToken))
@@ -502,22 +513,22 @@ export default function IndexPage () {
               <Button
                 className='govuk-button'
                 text='Activate/Deactivate Mock Session 1'
-                onClick={() => mockSession(mockOne)}
+                onClick={() => mockSession(mockOne, 'citizen')}
               />
               <Button
                 className='govuk-button'
                 text='Activate/Deactivate Mock Session 2'
-                onClick={() => mockSession(mockTwo)}
+                onClick={() => mockSession(mockTwo, 'citizen')}
               />
               <Button
                 className='govuk-button'
                 text='Activate/Deactivate Mock Session 3'
-                onClick={() => mockSession(mockThree)}
+                onClick={() => mockSession(mockThree, 'citizen')}
               />
               <Button
                 className='govuk-button'
                 text='Activate/Deactivate Mock Org Session 1'
-                onClick={() => mockSession(mockOrgOne)}
+                onClick={() => mockSession(mockOrgOne, 'org')}
               />
               <ul className='govuk-list'>
                 <li>

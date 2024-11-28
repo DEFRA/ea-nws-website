@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import ExpiredCodeLayout from '../email/ExpiredCodeLayout'
 import NotCompletedSigningUpLayout from '../../../citizen/layouts/sign-up/NotCompletedSignUpLayout'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
@@ -18,6 +17,7 @@ import {
 import { backendCall } from '../../../common/services/BackendService'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
 import { getAdditionals } from '../../services/ProfileServices'
+import ExpiredCodeLayout from '../email/ExpiredCodeLayout'
 
 export default function SignInValidatePageLayout ({
   NavigateToNextPage,
@@ -74,7 +74,7 @@ export default function SignInValidatePageLayout ({
           ])
         )
 
-        const isSignUpComplete = getAdditionals(data.profile, 'signUpComplete')
+        const isSignUpComplete = getAdditionals(data.profile, 'signupComplete')
         const lastAccessedUrl = getAdditionals(data.profile, 'lastAccessedUrl')
         setLastAccessedUrl(lastAccessedUrl)
 

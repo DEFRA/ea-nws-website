@@ -16,12 +16,15 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { name, fileType } = request.payload
+        const { name, fileType, folder } = request.payload
 
         if (name && fileType) {
           const uniqFileName = `${Date.now()}_${name}`
           const client = new S3Client()
-          const s3BucketName = await getSecretKeyValue('nws/aws', 'bulkUploadBucket')
+          const s3BucketName = await getSecretKeyValue(
+            'nws/aws',
+            'bulkUploadBucket'
+          )
 
           if (!s3BucketName) {
             console.error('S3 Bucket value undefined in Secrets Manager')
@@ -30,7 +33,7 @@ module.exports = [
 
           const params = {
             Bucket: s3BucketName,
-            Key: uniqFileName,
+            Key: `${folder}/${uniqFileName}`,
             ContentType: fileType
           }
 

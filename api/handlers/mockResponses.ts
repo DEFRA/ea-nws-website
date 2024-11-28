@@ -90,7 +90,7 @@
     mobilePhones: ['07343454590', '07889668367'],
     homePhones: ['01475721535'],
     language: 'EN',
-    additionals: [{id: "lastAccessedUrl", value: {s: "/signup/accountname/add"}}, {id: "signUpComplete", value: {s: 'true' }}],
+    additionals: [{id: "lastAccessedUrl", value: {s: "/signup/accountname/add"}}, {id: "signupComplete", value: {s: 'true' }}],
     unverified: {
       homePhones: [{address : '01475721535'}]
     },

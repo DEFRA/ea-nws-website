@@ -38,7 +38,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [{ id: 'signUpComplete', value: { s: 'true' } }],
+    additionals: [{ id: 'signupComplete', value: { s: 'true' } }],
     pois: [
       {
         id: 1,
@@ -75,7 +75,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [{ id: 'signUpComplete', value: { s: 'true' } }],
+    additionals: [{ id: 'signupComplete', value: { s: 'true' } }],
     pois: [
       {
         address: 'Big Ben, London, SW1A 0AA',
@@ -105,7 +105,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [{ id: 'signUpComplete', value: { s: 'true' } }],
+    additionals: [{ id: 'signupComplete', value: { s: 'true' } }],
     pois: [
       {
         address: 'Big Ben, London, SW1A 0AA',
@@ -267,7 +267,7 @@ export default function IndexPage () {
           })
         }
       },
-      { id: 'signUpComplete', value: { s: 'false' } }
+      { id: 'signupComplete', value: { s: 'false' } }
     ],
     pois: [
       {

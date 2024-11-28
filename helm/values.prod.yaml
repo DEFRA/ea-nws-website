@@ -20,7 +20,7 @@ frontend:
       image:
         repository: 533267401207.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
         pullPolicy: Always
-        tag: "frontend-0.1.4"
+        tag: "frontend-0.2.0"
       livenessProbe:
         httpGet:
           path: /
@@ -72,7 +72,7 @@ backend:
       image:
         repository: 533267401207.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
         pullPolicy: Always
-        tag: "backend-0.1.4"
+        tag: "backend-0.2.0"
       livenessProbe:
         httpGet:
           path: /liveness

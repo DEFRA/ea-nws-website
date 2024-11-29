@@ -1,19 +1,21 @@
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useMemo } from 'react'
+import React, { useEffect, useMemo, useRef } from 'react'
 import {
   GeoJSON,
   MapContainer,
   Marker,
   Popup,
+  TileLayer,
   ZoomControl,
   useMapEvents
 } from 'react-leaflet'
 // Leaflet Marker Icon fix
 import L from 'leaflet'
-import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
-import iconUrl from 'leaflet/dist/images/marker-icon.png'
-import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { useState } from 'react'
+import floodAlertIcon from '../../../../../common/assets/images/live-monitoring-flood-alert-icon.png'
+import floodWarningIcon from '../../../../../common/assets/images/live-monitoring-flood-warning-icon.png'
+import floodWarningRemovedIcon from '../../../../../common/assets/images/live-monitoring-removed-icon.png'
+import floodSevereWarningIcon from '../../../../../common/assets/images/live-monitoring-severe-flood-warning-icon.png'
 import TileLayerWithHeader from '../../../../../common/components/custom/TileLayerWithHeader'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { getSurroundingFloodAreas } from '../../../../../common/services/WfsFloodDataService'
@@ -42,21 +44,14 @@ export default function LiveMap({}) {
           mapCenter.lng,
           2
         )
-        console.log(alertArea)
-        console.log(warningArea)
         setAlertArea(alertArea)
         setWarningArea(warningArea)
-      } else {
-        setAlertArea(null)
-        setWarningArea(null)
       }
     }
     fetchFloodAreaData()
   }, [mapCenter, zoomLevel])
 
   const ZoomTracker = () => {
-    //const [zoomLevel, setZoomLevel] = useState(6);
-
     const map = useMapEvents({
       zoomend: () => {
         setZoomLevel(map.getZoom())
@@ -71,16 +66,29 @@ export default function LiveMap({}) {
     return null
   }
 
-  // Leaflet Marker Icon fix
-  const DefaultIcon = L.icon({
-    iconUrl,
-    iconRetinaUrl,
-    shadowUrl,
-    iconSize: [25, 41],
+  const floodSevereWarningMarker = L.icon({
+    iconUrl: floodSevereWarningIcon,
+    iconSize: [52, 45],
     iconAnchor: [12, 41]
   })
 
-  L.Marker.prototype.options.icon = DefaultIcon
+  const floodWarningMarker = L.icon({
+    iconUrl: floodWarningIcon,
+    iconSize: [52, 45],
+    iconAnchor: [12, 41]
+  })
+
+  const floodAlertMarker = L.icon({
+    iconUrl: floodAlertIcon,
+    iconSize: [52, 45],
+    iconAnchor: [12, 41]
+  })
+
+  const floodWarningRemovedMarker = L.icon({
+    iconUrl: floodWarningRemovedIcon,
+    iconSize: [45, 45],
+    iconAnchor: [12, 41]
+  })
 
   async function getApiKey() {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
@@ -132,17 +140,58 @@ export default function LiveMap({}) {
     [apiKey]
   )
 
+  const osmTileLayer = useMemo(
+    () => (
+      <TileLayer
+        url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+        attribution='© OpenStreetMap contributors'
+      />
+    ),
+    []
+  )
+
+  useEffect(() => {
+    if (zoomLevel < 12) {
+      if (warningAreaRef.current) {
+        warningAreaRef.current.clearLayers()
+      }
+      if (alertAreaRef.current) {
+        alertAreaRef.current.clearLayers()
+      }
+      setAlertArea(null)
+      setWarningArea(null)
+    }
+  }, [zoomLevel])
+
+  const alertAreaRef = useRef(null)
+  const warningAreaRef = useRef(null)
+
+  const getMarker = (type) => {
+    console.log(type)
+    switch (type) {
+      case 'severe':
+        return floodSevereWarningMarker
+      case 'warning':
+        return floodWarningMarker
+      case 'alert':
+        return floodAlertMarker
+      case 'removed':
+        return floodWarningRemovedMarker
+    }
+  }
+
   return (
     <>
       <MapContainer
-        center={[52.5619, -1.4649]}
-        zoom={6}
+        center={[52.7152, -1.17349]}
+        zoom={7}
         zoomControl={false}
         attributionControl={false}
         minZoom={7}
         maxBounds={maxBounds}
-        className={'map-container'}
+        className={'live-map-container'}
       >
+        {osmTileLayer}
         {apiKey && tileLayerWithHeader}
         <ZoomControl position='bottomright' />
         <ZoomTracker />
@@ -150,6 +199,7 @@ export default function LiveMap({}) {
         {locations.map((location, index) => (
           <Marker
             key={index}
+            icon={getMarker(location.type)}
             position={[
               location.coordinates.latitude,
               location.coordinates.longitude
@@ -166,6 +216,9 @@ export default function LiveMap({}) {
             key={warningArea}
             data={warningArea}
             style={{ color: '#f70202' }}
+            ref={(el) => {
+              warningAreaRef.current = el
+            }}
           />
         )}
         {alertArea && (
@@ -173,6 +226,9 @@ export default function LiveMap({}) {
             key={alertArea}
             data={alertArea}
             style={{ color: '#ffa200' }}
+            ref={(el) => {
+              alertAreaRef.current = el
+            }}
           />
         )}
       </MapContainer>

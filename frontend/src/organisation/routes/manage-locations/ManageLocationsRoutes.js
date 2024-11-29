@@ -51,6 +51,7 @@ import EditAddressPage from '../../pages/manage-locations/edit-location/edit-ind
 import EditKeyInformationPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/key-information/KeyInformationPage'
 import EditKeywordsPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/keywords/KeywordsPage'
 import EditNotesPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/notes/NotesPage'
+import LiveFLoodMonitoringPage from '../../pages/manage-locations/live-monitoring/LiveFloodMonitoringPage'
 
 // view imports
 import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
@@ -180,6 +181,11 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.view.viewMessages,
     component: <ViewMessagesPage />
+  },
+  // monitoring
+  {
+    path: orgManageLocationsUrls.monitoring.view,
+    component: <LiveFLoodMonitoringPage />
   },
   // add
   {

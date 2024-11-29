@@ -266,6 +266,11 @@
   width: 12.75em;
 }
 
+.live-map-container {
+  height: 80vh;
+  /* width: 73%; */
+}
+
 @media (max-width: 1099px) {
   .map-container {
     height: 45vh;

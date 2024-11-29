@@ -331,31 +331,36 @@ export default function IndexPage () {
       name: 'Stephanie Beach',
       job_title: 'Operations Director',
       email: 'stephanie.beach@company.com',
-      linked_locations: ['Loc_1', 'Loc_2']
+      linked_locations: ['Loc_1', 'Loc_2'],
+      keywords: ['Team 1']
     },
     {
       name: 'Mary Pepper',
       job_title: 'Regional Manager',
       email: 'mary.pepper@company.com',
-      linked_locations: []
+      linked_locations: [],
+      keywords: ['Team 1', 'Team 2']
     },
     {
       name: 'Amanda Jordan',
       job_title: 'Regional Manager',
       email: 'amanda.jordan@company.com',
-      linked_locations: ['Loc_3', 'Loc_4']
+      linked_locations: ['Loc_3', 'Loc_4'],
+      keywords: ['Team 1', 'Team 3']
     },
     {
       name: 'Steve Binns',
       job_title: 'Regional Manager',
       email: 'steve.binns@company.com',
-      linked_locations: ['Loc_1']
+      linked_locations: ['Loc_1'],
+      keywords: []
     },
     {
       name: 'Greg Swordy',
       job_title: 'Site Manager',
       email: 'greg.swordy@company.com',
-      linked_locations: ['Loc_1', 'Loc_2']
+      linked_locations: ['Loc_1', 'Loc_2'],
+      keywords: ['Team 3', 'Team 4']
     }
   ]
 

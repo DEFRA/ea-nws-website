@@ -77,7 +77,7 @@ export default function ViewContactsDashboardPage () {
     useState([])
   const [selectedJobTitleFilters, setSelectedJobTitleFilters] =
     useState([])
-  const [selectedEmailFilters, setSelectedEmailFilters] =
+  const [selectedKeywordFilters, setSelectedKeywordFilters] =
     useState([])
   const [selectedLinkedFilters, setSelectedLinkedFilters] =
     useState([])
@@ -149,6 +149,10 @@ export default function ViewContactsDashboardPage () {
     else {
       selectedFilterType = 'No'
     }
+
+    setSelectedFilters([])
+    setSelectedJobTitleFilters([])
+    setSelectedKeywordFilters([])
 
     setSelectedLinkedFilters([selectedFilterType])
     setSelectedFilters([selectedFilterType])
@@ -265,8 +269,8 @@ export default function ViewContactsDashboardPage () {
                   setContactNameFilter={setContactNameFilter}
                   selectedJobTitleFilters={selectedJobTitleFilters}
                   setSelectedJobTitleFilters={setSelectedJobTitleFilters}
-                  selectedEmailFilters={selectedEmailFilters}
-                  setSelectedEmailFilters={setSelectedEmailFilters}
+                  selectedKeywordFilters={selectedKeywordFilters}
+                  setSelectedKeywordFilters={setSelectedKeywordFilters}
                   selectedLinkedFilters={selectedLinkedFilters}
                   setSelectedLinkedFilters={setSelectedLinkedFilters}
                 />

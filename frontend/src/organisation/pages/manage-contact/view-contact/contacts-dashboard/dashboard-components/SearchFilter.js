@@ -21,8 +21,8 @@ export default function SearchFilter ({
   setContactNameFilter,
   selectedJobTitleFilters,
   setSelectedJobTitleFilters,
-  selectedEmailFilters,
-  setSelectedEmailFilters,
+  selectedKeywordFilters,
+  setSelectedKeywordFilters,
   selectedLinkedFilters,
   setSelectedLinkedFilters
 }) {
@@ -34,12 +34,10 @@ export default function SearchFilter ({
     )
   ]
 
-  const emails = [
-    ...new Set(
-      contacts
-        .map((contact) => contact.email)
-        .filter((email) => email) // filters out undefined entries
-    )
+  // TODO - get contacts keywords
+  const keywords = [
+    'Keyword 1',
+    'Keyword 2'
   ]
 
   const linkedLocations = [
@@ -49,7 +47,7 @@ export default function SearchFilter ({
   // search filters visibility
   const [contactNameVisible, setContactNameVisible] = useState(false)
   const [jobTitleVisible, setJobTitleVisible] = useState(selectedJobTitleFilters.length > 0)
-  const [emailVisible, setEmailVisible] = useState(selectedEmailFilters.length > 0)
+  const [keywordVisible, setKeywordVisible] = useState(selectedKeywordFilters.length > 0)
   const [linkedVisible, setLinkedVisible] = useState(selectedLinkedFilters.length > 0)
 
   // handle filters applied
@@ -88,11 +86,11 @@ export default function SearchFilter ({
       )
     }
 
-    // Apply email filter
-    if (selectedEmailFilters.length > 0) {
+    // Apply keyword filter - TODO
+    if (selectedKeywordFilters.length > 0) {
       filteredContacts = filteredContacts.filter((contact) =>
-      selectedEmailFilters.includes(
-          contact.email
+      selectedKeywordFilters.includes(
+          contact.keywords
         )
       )
     }
@@ -114,7 +112,7 @@ export default function SearchFilter ({
     setFilteredContacts(contacts)
     setSelectedFilters([])
     setSelectedJobTitleFilters([])
-    setSelectedEmailFilters([])
+    setSelectedKeywordFilters([])
     setSelectedLinkedFilters([])
   }
 
@@ -126,12 +124,8 @@ export default function SearchFilter ({
         className='contacts-filter-section'
         style={{
           display: 'flex',
-          alignItems: 'center',
           paddingLeft: 20,
-          paddingRight: 20,
-          paddingTop: 1,
-          paddingBottom: 1,
-          gap: 15
+          gap: 14
         }}
         onClick={() => setContactNameVisible(!contactNameVisible)}
       >
@@ -150,10 +144,7 @@ export default function SearchFilter ({
         <div class='govuk-form-group'
           style={{
             paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 1,
-            paddingBottom: 1,
-            gap: 15
+            paddingRight: 20
         } }>
           <div class='input-with-icon'>
             <FontAwesomeIcon icon={faMagnifyingGlass} className='input-icon' />
@@ -188,11 +179,7 @@ export default function SearchFilter ({
           className='contacts-filter-section'
           style={{
             display: 'flex',
-            alignItems: 'center',
             paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 1,
-            paddingBottom: 1,
             gap: 6
           }}
           onClick={() => {
@@ -212,10 +199,6 @@ export default function SearchFilter ({
           <div className='govuk-checkboxes govuk-checkboxes--small'
             style={{
               paddingLeft: 20,
-              paddingRight: 20,
-              paddingTop: 1,
-              paddingBottom: 1,
-              gap: 15,
               display: 'flex',
               flexDirection: 'column',
               overflowY: 'scroll',
@@ -264,11 +247,10 @@ export default function SearchFilter ({
               width: 'fit-content',
               height: 34,
               paddingLeft: 10,
-              paddingRight: 10,
-              gap: 5
+              paddingRight: 10
             }}>
             <label className='govuk-label'>
-              {filter}
+              {filter}&nbsp;
             </label>
             <FontAwesomeIcon icon={faXmark} 
               onClick={() => {
@@ -288,8 +270,7 @@ export default function SearchFilter ({
           borderStyle: 'solid',
           borderWidth: 'thin',
           borderColor: '#b1b4b6',
-          paddingBottom: 16,
-          gap: 15
+          paddingBottom: 16
         }}>
         <div className='contacts-filter-header'
           style={{
@@ -297,8 +278,7 @@ export default function SearchFilter ({
             paddingLeft: 20,
             paddingRight: 20,
             paddingTop: 11,
-            paddingBottom: 11,
-            gap: 15
+            paddingBottom: 11
           }}>
           <h1 className='govuk-heading-m govuk-!-margin-bottom-2'>Filter</h1>
         </div>
@@ -316,11 +296,7 @@ export default function SearchFilter ({
                 display: 'flex',
                 alignItems: 'center',
                 backgroundColor: '#f3f2f1',
-                paddingLeft: 20,
-                paddingRight: 20,
-                paddingTop: 11,
-                paddingBottom: 11,
-                gap: 15
+                paddingLeft: 20
               }}>
               <h2 className='govuk-heading-s' style={{ marginBottom: '0' }}>
                 Selected filters
@@ -339,9 +315,9 @@ export default function SearchFilter ({
               setSelectedJobTitleFilters
             )}
             {selectedFilterContents(
-              'Email',
-              selectedEmailFilters,
-              setSelectedEmailFilters
+              'Keyword',
+              selectedKeywordFilters,
+              setSelectedKeywordFilters
             )}
             {selectedFilterContents(
               'Linked locations',
@@ -354,10 +330,7 @@ export default function SearchFilter ({
         <div className=' govuk-!-margin-top-6'
           style={{
             paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 1,
-            paddingBottom: 1,
-            gap: 15
+            paddingRight: 20
           }}>
           <Button
             text='Apply filters'
@@ -379,12 +352,12 @@ export default function SearchFilter ({
         )}
 
         {otherFilter(
-          'Email',
-          emails,
-          selectedEmailFilters,
-          setSelectedEmailFilters,
-          emailVisible,
-          setEmailVisible
+          'Keyword',
+          keywords,
+          selectedKeywordFilters,
+          setSelectedKeywordFilters,
+          keywordVisible,
+          setKeywordVisible
         )}
 
         {otherFilter(

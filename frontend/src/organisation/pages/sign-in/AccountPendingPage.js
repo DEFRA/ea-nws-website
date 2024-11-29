@@ -9,7 +9,7 @@ export default function AccountPendingPage () {
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-one-half' />
+          <div className='govuk-grid-column-two-thirds' >
           <h1 class='govuk-heading-l'>Email address not recognised</h1>
           <p>
             You can try {' '}
@@ -48,6 +48,7 @@ export default function AccountPendingPage () {
             </Link>
             , if you need to.
           </p>
+          </div>
         </div>
       </main>
     </>

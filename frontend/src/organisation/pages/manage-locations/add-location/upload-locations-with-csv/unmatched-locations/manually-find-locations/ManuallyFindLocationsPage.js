@@ -27,13 +27,13 @@ export default function ManuallyFindLocationsPage () {
         'api/bulk_uploads/get_invalid_locations',
         navigate
       )
-      const l = []
+      const locations = []
       if (data) {
         data.forEach((location) => {
-          l.push(geoSafeToWebLocation(location))
+          locations.push(geoSafeToWebLocation(location))
         })
       }
-      setLocations(l)
+      setLocations(locations)
     }
     getInvLocations()
   }, [])

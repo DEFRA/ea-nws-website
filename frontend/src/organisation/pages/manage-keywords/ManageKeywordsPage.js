@@ -67,15 +67,12 @@ export default function ManageKeywordsPage () {
   useMemo(() => {
     const getKeywords = async () => {
       const key = orgId + (keywordType === 'location' ? ':t_Keywords_location' : ':t_Keywords_contact')
-      console.log(key)
       const dataToSend = { key }
       const { data } = await backendCall(
         dataToSend,
         'api/elasticache/get_data',
         navigate
       )
-      console.log('kkeywords')
-      console.log(data)
       let orgKeywords = []
       if (data) {
         orgKeywords = data

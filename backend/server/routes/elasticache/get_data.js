@@ -21,8 +21,6 @@ module.exports = [
             result = await getJsonData(key, paths)
           } else {
             result = await getJsonData(key)
-            console.log('elasticache result')
-            console.log(result)
           }
           if (result) {
             return h.response({ status: 200, data: result })

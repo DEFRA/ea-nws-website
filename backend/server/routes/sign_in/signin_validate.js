@@ -35,9 +35,7 @@ module.exports = [
               'organization/listContacts'
             )
             // Send the profile to elasticache
-            console.log('Setting elasticache')
             await orgSignIn(response.data.profile, response.data.organization, locationRes.data.locations, contactRes.data.contacts)
-            console.log('done')
           }
           return h.response(response)
         } else {
@@ -47,7 +45,6 @@ module.exports = [
           })
         }
       } catch (error) {
-        console.log(error)
         return createGenericErrorResponse(h)
       }
     }

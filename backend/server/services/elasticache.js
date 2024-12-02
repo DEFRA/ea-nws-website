@@ -5,7 +5,10 @@ const connectToRedis = async () => {
   const redisEndpoint = await getSecretKeyValue('nws/aws', 'redisEndpoint')
   // Create the client
   const client = redis.createClient({ url: 'rediss://' + redisEndpoint })
-  client.on('error', err => console.log('Redis Client Error', err))
+  client.on('error', error => {
+    console.log('Redis Client Error', error)
+    throw error
+  })
   // Connect to the redis elasticache
   await client.connect()
   return client
@@ -15,8 +18,6 @@ const checkKeyExists = async (key) => {
   const client = await connectToRedis()
   // send the data
   const keyExists = await client.exists(key)
-  console.log('key exists')
-  console.log(keyExists)
   // disconnect as we don't need the connection open anymore
   await client.disconnect()
   return keyExists

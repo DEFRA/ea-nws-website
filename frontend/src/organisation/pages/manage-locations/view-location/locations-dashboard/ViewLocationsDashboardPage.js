@@ -26,15 +26,14 @@ export default function ViewLocationsDashboardPage () {
         'api/elasticache/list_locations',
         navigate
       )
-      const l = []
+      const locations = []
       if (data) {
-        console.log(data)
         data.forEach((location) => {
-          l.push(geoSafeToWebLocation(location))
+          locations.push(geoSafeToWebLocation(location))
         })
       }
-      setLocations(l)
-      setFilteredLocations(l)
+      setLocations(locations)
+      setFilteredLocations(locations)
     }
     getLocations()
   }, [])

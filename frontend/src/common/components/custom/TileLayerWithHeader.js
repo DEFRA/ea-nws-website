@@ -26,14 +26,8 @@ export default function TileLayerWithHeader ({ url, token, bounds }) {
     }
     const tileMatrixLimits = tileMatrixSetLimits[coords.z]
     const withinLimits = () => {
-      if (
-        coords.x >= tileMatrixLimits.x[0] && coords.x <= tileMatrixLimits.x[1] &&
-        coords.y >= tileMatrixLimits.y[0] && coords.y <= tileMatrixLimits.y[1]
-      ) {
-        return true
-      } else {
-        return false
-      }
+      return coords.x >= tileMatrixLimits.x[0] && coords.x <= tileMatrixLimits.x[1] &&
+      coords.y >= tileMatrixLimits.y[0] && coords.y <= tileMatrixLimits.y[1]
     }
 
     return withinLimits()
@@ -43,19 +37,25 @@ export default function TileLayerWithHeader ({ url, token, bounds }) {
     L.TileLayer.WithHeader = L.TileLayer.extend({
       createTile (coords, done) {
         const img = document.createElement('img')
-        console.log(coords)
         const withinLimits = calculateWithin(coords)
         if (withinLimits) {
           const url = this.getTileUrl(coords)
-          console.log(url)
           const token = this.options.token
           fetch(url, {
             headers: { Authorization: `Bearer ${token}` },
             mode: 'cors'
+          }).then((res) => {
+            if (!res.ok) {
+              throw new Error()
+            }
           })
             .then((val) => val.blob())
             .then((blob) => {
               img.src = URL.createObjectURL(blob)
+              done(null, img)
+            })
+            .catch((error) => {
+              // if there are errors just ddisplay an empty tile
               done(null, img)
             })
         }

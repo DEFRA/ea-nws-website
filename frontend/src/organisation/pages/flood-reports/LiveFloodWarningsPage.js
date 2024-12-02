@@ -7,7 +7,7 @@ import Pagination from '../../../common/components/gov-uk/Pagination'
 import FloodReportsTable from '../../components/custom/FloodReportsTable'
 import { orgFloodReportsUrls } from '../../routes/flood-reports/FloodReportsRoutes'
 
-export default function LiveFloodWarningsPage () {
+export default function LiveFloodWarningsPage() {
   const navigate = useNavigate()
   const [warnings, setWarnings] = useState([])
   const [filteredWarnings, setFilteredWarnings] = useState([])
@@ -22,7 +22,51 @@ export default function LiveFloodWarningsPage () {
     currentPage * warningsPerPage
   )
 
+  // TODO: Integrate real warning data when available
   useEffect(() => {
+    const w = [
+      {
+        name: 'Location_01',
+        warningType: 'Flood warning',
+        locationOrBoundaryType: 'Office',
+        businessCriticality: 'High',
+        linkedContacts: '-',
+        lastUpdated: '2024-12-01 15:30:00'
+      },
+      {
+        name: 'Location_02',
+        warningType: 'Flood alert',
+        locationOrBoundaryType: 'Office',
+        businessCriticality: '-',
+        linkedContacts: '-',
+        lastUpdated: '2024-12-01 15:30:00'
+      },
+      {
+        name: 'Location_03',
+        warningType: 'Flood warning, Flood alert',
+        locationOrBoundaryType: 'Unitary authority',
+        businessCriticality: 'High',
+        linkedContacts: '-',
+        lastUpdated: '2024-12-01 15:30:00'
+      },
+      {
+        name: 'Location_04',
+        warningType: 'Flood warning',
+        locationOrBoundaryType: 'Unitary authority',
+        businessCriticality: '-',
+        linkedContacts: '-',
+        lastUpdated: '2024-12-01 15:30:00'
+      },
+      {
+        name: 'Location_05',
+        warningType: 'Flood warning, Flood alert',
+        locationOrBoundaryType: 'County',
+        businessCriticality: '-',
+        linkedContacts: '-',
+        lastUpdated: '2024-12-01 15:30:00'
+      }
+    ]
+    setWarnings(w)
     setCurrentPage(1)
   }, [resetPaging])
 
@@ -64,11 +108,8 @@ export default function LiveFloodWarningsPage () {
           <div className='govuk-grid-column-full govuk-body'>
             <br />
             <h1 className='govuk-heading-l'>Live flood warnings</h1>
-
             <div className='govuk-grid-row'>
-              <div className='govuk-grid-column-three-quarters'>
-                <>{table}</>
-              </div>
+              <>{table}</>
             </div>
           </div>
         </div>

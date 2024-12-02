@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-export default function FloodReportsTable ({
+export default function FloodReportsTable({
   warnings,
   displayedWarnings,
   filteredLocations,
@@ -113,7 +113,8 @@ export default function FloodReportsTable ({
                     locationNameSort,
                     setLocationNameSort,
                     'meta_data.location_additional.location_name'
-                  )}
+                  )
+                }
               >
                 Location name
               </button>
@@ -130,7 +131,8 @@ export default function FloodReportsTable ({
                     warningTypeSort,
                     setWarningTypeSort,
                     'meta_data.location_additional.location_type'
-                  )}
+                  )
+                }
               >
                 Warning <br />
                 type
@@ -158,7 +160,8 @@ export default function FloodReportsTable ({
                     businessCriticalitySort,
                     setBusinessCriticalitySort,
                     'meta_data.location_additional.business_criticality'
-                  )}
+                  )
+                }
               >
                 Business
                 <br /> criticality
@@ -186,7 +189,8 @@ export default function FloodReportsTable ({
                     lastUpdatedSort,
                     setlastUpdatedSort,
                     'riverSeaRisk.title'
-                  )}
+                  )
+                }
               >
                 Last
                 <br /> updated
@@ -195,7 +199,27 @@ export default function FloodReportsTable ({
             <th scope='col' className='govuk-table__header' />
           </tr>
         </thead>
-        <tbody className='govuk-table__body' />
+        <tbody className='govuk-table__body'>
+          {warnings.map((warning, index) => (
+            <tr key={index} className='govuk-table__row'>
+              <td className='govuk-table__cell'>{warning.name}</td>
+              <td className='govuk-table__cell'>
+                {' '}
+                {warning.warningType.split(', ').map((type, i) => (
+                  <div key={i}>{type}</div>
+                ))}
+              </td>
+              <td className='govuk-table__cell'>
+                {warning.locationOrBoundaryType}
+              </td>
+              <td className='govuk-table__cell'>
+                {warning.businessCriticality}
+              </td>
+              <td className='govuk-table__cell'>{warning.linkedContacts}</td>
+              <td className='govuk-table__cell'>{warning.lastUpdated}</td>
+            </tr>
+          ))}
+        </tbody>{' '}
       </table>
     </>
   )

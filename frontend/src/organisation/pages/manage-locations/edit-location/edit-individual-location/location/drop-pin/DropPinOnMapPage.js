@@ -1,14 +1,14 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { getLocationAdditional } from '../../../../../../../common/redux/userSlice'
 import DropPinOnMapLayout from '../../../../../../layouts/location/add-or-edit-location/search/drop-pin/DropPinOnMapLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function DropPinOnMapPage () {
   const navigate = useNavigate()
   const locationName = useSelector(
-    (state) =>
-      state.session.currentLocation.meta_data.location_additional.location_name
+    (state) => getLocationAdditional(state, 'locationName')
   )
 
   const navigateToNextPage = () => {

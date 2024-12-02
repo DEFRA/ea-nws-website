@@ -2,23 +2,23 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 
-const { findLocationByName } = require('../../services/elasticache')
+const { listLocations } = require('../../services/elasticache')
 
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/locations/check_duplicate',
+    path: '/api/elasticache/list_locations',
     handler: async (request, h) => {
       try {
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { orgId, locationName } = request.payload
+        const { orgId } = request.payload
 
-        if (locationName && orgId) {
-          const duplicate = await findLocationByName(orgId, locationName)
-          if (duplicate.length !== 0) {
-            return h.response({ status: 500, errorMessage: 'duplicate location' })
+        if (orgId) {
+          const result = await listLocations(orgId)
+          if (result) {
+            return h.response({ status: 200, data: result })
           } else {
             return h.response({ status: 200 })
           }

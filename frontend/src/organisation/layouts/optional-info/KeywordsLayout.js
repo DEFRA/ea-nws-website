@@ -8,11 +8,11 @@ import Button from '../../../common/components/gov-uk/Button'
 import Checkbox from '../../../common/components/gov-uk/CheckBox'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import {
-  setContactKeywords,
+  getLocationAdditional,
   setCurrentLocationKeywords,
-  setLocationKeywords,
   setOrgCurrentContact
 } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 import {
   getAdditionals,
   updateAdditionals
@@ -25,16 +25,26 @@ export default function KeywordsLayout ({
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
+  const orgId = useSelector((state) => state.session.orgId)
 
-  const orgKeywordsOriginal = useSelector((state) =>
-    keywordType === 'location'
-      ? state.session.locationKeywords
-        ? state.session.locationKeywords
-        : []
-      : state.session.contactKeywords
-        ? state.session.contactKeywords
-        : []
-  )
+  const [orgKeywordsOriginal, setOrgKeywordsOriginal] = useState([])
+  useEffect(() => {
+    const getOrgKeywordsOriginal = async () => {
+      const key = orgId + (keywordType === 'location' ? ':t_Keywords_location' : ':t_Keywords_contact')
+      const dataToSend = { key }
+      const { data } = await backendCall(
+        dataToSend,
+        'api/elasticache/get_data',
+        navigate
+      )
+      let orgKeywords = null
+      if (data) {
+        orgKeywords = data
+      }
+      setOrgKeywordsOriginal(orgKeywords)
+    }
+    getOrgKeywordsOriginal()
+  }, [keywordType])
 
   const currentObject = useSelector((state) =>
     keywordType === 'location '
@@ -60,8 +70,8 @@ export default function KeywordsLayout ({
 
   let currentKeywords = useSelector((state) =>
     keywordType === 'location'
-      ? state.session.currentLocation.meta_data.location_additional.keywords
-        ? state.session.currentLocation.meta_data.location_additional.keywords
+      ? getLocationAdditional(state, 'keywords')
+        ? getLocationAdditional(state, 'keywords')
         : ''
       : getAdditionals(currentObject, 'keywords')
         ? getAdditionals(currentObject, 'keywords')
@@ -217,7 +227,6 @@ export default function KeywordsLayout ({
     }
 
     if (keywordType === 'location') {
-      dispatch(setLocationKeywords(orgKeywords))
       dispatch(setCurrentLocationKeywords(JSON.stringify(keywordsArrayChecked)))
     } else {
       const updatedContact = updateAdditionals(currentObject, [
@@ -226,7 +235,6 @@ export default function KeywordsLayout ({
           value: JSON.stringify(keywordsArrayChecked)
         }
       ])
-      dispatch(setContactKeywords(orgKeywords))
       dispatch(setOrgCurrentContact(updatedContact))
     }
 

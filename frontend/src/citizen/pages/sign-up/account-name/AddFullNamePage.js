@@ -1,10 +1,10 @@
+import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { setProfile } from '../../../../common/redux/userSlice'
+import { backendCall } from '../../../../common/services/BackendService'
 import { updateAdditionals } from '../../../../common/services/ProfileServices'
 import AddAccountNameLayout from '../../../layouts/account-name/AddAccountNameLayout'
-import { useState } from 'react'
-import { backendCall } from '../../../../common/services/BackendService'
 
 export default function AddFullNamePage () {
   const navigate = useNavigate()
@@ -20,7 +20,7 @@ export default function AddFullNamePage () {
   }
 
   const updateProfile = async (profile, authToken) => {
-    const updatedProfile = updateAdditionals(profile, [{ id: 'lastAccessedUrl', value: '/declaration' }])
+    const updatedProfile = updateAdditionals(profile, [{ id: 'lastAccessedUrl', value: { s: '/declaration' } }])
     const dataToSend = { profile: updatedProfile, authToken }
     const { errorMessage, data } = await backendCall(
       dataToSend,

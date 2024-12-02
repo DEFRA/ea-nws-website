@@ -6,6 +6,7 @@ import Button from '../../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../../common/components/gov-uk/ErrorSummary'
 import InsetText from '../../../../../../../common/components/gov-uk/InsetText'
 import Radio from '../../../../../../../common/components/gov-uk/Radio'
+import { getLocationOther } from '../../../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function SelectHowToFindThisLocationPage () {
@@ -22,7 +23,7 @@ export default function SelectHowToFindThisLocationPage () {
 
   const selectedLocation = useSelector(
     (state) =>
-      state.session.currentLocation.meta_data.location_additional.full_address
+      getLocationOther(state, 'full_address')
   )
 
   const locationSearchResults = useSelector(

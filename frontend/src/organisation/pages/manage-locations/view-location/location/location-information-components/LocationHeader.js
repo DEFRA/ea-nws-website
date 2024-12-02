@@ -11,6 +11,7 @@ import ViewLocationSubNavigation from './ViewLocationSubNavigation'
 export default function LocationHeader ({ currentPage }) {
   const location = useLocation()
   const additionalData = useSelector((state) => getLocationAdditionals(state))
+  const currentLocation = useSelector((state) => state.session.currentLocation)
 
   return (
     <>
@@ -41,9 +42,10 @@ export default function LocationHeader ({ currentPage }) {
       </div>
 
       {/* flood risk bannner */}
-      {(additionalData.location_data_type === LocationDataType.ADDRESS ||
+      {/* only show if data allows */}
+      {((additionalData.location_data_type === LocationDataType.ADDRESS ||
         additionalData.location_data_type ===
-          LocationDataType.X_AND_Y_COORDS) && (
+          LocationDataType.X_AND_Y_COORDS) && currentLocation.coordines?.latitude && currentLocation.coordines?.longitude) && (
             <div class='govuk-grid-row'>
               <div className='govuk-grid-column-full'>
                 <div className='flood-risk-banner govuk-!-margin-top-2'>

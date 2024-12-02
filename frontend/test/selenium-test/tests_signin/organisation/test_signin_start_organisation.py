@@ -2,6 +2,7 @@ from common import *
 
 url_signin = url_org_signin.get('signin')
 url_signin_validate = url_org_signin.get('validate')
+account_pending_url = url_org_signin.get('pending')
 
 def test_signInStart_render(get_browser):
     browser = get_browser
@@ -37,7 +38,7 @@ def test_signInStart_invalidEmail(get_browser):
     browser.find_element(By.CLASS_NAME, "govuk-button").click()
     time.sleep(1)
     assert "Email address not recognised" in browser.page_source
-    assert browser.current_url == url_signin
+    assert browser.current_url == account_pending_url
 
 def test_signInStart_validEmail(get_browser):
     browser = get_browser

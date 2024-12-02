@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { setCurrentLocation } from '../../../../../../common/redux/userSlice'
+import { webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationsTable ({
@@ -116,7 +117,7 @@ export default function LocationsTable ({
                 {location.additionals.other?.business_criticality}
               </td>
               <td className='govuk-table__cell'>
-                <Link onClick={(e) => viewLocation(e, location)}>
+                <Link onClick={(e) => viewLocation(e, webToGeoSafeLocation(location))}>
                   View or edit
                 </Link>
               </td>

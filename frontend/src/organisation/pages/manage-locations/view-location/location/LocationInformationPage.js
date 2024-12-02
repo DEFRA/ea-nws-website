@@ -15,6 +15,7 @@ export default function LocationInformationPage () {
   const navigate = useNavigate()
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = useSelector((state) => getLocationAdditionals(state))
+  console.log(additionalData)
   const keywords = additionalData.keywords
     ? JSON.parse(additionalData.keywords)
     : []
@@ -396,24 +397,28 @@ export default function LocationInformationPage () {
                 </div>
             )}
           </div>
-
           {/* other half - map */}
-          <div className='govuk-grid-column-one-half'>
-            <Map showMapControls={false} zoomLevel={14} />
-            <div className='govuk-!-margin-top-4'>
-              <FloodWarningKey type='both' />
-            </div>
-            <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
-              This is not a live flood map
-            </span>
-            <span className='govuk-caption-m govuk-!-font-size-16'>
-              It shows fixed areas we provide flood warnings and alerts for
-            </span>
-            <div className=' govuk-!-margin-top-4'>
-              <RoomOutlinedIcon style={{ fontSize: 30 }} />
-              <Link>Open Map</Link>
-            </div>
-          </div>
+          {/* nly show map if data allows */}
+          {currentLocation.coordinates?.latitude && currentLocation.coordinates?.longitude &&
+              (
+                <div className='govuk-grid-column-one-half'>
+                  <Map showMapControls={false} zoomLevel={14} />
+                  <div className='govuk-!-margin-top-4'>
+                    <FloodWarningKey type='both' />
+                  </div>
+                  <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
+                    This is not a live flood map
+                  </span>
+                  <span className='govuk-caption-m govuk-!-font-size-16'>
+                    It shows fixed areas we provide flood warnings and alerts for
+                  </span>
+                  <div className=' govuk-!-margin-top-4'>
+                    <RoomOutlinedIcon style={{ fontSize: 30 }} />
+                    <Link>Open Map</Link>
+                  </div>
+                </div>
+              )}
+
         </div>
       </main>
     </>

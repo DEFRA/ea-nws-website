@@ -1036,27 +1036,46 @@
 }
 
 .locations-filter-container {
-  border: 1px solid #b1b4b6;
+  border: 0.1rem solid #b1b4b6;
+  margin: 0rem 1rem;
+  padding: 0rem 1rem;
+  width: 27rem;
 }
 
 .locations-filter-header {
+  background-color: #b1b4b6;
+  padding: 0.5rem 1rem 0.1rem 1rem;
+}
+
+.locations-filter-selected {
   position: relative;
   left: -1rem;
   right: -1rem;
   width: calc(100% + 2rem);
-  background-color: #b1b4b6;
-  padding: 0.5rem;
-  margin: 0 1rem 1rem 0;
-  border: 0.0625rem solid #b1b4b6;
+  background-color: #f2f2f2;
+  padding: 1rem 1rem 2rem 1rem;
+  border-bottom: 0.0625rem solid #b1b4b6;
 }
 
-.locations-filter-header h1 {
-  margin: 0.75rem 0 0.75rem 0.95rem;
+.locations-filter-selected .filter {
+  display: inline;
+  background-color: white;
+  padding: 0.4rem;
+  font-size: 1.12rem;
+  border: 0.0625rem solid black;
+  margin-right: 0.5rem;
+}
+
+.locations-filter-selected .filter-button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
 }
 
 .locations-filter-section {
   display: flex;
-  align-items: center;
+  padding-left: 1rem;
+  gap: 0.5rem;
 }
 
 .locations-map-key {
@@ -1071,6 +1090,49 @@
 .locations-filter-title {
   margin: 0 0 0 8px;
   color: #1d70b8;
+}
+
+.contacts-filter-panel {
+  border: 0.1rem solid #b1b4b6;
+  padding-bottom: 1rem;
+}
+
+.contacts-filter-header {
+  background-color: #b1b4b6;
+  padding: 0.5rem 1rem 0.1rem 1rem;
+}
+
+.contacts-filter-selected {
+  border-style: none none solid;
+  border-width: thin;
+  border-color: #b1b4b6;
+}
+
+/* .contacts-filter-selected .filter {
+  display: inline;
+  background-color: white;
+  padding: 0.4rem;
+  font-size: 1.12rem;
+  border: 0.0625rem solid black;
+  margin-right: 0.5rem;
+}
+
+.contacts-filter-selected .filter-button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+} */
+
+.contacts-filter-name-section {
+  display: flex;
+  padding-left: 1rem;
+  gap: 0.5rem;
+}
+
+.contacts-filter-other-section {
+  display: flex;
+  padding-left: 1rem;
+  gap: 0.2rem;
 }
 
 .input-with-icon {

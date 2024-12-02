@@ -34,10 +34,10 @@ export default function SearchFilter ({
     )
   ]
 
-  // TODO - get contacts keywords
   const keywords = [
-    'Keyword 1',
-    'Keyword 2'
+    ...new Set(
+      contacts.flatMap(contact => contact.keywords)
+    )
   ]
 
   const linkedLocations = [
@@ -86,11 +86,11 @@ export default function SearchFilter ({
       )
     }
 
-    // Apply keyword filter - TODO
+    // Apply keyword filter
     if (selectedKeywordFilters.length > 0) {
       filteredContacts = filteredContacts.filter((contact) =>
-      selectedKeywordFilters.includes(
-          contact.keywords
+      selectedKeywordFilters.some(
+          keyword => contact.keywords.includes(keyword)
         )
       )
     }
@@ -121,12 +121,7 @@ export default function SearchFilter ({
     <>
       <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 govuk-!-margin-left-3 govuk-!-margin-right-3' />
       <div
-        className='contacts-filter-section'
-        style={{
-          display: 'flex',
-          paddingLeft: 20,
-          gap: 14
-        }}
+        className='contacts-filter-name-section'
         onClick={() => setContactNameVisible(!contactNameVisible)}
       >
         <FontAwesomeIcon
@@ -176,12 +171,7 @@ export default function SearchFilter ({
       <>
         <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3 govuk-!-margin-left-3 govuk-!-margin-right-3'/>
         <div
-          className='contacts-filter-section'
-          style={{
-            display: 'flex',
-            paddingLeft: 20,
-            gap: 6
-          }}
+          className='contacts-filter-other-section'
           onClick={() => {
             setVisible(!visible)
           }}
@@ -249,10 +239,12 @@ export default function SearchFilter ({
               paddingLeft: 10,
               paddingRight: 10
             }}>
-            <label className='govuk-label'>
+            <label className='govuk-label'
+              style={{ fontSize: 18 }}>
               {filter}&nbsp;
             </label>
             <FontAwesomeIcon icon={faXmark} 
+              style={{ width: 16, height: 16 }}
               onClick={() => {
                 setFilterArray(filterArray.filter((item) => item !== filter))
               }}/>
@@ -265,39 +257,23 @@ export default function SearchFilter ({
 
   return (
     <>
-      <div className='contacts-filter-panel'
-        style={{
-          borderStyle: 'solid',
-          borderWidth: 'thin',
-          borderColor: '#b1b4b6',
-          paddingBottom: 16
-        }}>
-        <div className='contacts-filter-header'
-          style={{
-            backgroundColor: '#b1b4b6',
-            paddingLeft: 20,
-            paddingRight: 20,
-            paddingTop: 11,
-            paddingBottom: 11
-          }}>
+      <div className='contacts-filter-panel'>
+        <div className='contacts-filter-header'>
           <h1 className='govuk-heading-m govuk-!-margin-bottom-2'>Filter</h1>
         </div>
 
         {/* Selected filters */}
         {selectedFilters?.length > 0 && (
-          <div className='contacts-filter-selected'
-            style={{
-              borderStyle: 'none none solid',
-              borderWidth: 'thin',
-              borderColor: '#b1b4b6'
-          }}>
+          <div className='contacts-filter-selected'>
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 backgroundColor: '#f3f2f1',
-                paddingLeft: 20
-              }}>
+                paddingLeft: 20,
+                paddingRight: 20
+              }}
+              >
               <h2 className='govuk-heading-s' style={{ marginBottom: '0' }}>
                 Selected filters
               </h2>
@@ -315,7 +291,7 @@ export default function SearchFilter ({
               setSelectedJobTitleFilters
             )}
             {selectedFilterContents(
-              'Keyword',
+              'Keywords',
               selectedKeywordFilters,
               setSelectedKeywordFilters
             )}
@@ -352,7 +328,7 @@ export default function SearchFilter ({
         )}
 
         {otherFilter(
-          'Keyword',
+          'Keywords',
           keywords,
           selectedKeywordFilters,
           setSelectedKeywordFilters,

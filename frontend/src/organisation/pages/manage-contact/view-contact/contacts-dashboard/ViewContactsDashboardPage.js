@@ -93,8 +93,7 @@ export default function ViewContactsDashboardPage () {
       ),
       title: 'Delete contact',
       buttonText: 'Delete contact',
-      buttonClass: 'govuk-button--warning',
-      input: ''
+      buttonClass: 'govuk-button--warning'
     })
   }
 
@@ -110,8 +109,7 @@ export default function ViewContactsDashboardPage () {
         ),
         title: `Delete ${selectedContacts.length} ${selectedContacts.length > 1 ? 'contacts' : 'contact'}`,
         buttonText: 'Delete contacts',
-        buttonClass: 'govuk-button--warning',
-        input: ''
+        buttonClass: 'govuk-button--warning'
       })
     }
   }
@@ -195,9 +193,14 @@ export default function ViewContactsDashboardPage () {
     }
   }
 
+  const navigateBack = (event) => {
+    event.preventDefault()
+    navigate(-1)
+  }
+
   return (
     <>
-      <BackLink onClick={() => navigate(-1)} />
+      <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -215,27 +218,28 @@ export default function ViewContactsDashboardPage () {
           <div className='govuk-grid-column-full govuk-body'>
             {!isFilterVisible ? (
               <>
-                <Button
-                  text='Open filter'
-                  className='govuk-button govuk-button--secondary inline-block'
-                  onClick={() => setIsFilterVisible(!isFilterVisible)}
-                />
-                &nbsp; &nbsp;
-                <Select
-                    name='MoreActions'
-                    label=''
-                    options={moreActions}
-                    onSelect={(e) => onMoreAction(e)}
-                    initialSelectOptionText={
-                      'More actions'
-                    }
+                  <Button
+                    text='Open filter'
+                    className='govuk-button govuk-button--secondary inline-block'
+                    onClick={() => setIsFilterVisible(!isFilterVisible)}
                   />
-                &nbsp; &nbsp;
-                <Button
-                  text='Print'
-                  className='govuk-button govuk-button--secondary inline-block'
-                  // onClick={() => setIsFilterVisible(!isFilterVisible)}
-                />
+                  &nbsp; &nbsp;
+                  {/* <Select
+                      name='MoreActions'
+                      label=''
+                      options={moreActions}
+                      onSelect={(e) => onMoreAction(e)}
+                      initialSelectOptionText={
+                        'More actions'
+                      }
+                    /> */}
+                  &nbsp; &nbsp;
+                  <Button
+                    text='Print'
+                    className='govuk-button govuk-button--secondary inline-block'
+                    // onClick={() => setIsFilterVisible(!isFilterVisible)}
+                  />
+                {/* </div> */}
                 <ContactsTable
                   contacts={contacts}
                   displayedContacts={displayedContacts}
@@ -277,27 +281,33 @@ export default function ViewContactsDashboardPage () {
                 </div>
 
                 <div className='govuk-grid-column-three-quarters'>
-                  <Button
-                    text='Close Filter'
-                    className='govuk-button govuk-button--secondary'
-                    onClick={() => setIsFilterVisible(!isFilterVisible)}
-                  />
-                  &nbsp; &nbsp;
-                  <Select
-                    name='MoreActions'
-                    label=''
-                    options={moreActions}
-                    onSelect={(e) => onMoreAction(e)}
-                    initialSelectOptionText={
-                      'More actions'
-                    }
-                  />
-                  &nbsp; &nbsp;
-                  <Button
-                    text='Print'
-                    className='govuk-button govuk-button--secondary inline-block'
-                    // onClick={() => setIsFilterVisible(!isFilterVisible)}
-                  />
+                  <div className='govuk-grid-row'
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center'
+                    }}>
+                      <Button
+                        text='Close Filter'
+                        className='govuk-button govuk-button--secondary'
+                        onClick={() => setIsFilterVisible(false)}
+                      />
+                      &nbsp; &nbsp;
+                      {/* <Select
+                        name='MoreActions'
+                        label=''
+                        options={moreActions}
+                        onSelect={(e) => onMoreAction(e)}
+                        initialSelectOptionText={
+                          'More actions'
+                        }
+                      /> */}
+                      &nbsp; &nbsp;
+                      <Button
+                        text='Print'
+                        className='govuk-button govuk-button--secondary inline-block'
+                        // onClick={() => setIsFilterVisible(!isFilterVisible)}
+                      />
+                    </div>
                   <ContactsTable
                     contacts={contacts}
                     displayedContacts={displayedContacts}
@@ -329,11 +339,6 @@ export default function ViewContactsDashboardPage () {
                   popupText={dialog.text}
                   buttonText={dialog.buttonText}
                   buttonClass={dialog.buttonClass}
-                  input={dialog.input}
-                  textInput={updatedContact}
-                  setTextInput={setUpdatedContact}
-                  charLimit={dialog.charLimit}
-                  error={dialog.error}
                   setError={(val) =>
                     setDialog((dial) => ({ ...dial, error: val }))}
                   defaultValue={dialog.input ? targetContact.name : ''}

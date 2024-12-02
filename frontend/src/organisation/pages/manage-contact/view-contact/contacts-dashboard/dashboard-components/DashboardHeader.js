@@ -6,8 +6,8 @@ import { urlManageKeywordsOrg } from '../../../../../routes/manage-keywords/Mana
 import { urlManageContactsAdd } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function DashboardHeader ({
-  ContactsAdded,
-  LastUpdated,
+  contactsAdded,
+  lastUpdated,
   contacts,
   onClickLinked
 }) {
@@ -29,22 +29,22 @@ export default function DashboardHeader ({
   )
 
   const ContactsBanner = ({ type }) => {
-    const count = []
-    const message = []
-    const heading = []
+    let count = ''
+    let message = ''
+    let heading = ''
 
     if (type === 'linked') {
-      heading[0] = 'Contacts linked to locations'
-      count.push(
+      heading = 'Contacts linked to locations'
+      count =
         contacts.filter((item) => item.linked_locations.length > 0).length
-      )
-      message[0] = ' linked to locations'
+      
+      message = ' linked to locations'
     } else if (type === 'notLinked') {
-      heading[0] = 'Contacts not linked to locations'
-      count.push(
+      heading = 'Contacts not linked to locations'
+      count =
         contacts.filter((item) => item.linked_locations.length == 0).length
-      )
-      message[0] = ' not linked to locations'
+      
+      message = ' not linked to locations'
     }
 
     return (
@@ -52,10 +52,7 @@ export default function DashboardHeader ({
         className='govuk-!-margin-top-1'
         style={{
           width: '100%',
-          padding: '0.5rem 0.5rem'
-          // Set a minimum height for the outer container
-          // display: 'flex', // Use flexbox to handle inner content better
-          // flexDirection: 'column' // Ensure the inner content is stacked vertically
+          paddingRight: type === 'linked' ? '1rem' : ''
         }}
       >
         <p>
@@ -72,10 +69,10 @@ export default function DashboardHeader ({
               <h1
                 style={{ color: type === 'notLinked' ? 'crimson' : 'black' }}
               >
-                <strong>{count[0]}</strong>
+                <strong>{count}</strong>
               </h1>
               <Link className='govuk-link' onClick={() => onClickLinked(type)}>
-                {count[0] === 1 ? 'contact' : 'contacts'} {message[0]}
+                {count === 1 ? 'contact' : 'contacts'} {message}
               </Link>
             </>
           )}
@@ -117,7 +114,7 @@ export default function DashboardHeader ({
 
         <div style={{ display: 'flex', fontSize: '18px' }}>
           {contacts.filter((item) => item.linked_locations.length > 0).length > 0 && (
-            <ContactsBanner type='linked' />
+            <ContactsBanner type='linked'/>
           )}
           {contacts.filter((item) => item.linked_locations.length == 0).length > 0 && (
             <ContactsBanner type='notLinked' />

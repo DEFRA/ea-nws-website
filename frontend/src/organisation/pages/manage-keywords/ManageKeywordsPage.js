@@ -1,7 +1,7 @@
 import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React, { useEffect, useMemo, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -11,16 +11,13 @@ import Button from '../../../common/components/gov-uk/Button'
 import Details from '../../../common/components/gov-uk/Details'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../common/components/gov-uk/Pagination'
-import {
-  setContactKeywords,
-  setLocationKeywords
-} from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 import KeywordsTable from '../../components/custom/KeywordsTable'
 
 export default function ManageKeywordsPage () {
   const navigate = useNavigate()
+  const [cacheKeywords, setCacheKeywords] = useState([])
   const [keywords, setKeywords] = useState([])
-  const dispatch = useDispatch()
   const [keywordType, setKeywordType] = useState('location')
   const [notificationText, setNotificationText] = useState('')
   const [selectedKeywords, setSelectedKeywords] = useState([])
@@ -65,19 +62,30 @@ export default function ManageKeywordsPage () {
     )
   }, [filteredKeywords, currentPage])
 
-  const locationKeywords = useSelector((state) =>
-    state.session.locationKeywords !== null
-      ? state.session.locationKeywords
-      : []
-  )
-  const contactKeywords = useSelector((state) =>
-    state.session.contactKeywords !== null ? state.session.contactKeywords : []
-  )
+  const orgId = useSelector((state) => state.session.orgId)
+
+  useMemo(() => {
+    const getKeywords = async () => {
+      const key = orgId + (keywordType === 'location' ? ':t_Keywords_location' : ':t_Keywords_contact')
+      const dataToSend = { key }
+      const { data } = await backendCall(
+        dataToSend,
+        'api/elasticache/get_data',
+        navigate
+      )
+      let orgKeywords = []
+      if (data) {
+        orgKeywords = data
+      }
+      setCacheKeywords(orgKeywords)
+    }
+    getKeywords()
+  }, [keywordType])
 
   useEffect(() => {
-    setKeywords(keywordType === 'location' ? locationKeywords : contactKeywords)
+    setKeywords(cacheKeywords)
     setFilteredKeywords(keywords)
-  }, [contactKeywords, keywordType, keywords, locationKeywords])
+  }, [cacheKeywords, keywords])
 
   const handleSearch = () => {
     if (searchInput) {
@@ -224,9 +232,9 @@ export default function ManageKeywordsPage () {
     })
 
     if (keywordType === 'location') {
-      dispatch(setLocationKeywords(updatedKeywords))
+      // TODO: geosafe call and logic to update keywords then elasticache
     } else {
-      dispatch(setContactKeywords(updatedKeywords))
+      // TODO: geosafe call and logic to update keywords then elasticache
     }
 
     setKeywords([...updatedKeywords])
@@ -242,9 +250,9 @@ export default function ManageKeywordsPage () {
     )
 
     if (keywordType === 'location') {
-      dispatch(setLocationKeywords(updatedKeywords))
+      // TODO: geosafe call and logic to update keywords then elasticache
     } else {
-      dispatch(setContactKeywords(updatedKeywords))
+      // TODO: geosafe call and logic to update keywords then elasticache
     }
     setKeywords([...updatedKeywords])
 

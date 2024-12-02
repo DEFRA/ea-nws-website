@@ -25,6 +25,7 @@ import {
   getSurroundingFloodAreas
 } from '../../../common/services/WfsFloodDataService'
 import { createAlertPattern, createWarningPattern } from './FloodAreaPatterns'
+import { createExistingBoundaryPattern } from './PredefinedBoundaryPattern'
 
 export default function Map ({
   type,
@@ -173,6 +174,7 @@ export default function Map ({
   useEffect(() => {
     createWarningPattern()
     createAlertPattern()
+    createExistingBoundaryPattern()
   }, [])
 
   const onEachWarningAreaFeature = (feature, layer) => {
@@ -321,27 +323,23 @@ export default function Map ({
   const setBoundaryStyles = () => {
     if (boundaryRefVisible && boundaryRef.current) {
       boundaryRef.current.eachLayer((layer) => {
-        if (selectedBoundary && layer.feature.id === selectedBoundary.id) {
-          layer.setStyle({
-            color: '#adbbc4',
-            weight: 2,
-            fillColor: '#faf46b',
-            fillOpacity: 0.5
-          })
-        } else if (boundariesAlreadyAdded.includes(layer.feature.id)) {
-          layer.setStyle({
-            color: '#6e706a',
-            weight: 2,
-            fillColor: '#5a5c55',
-            fillOpacity: 0.5
-          })
-          // Prevent clicking on boundaries that have already been selected
+        if (boundariesAlreadyAdded.includes(layer.feature.id)) {
           layer.options.interactive = false
+        } else if (
+          selectedBoundary &&
+          layer.feature.id === selectedBoundary.id
+        ) {
+          layer.setStyle({
+            color: '#6d7475',
+            weight: 2,
+            fillColor: '#7c8282',
+            fillOpacity: 0.8
+          })
         } else {
           layer.setStyle({
-            color: '#003366',
+            color: '#6d7475',
             weight: 2,
-            fillColor: '#3399ff',
+            fillColor: '#e6e6e3',
             fillOpacity: 0.5
           })
         }
@@ -353,23 +351,75 @@ export default function Map ({
     setBoundaryStyles()
   }, [selectedBoundary])
 
-  const onEachBoundaryFeature = (feature, layer) => {
-    // Prevent default colour being temporarily shown when map loads
-    layer.setStyle({
-      color: '#003366',
-      weight: 2,
-      fillColor: '#3399ff',
-      fillOpacity: 0.5
-    })
+  let selectedLayerId = null
 
-    // Allow boundaries to be selected by clicking on them
+  const onEachBoundaryFeature = (feature, layer) => {
     layer.on({
-      click: () => {
-        if (layer.options.interactive) {
-          dispatch(setSelectedBoundary(feature))
-        }
+      mouseover: () => {
+        const text = feature.properties.NAME
+        layer
+          .bindTooltip(text, {
+            opacity: 1,
+            className: 'custom-tooltip'
+          })
+          .openTooltip()
+      },
+      mouseout: () => {
+        layer.unbindTooltip()
       }
     })
+
+    if (boundariesAlreadyAdded.includes(layer.feature.id)) {
+      layer.options.className = 'existing-boundary-area-pattern-fill'
+      layer.setStyle({
+        opacity: 1,
+        color: '#6d7475',
+        weight: 2,
+        fillOpacity: 0.6
+      })
+      layer.bringToFront()
+    } else if (
+      !selectedLayerId ||
+      (selectedLayerId && selectedLayerId !== layer.feature.id)
+    ) {
+      layer.setStyle({
+        color: '#6d7475',
+        weight: 2,
+        fillOpacity: 0.5,
+        fillColor: '#e6e6e3'
+      })
+
+      // Allow boundaries to be selected by clicking on them
+      layer.on({
+        mouseover: () => {
+          layer.setStyle({
+            color: '#6d7475',
+            weight: 2,
+            fillColor: '#7c8282',
+            fillOpacity: 0.8
+          })
+        },
+        mouseout: () => {
+          if (
+            !selectedLayerId ||
+            (selectedLayerId && selectedLayerId !== layer.feature.id)
+          ) {
+            layer.setStyle({
+              color: '#6d7475',
+              weight: 2,
+              fillOpacity: 0.5,
+              fillColor: '#e6e6e3'
+            })
+          }
+        },
+        click: () => {
+          if (layer.options.interactive) {
+            selectedLayerId = layer.feature.id
+            dispatch(setSelectedBoundary(feature))
+          }
+        }
+      })
+    }
   }
 
   return (

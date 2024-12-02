@@ -6,7 +6,7 @@ import Autocomplete from '../../../../../../../../common/components/gov-uk/Autoc
 import Button from '../../../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../../../common/components/gov-uk/ErrorSummary'
 import InsetText from '../../../../../../../../common/components/gov-uk/InsetText'
-import { setCurrentLocationCoordinates } from '../../../../../../../../common/redux/userSlice'
+import { getLocationOther, setCurrentLocationCoordinates } from '../../../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
@@ -15,7 +15,7 @@ export default function ProvideAreaNamePage () {
   const dispatch = useDispatch()
   const fullAddress = useSelector(
     (state) =>
-      state.session.currentLocation.meta_data.location_additional.full_address
+      getLocationOther(state, 'full_address')
   )
   const [areaName, setAreaName] = useState('')
   const [areaCoords, setAreaCoords] = useState(null)

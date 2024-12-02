@@ -26,7 +26,7 @@ export default function SearchFilter ({
   const locationTypes = [
     ...new Set(
       locations
-        .map((location) => location.meta_data.location_additional.location_type)
+        .map((location) => location.additionals.other.location_type)
         .filter((locationType) => locationType) // filters out undefined entries
     )
   ]
@@ -37,7 +37,7 @@ export default function SearchFilter ({
       locations
         .map(
           (location) =>
-            location.meta_data.location_additional.business_criticality
+            location.additionals.other.business_criticality
         )
         .filter((businessCriticality) => businessCriticality) // filters out undefined entries
     )
@@ -90,7 +90,7 @@ export default function SearchFilter ({
     // Apply Location name filter
     if (locationNameFilter) {
       filteredLocations = filteredLocations.filter((location) =>
-        location.location_additional.location_name
+        location.additionals.locationName
           .toLowerCase()
           .includes(locationNameFilter.toLowerCase())
       )
@@ -100,7 +100,7 @@ export default function SearchFilter ({
     if (selectedLocationTypeFilters.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
         selectedLocationTypeFilters.includes(
-          location.meta_data.location_additional.location_type
+          location.additionals.other.location_type
         )
       )
     }
@@ -115,9 +115,9 @@ export default function SearchFilter ({
           // return all locations
           return true
         } else if (selectedFloodMessagesAvailbleFilters.includes('Yes')) {
-          return location.alert_categories.length > 0
+          return location.additionals.other.alertTypes.length > 0
         } else if (selectedFloodMessagesAvailbleFilters.includes('No')) {
-          return location.alert_categories.length === 0
+          return location.additionals.other.alertTypes.length === 0
         }
 
         // Default return none (this should never be reached)
@@ -129,7 +129,7 @@ export default function SearchFilter ({
     if (selectedBusinessCriticalityFilters.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
         selectedBusinessCriticalityFilters.includes(
-          location.meta_data.location_additional.business_criticality
+          location.additionals.other.business_criticality
         )
       )
     }

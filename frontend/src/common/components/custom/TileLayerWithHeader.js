@@ -54,8 +54,8 @@ export default function TileLayerWithHeader ({ url, token, bounds }) {
               img.src = URL.createObjectURL(blob)
               done(null, img)
             })
-            .catch((error) => {
-              // if there are errors just ddisplay an empty tile
+            .catch(() => {
+              // if there are errors just display an empty tile
               done(null, img)
             })
         }

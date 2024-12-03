@@ -14,7 +14,7 @@ def render_add_loc_page(browser):
 
 # Render add address information page
 def render_add_address_info_page(browser):
-    select_input_radio_option(browser, 'BulkAddresses')
+    select_input_radio_option(browser, 'BulkCoordinates')
     click_button(browser, 'Continue', url_address_info)
     assert check_h1_heading(browser, 'How to upload a file with addresses and postcodes')
     assert not check_error_summary(browser)

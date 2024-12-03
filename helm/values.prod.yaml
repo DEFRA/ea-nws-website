@@ -1,0 +1,105 @@
+# Default values for ea-nws-website.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+frontend:
+  replicaCount: 3
+  imagePullSecrets: []
+  nameOverride: ""
+  fullnameOverride: ""
+  serviceAccount:
+    create: false
+    automount: true
+    annotations: {}
+    name: "prd-public-website-s3-service-account"
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  containers:
+    - name: frontend
+      securityContext: {}
+      image:
+        repository: 533267401207.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
+        pullPolicy: Always
+        tag: "frontend-0.2.0"
+      livenessProbe:
+        httpGet:
+          path: /
+          port: 3000
+      readinessProbe:
+        httpGet:
+          path: /
+          port: 3000
+      resources: {}
+      volumeMounts: []
+  service:
+    type: ClusterIP
+    ports:
+      - name: frontend
+        port: 3000
+        protocol: TCP
+        targetPort: 3000
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+  volumes: []
+  ingress:
+    enabled: false
+  nodeSelector:
+    eks.amazonaws.com/nodegroup: public-website-20241017151108856800000015
+
+  tolerations: []
+  affinity: {}
+  dnsPolicy: ClusterFirst
+
+backend:
+  replicaCount: 3
+  imagePullSecrets: []
+  nameOverride: ""
+  fullnameOverride: ""
+  serviceAccount:
+    create: false
+    automount: true
+    annotations: {}
+    name: "prd-public-website-s3-service-account"
+  podAnnotations: {}
+  podLabels: {}
+  podSecurityContext: {}
+  containers:
+    - name: backend
+      securityContext: {}
+      image:
+        repository: 533267401207.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
+        pullPolicy: Always
+        tag: "backend-0.2.0"
+      livenessProbe:
+        httpGet:
+          path: /liveness
+          port: 5000
+      readinessProbe:
+        httpGet:
+          path: /readiness
+          port: 5000
+      resources: {}
+      volumeMounts: []
+  service:
+    type: ClusterIP
+    ports:
+      - name: backend
+        port: 5000
+        protocol: TCP
+        targetPort: 5000
+  autoscaling:
+    enabled: false
+    minReplicas: 1
+    maxReplicas: 100
+    targetCPUUtilizationPercentage: 80
+  volumes: []
+  ingress:
+    enabled: false
+  nodeSelector:
+    eks.amazonaws.com/nodegroup: public-website-20241017151108856800000015
+  tolerations: []
+  affinity: {}
+  dnsPolicy: ClusterFirst

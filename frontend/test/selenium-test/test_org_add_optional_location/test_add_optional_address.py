@@ -18,7 +18,7 @@ def test_option_address_renders(get_browser):
 
 def test_proceed_with_optional_info(get_browser):
     setup(get_browser)
-    enter_input_text(get_browser, 'Address line 1 (optional)', '8 Elliot Street')
+    enter_textarea_text(get_browser, 'govuk-textarea', '8 Elliot Street', 'id')
     click_button(get_browser, "Continue", url_next_page )
     assert get_browser.current_url == url_next_page
     assert "Key information" in get_browser.page_source
@@ -28,22 +28,6 @@ def test_proceed_with_no_optional_info(get_browser):
     click_button(get_browser, "Continue", url_next_page )
     assert get_browser.current_url == url_next_page
     assert "Key information" in get_browser.page_source
-
-def test_postcode_error(get_browser):
-
-    setup(get_browser)
-    element = get_browser.find_element(By.NAME,'Postcode (optional)')
-    get_browser.execute_script("arguments[0].scrollIntoView(true);",element)
-    element.send_keys("kt3")
-    click_button(get_browser, 'Continue', current_url)
-    assert "Enter a full postcode in England, in the correct format, like KT3 3QQ" in get_browser.page_source
-
-def test_valid_postcode(get_browser):
-    setup(get_browser)
-    element = get_browser.find_element(By.NAME,'Postcode (optional)')
-    get_browser.execute_script("arguments[0].scrollIntoView(true);",element)
-    element.send_keys("kt3 3qq")
-    click_button(get_browser, 'Continue', url_next_page)
 
 def test_continue_button(get_browser):
     setup(get_browser)

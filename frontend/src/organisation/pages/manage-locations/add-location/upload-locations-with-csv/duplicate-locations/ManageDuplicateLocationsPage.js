@@ -11,7 +11,7 @@ import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/M
 export default function ManageDuplicateLocationsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
   const location = useLocation()
   const duplicateLocations = location?.state?.duplicateLocations
 
@@ -19,12 +19,11 @@ export default function ManageDuplicateLocationsPage() {
     // TODO
   }
 
-  const getLocation = async (type, locationName) => {
+  const getLocation = async (orgId, locationName, type) => {
     const dataToSend = {
-      authToken,
-      type: type,
-      path: 'meta_data.location_additional.location_name',
-      value: locationName
+      orgId,
+      locationName,
+      type
     }
     const { data } = await backendCall(
       dataToSend,
@@ -43,10 +42,10 @@ export default function ManageDuplicateLocationsPage() {
     event.preventDefault()
 
     // Get the existing location (note type is 'valid')
-    const existingLocation = await getLocation('valid', location.Location_name)
+    const existingLocation = await getLocation(orgId, location.Location_name, 'valid')
 
     // Get the new, duplicate location (note type is 'invalid')
-    const newLocation = await getLocation('invalid', location.Location_name)
+    const newLocation = await getLocation(orgId, location.Location_name, 'invalid')
 
     if (existingLocation && newLocation) {
       // Now compare the two and let the use choose one

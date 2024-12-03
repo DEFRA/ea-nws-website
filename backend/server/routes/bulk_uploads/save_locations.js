@@ -30,21 +30,21 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { authToken, fileName } = request.payload
+        const { orgId, fileName } = request.payload
 
-        if (fileName && authToken) {
+        if (fileName && orgId) {
           const elasticacheKey = 'bulk_upload:' + fileName.split('.')[0]
           const result = await getJsonData(elasticacheKey)
           const valid = convertToPois(result.data.valid)
           const invalid = convertToPois(result.data.invalid)
           // add unique location ID and add to elsaticache
           valid.forEach(async (location) => {
-            location.meta_data.location_id = uuidv4()
-            await addLocation(authToken, location)
+            location.id = uuidv4()
+            await addLocation(orgId, location)
           })
           invalid.forEach(async (location) => {
-            location.meta_data.location_id = uuidv4()
-            await addInvLocation(authToken, location)
+            location.id = uuidv4()
+            await addInvLocation(orgId, location)
           })
 
           // TODO: call geosafe API to add locations to geosafe as well

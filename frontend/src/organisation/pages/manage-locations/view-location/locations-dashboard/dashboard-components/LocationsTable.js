@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { setCurrentLocation } from '../../../../../../common/redux/userSlice'
+import { webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationsTable ({
@@ -104,19 +105,19 @@ export default function LocationsTable ({
                 </div>
               </th>
               <td className='govuk-table__cell'>
-                {location.meta_data.location_additional.location_name}
+                {location.additionals.locationName}
               </td>
               <td className='govuk-table__cell'>
-                {location.meta_data.location_additional.location_type}
+                {location.additionals.other?.location_type}
               </td>
               <td className='govuk-table__cell'>
-                {location.alert_categories.length > 0 ? 'Yes' : 'No'}
+                {location.additionals.other?.alertTypes > 0 ? 'Yes' : 'No'}
               </td>
               <td className='govuk-table__cell'>
-                {location.meta_data.location_additional.business_criticality}
+                {location.additionals.other?.business_criticality}
               </td>
               <td className='govuk-table__cell'>
-                <Link onClick={(e) => viewLocation(e, location)}>
+                <Link onClick={(e) => viewLocation(e, webToGeoSafeLocation(location))}>
                   View or edit
                 </Link>
               </td>

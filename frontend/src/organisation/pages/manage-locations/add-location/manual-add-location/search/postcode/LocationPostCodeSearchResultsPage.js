@@ -7,6 +7,7 @@ import OrganisationAccountNavigation from '../../../../../../../common/component
 import Button from '../../../../../../../common/components/gov-uk/Button'
 import Pagination from '../../../../../../../common/components/gov-uk/Pagination'
 import {
+  getLocationOther,
   setCurrentLocationAddress,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
@@ -29,7 +30,7 @@ export default function LocationSearchResultsPage () {
   const [loading, setLoading] = useState(false)
   const postCode = useSelector(
     (state) =>
-      state.session.currentLocation.meta_data.location_additional.postcode
+      getLocationOther(state, 'postcode')
   )
   const locations = useSelector((state) => state.session.locationSearchResults)
   const locationsPerPage = 20

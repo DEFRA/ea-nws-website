@@ -1,15 +1,12 @@
-const { searchLocations } = require('../../services/elasticache')
-
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 
-const { getJsonData, setJsonData } = require('../../services/elasticache')
+const { findLocationByName, getJsonData, setJsonData } = require('../../services/elasticache')
 
-const isDuplicate = async (authToken, locationName) => {
-  const locationArr = await searchLocations(
-    authToken,
-    'meta_data.location_additional.location_name',
+const isDuplicate = async (orgId, locationName) => {
+  const locationArr = await findLocationByName(
+    orgId,
     locationName
   )
   return locationArr.length !== 0
@@ -26,7 +23,7 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { authToken, fileName } = request.payload
+        const { orgId, fileName } = request.payload
 
         if (fileName) {
           const elasticacheKey = 'bulk_upload:' + fileName.split('.')[0]
@@ -36,7 +33,7 @@ module.exports = [
             if (result.data) {
               // Check invalid locations for duplicates
               result.data.invalid.forEach(async (location) => {
-                if (await isDuplicate(authToken, location.Location_name)) {
+                if (await isDuplicate(orgId, location.Location_name)) {
                   // An invalid location should already have at least one error
                   // but do not assume this is the case
                   if (Array.isArray(error)) {
@@ -52,7 +49,7 @@ module.exports = [
               // removing elements from valid locations.
               for (let i = 0; i < result.data.valid.length; i++) {
                 const location = result.data.valid[i]
-                if (await isDuplicate(authToken, location.Location_name)) {
+                if (await isDuplicate(orgId, location.Location_name)) {
                   result.data.valid.splice(i, 1)
                   // It seems reasonable to assume that a valid location
                   // will have no existing errors at this stage

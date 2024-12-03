@@ -6,11 +6,12 @@ import RiskAreaType from '../../../../../../../common/enums/RiskAreaType'
 import FloodWarningKey from '../../../../../../components/custom/FloodWarningKey'
 import Map from '../../../../../../components/custom/Map'
 import RiskCategoryLabel from '../../../../../../components/custom/RiskCategoryLabel'
+import { getLocationAdditionals } from '../../../../../../../common/redux/userSlice'
 
 export default function LocationInformationLayout({ location }) {
   const navigate = useNavigate()
   const currentLocation = useSelector((state) => state.session.currentLocation)
-  const additionalData = currentLocation.meta_data.location_additional
+  const additionalData = useSelector((state) => getLocationAdditionals(state))
   const formattedAddress = location.Full_address?.split(',')
 
   console.log('location', location)
@@ -216,7 +217,7 @@ export default function LocationInformationLayout({ location }) {
                 <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                   Location name
                 </h3>
-                <p>{additionalData.location_name}</p>
+                <p>{additionalData.locationName}</p>
                 {additionalData.internal_reference && (
                   <>
                     <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>

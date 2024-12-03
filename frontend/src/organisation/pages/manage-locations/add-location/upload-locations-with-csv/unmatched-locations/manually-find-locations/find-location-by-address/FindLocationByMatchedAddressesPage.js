@@ -6,13 +6,14 @@ import Button from '../../../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../../../common/components/gov-uk/ErrorSummary'
 import InsetText from '../../../../../../../../common/components/gov-uk/InsetText'
 import Select from '../../../../../../../../common/components/gov-uk/Select'
+import { getLocationOther } from '../../../../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function FindLocationByMatchedAddressesPage () {
   const navigate = useNavigate()
   const selectedLocation = useSelector(
     (state) =>
-      state.session.currentLocation.meta_data.location_additional.full_address
+      getLocationOther(state, 'full_address')
   )
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(null)
   const [error, setError] = useState('')

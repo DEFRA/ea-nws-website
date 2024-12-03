@@ -1,0 +1,79 @@
+# Default values for ea-nws-website.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount: {}
+
+podAnnotations: {}
+podLabels: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+containers:
+  - name: frontend
+    securityContext: {}
+    image:
+      repository: 730335517085.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
+      pullPolicy: Always
+      # Overrides the image tag whose default is the chart appVersion.
+      tag: "frontend-0.2.0"
+    livenessProbe:
+      httpGet:
+        path: /
+        port: 3000
+    readinessProbe:
+      httpGet:
+        path: /
+        port: 3000
+    resources: {}
+    # limits:
+    #   cpu: 100m
+    #   memory: 128Mi
+    # requests:
+    #   cpu: 100m
+    #   memory: 128Mi
+    volumeMounts: []
+    # - name: foo
+    #   mountPath: "/etc/foo"
+    #   readOnly: true
+
+service:
+  type: ClusterIP
+  ports:
+    - name: frontend
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+# Additional volumes on the output Deployment definition.
+volumes: []
+# - name: foo
+#   secret:
+#     secretName: mysecret
+#     optional: false
+
+ingress:
+  enabled: false
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+dnsPolicy: ClusterFirst

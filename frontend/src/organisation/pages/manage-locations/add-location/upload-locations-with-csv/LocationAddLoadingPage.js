@@ -15,11 +15,11 @@ export default function LocationAddLoadingPage () {
   const [notFoundLocations, setNotFoundLocations] = useState(null)
   const [notInEnglandLocations, setNotInEnglandLocations] = useState(null)
   const location = useLocation()
-  const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
   const fileName = location.state?.fileName
 
   if (!fileName) {
-    // theres not fileName so naviagte back. will need to give an error
+    // theres not fileName so navigate back. will need to give an error
     navigate(-1)
   }
 
@@ -54,7 +54,7 @@ export default function LocationAddLoadingPage () {
   // Check the status of the processing and update state
   useEffect(() => {
     const interval = setInterval(async () => {
-      const dataToSend = { authToken, fileName }
+      const dataToSend = { orgId, fileName }
       const { data, errorMessage } = await backendCall(
         dataToSend,
         'api/bulk_uploads/process_status',

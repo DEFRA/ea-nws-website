@@ -3,8 +3,8 @@ const {
 } = require('../../services/GenericErrorResponse')
 
 const {
-  searchLocations,
-  searchInvLocations
+  findLocationByName,
+  findInvLocationByName
 } = require('../../services/elasticache')
 
 module.exports = [
@@ -16,13 +16,13 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { authToken, type, path, value } = request.payload
+        const { orgId, locationName, type } = request.payload
 
         if (path && value && authToken) {
           const result =
             type === 'valid'
-              ? await searchLocations(authToken, path, value)
-              : await searchInvLocations(authToken, path, value)
+              ? await findLocationByName(orgId, locationName)
+              : await findInvLocationByName(orgId, locationName)
           if (result) {
             return h.response({ status: 200, data: result })
           } else {

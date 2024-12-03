@@ -6,6 +6,25 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 export default function ViewLocationSummaryPage () {
   const navigate = useNavigate()
+  
+  const locationInputs = [
+    {
+      numberLocation:
+        '1,799',
+      messageType: ['Severe flood warnings','Flood warnings','Flood alerts'],
+      messagesSent: ['5','795','1,484']
+    },
+    {
+      numberLocation: '1',
+      messageType: ['Severe flood warning','Flood warnings'],
+      messagesSent: ['0', '5']
+    },
+    {
+      numberLocation: '120',
+      messageType: ['Flood alerts only'],
+      messagesSent: ['100']
+    }
+  ]
 
   const locationThatWillGetMessagesTable = (
     <>
@@ -21,7 +40,7 @@ export default function ViewLocationSummaryPage () {
         What are the different types of flood messages?
       </Link>
       {/* ToDo change this so its not hardcoded*/}
-      <p className='govuk-!-margin-top-5'>11100 locations of 2000</p> 
+      <p className='govuk-!-margin-top-5'>1,920 of 2,000 locations</p> 
 
       <table className='govuk-table govuk-table--small-text-until-tablet'>
             <thead className='govuk-table__head'>
@@ -40,6 +59,34 @@ export default function ViewLocationSummaryPage () {
                 <th scope='col' className='govuk-table__header' />
               </tr>
             </thead>
+            <tbody className='govuk-table__body'>
+                {locationInputs.map((detail,index) => (
+                    <tr key={index} className='govuk-table__row'>
+                        <td
+                            className='govuk-table__cell'
+                            style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+                        >
+                            <Link to='/' className='govuk-link'>
+                            {detail.numberLocation}
+                            </Link>
+                        </td>
+                        <td
+                            className='govuk-table__cell'
+                            style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+                        >
+                            {detail.messageType}
+                        </td>
+                        <td
+                            className='govuk-table__cell'
+                            style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+                        >
+                            {detail.messagesSent.map((message, idx) => (
+                            <div key={idx}>{message}</div>
+                            ))}
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
         </table>
     </>
   )

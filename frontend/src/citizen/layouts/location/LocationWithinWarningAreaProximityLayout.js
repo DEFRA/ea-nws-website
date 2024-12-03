@@ -50,14 +50,6 @@ export default function LocationWithinWarningAreaProximityLayout ({
   const [floodHistoryUrl, setHistoryUrl] = useState(null)
   const [floodHistoryData, setFloodHistoryData] = useState(null)
 
-  async function getHistoryUrl () {
-    const { data } = await backendCall(
-      'data',
-      'api/locations/download_flood_history'
-    )
-    setHistoryUrl(data)
-  }
-
   useEffect(() => {
     dispatch(setSelectedFloodAlertArea(null))
     dispatch(setSelectedFloodWarningArea(null))
@@ -67,6 +59,14 @@ export default function LocationWithinWarningAreaProximityLayout ({
   }, [type])
 
   useEffect(() => {
+    async function getHistoryUrl () {
+      const { data } = await backendCall(
+        'data',
+        'api/locations/download_flood_history'
+      )
+      setHistoryUrl(data)
+    }
+  
     getHistoryUrl()
     fetch(floodHistoryUrl)
       .then((response) => response.text())

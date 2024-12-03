@@ -5,6 +5,7 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Details from '../../../../../common/components/gov-uk/Details'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
+import { getLocationAdditionals } from '../../../../../common/redux/userSlice'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -13,7 +14,8 @@ import LocationHeader from './location-information-components/LocationHeader'
 export default function LocationInformationPage () {
   const navigate = useNavigate()
   const currentLocation = useSelector((state) => state.session.currentLocation)
-  const additionalData = currentLocation.meta_data.location_additional
+  const additionalData = useSelector((state) => getLocationAdditionals(state))
+  console.log(additionalData)
   const keywords = additionalData.keywords
     ? JSON.parse(additionalData.keywords)
     : []
@@ -205,7 +207,7 @@ export default function LocationInformationPage () {
                   <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                     Location name
                   </h3>
-                  <p>{additionalData.location_name}</p>
+                  <p>{additionalData.locationName}</p>
                   {additionalData.internal_reference && (
                     <>
                       <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
@@ -395,24 +397,28 @@ export default function LocationInformationPage () {
                 </div>
             )}
           </div>
-
           {/* other half - map */}
-          <div className='govuk-grid-column-one-half'>
-            <Map showMapControls={false} zoomLevel={14} />
-            <div className='govuk-!-margin-top-4'>
-              <FloodWarningKey type='both' />
-            </div>
-            <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
-              This is not a live flood map
-            </span>
-            <span className='govuk-caption-m govuk-!-font-size-16'>
-              It shows fixed areas we provide flood warnings and alerts for
-            </span>
-            <div className=' govuk-!-margin-top-4'>
-              <RoomOutlinedIcon style={{ fontSize: 30 }} />
-              <Link>Open Map</Link>
-            </div>
-          </div>
+          {/* nly show map if data allows */}
+          {currentLocation.coordinates?.latitude && currentLocation.coordinates?.longitude &&
+              (
+                <div className='govuk-grid-column-one-half'>
+                  <Map showMapControls={false} zoomLevel={14} />
+                  <div className='govuk-!-margin-top-4'>
+                    <FloodWarningKey type='both' />
+                  </div>
+                  <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
+                    This is not a live flood map
+                  </span>
+                  <span className='govuk-caption-m govuk-!-font-size-16'>
+                    It shows fixed areas we provide flood warnings and alerts for
+                  </span>
+                  <div className=' govuk-!-margin-top-4'>
+                    <RoomOutlinedIcon style={{ fontSize: 30 }} />
+                    <Link>Open Map</Link>
+                  </div>
+                </div>
+              )}
+
         </div>
       </main>
     </>

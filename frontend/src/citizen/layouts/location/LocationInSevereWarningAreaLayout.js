@@ -108,11 +108,15 @@ export default function LocationInSevereWarningAreaLayout ({
     }
 
     dispatch(setAdditionalAlerts(false))
-    updatedProfile = await updateGeosafeProfile(profile)
-    // if user is in sign up flow, then profile returned will be undefined
-    if (updatedProfile) {
-      unregisterLocationFromPartner(updatedProfile)
+
+    if (!isSignUpFlow) {
+      updatedProfile = await updateGeosafeProfile(profile)
+      // if user is in sign up flow, then profile returned will be undefined
+      if (updatedProfile) {
+        unregisterLocationFromPartner(updatedProfile)
+      }
     }
+
     navigate(-1)
   }
 

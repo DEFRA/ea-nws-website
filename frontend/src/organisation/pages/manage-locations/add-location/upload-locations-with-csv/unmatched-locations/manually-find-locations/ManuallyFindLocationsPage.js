@@ -9,28 +9,31 @@ import {
   setLocationSearchResults
 } from '../../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../../common/services/BackendService'
+import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ManuallyFindLocationsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
   const [locations, setLocations] = useState(null)
   const location = useLocation()
 
   useEffect(() => {
     const getInvLocations = async () => {
-      const dataToSend = { authToken }
+      const dataToSend = { orgId }
       const { data } = await backendCall(
         dataToSend,
         'api/bulk_uploads/get_invalid_locations',
         navigate
       )
+      const locations = []
       if (data) {
-        setLocations(data)
-      } else {
-        setLocations(null)
+        data.forEach((location) => {
+          locations.push(geoSafeToWebLocation(location))
+        })
       }
+      setLocations(locations)
     }
     getInvLocations()
   }, [])
@@ -62,11 +65,11 @@ export default function ManuallyFindLocationsPage () {
   const handleFind = async (event, location) => {
     event.preventDefault()
     const poi = location
-    dispatch(setCurrentLocation(poi))
+    dispatch(setCurrentLocation(webToGeoSafeLocation(poi)))
     const isAddressValid = await findAvailableAddresses(
-      poi.meta_data.location_additional.full_address +
+      poi.additionals.other.full_address +
         ', ' +
-        poi.meta_data.location_additional.postcode
+        poi.additionals.other.postcode
     )
     // If there is results for the unmatched address, navigate to the radio screen
     // where user can select how to find the address
@@ -139,12 +142,11 @@ export default function ManuallyFindLocationsPage () {
                           </th>
                           <td class='govuk-table__cell'>
                             {
-                              location.meta_data.location_additional
-                                .full_address
+                              location.additionals.other.full_address
                             }
                           </td>
                           <td class='govuk-table__cell'>
-                            {location.meta_data.location_additional.postcode}
+                            {location.additionals.other.postcode}
                           </td>
                           <td class='govuk-table__cell'>
                             <Link

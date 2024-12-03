@@ -4,14 +4,14 @@ import Button from '../../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../../common/enums/RiskAreaType'
+import { getLocationAdditionals } from '../../../../../../common/redux/userSlice'
 import RiskCategoryLabel from '../../../../../components/custom/RiskCategoryLabel'
 import ViewLocationSubNavigation from './ViewLocationSubNavigation'
 
 export default function LocationHeader ({ currentPage }) {
   const location = useLocation()
-  const additionalData = useSelector(
-    (state) => state.session.currentLocation.meta_data.location_additional
-  )
+  const additionalData = useSelector((state) => getLocationAdditionals(state))
+  const currentLocation = useSelector((state) => state.session.currentLocation)
 
   return (
     <>
@@ -24,7 +24,7 @@ export default function LocationHeader ({ currentPage }) {
       )}
       <div className='govuk-grid-row'>
         <div className='govuk-grid-column-one-half'>
-          <h1 className='govuk-heading-l'>{additionalData.location_name}</h1>
+          <h1 className='govuk-heading-l'>{additionalData.locationName}</h1>
         </div>
         <div
           class='govuk-grid-column-one-half right'
@@ -42,9 +42,10 @@ export default function LocationHeader ({ currentPage }) {
       </div>
 
       {/* flood risk bannner */}
-      {(additionalData.location_data_type === LocationDataType.ADDRESS ||
+      {/* only show if data allows */}
+      {((additionalData.location_data_type === LocationDataType.ADDRESS ||
         additionalData.location_data_type ===
-          LocationDataType.X_AND_Y_COORDS) && (
+          LocationDataType.X_AND_Y_COORDS) && currentLocation.coordines?.latitude && currentLocation.coordines?.longitude) && (
             <div class='govuk-grid-row'>
               <div className='govuk-grid-column-full'>
                 <div className='flood-risk-banner govuk-!-margin-top-2'>

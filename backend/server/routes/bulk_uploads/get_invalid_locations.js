@@ -13,10 +13,10 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { authToken } = request.payload
+        const { orgId } = request.payload
 
-        if (authToken) {
-          const result = await listInvLocations(authToken)
+        if (orgId) {
+          const result = await listInvLocations(orgId)
           if (result) {
             return h.response({ status: 200, data: result })
           } else {

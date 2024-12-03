@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import { getLocationAdditional } from '../../../../../../common/redux/userSlice'
 import LocationOptionsLayout from '../../../../../layouts/location/add-or-edit-location/search/LocationSearchOptionsLayout'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
@@ -8,8 +9,7 @@ export default function LocationSearchOptionsPage () {
   const navigate = useNavigate()
 
   const locationName = useSelector(
-    (state) =>
-      state.session.currentLocation.meta_data.location_additional.location_name
+    (state) => getLocationAdditional(state, 'locationName')
   )
   const searchOptions = [
     { label: 'Use a postcode', value: 'UseAPostcode' },

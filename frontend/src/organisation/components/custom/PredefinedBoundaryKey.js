@@ -10,7 +10,7 @@ export default function PredefinedBoundaryKey () {
           src={boundaryAlreadyAddedIcon}
           alt='Flood warning and severe flood area'
         />
-        <span className='org-flood-warning-text'>Boundary already added</span>
+        <span className='org-flood-warning-text'>Boundary</span>
       </div>
 
       <div className='org-flood-alert-item'>

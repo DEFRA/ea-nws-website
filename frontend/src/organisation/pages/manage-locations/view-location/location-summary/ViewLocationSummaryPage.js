@@ -7,7 +7,7 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 export default function ViewLocationSummaryPage () {
   const navigate = useNavigate()
 
-  const locationInputs = [
+  const locationThatWillGetMessagesInputs = [
     {
       numberLocation:
         '1,799',
@@ -26,10 +26,24 @@ export default function ViewLocationSummaryPage () {
     }
   ]
 
-  const locationThatWillGetMessagesTable = (
+  const locationThatDoesNotGetMessagesInputs = [
+    {
+      numberLocation:
+          '80',
+      messageType: ['None available'],
+      messagesSent: ['0']
+    },
+    {
+      numberLocation: '1',
+      messageType: ['All messages types (turned off)'],
+      messagesSent: ['16']
+    }
+  ]
+
+  const locationTable = (title, tableData) => (
     <>
-      <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
-        Locations that get flood messages
+      <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-5 govuk-!-display-inline-block'>
+        {title}
       </h2>
       <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3 section-break-bold' />
       <p className='govuk-!-margin-bottom-5'>
@@ -60,27 +74,27 @@ export default function ViewLocationSummaryPage () {
           </tr>
         </thead>
         <tbody className='govuk-table__body'>
-          {locationInputs.map((detail, index) => (
+          {tableData.map((item, index) => (
             <tr key={index} className='govuk-table__row'>
               <td
                 className='govuk-table__cell'
                 style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
               >
                 <Link to='/' className='govuk-link'>
-                  {detail.numberLocation}
+                  {item.numberLocation}
                 </Link>
               </td>
               <td
                 className='govuk-table__cell'
                 style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
               >
-                {detail.messageType}
+                {item.messageType}
               </td>
               <td
                 className='govuk-table__cell'
                 style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
               >
-                {detail.messagesSent.map((message, idx) => (
+                {item.messagesSent.map((message, idx) => (
                   <div key={idx}>{message}</div>
                 ))}
               </td>
@@ -100,9 +114,9 @@ export default function ViewLocationSummaryPage () {
           <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l'>Summary of flood messages sent</h1>
             <div className='govuk-body'>
-              {locationThatWillGetMessagesTable}
+              {locationTable('Locations that get flood messages', locationThatWillGetMessagesInputs)}
+              {locationTable('Locations that will not get flood messages', locationThatDoesNotGetMessagesInputs)}
             </div>
-
           </div>
         </div>
       </main>

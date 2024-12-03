@@ -2,7 +2,7 @@ import React from 'react'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
-
+import { infoUrls } from '../../../../routes/info/InfoRoutes'
 import BackLink from '../../../../../common/components/custom/BackLink'
 export default function ViewLocationSummaryPage () {
   const navigate = useNavigate()
@@ -36,7 +36,7 @@ export default function ViewLocationSummaryPage () {
         This is a summary of how many locations get each of the different types of flood messages.
         Not all flood messages are available for some locations.
       </p>
-      <Link to='/' className='govuk-link '>
+      <Link to={infoUrls.floodTypes} className='govuk-link '>
         What are the different types of flood messages?
       </Link>
       {/* ToDo change this so its not hardcoded */}

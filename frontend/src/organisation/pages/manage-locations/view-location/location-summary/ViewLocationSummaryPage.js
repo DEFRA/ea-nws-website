@@ -6,17 +6,17 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 export default function ViewLocationSummaryPage () {
   const navigate = useNavigate()
-  
+
   const locationInputs = [
     {
       numberLocation:
         '1,799',
-      messageType: ['Severe flood warnings','Flood warnings','Flood alerts'],
-      messagesSent: ['5','795','1,484']
+      messageType: ['Severe flood warnings', 'Flood warnings', 'Flood alerts'],
+      messagesSent: ['5', '795', '1,484']
     },
     {
       numberLocation: '1',
-      messageType: ['Severe flood warning','Flood warnings'],
+      messageType: ['Severe flood warning', 'Flood warnings'],
       messagesSent: ['0', '5']
     },
     {
@@ -39,55 +39,55 @@ export default function ViewLocationSummaryPage () {
       <Link to='/' className='govuk-link '>
         What are the different types of flood messages?
       </Link>
-      {/* ToDo change this so its not hardcoded*/}
-      <p className='govuk-!-margin-top-5'>1,920 of 2,000 locations</p> 
+      {/* ToDo change this so its not hardcoded */}
+      <p className='govuk-!-margin-top-5'>1,920 of 2,000 locations</p>
 
       <table className='govuk-table govuk-table--small-text-until-tablet'>
-            <thead className='govuk-table__head'>
-              <tr className='govuk-table__row'>
-                <th scope='col' className='govuk-table__header'>
-                  Number of locations
-                </th>
-                <th scope='col' className='govuk-table__header'>
-                  Flood messages
-                  <br/> that will be sent
-                </th>
-                <th scope='col' className='govuk-table__header'>
-                  Number of messages 
-                  <br /> sent in the last 2 years
-                </th>
-                <th scope='col' className='govuk-table__header' />
-              </tr>
-            </thead>
-            <tbody className='govuk-table__body'>
-                {locationInputs.map((detail,index) => (
-                    <tr key={index} className='govuk-table__row'>
-                        <td
-                            className='govuk-table__cell'
-                            style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
-                        >
-                            <Link to='/' className='govuk-link'>
-                            {detail.numberLocation}
-                            </Link>
-                        </td>
-                        <td
-                            className='govuk-table__cell'
-                            style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
-                        >
-                            {detail.messageType}
-                        </td>
-                        <td
-                            className='govuk-table__cell'
-                            style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
-                        >
-                            {detail.messagesSent.map((message, idx) => (
-                            <div key={idx}>{message}</div>
-                            ))}
-                        </td>
-                    </tr>
+        <thead className='govuk-table__head'>
+          <tr className='govuk-table__row'>
+            <th scope='col' className='govuk-table__header'>
+              Number of locations
+            </th>
+            <th scope='col' className='govuk-table__header'>
+              Flood messages
+              <br /> that will be sent
+            </th>
+            <th scope='col' className='govuk-table__header'>
+              Number of messages
+              <br /> sent in the last 2 years
+            </th>
+            <th scope='col' className='govuk-table__header' />
+          </tr>
+        </thead>
+        <tbody className='govuk-table__body'>
+          {locationInputs.map((detail, index) => (
+            <tr key={index} className='govuk-table__row'>
+              <td
+                className='govuk-table__cell'
+                style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+              >
+                <Link to='/' className='govuk-link'>
+                  {detail.numberLocation}
+                </Link>
+              </td>
+              <td
+                className='govuk-table__cell'
+                style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+              >
+                {detail.messageType}
+              </td>
+              <td
+                className='govuk-table__cell'
+                style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+              >
+                {detail.messagesSent.map((message, idx) => (
+                  <div key={idx}>{message}</div>
                 ))}
-            </tbody>
-        </table>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
     </>
   )
 
@@ -98,11 +98,11 @@ export default function ViewLocationSummaryPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            <h1 className = 'govuk-heading-l'>Summary of flood messages sent</h1>
+            <h1 className='govuk-heading-l'>Summary of flood messages sent</h1>
             <div className='govuk-body'>
-            {locationThatWillGetMessagesTable}
+              {locationThatWillGetMessagesTable}
             </div>
-            
+
           </div>
         </div>
       </main>

@@ -32,80 +32,100 @@ export default function ContactsTable ({
     if (contactNameSort === 'none' || contactNameSort === 'descending') {
       setContactNameSort('ascending')
       setFilteredContacts(
-        [...filteredContacts].sort((a, b) => (
-          a.name > 
-          b.name ? 1 : -1))
+        [...filteredContacts].sort((a, b) => {
+          if (a.name === null && b.name === null) return 0
+          if (a.name === null) return 1
+          if (b.name === null) return -1
+          return a.name.localeCompare(b.name)
+        })
       )
     }
-    if (contactNameSort === 'ascending') {
+    else if (contactNameSort === 'ascending') {
       setContactNameSort('descending')
       setFilteredContacts(
-        [...filteredContacts].sort((a, b) => (
-          a.name < 
-          b.name ? 1 : -1))
+        [...filteredContacts].sort((a, b) => {
+          if (a.name === null && b.job_title === null) return 0
+          if (a.name === null) return 1
+          if (b.name === null) return -1
+          return b.name.localeCompare(a.name)
+        })
       )
     }
-    // setResetPaging(!resetPaging)
   }
 
   const sortJobTitles = () => {
     if (jobTitleSort === 'none' || jobTitleSort === 'descending') {
       setJobTitleSort('ascending')
       setFilteredContacts(
-        [...filteredContacts].sort((a, b) => (
-          a.job_title > 
-          b.job_title ? 1 : -1))
+        [...filteredContacts].sort((a, b) => {
+          if (a.job_title === null && b.job_title === null) return 0
+          if (a.job_title === null) return 1
+          if (b.job_title === null) return -1
+          return a.job_title.localeCompare(b.job_title)
+        })
       )
     }
-    if (jobTitleSort === 'ascending') {
+    else if (jobTitleSort === 'ascending') {
       setJobTitleSort('descending')
       setFilteredContacts(
-        [...filteredContacts].sort((a, b) => (
-          a.job_title < 
-          b.job_title ? 1 : -1))
+        [...filteredContacts].sort((a, b) => {
+          if (a.job_title === null && b.job_title === null) return 0
+          if (a.job_title === null) return 1
+          if (b.job_title === null) return -1
+          return b.job_title.localeCompare(a.job_title)
+        })
       )
     }
-    // setResetPaging(!resetPaging)
   }
 
   const sortEmails = () => {
     if (emailSort === 'none' || emailSort === 'descending') {
       setEmailSort('ascending')
       setFilteredContacts(
-        [...filteredContacts].sort((a, b) => (
-          a.email > 
-          b.email ? 1 : -1))
+        [...filteredContacts].sort((a, b) => {
+          if (a.email === null && b.email === null) return 0
+          if (a.email === null) return 1
+          if (b.email === null) return -1
+          return a.email.localeCompare(b.email)
+        })
       )
     }
     if (emailSort === 'ascending') {
       setEmailSort('descending')
       setFilteredContacts(
-        [...filteredContacts].sort((a, b) => (
-          a.email < 
-          b.email ? 1 : -1))
+        [...filteredContacts].sort((a, b) => {
+          if (a.email === null && b.email === null) return 0
+          if (a.email === null) return 1
+          if (b.email === null) return -1
+          return b.email.localeCompare(a.email)
+        })
       )
     }
-    // setResetPaging(!resetPaging)
   }
 
   const sortLinkedLocations = () => {
     if (linkedLocationsSort === 'none' || linkedLocationsSort === 'descending') {
       setLinkedLocationsSort('ascending')
       setFilteredContacts(
-        [...filteredContacts].sort((a, b) => (
-          a.linked_locations > 
-          b.linked_locations ? 1 : -1))
+        [...filteredContacts].sort((a, b) => {
+          if (a.linked_locations === null && b.linked_locations === null) return 0
+          if (a.linked_locations === null) return 1
+          if (b.linked_locations === null) return -1
+          return a.linked_locations > b.linked_locations ? 1 : -1
+        })
       )
     }
     if (linkedLocationsSort === 'ascending') {
       setLinkedLocationsSort('descending')
       setFilteredContacts(
-        [...filteredContacts].sort((a, b) => (
-          a.linked_locations < 
-          b.linked_locations ? 1 : -1))
+        [...filteredContacts].sort((a, b) => {
+          if (a.linked_locations === null && b.linked_locations === null) return 0
+          if (a.linked_locations === null) return 1
+          if (b.linked_locations === null) return -1
+          return a.linked_locations < b.linked_locations ? 1 : -1
+        })
       )
     }
-    // setResetPaging(!resetPaging)
   }
 
   const sortMessagesReceived = () => {
@@ -137,10 +157,7 @@ export default function ContactsTable ({
 
   return (
     <>
-      <p
-        className='govuk-!-margin-bottom-6'
-        style={{ display: 'flex', color: '#505a5f' }}
-      >
+      <p className='govuk-!-margin-bottom-6 contacts-table-panel'>
         {filteredContacts.length} {filteredContacts.length === 1 ? 'contact' : 'contacts'}{' '}
         <span style={{ margin: '0 20px' }}>|</span>
         <span style={{ color: '#1d70b8' }}>

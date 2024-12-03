@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Popup from '../../../../../common/components/custom/Popup'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
+import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
 import Select from '../../../../../common/components/gov-uk/Select'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
@@ -157,6 +158,8 @@ export default function ViewContactsDashboardPage () {
     setIsFilterVisible(true)
 
     setFilteredContacts([...updatedFilteredContacts])
+
+    setResetPaging(!resetPaging)
   }
 
   const removeContacts = (contactsToRemove) => {
@@ -218,28 +221,21 @@ export default function ViewContactsDashboardPage () {
           <div className='govuk-grid-column-full govuk-body'>
             {!isFilterVisible ? (
               <>
-                  <Button
-                    text='Open filter'
-                    className='govuk-button govuk-button--secondary inline-block'
-                    onClick={() => setIsFilterVisible(!isFilterVisible)}
-                  />
-                  &nbsp; &nbsp;
-                  {/* <Select
-                      name='MoreActions'
-                      label=''
-                      options={moreActions}
-                      onSelect={(e) => onMoreAction(e)}
-                      initialSelectOptionText={
-                        'More actions'
-                      }
-                    /> */}
-                  &nbsp; &nbsp;
-                  <Button
-                    text='Print'
-                    className='govuk-button govuk-button--secondary inline-block'
-                    // onClick={() => setIsFilterVisible(!isFilterVisible)}
-                  />
-                {/* </div> */}
+                <Button
+                  text='Open filter'
+                  className='govuk-button govuk-button--secondary inline-block'
+                  onClick={() => setIsFilterVisible(!isFilterVisible)}
+                />
+                &nbsp; &nbsp;
+                <ButtonMenu>
+
+                </ButtonMenu>
+                &nbsp; &nbsp;
+                <Button
+                  text='Print'
+                  className='govuk-button govuk-button--secondary inline-block'
+                  // onClick={() => setIsFilterVisible(!isFilterVisible)}
+                />
                 <ContactsTable
                   contacts={contacts}
                   displayedContacts={displayedContacts}
@@ -282,16 +278,18 @@ export default function ViewContactsDashboardPage () {
 
                 <div className='govuk-grid-column-three-quarters'>
                   <div className='govuk-grid-row'
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center'
-                    }}>
+                    // style={{
+                    //   display: 'flex',
+                    //   alignItems: 'center'
+                    // }}
+                    >
                       <Button
                         text='Close Filter'
                         className='govuk-button govuk-button--secondary'
                         onClick={() => setIsFilterVisible(false)}
                       />
                       &nbsp; &nbsp;
+                      {<ButtonMenu></ButtonMenu>}
                       {/* <Select
                         name='MoreActions'
                         label=''

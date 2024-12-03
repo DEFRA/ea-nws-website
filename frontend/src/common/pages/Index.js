@@ -444,14 +444,14 @@ export default function IndexPage () {
       job_title: 'Regional Manager',
       email: 'mary.pepper@company.com',
       linked_locations: [],
-      keywords: ['Team 1', 'Team 2']
+      keywords: ['Team 1', 'Team 5']
     },
     {
       name: 'Amanda Three',
       job_title: 'Regional Manager',
       email: 'amanda.jordan@company.com',
       linked_locations: ['Loc_3', 'Loc_4'],
-      keywords: ['Team 1', 'Team 3']
+      keywords: ['Team 1', 'Team 6']
     },
     {
       name: 'Steve Four',

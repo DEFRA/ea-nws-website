@@ -54,6 +54,9 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
       .then((data) => {
         setFloodHistoryData(csvToJson(data))
       })
+      .catch((e) =>
+        console.error('Could not fetch Historic Flood Warning file', e)
+      )
   }, [floodHistoryUrl])
 
   const setHistoricalAlertNumber = (AlertArea) => {
@@ -193,12 +196,12 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
                           <tr key={index} className='govuk-table__row'>
                             <td className='govuk-table__cell'>
                               <Link
-                                className='govuk-link'
-                                onClick={(event) =>
-                                  handleSelectedLocation(event, location)}
-                              >
-                                {location.address}
-                              </Link>
+                  className='govuk-link'
+                  onClick={(event) =>
+                                handleSelectedLocation(event, location)}
+                >
+                  {location.address}
+                </Link>
                             </td>
                           </tr>
                         ))}

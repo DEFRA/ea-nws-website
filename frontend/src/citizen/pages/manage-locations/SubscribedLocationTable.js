@@ -70,8 +70,6 @@ export default function SubscribedLocationTable () {
       // TODO - this will need updated when geosafe updates locations to have alert categories
       // if location was saved as alert only, there is no way of telling currently 14/08/24 CP
       dispatch(setSelectedLocation(location))
-      console.log('LAURENT: Home page location table selected is:')
-      console.log(location)
       navigate(`/manage-locations/view/${'both'}`)
     } else {
       dispatch(setShowOnlySelectedFloodArea(true))

@@ -132,6 +132,9 @@ export default function ViewLocationPage () {
         .then((data) => {
           setFloodHistoryData(csvToJson(data))
         })
+        .catch((e) =>
+          console.error('Could not fetch Historic Flood Warning file', e)
+        )
     }
 
     async function processFloodHist () {

@@ -36,7 +36,6 @@ import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-l
 import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
 
-
 // edit imports
 import EditConfirmLocationPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/ConfirmLocationPage'
 import EditLocationSearchOptionsPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/LocationSearchOptionsPage'
@@ -65,7 +64,6 @@ const urlManageOrgAddLocations = urlManageOrg + '/add'
 const urlManageOrgEditLocations = urlManageOrg + '/edit'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
 const urlManageOrgConfirmLocations = urlManageOrg + '/confirm'
-
 
 // Manage location urls
 const orgManageLocationsUrls = {
@@ -182,8 +180,8 @@ const orgManageLocationRoutes = [
     component: <ViewMessagesPage />
   },
   {
-    path:orgManageLocationsUrls.view.ViewSummary,
-    component: <ViewLocationSummaryPage/>
+    path: orgManageLocationsUrls.view.ViewSummary,
+    component: <ViewLocationSummaryPage />
   },
   // add
   {

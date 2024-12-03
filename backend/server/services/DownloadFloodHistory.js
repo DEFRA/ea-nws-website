@@ -5,9 +5,16 @@ const getDownloadFloodHistoryUrl = async () => {
       'nws/website',
       'addressFloodHistoryUrl'
     )
-    return {
-      status: 200,
-      data: response
+    if (response !== null && response.length >= 0) {
+      return {
+        status: 200,
+        data: response
+      }
+    } else {
+      return {
+        status: 500,
+        errorMessage: 'addressFloodHistoryUrl has no value!'
+      }
     }
   } catch {
     return {

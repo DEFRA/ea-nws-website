@@ -36,6 +36,7 @@ import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-l
 import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
 
+
 // edit imports
 import EditConfirmLocationPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/ConfirmLocationPage'
 import EditLocationSearchOptionsPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/LocationSearchOptionsPage'
@@ -56,6 +57,7 @@ import EditNotesPage from '../../pages/manage-locations/edit-location/edit-indiv
 import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
 import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
+import ViewLocationSummaryPage from '../../pages/manage-locations/view-location/location-summary/ViewLocationSummaryPage'
 
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgViewLocations = urlManageOrg + '/locations'
@@ -64,12 +66,14 @@ const urlManageOrgEditLocations = urlManageOrg + '/edit'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
 const urlManageOrgConfirmLocations = urlManageOrg + '/confirm'
 
+
 // Manage location urls
 const orgManageLocationsUrls = {
   view: {
     dashboard: urlManageOrgViewLocations,
     viewLocation: urlManageOrgViewLocations + '/view',
-    viewMessages: urlManageOrgViewLocations + '/view-messages'
+    viewMessages: urlManageOrgViewLocations + '/view-messages',
+    ViewSummary: urlManageOrgViewLocations + '/view-summary'
   },
   add: {
     addLocationWithinBoundaries: {},
@@ -176,6 +180,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.view.viewMessages,
     component: <ViewMessagesPage />
+  },
+  {
+    path:orgManageLocationsUrls.view.ViewSummary,
+    component: <ViewLocationSummaryPage/>
   },
   // add
   {

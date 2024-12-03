@@ -4,71 +4,186 @@ import BackLink from '../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../common/components/gov-uk/Button'
 import Pagination from '../../../common/components/gov-uk/Pagination'
-import FloodReportsTable from '../../components/custom/FloodReportsTable'
+import LocationDataType from '../../../common/enums/LocationDataType'
 import { orgFloodReportsUrls } from '../../routes/flood-reports/FloodReportsRoutes'
+import FloodReportsFilter from './dashboard-components/FloodReportsFilter'
+import FloodReportsTable from './dashboard-components/FloodReportsTable'
 
 export default function LiveFloodWarningsPage() {
   const navigate = useNavigate()
   const [warnings, setWarnings] = useState([])
+  const [displayedWarnings, setDisplayedWarnings] = useState([])
   const [filteredWarnings, setFilteredWarnings] = useState([])
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [selectedFilters, setSelectedFilters] = useState([])
+  // const [alertArea, setAlertArea] = useState(null)
+  // const [warningArea, setWarningArea] = useState(null)
 
   const [currentPage, setCurrentPage] = useState(1)
   const [resetPaging, setResetPaging] = useState(false)
-  const warningsPerPage = 10
-  const displayedWarnings = filteredWarnings.slice(
-    (currentPage - 1) * warningsPerPage,
-    currentPage * warningsPerPage
-  )
+  const warningsPerPage = 1
+
+  // async function fetchFloodAreaData() {
+  //   // York
+  //   // coordinates: { latitude: 53.959, longitude: -1.0815 }
+  //   const { alertArea, warningArea } = await getSurroundingFloodAreas(
+  //     53.959,
+  //     -1.0815
+  //   )
+
+  //   console.log(`alertArea: ${JSON.stringify(alertArea)}`)
+  //   console.log(`warningArea: ${JSON.stringify(warningArea)}`)
+
+  //   setAlertArea(alertArea)
+  //   setWarningArea(warningArea)
+  // }
 
   // TODO: Integrate real warning data when available
   useEffect(() => {
-    const w = [
+    const l = [
       {
-        name: 'Location_01',
-        warningType: 'Flood warning',
-        locationOrBoundaryType: 'Office',
-        businessCriticality: 'High',
-        linkedContacts: '-',
-        lastUpdated: '2024-12-01 15:30:00'
+        name: 'UPRN',
+        address: '34 Hughenden Road, High Wycombe, LE2 7BB',
+        coordinates: { latitude: 50.84106, longitude: -1.05814 },
+        alert_categories: ['Alert'],
+        meta_data: {
+          location_additional: {
+            location_name: 'Location_01',
+            full_address: 'some address',
+            postcode: 'LE2 7BB',
+            x_coordinate: 466413.18,
+            y_coordinate: 105037.31,
+            internal_reference: 'PS01, unit 57, HighW_07',
+            business_criticality: 'Medium',
+            location_type: 'Office',
+            action_plan: '1. Dont panic!',
+            notes:
+              'John Smith has the flood plan for this location. His contact number is 01234 567 890',
+            keywords: '["Midlands"]',
+            location_data_type: LocationDataType.X_AND_Y_COORDS
+          }
+        }
       },
       {
-        name: 'Location_02',
-        warningType: 'Flood alert',
-        locationOrBoundaryType: 'Office',
-        businessCriticality: '-',
-        linkedContacts: '-',
-        lastUpdated: '2024-12-01 15:30:00'
+        name: 'UPRN',
+        address: '',
+        coordinates: { latitude: 54.197594, longitude: -3.089788 },
+        alert_categories: ['Warning', 'Alert'],
+        meta_data: {
+          location_additional: {
+            location_name: 'Location_02',
+            full_address: '',
+            postcode: '',
+            x_coordinate: 329000.58,
+            y_coordinate: 478530.6,
+            internal_reference: '',
+            business_criticality: 'Low',
+            location_type: 'County',
+            action_plan: '',
+            notes: '',
+            keywords: '',
+            location_data_type: LocationDataType.X_AND_Y_COORDS
+          }
+        }
       },
       {
-        name: 'Location_03',
-        warningType: 'Flood warning, Flood alert',
-        locationOrBoundaryType: 'Unitary authority',
-        businessCriticality: 'High',
-        linkedContacts: '-',
-        lastUpdated: '2024-12-01 15:30:00'
+        name: 'UPRN',
+        address: '',
+        coordinates: { latitude: 50.84106, longitude: -1.05814 },
+        alert_categories: ['Warning', 'Alert'],
+        meta_data: {
+          location_additional: {
+            location_name: 'Location_03',
+            full_address: '',
+            postcode: '',
+            x_coordinate: '',
+            y_coordinate: '',
+            internal_reference: '',
+            business_criticality: '',
+            location_type: 'Warehouse',
+            action_plan: '',
+            notes: '',
+            keywords: '',
+            location_data_type: LocationDataType.SHAPE_POLYGON
+          }
+        }
       },
       {
-        name: 'Location_04',
-        warningType: 'Flood warning',
-        locationOrBoundaryType: 'Unitary authority',
-        businessCriticality: '-',
-        linkedContacts: '-',
-        lastUpdated: '2024-12-01 15:30:00'
+        name: 'UPRN',
+        address: '',
+        coordinates: { latitude: 50.84106, longitude: -1.05814 },
+        alert_categories: ['Warning'],
+        meta_data: {
+          location_additional: {
+            location_name: 'Location_04',
+            full_address: '',
+            postcode: '',
+            x_coordinate: '',
+            y_coordinate: '',
+            internal_reference: '',
+            business_criticality: '',
+            location_type: 'Unitary authority',
+            action_plan: '',
+            notes: '',
+            keywords: '',
+            location_data_type: LocationDataType.SHAPE_LINE
+          }
+        }
       },
       {
-        name: 'Location_05',
-        warningType: 'Flood warning, Flood alert',
-        locationOrBoundaryType: 'County',
-        businessCriticality: '-',
-        linkedContacts: '-',
-        lastUpdated: '2024-12-01 15:30:00'
+        name: 'UPRN',
+        address: '',
+        coordinates: { latitude: 50.84106, longitude: -1.05814 },
+        alert_categories: ['Warning', 'Alert'],
+        meta_data: {
+          location_additional: {
+            location_name: 'Location_05',
+            full_address: '',
+            postcode: '',
+            x_coordinate: '',
+            y_coordinate: '',
+            internal_reference: '',
+            business_criticality: 'High',
+            location_type: 'County',
+            action_plan: '',
+            notes: '',
+            keywords: '',
+            location_data_type: LocationDataType.BOUNDARY
+          }
+        }
       }
     ]
+
+    // Filter locations with alert_categories
+    const w = l.filter((location) => location.alert_categories !== null)
     setWarnings(w)
+  }, [])
+
+  useEffect(() => {
+    // Set initial displayed warnings when warnings are first loaded
+    if (warnings.length > 0) {
+      setDisplayedWarnings(
+        warnings.slice(
+          (currentPage - 1) * warningsPerPage,
+          currentPage * warningsPerPage
+        )
+      )
+    }
+  }, [currentPage, warnings])
+
+  useEffect(() => {
     setCurrentPage(1)
   }, [resetPaging])
+
+  // Selected filters
+  const [locationNameFilter, setLocationNameFilter] = useState([])
+  const [selectedWarningTypeFilters, setSelectedWarningTypeFilters] = useState(
+    []
+  )
+  const [selectedLocationTypeFilters, setSelectedLocationTypeFilters] =
+    useState([])
+  const [selectedBusCriticalityFilters, setSelectedBusCriticalityFilters] =
+    useState([])
 
   const table = (
     <>
@@ -86,13 +201,13 @@ export default function LiveFloodWarningsPage() {
       <FloodReportsTable
         warnings={warnings}
         displayedWarnings={displayedWarnings}
-        filteredLocations={filteredWarnings}
-        setFilteredLocations={setFilteredWarnings}
+        filteredWarnings={filteredWarnings}
+        setFilteredWarnings={setFilteredWarnings}
         resetPaging={resetPaging}
         setResetPaging={setResetPaging}
       />
       <Pagination
-        totalPages={Math.ceil(filteredWarnings.length / warningsPerPage)}
+        totalPages={Math.ceil(displayedWarnings.length / warningsPerPage)}
         onPageChange={(val) => setCurrentPage(val)}
       />
     </>
@@ -108,9 +223,41 @@ export default function LiveFloodWarningsPage() {
           <div className='govuk-grid-column-full govuk-body'>
             <br />
             <h1 className='govuk-heading-l'>Live flood warnings</h1>
-            <div className='govuk-grid-row'>
-              <>{table}</>
-            </div>
+            {!isFilterVisible ? (
+              <div className='govuk-grid-row'>
+                <>{table}</>
+              </div>
+            ) : (
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 contacts-filter-container'>
+                  <FloodReportsFilter
+                    warnings={warnings}
+                    setFilteredWarnings={setFilteredWarnings}
+                    resetPaging={resetPaging}
+                    setResetPaging={setResetPaging}
+                    selectedFilters={selectedFilters}
+                    setSelectedFilters={setSelectedFilters}
+                    locationNameFilter={locationNameFilter}
+                    setLocationNameFilter={setLocationNameFilter}
+                    selectedWarningTypeFilters={selectedWarningTypeFilters}
+                    setSelectedWarningTypeFilters={
+                      setSelectedWarningTypeFilters
+                    }
+                    selectedLocationTypeFilters={selectedLocationTypeFilters}
+                    setSelectedLocationTypeFilters={
+                      setSelectedLocationTypeFilters
+                    }
+                    selectedBusCriticalityFilters={
+                      selectedBusCriticalityFilters
+                    }
+                    setSelectedBusCriticalityFilters={
+                      setSelectedBusCriticalityFilters
+                    }
+                  />
+                </div>
+                <div className='govuk-grid-column-three-quarters'>{table}</div>
+              </div>
+            )}
           </div>
         </div>
       </main>

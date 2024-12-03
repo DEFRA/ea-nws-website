@@ -3,8 +3,8 @@ import { useEffect, useState } from 'react'
 export default function FloodReportsTable({
   warnings,
   displayedWarnings,
-  filteredLocations,
-  setFilteredLocations,
+  filteredWarnings,
+  setFilteredWarnings,
   resetPaging,
   setResetPaging
 }) {
@@ -27,13 +27,13 @@ export default function FloodReportsTable({
   // Sort standard data
   const sortData = (sortType, setSort, data) => {
     const getValue = (obj, path) => {
-      return path.split('.').reduce((acc, part) => acc && acc[part], obj)
+      return path.split('.').reduce((acc, part) => acc && acc[part], obj) || ''
     }
 
     if (sortType === 'none' || sortType === 'descending') {
       setSort('ascending')
-      setFilteredLocations(
-        [...filteredLocations].sort((a, b) => {
+      setFilteredWarnings(
+        [...filteredWarnings].sort((a, b) => {
           const valueA = getValue(a, data)
           const valueB = getValue(b, data)
 
@@ -53,8 +53,8 @@ export default function FloodReportsTable({
     }
     if (sortType === 'ascending') {
       setSort('descending')
-      setFilteredLocations(
-        [...filteredLocations].sort((a, b) => {
+      setFilteredWarnings(
+        [...filteredWarnings].sort((a, b) => {
           const valueA = getValue(a, data)
           const valueB = getValue(b, data)
           return (valueB || '').localeCompare(valueA || '')
@@ -67,16 +67,16 @@ export default function FloodReportsTable({
   const sortGetsFloodMessages = () => {
     if (locationTypeSort === 'none' || locationTypeSort === 'descending') {
       setLocationTypeSort('ascending')
-      setFilteredLocations(
-        [...filteredLocations].sort((a, b) =>
+      setFilteredWarnings(
+        [...filteredWarnings].sort((a, b) =>
           a.alert_categories.length > b.alert_categories.length ? 1 : -1
         )
       )
     }
     if (locationTypeSort === 'ascending') {
       setLocationTypeSort('descending')
-      setFilteredLocations(
-        [...filteredLocations].sort((a, b) =>
+      setFilteredWarnings(
+        [...filteredWarnings].sort((a, b) =>
           a.alert_categories.length < b.alert_categories.length ? 1 : -1
         )
       )
@@ -130,7 +130,7 @@ export default function FloodReportsTable({
                   sortData(
                     warningTypeSort,
                     setWarningTypeSort,
-                    'meta_data.location_additional.location_type'
+                    'meta_data.alert_categories'
                   )
                 }
               >
@@ -188,7 +188,7 @@ export default function FloodReportsTable({
                   sortData(
                     lastUpdatedSort,
                     setlastUpdatedSort,
-                    'riverSeaRisk.title'
+                    'riverSeaRisk.title' // TODO: Change this
                   )
                 }
               >
@@ -202,21 +202,24 @@ export default function FloodReportsTable({
         <tbody className='govuk-table__body'>
           {warnings.map((warning, index) => (
             <tr key={index} className='govuk-table__row'>
-              <td className='govuk-table__cell'>{warning.name}</td>
+              <td className='govuk-table__cell'>
+                {warning.meta_data.location_additional.location_name}
+              </td>
               <td className='govuk-table__cell'>
                 {' '}
-                {warning.warningType.split(', ').map((type, i) => (
-                  <div key={i}>{type}</div>
+                {warning.alert_categories.map((type, i) => (
+                  <div key={i}>Flood {type.toLowerCase()}</div>
                 ))}
               </td>
               <td className='govuk-table__cell'>
-                {warning.locationOrBoundaryType}
+                {warning.meta_data.location_additional.location_type}
               </td>
               <td className='govuk-table__cell'>
-                {warning.businessCriticality}
+                {warning.meta_data.location_additional.business_criticality ||
+                  '-'}
               </td>
-              <td className='govuk-table__cell'>{warning.linkedContacts}</td>
-              <td className='govuk-table__cell'>{warning.lastUpdated}</td>
+              <td className='govuk-table__cell'>*linkedContacts*</td>
+              <td className='govuk-table__cell'>*lastUpdated*</td>
             </tr>
           ))}
         </tbody>{' '}

@@ -36,7 +36,7 @@ module.exports = [
                 if (await isDuplicate(orgId, location.Location_name)) {
                   // An invalid location should already have at least one error
                   // but do not assume this is the case
-                  if (Array.isArray(error)) {
+                  if (Array.isArray(location.error)) {
                     location.error.push(DUPLICATE)
                   } else {
                     location.error = [DUPLICATE]

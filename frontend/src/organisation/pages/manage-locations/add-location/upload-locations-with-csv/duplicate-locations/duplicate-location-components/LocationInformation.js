@@ -1,15 +1,14 @@
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import Details from '../../../../../../../common/components/gov-uk/Details'
 import LocationDataType from '../../../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../../../common/enums/RiskAreaType'
+import { getLocationAdditionals } from '../../../../../../../common/redux/userSlice'
 import FloodWarningKey from '../../../../../../components/custom/FloodWarningKey'
 import Map from '../../../../../../components/custom/Map'
 import RiskCategoryLabel from '../../../../../../components/custom/RiskCategoryLabel'
-import { getLocationAdditionals } from '../../../../../../../common/redux/userSlice'
 
-export default function LocationInformationLayout({ location }) {
-  const navigate = useNavigate()
+export default function LocationInformationLayout ({ location }) {
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   const formattedAddress = location.Full_address?.split(',')
@@ -127,32 +126,32 @@ export default function LocationInformationLayout({ location }) {
         {(additionalData.location_data_type === LocationDataType.ADDRESS ||
           additionalData.location_data_type ===
             LocationDataType.X_AND_Y_COORDS) && (
-          <div>
-            <div className='govuk-grid-column-full'>
-              <div className='flood-risk-banner govuk-!-margin-top-2'>
-                <div className='flood-risk-banner-item govuk-!-padding-2'>
-                  <h3 className='flood-risk-banner-title govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                    {RiskAreaType.RIVERS_AND_SEA}
-                  </h3>
-                  <div className='flood-risk-banner-label '>
-                    <RiskCategoryLabel
-                      riskAreaType={RiskAreaType.RIVERS_AND_SEA}
-                    />
-                  </div>
-                </div>
-                <div className='flood-risk-banner-item'>
-                  <h3 className='flood-risk-banner-title govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                    {RiskAreaType.GROUNDWATER}
-                  </h3>
-                  <div className='flood-risk-banner-label '>
-                    <RiskCategoryLabel
-                      riskAreaType={RiskAreaType.GROUNDWATER}
-                    />
+              <div>
+                <div className='govuk-grid-column-full'>
+                  <div className='flood-risk-banner govuk-!-margin-top-2'>
+                    <div className='flood-risk-banner-item govuk-!-padding-2'>
+                      <h3 className='flood-risk-banner-title govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                        {RiskAreaType.RIVERS_AND_SEA}
+                      </h3>
+                      <div className='flood-risk-banner-label '>
+                        <RiskCategoryLabel
+                          riskAreaType={RiskAreaType.RIVERS_AND_SEA}
+                        />
+                      </div>
+                    </div>
+                    <div className='flood-risk-banner-item'>
+                      <h3 className='flood-risk-banner-title govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                        {RiskAreaType.GROUNDWATER}
+                      </h3>
+                      <div className='flood-risk-banner-label '>
+                        <RiskCategoryLabel
+                          riskAreaType={RiskAreaType.GROUNDWATER}
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </div>
         )}
 
         {/* map */}
@@ -203,46 +202,46 @@ export default function LocationInformationLayout({ location }) {
             {/* Key Information details */}
             {additionalData.location_data_type !==
               LocationDataType.BOUNDARY && (
-              <div className='govuk-!-margin-top-7'>
-                <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
-                  Key Information
-                </h2>
-                <Link
-                  className='govuk-link govuk-!-display-inline-block'
-                  style={{ float: 'right' }}
-                >
-                  Change
-                </Link>
-                <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                  Location name
-                </h3>
-                <p>{additionalData.locationName}</p>
-                {additionalData.internal_reference && (
-                  <>
-                    <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                      Internal reference
-                    </h3>
-                    <p>{additionalData.internal_reference}</p>
-                  </>
-                )}
-                {additionalData.business_criticality && (
-                  <>
-                    <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                      Business criticality
-                    </h3>
-                    <p>{additionalData.business_criticality}</p>
-                  </>
-                )}
-                {additionalData.location_type && (
-                  <>
-                    <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                      Location type
-                    </h3>
-                    <p>{additionalData.location_type}</p>
-                  </>
-                )}
-              </div>
+                <div className='govuk-!-margin-top-7'>
+                  <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
+                    Key Information
+                  </h2>
+                  <Link
+                    className='govuk-link govuk-!-display-inline-block'
+                    style={{ float: 'right' }}
+                  >
+                    Change
+                  </Link>
+                  <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+                  <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                    Location name
+                  </h3>
+                  <p>{additionalData.locationName}</p>
+                  {additionalData.internal_reference && (
+                    <>
+                      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                        Internal reference
+                      </h3>
+                      <p>{additionalData.internal_reference}</p>
+                    </>
+                  )}
+                  {additionalData.business_criticality && (
+                    <>
+                      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                        Business criticality
+                      </h3>
+                      <p>{additionalData.business_criticality}</p>
+                    </>
+                  )}
+                  {additionalData.location_type && (
+                    <>
+                      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                        Location type
+                      </h3>
+                      <p>{additionalData.location_type}</p>
+                    </>
+                  )}
+                </div>
             )}
 
             {/* Keywords details */}
@@ -304,31 +303,31 @@ export default function LocationInformationLayout({ location }) {
               {!currentLocation.address &&
                 additionalData.location_data_type !==
                   LocationDataType.BOUNDARY && (
-                  <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
-                    Add address
-                  </Link>
-                )}
+                    <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                      Add address
+                    </Link>
+              )}
               {!additionalData.internal_reference &&
                 additionalData.location_data_type !==
                   LocationDataType.BOUNDARY && (
-                  <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
-                    Add internal reference
-                  </Link>
-                )}
+                    <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                      Add internal reference
+                    </Link>
+              )}
               {!additionalData.business_criticality &&
                 additionalData.location_data_type !==
                   LocationDataType.BOUNDARY && (
-                  <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
-                    Add business criticality
-                  </Link>
-                )}
+                    <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                      Add business criticality
+                    </Link>
+              )}
               {!additionalData.location_type &&
                 additionalData.location_data_type !==
                   LocationDataType.BOUNDARY && (
-                  <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
-                    Add location type
-                  </Link>
-                )}
+                    <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                      Add location type
+                    </Link>
+              )}
               {!additionalData.keywords && (
                 <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
                   Add keywords
@@ -347,12 +346,12 @@ export default function LocationInformationLayout({ location }) {
             {(additionalData.location_data_type === LocationDataType.ADDRESS ||
               additionalData.location_data_type ===
                 LocationDataType.X_AND_Y_COORDS) && (
-              <div className='govuk-!-margin-top-7'>
-                <Details
-                  title='What is a flood risk?'
-                  text={floodRiskDetails}
-                />
-              </div>
+                  <div className='govuk-!-margin-top-7'>
+                    <Details
+                      title='What is a flood risk?'
+                      text={floodRiskDetails}
+                    />
+                  </div>
             )}
           </div>
         </div>

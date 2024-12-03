@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
@@ -8,9 +8,8 @@ import WarningText from '../../../../../../common/components/gov-uk/WarningText'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ManageDuplicateLocationsPage() {
+export default function ManageDuplicateLocationsPage () {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const orgId = useSelector((state) => state.session.orgId)
   const location = useLocation()
   const duplicateLocations = location?.state?.duplicateLocations
@@ -51,8 +50,8 @@ export default function ManageDuplicateLocationsPage() {
       // Now compare the two and let the use choose one
       navigate(orgManageLocationsUrls.add.duplicateLocationComparisonPage, {
         state: {
-          existingLocation: existingLocation,
-          newLocation: newLocation
+          existingLocation,
+          newLocation
         }
       })
     }
@@ -122,8 +121,7 @@ export default function ManageDuplicateLocationsPage() {
                           <td class='govuk-table__cell'>
                             <Link
                               onClick={(event) =>
-                                handleCompareDetails(event, location)
-                              }
+                                handleCompareDetails(event, location)}
                             >
                               Compare details
                             </Link>

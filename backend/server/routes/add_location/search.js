@@ -18,7 +18,7 @@ module.exports = [
         }
         const { orgId, locationName, type } = request.payload
 
-        if (path && value && authToken) {
+        if (locationName && orgId) {
           const result =
             type === 'valid'
               ? await findLocationByName(orgId, locationName)

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
@@ -9,9 +8,8 @@ import Radio from '../../../../../../common/components/gov-uk/Radio'
 import WarningText from '../../../../../../common/components/gov-uk/WarningText'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DuplicateLocationsOptionsPage() {
+export default function DuplicateLocationsOptionsPage () {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const [option, setOption] = useState('')
   const [error, setError] = useState('')
   const location = useLocation()

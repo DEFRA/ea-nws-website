@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 
-export default function FloodReportsTable({
+export default function FloodReportsTable ({
   warnings,
   displayedWarnings,
   filteredWarnings,
@@ -16,6 +16,7 @@ export default function FloodReportsTable({
   const [lastUpdatedSort, setlastUpdatedSort] = useState('none')
 
   useEffect(() => {
+    setFilteredWarnings(warnings)
     setLocationNameSort('none')
     setWarningTypeSort('none')
     setBusinessCriticalitySort('none')
@@ -113,8 +114,7 @@ export default function FloodReportsTable({
                     locationNameSort,
                     setLocationNameSort,
                     'meta_data.location_additional.location_name'
-                  )
-                }
+                  )}
               >
                 Location name
               </button>
@@ -131,8 +131,7 @@ export default function FloodReportsTable({
                     warningTypeSort,
                     setWarningTypeSort,
                     'meta_data.alert_categories'
-                  )
-                }
+                  )}
               >
                 Warning <br />
                 type
@@ -160,8 +159,7 @@ export default function FloodReportsTable({
                     businessCriticalitySort,
                     setBusinessCriticalitySort,
                     'meta_data.location_additional.business_criticality'
-                  )
-                }
+                  )}
               >
                 Business
                 <br /> criticality
@@ -189,8 +187,7 @@ export default function FloodReportsTable({
                     lastUpdatedSort,
                     setlastUpdatedSort,
                     'riverSeaRisk.title' // TODO: Change this
-                  )
-                }
+                  )}
               >
                 Last
                 <br /> updated
@@ -200,7 +197,7 @@ export default function FloodReportsTable({
           </tr>
         </thead>
         <tbody className='govuk-table__body'>
-          {warnings.map((warning, index) => (
+          {filteredWarnings.map((warning, index) => (
             <tr key={index} className='govuk-table__row'>
               <td className='govuk-table__cell'>
                 {warning.meta_data.location_additional.location_name}

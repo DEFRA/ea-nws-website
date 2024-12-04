@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 import Button from '../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../common/components/gov-uk/CheckBox'
 
-export default function FloodReportsFilter({
+export default function FloodReportsFilter ({
   warnings,
   setFilteredWarnings,
   resetPaging,
@@ -30,7 +30,11 @@ export default function FloodReportsFilter({
     ...new Set(['Severe flood warnings', 'Flood warnings', 'Flood alerts'])
   ]
   const locationTypes = [
-    ...new Set(['County', 'Office', 'Police force area', 'Unitary authority'])
+    ...new Set(
+      warnings.map(
+        (warning) => warning.meta_data.location_additional.location_type
+      )
+    )
   ]
   const busCriticalityTypes = [...new Set(['High', 'Medium', 'Low'])]
 
@@ -44,21 +48,29 @@ export default function FloodReportsFilter({
   // Handle filters applied
   const handleFilterChange = (e, setFilters) => {
     const { value } = e.target
-    setFilters((prev) => {
-      if (selectedFilters.includes(value)) {
-        setSelectedFilters([
-          ...selectedFilters.filter((preference) => preference !== value)
-        ])
-        return prev.filter((preference) => preference !== value)
-      } else {
-        setSelectedFilters([...selectedFilters, value])
-        return [...prev, value]
-      }
-    })
+
+    const newSelectedFilters = selectedFilters.includes(value)
+      ? selectedFilters.filter((preference) => preference !== value)
+      : [...selectedFilters, value]
+
+    setSelectedFilters(newSelectedFilters)
+    setFilters(newSelectedFilters)
+
+    // setFilters((prev) => {
+    //   if (selectedFilters.includes(value)) {
+    //     setSelectedFilters([
+    //       ...selectedFilters.filter((preference) => preference !== value)
+    //     ])
+    //     return prev.filter((preference) => preference !== value)
+    //   } else {
+    //     setSelectedFilters([...selectedFilters, value])
+    //     return [...prev, value]
+    //   }
+    // })
   }
 
   const filterWarnings = () => {
-    let filteredWarnings = warnings
+    let filteredWarnings = [...warnings]
 
     // Apply location name filter
     if (locationNameFilter) {
@@ -71,9 +83,22 @@ export default function FloodReportsFilter({
 
     // Apply warning type filter
     if (selectedWarningTypeFilters.length > 0) {
-      filteredWarnings = filteredWarnings.filter((warning) =>
-        selectedWarningTypeFilters.includes(warning.alert_categories)
-      )
+      filteredWarnings = filteredWarnings.filter((warning) => {
+        const categories = warning.alert_categories || []
+        const containsBoth =
+          categories.includes('Warning') && categories.includes('Alert')
+        const isWarningOnly =
+          categories.length === 1 && categories[0] === 'Warning'
+        const isAlertOnly = categories.length === 1 && categories[0] === 'Alert'
+        return (
+          (selectedWarningTypeFilters.includes('Severe flood warnings') &&
+            containsBoth) ||
+          (selectedWarningTypeFilters.includes('Flood warnings') &&
+            (isWarningOnly || containsBoth)) ||
+          (selectedWarningTypeFilters.includes('Flood alerts') &&
+            (isAlertOnly || containsBoth))
+        )
+      })
     }
 
     // Apply location or boundary type filter
@@ -102,7 +127,7 @@ export default function FloodReportsFilter({
   const clearFilters = () => {
     setFilteredWarnings(warnings)
     setSelectedFilters([])
-    setLocationNameFilter([])
+    setLocationNameFilter('')
     setSelectedWarningTypeFilters([])
     setSelectedLocationTypeFilters([])
     setSelectedBusCriticalityFilters([])
@@ -209,6 +234,11 @@ export default function FloodReportsFilter({
     )
   }
 
+  const areFiltersSelected = () =>
+    selectedWarningTypeFilters.length > 0 ||
+    selectedLocationTypeFilters.length > 0 ||
+    selectedBusCriticalityFilters.length > 0
+
   // Selected filters
   const selectedFilterContents = (filterName, filterArray, setFilterArray) => {
     if (filterArray.length === 0) return null
@@ -269,7 +299,7 @@ export default function FloodReportsFilter({
         </div>
 
         {/* Selected filters */}
-        {selectedFilters?.length > 0 && (
+        {areFiltersSelected() && (
           <div className='contacts-filter-selected'>
             <div
               style={{

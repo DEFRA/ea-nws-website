@@ -99,9 +99,9 @@ export default function UploadFileLayout ({
         backendRoute,
         navigate
       )
+
       if (errorMessage) {
-        // Set to an error to be displayed when doing DoR11 work
-        throw new Error(`Failed to get pre-signed URL: ${errorMessage}`)
+        throw new Error('Error uploading file')
       }
       const url = data?.url
       const uniqFileName = data?.fileName
@@ -129,23 +129,32 @@ export default function UploadFileLayout ({
           })
         } else if (uploadMethod === 'shape') {
           // Unzip the uploaded file and send output back to S3
-          const { data, errorMessage } = await backendCall(
+          const { errorMessage: unzipErrorMessage } = await backendCall(
             { zipFileName: uniqFileName },
             'api/shapefile/unzip',
             navigate
           )
-          if (data) {
-            // Proceed to next page
-            console.log('File unzipped successfully')
-          } else {
-            // Proceed to error page
-            console.log(`Error unzipping file: ${errorMessage}`)
+          if (unzipErrorMessage) {
+            throw new Error('Error uploading file')
           }
+
+          // Validate the files contained within the zip
+          const { errorMessage: shapefileErrorMessage } = await backendCall(
+            { zipFileName: uniqFileName },
+            'api/shapefile/validate',
+            navigate
+          )
+          if (shapefileErrorMessage) {
+            // Displays appropriate error message
+            throw new Error(shapefileErrorMessage)
+          }
+
+          // TDO: Navigate to confirmation page (once made)
         }
       }
     } catch (err) {
       setUploading(false)
-      setErrorFileType('Error uploading file')
+      setErrorFileType(err.message)
     }
   }
 

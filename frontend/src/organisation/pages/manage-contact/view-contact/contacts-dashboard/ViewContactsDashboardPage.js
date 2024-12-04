@@ -227,9 +227,10 @@ export default function ViewContactsDashboardPage () {
                   onClick={() => setIsFilterVisible(!isFilterVisible)}
                 />
                 &nbsp; &nbsp;
-                <ButtonMenu>
-
-                </ButtonMenu>
+                <ButtonMenu
+                  title={'More actions'}
+                  options={moreActions}
+                />
                 &nbsp; &nbsp;
                 <Button
                   text='Print'
@@ -253,6 +254,8 @@ export default function ViewContactsDashboardPage () {
                     filteredContacts.length / contactsPerPage
                   )}
                   onPageChange={(val) => setCurrentPage(val)}
+                  forcePage={currentPage}
+                  pageList={true}
                 />
               </>
             ) : (
@@ -323,7 +326,8 @@ export default function ViewContactsDashboardPage () {
                       filteredContacts.length / contactsPerPage
                     )}
                     onPageChange={(val) => setCurrentPage(val)}
-                    reset={resetPaging}
+                    forcePage={currentPage}
+                    pageList={true}
                   />
                 </div>
               </div>

@@ -49,24 +49,17 @@ export default function FloodReportsFilter ({
   const handleFilterChange = (e, setFilters) => {
     const { value } = e.target
 
-    const newSelectedFilters = selectedFilters.includes(value)
-      ? selectedFilters.filter((preference) => preference !== value)
-      : [...selectedFilters, value]
-
-    setSelectedFilters(newSelectedFilters)
-    setFilters(newSelectedFilters)
-
-    // setFilters((prev) => {
-    //   if (selectedFilters.includes(value)) {
-    //     setSelectedFilters([
-    //       ...selectedFilters.filter((preference) => preference !== value)
-    //     ])
-    //     return prev.filter((preference) => preference !== value)
-    //   } else {
-    //     setSelectedFilters([...selectedFilters, value])
-    //     return [...prev, value]
-    //   }
-    // })
+    setFilters((prev) => {
+      if (selectedFilters.includes(value)) {
+        setSelectedFilters([
+          ...selectedFilters.filter((preference) => preference !== value)
+        ])
+        return prev.filter((preference) => preference !== value)
+      } else {
+        setSelectedFilters([...selectedFilters, value])
+        return [...prev, value]
+      }
+    })
   }
 
   const filterWarnings = () => {
@@ -271,11 +264,12 @@ export default function FloodReportsFilter ({
                 width: 'fit-content',
                 height: 34,
                 paddingLeft: 10,
-                paddingRight: 10
+                paddingRight: 10,
+                margin: '0 8px 8px 0'
               }}
             >
               <label className='govuk-label' style={{ fontSize: 18 }}>
-                {filter}&nbsp;
+                {filter}
               </label>
               <FontAwesomeIcon
                 icon={faXmark}

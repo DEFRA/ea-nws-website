@@ -17,7 +17,7 @@ export default function Pagination ({ totalPages, onPageChange, reset, forcePage
 
     if (currentPage > 1) {
       if (currentPage === pageNumbers[0]) {
-        // Move the page numbers along
+        // Move the page numbers backwards
         setPageNumbers([--pageNumbers[0], --pageNumbers[1], --pageNumbers[2]])
       }
       setCurrentPage(currentPage - 1)
@@ -29,7 +29,7 @@ export default function Pagination ({ totalPages, onPageChange, reset, forcePage
 
     if (currentPage < totalPages) {
       if (currentPage === pageNumbers[2]) {
-        // Move the page numbers along
+        // Move the page numbers forwards
         setPageNumbers([++pageNumbers[0], ++pageNumbers[1], ++pageNumbers[2]])
       }
       setCurrentPage(currentPage + 1)

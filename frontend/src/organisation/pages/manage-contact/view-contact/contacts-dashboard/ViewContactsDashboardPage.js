@@ -126,11 +126,11 @@ export default function ViewContactsDashboardPage () {
     }
   }
 
-  const onMoreAction = (action) => {
-    if (action === 'Link selected to locations') {
+  const onMoreAction = (index) => {
+    if (index === 0) {
       // TODO
     }
-    else if (action === 'Delete selected') {
+    else if (index === 1) {
       selectDeleteDialog()
     }
   }
@@ -230,6 +230,7 @@ export default function ViewContactsDashboardPage () {
                 <ButtonMenu
                   title={'More actions'}
                   options={moreActions}
+                  onSelect={(index) => onMoreAction(index)}
                 />
                 &nbsp; &nbsp;
                 <Button
@@ -280,28 +281,18 @@ export default function ViewContactsDashboardPage () {
                 </div>
 
                 <div className='govuk-grid-column-three-quarters'>
-                  <div className='govuk-grid-row'
-                    // style={{
-                    //   display: 'flex',
-                    //   alignItems: 'center'
-                    // }}
-                    >
+                  <div className='govuk-grid-row'>
                       <Button
                         text='Close Filter'
                         className='govuk-button govuk-button--secondary'
                         onClick={() => setIsFilterVisible(false)}
                       />
                       &nbsp; &nbsp;
-                      {<ButtonMenu></ButtonMenu>}
-                      {/* <Select
-                        name='MoreActions'
-                        label=''
+                      <ButtonMenu
+                        title={'More actions'}
                         options={moreActions}
-                        onSelect={(e) => onMoreAction(e)}
-                        initialSelectOptionText={
-                          'More actions'
-                        }
-                      /> */}
+                        onSelect={(index) => onMoreAction(index)}
+                      />
                       &nbsp; &nbsp;
                       <Button
                         text='Print'

@@ -5,7 +5,7 @@ const {
 const {
   authCodeValidation
 } = require('../../services/validations/AuthCodeValidation')
-const { setJsonData } = require('../../services/elasticache')
+const { orgSignIn } = require('../../services/elasticache')
 
 module.exports = [
   {
@@ -26,9 +26,16 @@ module.exports = [
             'member/signinValidate'
           )
           if (signinType === 'org') {
+            const locationRes = await apiCall(
+              { authToken: response.data.authToken },
+              'location/list'
+            )
+            const contactRes = await apiCall(
+              { authToken: response.data.authToken },
+              'organization/listContacts'
+            )
             // Send the profile to elasticache
-            console.log('Setting elasticache')
-            await setJsonData(response.data.authToken, { profile: response.data.profile })
+            await orgSignIn(response.data.profile, response.data.organization, locationRes.data.locations, contactRes.data.contacts)
           }
           return h.response(response)
         } else {

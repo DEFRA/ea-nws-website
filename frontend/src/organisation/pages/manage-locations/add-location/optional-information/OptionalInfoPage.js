@@ -6,13 +6,14 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
+import { getLocationOther } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function OptionalLocationInformationPage () {
   const navigate = useNavigate()
   const postcode = useSelector(
     (state) =>
-      state.session.currentLocation.meta_data.location_additional.postcode
+      getLocationOther(state, 'postcode')
   )
   const navigateToNextPage = () => {
     if (postcode) {

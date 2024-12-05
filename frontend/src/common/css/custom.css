@@ -1290,6 +1290,10 @@
   fill: url(#alert-pattern);
 }
 
+.existing-boundary-area-pattern-fill {
+  fill: url(#existing-boundary-pattern);
+}
+
 /* flood risk banner */
 .map-error-container {
   display: flex;
@@ -1420,6 +1424,23 @@
 .section-break-bold {
   border-bottom: 0.05rem solid black;
   opacity: 1;
+}
+
+.textarea-info {
+  margin-top: -28px;
+  color: #505a5f;
+}
+
+.custom-tooltip {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.custom-tooltip .leaflet-tooltip-top:before,
+.leaflet-tooltip-bottom:before,
+.leaflet-tooltip-left:before,
+.leaflet-tooltip-right:before {
+  border: none !important;
 }
 
 .button-menu {

@@ -7,6 +7,7 @@ import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../common/components/gov-uk/TextArea'
 import {
+  getLocationOther,
   setCurrentLocationNotes,
   setOrgCurrentContactNotes
 } from '../../../common/redux/userSlice'
@@ -21,7 +22,7 @@ export default function NotesLayout ({
   const dispatch = useDispatch()
   const currentNotes = useSelector((state) =>
     keywordType === 'location'
-      ? state.session.currentLocation.meta_data.location_additional.notes
+      ? getLocationOther(state, 'notes')
       : state.session.orgCurrentContact.comments
   )
   const [notes, setNotes] = useState(currentNotes || '')
@@ -65,7 +66,7 @@ export default function NotesLayout ({
     <>
       <OrganisationAccountNavigation />
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
@@ -78,11 +79,10 @@ export default function NotesLayout ({
                 inputType='text'
                 rows='5'
                 onChange={(val) => setNotes(val)}
+                value={notes}
                 className='govuk-textarea'
+                additionalInfo={`You can enter up to ${charLimit} characters`}
               />
-              <p className='govuk-hint' style={{ marginTop: '-1.5rem' }}>
-                You can enter up to {charLimit} characters.
-              </p>
               <br />
               <Button
                 text={buttonText}

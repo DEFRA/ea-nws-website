@@ -13,7 +13,9 @@ const routes = [].concat(
   require('../routes/add_contact/landline/landline_validate'),
   require('../routes/add_contact/email/email_start'),
   require('../routes/add_contact/email/email_validate'),
-  require('../routes/partner/register_to_partner'),
+  require('../routes/register_location_to_partner/register_location_to_partner'),
+  require('../routes/register_location_to_partner/update_location_registration'),
+  require('../routes/register_location_to_partner/unregister_location_from_partner'),
   require('../routes/ordnance_survey/post_code_search'),
   require('../routes/ordnance_survey/name_search'),
   require('../routes/ordnance_survey/oauth_2'),
@@ -26,7 +28,11 @@ const routes = [].concat(
   require('../routes/bulk_uploads/process_status'),
   require('../routes/bulk_uploads/save_locations'),
   require('../routes/bulk_uploads/get_invalid_locations'),
-  require('../routes/add_location/duplicate_location')
+  require('../routes/shapefile/validate_shapefile'),
+  require('../routes/add_location/duplicate_location'),
+  require('../routes/elasticache/get_data'),
+  require('../routes/elasticache/list_locations'),
+  require('../routes/shapefile/unzip_shapefile')
 )
 
 module.exports = {

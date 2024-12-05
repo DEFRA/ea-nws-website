@@ -23,6 +23,7 @@ export default function ViewContactsDashboardPage () {
   const [targetContact, setTargetContact] = useState(null)
   const [currentPage, setCurrentPage] = useState(1)
   const [resetPaging, setResetPaging] = useState(false)
+  const [holdPage, setHoldPage] = useState(0)
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [displayedContacts, setDisplayedContacts] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
@@ -162,6 +163,11 @@ export default function ViewContactsDashboardPage () {
     setResetPaging(!resetPaging)
   }
 
+  const onOpenCloseFilter = () => {
+    setHoldPage(currentPage)
+    setIsFilterVisible(!isFilterVisible)
+  }
+
   const removeContacts = (contactsToRemove) => {
     const updatedContacts = contacts.filter(
       (contact) => !contactsToRemove.includes(contact)
@@ -224,7 +230,7 @@ export default function ViewContactsDashboardPage () {
                 <Button
                   text='Open filter'
                   className='govuk-button govuk-button--secondary inline-block'
-                  onClick={() => setIsFilterVisible(!isFilterVisible)}
+                  onClick={() => onOpenCloseFilter()}
                 />
                 &nbsp; &nbsp;
                 <ButtonMenu
@@ -255,8 +261,10 @@ export default function ViewContactsDashboardPage () {
                     filteredContacts.length / contactsPerPage
                   )}
                   onPageChange={(val) => setCurrentPage(val)}
-                  forcePage={currentPage}
+                  holdPage={holdPage}
+                  setHoldPage={setHoldPage}
                   pageList={true}
+                  reset={resetPaging}
                 />
               </>
             ) : (
@@ -285,7 +293,7 @@ export default function ViewContactsDashboardPage () {
                       <Button
                         text='Close Filter'
                         className='govuk-button govuk-button--secondary'
-                        onClick={() => setIsFilterVisible(false)}
+                        onClick={() => onOpenCloseFilter()}
                       />
                       &nbsp; &nbsp;
                       <ButtonMenu
@@ -317,8 +325,10 @@ export default function ViewContactsDashboardPage () {
                       filteredContacts.length / contactsPerPage
                     )}
                     onPageChange={(val) => setCurrentPage(val)}
-                    forcePage={currentPage}
+                    holdPage={holdPage}
+                    setHoldPage={setHoldPage}
                     pageList={true}
+                    reset={resetPaging}
                   />
                 </div>
               </div>

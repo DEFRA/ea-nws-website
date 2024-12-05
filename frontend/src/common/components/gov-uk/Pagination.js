@@ -1,7 +1,13 @@
 import React, { useEffect, useState } from 'react'
 
-export default function Pagination ({ totalPages, onPageChange, reset, forcePage = 0, pageList = false }) {
-  const [currentPage, setCurrentPage] = useState(forcePage ? forcePage : 1)
+export default function Pagination ({ 
+  totalPages,
+  onPageChange,
+  reset,
+  holdPage = 0,
+  setHoldPage,
+  pageList = false }) {
+  const [currentPage, setCurrentPage] = useState(holdPage ? holdPage : 1)
   const [pageNumbers, setPageNumbers] = useState([1, 2, 3])
 
   useEffect(() => {
@@ -9,7 +15,12 @@ export default function Pagination ({ totalPages, onPageChange, reset, forcePage
   }, [currentPage, onPageChange])
 
   useEffect(() => {
-    setCurrentPage(forcePage ? forcePage : 1)
+    if (!holdPage) {
+      setCurrentPage(1)
+    }
+    else {
+      setHoldPage(0)
+    }
   }, [reset])
 
   const onClickPrevious = (e) => {

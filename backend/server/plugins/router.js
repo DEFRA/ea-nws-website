@@ -30,6 +30,7 @@ const routes = [].concat(
   require('../routes/bulk_uploads/get_invalid_locations'),
   require('../routes/shapefile/validate_shapefile'),
   require('../routes/add_location/duplicate_location'),
+  require('../routes/add_location/download_flood_history'),
   require('../routes/elasticache/get_data'),
   require('../routes/elasticache/list_locations'),
   require('../routes/shapefile/unzip_shapefile')

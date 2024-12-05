@@ -80,7 +80,7 @@ export default function SearchFilter ({
     // Apply job title filter
     if (selectedJobTitleFilters.length > 0) {
       filteredContacts = filteredContacts.filter((contact) =>
-      selectedJobTitleFilters.includes(
+        selectedJobTitleFilters.includes(
           contact.job_title
         )
       )
@@ -89,7 +89,7 @@ export default function SearchFilter ({
     // Apply keyword filter
     if (selectedKeywordFilters.length > 0) {
       filteredContacts = filteredContacts.filter((contact) =>
-      selectedKeywordFilters.some(
+        selectedKeywordFilters.some(
           keyword => contact.keywords.includes(keyword)
         )
       )
@@ -99,7 +99,7 @@ export default function SearchFilter ({
     if (selectedLinkedFilters.length > 0) {
       filteredContacts = filteredContacts.filter((contact) =>
         (selectedLinkedFilters.includes('Yes') && contact.linked_locations.length > 0) ||
-        (selectedLinkedFilters.includes('No') && contact.linked_locations.length == 0)
+        (selectedLinkedFilters.includes('No') && contact.linked_locations.length === 0)
       )
     }
 
@@ -129,10 +129,12 @@ export default function SearchFilter ({
           icon={contactNameVisible ? faAngleUp : faAngleDown}
           size='lg'
         />
-        <label className='govuk-label'
-            style={{ color: '#1d70b8' }}>
-            Contact name
-          </label>
+        <label
+          className='govuk-label'
+          style={{ color: '#1d70b8' }}
+        >
+          Contact name
+        </label>
       </div>
       {(contactNameVisible || contactNameFilter.length > 0) && (
         <div class='govuk-form-group' className='contacts-name-filter'>
@@ -164,7 +166,7 @@ export default function SearchFilter ({
   ) => {
     return (
       <>
-        <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3 govuk-!-margin-left-3 govuk-!-margin-right-3'/>
+        <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3 govuk-!-margin-left-3 govuk-!-margin-right-3' />
         <div
           className='contacts-filter-other-section'
           onClick={() => {
@@ -173,8 +175,10 @@ export default function SearchFilter ({
         >
           <FontAwesomeIcon icon={visible ? faAngleUp : faAngleDown} size='lg' />
           &nbsp;
-          <label className='govuk-label'
-            style={{ color: '#1d70b8' }}>
+          <label
+            className='govuk-label'
+            style={{ color: '#1d70b8' }}
+          >
             {filterTitle}
           </label>
         </div>
@@ -211,10 +215,12 @@ export default function SearchFilter ({
                 <label className='govuk-label contacts-selected-filter-label'>
                   {filter}&nbsp;
                 </label>
-                <FontAwesomeIcon icon={faXmark} className='contacts-selected-filter-icon'
+                <FontAwesomeIcon
+                  icon={faXmark} className='contacts-selected-filter-icon'
                   onClick={() => {
                     setFilterArray(filterArray.filter((item) => item !== filter))
-                  }}/>
+                  }}
+                />
               </div>
             ))}
           </div>
@@ -280,7 +286,7 @@ export default function SearchFilter ({
           selectedJobTitleFilters,
           setSelectedJobTitleFilters,
           jobTitleVisible,
-          setJobTitleVisible,
+          setJobTitleVisible
         )}
 
         {otherFilter(
@@ -300,7 +306,7 @@ export default function SearchFilter ({
           linkedVisible,
           setLinkedVisible
         )}
-    </div>
+      </div>
     </>
   )
 }

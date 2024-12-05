@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
 export default function ContactsTable ({
   contacts,
@@ -19,7 +18,7 @@ export default function ContactsTable ({
   const [emailSort, setEmailSort] = useState('none')
   const [linkedLocationsSort, setLinkedLocationsSort] = useState('none')
   const [messagesReceivedSort, setMessagesReceivedSort] = useState('none')
-  
+
   useEffect(() => {
     setContactNameSort('none')
     setJobTitleSort('none')
@@ -39,8 +38,7 @@ export default function ContactsTable ({
           return a.name.localeCompare(b.name)
         })
       )
-    }
-    else if (contactNameSort === 'ascending') {
+    } else if (contactNameSort === 'ascending') {
       setContactNameSort('descending')
       setFilteredContacts(
         [...filteredContacts].sort((a, b) => {
@@ -64,8 +62,7 @@ export default function ContactsTable ({
           return a.job_title.localeCompare(b.job_title)
         })
       )
-    }
-    else if (jobTitleSort === 'ascending') {
+    } else if (jobTitleSort === 'ascending') {
       setJobTitleSort('descending')
       setFilteredContacts(
         [...filteredContacts].sort((a, b) => {
@@ -129,7 +126,7 @@ export default function ContactsTable ({
   }
 
   const sortMessagesReceived = () => {
-    
+
   }
 
   const handleHeaderCheckboxChange = (event) => {
@@ -207,8 +204,8 @@ export default function ContactsTable ({
             <th scope='col' className='govuk-table__header' aria-sort={messagesReceivedSort}>
               <button type='button' onClick={() => sortMessagesReceived()}>
                 Messages received in
-                <br/> last 2 years for current
-                <br/> linked locations
+                <br /> last 2 years for current
+                <br /> linked locations
               </button>
             </th>
             <th scope='col' className='govuk-table__header' />

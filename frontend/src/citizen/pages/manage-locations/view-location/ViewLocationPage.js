@@ -82,6 +82,12 @@ export default function ViewLocationPage () {
         selectedLocation.coordinates.latitude,
         selectedLocation.coordinates.longitude
       )
+
+      const isError = !warningArea && !alertArea
+      if (isError) {
+        navigate('/error')
+      }
+
       setAlertArea(alertArea)
       setWarningArea(warningArea)
     }

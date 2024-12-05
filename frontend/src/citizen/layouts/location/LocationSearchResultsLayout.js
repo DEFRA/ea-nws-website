@@ -49,7 +49,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
     }
 
     getHistoryUrl()
-    fetch(floodHistoryUrl)
+    floodHistoryUrl && fetch(floodHistoryUrl)
       .then((response) => response.text())
       .then((data) => {
         setFloodHistoryData(csvToJson(data))

@@ -68,14 +68,15 @@ export default function LocationWithinWarningAreaProximityLayout ({
     }
 
     getHistoryUrl()
-    fetch(floodHistoryUrl)
-      .then((response) => response.text())
-      .then((data) => {
-        setFloodHistoryData(csvToJson(data))
-      })
-      .catch((e) =>
-        console.error('Could not fetch Historic Flood Warning file', e)
-      )
+    floodHistoryUrl &&
+      fetch(floodHistoryUrl)
+        .then((response) => response.text())
+        .then((data) => {
+          setFloodHistoryData(csvToJson(data))
+        })
+        .catch((e) =>
+          console.error('Could not fetch Historic Flood Warning file', e)
+        )
   })
 
   const setHistoricalAlertNumber = (AlertArea) => {
@@ -199,23 +200,23 @@ export default function LocationWithinWarningAreaProximityLayout ({
                       {floodAreas
                         ? (
                             floodAreas.map((area, index) => (
-                              <Radio
-                                key={index}
-                                small
-                                label={`${index + 1}. ${area.properties.TA_NAME}`}
-                                name='floodAreas'
-                                onChange={() => setFloodArea(area)}
-                                checked={
+                      <Radio
+                              key={index}
+                              small
+                              label={`${index + 1}. ${area.properties.TA_NAME}`}
+                              name='floodAreas'
+                              onChange={() => setFloodArea(area)}
+                              checked={
                             (selectedFloodWarningArea &&
                               selectedFloodWarningArea.id === area.id) ||
                             (selectedFloodAlertArea &&
                               selectedFloodAlertArea.id === area.id)
                           }
-                              />
+                            />
                             ))
                           )
                         : (
-                          <LoadingSpinner />
+                  <LoadingSpinner />
                           )}
                     </fieldset>
                   </div>
@@ -230,11 +231,11 @@ export default function LocationWithinWarningAreaProximityLayout ({
                     {isMobile && (
                       <Link
                         onClick={(e) => {
-                          e.preventDefault()
-                          setShowMobileMap(true)
-                        }}
+                  e.preventDefault()
+                  setShowMobileMap(true)
+                }}
                       >
-                        View and select on map
+                      View and select on map
                       </Link>
                     )}
                   </div>

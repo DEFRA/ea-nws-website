@@ -119,7 +119,6 @@ export default function ViewLocationSummaryPage () {
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
             100
-
           </td>
         </tr>
       </tbody>

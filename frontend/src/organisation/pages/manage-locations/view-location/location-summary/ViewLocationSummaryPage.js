@@ -11,6 +11,8 @@ export default function ViewLocationSummaryPage () {
   const orgId = useSelector((state) => state.session.orgId)
   const [alertData, setAlertData] = useState(null)
   const [totalLocations, setTotalLocations] = useState(null)
+  const messages = (totalLocations - alertData?.noAlert.legnth)
+  const noMessages = (totalLocations - alertData?.severeWarningAlert.legnth + alertData?.warningAlert.legnth + alertData?.alert.legnth)
 
   useEffect(() => {
     const getData = async () => {
@@ -30,20 +32,6 @@ export default function ViewLocationSummaryPage () {
   useEffect(() => {
     setTotalLocations(alertData.severeWarningAlert.legnth + alertData.warningAlert.legnth + alertData.alert.legnth + alertData.noAlert.legnth)
   }, [alertData])
-
-  const locationThatDoesNotGetMessagesInputs = [
-    {
-      numberLocation:
-          '80',
-      messageType: ['None available'],
-      messagesSent: ['0']
-    },
-    {
-      numberLocation: '1',
-      messageType: ['All messages types (turned off)'],
-      messagesSent: ['16']
-    }
-  ]
 
   const locationTableMessagesBody = (alertData) => (
     <>
@@ -125,7 +113,85 @@ export default function ViewLocationSummaryPage () {
     </>
   )
 
-  const locationTableHead = (title, locationTableBody) => (
+  const locationTableNoMessages = (alertData) => (
+    <>
+      <tbody className='govuk-table__body'>
+
+        <tr className='govuk-table__row'>
+          <td
+            className='govuk-table__cell'
+            style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+          >
+            <Link to='/' className='govuk-link'>
+              {alertData.noAlert.legnth}
+            </Link>
+          </td>
+          <td
+            className='govuk-table__cell'
+            style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+          >
+            None available<br />
+            All message types (turned off)
+          </td>
+          <td
+            className='govuk-table__cell'
+            style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+          >
+            0<br />
+            16
+          </td>
+        </tr>
+        <tr className='govuk-table__row'>
+          <td
+            className='govuk-table__cell'
+            style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+          >
+            <Link to='/' className='govuk-link'>
+              {alertData.legnth - (alertData.noAlert.legnth - alertData.severeWarningAlert)}
+            </Link>
+          </td>
+          <td
+            className='govuk-table__cell'
+            style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+          >
+            Flood warnings<br />
+            Flood alerts
+          </td>
+          <td
+            className='govuk-table__cell'
+            style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+          >
+            0<br />
+            5
+          </td>
+        </tr>
+        <tr className='govuk-table__row'>
+          <td
+            className='govuk-table__cell'
+            style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+          >
+            <Link to='/' className='govuk-link'>
+              {alertData.legnth - (alertData.noAlert.legnth + alertData.severeWarningAlert.legnth + alertData.severeWarning.legnth)}
+            </Link>
+          </td>
+          <td
+            className='govuk-table__cell'
+            style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+          >
+            Flood alerts only
+          </td>
+          <td
+            className='govuk-table__cell'
+            style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+          >
+            100
+          </td>
+        </tr>
+      </tbody>
+    </>
+  )
+
+  const locationTableHead = (title, locationTableBody, messageType) => (
     <>
       <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-5 govuk-!-display-inline-block'>
         {title}
@@ -139,7 +205,7 @@ export default function ViewLocationSummaryPage () {
         What are the different types of flood messages?
       </Link>
 
-      <p className='govuk-!-margin-top-5'>{totalLocations - alertData?.noAlert.legnth} of {totalLocations} locations</p>
+      <p className='govuk-!-margin-top-5'>{messageType} of {totalLocations} locations</p>
 
       <table className='govuk-table govuk-table--small-text-until-tablet'>
         <thead className='govuk-table__head'>
@@ -172,8 +238,8 @@ export default function ViewLocationSummaryPage () {
           <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l'>Summary of flood messages sent</h1>
             <div className='govuk-body'>
-              {locationTableHead('Locations that get flood messages', locationTableMessagesBody(alertData))}
-              {locationTableHead('Locations that will not get flood messages', locationThatDoesNotGetMessagesInputs)}
+              {locationTableHead('Locations that get flood messages', locationTableMessagesBody(alertData), messages)}
+              {locationTableHead('Locations that will not get flood messages', locationTableNoMessages(alertData), noMessages)}
             </div>
           </div>
         </div>

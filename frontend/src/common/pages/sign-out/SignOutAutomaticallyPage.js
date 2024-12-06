@@ -20,7 +20,7 @@ export default function SignOutManuallyPage () {
       signout()
     }
     dispatch(clearAuth())
-  },[])
+  }, [])
 
   return <SignOutLayout text={"You've been signed out for security reasons"} />
 }

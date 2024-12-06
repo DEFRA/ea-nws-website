@@ -121,17 +121,17 @@ Functions for Valid locations to be used accross the
 entire site
 */
 
-const addToAlert = async (orgId,location) =>{
+const addToAlert = async (orgId, location) => {
   const key = orgId + ':alertLocations'
   const exists = await checkKeyExists(key)
-  if (!exists){
+  if (!exists) {
     const struct = {
-      severeWarningAlert: [], 
-      severeWarning: [], 
+      severeWarningAlert: [],
+      severeWarning: [],
       alert: [],
-      noAlert:[]
-      }
-      await setJsonData(key, struct)
+      noAlert: []
+    }
+    await setJsonData(key, struct)
   }
   let alertTypes
   location.additionals.forEach((additional) => {
@@ -144,16 +144,15 @@ const addToAlert = async (orgId,location) =>{
   const client = await connectToRedis()
   if (alertTypes.length === 3) {
     await client.json.arrAppend(key, '.severeWarningAlert', location.id)
-  }else if(alertTypes.length === 2){
+  } else if (alertTypes.length === 2) {
     await client.json.arrAppend(key, '.severeWarning', location.id)
-  }else if (alertTypes.length === 1){
+  } else if (alertTypes.length === 1) {
     await client.json.arrAppend(key, '.alert', location.id)
-  }else{
+  } else {
     await client.json.arrAppend(key, '.noAlert', location.id)
   }
   await client.disconnect()
 }
-
 
 const addLocation = async (orgId, location) => {
   const locationID = location.id
@@ -170,9 +169,8 @@ const addLocation = async (orgId, location) => {
   for (const keyword of keywords) {
     await addToKeywordArr(orgId + ':t_Keywords_location', { name: keyword, linked_ids: [locationID] })
   }
-  console.log("adding location")
-  await addToAlert(orgId,location)
-
+  console.log('adding location')
+  await addToAlert(orgId, location)
 }
 
 const removeLocation = async (orgId, locationID) => {
@@ -339,7 +337,7 @@ const orgSignIn = async (profile, organization, locations, contacts) => {
 }
 
 const orgSignOut = async (profileId, orgId) => {
-  console.log("org sign out")
+  console.log('org sign out')
   // delete all data from elasticache
   // delete profile
   await deleteJsonData(profileId + ':profile')

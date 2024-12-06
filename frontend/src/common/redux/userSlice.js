@@ -34,7 +34,10 @@ const setLocationOtherAdditionals = (additionals, id, value) => {
     }
   }
   if (!idFound) {
-    additionals.push({ id: 'other', value: { s: JSON.stringify({ [id]: value }) } })
+    additionals.push({
+      id: 'other',
+      value: { s: JSON.stringify({ [id]: value }) }
+    })
   }
 }
 
@@ -71,6 +74,9 @@ const userSlice = createSlice({
     selectedFloodAlertArea: null,
     showOnlySelectedFloodArea: null,
     nearbyTargetAreaFlow: null,
+    // required for historical flood warnings and alerts
+    severeFloodWarningCount: null,
+    floodAlertCount: null,
     // keywords
     locationKeywords: null,
     contactKeywords: null,
@@ -100,23 +106,21 @@ const userSlice = createSlice({
         {
           id: 'other',
           value: {
-            s: JSON.stringify(
-              {
-                full_address: null,
-                postcode: null,
-                // Easting EPSG: 27700
-                x_coordinate: null,
-                // Northing EPSG: 27700
-                y_coordinate: null,
-                internal_reference: null,
-                business_criticality: null,
-                location_type: null,
-                action_plan: null,
-                notes: null,
-                location_data_type: null,
-                alertTypes: null
-              }
-            )
+            s: JSON.stringify({
+              full_address: null,
+              postcode: null,
+              // Easting EPSG: 27700
+              x_coordinate: null,
+              // Northing EPSG: 27700
+              y_coordinate: null,
+              internal_reference: null,
+              business_criticality: null,
+              location_type: null,
+              action_plan: null,
+              notes: null,
+              location_data_type: null,
+              alertTypes: null
+            })
           }
         }
       ]
@@ -200,6 +204,13 @@ const userSlice = createSlice({
     setNearbyTargetAreasFlow: (state, action) => {
       state.nearbyTargetAreaFlow = action.payload
     },
+    // required for historical flood warnings and alerts
+    setSevereFloodWarningCount: (state, action) => {
+      state.severeFloodWarningCount = action.payload
+    },
+    setFloodAlertCount: (state, action) => {
+      state.floodAlertCount = action.payload
+    },
     // required for predefined boundary flow
     setSelectedBoundaryType: (state, action) => {
       state.selectedBoundaryType = action.payload
@@ -249,49 +260,109 @@ const userSlice = createSlice({
       state.currentLocation.geocode = action.payload
     },
     setCurrentLocationName: (state, action) => {
-      setAdditional(state.currentLocation.additionals, 'locationName', action.payload)
+      setAdditional(
+        state.currentLocation.additionals,
+        'locationName',
+        action.payload
+      )
     },
     setCurrentLocationParentID: (state, action) => {
-      setAdditional(state.currentLocation.additionals, 'parentID', action.payload)
+      setAdditional(
+        state.currentLocation.additionals,
+        'parentID',
+        action.payload
+      )
     },
     setCurrentLocationTargetAreas: (state, action) => {
-      setAdditional(state.currentLocation.additionals, 'targetAreas', action.payload)
+      setAdditional(
+        state.currentLocation.additionals,
+        'targetAreas',
+        action.payload
+      )
     },
     setCurrentLocationKeywords: (state, action) => {
-      setAdditional(state.currentLocation.additionals, 'keywords', action.payload)
+      setAdditional(
+        state.currentLocation.additionals,
+        'keywords',
+        action.payload
+      )
     },
     setCurrentLocationFullAddress: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'full_address', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'full_address',
+        action.payload
+      )
     },
     setCurrentLocationPostcode: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'postcode', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'postcode',
+        action.payload
+      )
     },
     setCurrentLocationEasting: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'x_coordinate', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'x_coordinate',
+        action.payload
+      )
     },
     setCurrentLocationNorthing: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'y_coordinate', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'y_coordinate',
+        action.payload
+      )
     },
     setCurrentLocationReference: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'internal_reference', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'internal_reference',
+        action.payload
+      )
     },
     setCurrentLocationCriticality: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'business_criticality', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'business_criticality',
+        action.payload
+      )
     },
     setCurrentLocationType: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'location_type', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'location_type',
+        action.payload
+      )
     },
     setCurrentLocationActionPlan: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'action_plan', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'action_plan',
+        action.payload
+      )
     },
     setCurrentLocationNotes: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'notes', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'notes',
+        action.payload
+      )
     },
     setCurrentLocationDataType: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'location_data_type', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'location_data_type',
+        action.payload
+      )
     },
     setCurrentLocationAlertTypes: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'alertTypes', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'alertTypes',
+        action.payload
+      )
     },
     // org contact data
     setOrgCurrentContact: (state, action) => {
@@ -357,6 +428,9 @@ const userSlice = createSlice({
       state.selectedFloodAlertArea = null
       state.showOnlySelectedFloodArea = null
       state.nearbyTargetAreaFlow = null
+      // required for historical flood warnings and alerts
+      state.severeFloodWarningCount = null
+      state.floodAlertCount = null
       // required for predefined boundary flow
       state.selectedBoundaryType = null
       state.selectedBoundary = null
@@ -383,23 +457,21 @@ const userSlice = createSlice({
           {
             id: 'other',
             value: {
-              s: JSON.stringify(
-                {
-                  full_address: null,
-                  postcode: null,
-                  // Easting EPSG: 27700
-                  x_coordinate: null,
-                  // Northing EPSG: 27700
-                  y_coordinate: null,
-                  internal_reference: null,
-                  business_criticality: null,
-                  location_type: null,
-                  action_plan: null,
-                  notes: null,
-                  location_data_type: null,
-                  alertTypes: null
-                }
-              )
+              s: JSON.stringify({
+                full_address: null,
+                postcode: null,
+                // Easting EPSG: 27700
+                x_coordinate: null,
+                // Northing EPSG: 27700
+                y_coordinate: null,
+                internal_reference: null,
+                business_criticality: null,
+                location_type: null,
+                action_plan: null,
+                notes: null,
+                location_data_type: null,
+                alertTypes: null
+              })
             }
           }
         ]
@@ -426,21 +498,60 @@ const userSlice = createSlice({
   selectors: {
     getLocationAdditionals: (state) => {
       return {
-        locationName: getAdditional(state.currentLocation.additionals, 'locationName'),
+        locationName: getAdditional(
+          state.currentLocation.additionals,
+          'locationName'
+        ),
         parentID: getAdditional(state.currentLocation.additionals, 'parentID'),
-        targetAreas: getAdditional(state.currentLocation.additionals, 'targetAreas'),
+        targetAreas: getAdditional(
+          state.currentLocation.additionals,
+          'targetAreas'
+        ),
         keywords: getAdditional(state.currentLocation.additionals, 'keywords'),
-        full_address: getLocationOtherAdditional(state.currentLocation.additionals, 'full_address'),
-        postcode: getLocationOtherAdditional(state.currentLocation.additionals, 'postcode'),
-        x_coordinate: getLocationOtherAdditional(state.currentLocation.additionals, 'x_coordinate'),
-        y_coordinate: getLocationOtherAdditional(state.currentLocation.additionals, 'y_coordinate'),
-        internal_reference: getLocationOtherAdditional(state.currentLocation.additionals, 'internal_reference'),
-        business_criticality: getLocationOtherAdditional(state.currentLocation.additionals, 'business_criticality'),
-        location_type: getLocationOtherAdditional(state.currentLocation.additionals, 'location_type'),
-        action_plan: getLocationOtherAdditional(state.currentLocation.additionals, 'action_plan'),
-        notes: getLocationOtherAdditional(state.currentLocation.additionals, 'notes'),
-        location_data_type: getLocationOtherAdditional(state.currentLocation.additionals, 'location_data_type'),
-        alertTypes: getLocationOtherAdditional(state.currentLocation.additionals, 'alertTypes')
+        full_address: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'full_address'
+        ),
+        postcode: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'postcode'
+        ),
+        x_coordinate: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'x_coordinate'
+        ),
+        y_coordinate: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'y_coordinate'
+        ),
+        internal_reference: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'internal_reference'
+        ),
+        business_criticality: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'business_criticality'
+        ),
+        location_type: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'location_type'
+        ),
+        action_plan: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'action_plan'
+        ),
+        notes: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'notes'
+        ),
+        location_data_type: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'location_data_type'
+        ),
+        alertTypes: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'alertTypes'
+        )
       }
     },
     getLocationAdditional: (state, key) => {
@@ -474,6 +585,9 @@ export const {
   setSelectedFloodAlertArea,
   setShowOnlySelectedFloodArea,
   setNearbyTargetAreasFlow,
+  // required for historical flood warnings and alerts
+  setSevereFloodWarningCount,
+  setFloodAlertCount,
   // required for predefined boundary flow
   setSelectedBoundaryType,
   setSelectedBoundary,

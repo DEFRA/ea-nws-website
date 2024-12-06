@@ -45,6 +45,7 @@ module.exports = [
           })
         }
       } catch (error) {
+        console.log(error)
         return createGenericErrorResponse(h)
       }
     }

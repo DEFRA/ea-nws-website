@@ -15,12 +15,12 @@ export default function ConfirmLocationsPage () {
   const notInEnglandLocations = location?.state?.notInEngland || 0
   const notFoundLocations = location?.state?.notFound || 0
   const fileName = location?.state?.fileName || ''
-  const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
 
   const handleLocations = async (event) => {
     event.preventDefault()
 
-    const dataToSend = { authToken, fileName }
+    const dataToSend = { orgId, fileName }
     const { data, errorMessage } = await backendCall(
       dataToSend,
       'api/bulk_uploads/save_locations',
@@ -139,12 +139,12 @@ export default function ConfirmLocationsPage () {
                 title='Why are some locations not found?'
                 text={detailsMessage}
               />
-              You can do this after you add the {validLocations} locations that
-              can be added now.
+              {validLocations > 0 && <p>You can do this after you add the {validLocations} locations that
+              can be added now.</p>}
             </div>
             <br />
             <Button
-              text='Add and continue'
+              text={validLocations > 0 ? `Add ${validLocations} locations` : 'Continue'}
               className='govuk-button govuk-button'
               onClick={handleLocations}
             />

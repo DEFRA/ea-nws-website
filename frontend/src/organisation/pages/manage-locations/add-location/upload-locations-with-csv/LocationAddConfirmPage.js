@@ -12,10 +12,10 @@ export default function LocationAddConfirmPage () {
 
   const locationsValid = location?.state?.valid || 0
   const fileName = location?.state?.fileName || ''
-  const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
 
   const upload = async () => {
-    const dataToSend = { authToken, fileName }
+    const dataToSend = { orgId, fileName }
     const { data, errorMessage } = await backendCall(
       dataToSend,
       'api/bulk_uploads/save_locations',

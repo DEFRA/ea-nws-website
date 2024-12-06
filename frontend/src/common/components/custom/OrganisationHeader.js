@@ -178,8 +178,6 @@ export default function OrganisationHeader () {
             backgroundColor: '#1d70b8',
             margin: '0 auto',
             padding: '0.3rem',
-            marginRight: '1.875rem',
-            marginLeft: '1.875rem'
           }}
         />
       </header>

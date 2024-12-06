@@ -14,7 +14,8 @@ export default function Radio ({
   conditional,
   conditionalQuestion,
   conditionalInput,
-  conditionalError
+  conditionalError,
+  right = false
 }) {
   return (
     <>
@@ -24,7 +25,15 @@ export default function Radio ({
           <div className='govuk-radios govuk-radios--small'>{children}</div>
         )}
       >
-        <div className='govuk-radios__item'>
+        <div className='govuk-radios__item' style={{
+          justifyContent: right && 'space-between'
+        }}>
+          {right && <label
+            className='govuk-label right_radio govuk-radios__label'
+            htmlFor={'id' + label}
+          >
+            {label}
+          </label>}
           <input
             className='govuk-radios__input'
             type='radio'
@@ -33,13 +42,18 @@ export default function Radio ({
             onChange={onChange}
             id={'id' + label}
             checked={checked}
+            style={{marginRight: right && '-10px !important',
+              marginLeft: right && 'auto !important'
+            }}
           />
+          {!right && 
           <label
             className='govuk-label govuk-radios__label'
             htmlFor={'id' + label}
           >
             {label}
           </label>
+}
         </div>
         {conditional && (
           <div className='govuk-radios__conditional'>

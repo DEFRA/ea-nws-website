@@ -93,7 +93,7 @@ const orgManageLocationsUrls = {
       urlManageOrgAddLocations + '/upload-file/manage-duplicate-locations',
     duplicateLocationComparisonPage:
       urlManageOrgAddLocations + '/upload-file/duplicate-location-comparison',
-    confirm: urlManageOrgAddLocations + '/confirm',
+    confirm: urlManageOrgAddLocations + '/bulk/confirm',
     name: urlManageOrg + '/add/name',
     error: {
       cannotFindAddress: urlManageOrg + '/add/cannot-find-address',

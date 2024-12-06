@@ -191,8 +191,8 @@ const searchLocations = async (orgId, searchKey, value) => {
   return locationArr
 }
 
-const searchInvLocations = async (authToken, searchKey, value) => {
-  const locationKeys = await getInvLocationKeys(authToken)
+const searchInvLocations = async (orgId, searchKey, value) => {
+  const locationKeys = await getInvLocationKeys(orgId)
   const locationArr = []
   const searchKeyArr = searchKey.split('.')
   await Promise.all(
@@ -351,8 +351,12 @@ const orgSignOut = async (profileId, orgId) => {
   // delete locations
   // delete contacts
   const locationKeys = await getLocationKeys(orgId)
+  const invLocationKeys = await getContactKeys(orgId)
   const contactKeys = await getContactKeys(orgId)
   await Promise.all(locationKeys.map(async (key) => {
+    await deleteJsonData(key)
+  }))
+  await Promise.all(invLocationKeys.map(async (key) => {
     await deleteJsonData(key)
   }))
   await Promise.all(contactKeys.map(async (key) => {
@@ -360,6 +364,7 @@ const orgSignOut = async (profileId, orgId) => {
   }))
 
   await deleteData(orgId + ':t_POIS_locID')
+  await deleteData(orgId + ':t_invPOIS_locID')
   await deleteData(orgId + ':t_Contacts_ID')
   // delete contact and location keywords
   await deleteJsonData(orgId + ':t_Keywords_location')

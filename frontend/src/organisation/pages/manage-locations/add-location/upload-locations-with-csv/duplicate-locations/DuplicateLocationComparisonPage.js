@@ -43,11 +43,11 @@ export default function DuplicateLocationComparisonPage () {
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-full'>
             {error && <ErrorSummary errorList={[error]} />}
             {/* TODO: use the existing location name here */}
             <h1 className='govuk-heading-l'>
-              {newLocation.Location_name} already exists in this account
+              {newLocation.additionals.locationName} already exists in this account
             </h1>
             <div className='govuk-body'>
               <div className='govuk-!-margin-bottom-6'>
@@ -66,16 +66,17 @@ export default function DuplicateLocationComparisonPage () {
                       name='ExistingOrNewRadio'
                       small='true'
                       onChange={(e) => setExistingOrNew('Existing')}
+                      right={true}
                     />
                   </div>
                 </div>
               </div>
-              <div class='govuk-grid-column-one-half'>
+              <div class='govuk-grid-column-one-half govuk-!-padding-right-0'>
                 <div className='outline-1px'>
                   <div className='org-location-information-header govuk-heading-m govuk-!-margin-bottom-0'>
                     New Location
                   </div>
-                  <LocationInformation location={newLocation} />
+                  <LocationInformation location={newLocation} comparedLocation={existingLocation} />
                   <div className='org-location-information-footer'>
                     <Radio
                       label='Use new location'

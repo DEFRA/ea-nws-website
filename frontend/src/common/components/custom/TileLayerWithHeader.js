@@ -44,10 +44,6 @@ export default function TileLayerWithHeader ({ url, token, bounds }) {
           fetch(url, {
             headers: { Authorization: `Bearer ${token}` },
             mode: 'cors'
-          }).then((res) => {
-            if (!res.ok) {
-              throw new Error()
-            }
           })
             .then((val) => val.blob())
             .then((blob) => {

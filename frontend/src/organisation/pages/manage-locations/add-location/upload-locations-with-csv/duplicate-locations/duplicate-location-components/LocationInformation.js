@@ -1,20 +1,20 @@
-import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import Details from '../../../../../../../common/components/gov-uk/Details'
 import LocationDataType from '../../../../../../../common/enums/LocationDataType'
-import RiskAreaType from '../../../../../../../common/enums/RiskAreaType'
-import { getLocationAdditionals } from '../../../../../../../common/redux/userSlice'
 import FloodWarningKey from '../../../../../../components/custom/FloodWarningKey'
 import Map from '../../../../../../components/custom/Map'
-import RiskCategoryLabel from '../../../../../../components/custom/RiskCategoryLabel'
 
-export default function LocationInformationLayout ({ location }) {
-  const currentLocation = useSelector((state) => state.session.currentLocation)
-  const additionalData = useSelector((state) => getLocationAdditionals(state))
-  const formattedAddress = location.Full_address?.split(',')
+export default function LocationInformationLayout ({ location, comparedLocation }) {
+  const additionalData = location.additionals.other
+  const formattedAddress = additionalData.full_address?.split(',')
+  const comparedAdditionalData = comparedLocation?.additionals.other
+  const comparedFormattedAddress = comparedAdditionalData?.full_address?.split(',')
 
-  console.log('location', location)
-  console.log('address', location.Full_address)
+  const compareStyle = {
+      backgroundColor: '#D2E2F1',
+      borderBottomStyle: 'solid',
+      borderBottomColor: '#5694CA'
+  }
+
+  const sectionClassName = 'govuk-!-padding-left-4 govuk-!-padding-right-4 govuk-!-margin-top-7'
 
   const LocationHeader = () => {
     switch (additionalData.location_data_type) {
@@ -54,109 +54,27 @@ export default function LocationInformationLayout ({ location }) {
   }
 
   const locationDetails = (
-    <>
-      <div className={location.Full_address ? 'govuk-!-margin-top-7' : ''}>
-        <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
+    <div style={(comparedLocation && comparedAdditionalData.full_address === null) ? compareStyle : {}}>
+      <div className={additionalData.full_address ? sectionClassName : 'govuk-!-padding-left-4 govuk-!-padding-right-4'}>
+        <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
           Location
         </h2>
-        <Link
-          className='govuk-link govuk-!-display-inline-block'
-          style={{ float: 'right' }}
-          // to={}
-        >
-          Change
-        </Link>
         <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
         <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-0'>
           {LocationHeader()}
         </h3>
         <p className='govuk-!-margin-top-1'>{LocationData()}</p>
       </div>
-    </>
+    </div>
   )
 
-  const floodRiskDetails = (
-    <>
-      <p>
-        Flood risk is based on a combination of likelihood and impact - how
-        likely it is that flooding will happen and the effect that flooding will
-        have on people, buildings and services. Flood risk can fall into the
-        following categories:
-      </p>
-      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-        High Risk
-      </h3>
-      <p>
-        Each year there’s a chance of flooding from rivers and the sea of
-        greater than 1 in 30.
-      </p>
-      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-        Medium Risk
-      </h3>
-      <p>
-        Each year there’s a chance of flooding from rivers and the sea of
-        between 1 in 100 and 1 in 30.
-      </p>
-      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-        Low Risk
-      </h3>
-      <p>
-        Each year there’s a chance of flooding from rivers and the sea of
-        between 1 in 1000 and 1 in 100.
-      </p>
-      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-        Possible
-      </h3>
-      <p>
-        Flooding is possible in the local area when groundwater levels are high.
-      </p>
-      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-        Unlikely
-      </h3>
-      <p>
-        It’s unlikely the location will be affected by groundwater flooding.
-      </p>
-    </>
-  )
 
   return (
     <>
       <main className='govuk-body'>
-        {/* flood risk bannner */}
-        {(additionalData.location_data_type === LocationDataType.ADDRESS ||
-          additionalData.location_data_type ===
-            LocationDataType.X_AND_Y_COORDS) && (
-              <div>
-                <div className='govuk-grid-column-full'>
-                  <div className='flood-risk-banner govuk-!-margin-top-2'>
-                    <div className='flood-risk-banner-item govuk-!-padding-2'>
-                      <h3 className='flood-risk-banner-title govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                        {RiskAreaType.RIVERS_AND_SEA}
-                      </h3>
-                      <div className='flood-risk-banner-label '>
-                        <RiskCategoryLabel
-                          riskAreaType={RiskAreaType.RIVERS_AND_SEA}
-                        />
-                      </div>
-                    </div>
-                    <div className='flood-risk-banner-item'>
-                      <h3 className='flood-risk-banner-title govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                        {RiskAreaType.GROUNDWATER}
-                      </h3>
-                      <div className='flood-risk-banner-label '>
-                        <RiskCategoryLabel
-                          riskAreaType={RiskAreaType.GROUNDWATER}
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-        )}
-
         {/* map */}
         <div>
-          <Map showMapControls={false} zoomLevel={14} />
+          <Map showMapControls={false} zoomLevel={14} manualCoords={location.coordinates}/>
           <div>
             <FloodWarningKey type='both' />
           </div>
@@ -169,191 +87,107 @@ export default function LocationInformationLayout ({ location }) {
         </div>
 
         {/* details */}
-        <div className='govuk-!-padding-left-4 govuk-!-padding-right-4'>
-          <div>
+        <div>
             {/* Address details */}
-            {location.Full_address && (
-              <>
-                <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
+            {additionalData.full_address && (
+              <div className='govuk-!-padding-left-4 govuk-!-padding-right-4' style={(comparedLocation && comparedAdditionalData.full_address === null) ? compareStyle : {}}>
+                <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
                   Address
                 </h2>
-                <Link
-                  className='govuk-link govuk-!-display-inline-block'
-                  style={{ float: 'right' }}
-                  // to={}
-                >
-                  Change
-                </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
                 <p>
                   {formattedAddress.map((line, index) => {
                     return (
-                      <span key={index}>
+                      <span key={index} style={(comparedLocation && comparedFormattedAddress[index] !==  formattedAddress[index]) ? compareStyle : {}}>
                         {line}
                         <br />
                       </span>
                     )
                   })}
                 </p>
-              </>
+              </div>
             )}
             {/* Location details */}
             {locationDetails}
             {/* Key Information details */}
             {additionalData.location_data_type !==
               LocationDataType.BOUNDARY && (
-                <div className='govuk-!-margin-top-7'>
-                  <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
+                <div className={sectionClassName}>
+                  <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
                     Key Information
                   </h2>
-                  <Link
-                    className='govuk-link govuk-!-display-inline-block'
-                    style={{ float: 'right' }}
-                  >
-                    Change
-                  </Link>
                   <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
                   <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                     Location name
                   </h3>
-                  <p>{additionalData.locationName}</p>
+                  <p>{location.additionals.locationName}</p>
                   {additionalData.internal_reference && (
-                    <>
+                    <div style={(comparedLocation && comparedAdditionalData.internal_reference === null) ? compareStyle : {}}>
                       <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                         Internal reference
                       </h3>
-                      <p>{additionalData.internal_reference}</p>
-                    </>
+                      <p style={(comparedLocation && comparedAdditionalData.internal_reference !== additionalData.internal_reference) ? compareStyle : {}}>
+                        {additionalData.internal_reference}
+                      </p>
+                    </div>
                   )}
                   {additionalData.business_criticality && (
-                    <>
+                    <div style={(comparedLocation && comparedAdditionalData.business_criticality === null) ? compareStyle : {}}>
                       <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                         Business criticality
                       </h3>
-                      <p>{additionalData.business_criticality}</p>
-                    </>
+                      <p style={(comparedLocation && comparedAdditionalData.business_criticality !== additionalData.business_criticality) ? compareStyle : {}}>
+                        {additionalData.business_criticality}
+                      </p>
+                    </div>
                   )}
                   {additionalData.location_type && (
-                    <>
+                    <div style={(comparedLocation && comparedAdditionalData.location_type === null) ? compareStyle : {}}>
                       <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                         Location type
                       </h3>
-                      <p>{additionalData.location_type}</p>
-                    </>
+                      <p style={(comparedLocation && comparedAdditionalData.location_type !==  additionalData.location_type) ? compareStyle : {}}>
+                        {additionalData.location_type}
+                      </p>
+                    </div>
                   )}
                 </div>
             )}
 
             {/* Keywords details */}
-            {additionalData.keywords && (
-              <div className='govuk-!-margin-top-7'>
-                <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
+            {location.additionals.keywords && (
+              <div className={sectionClassName} style={(comparedLocation && comparedLocation.additionals.keywords.length === 0) ? compareStyle : {}}>
+                <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
                   Keywords
                 </h2>
-                <Link
-                  className='govuk-link govuk-!-display-inline-block'
-                  style={{ float: 'right' }}
-                  // to={}
-                >
-                  Change
-                </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p>{additionalData.keywords}</p>
+                {location.additionals.keywords.map(keyword => {
+                  return <p className='govuk-!-margin-bottom-0' style={(comparedLocation && !comparedLocation.additionals.keywords.includes(keyword)) ? compareStyle : {}}>{keyword}</p>
+                })}
               </div>
             )}
 
             {/* Action plan details */}
             {additionalData.action_plan && (
-              <div className='govuk-!-margin-top-7'>
-                <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
+              <div className={sectionClassName} style={(comparedLocation && comparedAdditionalData.action_plan.length === 0) ? compareStyle : {}}>
+                <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
                   Action Plan
                 </h2>
-                <Link
-                  className='govuk-link govuk-!-display-inline-block'
-                  style={{ float: 'right' }}
-                  // to={}
-                >
-                  Change
-                </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <pre>{additionalData.action_plan}</pre>
+                <p style={(comparedLocation && comparedAdditionalData.action_plan !== additionalData.action_plan) ? compareStyle : {}}>{additionalData.action_plan}</p>
               </div>
             )}
 
             {/* Notes details */}
             {additionalData.notes && (
-              <div className='govuk-!-margin-top-7'>
-                <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
+              <div className={sectionClassName} style={(comparedLocation && comparedAdditionalData.notes === null) ? compareStyle : {}}>
+                <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
                   Notes
                 </h2>
-                <Link
-                  className='govuk-link govuk-!-display-inline-block'
-                  style={{ float: 'right' }}
-                  // to={}
-                >
-                  Change
-                </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p>{location.Notes}</p>
+                <p style={(comparedLocation && comparedAdditionalData.notes !== additionalData.notes) ? compareStyle : {}}>{additionalData.notes}</p>
               </div>
             )}
-
-            {/* Add more info links */}
-            <div className='govuk-!-font-size-19 govuk-!-margin-top-7'>
-              {!currentLocation.address &&
-                additionalData.location_data_type !==
-                  LocationDataType.BOUNDARY && (
-                    <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
-                      Add address
-                    </Link>
-              )}
-              {!additionalData.internal_reference &&
-                additionalData.location_data_type !==
-                  LocationDataType.BOUNDARY && (
-                    <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
-                      Add internal reference
-                    </Link>
-              )}
-              {!additionalData.business_criticality &&
-                additionalData.location_data_type !==
-                  LocationDataType.BOUNDARY && (
-                    <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
-                      Add business criticality
-                    </Link>
-              )}
-              {!additionalData.location_type &&
-                additionalData.location_data_type !==
-                  LocationDataType.BOUNDARY && (
-                    <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
-                      Add location type
-                    </Link>
-              )}
-              {!additionalData.keywords && (
-                <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
-                  Add keywords
-                </Link>
-              )}
-              {!additionalData.action_plan && (
-                <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
-                  Add action plan
-                </Link>
-              )}
-              {!additionalData.notes && (
-                <Link className='govuk-!-display-block'>Add notes</Link>
-              )}
-            </div>
-            {/* flood risk details */}
-            {(additionalData.location_data_type === LocationDataType.ADDRESS ||
-              additionalData.location_data_type ===
-                LocationDataType.X_AND_Y_COORDS) && (
-                  <div className='govuk-!-margin-top-7'>
-                    <Details
-                      title='What is a flood risk?'
-                      text={floodRiskDetails}
-                    />
-                  </div>
-            )}
-          </div>
         </div>
       </main>
     </>

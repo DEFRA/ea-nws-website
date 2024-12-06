@@ -6,6 +6,7 @@ import OrganisationAccountNavigation from '../../../../../../common/components/c
 import Button from '../../../../../../common/components/gov-uk/Button'
 import WarningText from '../../../../../../common/components/gov-uk/WarningText'
 import { backendCall } from '../../../../../../common/services/BackendService'
+import { geoSafeToWebLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ManageDuplicateLocationsPage () {
@@ -41,10 +42,10 @@ export default function ManageDuplicateLocationsPage () {
     event.preventDefault()
 
     // Get the existing location (note type is 'valid')
-    const existingLocation = await getLocation(orgId, location.Location_name, 'valid')
+    const existingLocation = geoSafeToWebLocation(await getLocation(orgId, location.Location_name, 'valid'))
 
     // Get the new, duplicate location (note type is 'invalid')
-    const newLocation = await getLocation(orgId, location.Location_name, 'invalid')
+    const newLocation = geoSafeToWebLocation(await getLocation(orgId, location.Location_name, 'invalid'))
 
     if (existingLocation && newLocation) {
       // Now compare the two and let the use choose one
@@ -85,8 +86,8 @@ export default function ManageDuplicateLocationsPage () {
         />
       )} */}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-full'>
+        <div className='govuk-grid-row govuk-body'>
+          <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
               Manage {duplicateLocations.length} duplicate locations
             </h1>
@@ -99,7 +100,7 @@ export default function ManageDuplicateLocationsPage () {
               text='Print duplicate locations'
               onClick={handlePrint}
             />
-            <div>{duplicateLocations.length} locations</div>
+            <p className='govuk-caption-m govuk-!-margin-bottom-0'>{duplicateLocations.length} locations</p>
             <div className='govuk-body govuk-!-padding-top-2'>
               <table class='govuk-table govuk-table--small-text-until-tablet'>
                 <thead class='govuk-table__head'>
@@ -118,7 +119,7 @@ export default function ManageDuplicateLocationsPage () {
                           <td class='govuk-table__cell'>
                             {location.Location_name}
                           </td>
-                          <td class='govuk-table__cell'>
+                          <td class='govuk-table__cell govuk-!-text-align-right'>
                             <Link
                               onClick={(event) =>
                                 handleCompareDetails(event, location)}

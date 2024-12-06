@@ -36,12 +36,14 @@ export default function Map ({
   showFloodAlertAreas = true,
   showMarker = false,
   boundaryList,
-  boundariesAlreadyAdded = []
+  boundariesAlreadyAdded = [],
+  manualCoords
 }) {
   const dispatch = useDispatch()
-  const { latitude, longitude } = useSelector(
+  const { currentLatitude, currentLongitude } = useSelector(
     (state) => state.session.currentLocation.coordinates
-  )
+  ) || {lat: null, long: null}
+  const {latitude, longitude} = manualCoords ? manualCoords : { currentLatitude, currentLongitude }
   const centre = [latitude, longitude]
   const [apiKey, setApiKey] = useState(null)
   const [marker, setMarker] = useState(null)

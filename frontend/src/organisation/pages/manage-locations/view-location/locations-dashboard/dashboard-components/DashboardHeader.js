@@ -6,7 +6,10 @@ import { infoUrls } from '../../../../../routes/info/InfoRoutes'
 import { urlManageKeywordsOrg } from '../../../../../routes/manage-keywords/ManageKeywordsRoutes'
 import { urlManageOrgAddLocations } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DashboardHeader ({ locations }) {
+export default function DashboardHeader ({ 
+  locations,
+  onClickLinked
+ }) {
   const navigate = useNavigate()
 
   const floodRiskDetails = (
@@ -79,6 +82,16 @@ export default function DashboardHeader ({ locations }) {
         locations.filter((obj) => obj.alert_categories.length > 0).length
       )
       message[0] = 'in flood areas'
+
+
+      heading[0] = 'Locations that will get flood message'
+
+      count.push(
+        locations.filter((obj) => obj.alert_categories.length > 0).length)
+      message[0] = 'in flood areas'
+
+      count.push(locations.filter((item) => item.meta_data.location_additional.linked_contacts.length > 0).length)
+      message.push('linked to nearby flood areas')
     } else if (type === 'noFloodMessages') {
       heading[0] = 'Locations that do not currently get flood messages'
 
@@ -100,7 +113,7 @@ export default function DashboardHeader ({ locations }) {
       message.push('at low flood risk')
     } else if (type === 'noContacts') {
       heading[0] = 'Locations not linked to contacts'
-      count.push(0)
+      count.push(locations.filter((item) => item.meta_data.location_additional.linked_contacts.length === 0).length)
       message[0] = 'not linked to contacts'
     }
 
@@ -122,14 +135,41 @@ export default function DashboardHeader ({ locations }) {
             height: '10rem'
           }}
         >
-          {(type === 'floodMessages' || type === 'noContacts') && (
+          {(type === 'floodMessages') && (
+            <div style={{ display: 'flex' }}>
+              <div
+                style={{
+                  width: '100%',
+                  padding: '0rem 1rem 0rem 0rem'
+                }}
+              >
+                <h1>
+                  <strong>{count[0]}</strong>
+                </h1>
+                <Link className='govuk-link' onClick={() => onClickLinked("messages")}>
+                  {count[0] === 1 ? 'location' : 'locations'} {message[0]}
+                </Link>
+              </div>
+              {locations.filter((item) => item.meta_data.location_additional.linked_contacts.length > 0).length > 0 && (
+                <div style={{ width: '100%', padding: '0rem 1.5rem', borderLeft: '2px solid lightGrey' }}>
+                  <h1>
+                    <strong>{count[1]}</strong>
+                  </h1>
+                  <Link className='govuk-link' onClick={() => onClickLinked("links")}>
+                    {count[1] === 1 ? 'location' : 'locations'} {message[1]}
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
+          {(type === 'noContacts') && (
             <>
               <h1
-                style={{ color: type === 'noContacts' ? 'crimson' : 'black' }}
+                style={{ color: 'crimson' }}
               >
                 <strong>{count[0]}</strong>
               </h1>
-              <Link className='govuk-link'>
+              <Link className='govuk-link' onClick={() => onClickLinked("no-links")}>
                 {count[0] === 1 ? 'location' : 'locations'} {message[0]}
               </Link>
             </>
@@ -146,7 +186,7 @@ export default function DashboardHeader ({ locations }) {
                 <h1 style={{ color: 'coral' }}>
                   <strong>{count[0]}</strong>
                 </h1>
-                <Link className='govuk-link'>
+                <Link className='govuk-link' onClick={() => onClickLinked("high-medium-risk")}>
                   {count[0] === 1 ? 'location' : 'locations'} {message[0]}
                 </Link>
               </div>
@@ -154,7 +194,7 @@ export default function DashboardHeader ({ locations }) {
                 <h1>
                   <strong>{count[1]}</strong>
                 </h1>
-                <Link className='govuk-link'>
+                <Link className='govuk-link' onClick={() => onClickLinked("low-risk")}>
                   {count[1] === 1 ? 'location' : 'locations'} {message[1]}
                 </Link>
               </div>
@@ -212,7 +252,9 @@ export default function DashboardHeader ({ locations }) {
         <span style={{ display: 'flex', fontSize: '18px' }}>
           <FloodBanner type='floodMessages' />
           <FloodBanner type='noFloodMessages' />
-          <FloodBanner type='noContacts' />
+          {locations.filter((item) => item.meta_data.location_additional.linked_contacts.length === 0).length > 0 && (
+            <FloodBanner type='noContacts' />
+          )}
         </span>
       </div>
 

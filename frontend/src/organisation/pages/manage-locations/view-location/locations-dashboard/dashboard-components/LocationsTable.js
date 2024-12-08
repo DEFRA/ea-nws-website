@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import locationPin from '../../../../../../common/assets/images/location_pin.svg'
-import Popup from '../../../../../../common/components/custom/Popup'
 import { setCurrentLocation } from '../../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
@@ -14,7 +13,8 @@ export default function LocationsTable ({
   setSelectedLocations,
   setFilteredLocations,
   resetPaging,
-  setResetPaging
+  setResetPaging,
+  onAction
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -27,16 +27,6 @@ export default function LocationsTable ({
   const [linkedContactsSort, setLinkedContactsSort] = useState('none')
   const [riverSeaRisksSort, setRiverSeaRisksSort] = useState('none')
   const [groundWaterRisksSort, setGroundWaterRisksSort] = useState('none')
-  const [dialog, setDialog] = useState({
-    show: false,
-    text: '',
-    title: '',
-    buttonText: '',
-    buttonClass: '',
-    input: '',
-    charLimit: 0,
-    error: ''
-  })
 
   useEffect(() => {
     setLocationNameSort('none')
@@ -46,29 +36,6 @@ export default function LocationsTable ({
     setLinkedContactsSort('none')
     setRiverSeaRisksSort('none')
   }, [locations])
-
-  const handleHeaderCheckboxChange = (event) => {
-    const isChecked = event.target.checked
-    setIsTopCheckboxChecked(isChecked)
-    if (isChecked) {
-      setSelectedLocations(displayedLocations)
-    } else {
-      setSelectedLocations([])
-    }
-  }
-
-  const handleLocationSelected = (location) => {
-    let updatedSelectedLocations = []
-
-    if (selectedLocations.includes(location)) {
-      updatedSelectedLocations = selectedLocations.filter(
-        (selectedLocation) => selectedLocation !== location
-      )
-    } else {
-      updatedSelectedLocations = [...selectedLocations, location]
-    }
-    setSelectedLocations(updatedSelectedLocations)
-  }
 
   // Sort standard data
   const sortData = (sortType, setSort, data) => {
@@ -134,7 +101,51 @@ export default function LocationsTable ({
   }
 
   const sortLinkedContacts = () => {
-    // TODO when linked contacts are available
+    if (linkedContactsSort === 'none' || linkedContactsSort === 'descending') {
+      setLinkedContactsSort('ascending')
+      setFilteredLocations(
+        [...filteredLocations].sort((a, b) => {
+          if (a.meta_data.location_additional.linked_contacts === null && b.meta_data.location_additional.linked_contacts === null) return 0
+          if (a.meta_data.location_additional.linked_contacts === null) return 1
+          if (b.meta_data.location_additional.linked_contacts === null) return -1
+          return a.meta_data.location_additional.linked_contacts > b.meta_data.location_additional.linked_contacts ? 1 : -1
+        })
+      )
+    }
+    if (linkedContactsSort === 'ascending') {
+      setLinkedContactsSort('descending')
+      setFilteredLocations(
+        [...filteredLocations].sort((a, b) => {
+          if (a.meta_data.location_additional.linked_contacts === null && b.meta_data.location_additional.linked_contacts === null) return 0
+          if (a.meta_data.location_additional.linked_contacts === null) return 1
+          if (b.meta_data.location_additional.linked_contacts === null) return -1
+          return a.meta_data.location_additional.linked_contacts < b.meta_data.location_additional.linked_contacts ? 1 : -1
+        })
+      )
+    }
+  }
+
+  const handleHeaderCheckboxChange = (event) => {
+    const isChecked = event.target.checked
+    setIsTopCheckboxChecked(isChecked)
+    if (isChecked) {
+      setSelectedLocations(displayedLocations)
+    } else {
+      setSelectedLocations([])
+    }
+  }
+
+  const handleLocationSelected = (location) => {
+    let updatedSelectedLocations = []
+
+    if (selectedLocations.includes(location)) {
+      updatedSelectedLocations = selectedLocations.filter(
+        (selectedLocation) => selectedLocation !== location
+      )
+    } else {
+      updatedSelectedLocations = [...selectedLocations, location]
+    }
+    setSelectedLocations(updatedSelectedLocations)
   }
 
   const viewLocation = (e, location) => {
@@ -143,51 +154,22 @@ export default function LocationsTable ({
     navigate(orgManageLocationsUrls.view.viewLocation)
   }
 
-  const updateMessageSettings = (e, location) => {
-    // TODO
-  }
-
   const linkToContacts = (e, location) => {
     // TODO
   }
 
-  const deleteLocation = (e, location) => {
-    setDialog({
-      show: true,
-      text: (
-        <>
-          If you continue {location.meta_data.location_additional.location_name}{' '}
-          will be deleted from this account and will not get flood messages.
-        </>
-      ),
-      title: 'Delete location',
-      buttonText: 'Delete location',
-      buttonClass: 'govuk-button--warning',
-      input: '',
-      textInput: '',
-      setTextInput: '',
-      charLimit: 0,
-      error: ''
-    })
-  }
-
-  const handleDelete = () => {
-    setDialog({ ...dialog, show: false })
+  const updateMessageSettings = (e, location) => {
+    // TODO
   }
 
   return (
     <>
-      <p
-        className='govuk-!-margin-bottom-3'
-        style={{ display: 'flex', color: '#505a5f' }}
-      >
-        {locations.length !== displayedLocations.length &&
-          'Showing ' + displayedLocations.length + ' of '}
-        {locations.length} {locations.length === 1 ? 'location' : 'locations'}
+      <p className='govuk-!-margin-bottom-6 locations-table-panel'>
+        {filteredLocations.length} {filteredLocations.length === 1 ? 'location' : 'locations'}{' '}
         <span style={{ margin: '0 20px' }}>|</span>
         <span style={{ color: '#1d70b8' }}>
           {selectedLocations.length}{' '}
-          {selectedLocations.length === 1 ? 'location' : 'locations'} selected
+          {selectedLocations.length === 1 ? 'location' : 'locations'} selected{' '}
         </span>
         <span style={{ margin: '0 20px' }}>|</span>
         <img src={locationPin} alt='Location pin icon' />
@@ -342,10 +324,7 @@ export default function LocationsTable ({
                   </div>
                 </div>
               </th>
-              <td
-                className='govuk-table__cell'
-                style={{ verticalAlign: 'middle' }}
-              >
+              <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'
                   onClick={(e) => viewLocation(e, location)}
@@ -353,22 +332,13 @@ export default function LocationsTable ({
                   {location.meta_data.location_additional.location_name}
                 </Link>
               </td>
-              <td
-                className='govuk-table__cell'
-                style={{ verticalAlign: 'middle' }}
-              >
+              <td className='govuk-table__cell'>
                 {location.meta_data.location_additional.location_type}
               </td>
-              <td
-                className='govuk-table__cell'
-                style={{ verticalAlign: 'middle' }}
-              >
+              <td className='govuk-table__cell'>
                 {location.meta_data.location_additional.business_criticality}
               </td>
-              <td
-                className='govuk-table__cell'
-                style={{ verticalAlign: 'middle' }}
-              >
+              <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'
                   onClick={(e) => updateMessageSettings(e, location)}
@@ -376,71 +346,35 @@ export default function LocationsTable ({
                   {location.alert_categories.length > 0 ? 'Yes' : 'No'}
                 </Link>
               </td>
-              <td
-                className='govuk-table__cell'
-                style={{ verticalAlign: 'middle' }}
-              >
+              <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'
                   onClick={(e) => linkToContacts(e, location)}
                 >
-                  0
+                  {location.meta_data.location_additional.linked_contacts.length}
                 </Link>
               </td>
-              <td
-                className='govuk-table__cell'
-                style={{ verticalAlign: 'middle' }}
-              >
+              <td className='govuk-table__cell'>
                 <span
                   className={`flood-risk-container ${location.riverSeaRisk?.className}`}
                 >
                   {location.riverSeaRisk?.title}
                 </span>
               </td>
-              <td
-                className='govuk-table__cell'
-                style={{ verticalAlign: 'middle' }}
-              >
+              <td className='govuk-table__cell'>
                 <span
                   className={`flood-risk-container ${location.groundWaterRisk?.className}`}
                 >
                   {location.groundWaterRisk?.title}
                 </span>
               </td>
-              <td
-                className='govuk-table__cell'
-                style={{ verticalAlign: 'middle' }}
-              >
-                <Link
-                  className='govuk-link'
-                  onClick={(e) => deleteLocation(e, location)}
-                >
+              <td className='govuk-table__cell'>
+                <Link onClick={(e) => onAction(e, 'delete', location)}>
                   Delete
                 </Link>
               </td>
             </tr>
           ))}
-          {dialog.show && (
-            <>
-              <Popup
-                onDelete={() => handleDelete()}
-                onClose={() => setDialog({ ...dialog, show: false })}
-                title={dialog.title}
-                popupText={dialog.text}
-                buttonText={dialog.buttonText}
-                buttonClass={dialog.buttonClass}
-                input={dialog.input}
-                // textInput={updatedKeyword}
-                // setTextInput={setUpdatedKeyword}
-                charLimit={dialog.charLimit}
-                error={dialog.error}
-                setError={(val) =>
-                  setDialog((dial) => ({ ...dial, error: val }))}
-                // validateInput={() => validateInput()}
-                // defaultValue={dialog.input ? targetKeyword.name : ''}
-              />
-            </>
-          )}
         </tbody>
       </table>
     </>

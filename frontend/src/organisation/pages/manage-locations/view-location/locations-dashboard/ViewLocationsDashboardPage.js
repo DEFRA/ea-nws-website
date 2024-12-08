@@ -1,7 +1,13 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router'
+import { useDispatch, useSelector } from 'react-redux'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../common/components/gov-uk/Button'
+import Popup from '../../../../../common/components/custom/Popup'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
+import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
+import BackLink from '../../../../../common/components/custom/BackLink'
+import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import {
@@ -12,13 +18,52 @@ import { orgManageLocationsUrls } from '../../../..//routes/manage-locations/Man
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import LocationsTable from './dashboard-components/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
+import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 
 export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const [notificationText, setNotificationText] = useState('')
   const [selectedLocations, setSelectedLocations] = useState([])
   const [filteredLocations, setFilteredLocations] = useState([])
+  const [targetLocation, setTargetLocation] = useState(null)
+  const [currentPage, setCurrentPage] = useState(1)
+  const [resetPaging, setResetPaging] = useState(false)
+  const [holdPage, setHoldPage] = useState(0)
   const [isFilterVisible, setIsFilterVisible] = useState(false)
+  const [displayedLocations, setDisplayedLocations] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
+  const [dialog, setDialog] = useState({
+    show: false,
+    text: '',
+    title: '',
+    buttonText: '',
+    buttonClass: '',
+    input: '',
+    charLimit: 0,
+    error: ''
+  })
+
+  const locationsPerPage = 10
+
+  useEffect(() => {
+    setFilteredLocations(locations)
+  }, [])
+
+  useEffect(() => {
+    setCurrentPage(1)
+    setSelectedLocations([])
+  }, [resetPaging])
+
+  useEffect(() => {
+    setDisplayedLocations(
+      filteredLocations.slice(
+        (currentPage - 1) * locationsPerPage,
+        currentPage * locationsPerPage
+      )
+    )
+  }, [filteredLocations, currentPage])
 
   useEffect(() => {
     const l = [
@@ -42,8 +87,9 @@ export default function ViewLocationsDashboardPage () {
             action_plan: '1. Dont panic!',
             notes:
               'John Smith has the flood plan for this location. His contact number is 01234 567 890',
-            keywords: '["Midlands"]',
-            location_data_type: LocationDataType.X_AND_Y_COORDS
+            keywords: ['East'],
+            location_data_type: LocationDataType.X_AND_Y_COORDS,
+            linked_contacts: ['Mary', 'John']
           }
         }
       },
@@ -66,8 +112,9 @@ export default function ViewLocationsDashboardPage () {
             location_type: '',
             action_plan: '',
             notes: '',
-            keywords: '',
-            location_data_type: LocationDataType.X_AND_Y_COORDS
+            keywords: ['North'],
+            location_data_type: LocationDataType.X_AND_Y_COORDS,
+            linked_contacts: ['Mary', 'John']
           }
         }
       },
@@ -91,8 +138,10 @@ export default function ViewLocationsDashboardPage () {
             location_type: 'Warehouse',
             action_plan: '',
             notes: '',
-            keywords: '',
-            location_data_type: LocationDataType.SHAPE_POLYGON
+            keywords: ['South'],
+            location_data_type: LocationDataType.SHAPE_POLYGON,
+            // linked_contacts: []
+            linked_contacts: ['Mary', 'John']
           }
         }
       },
@@ -116,8 +165,9 @@ export default function ViewLocationsDashboardPage () {
             location_type: '',
             action_plan: '',
             notes: '',
-            keywords: '',
-            location_data_type: LocationDataType.SHAPE_LINE
+            keywords: ['West'],
+            location_data_type: LocationDataType.SHAPE_LINE,
+            linked_contacts: ['Mary']
           }
         }
       },
@@ -141,454 +191,15 @@ export default function ViewLocationsDashboardPage () {
             location_type: '',
             action_plan: '',
             notes: '',
-            keywords: '',
-            location_data_type: LocationDataType.BOUNDARY
+            keywords: ['East', 'North'],
+            location_data_type: LocationDataType.BOUNDARY,
+            // linked_contacts: []
+            linked_contacts: ['Mary', 'John']
           }
         }
       }
-      // {
-      //   name: 'Location_ID7',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: [],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'Low',
-      //       location_type: 'Office',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID8',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: ['Warning'],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'High',
-      //       location_type: 'Warehouse',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID9',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: ['Warning', 'Alert'],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'Medium',
-      //       location_type: 'Retail space',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID10',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: ['Warning'],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'Low',
-      //       location_type: 'Warehouse',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID11',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: ['Warning', 'Alert'],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'Medium',
-      //       location_type: 'Office',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID12',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: ['Alert'],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'High',
-      //       location_type: 'Warehouse',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID13',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: ['Warning'],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'Low',
-      //       location_type: 'Retail space',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID14',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: [],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'Medium',
-      //       location_type: 'Warehouse',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID15',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: ['Warning', 'Alert'],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'Low',
-      //       location_type: 'Office',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID16',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: [],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'High',
-      //       location_type: 'Warehouse',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID17',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: ['Warning'],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'Medium',
-      //       location_type: 'Warehouse',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID18',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: ['Alert'],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'Low',
-      //       location_type: 'Retail space',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID19',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: ['Warning', 'Alert'],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'Medium',
-      //       location_type: 'Office',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID20',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: ['Warning'],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'High',
-      //       location_type: 'Warehouse',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID21',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: [],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'Low',
-      //       location_type: 'Retail space',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID22',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: ['Warning', 'Alert'],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'High',
-      //       location_type: 'Warehouse',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID23',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: ['Warning'],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'Medium',
-      //       location_type: 'Warehouse',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID24',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: ['Alert'],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'Low',
-      //       location_type: 'Office',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID25',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: ['Warning', 'Alert'],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'Medium',
-      //       location_type: 'Retail space',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID26',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: ['Alert'],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'High',
-      //       location_type: 'Warehouse',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID27',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: ['Warning'],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'Low',
-      //       location_type: 'Warehouse',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // },
-      // {
-      //   name: 'Location_ID28',
-      //   address: 'some address',
-      //   coordinates: ['lat', 'lng'],
-      //   alert_categories: ['Warning', 'Alert'],
-      //   meta_data: {
-      //     location_additional: {
-      //       full_address: 'some address',
-      //       postcode: 'some postcode',
-      //       x_coordinate: 'lat',
-      //       y_coordinate: 'lng',
-      //       internal_reference: 'reference',
-      //       business_criticality: 'Medium',
-      //       location_type: 'Office',
-      //       action_plan: 'action plan',
-      //       notes: 'some notes',
-      //       keywords: 'keywords'
-      //     }
-      //   }
-      // }
     ]
 
-    // TODO: There is some duplication in this function with RiskCategoryLabel. Combine when working
     const updateLocationData = async () => {
       const riverSeaRisks = await Promise.all(
         l.map((location) =>
@@ -657,19 +268,11 @@ export default function ViewLocationsDashboardPage () {
 
     return riskData[riskCategory]
   }
-
-  const [currentPage, setCurrentPage] = useState(1)
-  const [resetPaging, setResetPaging] = useState(false)
-  const locationsPerPage = 10
-  const displayedLocations = filteredLocations.slice(
-    (currentPage - 1) * locationsPerPage,
-    currentPage * locationsPerPage
-  )
-
-  useEffect(() => {
-    setCurrentPage(1)
-    setSelectedLocations([])
-  }, [resetPaging])
+    
+  const moreActions = [
+    'Link selected to locations',
+    'Delete selected'
+  ]
 
   // selected filters
   const [selectedLocationTypeFilters, setSelectedLocationTypeFilters] =
@@ -679,6 +282,10 @@ export default function ViewLocationsDashboardPage () {
     setSelectedFloodMessagesAvailableFilters
   ] = useState([])
   const [
+    selectedFloodMessagesSentFilters,
+    setSelectedFloodMessagesSentFilters
+  ] = useState([])
+  const [
     selectedBusinessCriticalityFilters,
     setSelectedBusinessCriticalityFilters
   ] = useState([])
@@ -686,119 +293,293 @@ export default function ViewLocationsDashboardPage () {
     useState([])
   const [selectedGroundWaterRiskFilters, setSelectedGroundWaterRiskFilters] =
     useState([])
+  const [selectedKeywordFilters, setSelectedKeywordFilters] =
+    useState([])
+  const [selectedLinkedFilters, setSelectedLinkedFilters] =
+    useState([])
 
-  const table = (
-    <>
-      <Button
-        text={isFilterVisible ? 'Close filter' : 'Open filter'}
-        className='govuk-button govuk-button--secondary inline-block'
-        onClick={() => setIsFilterVisible(!isFilterVisible)}
-      />
-      &nbsp; &nbsp;
-      {/* TODO: Implement as dropdown */}
-      <Button
-        text='More actions'
-        className='govuk-button govuk-button--secondary inline-block'
-      />
-      &nbsp; &nbsp;
-      <Button
-        text='Print'
-        className='govuk-button govuk-button--secondary inline-block'
-        // TODO:
-        onClick={() => window.print()}
-      />
-      <LocationsTable
-        locations={locations}
-        displayedLocations={displayedLocations}
-        filteredLocations={filteredLocations}
-        selectedLocations={selectedLocations}
-        setSelectedLocations={setSelectedLocations}
-        setFilteredLocations={setFilteredLocations}
-        resetPaging={resetPaging}
-        setResetPaging={setResetPaging}
-      />
-      <Pagination
-        totalPages={Math.ceil(filteredLocations.length / locationsPerPage)}
-        onPageChange={(val) => setCurrentPage(val)}
-      />
-    </>
-  )
+  const deleteDialog = (locationToBeDeleted) => {
+    setDialog({
+      show: true,
+      text: (
+        <>
+          If you continue {locationToBeDeleted.meta_data.location_additional.location_name} will be deleted from this account and will
+          not get flood messages.
+        </>
+      ),
+      title: 'Delete location',
+      buttonText: 'Delete location',
+      buttonClass: 'govuk-button--warning'
+    })
+  }
+
+  const selectDeleteDialog = () => {
+    if (selectedLocations && selectedLocations.length > 0) {
+      setDialog({
+        show: true,
+        text: (
+          <>
+            If you continue {selectedLocations.length} {selectedLocations.length > 1 ? 'locations' : 'location'} will be deleted from this account and
+            will not get flood messages.
+          </>
+        ),
+        title: `Delete ${selectedLocations.length} ${selectedLocations.length > 1 ? 'locations' : 'location'}`,
+        buttonText: 'Delete locations',
+        buttonClass: 'govuk-button--warning'
+      })
+    }
+  }
+
+  const onAction = (e, action, location) => {
+    setTargetLocation(location)
+    if (action === 'view') {
+      e.preventDefault()
+      dispatch(setCurrentLocation(location))
+      navigate(orgManageLocationsUrls.view.viewLocation)
+    } else {
+      deleteDialog(location)
+    }
+  }
+
+  const onMoreAction = (index) => {
+    if (index === 0) {
+      // TODO - linking
+    } else if (index === 1) {
+      selectDeleteDialog()
+    }
+  }
+
+  const onClickLinked = (type) => {
+    const updatedFilteredLocations = locations.filter((location) =>
+      (type === 'messages' && location.alert_categories.length > 0) ||
+      (type === 'links' && location.meta_data.location_additional.linked_contacts.length > 0) ||
+      (type === 'no-links' && location.meta_data.location_additional.linked_contacts.length === 0) ||
+      (type === 'high-medium-risk' && 
+        (location.riverSeaRisk?.title === 'Medium risk' || location.riverSeaRisk?.title === 'High risk') &&
+        location.alert_categories.length === 0) ||
+      (type === 'low-risk' && 
+        location.riverSeaRisk?.title === 'Low risk' &&
+        location.alert_categories.length === 0)
+    )
+
+    let selectedFilterType = []
+    if (type === 'links') {
+      selectedFilterType = 'Yes'
+    } else {
+      selectedFilterType = 'No'
+    }
+
+    setSelectedFilters([])
+
+    setSelectedLocationTypeFilters([])
+    setSelectedBusinessCriticalityFilters([])
+    setSelectedKeywordFilters([])
+    setSelectedGroundWaterRiskFilters([])
+    setSelectedRiverSeaRiskFilters([])
+    setSelectedFloodMessagesAvailableFilters([])
+
+    setSelectedLinkedFilters([selectedFilterType])
+    setSelectedFilters([selectedFilterType])
+    setIsFilterVisible(true)
+
+    setFilteredLocations([...updatedFilteredLocations])
+
+    setResetPaging(!resetPaging)
+  }
+
+  const onOpenCloseFilter = () => {
+    setHoldPage(currentPage)
+    setIsFilterVisible(!isFilterVisible)
+  }
+
+  const removeLocations = (locationsToRemove) => {
+    const updatedLocations = locations.filter(
+      (location) => !locationsToRemove.includes(location)
+    )
+    const updatedFilteredLocations = filteredLocations.filter(
+      (location) => !locationsToRemove.includes(location)
+    )
+
+    // dispatch(setLocations(updatedLocations))
+    setLocations([...updatedLocations])
+    setFilteredLocations([...updatedFilteredLocations])
+
+    setNotificationText(locationsToRemove.length > 1 ? 'Locations deleted' : 'Location deleted')
+
+    setDialog({ ...dialog, show: false })
+    setTargetLocation(null)
+    setSelectedLocations([])
+
+    setResetPaging(!resetPaging)
+  }
+    
+  const handleDelete = () => {
+    if (targetLocation) {
+      removeLocations([targetLocation])
+      if (selectedLocations.length > 0) {
+        const updatedSelectedLocations = selectedLocations.filter(location => location !== targetLocation)
+        setSelectedLocations(updatedSelectedLocations)
+      }
+    } else if (selectedLocations.length > 0) {
+      const locationsToRemove = [...selectedLocations]
+      removeLocations(locationsToRemove)
+    }
+  }
+
+  const navigateBack = (event) => {
+    event.preventDefault()
+    navigate(-1)
+  }
 
   return (
     <>
-      <OrganisationAccountNavigation
-        currentPage={orgManageLocationsUrls.view.dashboard}
-      />
+      <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <DashboardHeader locations={locations} />
+          {notificationText && (
+            <NotificationBanner
+              className='govuk-notification-banner govuk-notification-banner--success'
+              title='Success'
+              text={notificationText}
+            />
+          )}
+          <DashboardHeader
+            locations={locations}
+            onClickLinked={onClickLinked}
+          />
           <div className='govuk-grid-column-full govuk-body'>
-            {!isFilterVisible ? (
-              <>{table}</>
-            ) : (
-              <div className='govuk-grid-row'>
-                <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 locations-filter-container'>
-                  <SearchFilter
+            {!isFilterVisible
+              ? (
+                <>
+                  <Button
+                    text='Open filter'
+                    className='govuk-button govuk-button--secondary inline-block'
+                    onClick={() => onOpenCloseFilter()}
+                  />
+                  &nbsp; &nbsp;
+                  <ButtonMenu
+                    title='More actions'
+                    options={moreActions}
+                    onSelect={(index) => onMoreAction(index)}
+                  />
+                  &nbsp; &nbsp;
+                  <Button
+                    text='Print'
+                    className='govuk-button govuk-button--secondary inline-block'
+                    // onClick={() => setIsFilterVisible(!isFilterVisible)}
+                  />
+                  <LocationsTable
                     locations={locations}
+                    displayedLocations={displayedLocations}
+                    filteredLocations={filteredLocations}
+                    selectedLocations={selectedLocations}
+                    setLocations={setLocations}
+                    setSelectedLocations={setSelectedLocations}
                     setFilteredLocations={setFilteredLocations}
                     resetPaging={resetPaging}
                     setResetPaging={setResetPaging}
-                    selectedFilters={selectedFilters}
-                    setSelectedFilters={setSelectedFilters}
-                    selectedLocationTypeFilters={selectedLocationTypeFilters}
-                    setSelectedLocationTypeFilters={
-                      setSelectedLocationTypeFilters
-                    }
-                    selectedBusinessCriticalityFilters={
-                      selectedBusinessCriticalityFilters
-                    }
-                    setSelectedBusinessCriticalityFilters={
-                      setSelectedBusinessCriticalityFilters
-                    }
-                    // TODO
-                    // selectedKeywordsFilters={
-                    //   selectedKeywordsFilters
-                    // }
-                    // setSelectedKeywordsFilters={
-                    //   setSelectedKeywordsFilters
-                    // }
-                    selectedGroundWaterRiskFilters={
-                      selectedGroundWaterRiskFilters
-                    }
-                    setSelectedGroundWaterRiskFilters={
-                      setSelectedGroundWaterRiskFilters
-                    }
-                    selectedRiverSeaRiskFilters={selectedRiverSeaRiskFilters}
-                    setSelectedRiverSeaRiskFilters={
-                      setSelectedRiverSeaRiskFilters
-                    }
-                    selectedFloodMessagesAvailableFilters={
-                      selectedFloodMessagesAvailableFilters
-                    }
-                    setSelectedFloodMessagesAvailableFilters={
-                      setSelectedFloodMessagesAvailableFilters
-                    }
-                    // TODO
-                    // selectedFloodMessagesSentFilters={
-                    //   selectedFloodMessagesSentFilters
-                    // }
-                    // setSelectedFloodMessagesSentFilters={
-                    //   setSelectedFloodMessagesSentFilters
-                    // }
-                    // selectedLinkedContactsFilters={
-                    //   selectedLinkedContactsFilters
-                    // }
-                    // setSelectedLinkedContactsFilters={
-                    //   setSelectedLinkedContactsFilters
-                    // }
+                    onAction={onAction}
                   />
-                </div>
+                  <Pagination
+                    totalPages={Math.ceil(
+                      filteredLocations.length / locationsPerPage
+                    )}
+                    onPageChange={(val) => setCurrentPage(val)}
+                    holdPage={holdPage}
+                    setHoldPage={setHoldPage}
+                    pageList
+                    reset={resetPaging}
+                  />
+                </>
+                )
+              : (
+                <div className='govuk-grid-row'>
+                  <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 locations-filter-container'>
+                    <SearchFilter
+                      locations={locations}
+                      setFilteredLocations={setFilteredLocations}
+                      resetPaging={resetPaging}
+                      setResetPaging={setResetPaging}
+                      selectedFilters={selectedFilters}
+                      setSelectedFilters={setSelectedFilters}
+                      selectedLocationTypeFilters={selectedLocationTypeFilters}
+                      setSelectedLocationTypeFilters={setSelectedLocationTypeFilters}
+                      selectedBusinessCriticalityFilters={selectedBusinessCriticalityFilters}
+                      setSelectedBusinessCriticalityFilters={setSelectedBusinessCriticalityFilters}
+                      selectedKeywordFilters={selectedKeywordFilters}
+                      setSelectedKeywordFilters={setSelectedKeywordFilters}
+                      selectedGroundWaterRiskFilters={selectedGroundWaterRiskFilters}
+                      setSelectedGroundWaterRiskFilters={setSelectedGroundWaterRiskFilters}
+                      selectedRiverSeaRiskFilters={selectedRiverSeaRiskFilters}
+                      setSelectedRiverSeaRiskFilters={setSelectedRiverSeaRiskFilters}
+                      selectedFloodMessagesAvailableFilters={selectedFloodMessagesAvailableFilters}
+                      setSelectedFloodMessagesAvailableFilters={setSelectedFloodMessagesAvailableFilters}
+                      selectedFloodMessagesSentFilters={selectedFloodMessagesSentFilters}
+                      setSelectedFloodMessagesSentFilters={setSelectedFloodMessagesSentFilters}
+                      selectedLinkedFilters={selectedLinkedFilters}
+                      setSelectedLinkedFilters={setSelectedLinkedFilters}
+                    />
+                  </div>
 
-                <div className='govuk-grid-column-three-quarters'>
-                  <>{table}</>
+                  <div className='govuk-grid-column-three-quarters'>
+                    <div className='govuk-grid-row'>
+                      <Button
+                        text='Close Filter'
+                        className='govuk-button govuk-button--secondary'
+                        onClick={() => onOpenCloseFilter()}
+                      />
+                        &nbsp; &nbsp;
+                      <ButtonMenu
+                        title='More actions'
+                        options={moreActions}
+                        onSelect={(index) => onMoreAction(index)}
+                      />
+                        &nbsp; &nbsp;
+                      <Button
+                        text='Print'
+                        className='govuk-button govuk-button--secondary inline-block'
+                      />
+                    </div>
+                    <LocationsTable
+                      locations={locations}
+                      displayedLocations={displayedLocations}
+                      filteredLocations={filteredLocations}
+                      selectedLocations={selectedLocations}
+                      setLocations={setLocations}
+                      setSelectedLocations={setSelectedLocations}
+                      setFilteredLocations={setFilteredLocations}
+                      resetPaging={resetPaging}
+                      setResetPaging={setResetPaging}
+                      onAction={onAction}
+                    />
+                    <Pagination
+                      totalPages={Math.ceil(
+                        filteredLocations.length / locationsPerPage
+                      )}
+                      onPageChange={(val) => setCurrentPage(val)}
+                      holdPage={holdPage}
+                      setHoldPage={setHoldPage}
+                      pageList
+                      reset={resetPaging}
+                    />
+                  </div>
                 </div>
-              </div>
+                )}
+            {dialog.show && (
+              <>
+                <Popup
+                  onDelete={() => handleDelete()}
+                  onClose={() => setDialog({ ...dialog, show: false })}
+                  title={dialog.title}
+                  popupText={dialog.text}
+                  buttonText={dialog.buttonText}
+                  buttonClass={dialog.buttonClass}
+                  setError={(val) =>
+                    setDialog((dial) => ({ ...dial, error: val }))}
+                  defaultValue={dialog.input ? targetLocation.name : ''}
+                />
+              </>
             )}
           </div>
         </div>

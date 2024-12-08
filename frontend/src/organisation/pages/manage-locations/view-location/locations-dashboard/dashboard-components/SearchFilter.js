@@ -21,20 +21,18 @@ export default function SearchFilter ({
   setSelectedLocationTypeFilters,
   selectedBusinessCriticalityFilters,
   setSelectedBusinessCriticalityFilters,
-  // TODO
-  // selectedKeywordsFilters,
-  // setSelectedKeywordsFilters,
+  selectedKeywordFilters,
+  setSelectedKeywordFilters,
   selectedGroundWaterRiskFilters,
   setSelectedGroundWaterRiskFilters,
   selectedRiverSeaRiskFilters,
   setSelectedRiverSeaRiskFilters,
   selectedFloodMessagesAvailableFilters,
-  setSelectedFloodMessagesAvailableFilters
-  // TODO
-  // selectedFloodMessagesSentFilters,
-  // setSelectedFloodMessagesSentFilters,
-  // selectedLinkedContactsFilters,
-  // setSelectedLinkedContactsFilters,
+  setSelectedFloodMessagesAvailableFilters,
+  selectedFloodMessagesSentFilters,
+  setSelectedFloodMessagesSentFilters,
+  selectedLinkedFilters,
+  setSelectedLinkedFilters,
 }) {
   // filters
   const [locationNameFilter, setLocationNameFilter] = useState('')
@@ -46,8 +44,11 @@ export default function SearchFilter ({
         .filter((locationType) => locationType) // filters out undefined entries
     )
   ]
+
   // the below probably needs updated unless it can only be Yes or No
   const floodMessagesAvailable = ['Yes', 'No']
+  const floodMessagesSent = []
+
   const businessCriticality = [
     ...new Set(
       locations
@@ -75,14 +76,26 @@ export default function SearchFilter ({
     )
   ]
 
+  const keywords = [
+    ...new Set(
+      locations.flatMap(location => location.meta_data.location_additional.keywords)
+    )
+  ]
+
+  const linkedLocations = [
+    ...new Set(['No', 'Yes'])
+  ]
+
   // Visibility filters
   const [locationNameVisible, setLocationNameVisible] = useState(false)
-  const [locationTypeVisible, setLocationTypeVisible] = useState(false)
-  const [floodMessagesVisible, setFloodMessagesVisible] = useState(false)
-  const [businessCriticalityVisible, setBusinessCriticalityVisible] =
-    useState(false)
-  const [riverSeaRiskVisible, setRiverSeaRiskVisible] = useState(false)
-  const [groundWaterRiskVisible, setGroundWaterRiskVisible] = useState(false)
+  const [locationTypeVisible, setLocationTypeVisible] = useState(selectedLocationTypeFilters.length > 0)
+  const [floodMessagesAvailableVisible, setFloodMessagesAvailableVisible] = useState(selectedFloodMessagesAvailableFilters > 0)
+  const [floodMessagesSentVisible, setFloodMessagesSentVisible] = useState(selectedFloodMessagesSentFilters > 0)
+  const [businessCriticalityVisible, setBusinessCriticalityVisible] = useState(selectedBusinessCriticalityFilters > 0)
+  const [riverSeaRiskVisible, setRiverSeaRiskVisible] = useState(selectedRiverSeaRiskFilters > 0)
+  const [groundWaterRiskVisible, setGroundWaterRiskVisible] = useState(selectedGroundWaterRiskFilters > 0)
+  const [keywordVisible, setKeywordVisible] = useState(selectedKeywordFilters.length > 0)
+  const [linkedVisible, setLinkedVisible] = useState(selectedLinkedFilters.length > 0)
 
   // handle filters applied
   const handleFilterChange = (e, setFilters) => {
@@ -107,8 +120,7 @@ export default function SearchFilter ({
     if (locationNameFilter) {
       filteredLocations = filteredLocations.filter((location) =>
         location.location_additional.location_name
-          .toLowerCase()
-          .includes(locationNameFilter.toLowerCase())
+          .includes(locationNameFilter)
       )
     }
 
@@ -160,7 +172,24 @@ export default function SearchFilter ({
     // Apply ground water risk filter
     if (selectedGroundWaterRiskFilters.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
-        selectedGroundWaterRiskFilters.includes(location.groundWaterRisk.title)
+        selectedGroundWaterRiskFilters.includes(location.groundWaterRisk?.title)
+      )
+    }
+
+    // Apply keyword filter
+    if (selectedKeywordFilters.length > 0) {
+      filteredLocations = filteredLocations.filter((location) =>
+        selectedKeywordFilters.some(
+          keyword => location.meta_data.location_additional.keywords.includes(keyword)
+        )
+      )
+    }
+
+    // Apply linked locations filter
+    if (selectedLinkedFilters.length > 0) {
+      filteredLocations = filteredLocations.filter((location) =>
+        (selectedLinkedFilters.includes('Yes') && location.meta_data.location_additional.linked_contacts.length > 0) ||
+        (selectedLinkedFilters.includes('No') && location.meta_data.location_additional.linked_contacts.length === 0)
       )
     }
 
@@ -174,34 +203,42 @@ export default function SearchFilter ({
     setSelectedFilters([])
     setSelectedLocationTypeFilters([])
     setSelectedFloodMessagesAvailableFilters([])
+    setSelectedFloodMessagesSentFilters([])
     setSelectedBusinessCriticalityFilters([])
     setSelectedRiverSeaRiskFilters([])
     setSelectedGroundWaterRiskFilters([])
+    setSelectedKeywordFilters([])
+    setSelectedLinkedFilters([])
   }
 
   // Location name filter
   const locationNameSearchFilter = (
     <>
-      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3' />
+      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 govuk-!-margin-left-3 govuk-!-margin-right-3' />
       <div
-        className='locations-filter-section'
+        className='locations-filter-name-section'
         onClick={() => setLocationNameVisible(!locationNameVisible)}
       >
         <FontAwesomeIcon
           icon={locationNameVisible ? faAngleUp : faAngleDown}
           size='lg'
         />
-        <p className='locations-filter-title'>Location name</p>
+        <label
+          className='govuk-label'
+          style={{ color: '#1d70b8' }}
+        >
+          Location name
+        </label>
       </div>
-      {locationNameVisible && (
-        <div class='govuk-form-group'>
+      {(locationNameVisible || locationNameVisible.length > 0) && (
+        <div class='govuk-form-group' className='locations-name-filter'>
           <div class='input-with-icon'>
             <FontAwesomeIcon icon={faMagnifyingGlass} className='input-icon' />
             <input
               className='govuk-input govuk-input-icon govuk-!-margin-top-3'
               id='location-name'
               type='text'
-              value={locationNameFilter}
+              value={locationNameVisible}
               onChange={(event) => {
                 setLocationNameFilter(event.target.value)
               }}
@@ -213,7 +250,7 @@ export default function SearchFilter ({
   )
 
   // All other filters
-  const filter = (
+  const otherFilter = (
     filterTitle,
     filterType,
     selectedFilterType,
@@ -223,18 +260,24 @@ export default function SearchFilter ({
   ) => {
     return (
       <>
-        <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3' />
+        <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3 govuk-!-margin-left-3 govuk-!-margin-right-3' />
         <div
-          className='locations-filter-section'
+          className='locations-filter-other-section'
           onClick={() => {
             setVisible(!visible)
           }}
         >
           <FontAwesomeIcon icon={visible ? faAngleUp : faAngleDown} size='lg' />
-          <p className='locations-filter-title'>{filterTitle}</p>
+          &nbsp;
+          <label
+            className='govuk-label'
+            style={{ color: '#1d70b8' }}
+          >
+            {filterTitle}
+          </label>
         </div>
-        {visible && (
-          <div className='govuk-checkboxes govuk-checkboxes--small'>
+        {(visible) && (
+          <div className='govuk-checkboxes govuk-checkboxes--small locations-select-filter'>
             {filterType.map((option) => (
               <CheckBox
                 key={option}
@@ -256,110 +299,107 @@ export default function SearchFilter ({
 
     return (
       <>
-        <h3 className='govuk-heading-s govuk-!-margin-top-5 govuk-!-margin-bottom-2'>
-          {filterName}
-        </h3>
-        {filterArray?.map((filter, index) => (
-          <div key={index} className='filter'>
-            {filter}
-
-            <button
-              className='filter-button'
-              onClick={() => {
-                setFilterArray(filterArray.filter((item) => item !== filter))
-              }}
-            >
-              <FontAwesomeIcon icon={faXmark} />
-            </button>
+        <div className='locations-selected-filter-panel'>
+          <h3 className='govuk-heading-s govuk-!-margin-top-5 govuk-!-margin-bottom-2'>
+            {filterName}
+          </h3>
+          <div className='locations-selected-filter-row'>
+            {filterArray.map((filter, index) => (
+              <div key={index} className='locations-selected-filter'>
+                <label className='govuk-label locations-selected-filter-label'>
+                  {filter}&nbsp;
+                </label>
+                <FontAwesomeIcon
+                  icon={faXmark} className='locations-selected-filter-icon'
+                  onClick={() => {
+                    setFilterArray(filterArray.filter((item) => item !== filter))
+                  }}
+                />
+              </div>
+            ))}
           </div>
-        ))}
+        </div>
       </>
     )
   }
 
   return (
     <>
-      <div className='locations-filter-header'>
-        <h1 className='govuk-heading-m govuk-!-margin-bottom-2'>Filter</h1>
-      </div>
-
-      {/* Selected filters */}
-      {selectedFilters?.length > 0 && (
-        <div className='locations-filter-selected'>
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center'
-            }}
-          >
-            <h2 className='govuk-heading-s' style={{ marginBottom: '0' }}>
-              Selected filters
-            </h2>
-            <Link
-              onClick={clearFilters}
-              className='govuk-body govuk-link inline-link'
-              style={{ marginLeft: 'auto', marginBottom: '0' }}
-            >
-              Clear filters
-            </Link>
-          </div>
-          {selectedFilterContents(
-            'Location type',
-            selectedLocationTypeFilters,
-            setSelectedLocationTypeFilters
-          )}
-          {selectedFilterContents(
-            'Business criticality',
-            selectedBusinessCriticalityFilters,
-            setSelectedBusinessCriticalityFilters
-          )}
-          {/* TODO */}
-          {/* {selectedFilterContents(
-            'Keywords',
-            selectedKeywordsFilters,
-            setSelectedKeywordsFilters
-          )} */}
-          {selectedFilterContents(
-            'Groundwater flood risk',
-            selectedGroundWaterRiskFilters,
-            setSelectedGroundWaterRiskFilters
-          )}
-          {selectedFilterContents(
-            'Rivers and sea flood risk',
-            selectedRiverSeaRiskFilters,
-            setSelectedRiverSeaRiskFilters
-          )}
-          {selectedFilterContents(
-            'Flood messages available',
-            selectedFloodMessagesAvailableFilters,
-            setSelectedFloodMessagesAvailableFilters
-          )}
-          {/* TODO */}
-          {/* {selectedFilterContents(
-            'Flood messages sent',
-            selectedFloodMessagesSentFilters,
-            setSelectedFloodMessagesSentFilters
-          )}
-          {selectedFilterContents(
-            'Linked to contact',
-            selectedLinkedContactsFilters,
-            setSelectedLinkedContactsFilters
-          )} */}
+      <div className='locations-filter-panel'>
+        <div className='locations-filter-header'>
+          <h1 className='govuk-heading-m govuk-!-margin-bottom-2'>Filter</h1>
         </div>
-      )}
 
-      <div className=' govuk-!-margin-top-6'>
-        <Button
-          text='Apply Filter'
-          className='govuk-button govuk-button--primary'
-          onClick={() => filterLocations()}
-        />
-      </div>
+        {/* Selected filters */}
+        {selectedFilters?.length > 0 && (
+          <div className='locations-selected-filters-panel'>
+            <div className='locations-selected-filters-section'>
+              <h2 className='govuk-heading-s' style={{ marginBottom: '0' }}>
+                Selected filters
+              </h2>
+              <Link
+                onClick={clearFilters}
+                className='govuk-body govuk-link inline-link'
+                style={{ marginLeft: 'auto', marginBottom: '0' }}
+              >
+                Clear filters
+              </Link>
+            </div>
+            {selectedFilterContents(
+              'Location type',
+              selectedLocationTypeFilters,
+              setSelectedLocationTypeFilters
+            )}
+            {selectedFilterContents(
+              'Business criticality',
+              selectedBusinessCriticalityFilters,
+              setSelectedBusinessCriticalityFilters
+            )}
+            {selectedFilterContents(
+              'Keywords',
+              selectedKeywordFilters,
+              setSelectedKeywordFilters
+            )}
+            {selectedFilterContents(
+              'Groundwater flood risk',
+              selectedGroundWaterRiskFilters,
+              setSelectedGroundWaterRiskFilters
+            )}
+            {selectedFilterContents(
+              'Rivers and sea flood risk',
+              selectedRiverSeaRiskFilters,
+              setSelectedRiverSeaRiskFilters
+            )}
+            {selectedFilterContents(
+              'Flood messages available',
+              selectedFloodMessagesAvailableFilters,
+              setSelectedFloodMessagesAvailableFilters
+            )}
+            {selectedFilterContents(
+              'Flood messages sent',
+              selectedFloodMessagesSentFilters,
+              setSelectedFloodMessagesSentFilters
+            )}
+            {selectedFilterContents(
+              'Linked to contacts',
+              selectedLinkedFilters,
+              setSelectedLinkedFilters
+            )}
+          </div>
+        )}
 
-      {/* Filters */}
-      {locationNameSearchFilter}
+        <div className=' govuk-!-margin-top-6 locations-apply-filters'>
+          <Button
+            text='Apply filters'
+            className='govuk-button govuk-button--primary'
+            onClick={() => filterLocations()}
+          />
+        </div>
 
-      {filter(
+        {/* Filters */}
+        {locationNameSearchFilter}
+
+        {otherFilter(
         'Location type',
         locationTypes,
         selectedLocationTypeFilters,
@@ -368,7 +408,7 @@ export default function SearchFilter ({
         setLocationTypeVisible
       )}
 
-      {filter(
+      {otherFilter(
         'Business criticality',
         businessCriticality,
         selectedBusinessCriticalityFilters,
@@ -377,17 +417,16 @@ export default function SearchFilter ({
         setBusinessCriticalityVisible
       )}
 
-      {/* TODO */}
-      {/* {filter(
+      {otherFilter(
         'Keywords',
         keywords,
-        selectedKeywordsFilters,
-        setSelectedKeywordsFilters,
-        keywordsVisible,
-        setKeywordsVisible
-      )} */}
+        selectedKeywordFilters,
+        setSelectedKeywordFilters,
+        keywordVisible,
+        setKeywordVisible
+      )}
 
-      {filter(
+      {otherFilter(
         'Groundwater flood risk',
         groundWaterRisk,
         selectedGroundWaterRiskFilters,
@@ -396,7 +435,7 @@ export default function SearchFilter ({
         setGroundWaterRiskVisible
       )}
 
-      {filter(
+      {otherFilter(
         'Rivers and sea flood risk',
         riverSeaRisk,
         selectedRiverSeaRiskFilters,
@@ -405,17 +444,16 @@ export default function SearchFilter ({
         setRiverSeaRiskVisible
       )}
 
-      {filter(
+      {otherFilter(
         'Flood messages available',
         floodMessagesAvailable,
         selectedFloodMessagesAvailableFilters,
         setSelectedFloodMessagesAvailableFilters,
-        floodMessagesVisible,
-        setFloodMessagesVisible
+        floodMessagesAvailableVisible,
+        setFloodMessagesAvailableVisible
       )}
 
-      {/* TODO */}
-      {/* {filter(
+      {otherFilter(
         'Flood messages sent',
         floodMessagesSent,
         selectedFloodMessagesSentFilters,
@@ -424,14 +462,15 @@ export default function SearchFilter ({
         setFloodMessagesSentVisible
       )}
 
-      {filter(
+      {otherFilter(
         'Linked to contacts',
-        linkedContacts,
-        selectedLinkedContactsFilters,
-        setSelectedLinkedContactsFilters,
-        linkedContactsVisible,
-        setLinkedContactsVisible
-      )} */}
+        linkedLocations,
+        selectedLinkedFilters,
+        setSelectedLinkedFilters,
+        linkedVisible,
+        setLinkedVisible
+      )}
+      </div>
     </>
   )
 }

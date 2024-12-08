@@ -71,6 +71,9 @@ export default function DashboardHeader ({
     navigate(infoUrls.floodAreas)
   }
 
+  // TODO: The banner needs revisiting after the clarifications received from UCD team.
+  // When any count is zero then that section will not display.
+  // Also the links in the banner should perform filtering of the table.
   const FloodBanner = ({ type }) => {
     const count = []
     const message = []

@@ -7,21 +7,21 @@ import NotificationBanner from '../components/gov-uk/NotificationBanner'
 import AlertType from '../enums/AlertType'
 import {
   clearAuth,
-  setAuthToken,
-  setContactKeywords,
-  setContactPreferences,
+  setAuthToken, setContactPreferences,
   setCurrentLocation,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
   setCurrentLocationNorthing,
   setLocationBoundaries,
-  setLocationKeywords,
   setOrgCurrentContact,
+  setContacts,
+  setOrgId,
   setProfile,
   setRegistrations,
   setSelectedBoundary,
   setSelectedBoundaryType
 } from '../redux/userSlice'
+import { backendCall } from '../services/BackendService'
 
 export default function IndexPage () {
   const dispatch = useDispatch()
@@ -37,7 +37,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [{ id: 'signUpComplete', value: { s: 'true' } }],
+    additionals: [{ id: 'signupComplete', value: { s: 'true' } }],
     pois: [
       {
         id: 1,
@@ -74,7 +74,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [{ id: 'signUpComplete', value: { s: 'true' } }],
+    additionals: [{ id: 'signupComplete', value: { s: 'true' } }],
     pois: [
       {
         address: 'Big Ben, London, SW1A 0AA',
@@ -104,7 +104,7 @@ export default function IndexPage () {
     mobilePhones: ['07343 454590', '07889 668367'],
     homePhones: ['01475 721535'],
     language: 'EN',
-    additionals: [{ id: 'signUpComplete', value: { s: 'true' } }],
+    additionals: [{ id: 'signupComplete', value: { s: 'true' } }],
     pois: [
       {
         address: 'Big Ben, London, SW1A 0AA',
@@ -238,7 +238,7 @@ export default function IndexPage () {
   }
 
   const mockOrgOne = {
-    id: '',
+    id: '1',
     enabled: true,
     firstname: 'John',
     lastname: 'Smith',
@@ -266,10 +266,11 @@ export default function IndexPage () {
           })
         }
       },
-      { id: 'signUpComplete', value: { s: 'false' } }
+      { id: 'signupComplete', value: { s: 'false' } }
     ],
     pois: [
       {
+        id: '1',
         address: 'Big Ben, London, SW1A 0AA',
         name: 'UPRN',
         coordinates: {
@@ -278,6 +279,7 @@ export default function IndexPage () {
         }
       },
       {
+        id: '2',
         address: 'Kingfisher Way, London, NW10 8TZ',
         name: 'UPRN',
         coordinates: {
@@ -297,31 +299,6 @@ export default function IndexPage () {
     )
   }
 
-  const mockLocationKeywords = [
-    {
-      name: 'Location Keyword 1',
-      linked_ids: ['id', 'id']
-    },
-    {
-      name: 'Location Keyword 2',
-      linked_ids: ['id']
-    },
-    {
-      name: 'Location Keyword 3',
-      linked_ids: []
-    }
-  ]
-  const mockContactKeywords = [
-    {
-      name: 'Contact Keyword 1',
-      linked_ids: ['id', 'id']
-    },
-    {
-      name: 'Contact Keyword 2',
-      linked_ids: ['id']
-    }
-  ]
-
   const mockOrgCurrentContact = {
     id: null,
     enabled: null,
@@ -340,32 +317,226 @@ export default function IndexPage () {
     ]
   }
 
+  const mockContacts = [
+    {
+      name: 'Stephanie Beach',
+      job_title: 'Operations Director',
+      email: 'stephanie.beach@company.com',
+      linked_locations: ['Loc_1', 'Loc_2'],
+      keywords: ['Team 1']
+    },
+    {
+      name: 'Mary Pepper',
+      job_title: 'Regional Manager',
+      email: 'mary.pepper@company.com',
+      linked_locations: [],
+      keywords: ['Team 1', 'Team 2']
+    },
+    {
+      name: 'Amanda Jordan',
+      job_title: 'Regional Manager',
+      email: 'amanda.jordan@company.com',
+      linked_locations: ['Loc_3', 'Loc_4'],
+      keywords: ['Team 1', 'Team 3']
+    },
+    {
+      name: 'Steve Binns',
+      job_title: 'Regional Manager',
+      email: 'steve.binns@company.com',
+      linked_locations: ['Loc_1'],
+      keywords: []
+    },
+    {
+      name: 'Greg Swordy',
+      job_title: 'Site Manager',
+      email: 'greg.swordy@company.com',
+      linked_locations: ['Loc_1', 'Loc_2'],
+      keywords: ['Team 3', 'Team 4']
+    },
+    {
+      name: 'Stephanie Two',
+      job_title: 'Operations Director',
+      email: 'stephanie.beach@company.com',
+      linked_locations: ['Loc_1', 'Loc_2'],
+      keywords: ['Team 1']
+    },
+    {
+      name: 'Mary Two',
+      job_title: 'Regional Manager',
+      email: 'mary.pepper@company.com',
+      linked_locations: [],
+      keywords: ['Team 1', 'Team 2']
+    },
+    {
+      name: 'Amanda Two',
+      job_title: 'Regional Manager',
+      email: 'amanda.jordan@company.com',
+      linked_locations: ['Loc_3', 'Loc_4'],
+      keywords: ['Team 1', 'Team 3']
+    },
+    {
+      name: 'Steve Two',
+      job_title: 'Regional Manager',
+      email: 'steve.binns@company.com',
+      linked_locations: ['Loc_1'],
+      keywords: []
+    },
+    {
+      name: 'Greg Two',
+      job_title: 'Site Manager',
+      email: 'greg.swordy@company.com',
+      linked_locations: ['Loc_1', 'Loc_2'],
+      keywords: ['Team 3', 'Team 4']
+    },
+    {
+      name: 'Stephanie Three',
+      job_title: 'Operations Director',
+      email: 'stephanie.beach@company.com',
+      linked_locations: ['Loc_1', 'Loc_2'],
+      keywords: ['Team 1']
+    },
+    {
+      name: 'Mary Three',
+      job_title: 'Regional Manager',
+      email: 'mary.pepper@company.com',
+      linked_locations: [],
+      keywords: ['Team 1', 'Team 2']
+    },
+    {
+      name: 'Amanda Three',
+      job_title: 'Regional Manager',
+      email: 'amanda.jordan@company.com',
+      linked_locations: ['Loc_3', 'Loc_4'],
+      keywords: ['Team 1', 'Team 3']
+    },
+    {
+      name: 'Steve Three',
+      job_title: 'Regional Manager',
+      email: 'steve.binns@company.com',
+      linked_locations: ['Loc_1'],
+      keywords: []
+    },
+    {
+      name: 'Greg Three',
+      job_title: 'Site Manager',
+      email: 'greg.swordy@company.com',
+      linked_locations: ['Loc_1', 'Loc_2'],
+      keywords: ['Team 3', 'Team 4']
+    },
+    {
+      name: 'Stephanie Four',
+      job_title: 'Operations Director',
+      email: 'stephanie.beach@company.com',
+      linked_locations: ['Loc_1', 'Loc_2'],
+      keywords: ['Team 1']
+    },
+    {
+      name: 'Mary Four',
+      job_title: 'Regional Manager',
+      email: 'mary.pepper@company.com',
+      linked_locations: [],
+      keywords: ['Team 1', 'Team 5']
+    },
+    {
+      name: 'Amanda Three',
+      job_title: 'Regional Manager',
+      email: 'amanda.jordan@company.com',
+      linked_locations: ['Loc_3', 'Loc_4'],
+      keywords: ['Team 1', 'Team 6']
+    },
+    {
+      name: 'Steve Four',
+      job_title: 'Regional Manager',
+      email: 'steve.binns@company.com',
+      linked_locations: ['Loc_1'],
+      keywords: []
+    },
+    {
+      name: 'Greg Four',
+      job_title: 'Site Manager',
+      email: 'greg.swordy@company.com',
+      linked_locations: ['Loc_1', 'Loc_2'],
+      keywords: ['Team 3', 'Team 4']
+    },
+    {
+      name: 'Stephanie Five',
+      job_title: 'Operations Director',
+      email: 'stephanie.beach@company.com',
+      linked_locations: ['Loc_1', 'Loc_2'],
+      keywords: ['Team 1']
+    },
+    {
+      name: 'Mary Five',
+      job_title: 'Regional Manager',
+      email: 'mary.pepper@company.com',
+      linked_locations: [],
+      keywords: ['Team 1', 'Team 2']
+    },
+    {
+      name: 'Amanda Five',
+      job_title: 'Regional Manager',
+      email: 'amanda.jordan@company.com',
+      linked_locations: ['Loc_3', 'Loc_4'],
+      keywords: ['Team 1', 'Team 3']
+    },
+    {
+      name: 'Steve Five',
+      job_title: 'Regional Manager',
+      email: 'steve.binns@company.com',
+      linked_locations: ['Loc_1'],
+      keywords: []
+    },
+    {
+      name: 'Greg Five',
+      job_title: 'Site Manager',
+      email: 'greg.swordy@company.com',
+      linked_locations: ['Loc_1', 'Loc_2'],
+      keywords: ['Team 3', 'Team 4']
+    }
+  ]
+
   const mockCurrentLocation = {
+    id: null,
+    enabled: true,
+    // name is the UPRN
     name: null,
-    // address is the UPRN
+    // address is the human readable address or flood area name
     address: null,
     // Coordinates in dd (degrees decimal)
     coordinates: null,
-    alert_categories: null,
-    meta_data: {
-      location_additional: {
-        full_address: null,
-        postcode: null,
-        // Easting EPSG: 27700
-        x_coordinate: null,
-        // Northing EPSG: 27700
-        y_coordinate: null,
-        internal_reference: null,
-        business_criticality: null,
-        location_type: null,
-        action_plan: null,
-        notes: null,
-        keywords: null
+    geometry: null,
+    geocode: null,
+    additionals: [
+      { id: 'locationName', value: { s: '' } },
+      { id: 'parentID', value: { s: '' } },
+      { id: 'targetAreas', value: { s: '' } },
+      { id: 'keywords', value: { s: '' } },
+      {
+        id: 'other',
+        value: {
+          s: JSON.stringify(
+            {
+              full_address: null,
+              postcode: null,
+              // Easting EPSG: 27700
+              x_coordinate: null,
+              // Northing EPSG: 27700
+              y_coordinate: null,
+              internal_reference: null,
+              business_criticality: null,
+              location_type: null,
+              action_plan: null,
+              notes: null,
+              location_data_type: null,
+              alertTypes: null
+            }
+          )
+        }
       }
-    }
+    ]
   }
 
-  function mockSession (profile) {
+  function mockSession (profile, type) {
     if (mockSessionActive === false) {
       const authToken = uuidv4()
       const contactPreferences = ['Text']
@@ -404,6 +575,17 @@ export default function IndexPage () {
         }
       }
 
+      if (type === 'org') {
+        (async () => {
+          const dataToSend = { signinToken: uuidv4(), code: 123456, signinType: 'org' }
+
+          await backendCall(
+            dataToSend,
+            'api/sign_in_validate'
+          )
+        })()
+      }
+
       dispatch(setAuthToken(authToken))
       dispatch(setRegistrations(registrations))
       dispatch(setContactPreferences(contactPreferences))
@@ -415,11 +597,10 @@ export default function IndexPage () {
       dispatch(setSelectedBoundary(null))
       dispatch(setLocationBoundaries([]))
       dispatch(setOrgCurrentContact(mockOrgCurrentContact))
-      dispatch(setLocationKeywords(mockLocationKeywords))
-      dispatch(setContactKeywords(mockContactKeywords))
+      dispatch(setContacts(mockContacts))
+      dispatch(setOrgId('1'))
       dispatch(setCurrentLocationEasting('520814'))
       dispatch(setCurrentLocationNorthing('185016'))
-      dispatch(setOrgCurrentContact(mockOrgCurrentContact))
       setmockSessionActive(true)
     } else {
       dispatch(clearAuth())
@@ -514,22 +695,22 @@ export default function IndexPage () {
               <Button
                 className='govuk-button'
                 text='Activate/Deactivate Mock Session 1'
-                onClick={() => mockSession(mockOne)}
+                onClick={() => mockSession(mockOne, 'citizen')}
               />
               <Button
                 className='govuk-button'
                 text='Activate/Deactivate Mock Session 2'
-                onClick={() => mockSession(mockTwo)}
+                onClick={() => mockSession(mockTwo, 'citizen')}
               />
               <Button
                 className='govuk-button'
                 text='Activate/Deactivate Mock Session 3'
-                onClick={() => mockSession(mockThree)}
+                onClick={() => mockSession(mockThree, 'citizen')}
               />
               <Button
                 className='govuk-button'
                 text='Activate/Deactivate Mock Org Session 1'
-                onClick={() => mockSession(mockOrgOne)}
+                onClick={() => mockSession(mockOrgOne, 'org')}
               />
               <ul className='govuk-list'>
                 <li>

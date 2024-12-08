@@ -2,6 +2,7 @@ const responseCodes = require('../responseCodes')
 import Hapi from '@hapi/hapi'
 import type { Context } from 'openapi-backend'
 import uuidv4 from '../generateAuthToken'
+const mockLocations = require('../mockLocations')
 
 async function getLocationCreate(
   context: Context,
@@ -27,16 +28,18 @@ async function getLocationList(
   req: Hapi.Request,
   res: Hapi.ResponseToolkit
 ) {
-  const { authToken, options } = req.payload as { authToken: string, options: {contactId: string} }
+  const { authToken, options } = req.payload as { authToken: string, options: { contactId: string } }
 
   if (authToken !== 'WrongAuthToken') {
-    if (options.contactId) {
+    if (options?.contactId) {
       // Geosafe returns all locations linked to contactId#
       console.log('there is a contact ID')
     } else {
-      // Geosafe returns all locations
-      // {locations: [{poi},...], total: int}
       console.log('no contact ID returning all locations')
+      return {
+        locations: mockLocations.allLocations,
+        total: mockLocations.allLocations.length
+      }
     }
     return res.response(responseCodes.SUCCESS)
   } else {

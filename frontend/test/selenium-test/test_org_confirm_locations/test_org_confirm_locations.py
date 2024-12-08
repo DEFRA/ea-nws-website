@@ -1,7 +1,3 @@
-import pytest
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-import time
 from common import *
 
 url = "http://localhost:3000/organisation/manage-locations/confirm"

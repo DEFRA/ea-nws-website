@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import locationPin from '../../../../../../common/assets/images/location_pin.svg'
 import { setCurrentLocation } from '../../../../../../common/redux/userSlice'
+import { webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationsTable ({
@@ -333,7 +334,7 @@ export default function LocationsTable ({
                 </Link>
               </td>
               <td className='govuk-table__cell'>
-                {location.meta_data.location_additional.location_type}
+                {location.additionals.other?.location_type}
               </td>
               <td className='govuk-table__cell'>
                 {location.meta_data.location_additional.business_criticality}

@@ -69,7 +69,8 @@ url_org_signin_path = url_org + '/signin'
 url_org_signin = {
     'signin': url_org_signin_path,
     'validate': url_org_signin_path + '/validate',
-    'signBackIn': url_org + '/sign-back-in'
+    'signBackIn': url_org + '/sign-back-in',
+    'pending': url_org_signin_path + '/account-pending'
 }
 # Signout urls
 url_org_signout = {
@@ -93,6 +94,9 @@ url_org_man_loc = {
         'options': url_org_man_loc_path + '/add',
         'addressInfo': url_org_man_loc_path + '/add/address-info',
         'uploadFile': url_org_man_loc_path + '/add/upload-file',
+        'shapefileInfo': url_org_man_loc_path + '/add/shapefile-info',
+        'shapefileUpload': url_org_man_loc_path + '/add/shapefile-upload',
+        'loading': url_org_man_loc_path + '/add/upload-file/loading',
         'uploadTemplate': 'http://d39yn09rf1d1o9.cloudfront.net/template.csv',
         'name': url_org_man_loc_path + '/add/name',
         'searchOption': url_org_man_loc_path + '/add/search-option',
@@ -158,8 +162,8 @@ url_org_man_cont_path = url_org + '/manage-contacts'
 url_org_man_cont = {
     'add': {
         'details': url_org_man_cont_path + '/add',
-        'notes':url_org_man_cont_path + '/add/notes',
         'keywords': url_org_man_cont_path + '/add/keywords',
+        'notes': url_org_man_cont_path + '/add/notes',
         'channels': url_org_man_cont_path + '/add/channels'
     },
 }

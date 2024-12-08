@@ -28,12 +28,12 @@ def test_back_button(get_browser):
     enter_input_text(get_browser, 'Last name', 'Test')
     click_button(get_browser, 'Continue', current_url)
     click_link(get_browser, "Back", previous_url)
+    assert 'Contact details' in get_browser.page_source
 
 def test_continue_empty(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
     click_button(get_browser, 'Continue', next_url)
-    # TODO assert next page
-    # assert check_h1_heading(get_browser, 'Choose how you want')
+    assert 'You need to add at least 1 way for contacts to get sent flood messages.' in get_browser.page_source
 
 def test_add_multiple_keywords(get_browser):
     navigate_to_auth_page_via_index(get_browser,current_url)
@@ -42,7 +42,6 @@ def test_add_multiple_keywords(get_browser):
     add_keyword_success(get_browser, 'East')
     add_keyword_success(get_browser, 'West')
     click_button(get_browser, 'Continue', next_url)
-    # TODO assert next page
-    # assert check_h1_heading(get_browser, 'Choose how you want')
+    assert 'You need to add at least 1 way for contacts to get sent flood messages.' in get_browser.page_source
     
 # The AddKeywordLayout is tested extensively in test_add_keywords.py

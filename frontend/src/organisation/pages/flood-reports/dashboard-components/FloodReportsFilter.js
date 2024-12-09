@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 import Button from '../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../common/components/gov-uk/CheckBox'
 
-export default function FloodReportsFilter ({
+export default function FloodReportsFilter({
   warnings,
   setFilteredWarnings,
   resetPaging,
@@ -78,19 +78,18 @@ export default function FloodReportsFilter ({
     if (selectedWarningTypeFilters.length > 0) {
       filteredWarnings = filteredWarnings.filter((warning) => {
         const categories = warning.alert_categories || []
-        const containsBoth =
-          categories.includes('Warning') && categories.includes('Alert')
-        const isWarningOnly =
-          categories.length === 1 && categories[0] === 'Warning'
-        const isAlertOnly = categories.length === 1 && categories[0] === 'Alert'
-        return (
-          (selectedWarningTypeFilters.includes('Severe flood warnings') &&
-            containsBoth) ||
-          (selectedWarningTypeFilters.includes('Flood warnings') &&
-            (isWarningOnly || containsBoth)) ||
-          (selectedWarningTypeFilters.includes('Flood alerts') &&
-            (isAlertOnly || containsBoth))
-        )
+        return selectedWarningTypeFilters.some((filter) => {
+          if (filter === 'Severe food warnings') {
+            return categories.includes('Severe')
+          }
+          if (filter === 'Flood warnings') {
+            return categories.includes('Warning')
+          }
+          if (filter === 'Flood alerts') {
+            return categories.includes('Alert')
+          }
+          return false
+        })
       })
     }
 

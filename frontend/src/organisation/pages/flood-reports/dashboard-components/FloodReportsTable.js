@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
+import floodAlertIcon from '../../../../common/assets/images/flood_alert.svg'
+import floodWarningIcon from '../../../../common/assets/images/flood_warning.svg'
 
-export default function FloodReportsTable ({
+export default function FloodReportsTable({
   warnings,
   displayedWarnings,
   filteredWarnings,
@@ -114,7 +116,8 @@ export default function FloodReportsTable ({
                     locationNameSort,
                     setLocationNameSort,
                     'meta_data.location_additional.location_name'
-                  )}
+                  )
+                }
               >
                 Location name
               </button>
@@ -131,7 +134,8 @@ export default function FloodReportsTable ({
                     warningTypeSort,
                     setWarningTypeSort,
                     'meta_data.alert_categories'
-                  )}
+                  )
+                }
               >
                 Warning <br />
                 type
@@ -159,7 +163,8 @@ export default function FloodReportsTable ({
                     businessCriticalitySort,
                     setBusinessCriticalitySort,
                     'meta_data.location_additional.business_criticality'
-                  )}
+                  )
+                }
               >
                 Business
                 <br /> criticality
@@ -187,7 +192,8 @@ export default function FloodReportsTable ({
                     lastUpdatedSort,
                     setlastUpdatedSort,
                     'riverSeaRisk.title' // TODO: Change this
-                  )}
+                  )
+                }
               >
                 Last
                 <br /> updated
@@ -205,7 +211,23 @@ export default function FloodReportsTable ({
               <td className='govuk-table__cell'>
                 {' '}
                 {warning.alert_categories.map((type, i) => (
-                  <div key={i}>Flood {type.toLowerCase()}</div>
+                  <div key={i}>
+                    {type === 'Alert' && (
+                      <img
+                        src={floodAlertIcon}
+                        alt='Flood alert icon'
+                        style={{ width: '2em', height: '2em' }}
+                      />
+                    )}
+                    {type === 'Warning' && (
+                      <img
+                        src={floodWarningIcon}
+                        alt='Flood warning icon'
+                        style={{ width: '2em', height: '2em' }}
+                      />
+                    )}
+                    Flood {type.toLowerCase()}
+                  </div>
                 ))}
               </td>
               <td className='govuk-table__cell'>

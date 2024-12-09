@@ -149,7 +149,7 @@ const registrations = {
 }
 
 const organization = {
-  id: '1',
+  id: '2',
   name: 'Royal Mail',
   description: '',
   postalCode: 'NR30 1AA',

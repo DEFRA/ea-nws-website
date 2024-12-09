@@ -419,7 +419,7 @@ export default function IndexPage () {
       dispatch(setSelectedBoundary(null))
       dispatch(setLocationBoundaries([]))
       dispatch(setOrgCurrentContact(mockOrgCurrentContact))
-      dispatch(setOrgId('1'))
+      dispatch(setOrgId('2'))
       dispatch(setCurrentLocationEasting('520814'))
       dispatch(setCurrentLocationNorthing('185016'))
       setmockSessionActive(true)

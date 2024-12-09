@@ -9,10 +9,10 @@ import { useSelector } from 'react-redux'
 export default function ViewLocationSummaryPage () {
   const navigate = useNavigate()
   const orgId = useSelector((state) => state.session.orgId)
-  const [alertData, setAlertData] = useState(null)
+  const [alertData, setAlertData] = useState()
   const [totalLocations, setTotalLocations] = useState(null)
-  const messages = (totalLocations - alertData?.noAlert.legnth)
-  const noMessages = (totalLocations - alertData?.severeWarningAlert.legnth + alertData?.warningAlert.legnth + alertData?.alert.legnth)
+  // const messages = (totalLocations - alertData?.noAlert.length)
+  
 
   useEffect(() => {
     const getData = async () => {
@@ -23,14 +23,14 @@ export default function ViewLocationSummaryPage () {
         'api/elasticache/get_data',
         navigate
       )
-
+      console.log(data)
       data && setAlertData(data)
     }
     getData()
   }, [])
 
   useEffect(() => {
-    setTotalLocations(alertData.severeWarningAlert.legnth + alertData.warningAlert.legnth + alertData.alert.legnth + alertData.noAlert.legnth)
+    setTotalLocations(alertData?.severeWarningAlert.length + alertData?.severeWarning.length + alertData?.alert.length + alertData?.noAlert.length)
   }, [alertData])
 
   const locationTableMessagesBody = (alertData) => (
@@ -43,7 +43,7 @@ export default function ViewLocationSummaryPage () {
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
             <Link to='/' className='govuk-link'>
-              {alertData.legnth - alertData.noAlert.legnth}
+            {totalLocations - alertData?.severeWarning.length - alertData?.severeWarning}
             </Link>
           </td>
           <td
@@ -69,7 +69,7 @@ export default function ViewLocationSummaryPage () {
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
             <Link to='/' className='govuk-link'>
-              {alertData.legnth - (alertData.noAlert.legnth - alertData.severeWarningAlert)}
+              {alertData?.length - (alertData?.noAlert.length - alertData?.severeWarningAlert)}
             </Link>
           </td>
           <td
@@ -93,7 +93,8 @@ export default function ViewLocationSummaryPage () {
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
             <Link to='/' className='govuk-link'>
-              {alertData.legnth - (alertData.noAlert.legnth + alertData.severeWarningAlert.legnth + alertData.severeWarning.legnth)}
+            some numbers
+            {alertData?.length - (alertData?.noAlert.length + alertData?.severeWarningAlert.length + alertData?.severeWarning.length)}
             </Link>
           </td>
           <td
@@ -123,7 +124,7 @@ export default function ViewLocationSummaryPage () {
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
             <Link to='/' className='govuk-link'>
-              {alertData.noAlert.legnth}
+              {alertData.noAlert.length}
             </Link>
           </td>
           <td
@@ -147,8 +148,9 @@ export default function ViewLocationSummaryPage () {
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
             <Link to='/' className='govuk-link'>
-              {alertData.legnth - (alertData.noAlert.legnth - alertData.severeWarningAlert)}
-            </Link>
+            some numbers{/*
+              {alertData.length - (alertData.noAlert.length - alertData.severeWarningAlert)}
+            */}</Link>
           </td>
           <td
             className='govuk-table__cell'
@@ -170,9 +172,9 @@ export default function ViewLocationSummaryPage () {
             className='govuk-table__cell'
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
-            <Link to='/' className='govuk-link'>
-              {alertData.legnth - (alertData.noAlert.legnth + alertData.severeWarningAlert.legnth + alertData.severeWarning.legnth)}
-            </Link>
+            <Link to='/' className='govuk-link'>{/*
+            {alertData.length - (alertData.noAlert.length + alertData.severeWarningAlert.length + alertData.severeWarning.length)}
+            */}</Link>
           </td>
           <td
             className='govuk-table__cell'
@@ -238,8 +240,8 @@ export default function ViewLocationSummaryPage () {
           <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l'>Summary of flood messages sent</h1>
             <div className='govuk-body'>
-              {locationTableHead('Locations that get flood messages', locationTableMessagesBody(alertData), messages)}
-              {locationTableHead('Locations that will not get flood messages', locationTableNoMessages(alertData), noMessages)}
+              {locationTableHead('Locations that get flood messages', locationTableMessagesBody(alertData), ((alertData?.severeWarningAlert?.length + alertData?.severeWarning.length + alertData?.alert) - alertData?.noAlert.length))}
+              {/*{locationTableHead('Locations that will not get flood messages', locationTableNoMessages(alertData), noMessages)}*/}
             </div>
           </div>
         </div>

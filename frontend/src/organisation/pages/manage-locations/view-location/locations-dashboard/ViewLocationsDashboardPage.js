@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
@@ -141,8 +140,8 @@ export default function ViewLocationsDashboardPage () {
             notes: '',
             keywords: ['South'],
             location_data_type: LocationDataType.SHAPE_POLYGON,
-            // linked_contacts: []
-            linked_contacts: ['Mary', 'John']
+            linked_contacts: []
+            // linked_contacts: ['Mary', 'John']
           }
         }
       },
@@ -195,6 +194,206 @@ export default function ViewLocationsDashboardPage () {
             keywords: ['East', 'North'],
             location_data_type: LocationDataType.BOUNDARY,
             // linked_contacts: []
+            linked_contacts: ['Mary', 'John']
+          }
+        }
+      },
+      {
+        // x and y variant
+        name: 'UPRN',
+        address: '',
+        coordinates: { latitude: 54.197594, longitude: -3.089788 },
+        // alert_categories: ['Warning', 'Alert'],
+        alert_categories: [],
+        meta_data: {
+          location_additional: {
+            location_name: 'Location_02 - xy coord variant',
+            full_address: '',
+            postcode: '',
+            x_coordinate: 329000.58,
+            y_coordinate: 478530.6,
+            internal_reference: '',
+            business_criticality: 'Low',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            keywords: ['North'],
+            location_data_type: LocationDataType.X_AND_Y_COORDS,
+            linked_contacts: ['Mary', 'John']
+          }
+        }
+      },
+      {
+        // x and y variant
+        name: 'UPRN',
+        address: '',
+        coordinates: { latitude: 54.197594, longitude: -3.089788 },
+        // alert_categories: ['Warning', 'Alert'],
+        alert_categories: [],
+        meta_data: {
+          location_additional: {
+            location_name: 'Location_02 - xy coord variant',
+            full_address: '',
+            postcode: '',
+            x_coordinate: 329000.58,
+            y_coordinate: 478530.6,
+            internal_reference: '',
+            business_criticality: 'Low',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            keywords: ['North'],
+            location_data_type: LocationDataType.X_AND_Y_COORDS,
+            linked_contacts: ['Mary', 'John']
+          }
+        }
+      },
+      {
+        // x and y variant
+        name: 'UPRN',
+        address: '',
+        coordinates: { latitude: 54.197594, longitude: -3.089788 },
+        // alert_categories: ['Warning', 'Alert'],
+        alert_categories: [],
+        meta_data: {
+          location_additional: {
+            location_name: 'Location_02 - xy coord variant',
+            full_address: '',
+            postcode: '',
+            x_coordinate: 329000.58,
+            y_coordinate: 478530.6,
+            internal_reference: '',
+            business_criticality: 'Low',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            keywords: ['North'],
+            location_data_type: LocationDataType.X_AND_Y_COORDS,
+            linked_contacts: ['Mary', 'John']
+          }
+        }
+      },
+      {
+        // x and y variant
+        name: 'UPRN',
+        address: '',
+        coordinates: { latitude: 54.197594, longitude: -3.089788 },
+        // alert_categories: ['Warning', 'Alert'],
+        alert_categories: [],
+        meta_data: {
+          location_additional: {
+            location_name: 'Location_02 - xy coord variant',
+            full_address: '',
+            postcode: '',
+            x_coordinate: 329000.58,
+            y_coordinate: 478530.6,
+            internal_reference: '',
+            business_criticality: 'Low',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            keywords: ['North'],
+            location_data_type: LocationDataType.X_AND_Y_COORDS,
+            linked_contacts: ['Mary', 'John']
+          }
+        }
+      },
+      {
+        // x and y variant
+        name: 'UPRN',
+        address: '',
+        coordinates: { latitude: 54.197594, longitude: -3.089788 },
+        // alert_categories: ['Warning', 'Alert'],
+        alert_categories: [],
+        meta_data: {
+          location_additional: {
+            location_name: 'Location_02 - xy coord variant',
+            full_address: '',
+            postcode: '',
+            x_coordinate: 329000.58,
+            y_coordinate: 478530.6,
+            internal_reference: '',
+            business_criticality: 'Low',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            keywords: ['North'],
+            location_data_type: LocationDataType.X_AND_Y_COORDS,
+            linked_contacts: ['Mary', 'John']
+          }
+        }
+      },
+      {
+        // x and y variant
+        name: 'UPRN',
+        address: '',
+        coordinates: { latitude: 54.197594, longitude: -3.089788 },
+        // alert_categories: ['Warning', 'Alert'],
+        alert_categories: [],
+        meta_data: {
+          location_additional: {
+            location_name: 'Location_02 - xy coord variant',
+            full_address: '',
+            postcode: '',
+            x_coordinate: 329000.58,
+            y_coordinate: 478530.6,
+            internal_reference: '',
+            business_criticality: 'Low',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            keywords: ['North'],
+            location_data_type: LocationDataType.X_AND_Y_COORDS,
+            linked_contacts: ['Mary', 'John']
+          }
+        }
+      },
+      {
+        // x and y variant
+        name: 'UPRN',
+        address: '',
+        coordinates: { latitude: 54.197594, longitude: -3.089788 },
+        // alert_categories: ['Warning', 'Alert'],
+        alert_categories: [],
+        meta_data: {
+          location_additional: {
+            location_name: 'Location_02 - xy coord variant',
+            full_address: '',
+            postcode: '',
+            x_coordinate: 329000.58,
+            y_coordinate: 478530.6,
+            internal_reference: '',
+            business_criticality: 'Low',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            keywords: ['North'],
+            location_data_type: LocationDataType.X_AND_Y_COORDS,
+            linked_contacts: ['Mary', 'John']
+          }
+        }
+      },
+      {
+        // x and y variant
+        name: 'UPRN',
+        address: '',
+        coordinates: { latitude: 54.197594, longitude: -3.089788 },
+        // alert_categories: ['Warning', 'Alert'],
+        alert_categories: [],
+        meta_data: {
+          location_additional: {
+            location_name: 'Location_02 - xy coord variant',
+            full_address: '',
+            postcode: '',
+            x_coordinate: 329000.58,
+            y_coordinate: 478530.6,
+            internal_reference: '',
+            business_criticality: 'Low',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            keywords: ['North'],
+            location_data_type: LocationDataType.X_AND_Y_COORDS,
             linked_contacts: ['Mary', 'John']
           }
         }

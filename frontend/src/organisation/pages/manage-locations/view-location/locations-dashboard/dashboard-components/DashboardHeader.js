@@ -71,9 +71,6 @@ export default function DashboardHeader ({
     navigate(infoUrls.floodAreas)
   }
 
-  // TODO: The banner needs revisiting after the clarifications received from UCD team.
-  // When any count is zero then that section will not display.
-  // Also the links in the banner should perform filtering of the table.
   const FloodBanner = ({ type }) => {
     const count = []
     const message = []
@@ -86,14 +83,14 @@ export default function DashboardHeader ({
       )
       message[0] = 'in flood areas'
 
-
       heading[0] = 'Locations that will get flood message'
 
       count.push(
+        // TODO: use linked TAs (nearby target areas)
         locations.filter((obj) => obj.alert_categories.length > 0).length)
       message[0] = 'in flood areas'
 
-      count.push(locations.filter((item) => item.meta_data.location_additional.linked_contacts.length > 0).length)
+      count.push(locations.filter((item) => item.alert_categories.length > 0).length)
       message.push('linked to nearby flood areas')
     } else if (type === 'noFloodMessages') {
       heading[0] = 'Locations that do not currently get flood messages'
@@ -153,7 +150,7 @@ export default function DashboardHeader ({
                   {count[0] === 1 ? 'location' : 'locations'} {message[0]}
                 </Link>
               </div>
-              {locations.filter((item) => item.meta_data.location_additional.linked_contacts.length > 0).length > 0 && (
+              {locations.filter((item) => item.alert_categories.length > 0).length > 0 && (
                 <div style={{ width: '100%', padding: '0rem 1.5rem', borderLeft: '2px solid lightGrey' }}>
                   <h1>
                     <strong>{count[1]}</strong>
@@ -253,11 +250,19 @@ export default function DashboardHeader ({
         </div>
 
         <span style={{ display: 'flex', fontSize: '18px' }}>
-          <FloodBanner type='floodMessages' />
+        <FloodBanner type='floodMessages' />
+        {((locations.filter((item) => (item.riverSeaRisk?.title === 'Medium risk' ||
+                                       item.riverSeaRisk?.title === 'High risk') &&
+                                       item.alert_categories.length === 0
+                                      ).length > 0) ||
+          (locations.filter((item) => (item.riverSeaRisk?.title === 'Low risk') &&
+                                       item.alert_categories.length === 0
+                                      ).length > 0)) && (
           <FloodBanner type='noFloodMessages' />
-          {locations.filter((item) => item.meta_data.location_additional.linked_contacts.length === 0).length > 0 && (
-            <FloodBanner type='noContacts' />
-          )}
+        )}
+        {locations.filter((item) => item.meta_data.location_additional.linked_contacts.length === 0).length > 0 && (
+          <FloodBanner type='noContacts' />
+        )}
         </span>
       </div>
 

@@ -40,7 +40,7 @@ export default function SearchFilter ({
   const locationTypes = [
     ...new Set(
       locations
-        .map((location) => location.additionals.other.location_type)
+        .map((location) => location.meta_data.location_additional.location_type)
         .filter((locationType) => locationType) // filters out undefined entries
     )
   ]
@@ -54,7 +54,7 @@ export default function SearchFilter ({
       locations
         .map(
           (location) =>
-            location.additionals.other.business_criticality
+            location.meta_data.location_additional.business_criticality
         )
         .filter((businessCriticality) => businessCriticality) // filters out undefined entries
     )
@@ -128,7 +128,7 @@ export default function SearchFilter ({
     if (selectedLocationTypeFilters.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
         selectedLocationTypeFilters.includes(
-          location.additionals.other.location_type
+          location.meta_data.location_additional.location_type
         )
       )
     }
@@ -157,7 +157,7 @@ export default function SearchFilter ({
     if (selectedBusinessCriticalityFilters.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
         selectedBusinessCriticalityFilters.includes(
-          location.additionals.other.business_criticality
+          location.meta_data.location_additional.business_criticality
         )
       )
     }

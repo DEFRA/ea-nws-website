@@ -334,7 +334,7 @@ export default function LocationsTable ({
                 </Link>
               </td>
               <td className='govuk-table__cell'>
-                {location.additionals.other?.location_type}
+                {location.meta_data.location_additional.location_type}
               </td>
               <td className='govuk-table__cell'>
                 {location.meta_data.location_additional.business_criticality}

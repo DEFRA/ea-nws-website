@@ -56,7 +56,6 @@ import EditNotesPage from '../../pages/manage-locations/edit-location/edit-indiv
 import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
 import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
-import ViewLocationSummaryPage from '../../pages/manage-locations/view-location/location-summary/ViewLocationSummaryPage'
 
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgViewLocations = urlManageOrg + '/locations'
@@ -70,8 +69,7 @@ const orgManageLocationsUrls = {
   view: {
     dashboard: urlManageOrgViewLocations,
     viewLocation: urlManageOrgViewLocations + '/view',
-    viewMessages: urlManageOrgViewLocations + '/view-messages',
-    ViewSummary: urlManageOrgViewLocations + '/view-summary'
+    viewMessages: urlManageOrgViewLocations + '/view-messages'
   },
   add: {
     addLocationWithinBoundaries: {},
@@ -178,10 +176,6 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.view.viewMessages,
     component: <ViewMessagesPage />
-  },
-  {
-    path: orgManageLocationsUrls.view.ViewSummary,
-    component: <ViewLocationSummaryPage />
   },
   // add
   {

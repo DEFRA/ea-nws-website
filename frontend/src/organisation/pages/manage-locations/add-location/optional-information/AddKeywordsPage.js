@@ -29,7 +29,7 @@ export default function AddKeywordsPage () {
   )
 
   const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.add.optionalInformation.addActionPlan)
+    navigate(orgManageLocationsUrls.add.optionalInformation.addNotes)
   }
 
   return (

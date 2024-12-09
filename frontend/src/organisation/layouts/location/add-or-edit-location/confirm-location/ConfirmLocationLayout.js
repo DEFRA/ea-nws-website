@@ -1,11 +1,13 @@
-import { React } from 'react'
-import { useSelector } from 'react-redux'
+import { React, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../common/components/gov-uk/Button'
-import { getLocationAdditional, getLocationOther } from '../../../../../common/redux/userSlice'
+import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
+import { getLocationAdditional, getLocationOther, setCurrentLocation } from '../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../common/services/BackendService'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 
@@ -13,7 +15,12 @@ export default function ConfirmLocationLayout ({
   navigateToNextPage,
   navigateToPinDropFlow
 }) {
+  const { error, setError } = useState(null)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const currentLocation = useSelector((state) => state.session.currentLocation)
+  const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
   const locationName = useSelector(
     (state) => getLocationAdditional(state, 'locationName')
   )
@@ -23,9 +30,20 @@ export default function ConfirmLocationLayout ({
   )
   const formattedAddress = currentAddress ? currentAddress.split(',') : ''
 
-  const handleSubmit = () => {
-    // do we need to do anything else here?
-    navigateToNextPage()
+  const handleSubmit = async () => {
+    const dataToSend = { authToken, orgId, location: currentLocation }
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
+      'api/location/create',
+      navigate
+    )
+    if (data) {
+      // need to set the current location due to geosafe creating the ID.
+      dispatch(setCurrentLocation(data))
+      navigateToNextPage()
+    } else {
+      errorMessage ? setError(errorMessage) : setError('Oops, something went wrong')
+    }
   }
 
   const handleNavigateToPinDropFlow = (event) => {
@@ -45,6 +63,7 @@ export default function ConfirmLocationLayout ({
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
+            {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l govuk-!-margin-top-5'>
               Confirm Location
             </h1>

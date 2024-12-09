@@ -1,6 +1,6 @@
 import { React } from 'react'
 import { useNavigate } from 'react-router'
-import AddKeywordsLayout from '../../../layouts/optional-info/AddKeywordsLayout'
+import KeywordsLayout from '../../../layouts/optional-info/KeywordsLayout'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function AddContactKeywordsPage () {
@@ -39,10 +39,10 @@ export default function AddContactKeywordsPage () {
 
   return (
     <>
-      <AddKeywordsLayout
+      <KeywordsLayout
         keywordType='contact'
-        KeywordText={KeywordText}
-        NavigateToNextPage={NavigateToNextPage}
+        keywordText={KeywordText}
+        navigateToNextPage={NavigateToNextPage}
       />
     </>
   )

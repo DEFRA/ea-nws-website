@@ -37,6 +37,10 @@ export default function LocationInSevereWarningAreaLayout ({
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+  const severeFloodWarningCount = useSelector(
+    (state) => state.session.severeFloodWarningCount
+  )
+
   // only used when user is going through nearby target areas flow
   const isUserInNearbyTargetFlowpath = useSelector(
     (state) => state.session.nearbyTargetAreaFlow
@@ -104,11 +108,15 @@ export default function LocationInSevereWarningAreaLayout ({
     }
 
     dispatch(setAdditionalAlerts(false))
-    updatedProfile = await updateGeosafeProfile(profile)
-    // if user is in sign up flow, then profile returned will be undefined
-    if (updatedProfile) {
-      unregisterLocationFromPartner(updatedProfile)
+
+    if (!isSignUpFlow) {
+      updatedProfile = await updateGeosafeProfile(profile)
+      // if user is in sign up flow, then profile returned will be undefined
+      if (updatedProfile) {
+        unregisterLocationFromPartner(updatedProfile)
+      }
     }
+
     navigate(-1)
   }
 
@@ -253,6 +261,10 @@ export default function LocationInSevereWarningAreaLayout ({
             <p>
               Severe flood warnings will be sent at any time when life is at
               risk.
+            </p>
+            <p>
+              Total sent in last year:{' '}
+              <b>{severeFloodWarningCount || 0}</b>
             </p>
             <Button
               text='Confirm you want this location'

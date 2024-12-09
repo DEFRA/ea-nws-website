@@ -37,6 +37,7 @@ export default function LocationInAlertAreaLayout ({
   const additionalAlerts = useSelector(
     (state) => state.session.additionalAlerts
   )
+  const floodAlertCount = useSelector((state) => state.session.floodAlertCount)
   // only used when user is going through nearby target areas flow
   const isUserInNearbyTargetFlowpath = useSelector(
     (state) => state.session.nearbyTargetAreaFlow
@@ -291,6 +292,10 @@ export default function LocationInAlertAreaLayout ({
               <li>2 to 12 hours before flooding</li>
               <li>during waking hours when possible</li>
             </ul>
+            <p>
+              Total sent in last year:{' '}
+              <b>{floodAlertCount || 0}</b>
+            </p>
             {additionalAlerts && (
               <>
                 <CheckBox

@@ -1,15 +1,16 @@
 import React from 'react'
-import BackLink from '../../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
-import { useSelector } from 'react-redux'
+import BackLink from '../../../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
+import { getLocationAdditional } from '../../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 export default function LocationAlreadyExists () {
   const navigate = useNavigate()
   const locationName = useSelector(
     (state) =>
-      state.session.currentLocation.meta_data.location_additional.location_name
+      getLocationAdditional(state, 'locationName')
   )
 
   return (

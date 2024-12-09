@@ -9,33 +9,17 @@ export default function LocationXYCoordinatesSearchPage () {
   const navigateToNotInEngland = () => {
     navigate(orgManageLocationsUrls.add.error.xyCoordinatesNotInEngland)
   }
-  const allFloodAreasAvailable = () => {
+
+  const navigateToNextPage = () => {
     navigate(
       orgManageLocationsUrls.add.manualAddLocation.confirmManualSearchedLocation
-        .replace(':flow', 'xy-coordinates-search')
-        .replace(':type', 'all')
     )
   }
-  const floodAlertAreasAvailableOnly = () => {
-    navigate(
-      orgManageLocationsUrls.add.manualAddLocation.confirmManualSearchedLocation
-        .replace(':flow', 'xy-coordinates-search')
-        .replace(':type', 'alerts')
-    )
-  }
-  const noFloodAreasAvailable = () => {
-    navigate(
-      orgManageLocationsUrls.add.manualAddLocation.confirmManualSearchedLocation
-        .replace(':flow', 'xy-coordinates-search')
-        .replace(':type', 'no-alerts')
-    )
-  }
+
   return (
     <>
       <LocationXYCoordinatesSearchLayout
-        allFloodAreasAvailable={allFloodAreasAvailable}
-        floodAlertAreasAvailableOnly={floodAlertAreasAvailableOnly}
-        noFloodAreasAvailable={noFloodAreasAvailable}
+        navigateToNextPage={navigateToNextPage}
         navigateToNotInEngland={navigateToNotInEngland}
       />
     </>

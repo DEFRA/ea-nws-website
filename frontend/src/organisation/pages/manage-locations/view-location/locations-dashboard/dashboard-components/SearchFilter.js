@@ -40,7 +40,7 @@ export default function SearchFilter ({
   const locationTypes = [
     ...new Set(
       locations
-        .map((location) => location.meta_data.location_additional.location_type)
+        .map((location) => location.additionals.other?.location_type)
         .filter((locationType) => locationType) // filters out undefined entries
     )
   ]
@@ -54,7 +54,7 @@ export default function SearchFilter ({
       locations
         .map(
           (location) =>
-            location.meta_data.location_additional.business_criticality
+          location.additionals.other?.business_criticality
         )
         .filter((businessCriticality) => businessCriticality) // filters out undefined entries
     )
@@ -78,7 +78,7 @@ export default function SearchFilter ({
 
   const keywords = [
     ...new Set(
-      locations.flatMap(location => location.meta_data.location_additional.keywords)
+      locations.flatMap(location => location.additionals.other?.keywords)
     )
   ]
 
@@ -128,7 +128,7 @@ export default function SearchFilter ({
     if (selectedLocationTypeFilters.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
         selectedLocationTypeFilters.includes(
-          location.meta_data.location_additional.location_type
+          location.additionals.other?.location_type
         )
       )
     }
@@ -143,9 +143,9 @@ export default function SearchFilter ({
           // return all locations
           return true
         } else if (selectedFloodMessagesAvailableFilters.includes('Yes')) {
-          return location.alert_categories.length > 0
+          return location.additionals.other?.alertTypes.length > 0
         } else if (selectedFloodMessagesAvailableFilters.includes('No')) {
-          return location.alert_categories.length === 0
+          return location.additionals.other?.alertTypes.length === 0
         }
 
         // Default return none (this should never be reached)
@@ -157,7 +157,7 @@ export default function SearchFilter ({
     if (selectedBusinessCriticalityFilters.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
         selectedBusinessCriticalityFilters.includes(
-          location.meta_data.location_additional.business_criticality
+          location.additionals.other?.business_criticality
         )
       )
     }
@@ -180,7 +180,7 @@ export default function SearchFilter ({
     if (selectedKeywordFilters.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
         selectedKeywordFilters.some(
-          keyword => location.meta_data.location_additional.keywords.includes(keyword)
+          keyword => location.additionals.other?.keywords.includes(keyword)
         )
       )
     }
@@ -188,8 +188,8 @@ export default function SearchFilter ({
     // Apply linked locations filter
     if (selectedLinkedFilters.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
-        (selectedLinkedFilters.includes('Yes') && location.meta_data.location_additional.linked_contacts.length > 0) ||
-        (selectedLinkedFilters.includes('No') && location.meta_data.location_additional.linked_contacts.length === 0)
+        (selectedLinkedFilters.includes('Yes') && location.linked_contacts?.length > 0) ||
+        (selectedLinkedFilters.includes('No') && location.linked_contacts?.length === 0)
       )
     }
 

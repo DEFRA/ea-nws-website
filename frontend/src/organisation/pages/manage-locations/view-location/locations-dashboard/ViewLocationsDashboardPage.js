@@ -7,6 +7,8 @@ import Popup from '../../../../../common/components/custom/Popup'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
 import BackLink from '../../../../../common/components/custom/BackLink'
+import { backendCall } from '../../../../../common/services/BackendService'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
@@ -34,6 +36,7 @@ export default function ViewLocationsDashboardPage () {
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [displayedLocations, setDisplayedLocations] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
+  const orgId = useSelector((state) => state.session.orgId)
   const [dialog, setDialog] = useState({
     show: false,
     text: '',
@@ -66,343 +69,27 @@ export default function ViewLocationsDashboardPage () {
   }, [filteredLocations, currentPage])
 
   useEffect(() => {
-    const l = [
-      {
-        // address variant
-        name: 'UPRN',
-        address: '34 Hughenden Road, High Wycombe, LE2 7BB',
-        coordinates: { latitude: 50.84106, longitude: -1.05814 },
-        // alert_categories: ['Alert'],
-        alert_categories: [],
-        meta_data: {
-          location_additional: {
-            location_name: 'Location_01 - address variant',
-            full_address: 'some address',
-            postcode: 'LE2 7BB',
-            x_coordinate: 466413.18,
-            y_coordinate: 105037.31,
-            internal_reference: 'PS01, unit 57, HighW_07',
-            business_criticality: 'Medium',
-            location_type: 'Office',
-            action_plan: '1. Dont panic!',
-            notes:
-              'John Smith has the flood plan for this location. His contact number is 01234 567 890',
-            keywords: ['East'],
-            location_data_type: LocationDataType.X_AND_Y_COORDS,
-            linked_contacts: ['Mary', 'John']
-          }
-        }
-      },
-      {
-        // x and y variant
-        name: 'UPRN',
-        address: '',
-        coordinates: { latitude: 54.197594, longitude: -3.089788 },
-        // alert_categories: ['Warning', 'Alert'],
-        alert_categories: [],
-        meta_data: {
-          location_additional: {
-            location_name: 'Location_02 - xy coord variant',
-            full_address: '',
-            postcode: '',
-            x_coordinate: 329000.58,
-            y_coordinate: 478530.6,
-            internal_reference: '',
-            business_criticality: 'Low',
-            location_type: '',
-            action_plan: '',
-            notes: '',
-            keywords: ['North'],
-            location_data_type: LocationDataType.X_AND_Y_COORDS,
-            linked_contacts: ['Mary', 'John']
-          }
-        }
-      },
-      {
-        // shapefile (polygon) variant
-        name: 'UPRN',
-        address: '',
-        // coordinates should be empty for this and we instead use the geometry field instead
-        // using this for meantime
-        coordinates: { latitude: 50.84106, longitude: -1.05814 },
-        alert_categories: ['Warning', 'Alert'],
-        meta_data: {
-          location_additional: {
-            location_name: 'Location_03 - shapefile polygon variant',
-            full_address: '',
-            postcode: '',
-            x_coordinate: '',
-            y_coordinate: '',
-            internal_reference: '',
-            business_criticality: '',
-            location_type: 'Warehouse',
-            action_plan: '',
-            notes: '',
-            keywords: ['South'],
-            location_data_type: LocationDataType.SHAPE_POLYGON,
-            linked_contacts: []
-            // linked_contacts: ['Mary', 'John']
-          }
-        }
-      },
-      {
-        // shapefile (line) variant
-        name: 'UPRN',
-        address: '',
-        // coordinates should be empty for this and we instead use the geometry field instead
-        // using this for meantime
-        coordinates: { latitude: 50.84106, longitude: -1.05814 },
-        alert_categories: [],
-        meta_data: {
-          location_additional: {
-            location_name: 'Location_04 - shapefile line variant',
-            full_address: '',
-            postcode: '',
-            x_coordinate: '',
-            y_coordinate: '',
-            internal_reference: '',
-            business_criticality: '',
-            location_type: '',
-            action_plan: '',
-            notes: '',
-            keywords: ['West'],
-            location_data_type: LocationDataType.SHAPE_LINE,
-            linked_contacts: ['Mary']
-          }
-        }
-      },
-      {
-        // shapefile (line) variant
-        name: 'UPRN',
-        address: '',
-        // coordinates should be empty for this and we instead use the geometry field instead
-        // using this for meantime
-        coordinates: { latitude: 50.84106, longitude: -1.05814 },
-        alert_categories: ['Warning', 'Alert'],
-        meta_data: {
-          location_additional: {
-            location_name: 'Location_05 - boundary variant',
-            full_address: '',
-            postcode: '',
-            x_coordinate: '',
-            y_coordinate: '',
-            internal_reference: '',
-            business_criticality: '',
-            location_type: '',
-            action_plan: '',
-            notes: '',
-            keywords: ['East', 'North'],
-            location_data_type: LocationDataType.BOUNDARY,
-            // linked_contacts: []
-            linked_contacts: ['Mary', 'John']
-          }
-        }
-      },
-      {
-        // x and y variant
-        name: 'UPRN',
-        address: '',
-        coordinates: { latitude: 54.197594, longitude: -3.089788 },
-        // alert_categories: ['Warning', 'Alert'],
-        alert_categories: [],
-        meta_data: {
-          location_additional: {
-            location_name: 'Location_02 - xy coord variant',
-            full_address: '',
-            postcode: '',
-            x_coordinate: 329000.58,
-            y_coordinate: 478530.6,
-            internal_reference: '',
-            business_criticality: 'Low',
-            location_type: '',
-            action_plan: '',
-            notes: '',
-            keywords: ['North'],
-            location_data_type: LocationDataType.X_AND_Y_COORDS,
-            linked_contacts: ['Mary', 'John']
-          }
-        }
-      },
-      {
-        // x and y variant
-        name: 'UPRN',
-        address: '',
-        coordinates: { latitude: 54.197594, longitude: -3.089788 },
-        // alert_categories: ['Warning', 'Alert'],
-        alert_categories: [],
-        meta_data: {
-          location_additional: {
-            location_name: 'Location_02 - xy coord variant',
-            full_address: '',
-            postcode: '',
-            x_coordinate: 329000.58,
-            y_coordinate: 478530.6,
-            internal_reference: '',
-            business_criticality: 'Low',
-            location_type: '',
-            action_plan: '',
-            notes: '',
-            keywords: ['North'],
-            location_data_type: LocationDataType.X_AND_Y_COORDS,
-            linked_contacts: ['Mary', 'John']
-          }
-        }
-      },
-      {
-        // x and y variant
-        name: 'UPRN',
-        address: '',
-        coordinates: { latitude: 54.197594, longitude: -3.089788 },
-        // alert_categories: ['Warning', 'Alert'],
-        alert_categories: [],
-        meta_data: {
-          location_additional: {
-            location_name: 'Location_02 - xy coord variant',
-            full_address: '',
-            postcode: '',
-            x_coordinate: 329000.58,
-            y_coordinate: 478530.6,
-            internal_reference: '',
-            business_criticality: 'Low',
-            location_type: '',
-            action_plan: '',
-            notes: '',
-            keywords: ['North'],
-            location_data_type: LocationDataType.X_AND_Y_COORDS,
-            linked_contacts: ['Mary', 'John']
-          }
-        }
-      },
-      {
-        // x and y variant
-        name: 'UPRN',
-        address: '',
-        coordinates: { latitude: 54.197594, longitude: -3.089788 },
-        // alert_categories: ['Warning', 'Alert'],
-        alert_categories: [],
-        meta_data: {
-          location_additional: {
-            location_name: 'Location_02 - xy coord variant',
-            full_address: '',
-            postcode: '',
-            x_coordinate: 329000.58,
-            y_coordinate: 478530.6,
-            internal_reference: '',
-            business_criticality: 'Low',
-            location_type: '',
-            action_plan: '',
-            notes: '',
-            keywords: ['North'],
-            location_data_type: LocationDataType.X_AND_Y_COORDS,
-            linked_contacts: ['Mary', 'John']
-          }
-        }
-      },
-      {
-        // x and y variant
-        name: 'UPRN',
-        address: '',
-        coordinates: { latitude: 54.197594, longitude: -3.089788 },
-        // alert_categories: ['Warning', 'Alert'],
-        alert_categories: [],
-        meta_data: {
-          location_additional: {
-            location_name: 'Location_02 - xy coord variant',
-            full_address: '',
-            postcode: '',
-            x_coordinate: 329000.58,
-            y_coordinate: 478530.6,
-            internal_reference: '',
-            business_criticality: 'Low',
-            location_type: '',
-            action_plan: '',
-            notes: '',
-            keywords: ['North'],
-            location_data_type: LocationDataType.X_AND_Y_COORDS,
-            linked_contacts: ['Mary', 'John']
-          }
-        }
-      },
-      {
-        // x and y variant
-        name: 'UPRN',
-        address: '',
-        coordinates: { latitude: 54.197594, longitude: -3.089788 },
-        // alert_categories: ['Warning', 'Alert'],
-        alert_categories: [],
-        meta_data: {
-          location_additional: {
-            location_name: 'Location_02 - xy coord variant',
-            full_address: '',
-            postcode: '',
-            x_coordinate: 329000.58,
-            y_coordinate: 478530.6,
-            internal_reference: '',
-            business_criticality: 'Low',
-            location_type: '',
-            action_plan: '',
-            notes: '',
-            keywords: ['North'],
-            location_data_type: LocationDataType.X_AND_Y_COORDS,
-            linked_contacts: ['Mary', 'John']
-          }
-        }
-      },
-      {
-        // x and y variant
-        name: 'UPRN',
-        address: '',
-        coordinates: { latitude: 54.197594, longitude: -3.089788 },
-        // alert_categories: ['Warning', 'Alert'],
-        alert_categories: [],
-        meta_data: {
-          location_additional: {
-            location_name: 'Location_02 - xy coord variant',
-            full_address: '',
-            postcode: '',
-            x_coordinate: 329000.58,
-            y_coordinate: 478530.6,
-            internal_reference: '',
-            business_criticality: 'Low',
-            location_type: '',
-            action_plan: '',
-            notes: '',
-            keywords: ['North'],
-            location_data_type: LocationDataType.X_AND_Y_COORDS,
-            linked_contacts: ['Mary', 'John']
-          }
-        }
-      },
-      {
-        // x and y variant
-        name: 'UPRN',
-        address: '',
-        coordinates: { latitude: 54.197594, longitude: -3.089788 },
-        // alert_categories: ['Warning', 'Alert'],
-        alert_categories: [],
-        meta_data: {
-          location_additional: {
-            location_name: 'Location_02 - xy coord variant',
-            full_address: '',
-            postcode: '',
-            x_coordinate: 329000.58,
-            y_coordinate: 478530.6,
-            internal_reference: '',
-            business_criticality: 'Low',
-            location_type: '',
-            action_plan: '',
-            notes: '',
-            keywords: ['North'],
-            location_data_type: LocationDataType.X_AND_Y_COORDS,
-            linked_contacts: ['Mary', 'John']
-          }
-        }
+    const getLocations = async () => {
+      const dataToSend = { orgId }
+      const { data } = await backendCall(
+        dataToSend,
+        'api/elasticache/list_locations',
+        navigate
+      )
+      const locations = []
+      if (data) {
+        data.forEach((location) => {
+          locations.push(geoSafeToWebLocation(location))
+        })
       }
-    ]
+      setLocations(locations)
+      setFilteredLocations(locations)
+    }
+    getLocations()
 
     const updateLocationData = async () => {
       const riverSeaRisks = await Promise.all(
-        l.map((location) =>
+        locations.map((location) =>
           getRiskCategory({
             riskAreaType: RiskAreaType.RIVERS_AND_SEA,
             location
@@ -410,7 +97,7 @@ export default function ViewLocationsDashboardPage () {
         )
       )
       const groundWaterRisks = await Promise.all(
-        l.map((location) =>
+        locations.map((location) =>
           getRiskCategory({
             riskAreaType: RiskAreaType.GROUNDWATER,
             location
@@ -418,7 +105,7 @@ export default function ViewLocationsDashboardPage () {
         )
       )
 
-      const updatedLocations = l.map((location, idx) => ({
+      const updatedLocations = locations.map((location, idx) => ({
         ...location,
         riverSeaRisk: riverSeaRisks[idx],
         groundWaterRisk: groundWaterRisks[idx]
@@ -426,8 +113,16 @@ export default function ViewLocationsDashboardPage () {
       setLocations(updatedLocations)
       setFilteredLocations(updatedLocations)
     }
-
     updateLocationData()
+
+    // TODO: Get linked contacts from the API (EAN-1364)
+    const getContacts = async () => {
+      const updatedLocations = locations.map((location, idx) => ({
+        ...location,
+        linked_contacts: ['Contact 1', 'Contact 2']
+      }))
+    }
+    getContacts()
   }, [])
 
   const getRiskCategory = async ({ riskAreaType, location }) => {
@@ -445,9 +140,9 @@ export default function ViewLocationsDashboardPage () {
     }
 
     if (
-      location.meta_data.location_additional.location_data_type !==
+      location.additionals.other?.location_type !==
         LocationDataType.ADDRESS &&
-      location.meta_data.location_additional.location_data_type !==
+        location.additionals.other?.location_type !==
         LocationDataType.X_AND_Y_COORDS &&
       location.coordinates != null
     ) {
@@ -503,7 +198,7 @@ export default function ViewLocationsDashboardPage () {
       show: true,
       text: (
         <>
-          If you continue {locationToBeDeleted.meta_data.location_additional.location_name} will be deleted from this account and will
+          If you continue {locationToBeDeleted.name} will be deleted from this account and will
           not get flood messages.
         </>
       ),
@@ -551,15 +246,15 @@ export default function ViewLocationsDashboardPage () {
 
   const onClickLinked = (type) => {
     const updatedFilteredLocations = locations.filter((location) =>
-      (type === 'messages' && location.alert_categories.length > 0) ||
-      (type === 'links' && location.meta_data.location_additional.linked_contacts.length > 0) ||
-      (type === 'no-links' && location.meta_data.location_additional.linked_contacts.length === 0) ||
+      (type === 'messages' && location.additionals.other?.alertTypes.length > 0) ||
+      (type === 'links' && location.linked_contacts?.length > 0) ||
+      (type === 'no-links' && location.linked_contacts?.length === 0) ||
       (type === 'high-medium-risk' && 
         (location.riverSeaRisk?.title === 'Medium risk' || location.riverSeaRisk?.title === 'High risk') &&
-        location.alert_categories.length === 0) ||
+        location.additionals.other?.alertTypes.length === 0) ||
       (type === 'low-risk' && 
         location.riverSeaRisk?.title === 'Low risk' &&
-        location.alert_categories.length === 0)
+        location.additionals.other?.alertTypes.length === 0)
     )
 
     let selectedFilterType = []

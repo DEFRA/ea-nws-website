@@ -79,7 +79,7 @@ export default function DashboardHeader ({
     if (type === 'floodMessages') {
       heading[0] = 'Locations that will get flood messages'
       count.push(
-        locations.filter((obj) => obj.alert_categories.length > 0).length
+        locations.filter((obj) => obj.additionals.other?.alertTypes.length > 0).length
       )
       message[0] = 'in flood areas'
 
@@ -87,10 +87,10 @@ export default function DashboardHeader ({
 
       count.push(
         // TODO: use linked TAs (nearby target areas)
-        locations.filter((obj) => obj.alert_categories.length > 0).length)
+        locations.filter((obj) => obj.additionals.other?.alertTypes.length > 0).length)
       message[0] = 'in flood areas'
 
-      count.push(locations.filter((item) => item.alert_categories.length > 0).length)
+      count.push(locations.filter((item) => item.additionals.other?.alertTypes.length > 0).length)
       message.push('linked to nearby flood areas')
     } else if (type === 'noFloodMessages') {
       heading[0] = 'Locations that do not currently get flood messages'
@@ -99,7 +99,7 @@ export default function DashboardHeader ({
         (obj) =>
           (obj.riverSeaRisk?.title === 'Medium risk' ||
             obj.riverSeaRisk?.title === 'High risk') &&
-          obj.alert_categories.length === 0
+          obj.additionals.other?.alertTypes.length === 0
       ).length
       count.push(mediumHighRisk)
       message[0] = 'at medium or high flood risk'
@@ -107,13 +107,13 @@ export default function DashboardHeader ({
       const lowRisk = locations.filter(
         (obj) =>
           obj.riverSeaRisk?.title === 'Low risk' &&
-          obj.alert_categories.length === 0
+          obj.additionals.other?.alertTypes.length === 0
       ).length
       count.push(lowRisk)
       message.push('at low flood risk')
     } else if (type === 'noContacts') {
       heading[0] = 'Locations not linked to contacts'
-      count.push(locations.filter((item) => item.meta_data.location_additional.linked_contacts.length === 0).length)
+      count.push(locations.filter((item) => item.linked_contacts?.length === 0).length)
       message[0] = 'not linked to contacts'
     }
 
@@ -150,7 +150,7 @@ export default function DashboardHeader ({
                   {count[0] === 1 ? 'location' : 'locations'} {message[0]}
                 </Link>
               </div>
-              {locations.filter((item) => item.alert_categories.length > 0).length > 0 && (
+              {locations.filter((item) => item.additionals.other?.alertTypes.length > 0).length > 0 && (
                 <div style={{ width: '100%', padding: '0rem 1.5rem', borderLeft: '2px solid lightGrey' }}>
                   <h1>
                     <strong>{count[1]}</strong>
@@ -253,14 +253,14 @@ export default function DashboardHeader ({
         <FloodBanner type='floodMessages' />
         {((locations.filter((item) => (item.riverSeaRisk?.title === 'Medium risk' ||
                                        item.riverSeaRisk?.title === 'High risk') &&
-                                       item.alert_categories.length === 0
+                                       item.additionals.other?.alertTypes.length === 0
                                       ).length > 0) ||
           (locations.filter((item) => (item.riverSeaRisk?.title === 'Low risk') &&
-                                       item.alert_categories.length === 0
+                                       item.additionals.other?.alertTypes.length === 0
                                       ).length > 0)) && (
           <FloodBanner type='noFloodMessages' />
         )}
-        {locations.filter((item) => item.meta_data.location_additional.linked_contacts.length === 0).length > 0 && (
+        {locations.filter((item) => item.linked_contacts?.length === 0).length > 0 && (
           <FloodBanner type='noContacts' />
         )}
         </span>

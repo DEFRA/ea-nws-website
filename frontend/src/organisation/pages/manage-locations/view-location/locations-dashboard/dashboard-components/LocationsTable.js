@@ -86,7 +86,7 @@ export default function LocationsTable ({
       setGetsFloodMessagesSort('ascending')
       setFilteredLocations(
         [...filteredLocations].sort((a, b) =>
-          a.alert_categories.length > b.alert_categories.length ? 1 : -1
+          a.additionals.other?.alertTypes.length > b.additionals.other?.alertTypes.length ? 1 : -1
         )
       )
     }
@@ -94,7 +94,7 @@ export default function LocationsTable ({
       setGetsFloodMessagesSort('descending')
       setFilteredLocations(
         [...filteredLocations].sort((a, b) =>
-          a.alert_categories.length < b.alert_categories.length ? 1 : -1
+          a.additionals.other?.alertTypes.length < b.additionals.other?.alertTypes.length ? 1 : -1
         )
       )
     }
@@ -106,10 +106,10 @@ export default function LocationsTable ({
       setLinkedContactsSort('ascending')
       setFilteredLocations(
         [...filteredLocations].sort((a, b) => {
-          if (a.meta_data.location_additional.linked_contacts === null && b.meta_data.location_additional.linked_contacts === null) return 0
-          if (a.meta_data.location_additional.linked_contacts === null) return 1
-          if (b.meta_data.location_additional.linked_contacts === null) return -1
-          return a.meta_data.location_additional.linked_contacts > b.meta_data.location_additional.linked_contacts ? 1 : -1
+          if (a.linked_contacts?.length === 0 && b.linked_contacts?.length === 0) return 0
+          if (a.linked_contacts?.length === 0) return 1
+          if (b.linked_contacts?.length === 0) return -1
+          return a.linked_contacts?.length > b.linked_contacts?.length ? 1 : -1
         })
       )
     }
@@ -117,10 +117,10 @@ export default function LocationsTable ({
       setLinkedContactsSort('descending')
       setFilteredLocations(
         [...filteredLocations].sort((a, b) => {
-          if (a.meta_data.location_additional.linked_contacts === null && b.meta_data.location_additional.linked_contacts === null) return 0
-          if (a.meta_data.location_additional.linked_contacts === null) return 1
-          if (b.meta_data.location_additional.linked_contacts === null) return -1
-          return a.meta_data.location_additional.linked_contacts < b.meta_data.location_additional.linked_contacts ? 1 : -1
+          if (a.linked_contacts?.length === 0 && b.linked_contacts?.length === 0) return 0
+          if (a.linked_contacts?.length === 0) return 1
+          if (b.linked_contacts?.length === 0) return -1
+          return a.linked_contacts?.length < b.linked_contacts?.length ? 1 : -1
         })
       )
     }
@@ -206,7 +206,7 @@ export default function LocationsTable ({
                   sortData(
                     locationNameSort,
                     setLocationNameSort,
-                    'meta_data.location_additional.location_name'
+                    'location.name'
                   )}
               >
                 Location name
@@ -223,7 +223,7 @@ export default function LocationsTable ({
                   sortData(
                     locationTypeSort,
                     setLocationTypeSort,
-                    'meta_data.location_additional.location_type'
+                    'location.additionals.other?.location_type'
                   )}
               >
                 Location type
@@ -240,7 +240,7 @@ export default function LocationsTable ({
                   sortData(
                     businessCriticalitySort,
                     setBusinessCriticalitySort,
-                    'meta_data.location_additional.business_criticality'
+                    'location.additionals.other?.business_criticality'
                   )}
               >
                 Business
@@ -330,21 +330,21 @@ export default function LocationsTable ({
                   className='govuk-link'
                   onClick={(e) => viewLocation(e, location)}
                 >
-                  {location.meta_data.location_additional.location_name}
+                  {location.name}
                 </Link>
               </td>
               <td className='govuk-table__cell'>
-                {location.meta_data.location_additional.location_type}
+                {location.additionals.other?.location_type}
               </td>
               <td className='govuk-table__cell'>
-                {location.meta_data.location_additional.business_criticality}
+                {location.additionals.other?.business_criticality}
               </td>
               <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'
                   onClick={(e) => updateMessageSettings(e, location)}
                 >
-                  {location.alert_categories.length > 0 ? 'Yes' : 'No'}
+                  {location.additionals.other?.alertTypes.length > 0 ? 'Yes' : 'No'}
                 </Link>
               </td>
               <td className='govuk-table__cell'>
@@ -352,7 +352,7 @@ export default function LocationsTable ({
                   className='govuk-link'
                   onClick={(e) => linkToContacts(e, location)}
                 >
-                  {location.meta_data.location_additional.linked_contacts.length}
+                  {location.linked_contacts?.length}
                 </Link>
               </td>
               <td className='govuk-table__cell'>

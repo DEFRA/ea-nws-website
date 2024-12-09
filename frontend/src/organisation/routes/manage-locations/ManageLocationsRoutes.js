@@ -57,6 +57,9 @@ import ViewLocationInformationPage from '../../pages/manage-locations/view-locat
 import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
 
+// link imports
+import LinkLocationPage from '../../pages/manage-locations/link-location/LinkLocationPage'
+
 const urlManageOrg = '/organisation/manage-locations'
 const urlManageOrgViewLocations = urlManageOrg + '/locations'
 const urlManageOrgAddLocations = urlManageOrg + '/add'
@@ -159,6 +162,9 @@ const orgManageLocationsUrls = {
       notInEngland:
         urlManageOrgUnmatchedLocations + '/manually-find/not-in-england'
     }
+  },
+  link: {
+    linkLocation: urlManageOrg + '/link-locations'
   }
 }
 
@@ -407,7 +413,12 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.edit.individualLocation.optionalInformation
       .keywords,
     component: <EditKeywordsPage />
-  }
+  },
+  // link location
+  {
+    path: orgManageLocationsUrls.link.linkLocation,
+    component: <LinkLocationPage />
+  },
 ]
 
 export { orgManageLocationRoutes, orgManageLocationsUrls }

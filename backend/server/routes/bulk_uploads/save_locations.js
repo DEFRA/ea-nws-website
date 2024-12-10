@@ -22,7 +22,7 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
         const { orgId, fileName } = request.payload
-        console.log(request.payload)
+
         if (fileName && orgId) {
           const elasticacheKey = 'bulk_upload:' + fileName.split('.')[0]
           const result = await getJsonData(elasticacheKey)
@@ -45,7 +45,6 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
       } catch (error) {
-        console.log(error)
         return createGenericErrorResponse(h)
       }
     }

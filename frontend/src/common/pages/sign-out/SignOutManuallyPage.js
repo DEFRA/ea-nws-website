@@ -9,7 +9,6 @@ export default function SignOutManuallyPage () {
   const signinType = useSelector((state) => state.session.signinType)
   const profileId = useSelector((state) => state.session.profileId)
   const orgId = useSelector((state) => state.session.orgId)
-  console.log(signinType)
 
   useEffect(() => {
     const signout = async () => {

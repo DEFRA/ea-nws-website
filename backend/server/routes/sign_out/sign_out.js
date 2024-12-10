@@ -12,8 +12,7 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        console.log('sign out')
-        console.log(request.payload)
+
         const { profileId, orgId } = request.payload
         if (profileId && orgId) {
           await orgSignOut(profileId, orgId)

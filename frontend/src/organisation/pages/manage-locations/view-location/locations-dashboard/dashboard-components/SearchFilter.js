@@ -89,11 +89,11 @@ export default function SearchFilter ({
   // Visibility filters
   const [locationNameVisible, setLocationNameVisible] = useState(false)
   const [locationTypeVisible, setLocationTypeVisible] = useState(selectedLocationTypeFilters.length > 0)
-  const [floodMessagesAvailableVisible, setFloodMessagesAvailableVisible] = useState(selectedFloodMessagesAvailableFilters > 0)
-  const [floodMessagesSentVisible, setFloodMessagesSentVisible] = useState(selectedFloodMessagesSentFilters > 0)
-  const [businessCriticalityVisible, setBusinessCriticalityVisible] = useState(selectedBusinessCriticalityFilters > 0)
-  const [riverSeaRiskVisible, setRiverSeaRiskVisible] = useState(selectedRiverSeaRiskFilters > 0)
-  const [groundWaterRiskVisible, setGroundWaterRiskVisible] = useState(selectedGroundWaterRiskFilters > 0)
+  const [floodMessagesAvailableVisible, setFloodMessagesAvailableVisible] = useState(selectedFloodMessagesAvailableFilters.length > 0)
+  const [floodMessagesSentVisible, setFloodMessagesSentVisible] = useState(selectedFloodMessagesSentFilters.length > 0)
+  const [businessCriticalityVisible, setBusinessCriticalityVisible] = useState(selectedBusinessCriticalityFilters.length > 0)
+  const [riverSeaRiskVisible, setRiverSeaRiskVisible] = useState(selectedRiverSeaRiskFilters.length > 0)
+  const [groundWaterRiskVisible, setGroundWaterRiskVisible] = useState(selectedGroundWaterRiskFilters.length > 0)
   const [keywordVisible, setKeywordVisible] = useState(selectedKeywordFilters.length > 0)
   const [linkedVisible, setLinkedVisible] = useState(selectedLinkedFilters.length > 0)
 
@@ -119,7 +119,7 @@ export default function SearchFilter ({
     // Apply Location name filter
     if (locationNameFilter) {
       filteredLocations = filteredLocations.filter((location) =>
-        location.location_additional.location_name
+        location.name
           .includes(locationNameFilter)
       )
     }
@@ -201,6 +201,7 @@ export default function SearchFilter ({
   const clearFilters = () => {
     setFilteredLocations(locations)
     setSelectedFilters([])
+    setLocationNameFilter('')
     setSelectedLocationTypeFilters([])
     setSelectedFloodMessagesAvailableFilters([])
     setSelectedFloodMessagesSentFilters([])
@@ -238,7 +239,7 @@ export default function SearchFilter ({
               className='govuk-input govuk-input-icon govuk-!-margin-top-3'
               id='location-name'
               type='text'
-              value={locationNameVisible}
+              value={locationNameFilter}
               onChange={(event) => {
                 setLocationNameFilter(event.target.value)
               }}
@@ -331,7 +332,7 @@ export default function SearchFilter ({
         </div>
 
         {/* Selected filters */}
-        {selectedFilters?.length > 0 && (
+        {(selectedFilters?.length > 0 || locationNameFilter.length > 0) && (
           <div className='locations-selected-filters-panel'>
             <div className='locations-selected-filters-section'>
               <h2 className='govuk-heading-s' style={{ marginBottom: '0' }}>

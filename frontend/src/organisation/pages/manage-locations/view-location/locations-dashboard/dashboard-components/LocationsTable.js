@@ -206,7 +206,7 @@ export default function LocationsTable ({
                   sortData(
                     locationNameSort,
                     setLocationNameSort,
-                    'location.name'
+                    'name'
                   )}
               >
                 Location name
@@ -223,7 +223,7 @@ export default function LocationsTable ({
                   sortData(
                     locationTypeSort,
                     setLocationTypeSort,
-                    'location.additionals.other?.location_type'
+                    'additionals.other.location_type'
                   )}
               >
                 Location type
@@ -240,7 +240,7 @@ export default function LocationsTable ({
                   sortData(
                     businessCriticalitySort,
                     setBusinessCriticalitySort,
-                    'location.additionals.other?.business_criticality'
+                    'additionals.other.business_criticality'
                   )}
               >
                 Business

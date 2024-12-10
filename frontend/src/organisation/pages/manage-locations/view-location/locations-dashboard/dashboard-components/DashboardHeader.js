@@ -83,14 +83,9 @@ export default function DashboardHeader ({
       )
       message[0] = 'in flood areas'
 
-      heading[0] = 'Locations that will get flood message'
-
       count.push(
-        // TODO: use linked TAs (nearby target areas)
-        locations.filter((obj) => obj.additionals.other?.alertTypes.length > 0).length)
-      message[0] = 'in flood areas'
-
-      count.push(locations.filter((item) => item.additionals.other?.alertTypes.length > 0).length)
+        locations.filter((item) => 
+          item.additionals.parentID.length > 0 && item.additionals.other?.alertTypes.length > 0).length)
       message.push('linked to nearby flood areas')
     } else if (type === 'noFloodMessages') {
       heading[0] = 'Locations that do not currently get flood messages'
@@ -150,12 +145,48 @@ export default function DashboardHeader ({
                   {count[0] === 1 ? 'location' : 'locations'} {message[0]}
                 </Link>
               </div>
-              {locations.filter((item) => item.additionals.other?.alertTypes.length > 0).length > 0 && (
+              {locations.filter((item) => item.additionals.parentID.length > 0 &&
+                                          item.additionals.other?.alertTypes.length > 0).length > 0 && (
                 <div style={{ width: '100%', padding: '0rem 1.5rem', borderLeft: '2px solid lightGrey' }}>
                   <h1>
                     <strong>{count[1]}</strong>
                   </h1>
-                  <Link className='govuk-link' onClick={() => onClickLinked("links")}>
+                  <Link className='govuk-link' onClick={() => onClickLinked("linked-locations")}>
+                    {count[1] === 1 ? 'location' : 'locations'} {message[1]}
+                  </Link>
+                </div>
+              )}
+            </div>
+          )}
+          {type === 'noFloodMessages' && (
+            <div style={{ display: 'flex' }}>
+              {locations.filter((item) => (item.riverSeaRisk?.title === 'Medium risk' ||
+                                           item.riverSeaRisk?.title === 'High risk') &&
+                                           item.additionals.other?.alertTypes.length === 0
+                                          ).length > 0 && (
+                <div
+                  style={{
+                    borderRight: '2px solid lightGrey',
+                    width: '100%',
+                    padding: '0rem 1rem 0rem 0rem'
+                  }}
+                >
+                  <h1 style={{ color: 'coral' }}>
+                    <strong>{count[0]}</strong>
+                  </h1>
+                  <Link className='govuk-link' onClick={() => onClickLinked("high-medium-risk")}>
+                    {count[0] === 1 ? 'location' : 'locations'} {message[0]}
+                  </Link>
+                </div>
+              )}
+              {locations.filter((item) => (item.riverSeaRisk?.title === 'Low risk') &&
+                                           item.additionals.other?.alertTypes.length === 0
+                                          ).length > 0 && (
+                <div style={{ width: '100%', padding: '0rem 1.5rem' }}>
+                  <h1>
+                    <strong>{count[1]}</strong>
+                  </h1>
+                  <Link className='govuk-link' onClick={() => onClickLinked("low-risk")}>
                     {count[1] === 1 ? 'location' : 'locations'} {message[1]}
                   </Link>
                 </div>
@@ -173,32 +204,6 @@ export default function DashboardHeader ({
                 {count[0] === 1 ? 'location' : 'locations'} {message[0]}
               </Link>
             </>
-          )}
-          {type === 'noFloodMessages' && (
-            <div style={{ display: 'flex' }}>
-              <div
-                style={{
-                  borderRight: '2px solid lightGrey',
-                  width: '100%',
-                  padding: '0rem 1rem 0rem 0rem'
-                }}
-              >
-                <h1 style={{ color: 'coral' }}>
-                  <strong>{count[0]}</strong>
-                </h1>
-                <Link className='govuk-link' onClick={() => onClickLinked("high-medium-risk")}>
-                  {count[0] === 1 ? 'location' : 'locations'} {message[0]}
-                </Link>
-              </div>
-              <div style={{ width: '100%', padding: '0rem 1.5rem' }}>
-                <h1>
-                  <strong>{count[1]}</strong>
-                </h1>
-                <Link className='govuk-link' onClick={() => onClickLinked("low-risk")}>
-                  {count[1] === 1 ? 'location' : 'locations'} {message[1]}
-                </Link>
-              </div>
-            </div>
           )}
         </div>
 

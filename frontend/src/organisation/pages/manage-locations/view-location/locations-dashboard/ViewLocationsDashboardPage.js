@@ -76,20 +76,15 @@ export default function ViewLocationsDashboardPage () {
         'api/elasticache/list_locations',
         navigate
       )
-      const locations = []
+      const locationsUpdate = []
       if (data) {
         data.forEach((location) => {
-          locations.push(geoSafeToWebLocation(location))
+          locationsUpdate.push(geoSafeToWebLocation(location))
         })
       }
-      setLocations(locations)
-      setFilteredLocations(locations)
-    }
-    getLocations()
 
-    const updateLocationData = async () => {
       const riverSeaRisks = await Promise.all(
-        locations.map((location) =>
+        locationsUpdate.map((location) =>
           getRiskCategory({
             riskAreaType: RiskAreaType.RIVERS_AND_SEA,
             location
@@ -97,7 +92,7 @@ export default function ViewLocationsDashboardPage () {
         )
       )
       const groundWaterRisks = await Promise.all(
-        locations.map((location) =>
+        locationsUpdate.map((location) =>
           getRiskCategory({
             riskAreaType: RiskAreaType.GROUNDWATER,
             location
@@ -105,24 +100,28 @@ export default function ViewLocationsDashboardPage () {
         )
       )
 
-      const updatedLocations = locations.map((location, idx) => ({
-        ...location,
-        riverSeaRisk: riverSeaRisks[idx],
-        groundWaterRisk: groundWaterRisks[idx]
-      }))
-      setLocations(updatedLocations)
-      setFilteredLocations(updatedLocations)
-    }
-    updateLocationData()
+      locationsUpdate.forEach(function (location, idx) {
+        location.riverSeaRisk = riverSeaRisks[idx];
+        location.groundWaterRisk = groundWaterRisks[idx];
+      });
 
-    // TODO: Get linked contacts from the API (EAN-1364)
-    const getContacts = async () => {
-      const updatedLocations = locations.map((location, idx) => ({
-        ...location,
-        linked_contacts: ['Contact 1', 'Contact 2']
-      }))
+      // TODO: Get linked contacts from the API (EAN-1364)
+      let tempSwitch = false
+      locationsUpdate.forEach(function (location) {
+        if (tempSwitch) {
+          location.linked_contacts = ['Contact 1', 'Contact 2'];
+          tempSwitch = false;
+        }
+        else {
+          location.linked_contacts = [];
+          tempSwitch = true;
+        }
+      });
+
+      setLocations(locationsUpdate)
+      setFilteredLocations(locationsUpdate)
     }
-    getContacts()
+    getLocations()
   }, [])
 
   const getRiskCategory = async ({ riskAreaType, location }) => {
@@ -140,11 +139,12 @@ export default function ViewLocationsDashboardPage () {
     }
 
     if (
-      location.additionals.other?.location_type !==
+      (location.additionals.other?.location_data_type !==
         LocationDataType.ADDRESS &&
-        location.additionals.other?.location_type !==
-        LocationDataType.X_AND_Y_COORDS &&
-      location.coordinates != null
+       location.additionals.other?.location_data_type !==
+        LocationDataType.X_AND_Y_COORDS) ||
+      location.coordinates.latitude === null || 
+      location.coordinates.longtitude === null
     ) {
       return null
     }
@@ -245,38 +245,52 @@ export default function ViewLocationsDashboardPage () {
   }
 
   const onClickLinked = (type) => {
-    const updatedFilteredLocations = locations.filter((location) =>
-      (type === 'messages' && location.additionals.other?.alertTypes.length > 0) ||
-      (type === 'links' && location.linked_contacts?.length > 0) ||
-      (type === 'no-links' && location.linked_contacts?.length === 0) ||
-      (type === 'high-medium-risk' && 
-        (location.riverSeaRisk?.title === 'Medium risk' || location.riverSeaRisk?.title === 'High risk') &&
-        location.additionals.other?.alertTypes.length === 0) ||
-      (type === 'low-risk' && 
-        location.riverSeaRisk?.title === 'Low risk' &&
-        location.additionals.other?.alertTypes.length === 0)
-    )
-
-    let selectedFilterType = []
-    if (type === 'links') {
-      selectedFilterType = 'Yes'
-    } else {
-      selectedFilterType = 'No'
-    }
-
     setSelectedFilters([])
-
     setSelectedLocationTypeFilters([])
     setSelectedBusinessCriticalityFilters([])
     setSelectedKeywordFilters([])
     setSelectedGroundWaterRiskFilters([])
     setSelectedRiverSeaRiskFilters([])
     setSelectedFloodMessagesAvailableFilters([])
+    setSelectedLinkedFilters([])
 
-    setSelectedLinkedFilters([selectedFilterType])
-    setSelectedFilters([selectedFilterType])
+    let updatedFilteredLocations = []
+
+    if (type === 'messages') {
+      updatedFilteredLocations = locations.filter((location) =>
+        (location.additionals.other?.alertTypes.length > 0))
+      setSelectedFloodMessagesAvailableFilters(['Yes'])
+      setSelectedFilters(['Yes'])
+    }
+    else if (type === 'linked-locations') {
+      updatedFilteredLocations = locations.filter((location) =>
+        (location.additionals.parentID.length > 0 && location.additionals.other?.alertTypes.length > 0))
+      setSelectedFloodMessagesAvailableFilters(['Yes'])
+      setSelectedFilters(['Yes'])
+    }
+    else if (type === 'high-medium-risk') {
+      updatedFilteredLocations = locations.filter((location) =>
+        ((location.riverSeaRisk?.title === 'Medium risk' ||
+          location.riverSeaRisk?.title === 'High risk') &&
+          location.additionals.other?.alertTypes.length === 0))
+      setSelectedFloodMessagesAvailableFilters(['Yes'])
+      setSelectedFilters(['Yes'])
+    }
+    else if (type === 'low-risk') {
+      updatedFilteredLocations = locations.filter((location) =>
+        ((location.riverSeaRisk?.title === 'Low risk') &&
+          location.additionals.other?.alertTypes.length === 0))
+      setSelectedFloodMessagesAvailableFilters(['Yes'])
+      setSelectedFilters(['Yes'])
+    }
+    else if (type === 'no-links') {
+      updatedFilteredLocations = locations.filter((location) =>
+        (location.linked_contacts?.length === 0))
+        setSelectedLinkedFilters(['No'])
+      setSelectedFilters(['No'])
+    }
+
     setIsFilterVisible(true)
-
     setFilteredLocations([...updatedFilteredLocations])
 
     setResetPaging(!resetPaging)

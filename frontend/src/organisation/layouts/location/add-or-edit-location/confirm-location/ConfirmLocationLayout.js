@@ -15,7 +15,7 @@ export default function ConfirmLocationLayout ({
   navigateToNextPage,
   navigateToPinDropFlow
 }) {
-  const { error, setError } = useState(null)
+  const [error, setError] = useState(null)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const currentLocation = useSelector((state) => state.session.currentLocation)

@@ -102,7 +102,7 @@ const userSlice = createSlice({
         { id: 'locationName', value: { s: '' } },
         { id: 'parentID', value: { s: '' } },
         { id: 'targetAreas', value: { s: '' } },
-        { id: 'keywords', value: { s: '' } },
+        { id: 'keywords', value: { s: '[]' } },
         {
           id: 'other',
           value: {
@@ -237,6 +237,46 @@ const userSlice = createSlice({
       state.currentLocation.geometry = action.payload.geometry
       state.currentLocation.geocode = action.payload.geocode
       state.currentLocation.additionals = action.payload.additionals
+    },
+    clearCurrentLocation: (state) => {
+      state.currentLocation = {
+        id: null,
+        enabled: true,
+        // name is the UPRN
+        name: null,
+        // address is the human readable address or flood area name
+        address: null,
+        // Coordinates in dd (degrees decimal)
+        coordinates: null,
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: '' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '[]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify({
+                full_address: null,
+                postcode: null,
+                // Easting EPSG: 27700
+                x_coordinate: null,
+                // Northing EPSG: 27700
+                y_coordinate: null,
+                internal_reference: null,
+                business_criticality: null,
+                location_type: null,
+                action_plan: null,
+                notes: null,
+                location_data_type: null,
+                alertTypes: null
+              })
+            }
+          }
+        ]
+      }
     },
     setCurrentLocationId: (state, action) => {
       state.currentLocation.id = action.payload
@@ -453,7 +493,7 @@ const userSlice = createSlice({
           { id: 'locationName', value: { s: '' } },
           { id: 'parentID', value: { s: '' } },
           { id: 'targetAreas', value: { s: '' } },
-          { id: 'keywords', value: { s: '' } },
+          { id: 'keywords', value: { s: '[]' } },
           {
             id: 'other',
             value: {
@@ -631,7 +671,8 @@ export const {
   setOrgCurrentContactAdditionals,
   setOrgCurrentContactNotes,
   // clear state
-  clearAuth
+  clearAuth,
+  clearCurrentLocation
 } = userSlice.actions
 
 export const {

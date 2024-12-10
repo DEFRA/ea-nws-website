@@ -20,9 +20,9 @@ module.exports = [
             { authToken: authToken, location: location },
             'location/create'
           )
-          if (response.location) {
-            await addLocation(orgId, response.location)
-            return h.response({ status: 200, data: response.location })
+          if (response.data.location) {
+            await addLocation(orgId, response.data.location)
+            return h.response({ status: 200, data: response.data.location })
           } else {
             return createGenericErrorResponse(h)
           }

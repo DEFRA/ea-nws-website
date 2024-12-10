@@ -104,7 +104,7 @@ export default function FloodReportsTable ({
   }
 
   const sortLinkedContacts = () => {
-    // TODO when linked contacts are available
+    // TODO: when linked contacts are available
   }
 
   return (
@@ -204,7 +204,7 @@ export default function FloodReportsTable ({
                   sortData(
                     lastUpdatedSort,
                     setlastUpdatedSort,
-                    '' // TODO: Change this
+                    '' // TODO: Change  to use the warning time values when available
                   )}
               >
                 Last
@@ -220,7 +220,7 @@ export default function FloodReportsTable ({
               <td className='govuk-table__cell'>
                 <p className='govuk-hint' style={{ marginBottom: '0.2em' }}>
                   {`Boundary_0${index + 1}`}{' '}
-                  {/* TODO: Link in boundary when real warning data available */}
+                  {/* TODO: Link in boundaries when real warning data available */}
                 </p>
                 <Link
                   className='govuk-link'

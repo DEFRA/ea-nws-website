@@ -52,7 +52,7 @@ export default function FloodReportPopup ({ onClose, title, warning }) {
 
                 return (
                   <div key={index}>
-                    {/* TODO: Integrate real warning data available */}
+                    {/* TODO: Integrate real warning data when available */}
                     <div className={cardClass}>
                       <div className='flood-warning-card-content'>
                         <img
@@ -81,7 +81,7 @@ export default function FloodReportPopup ({ onClose, title, warning }) {
                 )
               })}
 
-            {/* TODO: Create timeline tab */}
+            {/* TODO: Create timeline tab when warning timeline data is available */}
           </>
         }
         buttonText='Close'

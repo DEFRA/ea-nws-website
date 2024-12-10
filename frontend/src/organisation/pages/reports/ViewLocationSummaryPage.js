@@ -6,6 +6,8 @@ import { infoUrls } from '../../routes/info/InfoRoutes'
 import BackLink from '../../../common/components/custom/BackLink'
 import { backendCall } from '../../../common/services/BackendService'
 import { useSelector } from 'react-redux'
+import { orgViewReportsUrls } from '../../routes/reports/reportRoutes'
+
 export default function ViewLocationSummaryPage () {
   const navigate = useNavigate()
   const orgId = useSelector((state) => state.session.orgId)
@@ -165,15 +167,14 @@ export default function ViewLocationSummaryPage () {
     </>
   )
 
-  const locationTableHead = (title, locationTableBody, numberMessages) => (
+  const locationTableHead = (title, paragraph, locationTableBody, numberMessages) => (
     <>
       <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-5 govuk-!-display-inline-block'>
         {title}
       </h2>
       <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3 section-break-bold' />
-      <p className='govuk-!-margin-bottom-5'>
-        This is a summary of how many locations get each of the different types of flood messages.
-        Not all flood messages are available for some locations.
+      <p className='govuk-!-margin-bottom-5'>{paragraph}
+
       </p>
       <Link to={infoUrls.floodTypes} className='govuk-link '>
         What are the different types of flood messages?
@@ -201,18 +202,30 @@ export default function ViewLocationSummaryPage () {
       </table>
     </>
   )
+  const paragraphMessages = (
+    <>
+      This is a summary of how many locations get each of the different types of <br /> flood messages.
+      Not all flood messages are available for some locations.
+    </>
+  )
 
+  const paragraphNoMessages = (
+    <>
+      This is a summary of locations that will not get messages. This is because <br />
+      no messages are available or messages types have been turned off.
+    </>
+  )
   return (
     <>
-      <OrganisationAccountNavigation />
+      <OrganisationAccountNavigation currentPage={orgViewReportsUrls.ViewSummary} />
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-one-half'>
+          <div className='govuk-grid-column-full'>
             <h1 className='govuk-heading-l'>Summary of flood messages sent</h1>
             <div className='govuk-body'>
-              {locationTableHead('Locations that get flood messages', locationTableMessagesBody(alertData), totalLocations - alertData?.noAlert.length)}
-              {locationTableHead('Locations that will not get flood messages', locationTableNoMessages(alertData), alertData?.noAlert.length)}
+              {locationTableHead('Locations that get flood messages', paragraphMessages, locationTableMessagesBody(alertData), totalLocations - alertData?.noAlert.length)}
+              {locationTableHead('Locations that will not get flood messages', paragraphNoMessages, locationTableNoMessages(alertData), alertData?.noAlert.length)}
             </div>
           </div>
         </div>

@@ -109,7 +109,9 @@ export default function ViewLocationSummaryPage () {
     </>
   )
 
-  /* ToDo get data for no alerts properly and how many messages for each */
+  /* ToDo get data for no alerts properly and how many messages for each
+  however this feature cant be implimented yet so dummy data and hard code
+  needed for this table */
   const locationTableNoMessages = (alertData) => (
     <>
       <tbody className='govuk-table__body'>

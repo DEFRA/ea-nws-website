@@ -9,7 +9,7 @@ import { orgFloodReportsUrls } from '../../routes/flood-reports/FloodReportsRout
 import FloodReportsFilter from './dashboard-components/FloodReportsFilter'
 import FloodReportsTable from './dashboard-components/FloodReportsTable'
 
-export default function LiveFloodWarningsPage() {
+export default function LiveFloodWarningsPage () {
   const navigate = useNavigate()
 
   const [warnings, setWarnings] = useState([])
@@ -207,41 +207,43 @@ export default function LiveFloodWarningsPage() {
           <div className='govuk-grid-column-full govuk-body'>
             <br />
             <h1 className='govuk-heading-l'>Live flood warnings</h1>
-            {!isFilterVisible ? (
-              <div className='govuk-grid-row'>
-                <>{table}</>
-              </div>
-            ) : (
-              <div className='govuk-grid-row'>
-                <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 contacts-filter-container'>
-                  <FloodReportsFilter
-                    warnings={warnings}
-                    setFilteredWarnings={setFilteredWarnings}
-                    resetPaging={resetPaging}
-                    setResetPaging={setResetPaging}
-                    selectedFilters={selectedFilters}
-                    setSelectedFilters={setSelectedFilters}
-                    locationNameFilter={locationNameFilter}
-                    setLocationNameFilter={setLocationNameFilter}
-                    selectedWarningTypeFilters={selectedWarningTypeFilters}
-                    setSelectedWarningTypeFilters={
+            {!isFilterVisible
+              ? (
+                <div className='govuk-grid-row'>
+                  <>{table}</>
+                </div>
+                )
+              : (
+                <div className='govuk-grid-row'>
+                  <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 contacts-filter-container'>
+                    <FloodReportsFilter
+                      warnings={warnings}
+                      setFilteredWarnings={setFilteredWarnings}
+                      resetPaging={resetPaging}
+                      setResetPaging={setResetPaging}
+                      selectedFilters={selectedFilters}
+                      setSelectedFilters={setSelectedFilters}
+                      locationNameFilter={locationNameFilter}
+                      setLocationNameFilter={setLocationNameFilter}
+                      selectedWarningTypeFilters={selectedWarningTypeFilters}
+                      setSelectedWarningTypeFilters={
                       setSelectedWarningTypeFilters
                     }
-                    selectedLocationTypeFilters={selectedLocationTypeFilters}
-                    setSelectedLocationTypeFilters={
+                      selectedLocationTypeFilters={selectedLocationTypeFilters}
+                      setSelectedLocationTypeFilters={
                       setSelectedLocationTypeFilters
                     }
-                    selectedBusCriticalityFilters={
+                      selectedBusCriticalityFilters={
                       selectedBusCriticalityFilters
                     }
-                    setSelectedBusCriticalityFilters={
+                      setSelectedBusCriticalityFilters={
                       setSelectedBusCriticalityFilters
                     }
-                  />
+                    />
+                  </div>
+                  <div className='govuk-grid-column-three-quarters'>{table}</div>
                 </div>
-                <div className='govuk-grid-column-three-quarters'>{table}</div>
-              </div>
-            )}
+                )}
           </div>
         </div>
       </main>

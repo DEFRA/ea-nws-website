@@ -4,7 +4,7 @@ import floodAlertIcon from '../../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../../common/assets/images/flood_warning.svg'
 import FloodReportPopup from './FloodReportPopup'
 
-export default function FloodReportsTable({
+export default function FloodReportsTable ({
   warnings,
   displayedWarnings,
   filteredWarnings,
@@ -132,8 +132,7 @@ export default function FloodReportsTable({
                     locationNameSort,
                     setLocationNameSort,
                     'meta_data.location_additional.location_name'
-                  )
-                }
+                  )}
               >
                 Location name
               </button>
@@ -150,8 +149,7 @@ export default function FloodReportsTable({
                     warningTypeSort,
                     setWarningTypeSort,
                     'meta_data.alert_categories'
-                  )
-                }
+                  )}
               >
                 Warning <br />
                 type
@@ -179,8 +177,7 @@ export default function FloodReportsTable({
                     businessCriticalitySort,
                     setBusinessCriticalitySort,
                     'meta_data.location_additional.business_criticality'
-                  )
-                }
+                  )}
               >
                 Business
                 <br /> criticality
@@ -208,8 +205,7 @@ export default function FloodReportsTable({
                     lastUpdatedSort,
                     setlastUpdatedSort,
                     '' // TODO: Change this
-                  )
-                }
+                  )}
               >
                 Last
                 <br /> updated
@@ -224,7 +220,7 @@ export default function FloodReportsTable({
               <td className='govuk-table__cell'>
                 <p className='govuk-hint' style={{ marginBottom: '0.2em' }}>
                   {`Boundary_0${index + 1}`}{' '}
-                  {/*TODO: Link in boundary when real warning data available*/}
+                  {/* TODO: Link in boundary when real warning data available */}
                 </p>
                 <Link
                   className='govuk-link'
@@ -275,7 +271,7 @@ export default function FloodReportsTable({
         <FloodReportPopup
           onClose={closePopup}
           title={popupWarning.meta_data.location_additional.location_name}
-          warnings={[popupWarning]}
+          warning={popupWarning}
         />
       )}
     </>

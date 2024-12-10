@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 import Button from '../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../common/components/gov-uk/CheckBox'
 
-export default function FloodReportsFilter({
+export default function FloodReportsFilter ({
   warnings,
   setFilteredWarnings,
   resetPaging,

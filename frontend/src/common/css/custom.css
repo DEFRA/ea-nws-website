@@ -1211,31 +1211,45 @@
 
 .flood-warning-popup-tab-group {
   display: flex;
-  border-bottom: 2px solid #d8d8d8;
-  margin-bottom: 16px;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
 }
 
 .flood-warning-popup-tab {
-  padding: 8px 16px;
-  font-weight: bold;
-}
-
-.flood-warning-popup-tab .selected {
-  border-bottom: 2px solid #1d70b8;
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-bottom: 2px solid transparent;
   color: #1d708b;
 }
 
-.warning-card {
-  border: 1px solid #d8d8d8;
-  border-left: 4px solid #00703c;
-  padding: 16px;
-  margin-bottom: 16px;
-  background-color: #f3f4f6;
+.flood-warning-popup-tab.selected {
+  border-bottom: 2px solid #1d70b8;
+  color: #000000;
 }
 
-.warning-card .severe {
-  border-left-color: #d4351c;
-  background-color: #f3e2e3;
+.flood-warning-card {
+  padding: 0.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  background-color: #ffd7dc;
+  border-left: 5px solid #db091c;
+  border-radius: 0;
+}
+
+.flood-warning-card.alert {
+  background-color: #fdf1e3;
+  border-left: 5px solid #eb7c25;
+}
+
+.flood-warning-card-content {
+  display: flex;
+  align-items: center;
+}
+
+.flood-warning-card-icon {
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
 }
 
 .input-with-icon {

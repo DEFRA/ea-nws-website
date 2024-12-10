@@ -15,7 +15,6 @@ export default function LocationInformationPage () {
   const navigate = useNavigate()
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = useSelector((state) => getLocationAdditionals(state))
-  console.log(additionalData)
   const keywords = additionalData.keywords
     ? JSON.parse(additionalData.keywords)
     : []

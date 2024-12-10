@@ -331,7 +331,7 @@ export default function IndexPage () {
       { id: 'locationName', value: { s: '' } },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
-      { id: 'keywords', value: { s: '' } },
+      { id: 'keywords', value: { s: '[]' } },
       {
         id: 'other',
         value: {

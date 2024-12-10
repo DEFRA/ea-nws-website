@@ -173,16 +173,43 @@ const addLocation = async (orgId, location) => {
   await addToAlert(orgId, location)
 }
 
+const removeLocationFromKeywords = async (orgId, locationID) => {
+  const key = orgId + ':t_Keywords_location'
+  const arrExists = await checkKeyExists(key)
+  if (arrExists) {
+    const keywordArr = await getJsonData(key)
+    keywordArr.forEach((keyword) => {
+      let linkedIds = keyword.linked_ids
+      linkedIds = linkedIds.filter(id => id !== locationID)
+      keyword.linked_ids = linkedIds
+    })
+    await setJsonData(key, keywordArr)
+  }
+}
+
 const removeLocation = async (orgId, locationID) => {
   const key = orgId + ':t_POIS:' + locationID
+  await removeLocationFromKeywords(orgId, locationID)
   await deleteJsonData(key)
   await removeFromList(orgId + ':t_POIS_locID', locationID)
 }
 
 const updateLocation = async (orgId, location) => {
-  // Can call to add location as setting a value for a
-  // key will overwrite it's previous value.
-  await addLocation(orgId, location)
+  const locationID = location.id
+  const key = orgId + ':t_POIS:' + locationID
+  // Remove location from keywords as the update call may contain different keywords
+  await removeLocationFromKeywords(orgId, locationID)
+  await setJsonData(key, location)
+  // add location ID to list
+  let keywords = []
+  location.additionals.forEach((additional) => {
+    if (additional.id === 'keywords') {
+      keywords = JSON.parse(additional.value?.s)
+    }
+  })
+  for (const keyword of keywords) {
+    await addToKeywordArr(orgId + ':t_Keywords_location', { name: keyword, linked_ids: [locationID] })
+  }
 }
 
 const getLocationKeys = async (orgId) => {

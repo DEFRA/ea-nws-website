@@ -19,15 +19,19 @@ const geoSafeToWebLocation = (geoSafeLocation) => {
   const additionals = geoSafeLocation?.additionals
   additionals?.forEach(additional => {
     if (additional.id === 'keywords') {
-      location.additionals.keywords = JSON.parse(additional.value?.s)
+      location.additionals.keywords = Array => {
+        try {
+          return JSON.parse(additional.value?.s)
+        } catch (e) {
+          return []
+        }
+      }
     } else if (additional.id === 'other') {
       location.additionals.other = JSON.parse(additional.value?.s)
     } else {
       location.additionals[additional.id] = additional.value?.s
     }
   })
-
-  console.log(location)
 
   return location
 }

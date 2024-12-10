@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { getLocationAdditional } from '../../../../../../../common/redux/userSlice'
@@ -7,6 +7,7 @@ import { orgManageLocationsUrls } from '../../../../../../routes/manage-location
 
 export default function ActionPlanPage () {
   const navigate = useNavigate()
+  const [error, setError] = useState(null)
   const locationName = useSelector(
     (state) => getLocationAdditional(state, 'locationName')
   )
@@ -19,7 +20,7 @@ export default function ActionPlanPage () {
 
   return (
     <>
-      <ActionPlanLayout navigateToNextPage={navigateToNextPage} />
+      <ActionPlanLayout navigateToNextPage={navigateToNextPage} error={error} setError={setError} />
     </>
   )
 }

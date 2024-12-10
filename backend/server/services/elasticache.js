@@ -169,7 +169,7 @@ const addLocation = async (orgId, location) => {
   for (const keyword of keywords) {
     await addToKeywordArr(orgId + ':t_Keywords_location', { name: keyword, linked_ids: [locationID] })
   }
-  console.log('adding location')
+
   await addToAlert(orgId, location)
 }
 
@@ -337,7 +337,6 @@ const orgSignIn = async (profile, organization, locations, contacts) => {
 }
 
 const orgSignOut = async (profileId, orgId) => {
-  console.log('org sign out')
   // delete all data from elasticache
   // delete profile
   await deleteJsonData(profileId + ':profile')

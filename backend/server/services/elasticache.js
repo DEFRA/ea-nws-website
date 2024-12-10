@@ -121,6 +121,39 @@ Functions for Valid locations to be used accross the
 entire site
 */
 
+const addToAlert = async (orgId, location) => {
+  const key = orgId + ':alertLocations'
+  const exists = await checkKeyExists(key)
+  if (!exists) {
+    const struct = {
+      severeWarningAlert: [],
+      severeWarning: [],
+      alert: [],
+      noAlert: []
+    }
+    await setJsonData(key, struct)
+  }
+  let alertTypes
+  location.additionals.forEach((additional) => {
+    if (additional.id === 'other') {
+      const other = JSON.parse(additional.value?.s)
+      alertTypes = other.alertTypes
+    }
+  })
+  console.log(alertTypes)
+  const client = await connectToRedis()
+  if (alertTypes.length === 3) {
+    await client.json.arrAppend(key, '.severeWarningAlert', location.id)
+  } else if (alertTypes.length === 2) {
+    await client.json.arrAppend(key, '.severeWarning', location.id)
+  } else if (alertTypes.length === 1) {
+    await client.json.arrAppend(key, '.alert', location.id)
+  } else {
+    await client.json.arrAppend(key, '.noAlert', location.id)
+  }
+  await client.disconnect()
+}
+
 const addLocation = async (orgId, location) => {
   const locationID = location.id
   const key = orgId + ':t_POIS:' + locationID
@@ -136,6 +169,8 @@ const addLocation = async (orgId, location) => {
   for (const keyword of keywords) {
     await addToKeywordArr(orgId + ':t_Keywords_location', { name: keyword, linked_ids: [locationID] })
   }
+
+  await addToAlert(orgId, location)
 }
 
 const removeLocation = async (orgId, locationID) => {
@@ -323,6 +358,7 @@ const orgSignOut = async (profileId, orgId) => {
   // delete contact and location keywords
   await deleteJsonData(orgId + ':t_Keywords_location')
   await deleteJsonData(orgId + ':t_Keywords_contact')
+  await deleteJsonData(orgId + ':alertLocations')
 }
 
 module.exports = {

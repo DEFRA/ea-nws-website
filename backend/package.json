@@ -28,6 +28,7 @@
     "@hapi/vision": "6.1.0",
     "axios": "^1.7.2",
     "blipp": "4.0.2",
+    "dbf-reader": "^1.0.3",
     "govuk-frontend": "^4.8.0",
     "hapi-k8s-health": "^1.1.1",
     "hapi-pino": "9.4.0",

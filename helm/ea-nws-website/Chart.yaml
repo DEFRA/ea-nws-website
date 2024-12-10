@@ -1,15 +1,15 @@
 apiVersion: v2
-appVersion: "0.2.0"
+appVersion: "0.2.1"
 description: A Helm chart for Kubernetes
 name: ea-nws-website
 type: application
-version: 0.2.0
+version: 0.2.1
 dependencies:
   - alias: backend
     name: backend
-    version: "0.2.0"
+    version: "0.2.1"
     repository: file://charts/backend
   - alias: frontend
     name: frontend
-    version: "0.2.0"
+    version: "0.2.1"
     repository: file://charts/frontend

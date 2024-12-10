@@ -1,11 +1,13 @@
 import LiveFloodWarningsPage from '../../pages/flood-reports/LiveFloodWarningsPage'
 import ReportsOverviewPage from '../../pages/flood-reports/ReportsOverviewPage'
+import ViewLocationSummaryPage from '../../pages/flood-reports/ViewLocationSummaryPage'
 
 const urlOrg = '/organisation'
 
 const orgFloodReportsUrls = {
   overview: urlOrg + '/reports',
-  live: urlOrg + '/reports/live-warnings'
+  live: urlOrg + '/reports/live-warnings',
+  summary: urlOrg + '/reports/view-summary'
 }
 
 const orgFloodReportsRoutes = [
@@ -16,6 +18,10 @@ const orgFloodReportsRoutes = [
   {
     path: orgFloodReportsUrls.live,
     component: <LiveFloodWarningsPage />
+  },
+  {
+    path: orgFloodReportsUrls.summary,
+    component: <ViewLocationSummaryPage />
   }
 ]
 export { orgFloodReportsRoutes, orgFloodReportsUrls }

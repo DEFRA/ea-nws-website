@@ -11,12 +11,16 @@ export default function SignOutManuallyPage () {
   const orgId = useSelector((state) => state.session.orgId)
 
   useEffect(() => {
+    const signout = async () => {
+      // need to call the backend to remove data from elasticache once signed out
+      await backendCall({ profileId, orgId }, 'api/sign_out')
+    }
     if (signinType === 'org') {
       // need to call the backend to remove data from elasticache once signed out
-      backendCall({ profileId, orgId }, 'api/sign_out')
+      signout()
     }
     dispatch(clearAuth())
-  })
+  }, [])
 
   return <SignOutLayout text={"You've been signed out for security reasons"} />
 }

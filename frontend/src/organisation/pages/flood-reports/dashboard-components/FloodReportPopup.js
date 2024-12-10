@@ -4,7 +4,7 @@ import floodAlertIcon from '../../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../../common/assets/images/flood_warning.svg'
 import Popup from '../../../../common/components/custom/Popup'
 
-export default function FloodReportPopup({ onClose, title, warning }) {
+export default function FloodReportPopup ({ onClose, title, warning }) {
   const [activeTab, setActiveTab] = useState('Live')
 
   return (
@@ -81,7 +81,7 @@ export default function FloodReportPopup({ onClose, title, warning }) {
                 )
               })}
 
-            {/* TODO: Create timeline tab*/}
+            {/* TODO: Create timeline tab */}
           </>
         }
         buttonText='Close'

@@ -5,7 +5,7 @@ import BackLink from '../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import { orgFloodReportsUrls } from '../../routes/flood-reports/FloodReportsRoutes'
 
-export default function ReportsOverviewPage() {
+export default function ReportsOverviewPage () {
   const navigate = useNavigate()
 
   return (

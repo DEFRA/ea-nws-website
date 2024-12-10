@@ -8,7 +8,7 @@ import { backendCall } from '../../../common/services/BackendService'
 import { orgFloodReportsUrls } from '../../routes/flood-reports/FloodReportsRoutes'
 import { infoUrls } from '../../routes/info/InfoRoutes'
 
-export default function ViewLocationSummaryPage() {
+export default function ViewLocationSummaryPage () {
   const navigate = useNavigate()
   const orgId = useSelector((state) => state.session.orgId)
   const [alertData, setAlertData] = useState()

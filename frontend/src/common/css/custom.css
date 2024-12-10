@@ -1200,6 +1200,44 @@
   color: #505a5f;
 }
 
+.reports-table-data-position .govuk-table__cell {
+  vertical-align: middle;
+}
+
+.reports-table-icon-position {
+  display: 'flex';
+  gap: '0.5rem';
+}
+
+.flood-warning-popup-tab-group {
+  display: flex;
+  border-bottom: 2px solid #d8d8d8;
+  margin-bottom: 16px;
+}
+
+.flood-warning-popup-tab {
+  padding: 8px 16px;
+  font-weight: bold;
+}
+
+.flood-warning-popup-tab .selected {
+  border-bottom: 2px solid #1d70b8;
+  color: #1d708b;
+}
+
+.warning-card {
+  border: 1px solid #d8d8d8;
+  border-left: 4px solid #00703c;
+  padding: 16px;
+  margin-bottom: 16px;
+  background-color: #f3f4f6;
+}
+
+.warning-card .severe {
+  border-left-color: #d4351c;
+  background-color: #f3e2e3;
+}
+
 .input-with-icon {
   position: relative;
 }

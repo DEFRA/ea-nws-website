@@ -5,7 +5,7 @@ import BackLink from '../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import { orgFloodReportsUrls } from '../../routes/flood-reports/FloodReportsRoutes'
 
-export default function ReportsOverviewPage () {
+export default function ReportsOverviewPage() {
   const navigate = useNavigate()
 
   return (
@@ -46,7 +46,10 @@ export default function ReportsOverviewPage () {
               has a filter to produce reports
             </p>
             <p>
-              <Link to='#' className='govuk-link'>
+              <Link
+                to='/organisation/reports/view-summary'
+                className='govuk-link'
+              >
                 Summary of flood messages sent to your locations
               </Link>
             </p>

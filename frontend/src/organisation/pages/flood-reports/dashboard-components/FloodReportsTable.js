@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom'
 import floodAlertIcon from '../../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../../common/assets/images/flood_warning.svg'
+import FloodReportPopup from './FloodReportPopup'
 
 export default function FloodReportsTable({
   warnings,
@@ -10,6 +12,9 @@ export default function FloodReportsTable({
   resetPaging,
   setResetPaging
 }) {
+  const [popupVisible, setPopupVisible] = useState(false)
+  const [popupWarning, setPopupWarning] = useState(null)
+
   const [locationNameSort, setLocationNameSort] = useState('none')
   const [warningTypeSort, setWarningTypeSort] = useState('none')
   const [locationTypeSort, setLocationTypeSort] = useState('none')
@@ -26,6 +31,17 @@ export default function FloodReportsTable({
     setLinkedContactsSort('none')
     setlastUpdatedSort('none')
   }, [warnings])
+
+  // Popup logic
+  const openPopup = (warning) => {
+    setPopupWarning(warning)
+    setPopupVisible(true)
+  }
+
+  const closePopup = () => {
+    setPopupWarning(null)
+    setPopupVisible(false)
+  }
 
   // Sort standard data
   const sortData = (sortType, setSort, data) => {
@@ -101,7 +117,7 @@ export default function FloodReportsTable({
           'Showing ' + displayedWarnings.length + ' of '}
         {warnings.length} {warnings.length === 1 ? 'location' : 'locations'}
       </p>
-      <table className='govuk-table govuk-table--small-text-until-tablet'>
+      <table className='govuk-table govuk-table--small-text-until-tablet reports-table-data-position'>
         <thead className='govuk-table__head'>
           <tr className='govuk-table__row'>
             <th
@@ -191,7 +207,7 @@ export default function FloodReportsTable({
                   sortData(
                     lastUpdatedSort,
                     setlastUpdatedSort,
-                    'riverSeaRisk.title' // TODO: Change this
+                    '' // TODO: Change this
                   )
                 }
               >
@@ -206,12 +222,24 @@ export default function FloodReportsTable({
           {filteredWarnings.map((warning, index) => (
             <tr key={index} className='govuk-table__row'>
               <td className='govuk-table__cell'>
-                {warning.meta_data.location_additional.location_name}
+                <p className='govuk-hint' style={{ marginBottom: '0.2em' }}>
+                  {`Boundary_0${index + 1}`}{' '}
+                  {/*TODO: Link in boundary when real warning data available*/}
+                </p>
+                <Link
+                  className='govuk-link'
+                  onClick={(e) => {
+                    e.preventDefault()
+                    openPopup(warning)
+                  }}
+                >
+                  {warning.meta_data.location_additional.location_name}
+                </Link>
               </td>
               <td className='govuk-table__cell'>
                 {' '}
                 {warning.alert_categories.map((type, i) => (
-                  <div key={i}>
+                  <div key={i} className='reports-table-icon-position'>
                     {type === 'Alert' && (
                       <img
                         src={floodAlertIcon}
@@ -243,6 +271,13 @@ export default function FloodReportsTable({
           ))}
         </tbody>{' '}
       </table>
+      {popupVisible && popupWarning && (
+        <FloodReportPopup
+          onClose={closePopup}
+          title={popupWarning.meta_data.location_additional.location_name}
+          warnings={[popupWarning]}
+        />
+      )}
     </>
   )
 }

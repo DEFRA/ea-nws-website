@@ -6,14 +6,19 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
-import { getLocationAdditional, getLocationOther, setCurrentLocation } from '../../../../../common/redux/userSlice'
+import {
+  getLocationAdditional,
+  getLocationOther,
+  setCurrentLocation
+} from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 
-export default function ConfirmLocationLayout ({
+export default function ConfirmLocationLayout({
   navigateToNextPage,
-  navigateToPinDropFlow
+  navigateToPinDropFlow,
+  layoutType = 'XandY'
 }) {
   const [error, setError] = useState(null)
   const navigate = useNavigate()
@@ -21,29 +26,47 @@ export default function ConfirmLocationLayout ({
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
-  const locationName = useSelector(
-    (state) => getLocationAdditional(state, 'locationName')
+  const locationName = useSelector((state) =>
+    getLocationAdditional(state, 'locationName')
   )
 
-  const currentAddress = useSelector(
-    (state) => getLocationOther(state, 'full_address')
+  const currentAddress = useSelector((state) =>
+    getLocationOther(state, 'full_address')
   )
   const formattedAddress = currentAddress ? currentAddress.split(',') : ''
+  const xCoord = Math.round(
+    useSelector((state) => getLocationOther(state, 'x_coordinate'))
+  )
+  const yCoord = Math.round(
+    useSelector((state) => getLocationOther(state, 'y_coordinate'))
+  )
 
-  const handleSubmit = async () => {
-    const dataToSend = { authToken, orgId, location: currentLocation }
-    const { data, errorMessage } = await backendCall(
-      dataToSend,
-      'api/location/create',
-      navigate
-    )
-    if (data) {
-      // need to set the current location due to geosafe creating the ID.
-      dispatch(setCurrentLocation(data))
-      navigateToNextPage()
-    } else {
-      errorMessage ? setError(errorMessage) : setError('Oops, something went wrong')
-    }
+  // Switch case to change the button/link logic depending on the location type
+  let handleSubmit, cancel
+  switch (layoutType) {
+    case 'shape':
+      break
+    default:
+      handleSubmit = async () => {
+        const dataToSend = { authToken, orgId, location: currentLocation }
+        const { data, errorMessage } = await backendCall(
+          dataToSend,
+          'api/location/create',
+          navigate
+        )
+        if (data) {
+          // need to set the current location due to geosafe creating the ID.
+          dispatch(setCurrentLocation(data))
+          navigateToNextPage()
+        } else {
+          errorMessage
+            ? setError(errorMessage)
+            : setError('Oops, something went wrong')
+        }
+      }
+      cancel = () => {
+        navigateBack()
+      }
   }
 
   const handleNavigateToPinDropFlow = (event) => {
@@ -65,7 +88,7 @@ export default function ConfirmLocationLayout ({
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l govuk-!-margin-top-5'>
-              Confirm Location
+              Confirm location
             </h1>
             <h2 className='govuk-heading-m govuk-!-margin-top-6'>
               {locationName}
@@ -89,43 +112,64 @@ export default function ConfirmLocationLayout ({
                 </p>
               </>
             )}
-            <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-4 govuk-!-margin-bottom-0'>
-              X and Y Coordinates
-            </h3>
-            <p>
-              {Math.round(
-                useSelector(
-                  (state) => getLocationOther(state, 'x_coordinate')
-                )
-              )}
-              {', '}
-              {Math.round(
-                useSelector(
-                  (state) => getLocationOther(state, 'y_coordinate')
-                )
-              )}
-            </p>
 
-            <Link
-              onClick={(e) => handleNavigateToPinDropFlow(e)}
-              className='govuk-link'
-            >
-              Move pin position
-            </Link>
+            {/* X and Y coordinates layout (default)*/}
+            {layoutType === 'XandY' && (
+              <>
+                <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-4 govuk-!-margin-bottom-0'>
+                  X and Y Coordinates
+                </h3>
+                <p>
+                  {xCoord}
+                  {', '}
+                  {yCoord}
+                </p>
 
-            <div className='govuk-!-margin-top-8'>
-              <Button
-                text='Confirm Location'
-                className='govuk-button'
-                onClick={handleSubmit}
-              />
-              <Link
-                onClick={navigateBack}
-                className='govuk-body govuk-link inline-link'
-              >
-                Cancel
-              </Link>
-            </div>
+                <Link
+                  onClick={(e) => handleNavigateToPinDropFlow(e)}
+                  className='govuk-link'
+                >
+                  Move pin position
+                </Link>
+
+                <div className='govuk-!-margin-top-8'>
+                  <Button
+                    text='Confirm Location'
+                    className='govuk-button'
+                    onClick={handleSubmit}
+                  />
+                  <Link
+                    onClick={cancel}
+                    className='govuk-body govuk-link inline-link'
+                  >
+                    Cancel
+                  </Link>
+                </div>
+              </>
+            )}
+
+            {/* Shapefile layout */}
+            {layoutType === 'shape' && (
+              <>
+                <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-4 govuk-!-margin-bottom-0'>
+                  Polygon
+                </h3>
+                <p>2,000 square metres</p>
+
+                <div className='govuk-!-margin-top-8'>
+                  <Button
+                    text='Add and continue'
+                    className='govuk-button'
+                    onClick={handleSubmit}
+                  />{' '}
+                  <Button
+                    text='Cancel upload'
+                    className={'govuk-button govuk-button--warning'}
+                    onClick={cancel}
+                  />
+                </div>
+              </>
+            )}
           </div>
           <div
             className='govuk-grid-column-one-half'

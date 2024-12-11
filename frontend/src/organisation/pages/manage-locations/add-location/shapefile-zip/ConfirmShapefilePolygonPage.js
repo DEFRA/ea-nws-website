@@ -18,6 +18,7 @@ export default function ConfirmShapefilePolygonPage() {
     <ConfirmLocationLayout
       navigateToNextPage={navigateToNextPage}
       navigateToPinDropFlow={navigateToPinDropFlow}
+      layoutType='shape'
     />
   )
 }

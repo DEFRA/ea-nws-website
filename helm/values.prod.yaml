@@ -2,7 +2,7 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 frontend:
-  replicaCount: 3
+  replicaCount: 2
   imagePullSecrets: []
   nameOverride: ""
   fullnameOverride: ""
@@ -12,7 +12,8 @@ frontend:
     annotations: {}
     name: "prd-public-website-s3-service-account"
   podAnnotations: {}
-  podLabels: {}
+  podLabels:
+    app: frontend
   podSecurityContext: {}
   containers:
     - name: frontend
@@ -20,7 +21,7 @@ frontend:
       image:
         repository: 533267401207.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
         pullPolicy: Always
-        tag: "frontend-0.1.4"
+        tag: "frontend-0.2.1"
       livenessProbe:
         httpGet:
           path: /
@@ -47,14 +48,32 @@ frontend:
   ingress:
     enabled: false
   nodeSelector:
-    eks.amazonaws.com/nodegroup: public-website-20241017151108856800000015
+    eks.amazonaws.com/nodegroup: public-website-20241126153657334000000005
 
   tolerations: []
-  affinity: {}
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - frontend
+        topologyKey: "topology.kubernetes.io/zone"
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: "topology.kubernetes.io/zone"
+            operator: In
+            values:
+            - eu-west-2a
+            - eu-west-2b
   dnsPolicy: ClusterFirst
 
 backend:
-  replicaCount: 3
+  replicaCount: 2
   imagePullSecrets: []
   nameOverride: ""
   fullnameOverride: ""
@@ -64,7 +83,8 @@ backend:
     annotations: {}
     name: "prd-public-website-s3-service-account"
   podAnnotations: {}
-  podLabels: {}
+  podLabels:
+    app: backend
   podSecurityContext: {}
   containers:
     - name: backend
@@ -72,7 +92,7 @@ backend:
       image:
         repository: 533267401207.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
         pullPolicy: Always
-        tag: "backend-0.1.4"
+        tag: "backend-0.2.1"
       livenessProbe:
         httpGet:
           path: /liveness
@@ -99,7 +119,25 @@ backend:
   ingress:
     enabled: false
   nodeSelector:
-    eks.amazonaws.com/nodegroup: public-website-20241017151108856800000015
+    eks.amazonaws.com/nodegroup: public-website-20241126153657334000000005
   tolerations: []
-  affinity: {}
+  affinity:
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchExpressions:
+          - key: app
+            operator: In
+            values:
+            - backend
+        topologyKey: "topology.kubernetes.io/zone"
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: "topology.kubernetes.io/zone"
+            operator: In
+            values:
+            - eu-west-2a
+            - eu-west-2b
   dnsPolicy: ClusterFirst

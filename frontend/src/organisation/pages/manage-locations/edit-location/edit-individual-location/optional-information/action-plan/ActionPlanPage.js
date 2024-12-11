@@ -1,5 +1,4 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import ActionPlanLayout from '../../../../../../layouts/optional-info/ActionPlanLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'

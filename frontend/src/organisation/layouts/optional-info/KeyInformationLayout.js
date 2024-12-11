@@ -8,6 +8,7 @@ import Details from '../../../common/components/gov-uk/Details'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import {
+  getLocationAdditionals,
   setCurrentLocationCriticality,
   setCurrentLocationName,
   setCurrentLocationReference,
@@ -19,12 +20,9 @@ export default function KeyInformationLayout({ flow, navigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
-  const additionalData = useSelector(
-    (state) => state.session.currentLocation.meta_data.location_additional
-  )
-
+  const additionalData = useSelector((state) => getLocationAdditionals(state))
   const [locationName, setLocationName] = useState(
-    additionalData.location_name ? additionalData.location_name : ''
+    additionalData.locationName ? additionalData.locationName : ''
   )
   const [locationNameError, setLocationNameError] = useState('')
   const [internalReference, setInternalReference] = useState(
@@ -47,7 +45,7 @@ export default function KeyInformationLayout({ flow, navigateToNextPage }) {
     // location name can be amended when a user is editing a locations key information
     if (flow === 'edit') {
       // only execute if location name has been changed
-      if (locationName !== additionalData.location_name) {
+      if (locationName !== additionalData.locationName) {
         if (locationName) {
           const dataToSend = { authToken, locationName }
           const { errorMessage } = await backendCall(

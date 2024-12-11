@@ -25,7 +25,7 @@ export default function OptionalInformationPage () {
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             <NotificationBanner
               className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
               title='Success'
@@ -40,6 +40,51 @@ export default function OptionalInformationPage () {
               Providing these details will allow you to filter your
               organisation’s locations, making it quicker to find them.
             </p>
+
+            <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
+              Address
+            </h3>
+
+            <p className='govuk-body'>
+              If you add a location as X and Y coordinates you can add an address. This address will then be associated with the location.
+            </p>
+
+            <h3 className='govuk-heading-s'>
+              Key information
+            </h3>
+            <ul className='govuk-list govuk-list--bullet'>
+              <li>
+                <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
+                  Internal reference
+                </h3>
+                <p>
+                  Your internal reference, for example:
+                  PS01, unit 57, Brid_04.
+                  This can help you identify the location more easily.
+                </p>
+              </li>
+
+              <li>
+                <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
+                  Business criticality
+                </h3>
+                <p>
+                  How important the location is to your business.
+                  For example, low or medium, business critical.
+                </p>
+              </li>
+
+              <li>
+                <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
+                  Location type
+                </h3>
+                <p>
+                  For example, pumping station, ground floor flat, office, retail unit.
+                </p>
+              </li>
+
+            </ul>
+
             <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
               Keywords for locations
             </h3>
@@ -59,7 +104,7 @@ export default function OptionalInformationPage () {
               single or multiple words, for example ‘South’ or ‘South West’.
             </p>
             <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
-              Action plan
+              Action to be taken
             </h3>
             <p className='govuk-body'>
               Use this section to indicate what you can do to reduce the

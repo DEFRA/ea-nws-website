@@ -1168,6 +1168,10 @@
   fill: url(#alert-pattern);
 }
 
+.existing-boundary-area-pattern-fill {
+  fill: url(#existing-boundary-pattern);
+}
+
 /* flood risk banner */
 .map-error-container {
   display: flex;

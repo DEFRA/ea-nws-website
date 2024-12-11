@@ -1,3 +1,5 @@
+import { faSquareFull } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -92,6 +94,37 @@ export default function LiveFLoodMonitoringPage() {
           </div>
           <div class='govuk-grid-column-two-thirds'>
             <LiveMap />
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                paddingTop: '10px',
+                paddingBottom: '10px',
+                backgroundColor: '#F3F2F1'
+              }}
+            >
+              <div style={{ flex: '0 0 auto', marginRight: '12px' }}>
+                <FontAwesomeIcon
+                  icon={faSquareFull}
+                  style={{ color: '#E1414B' }}
+                  size='lg'
+                  className='govuk-!-margin-left-4'
+                />
+                <span className='govuk-!-font-size-19 govuk-!-margin-left-2'>
+                  Severe flood warnings and flood warnings area
+                </span>
+                <FontAwesomeIcon
+                  icon={faSquareFull}
+                  style={{ color: '#ED9E4A' }}
+                  size='lg'
+                  className='govuk-!-margin-left-6'
+                />
+                <span className='govuk-!-font-size-19 govuk-!-margin-left-2'>
+                  Flood alert area
+                </span>
+              </div>
+            </div>
             <br />
 
             {/* <p className='govuk-body govuk-!-font-weight-bold'>

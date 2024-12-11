@@ -26,16 +26,12 @@ export default function TileLayerWithHeader({ url, token, bounds }) {
     }
     const tileMatrixLimits = tileMatrixSetLimits[coords.z]
     const withinLimits = () => {
-      if (
+      return (
         coords.x >= tileMatrixLimits.x[0] &&
         coords.x <= tileMatrixLimits.x[1] &&
         coords.y >= tileMatrixLimits.y[0] &&
         coords.y <= tileMatrixLimits.y[1]
-      ) {
-        return true
-      } else {
-        return false
-      }
+      )
     }
 
     return withinLimits()
@@ -56,6 +52,10 @@ export default function TileLayerWithHeader({ url, token, bounds }) {
             .then((val) => val.blob())
             .then((blob) => {
               img.src = URL.createObjectURL(blob)
+              done(null, img)
+            })
+            .catch(() => {
+              // if there are errors just display an empty tile
               done(null, img)
             })
         }

@@ -32,7 +32,7 @@ export default function SearchFilter ({
   selectedFloodMessagesSentFilters,
   setSelectedFloodMessagesSentFilters,
   selectedLinkedFilters,
-  setSelectedLinkedFilters,
+  setSelectedLinkedFilters
 }) {
   // filters
   const [locationNameFilter, setLocationNameFilter] = useState('')
@@ -54,7 +54,7 @@ export default function SearchFilter ({
       locations
         .map(
           (location) =>
-          location.additionals.other?.business_criticality
+            location.additionals.other?.business_criticality
         )
         .filter((businessCriticality) => businessCriticality) // filters out undefined entries
     )
@@ -401,76 +401,76 @@ export default function SearchFilter ({
         {locationNameSearchFilter}
 
         {otherFilter(
-        'Location type',
-        locationTypes,
-        selectedLocationTypeFilters,
-        setSelectedLocationTypeFilters,
-        locationTypeVisible,
-        setLocationTypeVisible
-      )}
+          'Location type',
+          locationTypes,
+          selectedLocationTypeFilters,
+          setSelectedLocationTypeFilters,
+          locationTypeVisible,
+          setLocationTypeVisible
+        )}
 
-      {otherFilter(
-        'Business criticality',
-        businessCriticality,
-        selectedBusinessCriticalityFilters,
-        setSelectedBusinessCriticalityFilters,
-        businessCriticalityVisible,
-        setBusinessCriticalityVisible
-      )}
+        {otherFilter(
+          'Business criticality',
+          businessCriticality,
+          selectedBusinessCriticalityFilters,
+          setSelectedBusinessCriticalityFilters,
+          businessCriticalityVisible,
+          setBusinessCriticalityVisible
+        )}
 
-      {otherFilter(
-        'Keywords',
-        keywords,
-        selectedKeywordFilters,
-        setSelectedKeywordFilters,
-        keywordVisible,
-        setKeywordVisible
-      )}
+        {otherFilter(
+          'Keywords',
+          keywords,
+          selectedKeywordFilters,
+          setSelectedKeywordFilters,
+          keywordVisible,
+          setKeywordVisible
+        )}
 
-      {otherFilter(
-        'Groundwater flood risk',
-        groundWaterRisk,
-        selectedGroundWaterRiskFilters,
-        setSelectedGroundWaterRiskFilters,
-        groundWaterRiskVisible,
-        setGroundWaterRiskVisible
-      )}
+        {otherFilter(
+          'Groundwater flood risk',
+          groundWaterRisk,
+          selectedGroundWaterRiskFilters,
+          setSelectedGroundWaterRiskFilters,
+          groundWaterRiskVisible,
+          setGroundWaterRiskVisible
+        )}
 
-      {otherFilter(
-        'Rivers and sea flood risk',
-        riverSeaRisk,
-        selectedRiverSeaRiskFilters,
-        setSelectedRiverSeaRiskFilters,
-        riverSeaRiskVisible,
-        setRiverSeaRiskVisible
-      )}
+        {otherFilter(
+          'Rivers and sea flood risk',
+          riverSeaRisk,
+          selectedRiverSeaRiskFilters,
+          setSelectedRiverSeaRiskFilters,
+          riverSeaRiskVisible,
+          setRiverSeaRiskVisible
+        )}
 
-      {otherFilter(
-        'Flood messages available',
-        floodMessagesAvailable,
-        selectedFloodMessagesAvailableFilters,
-        setSelectedFloodMessagesAvailableFilters,
-        floodMessagesAvailableVisible,
-        setFloodMessagesAvailableVisible
-      )}
+        {otherFilter(
+          'Flood messages available',
+          floodMessagesAvailable,
+          selectedFloodMessagesAvailableFilters,
+          setSelectedFloodMessagesAvailableFilters,
+          floodMessagesAvailableVisible,
+          setFloodMessagesAvailableVisible
+        )}
 
-      {otherFilter(
-        'Flood messages sent',
-        floodMessagesSent,
-        selectedFloodMessagesSentFilters,
-        setSelectedFloodMessagesSentFilters,
-        floodMessagesSentVisible,
-        setFloodMessagesSentVisible
-      )}
+        {otherFilter(
+          'Flood messages sent',
+          floodMessagesSent,
+          selectedFloodMessagesSentFilters,
+          setSelectedFloodMessagesSentFilters,
+          floodMessagesSentVisible,
+          setFloodMessagesSentVisible
+        )}
 
-      {otherFilter(
-        'Linked to contacts',
-        linkedLocations,
-        selectedLinkedFilters,
-        setSelectedLinkedFilters,
-        linkedVisible,
-        setLinkedVisible
-      )}
+        {otherFilter(
+          'Linked to contacts',
+          linkedLocations,
+          selectedLinkedFilters,
+          setSelectedLinkedFilters,
+          linkedVisible,
+          setLinkedVisible
+        )}
       </div>
     </>
   )

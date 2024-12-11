@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import locationPin from '../../../../../../common/assets/images/location_pin.svg'
 import { setCurrentLocation } from '../../../../../../common/redux/userSlice'
-import { webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationsTable ({
@@ -106,9 +105,6 @@ export default function LocationsTable ({
       setLinkedContactsSort('ascending')
       setFilteredLocations(
         [...filteredLocations].sort((a, b) => {
-          if (a.linked_contacts?.length === 0 && b.linked_contacts?.length === 0) return 0
-          if (a.linked_contacts?.length === 0) return 1
-          if (b.linked_contacts?.length === 0) return -1
           return a.linked_contacts?.length > b.linked_contacts?.length ? 1 : -1
         })
       )
@@ -117,9 +113,6 @@ export default function LocationsTable ({
       setLinkedContactsSort('descending')
       setFilteredLocations(
         [...filteredLocations].sort((a, b) => {
-          if (a.linked_contacts?.length === 0 && b.linked_contacts?.length === 0) return 0
-          if (a.linked_contacts?.length === 0) return 1
-          if (b.linked_contacts?.length === 0) return -1
           return a.linked_contacts?.length < b.linked_contacts?.length ? 1 : -1
         })
       )

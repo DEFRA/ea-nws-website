@@ -5,6 +5,17 @@ import {
   getRiversAndSeaFloodRiskRatingOfLocation
 } from '../../../common/services/WfsFloodDataService'
 
+export const riskData = {
+  'v.low': { className: 'very-low-risk', title: 'Very low risk' },
+  low: { className: 'low-risk', title: 'Low risk' },
+  medium: { className: 'medium-risk', title: 'Medium risk' },
+  high: { className: 'high-risk', title: 'High risk' },
+  unlikely: { className: 'unlikely-risk', title: 'Unlikely' },
+  possible: { className: 'possible-risk', title: 'Possible' },
+  // incase the wfs returns no data
+  unavailable: { className: '', title: 'Unavailable' }
+}
+
 export default function RiskCategoryLabel ({ riskAreaType, coordinates }) {
   const [riskRating, setRiskRating] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -29,17 +40,6 @@ export default function RiskCategoryLabel ({ riskAreaType, coordinates }) {
     }
     getRiskRatings()
   }, [])
-
-  const riskData = {
-    'v.low': { className: 'very-low-risk', title: 'Very low risk' },
-    low: { className: 'low-risk', title: 'Low risk' },
-    medium: { className: 'medium-risk', title: 'Medium risk' },
-    high: { className: 'high-risk', title: 'High risk' },
-    unlikely: { className: 'unlikely-risk', title: 'Unlikely' },
-    possible: { className: 'possible-risk', title: 'Possible' },
-    // incase the wfs returns no data
-    unavailable: { className: '', title: 'Unavailable' }
-  }
 
   const { className, title } = riskData[riskRating] || {
     className: '',

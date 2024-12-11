@@ -21,6 +21,7 @@ import DashboardHeader from './dashboard-components/DashboardHeader'
 import LocationsTable from './dashboard-components/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
+import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 
 export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
@@ -101,22 +102,21 @@ export default function ViewLocationsDashboardPage () {
       )
 
       locationsUpdate.forEach(function (location, idx) {
-        location.riverSeaRisk = riverSeaRisks[idx];
-        location.groundWaterRisk = groundWaterRisks[idx];
-      });
+        location.riverSeaRisk = riverSeaRisks[idx]
+        location.groundWaterRisk = groundWaterRisks[idx]
+      })
 
       // TODO: Get linked contacts from the API (EAN-1364)
       let tempSwitch = false
       locationsUpdate.forEach(function (location) {
         if (tempSwitch) {
-          location.linked_contacts = ['Contact 1', 'Contact 2'];
-          tempSwitch = false;
+          location.linked_contacts = ['Contact 1', 'Contact 2']
+          tempSwitch = false
+        } else {
+          location.linked_contacts = []
+          tempSwitch = true
         }
-        else {
-          location.linked_contacts = [];
-          tempSwitch = true;
-        }
-      });
+      })
 
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
@@ -127,23 +127,12 @@ export default function ViewLocationsDashboardPage () {
   const getRiskCategory = async ({ riskAreaType, location }) => {
     let riskCategory = null
 
-    const riskData = {
-      'v.low': { className: 'very-low-risk', title: 'Very low risk' },
-      low: { className: 'low-risk', title: 'Low risk' },
-      medium: { className: 'medium-risk', title: 'Medium risk' },
-      high: { className: 'high-risk', title: 'High risk' },
-      unlikely: { className: 'unlikely-risk', title: 'Unlikely' },
-      possible: { className: 'possible-risk', title: 'Possible' },
-      // incase the wfs returns no data
-      unavailable: { className: '', title: 'Unavailable' }
-    }
-
     if (
       (location.additionals.other?.location_data_type !==
         LocationDataType.ADDRESS &&
        location.additionals.other?.location_data_type !==
         LocationDataType.X_AND_Y_COORDS) ||
-      location.coordinates.latitude === null || 
+      location.coordinates.latitude === null ||
       location.coordinates.longtitude === null
     ) {
       return null
@@ -163,7 +152,7 @@ export default function ViewLocationsDashboardPage () {
 
     return riskData[riskCategory]
   }
-    
+
   const moreActions = [
     'Link selected to locations',
     'Delete selected'
@@ -261,32 +250,28 @@ export default function ViewLocationsDashboardPage () {
         (location.additionals.other?.alertTypes.length > 0))
       setSelectedFloodMessagesAvailableFilters(['Yes'])
       setSelectedFilters(['Yes'])
-    }
-    else if (type === 'linked-locations') {
+    } else if (type === 'linked-locations') {
       updatedFilteredLocations = locations.filter((location) =>
         (location.additionals.parentID.length > 0 && location.additionals.other?.alertTypes.length > 0))
       setSelectedFloodMessagesAvailableFilters(['Yes'])
       setSelectedFilters(['Yes'])
-    }
-    else if (type === 'high-medium-risk') {
+    } else if (type === 'high-medium-risk') {
       updatedFilteredLocations = locations.filter((location) =>
         ((location.riverSeaRisk?.title === 'Medium risk' ||
           location.riverSeaRisk?.title === 'High risk') &&
           location.additionals.other?.alertTypes.length === 0))
       setSelectedFloodMessagesAvailableFilters(['Yes'])
       setSelectedFilters(['Yes'])
-    }
-    else if (type === 'low-risk') {
+    } else if (type === 'low-risk') {
       updatedFilteredLocations = locations.filter((location) =>
         ((location.riverSeaRisk?.title === 'Low risk') &&
           location.additionals.other?.alertTypes.length === 0))
       setSelectedFloodMessagesAvailableFilters(['Yes'])
       setSelectedFilters(['Yes'])
-    }
-    else if (type === 'no-links') {
+    } else if (type === 'no-links') {
       updatedFilteredLocations = locations.filter((location) =>
         (location.linked_contacts?.length === 0))
-        setSelectedLinkedFilters(['No'])
+      setSelectedLinkedFilters(['No'])
       setSelectedFilters(['No'])
     }
 
@@ -321,7 +306,7 @@ export default function ViewLocationsDashboardPage () {
 
     setResetPaging(!resetPaging)
   }
-    
+
   const handleDelete = () => {
     if (targetLocation) {
       removeLocations([targetLocation])
@@ -342,6 +327,7 @@ export default function ViewLocationsDashboardPage () {
 
   return (
     <>
+      <OrganisationAccountNavigation />
       <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

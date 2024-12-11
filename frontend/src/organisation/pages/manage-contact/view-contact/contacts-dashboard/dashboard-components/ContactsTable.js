@@ -42,7 +42,7 @@ export default function ContactsTable ({
       setContactNameSort('descending')
       setFilteredContacts(
         [...filteredContacts].sort((a, b) => {
-          if (a.name === null && b.job_title === null) return 0
+          if (a.name === null && b.name === null) return 0
           if (a.name === null) return 1
           if (b.name === null) return -1
           return b.name.localeCompare(a.name)

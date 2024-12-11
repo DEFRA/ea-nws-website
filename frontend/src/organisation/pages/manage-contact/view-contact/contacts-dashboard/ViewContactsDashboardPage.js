@@ -7,6 +7,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
+import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import ContactsTable from './dashboard-components/ContactsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
@@ -201,6 +202,7 @@ export default function ViewContactsDashboardPage () {
 
   return (
     <>
+      <OrganisationAccountNavigation />
       <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

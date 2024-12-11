@@ -1,4 +1,4 @@
-const { deleteJsonData } = require('../../services/elasticache')
+const { orgSignOut } = require('../../services/elasticache')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
@@ -12,9 +12,10 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { authToken } = request.payload
-        if (authToken) {
-          await deleteJsonData(authToken)
+
+        const { profileId, orgId } = request.payload
+        if (profileId && orgId) {
+          await orgSignOut(profileId, orgId)
           return h.response({
             status: 200
           })

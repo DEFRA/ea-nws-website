@@ -10,22 +10,34 @@ const convertToPois = (locations) => {
       name: null,
       address: location.address,
       coordinates: location.coordinates,
-      alert_categories: null,
-      meta_data: {
-        location_additional: {
-          location_name: location.Location_name,
-          full_address: location.Full_address,
-          postcode: location.Postcode,
-          x_coordinate: location.X_coordinates,
-          y_coordinate: location.Y_coordinates,
-          internal_reference: location.Internal_reference,
-          business_criticality: location.Business_criticality,
-          location_type: location.Location_type,
-          action_plan: location.Action_plan,
-          notes: location.Notes,
-          keywords: location.Keywords
+      geometry: null,
+      geocode: null,
+      additionals: [
+        { id: 'locationName', value: { s: location.Location_name } },
+        { id: 'parentID', value: { s: '' } },
+        { id: 'targetAreas', value: { s: '' } },
+        { id: 'keywords', value: { s: JSON.stringify(location.Keywords) } },
+        {
+          id: 'other',
+          value: {
+            s: JSON.stringify(
+              {
+                full_address: location.Full_address,
+                postcode: location.Postcode,
+                x_coordinate: location.X_coordinates,
+                y_coordinate: location.Y_coordinates,
+                internal_reference: location.Internal_reference,
+                business_criticality: location.Business_criticality,
+                location_type: location.Location_type,
+                action_plan: location.Action_plan,
+                notes: location.Notes,
+                location_data_type: 'xycoords',
+                alertTypes: []
+              }
+            )
+          }
         }
-      }
+      ]
     }
     pois.push(poi)
   })

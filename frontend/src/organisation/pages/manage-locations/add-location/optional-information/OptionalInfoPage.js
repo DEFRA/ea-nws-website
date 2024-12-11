@@ -6,13 +6,17 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
+import { getLocationAdditional, getLocationOther } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function OptionalLocationInformationPage () {
   const navigate = useNavigate()
+  const locationName = useSelector(
+    (state) => getLocationAdditional(state, 'locationName')
+  )
   const postcode = useSelector(
     (state) =>
-      state.session.currentLocation.meta_data.location_additional.postcode
+      getLocationOther(state, 'postcode')
   )
   const navigateToNextPage = () => {
     if (postcode) {
@@ -37,7 +41,7 @@ export default function OptionalLocationInformationPage () {
             <NotificationBanner
               className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
               title='Success'
-              text='Location added'
+              text={`${locationName} added`}
             />
             &nbsp; &nbsp;
             <h1 className='govuk-heading-l'>

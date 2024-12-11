@@ -7,18 +7,20 @@ import { backendCall } from '../../services/BackendService'
 export default function SignOutManuallyPage () {
   const dispatch = useDispatch()
   const signinType = useSelector((state) => state.session.signinType)
-  const authToken = useSelector((state) => state.session.authToken)
+  const profileId = useSelector((state) => state.session.profileId)
+  const orgId = useSelector((state) => state.session.orgId)
 
   useEffect(() => {
+    const signout = async () => {
+      // need to call the backend to remove data from elasticache once signed out
+      await backendCall({ profileId, orgId }, 'api/sign_out')
+    }
     if (signinType === 'org') {
       // need to call the backend to remove data from elasticache once signed out
-      backendCall(
-        { authToken },
-        'api/sign_out'
-      )
+      signout()
     }
     dispatch(clearAuth())
-  })
+  }, [])
 
   return <SignOutLayout text={"You've signed out"} />
 }

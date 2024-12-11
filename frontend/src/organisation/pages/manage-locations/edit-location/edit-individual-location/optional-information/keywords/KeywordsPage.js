@@ -1,13 +1,13 @@
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { getLocationAdditional } from '../../../../../../../common/redux/userSlice'
 import KeywordsLayout from '../../../../../../layouts/optional-info/KeywordsLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function KeywordsPage () {
   const navigate = useNavigate()
   const locationName = useSelector(
-    (state) =>
-      state.session.currentLocation.meta_data.location_additional.location_name
+    (state) => getLocationAdditional(state, 'locationName')
   )
 
   const keywordText = () => {

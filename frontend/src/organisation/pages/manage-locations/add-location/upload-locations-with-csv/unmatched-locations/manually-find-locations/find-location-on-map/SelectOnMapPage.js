@@ -1,6 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { getLocationOther } from '../../../../../../../../common/redux/userSlice'
 import SelectOnMapLayout from '../../../../../../../layouts/location/upload-locations-with-csv/unmatched-locations/SelectOnMapLayout'
 import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
@@ -8,7 +9,7 @@ export default function SelectOnMapPage () {
   const navigate = useNavigate()
   const fullAddress = useSelector(
     (state) =>
-      state.session.currentLocation.meta_data.location_additional.full_address
+      getLocationOther(state, 'full_address')
   )
 
   const NavigateToPreviousPage = () => {

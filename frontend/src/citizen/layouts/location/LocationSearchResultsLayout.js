@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import moment from 'moment'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -6,17 +7,20 @@ import LoadingSpinner from '../../../common/components/custom/LoadingSpinner'
 import Details from '../../../common/components/gov-uk/Details'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import {
+  setFloodAlertCount,
   setNearbyTargetAreasFlow,
   setSelectedFloodAlertArea,
   setSelectedFloodWarningArea,
   setSelectedLocation,
+  setSevereFloodWarningCount,
   setShowOnlySelectedFloodArea
 } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
+import { csvToJson } from '../../../common/services/CsvToJson'
 import {
   getSurroundingFloodAreas,
   isLocationInFloodArea
 } from '../../../common/services/WfsFloodDataService'
-
 export default function LocationSearchResultsLayout ({ continueToNextPage }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -31,6 +35,51 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
     (currentPage - 1) * locationsPerPage,
     currentPage * locationsPerPage
   )
+
+  const [floodHistoryUrl, setHistoryUrl] = useState(null)
+  const [floodHistoryData, setFloodHistoryData] = useState(null)
+
+  useEffect(() => {
+    async function getHistoryUrl () {
+      const { data } = await backendCall(
+        'data',
+        'api/locations/download_flood_history'
+      )
+      setHistoryUrl(data)
+    }
+
+    getHistoryUrl()
+    floodHistoryUrl && fetch(floodHistoryUrl)
+      .then((response) => response.text())
+      .then((data) => {
+        setFloodHistoryData(csvToJson(data))
+      })
+      .catch((e) =>
+        console.error('Could not fetch Historic Flood Warning file', e)
+      )
+  }, [floodHistoryUrl])
+
+  const setHistoricalAlertNumber = (AlertArea) => {
+    const oneYearAgo = moment().subtract(1, 'years')
+
+    const areaAlert = floodHistoryData.filter(
+      (alert) =>
+        alert.CODE === AlertArea &&
+        moment(alert.DATE, 'DD/MM/YYYY') > oneYearAgo
+    )
+    dispatch(setFloodAlertCount(areaAlert.length))
+  }
+
+  const setHistoricalWarningNumber = (WarningArea) => {
+    const oneYearAgo = moment().subtract(1, 'years')
+
+    const areaWarning = floodHistoryData.filter(
+      (alert) =>
+        alert.CODE === WarningArea &&
+        moment(alert.DATE, 'DD/MM/YYYY') > oneYearAgo
+    )
+    dispatch(setSevereFloodWarningCount(areaWarning.length))
+  }
 
   const handleSelectedLocation = async (event, selectedLocation) => {
     event.preventDefault()
@@ -68,6 +117,15 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
           selectedLocation.coordinates.longitude,
           warningArea
         )
+
+      if (isInAlertArea) {
+        setHistoricalAlertNumber(alertArea.features[0].properties.FWS_TACODE)
+      }
+      if (isInAlertArea) {
+        setHistoricalWarningNumber(
+          warningArea.features[0].properties.FWS_TACODE
+        )
+      }
 
       let isWithinWarningAreaProximity = false
       let isWithinAlertAreaProximity = false

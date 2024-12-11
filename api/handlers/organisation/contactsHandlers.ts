@@ -1,6 +1,7 @@
 const responseCodes = require('../responseCodes')
 import Hapi from '@hapi/hapi'
 import type { Context } from 'openapi-backend'
+const mockContacts = require('../mockContacts')
 
 async function getOrgCreateContacts(
   context: Context,
@@ -24,8 +25,10 @@ async function getOrgListContacts(
     const { authToken } = req.payload as { authToken: string }
   
     if (authToken !== 'WrongAuthToken') {
-        // geosafe returns array of contacts
-      return res.response(responseCodes.SUCCESS)
+      return {
+        contacts: mockContacts.allContacts,
+        total: mockContacts.allContacts.length
+      }
     } else {
       return res.response(responseCodes.INVALID_TOKEN).code(500)
     }

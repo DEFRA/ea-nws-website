@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { getOrganisationAdditionals } from '../../../common/services/ProfileServices'
 import BackLink from '../../components/custom/BackLink'
 import Button from '../../components/gov-uk/Button'
 import ErrorSummary from '../../components/gov-uk/ErrorSummary'
@@ -23,7 +22,8 @@ export default function SignUpDuplicateEmailPageLayout () {
     ? '/organisation/signin/validate'
     : '/signin/validate'
 
-  const organisation = Object.assign({}, getOrganisationAdditionals(profile))
+  const organization = useSelector((state) => state.session.organization)
+  const organizationAdditionals = JSON.parse(organization.description)
 
   const handleSubmit = async () => {
     const dataToSend = { email }
@@ -54,7 +54,7 @@ export default function SignUpDuplicateEmailPageLayout () {
             </h1>
             <InsetText text={email} isTextBold />
             <div className='govuk-body'>
-              {organisation.isAdminRegistering
+              {organizationAdditionals.isAdminRegistering
                 ? (
                   <>
                     <p>

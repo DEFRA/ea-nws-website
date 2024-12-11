@@ -204,34 +204,6 @@ const updateAdditionals = (profile, updatedAdditionals) => {
 
   return updatedProfile
 }
-const setOrganisationAdditionals = (profile) => {
-  const orgJson = {
-    name: null,
-    address: null,
-    compHouseNum: null,
-    emergencySector: null,
-    isAdminRegistering: null,
-    alternativeContact: {
-      firstName: null,
-      lastName: null,
-      email: null,
-      telephone: null,
-      jobTitle: null
-    }
-  }
-  return updateOrganisationAdditionals(profile, orgJson)
-}
-const getOrganisationAdditionals = (profile) => {
-  const orgAdditionals = getAdditionals(profile, 'organisation')
-
-  return JSON.parse(orgAdditionals === '' ? '{}' : orgAdditionals)
-}
-
-const updateOrganisationAdditionals = (profile, updatedOrganisation) => {
-  return updateAdditionals(profile, [
-    { id: 'organisation', value: { s: JSON.stringify(updatedOrganisation) } }
-  ])
-}
 
 const addLocation = (profile, newLocation) => {
   const currentLocations = profile.pois
@@ -350,8 +322,5 @@ module.exports = {
   updateAdditionals,
   addLocation,
   removeLocation,
-  updateLocationsAlertTypes,
-  setOrganisationAdditionals,
-  getOrganisationAdditionals,
-  updateOrganisationAdditionals
+  updateLocationsAlertTypes
 }

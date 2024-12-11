@@ -25,13 +25,13 @@ export default function ValidateEmailLayout ({
   const dispatch = useDispatch()
   const registerToken = useSelector((state) => state.session.registerToken)
   const loginEmail = useSelector((state) => state.session.profile.emails[0])
+  const organization = useSelector((state) => state.session.organization)
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
-  const session = useSelector((state) => state.session)
-  const profile = session.profile
+  const profile = useSelector((state) => state.session.profile)
 
   // if error remove code sent notification
   useEffect(() => {
@@ -44,13 +44,13 @@ export default function ValidateEmailLayout ({
 
     if (validationError === '') {
       const dataToSend = {
-        registerToken,
+        orgRegisterToken: registerToken,
         code
       }
 
       const { data, errorMessage } = await backendCall(
         dataToSend,
-        'api/sign_up_validate',
+        'api/org/sign_up_validate',
         navigate
       )
 
@@ -66,9 +66,15 @@ export default function ValidateEmailLayout ({
       } else {
         dispatch(setAuthToken(data.authToken))
         const updatedProfile = updateAdditionals(profile, [
-          { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } }
+          { id: 'signupComplete', value: { s: 'false' } },
+          { id: 'lastAccessedUrl', value: { s: '/organisation/sign-up/alternative-contact' } }
         ])
         dispatch(setProfile(updatedProfile))
+        const profileDataToSend = {
+          profile: updatedProfile,
+          authToken: data.authToken
+        }
+        await backendCall(profileDataToSend, 'api/profile/update', navigate)
         NavigateToNextPage()
       }
     }
@@ -76,10 +82,10 @@ export default function ValidateEmailLayout ({
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const dataToSend = { email: loginEmail }
+    const dataToSend = { name: organization.name, email: loginEmail }
     const { data, errorMessage } = await backendCall(
       dataToSend,
-      'api/sign_up_start',
+      'api/org/sign_up_start',
       navigate
     )
 

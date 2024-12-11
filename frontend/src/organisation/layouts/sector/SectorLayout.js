@@ -1,14 +1,10 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../common/components/gov-uk/Radio'
-import { setProfile } from '../../../common/redux/userSlice'
-import {
-  getOrganisationAdditionals,
-  updateOrganisationAdditionals
-} from '../../../common/services/ProfileServices'
+import { setOrganizationEmergencySector } from '../../../common/redux/userSlice'
 
 export default function SectorLayout ({
   NavigateToNextPage,
@@ -17,7 +13,6 @@ export default function SectorLayout ({
   const dispatch = useDispatch()
   const [emergencySector, setEmergencySector] = useState(null)
   const [error, setError] = useState('')
-  const profile = useSelector((state) => state.session.profile)
 
   const handleSubmit = async () => {
     if (emergencySector === null) {
@@ -26,12 +21,7 @@ export default function SectorLayout ({
       )
       return
     }
-
-    const organisation = Object.assign({}, getOrganisationAdditionals(profile))
-    organisation.emergencySector = emergencySector
-
-    const updatedProfile = updateOrganisationAdditionals(profile, organisation)
-    dispatch(setProfile(updatedProfile))
+    dispatch(setOrganizationEmergencySector(emergencySector))
     NavigateToNextPage()
   }
 

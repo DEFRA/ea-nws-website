@@ -4,6 +4,7 @@ const routes = [].concat(
   require('../routes/sign_in/signin_validate'),
   require('../routes/sign_up/signup_start'),
   require('../routes/sign_up/org_start'),
+  require('../routes/sign_up/org_validate'),
   require('../routes/sign_up/signup_validate'),
   require('../routes/sign_up/signup_feedback'),
   require('../routes/update_profile/update_profile'),
@@ -36,7 +37,8 @@ const routes = [].concat(
   require('../routes/shapefile/unzip_shapefile'),
   require('../routes/location/create'),
   require('../routes/location/remove'),
-  require('../routes/location/update')
+  require('../routes/location/update'),
+  require('../routes/organization/update')
 )
 
 module.exports = {

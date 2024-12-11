@@ -3,18 +3,26 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
-import { getOrganisationAdditionals } from '../../../../common/services/ProfileServices'
+import { backendCall } from '../../../../common/services/BackendService'
 import AlternativeContactTable from './AlternativeContactTable'
 import MainAdministratorTable from './MainAdministratorTable'
 import OrganisationDetailsTable from './OrganisationDetailsTable'
 export default function CheckYourAnswersPage () {
   const profile = useSelector((state) => state.session.profile)
-  const organisation = Object.assign({}, getOrganisationAdditionals(profile))
+  const organization = useSelector((state) => state.session.organization)
+  const organizationAdditionals = JSON.parse(organization.description)
+  const authToken = useSelector((state) => state.session.authToken)
   const navigate = useNavigate()
 
-  const handleButton = () => {
+  const handleButton = async () => {
     // TODO once we have updated API
     // call to update profile with final profile here
+    const dataToSend = { organization, authToken }
+    await backendCall(
+      dataToSend,
+      'api/organization/update',
+      navigate
+    )
     navigate('/organisation/sign-up/success')
   }
 
@@ -25,10 +33,10 @@ export default function CheckYourAnswersPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row '>
           <h2 className='govuk-heading-l'>Check your answers</h2>
-          <OrganisationDetailsTable organisation={organisation} />
+          <OrganisationDetailsTable organisation={organizationAdditionals} />
           <MainAdministratorTable profile={profile} />
           <AlternativeContactTable
-            alternativeContact={organisation.alternativeContact}
+            alternativeContact={organizationAdditionals.alternativeContact}
           />
           <Button
             onClick={handleButton}

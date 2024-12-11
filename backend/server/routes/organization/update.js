@@ -1,30 +1,28 @@
+const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
-const { apiCall } = require('../../services/ApiService')
 
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/org/sign_up_start',
+    path: '/api/organization/update',
+
     handler: async (request, h) => {
       try {
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
+        const { authToken, organization } = request.payload
 
-        const { name, email } = request.payload
-        if (name && email) {
+        if (Object.keys(organization).length !== 0 && authToken) {
           const response = await apiCall(
-            { name: name },
-            'organization/registerStart'
+            { authToken: authToken, organization: organization },
+            'organization/update'
           )
           return h.response(response)
         } else {
-          return h.response({
-            status: 500,
-            errorMessage: 'Organisation name is null'
-          })
+          return createGenericErrorResponse(h)
         }
       } catch (error) {
         return createGenericErrorResponse(h)

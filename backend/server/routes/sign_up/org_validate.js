@@ -2,28 +2,31 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 const { apiCall } = require('../../services/ApiService')
+const { authCodeValidation } = require('../../services/validations/AuthCodeValidation')
 
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/org/sign_up_start',
+    path: '/api/org/sign_up_validate',
     handler: async (request, h) => {
       try {
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
 
-        const { name, email } = request.payload
-        if (name && email) {
+        const { code, orgRegisterToken } = request.payload
+        const error = authCodeValidation(code)
+
+        if (!error && orgRegisterToken) {
           const response = await apiCall(
-            { name: name },
-            'organization/registerStart'
+            { orgRegisterToken: orgRegisterToken, code: code },
+            'organization/registerValidate'
           )
           return h.response(response)
         } else {
           return h.response({
             status: 500,
-            errorMessage: 'Organisation name is null'
+            errorMessage: !error ? 'Oops, something happened!' : error
           })
         }
       } catch (error) {

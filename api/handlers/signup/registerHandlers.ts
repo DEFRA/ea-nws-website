@@ -28,10 +28,14 @@ async function getOrgRegisterStart(
   res: Hapi.ResponseToolkit
 ) {
   console.log('Received register start request for: ', req.payload)
-  const { name } = req.payload as { name: string }
+  const { name, email } = req.payload as { name: string, email: string }
   if (name === 'duplicateOrganisation') {
     console.log('duplicate organisation, responding 500')
     return res.response(responseCodes.DUPLICATE_ORG).code(500)
+  }
+  if (email === 'duplicate@email.com') {
+    console.log('duplicate email, responding 500')
+    return res.response(responseCodes.DUPLICATE_EMAIL).code(500)
   }
   console.log('Valid organisation, responding 200')
   return { orgRegisterToken: '123456' }

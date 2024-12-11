@@ -51,6 +51,18 @@ const getLocationOtherAdditional = (additionals, id) => {
   return ''
 }
 
+const setOrgAdditional = (additionals, id, value) => {
+  let orgAdditionals = {}
+  const alertnativeContactInfo = ['firstName', 'lastName', 'email', 'telephone', 'jobTitle']
+  orgAdditionals = JSON.parse(additionals)
+  if (alertnativeContactInfo.contains(id)) {
+    orgAdditionals.alternativeContact[id] = value
+  } else {
+    orgAdditionals[id] = value
+  }
+  additionals = JSON.stringify(orgAdditionals)
+}
+
 const userSlice = createSlice({
   name: 'session',
   initialState: {
@@ -124,6 +136,32 @@ const userSlice = createSlice({
           }
         }
       ]
+    },
+    // org data
+    organization: {
+      id: null,
+      name: null,
+      description: JSON.stringify({
+        name: null,
+        address: null,
+        compHouseNum: null,
+        emergencySector: null,
+        isAdminRegistering: null,
+        alternativeContact: {
+          firstName: null,
+          lastName: null,
+          email: null,
+          telephone: null,
+          jobTitle: null
+        }
+      }),
+      postalCode: null,
+      longName: null,
+      logoUrl: null,
+      backgroundUrl: null,
+      alertDiffusionZone: null,
+      alertDiffusionZoneBoundingBox: null,
+      urlSlug: null
     },
     // org contact data
     orgCurrentContact: {
@@ -404,6 +442,80 @@ const userSlice = createSlice({
         action.payload
       )
     },
+    // org data
+    setOrganization: (state, action) => {
+      state.organization.id = action.payload.id
+      state.organization.name = action.payload.name
+      state.organization.description = action.payload.description
+      state.organization.postalCode = action.payload.postalCode
+      state.organization.longName = action.payload.longName
+      state.organization.logoUrl = action.payload.logoUrl
+      state.organization.backgroundUrl = action.payload.backgroundUrl
+      state.organization.alertDiffusionZone = action.payload.alertDiffusionZone
+      state.organization.alertDiffusionZoneBoundingBox = action.payload.alertDiffusionZoneBoundingBox
+      state.organization.urlSlug = action.payload.urlSlug
+    },
+    setOrganizationId: (state, action) => {
+      state.organization.id = action.payload
+    },
+    setOrganizationName: (state, action) => {
+      state.organization.name = action.payload
+      setOrgAdditional(state.organization.description, 'name', action.payload)
+    },
+    setOrganizationAddress: (state, action) => {
+      setOrgAdditional(state.organization.description, 'address', action.payload)
+    },
+    setOrganizationCompHouseNum: (state, action) => {
+      setOrgAdditional(state.organization.description, 'compHouseNum', action.payload)
+    },
+    setOrganizationEmergencySector: (state, action) => {
+      setOrgAdditional(state.organization.description, 'emergencySector', action.payload)
+    },
+    setOrganizationIsAdminRegistering: (state, action) => {
+      setOrgAdditional(state.organization.description, 'isAdminRegistering', action.payload)
+    },
+    setOrganizationAlternativeContact: (state, action) => {
+      setOrgAdditional(state.organization.description, 'alternativeContact', action.payload)
+    },
+    setOrganizationACFirstName: (state, action) => {
+      setOrgAdditional(state.organization.description, 'firstName', action.payload)
+    },
+    setOrganizationACLastName: (state, action) => {
+      setOrgAdditional(state.organization.description, 'lastName', action.payload)
+    },
+    setOrganizationACEmail: (state, action) => {
+      setOrgAdditional(state.organization.description, 'email', action.payload)
+    },
+    setOrganizationACTelephone: (state, action) => {
+      setOrgAdditional(state.organization.description, 'telephone', action.payload)
+    },
+    setOrganizationACJobTitle: (state, action) => {
+      setOrgAdditional(state.organization.description, 'jobTitle', action.payload)
+    },
+    setOrganizationDescription: (state, action) => {
+      state.organization.description = action.payload
+    },
+    setOrganizationPostalCode: (state, action) => {
+      state.organization.postalCode = action.payload
+    },
+    setOrganizationLongName: (state, action) => {
+      state.organization.longName = action.payload
+    },
+    setOrganizationLogoUrl: (state, action) => {
+      state.organization.logoUrl = action.payload
+    },
+    setOrganizationBackgroundUrl: (state, action) => {
+      state.organization.backgroundUrl = action.payload
+    },
+    setOrganizationAlertDiffusionZone: (state, action) => {
+      state.organization.alertDiffusionZone = action.payload
+    },
+    setOrganizationAlertDiffusionZoneBoundingBox: (state, action) => {
+      state.organization.alertDiffusionZoneBoundingBox = action.payload
+    },
+    setOrganizationUrlSlug: (state, action) => {
+      state.organization.urlSlug = action.payload
+    },
     // org contact data
     setOrgCurrentContact: (state, action) => {
       state.orgCurrentContact.id = action.payload.id
@@ -515,6 +627,32 @@ const userSlice = createSlice({
             }
           }
         ]
+      }
+      // org data
+      state.organization = {
+        id: null,
+        name: null,
+        description: JSON.stringify({
+          name: null,
+          address: null,
+          compHouseNum: null,
+          emergencySector: null,
+          isAdminRegistering: null,
+          alternativeContact: {
+            firstName: null,
+            lastName: null,
+            email: null,
+            telephone: null,
+            jobTitle: null
+          }
+        }),
+        postalCode: null,
+        longName: null,
+        logoUrl: null,
+        backgroundUrl: null,
+        alertDiffusionZone: null,
+        alertDiffusionZoneBoundingBox: null,
+        urlSlug: null
       }
       state.orgCurrentContact = {
         id: null,
@@ -658,6 +796,28 @@ export const {
   setCurrentLocationKeywords,
   setCurrentLocationDataType,
   setCurrentLocationAlertTypes,
+  // org data
+  setOrganization,
+  setOrganizationId,
+  setOrganizationName,
+  setOrganizationAddress,
+  setOrganizationCompHouseNum,
+  setOrganizationEmergencySector,
+  setOrganizationIsAdminRegistering,
+  setOrganizationAlternativeContact,
+  setOrganizationACFirstName,
+  setOrganizationACLastName,
+  setOrganizationACEmail,
+  setOrganizationACTelephone,
+  setOrganizationACJobTitle,
+  setOrganizationDescription,
+  setOrganizationPostalCode,
+  setOrganizationLongName,
+  setOrganizationLogoUrl,
+  setOrganizationBackgroundUrl,
+  setOrganizationAlertDiffusionZone,
+  setOrganizationAlertDiffusionZoneBoundingBox,
+  setOrganizationUrlSlug,
   // org current contact
   setOrgCurrentContact,
   setOrgCurrentContactId,

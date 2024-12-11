@@ -1,15 +1,16 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../common/components/gov-uk/Button'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddAddressInfoPage () {
+export default function LocationAddAddressInfoPage() {
   const navigate = useNavigate()
   const [templateUrl, setTemplateUrl] = useState(null)
 
-  async function getTemplateUrl () {
+  async function getTemplateUrl() {
     const { data } = await backendCall(
       'data',
       'api/bulk_uploads/download_template'
@@ -27,8 +28,14 @@ export default function LocationAddAddressInfoPage () {
 
   return (
     <>
+      <OrganisationAccountNavigation
+        currentPage={
+          {
+            /* TODO: Change to highlight locations dashboard when complete  (EAN-1247)*/
+          }
+        }
+      />
       <BackLink onClick={() => navigate(-1)} />
-
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

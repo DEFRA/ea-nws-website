@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react'
 import Spinner from 'react-bootstrap/esm/Spinner'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
+import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import { backendCall } from '../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function UploadFileLayout ({
+export default function UploadFileLayout({
   uploadMethod // Currently either "csv" or "shape"
 }) {
   const navigate = useNavigate()
@@ -160,12 +161,19 @@ export default function UploadFileLayout ({
 
   return (
     <>
+      <OrganisationAccountNavigation
+        currentPage={
+          {
+            /* TODO: Change to highlight locations dashboard when complete  (EAN-1247)*/
+          }
+        }
+      />
       {!uploading && <BackLink onClick={() => navigate(-1)} />}
 
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
-          {!uploading
-            ? (
+          <div className='govuk-grid-column-full'>
+            {!uploading ? (
               <>
                 {(errorFileType || errorFileSize) && (
                   <ErrorSummary errorList={[errorFileType, errorFileSize]} />
@@ -174,29 +182,35 @@ export default function UploadFileLayout ({
                   <h1 className='govuk-heading-l'>Upload file</h1>
                   <div
                     className={
-                    errorFileSize || errorFileType
-                      ? 'govuk-form-group govuk-form-group--error'
-                      : 'govuk-form-group'
-                  }
+                      errorFileSize || errorFileType
+                        ? 'govuk-form-group govuk-form-group--error'
+                        : 'govuk-form-group'
+                    }
                   >
                     <p className='govuk-hint'>{fileTypeHint}</p>
                     {errorFileType && (
-                      <p id='file-upload-1-error' className='govuk-error-message'>
+                      <p
+                        id='file-upload-1-error'
+                        className='govuk-error-message'
+                      >
                         {errorFileType}
                       </p>
                     )}
                     {errorFileSize && (
-                      <p id='file-upload-2-error' className='govuk-error-message'>
+                      <p
+                        id='file-upload-2-error'
+                        className='govuk-error-message'
+                      >
                         {errorFileSize}
                       </p>
                     )}
                     <input
                       type='file'
                       className={
-                      errorFileSize || errorFileType
-                        ? 'govuk-file-upload govuk-file-upload--error'
-                        : 'govuk-file-upload'
-                    }
+                        errorFileSize || errorFileType
+                          ? 'govuk-file-upload govuk-file-upload--error'
+                          : 'govuk-file-upload'
+                      }
                       id='file-upload'
                       onChange={setValidSelectedFile}
                     />
@@ -214,15 +228,15 @@ export default function UploadFileLayout ({
                   </Link>
                 </div>
               </>
-              )
-            : (
+            ) : (
               <div className='govuk-!-text-align-centre'>
                 <h1 className='govuk-heading-l'>Uploading</h1>
                 <div className='govuk-body'>
                   <Spinner size='75' />
                 </div>
               </div>
-              )}
+            )}
+          </div>
         </div>
       </main>
     </>

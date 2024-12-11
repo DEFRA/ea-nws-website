@@ -9,7 +9,7 @@ import Radio from '../../../../common/components/gov-uk/Radio'
 import { clearCurrentLocation } from '../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AddLocationOptionsPage () {
+export default function AddLocationOptionsPage() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   // Clear the current location when adding a new one
@@ -57,7 +57,13 @@ export default function AddLocationOptionsPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+      <OrganisationAccountNavigation
+        currentPage={
+          {
+            /* TODO: Change to highlight locations dashboard when complete  (EAN-1247)*/
+          }
+        }
+      />
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

@@ -38,7 +38,7 @@ export default function ViewContactsDashboardPage () {
     error: ''
   })
 
-  const contactsPerPage = 10
+  const contactsPerPage = 20
 
   const contacts = useSelector((state) =>
     state.session.contacts !== null

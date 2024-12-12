@@ -11,7 +11,7 @@ import { addUnverifiedContact } from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 
 export default function ChangeEmailLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const navigate = useNavigate()
@@ -51,7 +51,7 @@ export default function ChangeEmailLayout ({
             setError(errorMessage)
           } else {
             dispatch(setCurrentContact(email))
-            NavigateToNextPage()
+            navigateToNextPage()
           }
         }
       }

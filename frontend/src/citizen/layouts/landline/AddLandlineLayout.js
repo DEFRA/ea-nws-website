@@ -12,7 +12,7 @@ import { normalisePhoneNumber } from '../../../common/services/formatters/Normal
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
 
 export default function AddLandlineLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const navigate = useNavigate()
@@ -49,7 +49,7 @@ export default function AddLandlineLayout ({
           setError(errorMessage)
         } else {
           dispatch(setCurrentContact(normalisedPhoneNumber))
-          NavigateToNextPage()
+          navigateToNextPage()
         }
       }
     }

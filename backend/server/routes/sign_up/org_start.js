@@ -13,17 +13,20 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { name } = request.payload
-        if (name != null) {
+        const { name, email } = request.payload
+        if (name && email) {
           const response = await apiCall(
-            { name: name },
+            {
+              name: name,
+              email: email
+            },
             'organization/registerStart'
           )
           return h.response(response)
         } else {
           return h.response({
             status: 500,
-            errorMessage: 'Organisation name is null'
+            errorMessage: 'Organisation name is empty'
           })
         }
       } catch (error) {

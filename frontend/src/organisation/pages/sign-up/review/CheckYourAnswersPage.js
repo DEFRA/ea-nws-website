@@ -34,7 +34,7 @@ export default function CheckYourAnswersPage () {
     dispatch(setProfile(updatedProfile))
     const profileDataToSend = {
       profile: updatedProfile,
-      authToken: authToken,
+      authToken,
       signinType: 'org'
     }
     await backendCall(profileDataToSend, 'api/profile/update', navigate)

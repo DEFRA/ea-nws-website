@@ -5,7 +5,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import InsetText from '../../../../../common/components/gov-uk/InsetText'
 import {
-    setCurrentLocationCoordinates
+  setCurrentLocationCoordinates
 } from '../../../../../common/redux/userSlice'
 import { locationInEngland } from '../../../../../common/services/validations/LocationInEngland'
 import Map from '../../../../components/custom/Map'

@@ -11,9 +11,9 @@ import ExpiredCodeLayout from '../../../common/layouts/email/ExpiredCodeLayout'
 import { setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import {
-    addUnverifiedContact,
-    removeUnverifiedContact,
-    removeVerifiedContact
+  addUnverifiedContact,
+  removeUnverifiedContact,
+  removeVerifiedContact
 } from '../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
 

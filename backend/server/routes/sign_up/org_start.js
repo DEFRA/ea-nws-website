@@ -16,9 +16,10 @@ module.exports = [
         const { name, email } = request.payload
         if (name && email) {
           const response = await apiCall(
-            { name: name,
+            {
+              name: name,
               email: email
-             },
+            },
             'organization/registerStart'
           )
           return h.response(response)

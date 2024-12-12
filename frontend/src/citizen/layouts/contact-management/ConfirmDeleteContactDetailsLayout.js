@@ -7,8 +7,8 @@ import InsetText from '../../../common/components/gov-uk/InsetText'
 import { setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import {
-    removeUnverifiedContact,
-    removeVerifiedContact
+  removeUnverifiedContact,
+  removeVerifiedContact
 } from '../../../common/services/ProfileServices'
 
 export default function ConfirmDeleteContactDetailsLayout ({

@@ -10,9 +10,9 @@ import NotificationBanner from '../../components/gov-uk/NotificationBanner'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import {
-    addUnverifiedContact,
-    removeUnverifiedContact,
-    removeVerifiedContact
+  addUnverifiedContact,
+  removeUnverifiedContact,
+  removeVerifiedContact
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from './ExpiredCodeLayout'

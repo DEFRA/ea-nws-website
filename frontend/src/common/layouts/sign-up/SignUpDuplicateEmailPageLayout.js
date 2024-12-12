@@ -12,7 +12,6 @@ export default function SignUpDuplicateEmailPageLayout () {
   const location = useLocation()
   const [error, setError] = useState('')
   const email = location.state.email
-  const profile = useSelector((state) => state.session.profile)
 
   const isOrganisationPage = location.pathname.includes('organisation')
   const urlSignup = isOrganisationPage

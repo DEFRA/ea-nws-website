@@ -9,6 +9,8 @@ import InsetText from '../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import {
   setAuthToken,
+  setOrgId,
+  setOrganizationId,
   setProfile,
   setProfileId,
   setRegisterToken
@@ -77,11 +79,13 @@ export default function ValidateEmailLayout ({
         const profileDataToSend = {
           profile: updatedProfile,
           authToken: data.authToken,
-          signinType: signinType
+          signinType
         }
         const { data: updateData, errorMessage: updateErrorMessage } = await backendCall(profileDataToSend, 'api/profile/update', navigate)
         if (updateData) {
           dispatch(setProfileId(updateData.profile.id))
+        } else if (updateErrorMessage) {
+          setError(updateErrorMessage)
         }
         NavigateToNextPage()
       }

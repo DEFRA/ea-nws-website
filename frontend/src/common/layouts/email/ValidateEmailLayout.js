@@ -123,7 +123,7 @@ export default function ValidateEmailLayout ({
       dispatch(setProfile(removeVerifiedContact(session.profile, email)))
     }
 
-    const dataToSend = { profile: updatedProfile, authToken: session.authToken, signinType: signinType }
+    const dataToSend = { profile: updatedProfile, authToken: session.authToken, signinType }
 
     const { errorMessage } = await backendCall(
       dataToSend,

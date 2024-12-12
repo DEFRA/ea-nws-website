@@ -9,12 +9,12 @@ import Input from '../../../common/components/gov-uk/Input'
 import InsetText from '../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import {
-  setAuthToken,
-  setContactPreferences,
-  setOrgId,
-  setProfile,
-  setProfileId,
-  setRegistrations
+    setAuthToken,
+    setContactPreferences,
+    setOrgId,
+    setProfile,
+    setProfileId,
+    setRegistrations
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
@@ -22,7 +22,7 @@ import { getAdditionals } from '../../services/ProfileServices'
 import ExpiredCodeLayout from '../email/ExpiredCodeLayout'
 
 export default function SignInValidatePageLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const location = useLocation()
@@ -87,7 +87,7 @@ export default function SignInValidatePageLayout ({
         if (isSignUpComplete !== 'true' && lastAccessedUrl !== undefined) {
           setSignUpNotComplete(true)
         } else {
-          NavigateToNextPage()
+          navigateToNextPage()
         }
       }
     }

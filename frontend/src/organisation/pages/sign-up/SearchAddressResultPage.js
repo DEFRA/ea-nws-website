@@ -4,7 +4,7 @@ import SelectAddressLayout from '../../layouts/address/SearchAddressResultLayout
 
 export default function SelectAddressPage () {
   const navigate = useNavigate()
-  const NavigateToNextPage = () =>
+  const navigateToNextPage = () =>
     navigate('/organisation/sign-up/address-confirm')
 
   const NavigateToPreviousPage = () => {
@@ -13,7 +13,7 @@ export default function SelectAddressPage () {
 
   return (
     <SelectAddressLayout
-      NavigateToNextPage={NavigateToNextPage}
+      navigateToNextPage={navigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
     />
   )

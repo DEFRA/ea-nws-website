@@ -9,7 +9,7 @@ import { setOrganizationName, setSigninType } from '../../../common/redux/userSl
 import { orgNameValidation } from '../../../common/services/validations/OrgNameValidation'
 
 export default function AddNameLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const dispatch = useDispatch()
@@ -29,7 +29,7 @@ export default function AddNameLayout ({
       return
     }
 
-    NavigateToNextPage()
+    navigateToNextPage()
 
     /* // Check for duplicate organisation name
     const dataToSend = { name }
@@ -48,7 +48,7 @@ export default function AddNameLayout ({
         setError(errorMessage)
       }
     } else {
-      NavigateToNextPage()
+      navigateToNextPage()
     } */
   }
 

@@ -12,13 +12,13 @@ export default function SignInPage () {
     dispatch(setSigninType('org'))
   })
 
-  const NavigateToNextPage = ({ signinToken, email }) => {
+  const navigateToNextPage = ({ signinToken, email }) => {
     navigate('/organisation/signin/validate', {
       state: { signinToken, email }
     })
   }
 
   return (
-    <SignInPageLayout NavigateToNextPage={NavigateToNextPage} />
+    <SignInPageLayout navigateToNextPage={navigateToNextPage} />
   )
 }

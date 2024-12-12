@@ -6,7 +6,7 @@ import Pagination from '../../../common/components/gov-uk/Pagination'
 import { setOrganizationAddress } from '../../../common/redux/userSlice'
 
 export default function SelectAddressLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const navigate = useNavigate()
@@ -25,7 +25,7 @@ export default function SelectAddressLayout ({
   const handleSelectedLocation = async (event, selectedLocation) => {
     event.preventDefault()
     dispatch(setOrganizationAddress(selectedLocation.name))
-    NavigateToNextPage()
+    navigateToNextPage()
   }
 
   const navigateBack = async (event) => {

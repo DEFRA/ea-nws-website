@@ -6,20 +6,20 @@ import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import {
-  setCurrentContact,
-  setProfile,
-  setRegisterToken
+    setCurrentContact,
+    setProfile,
+    setRegisterToken
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import {
-  addAccountName,
-  addVerifiedContact
+    addAccountName,
+    addVerifiedContact
 } from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 
 export default function AdminDetailsLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const dispatch = useDispatch()
@@ -94,7 +94,7 @@ export default function AdminDetailsLayout ({
       dispatch(setProfile(updatedProfile))
       dispatch(setRegisterToken(data.orgRegisterToken))
       dispatch(setCurrentContact(email))
-      NavigateToNextPage()
+      navigateToNextPage()
     }
   }
 

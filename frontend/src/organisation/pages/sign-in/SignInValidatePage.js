@@ -4,7 +4,7 @@ import SignInValidatePageLayout from '../../../common/layouts/sign-in/SignInVali
 export default function SignInValidatePage () {
   const navigate = useNavigate()
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     navigate('/organisation/home')
   }
 
@@ -13,6 +13,6 @@ export default function SignInValidatePage () {
   }
 
   return (
-    <SignInValidatePageLayout NavigateToNextPage={NavigateToNextPage} NavigateToPreviousPage={NavigateToPreviousPage} />
+    <SignInValidatePageLayout navigateToNextPage={navigateToNextPage} NavigateToPreviousPage={NavigateToPreviousPage} />
   )
 }

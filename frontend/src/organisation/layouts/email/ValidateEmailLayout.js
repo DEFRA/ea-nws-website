@@ -21,7 +21,7 @@ import { authCodeValidation } from '../../../common/services/validations/AuthCod
 import ExpiredCodeLayout from '../../layouts/expired-code/ExpiredCodeLayout'
 
 export default function ValidateEmailLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const navigate = useNavigate()
@@ -87,7 +87,7 @@ export default function ValidateEmailLayout ({
         } else if (updateErrorMessage) {
           setError(updateErrorMessage)
         }
-        NavigateToNextPage()
+        navigateToNextPage()
       }
     }
   }

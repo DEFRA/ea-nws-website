@@ -4,7 +4,7 @@ import ValidateEmailLayout from '../../../../common/layouts/email/ValidateEmailL
 export default function ValidateEmailPage () {
   const navigate = useNavigate()
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     navigate('/managecontacts')
   }
   const SkipValidation = (email) => {
@@ -21,7 +21,7 @@ export default function ValidateEmailPage () {
 
   return (
     <ValidateEmailLayout
-      NavigateToNextPage={NavigateToNextPage}
+      navigateToNextPage={navigateToNextPage}
       NavigateToPreviousPage={DifferentEmail}
       SkipValidation={SkipValidation}
       DifferentEmail={DifferentEmail}

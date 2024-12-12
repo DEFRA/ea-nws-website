@@ -14,7 +14,7 @@ export default function ChangeNamePage () {
     navigate('/account')
   }
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     navigate('/account')
   }
 
@@ -41,7 +41,7 @@ export default function ChangeNamePage () {
   return (
     <AddAccountNameLayout
       NavigateToPreviousPage={NavigateToPreviousPage}
-      NavigateToNextPage={NavigateToNextPage}
+      navigateToNextPage={navigateToNextPage}
       buttonText='Save changes'
       changeName
       updateProfile={updateProfile}

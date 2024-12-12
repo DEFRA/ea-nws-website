@@ -7,7 +7,7 @@ import Radio from '../../../common/components/gov-uk/Radio'
 import { setOrganizationIsAdminRegistering } from '../../../common/redux/userSlice'
 
 export default function MainAdminLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const dispatch = useDispatch()
@@ -20,7 +20,7 @@ export default function MainAdminLayout ({
       return
     }
     dispatch(setOrganizationIsAdminRegistering(adminDetails))
-    NavigateToNextPage()
+    navigateToNextPage()
   }
 
   const navigateBack = async (event) => {

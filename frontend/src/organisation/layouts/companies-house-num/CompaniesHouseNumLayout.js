@@ -8,7 +8,7 @@ import { setOrganizationCompHouseNum } from '../../../common/redux/userSlice'
 import { compHouseNumberValidation } from '../../../common/services/validations/CompHouseNumValidation'
 
 export default function CompaniesHouseNumLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const dispatch = useDispatch()
@@ -28,13 +28,13 @@ export default function CompaniesHouseNumLayout ({
     // Explicitly checking for false as !companyNum would also include empty string
     if (companyNum === false) {
       dispatch(setOrganizationCompHouseNum(null))
-      NavigateToNextPage()
+      navigateToNextPage()
     } else {
       // Yes was clicked - validate input before proceeding
       const validationError = compHouseNumberValidation(companyNum)
       if (!validationError) {
         dispatch(setOrganizationCompHouseNum(companyNum))
-        NavigateToNextPage()
+        navigateToNextPage()
       } else {
         setNumberError(validationError)
       }

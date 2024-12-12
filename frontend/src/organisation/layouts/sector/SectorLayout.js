@@ -7,7 +7,7 @@ import Radio from '../../../common/components/gov-uk/Radio'
 import { setOrganizationEmergencySector } from '../../../common/redux/userSlice'
 
 export default function SectorLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const dispatch = useDispatch()
@@ -22,7 +22,7 @@ export default function SectorLayout ({
       return
     }
     dispatch(setOrganizationEmergencySector(emergencySector))
-    NavigateToNextPage()
+    navigateToNextPage()
   }
 
   const navigateBack = async (event) => {

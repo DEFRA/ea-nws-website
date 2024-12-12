@@ -5,12 +5,12 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import InsetText from '../../../../../common/components/gov-uk/InsetText'
 import {
-  setCurrentLocationCoordinates
+    setCurrentLocationCoordinates
 } from '../../../../../common/redux/userSlice'
 import { locationInEngland } from '../../../../../common/services/validations/LocationInEngland'
 import Map from '../../../../components/custom/Map'
 
-export default function SelectOnMapLayout ({ fullAddress, NavigateToNextPage, NavigateToPreviousPage, NavigateToNotFound }) {
+export default function SelectOnMapLayout ({ fullAddress, navigateToNextPage, NavigateToPreviousPage, NavigateToNotFound }) {
   const dispatch = useDispatch()
   const [pinCoords, setPinCoords] = useState('')
   const [error, setError] = useState('')
@@ -24,7 +24,7 @@ export default function SelectOnMapLayout ({ fullAddress, NavigateToNextPage, Na
       if (inEngland) {
         dispatch(setCurrentLocationCoordinates(pinCoords))
         // TODO: Send currentLocation object to elasticache and geosafe, then navigate
-        NavigateToNextPage()
+        navigateToNextPage()
       } else {
         NavigateToNotFound()
       }

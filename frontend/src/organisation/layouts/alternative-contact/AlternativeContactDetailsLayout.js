@@ -12,7 +12,7 @@ import { fullNameValidation } from '../../../common/services/validations/FullNam
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
 
 export default function AlternativeContactDetailsLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const navigate = useNavigate()
@@ -87,7 +87,7 @@ export default function AlternativeContactDetailsLayout ({
         telephone,
         jobTitle
       }))
-      NavigateToNextPage()
+      navigateToNextPage()
     }
   }
 

@@ -7,13 +7,13 @@ import InsetText from '../../../common/components/gov-uk/InsetText'
 import { setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import {
-  removeUnverifiedContact,
-  removeVerifiedContact
+    removeUnverifiedContact,
+    removeVerifiedContact
 } from '../../../common/services/ProfileServices'
 
 export default function ConfirmDeleteContactDetailsLayout ({
   NavigateToPreviousPage,
-  NavigateToNextPage
+  navigateToNextPage
 }) {
   const location = useLocation()
   const dispatch = useDispatch()
@@ -42,7 +42,7 @@ export default function ConfirmDeleteContactDetailsLayout ({
     )
     if (!errorMessage) {
       dispatch(setProfile(updatedProfile))
-      NavigateToNextPage(location.state.type, location.state.contact)
+      navigateToNextPage(location.state.type, location.state.contact)
     }
   }
 

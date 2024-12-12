@@ -5,7 +5,7 @@ import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 
 export default function ConfirmAddressLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const organization = useSelector((state) => state.session.organization)
@@ -14,7 +14,7 @@ export default function ConfirmAddressLayout ({
 
   const handleSubmit = async () => {
     // Correct address is already stored in
-    NavigateToNextPage()
+    navigateToNextPage()
   }
 
   const navigateBack = async (event) => {

@@ -7,18 +7,18 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import InsetText from '../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
+import ExpiredCodeLayout from '../../../common/layouts/email/ExpiredCodeLayout'
 import { setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import {
-  addUnverifiedContact,
-  removeUnverifiedContact,
-  removeVerifiedContact
+    addUnverifiedContact,
+    removeUnverifiedContact,
+    removeVerifiedContact
 } from '../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
-import ExpiredCodeLayout from '../../../common/layouts/email/ExpiredCodeLayout'
 
 export default function ValidateLandlineLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   SkipValidation,
   DifferentHomePhone,
   NavigateToPreviousPage
@@ -61,7 +61,7 @@ export default function ValidateLandlineLayout ({
         }
       } else {
         dispatch(setProfile(data.profile))
-        NavigateToNextPage()
+        navigateToNextPage()
       }
     }
   }

@@ -6,16 +6,16 @@ import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import {
-  setLocationPostCode,
-  setLocationSearchResults,
-  setOrganizationAddress,
-  setOrganizationPostalCode
+    setLocationPostCode,
+    setLocationSearchResults,
+    setOrganizationAddress,
+    setOrganizationPostalCode
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
 export default function AddAddressLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const navigate = useNavigate()
@@ -59,7 +59,7 @@ export default function AddAddressLayout ({
         } else {
           dispatch(setLocationSearchResults(data))
         }
-        NavigateToNextPage()
+        navigateToNextPage()
       } else {
         setError(errorMessage)
       }

@@ -10,15 +10,15 @@ import NotificationBanner from '../../components/gov-uk/NotificationBanner'
 import { setProfile } from '../../redux/userSlice'
 import { backendCall } from '../../services/BackendService'
 import {
-  addUnverifiedContact,
-  removeUnverifiedContact,
-  removeVerifiedContact
+    addUnverifiedContact,
+    removeUnverifiedContact,
+    removeVerifiedContact
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from './ExpiredCodeLayout'
 
 export default function ValidateEmailLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   SkipValidation,
   DifferentEmail,
   NavigateToPreviousPage,
@@ -66,7 +66,7 @@ export default function ValidateEmailLayout ({
           setError(profileError)
         } else {
           dispatch(setProfile(data.profile))
-          NavigateToNextPage()
+          navigateToNextPage()
         }
       }
     }

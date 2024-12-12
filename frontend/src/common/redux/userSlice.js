@@ -55,12 +55,12 @@ const setOrgAdditional = (additionals, id, value) => {
   let orgAdditionals = {}
   const alertnativeContactInfo = ['firstName', 'lastName', 'email', 'telephone', 'jobTitle']
   orgAdditionals = JSON.parse(additionals)
-  if (alertnativeContactInfo.contains(id)) {
+  if (alertnativeContactInfo.includes(id)) {
     orgAdditionals.alternativeContact[id] = value
   } else {
     orgAdditionals[id] = value
   }
-  additionals = JSON.stringify(orgAdditionals)
+  return JSON.stringify(orgAdditionals)
 }
 
 const userSlice = createSlice({
@@ -70,7 +70,23 @@ const userSlice = createSlice({
     registerToken: null,
     profileId: null,
     orgId: null,
-    profile: null,
+    profile: {
+      id: '',
+      enabled: true,
+      firstname: '',
+      lastname: '',
+      emails: [],
+      mobilePhones: [],
+      homePhones: [],
+      language: 'EN',
+      additionals: [{ id: 'signupComplete', value: { s: 'false' } }],
+      unverified: {
+        emails: [],
+        mobilePhones: [],
+        homePhones: []
+      },
+      pois: []
+    },
     contactPreferences: null,
     registrations: null,
     currentContact: null,
@@ -460,37 +476,37 @@ const userSlice = createSlice({
     },
     setOrganizationName: (state, action) => {
       state.organization.name = action.payload
-      setOrgAdditional(state.organization.description, 'name', action.payload)
+      state.organization.description = setOrgAdditional(state.organization.description, 'name', action.payload)
     },
     setOrganizationAddress: (state, action) => {
-      setOrgAdditional(state.organization.description, 'address', action.payload)
+      state.organization.description = setOrgAdditional(state.organization.description, 'address', action.payload)
     },
     setOrganizationCompHouseNum: (state, action) => {
-      setOrgAdditional(state.organization.description, 'compHouseNum', action.payload)
+      state.organization.description = setOrgAdditional(state.organization.description, 'compHouseNum', action.payload)
     },
     setOrganizationEmergencySector: (state, action) => {
-      setOrgAdditional(state.organization.description, 'emergencySector', action.payload)
+      state.organization.description = setOrgAdditional(state.organization.description, 'emergencySector', action.payload)
     },
     setOrganizationIsAdminRegistering: (state, action) => {
-      setOrgAdditional(state.organization.description, 'isAdminRegistering', action.payload)
+      state.organization.description = setOrgAdditional(state.organization.description, 'isAdminRegistering', action.payload)
     },
     setOrganizationAlternativeContact: (state, action) => {
-      setOrgAdditional(state.organization.description, 'alternativeContact', action.payload)
+      state.organization.description = setOrgAdditional(state.organization.description, 'alternativeContact', action.payload)
     },
     setOrganizationACFirstName: (state, action) => {
-      setOrgAdditional(state.organization.description, 'firstName', action.payload)
+      state.organization.description = setOrgAdditional(state.organization.description, 'firstName', action.payload)
     },
     setOrganizationACLastName: (state, action) => {
-      setOrgAdditional(state.organization.description, 'lastName', action.payload)
+      state.organization.description = setOrgAdditional(state.organization.description, 'lastName', action.payload)
     },
     setOrganizationACEmail: (state, action) => {
-      setOrgAdditional(state.organization.description, 'email', action.payload)
+      state.organization.description = setOrgAdditional(state.organization.description, 'email', action.payload)
     },
     setOrganizationACTelephone: (state, action) => {
-      setOrgAdditional(state.organization.description, 'telephone', action.payload)
+      state.organization.description = setOrgAdditional(state.organization.description, 'telephone', action.payload)
     },
     setOrganizationACJobTitle: (state, action) => {
-      setOrgAdditional(state.organization.description, 'jobTitle', action.payload)
+      state.organization.description = setOrgAdditional(state.organization.description, 'jobTitle', action.payload)
     },
     setOrganizationDescription: (state, action) => {
       state.organization.description = action.payload

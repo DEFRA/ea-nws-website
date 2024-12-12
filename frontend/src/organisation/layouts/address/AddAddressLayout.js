@@ -6,10 +6,10 @@ import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import {
-    setLocationPostCode,
-    setLocationSearchResults,
-    setOrganizationAddress,
-    setOrganizationPostalCode
+  setLocationPostCode,
+  setLocationSearchResults,
+  setOrganizationAddress,
+  setOrganizationPostalCode
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
@@ -49,7 +49,7 @@ export default function AddAddressLayout ({
               .includes(normalisedBuildingNum)
           )
           if (address.length === 1) {
-            dispatch(setOrganizationAddress(address[0].name))
+            dispatch(setOrganizationAddress(address[0].address))
             navigate('/organisation/sign-up/address-confirm')
             return // Ensure none of the following code is executed
           } else {

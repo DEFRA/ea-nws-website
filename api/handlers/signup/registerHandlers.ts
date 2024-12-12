@@ -2,6 +2,7 @@ const responseCodes = require('../responseCodes')
 import Hapi from '@hapi/hapi'
 import type { Context } from 'openapi-backend'
 import uuidv4 from '../generateAuthToken'
+const mockResponses = require('../mockResponses')
 
 async function getRegisterStart(
   context: Context,
@@ -86,7 +87,7 @@ async function getOrgRegisterValidate(
   }
   console.log('Valid token')
 
-  return { authToken: uuidv4() }
+  return { authToken: uuidv4(), organization: mockResponses.organization }
 }
 
 module.exports = { getRegisterStart, getOrgRegisterStart, getRegisterValidate, getOrgRegisterValidate }

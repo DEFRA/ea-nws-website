@@ -156,6 +156,9 @@ const removeVerifiedContact = (profile, contact) => {
 }
 
 const addAccountName = (profile, firstname, lastname) => {
+  if (!profile) {
+    profile = {}
+  }
   profile.firstname = firstname
   profile.lastname = lastname
 

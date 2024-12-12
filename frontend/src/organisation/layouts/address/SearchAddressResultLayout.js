@@ -24,7 +24,7 @@ export default function SelectAddressLayout ({
 
   const handleSelectedLocation = async (event, selectedLocation) => {
     event.preventDefault()
-    dispatch(setOrganizationAddress(selectedLocation.name))
+    dispatch(setOrganizationAddress(selectedLocation.address))
     navigateToNextPage()
   }
 

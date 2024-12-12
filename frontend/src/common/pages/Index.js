@@ -8,12 +8,14 @@ import AlertType from '../enums/AlertType'
 import LocationDataType from '../enums/LocationDataType'
 import {
   clearAuth,
-  setAuthToken, setContactPreferences,
+  setAuthToken,
+  setContactPreferences,
   setCurrentLocation,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
   setCurrentLocationNorthing,
-  setLocationBoundaries, setOrgCurrentContact,
+  setLocationBoundaries,
+  setOrgCurrentContact,
   setOrgId,
   setProfile,
   setRegistrations,
@@ -23,7 +25,7 @@ import {
 } from '../redux/userSlice'
 import { backendCall } from '../services/BackendService'
 
-export default function IndexPage () {
+export default function IndexPage() {
   const dispatch = useDispatch()
   const [mockSessionActive, setmockSessionActive] = useState(false)
   const [emptyProfileActive, setEmptyProfileActive] = useState(false)
@@ -290,7 +292,7 @@ export default function IndexPage () {
     ]
   }
 
-  function uuidv4 () {
+  function uuidv4() {
     return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) =>
       (
         +c ^
@@ -314,10 +316,7 @@ export default function IndexPage () {
       {
         address: 'Big Ben, London, SW1A 0AA',
         name: 'UPRN',
-        coordinates: {
-          latitude: 51.5007,
-          longitude: 0.1246
-        },
+        coordinates: [51.5007, 0.1246],
         meta_data: {
           location_additional: {
             location_data_type: LocationDataType.X_AND_Y_COORDS
@@ -325,12 +324,9 @@ export default function IndexPage () {
         }
       },
       {
-        address: 'Kingfisher Way, London, NW10 8TZ',
+        address: 'Stonehenge, Amesbury, SP4 7DE',
         name: 'UPRN',
-        coordinates: {
-          latitude: 51.550738,
-          longitude: -0.257635
-        },
+        coordinates: [51.1789, -1.8262],
         meta_data: {
           location_additional: {
             location_data_type: LocationDataType.X_AND_Y_COORDS
@@ -338,12 +334,9 @@ export default function IndexPage () {
         }
       },
       {
-        address: 'Ellesmere Crescent',
+        address: 'The Shard, London, SE1 9SG',
         name: 'UPRN',
-        coordinates: {
-          latitude: 52.038247685799156,
-          longitude: -1.147584819157741
-        },
+        coordinates: [51.5045, -0.0865],
         meta_data: {
           location_additional: {
             location_data_type: LocationDataType.X_AND_Y_COORDS
@@ -351,12 +344,9 @@ export default function IndexPage () {
         }
       },
       {
-        address: 'Mushroom Farm',
+        address: 'The Roman Baths, Bath, BA1 1LZ',
         name: 'UPRN',
-        coordinates: {
-          latitude: 52.815995210291554,
-          longitude: -2.467525521069016
-        },
+        coordinates: [51.3811, -2.359],
         meta_data: {
           location_additional: {
             location_data_type: LocationDataType.X_AND_Y_COORDS
@@ -364,21 +354,97 @@ export default function IndexPage () {
         }
       },
       {
-        address: 'Oxford',
+        address: 'Durham Cathedral, Durham, DH1 3EH',
+        name: 'UPRN',
+        coordinates: [54.7761, -1.575],
+        meta_data: {
+          location_additional: {
+            location_data_type: LocationDataType.X_AND_Y_COORDS
+          }
+        }
+      },
+      {
+        address: '',
         name: 'UPRN',
         geometry: {
-          geoJson: {
-            coordinates: [
+          geoJson: [
+            [51.4826, -0.0077], // Greenwich
+            [51.5055, -0.0754], // Tower Bridge
+            [51.5145, -0.0983], // St. Paul's Cathedral
+            [51.5194, -0.127], // The British Museum
+            [51.5074, -0.1657] // Hyde Park
+          ]
+        },
+        coordinates: [],
+        meta_data: {
+          location_additional: {
+            location_data_type: LocationDataType.SHAPE_LINE
+          }
+        }
+      },
+      {
+        address: '',
+        name: 'UPRN',
+        geometry: {
+          geoJson: [
+            [51.754816, -1.254367],
+            [51.754216, -1.253267],
+            [51.753516, -1.254067],
+            [51.753416, -1.255367],
+            [51.754016, -1.255567],
+            [51.754816, -1.254367]
+          ]
+        },
+        meta_data: {
+          location_additional: {
+            location_data_type: LocationDataType.SHAPE_POLYGON
+          }
+        }
+      },
+      {
+        address: 'Oxford, England',
+        name: 'UPRN',
+        geometry: {
+          geoJson: [
+            [
+              [-1.272146, 51.752022],
+              [-1.250273, 51.735641],
+              [-1.219708, 51.748723],
+              [-1.236281, 51.764847],
+              [-1.272146, 51.752022]
+            ]
+          ]
+        },
+        meta_data: {
+          location_additional: {
+            location_data_type: LocationDataType.SHAPE_POLYGON
+          }
+        }
+      },
+      {
+        address: 'Greater London and Kent',
+        name: 'UPRN',
+        geometry: {
+          geoJson: [
+            [
               [
-                [-1.3310623, 51.7990615],
-                [-1.320076, 51.7312811],
-                [-1.2280655, 51.7302179],
-                [-1.2249756, 51.7965136],
-                [-1.3310623, 51.7990615]
+                [-0.241681, 51.528735],
+                [-0.128851, 51.507351],
+                [-0.142978, 51.477928],
+                [-0.251053, 51.489344],
+                [-0.241681, 51.528735]
               ]
             ],
-            type: 'Polygon'
-          }
+            [
+              [
+                [0.130952, 51.445674],
+                [0.163302, 51.423306],
+                [0.185021, 51.464355],
+                [0.148287, 51.482805],
+                [0.130952, 51.445674]
+              ]
+            ]
+          ]
         },
         meta_data: {
           location_additional: {
@@ -390,7 +456,7 @@ export default function IndexPage () {
     additionals: [
       {
         id: 'keywords',
-        value: 'north, west, east'
+        value: 'North, Midlands, Manager'
       }
     ]
   }
@@ -414,29 +480,27 @@ export default function IndexPage () {
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: null,
-              postcode: null,
-              // Easting EPSG: 27700
-              x_coordinate: null,
-              // Northing EPSG: 27700
-              y_coordinate: null,
-              internal_reference: null,
-              business_criticality: null,
-              location_type: null,
-              action_plan: null,
-              notes: null,
-              location_data_type: null,
-              alertTypes: null
-            }
-          )
+          s: JSON.stringify({
+            full_address: null,
+            postcode: null,
+            // Easting EPSG: 27700
+            x_coordinate: null,
+            // Northing EPSG: 27700
+            y_coordinate: null,
+            internal_reference: null,
+            business_criticality: null,
+            location_type: null,
+            action_plan: null,
+            notes: null,
+            location_data_type: null,
+            alertTypes: null
+          })
         }
       }
     ]
   }
 
-  function mockSession (profile, type) {
+  function mockSession(profile, type) {
     if (mockSessionActive === false) {
       const authToken = uuidv4()
       const contactPreferences = ['Text']
@@ -476,13 +540,14 @@ export default function IndexPage () {
       }
 
       if (type === 'org') {
-        (async () => {
-          const dataToSend = { signinToken: uuidv4(), code: 123456, signinType: 'org' }
+        ;(async () => {
+          const dataToSend = {
+            signinToken: uuidv4(),
+            code: 123456,
+            signinType: 'org'
+          }
 
-          await backendCall(
-            dataToSend,
-            'api/sign_in_validate'
-          )
+          await backendCall(dataToSend, 'api/sign_in_validate')
         })()
         dispatch(setSigninType('org'))
       }
@@ -508,7 +573,7 @@ export default function IndexPage () {
     }
   }
 
-  function mockEmptyProfileWithNoAuthentication () {
+  function mockEmptyProfileWithNoAuthentication() {
     if (!emptyProfileActive) {
       const emptyProfile = {
         id: '',

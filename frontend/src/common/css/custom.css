@@ -1315,3 +1315,7 @@
 .leaflet-tooltip-right:before {
   border: none !important;
 }
+
+.contacts-map-container {
+  height: 60vh;
+}

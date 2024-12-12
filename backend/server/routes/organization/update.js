@@ -2,6 +2,7 @@ const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
+const { setJsonData } = require('../../services/elasticache')
 
 module.exports = [
   {
@@ -20,6 +21,7 @@ module.exports = [
             { authToken: authToken, organization: organization },
             'organization/update'
           )
+          await setJsonData(response.data.organization.id + ':org_data', response.data.organization)
           return h.response(response)
         } else {
           return createGenericErrorResponse(h)

@@ -10,6 +10,7 @@ import NotificationBanner from '../../../common/components/gov-uk/NotificationBa
 import {
   setAuthToken,
   setProfile,
+  setProfileId,
   setRegisterToken
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
@@ -32,6 +33,7 @@ export default function ValidateEmailLayout ({
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
   const profile = useSelector((state) => state.session.profile)
+  const signinType = useSelector((state) => state.session.signinType)
 
   // if error remove code sent notification
   useEffect(() => {
@@ -65,6 +67,8 @@ export default function ValidateEmailLayout ({
         }
       } else {
         dispatch(setAuthToken(data.authToken))
+        dispatch(setOrgId(data.organization.id))
+        dispatch(setOrganizationId(data.organization.id))
         const updatedProfile = updateAdditionals(profile, [
           { id: 'signupComplete', value: { s: 'false' } },
           { id: 'lastAccessedUrl', value: { s: '/organisation/sign-up/alternative-contact' } }
@@ -72,9 +76,13 @@ export default function ValidateEmailLayout ({
         dispatch(setProfile(updatedProfile))
         const profileDataToSend = {
           profile: updatedProfile,
-          authToken: data.authToken
+          authToken: data.authToken,
+          signinType: signinType
         }
-        await backendCall(profileDataToSend, 'api/profile/update', navigate)
+        const { data: updateData, errorMessage: updateErrorMessage } = await backendCall(profileDataToSend, 'api/profile/update', navigate)
+        if (updateData) {
+          dispatch(setProfileId(updateData.profile.id))
+        }
         NavigateToNextPage()
       }
     }

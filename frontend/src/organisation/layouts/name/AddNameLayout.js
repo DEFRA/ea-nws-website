@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
-import { setOrganizationName } from '../../../common/redux/userSlice'
+import { setOrganizationName, setSigninType } from '../../../common/redux/userSlice'
 // import { backendCall } from '../../../common/services/BackendService'
 import { orgNameValidation } from '../../../common/services/validations/OrgNameValidation'
 
@@ -15,6 +15,9 @@ export default function AddNameLayout ({
   const dispatch = useDispatch()
   const [name, setName] = useState('')
   const [error, setError] = useState('')
+  useEffect(() => {
+    dispatch(setSigninType('org'))
+  })
 
   const handleSubmit = async () => {
     const validationError = orgNameValidation(name)

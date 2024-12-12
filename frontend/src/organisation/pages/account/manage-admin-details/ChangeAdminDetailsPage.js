@@ -1,16 +1,16 @@
 import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
-import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Button from '../../../../common/components/gov-uk/Button'
+import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
-import { useNavigate } from 'react-router'
-import { useSelector, useDispatch } from 'react-redux'
+import { setCurrentContact, setProfile } from '../../../../common/redux/userSlice'
+import { backendCall } from '../../../../common/services/BackendService'
+import { addAccountName, addUnverifiedContact } from '../../../../common/services/ProfileServices'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../../common/services/validations/FullNameValidation'
-import { backendCall } from '../../../../common/services/BackendService'
-import { addUnverifiedContact, addAccountName } from '../../../../common/services/ProfileServices'
-import { setCurrentContact, setProfile } from '../../../../common/redux/userSlice'
 import { orgAccountUrls } from '../../../routes/account/AccountRoutes'
 export default function ChangeAdminDetailsPage () {
   const dispatch = useDispatch()
@@ -34,14 +34,15 @@ export default function ChangeAdminDetailsPage () {
   const [error, setError] = useState('')
   const profile = useSelector((state) => state.session.profile)
   const authToken = useSelector((state) => state.session.authToken)
+  const signinType = useSelector((state) => state.session.authToken)
 
   const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
   }
 
-  const updateProfile = async (profile, authToken) => {
-    const dataToSend = { profile, authToken }
+  const updateProfile = async (profile, authToken, signinType) => {
+    const dataToSend = { profile, authToken, signinType }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/profile/update',
@@ -77,7 +78,7 @@ export default function ChangeAdminDetailsPage () {
         updatedProfile = addUnverifiedContact(updatedProfile, 'email', email)
         successMessages.push('Email address changed')
       }
-      await updateProfile(updatedProfile, authToken)
+      await updateProfile(updatedProfile, authToken, signinType)
       if (email) {
         const dataToSend = { email, authToken }
         const { errorMessage } = await backendCall(

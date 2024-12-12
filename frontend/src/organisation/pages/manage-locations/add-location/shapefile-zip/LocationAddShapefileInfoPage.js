@@ -20,11 +20,7 @@ export default function LocationAddShapefilePage() {
   return (
     <>
       <OrganisationAccountNavigation
-        currentPage={
-          {
-            /* TODO: Change to highlight locations dashboard when complete  (EAN-1247)*/
-          }
-        }
+        currentPage={orgManageLocationsUrls.view.dashboard}
       />
       <BackLink onClick={() => navigate(-1)} />
 

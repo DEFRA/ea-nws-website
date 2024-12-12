@@ -58,11 +58,7 @@ export default function AddLocationOptionsPage() {
   return (
     <>
       <OrganisationAccountNavigation
-        currentPage={
-          {
-            /* TODO: Change to highlight locations dashboard when complete  (EAN-1247)*/
-          }
-        }
+        currentPage={orgManageLocationsUrls.view.dashboard}
       />
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

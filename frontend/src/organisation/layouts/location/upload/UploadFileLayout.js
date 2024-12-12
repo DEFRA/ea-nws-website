@@ -150,7 +150,12 @@ export default function UploadFileLayout({
             throw new Error(shapefileErrorMessage)
           }
 
-          // TDO: Navigate to confirmation page (once made)
+          const { errorMessage: geojsonErrorMessage } = await backendCall(
+            { zipFileName: uniqFileName },
+            'api/shapefile/convert',
+            navigate
+          )
+          navigate(orgManageLocationsUrls.add.confirmLocationsWithShapefile)
         }
       }
     } catch (err) {
@@ -162,11 +167,7 @@ export default function UploadFileLayout({
   return (
     <>
       <OrganisationAccountNavigation
-        currentPage={
-          {
-            /* TODO: Change to highlight locations dashboard when complete  (EAN-1247)*/
-          }
-        }
+        currentPage={orgManageLocationsUrls.view.dashboard}
       />
       {!uploading && <BackLink onClick={() => navigate(-1)} />}
 

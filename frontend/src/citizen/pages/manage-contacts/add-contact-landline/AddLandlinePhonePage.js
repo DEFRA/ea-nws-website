@@ -3,7 +3,7 @@ import AddLandlineLayout from '../../../layouts/landline/AddLandlineLayout'
 
 export default function AddLandlinePhonePage () {
   const navigate = useNavigate()
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     navigate('/managecontacts/validate-landline')
   }
 
@@ -13,7 +13,7 @@ export default function AddLandlinePhonePage () {
 
   return (
     <AddLandlineLayout
-      NavigateToNextPage={NavigateToNextPage}
+      navigateToNextPage={navigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
 
     />

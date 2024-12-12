@@ -14,7 +14,7 @@ export default function ChangeAccountNamePage () {
     navigate('/signup/review')
   }
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     navigate('/signup/review')
   }
 
@@ -41,7 +41,7 @@ export default function ChangeAccountNamePage () {
   return (
     <AddAccountNameLayout
       NavigateToPreviousPage={NavigateToPreviousPage}
-      NavigateToNextPage={NavigateToNextPage}
+      navigateToNextPage={navigateToNextPage}
       buttonText='Save changes'
       changeName
       updateProfile={updateProfile}

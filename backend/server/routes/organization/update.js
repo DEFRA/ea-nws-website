@@ -7,23 +7,21 @@ const { setJsonData } = require('../../services/elasticache')
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/profile/update',
+    path: '/api/organization/update',
 
     handler: async (request, h) => {
       try {
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { authToken, profile, signinType } = request.payload
+        const { authToken, organization } = request.payload
 
-        if (Object.keys(profile).length !== 0 && authToken) {
+        if (Object.keys(organization).length !== 0 && authToken) {
           const response = await apiCall(
-            { authToken: authToken, profile: profile },
-            'member/updateProfile'
+            { authToken: authToken, organization: organization },
+            'organization/update'
           )
-          if (signinType === 'org') {
-            await setJsonData(response.data.profile.id + ':profile', response.data.profile)
-          }
+          await setJsonData(response.data.organization.id + ':org_data', response.data.organization)
           return h.response(response)
         } else {
           return createGenericErrorResponse(h)

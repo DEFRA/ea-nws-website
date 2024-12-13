@@ -119,7 +119,10 @@ export default function ContactsTable ({
   return (
     <>
       <p className='govuk-!-margin-bottom-6 contacts-table-panel'>
-        {filteredContacts.length} {filteredContacts.length === 1 ? 'contact' : 'contacts'}{' '}
+        {filteredContacts.length != contacts.length ? 'Showing ' : ''}
+        {filteredContacts.length != contacts.length ? filteredContacts.length : ''}
+        {filteredContacts.length != contacts.length ? ' of ' : ''}
+        {contacts.length}{contacts.length === 1 ? ' contact' : ' contacts'}{' '}
         <span style={{ margin: '0 20px' }}>|</span>
         <span style={{ color: '#1d70b8' }}>
           {selectedContacts.length}{' '}

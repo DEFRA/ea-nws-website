@@ -105,18 +105,13 @@ module.exports = [
               throw new Error()
             }
           }
-        } catch (e) {
+        } catch {
           errorsArray.push(
             'The selected file could not be uploaded because the location name is missing'
           )
         }
 
         // *** TODO: Implement virus scan after EAN-1122 is complete *** //
-
-        // If any errors, return them (done in catch block to include the clean up)
-        if (errorsArray.length > 0) {
-          throw new Error()
-        }
 
         // No errors thrown means a valid shapefile
         return h.response({

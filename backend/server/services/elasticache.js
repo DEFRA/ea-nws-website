@@ -133,11 +133,14 @@ const addToAlert = async (orgId, location) => {
     }
     await setJsonData(key, struct)
   }
-  let alertTypes
+  let alertTypes = []
   location.additionals.forEach((additional) => {
     if (additional.id === 'other') {
       const other = JSON.parse(additional.value?.s)
       alertTypes = other.alertTypes
+      if (!alertTypes) {
+        alertTypes = []
+      }
     }
   })
   const client = await connectToRedis()

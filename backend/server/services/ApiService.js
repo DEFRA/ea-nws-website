@@ -23,6 +23,18 @@ const apiCall = async (data, path) => {
     data.profile = convertWebProfile(data.profile)
   }
 
+  if (data.location) {
+    data.location.coordinates.latitude = parseInt(
+      data.location.coordinates.latitude * 10 ** 6
+    )
+    data.location.coordinates.longitude = parseInt(
+      data.location.coordinates.longitude * 10 ** 6
+    )
+  }
+
+  console.log('Converted data')
+  console.log(JSON.stringify(data))
+
   try {
     const response = await axios.post(url, data, {
       headers: {
@@ -34,6 +46,8 @@ const apiCall = async (data, path) => {
       withCredentials: false
     })
 
+    console.log(response.data)
+
     if (response.data.profile) {
       response.data.profile = convertGeoSafeProfile(
         response.data.profile,
@@ -41,8 +55,21 @@ const apiCall = async (data, path) => {
       )
     }
 
+    if (response.data.location) {
+      response.data.location.coordinates.latitude = response.data.location.coordinates.latitude / 10 ** 6
+      response.data.location.coordinates.longitude = response.data.location.coordinates.longitude / 10 ** 6
+    }
+
+    if (response.data.locations) {
+      response.data.locations.forEach((location) => {
+        location.coordinates.latitude = location.coordinates.latitude / 10 ** 6
+        location.coordinates.longitude = location.coordinates.longitude / 10 ** 6
+      })
+    }
+
     return { status: response.status, data: response.data }
   } catch (error) {
+    console.log(error)
     if (error.response) {
       const { status } = error.response
       if (status === 400) {

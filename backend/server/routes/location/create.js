@@ -20,6 +20,7 @@ module.exports = [
             { authToken: authToken, location: location },
             'location/create'
           )
+          console.log(response)
           if (response.data.location) {
             await addLocation(orgId, response.data.location)
             return h.response({ status: 200, data: response.data.location })
@@ -30,6 +31,7 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
       } catch (error) {
+        console.log(error)
         return createGenericErrorResponse(h)
       }
     }

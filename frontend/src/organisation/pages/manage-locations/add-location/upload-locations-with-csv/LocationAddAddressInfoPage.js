@@ -35,7 +35,7 @@ export default function LocationAddAddressInfoPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+      <OrganisationAccountNavigation currentPage={orgManageLocationsUrls.add.addressInfo} />
       <BackLink onClick={() => navigate(-1)} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
@@ -204,7 +204,7 @@ export default function LocationAddAddressInfoPage () {
               </p>
               <p className='govuk-!-margin-bottom-6'>
                 <a className='govuk-link ' href={templateUrl}>
-                  Download this template spreadsheet.
+                  Download the template.
                 </a>
               </p>
 

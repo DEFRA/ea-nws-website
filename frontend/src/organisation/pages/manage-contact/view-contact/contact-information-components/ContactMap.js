@@ -1,6 +1,6 @@
 import 'leaflet/dist/leaflet.css'
 import React, { useEffect, useMemo, useState } from 'react'
-import { MapContainer, Marker, Popup, useMap } from 'react-leaflet'
+import { GeoJSON, MapContainer, Marker, Popup, useMap } from 'react-leaflet'
 import { Link } from 'react-router-dom'
 // Leaflet Marker Icon fix
 import * as turf from '@turf/turf'
@@ -12,103 +12,51 @@ import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinn
 import TileLayerWithHeader from '../../../../../common/components/custom/TileLayerWithHeader'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import { backendCall } from '../../../../../common/services/BackendService'
+import {
+  convertDataToGeoJsonFeature,
+  getAreaOrLength
+} from '../../../../../common/services/GeoJsonHandler'
 
 export default function ContactMap({ locations }) {
   const [loading, setLoading] = useState(true)
   const [apiKey, setApiKey] = useState(null)
   const [bounds, setBounds] = useState(null)
   const [centre, setCentre] = useState(null)
+  const [features, setFeatures] = useState(null)
   const [areaSize, setAreaSize] = useState([])
-  const [markers, setMarkers] = useState([])
-  // const [lines, setLines] = useState([])
-  // const [polygons, setPolygons] = useState([])
 
   useEffect(() => {
-    if (locations.length === 1) {
-      fitMapToSingleLocation()
-    } else {
-      getBoundaryBoxOfAllLocations()
-      //handleLocations()
-    }
+    loadLocationsOnMap()
 
     setLoading(false)
   }, [])
 
-  const fitMapToSingleLocation = () => {
-    const singleLocation = locations[0]
-    let bbox
-    switch (singleLocation.meta_data.location_additional.location_data_type) {
-      case LocationDataType.X_AND_Y_COORDS:
-        const point = turf.point(singleLocation.coordinates)
-        const bufferedPoint = turf.buffer(point, 0.5, { units: 'kilometers' })
-        bbox = turf.bbox(bufferedPoint)
-        break
+  const loadLocationsOnMap = () => {
+    //load all locations user is connected to onto map
+    const features = []
 
-      case LocationDataType.SHAPE_LINE:
-        // confirm with kevin - can line shapes only be a set of 2 coords?
-        const line = turf.lineString(singleLocation?.geometry?.geoJson)
-        bbox = turf.bbox(line)
-        break
+    locations.forEach((location) => {
+      let feature
+      const locationType =
+        location.meta_data.location_additional.location_data_type
 
-      case LocationDataType.SHAPE_POLYGON || LocationDataType.BOUNDARY:
-        const shapePoints = turf.points(singleLocation?.geometry?.geoJson)
-        bbox = turf.bbox(turf.featureCollection(shapePoints))
-        break
-    }
-
-    console.log('single point bbox', bbox)
-    const newBounds = L.latLngBounds([bbox[1], bbox[0]], [bbox[3], bbox[2]])
-    setBounds(newBounds)
-  }
-
-  const isPolygon = (geoJson) => {
-    return (
-      Array.isArray(geoJson) &&
-      geoJson.length === 1 &&
-      Array.isArray(geoJson[0]) &&
-      !Array.isArray(geoJson[0][0][0])
-    )
-  }
-
-  const isMultiPolygon = (geoJson) => {
-    return (
-      Array.isArray(geoJson) &&
-      geoJson.length > 1 &&
-      Array.isArray(geoJson[0][0]) &&
-      Array.isArray(geoJson[0][0][0])
-    )
-  }
-
-  const getBoundaryBoxOfAllLocations = () => {
-    const centrePoints = []
-
-    locations.forEach((location, index) => {
-      switch (location.meta_data.location_additional.location_data_type) {
-        case LocationDataType.X_AND_Y_COORDS:
-          centrePoints.push(turf.point(location.coordinates))
-          break
-
-        case LocationDataType.SHAPE_LINE:
-          // confirm with kevin - can line shapes only be a set of 2 coords?
-          const line = turf.lineString(location?.geometry?.geoJson)
-          const centre = turf.center(line)
-          centrePoints.push(turf.point(centre.geometry.coordinates))
-          break
-
-        case LocationDataType.SHAPE_POLYGON || LocationDataType.BOUNDARY:
-          // need a way here to figure if shape is a polygon or a multipolygon
-
-          const areaPoints = turf.points(location?.geometry?.geoJson)
-          const areaCentre = turf.center(areaPoints)
-
-          centrePoints.push(turf.point(areaCentre.geometry.coordinates))
-          break
+      if (locationType === LocationDataType.X_AND_Y_COORDS) {
+        feature = convertDataToGeoJsonFeature('Point', location.coordinates)
+      } else {
+        feature = convertDataToGeoJsonFeature(
+          location.geometry.geoJson.type,
+          location.geometry.geoJson.coordinates
+        )
       }
+
+      features.push(feature)
     })
 
-    setMarkers(centrePoints)
+    const geoJsonFeatures = turf.featureCollection(features)
+    setFeatures(geoJsonFeatures)
 
-    const bbox = turf.bbox(turf.featureCollection(centrePoints))
+    // calculate boundary around locations
+    const bbox = turf.bbox(geoJsonFeatures)
 
     const newBounds = L.latLngBounds([bbox[1], bbox[0]], [bbox[3], bbox[2]])
     setBounds(newBounds)
@@ -120,17 +68,39 @@ export default function ContactMap({ locations }) {
 
     const boundarySize = turf.area(area)
     setAreaSize(boundarySize)
+
+    // convert locations not large enough on map
+    if (locations > 1) {
+      console.log()
+      locations.forEach((location) => {
+        let size
+        const locationType =
+          location.meta_data.location_additional.location_data_type
+
+        if (locationType != LocationDataType.X_AND_Y_COORDS) {
+          size = getAreaOrLength(
+            location.geometry.geoJson.type,
+            location.geometry.geoJson.coordinates
+          )
+          console.log(size)
+          // if location is line and length is less than 5km then get centre and show marker instead
+          // if location is polygon and area is less than 10% then of bbox then get centre show marker instead
+          // convert centre to a point and add to features
+        }
+      })
+    }
   }
 
-  const handleLocations = () => {
-    locations.forEach((location) => {
-      if (
-        location.meta_data.location_additional.location_data_type ===
-        LocationDataType.X_AND_Y_COORDS
-      ) {
-        setMarkers(...markers, location)
+  const Locations = () => {
+    const map = useMap()
+
+    useEffect(() => {
+      if (features) {
+        features.features.forEach((feature) => {
+          //console.log(feature)
+        })
       }
-    })
+    }, [features])
   }
 
   const FitBounds = () => {
@@ -220,7 +190,7 @@ export default function ContactMap({ locations }) {
           center={centre}
           dragging={false}
           scrollWheelZoom={false}
-          zoom={7}
+          zoom={9}
           zoomControl={false}
           attributionControl={false}
           maxBounds={maxBounds}
@@ -232,19 +202,9 @@ export default function ContactMap({ locations }) {
               <Marker position={[centre[0], centre[1]]}>
                 <Popup />
               </Marker>
-              {markers &&
-                markers.map((marker) => {
-                  return (
-                    <Marker
-                      position={[
-                        marker.geometry.coordinates[0],
-                        marker.geometry.coordinates[1]
-                      ]}
-                    >
-                      <Popup />
-                    </Marker>
-                  )
-                })}
+              {features && (
+                <GeoJSON data={features} style={{ color: '#ffa200' }} />
+              )}
               <FitBounds />
             </>
           ) : (

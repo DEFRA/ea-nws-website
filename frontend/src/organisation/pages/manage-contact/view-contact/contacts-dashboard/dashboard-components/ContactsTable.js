@@ -146,32 +146,38 @@ export default function ContactsTable ({
               </div>
             </th>
             <th scope='col' className='govuk-table__header' aria-sort={contactNameSort}>
-              <button type='button'
+              <button
+                type='button'
                 onClick={() => sortData(
                   contactNameSort,
                   setContactNameSort,
                   'name'
-                )}>
+                )}
+              >
                 Name
               </button>
             </th>
             <th scope='col' className='govuk-table__header' aria-sort={jobTitleSort}>
-              <button type='button'
+              <button
+                type='button'
                 onClick={() => sortData(
                   jobTitleSort,
                   setJobTitleSort,
                   'job_title'
-                )}>
+                )}
+              >
                 Job title
               </button>
             </th>
             <th scope='col' className='govuk-table__header' aria-sort={emailSort}>
-              <button type='button'
+              <button
+                type='button'
                 onClick={() => sortData(
                   emailSort,
                   setEmailSort,
                   'email'
-                )}>
+                )}
+              >
                 Email
               </button>
             </th>

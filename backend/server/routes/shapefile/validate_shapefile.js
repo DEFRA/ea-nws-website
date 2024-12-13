@@ -29,7 +29,7 @@ module.exports = [
       let Contents = []
       let s3BucketName = ''
       let zipFilePath = ''
-      let errorsArray = []
+      const errorsArray = []
 
       try {
         if (!request.payload) {

@@ -8,6 +8,7 @@ export default function Pagination ({
   setHoldPage,
   pageList = false
 }) {
+  // TODO: Future enhancement - Look at moving the current page state to the parent component
   const [currentPage, setCurrentPage] = useState(holdPage || 1)
   const [pageNumbers, setPageNumbers] = useState([1, 2, 3])
 

@@ -74,7 +74,8 @@ export default function SearchFilter ({
     if (contactNameFilter) {
       filteredContacts = filteredContacts.filter((contact) =>
         contact.name
-          .includes(contactNameFilter)
+          .toLowerCase()
+          .includes(contactNameFilter.toLowerCase())
       )
     }
 

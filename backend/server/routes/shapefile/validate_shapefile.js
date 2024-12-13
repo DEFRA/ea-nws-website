@@ -29,6 +29,7 @@ module.exports = [
       let Contents = []
       let s3BucketName = ''
       let zipFilePath = ''
+      let errorsArray = []
 
       try {
         if (!request.payload) {
@@ -41,6 +42,7 @@ module.exports = [
         s3Client = new S3Client()
         s3BucketName = await getSecretKeyValue('nws/aws', 'bulkUploadBucket')
 
+        console.log('Beginning validation')
         // List bucket folder contents
         const response = await s3Client.send(
           new ListObjectsV2Command({
@@ -51,23 +53,28 @@ module.exports = [
         Contents = response.Contents
 
         // ***  Check 1: empty zip file *** //
+        console.log(`Performing check 1`)
         if (!Contents || Contents.length === 0) {
-          throw new Error('The file is empty')
+          errorsArray.push('The file is empty')
+          console.log(`Failed check 1. errorsArray: ${errorsArray}`)
         }
 
         // ***  Check 2: all prefixes match *** //
+        console.log('Performing check 2')
         const prefixes = Contents.map((item) => {
           const fileName = item.Key.replace(bucketFolder, '')
           return fileName.split('.')[0]
         })
         const uniquePrefixes = new Set(prefixes)
         if (uniquePrefixes.size > 1) {
-          throw new Error(
+          errorsArray.push(
             'Each file in the ZIP must have the same prefix, for example, locations.shp, locations.shx or locations.dbf'
           )
+          console.log(`Failed check 2. errorsArray: ${errorsArray}`)
         }
 
         // ***  Check 3: required files *** //
+        console.log('Performing check 3')
         const requiredFilesTypes = ['.shp', '.shx', '.dbf']
         const presentFileTypes = Contents.map((item) => {
           const fileType = item.Key.slice(item.Key.lastIndexOf('.'))
@@ -75,38 +82,51 @@ module.exports = [
         })
         for (const required of requiredFilesTypes) {
           if (!presentFileTypes.includes(required)) {
-            throw new Error(
+            errorsArray.push(
               'The ZIP file must contain .shp (main file), .shx (index file) and .dbf (database file)'
             )
+            console.log(`Failed check 3. errorsArray: ${errorsArray}`)
           }
         }
 
         // ***  Check 4: no location name *** //
         // Retrieve dbf file from bucket (know it exists from Check 3)
-        const dbfResponse = await s3Client.send(
-          new GetObjectCommand({
-            Bucket: s3BucketName,
-            Key: Contents.find((item) => item.Key.endsWith('.dbf'))?.Key
-          })
-        )
-        const dbfBuffer = await streamToBuffer(dbfResponse.Body)
-        const dbfTable = Dbf.read(dbfBuffer)
-        if (dbfTable) {
-          // Find the index of the 'lrf15nm' column (which stores the location name)
-          const locationIndex = dbfTable.columns.findIndex(
-            (col) => col.name === 'lrf15nm'
+        try {
+          console.log('Performing check 4')
+          const dbfResponse = await s3Client.send(
+            new GetObjectCommand({
+              Bucket: s3BucketName,
+              Key: Contents.find((item) => item.Key.endsWith('.dbf'))?.Key
+            })
           )
-          // Retrieve the location name value and ensure it is not null
-          const locationName =
-            dbfTable.rows[0][dbfTable.columns[locationIndex].name]
-          if (!locationName) {
-            throw new Error(
-              'The selected file could not be uploaded because the location name is missing'
+          const dbfBuffer = await streamToBuffer(dbfResponse.Body)
+          const dbfTable = Dbf.read(dbfBuffer)
+          if (dbfTable) {
+            // Find the index of the 'lrf15nm' column (which stores the location name)
+            const locationIndex = dbfTable.columns.findIndex(
+              (col) => col.name === 'lrf15nm'
             )
+            // Retrieve the location name value and ensure it is not null
+            const locationName =
+              dbfTable.rows[0][dbfTable.columns[locationIndex].name]
+            if (!locationName) {
+              throw new Error()
+            }
           }
+        } catch (e) {
+          errorsArray.push(
+            'The selected file could not be uploaded because the location name is missing'
+          )
+          console.log(`Failed check 4. errorsArray: ${errorsArray}`)
         }
 
         // *** TODO: Implement virus scan after EAN-1122 is complete *** //
+
+        console.log(`Errors array: ${errorsArray}`)
+        // If any errors, return them (done in catch block to include the clean up)
+        if (errorsArray.length > 0) {
+          throw new Error()
+        }
 
         // No errors thrown means a valid shapefile
         return h.response({
@@ -132,9 +152,11 @@ module.exports = [
         } catch (err) {
           console.log(err)
         }
+        console.log(`Error: ${error}`)
+        console.log(`errorsArray: ${errorsArray}`)
         return h.response({
           status: 500,
-          errorMessage: error.message
+          errorMessage: errorsArray
         })
       }
     }

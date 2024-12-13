@@ -84,8 +84,7 @@ export default function ViewContactsDashboardPage () {
 
     if (contactsToBeDeleted.length > 1) {
       text = contactsToBeDeleted.length + ' ' + (selectedContacts.length > 1 ? 'contacts' : 'contact')
-    }
-    else {
+    } else {
       text = contactsToBeDeleted[0].name
     }
 
@@ -116,7 +115,7 @@ export default function ViewContactsDashboardPage () {
       dispatch(setCurrentContact(contact))
       navigate(orgManageContactsUrls.view.viewContact)
     } else {
-      let contactsToDelete = [contact]
+      const contactsToDelete = [contact]
       deleteDialog(contactsToDelete)
     }
   }
@@ -172,7 +171,7 @@ export default function ViewContactsDashboardPage () {
     setContacts([...updatedContacts])
     setFilteredContacts([...updatedFilteredContacts])
 
-    setNotificationText(deleteContactsText(contactsToRemove) +  ' deleted')
+    setNotificationText(deleteContactsText(contactsToRemove) + ' deleted')
 
     setDialog({ ...dialog, show: false })
     setTargetContact(null)

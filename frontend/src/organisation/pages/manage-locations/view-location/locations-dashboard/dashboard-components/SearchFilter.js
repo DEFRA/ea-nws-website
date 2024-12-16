@@ -11,6 +11,7 @@ import Button from '../../../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../../../common/components/gov-uk/CheckBox'
 
 export default function SearchFilter ({
+  // TODO: Combine filter values into a single object
   locations,
   setFilteredLocations,
   resetPaging,
@@ -117,10 +118,11 @@ export default function SearchFilter ({
     let filteredLocations = locations
 
     // Apply Location name filter
-    if (locationNameFilter) {
+    if (locationNameFilter.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
-        location.name
-          .includes(locationNameFilter)
+        location.additionals.locationName
+        .toLowerCase()
+        .includes(locationNameFilter.toLowerCase())
       )
     }
 
@@ -143,9 +145,9 @@ export default function SearchFilter ({
           // return all locations
           return true
         } else if (selectedFloodMessagesAvailableFilters.includes('Yes')) {
-          return location.additionals.other?.alertTypes.length > 0
+          return location.additionals.other?.alertTypes?.length > 0
         } else if (selectedFloodMessagesAvailableFilters.includes('No')) {
-          return location.additionals.other?.alertTypes.length === 0
+          return location.additionals.other?.alertTypes?.length === 0
         }
 
         // Default return none (this should never be reached)

@@ -79,13 +79,13 @@ export default function DashboardHeader ({
     if (type === 'floodMessages') {
       heading[0] = 'Locations that will get flood messages'
       count.push(
-        locations.filter((obj) => obj.additionals.other?.alertTypes.length > 0).length
+        locations.filter((obj) => obj.additionals.other?.alertTypes?.length > 0).length
       )
       message[0] = 'in flood areas'
 
       count.push(
         locations.filter((item) =>
-          item.additionals.parentID.length > 0 && item.additionals.other?.alertTypes.length > 0).length)
+          item.additionals.parentID.length > 0 && item.additionals.other?.alertTypes?.length > 0).length)
       message.push('linked to nearby flood areas')
     } else if (type === 'noFloodMessages') {
       heading[0] = 'Locations that do not currently get flood messages'
@@ -94,7 +94,7 @@ export default function DashboardHeader ({
         (obj) =>
           (obj.riverSeaRisk?.title === 'Medium risk' ||
             obj.riverSeaRisk?.title === 'High risk') &&
-          obj.additionals.other?.alertTypes.length === 0
+          obj.additionals.other?.alertTypes?.length === 0
       ).length
       count.push(mediumHighRisk)
       message[0] = 'at medium or high flood risk'
@@ -102,7 +102,7 @@ export default function DashboardHeader ({
       const lowRisk = locations.filter(
         (obj) =>
           obj.riverSeaRisk?.title === 'Low risk' &&
-          obj.additionals.other?.alertTypes.length === 0
+          obj.additionals.other?.alertTypes?.length === 0
       ).length
       count.push(lowRisk)
       message.push('at low flood risk')
@@ -146,7 +146,7 @@ export default function DashboardHeader ({
                 </Link>
               </div>
               {locations.filter((item) => item.additionals.parentID.length > 0 &&
-                                          item.additionals.other?.alertTypes.length > 0).length > 0 && (
+                                          item.additionals.other?.alertTypes?.length > 0).length > 0 && (
                                             <div style={{ width: '100%', padding: '0rem 1.5rem', borderLeft: '2px solid lightGrey' }}>
                                               <h1>
                                                 <strong>{count[1]}</strong>
@@ -162,15 +162,10 @@ export default function DashboardHeader ({
             <div style={{ display: 'flex' }}>
               {locations.filter((item) => (item.riverSeaRisk?.title === 'Medium risk' ||
                                            item.riverSeaRisk?.title === 'High risk') &&
-                                           item.additionals.other?.alertTypes.length === 0
+                                           item.additionals.other?.alertTypes?.length === 0
               ).length > 0 && (
                 <div
-                  style={{
-                    borderRight: '2px solid lightGrey',
-                    width: '100%',
-                    padding: '0rem 1rem 0rem 0rem'
-                  }}
-                >
+                  style={{ width: '100%', padding: '0rem 1rem 0rem 0rem' }}>
                   <h1 style={{ color: 'coral' }}>
                     <strong>{count[0]}</strong>
                   </h1>
@@ -179,8 +174,21 @@ export default function DashboardHeader ({
                   </Link>
                 </div>
               )}
+              {locations.filter((item) => (item.riverSeaRisk?.title === 'Medium risk' ||
+                                           item.riverSeaRisk?.title === 'High risk') &&
+                                           item.additionals.other?.alertTypes?.length === 0
+               ).length > 0 &&
+               locations.filter((item) => (item.riverSeaRisk?.title === 'Low risk') &&
+                                           item.additionals.other?.alertTypes?.length === 0
+               ).length > 0 && (
+                <div
+                    style={{
+                      borderRight: '2px solid lightGrey'
+                    }}
+                />
+              )}
               {locations.filter((item) => (item.riverSeaRisk?.title === 'Low risk') &&
-                                           item.additionals.other?.alertTypes.length === 0
+                                           item.additionals.other?.alertTypes?.length === 0
               ).length > 0 && (
                 <div style={{ width: '100%', padding: '0rem 1.5rem' }}>
                   <h1>
@@ -258,10 +266,10 @@ export default function DashboardHeader ({
           <FloodBanner type='floodMessages' />
           {((locations.filter((item) => (item.riverSeaRisk?.title === 'Medium risk' ||
                                        item.riverSeaRisk?.title === 'High risk') &&
-                                       item.additionals.other?.alertTypes.length === 0
+                                       item.additionals.other?.alertTypes?.length === 0
           ).length > 0) ||
           (locations.filter((item) => (item.riverSeaRisk?.title === 'Low risk') &&
-                                       item.additionals.other?.alertTypes.length === 0
+                                       item.additionals.other?.alertTypes?.length === 0
           ).length > 0)) && (
             <FloodBanner type='noFloodMessages' />
           )}

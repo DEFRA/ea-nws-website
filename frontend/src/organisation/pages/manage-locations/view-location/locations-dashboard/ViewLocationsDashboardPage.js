@@ -49,7 +49,7 @@ export default function ViewLocationsDashboardPage () {
     error: ''
   })
 
-  const locationsPerPage = 10
+  const locationsPerPage = 20
 
   useEffect(() => {
     setFilteredLocations(locations)
@@ -182,33 +182,31 @@ export default function ViewLocationsDashboardPage () {
   const [selectedLinkedFilters, setSelectedLinkedFilters] =
     useState([])
 
-  const deleteDialog = (locationToBeDeleted) => {
-    setDialog({
-      show: true,
-      text: (
-        <>
-          If you continue {locationToBeDeleted.name} will be deleted from this account and will
-          not get flood messages.
-        </>
-      ),
-      title: 'Delete location',
-      buttonText: 'Delete location',
-      buttonClass: 'govuk-button--warning'
-    })
+  const deleteLocationsText = (locationsToBeDeleted) => {
+    let text = ''
+
+    if (locationsToBeDeleted.length > 1) {
+      text = locationsToBeDeleted.length + ' ' + (selectedLocations.length > 1 ? 'locations' : 'location')
+    }
+    else {
+      text = locationsToBeDeleted[0].additionals.locationName
+    }
+
+    return text
   }
 
-  const selectDeleteDialog = () => {
-    if (selectedLocations && selectedLocations.length > 0) {
+  const deleteDialog = (locationsToBeDeleted) => {
+    if (locationsToBeDeleted && locationsToBeDeleted.length > 0) {
       setDialog({
         show: true,
         text: (
           <>
-            If you continue {selectedLocations.length} {selectedLocations.length > 1 ? 'locations' : 'location'} will be deleted from this account and
+            If you continue {deleteLocationsText(locationsToBeDeleted)} will be deleted from this account and
             will not get flood messages.
           </>
         ),
-        title: `Delete ${selectedLocations.length} ${selectedLocations.length > 1 ? 'locations' : 'location'}`,
-        buttonText: 'Delete locations',
+        title: `Delete ${locationsToBeDeleted.length > 1 ? locationsToBeDeleted.length : ''} ${locationsToBeDeleted.length > 1 ? 'locations' : 'location'}`,
+        buttonText: `Delete ${locationsToBeDeleted.length > 1 ? 'locations' : 'location'}`,
         buttonClass: 'govuk-button--warning'
       })
     }
@@ -221,7 +219,8 @@ export default function ViewLocationsDashboardPage () {
       dispatch(setCurrentLocation(location))
       navigate(orgManageLocationsUrls.view.viewLocation)
     } else {
-      deleteDialog(location)
+      let locationsToDelete = [location]
+      deleteDialog(locationsToDelete)
     }
   }
 
@@ -229,7 +228,7 @@ export default function ViewLocationsDashboardPage () {
     if (index === 0) {
       // TODO - linking
     } else if (index === 1) {
-      selectDeleteDialog()
+      deleteDialog(selectedLocations)
     }
   }
 
@@ -247,25 +246,25 @@ export default function ViewLocationsDashboardPage () {
 
     if (type === 'messages') {
       updatedFilteredLocations = locations.filter((location) =>
-        (location.additionals.other?.alertTypes.length > 0))
+        (location.additionals.other?.alertTypes?.length > 0))
       setSelectedFloodMessagesAvailableFilters(['Yes'])
       setSelectedFilters(['Yes'])
     } else if (type === 'linked-locations') {
       updatedFilteredLocations = locations.filter((location) =>
-        (location.additionals.parentID.length > 0 && location.additionals.other?.alertTypes.length > 0))
+        (location.additionals.parentID.length > 0 && location.additionals.other?.alertTypes?.length > 0))
       setSelectedFloodMessagesAvailableFilters(['Yes'])
       setSelectedFilters(['Yes'])
     } else if (type === 'high-medium-risk') {
       updatedFilteredLocations = locations.filter((location) =>
         ((location.riverSeaRisk?.title === 'Medium risk' ||
           location.riverSeaRisk?.title === 'High risk') &&
-          location.additionals.other?.alertTypes.length === 0))
+          location.additionals.other?.alertTypes?.length === 0))
       setSelectedFloodMessagesAvailableFilters(['Yes'])
       setSelectedFilters(['Yes'])
     } else if (type === 'low-risk') {
       updatedFilteredLocations = locations.filter((location) =>
         ((location.riverSeaRisk?.title === 'Low risk') &&
-          location.additionals.other?.alertTypes.length === 0))
+          location.additionals.other?.alertTypes?.length === 0))
       setSelectedFloodMessagesAvailableFilters(['Yes'])
       setSelectedFilters(['Yes'])
     } else if (type === 'no-links') {
@@ -298,7 +297,7 @@ export default function ViewLocationsDashboardPage () {
     setLocations([...updatedLocations])
     setFilteredLocations([...updatedFilteredLocations])
 
-    setNotificationText(locationsToRemove.length > 1 ? 'Locations deleted' : 'Location deleted')
+    setNotificationText(deleteLocationsText(locationsToRemove) +  ' deleted')
 
     setDialog({ ...dialog, show: false })
     setTargetLocation(null)
@@ -472,7 +471,7 @@ export default function ViewLocationsDashboardPage () {
                   buttonClass={dialog.buttonClass}
                   setError={(val) =>
                     setDialog((dial) => ({ ...dial, error: val }))}
-                  defaultValue={dialog.input ? targetLocation.name : ''}
+                  defaultValue={dialog.input ? targetLocation.additionals.locationName : ''}
                 />
               </>
             )}

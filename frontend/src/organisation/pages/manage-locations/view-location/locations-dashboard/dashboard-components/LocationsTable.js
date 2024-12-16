@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import locationPin from '../../../../../../common/assets/images/location_pin.svg'
 import { setCurrentLocation } from '../../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
+import { webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 
 export default function LocationsTable ({
   locations,
@@ -85,7 +86,7 @@ export default function LocationsTable ({
       setGetsFloodMessagesSort('ascending')
       setFilteredLocations(
         [...filteredLocations].sort((a, b) =>
-          a.additionals.other?.alertTypes.length > b.additionals.other?.alertTypes.length ? 1 : -1
+          a.additionals.other?.alertTypes?.length > b.additionals.other?.alertTypes?.length ? 1 : -1
         )
       )
     }
@@ -93,7 +94,7 @@ export default function LocationsTable ({
       setGetsFloodMessagesSort('descending')
       setFilteredLocations(
         [...filteredLocations].sort((a, b) =>
-          a.additionals.other?.alertTypes.length < b.additionals.other?.alertTypes.length ? 1 : -1
+          a.additionals.other?.alertTypes?.length < b.additionals.other?.alertTypes?.length ? 1 : -1
         )
       )
     }
@@ -144,7 +145,7 @@ export default function LocationsTable ({
 
   const viewLocation = (e, location) => {
     e.preventDefault()
-    dispatch(setCurrentLocation(location))
+    dispatch(setCurrentLocation(webToGeoSafeLocation(location)))
     navigate(orgManageLocationsUrls.view.viewLocation)
   }
 
@@ -159,7 +160,10 @@ export default function LocationsTable ({
   return (
     <>
       <p className='govuk-!-margin-bottom-6 locations-table-panel'>
-        {filteredLocations.length} {filteredLocations.length === 1 ? 'location' : 'locations'}{' '}
+        {filteredLocations.length != locations.length ? 'Showing ' : ''}
+        {filteredLocations.length != locations.length ? filteredLocations.length : ''}
+        {filteredLocations.length != locations.length ? ' of ' : ''}
+        {locations.length}{locations.length === 1 ? ' location' : ' locations'}{' '}
         <span style={{ margin: '0 20px' }}>|</span>
         <span style={{ color: '#1d70b8' }}>
           {selectedLocations.length}{' '}
@@ -323,7 +327,7 @@ export default function LocationsTable ({
                   className='govuk-link'
                   onClick={(e) => viewLocation(e, location)}
                 >
-                  {location.name}
+                  {location.additionals.locationName}
                 </Link>
               </td>
               <td className='govuk-table__cell'>
@@ -337,7 +341,7 @@ export default function LocationsTable ({
                   className='govuk-link'
                   onClick={(e) => updateMessageSettings(e, location)}
                 >
-                  {location.additionals.other?.alertTypes.length > 0 ? 'Yes' : 'No'}
+                  {location.additionals.other?.alertTypes?.length > 0 ? 'Yes' : 'No'}
                 </Link>
               </td>
               <td className='govuk-table__cell'>

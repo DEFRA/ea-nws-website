@@ -160,9 +160,9 @@ export default function LocationsTable ({
   return (
     <>
       <p className='govuk-!-margin-bottom-6 locations-table-panel'>
-        {filteredLocations.length != locations.length ? 'Showing ' : ''}
-        {filteredLocations.length != locations.length ? filteredLocations.length : ''}
-        {filteredLocations.length != locations.length ? ' of ' : ''}
+        {filteredLocations.length !== locations.length ? 'Showing ' : ''}
+        {filteredLocations.length !== locations.length ? filteredLocations.length : ''}
+        {filteredLocations.length !== locations.length ? ' of ' : ''}
         {locations.length}{locations.length === 1 ? ' location' : ' locations'}{' '}
         <span style={{ margin: '0 20px' }}>|</span>
         <span style={{ color: '#1d70b8' }}>

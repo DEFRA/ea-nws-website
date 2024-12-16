@@ -165,7 +165,8 @@ export default function DashboardHeader ({
                                            item.additionals.other?.alertTypes?.length === 0
               ).length > 0 && (
                 <div
-                  style={{ width: '100%', padding: '0rem 1rem 0rem 0rem' }}>
+                  style={{ width: '100%', padding: '0rem 1rem 0rem 0rem' }}
+                >
                   <h1 style={{ color: 'coral' }}>
                     <strong>{count[0]}</strong>
                   </h1>
@@ -177,15 +178,15 @@ export default function DashboardHeader ({
               {locations.filter((item) => (item.riverSeaRisk?.title === 'Medium risk' ||
                                            item.riverSeaRisk?.title === 'High risk') &&
                                            item.additionals.other?.alertTypes?.length === 0
-               ).length > 0 &&
+              ).length > 0 &&
                locations.filter((item) => (item.riverSeaRisk?.title === 'Low risk') &&
                                            item.additionals.other?.alertTypes?.length === 0
                ).length > 0 && (
-                <div
-                    style={{
-                      borderRight: '2px solid lightGrey'
-                    }}
-                />
+                 <div
+                   style={{
+                     borderRight: '2px solid lightGrey'
+                   }}
+                 />
               )}
               {locations.filter((item) => (item.riverSeaRisk?.title === 'Low risk') &&
                                            item.additionals.other?.alertTypes?.length === 0

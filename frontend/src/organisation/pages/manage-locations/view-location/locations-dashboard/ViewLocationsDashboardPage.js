@@ -187,8 +187,7 @@ export default function ViewLocationsDashboardPage () {
 
     if (locationsToBeDeleted.length > 1) {
       text = locationsToBeDeleted.length + ' ' + (selectedLocations.length > 1 ? 'locations' : 'location')
-    }
-    else {
+    } else {
       text = locationsToBeDeleted[0].additionals.locationName
     }
 
@@ -219,7 +218,7 @@ export default function ViewLocationsDashboardPage () {
       dispatch(setCurrentLocation(location))
       navigate(orgManageLocationsUrls.view.viewLocation)
     } else {
-      let locationsToDelete = [location]
+      const locationsToDelete = [location]
       deleteDialog(locationsToDelete)
     }
   }
@@ -297,7 +296,7 @@ export default function ViewLocationsDashboardPage () {
     setLocations([...updatedLocations])
     setFilteredLocations([...updatedFilteredLocations])
 
-    setNotificationText(deleteLocationsText(locationsToRemove) +  ' deleted')
+    setNotificationText(deleteLocationsText(locationsToRemove) + ' deleted')
 
     setDialog({ ...dialog, show: false })
     setTargetLocation(null)

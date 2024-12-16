@@ -121,8 +121,8 @@ export default function SearchFilter ({
     if (locationNameFilter.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
         location.additionals.locationName
-        .toLowerCase()
-        .includes(locationNameFilter.toLowerCase())
+          .toLowerCase()
+          .includes(locationNameFilter.toLowerCase())
       )
     }
 

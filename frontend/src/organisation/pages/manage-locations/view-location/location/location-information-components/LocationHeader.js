@@ -12,6 +12,9 @@ export default function LocationHeader ({ currentPage }) {
   const location = useLocation()
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   const currentLocation = useSelector((state) => state.session.currentLocation)
+  const coordinates = useSelector(
+    (state) => state.session.currentLocation.coordinates
+  )
 
   return (
     <>
@@ -56,6 +59,7 @@ export default function LocationHeader ({ currentPage }) {
                     <div className='flood-risk-banner-label '>
                       <RiskCategoryLabel
                         riskAreaType={RiskAreaType.RIVERS_AND_SEA}
+                        coordinates={coordinates}
                       />
                     </div>
                   </div>
@@ -64,7 +68,10 @@ export default function LocationHeader ({ currentPage }) {
                       {RiskAreaType.GROUNDWATER}
                     </h3>
                     <div className='flood-risk-banner-label '>
-                      <RiskCategoryLabel riskAreaType={RiskAreaType.GROUNDWATER} />
+                      <RiskCategoryLabel
+                        riskAreaType={RiskAreaType.GROUNDWATER}
+                        coordinates={coordinates}
+                      />
                     </div>
                   </div>
                 </div>

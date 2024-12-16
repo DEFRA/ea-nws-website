@@ -1035,85 +1035,28 @@
   background-color: #b1b4b6;
 }
 
-.locations-filter-container {
-  border: 0.1rem solid #b1b4b6;
-  margin: 0rem 1rem;
-  padding: 0rem 1rem;
-  width: 27rem;
-}
-
-.locations-filter-header {
-  background-color: #b1b4b6;
-  padding: 0.5rem 1rem 0.1rem 1rem;
-}
-
-.locations-filter-selected {
-  position: relative;
-  left: -1rem;
-  right: -1rem;
-  width: calc(100% + 2rem);
-  background-color: #f2f2f2;
-  padding: 1rem 1rem 2rem 1rem;
-  border-bottom: 0.0625rem solid #b1b4b6;
-}
-
-.locations-filter-selected .filter {
-  display: inline;
-  background-color: white;
-  padding: 0.4rem;
-  font-size: 1.12rem;
-  border: 0.0625rem solid black;
-  margin-right: 0.5rem;
-}
-
-.locations-filter-selected .filter-button {
-  border: none;
-  background: transparent;
-  cursor: pointer;
-}
-
-.locations-filter-section {
-  display: flex;
-  padding-left: 1rem;
-  gap: 0.5rem;
-}
-
-.locations-map-key {
-  display: flex;
-  align-items: center;
-}
-
-.locations-filter-section:hover {
-  cursor: pointer;
-}
-
-.locations-filter-title {
-  margin: 0 0 0 8px;
-  color: #1d70b8;
-}
-
-.contacts-filter-panel {
+.locations-filter-panel {
   border: 0.1rem solid #b1b4b6;
   padding-bottom: 1rem;
 }
 
-.contacts-filter-header {
+.locations-filter-header {
   background-color: #b1b4b6;
   padding: 0.5rem 1rem 0.1rem 1.3rem;
 }
 
-.contacts-filter-selected {
+.locations-filter-selected {
   border-style: none none solid;
   border-width: thin;
   border-color: #b1b4b6;
 }
 
-.contacts-name-filter {
+.locations-name-filter {
   padding-left: 1rem;
   padding-right: 1rem;
 }
 
-.contacts-select-filter {
+.locations-select-filter {
   padding-left: 1rem;
   display: flex;
   flex-direction: column;
@@ -1121,12 +1064,12 @@
   max-height: 11rem;
 }
 
-.contacts-selected-filter-panel {
+.locations-selected-filter-panel {
   background-color: #f3f2f1;
   padding: 0.1rem 1rem 0.1rem 1.3rem;
 }
 
-.contacts-selected-filter {
+.locations-selected-filter {
   border-style: solid;
   border-width: thin;
   background-color: #ffffff;
@@ -1141,7 +1084,7 @@
   gap: 0.2rem;
 }
 
-.contacts-selected-filters-panel {
+.locations-selected-filters-panel {
   border-bottom-style: solid;
   border-width: thin;
   border-color:#b1b4b6;
@@ -1149,7 +1092,7 @@
   padding-bottom: 1rem;
 }
 
-.contacts-selected-filters-section {
+.locations-selected-filters-section {
   display: flex;
   align-items: center;
   background-color: #f3f2f1;
@@ -1158,46 +1101,52 @@
   padding-top: 0.5rem;
 }
 
-.contacts-apply-filters {
+.locations-apply-filters {
   padding-left: 1.3rem;
   padding-right: 1rem;
 }
 
-.contacts-filter-name-section {
+.locations-filter-name-section {
   display: flex;
   padding-left: 1rem;
   gap: 0.5rem;
 }
 
-.contacts-filter-other-section {
+.locations-filter-other-section {
   display: flex;
   padding-left: 1rem;
   gap: 0.2rem;
 }
 
-.contacts-selected-filter-row {
+.locations-selected-filter-row {
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
 }
 
-.contacts-selected-filter-label {
+.locations-selected-filter-label {
   font-size: 16px;
 }
 
-.contacts-selected-filter-icon {
+.locations-selected-filter-icon {
   width: 1rem,;
   height: 1rem;
 }
 
-.contacts-table-panel {
+.locations-table-panel {
   display: flex;
   color: #505a5f;
 }
 
-.contacts-table-header {
+.locations-table-header {
   display: flex;
   color: #505a5f;
+}
+
+
+.locations-map-key {
+  display: flex;
+  align-items: center;
 }
 
 .input-with-icon {
@@ -1431,18 +1380,6 @@
   color: #505a5f;
 }
 
-.custom-tooltip {
-  font-size: 16px;
-  font-weight: bold;
-}
-
-.custom-tooltip .leaflet-tooltip-top:before,
-.leaflet-tooltip-bottom:before,
-.leaflet-tooltip-left:before,
-.leaflet-tooltip-right:before {
-  border: none !important;
-}
-
 .button-menu {
   display: inline-block;
   position: relative;
@@ -1459,4 +1396,5 @@
 .button-menu-item {
   display: inline-flex;
   width: 240px;
+  text-align: left;
 }

@@ -154,7 +154,8 @@ export default function ViewLocationsDashboardPage () {
   }
 
   const moreActions = [
-    'Link selected to locations',
+    'Link selected to contacts',
+    'Update selected message settings',
     'Delete selected'
   ]
 
@@ -224,10 +225,17 @@ export default function ViewLocationsDashboardPage () {
   }
 
   const onMoreAction = (index) => {
-    if (index === 0) {
-      // TODO - linking
-    } else if (index === 1) {
-      deleteDialog(selectedLocations)
+    switch (index) {
+      case 0:
+        // TODO - linking (EAN-1126)
+        break
+      case 1:
+        // TODO - message settings (EAN-1424)
+        break
+      case 2:
+        deleteDialog(selectedLocations)
+        break
+      default:
     }
   }
 

@@ -150,11 +150,13 @@ export default function LocationsTable ({
   }
 
   const linkToContacts = (e, location) => {
-    // TODO
+    // TODO (EAN-1126)
   }
 
   const updateMessageSettings = (e, location) => {
-    // TODO
+    e.preventDefault()
+    dispatch(setCurrentLocation(webToGeoSafeLocation(location)))
+    navigate(orgManageLocationsUrls.view.viewMessages)
   }
 
   return (

@@ -1396,4 +1396,5 @@
 .button-menu-item {
   display: inline-flex;
   width: 240px;
+  text-align: left;
 }

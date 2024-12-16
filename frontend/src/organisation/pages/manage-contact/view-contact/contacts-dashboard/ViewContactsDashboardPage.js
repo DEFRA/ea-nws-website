@@ -7,6 +7,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
+import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import ContactsTable from './dashboard-components/ContactsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
@@ -37,7 +38,7 @@ export default function ViewContactsDashboardPage () {
     error: ''
   })
 
-  const contactsPerPage = 10
+  const contactsPerPage = 20
 
   const contacts = useSelector((state) =>
     state.session.contacts !== null
@@ -78,33 +79,30 @@ export default function ViewContactsDashboardPage () {
   const [selectedLinkedFilters, setSelectedLinkedFilters] =
     useState([])
 
-  const deleteDialog = (contactToBeDeleted) => {
-    setDialog({
-      show: true,
-      text: (
-        <>
-          If you continue {contactToBeDeleted.name} will be deleted from this account and will
-          not get flood messages.
-        </>
-      ),
-      title: 'Delete contact',
-      buttonText: 'Delete contact',
-      buttonClass: 'govuk-button--warning'
-    })
+  const deleteContactsText = (contactsToBeDeleted) => {
+    let text = ''
+
+    if (contactsToBeDeleted.length > 1) {
+      text = contactsToBeDeleted.length + ' ' + (selectedContacts.length > 1 ? 'contacts' : 'contact')
+    } else {
+      text = contactsToBeDeleted[0].name
+    }
+
+    return text
   }
 
-  const selectDeleteDialog = () => {
-    if (selectedContacts && selectedContacts.length > 0) {
+  const deleteDialog = (contactsToBeDeleted) => {
+    if (contactsToBeDeleted && contactsToBeDeleted.length > 0) {
       setDialog({
         show: true,
         text: (
           <>
-            If you continue {selectedContacts.length} {selectedContacts.length > 1 ? 'contacts' : 'contact'} will be deleted from this account and
+            If you continue {deleteContactsText(contactsToBeDeleted)} will be deleted from this account and
             will not get flood messages.
           </>
         ),
-        title: `Delete ${selectedContacts.length} ${selectedContacts.length > 1 ? 'contacts' : 'contact'}`,
-        buttonText: 'Delete contacts',
+        title: `Delete ${contactsToBeDeleted.length > 1 ? contactsToBeDeleted.length : ''} ${contactsToBeDeleted.length > 1 ? 'contacts' : 'contact'}`,
+        buttonText: `Delete ${contactsToBeDeleted.length > 1 ? 'contacts' : 'contact'}`,
         buttonClass: 'govuk-button--warning'
       })
     }
@@ -117,7 +115,8 @@ export default function ViewContactsDashboardPage () {
       dispatch(setCurrentContact(contact))
       navigate(orgManageContactsUrls.view.viewContact)
     } else {
-      deleteDialog(contact)
+      const contactsToDelete = [contact]
+      deleteDialog(contactsToDelete)
     }
   }
 
@@ -125,7 +124,7 @@ export default function ViewContactsDashboardPage () {
     if (index === 0) {
       // TODO
     } else if (index === 1) {
-      selectDeleteDialog()
+      deleteDialog(selectedContacts)
     }
   }
 
@@ -172,7 +171,7 @@ export default function ViewContactsDashboardPage () {
     setContacts([...updatedContacts])
     setFilteredContacts([...updatedFilteredContacts])
 
-    setNotificationText(contactsToRemove.length > 1 ? 'Contacts deleted' : 'Contact deleted')
+    setNotificationText(deleteContactsText(contactsToRemove) + ' deleted')
 
     setDialog({ ...dialog, show: false })
     setTargetContact(null)
@@ -201,6 +200,7 @@ export default function ViewContactsDashboardPage () {
 
   return (
     <>
+      <OrganisationAccountNavigation />
       <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

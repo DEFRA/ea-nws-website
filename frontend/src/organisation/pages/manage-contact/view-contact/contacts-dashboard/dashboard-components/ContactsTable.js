@@ -8,8 +8,6 @@ export default function ContactsTable ({
   selectedContacts,
   setSelectedContacts,
   setFilteredContacts,
-  resetPaging,
-  setResetPaging,
   onAction
 }) {
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
@@ -27,74 +25,40 @@ export default function ContactsTable ({
     setMessagesReceivedSort('none')
   }, [contacts])
 
-  const sortContactNames = () => {
-    if (contactNameSort === 'none' || contactNameSort === 'descending') {
-      setContactNameSort('ascending')
-      setFilteredContacts(
-        [...filteredContacts].sort((a, b) => {
-          if (a.name === null && b.name === null) return 0
-          if (a.name === null) return 1
-          if (b.name === null) return -1
-          return a.name.localeCompare(b.name)
-        })
-      )
-    } else if (contactNameSort === 'ascending') {
-      setContactNameSort('descending')
-      setFilteredContacts(
-        [...filteredContacts].sort((a, b) => {
-          if (a.name === null && b.job_title === null) return 0
-          if (a.name === null) return 1
-          if (b.name === null) return -1
-          return b.name.localeCompare(a.name)
-        })
-      )
+  // Sort standard data
+  const sortData = (sortType, setSort, data) => {
+    const getValue = (obj, path) => {
+      return path.split('.').reduce((acc, part) => acc && acc[part], obj)
     }
-  }
 
-  const sortJobTitles = () => {
-    if (jobTitleSort === 'none' || jobTitleSort === 'descending') {
-      setJobTitleSort('ascending')
+    if (sortType === 'none' || sortType === 'descending') {
+      setSort('ascending')
       setFilteredContacts(
         [...filteredContacts].sort((a, b) => {
-          if (a.job_title === null && b.job_title === null) return 0
-          if (a.job_title === null) return 1
-          if (b.job_title === null) return -1
-          return a.job_title.localeCompare(b.job_title)
-        })
-      )
-    } else if (jobTitleSort === 'ascending') {
-      setJobTitleSort('descending')
-      setFilteredContacts(
-        [...filteredContacts].sort((a, b) => {
-          if (a.job_title === null && b.job_title === null) return 0
-          if (a.job_title === null) return 1
-          if (b.job_title === null) return -1
-          return b.job_title.localeCompare(a.job_title)
-        })
-      )
-    }
-  }
+          const valueA = getValue(a, data)
+          const valueB = getValue(b, data)
 
-  const sortEmails = () => {
-    if (emailSort === 'none' || emailSort === 'descending') {
-      setEmailSort('ascending')
-      setFilteredContacts(
-        [...filteredContacts].sort((a, b) => {
-          if (a.email === null && b.email === null) return 0
-          if (a.email === null) return 1
-          if (b.email === null) return -1
-          return a.email.localeCompare(b.email)
+          // Place empty strings at the end
+          if (
+            (valueA === '' || valueA == null) &&
+            (valueB === '' || valueB == null)
+          ) {
+            return 0
+          }
+          if (valueA === '' || valueA == null) return 1
+          if (valueB === '' || valueB == null) return -1
+
+          return (valueA || '').localeCompare(valueB || '')
         })
       )
     }
-    if (emailSort === 'ascending') {
-      setEmailSort('descending')
+    if (sortType === 'ascending') {
+      setSort('descending')
       setFilteredContacts(
         [...filteredContacts].sort((a, b) => {
-          if (a.email === null && b.email === null) return 0
-          if (a.email === null) return 1
-          if (b.email === null) return -1
-          return b.email.localeCompare(a.email)
+          const valueA = getValue(a, data)
+          const valueB = getValue(b, data)
+          return (valueB || '').localeCompare(valueA || '')
         })
       )
     }
@@ -155,7 +119,10 @@ export default function ContactsTable ({
   return (
     <>
       <p className='govuk-!-margin-bottom-6 contacts-table-panel'>
-        {filteredContacts.length} {filteredContacts.length === 1 ? 'contact' : 'contacts'}{' '}
+        {filteredContacts.length !== contacts.length ? 'Showing ' : ''}
+        {filteredContacts.length !== contacts.length ? filteredContacts.length : ''}
+        {filteredContacts.length !== contacts.length ? ' of ' : ''}
+        {contacts.length}{contacts.length === 1 ? ' contact' : ' contacts'}{' '}
         <span style={{ margin: '0 20px' }}>|</span>
         <span style={{ color: '#1d70b8' }}>
           {selectedContacts.length}{' '}
@@ -182,17 +149,38 @@ export default function ContactsTable ({
               </div>
             </th>
             <th scope='col' className='govuk-table__header' aria-sort={contactNameSort}>
-              <button type='button' onClick={() => sortContactNames()}>
+              <button
+                type='button'
+                onClick={() => sortData(
+                  contactNameSort,
+                  setContactNameSort,
+                  'name'
+                )}
+              >
                 Name
               </button>
             </th>
             <th scope='col' className='govuk-table__header' aria-sort={jobTitleSort}>
-              <button type='button' onClick={() => sortJobTitles()}>
+              <button
+                type='button'
+                onClick={() => sortData(
+                  jobTitleSort,
+                  setJobTitleSort,
+                  'job_title'
+                )}
+              >
                 Job title
               </button>
             </th>
             <th scope='col' className='govuk-table__header' aria-sort={emailSort}>
-              <button type='button' onClick={() => sortEmails()}>
+              <button
+                type='button'
+                onClick={() => sortData(
+                  emailSort,
+                  setEmailSort,
+                  'email'
+                )}
+              >
                 Email
               </button>
             </th>

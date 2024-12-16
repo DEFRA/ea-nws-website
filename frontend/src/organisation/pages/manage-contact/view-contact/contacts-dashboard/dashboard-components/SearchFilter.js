@@ -11,6 +11,7 @@ import Button from '../../../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../../../common/components/gov-uk/CheckBox'
 
 export default function SearchFilter ({
+  // TODO: Combine filter values into a single object
   contacts,
   setFilteredContacts,
   resetPaging,
@@ -70,10 +71,11 @@ export default function SearchFilter ({
     let filteredContacts = contacts
 
     // Apply contact name filter
-    if (contactNameFilter) {
+    if (contactNameFilter.length > 0) {
       filteredContacts = filteredContacts.filter((contact) =>
         contact.name
-          .includes(contactNameFilter)
+          .toLowerCase()
+          .includes(contactNameFilter.toLowerCase())
       )
     }
 

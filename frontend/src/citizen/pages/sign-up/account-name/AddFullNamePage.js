@@ -11,7 +11,7 @@ export default function AddFullNamePage () {
   const dispatch = useDispatch()
   const [error, setError] = useState()
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     navigate('/declaration')
   }
 
@@ -37,7 +37,7 @@ export default function AddFullNamePage () {
 
   return (
     <AddAccountNameLayout
-      NavigateToNextPage={NavigateToNextPage}
+      navigateToNextPage={navigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
       buttonText='Continue'
       updateProfile={updateProfile}

@@ -121,6 +121,38 @@ Functions for Valid locations to be used accross the
 entire site
 */
 
+const addToAlert = async (orgId, location) => {
+  const key = orgId + ':alertLocations'
+  const exists = await checkKeyExists(key)
+  if (!exists) {
+    const struct = {
+      severeWarningAlert: [],
+      severeWarning: [],
+      alert: [],
+      noAlert: []
+    }
+    await setJsonData(key, struct)
+  }
+  let alertTypes
+  location.additionals.forEach((additional) => {
+    if (additional.id === 'other') {
+      const other = JSON.parse(additional.value?.s)
+      alertTypes = other.alertTypes
+    }
+  })
+  const client = await connectToRedis()
+  if (alertTypes.length === 3) {
+    await client.json.arrAppend(key, '.severeWarningAlert', location.id)
+  } else if (alertTypes.length === 2) {
+    await client.json.arrAppend(key, '.severeWarning', location.id)
+  } else if (alertTypes.length === 1) {
+    await client.json.arrAppend(key, '.alert', location.id)
+  } else {
+    await client.json.arrAppend(key, '.noAlert', location.id)
+  }
+  await client.disconnect()
+}
+
 const addLocation = async (orgId, location) => {
   const locationID = location.id
   const key = orgId + ':t_POIS:' + locationID
@@ -136,18 +168,47 @@ const addLocation = async (orgId, location) => {
   for (const keyword of keywords) {
     await addToKeywordArr(orgId + ':t_Keywords_location', { name: keyword, linked_ids: [locationID] })
   }
+
+  await addToAlert(orgId, location)
+}
+
+const removeLocationFromKeywords = async (orgId, locationID) => {
+  const key = orgId + ':t_Keywords_location'
+  const arrExists = await checkKeyExists(key)
+  if (arrExists) {
+    const keywordArr = await getJsonData(key)
+    keywordArr.forEach((keyword) => {
+      let linkedIds = keyword.linked_ids
+      linkedIds = linkedIds.filter(id => id !== locationID)
+      keyword.linked_ids = linkedIds
+    })
+    await setJsonData(key, keywordArr)
+  }
 }
 
 const removeLocation = async (orgId, locationID) => {
   const key = orgId + ':t_POIS:' + locationID
+  await removeLocationFromKeywords(orgId, locationID)
   await deleteJsonData(key)
   await removeFromList(orgId + ':t_POIS_locID', locationID)
 }
 
 const updateLocation = async (orgId, location) => {
-  // Can call to add location as setting a value for a
-  // key will overwrite it's previous value.
-  await addLocation(orgId, location)
+  const locationID = location.id
+  const key = orgId + ':t_POIS:' + locationID
+  // Remove location from keywords as the update call may contain different keywords
+  await removeLocationFromKeywords(orgId, locationID)
+  await setJsonData(key, location)
+  // add location ID to list
+  let keywords = []
+  location.additionals.forEach((additional) => {
+    if (additional.id === 'keywords') {
+      keywords = JSON.parse(additional.value?.s)
+    }
+  })
+  for (const keyword of keywords) {
+    await addToKeywordArr(orgId + ':t_Keywords_location', { name: keyword, linked_ids: [locationID] })
+  }
 }
 
 const getLocationKeys = async (orgId) => {
@@ -323,6 +384,7 @@ const orgSignOut = async (profileId, orgId) => {
   // delete contact and location keywords
   await deleteJsonData(orgId + ':t_Keywords_location')
   await deleteJsonData(orgId + ':t_Keywords_contact')
+  await deleteJsonData(orgId + ':alertLocations')
 }
 
 module.exports = {

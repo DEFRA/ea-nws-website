@@ -11,15 +11,12 @@ import {
   setCurrentLocationAddress,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
+  setCurrentLocationFullAddress,
   setCurrentLocationNorthing,
   setCurrentLocationPostcode,
   setCurrentLocationUPRN
 } from '../../../../../../../common/redux/userSlice'
 import { convertCoordinatesToEspg27700 } from '../../../../../../../common/services/CoordinatesFormatConverter'
-import {
-  getSurroundingFloodAreas,
-  isLocationInFloodArea
-} from '../../../../../../../common/services/WfsFloodDataService'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationSearchResultsPage () {
@@ -47,6 +44,7 @@ export default function LocationSearchResultsPage () {
       dispatch(setCurrentLocationUPRN(selectedLocation.name))
       dispatch(setCurrentLocationCoordinates(selectedLocation.coordinates))
       dispatch(setCurrentLocationAddress(selectedLocation.address))
+      dispatch(setCurrentLocationFullAddress(selectedLocation.address))
       dispatch(setCurrentLocationPostcode(selectedLocation.postcode))
 
       const { northing, easting } = convertCoordinatesToEspg27700(
@@ -56,52 +54,14 @@ export default function LocationSearchResultsPage () {
 
       dispatch(setCurrentLocationNorthing(northing))
       dispatch(setCurrentLocationEasting(easting))
-
-      const { warningArea, alertArea } = await getSurroundingFloodAreas(
-        selectedLocation.coordinates.latitude,
-        selectedLocation.coordinates.longitude
-      )
-
-      const isError = !warningArea && !alertArea
-
-      const isInAlertArea =
-        alertArea &&
-        isLocationInFloodArea(
-          selectedLocation.coordinates.latitude,
-          selectedLocation.coordinates.longitude,
-          alertArea
-        )
-
-      const isInWarningArea =
-        warningArea &&
-        isLocationInFloodArea(
-          selectedLocation.coordinates.latitude,
-          selectedLocation.coordinates.longitude,
-          warningArea
-        )
-
-      navigateToNextPage(isInAlertArea, isInWarningArea, isError)
+      navigateToNextPage()
     } finally {
       setLoading(false)
     }
   }
 
-  const navigateToNextPage = (isInAlertArea, isInWarningArea, isError) => {
-    if (isInAlertArea && isInWarningArea) {
-      navigate(
-        '/organisation/manage-locations/add/location-in-area/postcode-search/all'
-      )
-    } else if (isInAlertArea) {
-      navigate(
-        '/organisation/manage-locations/add/location-in-area/postcode-search/alerts'
-      )
-    } else if (!isInAlertArea && !isInWarningArea) {
-      navigate(
-        '/organisation/manage-locations/add/location-in-area/postcode-search/no-alerts'
-      )
-    } else if (isError) {
-      navigate('/error')
-    }
+  const navigateToNextPage = () => {
+    navigate(orgManageLocationsUrls.add.manualAddLocation.confirmManualSearchedLocation)
   }
 
   const navigateToCannotFindAddressPage = () => {

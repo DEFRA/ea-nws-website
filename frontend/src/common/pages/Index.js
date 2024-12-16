@@ -19,7 +19,8 @@ import {
   setProfile,
   setRegistrations,
   setSelectedBoundary,
-  setSelectedBoundaryType
+  setSelectedBoundaryType,
+  setSigninType
 } from '../redux/userSlice'
 import { backendCall } from '../services/BackendService'
 
@@ -510,7 +511,7 @@ export default function IndexPage () {
       { id: 'locationName', value: { s: '' } },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
-      { id: 'keywords', value: { s: '' } },
+      { id: 'keywords', value: { s: '[]' } },
       {
         id: 'other',
         value: {
@@ -584,6 +585,7 @@ export default function IndexPage () {
             'api/sign_in_validate'
           )
         })()
+        dispatch(setSigninType('org'))
       }
 
       dispatch(setAuthToken(authToken))

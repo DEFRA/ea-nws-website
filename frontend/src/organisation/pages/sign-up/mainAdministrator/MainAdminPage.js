@@ -4,7 +4,7 @@ import MainAdminLayout from '../../../layouts/admin/MainAdminLayout'
 export default function MainAdminPage () {
   const navigate = useNavigate()
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     navigate('/organisation/sign-up/admin-details')
   }
 
@@ -14,7 +14,7 @@ export default function MainAdminPage () {
 
   return (
     <MainAdminLayout
-      NavigateToNextPage={NavigateToNextPage}
+      navigateToNextPage={navigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
     />
   )

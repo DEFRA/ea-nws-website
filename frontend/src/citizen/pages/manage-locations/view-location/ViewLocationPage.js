@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import moment from 'moment'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -11,12 +12,14 @@ import NotificationBanner from '../../../../common/components/gov-uk/Notificatio
 import AlertType from '../../../../common/enums/AlertType'
 import { setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
+import { csvToJson } from '../../../../common/services/CsvToJson'
 import {
   getLocationOtherAdditional,
   getRegistrationParams,
   removeLocation,
   updateLocationsAlertTypes
 } from '../../../../common/services/ProfileServices'
+import { getSurroundingFloodAreas } from '../../../../common/services/WfsFloodDataService'
 
 const floodWarningCardDetails = (
   <>
@@ -55,6 +58,12 @@ export default function ViewLocationPage () {
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+  const [alertArea, setAlertArea] = useState(null)
+  const [warningArea, setWarningArea] = useState(null)
+  const [floodHistoryData, setFloodHistoryData] = useState(null)
+  const [floodAlertCount, setFloodAlertCount] = useState(null)
+  const [severeFloodWarningCount, setSevereFloodWarningCount] = useState(null)
+
   let alertTypes = getLocationOtherAdditional(
     selectedLocation.additionals,
     'alertTypes'
@@ -65,6 +74,90 @@ export default function ViewLocationPage () {
   )
 
   const areaAreas = type === 'both' ? ['severe', 'alert'] : [type]
+
+  // get flood area data
+  useEffect(() => {
+    async function fetchFloodAreaData () {
+      const { alertArea, warningArea } = await getSurroundingFloodAreas(
+        selectedLocation.coordinates.latitude,
+        selectedLocation.coordinates.longitude
+      )
+
+      const isError = !warningArea && !alertArea
+      if (isError) {
+        navigate('/error')
+      }
+
+      setAlertArea(alertArea)
+      setWarningArea(warningArea)
+    }
+    fetchFloodAreaData()
+  }, [])
+
+  // get flood history data
+  useEffect(() => {
+    const setHistoricalAlertNumber = () => {
+      const oneYearAgo = moment().subtract(1, 'years')
+      if (alertArea) {
+        const taCodes = alertArea.features.map((el) => {
+          return el.properties.FWS_TACODE
+        })
+
+        const filteredAlert = floodHistoryData
+          .filter(({ CODE }) => taCodes.includes(CODE))
+          .filter((inDate) => moment(inDate.DATE, 'DD/MM/YYYY') > oneYearAgo)
+
+        setFloodAlertCount(filteredAlert.length)
+      }
+    }
+
+    const setHistoricalWarningNumber = () => {
+      const oneYearAgo = moment().subtract(1, 'years')
+
+      if (warningArea) {
+        const taCodes = warningArea.features.map((el) => {
+          return el.properties.FWS_TACODE
+        })
+
+        const filteredWarning = floodHistoryData
+          .filter(({ CODE }) => taCodes.includes(CODE))
+          .filter((inDate) => moment(inDate.DATE, 'DD/MM/YYYY') > oneYearAgo)
+
+        setSevereFloodWarningCount(filteredWarning.length)
+      }
+    }
+
+    async function getHistoryUrl () {
+      const { data } = await backendCall(
+        'data',
+        'api/locations/download_flood_history'
+      )
+
+      data &&
+        fetch(data)
+          .then((response) => response.text())
+          .then((data) => {
+            setFloodHistoryData(csvToJson(data))
+          })
+          .catch((e) =>
+            console.error('Could not fetch Historic Flood Warning file', e)
+          )
+    }
+
+    async function processFloodHist () {
+      await getHistoryUrl()
+
+      if (floodHistoryData) {
+        if (alertArea) {
+          setHistoricalAlertNumber()
+        }
+        if (warningArea) {
+          setHistoricalWarningNumber()
+        }
+      }
+    }
+    processFloodHist()
+  }, [alertArea, warningArea])
 
   const deleteLocation = async () => {
     const data = {
@@ -182,7 +275,7 @@ export default function ViewLocationPage () {
                   </div>
                   <div className='govuk-summary-card__content'>
                     <p className='govuk-body'>
-                      Sent in last year: <b>6</b>
+                      Sent in last year: <b>{severeFloodWarningCount || 0}</b>
                     </p>
                     <Details
                       title='Risks when these are in force'
@@ -268,7 +361,7 @@ export default function ViewLocationPage () {
                         : 'You turned these early flood alerts off.'}
                     </p>
                     <p className='govuk-body'>
-                      Sent in last year: <b>27</b>
+                      Sent in last year: <b>{floodAlertCount || 0}</b>
                     </p>
                     <Details
                       title='Risks when these are in force'

@@ -10,4 +10,4 @@ const orgManageKeywordsRoutes = [
   }
 ]
 
-export { orgManageKeywordsRoutes }
+export { orgManageKeywordsRoutes, urlManageKeywordsOrg }

@@ -38,7 +38,10 @@ const routes = [].concat(
   require('../routes/location/create'),
   require('../routes/location/remove'),
   require('../routes/location/update'),
-  require('../routes/organization/update')
+  require('../routes/organization/update'),
+  require('../routes/organization/create_contacts'),
+  require('../routes/organization/update_contact'),
+  require('../routes/organization/remove_contacts')
 )
 
 module.exports = {

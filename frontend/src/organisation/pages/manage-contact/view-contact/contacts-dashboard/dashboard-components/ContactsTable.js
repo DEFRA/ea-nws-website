@@ -25,18 +25,15 @@ export default function ContactsTable ({
     setMessagesReceivedSort('none')
   }, [contacts])
 
-  // Sort standard data
-  const sortData = (sortType, setSort, data) => {
-    const getValue = (obj, path) => {
-      return path.split('.').reduce((acc, part) => acc && acc[part], obj)
-    }
 
+  // Sort standard data
+  const sortData = (sortType, setSort, getValue) => {
     if (sortType === 'none' || sortType === 'descending') {
       setSort('ascending')
       setFilteredContacts(
         [...filteredContacts].sort((a, b) => {
-          const valueA = getValue(a, data)
-          const valueB = getValue(b, data)
+          const valueA = getValue(a)
+          const valueB = getValue(b)
 
           // Place empty strings at the end
           if (
@@ -56,8 +53,8 @@ export default function ContactsTable ({
       setSort('descending')
       setFilteredContacts(
         [...filteredContacts].sort((a, b) => {
-          const valueA = getValue(a, data)
-          const valueB = getValue(b, data)
+          const valueA = getValue(a)
+          const valueB = getValue(b)
           return (valueB || '').localeCompare(valueA || '')
         })
       )
@@ -154,8 +151,7 @@ export default function ContactsTable ({
                 onClick={() => sortData(
                   contactNameSort,
                   setContactNameSort,
-                  'name'
-                )}
+                  (contact) => {return contact.firstname + contact.lastname})}
               >
                 Name
               </button>
@@ -166,8 +162,7 @@ export default function ContactsTable ({
                 onClick={() => sortData(
                   jobTitleSort,
                   setJobTitleSort,
-                  'job_title'
-                )}
+                  (contact) => {return contact.position})}
               >
                 Job title
               </button>
@@ -178,8 +173,7 @@ export default function ContactsTable ({
                 onClick={() => sortData(
                   emailSort,
                   setEmailSort,
-                  'email'
-                )}
+                  (contact) => {return contact.emails[0]})}
               >
                 Email
               </button>
@@ -220,14 +214,14 @@ export default function ContactsTable ({
               </th>
               <td className='govuk-table__cell'>
                 <Link onClick={(e) => onAction(e, 'view', contact)}>
-                  {contact.name}
+                  {contact.firstname}{contact.lastname.length > 0 ? ' ' + contact.lastname : ''}
                 </Link>
               </td>
               <td className='govuk-table__cell'>
-                {contact.job_title}
+                {contact.position}
               </td>
               <td className='govuk-table__cell'>
-                {contact.email}
+                {contact.emails[0]}
               </td>
               <td className='govuk-table__cell'>
                 {contact.linked_locations.length}

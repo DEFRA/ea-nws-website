@@ -370,6 +370,16 @@ const removeContactFromKeywords = async (orgId, contactID) => {
   }
 }
 
+const listContacts = async (orgId) => {
+  const contactKeys = await getContactKeys(orgId)
+  const contactArr = []
+  await Promise.all(contactKeys.map(async (key) => {
+    const contact = await getJsonData(key)
+    contactArr.push(contact)
+  }))
+  return contactArr
+}
+
 const orgSignIn = async (profile, organization, locations, contacts) => {
   await setJsonData(profile.id + ':profile', profile)
   const orgExists = await checkKeyExists(organization.id + ':org_data')
@@ -436,6 +446,7 @@ module.exports = {
   searchLocations,
   findLocationByName,
   listLocations,
+  listContacts,
   addInvLocation,
   removeInvLocation,
   listInvLocations,

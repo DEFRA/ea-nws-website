@@ -16,7 +16,8 @@ export default function NotesLayout ({
   navigateToNextPage,
   keywordType,
   instructionText,
-  buttonText = 'Continue'
+  buttonText = 'Continue',
+  onSubmit
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -51,8 +52,9 @@ export default function NotesLayout ({
           break
       }
     }
-
-    // should we update geosafe profile here?
+    if (onSubmit) {
+      onSubmit()
+    }
 
     navigateToNextPage()
   }

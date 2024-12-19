@@ -220,71 +220,95 @@ export default function FullscreenMap ({ showMap, setShowMap, locations }) {
     <div>
       <Modal show={showMap} onHide={handleCloseMap} fullscreen centered>
         <Modal.Body className='p-0'>
-          <div style={{ height: '100vh', width: '100%' }}>
-            <MapContainer
-              center={initialPosition}
-              zoom={initialZoom}
-              zoomControl={false}
-              attributionControl={false}
-              minZoom={7}
-              maxBounds={maxBounds}
-              style={{ width: '100%', height: '100%' }}
-            >
-              {osmTileLayer}
-              {apiKey && tileLayerWithHeader}
-              <ZoomControl position='bottomright' />
-              <ZoomTracker />
-              <ResetMapButton />
-              <ExitMapButton />
-              {locations
-                .filter(
-                  (location) =>
-                    location.coordinates.latitude &&
-                    location.coordinates.longitude
-                )
-                .map((location, index) => (
-                  <Marker
-                    key={index}
-                    position={[
-                      location.coordinates.latitude,
+          <div style={{ display: 'flex', height: '100vh' }}>
+            <div style={{ height: '100vh', width: '80%' }}>
+              <MapContainer
+                center={initialPosition}
+                zoom={initialZoom}
+                zoomControl={false}
+                attributionControl={false}
+                minZoom={7}
+                maxBounds={maxBounds}
+                style={{ width: '100%', height: '100%' }}
+              >
+                {osmTileLayer}
+                {apiKey && tileLayerWithHeader}
+                <ZoomControl position='bottomright' />
+                <ZoomTracker />
+                <ResetMapButton />
+                <ExitMapButton />
+                {locations
+                  .filter(
+                    (location) =>
+                      location.coordinates.latitude &&
                       location.coordinates.longitude
-                    ]}
-                  >
-                    <Popup>
-                      <Link
-                        className='govuk-link'
-                        // onClick={(e) => viewLocation(e, location)}
-                      >
-                        {location.additionals.locationName}
-                      </Link>
-                      <br />
-                      {location.additionals.other.location_type}
-                      <br />
-                      {location.address}
-                    </Popup>
-                  </Marker>
-                ))}
-              {warningArea && (
-                <GeoJSON
-                  key={warningArea}
-                  data={warningArea}
-                  style={{ color: '#f70202' }}
-                  ref={(el) => {
-                    warningAreaRef.current = el
-                  }}
-                />
-              )}
-              {alertArea && (
-                <GeoJSON
-                  key={alertArea}
-                  data={alertArea}
-                  style={{ color: '#ffa200' }}
-                  ref={(el) => {
-                    alertAreaRef.current = el
-                  }}
-                />
-              )}
-            </MapContainer>
+                  )
+                  .map((location, index) => (
+                    <Marker
+                      key={index}
+                      position={[
+                        location.coordinates.latitude,
+                        location.coordinates.longitude
+                      ]}
+                    >
+                      <Popup>
+                        <Link
+                          className='govuk-link'
+                          // onClick={(e) => viewLocation(e, location)}
+                        >
+                          {location.additionals.locationName}
+                        </Link>
+                        <br />
+                        {location.additionals.other.location_type}
+                        <br />
+                        {location.address}
+                      </Popup>
+                    </Marker>
+                  ))}
+                {warningArea && (
+                  <GeoJSON
+                    key={warningArea}
+                    data={warningArea}
+                    style={{ color: '#f70202' }}
+                    ref={(el) => {
+                      warningAreaRef.current = el
+                    }}
+                  />
+                )}
+                {alertArea && (
+                  <GeoJSON
+                    key={alertArea}
+                    data={alertArea}
+                    style={{ color: '#ffa200' }}
+                    ref={(el) => {
+                      alertAreaRef.current = el
+                    }}
+                  />
+                )}
+              </MapContainer>
+            </div>
+
+            <div style={{ width: '20%', padding: '20px', overflowY: 'auto' }}>
+              <h4>
+                <strong>Key</strong>
+              </h4>
+              <hr />
+              <strong>Flood areas</strong>
+
+              <hr />
+              <strong>Locations ({locations.length})</strong>
+
+              <hr />
+              <strong>Location filter</strong>
+
+              <hr />
+              <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
+                This is not a live flood map
+              </span>
+              <span className='govuk-caption-m govuk-!-font-size-16'>
+                It shows fixed areas we provide flood warnings and alerts for.
+              </span>
+            </div>
           </div>
         </Modal.Body>
       </Modal>

@@ -12,10 +12,7 @@ import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinn
 import TileLayerWithHeader from '../../../../../common/components/custom/TileLayerWithHeader'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import { backendCall } from '../../../../../common/services/BackendService'
-import {
-  convertDataToGeoJsonFeature,
-  getAreaOrLength
-} from '../../../../../common/services/GeoJsonHandler'
+import { convertDataToGeoJsonFeature } from '../../../../../common/services/GeoJsonHandler'
 
 export default function ContactMap({ locations }) {
   const [loading, setLoading] = useState(true)
@@ -31,32 +28,48 @@ export default function ContactMap({ locations }) {
     setLoading(false)
   }, [])
 
+  const [markers, setMarkers] = useState([])
+  const [geoJsonShapes, setGeoJsonShapes] = useState([])
+
   const loadLocationsOnMap = () => {
     //load all locations user is connected to onto map
-    const features = []
+    const nfeatures = []
+    const nmarkers = []
+    const ngeoJsonShapes = []
 
-    locations.forEach((location) => {
+    locations.forEach((location, index) => {
       let feature
       const locationType =
         location.meta_data.location_additional.location_data_type
 
+      // add all points to markers which can be represented on the map
+      // we need to convert points to geojson so we can calculate the bbox
       if (locationType === LocationDataType.X_AND_Y_COORDS) {
-        feature = convertDataToGeoJsonFeature('Point', location.coordinates)
+        // turf accepts in the format [lng,lat] - we save points as [lat,lng]
+        feature = convertDataToGeoJsonFeature('Point', [
+          location.coordinates[1],
+          location.coordinates[0]
+        ])
+        nmarkers.push(location.coordinates)
       } else {
-        feature = convertDataToGeoJsonFeature(
-          location.geometry.geoJson.type,
-          location.geometry.geoJson.coordinates
-        )
+        feature = location.geometry.geoJson
+        setGeoJsonShapes((prevShapes) => [
+          ...prevShapes,
+          location.geometry.geoJson
+        ])
+        ngeoJsonShapes.push(location.geometry.geoJson)
       }
 
-      features.push(feature)
+      nfeatures.push(feature)
     })
+    setMarkers(nmarkers)
+    setGeoJsonShapes(ngeoJsonShapes)
 
-    const geoJsonFeatures = turf.featureCollection(features)
-    setFeatures(geoJsonFeatures)
+    const geoJsonFeatureCollection = turf.featureCollection(nfeatures)
+    setFeatures(geoJsonFeatureCollection)
 
     // calculate boundary around locations
-    const bbox = turf.bbox(geoJsonFeatures)
+    const bbox = turf.bbox(geoJsonFeatureCollection)
 
     const newBounds = L.latLngBounds([bbox[1], bbox[0]], [bbox[3], bbox[2]])
     setBounds(newBounds)
@@ -64,44 +77,32 @@ export default function ContactMap({ locations }) {
     const area = turf.bboxPolygon(bbox)
     const mapCentre = turf.center(area)
     const mapCentreCoords = mapCentre.geometry.coordinates
-    setCentre([mapCentreCoords[0], mapCentreCoords[1]])
+    setCentre([mapCentreCoords[1], mapCentreCoords[0]])
 
-    const boundarySize = turf.area(area)
-    setAreaSize(boundarySize)
+    // const boundarySize = turf.area(area)
+    // setAreaSize(boundarySize)
 
     // convert locations not large enough on map
-    if (locations > 1) {
-      console.log()
-      locations.forEach((location) => {
-        let size
-        const locationType =
-          location.meta_data.location_additional.location_data_type
+    // if (locations > 1) {
+    //   locations.forEach((location) => {
+    //     let size
+    //     const locationType =
+    //       location.meta_data.location_additional.location_data_type
 
-        if (locationType != LocationDataType.X_AND_Y_COORDS) {
-          size = getAreaOrLength(
-            location.geometry.geoJson.type,
-            location.geometry.geoJson.coordinates
-          )
-          console.log(size)
-          // if location is line and length is less than 5km then get centre and show marker instead
-          // if location is polygon and area is less than 10% then of bbox then get centre show marker instead
-          // convert centre to a point and add to features
-        }
-      })
-    }
+    //     if (locationType != LocationDataType.X_AND_Y_COORDS) {
+    //       size = getAreaOrLength(
+    //         location.geometry.geoJson.type,
+    //         location.geometry.geoJson.coordinates
+    //       )
+    //       console.log(size)
+    //       // if location is line and length is less than 5km then get centre and show marker instead
+    //       // if location is polygon and area is less than 10% then of bbox then get centre show marker instead
+    //       // convert centre to a point and add to features
+    //     }
+    //   })
+    // }
   }
 
-  const Locations = () => {
-    const map = useMap()
-
-    useEffect(() => {
-      if (features) {
-        features.features.forEach((feature) => {
-          //console.log(feature)
-        })
-      }
-    }, [features])
-  }
 
   const FitBounds = () => {
     const map = useMap()
@@ -181,6 +182,7 @@ export default function ContactMap({ locations }) {
     [apiKey]
   )
 
+
   return (
     <>
       {loading ? (
@@ -188,10 +190,10 @@ export default function ContactMap({ locations }) {
       ) : (
         <MapContainer
           center={centre}
-          dragging={false}
-          scrollWheelZoom={false}
-          zoom={9}
-          zoomControl={false}
+          dragging={true}
+          scrollWheelZoom={true}
+          zoom={7}
+          zoomControl={true}
           attributionControl={false}
           maxBounds={maxBounds}
           className={'contacts-map-container'}
@@ -199,13 +201,16 @@ export default function ContactMap({ locations }) {
           {apiKey && apiKey !== 'error' ? (
             <>
               {tileLayerWithHeader}
+              {/* <FitBounds /> */}
               <Marker position={[centre[0], centre[1]]}>
                 <Popup />
               </Marker>
-              {features && (
-                <GeoJSON data={features} style={{ color: '#ffa200' }} />
-              )}
-              <FitBounds />
+              {markers && markers.map((marker) => {
+                <Marker key={marker} position={[marker[0], marker[1]]}>
+                  <Popup />
+                </Marker>
+              })}
+              {/* {geoJsonShapes && <GeoJSON data={geoJsonShapes} />} */}
             </>
           ) : (
             <div className='map-error-container'>

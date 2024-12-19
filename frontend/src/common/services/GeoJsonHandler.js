@@ -21,7 +21,6 @@ export const convertDataToGeoJsonFeature = (geoJsonType, geoJsonData) => {
       break
     case 'MultiPolygon':
       shape = turf.multiPolygon(geoJsonData)
-      console.log(shape)
       break
     default:
       shape = turf.point(geoJsonData)

@@ -15,22 +15,20 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'LE2 7BB',
-              x_coordinate: 466413.18,
-              y_coordinate: 105037.31,
-              internal_reference: 'PS01, unit 57, HighW_07',
-              business_criticality: 'Medium',
-              location_type: 'Office',
-              action_plan: '1. Dont panic!',
-              notes:
-                'John Smith has the flood plane for this location. His contact number is 01234 567 890',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_3']
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'LE2 7BB',
+            x_coordinate: 466413.18,
+            y_coordinate: 105037.31,
+            internal_reference: 'PS01, unit 57, HighW_07',
+            business_criticality: 'Medium',
+            location_type: 'Office',
+            action_plan: '1. Dont panic!',
+            notes:
+              'John Smith has the flood plane for this location. His contact number is 01234 567 890',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_3']
+          })
         }
       }
     ]
@@ -51,21 +49,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: '',
-              postcode: '',
-              x_coordinate: 329000.58,
-              y_coordinate: 478530.6,
-              internal_reference: '',
-              business_criticality: '',
-              location_type: '',
-              action_plan: '',
-              notes: '',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
-            }
-          )
+          s: JSON.stringify({
+            full_address: '',
+            postcode: '',
+            x_coordinate: 329000.58,
+            y_coordinate: 478530.6,
+            internal_reference: '',
+            business_criticality: '',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
+          })
         }
       }
     ]
@@ -79,28 +75,29 @@ const locations = [
     geometry: null,
     geocode: null,
     additionals: [
-      { id: 'locationName', value: { s: 'Location_03 - shapefile polygon variant' } },
+      {
+        id: 'locationName',
+        value: { s: 'Location_03 - shapefile polygon variant' }
+      },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
       { id: 'keywords', value: { s: '[]' } },
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: '',
-              postcode: '',
-              x_coordinate: '',
-              y_coordinate: '',
-              internal_reference: '',
-              business_criticality: '',
-              location_type: '',
-              action_plan: '',
-              notes: '',
-              location_data_type: 'polygon',
-              alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
-            }
-          )
+          s: JSON.stringify({
+            full_address: '',
+            postcode: '',
+            x_coordinate: '',
+            y_coordinate: '',
+            internal_reference: '',
+            business_criticality: '',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            location_data_type: 'polygon',
+            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
+          })
         }
       }
     ]
@@ -114,28 +111,29 @@ const locations = [
     geometry: null,
     geocode: null,
     additionals: [
-      { id: 'locationName', value: { s: 'Location_04 - shapefile line variant' } },
+      {
+        id: 'locationName',
+        value: { s: 'Location_04 - shapefile line variant' }
+      },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
       { id: 'keywords', value: { s: '[]' } },
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: '',
-              postcode: '',
-              x_coordinate: '',
-              y_coordinate: '',
-              internal_reference: '',
-              business_criticality: '',
-              location_type: '',
-              action_plan: '',
-              notes: '',
-              location_data_type: 'line',
-              alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
-            }
-          )
+          s: JSON.stringify({
+            full_address: '',
+            postcode: '',
+            x_coordinate: '',
+            y_coordinate: '',
+            internal_reference: '',
+            business_criticality: '',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            location_data_type: 'line',
+            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
+          })
         }
       }
     ]
@@ -156,21 +154,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: '',
-              postcode: '',
-              x_coordinate: '',
-              y_coordinate: '',
-              internal_reference: '',
-              business_criticality: '',
-              location_type: '',
-              action_plan: '',
-              notes: '',
-              location_data_type: 'boundary',
-              alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
-            }
-          )
+          s: JSON.stringify({
+            full_address: '',
+            postcode: '',
+            x_coordinate: '',
+            y_coordinate: '',
+            internal_reference: '',
+            business_criticality: '',
+            location_type: '',
+            action_plan: '',
+            notes: '',
+            location_data_type: 'boundary',
+            alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
+          })
         }
       }
     ]
@@ -191,21 +187,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'Low',
-              location_type: 'Office',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: []
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: []
+          })
         }
       }
     ]
@@ -226,21 +220,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'High',
-              location_type: 'Warehouse',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_2']
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_2']
+          })
         }
       }
     ]
@@ -261,21 +253,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'Medium',
-              location_type: 'Retail space',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Retail space',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+          })
         }
       }
     ]
@@ -296,21 +286,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'Low',
-              location_type: 'Warehouse',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_2']
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_2']
+          })
         }
       }
     ]
@@ -331,21 +319,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'Medium',
-              location_type: 'Office',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+          })
         }
       }
     ]
@@ -366,21 +352,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'High',
-              location_type: 'Warehouse',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_3']
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_3']
+          })
         }
       }
     ]
@@ -401,21 +385,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'Low',
-              location_type: 'Retail space',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_2']
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Retail space',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_2']
+          })
         }
       }
     ]
@@ -436,21 +418,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'Medium',
-              location_type: 'Warehouse',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: []
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: []
+          })
         }
       }
     ]
@@ -471,21 +451,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'Low',
-              location_type: 'Office',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+          })
         }
       }
     ]
@@ -506,21 +484,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'High',
-              location_type: 'Warehouse',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: []
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: []
+          })
         }
       }
     ]
@@ -541,21 +517,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'Medium',
-              location_type: 'Warehouse',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_2']
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_2']
+          })
         }
       }
     ]
@@ -576,21 +550,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'Low',
-              location_type: 'Retail space',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_3']
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Retail space',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_3']
+          })
         }
       }
     ]
@@ -611,21 +583,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'Medium',
-              location_type: 'Office',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+          })
         }
       }
     ]
@@ -646,21 +616,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'High',
-              location_type: 'Warehouse',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_2']
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_2']
+          })
         }
       }
     ]
@@ -681,21 +649,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'Low',
-              location_type: 'Retail space',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: []
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Retail space',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: []
+          })
         }
       }
     ]
@@ -716,21 +682,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'High',
-              location_type: 'Warehouse',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+          })
         }
       }
     ]
@@ -751,21 +715,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'Medium',
-              location_type: 'Warehouse',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_2']
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_2']
+          })
         }
       }
     ]
@@ -786,21 +748,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'Low',
-              location_type: 'Office',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_3']
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_3']
+          })
         }
       }
     ]
@@ -821,21 +781,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'Medium',
-              location_type: 'Retail space',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Retail space',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+          })
         }
       }
     ]
@@ -856,21 +814,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'High',
-              location_type: 'Warehouse',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_3']
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_3']
+          })
         }
       }
     ]
@@ -880,7 +836,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    coordinates: { latitude: 50.84106, longitude: -1.05814 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -891,21 +847,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'Low',
-              location_type: 'Warehouse',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_2']
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_2']
+          })
         }
       }
     ]
@@ -926,21 +880,19 @@ const locations = [
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: 'some address',
-              postcode: 'some postcode',
-              x_coordinate: 'lat',
-              y_coordinate: 'long',
-              internal_reference: 'reference',
-              business_criticality: 'Medium',
-              location_type: 'Office',
-              action_plan: 'action plan',
-              notes: 'some notes',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
-            }
-          )
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+          })
         }
       }
     ]

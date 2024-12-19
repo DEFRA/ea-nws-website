@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -10,11 +11,12 @@ import NotificationBanner from '../../../../../common/components/gov-uk/Notifica
 import Radio from '../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../common/enums/AlertType'
 import { getLocationAdditionals, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../common/services/BackendService'
+import { csvToJson } from '../../../../../common/services/CsvToJson'
 import { getSurroundingFloodAreas } from '../../../../../common/services/WfsFloodDataService'
 import { infoUrls } from '../../../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationHeader from './location-information-components/LocationHeader'
-
 export default function LocationMessagesPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -27,9 +29,12 @@ export default function LocationMessagesPage () {
   const { latitude, longitude } = useSelector(
     (state) => state.session.currentLocation.coordinates
   )
-  const [alertArea, setAlertArea] = useState(null)
-  const [warningArea, setWarningArea] = useState(null)
+  const [alertAreas, setAlertAreas] = useState(null)
+  const [warningAreas, setWarningAreas] = useState(null)
   const [floodAreasInputs, setFloodAreasInputs] = useState([])
+  const [floodHistoryData, setFloodHistoryData] = useState(null)
+  const [floodAlertsCount, setFloodAlertsCount] = useState([])
+  const [severeFloodWarningsCount, setSevereFloodWarningsCount] = useState([])
   const alertTypes = additionalData.alertTypes
   const allAlertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
 
@@ -56,8 +61,8 @@ export default function LocationMessagesPage () {
       latitude, longitude,
       0.5
     )
-    setAlertArea(alertArea)
-    setWarningArea(warningArea)
+    setAlertAreas(alertArea)
+    setWarningAreas(warningArea)
   }
 
   useEffect(() => {
@@ -68,41 +73,98 @@ export default function LocationMessagesPage () {
   }, [])
 
   useEffect(() => {
-    if (alertArea || warningArea) {
-      populateInputs(alertArea?.features, warningArea?.features)
+    if (alertAreas || warningAreas) {
+      populateInputs(alertAreas?.features, warningAreas?.features)
     }
+
+  }, [alertAreas, warningAreas])
+
+  useEffect(() => {
+    const setHistoricalAlertNumber = (alertArea) => {
+      const oneYearAgo = moment().subtract(1, 'years')
+      if (alertArea) {
+        const taCodes = alertArea.properties.FWS_TACODE
+
+        const filteredAlert = floodHistoryData
+          .filter(({ CODE }) => taCodes.includes(CODE))
+          .filter((inDate) => moment(inDate.DATE, 'DD/MM/YYYY') > oneYearAgo)
+
+        setFloodAlertsCount(prevState => [...prevState, filteredAlert.length])
+      }
+    }
+
+    const setHistoricalWarningNumber = (warningArea) => {
+      const oneYearAgo = moment().subtract(1, 'years')
+
+      if (warningArea) {
+        const taCodes = warningArea.properties.FWS_TACODE
+        
+        const filteredWarning = floodHistoryData
+          .filter(({ CODE }) => taCodes.includes(CODE))
+          .filter((inDate) => moment(inDate.DATE, 'DD/MM/YYYY') > oneYearAgo)
+
+        setSevereFloodWarningsCount(prevState => [...prevState, filteredWarning.length])
+      }
+    }
+
+    async function getHistoryUrl () {
+      const { data } = await backendCall(
+        'data',
+        'api/locations/download_flood_history'
+      )
+
+      data &&
+        fetch(data)
+          .then((response) => response.text())
+          .then((data) => {
+            setFloodHistoryData(csvToJson(data))
+          })
+          .catch((e) =>
+            console.error('Could not fetch Historic Flood Warning file', e)
+          )
+    }
+
+    async function processFloodHist () {
+      await getHistoryUrl()
+
+      if (floodHistoryData) {
+        if (alertAreas) {
+          alertAreas.features.forEach((area) => setHistoricalAlertNumber(area))
+        }
+        if (warningAreas) {
+          warningAreas.features.forEach((area) => setHistoricalWarningNumber(area))
+        }
+      }
+    }
+    processFloodHist()
     setLoading(false)
-  }, [alertArea, warningArea])
+  }, [alertAreas, floodHistoryData, warningAreas])
 
 
-  const populateInputs = (alertArea, warningArea) => {
+  const populateInputs = (alertAreas, warningAreas) => {
     const updatedFloodAreas = []
-    if (alertArea) {
-      
-      alertArea.forEach((area) => {
-        console.log('properties:', area.properties)
+    if (alertAreas) {
+      for(var i = 0; i < alertAreas.length; i++){
         updatedFloodAreas.push({
           areaName:
-          area.properties.TA_NAME,
+          alertAreas[i].properties.TA_NAME,
           areaType: 'Flood alert',
-          messagesSent: ['x Flood alerts']
+          messagesSent: `${floodAlertsCount[i]} flood alert${floodAlertsCount[i]>1? 's' : ''}`
         })
-      })
+
     }
-    if (warningArea) {
-      warningArea.forEach((area) => {
+    if (warningAreas) {
+      for(var i = 0; i < warningAreas.length; i++){
         updatedFloodAreas.push({
           areaName:
-            area.properties.TA_NAME,
+          warningAreas[i].properties.TA_NAME,
           areaType: 'Severe and flood warning',
-          messagesSent: ['x severe flood warning', 'x flood warnings']
+          messagesSent: `${severeFloodWarningsCount[i]} severe flood warning${severeFloodWarningsCount[i]>1 ? 's' : ''} and flood warning${severeFloodWarningsCount[i]>1 ? 's' : ''}`
         })
-      })
+      }
     }
     setFloodAreasInputs(updatedFloodAreas)
-    console.log(updatedFloodAreas)
-    console.log(loading)
-  }
+  }}
 
   const handleSumbit = () => {
     if (
@@ -312,9 +374,7 @@ export default function LocationMessagesPage () {
                        className='govuk-table__cell'
                        style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
                      >
-                       {detail.messagesSent.map((message, idx) => (
-                         <div key={idx}>{message}</div>
-                       ))}
+                       {detail.messagesSent}
                      </td>
                      <td
                        className='govuk-table__cell'

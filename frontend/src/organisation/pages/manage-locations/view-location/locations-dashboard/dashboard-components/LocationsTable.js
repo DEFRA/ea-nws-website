@@ -5,6 +5,7 @@ import locationPin from '../../../../../../common/assets/images/location_pin.svg
 import { setCurrentLocation } from '../../../../../../common/redux/userSlice'
 import { webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
+import FullscreenMap from '../../FullscreenMap'
 
 export default function LocationsTable ({
   locations,
@@ -20,6 +21,7 @@ export default function LocationsTable ({
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const [showMap, setShowMap] = useState(false)
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
   const [locationNameSort, setLocationNameSort] = useState('none')
   const [locationTypeSort, setLocationTypeSort] = useState('none')
@@ -165,6 +167,10 @@ export default function LocationsTable ({
     navigate(orgManageLocationsUrls.view.viewMessages)
   }
 
+  const openMap = () => {
+    setShowMap(true) // Set the state to show the map
+  }
+
   return (
     <>
       <p className='govuk-!-margin-bottom-6 locations-table-panel'>
@@ -182,8 +188,17 @@ export default function LocationsTable ({
         </span>
         <span style={{ margin: '0 20px' }}>|</span>
         <img src={locationPin} alt='Location pin icon' />
-        <Link className='govuk-link'>View on map</Link>
+        <Link className='govuk-link' onClick={openMap}>
+          View on map
+        </Link>
       </p>
+      {showMap && (
+        <FullscreenMap
+          showMap={showMap}
+          setShowMap={setShowMap}
+          locations={locations}
+        />
+      )}
       <table className='govuk-table govuk-table--small-text-until-tablet'>
         <thead className='govuk-table__head'>
           <tr className='govuk-table__row'>
@@ -380,7 +395,10 @@ export default function LocationsTable ({
                 </span>
               </td>
               <td className='govuk-table__cell'>
-                <Link onClick={(e) => onAction(e, 'delete', location)}>
+                <Link
+                  className='govuk-link'
+                  onClick={(e) => onAction(e, 'delete', location)}
+                >
                   Delete
                 </Link>
               </td>

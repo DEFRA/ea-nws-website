@@ -397,7 +397,7 @@ export default function LocationInformationPage () {
             )}
           </div>
           {/* other half - map */}
-          {/* nly show map if data allows */}
+          {/* only show map if data allows */}
           {currentLocation.coordinates?.latitude && currentLocation.coordinates?.longitude &&
               (
                 <div className='govuk-grid-column-one-half'>

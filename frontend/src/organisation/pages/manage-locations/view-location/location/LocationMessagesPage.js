@@ -32,9 +32,13 @@ export default function LocationMessagesPage () {
   const [alertAreas, setAlertAreas] = useState(null)
   const [warningAreas, setWarningAreas] = useState(null)
   const [floodAreasInputs, setFloodAreasInputs] = useState([])
+  const [floodHistoryUrl, setHistoryUrl] = useState('')
   const [floodHistoryData, setFloodHistoryData] = useState(null)
   const [floodAlertsCount, setFloodAlertsCount] = useState([])
+  const [floodWarningsCount, setFloodWarningsCount] = useState([])
   const [severeFloodWarningsCount, setSevereFloodWarningsCount] = useState([])
+  const [alertAreasTypes, setAlertAreasTypes] = useState([])
+  const [warningAreasTypes, setWarningAreasTypes] = useState([])
   const alertTypes = additionalData.alertTypes
   const allAlertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
 
@@ -73,73 +77,81 @@ export default function LocationMessagesPage () {
   }, [])
 
   useEffect(() => {
-    if (alertAreas || warningAreas) {
-      populateInputs(alertAreas?.features, warningAreas?.features)
-    }
-
-  }, [alertAreas, warningAreas])
-
-  useEffect(() => {
-    const setHistoricalAlertNumber = (alertArea) => {
-      const oneYearAgo = moment().subtract(1, 'years')
-      if (alertArea) {
-        const taCodes = alertArea.properties.FWS_TACODE
-
-        const filteredAlert = floodHistoryData
-          .filter(({ CODE }) => taCodes.includes(CODE))
-          .filter((inDate) => moment(inDate.DATE, 'DD/MM/YYYY') > oneYearAgo)
-
-        setFloodAlertsCount(prevState => [...prevState, filteredAlert.length])
-      }
-    }
-
-    const setHistoricalWarningNumber = (warningArea) => {
-      const oneYearAgo = moment().subtract(1, 'years')
-
-      if (warningArea) {
-        const taCodes = warningArea.properties.FWS_TACODE
-        
-        const filteredWarning = floodHistoryData
-          .filter(({ CODE }) => taCodes.includes(CODE))
-          .filter((inDate) => moment(inDate.DATE, 'DD/MM/YYYY') > oneYearAgo)
-
-        setSevereFloodWarningsCount(prevState => [...prevState, filteredWarning.length])
-      }
-    }
-
     async function getHistoryUrl () {
       const { data } = await backendCall(
         'data',
-        'api/locations/download_flood_history'
+        'api/locations/download_org_flood_history'
       )
-
-      data &&
-        fetch(data)
-          .then((response) => response.text())
-          .then((data) => {
-            setFloodHistoryData(csvToJson(data))
-          })
-          .catch((e) =>
-            console.error('Could not fetch Historic Flood Warning file', e)
-          )
+      setHistoryUrl(data)
     }
 
-    async function processFloodHist () {
-      await getHistoryUrl()
+    getHistoryUrl()
+    floodHistoryUrl &&
+      fetch(floodHistoryUrl)
+        .then((response) => response.text())
+        .then((data) => {
+          setFloodHistoryData(csvToJson(data))
+        })
+        .catch((e) =>
+          console.error('Could not fetch Organisation Historic Flood Warning file', e)
+        )
+  }, [])
 
-      if (floodHistoryData) {
-        if (alertAreas) {
-          alertAreas.features.forEach((area) => setHistoricalAlertNumber(area))
+  useEffect(() => {
+    processFloodData()
+  }, [floodHistoryData])
+
+  useEffect(() => {
+    if (floodHistoryData && (alertAreas || warningAreas)) {
+      populateInputs(alertAreas?.features, warningAreas?.features)
+    }
+
+  }, [alertAreas, warningAreas, floodHistoryData])
+
+
+
+
+  const setHistoricalData = (area, type) => {
+    const twoYearsAgo = moment().subtract(2, 'years')
+
+    if (area) {
+      const taCode = area.properties.FWS_TACODE
+
+      const filteredData = floodHistoryData.filter(
+        (alert) =>
+          alert['TA Code'] === taCode &&
+          alert['lookup category'] === type &&
+          (moment(alert.Approved
+            , 'DD/MM/YYYY HH:MM:SS')).format('DD/MM/YYYY') > twoYearsAgo.format('DD/MM/YYYY'))
+      switch(type){
+        case 'Flood Alert':
+          setFloodAlertsCount(prevState => [...prevState, filteredData.length])
+          setAlertAreasTypes(prevState => [...prevState, filteredData.length > 0 ? filteredData[0]["lookup areatype"] : '/'])
+          break
+        case 'Flood Warning':
+          setFloodWarningsCount(prevState => [...prevState, filteredData.length])
+          setWarningAreasTypes(prevState => [...prevState, filteredData.length > 0 ? filteredData[0]["lookup areatype"] : '/'])
+          break
+        case 'Flood Warning Rapid Response':
+            setSevereFloodWarningsCount(prevState => [...prevState, filteredData.length])
+            break
+        default: 
+          break
         }
-        if (warningAreas) {
-          warningAreas.features.forEach((area) => setHistoricalWarningNumber(area))
-        }
+    }
+  }
+
+  const processFloodData  =() =>{
+    if (floodHistoryData) {
+      if (alertAreas) {
+        alertAreas.features.forEach((area) => setHistoricalData(area, 'Flood Alert'))
+      }
+      if (warningAreas) {
+        warningAreas.features.forEach((area) => setHistoricalData(area, 'Flood Warning'))
+        warningAreas.features.forEach((area) => setHistoricalData(area, 'Flood Warning Rapid Response'))
       }
     }
-    processFloodHist()
-    setLoading(false)
-  }, [alertAreas, floodHistoryData, warningAreas])
-
+  }
 
   const populateInputs = (alertAreas, warningAreas) => {
     const updatedFloodAreas = []
@@ -148,22 +160,23 @@ export default function LocationMessagesPage () {
         updatedFloodAreas.push({
           areaName:
           alertAreas[i].properties.TA_NAME,
-          areaType: 'Flood alert',
+          areaType: `${alertAreasTypes[i]}`,
           messagesSent: `${floodAlertsCount[i]} flood alert${floodAlertsCount[i]>1? 's' : ''}`
         })
 
-    }
+    } 
     if (warningAreas) {
       for(var i = 0; i < warningAreas.length; i++){
         updatedFloodAreas.push({
           areaName:
           warningAreas[i].properties.TA_NAME,
-          areaType: 'Severe and flood warning',
-          messagesSent: `${severeFloodWarningsCount[i]} severe flood warning${severeFloodWarningsCount[i]>1 ? 's' : ''} and flood warning${severeFloodWarningsCount[i]>1 ? 's' : ''}`
+          areaType: `${warningAreasTypes[i]}`,
+          messagesSent: `${severeFloodWarningsCount[i]} severe flood warning${severeFloodWarningsCount[i]>1 ? 's' : ''} and ${floodWarningsCount[i]} flood warning${floodWarningsCount[i]>1 ? 's' : ''}`
         })
       }
     }
     setFloodAreasInputs(updatedFloodAreas)
+    setLoading(false)
   }}
 
   const handleSumbit = () => {
@@ -380,7 +393,7 @@ export default function LocationMessagesPage () {
                        className='govuk-table__cell'
                        style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
                      >
-                       {detail.areaType === 'Flood alert'
+                       {detail.messagesSent.includes('flood alert')
                          ? (
                            <Link className='govuk-link'>Unlink</Link>
                            )

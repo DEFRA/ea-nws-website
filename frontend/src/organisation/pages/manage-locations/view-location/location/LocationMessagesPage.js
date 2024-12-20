@@ -104,6 +104,7 @@ export default function LocationMessagesPage () {
   useEffect(() => {
     if (floodHistoryData && (alertAreas || warningAreas)) {
       populateInputs(alertAreas?.features, warningAreas?.features)
+      setLoading(false)
     }
 
   }, [alertAreas, warningAreas, floodHistoryData])
@@ -176,7 +177,6 @@ export default function LocationMessagesPage () {
       }
     }
     setFloodAreasInputs(updatedFloodAreas)
-    setLoading(false)
   }}
 
   const handleSumbit = () => {

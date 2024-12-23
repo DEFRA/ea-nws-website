@@ -197,6 +197,7 @@ export default function LocationsTable ({
           showMap={showMap}
           setShowMap={setShowMap}
           locations={locations}
+          filteredLocations={filteredLocations}
         />
       )}
       <table className='govuk-table govuk-table--small-text-until-tablet'>
@@ -348,7 +349,10 @@ export default function LocationsTable ({
                   </div>
                 </div>
               </th>
-              <td className='govuk-table__cell'>
+              <td
+                className='govuk-table__cell'
+                style={{ minWidth: '20rem', maxWidth: '30rem' }}
+              >
                 <Link
                   className='govuk-link'
                   onClick={(e) => viewLocation(e, location)}

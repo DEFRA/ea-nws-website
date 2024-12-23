@@ -21,7 +21,12 @@ import { backendCall } from '../../../../common/services/BackendService'
 import { getSurroundingFloodAreas } from '../../../../common/services/WfsFloodDataService'
 import FullMapInteractiveKey from '../../../components/custom/FullMapInteractiveKey'
 
-export default function FullscreenMap ({ showMap, setShowMap, locations }) {
+export default function FullscreenMap ({
+  showMap,
+  setShowMap,
+  locations,
+  filteredLocations
+}) {
   const [apiKey, setApiKey] = useState(null)
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
@@ -33,8 +38,25 @@ export default function FullscreenMap ({ showMap, setShowMap, locations }) {
   const [alertAreaRefVisible, setAlertAreaRefVisible] = useState(false)
   const [warningAreaRefVisible, setWarningAreaRefVisible] = useState(false)
 
+  const [showLocationsWithinFloodAreas, setShowLocationsWithinFloodAreas] =
+    useState(true)
+  const [showLocationsOutsideFloodAreas, setShowLocationsOutsideFloodAreas] =
+    useState(false)
+  const [showOnlyFilteredLocations, setShowOnlyFilteredLocations] =
+    useState(true)
+
+  const [mapLocations, setMapLocations] = useState(filteredLocations)
+
   const initialPosition = [52.7152, -1.17349]
   const initialZoom = 7
+
+  useEffect(() => {
+    if (showOnlyFilteredLocations) {
+      setMapLocations(filteredLocations)
+    } else {
+      setMapLocations(locations)
+    }
+  }, [showOnlyFilteredLocations])
 
   // Get flood area data
   useEffect(() => {
@@ -309,11 +331,17 @@ export default function FullscreenMap ({ showMap, setShowMap, locations }) {
                 <ZoomTracker />
                 <ResetMapButton />
                 <ExitMapButton />
-                {locations
+                {mapLocations
                   .filter(
                     (location) =>
-                      location.coordinates.latitude &&
-                      location.coordinates.longitude
+                      (location.coordinates.latitude &&
+                        location.coordinates.longitude &&
+                        showLocationsWithinFloodAreas &&
+                        location.additionals.other?.alertTypes?.length > 0) ||
+                      (location.coordinates.latitude &&
+                        location.coordinates.longitude &&
+                        showLocationsOutsideFloodAreas &&
+                        location.additionals.other?.alertTypes?.length === 0)
                   )
                   .map((location, index) => (
                     <Marker
@@ -323,7 +351,7 @@ export default function FullscreenMap ({ showMap, setShowMap, locations }) {
                         location.coordinates.longitude
                       ]}
                     >
-                      <Popup>
+                      <Popup offset={[0, -25]}>
                         <Link
                           className='govuk-link'
                           // onClick={(e) => viewLocation(e, location)}
@@ -370,21 +398,20 @@ export default function FullscreenMap ({ showMap, setShowMap, locations }) {
                 setShowFloodAlertAreas={setShowFloodAlertAreas}
                 showFloodExtents={showFloodExtents}
                 setShowFloodExtents={setShowFloodExtents}
-                locations={locations}
+                showLocationsWithinFloodAreas={showLocationsWithinFloodAreas}
+                setShowLocationsWithinFloodAreas={
+                  setShowLocationsWithinFloodAreas
+                }
+                showLocationsOutsideFloodAreas={showLocationsOutsideFloodAreas}
+                setShowLocationsOutsideFloodAreas={
+                  setShowLocationsOutsideFloodAreas
+                }
+                showOnlyFilteredLocations={showOnlyFilteredLocations}
+                setShowOnlyFilteredLocations={setShowOnlyFilteredLocations}
+                locations={
+                  showOnlyFilteredLocations ? filteredLocations : locations
+                }
               />
-
-              <hr class='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
-
-              <strong>Location filter</strong>
-
-              <hr class='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
-
-              <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
-                This is not a live flood map
-              </span>
-              <span className='govuk-caption-m govuk-!-font-size-16'>
-                It shows fixed areas we provide flood warnings and alerts for.
-              </span>
             </div>
           </div>
         </Modal.Body>

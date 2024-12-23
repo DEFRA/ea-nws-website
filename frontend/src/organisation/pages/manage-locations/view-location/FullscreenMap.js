@@ -315,7 +315,7 @@ export default function FullscreenMap ({
       <Modal show={showMap} onHide={handleCloseMap} fullscreen centered>
         <Modal.Body className='p-0'>
           <div style={{ display: 'flex', height: '100vh' }}>
-            <div style={{ height: '100vh', width: '80%' }}>
+            <div style={{ height: '100vh', width: '85%' }}>
               <MapContainer
                 center={initialPosition}
                 zoom={initialZoom}
@@ -390,7 +390,7 @@ export default function FullscreenMap ({
               </MapContainer>
             </div>
 
-            <div style={{ width: '20%', padding: '20px', overflowY: 'auto' }}>
+            <div style={{ width: '15%', padding: '20px', overflowY: 'auto' }}>
               <FullMapInteractiveKey
                 showFloodWarningAreas={showFloodWarningAreas}
                 setShowFloodWarningAreas={setShowFloodWarningAreas}

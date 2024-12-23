@@ -349,10 +349,7 @@ export default function LocationsTable ({
                   </div>
                 </div>
               </th>
-              <td
-                className='govuk-table__cell'
-                style={{ minWidth: '20rem', maxWidth: '30rem' }}
-              >
+              <td className='govuk-table__cell' style={{ width: '25rem' }}>
                 <Link
                   className='govuk-link'
                   onClick={(e) => viewLocation(e, location)}

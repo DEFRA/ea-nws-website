@@ -16,10 +16,10 @@ import {
 } from 'react-leaflet'
 import { Link } from 'react-router-dom'
 import iconUrl from '../../../../common/assets/images/location_pin.svg'
-
 import TileLayerWithHeader from '../../../../common/components/custom/TileLayerWithHeader'
 import { backendCall } from '../../../../common/services/BackendService'
 import { getSurroundingFloodAreas } from '../../../../common/services/WfsFloodDataService'
+import FullMapInteractiveKey from '../../../components/custom/FullMapInteractiveKey'
 
 export default function FullscreenMap ({ showMap, setShowMap, locations }) {
   const [apiKey, setApiKey] = useState(null)
@@ -27,6 +27,11 @@ export default function FullscreenMap ({ showMap, setShowMap, locations }) {
   const [warningArea, setWarningArea] = useState(null)
   const [mapCenter, setMapCenter] = useState(null)
   const [zoomLevel, setZoomLevel] = useState(null)
+  const [showFloodWarningAreas, setShowFloodWarningAreas] = useState(true)
+  const [showFloodAlertAreas, setShowFloodAlertAreas] = useState(true)
+  const [showFloodExtents, setShowFloodExtents] = useState(true)
+  const [alertAreaRefVisible, setAlertAreaRefVisible] = useState(false)
+  const [warningAreaRefVisible, setWarningAreaRefVisible] = useState(false)
 
   const initialPosition = [52.7152, -1.17349]
   const initialZoom = 7
@@ -51,6 +56,10 @@ export default function FullscreenMap ({ showMap, setShowMap, locations }) {
     }
     fetchFloodAreaData()
   }, [mapCenter, zoomLevel])
+
+  useEffect(() => {
+    showAreas()
+  }, [showFloodWarningAreas, showFloodAlertAreas])
 
   const ZoomTracker = () => {
     const map = useMapEvents({
@@ -216,6 +225,69 @@ export default function FullscreenMap ({ showMap, setShowMap, locations }) {
     )
   }
 
+  const showWarningAreas = () => {
+    if (warningAreaRefVisible && warningAreaRef.current) {
+      warningAreaRef.current.eachLayer((layer) => {
+        layer.options.className = 'warning-area-pattern-fill'
+        layer.setStyle({
+          opacity: 1,
+          color: '#f70202',
+          weight: 2,
+          fillOpacity: 0.25
+        })
+        layer.bringToFront()
+      })
+    }
+  }
+
+  const showAlertAreas = () => {
+    if (alertAreaRefVisible && alertAreaRef.current) {
+      alertAreaRef.current.eachLayer((layer) => {
+        layer.options.className = 'alert-area-pattern-fill'
+        layer.setStyle({
+          opacity: 1,
+          color: '#ffa200',
+          weight: 2,
+          fillOpacity: 0.5
+        })
+      })
+    }
+  }
+
+  const hideWarningArea = () => {
+    if (warningAreaRefVisible && warningAreaRef.current) {
+      warningAreaRef.current.eachLayer((layer) => {
+        layer.setStyle({ opacity: 0, fillOpacity: 0 })
+      })
+      setWarningAreaRefVisible(false)
+    }
+  }
+
+  const hideAlertArea = () => {
+    if (alertAreaRefVisible && alertAreaRef.current) {
+      alertAreaRef.current.eachLayer((layer) => {
+        layer.setStyle({ opacity: 0, fillOpacity: 0 })
+      })
+      setAlertAreaRefVisible(false)
+    }
+  }
+
+  const showAreas = () => {
+    if (showFloodWarningAreas && showFloodAlertAreas) {
+      showAlertAreas()
+      showWarningAreas()
+    } else if (showFloodWarningAreas) {
+      showWarningAreas()
+      hideAlertArea()
+    } else if (showFloodAlertAreas) {
+      showAlertAreas()
+      hideWarningArea()
+    } else {
+      hideWarningArea()
+      hideAlertArea()
+    }
+  }
+
   return (
     <div>
       <Modal show={showMap} onHide={handleCloseMap} fullscreen centered>
@@ -272,6 +344,7 @@ export default function FullscreenMap ({ showMap, setShowMap, locations }) {
                     style={{ color: '#f70202' }}
                     ref={(el) => {
                       warningAreaRef.current = el
+                      setWarningAreaRefVisible(true)
                     }}
                   />
                 )}
@@ -282,6 +355,7 @@ export default function FullscreenMap ({ showMap, setShowMap, locations }) {
                     style={{ color: '#ffa200' }}
                     ref={(el) => {
                       alertAreaRef.current = el
+                      setAlertAreaRefVisible(true)
                     }}
                   />
                 )}
@@ -289,19 +363,22 @@ export default function FullscreenMap ({ showMap, setShowMap, locations }) {
             </div>
 
             <div style={{ width: '20%', padding: '20px', overflowY: 'auto' }}>
-              <h4>
-                <strong>Key</strong>
-              </h4>
-              <hr />
-              <strong>Flood areas</strong>
+              <FullMapInteractiveKey
+                showFloodWarningAreas={showFloodWarningAreas}
+                setShowFloodWarningAreas={setShowFloodWarningAreas}
+                showFloodAlertAreas={showFloodAlertAreas}
+                setShowFloodAlertAreas={setShowFloodAlertAreas}
+                showFloodExtents={showFloodExtents}
+                setShowFloodExtents={setShowFloodExtents}
+                locations={locations}
+              />
 
-              <hr />
-              <strong>Locations ({locations.length})</strong>
+              <hr class='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
 
-              <hr />
               <strong>Location filter</strong>
 
-              <hr />
+              <hr class='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
+
               <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
                 This is not a live flood map
               </span>

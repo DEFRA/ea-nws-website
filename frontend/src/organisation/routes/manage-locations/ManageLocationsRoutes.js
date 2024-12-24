@@ -27,8 +27,10 @@ import LocationAddConfirm from '../../pages/manage-locations/add-location/upload
 import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
 import ConfirmAddingLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
+import ConfirmUploadCsvPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm/ConfirmUploadCsvPage'
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/FindUnmatchedLocationsPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
+import FindUnmatchedLocationPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/FindUnmatchedLocationPage'
 import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
 import SelectHowToFindThisLocationPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/SelectHowToFindThisLocationPage'
 import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-by-address/FindLocationByMatchedAddressesPage'
@@ -76,7 +78,9 @@ const orgManageLocationsUrls = {
     manualAddLocation: {
       confirmManualSearchedLocation: urlManageOrg + '/add/confirm'
     },
-    uploadLocationsWithCsv: {},
+    uploadLocationsWithCsv: {
+      confirm: urlManageOrgAddLocations + '/csv-upload/confirm'
+    },
     addLocationsWithShapefile: urlManageOrgAddLocations + '/shapefile-info',
     uploadLocationsWithShapefile:
       urlManageOrgAddLocations + '/shapefile-upload',
@@ -158,6 +162,9 @@ const orgManageLocationsUrls = {
       map: urlManageOrgUnmatchedLocations + '/manually-find/map',
       notInEngland:
         urlManageOrgUnmatchedLocations + '/manually-find/not-in-england'
+    },
+    find: {
+      options: urlManageOrgUnmatchedLocations + '/find/options'
     }
   }
 }
@@ -198,6 +205,10 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.add.manualAddLocation
       .confirmManualSearchedLocation,
     component: <ConfirmLocationPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.uploadLocationsWithCsv.confirm,
+    component: <ConfirmUploadCsvPage />
   },
   {
     path: orgManageLocationsUrls.add.uploadFile,
@@ -277,6 +288,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.index,
     component: <ManuallyFindLocationsPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.find.options,
+    component: <FindUnmatchedLocationPage />
   },
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName,

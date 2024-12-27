@@ -13,11 +13,36 @@ import {
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { postCodeValidation } from '../../../../../../common/services/validations/PostCodeValidation'
 
-export default function PostCodeSearchLayout ({ navigateToNextPage }) {
+export default function PostCodeSearchLayout ({ navigateToNextPage, location }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [postCode, setPostCode] = useState('')
   const [error, setError] = useState('')
+
+  const InsetText = () => (
+    <div className='govuk-inset-text'>
+      <strong>{location.name}</strong>
+      {location.address && (
+        <>
+          <br />
+          {location.address}
+        </>
+      )}
+      {location.coordinates && !location.address && (
+        <>
+          <br />
+          {location.coordinates}
+        </>
+      )}
+      {location.coordinates && location.address && (
+        <>
+          <br />
+          <br />
+          {location.coordinates}
+        </>
+      )}
+    </div>
+  )
 
   const handleSubmit = async () => {
     const postCodeValidationError = postCodeValidation(postCode)
@@ -60,9 +85,12 @@ export default function PostCodeSearchLayout ({ navigateToNextPage }) {
             <h1 className='govuk-heading-l'>
               What is the location's postcode?
             </h1>
+            {location && <InsetText />}
             <div className='govuk-body'>
               <Input
                 name='Postcode'
+                isNameBold='true'
+                nameSize='s'
                 inputType='text'
                 value={postCode}
                 onChange={(val) => setPostCode(val)}

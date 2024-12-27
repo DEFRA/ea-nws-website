@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useSelector } from 'react-redux'
+// import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../../common/components/gov-uk/Button'
@@ -16,6 +16,7 @@ export default function FindUnmatchedLocationsPage () {
   const location = {
     name: 'Location_IDXX',
     address: 'Address',
+    postcode: null,
     coordinates: 'X and Y'
   }
 
@@ -28,16 +29,16 @@ export default function FindUnmatchedLocationsPage () {
     { value: 'map', label: 'Drop a pin on a map' }
   ]
 
-  const locationSearchResults = useSelector(
-    (state) => state.session.locationSearchResults
-  )
+  // const locationSearchResults = useSelector(
+  //   (state) => state.session.locationSearchResults
+  // )
 
   const handleContinue = () => {
     if (!findLocationOption) {
       setError('Select how do you want to find this location')
     } else if (findLocationOption === findLocationOptions[0].value) {
-      if (locationSearchResults) {
-        navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.address)
+      if (!location.postcode) {
+        navigate(orgManageLocationsUrls.unmatchedLocations.find.postcode)
       }
     } else {
       navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName) // Navigate to map
@@ -82,6 +83,31 @@ export default function FindUnmatchedLocationsPage () {
     </>
   )
 
+  const InsetText = () => (
+    <div className='govuk-inset-text'>
+      <strong>{location.name}</strong>
+      {location.address && (
+        <>
+          <br />
+          {location.address}
+        </>
+      )}
+      {location.coordinates && !location.address && (
+        <>
+          <br />
+          {location.coordinates}
+        </>
+      )}
+      {location.coordinates && location.address && (
+        <>
+          <br />
+          <br />
+          {location.coordinates}
+        </>
+      )}
+    </div>
+  )
+
   return (
     <>
       <BackLink onClick={() => navigate(-1)} />
@@ -94,29 +120,7 @@ export default function FindUnmatchedLocationsPage () {
             </h1>
             <div className='govuk-body'>
               <Info />
-
-              <div className='govuk-inset-text'>
-                <strong>{location.name}</strong>
-                {location.address && (
-                  <>
-                    <br />
-                    {location.address}
-                  </>
-                )}
-                {location.coordinates && !location.address && (
-                  <>
-                    <br />
-                    {location.coordinates}
-                  </>
-                )}
-                {location.coordinates && location.address && (
-                  <>
-                    <br />
-                    <br />
-                    {location.coordinates}
-                  </>
-                )}
-              </div>
+              <InsetText />
 
               <div
                 className={

@@ -31,6 +31,7 @@ import ConfirmUploadCsvPage from '../../pages/manage-locations/add-location/uplo
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/FindUnmatchedLocationsPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import FindUnmatchedLocationPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/FindUnmatchedLocationPage'
+import FindLocationByPostCodePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-by-postcode/FindLocationByPostCodePage'
 import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
 import SelectHowToFindThisLocationPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/SelectHowToFindThisLocationPage'
 import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-by-address/FindLocationByMatchedAddressesPage'
@@ -164,7 +165,8 @@ const orgManageLocationsUrls = {
         urlManageOrgUnmatchedLocations + '/manually-find/not-in-england'
     },
     find: {
-      options: urlManageOrgUnmatchedLocations + '/find/options'
+      options: urlManageOrgUnmatchedLocations + '/find/options',
+      postcode: urlManageOrgUnmatchedLocations + '/find/post-code'
     }
   }
 }
@@ -292,6 +294,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.unmatchedLocations.find.options,
     component: <FindUnmatchedLocationPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.find.postcode,
+    component: <FindLocationByPostCodePage />
   },
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName,

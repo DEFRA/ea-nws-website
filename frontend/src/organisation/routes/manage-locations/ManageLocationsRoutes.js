@@ -30,10 +30,12 @@ import ConfirmAddingLocationsPage from '../../pages/manage-locations/add-locatio
 import ConfirmUploadCsvPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm/ConfirmUploadCsvPage'
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/FindUnmatchedLocationsPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
+import ConfirmUnmatchedLocationPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ConfirmUnmatchedLocationPage'
 import FindUnmatchedLocationPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/FindUnmatchedLocationPage'
-import FindLocationByPostCodePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-by-postcode/FindLocationByPostCodePage'
 import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
 import SelectHowToFindThisLocationPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/SelectHowToFindThisLocationPage'
+import FindLocationByCoordinatesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-by-coordinates/FindLocationByCoordinatesPage'
+import FindLocationByPostCodePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-by-postcode/FindLocationByPostCodePage'
 import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-by-address/FindLocationByMatchedAddressesPage'
 import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/NotInEnglandPage'
 import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
@@ -166,7 +168,9 @@ const orgManageLocationsUrls = {
     },
     find: {
       options: urlManageOrgUnmatchedLocations + '/find/options',
-      postcode: urlManageOrgUnmatchedLocations + '/find/post-code'
+      postcode: urlManageOrgUnmatchedLocations + '/find/post-code',
+      coordinates: urlManageOrgUnmatchedLocations + '/find/coordinates',
+      confirm: urlManageOrgUnmatchedLocations + '/find/confirm-location'
     }
   }
 }
@@ -298,6 +302,14 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.unmatchedLocations.find.postcode,
     component: <FindLocationByPostCodePage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.find.coordinates,
+    component: <FindLocationByCoordinatesPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.find.confirm,
+    component: <ConfirmUnmatchedLocationPage />
   },
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName,

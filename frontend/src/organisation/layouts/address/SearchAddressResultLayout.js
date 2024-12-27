@@ -5,7 +5,7 @@ import BackLink from '../../../common/components/custom/BackLink'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import { setOrganizationAddress } from '../../../common/redux/userSlice'
 
-export default function SelectAddressLayout ({
+export default function SearchAddressResultLayout ({
   navigateToNextPage,
   NavigateToPreviousPage
 }) {
@@ -22,7 +22,7 @@ export default function SelectAddressLayout ({
     currentPage * locationsPerPage
   )
 
-  const handleSelectedLocation = async (event, selectedLocation) => {
+  const handleSelectedLocation = (event, selectedLocation) => {
     event.preventDefault()
     dispatch(setOrganizationAddress(selectedLocation.address))
     navigateToNextPage()

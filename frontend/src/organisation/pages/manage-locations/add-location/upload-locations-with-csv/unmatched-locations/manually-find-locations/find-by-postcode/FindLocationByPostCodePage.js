@@ -7,6 +7,7 @@ export default function LocationPostCodeSearchPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {
+    // TODO: Need to navigate to appropriate page
     navigate(orgManageLocationsUrls.add.search.postCodeSearchResults)
   }
 

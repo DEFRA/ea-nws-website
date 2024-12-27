@@ -11,9 +11,8 @@ import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locat
 
 export default function FindLocationByMatchedAddressesPage () {
   const navigate = useNavigate()
-  const selectedLocation = useSelector(
-    (state) =>
-      getLocationOther(state, 'full_address')
+  const selectedLocation = useSelector((state) =>
+    getLocationOther(state, 'full_address')
   )
   const [selectedAddressIndex, setSelectedAddressIndex] = useState(null)
   const [error, setError] = useState('')
@@ -25,7 +24,7 @@ export default function FindLocationByMatchedAddressesPage () {
     setError('')
   }, [selectedAddressIndex])
 
-  const handleContinue = async () => {
+  const handleContinue = () => {
     if (!selectedAddressIndex) {
       setError('Select an address')
     } else {
@@ -62,7 +61,7 @@ export default function FindLocationByMatchedAddressesPage () {
                   initialSelectOptionText={`Select from ${
                     availableAddresses.length
                   } address${
-                    availableAddresses.lenght > 1 ? 'es' : ''
+                    availableAddresses.length > 1 ? 'es' : ''
                   } partly matched`}
                 />
               </div>

@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import SelectAddressLayout from '../../layouts/address/SearchAddressResultLayout'
+import SearchAddressResultLayout from '../../layouts/address/SearchAddressResultLayout'
 
 export default function SelectAddressPage () {
   const navigate = useNavigate()
@@ -12,7 +12,7 @@ export default function SelectAddressPage () {
   }
 
   return (
-    <SelectAddressLayout
+    <SearchAddressResultLayout
       navigateToNextPage={navigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
     />

@@ -6,7 +6,11 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
-import { getLocationAdditional, getLocationOther, setCurrentLocation } from '../../../../../common/redux/userSlice'
+import {
+  getLocationAdditional,
+  getLocationOther,
+  setCurrentLocation
+} from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
@@ -21,12 +25,12 @@ export default function ConfirmLocationLayout ({
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
-  const locationName = useSelector(
-    (state) => getLocationAdditional(state, 'locationName')
+  const locationName = useSelector((state) =>
+    getLocationAdditional(state, 'locationName')
   )
 
-  const currentAddress = useSelector(
-    (state) => getLocationOther(state, 'full_address')
+  const currentAddress = useSelector((state) =>
+    getLocationOther(state, 'full_address')
   )
   const formattedAddress = currentAddress ? currentAddress.split(',') : ''
 
@@ -42,7 +46,9 @@ export default function ConfirmLocationLayout ({
       dispatch(setCurrentLocation(data))
       navigateToNextPage()
     } else {
-      errorMessage ? setError(errorMessage) : setError('Oops, something went wrong')
+      errorMessage
+        ? setError(errorMessage)
+        : setError('Oops, something went wrong')
     }
   }
 
@@ -94,15 +100,11 @@ export default function ConfirmLocationLayout ({
             </h3>
             <p>
               {Math.round(
-                useSelector(
-                  (state) => getLocationOther(state, 'x_coordinate')
-                )
+                useSelector((state) => getLocationOther(state, 'x_coordinate'))
               )}
               {', '}
               {Math.round(
-                useSelector(
-                  (state) => getLocationOther(state, 'y_coordinate')
-                )
+                useSelector((state) => getLocationOther(state, 'y_coordinate'))
               )}
             </p>
 

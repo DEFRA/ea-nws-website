@@ -17,7 +17,8 @@ import Map from '../../../../components/custom/Map'
 
 export default function ConfirmLocationLayout ({
   navigateToNextPage,
-  navigateToPinDropFlow
+  navigateToPinDropFlow,
+  flow
 }) {
   const [error, setError] = useState(null)
   const navigate = useNavigate()
@@ -71,7 +72,7 @@ export default function ConfirmLocationLayout ({
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l govuk-!-margin-top-5'>
-              Confirm Location
+              Confirm location
             </h1>
             <h2 className='govuk-heading-m govuk-!-margin-top-6'>
               {locationName}
@@ -117,7 +118,11 @@ export default function ConfirmLocationLayout ({
 
             <div className='govuk-!-margin-top-8'>
               <Button
-                text='Confirm Location'
+                text={
+                  flow === 'unmatched-locations'
+                    ? 'Add location'
+                    : 'Confirm location'
+                }
                 className='govuk-button'
                 onClick={handleSubmit}
               />

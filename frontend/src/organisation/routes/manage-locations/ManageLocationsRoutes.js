@@ -35,6 +35,7 @@ import FindUnmatchedLocationPage from '../../pages/manage-locations/add-location
 import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
 import SelectHowToFindThisLocationPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/SelectHowToFindThisLocationPage'
 import FindLocationByCoordinatesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-by-coordinates/FindLocationByCoordinatesPage'
+import FindLocationByDropPinResultsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-by-drop-pin/FindLocationByDropPinResultsPage'
 import FindLocationByPostCodePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-by-postcode/FindLocationByPostCodePage'
 import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-by-address/FindLocationByMatchedAddressesPage'
 import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/NotInEnglandPage'
@@ -170,7 +171,11 @@ const orgManageLocationsUrls = {
       options: urlManageOrgUnmatchedLocations + '/find/options',
       postcode: urlManageOrgUnmatchedLocations + '/find/post-code',
       coordinates: urlManageOrgUnmatchedLocations + '/find/coordinates',
-      confirm: urlManageOrgUnmatchedLocations + '/find/confirm-location'
+      confirm: urlManageOrgUnmatchedLocations + '/find/confirm-location',
+      dropPin: {
+        search: urlManageOrgUnmatchedLocations + '/find/drop-pin',
+        results: urlManageOrgUnmatchedLocations + '/find/drop-pin/results'
+      }
     }
   }
 }
@@ -310,6 +315,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.unmatchedLocations.find.confirm,
     component: <ConfirmUnmatchedLocationPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.find.dropPin.results,
+    component: <FindLocationByDropPinResultsPage />
   },
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName,

@@ -11,19 +11,11 @@ export default function LocationPostCodeSearchPage () {
     navigate(orgManageLocationsUrls.add.search.postCodeSearchResults)
   }
 
-  // TODO: This data needs to be passed
-  const location = {
-    name: 'Location_IDXX',
-    address: 'Address',
-    postcode: null,
-    coordinates: 'X and Y'
-  }
-
   return (
     <>
       <PostCodeSearchLayout
         navigateToNextPage={navigateToNextPage}
-        location={location}
+        flow='unmatched-locations'
       />
     </>
   )

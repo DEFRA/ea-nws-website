@@ -11,9 +11,7 @@ export default function FindLocationByCoordinatesPage () {
   }
 
   const navigateToNextPage = () => {
-    navigate(
-      orgManageLocationsUrls.add.manualAddLocation.confirmManualSearchedLocation
-    )
+    navigate(orgManageLocationsUrls.unmatchedLocations.find.confirm)
   }
 
   return (

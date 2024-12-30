@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 // import { useSelector } from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
@@ -23,25 +23,33 @@ export default function FindUnmatchedLocationsPage () {
 
   const dispatch = useDispatch()
 
-  // TODO: This data needs to be passed
+  // TODO: This data will be set from the unmatched location table
   const location = {
     name: 'Location_IDXX',
     address: 'Address',
+    // address: null,
     postcode: null,
-    // coordinates: ['X', 'Y']
-    coordinates: [null, null]
+    coordinates: ['Y', 'X']
+    // coordinates: [null, null]
   }
 
-  if (location.coordinates[0] && location.coordinates[1]) {
-    setCoordinatesAvailable(true)
-  }
+  useEffect(() => {
+    if (location.coordinates[0] && location.coordinates[1]) {
+      setCoordinatesAvailable(true)
+    }
+  }, [location.coordinates])
 
   const findLocationOptions = [
     {
       value: 'postcode',
       label: 'Check the postcode'
     },
-    { value: 'coordinates', label: 'Use different X and Y coordinates' },
+    {
+      value: 'coordinates',
+      label: coordinatesAvailable
+        ? 'Use different X and Y coordinates'
+        : 'Use X and Y coordinates'
+    },
     { value: 'map', label: 'Drop a pin on a map' }
   ]
 
@@ -50,6 +58,7 @@ export default function FindUnmatchedLocationsPage () {
   // )
 
   const handleContinue = () => {
+    // TODO: This will be set from the unmatched location table
     dispatch(setCurrentLocationName(location.name))
     dispatch(setCurrentLocationFullAddress(location.address))
     dispatch(setCurrentLocationPostcode(location.postcode))
@@ -121,14 +130,14 @@ export default function FindUnmatchedLocationsPage () {
       {coordinatesAvailable && !location.address && (
         <>
           <br />
-          {location.coordinates}
+          {location.coordinates[0]}, {location.coordinates[1]}
         </>
       )}
       {coordinatesAvailable && location.address && (
         <>
           <br />
           <br />
-          {location.coordinates}
+          {location.coordinates[0]}, {location.coordinates[1]}
         </>
       )}
     </div>

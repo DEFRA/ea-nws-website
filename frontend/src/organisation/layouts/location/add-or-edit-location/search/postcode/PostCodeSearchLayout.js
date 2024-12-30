@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
@@ -7,42 +7,53 @@ import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../../../common/components/gov-uk/Input'
 import {
+  getLocationAdditional,
+  getLocationOther,
   setCurrentLocationPostcode,
   setLocationSearchResults
 } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { postCodeValidation } from '../../../../../../common/services/validations/PostCodeValidation'
 
-export default function PostCodeSearchLayout ({ navigateToNextPage, location }) {
+export default function PostCodeSearchLayout ({ navigateToNextPage, flow }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [postCode, setPostCode] = useState('')
   const [error, setError] = useState('')
 
-  const InsetText = () => (
-    <div className='govuk-inset-text'>
-      <strong>{location.name}</strong>
-      {location.address && (
-        <>
-          <br />
-          {location.address}
-        </>
-      )}
-      {location.coordinates && !location.address && (
-        <>
-          <br />
-          {location.coordinates}
-        </>
-      )}
-      {location.coordinates && location.address && (
-        <>
-          <br />
-          <br />
-          {location.coordinates}
-        </>
-      )}
-    </div>
-  )
+  const LocationDetails = () => {
+    const locationName = useSelector((state) =>
+      getLocationAdditional(state, 'locationName')
+    )
+    const locationFullAddress = useSelector((state) =>
+      getLocationOther(state, 'full_address')
+    )
+    const locationXcoordinate = useSelector((state) =>
+      getLocationOther(state, 'x_coordinate')
+    )
+    const locationYcoordinate = useSelector((state) =>
+      getLocationOther(state, 'y_coordinate')
+    )
+
+    return (
+      <div className='govuk-inset-text'>
+        <strong>{locationName}</strong>
+        {locationFullAddress && (
+          <>
+            <br />
+            {locationFullAddress}
+          </>
+        )}
+        <br />
+        {locationXcoordinate && locationYcoordinate && (
+          <>
+            <br />
+            {locationXcoordinate}, {locationYcoordinate}
+          </>
+        )}
+      </div>
+    )
+  }
 
   const handleSubmit = async () => {
     const postCodeValidationError = postCodeValidation(postCode)
@@ -85,7 +96,7 @@ export default function PostCodeSearchLayout ({ navigateToNextPage, location }) 
             <h1 className='govuk-heading-l'>
               What is the location's postcode?
             </h1>
-            {location && <InsetText />}
+            {flow === 'unmatched-locations' && <LocationDetails />}
             <div className='govuk-body'>
               <Input
                 name='Postcode'

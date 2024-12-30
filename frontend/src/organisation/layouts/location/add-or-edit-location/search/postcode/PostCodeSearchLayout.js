@@ -15,7 +15,11 @@ import {
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { postCodeValidation } from '../../../../../../common/services/validations/PostCodeValidation'
 
-export default function PostCodeSearchLayout ({ navigateToNextPage, flow }) {
+export default function PostCodeSearchLayout ({
+  navigateToNextPage,
+  navigateToNotInEnglandPage,
+  flow
+}) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [postCode, setPostCode] = useState('')
@@ -72,8 +76,12 @@ export default function PostCodeSearchLayout ({ navigateToNextPage, flow }) {
         dispatch(setLocationSearchResults(data))
         navigateToNextPage()
       } else {
-        // show error message from OS Api postcode search
-        setError(errorMessage)
+        if (flow === 'unmatched-locations') {
+          navigateToNotInEnglandPage()
+        } else {
+          // show error message from OS Api postcode search
+          setError(errorMessage)
+        }
       }
     } else {
       setError(postCodeValidationError)

@@ -10,14 +10,14 @@ export default function DropPinOnMapPage () {
     navigate(orgManageLocationsUrls.add.search.dropPinSearchResults)
   }
 
-  const NavigateToNotInEnglandPage = () => {
+  const navigateToNotInEnglandPage = () => {
     navigate(orgManageLocationsUrls.add.error.dropPinNotInEngland)
   }
 
   return (
     <DropPinOnMapLayout
       navigateToNextPage={navigateToNextPage}
-      NavigateToNotInEnglandPage={NavigateToNotInEnglandPage}
+      navigateToNotInEnglandPage={navigateToNotInEnglandPage}
       flow='add'
     />
   )

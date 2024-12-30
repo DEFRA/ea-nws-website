@@ -11,10 +11,17 @@ export default function LocationPostCodeSearchPage () {
     navigate(orgManageLocationsUrls.add.search.postCodeSearchResults)
   }
 
+  const navigateToNotInEnglandPage = () => {
+    navigate(
+      orgManageLocationsUrls.unmatchedLocations.find.notInEngland.postcode
+    )
+  }
+
   return (
     <>
       <PostCodeSearchLayout
         navigateToNextPage={navigateToNextPage}
+        navigateToNotInEnglandPage={navigateToNotInEnglandPage}
         flow='unmatched-locations'
       />
     </>

@@ -11,13 +11,20 @@ export default function FindLocationByDropPinResultsPage () {
   }
 
   const navigateToNotInEnglandPage = () => {
-    navigate(orgManageLocationsUrls.add.error.dropPinNotInEngland)
+    navigate(
+      orgManageLocationsUrls.unmatchedLocations.find.notInEngland.dropPin
+    )
+  }
+
+  const navigateToDropPinLocationSearchPage = () => {
+    navigate(orgManageLocationsUrls.unmatchedLocations.find.dropPin.search)
   }
 
   return (
     <DropPinOnMapLayout
       navigateToNextPage={navigateToNextPage}
       navigateToNotInEnglandPage={navigateToNotInEnglandPage}
+      navigateToDropPinLocationSearchPage={navigateToDropPinLocationSearchPage}
       flow='unmatched-locations'
     />
   )

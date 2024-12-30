@@ -7,7 +7,9 @@ export default function FindLocationByCoordinatesPage () {
   const navigate = useNavigate()
 
   const navigateToNotInEngland = () => {
-    navigate(orgManageLocationsUrls.add.error.xyCoordinatesNotInEngland)
+    navigate(
+      orgManageLocationsUrls.unmatchedLocations.find.notInEngland.coordinates
+    )
   }
 
   const navigateToNextPage = () => {

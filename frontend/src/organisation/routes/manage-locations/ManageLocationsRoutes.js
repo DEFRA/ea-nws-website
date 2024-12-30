@@ -41,6 +41,9 @@ import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/add
 import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/NotInEnglandPage'
 import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
 import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
+import UnmatchedLocationCoordinatesNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/not-in-england/CoordinatesNotInEnglandPage'
+import UnmatchedLocationDropPinNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/not-in-england/DropPinNotInEnglandPage'
+import UnmatchedLocationPostcodeNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/not-in-england/PostcodeNotInEnglandPage'
 
 // edit imports
 import EditConfirmLocationPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/ConfirmLocationPage'
@@ -173,8 +176,16 @@ const orgManageLocationsUrls = {
       coordinates: urlManageOrgUnmatchedLocations + '/find/coordinates',
       confirm: urlManageOrgUnmatchedLocations + '/find/confirm-location',
       dropPin: {
-        search: urlManageOrgUnmatchedLocations + '/find/drop-pin',
+        search: urlManageOrgUnmatchedLocations + '/find/drop-pin/search',
         results: urlManageOrgUnmatchedLocations + '/find/drop-pin/results'
+      },
+      notInEngland: {
+        dropPin:
+          urlManageOrgUnmatchedLocations + '/find/drop-pin/not-in-england',
+        coordinates:
+          urlManageOrgUnmatchedLocations + '/find/coordinates/not-in-england',
+        postcode:
+          urlManageOrgUnmatchedLocations + '/find/post-code/not-in-england'
       }
     }
   }
@@ -319,6 +330,19 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.unmatchedLocations.find.dropPin.results,
     component: <FindLocationByDropPinResultsPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.find.notInEngland.dropPin,
+    component: <UnmatchedLocationDropPinNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.find.notInEngland
+      .coordinates,
+    component: <UnmatchedLocationCoordinatesNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.find.notInEngland.postcode,
+    component: <UnmatchedLocationPostcodeNotInEnglandPage />
   },
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName,

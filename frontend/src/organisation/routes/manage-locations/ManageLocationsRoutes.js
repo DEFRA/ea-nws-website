@@ -36,6 +36,7 @@ import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location
 import SelectHowToFindThisLocationPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/SelectHowToFindThisLocationPage'
 import FindLocationByCoordinatesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-by-coordinates/FindLocationByCoordinatesPage'
 import FindLocationByDropPinResultsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-by-drop-pin/FindLocationByDropPinResultsPage'
+import FindLocationByDropPinSearchPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-by-drop-pin/FindLocationByDropPinSearchPage'
 import FindLocationByPostCodePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-by-postcode/FindLocationByPostCodePage'
 import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-by-address/FindLocationByMatchedAddressesPage'
 import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/NotInEnglandPage'
@@ -326,6 +327,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.unmatchedLocations.find.confirm,
     component: <ConfirmUnmatchedLocationPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.find.dropPin.search,
+    component: <FindLocationByDropPinSearchPage />
   },
   {
     path: orgManageLocationsUrls.unmatchedLocations.find.dropPin.results,

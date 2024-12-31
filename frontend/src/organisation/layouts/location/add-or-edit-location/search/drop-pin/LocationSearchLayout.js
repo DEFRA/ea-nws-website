@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
@@ -7,10 +7,14 @@ import Autocomplete from '../../../../../../common/components/gov-uk/Autocomplet
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../../../common/components/gov-uk/Radio'
-import { setCurrentLocationCoordinates } from '../../../../../../common/redux/userSlice'
+import {
+  getLocationAdditional,
+  getLocationOther,
+  setCurrentLocationCoordinates
+} from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 
-export default function LocationSearchLayout ({ navigateToNextPage }) {
+export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [searchOption, setSearchOption] = useState('')
@@ -122,25 +126,66 @@ export default function LocationSearchLayout ({ navigateToNextPage }) {
     navigate(-1)
   }
 
+  const LocationDetails = () => {
+    const locationName = useSelector((state) =>
+      getLocationAdditional(state, 'locationName')
+    )
+    const locationFullAddress = useSelector((state) =>
+      getLocationOther(state, 'full_address')
+    )
+    const locationXcoordinate = useSelector((state) =>
+      getLocationOther(state, 'x_coordinate')
+    )
+    const locationYcoordinate = useSelector((state) =>
+      getLocationOther(state, 'y_coordinate')
+    )
+
+    return (
+      <div className='govuk-inset-text'>
+        <strong>{locationName}</strong>
+        {locationFullAddress && (
+          <>
+            <br />
+            {locationFullAddress}
+          </>
+        )}
+        <br />
+        {locationXcoordinate && locationYcoordinate && (
+          <>
+            <br />
+            {locationXcoordinate}, {locationYcoordinate}
+          </>
+        )}
+      </div>
+    )
+  }
+
   return (
     <>
       <OrganisationAccountNavigation />
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             {(searchOptionError || placeNameTownOrPostcodeError) && (
               <ErrorSummary
                 errorList={[searchOptionError, placeNameTownOrPostcodeError]}
               />
             )}
-            <h1 className='govuk-heading-l'>
-              How do you want to find the location on a map?
-            </h1>
-            <p>
+            <h1 className='govuk-heading-l'>Find the location on a map</h1>
+            {flow === 'unmatched-locations' && (
+              <p>
+                The location you're searching for cannot be found. We need some
+                additional information to help us find it.
+              </p>
+            )}
+            {flow === 'unmatched-locations' && <LocationDetails />}
+
+            {/* TODO: Looks like the radio options are removed from the master screens */}
+            {/* <p>
               We need some additional information to help us find the location.
               Select from the following options which of these you want to use.
-            </p>
+            </p> */}
             <div
               className={
                 searchOptionError

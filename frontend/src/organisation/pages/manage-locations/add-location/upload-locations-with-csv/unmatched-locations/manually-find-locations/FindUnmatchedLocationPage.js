@@ -76,7 +76,7 @@ export default function FindUnmatchedLocationsPage () {
     } else if (findLocationOption === findLocationOptions[1].value) {
       navigate(orgManageLocationsUrls.unmatchedLocations.find.coordinates)
     } else {
-      navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName) // Navigate to map
+      navigate(orgManageLocationsUrls.unmatchedLocations.find.dropPin.search)
     }
   }
 
@@ -104,7 +104,7 @@ export default function FindUnmatchedLocationsPage () {
         </p>
       )}
 
-      {coordinatesAvailable && !location.address && (
+      {coordinatesAvailable && (
         <p>
           The X and Y coordinates uploaded for this location were not
           recognised.

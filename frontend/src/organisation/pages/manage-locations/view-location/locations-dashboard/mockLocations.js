@@ -103,7 +103,7 @@ export const mockLocations = [
         location_type: 'Office',
         business_criticality: 'Low',
         alertTypes: [],
-        location_data_type: 'xycoords'
+        location_data_type: 'polygon'
       }
     }
   },
@@ -121,7 +121,7 @@ export const mockLocations = [
         location_type: 'Warehouse',
         business_criticality: 'High',
         alertTypes: ['ALERT_LVL_2'],
-        location_data_type: 'xycoords'
+        location_data_type: 'polygon'
       }
     }
   },
@@ -175,7 +175,7 @@ export const mockLocations = [
         location_type: 'Office',
         business_criticality: 'Medium',
         alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3'],
-        location_data_type: 'xycoords'
+        location_data_type: 'polygon'
       }
     }
   },

@@ -45,18 +45,24 @@ export default function FullscreenMap ({
   const [showOnlyFilteredLocations, setShowOnlyFilteredLocations] =
     useState(true)
 
-  const [mapLocations, setMapLocations] = useState(filteredLocations)
+  const [mapLocations, setMapLocations] = useState(
+    filteredLocations || locations
+  )
 
   const initialPosition = [52.7152, -1.17349]
   const initialZoom = 7
 
   useEffect(() => {
-    if (showOnlyFilteredLocations) {
+    if (filteredLocations && showOnlyFilteredLocations) {
       setMapLocations(filteredLocations)
     } else {
       setMapLocations(locations)
     }
   }, [showOnlyFilteredLocations])
+
+  useEffect(() => {
+    if (!filteredLocations) setShowLocationsOutsideFloodAreas(true)
+  }, [])
 
   // Get flood area data
   useEffect(() => {
@@ -276,6 +282,8 @@ export default function FullscreenMap ({
     }
   }
 
+  // TODO: Add functionality to show/hide flood extent areas
+
   const hideWarningArea = () => {
     if (warningAreaRefVisible && warningAreaRef.current) {
       warningAreaRef.current.eachLayer((layer) => {
@@ -310,6 +318,29 @@ export default function FullscreenMap ({
     }
   }
 
+  // Check if location has alert type
+  const locationHasAlertType = (location) => {
+    const alertTypes = location.additionals.other?.alertTypes?.length
+
+    // Needed to parse current location structure in redux
+    const parsedAlertTypes = location.additionals[4]
+      ? JSON.parse(location.additionals[4]?.value?.s).alertTypes?.length
+      : 0
+    return alertTypes || parsedAlertTypes
+  }
+
+  // Display locations with alerts
+  const displayLocationsWithAlerts = (location) => {
+    const { latitude, longitude } = location.coordinates
+    const isValidLocation = latitude && longitude
+    const isInFloodArea =
+      showLocationsWithinFloodAreas && locationHasAlertType(location)
+    const isOutsideFloodArea =
+      showLocationsOutsideFloodAreas && !locationHasAlertType(location)
+
+    return isValidLocation && (isInFloodArea || isOutsideFloodArea)
+  }
+
   return (
     <div>
       <Modal show={showMap} onHide={handleCloseMap} fullscreen centered>
@@ -332,17 +363,7 @@ export default function FullscreenMap ({
                 <ResetMapButton />
                 <ExitMapButton />
                 {mapLocations
-                  .filter(
-                    (location) =>
-                      (location.coordinates.latitude &&
-                        location.coordinates.longitude &&
-                        showLocationsWithinFloodAreas &&
-                        location.additionals.other?.alertTypes?.length > 0) ||
-                      (location.coordinates.latitude &&
-                        location.coordinates.longitude &&
-                        showLocationsOutsideFloodAreas &&
-                        location.additionals.other?.alertTypes?.length === 0)
-                  )
+                  .filter(displayLocationsWithAlerts)
                   .map((location, index) => (
                     <Marker
                       key={index}
@@ -356,10 +377,13 @@ export default function FullscreenMap ({
                           className='govuk-link'
                           // onClick={(e) => viewLocation(e, location)}
                         >
-                          {location.additionals.locationName}
+                          {location.additionals.locationName ||
+                            location.additionals[0].value.s}
                         </Link>
                         <br />
-                        {location.additionals.other.location_type}
+                        {location.additionals.other?.location_type ||
+                          JSON.parse(location.additionals[4]?.value?.s)
+                            .location_type}
                         <br />
                         {location.address}
                       </Popup>

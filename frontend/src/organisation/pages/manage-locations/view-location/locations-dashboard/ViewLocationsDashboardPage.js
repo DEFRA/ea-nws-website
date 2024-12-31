@@ -71,7 +71,7 @@ export default function ViewLocationsDashboardPage () {
   }, [filteredLocations, currentPage])
 
   useEffect(() => {
-    // Temporarily get mock locations locally instead of elasticache to avoid discrepancies
+    // TODO: Temporarily get mock locations locally instead of elasticache to avoid discrepancies
     const locationsUpdate = mockLocations
     const getLocations = async (locationsUpdate) => {
       // const getLocations = async () => {
@@ -126,6 +126,8 @@ export default function ViewLocationsDashboardPage () {
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
     }
+
+    // TODO: Temporarily get mock locations locally instead of elasticache to avoid discrepancies
     // getLocations()
     getLocations(locationsUpdate)
   }, [])

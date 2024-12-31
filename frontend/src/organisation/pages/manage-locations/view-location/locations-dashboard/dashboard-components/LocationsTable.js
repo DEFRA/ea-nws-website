@@ -168,7 +168,7 @@ export default function LocationsTable ({
   }
 
   const openMap = () => {
-    setShowMap(true) // Set the state to show the map
+    setShowMap(true)
   }
 
   return (

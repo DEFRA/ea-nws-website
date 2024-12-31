@@ -76,6 +76,7 @@ export default function FloodAreasCheckboxKey ({
             onChange={() => setShowFloodExtents(!showFloodExtents)}
             checked={showFloodExtents}
           />
+          {/* TODO: Add key image for flood extent */}
           <FontAwesomeIcon
             icon={PublicSharpIcon}
             size='xl'

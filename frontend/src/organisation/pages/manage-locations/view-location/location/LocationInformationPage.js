@@ -1,7 +1,7 @@
-import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import locationPin from '../../../../../common/assets/images/location_pin.svg'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Details from '../../../../../common/components/gov-uk/Details'
@@ -409,17 +409,15 @@ export default function LocationInformationPage () {
             (
               <div className='govuk-grid-column-one-half'>
                 <Map showMapControls={false} zoomLevel={14} />
-                <div className='govuk-!-margin-top-4'>
-                  <FloodWarningKey type='both' />
-                </div>
+                <FloodWarningKey />
                 <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
                   This is not a live flood map
                 </span>
                 <span className='govuk-caption-m govuk-!-font-size-16'>
                   It shows fixed areas we provide flood warnings and alerts for
                 </span>
-                <div className=' govuk-!-margin-top-4'>
-                  <RoomOutlinedIcon style={{ fontSize: 30 }} />
+                <div className=' govuk-!-margin-top-4' style={{ display: 'flex', marginLeft: '-0.5rem' }}>
+                  <img src={locationPin} alt='Location pin icon' />
                   <Link className='govuk-link' onClick={openMap}>Open map</Link>
                 </div>
                 {showMap && (
@@ -427,7 +425,6 @@ export default function LocationInformationPage () {
                     showMap={showMap}
                     setShowMap={setShowMap}
                     locations={[currentLocation]}
-                    // filteredLocations={[currentLocation]}
                   />
                 )}
               </div>

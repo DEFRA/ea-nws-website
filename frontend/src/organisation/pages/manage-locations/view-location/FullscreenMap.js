@@ -27,11 +27,23 @@ export default function FullscreenMap ({
   locations,
   filteredLocations
 }) {
+  const initialPosition = filteredLocations
+    ? [52.7152, -1.17349]
+    : [locations[0].coordinates.latitude, locations[0].coordinates.longitude]
+  const initialZoom = filteredLocations ? 7 : 14
+
   const [apiKey, setApiKey] = useState(null)
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
-  const [mapCenter, setMapCenter] = useState(null)
-  const [zoomLevel, setZoomLevel] = useState(null)
+  const [mapCenter, setMapCenter] = useState(
+    filteredLocations
+      ? null
+      : {
+          lat: initialPosition[0],
+          lng: initialPosition[1]
+        }
+  )
+  const [zoomLevel, setZoomLevel] = useState(initialZoom)
   const [showFloodWarningAreas, setShowFloodWarningAreas] = useState(true)
   const [showFloodAlertAreas, setShowFloodAlertAreas] = useState(true)
   const [showFloodExtents, setShowFloodExtents] = useState(true)
@@ -48,9 +60,6 @@ export default function FullscreenMap ({
   const [mapLocations, setMapLocations] = useState(
     filteredLocations || locations
   )
-
-  const initialPosition = [52.7152, -1.17349]
-  const initialZoom = 7
 
   useEffect(() => {
     if (filteredLocations && showOnlyFilteredLocations) {
@@ -381,8 +390,9 @@ export default function FullscreenMap ({
                             location.additionals[0].value.s}
                         </Link>
                         <br />
-                        {location.additionals.other?.location_type ||
-                          JSON.parse(location.additionals[4]?.value?.s)
+                        {filteredLocations
+                          ? location.additionals.other.location_type
+                          : JSON.parse(location.additionals[4]?.value?.s)
                             .location_type}
                         <br />
                         {location.address}

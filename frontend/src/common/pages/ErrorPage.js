@@ -16,7 +16,7 @@ export default function ErrorPage () {
               <b>Contact us, if you need help</b><br />
               Telephone: 0345 988 1188<br />
               Textphone: 0345 602 6340<br />
-              24 hour service, 7days a week
+              Open 24 hours a day, 7 days a week
             </p>
 
             <p>

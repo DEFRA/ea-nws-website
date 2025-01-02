@@ -101,65 +101,67 @@ export default function LocationMessagesPage () {
     }
   }
 
-  const processFloodData  =() =>{
-    if (floodHistoryData) {
-      if (alertAreas) {
-        alertAreas.features.forEach((area) => setHistoricalData(area, 'Flood Alert'))
-      }
-      if (warningAreas) {
-        warningAreas.features.forEach((area) => setHistoricalData(area, 'Flood Warning'))
-        warningAreas.features.forEach((area) => setHistoricalData(area, 'Flood Warning Rapid Response'))
-      }
-    }
-  }
 
-  const populateInputs = (alertAreas, warningAreas) => {
-    const updatedFloodAreas = []
-    if (alertAreas) {
-      for(var i = 0; i < alertAreas.length; i++){
-        updatedFloodAreas.push({
-          areaName:
-          alertAreas[i].properties.TA_NAME,
-          areaType: `${alertAreasTypes[i]}`,
-          messagesSent: `${floodAlertsCount[i]} flood alert${floodAlertsCount[i]>1? 's' : ''}`
-        })
 
-    } 
-    if (warningAreas) {
-      for(var j = 0; j < warningAreas.length; j++){
-        updatedFloodAreas.push({
-          areaName:
-          warningAreas[j].properties.TA_NAME,
-          areaType: `${warningAreasTypes[j]}`,
-          messagesSent: `${severeFloodWarningsCount[j]} severe flood warning${severeFloodWarningsCount[j]>1 ? 's' : ''} and ${floodWarningsCount[j]} flood warning${floodWarningsCount[j]>1 ? 's' : ''}`
-        })
-      }
-    }
-    setFloodAreasInputs(updatedFloodAreas) 
-  }}
-
+  
   useEffect(() => {
+    const processFloodData  =() =>{
+      if (floodHistoryData) {
+        if (alertAreas) {
+          alertAreas.features.forEach((area) => setHistoricalData(area, 'Flood Alert'))
+        }
+        if (warningAreas) {
+          warningAreas.features.forEach((area) => setHistoricalData(area, 'Flood Warning'))
+          warningAreas.features.forEach((area) => setHistoricalData(area, 'Flood Warning Rapid Response'))
+        }
+      }
+    }
     processFloodData()
-  }, [floodHistoryData])
+  }, [floodHistoryData, warningAreas, alertAreas])
 
   useEffect(() => {
+    const populateInputs = (alertAreas, warningAreas) => {
+      const updatedFloodAreas = []
+      if (alertAreas) {
+        for(var i = 0; i < alertAreas.length; i++){
+          updatedFloodAreas.push({
+            areaName:
+            alertAreas[i].properties.TA_NAME,
+            areaType: `${alertAreasTypes[i]}`,
+            messagesSent: `${floodAlertsCount[i]} flood alert${floodAlertsCount[i]>1? 's' : ''}`
+          })
+  
+      } 
+      if (warningAreas) {
+        for(var j = 0; j < warningAreas.length; j++){
+          updatedFloodAreas.push({
+            areaName:
+            warningAreas[j].properties.TA_NAME,
+            areaType: `${warningAreasTypes[j]}`,
+            messagesSent: `${severeFloodWarningsCount[j]} severe flood warning${severeFloodWarningsCount[j]>1 ? 's' : ''} and ${floodWarningsCount[j]} flood warning${floodWarningsCount[j]>1 ? 's' : ''}`
+          })
+        }
+      } 
+      setFloodAreasInputs(updatedFloodAreas) 
+    }}
+  
     if (floodHistoryData && (alertAreas || warningAreas)) {
       populateInputs(alertAreas?.features, warningAreas?.features)
     }
-  }, [alertAreas, warningAreas, floodHistoryData])
+  }, [floodAlertsCount, floodWarningsCount, severeFloodWarningsCount, alertAreasTypes, warningAreasTypes])
 
   useEffect(() => {
-    if(floodAreasInputs && floodAlertsCount){
-      setLoading(false)
-    }
-  }, [floodAreasInputs])
+    const areAllCountsLoaded = floodAlertsCount.length > 0 && floodWarningsCount.length > 0 && severeFloodWarningsCount.length > 0;
+    if(floodAreasInputs.length > 0 && areAllCountsLoaded){
+      setLoading(false)}
+},[floodAreasInputs, floodAlertsCount, floodWarningsCount, severeFloodWarningsCount])
 
   useEffect(() => {
     const fetchAreas = async () => {
       await surroundingAreas()
     }
     fetchAreas()
-  }, [surroundingAreas])
+  }, [])
 
   useEffect(() => {
     async function getHistoryUrl () {
@@ -174,7 +176,6 @@ export default function LocationMessagesPage () {
       fetch(floodHistoryUrl)
         .then((response) => response.text())
         .then((data) => {
-          console.log('A: ', floodHistoryUrl)
           setFloodHistoryData(csvToJson(data))
         })
         .catch((e) =>

@@ -6,16 +6,13 @@ import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locat
 export default function LocationPostCodeSearchPage () {
   const navigate = useNavigate()
 
-  const navigateToNextPage = () => {
-    // TODO: Need to navigate to appropriate page
-    navigate(orgManageLocationsUrls.add.search.postCodeSearchResults)
-  }
+  const navigateToNextPage = () =>
+    navigate(orgManageLocationsUrls.unmatchedLocations.find.address)
 
-  const navigateToNotInEnglandPage = () => {
+  const navigateToNotInEnglandPage = () =>
     navigate(
       orgManageLocationsUrls.unmatchedLocations.find.notInEngland.postcode
     )
-  }
 
   return (
     <>

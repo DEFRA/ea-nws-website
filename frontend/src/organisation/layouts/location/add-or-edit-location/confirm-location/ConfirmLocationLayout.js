@@ -14,6 +14,7 @@ import {
 import { backendCall } from '../../../../../common/services/BackendService'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ConfirmLocationLayout ({
   navigateToNextPage,
@@ -65,7 +66,9 @@ export default function ConfirmLocationLayout ({
 
   return (
     <>
-      <OrganisationAccountNavigation />
+      <OrganisationAccountNavigation
+        currentPage={orgManageLocationsUrls.view.dashboard}
+      />
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
@@ -126,10 +129,8 @@ export default function ConfirmLocationLayout ({
                 className='govuk-button'
                 onClick={handleSubmit}
               />
-              <Link
-                onClick={navigateBack}
-                className='govuk-body govuk-link inline-link'
-              >
+              &nbsp;
+              <Link onClick={navigateBack} className='govuk-link inline-link'>
                 Cancel
               </Link>
             </div>
@@ -139,9 +140,7 @@ export default function ConfirmLocationLayout ({
             style={{ marginTop: '95px' }}
           >
             <Map showMapControls={false} zoomLevel={14} />
-            <div className='govuk-!-margin-top-4'>
-              <FloodWarningKey type='both' />
-            </div>
+            <FloodWarningKey />
             <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
               This is not a live flood map
             </span>

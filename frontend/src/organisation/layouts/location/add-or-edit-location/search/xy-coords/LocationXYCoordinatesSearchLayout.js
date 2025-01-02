@@ -17,6 +17,7 @@ import { convertCoordinatesToEspg4326 } from '../../../../../../common/services/
 import { locationInEngland } from '../../../../../../common/services/validations/LocationInEngland'
 import { xCoordinateValidation } from '../../../../../../common/services/validations/XCoordinateValidation'
 import { yCoordinateValidation } from '../../../../../../common/services/validations/YCoordinateValidation'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationXYCoordinatesSearchLayout ({
   navigateToNextPage,
@@ -116,7 +117,9 @@ export default function LocationXYCoordinatesSearchLayout ({
 
   return (
     <>
-      <OrganisationAccountNavigation />
+      <OrganisationAccountNavigation
+        currentPage={orgManageLocationsUrls.view.dashboard}
+      />
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

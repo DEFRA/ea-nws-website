@@ -14,6 +14,7 @@ import {
 } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { postCodeValidation } from '../../../../../../common/services/validations/PostCodeValidation'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function PostCodeSearchLayout ({
   navigateToNextPage,
@@ -95,7 +96,9 @@ export default function PostCodeSearchLayout ({
 
   return (
     <>
-      <OrganisationAccountNavigation />
+      <OrganisationAccountNavigation
+        currentPage={orgManageLocationsUrls.view.dashboard}
+      />
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

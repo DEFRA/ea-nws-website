@@ -8,8 +8,7 @@ export default function FloodWarningKey () {
       <div className='org-flood-warning-item'>
         <img src={warningIcon} alt='Flood warning and severe flood area' />
         <span className='org-flood-warning-text'>
-          Flood warning and
-          <br /> severe flood area
+          Severe flood warnings and flood warnings area
         </span>
       </div>
 

@@ -13,6 +13,7 @@ import {
   setCurrentLocationCoordinates
 } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
   const dispatch = useDispatch()
@@ -162,7 +163,9 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+      <OrganisationAccountNavigation
+        currentPage={orgManageLocationsUrls.view.dashboard}
+      />
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>

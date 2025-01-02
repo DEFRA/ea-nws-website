@@ -69,47 +69,6 @@ export default function LocationMessagesPage () {
     setWarningAreas(warningArea)
   }
 
-  useEffect(() => {
-    const fetchAreas = async () => {
-      await surroundingAreas()
-    }
-    fetchAreas()
-  }, [])
-
-  useEffect(() => {
-    async function getHistoryUrl () {
-      const { data } = await backendCall(
-        'data',
-        'api/locations/download_org_flood_history'
-      )
-      setHistoryUrl(data)
-    }
-
-    getHistoryUrl()
-    floodHistoryUrl &&
-      fetch(floodHistoryUrl)
-        .then((response) => response.text())
-        .then((data) => {
-          setFloodHistoryData(csvToJson(data))
-        })
-        .catch((e) =>
-          console.error('Could not fetch Organisation Historic Flood Warning file', e)
-        )
-  }, [])
-
-  useEffect(() => {
-    processFloodData()
-  }, [floodHistoryData])
-
-  useEffect(() => {
-    if (floodHistoryData && (alertAreas || warningAreas)) {
-      populateInputs(alertAreas?.features, warningAreas?.features)
-      setLoading(false)
-    }
-
-  }, [alertAreas, warningAreas, floodHistoryData])
-
-
 
 
   const setHistoricalData = (area, type) => {
@@ -167,17 +126,61 @@ export default function LocationMessagesPage () {
 
     } 
     if (warningAreas) {
-      for(var i = 0; i < warningAreas.length; i++){
+      for(var j = 0; j < warningAreas.length; j++){
         updatedFloodAreas.push({
           areaName:
-          warningAreas[i].properties.TA_NAME,
-          areaType: `${warningAreasTypes[i]}`,
-          messagesSent: `${severeFloodWarningsCount[i]} severe flood warning${severeFloodWarningsCount[i]>1 ? 's' : ''} and ${floodWarningsCount[i]} flood warning${floodWarningsCount[i]>1 ? 's' : ''}`
+          warningAreas[j].properties.TA_NAME,
+          areaType: `${warningAreasTypes[j]}`,
+          messagesSent: `${severeFloodWarningsCount[j]} severe flood warning${severeFloodWarningsCount[j]>1 ? 's' : ''} and ${floodWarningsCount[j]} flood warning${floodWarningsCount[j]>1 ? 's' : ''}`
         })
       }
     }
-    setFloodAreasInputs(updatedFloodAreas)
+    setFloodAreasInputs(updatedFloodAreas) 
   }}
+
+  useEffect(() => {
+    processFloodData()
+  }, [floodHistoryData])
+
+  useEffect(() => {
+    if (floodHistoryData && (alertAreas || warningAreas)) {
+      populateInputs(alertAreas?.features, warningAreas?.features)
+    }
+  }, [alertAreas, warningAreas, floodHistoryData])
+
+  useEffect(() => {
+    if(floodAreasInputs && floodAlertsCount){
+      setLoading(false)
+    }
+  }, [floodAreasInputs])
+
+  useEffect(() => {
+    const fetchAreas = async () => {
+      await surroundingAreas()
+    }
+    fetchAreas()
+  }, [surroundingAreas])
+
+  useEffect(() => {
+    async function getHistoryUrl () {
+      const { data } = await backendCall(
+        'data',
+        'api/locations/download_org_flood_history'
+      )
+      setHistoryUrl(data)
+    }
+    getHistoryUrl()
+    floodHistoryUrl &&
+      fetch(floodHistoryUrl)
+        .then((response) => response.text())
+        .then((data) => {
+          console.log('A: ', floodHistoryUrl)
+          setFloodHistoryData(csvToJson(data))
+        })
+        .catch((e) =>
+          console.error('Could not fetch Organisation Historic Flood Warning file', e)
+        )
+  }, [floodHistoryUrl])
 
   const handleSumbit = () => {
     if (
@@ -206,6 +209,8 @@ export default function LocationMessagesPage () {
     setAlertTypesEnabled(newalertTypesEnabled)
     setIsBannerDisplayed(false)
   }
+
+
 
   const messageSettingsSection = (
     <>

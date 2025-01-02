@@ -12,8 +12,10 @@ import {
   setCurrentLocationFullAddress,
   setCurrentLocationName,
   setCurrentLocationNorthing,
-  setCurrentLocationPostcode
+  setCurrentLocationPostcode,
+  setLocationSearchResults
 } from '../../../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function FindUnmatchedLocationsPage () {
@@ -29,6 +31,7 @@ export default function FindUnmatchedLocationsPage () {
     name: 'Location_IDXX',
     address: 'Address',
     // address: null,
+    // postcode: 'N1 0AG',
     postcode: null,
     coordinates: ['Y', 'X']
     // coordinates: [null, null]
@@ -58,7 +61,7 @@ export default function FindUnmatchedLocationsPage () {
   //   (state) => state.session.locationSearchResults
   // )
 
-  const handleContinue = () => {
+  const handleContinue = async () => {
     // TODO: This will be set from the unmatched location table
     dispatch(setCurrentLocationName(location.name))
     dispatch(setCurrentLocationFullAddress(location.address))
@@ -72,7 +75,19 @@ export default function FindUnmatchedLocationsPage () {
       if (!location.postcode) {
         navigate(orgManageLocationsUrls.unmatchedLocations.find.postcode)
       } else {
-        // TODO: Go to postcode addresses page
+        const dataToSend = {
+          postCode: location.postcode.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
+        }
+        const { data, errorMessage } = await backendCall(
+          dataToSend,
+          'api/os-api/postcode-search',
+          navigate
+        )
+        if (!errorMessage) {
+          dispatch(setCurrentLocationPostcode(data[0].postcode))
+          dispatch(setLocationSearchResults(data))
+          navigate(orgManageLocationsUrls.unmatchedLocations.find.address)
+        }
       }
     } else if (findLocationOption === findLocationOptions[1].value) {
       navigate(orgManageLocationsUrls.unmatchedLocations.find.coordinates)

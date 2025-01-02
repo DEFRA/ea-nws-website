@@ -12,7 +12,7 @@ export default function SelectAddressPage () {
   const navigateToPreviousPage = () => navigate(-1)
 
   const navigateToCannotFindAddressPage = () =>
-    navigate(orgManageLocationsUrls.unmatchedLocations.find.confirm)
+    navigate(orgManageLocationsUrls.unmatchedLocations.find.cannotFindAddress)
 
   return (
     <SearchAddressResultLayout

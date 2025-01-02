@@ -18,7 +18,6 @@ export default function DropPinOnMapPage () {
     <DropPinOnMapLayout
       navigateToNextPage={navigateToNextPage}
       navigateToNotInEnglandPage={navigateToNotInEnglandPage}
-      flow='add'
     />
   )
 }

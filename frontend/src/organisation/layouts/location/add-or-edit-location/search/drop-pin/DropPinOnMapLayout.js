@@ -97,7 +97,7 @@ export default function DropPinOnMapLayout ({
   }
 
   const handleSubmit = async () => {
-    if (pinCoords === '') {
+    if (!pinCoords) {
       setError('Click on the map to drop a pin')
     } else {
       const inEngland = await locationInEngland(

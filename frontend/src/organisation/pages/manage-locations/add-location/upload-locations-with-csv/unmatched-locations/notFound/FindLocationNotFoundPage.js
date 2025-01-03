@@ -18,7 +18,7 @@ import {
 import { backendCall } from '../../../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function FindUnmatchedLocationsPage () {
+export default function FindLocationNotFound () {
   const navigate = useNavigate()
   const [findLocationOption, setFindLocationOption] = useState('')
   const [error, setError] = useState('')

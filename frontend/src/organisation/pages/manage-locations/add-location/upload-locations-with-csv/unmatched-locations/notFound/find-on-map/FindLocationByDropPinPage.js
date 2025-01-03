@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import DropPinOnMapLayout from '../../../../../../../layouts/location/add-or-edit-location/search/drop-pin/DropPinOnMapLayout'
 import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function FindLocationByDropPinResultsPage () {
+export default function FindLocationByDropPinPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {

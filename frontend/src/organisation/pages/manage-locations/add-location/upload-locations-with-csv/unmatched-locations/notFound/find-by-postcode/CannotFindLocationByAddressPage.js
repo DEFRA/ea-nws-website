@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 import CannotFindAddressLayout from '../../../../../../../layouts/location/add-or-edit-location/error/CannotFindAddressLayout'
 import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function CannotFindLocationByPostCodeAddressPage () {
+export default function CannotFindLocationByAddressPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () =>

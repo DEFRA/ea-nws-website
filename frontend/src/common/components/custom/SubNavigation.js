@@ -24,6 +24,7 @@ export default function SubNavigation ({ pages, currentPage, type }) {
     return (
       <nav aria-label='Sub navigation'>
         <ul className='sub-navigation__list'>
+          <li className='sub-navigation__item'><b>Get flood warnings</b></li>
           {pages.map((page, index) => (
             <li key={index} className='sub-navigation__item'>
               <Link

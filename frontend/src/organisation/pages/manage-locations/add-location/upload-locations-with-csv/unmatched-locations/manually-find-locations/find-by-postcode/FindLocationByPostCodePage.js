@@ -7,11 +7,11 @@ export default function LocationPostCodeSearchPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () =>
-    navigate(orgManageLocationsUrls.unmatchedLocations.find.address)
+    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.address)
 
   const navigateToNotInEnglandPage = () =>
     navigate(
-      orgManageLocationsUrls.unmatchedLocations.find.notInEngland.postcode
+      orgManageLocationsUrls.unmatchedLocations.notFound.notInEngland.postcode
     )
 
   return (
@@ -19,7 +19,7 @@ export default function LocationPostCodeSearchPage () {
       <PostCodeSearchLayout
         navigateToNextPage={navigateToNextPage}
         navigateToNotInEnglandPage={navigateToNotInEnglandPage}
-        flow='unmatched-locations'
+        flow='unmatched-locations-not-found'
       />
     </>
   )

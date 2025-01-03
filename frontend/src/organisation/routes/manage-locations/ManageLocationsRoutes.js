@@ -77,6 +77,8 @@ export const urlManageOrgAddLocations = urlManageOrg + '/add'
 const urlManageOrgEditLocations = urlManageOrg + '/edit'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
 const urlManageOrgConfirmLocations = urlManageOrg + '/confirm'
+const urlUnmatchedLocationsNotFound =
+  urlManageOrg + '/unmatched-locations-not-found'
 
 // Manage location urls
 const orgManageLocationsUrls = {
@@ -175,26 +177,27 @@ const orgManageLocationsUrls = {
       notInEngland:
         urlManageOrgUnmatchedLocations + '/manually-find/not-in-england'
     },
-    find: {
-      options: urlManageOrgUnmatchedLocations + '/find/options',
-      postcode: urlManageOrgUnmatchedLocations + '/find/post-code',
-      address: urlManageOrgUnmatchedLocations + '/find/address',
+    notFound: {
+      dashboard: urlUnmatchedLocationsNotFound,
+      find: urlUnmatchedLocationsNotFound + '/find-location',
+      postcode: urlUnmatchedLocationsNotFound + '/find-location-postcode',
+      address: urlUnmatchedLocationsNotFound + '/find-location-address',
       cannotFindAddress:
-        urlManageOrgUnmatchedLocations + '/find/cannot-find-address',
-      coordinates: urlManageOrgUnmatchedLocations + '/find/coordinates',
-      confirm: urlManageOrgUnmatchedLocations + '/find/confirm-location',
-      dropPin: {
-        search: urlManageOrgUnmatchedLocations + '/find/drop-pin/search',
-        results: urlManageOrgUnmatchedLocations + '/find/drop-pin/results'
-      },
+        urlUnmatchedLocationsNotFound + '/cannot-find-location-address',
+      coordinates: urlUnmatchedLocationsNotFound + '/find-location-coordinates',
+      map: urlUnmatchedLocationsNotFound + '/find-location-on-map',
+      mapDropPin:
+        urlUnmatchedLocationsNotFound + '/find-location-on-map/drop-pin',
       notInEngland: {
-        dropPin:
-          urlManageOrgUnmatchedLocations + '/find/drop-pin/not-in-england',
-        coordinates:
-          urlManageOrgUnmatchedLocations + '/find/coordinates/not-in-england',
         postcode:
-          urlManageOrgUnmatchedLocations + '/find/post-code/not-in-england'
-      }
+          urlUnmatchedLocationsNotFound + '/postcode/location-not-in-england',
+        coordinates:
+          urlUnmatchedLocationsNotFound +
+          '/coordinates/location-not-in-england',
+        dropPin:
+          urlUnmatchedLocationsNotFound + '/drop-pin/location-not-in-england'
+      },
+      confirm: urlUnmatchedLocationsNotFound + '/confirm-location'
     }
   }
 }
@@ -320,51 +323,6 @@ const orgManageLocationRoutes = [
     component: <ManuallyFindLocationsPage />
   },
   {
-    path: orgManageLocationsUrls.unmatchedLocations.find.options,
-    component: <FindUnmatchedLocationPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.find.postcode,
-    component: <FindLocationByPostCodePage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.find.address,
-    component: <FindLocationByPostCodeAddressPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.find.cannotFindAddress,
-    component: <CannotFindLocationByPostCodeAddressPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.find.coordinates,
-    component: <FindLocationByCoordinatesPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.find.confirm,
-    component: <ConfirmUnmatchedLocationPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.find.dropPin.search,
-    component: <FindLocationByDropPinSearchPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.find.dropPin.results,
-    component: <FindLocationByDropPinResultsPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.find.notInEngland.dropPin,
-    component: <UnmatchedLocationDropPinNotInEnglandPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.find.notInEngland
-      .coordinates,
-    component: <UnmatchedLocationCoordinatesNotInEnglandPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.find.notInEngland.postcode,
-    component: <UnmatchedLocationPostcodeNotInEnglandPage />
-  },
-  {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName,
     component: <ProvideAreaNamePage />
   },
@@ -383,6 +341,54 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.address,
     component: <FindLocationByMatchedAddressesPage />
+  },
+  // unmatched locations: not found
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.find,
+    component: <FindUnmatchedLocationPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.postcode,
+    component: <FindLocationByPostCodePage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.address,
+    component: <FindLocationByPostCodeAddressPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.cannotFindAddress,
+    component: <CannotFindLocationByPostCodeAddressPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.coordinates,
+    component: <FindLocationByCoordinatesPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.confirm,
+    component: <ConfirmUnmatchedLocationPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.map,
+    component: <FindLocationByDropPinSearchPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.mapDropPin,
+    component: <FindLocationByDropPinResultsPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.notInEngland
+      .dropPin,
+    component: <UnmatchedLocationDropPinNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.notInEngland
+      .coordinates,
+    component: <UnmatchedLocationCoordinatesNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.notInEngland
+      .postcode,
+    component: <UnmatchedLocationPostcodeNotInEnglandPage />
   },
   // optional information
   {

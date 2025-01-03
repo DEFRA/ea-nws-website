@@ -29,7 +29,7 @@ export default function NotInEnglandLayout ({
     xyCoordinate: xyCoordinatesSearchUrl && (
       <li key='xyCoordinate'>
         <Link to={xyCoordinatesSearchUrl} className='govuk-link'>
-          {flow === 'xyCoordinate'
+          {flow === 'coordinates'
             ? 'use a different set of X and Y coordinates'
             : 'use X and Y coordinates'}
         </Link>
@@ -64,9 +64,9 @@ export default function NotInEnglandLayout ({
         currentPage={orgManageLocationsUrls.view.dashboard}
       />
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-body govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-body govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l'>
               This location is not in England and cannot be added to this
               account

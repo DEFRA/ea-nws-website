@@ -7,19 +7,21 @@ export default function SelectAddressPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () =>
-    navigate(orgManageLocationsUrls.unmatchedLocations.find.confirm)
+    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.confirm)
 
   const navigateToPreviousPage = () => navigate(-1)
 
   const navigateToCannotFindAddressPage = () =>
-    navigate(orgManageLocationsUrls.unmatchedLocations.find.cannotFindAddress)
+    navigate(
+      orgManageLocationsUrls.unmatchedLocations.notFound.cannotFindAddress
+    )
 
   return (
     <SearchAddressResultLayout
       navigateToNextPage={navigateToNextPage}
       navigateToPreviousPage={navigateToPreviousPage}
       navigateToCannotFindAddressPage={navigateToCannotFindAddressPage}
-      flow='unmatched-locations'
+      flow='unmatched-locations-not-found'
     />
   )
 }

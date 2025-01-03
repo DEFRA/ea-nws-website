@@ -8,12 +8,13 @@ export default function FindLocationByCoordinatesPage () {
 
   const navigateToNotInEngland = () => {
     navigate(
-      orgManageLocationsUrls.unmatchedLocations.find.notInEngland.coordinates
+      orgManageLocationsUrls.unmatchedLocations.notFound.notInEngland
+        .coordinates
     )
   }
 
   const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.unmatchedLocations.find.confirm)
+    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.confirm)
   }
 
   return (
@@ -21,7 +22,7 @@ export default function FindLocationByCoordinatesPage () {
       <LocationXYCoordinatesSearchLayout
         navigateToNextPage={navigateToNextPage}
         navigateToNotInEngland={navigateToNotInEngland}
-        flow='unmatched-locations'
+        flow='unmatched-locations-not-found'
       />
     </>
   )

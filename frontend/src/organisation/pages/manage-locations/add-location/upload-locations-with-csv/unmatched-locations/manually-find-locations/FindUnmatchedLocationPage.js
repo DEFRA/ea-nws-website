@@ -73,7 +73,7 @@ export default function FindUnmatchedLocationsPage () {
       setError('Select how do you want to find this location')
     } else if (findLocationOption === findLocationOptions[0].value) {
       if (!location.postcode) {
-        navigate(orgManageLocationsUrls.unmatchedLocations.find.postcode)
+        navigate(orgManageLocationsUrls.unmatchedLocations.notFound.postcode)
       } else {
         const dataToSend = {
           postCode: location.postcode.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
@@ -86,13 +86,13 @@ export default function FindUnmatchedLocationsPage () {
         if (!errorMessage) {
           dispatch(setCurrentLocationPostcode(data[0].postcode))
           dispatch(setLocationSearchResults(data))
-          navigate(orgManageLocationsUrls.unmatchedLocations.find.address)
+          navigate(orgManageLocationsUrls.unmatchedLocations.notFound.address)
         }
       }
     } else if (findLocationOption === findLocationOptions[1].value) {
-      navigate(orgManageLocationsUrls.unmatchedLocations.find.coordinates)
+      navigate(orgManageLocationsUrls.unmatchedLocations.notFound.coordinates)
     } else {
-      navigate(orgManageLocationsUrls.unmatchedLocations.find.dropPin.search)
+      navigate(orgManageLocationsUrls.unmatchedLocations.notFound.map)
     }
   }
 

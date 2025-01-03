@@ -70,14 +70,12 @@ export default function ConfirmLocationLayout ({
         currentPage={orgManageLocationsUrls.view.dashboard}
       />
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l govuk-!-margin-top-5'>
-              Confirm location
-            </h1>
-            <h2 className='govuk-heading-m govuk-!-margin-top-6'>
+            <h1 className='govuk-heading-l '>Confirm location</h1>
+            <h2 className='govuk-heading-m govuk-!-margin-top-8'>
               {locationName}
             </h2>
             <hr />
@@ -100,7 +98,7 @@ export default function ConfirmLocationLayout ({
               </>
             )}
             <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-4 govuk-!-margin-bottom-0'>
-              X and Y Coordinates
+              X and Y coordinates
             </h3>
             <p>
               {Math.round(
@@ -112,6 +110,7 @@ export default function ConfirmLocationLayout ({
               )}
             </p>
 
+            <br />
             <Link
               onClick={(e) => handleNavigateToPinDropFlow(e)}
               className='govuk-link'
@@ -122,7 +121,7 @@ export default function ConfirmLocationLayout ({
             <div className='govuk-!-margin-top-8'>
               <Button
                 text={
-                  flow === 'unmatched-locations'
+                  flow === 'unmatched-locations-not-found'
                     ? 'Add location'
                     : 'Confirm location'
                 }

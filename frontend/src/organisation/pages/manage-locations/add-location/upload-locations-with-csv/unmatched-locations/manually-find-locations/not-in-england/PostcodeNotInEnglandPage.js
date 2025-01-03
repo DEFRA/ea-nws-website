@@ -11,13 +11,13 @@ export default function PostcodeNotInEnglandPage () {
   }
 
   const postCodeSearchUrl =
-    orgManageLocationsUrls.unmatchedLocations.find.postcode
+    orgManageLocationsUrls.unmatchedLocations.notFound.postcode
 
   const xyCoordsSearchUrl =
-    orgManageLocationsUrls.unmatchedLocations.find.coordinates
+    orgManageLocationsUrls.unmatchedLocations.notFound.coordinates
 
   const dropPinSearchUrl =
-    orgManageLocationsUrls.unmatchedLocations.find.dropPin.search
+    orgManageLocationsUrls.unmatchedLocations.notFound.map
 
   return (
     <NotInEnglandLayout

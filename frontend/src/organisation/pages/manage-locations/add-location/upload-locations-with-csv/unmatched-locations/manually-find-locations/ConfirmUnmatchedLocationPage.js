@@ -11,7 +11,7 @@ export default function ConfirmUnmatchedLocationPage () {
   }
 
   const navigateToPinDropFlow = () => {
-    navigate(orgManageLocationsUrls.unmatchedLocations.find.dropPin.results)
+    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.mapDropPin)
   }
 
   return (
@@ -19,7 +19,7 @@ export default function ConfirmUnmatchedLocationPage () {
       <ConfirmLocationLayout
         navigateToNextPage={navigateToNextPage}
         navigateToPinDropFlow={navigateToPinDropFlow}
-        flow='unmatched-locations'
+        flow='unmatched-locations-not-found'
       />
     </>
   )

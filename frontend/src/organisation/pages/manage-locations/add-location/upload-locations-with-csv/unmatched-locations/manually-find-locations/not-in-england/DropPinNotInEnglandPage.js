@@ -11,13 +11,13 @@ export default function DropPinNotInEnglandPage () {
   }
 
   const postCodeSearchUrl =
-    orgManageLocationsUrls.unmatchedLocations.find.postcode
+    orgManageLocationsUrls.unmatchedLocations.notFound.postcode
 
   const xyCoordsSearchUrl =
-    orgManageLocationsUrls.unmatchedLocations.find.coordinates
+    orgManageLocationsUrls.unmatchedLocations.notFound.coordinates
 
   const dropPinSearchUrl =
-    orgManageLocationsUrls.unmatchedLocations.find.dropPin.results
+    orgManageLocationsUrls.unmatchedLocations.notFound.map
 
   return (
     <NotInEnglandLayout

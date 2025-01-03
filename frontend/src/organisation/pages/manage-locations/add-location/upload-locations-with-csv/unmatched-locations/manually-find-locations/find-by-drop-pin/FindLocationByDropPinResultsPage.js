@@ -12,12 +12,12 @@ export default function FindLocationByDropPinResultsPage () {
 
   const navigateToNotInEnglandPage = () => {
     navigate(
-      orgManageLocationsUrls.unmatchedLocations.find.notInEngland.dropPin
+      orgManageLocationsUrls.unmatchedLocations.notFound.notInEngland.dropPin
     )
   }
 
   const navigateToDropPinLocationSearchPage = () => {
-    navigate(orgManageLocationsUrls.unmatchedLocations.find.dropPin.search)
+    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.map)
   }
 
   return (
@@ -25,7 +25,7 @@ export default function FindLocationByDropPinResultsPage () {
       navigateToNextPage={navigateToNextPage}
       navigateToNotInEnglandPage={navigateToNotInEnglandPage}
       navigateToDropPinLocationSearchPage={navigateToDropPinLocationSearchPage}
-      flow='unmatched-locations'
+      flow='unmatched-locations-not-found'
     />
   )
 }

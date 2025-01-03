@@ -7,13 +7,16 @@ export default function CannotFindLocationByPostCodeAddressPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () =>
-    navigate(orgManageLocationsUrls.unmatchedLocations.find.options)
+    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.find)
 
   const navigateToDifferentPostCode = () =>
-    navigate(orgManageLocationsUrls.unmatchedLocations.find.postcode)
+    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.postcode)
+
+  const navigateToDifferentCoordinates = () =>
+    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.coordinates)
 
   const navigateToFindLocationOnMap = () => {
-    navigate(orgManageLocationsUrls.unmatchedLocations.find.dropPin.search)
+    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.map)
   }
 
   return (
@@ -21,8 +24,9 @@ export default function CannotFindLocationByPostCodeAddressPage () {
       <CannotFindAddressLayout
         navigateToNextPage={navigateToNextPage}
         navigateToDifferentPostCode={navigateToDifferentPostCode}
+        navigateToDifferentCoordinates={navigateToDifferentCoordinates}
         navigateToFindLocationOnMap={navigateToFindLocationOnMap}
-        flow='unmatched-locations'
+        flow='unmatched-locations-not-found'
       />
     </>
   )

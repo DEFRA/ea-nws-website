@@ -11,13 +11,13 @@ export default function CoordinatesNotInEnglandPage () {
   }
 
   const postCodeSearchUrl =
-    orgManageLocationsUrls.unmatchedLocations.find.postcode
+    orgManageLocationsUrls.unmatchedLocations.notFound.postcode
 
   const xyCoordsSearchUrl =
-    orgManageLocationsUrls.unmatchedLocations.find.coordinates
+    orgManageLocationsUrls.unmatchedLocations.notFound.coordinates
 
   const dropPinSearchUrl =
-    orgManageLocationsUrls.unmatchedLocations.find.dropPin.search
+    orgManageLocationsUrls.unmatchedLocations.notFound.map
 
   return (
     <NotInEnglandLayout
@@ -25,7 +25,7 @@ export default function CoordinatesNotInEnglandPage () {
       postCodeSearchUrl={postCodeSearchUrl}
       xyCoordinatesSearchUrl={xyCoordsSearchUrl}
       dropPinSearchUrl={dropPinSearchUrl}
-      flow='xyCoordinate'
+      flow='coordinates'
     />
   )
 }

@@ -130,9 +130,9 @@ export default function DropPinOnMapLayout ({
         currentPage={orgManageLocationsUrls.view.dashboard}
       />
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>Find the location on a map</h1>
             <div className='govuk-body'>
@@ -141,7 +141,7 @@ export default function DropPinOnMapLayout ({
                 You can then add the location to this account.
               </p>
 
-              {flow === 'unmatched-locations' && <LocationDetails />}
+              {flow === 'unmatched-locations-not-found' && <LocationDetails />}
 
               <div className='govuk-!-margin-bottom-4'>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -162,69 +162,71 @@ export default function DropPinOnMapLayout ({
                   </Link>
                 </div>
               </div>
-              <div class='govuk-grid-row'>
-                <div class='govuk-grid-column-two-thirds'>
-                  <Map
-                    setCoordinates={setPinCoords}
-                    type='drop'
-                    showFloodWarningAreas={showFloodWarningAreas}
-                    showFloodAlertAreas={showFloodAlertAreas}
-                    showMarker={showMarkerInitially}
-                  />
-                </div>
-                <div class='govuk-grid-column-one-third'>
-                  <MapInteractiveKey
-                    showFloodWarningAreas={showFloodWarningAreas}
-                    setShowFloodWarningAreas={setShowFloodWarningAreas}
-                    showFloodAlertAreas={showFloodAlertAreas}
-                    setShowFloodAlertAreas={setShowFloodAlertAreas}
-                    showFloodExtents={showFloodExtents}
-                    setShowFloodExtents={setShowFloodExtents}
-                  />
-                </div>
-              </div>
-
-              <div class='govuk-grid-row'>
-                <div class='govuk-grid-column-two-thirds'>
-                  <div
-                    className='govuk-caption-container'
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between'
-                    }}
-                  >
-                    <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
-                      This is not a live flood map
-                    </span>
-                    <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-margin-top-1'>
-                      X and Y {displayCoords}
-                    </span>
-                  </div>
-                  <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-margin-top-1'>
-                    It shows fixed areas that we provide flood warnings and
-                    alerts for.
-                  </span>
-                </div>
-              </div>
             </div>
-            <Button
-              className='govuk-button govuk-!-margin-top-4'
-              text={
-                useLocation().pathname.includes('add') ||
-                flow === 'unmatched-locations'
-                  ? 'Add location'
-                  : 'Save location'
-              }
-              onClick={handleSubmit}
-            />
-            <Link
-              onClick={navigateBack}
-              className='govuk-body govuk-link inline-link govuk-!-margin-top-4 govuk-!-margin-left-2'
-            >
-              Cancel
-            </Link>
           </div>
+
+          <div class='govuk-grid-row'>
+            <div class='govuk-grid-column-three-quarters '>
+              <Map
+                setCoordinates={setPinCoords}
+                type='drop'
+                showFloodWarningAreas={showFloodWarningAreas}
+                showFloodAlertAreas={showFloodAlertAreas}
+                showMarker={showMarkerInitially}
+              />
+            </div>
+            <div class='govuk-grid-column-one-quarter'>
+              <MapInteractiveKey
+                showFloodWarningAreas={showFloodWarningAreas}
+                setShowFloodWarningAreas={setShowFloodWarningAreas}
+                showFloodAlertAreas={showFloodAlertAreas}
+                setShowFloodAlertAreas={setShowFloodAlertAreas}
+                showFloodExtents={showFloodExtents}
+                setShowFloodExtents={setShowFloodExtents}
+              />
+            </div>
+          </div>
+
+          <div class='govuk-grid-row'>
+            <div class='govuk-grid-column-three-quarters'>
+              <div
+                className='govuk-caption-container'
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
+                  This is not a live flood map
+                </span>
+                {pinCoords && (
+                  <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-margin-top-4'>
+                    X and Y {displayCoords}
+                  </span>
+                )}
+              </div>
+              <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-margin-top-1'>
+                It shows fixed areas that we provide flood warnings and alerts
+                for.
+              </span>
+            </div>
+          </div>
+          <Button
+            className='govuk-button govuk-!-margin-top-6'
+            text={
+              useLocation().pathname.includes('add') ||
+              flow === 'unmatched-locations-not-found'
+                ? 'Add location'
+                : 'Save location'
+            }
+            onClick={handleSubmit}
+          />
+          <Link
+            onClick={navigateBack}
+            className='govuk-body govuk-link inline-link govuk-!-margin-top-6 govuk-!-margin-left-2'
+          >
+            Cancel
+          </Link>
         </div>
       </main>
     </>

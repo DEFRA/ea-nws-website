@@ -7,6 +7,7 @@ import Button from '../../../../../common/components/gov-uk/Button'
 export default function CannotFindAddressLayout ({
   navigateToNextPage,
   navigateToDifferentPostCode,
+  navigateToDifferentCoordinates,
   navigateToFindLocationOnMap,
   flow
 }) {
@@ -44,6 +45,19 @@ export default function CannotFindAddressLayout ({
                       use a different postcode
                     </Link>
                   </li>
+                  {navigateToDifferentCoordinates && (
+                    <li>
+                      <Link
+                        onClick={(e) => {
+                          e.preventDefault()
+                          navigateToDifferentCoordinates()
+                        }}
+                        className='govuk-link'
+                      >
+                        use X and Y coordinates
+                      </Link>
+                    </li>
+                  )}
                   <li>
                     <Link
                       onClick={(e) => {
@@ -58,7 +72,7 @@ export default function CannotFindAddressLayout ({
                 </ul>
               </p>
 
-              {flow === 'unmatched-locations' && (
+              {flow === 'unmatched-locations-not-found' && (
                 <Button
                   className='govuk-button govuk-!-margin-top-4'
                   text='Continue'

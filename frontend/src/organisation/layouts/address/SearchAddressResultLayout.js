@@ -86,27 +86,30 @@ export default function SearchAddressResultLayout ({
         currentPage={orgManageLocationsUrls.view.dashboard}
       />
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-body'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
               <div className='govuk-body'>
                 <h1 className='govuk-heading-l'>Select an address</h1>
-                {flow === 'unmatched-locations' && <LocationDetails />}
-                {(locationPostCode || flow === 'unmatched-locations') && (
-                  <p className='govuk-body'>
-                    Postcode:{' '}
-                    {flow === 'unmatched-locations'
-                      ? currentLocationPostcode
-                      : locationPostCode}
-                    {'   '}
-                    <Link
-                      onClick={() => navigate(-1)}
-                      className='govuk-link govuk-!-padding-left-5'
-                    >
-                      Change postcode
-                    </Link>
-                  </p>
+                {flow === 'unmatched-locations-not-found' && (
+                  <LocationDetails />
+                )}
+                {(locationPostCode ||
+                  flow === 'unmatched-locations-not-found') && (
+                    <p className='govuk-body'>
+                      Postcode:{' '}
+                      {flow === 'unmatched-locations-not-found'
+                        ? currentLocationPostcode
+                        : locationPostCode}
+                      {'   '}
+                      <Link
+                        onClick={() => navigate(-1)}
+                        className='govuk-link govuk-!-padding-left-5'
+                      >
+                        Change postcode
+                      </Link>
+                    </p>
                 )}
                 <table className='govuk-table'>
                   <tbody className='govuk-table__body'>

@@ -121,9 +121,9 @@ export default function LocationXYCoordinatesSearchLayout ({
         currentPage={orgManageLocationsUrls.view.dashboard}
       />
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             {(xCoordinateError || yCoordinateError) && (
               <ErrorSummary errorList={[xCoordinateError, yCoordinateError]} />
             )}
@@ -131,7 +131,7 @@ export default function LocationXYCoordinatesSearchLayout ({
               What are the X and Y coordinates?
             </h1>
 
-            {flow === 'unmatched-locations' && <LocationDetails />}
+            {flow === 'unmatched-locations-not-found' && <LocationDetails />}
 
             <div className='govuk-body'>
               <Input

@@ -167,7 +167,7 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
         currentPage={orgManageLocationsUrls.view.dashboard}
       />
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
             {(searchOptionError || placeNameTownOrPostcodeError) && (
@@ -176,13 +176,13 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
               />
             )}
             <h1 className='govuk-heading-l'>Find the location on a map</h1>
-            {flow === 'unmatched-locations' && (
+            {flow === 'unmatched-locations-not-found' && (
               <p>
                 The location you're searching for cannot be found. We need some
                 additional information to help us find it.
               </p>
             )}
-            {flow === 'unmatched-locations' && <LocationDetails />}
+            {flow === 'unmatched-locations-not-found' && <LocationDetails />}
 
             {/* TODO: Looks like the radio options are removed from the master screens */}
             {/* <p>

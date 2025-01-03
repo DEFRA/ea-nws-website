@@ -7,7 +7,7 @@ export default function FindLocationByDropPinSearchPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = (mapArea) => {
-    navigate(orgManageLocationsUrls.unmatchedLocations.find.dropPin.results, {
+    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.mapDropPin, {
       state: { mapArea }
     })
   }
@@ -15,7 +15,7 @@ export default function FindLocationByDropPinSearchPage () {
   return (
     <LocationSearchLayout
       navigateToNextPage={navigateToNextPage}
-      flow='unmatched-locations'
+      flow='unmatched-locations-not-found'
     />
   )
 }

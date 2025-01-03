@@ -77,7 +77,7 @@ export default function PostCodeSearchLayout ({
         dispatch(setLocationSearchResults(data))
         navigateToNextPage()
       } else {
-        if (flow === 'unmatched-locations') {
+        if (flow === 'unmatched-locations-not-found') {
           navigateToNotInEnglandPage()
         } else {
           // show error message from OS Api postcode search
@@ -100,14 +100,14 @@ export default function PostCodeSearchLayout ({
         currentPage={orgManageLocationsUrls.view.dashboard}
       />
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>
               What is the location's postcode?
             </h1>
-            {flow === 'unmatched-locations' && <LocationDetails />}
+            {flow === 'unmatched-locations-not-found' && <LocationDetails />}
             <div className='govuk-body'>
               <Input
                 name='Postcode'

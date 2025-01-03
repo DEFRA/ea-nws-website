@@ -6,7 +6,7 @@ export default function OrganisationAccountNavigation ({ currentPage }) {
   const pages = [
     { title: 'Live flood warnings', link: '/' },
     { title: 'Locations', link: orgManageLocationsUrls.view.dashboard },
-    { title: 'Contacts', link: orgManageContactsUrls.view.dashboard },
+    { title: 'Users', link: orgManageContactsUrls.view.dashboard },
     { title: 'Reports', link: '/' }
   ]
 

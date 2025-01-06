@@ -32,9 +32,6 @@ const apiCall = async (data, path) => {
     )
   }
 
-  console.log('Converted data')
-  console.log(JSON.stringify(data))
-
   try {
     const response = await axios.post(url, data, {
       headers: {
@@ -45,8 +42,6 @@ const apiCall = async (data, path) => {
       }),
       withCredentials: false
     })
-
-    console.log(response.data)
 
     if (response.data.profile) {
       response.data.profile = convertGeoSafeProfile(
@@ -69,7 +64,6 @@ const apiCall = async (data, path) => {
 
     return { status: response.status, data: response.data }
   } catch (error) {
-    console.log(error)
     if (error.response) {
       const { status } = error.response
       if (status === 400) {

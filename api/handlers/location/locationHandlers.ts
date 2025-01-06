@@ -10,7 +10,6 @@ async function getLocationCreate(
   res: Hapi.ResponseToolkit
 ) {
   const { authToken, location } = req.payload as { authToken: string, location: any }
-  console.log(req.payload)
 
   if (authToken !== 'WrongAuthToken' && location) {
     let updatedLocation = location

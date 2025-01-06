@@ -1,10 +1,10 @@
-import { useNavigate, useLocation } from 'react-router'
-import ValidateEmailLayout from '../../../../common/layouts/email/ValidateEmailLayout'
-import { orgAccountUrls } from '../../../routes/account/AccountRoutes'
 import { useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { backendCall } from '../../../../common/services/BackendService'
+import { useLocation, useNavigate } from 'react-router'
+import ValidateEmailLayout from '../../../../common/layouts/email/ValidateEmailLayout'
 import { setProfile } from '../../../../common/redux/userSlice'
+import { backendCall } from '../../../../common/services/BackendService'
+import { orgAccountUrls } from '../../../routes/account/AccountRoutes'
 export default function ValidateNewAdminEmailPage () {
   const navigate = useNavigate()
   const location = useLocation()
@@ -15,14 +15,14 @@ export default function ValidateNewAdminEmailPage () {
     navigate(orgAccountUrls.admin.changeDetails)
   }
 
-  const updateProfile = async (profile, authToken) => {
+  const updateProfile = async (profile, authToken, signinType) => {
     // The sign in email is always the first one in the array
     // Pop out the last email added and put it in first position
     const profileEmails = profile.emails
     profileEmails[0] = profileEmails.pop()
     profile.emails = profileEmails
 
-    const dataToSend = { profile, authToken }
+    const dataToSend = { profile, authToken, signinType }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/profile/update',

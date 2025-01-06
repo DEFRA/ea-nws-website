@@ -2,6 +2,9 @@ const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3')
 const getSecretKeyValue = require('../../services/SecretsManager')
 const shapefile = require('shapefile')
 const { Readable } = require('stream')
+const {
+  createGenericErrorResponse
+} = require('../../services/GenericErrorResponse')
 
 const convertShapefileToGeoJSON = async (shp, dbf, shx) => {
   try {
@@ -81,7 +84,7 @@ module.exports = [
         }
 
         // DEBUG
-        console.log(`Expected shapefile names:`)
+        console.log('Expected shapefile names:')
         console.log(`${zipFileFolder}${baseFileName.replace('.zip', '.shp')}`)
         console.log(`${zipFileFolder}${baseFileName.replace('.zip', '.shx')}`)
         console.log(`${zipFileFolder}${baseFileName.replace('.zip', '.dbf')}`)

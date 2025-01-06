@@ -9,7 +9,7 @@ import Radio from '../../../../common/components/gov-uk/Radio'
 import { clearCurrentLocation } from '../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function AddLocationOptionsPage() {
+export default function AddLocationOptionsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   // Clear the current location when adding a new one

@@ -15,7 +15,7 @@ import { backendCall } from '../../../../../common/services/BackendService'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 
-export default function ConfirmLocationLayout({
+export default function ConfirmLocationLayout ({
   navigateToNextPage,
   navigateToPinDropFlow,
   layoutType = 'XandY'
@@ -113,7 +113,7 @@ export default function ConfirmLocationLayout({
               </>
             )}
 
-            {/* X and Y coordinates layout (default)*/}
+            {/* X and Y coordinates layout (default) */}
             {layoutType === 'XandY' && (
               <>
                 <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-4 govuk-!-margin-bottom-0'>
@@ -164,7 +164,7 @@ export default function ConfirmLocationLayout({
                   />{' '}
                   <Button
                     text='Cancel upload'
-                    className={'govuk-button govuk-button--warning'}
+                    className='govuk-button govuk-button--warning'
                     onClick={cancel}
                   />
                 </div>

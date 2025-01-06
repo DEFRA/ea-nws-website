@@ -6,11 +6,11 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddAddressInfoPage() {
+export default function LocationAddAddressInfoPage () {
   const navigate = useNavigate()
   const [templateUrl, setTemplateUrl] = useState(null)
 
-  async function getTemplateUrl() {
+  async function getTemplateUrl () {
     const { data } = await backendCall(
       'data',
       'api/bulk_uploads/download_template'

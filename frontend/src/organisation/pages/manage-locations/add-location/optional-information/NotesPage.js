@@ -9,7 +9,7 @@ export default function AddNotesPage () {
   const navigateToNextPage = () => {
     // TODO: Navigate to correct destination when available.
     //       Notes test will need updating afterwards.
-    navigate(orgManageLocationsUrls.add.predefinedBoundary.addAnother)
+    navigate(orgManageLocationsUrls.add.optionalInformation.addActionPlan)
   }
 
   const instructionText = (

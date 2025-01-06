@@ -20,12 +20,13 @@ export default function FloodAreasPage () {
         location is in an area where not many people live or work.
       </p>
       <p>
-        Locations may still be at risk even if youcannot get flood messages for
+        Locations may still be at risk even if you cannot get flood messages for
         that area.
       </p>
       <p>
         If you cannot get flood messages for your organisation's locations you
-        can check the Met Office forecasts or following local news channels.
+        may be able to link these locations to nearby flood areas that can get
+        flood messages.
       </p>
     </div>
   )

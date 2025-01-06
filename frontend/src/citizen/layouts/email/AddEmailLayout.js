@@ -10,7 +10,7 @@ import { backendCall } from '../../../common/services/BackendService'
 import { addUnverifiedContact } from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 
-export default function AddEmailLayout ({ NavigateToNextPage }) {
+export default function AddEmailLayout ({ navigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [email, setEmail] = useState('')
@@ -44,7 +44,7 @@ export default function AddEmailLayout ({ NavigateToNextPage }) {
           setError(errorMessage)
         } else {
           dispatch(setCurrentContact(email))
-          NavigateToNextPage()
+          navigateToNextPage()
         }
       }
     }

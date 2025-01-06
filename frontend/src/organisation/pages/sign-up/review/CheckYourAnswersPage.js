@@ -1,20 +1,44 @@
 import { React } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
-import { getOrganisationAdditionals } from '../../../../common/services/ProfileServices'
+import { setProfile } from '../../../../common/redux/userSlice'
+import { backendCall } from '../../../../common/services/BackendService'
+import { updateAdditionals } from '../../../../common/services/ProfileServices'
 import AlternativeContactTable from './AlternativeContactTable'
 import MainAdministratorTable from './MainAdministratorTable'
 import OrganisationDetailsTable from './OrganisationDetailsTable'
 export default function CheckYourAnswersPage () {
   const profile = useSelector((state) => state.session.profile)
-  const organisation = Object.assign({}, getOrganisationAdditionals(profile))
+  const organization = useSelector((state) => state.session.organization)
+  const organizationAdditionals = JSON.parse(organization.description)
+  const authToken = useSelector((state) => state.session.authToken)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
-  const handleButton = () => {
+  const handleButton = async () => {
     // TODO once we have updated API
     // call to update profile with final profile here
+    const dataToSend = { organization, authToken }
+    await backendCall(
+      dataToSend,
+      'api/organization/update',
+      navigate
+    )
+
+    const updatedProfile = updateAdditionals(profile, [
+      { id: 'signupComplete', value: { s: 'true' } },
+      { id: 'lastAccessedUrl', value: { s: '/organisation/sign-up/success' } }
+    ])
+    dispatch(setProfile(updatedProfile))
+    const profileDataToSend = {
+      profile: updatedProfile,
+      authToken,
+      signinType: 'org'
+    }
+    await backendCall(profileDataToSend, 'api/profile/update', navigate)
+
     navigate('/organisation/sign-up/success')
   }
 
@@ -25,10 +49,10 @@ export default function CheckYourAnswersPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row '>
           <h2 className='govuk-heading-l'>Check your answers</h2>
-          <OrganisationDetailsTable organisation={organisation} />
+          <OrganisationDetailsTable organisation={organizationAdditionals} />
           <MainAdministratorTable profile={profile} />
           <AlternativeContactTable
-            alternativeContact={organisation.alternativeContact}
+            alternativeContact={organizationAdditionals.alternativeContact}
           />
           <Button
             onClick={handleButton}

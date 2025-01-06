@@ -1,5 +1,6 @@
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { useDispatch, useSelector } from 'react-redux'
@@ -14,11 +15,15 @@ import InsetText from '../../../common/components/gov-uk/InsetText'
 import Radio from '../../../common/components/gov-uk/Radio'
 import {
   setAdditionalAlerts,
+  setFloodAlertCount,
   setNearbyTargetAreasFlow,
   setSelectedFloodAlertArea,
   setSelectedFloodWarningArea,
+  setSevereFloodWarningCount,
   setShowOnlySelectedFloodArea
 } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
+import { csvToJson } from '../../../common/services/CsvToJson'
 
 export default function LocationWithinWarningAreaProximityLayout ({
   continueToSelectedFloodWarningsPage,
@@ -42,6 +47,9 @@ export default function LocationWithinWarningAreaProximityLayout ({
     (state) => state.session.selectedFloodAlertArea
   )
 
+  const [floodHistoryUrl, setHistoryUrl] = useState(null)
+  const [floodHistoryData, setFloodHistoryData] = useState(null)
+
   useEffect(() => {
     dispatch(setSelectedFloodAlertArea(null))
     dispatch(setSelectedFloodWarningArea(null))
@@ -50,15 +58,63 @@ export default function LocationWithinWarningAreaProximityLayout ({
     setError(null)
   }, [type])
 
+  useEffect(() => {
+    async function getHistoryUrl () {
+      const { data } = await backendCall(
+        'data',
+        'api/locations/download_flood_history'
+      )
+      setHistoryUrl(data)
+    }
+
+    getHistoryUrl()
+    floodHistoryUrl &&
+      fetch(floodHistoryUrl)
+        .then((response) => response.text())
+        .then((data) => {
+          setFloodHistoryData(csvToJson(data))
+        })
+        .catch((e) =>
+          console.error('Could not fetch Historic Flood Warning file', e)
+        )
+  })
+
+  const setHistoricalAlertNumber = (AlertArea) => {
+    const oneYearAgo = moment().subtract(1, 'years')
+
+    const areaAlert = floodHistoryData.filter(
+      (alert) =>
+        alert.CODE === AlertArea &&
+        moment(alert.DATE, 'DD/MM/YYYY') > oneYearAgo
+    )
+    dispatch(setFloodAlertCount(areaAlert.length))
+  }
+
+  const setHistoricalWarningNumber = (WarningArea) => {
+    const oneYearAgo = moment().subtract(1, 'years')
+
+    const areaWarning = floodHistoryData.filter(
+      (alert) =>
+        alert.CODE === WarningArea &&
+        moment(alert.DATE, 'DD/MM/YYYY') > oneYearAgo
+    )
+    dispatch(setSevereFloodWarningCount(areaWarning.length))
+  }
+
   const handleConfirm = () => {
     if (selectedFloodWarningArea || selectedFloodAlertArea) {
       if (type === 'severe') {
         dispatch(setAdditionalAlerts(true))
+        setHistoricalWarningNumber(
+          selectedFloodWarningArea.properties.FWS_TACODE
+        )
       } else if (type === 'alert') {
         dispatch(setAdditionalAlerts(false))
+        setHistoricalAlertNumber(selectedFloodWarningArea.properties.FWS_TACODE)
       }
       dispatch(setShowOnlySelectedFloodArea(true))
       dispatch(setNearbyTargetAreasFlow(true))
+
       continueToSelectedFloodWarningsPage(type)
     } else {
       setError('Select a nearby area')

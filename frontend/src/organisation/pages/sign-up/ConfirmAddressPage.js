@@ -3,7 +3,7 @@ import ConfirmAddressLayout from '../../layouts/address/ConfirmAddressLayout'
 
 export default function ConfirmAddressPage () {
   const navigate = useNavigate()
-  const NavigateToNextPage = () => navigate('/organisation/sign-up/number')
+  const navigateToNextPage = () => navigate('/organisation/sign-up/number')
 
   const NavigateToPreviousPage = () => {
     navigate('/organisation/sign-up/address')
@@ -11,7 +11,7 @@ export default function ConfirmAddressPage () {
 
   return (
     <ConfirmAddressLayout
-      NavigateToNextPage={NavigateToNextPage}
+      navigateToNextPage={navigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
     />
   )

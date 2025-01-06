@@ -20,6 +20,8 @@ import { orgManageKeywordsRoutes } from './organisation/routes/manage-keywords/M
 import { orgManageLocationRoutes } from './organisation/routes/manage-locations/ManageLocationsRoutes'
 import orgSigninRoutes from './organisation/routes/sign-in/SignInRoutes'
 import orgSignupRoutes from './organisation/routes/sign-up/SignUpRoutes'
+import { orgViewReportRoutes } from './organisation/routes/reports/reportRoutes'
+
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
 const errorRoutes = [{ path: '/error', component: <ErrorPage /> }]
@@ -48,5 +50,6 @@ export const authenticatedRoutes = [
   ...orgManageLocationRoutes,
   ...orgManageKeywordsRoutes,
   ...orgManageContactsRoutes,
-  ...orgManageAccountRoutes
+  ...orgManageAccountRoutes,
+  ...orgViewReportRoutes
 ]

@@ -26,8 +26,12 @@ export default function TileLayerWithHeader ({ url, token, bounds }) {
     }
     const tileMatrixLimits = tileMatrixSetLimits[coords.z]
     const withinLimits = () => {
-      return coords.x >= tileMatrixLimits.x[0] && coords.x <= tileMatrixLimits.x[1] &&
-      coords.y >= tileMatrixLimits.y[0] && coords.y <= tileMatrixLimits.y[1]
+      return (
+        coords.x >= tileMatrixLimits.x[0] &&
+        coords.x <= tileMatrixLimits.x[1] &&
+        coords.y >= tileMatrixLimits.y[0] &&
+        coords.y <= tileMatrixLimits.y[1]
+      )
     }
 
     return withinLimits()

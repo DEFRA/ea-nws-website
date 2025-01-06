@@ -13,6 +13,7 @@ export default function UploadFileLayout ({
   const navigate = useNavigate()
   const [errorFileType, setErrorFileType] = useState(null)
   const [errorFileSize, setErrorFileSize] = useState(null)
+  const [errorShapefile, setErrorShapefile] = useState([])
   const [selectedFile, setSelectedFile] = useState(null)
   const [uploading, setUploading] = useState(false)
 
@@ -80,6 +81,7 @@ export default function UploadFileLayout ({
     e.preventDefault()
     setErrorFileSize(null)
     setErrorFileType(null)
+    setErrorShapefile([])
 
     if (!selectedFile) {
       setErrorFileSize('The file is empty')
@@ -99,9 +101,9 @@ export default function UploadFileLayout ({
         backendRoute,
         navigate
       )
+
       if (errorMessage) {
-        // Set to an error to be displayed when doing DoR11 work
-        throw new Error(`Failed to get pre-signed URL: ${errorMessage}`)
+        throw new Error('Error uploading file')
       }
       const url = data?.url
       const uniqFileName = data?.fileName
@@ -129,23 +131,32 @@ export default function UploadFileLayout ({
           })
         } else if (uploadMethod === 'shape') {
           // Unzip the uploaded file and send output back to S3
-          const { data, errorMessage } = await backendCall(
+          const { errorMessage: unzipErrorMessage } = await backendCall(
             { zipFileName: uniqFileName },
             'api/shapefile/unzip',
             navigate
           )
-          if (data) {
-            // Proceed to next page
-            console.log('File unzipped successfully')
-          } else {
-            // Proceed to error page
-            console.log(`Error unzipping file: ${errorMessage}`)
+          if (unzipErrorMessage) {
+            throw new Error('Error uploading file')
           }
+
+          // Validate the files contained within the zip
+          const { errorMessage: shapefileErrorMessage } = await backendCall(
+            { zipFileName: uniqFileName },
+            'api/shapefile/validate',
+            navigate
+          )
+          if (shapefileErrorMessage) {
+            setUploading(false)
+            setErrorShapefile(shapefileErrorMessage)
+          }
+
+          // TDO: Navigate to confirmation page (once made)
         }
       }
     } catch (err) {
       setUploading(false)
-      setErrorFileType('Error uploading file')
+      setErrorFileType(err)
     }
   }
 
@@ -158,14 +169,22 @@ export default function UploadFileLayout ({
           {!uploading
             ? (
               <>
-                {(errorFileType || errorFileSize) && (
-                  <ErrorSummary errorList={[errorFileType, errorFileSize]} />
+                {(errorFileType ||
+                errorFileSize ||
+                errorShapefile.length > 0) && (
+                  <ErrorSummary
+                    errorList={[
+                      errorFileType,
+                      errorFileSize,
+                      ...errorShapefile
+                    ].filter(Boolean)}
+                  />
                 )}
                 <div className='govuk-grid-column-full'>
                   <h1 className='govuk-heading-l'>Upload file</h1>
                   <div
                     className={
-                    errorFileSize || errorFileType
+                    errorFileSize || errorFileType || errorShapefile.length > 0
                       ? 'govuk-form-group govuk-form-group--error'
                       : 'govuk-form-group'
                   }
@@ -181,6 +200,11 @@ export default function UploadFileLayout ({
                         {errorFileSize}
                       </p>
                     )}
+                    {errorShapefile.map((error, index) => (
+                      <p key={index} className='govuk-error-message'>
+                        {error}
+                      </p>
+                    ))}
                     <input
                       type='file'
                       className={

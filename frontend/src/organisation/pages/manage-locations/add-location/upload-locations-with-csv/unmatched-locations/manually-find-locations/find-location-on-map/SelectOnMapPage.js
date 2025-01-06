@@ -22,7 +22,7 @@ export default function SelectOnMapPage () {
     )
   }
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index, {
       state: 'Added'
     })
@@ -32,7 +32,7 @@ export default function SelectOnMapPage () {
     <SelectOnMapLayout
       fullAddress={fullAddress}
       NavigateToPreviousPage={NavigateToPreviousPage}
-      NavigateToNextPage={NavigateToNextPage}
+      navigateToNextPage={navigateToNextPage}
       NavigateToNotFound={NavigateToNotFound}
     />
   )

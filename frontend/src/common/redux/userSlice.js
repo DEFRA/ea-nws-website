@@ -34,7 +34,10 @@ const setLocationOtherAdditionals = (additionals, id, value) => {
     }
   }
   if (!idFound) {
-    additionals.push({ id: 'other', value: { s: JSON.stringify({ [id]: value }) } })
+    additionals.push({
+      id: 'other',
+      value: { s: JSON.stringify({ [id]: value }) }
+    })
   }
 }
 
@@ -48,6 +51,18 @@ const getLocationOtherAdditional = (additionals, id) => {
   return ''
 }
 
+const setOrgAdditional = (additionals, id, value) => {
+  let orgAdditionals = {}
+  const alertnativeContactInfo = ['firstName', 'lastName', 'email', 'telephone', 'jobTitle']
+  orgAdditionals = JSON.parse(additionals)
+  if (alertnativeContactInfo.includes(id)) {
+    orgAdditionals.alternativeContact[id] = value
+  } else {
+    orgAdditionals[id] = value
+  }
+  return JSON.stringify(orgAdditionals)
+}
+
 const userSlice = createSlice({
   name: 'session',
   initialState: {
@@ -55,7 +70,23 @@ const userSlice = createSlice({
     registerToken: null,
     profileId: null,
     orgId: null,
-    profile: null,
+    profile: {
+      id: '',
+      enabled: true,
+      firstname: '',
+      lastname: '',
+      emails: [],
+      mobilePhones: [],
+      homePhones: [],
+      language: 'EN',
+      additionals: [{ id: 'signupComplete', value: { s: 'false' } }],
+      unverified: {
+        emails: [],
+        mobilePhones: [],
+        homePhones: []
+      },
+      pois: []
+    },
     contactPreferences: null,
     registrations: null,
     currentContact: null,
@@ -71,6 +102,9 @@ const userSlice = createSlice({
     selectedFloodAlertArea: null,
     showOnlySelectedFloodArea: null,
     nearbyTargetAreaFlow: null,
+    // required for historical flood warnings and alerts
+    severeFloodWarningCount: null,
+    floodAlertCount: null,
     // keywords
     locationKeywords: null,
     contactKeywords: null,
@@ -96,30 +130,54 @@ const userSlice = createSlice({
         { id: 'locationName', value: { s: '' } },
         { id: 'parentID', value: { s: '' } },
         { id: 'targetAreas', value: { s: '' } },
-        { id: 'keywords', value: { s: '' } },
+        { id: 'keywords', value: { s: '[]' } },
         {
           id: 'other',
           value: {
-            s: JSON.stringify(
-              {
-                full_address: null,
-                postcode: null,
-                // Easting EPSG: 27700
-                x_coordinate: null,
-                // Northing EPSG: 27700
-                y_coordinate: null,
-                internal_reference: null,
-                business_criticality: null,
-                location_type: null,
-                action_plan: null,
-                notes: null,
-                location_data_type: null,
-                alertTypes: null
-              }
-            )
+            s: JSON.stringify({
+              full_address: null,
+              postcode: null,
+              // Easting EPSG: 27700
+              x_coordinate: null,
+              // Northing EPSG: 27700
+              y_coordinate: null,
+              internal_reference: null,
+              business_criticality: null,
+              location_type: null,
+              action_plan: null,
+              notes: null,
+              location_data_type: null,
+              alertTypes: null
+            })
           }
         }
       ]
+    },
+    // org data
+    organization: {
+      id: null,
+      name: null,
+      description: JSON.stringify({
+        name: null,
+        address: null,
+        compHouseNum: null,
+        emergencySector: null,
+        isAdminRegistering: null,
+        alternativeContact: {
+          firstName: null,
+          lastName: null,
+          email: null,
+          telephone: null,
+          jobTitle: null
+        }
+      }),
+      postalCode: null,
+      longName: null,
+      logoUrl: null,
+      backgroundUrl: null,
+      alertDiffusionZone: null,
+      alertDiffusionZoneBoundingBox: null,
+      urlSlug: null
     },
     // org contact data
     orgCurrentContact: {
@@ -138,7 +196,8 @@ const userSlice = createSlice({
           value: null
         }
       ]
-    }
+    },
+    contacts: null
   },
   reducers: {
     setAuthToken: (state, action) => {
@@ -200,6 +259,13 @@ const userSlice = createSlice({
     setNearbyTargetAreasFlow: (state, action) => {
       state.nearbyTargetAreaFlow = action.payload
     },
+    // required for historical flood warnings and alerts
+    setSevereFloodWarningCount: (state, action) => {
+      state.severeFloodWarningCount = action.payload
+    },
+    setFloodAlertCount: (state, action) => {
+      state.floodAlertCount = action.payload
+    },
     // required for predefined boundary flow
     setSelectedBoundaryType: (state, action) => {
       state.selectedBoundaryType = action.payload
@@ -227,6 +293,46 @@ const userSlice = createSlice({
       state.currentLocation.geocode = action.payload.geocode
       state.currentLocation.additionals = action.payload.additionals
     },
+    clearCurrentLocation: (state) => {
+      state.currentLocation = {
+        id: null,
+        enabled: true,
+        // name is the UPRN
+        name: null,
+        // address is the human readable address or flood area name
+        address: null,
+        // Coordinates in dd (degrees decimal)
+        coordinates: null,
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: '' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '[]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify({
+                full_address: null,
+                postcode: null,
+                // Easting EPSG: 27700
+                x_coordinate: null,
+                // Northing EPSG: 27700
+                y_coordinate: null,
+                internal_reference: null,
+                business_criticality: null,
+                location_type: null,
+                action_plan: null,
+                notes: null,
+                location_data_type: null,
+                alertTypes: null
+              })
+            }
+          }
+        ]
+      }
+    },
     setCurrentLocationId: (state, action) => {
       state.currentLocation.id = action.payload
     },
@@ -249,49 +355,183 @@ const userSlice = createSlice({
       state.currentLocation.geocode = action.payload
     },
     setCurrentLocationName: (state, action) => {
-      setAdditional(state.currentLocation.additionals, 'locationName', action.payload)
+      setAdditional(
+        state.currentLocation.additionals,
+        'locationName',
+        action.payload
+      )
     },
     setCurrentLocationParentID: (state, action) => {
-      setAdditional(state.currentLocation.additionals, 'parentID', action.payload)
+      setAdditional(
+        state.currentLocation.additionals,
+        'parentID',
+        action.payload
+      )
     },
     setCurrentLocationTargetAreas: (state, action) => {
-      setAdditional(state.currentLocation.additionals, 'targetAreas', action.payload)
+      setAdditional(
+        state.currentLocation.additionals,
+        'targetAreas',
+        action.payload
+      )
     },
     setCurrentLocationKeywords: (state, action) => {
-      setAdditional(state.currentLocation.additionals, 'keywords', action.payload)
+      setAdditional(
+        state.currentLocation.additionals,
+        'keywords',
+        action.payload
+      )
     },
     setCurrentLocationFullAddress: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'full_address', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'full_address',
+        action.payload
+      )
     },
     setCurrentLocationPostcode: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'postcode', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'postcode',
+        action.payload
+      )
     },
     setCurrentLocationEasting: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'x_coordinate', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'x_coordinate',
+        action.payload
+      )
     },
     setCurrentLocationNorthing: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'y_coordinate', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'y_coordinate',
+        action.payload
+      )
     },
     setCurrentLocationReference: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'internal_reference', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'internal_reference',
+        action.payload
+      )
     },
     setCurrentLocationCriticality: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'business_criticality', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'business_criticality',
+        action.payload
+      )
     },
     setCurrentLocationType: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'location_type', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'location_type',
+        action.payload
+      )
     },
     setCurrentLocationActionPlan: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'action_plan', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'action_plan',
+        action.payload
+      )
     },
     setCurrentLocationNotes: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'notes', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'notes',
+        action.payload
+      )
     },
     setCurrentLocationDataType: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'location_data_type', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'location_data_type',
+        action.payload
+      )
     },
     setCurrentLocationAlertTypes: (state, action) => {
-      setLocationOtherAdditionals(state.currentLocation.additionals, 'alertTypes', action.payload)
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'alertTypes',
+        action.payload
+      )
+    },
+    // org data
+    setOrganization: (state, action) => {
+      state.organization.id = action.payload.id
+      state.organization.name = action.payload.name
+      state.organization.description = action.payload.description
+      state.organization.postalCode = action.payload.postalCode
+      state.organization.longName = action.payload.longName
+      state.organization.logoUrl = action.payload.logoUrl
+      state.organization.backgroundUrl = action.payload.backgroundUrl
+      state.organization.alertDiffusionZone = action.payload.alertDiffusionZone
+      state.organization.alertDiffusionZoneBoundingBox = action.payload.alertDiffusionZoneBoundingBox
+      state.organization.urlSlug = action.payload.urlSlug
+    },
+    setOrganizationId: (state, action) => {
+      state.organization.id = action.payload
+    },
+    setOrganizationName: (state, action) => {
+      state.organization.name = action.payload
+      state.organization.description = setOrgAdditional(state.organization.description, 'name', action.payload)
+    },
+    setOrganizationAddress: (state, action) => {
+      state.organization.description = setOrgAdditional(state.organization.description, 'address', action.payload)
+    },
+    setOrganizationCompHouseNum: (state, action) => {
+      state.organization.description = setOrgAdditional(state.organization.description, 'compHouseNum', action.payload)
+    },
+    setOrganizationEmergencySector: (state, action) => {
+      state.organization.description = setOrgAdditional(state.organization.description, 'emergencySector', action.payload)
+    },
+    setOrganizationIsAdminRegistering: (state, action) => {
+      state.organization.description = setOrgAdditional(state.organization.description, 'isAdminRegistering', action.payload)
+    },
+    setOrganizationAlternativeContact: (state, action) => {
+      state.organization.description = setOrgAdditional(state.organization.description, 'alternativeContact', action.payload)
+    },
+    setOrganizationACFirstName: (state, action) => {
+      state.organization.description = setOrgAdditional(state.organization.description, 'firstName', action.payload)
+    },
+    setOrganizationACLastName: (state, action) => {
+      state.organization.description = setOrgAdditional(state.organization.description, 'lastName', action.payload)
+    },
+    setOrganizationACEmail: (state, action) => {
+      state.organization.description = setOrgAdditional(state.organization.description, 'email', action.payload)
+    },
+    setOrganizationACTelephone: (state, action) => {
+      state.organization.description = setOrgAdditional(state.organization.description, 'telephone', action.payload)
+    },
+    setOrganizationACJobTitle: (state, action) => {
+      state.organization.description = setOrgAdditional(state.organization.description, 'jobTitle', action.payload)
+    },
+    setOrganizationDescription: (state, action) => {
+      state.organization.description = action.payload
+    },
+    setOrganizationPostalCode: (state, action) => {
+      state.organization.postalCode = action.payload
+    },
+    setOrganizationLongName: (state, action) => {
+      state.organization.longName = action.payload
+    },
+    setOrganizationLogoUrl: (state, action) => {
+      state.organization.logoUrl = action.payload
+    },
+    setOrganizationBackgroundUrl: (state, action) => {
+      state.organization.backgroundUrl = action.payload
+    },
+    setOrganizationAlertDiffusionZone: (state, action) => {
+      state.organization.alertDiffusionZone = action.payload
+    },
+    setOrganizationAlertDiffusionZoneBoundingBox: (state, action) => {
+      state.organization.alertDiffusionZoneBoundingBox = action.payload
+    },
+    setOrganizationUrlSlug: (state, action) => {
+      state.organization.urlSlug = action.payload
     },
     // org contact data
     setOrgCurrentContact: (state, action) => {
@@ -336,6 +576,9 @@ const userSlice = createSlice({
     setOrgCurrentContactAdditionals: (state, action) => {
       state.orgCurrentContact.additionals = action.payload
     },
+    setContacts: (state, action) => {
+      state.contacts = action.payload
+    },
     // Clear state
     clearAuth: (state) => {
       state.authToken = null
@@ -357,6 +600,9 @@ const userSlice = createSlice({
       state.selectedFloodAlertArea = null
       state.showOnlySelectedFloodArea = null
       state.nearbyTargetAreaFlow = null
+      // required for historical flood warnings and alerts
+      state.severeFloodWarningCount = null
+      state.floodAlertCount = null
       // required for predefined boundary flow
       state.selectedBoundaryType = null
       state.selectedBoundary = null
@@ -379,30 +625,54 @@ const userSlice = createSlice({
           { id: 'locationName', value: { s: '' } },
           { id: 'parentID', value: { s: '' } },
           { id: 'targetAreas', value: { s: '' } },
-          { id: 'keywords', value: { s: '' } },
+          { id: 'keywords', value: { s: '[]' } },
           {
             id: 'other',
             value: {
-              s: JSON.stringify(
-                {
-                  full_address: null,
-                  postcode: null,
-                  // Easting EPSG: 27700
-                  x_coordinate: null,
-                  // Northing EPSG: 27700
-                  y_coordinate: null,
-                  internal_reference: null,
-                  business_criticality: null,
-                  location_type: null,
-                  action_plan: null,
-                  notes: null,
-                  location_data_type: null,
-                  alertTypes: null
-                }
-              )
+              s: JSON.stringify({
+                full_address: null,
+                postcode: null,
+                // Easting EPSG: 27700
+                x_coordinate: null,
+                // Northing EPSG: 27700
+                y_coordinate: null,
+                internal_reference: null,
+                business_criticality: null,
+                location_type: null,
+                action_plan: null,
+                notes: null,
+                location_data_type: null,
+                alertTypes: null
+              })
             }
           }
         ]
+      }
+      // org data
+      state.organization = {
+        id: null,
+        name: null,
+        description: JSON.stringify({
+          name: null,
+          address: null,
+          compHouseNum: null,
+          emergencySector: null,
+          isAdminRegistering: null,
+          alternativeContact: {
+            firstName: null,
+            lastName: null,
+            email: null,
+            telephone: null,
+            jobTitle: null
+          }
+        }),
+        postalCode: null,
+        longName: null,
+        logoUrl: null,
+        backgroundUrl: null,
+        alertDiffusionZone: null,
+        alertDiffusionZoneBoundingBox: null,
+        urlSlug: null
       }
       state.orgCurrentContact = {
         id: null,
@@ -426,21 +696,60 @@ const userSlice = createSlice({
   selectors: {
     getLocationAdditionals: (state) => {
       return {
-        locationName: getAdditional(state.currentLocation.additionals, 'locationName'),
+        locationName: getAdditional(
+          state.currentLocation.additionals,
+          'locationName'
+        ),
         parentID: getAdditional(state.currentLocation.additionals, 'parentID'),
-        targetAreas: getAdditional(state.currentLocation.additionals, 'targetAreas'),
+        targetAreas: getAdditional(
+          state.currentLocation.additionals,
+          'targetAreas'
+        ),
         keywords: getAdditional(state.currentLocation.additionals, 'keywords'),
-        full_address: getLocationOtherAdditional(state.currentLocation.additionals, 'full_address'),
-        postcode: getLocationOtherAdditional(state.currentLocation.additionals, 'postcode'),
-        x_coordinate: getLocationOtherAdditional(state.currentLocation.additionals, 'x_coordinate'),
-        y_coordinate: getLocationOtherAdditional(state.currentLocation.additionals, 'y_coordinate'),
-        internal_reference: getLocationOtherAdditional(state.currentLocation.additionals, 'internal_reference'),
-        business_criticality: getLocationOtherAdditional(state.currentLocation.additionals, 'business_criticality'),
-        location_type: getLocationOtherAdditional(state.currentLocation.additionals, 'location_type'),
-        action_plan: getLocationOtherAdditional(state.currentLocation.additionals, 'action_plan'),
-        notes: getLocationOtherAdditional(state.currentLocation.additionals, 'notes'),
-        location_data_type: getLocationOtherAdditional(state.currentLocation.additionals, 'location_data_type'),
-        alertTypes: getLocationOtherAdditional(state.currentLocation.additionals, 'alertTypes')
+        full_address: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'full_address'
+        ),
+        postcode: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'postcode'
+        ),
+        x_coordinate: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'x_coordinate'
+        ),
+        y_coordinate: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'y_coordinate'
+        ),
+        internal_reference: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'internal_reference'
+        ),
+        business_criticality: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'business_criticality'
+        ),
+        location_type: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'location_type'
+        ),
+        action_plan: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'action_plan'
+        ),
+        notes: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'notes'
+        ),
+        location_data_type: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'location_data_type'
+        ),
+        alertTypes: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'alertTypes'
+        )
       }
     },
     getLocationAdditional: (state, key) => {
@@ -474,6 +783,9 @@ export const {
   setSelectedFloodAlertArea,
   setShowOnlySelectedFloodArea,
   setNearbyTargetAreasFlow,
+  // required for historical flood warnings and alerts
+  setSevereFloodWarningCount,
+  setFloodAlertCount,
   // required for predefined boundary flow
   setSelectedBoundaryType,
   setSelectedBoundary,
@@ -504,6 +816,28 @@ export const {
   setCurrentLocationKeywords,
   setCurrentLocationDataType,
   setCurrentLocationAlertTypes,
+  // org data
+  setOrganization,
+  setOrganizationId,
+  setOrganizationName,
+  setOrganizationAddress,
+  setOrganizationCompHouseNum,
+  setOrganizationEmergencySector,
+  setOrganizationIsAdminRegistering,
+  setOrganizationAlternativeContact,
+  setOrganizationACFirstName,
+  setOrganizationACLastName,
+  setOrganizationACEmail,
+  setOrganizationACTelephone,
+  setOrganizationACJobTitle,
+  setOrganizationDescription,
+  setOrganizationPostalCode,
+  setOrganizationLongName,
+  setOrganizationLogoUrl,
+  setOrganizationBackgroundUrl,
+  setOrganizationAlertDiffusionZone,
+  setOrganizationAlertDiffusionZoneBoundingBox,
+  setOrganizationUrlSlug,
   // org current contact
   setOrgCurrentContact,
   setOrgCurrentContactId,
@@ -516,8 +850,10 @@ export const {
   setOrgCurrentContactPosition,
   setOrgCurrentContactAdditionals,
   setOrgCurrentContactNotes,
+  setContacts,
   // clear state
-  clearAuth
+  clearAuth,
+  clearCurrentLocation
 } = userSlice.actions
 
 export const {

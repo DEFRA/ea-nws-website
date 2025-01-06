@@ -3,7 +3,7 @@ import ConfirmDeleteContactDetailsLayout from '../../../../layouts/contact-manag
 export default function RemoveContactFromReviewConfirmationPage () {
   const navigate = useNavigate()
 
-  const NavigateToNextPage = (type, contact) => {
+  const navigateToNextPage = (type, contact) => {
     navigate('/signup/review', {
       state: {
         removedType: type,
@@ -18,7 +18,7 @@ export default function RemoveContactFromReviewConfirmationPage () {
 
   return (
     <ConfirmDeleteContactDetailsLayout
-      NavigateToNextPage={() => NavigateToNextPage()}
+      navigateToNextPage={() => navigateToNextPage()}
       NavigateToPreviousPage={NavigateToPreviousPage}
     />
   )

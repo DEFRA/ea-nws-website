@@ -7,7 +7,7 @@ export default function ConfirmLocationPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.add.optionalInfo)
+    navigate(orgManageLocationsUrls.add.optionalInformation.optionalInfo)
   }
 
   const navigateToPinDropFlow = () => {

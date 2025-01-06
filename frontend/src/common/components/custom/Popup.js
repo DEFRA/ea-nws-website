@@ -3,14 +3,16 @@ import { Link } from 'react-router-dom'
 import '../../css/custom.css'
 import Button from '../gov-uk/Button'
 import Input from '../gov-uk/Input'
+import Radio from '../gov-uk/Radio'
 
-export default function Popup ({
+export default function Popup({
   onEdit,
   onDelete,
   onClose,
   title,
   popupText,
   input = '',
+  options,
   textInput,
   setTextInput,
   buttonClass = '',
@@ -19,7 +21,8 @@ export default function Popup ({
   setError,
   charLimit = 0,
   validateInput = null,
-  defaultValue
+  defaultValue,
+  setOptionsSelected
 }) {
   const handleTextInputChange = (val) => {
     if (input) {
@@ -32,8 +35,15 @@ export default function Popup ({
     }
   }
 
+  const handleRadioChange = (val) => {
+    if (options) {
+      setOptionsSelected(val)
+    }
+  }
+
   const handleSubmit = () => {
-    if (!input) {
+    console.log('options: ', options)
+    if (!input || !options) {
       onDelete()
     } else {
       if (error === '') {
@@ -67,6 +77,22 @@ export default function Popup ({
               error={error}
               defaultValue={defaultValue}
             />
+          )}
+          {options && (
+            <div className='govuk-radios'>
+              <Radio
+                label='On'
+                key={options[0].value + '_on'}
+                name={options[0].value + 'Radio'}
+                onChange={(e) => handleRadioChange(e.target.value)}
+              />
+              <Radio
+                label='Off'
+                key={options[0].value + '_off'}
+                name={options[0].value + 'Radio'}
+                onChange={(e) => handleRadioChange(e.target.value)}
+              />
+            </div>
           )}
           <div className='popup-dialog-flex'>
             <Button

@@ -7,14 +7,16 @@ import NotificationBanner from '../components/gov-uk/NotificationBanner'
 import AlertType from '../enums/AlertType'
 import {
   clearAuth,
-  setAuthToken, setContactPreferences,
+  setAuthToken,
+  setContactPreferences,
+  setContacts,
   setCurrentLocation,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
+  setCurrentLocationFullAddress,
   setCurrentLocationNorthing,
   setLocationBoundaries,
   setOrgCurrentContact,
-  setContacts,
   setOrgId,
   setProfile,
   setRegistrations,
@@ -600,9 +602,12 @@ export default function IndexPage () {
       dispatch(setLocationBoundaries([]))
       dispatch(setOrgCurrentContact(mockOrgCurrentContact))
       dispatch(setContacts(mockContacts))
-      dispatch(setOrgId('1'))
+      dispatch(setOrgId('123456'))
       dispatch(setCurrentLocationEasting('520814'))
       dispatch(setCurrentLocationNorthing('185016'))
+      dispatch(
+        setCurrentLocationFullAddress('Kingfisher Way, London, NW10 8TZ')
+      )
       setmockSessionActive(true)
     } else {
       dispatch(clearAuth())

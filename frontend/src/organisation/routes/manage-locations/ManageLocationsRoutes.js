@@ -50,6 +50,10 @@ import LocationNotFoundCoordinatesNotInEnglandPage from '../../pages/manage-loca
 import LocationNotFoundDropPinNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/notFound/not-in-england/DropPinNotInEnglandPage'
 import LocationNotFoundPostcodeNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/notFound/not-in-england/PostcodeNotInEnglandPage'
 
+// Unmatched locations: location not in England
+import FindLocationNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-in-england/FindLocationNotInEnglandPage'
+import LocationNotInEnglandInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-in-england/LocationNotInEnglandInfoPage'
+
 // edit imports
 import EditConfirmLocationPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/ConfirmLocationPage'
 import EditLocationSearchOptionsPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/LocationSearchOptionsPage'
@@ -79,6 +83,8 @@ const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
 const urlManageOrgConfirmLocations = urlManageOrg + '/confirm'
 const urlUnmatchedLocationsNotFound =
   urlManageOrg + '/unmatched-locations-not-found'
+const urlUnmatchedLocationsNotInEngland =
+  urlManageOrg + '/unmatched-locations-not-in-england'
 
 // Manage location urls
 const orgManageLocationsUrls = {
@@ -198,6 +204,31 @@ const orgManageLocationsUrls = {
           urlUnmatchedLocationsNotFound + '/drop-pin/location-not-in-england'
       },
       confirm: urlUnmatchedLocationsNotFound + '/confirm-location'
+    },
+    notInEngland: {
+      info: urlUnmatchedLocationsNotInEngland + '/location-info',
+      find: urlUnmatchedLocationsNotInEngland + '/find-location',
+      postcode: urlUnmatchedLocationsNotInEngland + '/find-location-postcode',
+      address: urlUnmatchedLocationsNotInEngland + '/find-location-address',
+      cannotFindAddress:
+        urlUnmatchedLocationsNotInEngland + '/cannot-find-location-address',
+      coordinates:
+        urlUnmatchedLocationsNotInEngland + '/find-location-coordinates',
+      map: urlUnmatchedLocationsNotInEngland + '/find-location-on-map',
+      mapDropPin:
+        urlUnmatchedLocationsNotInEngland + '/find-location-on-map/drop-pin',
+      notInEngland: {
+        postcode:
+          urlUnmatchedLocationsNotInEngland +
+          '/postcode/location-not-in-england',
+        coordinates:
+          urlUnmatchedLocationsNotInEngland +
+          '/coordinates/location-not-in-england',
+        dropPin:
+          urlUnmatchedLocationsNotInEngland +
+          '/drop-pin/location-not-in-england'
+      },
+      confirm: urlUnmatchedLocationsNotInEngland + '/confirm-location'
     }
   }
 }
@@ -389,6 +420,15 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.unmatchedLocations.notFound.notInEngland
       .postcode,
     component: <LocationNotFoundPostcodeNotInEnglandPage />
+  },
+  // unmatched locations: location not in England
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.info,
+    component: <LocationNotInEnglandInfoPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.find,
+    component: <FindLocationNotInEnglandPage />
   },
   // optional information
   {

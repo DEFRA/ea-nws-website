@@ -44,7 +44,7 @@ export default function SignUpDuplicateEmailPageLayout () {
 
   return (
     <>
-    <CitizenAccountNavigation currentPage={useLocation().pathname} />
+      <CitizenAccountNavigation currentPage={useLocation().pathname} />
       <BackLink to={urlSignup} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

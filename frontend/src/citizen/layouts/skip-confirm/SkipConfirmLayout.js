@@ -1,10 +1,9 @@
 import * as React from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
-import { useLocation } from 'react-router-dom'
 export default function SkipConfirmLayout (contactPreference) {
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
@@ -22,7 +21,7 @@ export default function SkipConfirmLayout (contactPreference) {
 
   return (
     <>
-    <CitizenAccountNavigation currentPage={useLocation().pathname}/>
+      <CitizenAccountNavigation currentPage={useLocation().pathname} />
       <BackLink to='/signup/contactpreferences/mobile/validate' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

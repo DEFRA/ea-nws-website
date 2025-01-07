@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -10,7 +10,6 @@ import { backendCall } from '../../../common/services/BackendService'
 import { getAdditionals, updateAdditionals } from '../../../common/services/ProfileServices'
 import { businessDetailsValidation } from '../../../common/services/validations/BusinessDetailsValidation'
 import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
-import { useLocation } from 'react-router-dom'
 export default function ChangeBusinessDetailsPage () {
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
@@ -58,7 +57,7 @@ export default function ChangeBusinessDetailsPage () {
 
   return (
     <>
-   <CitizenAccountNavigation currentPage={useLocation().pathname} />
+      <CitizenAccountNavigation currentPage={useLocation().pathname} />
       <BackLink to='/account' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

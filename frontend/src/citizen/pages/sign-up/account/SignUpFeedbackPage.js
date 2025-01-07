@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
@@ -7,7 +7,6 @@ import Radio from '../../../../common/components/gov-uk/Radio'
 import TextArea from '../../../../common/components/gov-uk/TextArea'
 import { backendCall } from '../../../../common/services/BackendService'
 import CitizenAccountNavigation from '../../../../common/components/custom/CitizenAccountNavigation'
-import { useLocation } from 'react-router-dom'
 export default function FeedbackPage () {
   const navigate = useNavigate()
   const [feedbackPreference, setFeedbackPreference] = useState('')
@@ -77,7 +76,7 @@ export default function FeedbackPage () {
 
   return (
     <>
-    <CitizenAccountNavigation currentPage={useLocation().pathname} />
+      <CitizenAccountNavigation currentPage={useLocation().pathname} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

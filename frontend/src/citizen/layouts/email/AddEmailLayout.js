@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
-import { useLocation } from 'react-router-dom'
+import { useNavigate, useLocation } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -15,7 +14,6 @@ import CitizenAccountNavigation from '../../../common/components/custom/CitizenA
 export default function AddEmailLayout ({ navigateToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const location = useLocation
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
   const session = useSelector((state) => state.session)
@@ -63,7 +61,7 @@ export default function AddEmailLayout ({ navigateToNextPage }) {
 
   return (
     <>
-      <CitizenAccountNavigation currentPage={useLocation().pathname}/>
+      <CitizenAccountNavigation currentPage={useLocation().pathname} />
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

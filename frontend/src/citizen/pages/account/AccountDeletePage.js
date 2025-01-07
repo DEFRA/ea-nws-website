@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -8,7 +8,6 @@ import Radio from '../../../common/components/gov-uk/Radio'
 import TextArea from '../../../common/components/gov-uk/TextArea'
 import { backendCall } from '../../../common/services/BackendService'
 import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
-import { useLocation } from 'react-router-dom'
 export default function AccountDeletePage () {
   const navigate = useNavigate()
   const charLimit = 2000
@@ -94,7 +93,7 @@ export default function AccountDeletePage () {
 
   return (
     <>
-    <CitizenAccountNavigation currentPage={useLocation().pathname}/>
+      <CitizenAccountNavigation currentPage={useLocation().pathname} />
       <BackLink onClick={() => navigate(-1)} />
       {/* Main body */}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

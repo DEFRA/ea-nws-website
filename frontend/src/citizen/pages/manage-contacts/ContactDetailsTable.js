@@ -1,10 +1,9 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
 import { setCurrentContact } from '../../../common/redux/userSlice'
 import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
-import { useLocation } from 'react-router-dom'
 export default function ContactDetailsTable ({
   contacts,
   contactTitle,

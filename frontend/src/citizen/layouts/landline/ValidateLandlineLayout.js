@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, useNavigate, useLocation } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -17,7 +17,6 @@ import {
 } from '../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
 import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
-import { useLocation } from 'react-router-dom'
 export default function ValidateLandlineLayout ({
   navigateToNextPage,
   SkipValidation,
@@ -135,7 +134,7 @@ export default function ValidateLandlineLayout ({
 
   return (
     <>
-    <CitizenAccountNavigation currentPage={useLocation().pathname}/>
+      <CitizenAccountNavigation currentPage={useLocation().pathname} />
       {codeExpired
         ? (
           <ExpiredCodeLayout getNewCode={getNewCode} />

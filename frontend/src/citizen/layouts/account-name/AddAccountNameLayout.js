@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
-import { useLocation } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -18,7 +17,6 @@ export default function AddAccountNameLayout ({
   updateProfile,
   profileError
 }) {
-
   const dispatch = useDispatch()
   const [error, setError] = useState('')
   const session = useSelector((state) => state.session)
@@ -28,7 +26,6 @@ export default function AddAccountNameLayout ({
       ? `${session.profile.firstname} ${session.profile.lastname}`
       : ''
   )
-  const location = useLocation()
 
   const handleSubmit = async () => {
     const validationError = fullNameValidation(fullName)
@@ -52,10 +49,10 @@ export default function AddAccountNameLayout ({
     event.preventDefault()
     NavigateToPreviousPage()
   }
-  
+
   return (
     <>
-      <CitizenAccountNavigation currentPage={useLocation().pathname}/>
+      <CitizenAccountNavigation currentPage={useLocation().pathname} />
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

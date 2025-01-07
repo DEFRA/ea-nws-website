@@ -35,14 +35,13 @@ export default function Popup({
     }
   }
 
-  const handleRadioChange = (val) => {
+  const handleRadioChange = (option, isItOn, index) => {
     if (options) {
-      setOptionsSelected(val)
+      setOptionsSelected()
     }
   }
 
   const handleSubmit = () => {
-    console.log('options: ', options)
     if (!input || !options) {
       onDelete()
     } else {
@@ -51,11 +50,41 @@ export default function Popup({
         if (validationError) {
           setError(validationError)
         } else {
+          console.log('Popup.js l54')
           onEdit()
         }
       }
     }
   }
+
+  const RadioOptions = ({ options, handleRadioChange }) => (
+    <>
+      {options.map((option, index) => (
+        <div className='govuk-radios'>
+          <td className='govuk-table__cell' style={{ verticalAlign: 'middle' }}>
+            <strong>{option.label}</strong>
+          </td>
+          <td className='govuk-table__cell'>
+            <Radio
+              label='On'
+              key={option.value + '_on'}
+              name={option.value + 'Radio'}
+              onChange={() => handleRadioChange(option, true, index)}
+            />
+          </td>
+          <td className='govuk-table__cell'>
+            <Radio
+              label='Off'
+              key={option.value + '_off'}
+              name={option.value + 'Radio'}
+              value=''
+              onChange={() => handleRadioChange(option, false, index)}
+            />
+          </td>
+        </div>
+      ))}
+    </>
+  )
 
   return (
     <div className='popup-dialog'>
@@ -79,20 +108,10 @@ export default function Popup({
             />
           )}
           {options && (
-            <div className='govuk-radios'>
-              <Radio
-                label='On'
-                key={options[0].value + '_on'}
-                name={options[0].value + 'Radio'}
-                onChange={(e) => handleRadioChange(e.target.value)}
-              />
-              <Radio
-                label='Off'
-                key={options[0].value + '_off'}
-                name={options[0].value + 'Radio'}
-                onChange={(e) => handleRadioChange(e.target.value)}
-              />
-            </div>
+            <RadioOptions
+              options={options}
+              handleRadioChange={handleRadioChange}
+            />
           )}
           <div className='popup-dialog-flex'>
             <Button

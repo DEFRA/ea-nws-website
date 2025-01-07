@@ -39,7 +39,11 @@ export default function ViewLocationsDashboardPage() {
   const [displayedLocations, setDisplayedLocations] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
   const orgId = useSelector((state) => state.session.orgId)
-  const [optionsSelected, setOptionsSelected] = useState([])
+  const [optionsSelected, setOptionsSelected] = useState({
+    alert: false,
+    warning: false,
+    severeWarning: false
+  })
   const [dialog, setDialog] = useState({
     show: false,
     text: '',
@@ -200,7 +204,6 @@ export default function ViewLocationsDashboardPage() {
   }
 
   const editLocationText = (locationsToBeEdited) => {
-    console.log(locationsToBeEdited)
     const unavailableLocationsCount = 0
     const alertOnlyLocationsCount = 0
     const remainingLocationsCount =
@@ -271,6 +274,8 @@ export default function ViewLocationsDashboardPage() {
   }
 
   const editDialog = (locationsToBeEdited) => {
+    console.log('SelectedLocations:')
+    console.log(locationsToBeEdited)
     if (locationsToBeEdited && locationsToBeEdited.length > 0) {
       setDialog({
         show: true,
@@ -283,10 +288,19 @@ export default function ViewLocationsDashboardPage() {
         options: [
           {
             label: 'Severe flood warnings',
-            value: AlertType.SEVERE_FLOOD_WARNING
+            value: AlertType.SEVERE_FLOOD_WARNING,
+            sent: false
           },
-          { label: 'Flood warnings', value: AlertType.FLOOD_WARNING },
-          { label: 'Flood alerts', value: AlertType.FLOOD_ALERT }
+          {
+            label: 'Flood warnings',
+            value: AlertType.FLOOD_WARNING,
+            sent: false
+          },
+          {
+            label: 'Flood alerts',
+            value: AlertType.FLOOD_ALERT,
+            sent: false
+          }
         ],
         error: ''
       })
@@ -382,6 +396,8 @@ export default function ViewLocationsDashboardPage() {
     setIsFilterVisible(!isFilterVisible)
   }
 
+  const editLocations = (locationsToEdit) => {}
+
   const removeLocations = (locationsToRemove) => {
     const updatedLocations = locations.filter(
       (location) => !locationsToRemove.includes(location)
@@ -415,6 +431,15 @@ export default function ViewLocationsDashboardPage() {
     } else if (selectedLocations.length > 0) {
       const locationsToRemove = [...selectedLocations]
       removeLocations(locationsToRemove)
+    }
+  }
+
+  const handleEdit = () => {
+    console.log('inHere!')
+    console.log('optionsSelected', optionsSelected)
+    if (selectedLocations.length > 0) {
+      const locationsToBeEdited = [...selectedLocations]
+      editLocations(locationsToBeEdited)
     }
   }
 
@@ -580,6 +605,7 @@ export default function ViewLocationsDashboardPage() {
             {dialog.show && (
               <>
                 <Popup
+                  onEdit={() => handleEdit()}
                   onDelete={() => handleDelete()}
                   onClose={() => setDialog({ ...dialog, show: false })}
                   title={dialog.title}

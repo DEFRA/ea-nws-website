@@ -1,11 +1,11 @@
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import ConfirmationPanel from '../../../../common/components/gov-uk/Panel'
-import CitizenAccountNavigation from '../../../../common/components/custom/CitizenAccountNavigation'
+
 export default function SignUpSuccessPage () {
   // need to check for authToken
   return (
     <>
-      
+
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

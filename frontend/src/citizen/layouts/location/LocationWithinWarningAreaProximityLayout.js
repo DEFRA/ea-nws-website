@@ -4,7 +4,7 @@ import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { isMobile } from 'react-device-detect'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate, useParams, useLocation } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import FloodWarningKey from '../../../common/components/custom/FloodWarningKey'
 import LoadingSpinner from '../../../common/components/custom/LoadingSpinner'
@@ -24,7 +24,7 @@ import {
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { csvToJson } from '../../../common/services/CsvToJson'
-import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
+
 export default function LocationWithinWarningAreaProximityLayout ({
   continueToSelectedFloodWarningsPage,
   continueToNearbyFloodAlertsPage,
@@ -131,7 +131,7 @@ export default function LocationWithinWarningAreaProximityLayout ({
 
   return (
     <>
-      
+
       {showMobileMap
         ? (
           <>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate, useLocation } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 import Button from '../../components/gov-uk/Button'
 import ErrorSummary from '../../components/gov-uk/ErrorSummary'
@@ -16,7 +16,7 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from './ExpiredCodeLayout'
-import CitizenAccountNavigation from '../../components/custom/CitizenAccountNavigation'
+
 export default function ValidateEmailLayout ({
   navigateToNextPage,
   SkipValidation,
@@ -137,7 +137,7 @@ export default function ValidateEmailLayout ({
 
   return (
     <>
-      
+
       {codeExpired
         ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
         : (

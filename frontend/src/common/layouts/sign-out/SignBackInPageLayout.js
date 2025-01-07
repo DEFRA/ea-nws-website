@@ -1,6 +1,6 @@
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
-import CitizenAccountNavigation from '../../components/custom/CitizenAccountNavigation'
+
 export default function SignBackInPage () {
   const navigate = useNavigate()
   const isOrgRoute = !!window.location.pathname.includes('/organisation/')
@@ -11,7 +11,7 @@ export default function SignBackInPage () {
 
   return (
     <>
-      
+
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

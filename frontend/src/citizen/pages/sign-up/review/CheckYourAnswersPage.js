@@ -1,6 +1,6 @@
 import { React } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import { setProfile } from '../../../../common/redux/userSlice'
@@ -10,7 +10,7 @@ import AccountDetailsTable from './AccountDetailsTable'
 import ContactReviewTable from './ContactReviewTable'
 import FloodMessageReviewTable from './FloodMessageReviewTable'
 import LocationReviewTable from './LocationReviewTable'
-import CitizenAccountNavigation from '../../../../common/components/custom/CitizenAccountNavigation'
+
 export default function CheckYourAnswersPage () {
   const session = useSelector((state) => state.session)
   const profile = useSelector((state) => state.session.profile)
@@ -48,7 +48,7 @@ export default function CheckYourAnswersPage () {
 
   return (
     <>
-      
+
       <BackLink to='/declaration' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row '>

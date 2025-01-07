@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -8,7 +8,7 @@ import Input from '../../../common/components/gov-uk/Input'
 import { setProfile } from '../../../common/redux/userSlice'
 import { addAccountName } from '../../../common/services/ProfileServices'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
-import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
+
 export default function AddAccountNameLayout ({
   navigateToNextPage,
   NavigateToPreviousPage,

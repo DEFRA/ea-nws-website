@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { useNavigate, useLocation } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -11,7 +11,7 @@ import {
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
-import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
+
 export default function LocationSearchLayout ({ continueToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -95,7 +95,7 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
 
   return (
     <>
-      
+
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>

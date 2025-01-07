@@ -28,27 +28,19 @@ import LocationAddLoadingPage from '../../pages/manage-locations/add-location/up
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
 import ConfirmAddingLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
 import ConfirmUploadCsvPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm/ConfirmUploadCsvPage'
-import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/FindUnmatchedLocationsPage'
-import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
-import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
-import SelectHowToFindThisLocationPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/SelectHowToFindThisLocationPage'
-import FindLocationByMatchedAddressesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-by-address/FindLocationByMatchedAddressesPage'
-import NotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/NotInEnglandPage'
-import ProvideAreaNamePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/ProvideAreaNamePage'
-import SelectOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/find-location-on-map/SelectOnMapPage'
 
 // Unmatched locations: location not found
-import ConfirmLocationNotFoundPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/notFound/ConfirmLocationNotFoundPage'
-import FindLocationNotFoundPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/notFound/FindLocationNotFoundPage'
-import FindLocationNotFoundByCoordinatesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/notFound/find-by-coordinates/FindLocationByCoordinatesPage'
-import CannotFindLocationNotFoundByAddressPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/notFound/find-by-postcode/CannotFindLocationByAddressPage'
-import FindLocationNotFoundByAddressPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/notFound/find-by-postcode/FindLocationByAddressPage'
-import FindLocationNotFoundByPostcodePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/notFound/find-by-postcode/FindLocationByPostcodePage'
-import FindLocationNotFoundByDropPinPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/notFound/find-on-map/FindLocationByDropPinPage'
-import FindLocationNotFoundOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/notFound/find-on-map/FindLocationOnMapPage'
-import LocationNotFoundCoordinatesNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/notFound/not-in-england/CoordinatesNotInEnglandPage'
-import LocationNotFoundDropPinNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/notFound/not-in-england/DropPinNotInEnglandPage'
-import LocationNotFoundPostcodeNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/notFound/not-in-england/PostcodeNotInEnglandPage'
+import ConfirmLocationNotFoundPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/ConfirmLocationNotFoundPage'
+import FindLocationNotFoundPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/FindLocationNotFoundPage'
+import FindLocationNotFoundByCoordinatesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/find-by-coordinates/FindLocationByCoordinatesPage'
+import CannotFindLocationNotFoundByAddressPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/find-by-postcode/CannotFindLocationByAddressPage'
+import FindLocationNotFoundByAddressPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/find-by-postcode/FindLocationByAddressPage'
+import FindLocationNotFoundByPostcodePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/find-by-postcode/FindLocationByPostcodePage'
+import FindLocationNotFoundByDropPinPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/find-on-map/FindLocationByDropPinPage'
+import FindLocationNotFoundOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/find-on-map/FindLocationOnMapPage'
+import LocationNotFoundCoordinatesNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/not-in-england/CoordinatesNotInEnglandPage'
+import LocationNotFoundDropPinNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/not-in-england/DropPinNotInEnglandPage'
+import LocationNotFoundPostcodeNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/not-in-england/PostcodeNotInEnglandPage'
 
 // edit imports
 import EditConfirmLocationPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/ConfirmLocationPage'
@@ -75,7 +67,6 @@ const urlManageOrg = '/organisation/manage-locations'
 export const urlManageOrgViewLocations = urlManageOrg + '/locations'
 export const urlManageOrgAddLocations = urlManageOrg + '/add'
 const urlManageOrgEditLocations = urlManageOrg + '/edit'
-const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
 const urlManageOrgConfirmLocations = urlManageOrg + '/confirm'
 const urlUnmatchedLocationsNotFound =
   urlManageOrg + '/unmatched-locations-not-found'
@@ -166,17 +157,6 @@ const orgManageLocationsUrls = {
     }
   },
   unmatchedLocations: {
-    index: urlManageOrgUnmatchedLocations,
-    doNotAdd: urlManageOrgUnmatchedLocations + '/do-not-add',
-    manuallyfind: {
-      index: urlManageOrgUnmatchedLocations + '/manually-find',
-      selectHow: urlManageOrgUnmatchedLocations + '/manually-find/select-how',
-      address: urlManageOrgUnmatchedLocations + '/manually-find/address',
-      areaName: urlManageOrgUnmatchedLocations + '/manually-find/area-name',
-      map: urlManageOrgUnmatchedLocations + '/manually-find/map',
-      notInEngland:
-        urlManageOrgUnmatchedLocations + '/manually-find/not-in-england'
-    },
     notFound: {
       dashboard: urlUnmatchedLocationsNotFound,
       find: urlUnmatchedLocationsNotFound + '/find-location',
@@ -308,39 +288,6 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.predefinedBoundary.addAnother,
     component: <AddAnotherPredefinedBoundaryPage />
-  },
-  // unmatched locations
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.doNotAdd,
-    component: <DoNotAddLocationsPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.index,
-    component: <FindUnmatchedLocationsPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.index,
-    component: <ManuallyFindLocationsPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.areaName,
-    component: <ProvideAreaNamePage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.map,
-    component: <SelectOnMapPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.notInEngland,
-    component: <NotInEnglandPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.selectHow,
-    component: <SelectHowToFindThisLocationPage />
-  },
-  {
-    path: orgManageLocationsUrls.unmatchedLocations.manuallyfind.address,
-    component: <FindLocationByMatchedAddressesPage />
   },
   // unmatched locations: location not found
   {

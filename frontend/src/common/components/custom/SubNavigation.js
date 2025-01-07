@@ -1,10 +1,17 @@
+import { useState } from 'react'
+import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import '../../css/custom.css'
-import { useSelector } from 'react-redux'
 
 export default function SubNavigation ({ pages, currentPage, type }) {
   const session = useSelector((state) => state.session)
   const authToken = session.authToken
+  const [menuOpen, setMenuOpen] = useState(false)
+  
+  const toggleMenu = () => {
+    setMenuOpen(!menuOpen)
+  }
+  
   if (type === 'org') {
     return (
       <nav aria-label='Sub navigation' className='sub-navigation-org'>
@@ -37,12 +44,18 @@ export default function SubNavigation ({ pages, currentPage, type }) {
       <nav aria-label='Sub navigation'>
         <ul className='sub-navigation__list'>
           <li className='sub-navigation__item bold'>
-            <a href='/' style={{ textDecoration: 'none', color: 'black' }}>
+            <p>
               Get flood warnings
-            </a>
+            </p>
           </li>
 
-          {authToken !== null &&
+          <li className='sub-navigation__item'>
+            <button onClick={() => toggleMenu()} className='sub-navigation__menu'>
+              Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
+            </button>
+          </li>
+
+          {(authToken !== null && menuOpen === true) &&
           pages.map((page, index) => (
             <li key={index} className='sub-navigation__item'>
               <Link

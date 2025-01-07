@@ -7,7 +7,7 @@ export default function PostcodeNotInEnglandPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.add.uploadLocationsWithCsv.confirm)
+    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard)
   }
 
   const postCodeSearchUrl =

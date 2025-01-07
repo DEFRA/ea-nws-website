@@ -7,7 +7,7 @@ export default function FindLocationByDropPinPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.add.uploadLocationsWithCsv.confirm)
+    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard)
   }
 
   const navigateToNotInEnglandPage = () => {

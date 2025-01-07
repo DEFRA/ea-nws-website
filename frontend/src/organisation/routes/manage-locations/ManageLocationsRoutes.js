@@ -27,11 +27,11 @@ import LocationAddConfirm from '../../pages/manage-locations/add-location/upload
 import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
 import ConfirmAddingLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
-import ConfirmUploadCsvPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm/ConfirmUploadCsvPage'
 
 // Unmatched locations: location not found
 import ConfirmLocationNotFoundPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/ConfirmLocationNotFoundPage'
 import FindLocationNotFoundPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/FindLocationNotFoundPage'
+import LocationsNotFoundDashboardPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/LocationsNotFoundDashboardPage'
 import FindLocationNotFoundByCoordinatesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/find-by-coordinates/FindLocationByCoordinatesPage'
 import CannotFindLocationNotFoundByAddressPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/find-by-postcode/CannotFindLocationByAddressPage'
 import FindLocationNotFoundByAddressPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/find-by-postcode/FindLocationByAddressPage'
@@ -82,9 +82,6 @@ const orgManageLocationsUrls = {
     addLocationWithinBoundaries: {},
     manualAddLocation: {
       confirmManualSearchedLocation: urlManageOrg + '/add/confirm'
-    },
-    uploadLocationsWithCsv: {
-      confirm: urlManageOrgAddLocations + '/csv-upload/confirm'
     },
     addLocationsWithShapefile: urlManageOrgAddLocations + '/shapefile-info',
     uploadLocationsWithShapefile:
@@ -220,10 +217,6 @@ const orgManageLocationRoutes = [
     component: <ConfirmLocationPage />
   },
   {
-    path: orgManageLocationsUrls.add.uploadLocationsWithCsv.confirm,
-    component: <ConfirmUploadCsvPage />
-  },
-  {
     path: orgManageLocationsUrls.add.uploadFile,
     component: <LocationAddUploadFilePage />
   },
@@ -290,6 +283,10 @@ const orgManageLocationRoutes = [
     component: <AddAnotherPredefinedBoundaryPage />
   },
   // unmatched locations: location not found
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notFound.dashboard,
+    component: <LocationsNotFoundDashboardPage />
+  },
   {
     path: orgManageLocationsUrls.unmatchedLocations.notFound.find,
     component: <FindLocationNotFoundPage />

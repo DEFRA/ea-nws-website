@@ -1,9 +1,9 @@
 import { Link, useLocation } from 'react-router-dom'
-import Button from '../../../../../../common/components/gov-uk/Button'
-import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
-import WarningText from '../../../../../../common/components/gov-uk/WarningText'
+import Button from '../../../../../../../common/components/gov-uk/Button'
+import NotificationBanner from '../../../../../../../common/components/gov-uk/NotificationBanner'
+import WarningText from '../../../../../../../common/components/gov-uk/WarningText'
 
-export default function SuccessUploadCsvPage () {
+export default function LocationsNotFoundDashboardPage () {
   const location = useLocation()
   const locations = []
 
@@ -93,7 +93,7 @@ export default function SuccessUploadCsvPage () {
                     return (
                       <tr class='govuk-table__row' key={index}>
                         <th scope='row' class='govuk-table__header'>
-                          {location.name}
+                          {location.additionals.locationName}
                         </th>
                         <td class='govuk-table__cell'>
                           {location.additionals.other.full_address}
@@ -102,7 +102,8 @@ export default function SuccessUploadCsvPage () {
                           {location.additionals.other.postcode}
                         </td>
                         <td class='govuk-table__cell'>
-                          {/* TODO: Add X and Y coordinates */}
+                          {location.additionals.other.x_coordinate},{' '}
+                          {location.additionals.other.y_coordinate}
                         </td>
                         <td class='govuk-table__cell'>
                           <Link>Find this location</Link>

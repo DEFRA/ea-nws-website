@@ -19,7 +19,6 @@ import {
   updateLocationsAlertTypes
 } from '../../../common/services/ProfileServices'
 import { getCoordsOfFloodArea } from '../../../common/services/WfsFloodDataService'
-import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
 
 export default function LocationInAlertAreaLayout ({
   continueToNextPage,
@@ -253,7 +252,7 @@ export default function LocationInAlertAreaLayout ({
 
   return (
     <>
-      
+
       <BackLink onClick={() => handleUserNavigatingBack()} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>

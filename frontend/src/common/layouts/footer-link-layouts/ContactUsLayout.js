@@ -1,19 +1,16 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
-import CitizenAccountNavigation from '../../components/custom/CitizenAccountNavigation'
 
 export default function ContactUsLayout () {
   const navigate = useNavigate()
-  const location = useLocation()
+
   const authToken = useSelector((state) => state.session.authToken)
 
   return (
     <>
-      {authToken && (
-        
-      )}
+
       {!authToken && <BackLink onClick={() => navigate(-1)} />}
       <main
         className={

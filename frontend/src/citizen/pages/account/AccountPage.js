@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
+
 import Button from '../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import { getAdditionals } from '../../../common/services/ProfileServices'
@@ -39,7 +39,7 @@ export default function AccountPage () {
 
   return (
     <>
-      
+
       {location.state !== null
         ? (
           <NotificationBanner

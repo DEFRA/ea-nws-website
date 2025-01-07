@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
-import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
+
 import Details from '../../../common/components/gov-uk/Details'
 import InsetText from '../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
@@ -62,7 +62,7 @@ export default function ManageContactsPage () {
 
   return (
     <>
-      
+
       {location.state !== null && location.state.removedContact
         ? (
           <NotificationBanner

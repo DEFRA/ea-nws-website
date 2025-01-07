@@ -92,8 +92,10 @@ export default function ViewContactsDashboardPage () {
 
       setContacts(contactsUpdate)
       setFilteredContacts(contactsUpdate)
+      console.log('Num contacts: ' + contactsUpdate.length)
     }
     getContacts()
+    
   }, [])
 
   const moreActions = [
@@ -205,16 +207,15 @@ export default function ViewContactsDashboardPage () {
     })
 
     const dataToSend = { authToken, orgId, removeContactIDs }
-    const { data, errorMessage } = await backendCall(
+    const { errorMessage } = await backendCall(
       dataToSend,
       'api/organization/remove_contacts',
       navigate
     )
-    if (!data) {
+    if (errorMessage) {
       errorMessage ? setError(errorMessage) : setError('Oops, something went wrong')
     }
 
-    // dispatch(setContacts(updatedContacts))
     setContacts([...updatedContacts])
     setFilteredContacts([...updatedFilteredContacts])
 

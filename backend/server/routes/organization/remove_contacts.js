@@ -14,14 +14,16 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
 
-        const { authToken, orgId, contactIDs } = request.payload
-        if (authToken && orgId && contactIDs) {
+        const { authToken, orgId, removeContactIDs } = request.payload
+
+        if (authToken && orgId && removeContactIDs) {
           const response = await apiCall(
-            { authToken: authToken, contactIDs: contactIDs },
+            { authToken: authToken, contactIds: removeContactIDs },
             'organization/removeContacts'
           )
+
           if (response.status === 200) {
-            await Promise.all(contactIDs.map(async (contactID) => {
+            await Promise.all(removeContactIDs.map(async (contactID) => {
               await removeContact(orgId, contactID)
             }))
             return h.response({ status: 200 })

@@ -1,6 +1,6 @@
 import { React, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
@@ -14,8 +14,9 @@ import {
 import { backendCall } from '../../../../../common/services/BackendService'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmLocationLayout ({
+export default function ConfirmLocationLayout({
   navigateToNextPage,
   navigateToPinDropFlow,
   layoutType = 'XandY'
@@ -23,13 +24,13 @@ export default function ConfirmLocationLayout ({
   const [error, setError] = useState(null)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const location = useLocation()
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
   )
-
   const currentAddress = useSelector((state) =>
     getLocationOther(state, 'full_address')
   )
@@ -41,10 +42,21 @@ export default function ConfirmLocationLayout ({
     useSelector((state) => getLocationOther(state, 'y_coordinate'))
   )
 
+  // Shapefile polygon specific values
+  let shapeArea, shapeName
+  if (layoutType === 'shape') {
+    const { geojsonData } = location.state || {}
+    shapeArea = Math.round(geojsonData.features[0]?.properties?.Shape_Area)
+    shapeName = geojsonData.fileName
+    console.log(`Data from confirmation page: ${shapeArea} ${shapeName}`)
+  }
+
   // Switch case to change the button/link logic depending on the location type
-  let handleSubmit, cancel
+  let handleSubmit
   switch (layoutType) {
     case 'shape':
+      // TODO: Shapefile handleSubmit()
+      handleSubmit = async () => {}
       break
     default:
       handleSubmit = async () => {
@@ -64,9 +76,6 @@ export default function ConfirmLocationLayout ({
             : setError('Oops, something went wrong')
         }
       }
-      cancel = () => {
-        navigateBack()
-      }
   }
 
   const handleNavigateToPinDropFlow = (event) => {
@@ -81,7 +90,9 @@ export default function ConfirmLocationLayout ({
 
   return (
     <>
-      <OrganisationAccountNavigation />
+      <OrganisationAccountNavigation
+        currentPage={orgManageLocationsUrls.view.dashboard}
+      />
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
@@ -90,13 +101,13 @@ export default function ConfirmLocationLayout ({
             <h1 className='govuk-heading-l govuk-!-margin-top-5'>
               Confirm location
             </h1>
-            <h2 className='govuk-heading-m govuk-!-margin-top-6'>
-              {locationName}
-            </h2>
-            <hr />
 
             {currentAddress && (
               <>
+                <h2 className='govuk-heading-m govuk-!-margin-top-6'>
+                  {locationName}
+                </h2>
+                <hr />
                 <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                   Address
                 </h3>
@@ -139,7 +150,7 @@ export default function ConfirmLocationLayout ({
                     onClick={handleSubmit}
                   />
                   <Link
-                    onClick={cancel}
+                    onClick={navigateBack}
                     className='govuk-body govuk-link inline-link'
                   >
                     Cancel
@@ -151,10 +162,14 @@ export default function ConfirmLocationLayout ({
             {/* Shapefile layout */}
             {layoutType === 'shape' && (
               <>
+                <h2 className='govuk-heading-m govuk-!-margin-top-6'>
+                  {shapeName}
+                </h2>
+                <hr />
                 <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-4 govuk-!-margin-bottom-0'>
                   Polygon
                 </h3>
-                <p>2,000 square metres</p>
+                <p>{shapeArea} square metres</p>
 
                 <div className='govuk-!-margin-top-8'>
                   <Button
@@ -165,7 +180,7 @@ export default function ConfirmLocationLayout ({
                   <Button
                     text='Cancel upload'
                     className='govuk-button govuk-button--warning'
-                    onClick={cancel}
+                    onClick={navigateBack}
                   />
                 </div>
               </>

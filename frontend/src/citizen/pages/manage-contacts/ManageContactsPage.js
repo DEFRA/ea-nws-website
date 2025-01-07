@@ -62,7 +62,7 @@ export default function ManageContactsPage () {
 
   return (
     <>
-      <CitizenAccountNavigation currentPage={useLocation().pathname} />
+      
       {location.state !== null && location.state.removedContact
         ? (
           <NotificationBanner

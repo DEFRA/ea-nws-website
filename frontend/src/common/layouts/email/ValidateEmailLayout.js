@@ -137,7 +137,7 @@ export default function ValidateEmailLayout ({
 
   return (
     <>
-      <CitizenAccountNavigation currentPage={useLocation().pathname} />
+      
       {codeExpired
         ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
         : (

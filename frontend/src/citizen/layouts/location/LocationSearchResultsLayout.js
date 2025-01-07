@@ -160,7 +160,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
 
   return (
     <>
-      <CitizenAccountNavigation currentPage={useLocation().pathname} />
+      
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>

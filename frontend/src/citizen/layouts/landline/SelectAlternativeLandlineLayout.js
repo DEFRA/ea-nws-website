@@ -92,7 +92,7 @@ export default function SelectAlternativeLandlineLayout ({
 
   return (
     <>
-      <CitizenAccountNavigation currentPage={useLocation().pathname} />
+      
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

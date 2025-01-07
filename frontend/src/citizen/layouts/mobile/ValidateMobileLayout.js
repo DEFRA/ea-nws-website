@@ -135,7 +135,7 @@ export default function ValidateMobileLayout ({
 
   return (
     <>
-      <CitizenAccountNavigation currentPage={useLocation().pathname} />
+      
       {codeExpired
         ? (
           <ExpiredCodeLayout getNewCode={getNewCode} />

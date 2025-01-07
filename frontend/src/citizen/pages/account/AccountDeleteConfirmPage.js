@@ -12,7 +12,7 @@ export default function AccountDeleteConfirmPage () {
 
   return (
     <>
-      <CitizenAccountNavigation currentPage={useLocation().pathname} />
+      
       {/* Main body */}
       <main className='govuk-main-wrapper'>
         {/* Account deletion confirmation panel */}

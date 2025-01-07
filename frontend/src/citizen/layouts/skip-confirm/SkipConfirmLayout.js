@@ -21,7 +21,7 @@ export default function SkipConfirmLayout (contactPreference) {
 
   return (
     <>
-      <CitizenAccountNavigation currentPage={useLocation().pathname} />
+      
       <BackLink to='/signup/contactpreferences/mobile/validate' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

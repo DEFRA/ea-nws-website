@@ -39,7 +39,7 @@ export default function AccountPage () {
 
   return (
     <>
-      <CitizenAccountNavigation currentPage={useLocation().pathname} />
+      
       {location.state !== null
         ? (
           <NotificationBanner

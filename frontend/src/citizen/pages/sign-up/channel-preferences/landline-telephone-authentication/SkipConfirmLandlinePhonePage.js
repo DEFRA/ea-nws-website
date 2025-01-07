@@ -17,7 +17,7 @@ export default function SkipConfirmLandlinePhonePage () {
 
   return (
     <>
-      <CitizenAccountNavigation currentPage={useLocation().pathname} />
+      
       <BackLink to='/signup/contactpreferences/landline/validate' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

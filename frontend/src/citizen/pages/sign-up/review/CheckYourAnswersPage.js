@@ -48,7 +48,7 @@ export default function CheckYourAnswersPage () {
 
   return (
     <>
-      <CitizenAccountNavigation currentPage={useLocation().pathname} />
+      
       <BackLink to='/declaration' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row '>

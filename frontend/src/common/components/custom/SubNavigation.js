@@ -9,7 +9,11 @@ export default function SubNavigation ({ pages, currentPage, type }) {
     return (
       <nav aria-label='Sub navigation' className='sub-navigation-org'>
         <ul className='sub-navigation-org__list'>
-          <li className='sub-navigation__item bold'>Get flood warnings</li>
+          <li className='sub-navigation__item bold'>
+            <a href='/' style={{ textDecoration: 'none', color: 'black' }}>
+              Get flood warnings
+            </a>
+          </li>
 
           {
             authToken !== null &&
@@ -32,7 +36,12 @@ export default function SubNavigation ({ pages, currentPage, type }) {
     return (
       <nav aria-label='Sub navigation'>
         <ul className='sub-navigation__list'>
-          <li className='sub-navigation__item'><b>Get flood warnings</b></li>
+          <li className='sub-navigation__item bold'>
+            <a href='/' style={{ textDecoration: 'none', color: 'black' }}>
+              Get flood warnings
+            </a>
+          </li>
+
           {authToken !== null &&
           pages.map((page, index) => (
             <li key={index} className='sub-navigation__item'>

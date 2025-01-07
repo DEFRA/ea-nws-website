@@ -131,7 +131,7 @@ export default function LocationWithinWarningAreaProximityLayout ({
 
   return (
     <>
-      <CitizenAccountNavigation currentPage={useLocation().pathname} />
+      
       {showMobileMap
         ? (
           <>

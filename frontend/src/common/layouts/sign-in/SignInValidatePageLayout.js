@@ -119,7 +119,7 @@ export default function SignInValidatePageLayout ({
 
   return (
     <>
-      <CitizenAccountNavigation currentPage={useLocation().pathname} />
+      
       {codeExpired || signUpNotComplete
         ? (
             (codeExpired && <ExpiredCodeLayout getNewCode={getNewCode} />) ||

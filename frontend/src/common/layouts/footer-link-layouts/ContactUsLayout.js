@@ -12,7 +12,7 @@ export default function ContactUsLayout () {
   return (
     <>
       {authToken && (
-        <CitizenAccountNavigation currentPage={location.pathname} />
+        
       )}
       {!authToken && <BackLink onClick={() => navigate(-1)} />}
       <main

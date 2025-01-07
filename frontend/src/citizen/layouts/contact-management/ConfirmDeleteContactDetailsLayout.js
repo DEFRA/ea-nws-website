@@ -53,7 +53,7 @@ export default function ConfirmDeleteContactDetailsLayout ({
 
   return (
     <>
-      <CitizenAccountNavigation currentPage={useLocation().pathname} />
+      
       <BackLink onClick={handleCancelLink} />
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>

@@ -22,7 +22,7 @@ export default function HomePage () {
 
   return (
     <>
-      <CitizenAccountNavigation currentPage={useLocation().pathname} />
+      
       {location.state !== null && location.state.removedLocation && (
         <NotificationBanner
           className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'

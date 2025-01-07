@@ -85,7 +85,7 @@ export default function ContactDetailsTable ({
 
   return (
     <>
-      <CitizenAccountNavigation currentPage={useLocation().pathname} />
+      
 
       <h3 className='govuk-heading-m'>{contactTitle}</h3>
       {(contacts.length > 0 || unregisteredContact.length) > 0 && (

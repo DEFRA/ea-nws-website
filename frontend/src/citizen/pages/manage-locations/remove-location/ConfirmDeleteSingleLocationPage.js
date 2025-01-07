@@ -8,6 +8,7 @@ import InsetText from '../../../../common/components/gov-uk/InsetText'
 import { setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { removeLocation } from '../../../../common/services/ProfileServices'
+import CitizenAccountNavigation from '../../../../common/components/custom/CitizenAccountNavigation'
 
 export default function ConfirmDeleteSingleLocationPage () {
   const location = useLocation()
@@ -49,6 +50,7 @@ export default function ConfirmDeleteSingleLocationPage () {
 
   return (
     <>
+      <CitizenAccountNavigation currentPage={useLocation().pathname} />
       <BackLink onClick={() => navigate(-1)} />
       {error && <ErrorSummary errorList={[error]} />}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

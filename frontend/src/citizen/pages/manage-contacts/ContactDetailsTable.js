@@ -3,7 +3,8 @@ import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
 import { setCurrentContact } from '../../../common/redux/userSlice'
-
+import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
+import { useLocation } from 'react-router-dom'
 export default function ContactDetailsTable ({
   contacts,
   contactTitle,
@@ -85,6 +86,8 @@ export default function ContactDetailsTable ({
 
   return (
     <>
+      <CitizenAccountNavigation currentPage={useLocation().pathname} />
+
       <h3 className='govuk-heading-m'>{contactTitle}</h3>
       {(contacts.length > 0 || unregisteredContact.length) > 0 && (
         <table className='govuk-table'>

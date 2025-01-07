@@ -9,7 +9,8 @@ import { setCurrentContact, setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { addUnverifiedContact } from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
-
+import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
+import { useLocation } from 'react-router-dom'
 export default function ChangeEmailLayout ({
   navigateToNextPage,
   NavigateToPreviousPage
@@ -65,6 +66,7 @@ export default function ChangeEmailLayout ({
 
   return (
     <>
+    <CitizenAccountNavigation currentPage={useLocation().pathname}/>
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

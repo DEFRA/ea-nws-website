@@ -20,6 +20,8 @@ import {
   updateAdditionals
 } from '../../../../common/services/ProfileServices'
 import { authCodeValidation } from '../../../../common/services/validations/AuthCodeValidation'
+import CitizenAccountNavigation from '../../../../common/components/custom/CitizenAccountNavigation'
+import { useLocation } from 'react-router-dom'
 export default function SignUpValidationPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -135,6 +137,7 @@ export default function SignUpValidationPage () {
 
   return (
     <>
+    <CitizenAccountNavigation currentPage={useLocation().pathname} />
       {codeExpired
         ? (
           <ExpiredCodeLayout getNewCode={getNewCode} />

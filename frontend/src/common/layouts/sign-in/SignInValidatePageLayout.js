@@ -20,7 +20,7 @@ import { backendCall } from '../../../common/services/BackendService'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
 import { getAdditionals } from '../../services/ProfileServices'
 import ExpiredCodeLayout from '../email/ExpiredCodeLayout'
-
+import CitizenAccountNavigation from '../../components/custom/CitizenAccountNavigation'
 export default function SignInValidatePageLayout ({
   navigateToNextPage,
   NavigateToPreviousPage
@@ -119,6 +119,7 @@ export default function SignInValidatePageLayout ({
 
   return (
     <>
+    <CitizenAccountNavigation currentPage={useLocation().pathname} />
       {codeExpired || signUpNotComplete
         ? (
             (codeExpired && <ExpiredCodeLayout getNewCode={getNewCode} />) ||

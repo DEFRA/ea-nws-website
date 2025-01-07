@@ -10,7 +10,8 @@ import { backendCall } from '../../../common/services/BackendService'
 import { addUnverifiedContact } from '../../../common/services/ProfileServices'
 import { normalisePhoneNumber } from '../../../common/services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
-
+import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
+import { useLocation } from 'react-router-dom'
 export default function AddMobileLayout ({
   navigateToNextPage,
   NavigateToPreviousPage
@@ -66,6 +67,7 @@ export default function AddMobileLayout ({
 
   return (
     <>
+    <CitizenAccountNavigation currentPage={useLocation().pathname}/>
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

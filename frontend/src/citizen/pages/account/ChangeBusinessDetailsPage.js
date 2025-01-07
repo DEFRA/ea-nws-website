@@ -9,7 +9,8 @@ import { setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { getAdditionals, updateAdditionals } from '../../../common/services/ProfileServices'
 import { businessDetailsValidation } from '../../../common/services/validations/BusinessDetailsValidation'
-
+import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
+import { useLocation } from 'react-router-dom'
 export default function ChangeBusinessDetailsPage () {
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
@@ -57,6 +58,7 @@ export default function ChangeBusinessDetailsPage () {
 
   return (
     <>
+   <CitizenAccountNavigation currentPage={useLocation().pathname} />
       <BackLink to='/account' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

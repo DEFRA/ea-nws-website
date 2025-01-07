@@ -11,7 +11,8 @@ import {
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
-
+import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
+import { useLocation } from 'react-router-dom'
 export default function LocationSearchLayout ({ continueToNextPage }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -95,6 +96,7 @@ export default function LocationSearchLayout ({ continueToNextPage }) {
 
   return (
     <>
+    <CitizenAccountNavigation currentPage={useLocation().pathname}/>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>

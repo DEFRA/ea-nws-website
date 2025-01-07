@@ -16,7 +16,8 @@ import {
 } from '../../services/ProfileServices'
 import { authCodeValidation } from '../../services/validations/AuthCodeValidation'
 import ExpiredCodeLayout from './ExpiredCodeLayout'
-
+import CitizenAccountNavigation from '../../components/custom/CitizenAccountNavigation'
+import { useLocation } from 'react-router-dom'
 export default function ValidateEmailLayout ({
   navigateToNextPage,
   SkipValidation,
@@ -137,6 +138,7 @@ export default function ValidateEmailLayout ({
 
   return (
     <>
+    <CitizenAccountNavigation currentPage={useLocation().pathname} />
       {codeExpired
         ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
         : (

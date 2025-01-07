@@ -6,6 +6,7 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
 import { backendCall } from '../../../common/services/BackendService'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
+import CitizenAccountNavigation from '../../components/custom/CitizenAccountNavigation'
 
 export default function SignInPageLayout ({ navigateToNextPage }) {
   const navigate = useNavigate()
@@ -37,6 +38,7 @@ export default function SignInPageLayout ({ navigateToNextPage }) {
 
   return (
     <>
+      <CitizenAccountNavigation currentPage={useLocation().pathname} />
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

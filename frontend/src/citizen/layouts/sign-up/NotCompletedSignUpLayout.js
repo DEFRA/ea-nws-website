@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
-
+import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
+import { useLocation } from 'react-router-dom'
 export default function NotCompletedSignUpLayout ({ nextPage }) {
   const navigate = useNavigate()
 
@@ -11,6 +12,7 @@ export default function NotCompletedSignUpLayout ({ nextPage }) {
 
   return (
     <>
+    <CitizenAccountNavigation currentPage={useLocation().pathname}/>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-row'>

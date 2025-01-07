@@ -14,7 +14,8 @@ import {
 } from '../../../common/services/ProfileServices'
 import { normalisePhoneNumber } from '../../../common/services/formatters/NormalisePhoneNumber'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
-
+import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
+import { useLocation } from 'react-router-dom'
 export default function SelectAlternativeLandlineLayout ({
   NextPageWithoutValidation,
   NextPageWithValidation,
@@ -92,6 +93,7 @@ export default function SelectAlternativeLandlineLayout ({
 
   return (
     <>
+    <CitizenAccountNavigation currentPage={useLocation().pathname}/>
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

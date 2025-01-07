@@ -6,6 +6,7 @@ import Button from '../../components/gov-uk/Button'
 import ErrorSummary from '../../components/gov-uk/ErrorSummary'
 import InsetText from '../../components/gov-uk/InsetText'
 import { backendCall } from '../../services/BackendService'
+import CitizenAccountNavigation from '../../components/custom/CitizenAccountNavigation'
 
 export default function SignUpDuplicateEmailPageLayout () {
   const navigate = useNavigate()
@@ -43,6 +44,7 @@ export default function SignUpDuplicateEmailPageLayout () {
 
   return (
     <>
+    <CitizenAccountNavigation currentPage={useLocation().pathname} />
       <BackLink to={urlSignup} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

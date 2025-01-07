@@ -15,7 +15,9 @@ import {
   removeUnverifiedContact,
   removeVerifiedContact
 } from '../../../common/services/ProfileServices'
+import { useLocation } from 'react-router-dom'
 import { authCodeValidation } from '../../../common/services/validations/AuthCodeValidation'
+import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
 
 export default function ValidateMobileLayout ({
   navigateToNextPage,
@@ -134,6 +136,7 @@ export default function ValidateMobileLayout ({
 
   return (
     <>
+    <CitizenAccountNavigation currentPage={useLocation().pathname}/>
       {codeExpired
         ? (
           <ExpiredCodeLayout getNewCode={getNewCode} />

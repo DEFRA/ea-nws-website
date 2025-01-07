@@ -10,7 +10,7 @@ import {
   removeUnverifiedContact,
   removeVerifiedContact
 } from '../../../common/services/ProfileServices'
-
+import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
 export default function ConfirmDeleteContactDetailsLayout ({
   NavigateToPreviousPage,
   navigateToNextPage
@@ -53,6 +53,7 @@ export default function ConfirmDeleteContactDetailsLayout ({
 
   return (
     <>
+    <CitizenAccountNavigation currentPage={useLocation().pathname}/>
       <BackLink onClick={handleCancelLink} />
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>

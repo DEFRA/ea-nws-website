@@ -24,7 +24,8 @@ import {
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { csvToJson } from '../../../common/services/CsvToJson'
-
+import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
+import { useLocation } from 'react-router-dom'
 export default function LocationWithinWarningAreaProximityLayout ({
   continueToSelectedFloodWarningsPage,
   continueToNearbyFloodAlertsPage,
@@ -131,6 +132,7 @@ export default function LocationWithinWarningAreaProximityLayout ({
 
   return (
     <>
+    <CitizenAccountNavigation currentPage={useLocation().pathname}/>
       {showMobileMap
         ? (
           <>

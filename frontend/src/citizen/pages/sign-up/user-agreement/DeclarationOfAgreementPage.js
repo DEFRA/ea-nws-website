@@ -11,7 +11,8 @@ import {
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { updateAdditionals } from '../../../../common/services/ProfileServices'
-
+import CitizenAccountNavigation from '../../../../common/components/custom/CitizenAccountNavigation'
+import { useLocation } from 'react-router-dom'
 export default function DeclarationOfAgreementPage () {
   const dispatch = useDispatch()
   const [isChecked, setIsChecked] = useState(false)
@@ -69,6 +70,7 @@ export default function DeclarationOfAgreementPage () {
 
   return (
     <>
+    <CitizenAccountNavigation currentPage={useLocation().pathname}/>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

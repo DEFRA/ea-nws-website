@@ -3,7 +3,8 @@ import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
-
+import CitizenAccountNavigation from '../../../../../common/components/custom/CitizenAccountNavigation'
+import { useLocation } from 'react-router-dom'
 export default function SkipConfirmLandlinePhonePage () {
   const navigate = useNavigate()
 
@@ -17,6 +18,7 @@ export default function SkipConfirmLandlinePhonePage () {
 
   return (
     <>
+    <CitizenAccountNavigation currentPage={useLocation().pathname} />
       <BackLink to='/signup/contactpreferences/landline/validate' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

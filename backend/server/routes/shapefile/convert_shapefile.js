@@ -51,7 +51,6 @@ module.exports = [
           shapefileBuffer.byteOffset + shapefileBuffer.byteLength
         )
 
-        // Parse shapefile zip into GeoJSON object
         const { parseZip } = await import('shpjs')
         const geojson = await parseZip(shapefileArrayBuffer)
 
@@ -59,7 +58,6 @@ module.exports = [
           throw new Error('Could not read shapefile')
         }
 
-        // Return GeoJSON response
         return h.response({
           status: 200,
           data: geojson

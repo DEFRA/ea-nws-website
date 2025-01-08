@@ -44,7 +44,7 @@ export default function FloodReportsTable ({
   }
 
   // Sort standard data
-  const sortData = (sortType, setSort, data) => {
+  const sortTableData = (sortType, setSort, data) => {
     const getValue = (obj, path) => {
       return path.split('.').reduce((acc, part) => acc && acc[part], obj) || ''
     }
@@ -83,7 +83,7 @@ export default function FloodReportsTable ({
     setResetPaging(!resetPaging)
   }
 
-  const sortGetsFloodMessages = () => {
+  const sortLocationType = () => {
     if (locationTypeSort === 'none' || locationTypeSort === 'descending') {
       setLocationTypeSort('ascending')
       setFilteredWarnings(
@@ -128,7 +128,7 @@ export default function FloodReportsTable ({
               <button
                 type='button'
                 onClick={() =>
-                  sortData(
+                  sortTableData(
                     locationNameSort,
                     setLocationNameSort,
                     'meta_data.location_additional.location_name'
@@ -145,7 +145,7 @@ export default function FloodReportsTable ({
               <button
                 type='button'
                 onClick={() =>
-                  sortData(
+                  sortTableData(
                     warningTypeSort,
                     setWarningTypeSort,
                     'meta_data.alert_categories'
@@ -160,7 +160,7 @@ export default function FloodReportsTable ({
               className='govuk-table__header'
               aria-sort={locationTypeSort}
             >
-              <button type='button' onClick={() => sortGetsFloodMessages()}>
+              <button type='button' onClick={() => sortLocationType()}>
                 Location or
                 <br /> boundary type
               </button>
@@ -173,7 +173,7 @@ export default function FloodReportsTable ({
               <button
                 type='button'
                 onClick={() =>
-                  sortData(
+                  sortTableData(
                     businessCriticalitySort,
                     setBusinessCriticalitySort,
                     'meta_data.location_additional.business_criticality'
@@ -201,7 +201,7 @@ export default function FloodReportsTable ({
               <button
                 type='button'
                 onClick={() =>
-                  sortData(
+                  sortTableData(
                     lastUpdatedSort,
                     setlastUpdatedSort,
                     '' // TODO: Change  to use the warning time values when available

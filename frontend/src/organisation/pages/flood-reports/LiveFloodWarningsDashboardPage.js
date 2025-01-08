@@ -9,7 +9,7 @@ import { orgFloodReportsUrls } from '../../routes/flood-reports/FloodReportsRout
 import FloodReportsFilter from './dashboard-components/FloodReportsFilter'
 import FloodReportsTable from './dashboard-components/FloodReportsTable'
 
-export default function LiveFloodWarningsPage () {
+export default function LiveFloodWarningsDashboardPage () {
   const navigate = useNavigate()
 
   const [warnings, setWarnings] = useState([])

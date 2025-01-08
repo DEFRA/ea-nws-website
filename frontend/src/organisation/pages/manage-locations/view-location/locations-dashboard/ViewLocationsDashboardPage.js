@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
@@ -11,8 +11,8 @@ import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
-// import { backendCall } from '../../../../../common/services/BackendService'
-// import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import { backendCall } from '../../../../../common/services/BackendService'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import {
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation
@@ -22,7 +22,6 @@ import { orgManageLocationsUrls } from '../../../../routes/manage-locations/Mana
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import LocationsTable from './dashboard-components/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
-import { mockLocations } from './mockLocations'
 
 export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
@@ -38,7 +37,7 @@ export default function ViewLocationsDashboardPage () {
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [displayedLocations, setDisplayedLocations] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
-  // const orgId = useSelector((state) => state.session.orgId)
+  const orgId = useSelector((state) => state.session.orgId)
   const [dialog, setDialog] = useState({
     show: false,
     text: '',
@@ -71,23 +70,20 @@ export default function ViewLocationsDashboardPage () {
   }, [filteredLocations, currentPage])
 
   useEffect(() => {
-    // TODO: Temporarily get mock locations locally instead of elasticache to avoid discrepancies
-    const locationsUpdate = mockLocations
-    const getLocations = async (locationsUpdate) => {
-      // const getLocations = async () => {
-      //   const dataToSend = { orgId }
-      //   const { data } = await backendCall(
-      //     dataToSend,
-      //     'api/elasticache/list_locations',
-      //     navigate
-      //   )
+    const getLocations = async () => {
+      const dataToSend = { orgId }
+      const { data } = await backendCall(
+        dataToSend,
+        'api/elasticache/list_locations',
+        navigate
+      )
 
-      //   const locationsUpdate = []
-      //   if (data) {
-      //     data.forEach((location) => {
-      //       locationsUpdate.push(geoSafeToWebLocation(location))
-      //     })
-      //   }
+      const locationsUpdate = []
+      if (data) {
+        data.forEach((location) => {
+          locationsUpdate.push(geoSafeToWebLocation(location))
+        })
+      }
 
       const riverSeaRisks = await Promise.all(
         locationsUpdate.map((location) =>
@@ -127,9 +123,7 @@ export default function ViewLocationsDashboardPage () {
       setFilteredLocations(locationsUpdate)
     }
 
-    // TODO: Temporarily get mock locations locally instead of elasticache to avoid discrepancies
-    // getLocations()
-    getLocations(locationsUpdate)
+    getLocations()
   }, [])
 
   const getRiskCategory = async ({ riskAreaType, location }) => {

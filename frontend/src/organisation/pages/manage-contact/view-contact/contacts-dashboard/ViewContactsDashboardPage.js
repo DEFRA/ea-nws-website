@@ -11,7 +11,7 @@ import OrganisationAccountNavigation from '../../../../../common/components/cust
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import ContactsTable from './dashboard-components/ContactsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
-import { setCurrentContact, setContacts } from '../../../../../common/redux/userSlice'
+import { setCurrentContact } from '../../../../../common/redux/userSlice'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import { backendCall } from '../../../../../common/services/BackendService'
 
@@ -31,7 +31,6 @@ export default function ViewContactsDashboardPage () {
   const [selectedFilters, setSelectedFilters] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
-  const [error, setError] = useState(null)
   const [dialog, setDialog] = useState({
     show: false,
     text: '',
@@ -199,7 +198,7 @@ export default function ViewContactsDashboardPage () {
       (contact) => !contactsToRemove.includes(contact)
     )
 
-    let removeContactIDs = []
+    const removeContactIDs = []
     contactsToRemove.forEach((contact) => {
       removeContactIDs.push(contact.id)
     })
@@ -211,7 +210,7 @@ export default function ViewContactsDashboardPage () {
       navigate
     )
     if (errorMessage) {
-      errorMessage ? setError(errorMessage) : setError('Oops, something went wrong')
+      console.log(errorMessage)
     }
 
     setContacts([...updatedContacts])

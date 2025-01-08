@@ -81,11 +81,11 @@ export default function SearchFilter ({
     locations.flatMap(location => {
       if (Array.isArray(location.additionals)) {
         return location.additionals
-          .filter(additional => additional.id === "keywords")
-          .map(additional => JSON.parse(additional.value.s));
+          .filter(additional => additional.id === 'keywords')
+          .map(additional => JSON.parse(additional.value.s))
       }
-      return [];
-    }).flat();
+      return []
+    }).flat()
 
   const linkedLocations = [
     ...new Set(['No', 'Yes'])

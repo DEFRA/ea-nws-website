@@ -1,17 +1,14 @@
-import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import React from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import NotesLayout from '../../../layouts/optional-info/NotesLayout'
 import { backendCall } from '../../../../common/services/BackendService'
-import { setCurrentContact } from '../../../../common/redux/userSlice'
 
 export default function AddContactNotesPage () {
   const navigate = useNavigate()
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const orgCurrentContact = useSelector((state) => state.session.orgCurrentContact)
-  const [error, setError] = useState(null)
-  const dispatch = useDispatch()
 
   const navigateToNextPage = () => {
     // TODO navigate to link locations
@@ -25,12 +22,11 @@ export default function AddContactNotesPage () {
       'api/organization/create_contacts',
       navigate
     )
-    
+
     if (!errorMessage) {
       navigateToNextPage()
     } else {
       console.log(errorMessage)
-      errorMessage ? setError(errorMessage) : setError('Oops, something went wrong')
     }
   }
 

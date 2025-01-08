@@ -25,7 +25,6 @@ export default function ContactsTable ({
     setMessagesReceivedSort('none')
   }, [contacts])
 
-
   // Sort standard data
   const sortData = (sortType, setSort, getValue) => {
     if (sortType === 'none' || sortType === 'descending') {
@@ -151,7 +150,7 @@ export default function ContactsTable ({
                 onClick={() => sortData(
                   contactNameSort,
                   setContactNameSort,
-                  (contact) => {return contact.firstname + contact.lastname})}
+                  (contact) => { return contact.firstname + contact.lastname })}
               >
                 Name
               </button>
@@ -162,7 +161,7 @@ export default function ContactsTable ({
                 onClick={() => sortData(
                   jobTitleSort,
                   setJobTitleSort,
-                  (contact) => {return contact.position})}
+                  (contact) => { return contact.position })}
               >
                 Job title
               </button>
@@ -173,7 +172,7 @@ export default function ContactsTable ({
                 onClick={() => sortData(
                   emailSort,
                   setEmailSort,
-                  (contact) => {return contact.emails[0]})}
+                  (contact) => { return contact.emails[0] })}
               >
                 Email
               </button>

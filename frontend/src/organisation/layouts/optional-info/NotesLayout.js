@@ -54,8 +54,7 @@ export default function NotesLayout ({
     }
     if (onSubmit) {
       await onSubmit()
-    }
-    else {
+    } else {
       navigateToNextPage()
     }
   }

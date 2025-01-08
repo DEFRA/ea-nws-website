@@ -196,8 +196,11 @@ const removeLocation = async (orgId, locationID) => {
 const updateLocation = async (orgId, location) => {
   const locationID = location.id
   const key = orgId + ':t_POIS:' + locationID
-  // Remove location from keywords as the update call may contain different keywords
   await removeLocationFromKeywords(orgId, locationID)
+  const exists = await checkKeyExists(key)
+  if (exists) {
+    await removeLocation(orgId, locationID)
+  }
   await setJsonData(key, location)
   // add location ID to list
   let keywords = []

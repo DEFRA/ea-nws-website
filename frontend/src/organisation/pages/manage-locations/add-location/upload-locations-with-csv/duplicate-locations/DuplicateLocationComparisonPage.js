@@ -1,9 +1,13 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../../../common/components/gov-uk/Radio'
+import { backendCall } from '../../../../../../common/services/BackendService'
+import { webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationInformation from './duplicate-location-components/LocationInformation'
 
 export default function DuplicateLocationComparisonPage () {
@@ -13,6 +17,9 @@ export default function DuplicateLocationComparisonPage () {
   const [error, setError] = useState('')
   const existingLocation = location?.state?.existingLocation
   const newLocation = location?.state?.newLocation
+  const numDuplicates = location?.state?.numDuplicates
+  const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
 
   // remove error if user changes selection
   useEffect(() => {
@@ -27,9 +34,39 @@ export default function DuplicateLocationComparisonPage () {
         'Select if you want to keep the existing location or use the new location'
       )
     } else {
-      // TODO: do something with existing or new location then navigate
-      // back to the "Manage duplicate locations" page
-      navigate(-1)
+      // update location then navigate
+      if (existingOrNew === 'New') {
+        const locationToUpdate = webToGeoSafeLocation(newLocation)
+        // change the location ID to the existing ID in geosafe
+        locationToUpdate.id = existingLocation.id
+        const dataToSend = { authToken, orgId, location: locationToUpdate }
+        await backendCall(
+          dataToSend,
+          'api/location/update',
+          navigate
+        )
+      }
+      // need to remove the invalid location from elasticache
+      const locationIdToRemove = newLocation.id
+      await backendCall(
+        { orgId, locationId: locationIdToRemove },
+        'api/bulk_uploads/remove_invalid_location',
+        navigate
+      )
+
+      if (numDuplicates === 1) {
+        // navigate to link contacts, for now navigate to locations dashboard
+        navigate(orgManageLocationsUrls.view.dashboard)
+      } else {
+        navigate(orgManageLocationsUrls.add.manageDuplicateLocationsPage,
+          {
+            state:
+            {
+              text: existingOrNew === 'Existing' ? `Existing ${existingLocation} kept` : `${newLocation} replaced`
+            }
+          }
+        )
+      }
     }
   }
 
@@ -66,7 +103,7 @@ export default function DuplicateLocationComparisonPage () {
                       name='ExistingOrNewRadio'
                       small='true'
                       onChange={(e) => setExistingOrNew('Existing')}
-                      right={true}
+                      right
                     />
                   </div>
                 </div>

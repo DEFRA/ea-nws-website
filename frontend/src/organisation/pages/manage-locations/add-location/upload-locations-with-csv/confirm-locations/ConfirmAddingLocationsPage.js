@@ -4,23 +4,43 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
 import { backendCall } from '../../../../../../common/services/BackendService'
+import { geoSafeToWebLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ConfirmLocationsPage () {
   const navigate = useNavigate()
   const location = useLocation()
-  const bulkUploadData = location?.state?.bulkUploadData
   const validLocations = location?.state?.valid || 0
   const duplicateLocations = location?.state?.duplicates || 0
   const notInEnglandLocations = location?.state?.notInEngland || 0
   const notFoundLocations = location?.state?.notFound || 0
   const fileName = location?.state?.fileName || ''
   const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
+
+  const getLocation = async (orgId, locationName, type) => {
+    const dataToSend = {
+      orgId,
+      locationName,
+      type
+    }
+    const { data } = await backendCall(
+      dataToSend,
+      'api/locations/search',
+      navigate
+    )
+
+    if (data && data.length === 1) {
+      return data[0]
+    } else {
+      return null
+    }
+  }
 
   const handleLocations = async (event) => {
     event.preventDefault()
 
-    const dataToSend = { orgId, fileName }
+    const dataToSend = { authToken, orgId, fileName }
     const { data, errorMessage } = await backendCall(
       dataToSend,
       'api/bulk_uploads/save_locations',
@@ -29,17 +49,27 @@ export default function ConfirmLocationsPage () {
     if (!errorMessage) {
       if (duplicateLocations > 0) {
         if (duplicateLocations === 1) {
-          // TODO: go to page to handle single duplicate
+          // Get the existing location (note type is 'valid')
+          const existingLocation = geoSafeToWebLocation(await getLocation(orgId, location.Location_name, 'valid'))
+
+          // Get the new, duplicate location (note type is 'invalid')
+          const newLocation = geoSafeToWebLocation(await getLocation(orgId, location.Location_name, 'invalid'))
+
+          if (existingLocation && newLocation) {
+            // Now compare the two and let the use choose one
+            navigate(orgManageLocationsUrls.add.duplicateLocationComparisonPage, {
+              state: {
+                existingLocation,
+                newLocation,
+                numDuplicates: duplicateLocations
+              }
+            })
+          }
         } else {
-          const duplicateLocations = bulkUploadData.invalid.filter(
-            (invalid) =>
-              Array.isArray(invalid.error) &&
-              invalid.error.includes('duplicate')
-          )
           navigate(orgManageLocationsUrls.add.duplicateLocationsOptionsPage, {
             state: {
               addedLocations: data.valid,
-              duplicateLocations
+              numDuplicates: data.invalid.duplicates
             }
           })
         }
@@ -47,7 +77,7 @@ export default function ConfirmLocationsPage () {
         navigate(orgManageLocationsUrls.unmatchedLocations.index, {
           state: {
             added: data.valid,
-            notAdded: data.invalid
+            notAdded: data.invalid.notFound
           }
         })
       }
@@ -139,8 +169,12 @@ export default function ConfirmLocationsPage () {
                 title='Why are some locations not found?'
                 text={detailsMessage}
               />
-              {validLocations > 0 && <p>You can do this after you add the {validLocations} locations that
-              can be added now.</p>}
+              {validLocations > 0 &&
+              (
+                <p>You can do this after you add the {validLocations} locations that
+                  can be added now.
+                </p>
+              )}
             </div>
             <br />
             <Button

@@ -65,14 +65,14 @@ const validateLocations = async (locations) => {
             )
             valid.push(location)
           } else {
-            location.error = ['Invalid coordinates']
+            location.error = ['not found']
             invalid.push(location)
           }
         } else if (location.Full_address && location.Postcode) {
           // calculate X and Y based on address and postcode
           const { errorMessage, data } = await getCoords(location)
           if (errorMessage) {
-            location.error = ['Unable get coordinates from provided address']
+            location.error = ['not found']
             invalid.push(location)
           } else {
             location.coordinates = data[0].coordinates
@@ -80,7 +80,7 @@ const validateLocations = async (locations) => {
             valid.push(location)
           }
         } else {
-          location.error = ['Insufficient information for location']
+          location.error = ['not found']
           invalid.push(location)
         }
       })

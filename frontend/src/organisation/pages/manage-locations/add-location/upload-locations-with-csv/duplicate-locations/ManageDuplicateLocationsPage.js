@@ -1,9 +1,10 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../../common/components/gov-uk/Button'
+import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
 import WarningText from '../../../../../../common/components/gov-uk/WarningText'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../../common/services/formatters/LocationFormatter'
@@ -12,8 +13,28 @@ import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/M
 export default function ManageDuplicateLocationsPage () {
   const navigate = useNavigate()
   const orgId = useSelector((state) => state.session.orgId)
+  const [duplicateLocations, setDuplicateLocations] = useState([])
   const location = useLocation()
-  const duplicateLocations = location?.state?.duplicateLocations
+
+  useEffect(() => {
+    const getDupLocations = async () => {
+      const dataToSend = { orgId }
+      const { data } = await backendCall(
+        dataToSend,
+        'api/bulk_uploads/get_invalid_locations',
+        navigate
+      )
+      const locations = []
+      if (data) {
+        const duplicates = data.filter((location) => location.error === 'duplicate')
+        duplicates.forEach((location) => {
+          locations.push(geoSafeToWebLocation(location))
+        })
+      }
+      setDuplicateLocations(locations)
+    }
+    getDupLocations()
+  }, [])
 
   const handlePrint = () => {
     // TODO
@@ -42,17 +63,18 @@ export default function ManageDuplicateLocationsPage () {
     event.preventDefault()
 
     // Get the existing location (note type is 'valid')
-    const existingLocation = geoSafeToWebLocation(await getLocation(orgId, location.Location_name, 'valid'))
+    const existingLocation = geoSafeToWebLocation(await getLocation(orgId, location.additionals.locationName, 'valid'))
 
     // Get the new, duplicate location (note type is 'invalid')
-    const newLocation = geoSafeToWebLocation(await getLocation(orgId, location.Location_name, 'invalid'))
+    const newLocation = geoSafeToWebLocation(await getLocation(orgId, location.additionals.locationName, 'invalid'))
 
     if (existingLocation && newLocation) {
       // Now compare the two and let the use choose one
       navigate(orgManageLocationsUrls.add.duplicateLocationComparisonPage, {
         state: {
           existingLocation,
-          newLocation
+          newLocation,
+          numDuplicates: duplicateLocations.length
         }
       })
     }
@@ -71,20 +93,13 @@ export default function ManageDuplicateLocationsPage () {
     <>
       <OrganisationAccountNavigation />
       <BackLink onClick={navigateBack} />
-      {/* TODO: do we need something like this to show result of compare? */}
-      {/* {location.state && (
+      {location.state && (
         <NotificationBanner
-          className={`govuk-notification-banner ${
-            location.state === 'Added' && 'govuk-notification-banner--success'
-          } govuk-!-margin-bottom-0 govuk-!-margin-top-4`}
-          title={location.state === 'Added' ? 'Success' : 'Information'}
-          text={
-            location.state === 'Added'
-              ? '1 Location Added'
-              : "1 location cannot be added because it's not in England"
-          }
+          className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
+          title='Sucess'
+          text={location.state.text}
         />
-      )} */}
+      )}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-two-thirds'>
@@ -117,7 +132,7 @@ export default function ManageDuplicateLocationsPage () {
                       return (
                         <tr class='govuk-table__row' key={index}>
                           <td class='govuk-table__cell'>
-                            {location.Location_name}
+                            {location.additionals.locationName}
                           </td>
                           <td class='govuk-table__cell govuk-!-text-align-right'>
                             <Link

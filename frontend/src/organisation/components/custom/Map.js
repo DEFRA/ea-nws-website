@@ -42,8 +42,8 @@ export default function Map ({
   const dispatch = useDispatch()
   const { currentLatitude, currentLongitude } = useSelector(
     (state) => state.session.currentLocation.coordinates
-  ) || {lat: null, long: null}
-  const {latitude, longitude} = manualCoords ? manualCoords : { currentLatitude, currentLongitude }
+  ) || { lat: null, long: null }
+  const { latitude, longitude } = manualCoords || { currentLatitude, currentLongitude }
   const centre = [latitude, longitude]
   const [apiKey, setApiKey] = useState(null)
   const [marker, setMarker] = useState(null)

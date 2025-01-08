@@ -9,9 +9,9 @@ export default function LocationInformationLayout ({ location, comparedLocation 
   const comparedFormattedAddress = comparedAdditionalData?.full_address?.split(',')
 
   const compareStyle = {
-      backgroundColor: '#D2E2F1',
-      borderBottomStyle: 'solid',
-      borderBottomColor: '#5694CA'
+    backgroundColor: '#D2E2F1',
+    borderBottomStyle: 'solid',
+    borderBottomColor: '#5694CA'
   }
 
   const sectionClassName = 'govuk-!-padding-left-4 govuk-!-padding-right-4 govuk-!-margin-top-7'
@@ -68,13 +68,12 @@ export default function LocationInformationLayout ({ location, comparedLocation 
     </div>
   )
 
-
   return (
     <>
       <main className='govuk-body'>
         {/* map */}
         <div>
-          <Map showMapControls={false} zoomLevel={14} manualCoords={location.coordinates}/>
+          <Map showMapControls={false} zoomLevel={14} manualCoords={location.coordinates} />
           <div>
             <FloodWarningKey type='both' />
           </div>
@@ -88,29 +87,29 @@ export default function LocationInformationLayout ({ location, comparedLocation 
 
         {/* details */}
         <div>
-            {/* Address details */}
-            {additionalData.full_address && (
-              <div className='govuk-!-padding-left-4 govuk-!-padding-right-4' style={(comparedLocation && comparedAdditionalData.full_address === null) ? compareStyle : {}}>
-                <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
-                  Address
-                </h2>
-                <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p>
-                  {formattedAddress.map((line, index) => {
-                    return (
-                      <span key={index} style={(comparedLocation && comparedFormattedAddress[index] !==  formattedAddress[index]) ? compareStyle : {}}>
-                        {line}
-                        <br />
-                      </span>
-                    )
-                  })}
-                </p>
-              </div>
-            )}
-            {/* Location details */}
-            {locationDetails}
-            {/* Key Information details */}
-            {additionalData.location_data_type !==
+          {/* Address details */}
+          {additionalData.full_address && (
+            <div className='govuk-!-padding-left-4 govuk-!-padding-right-4' style={(comparedLocation && comparedAdditionalData.full_address === null) ? compareStyle : {}}>
+              <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
+                Address
+              </h2>
+              <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+              <p>
+                {formattedAddress.map((line, index) => {
+                  return (
+                    <span key={index} style={(comparedLocation && comparedFormattedAddress[index] !== formattedAddress[index]) ? compareStyle : {}}>
+                      {line}
+                      <br />
+                    </span>
+                  )
+                })}
+              </p>
+            </div>
+          )}
+          {/* Location details */}
+          {locationDetails}
+          {/* Key Information details */}
+          {additionalData.location_data_type !==
               LocationDataType.BOUNDARY && (
                 <div className={sectionClassName}>
                   <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
@@ -146,48 +145,48 @@ export default function LocationInformationLayout ({ location, comparedLocation 
                       <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                         Location type
                       </h3>
-                      <p style={(comparedLocation && comparedAdditionalData.location_type !==  additionalData.location_type) ? compareStyle : {}}>
+                      <p style={(comparedLocation && comparedAdditionalData.location_type !== additionalData.location_type) ? compareStyle : {}}>
                         {additionalData.location_type}
                       </p>
                     </div>
                   )}
                 </div>
-            )}
+          )}
 
-            {/* Keywords details */}
-            {location.additionals.keywords && (
-              <div className={sectionClassName} style={(comparedLocation && comparedLocation.additionals.keywords.length === 0) ? compareStyle : {}}>
-                <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
-                  Keywords
-                </h2>
-                <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                {location.additionals.keywords.map(keyword => {
-                  return <p className='govuk-!-margin-bottom-0' style={(comparedLocation && !comparedLocation.additionals.keywords.includes(keyword)) ? compareStyle : {}}>{keyword}</p>
-                })}
-              </div>
-            )}
+          {/* Keywords details */}
+          {location.additionals.keywords && (
+            <div className={sectionClassName} style={(comparedLocation && comparedLocation.additionals.keywords.length === 0) ? compareStyle : {}}>
+              <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
+                Keywords
+              </h2>
+              <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+              {location.additionals.keywords.map((keyword, index) => {
+                return <p key={index} className='govuk-!-margin-bottom-0' style={(comparedLocation && !comparedLocation.additionals.keywords.includes(keyword)) ? compareStyle : {}}>{keyword}</p>
+              })}
+            </div>
+          )}
 
-            {/* Action plan details */}
-            {additionalData.action_plan && (
-              <div className={sectionClassName} style={(comparedLocation && comparedAdditionalData.action_plan.length === 0) ? compareStyle : {}}>
-                <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
-                  Action Plan
-                </h2>
-                <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p style={(comparedLocation && comparedAdditionalData.action_plan !== additionalData.action_plan) ? compareStyle : {}}>{additionalData.action_plan}</p>
-              </div>
-            )}
+          {/* Action plan details */}
+          {additionalData.action_plan && (
+            <div className={sectionClassName} style={(comparedLocation && comparedAdditionalData.action_plan.length === 0) ? compareStyle : {}}>
+              <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
+                Action Plan
+              </h2>
+              <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+              <p style={(comparedLocation && comparedAdditionalData.action_plan !== additionalData.action_plan) ? compareStyle : {}}>{additionalData.action_plan}</p>
+            </div>
+          )}
 
-            {/* Notes details */}
-            {additionalData.notes && (
-              <div className={sectionClassName} style={(comparedLocation && comparedAdditionalData.notes === null) ? compareStyle : {}}>
-                <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
-                  Notes
-                </h2>
-                <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p style={(comparedLocation && comparedAdditionalData.notes !== additionalData.notes) ? compareStyle : {}}>{additionalData.notes}</p>
-              </div>
-            )}
+          {/* Notes details */}
+          {additionalData.notes && (
+            <div className={sectionClassName} style={(comparedLocation && comparedAdditionalData.notes === null) ? compareStyle : {}}>
+              <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
+                Notes
+              </h2>
+              <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+              <p style={(comparedLocation && comparedAdditionalData.notes !== additionalData.notes) ? compareStyle : {}}>{additionalData.notes}</p>
+            </div>
+          )}
         </div>
       </main>
     </>

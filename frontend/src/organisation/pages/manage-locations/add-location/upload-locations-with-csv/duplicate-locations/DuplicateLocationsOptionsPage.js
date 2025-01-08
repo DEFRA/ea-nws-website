@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
@@ -6,6 +7,8 @@ import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummar
 import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
 import Radio from '../../../../../../common/components/gov-uk/Radio'
 import WarningText from '../../../../../../common/components/gov-uk/WarningText'
+import { backendCall } from '../../../../../../common/services/BackendService'
+import { geoSafeToWebLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function DuplicateLocationsOptionsPage () {
@@ -15,6 +18,28 @@ export default function DuplicateLocationsOptionsPage () {
   const location = useLocation()
   const addedLocations = location?.state?.addedLocations || 0
   const duplicateLocations = location?.state?.duplicateLocations
+  const orgId = useSelector((state) => state.session.orgId)
+  const [dupLocations, setDupLocations] = useState([])
+
+  useEffect(() => {
+    const getDupLocations = async () => {
+      const dataToSend = { orgId }
+      const { data } = await backendCall(
+        dataToSend,
+        'api/bulk_uploads/get_invalid_locations',
+        navigate
+      )
+      const locations = []
+      if (data) {
+        const duplicates = data.filter((location) => location.error === 'duplicate')
+        duplicates.forEach((location) => {
+          locations.push(geoSafeToWebLocation(location))
+        })
+      }
+      setDupLocations(locations)
+    }
+    getDupLocations()
+  }, [])
 
   const options = [
     {
@@ -44,6 +69,20 @@ export default function DuplicateLocationsOptionsPage () {
     } else {
       switch (option) {
         case options[0].value: {
+          await Promise.all(dupLocations.map(async (location) => {
+            const locationIdToRemove = location.id
+            await backendCall(
+              { orgId, locationId: locationIdToRemove },
+              'api/bulk_uploads/remove_invalid_location',
+              navigate
+            )
+          }))
+          // change to link contacts
+          navigate(orgManageLocationsUrls.view.dashboard,
+            {
+              state:
+          { text: `${dupLocations.length} existing locations kept` }
+            })
           break
         }
         case options[1].value: {

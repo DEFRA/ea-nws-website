@@ -155,7 +155,7 @@ export default function LocationMessagesPage () {
             areaName:
             warningAreas[j].properties.TA_NAME,
             areaType: `${severeFloodWarningsCount[warningAreaIndex] > 0 ? 'Severe flood warning area' : 'Flood warning area'}`,
-            messagesSent: `${ severeFloodWarningsCount[warningAreaIndex]} severe flood warning${severeFloodWarningsCount[warningAreaIndex]>1 ? 's' : ''}  ${floodWarningsCount[warningAreaIndex]} flood warning${floodWarningsCount[warningAreaIndex]>1 ? 's' : ''} ${floodAlertsCount[warningAreaIndex]} flood alert${floodAlertsCount[warningAreaIndex]>1 ? 's' : ''}`,
+            messagesSent: `${ severeFloodWarningsCount[warningAreaIndex]} severe flood warning${severeFloodWarningsCount[warningAreaIndex]>1 ? 's' : ''},  ${floodWarningsCount[warningAreaIndex]} flood warning${floodWarningsCount[warningAreaIndex]>1 ? 's' : ''}, ${floodAlertsCount[warningAreaIndex]} flood alert${floodAlertsCount[warningAreaIndex]>1 ? 's' : ''}`,
            linked: childrenId.includes(warningAreas[j].id)
           })
         } 

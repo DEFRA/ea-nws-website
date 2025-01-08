@@ -18,9 +18,9 @@ import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmLocationLayout({
+export default function ConfirmLocationLayout ({
   navigateToNextPage,
-  navigateToPinDropFlow,
+  navigateToPinDropFlow = null,
   layoutType = 'XandY'
 }) {
   const [error, setError] = useState(null)
@@ -73,7 +73,9 @@ export default function ConfirmLocationLayout({
   switch (layoutType) {
     case 'shape':
       // TODO: Shapefile handleSubmit()
-      handleSubmit = async () => {}
+      handleSubmit = async () => {
+        navigateToNextPage()
+      }
       break
     default:
       handleSubmit = async () => {
@@ -213,7 +215,7 @@ export default function ConfirmLocationLayout({
               shapefileData={shapeGeoData}
             />
             <div className='govuk-!-margin-top-4'>
-              <FloodWarningKey type='both' />
+              <FloodWarningKey showShapefile={layoutType === 'shape'} />
             </div>
             <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
               This is not a live flood map

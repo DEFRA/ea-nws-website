@@ -7,7 +7,7 @@ export default function ConfirmLocationNotFoundPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.index)
+    navigate(orgManageLocationsUrls.notFound.dashboard)
   }
 
   const navigateToPinDropFlow = () => {

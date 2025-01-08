@@ -8,6 +8,8 @@ import Pagination from '../../../common/components/gov-uk/Pagination'
 import {
   getLocationAdditional,
   getLocationOther,
+  setCurrentLocationCoordinates,
+  setCurrentLocationFullAddress,
   setOrganizationAddress
 } from '../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
@@ -71,7 +73,12 @@ export default function SearchAddressResultLayout ({
 
   const handleSelectedLocation = (event, selectedLocation) => {
     event.preventDefault()
-    dispatch(setOrganizationAddress(selectedLocation.address))
+    if (flow === 'unmatched-locations-not-found') {
+      dispatch(setCurrentLocationFullAddress(selectedLocation.address))
+      dispatch(setCurrentLocationCoordinates(selectedLocation.coordinates))
+    } else {
+      dispatch(setOrganizationAddress(selectedLocation.address))
+    }
     navigateToNextPage()
   }
 

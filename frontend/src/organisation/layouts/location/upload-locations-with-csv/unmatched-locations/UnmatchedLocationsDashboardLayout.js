@@ -1,7 +1,15 @@
+import { useDispatch } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import WarningText from '../../../../../common/components/gov-uk/WarningText'
+import {
+  setCurrentLocationEasting,
+  setCurrentLocationFullAddress,
+  setCurrentLocationName,
+  setCurrentLocationNorthing,
+  setCurrentLocationPostcode
+} from '../../../../../common/redux/userSlice'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 
 export default function UnmatchedLocationsDashboardLayout ({
@@ -9,6 +17,7 @@ export default function UnmatchedLocationsDashboardLayout ({
   flow
 }) {
   const location = useLocation()
+  const dispatch = useDispatch()
 
   // Default values for null location.state
   const addedLocations = location?.state?.added || 0
@@ -21,10 +30,6 @@ export default function UnmatchedLocationsDashboardLayout ({
     notAddedLocationsDataGeoSafe.forEach((location) => {
       notAddedLocationsData.push(geoSafeToWebLocation(location))
     })
-  }
-
-  const handleButton = () => {
-    // TODO: Add route to next page
   }
 
   const unmatchedLocationText =
@@ -102,14 +107,50 @@ export default function UnmatchedLocationsDashboardLayout ({
     }
   }
 
+  const handleButton = () => {
+    // TODO: Add route to next page
+  }
+
+  const findLocation = (e, index) => {
+    e.preventDefault()
+    dispatch(
+      setCurrentLocationName(
+        notAddedLocationsData[index].additionals.locationName
+      )
+    )
+    dispatch(
+      setCurrentLocationFullAddress(
+        notAddedLocationsData[index].additionals.other.full_address
+      )
+    )
+    dispatch(
+      setCurrentLocationPostcode(
+        notAddedLocationsData[index].additionals.other.postcode
+      )
+    )
+    dispatch(
+      setCurrentLocationEasting(
+        notAddedLocationsData[index].additionals.other.x_coordinate
+      )
+    )
+    dispatch(
+      setCurrentLocationNorthing(
+        notAddedLocationsData[index].additionals.other.y_coordinate
+      )
+    )
+    navigateToNextPage()
+  }
+
   return (
     <>
-      <NotificationBanner
-        className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-top-5'
-        title='Success'
-        text={`${addedLocations} locations added`}
-      />
-      <main className='govuk-main-wrapper govuk-!-padding-top-1'>
+      {addedLocations > 0 && (
+        <NotificationBanner
+          className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-top-5 govuk-!-margin-bottom-0'
+          title='Success'
+          text={`${addedLocations} locations added`}
+        />
+      )}
+      <main className='govuk-main-wrapper govuk-!-margin-top-3'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l'>
@@ -170,7 +211,16 @@ export default function UnmatchedLocationsDashboardLayout ({
                           {location.additionals.other.y_coordinate}
                         </td>
                         <td class='govuk-table__cell'>
-                          <Link className='govuk-link'>Find this location</Link>
+                          <Link
+                            className='govuk-link'
+                            onClick={(e) => findLocation(e, index)}
+                          >
+                            {(flow === 'unmatched-locations-not-found' &&
+                              'Find this') ||
+                              (flow === 'unmatched-locations-not-in-england' &&
+                                'Check')}{' '}
+                            location
+                          </Link>
                         </td>
                       </tr>
                     )

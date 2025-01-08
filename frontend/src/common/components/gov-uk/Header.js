@@ -16,7 +16,7 @@ export default function Header () {
           <OrganisationHeader />
           )
         : (
-          <header className='govuk-header' data-module='govuk-header'>
+          <header className='govuk-header govuk-header--full-width-border' data-module='govuk-header'>
             <div className='govuk-width-container govuk-header__container'>
               <div className='govuk-header__logo'>
                 <a

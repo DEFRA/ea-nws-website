@@ -48,16 +48,17 @@ export default function SubNavigation ({ pages, currentPage, type }) {
               Get flood warnings
             </p>
           </li>
-
+          {authToken !== null &&
           <li className='sub-navigation__item'>
             <button onClick={() => toggleMenu()} className='sub-navigation__menu'>
               Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
             </button>
           </li>
+  }
 
-          {(authToken !== null && menuOpen === true) &&
+          {authToken !== null &&
           pages.map((page, index) => (
-            <li key={index} className='sub-navigation__item'>
+            <li key={index} className={`sub-navigation__item ${!menuOpen && 'closed'}`}>
               <Link
                 to={page.link}
                 className='sub-navigation__link'

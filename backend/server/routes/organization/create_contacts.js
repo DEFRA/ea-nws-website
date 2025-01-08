@@ -31,7 +31,7 @@ module.exports = [
             await Promise.all(contactRes.data.contacts.map(async (contact) => {
               await addContact(orgId, contact)
             }))
-            
+
             return h.response({ status: 200 })
           } else {
             return createGenericErrorResponse(h)

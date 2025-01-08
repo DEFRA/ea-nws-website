@@ -43,20 +43,21 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
     async function getHistoryUrl () {
       const { data } = await backendCall(
         'data',
-        'api/locations/download_flood_history'
+        'api/locations/download_citizen_flood_history'
       )
       setHistoryUrl(data)
     }
 
     getHistoryUrl()
-    floodHistoryUrl && fetch(floodHistoryUrl)
-      .then((response) => response.text())
-      .then((data) => {
-        setFloodHistoryData(csvToJson(data))
-      })
-      .catch((e) =>
-        console.error('Could not fetch Historic Flood Warning file', e)
-      )
+    floodHistoryUrl &&
+      fetch(floodHistoryUrl)
+        .then((response) => response.text())
+        .then((data) => {
+          setFloodHistoryData(csvToJson(data))
+        })
+        .catch((e) =>
+          console.error('Could not fetch Historic Flood Warning file', e)
+        )
   }, [floodHistoryUrl])
 
   const setHistoricalAlertNumber = (AlertArea) => {

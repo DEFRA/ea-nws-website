@@ -1,9 +1,9 @@
 const getSecretKeyValue = require('./SecretsManager')
-const getDownloadFloodHistoryUrl = async () => {
+const getDownloadCitizenFloodHistoryUrl = async () => {
   try {
     const response = await getSecretKeyValue(
       'nws/website',
-      'addressFloodHistoryUrl'
+      'citizenFloodHistoryUrl'
     )
     if (response !== null && response.length >= 0) {
       return {
@@ -13,7 +13,7 @@ const getDownloadFloodHistoryUrl = async () => {
     } else {
       return {
         status: 500,
-        errorMessage: 'addressFloodHistoryUrl has no value!'
+        errorMessage: 'citizenFloodHistoryUrl has no value!'
       }
     }
   } catch {
@@ -25,5 +25,5 @@ const getDownloadFloodHistoryUrl = async () => {
 }
 
 module.exports = {
-  getDownloadFloodHistoryUrl
+  getDownloadCitizenFloodHistoryUrl
 }

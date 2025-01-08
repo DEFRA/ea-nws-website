@@ -1,6 +1,6 @@
 const {
-  getDownloadFloodHistoryUrl
-} = require('../../services/DownloadFloodHistory')
+  getDownloadCitizenFloodHistoryUrl
+} = require('../../services/DownloadCitizenFloodHistory')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
@@ -8,13 +8,13 @@ const {
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/locations/download_flood_history',
+    path: '/api/locations/download_citizen_flood_history',
     handler: async (request, h) => {
       try {
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const response = await getDownloadFloodHistoryUrl()
+        const response = await getDownloadCitizenFloodHistoryUrl()
         return h.response(response)
       } catch {
         createGenericErrorResponse(h)

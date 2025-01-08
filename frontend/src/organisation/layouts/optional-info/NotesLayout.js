@@ -38,7 +38,7 @@ export default function NotesLayout ({
     }
   }, [notes])
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (error) return
     if (notes) {
       switch (keywordType) {
@@ -53,10 +53,11 @@ export default function NotesLayout ({
       }
     }
     if (onSubmit) {
-      onSubmit()
+      await onSubmit()
     }
-
-    navigateToNextPage()
+    else {
+      navigateToNextPage()
+    }
   }
 
   const navigateBack = (event) => {

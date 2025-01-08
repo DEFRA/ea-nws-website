@@ -4,7 +4,7 @@ import SubNavigation from './SubNavigation'
 
 export default function OrganisationAccountNavigation ({ currentPage }) {
   const pages = [
-    { title: 'Live flood warnings', link: '/' },
+    { title: 'Live flood warnings', link: '/organisation/home' },
     { title: 'Locations', link: orgManageLocationsUrls.view.dashboard },
     { title: 'Contacts', link: orgManageContactsUrls.view.dashboard },
     { title: 'Reports', link: '/' }

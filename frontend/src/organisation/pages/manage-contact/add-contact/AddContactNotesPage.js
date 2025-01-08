@@ -27,7 +27,6 @@ export default function AddContactNotesPage () {
     )
     
     if (!errorMessage) {
-      dispatch(setCurrentContact(orgCurrentContact))
       navigateToNextPage()
     } else {
       console.log(errorMessage)

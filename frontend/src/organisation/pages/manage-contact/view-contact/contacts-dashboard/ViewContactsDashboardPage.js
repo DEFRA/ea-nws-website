@@ -92,10 +92,8 @@ export default function ViewContactsDashboardPage () {
 
       setContacts(contactsUpdate)
       setFilteredContacts(contactsUpdate)
-      console.log('Num contacts: ' + contactsUpdate.length)
     }
     getContacts()
-    
   }, [])
 
   const moreActions = [

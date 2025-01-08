@@ -38,7 +38,7 @@ export default function LocationMessagesPage () {
   const [floodAlertsCount, setFloodAlertsCount] = useState([])
   const [floodWarningsCount, setFloodWarningsCount] = useState([])
   const [severeFloodWarningsCount, setSevereFloodWarningsCount] = useState([])
- 
+
   const alertTypes = additionalData.alertTypes
   const allAlertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
   const childrenId = ['flood_alerts.33'] // TODO additionalData.childrenId
@@ -82,7 +82,7 @@ export default function LocationMessagesPage () {
           alert['lookup category'] === type &&
           (moment(alert.Approved
             , 'DD/MM/YYYY HH:MM:SS')).format('DD/MM/YYYY') > twoYearsAgo.format('DD/MM/YYYY'))
-      switch(type){
+      switch (type) {
         case 'Flood Alert':
           setFloodAlertsCount(prevState => {
             const updatedState = [...prevState]
@@ -104,27 +104,24 @@ export default function LocationMessagesPage () {
             return updatedState
           })
           break
-        default: 
+        default:
           break
       }
     }
   }
 
   useEffect(() => {
-    const processFloodData  =() => {
+    const processFloodData = () => {
       if (floodHistoryData) {
-        if(alertAreas && warningAreas){
-
+        if (alertAreas && warningAreas) {
           const allAreas = [...alertAreas.features, ...warningAreas.features]
           console.log(allAreas)
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Warning', index))
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Warning Rapid Response', index))
-        }
-        else if (alertAreas) {
+        } else if (alertAreas) {
           alertAreas.features.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
-        }
-        else if (warningAreas) {
+        } else if (warningAreas) {
           warningAreas.features.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
           warningAreas.features.forEach((area, index) => setHistoricalData(area, 'Flood Warning', index))
           warningAreas.features.forEach((area, index) => setHistoricalData(area, 'Flood Warning Rapid Response', index))
@@ -138,41 +135,43 @@ export default function LocationMessagesPage () {
     const populateInputs = (alertAreas, warningAreas) => {
       const updatedFloodAreas = []
       if (alertAreas) {
-        for(var i = 0; i < alertAreas.length; i++){
+        for (let i = 0; i < alertAreas.length; i++) {
           updatedFloodAreas.push({
             areaName:
             alertAreas[i].properties.TA_NAME,
-            areaType: `Alert areas`,
-            messagesSent: `${floodAlertsCount[i]} flood alert${floodAlertsCount[i]>1? 's' : ''}`,
+            areaType: 'Alert areas',
+            messagesSent: `${floodAlertsCount[i]} flood alert${floodAlertsCount[i] > 1 ? 's' : ''}`,
             linked: childrenId.includes(alertAreas[i].id)
-          })  
-      } }
+          })
+        }
+      }
       if (warningAreas) {
         const alertAreaLenght = alertAreas.length
-        for(var j = 0; j < warningAreas.length; j++){
+        for (let j = 0; j < warningAreas.length; j++) {
           const warningAreaIndex = alertAreaLenght > 0 ? j + alertAreas.length : j
           updatedFloodAreas.push({
             areaName:
             warningAreas[j].properties.TA_NAME,
             areaType: `${severeFloodWarningsCount[warningAreaIndex] > 0 ? 'Severe flood warning area' : 'Flood warning area'}`,
-            messagesSent: `${ severeFloodWarningsCount[warningAreaIndex]} severe flood warning${severeFloodWarningsCount[warningAreaIndex]>1 ? 's' : ''},  ${floodWarningsCount[warningAreaIndex]} flood warning${floodWarningsCount[warningAreaIndex]>1 ? 's' : ''}, ${floodAlertsCount[warningAreaIndex]} flood alert${floodAlertsCount[warningAreaIndex]>1 ? 's' : ''}`,
-           linked: childrenId.includes(warningAreas[j].id)
+            messagesSent: `${severeFloodWarningsCount[warningAreaIndex]} severe flood warning${severeFloodWarningsCount[warningAreaIndex] > 1 ? 's' : ''},  ${floodWarningsCount[warningAreaIndex]} flood warning${floodWarningsCount[warningAreaIndex] > 1 ? 's' : ''}, ${floodAlertsCount[warningAreaIndex]} flood alert${floodAlertsCount[warningAreaIndex] > 1 ? 's' : ''}`,
+            linked: childrenId.includes(warningAreas[j].id)
           })
-        } 
-      } 
-      setFloodAreasInputs(updatedFloodAreas) 
+        }
+      }
+      setFloodAreasInputs(updatedFloodAreas)
     }
-  
+
     if (floodHistoryData && (alertAreas || warningAreas)) {
       populateInputs(alertAreas?.features, warningAreas?.features)
     }
   }, [floodAlertsCount, floodWarningsCount, severeFloodWarningsCount])
 
   useEffect(() => {
-    const areAllCountsLoaded = floodAlertsCount.length > 0 && floodWarningsCount.length > 0 && severeFloodWarningsCount.length > 0;
-    if(floodAreasInputs.length > 0 && areAllCountsLoaded){
-      setLoading(false)}
-},[floodAreasInputs, floodAlertsCount, floodWarningsCount, severeFloodWarningsCount])
+    const areAllCountsLoaded = floodAlertsCount.length > 0 && floodWarningsCount.length > 0 && severeFloodWarningsCount.length > 0
+    if (floodAreasInputs.length > 0 && areAllCountsLoaded) {
+      setLoading(false)
+    }
+  }, [floodAreasInputs, floodAlertsCount, floodWarningsCount, severeFloodWarningsCount])
 
   useEffect(() => {
     const fetchAreas = async () => {
@@ -228,8 +227,6 @@ export default function LocationMessagesPage () {
     setAlertTypesEnabled(newalertTypesEnabled)
     setIsBannerDisplayed(false)
   }
-
-
 
   const messageSettingsSection = (
     <>
@@ -335,101 +332,103 @@ export default function LocationMessagesPage () {
         Flood areas
       </h2>
       <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-      {loading ? (<LoadingSpinner />)
-        : <>
-          {floodAreasInputs.length > 0
-            ? (
-              <p>
-                {additionalData.locationName} can get flood messages for these areas.
-                You may be also able to link {additionalData.locationName} to nearby
-                flood areas that get flood messages.
-              </p>
-              )
-            : (
-              <p>
-                Flood messages are currently unavailable for this location.
-                But you may be able to link this location to any nearby flood areas
-                that can get flood messages.
-              </p>
-              )}
-          <br />
-          <p>
-            <Link to={infoUrls.floodAreas} className='govuk-link'>
-              What are flood areas?
-            </Link>
-          </p>
-          <br />
+      {loading
+        ? (<LoadingSpinner />)
+        : (
+          <>
+            {floodAreasInputs.length > 0
+              ? (
+                <p>
+                  {additionalData.locationName} can get flood messages for these areas.
+                  You may be also able to link {additionalData.locationName} to nearby
+                  flood areas that get flood messages.
+                </p>
+                )
+              : (
+                <p>
+                  Flood messages are currently unavailable for this location.
+                  But you may be able to link this location to any nearby flood areas
+                  that can get flood messages.
+                </p>
+                )}
+            <br />
+            <p>
+              <Link to={infoUrls.floodAreas} className='govuk-link'>
+                What are flood areas?
+              </Link>
+            </p>
+            <br />
 
-          {floodAreasInputs.length > 0 &&
+            {floodAreasInputs.length > 0 &&
+            (
+              <>
+                <span class='govuk-caption-m'>
+                  {floodAreasInputs.length} flood areas
+                </span>
 
-         (
-           <>
-             <span class='govuk-caption-m'>
-               {floodAreasInputs.length} flood areas
-             </span>
-
-             <table className='govuk-table govuk-table--small-text-until-tablet'>
-               <thead className='govuk-table__head'>
-                 <tr className='govuk-table__row'>
-                   <th scope='col' className='govuk-table__header'>
-                     Area name
-                   </th>
-                   <th scope='col' className='govuk-table__header'>
-                     Area type
-                   </th>
-                   <th scope='col' className='govuk-table__header'>
-                     Total messages sent in the
-                     <br /> last 2 years
-                   </th>
-                   <th scope='col' className='govuk-table__header' />
-                 </tr>
-               </thead>
-               <tbody className='govuk-table__body'>
-                 {floodAreasInputs.map((detail, index) => (
-                   <tr key={index} className='govuk-table__row'>
-                     <td
-                       className='govuk-table__cell'
-                       style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
-                     >
-                       <Link to='/' className='govuk-link'>
-                         {detail.areaName}
-                       </Link>
-                     </td>
-                     <td
-                       className='govuk-table__cell'
-                       style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
-                     >
-                       {/* TODO: Add link icon if location is already linked */}
-                       {/* <img
-                      src={linkIcon}
-                      alt='Link icon'
-                      style={{ marginRight: '10px' }}
-                    /> */}
-                       {detail.areaType}
-                     </td>
-                     <td
-                       className='govuk-table__cell'
-                       style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
-                     >
-                       {detail.messagesSent}
-                     </td>
-                     <td
-                       className='govuk-table__cell'
-                       style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
-                     >
-                       {detail.linked
-                         ? (
-                           <Link className='govuk-link'>Unlink</Link>
-                           )
-                         : null}
-                     </td>
-                   </tr>
-                 ))}
-               </tbody>
-             </table>
-           </>
-         )}
-          </>}
+                <table className='govuk-table govuk-table--small-text-until-tablet'>
+                  <thead className='govuk-table__head'>
+                    <tr className='govuk-table__row'>
+                      <th scope='col' className='govuk-table__header'>
+                        Area name
+                      </th>
+                      <th scope='col' className='govuk-table__header'>
+                        Area type
+                      </th>
+                      <th scope='col' className='govuk-table__header'>
+                        Total messages sent in the
+                        <br /> last 2 years
+                      </th>
+                      <th scope='col' className='govuk-table__header' />
+                    </tr>
+                  </thead>
+                  <tbody className='govuk-table__body'>
+                    {floodAreasInputs.map((detail, index) => (
+                      <tr key={index} className='govuk-table__row'>
+                        <td
+                          className='govuk-table__cell'
+                          style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+                        >
+                          <Link to='/' className='govuk-link'>
+                            {detail.areaName}
+                          </Link>
+                        </td>
+                        <td
+                          className='govuk-table__cell'
+                          style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+                        >
+                          {/* TODO: Add link icon if location is already linked */}
+                          {/* <img
+                          src={linkIcon}
+                          alt='Link icon'
+                          style={{ marginRight: '10px' }}
+                        /> */}
+                          {detail.areaType}
+                        </td>
+                        <td
+                          className='govuk-table__cell'
+                          style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+                        >
+                          {detail.messagesSent}
+                        </td>
+                        <td
+                          className='govuk-table__cell'
+                          style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
+                        >
+                          {detail.linked
+                            ? (
+                              <Link className='govuk-link'>Unlink</Link>
+                              )
+                            : null}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </>
+            )}
+          </>
+          )}
 
       <Button
         imageSrc={linkIcon}

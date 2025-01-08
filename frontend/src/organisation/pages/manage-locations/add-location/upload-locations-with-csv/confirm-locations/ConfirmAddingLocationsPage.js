@@ -25,10 +25,11 @@ export default function ConfirmLocationsPage () {
       navigate
     )
     if (!errorMessage) {
-      navigate(orgManageLocationsUrls.unmatchedLocations.index, {
+      navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard, {
         state: {
           added: data.valid,
-          notAdded: data.invalid
+          notAdded: data.invalid,
+          notAddedLocations: data.invalidLocations
         }
       })
     } else {

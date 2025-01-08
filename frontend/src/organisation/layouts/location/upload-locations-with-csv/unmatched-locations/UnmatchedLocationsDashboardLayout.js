@@ -2,17 +2,26 @@ import { Link, useLocation } from 'react-router-dom'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import WarningText from '../../../../../common/components/gov-uk/WarningText'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 
 export default function UnmatchedLocationsDashboardLayout ({
   navigateToNextPage,
   flow
 }) {
   const location = useLocation()
-  const locations = []
 
   // Default values for null location.state
   const addedLocations = location?.state?.added || 0
   const notAddedLocations = location?.state?.notAdded || 0
+  const notAddedLocationsDataGeoSafe =
+    location?.state?.notAddedLocations || null
+
+  const notAddedLocationsData = []
+  if (notAddedLocationsDataGeoSafe) {
+    notAddedLocationsDataGeoSafe.forEach((location) => {
+      notAddedLocationsData.push(geoSafeToWebLocation(location))
+    })
+  }
 
   const handleButton = () => {
     // TODO: Add route to next page
@@ -143,13 +152,13 @@ export default function UnmatchedLocationsDashboardLayout ({
                 </tr>
               </thead>
               <tbody class='govuk-table__body'>
-                {locations &&
-                  locations.map((location, index) => {
+                {notAddedLocationsData &&
+                  notAddedLocationsData.map((location, index) => {
                     return (
                       <tr class='govuk-table__row' key={index}>
-                        <th scope='row' class='govuk-table__header'>
+                        <td class='govuk-table__cell'>
                           {location.additionals.locationName}
-                        </th>
+                        </td>
                         <td class='govuk-table__cell'>
                           {location.additionals.other.full_address}
                         </td>
@@ -161,7 +170,7 @@ export default function UnmatchedLocationsDashboardLayout ({
                           {location.additionals.other.y_coordinate}
                         </td>
                         <td class='govuk-table__cell'>
-                          <Link>Find this location</Link>
+                          <Link className='govuk-link'>Find this location</Link>
                         </td>
                       </tr>
                     )

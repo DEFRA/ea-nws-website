@@ -2,13 +2,22 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 
-const { getJsonData, addInvLocation, addLocation } = require('../../services/elasticache')
-const { convertToPois } = require('../../services/bulk_uploads/processLocations')
+const {
+  getJsonData,
+  addInvLocation,
+  addLocation
+} = require('../../services/elasticache')
+const {
+  convertToPois
+} = require('../../services/bulk_uploads/processLocations')
 const crypto = require('node:crypto')
 
-function uuidv4 () {
-  return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, c =>
-    (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+function uuidv4() {
+  return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) =>
+    (
+      +c ^
+      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))
+    ).toString(16)
   )
 }
 
@@ -28,7 +37,7 @@ module.exports = [
           const result = await getJsonData(elasticacheKey)
           const valid = convertToPois(result.data.valid)
           const invalid = convertToPois(result.data.invalid)
-          // add unique location ID and add to elsaticache
+          // add unique location ID and add to elasticache
           valid.forEach(async (location) => {
             location.id = uuidv4()
             await addLocation(orgId, location)
@@ -40,7 +49,14 @@ module.exports = [
 
           // TODO: call geosafe API to add locations to geosafe as well
 
-          return h.response({ status: 200, data: { valid: valid.length, invalid: invalid.length } })
+          return h.response({
+            status: 200,
+            data: {
+              valid: valid.length,
+              invalid: invalid.length,
+              invalidLocations: invalid
+            }
+          })
         } else {
           return createGenericErrorResponse(h)
         }

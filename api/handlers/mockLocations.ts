@@ -197,7 +197,7 @@ const locations = [
             location_type: 'Office',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: []
           })
         }
@@ -230,7 +230,7 @@ const locations = [
             location_type: 'Warehouse',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_2']
           })
         }
@@ -263,7 +263,7 @@ const locations = [
             location_type: 'Retail space',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
           })
         }
@@ -296,7 +296,7 @@ const locations = [
             location_type: 'Warehouse',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_2']
           })
         }
@@ -329,7 +329,7 @@ const locations = [
             location_type: 'Office',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
           })
         }
@@ -362,7 +362,7 @@ const locations = [
             location_type: 'Warehouse',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_3']
           })
         }
@@ -395,7 +395,7 @@ const locations = [
             location_type: 'Retail space',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_2']
           })
         }
@@ -428,7 +428,7 @@ const locations = [
             location_type: 'Warehouse',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: []
           })
         }
@@ -461,7 +461,7 @@ const locations = [
             location_type: 'Office',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
           })
         }
@@ -494,7 +494,7 @@ const locations = [
             location_type: 'Warehouse',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: []
           })
         }
@@ -527,7 +527,7 @@ const locations = [
             location_type: 'Warehouse',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_2']
           })
         }
@@ -560,7 +560,7 @@ const locations = [
             location_type: 'Retail space',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_3']
           })
         }
@@ -593,7 +593,7 @@ const locations = [
             location_type: 'Office',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
           })
         }
@@ -626,7 +626,7 @@ const locations = [
             location_type: 'Warehouse',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_2']
           })
         }
@@ -659,7 +659,7 @@ const locations = [
             location_type: 'Retail space',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: []
           })
         }
@@ -692,7 +692,7 @@ const locations = [
             location_type: 'Warehouse',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
           })
         }
@@ -725,7 +725,7 @@ const locations = [
             location_type: 'Warehouse',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_2']
           })
         }
@@ -758,7 +758,7 @@ const locations = [
             location_type: 'Office',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_3']
           })
         }
@@ -791,7 +791,7 @@ const locations = [
             location_type: 'Retail space',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
           })
         }
@@ -824,7 +824,7 @@ const locations = [
             location_type: 'Warehouse',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_3']
           })
         }
@@ -857,7 +857,7 @@ const locations = [
             location_type: 'Warehouse',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_2']
           })
         }
@@ -890,7 +890,7 @@ const locations = [
             location_type: 'Office',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
           })
         }

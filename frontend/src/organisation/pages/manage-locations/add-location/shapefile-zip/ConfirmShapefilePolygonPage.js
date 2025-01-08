@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router'
 import ConfirmLocationLayout from '../../../../layouts/location/add-or-edit-location/confirm-location/ConfirmLocationLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmShapefilePolygonPage() {
+export default function ConfirmShapefilePolygonPage () {
   const navigate = useNavigate()
 
   // TODO: Update these for shapefile specific pages!

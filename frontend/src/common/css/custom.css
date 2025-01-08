@@ -1167,6 +1167,10 @@
   fill: url(#existing-boundary-pattern);
 }
 
+.shapefile-area-pattern-fill {
+  fill: url(#shapefile-pattern);
+}
+
 /* flood risk banner */
 .map-error-container {
   display: flex;

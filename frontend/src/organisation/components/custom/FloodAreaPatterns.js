@@ -57,3 +57,34 @@ export const createAlertPattern = () => {
     .attr('stroke', '#ffa200')
     .attr('stroke-width', 2)
 }
+
+export const createShapefilePattern = () => {
+  const shapefileSvg = d3
+    .select('body')
+    .append('svg')
+    .attr('width', 0)
+    .attr('height', 0)
+    .attr('id', 'svg-shapefile-pattern')
+
+  const shapefilePattern = shapefileSvg
+    .append('defs')
+    .append('pattern')
+    .attr('id', 'shapefile-pattern')
+    .attr('patternUnits', 'userSpaceOnUse')
+    .attr('width', 10)
+    .attr('height', 10)
+    .attr('patternTransform', 'rotate(45)')
+    .attr('patternContentUnits', 'userSpaceOnUse')
+
+  shapefilePattern
+    .append('rect')
+    .attr('width', 5)
+    .attr('height', 5)
+    .attr('fill', '#666666')
+
+  shapefilePattern
+    .append('path')
+    .attr('d', 'M0,0 L10,0 L10,10 L0,10 Z')
+    .attr('stroke', '#666666')
+    .attr('stroke-width', 2)
+}

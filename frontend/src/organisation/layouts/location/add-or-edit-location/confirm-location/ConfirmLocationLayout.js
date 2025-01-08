@@ -1,4 +1,5 @@
-import { React, useState } from 'react'
+import { centroid } from '@turf/turf'
+import { React, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
@@ -9,7 +10,8 @@ import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import {
   getLocationAdditional,
   getLocationOther,
-  setCurrentLocation
+  setCurrentLocation,
+  setCurrentLocationCoordinates
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
@@ -43,13 +45,28 @@ export default function ConfirmLocationLayout({
   )
 
   // Shapefile polygon specific values
-  let shapeArea, shapeName
+  let shapeGeoData, shapeName, shapeArea, shapeLong, shapeLat
   if (layoutType === 'shape') {
     const { geojsonData } = location.state || {}
-    shapeArea = Math.round(geojsonData.features[0]?.properties?.Shape_Area)
-    shapeName = geojsonData.fileName
-    console.log(`Data from confirmation page: ${shapeArea} ${shapeName}`)
+
+    shapeGeoData = geojsonData
+    shapeArea = Math.round(shapeGeoData.features[0]?.properties?.Shape_Area)
+    shapeName = shapeGeoData.fileName
+
+    // Calculate coords of centre of polygon to display the map properly
+    const polygonCentre = centroid(shapeGeoData.features[0]?.geometry)
+    shapeLong = polygonCentre.geometry.coordinates[0]
+    shapeLat = polygonCentre.geometry.coordinates[1]
   }
+
+  useEffect(() => {
+    dispatch(
+      setCurrentLocationCoordinates({
+        latitude: shapeLat,
+        longitude: shapeLong
+      })
+    )
+  }, [shapeLong, shapeLat])
 
   // Switch case to change the button/link logic depending on the location type
   let handleSubmit
@@ -190,7 +207,11 @@ export default function ConfirmLocationLayout({
             className='govuk-grid-column-one-half'
             style={{ marginTop: '95px' }}
           >
-            <Map showMapControls={false} zoomLevel={14} />
+            <Map
+              showMapControls={false}
+              zoomLevel={14}
+              shapefileData={shapeGeoData}
+            />
             <div className='govuk-!-margin-top-4'>
               <FloodWarningKey type='both' />
             </div>

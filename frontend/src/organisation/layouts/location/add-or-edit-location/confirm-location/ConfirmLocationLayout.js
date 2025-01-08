@@ -11,7 +11,9 @@ import {
   getLocationAdditional,
   getLocationOther,
   setCurrentLocation,
-  setCurrentLocationCoordinates
+  setCurrentLocationCoordinates,
+  setCurrentLocationGeometry,
+  setCurrentLocationName
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
@@ -72,8 +74,13 @@ export default function ConfirmLocationLayout ({
   let handleSubmit
   switch (layoutType) {
     case 'shape':
-      // TODO: Shapefile handleSubmit()
       handleSubmit = async () => {
+        dispatch(
+          setCurrentLocationGeometry({
+            geoJson: JSON.stringify(shapeGeoData)
+          })
+        )
+        dispatch(setCurrentLocationName(shapeName))
         navigateToNextPage()
       }
       break

@@ -1,5 +1,5 @@
-import SubNavigation from '../../../../../common/components/custom/SubNavigation'
-import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
+import SubNavigation from '../../../../../../common/components/custom/SubNavigation'
+import { orgManageContactsUrls } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function ViewContactSubNavigation({ currentPage }) {
   const pages = [

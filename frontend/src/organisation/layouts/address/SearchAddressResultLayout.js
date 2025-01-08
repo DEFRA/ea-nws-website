@@ -3,20 +3,15 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Pagination from '../../../common/components/gov-uk/Pagination'
-import { setProfile } from '../../../common/redux/userSlice'
-import {
-  getOrganisationAdditionals,
-  updateOrganisationAdditionals
-} from '../../../common/services/ProfileServices'
+import { setOrganizationAddress } from '../../../common/redux/userSlice'
 
 export default function SelectAddressLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(1)
-  const profile = useSelector((state) => state.session.profile)
   const locations = useSelector((state) => state.session.locationSearchResults)
   const locationPostCode = useSelector(
     (state) => state.session.locationPostCode
@@ -29,12 +24,8 @@ export default function SelectAddressLayout ({
 
   const handleSelectedLocation = (event, selectedLocation) => {
     event.preventDefault()
-    const organisation = Object.assign({}, getOrganisationAdditionals(profile))
-    organisation.address = selectedLocation
-
-    const updatedProfile = updateOrganisationAdditionals(profile, organisation)
-    dispatch(setProfile(updatedProfile))
-    NavigateToNextPage()
+    dispatch(setOrganizationAddress(selectedLocation.address))
+    navigateToNextPage()
   }
 
   const navigateBack = (event) => {

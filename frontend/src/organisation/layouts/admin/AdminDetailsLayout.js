@@ -13,14 +13,13 @@ import {
 import { backendCall } from '../../../common/services/BackendService'
 import {
   addAccountName,
-  addVerifiedContact,
-  getOrganisationAdditionals
+  addVerifiedContact
 } from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 
 export default function AdminDetailsLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const dispatch = useDispatch()
@@ -35,8 +34,9 @@ export default function AdminDetailsLayout ({
   const [email, setEmail] = useState('')
   const navigate = useNavigate()
 
-  const organisation = getOrganisationAdditionals(session.profile)
-  const isAdmin = organisation.isAdminRegistering
+  const organization = useSelector((state) => state.session.organization)
+  const organizationAdditionals = JSON.parse(organization.description)
+  const isAdmin = organizationAdditionals.isAdminRegistering
 
   const handleSubmit = async (event) => {
     event.preventDefault()
@@ -69,10 +69,10 @@ export default function AdminDetailsLayout ({
     dispatch(setProfile(profile))
 
     // Add the main admin email to the unverified component
-    const dataToSend = { email }
+    const dataToSend = { name: organization.name, email }
     const { data, errorMessage } = await backendCall(
       dataToSend,
-      'api/sign_up_start',
+      'api/org/sign_up_start',
       navigate
     )
 
@@ -81,6 +81,10 @@ export default function AdminDetailsLayout ({
         navigate('/organisation/sign-up/admin-email-duplicate', {
           state: { email }
         })
+      } else if (errorMessage === 'organisation already registered') {
+        navigate('/organisation/sign-up/duplicate', {
+          state: { name: organization.name }
+        })
       } else {
         setErrorEmail(errorMessage)
       }
@@ -88,9 +92,9 @@ export default function AdminDetailsLayout ({
       // add email to  emails list
       const updatedProfile = addVerifiedContact(profile, 'email', email)
       dispatch(setProfile(updatedProfile))
-      dispatch(setRegisterToken(data.registerToken))
+      dispatch(setRegisterToken(data.orgRegisterToken))
       dispatch(setCurrentContact(email))
-      NavigateToNextPage()
+      navigateToNextPage()
     }
   }
 

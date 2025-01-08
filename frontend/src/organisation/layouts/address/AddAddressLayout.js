@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
@@ -8,17 +8,14 @@ import Input from '../../../common/components/gov-uk/Input'
 import {
   setLocationPostCode,
   setLocationSearchResults,
-  setProfile
+  setOrganizationAddress,
+  setOrganizationPostalCode
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import {
-  getOrganisationAdditionals,
-  updateOrganisationAdditionals
-} from '../../../common/services/ProfileServices'
 import { postCodeValidation } from '../../../common/services/validations/PostCodeValidation'
 
 export default function AddAddressLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const navigate = useNavigate()
@@ -26,7 +23,6 @@ export default function AddAddressLayout ({
   const [postCode, setPostCode] = useState('')
   const [buildingNum, setBuildingNum] = useState('')
   const [error, setError] = useState('')
-  const profile = useSelector((state) => state.session.profile)
 
   const handleSubmit = async () => {
     const validationError = postCodeValidation(postCode)
@@ -42,6 +38,7 @@ export default function AddAddressLayout ({
       )
       if (!errorMessage) {
         dispatch(setLocationPostCode(data[0].postcode))
+        dispatch(setOrganizationPostalCode(data[0].postcode))
 
         if (buildingNum) {
           const normalisedBuildingNum = buildingNum.toLowerCase().trim()
@@ -52,18 +49,7 @@ export default function AddAddressLayout ({
               .includes(normalisedBuildingNum)
           )
           if (address.length === 1) {
-            const organisation = Object.assign(
-              {},
-              getOrganisationAdditionals(profile)
-            )
-            organisation.address = address[0]
-
-            const updatedProfile = updateOrganisationAdditionals(
-              profile,
-              organisation
-            )
-            dispatch(setProfile(updatedProfile))
-
+            dispatch(setOrganizationAddress(address[0].address))
             navigate('/organisation/sign-up/address-confirm')
             return // Ensure none of the following code is executed
           } else {
@@ -73,7 +59,7 @@ export default function AddAddressLayout ({
         } else {
           dispatch(setLocationSearchResults(data))
         }
-        NavigateToNextPage()
+        navigateToNextPage()
       } else {
         setError(errorMessage)
       }

@@ -4,7 +4,7 @@ import ValidateLandlineLayout from '../../../../layouts/landline/ValidateLandlin
 export default function ValidateLandlinePhonePage () {
   const navigate = useNavigate()
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     navigate('/signup/accountname/add')
   }
 
@@ -18,7 +18,7 @@ export default function ValidateLandlinePhonePage () {
 
   return (
     <ValidateLandlineLayout
-      NavigateToNextPage={NavigateToNextPage}
+      navigateToNextPage={navigateToNextPage}
       NavigateToPreviousPage={DifferentHomePhone}
       SkipValidation={SkipValidation}
       DifferentHomePhone={DifferentHomePhone}

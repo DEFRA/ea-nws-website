@@ -1,4 +1,4 @@
-import Button from '../../../../../common/components/gov-uk/Button'
+import Button from '../../../../../../common/components/gov-uk/Button'
 import ViewContactSubNavigation from './ViewContactSubNavigation'
 
 export default function ContactHeader({ contactName, currentPage }) {

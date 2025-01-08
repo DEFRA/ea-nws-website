@@ -8,11 +8,11 @@ import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
 import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
-import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner'
-import TileLayerWithHeader from '../../../../../common/components/custom/TileLayerWithHeader'
-import LocationDataType from '../../../../../common/enums/LocationDataType'
-import { backendCall } from '../../../../../common/services/BackendService'
-import { convertDataToGeoJsonFeature } from '../../../../../common/services/GeoJsonHandler'
+import LoadingSpinner from '../../../../../../common/components/custom/LoadingSpinner'
+import TileLayerWithHeader from '../../../../../../common/components/custom/TileLayerWithHeader'
+import LocationDataType from '../../../../../../common/enums/LocationDataType'
+import { backendCall } from '../../../../../../common/services/BackendService'
+import { convertDataToGeoJsonFeature } from '../../../../../../common/services/GeoJsonHandler'
 
 export default function ContactMap({ locations }) {
   const [loading, setLoading] = useState(true)
@@ -33,11 +33,11 @@ export default function ContactMap({ locations }) {
 
   const loadLocationsOnMap = () => {
     //load all locations user is connected to onto map
-    const nfeatures = []
-    const nmarkers = []
-    const ngeoJsonShapes = []
+    const locationsCollection = []
+    const points = []
+    const shapes = []
 
-    locations.forEach((location, index) => {
+    locations.forEach((location) => {
       let feature
       const locationType =
         location.meta_data.location_additional.location_data_type
@@ -50,59 +50,34 @@ export default function ContactMap({ locations }) {
           location.coordinates[1],
           location.coordinates[0]
         ])
-        nmarkers.push(location.coordinates)
+        points.push(location.coordinates)
       } else {
         feature = location.geometry.geoJson
         setGeoJsonShapes((prevShapes) => [
           ...prevShapes,
           location.geometry.geoJson
         ])
-        ngeoJsonShapes.push(location.geometry.geoJson)
+        shapes.push(location.geometry.geoJson)
       }
 
-      nfeatures.push(feature)
+      locationsCollection.push(feature)
     })
-    setMarkers(nmarkers)
-    setGeoJsonShapes(ngeoJsonShapes)
+    setMarkers(points)
+    setGeoJsonShapes(shapes)
 
-    const geoJsonFeatureCollection = turf.featureCollection(nfeatures)
+    const geoJsonFeatureCollection = turf.featureCollection(locationsCollection)
     setFeatures(geoJsonFeatureCollection)
 
     // calculate boundary around locations
     const bbox = turf.bbox(geoJsonFeatureCollection)
+    console.log('bbox', bbox)
 
     const newBounds = L.latLngBounds([bbox[1], bbox[0]], [bbox[3], bbox[2]])
+    console.log('newBounds', newBounds)
     setBounds(newBounds)
 
-    const area = turf.bboxPolygon(bbox)
-    const mapCentre = turf.center(area)
-    const mapCentreCoords = mapCentre.geometry.coordinates
-    setCentre([mapCentreCoords[1], mapCentreCoords[0]])
-
-    // const boundarySize = turf.area(area)
-    // setAreaSize(boundarySize)
-
-    // convert locations not large enough on map
-    // if (locations > 1) {
-    //   locations.forEach((location) => {
-    //     let size
-    //     const locationType =
-    //       location.meta_data.location_additional.location_data_type
-
-    //     if (locationType != LocationDataType.X_AND_Y_COORDS) {
-    //       size = getAreaOrLength(
-    //         location.geometry.geoJson.type,
-    //         location.geometry.geoJson.coordinates
-    //       )
-    //       console.log(size)
-    //       // if location is line and length is less than 5km then get centre and show marker instead
-    //       // if location is polygon and area is less than 10% then of bbox then get centre show marker instead
-    //       // convert centre to a point and add to features
-    //     }
-    //   })
-    // }
+    setCentre(newBounds.getCenter())
   }
-
 
   const FitBounds = () => {
     const map = useMap()
@@ -182,7 +157,6 @@ export default function ContactMap({ locations }) {
     [apiKey]
   )
 
-
   return (
     <>
       {loading ? (
@@ -201,16 +175,16 @@ export default function ContactMap({ locations }) {
           {apiKey && apiKey !== 'error' ? (
             <>
               {tileLayerWithHeader}
-              {/* <FitBounds /> */}
-              <Marker position={[centre[0], centre[1]]}>
-                <Popup />
-              </Marker>
-              {markers && markers.map((marker) => {
-                <Marker key={marker} position={[marker[0], marker[1]]}>
-                  <Popup />
-                </Marker>
-              })}
-              {/* {geoJsonShapes && <GeoJSON data={geoJsonShapes} />} */}
+              <FitBounds />
+              {markers &&
+                markers.map((marker, index) => (
+                  <Marker key={index} position={[marker[0], marker[1]]}>
+                    <Popup />
+                  </Marker>
+                ))}
+              {geoJsonShapes.map((shape, index) => (
+                <GeoJSON key={index} data={shape} />
+              ))}
             </>
           ) : (
             <div className='map-error-container'>

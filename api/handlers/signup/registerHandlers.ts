@@ -2,6 +2,7 @@ const responseCodes = require('../responseCodes')
 import Hapi from '@hapi/hapi'
 import type { Context } from 'openapi-backend'
 import uuidv4 from '../generateAuthToken'
+const mockResponses = require('../mockResponses')
 
 async function getRegisterStart(
   context: Context,
@@ -28,10 +29,14 @@ async function getOrgRegisterStart(
   res: Hapi.ResponseToolkit
 ) {
   console.log('Received register start request for: ', req.payload)
-  const { name } = req.payload as { name: string }
+  const { name, email } = req.payload as { name: string, email: string }
   if (name === 'duplicateOrganisation') {
     console.log('duplicate organisation, responding 500')
     return res.response(responseCodes.DUPLICATE_ORG).code(500)
+  }
+  if (email === 'duplicate@email.com') {
+    console.log('duplicate email, responding 500')
+    return res.response(responseCodes.DUPLICATE_EMAIL).code(500)
   }
   console.log('Valid organisation, responding 200')
   return { orgRegisterToken: '123456' }
@@ -82,7 +87,7 @@ async function getOrgRegisterValidate(
   }
   console.log('Valid token')
 
-  return { authToken: uuidv4() }
+  return { authToken: uuidv4(), organization: mockResponses.organization }
 }
 
 module.exports = { getRegisterStart, getOrgRegisterStart, getRegisterValidate, getOrgRegisterValidate }

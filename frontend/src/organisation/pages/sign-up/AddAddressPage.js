@@ -4,7 +4,7 @@ import AddAddressLayout from '../../layouts/address/AddAddressLayout'
 
 export default function AddAddressPage () {
   const navigate = useNavigate()
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     navigate('/organisation/sign-up/address-search')
   }
   const NavigateToPreviousPage = () => {
@@ -13,7 +13,7 @@ export default function AddAddressPage () {
 
   return (
     <AddAddressLayout
-      NavigateToNextPage={NavigateToNextPage}
+      navigateToNextPage={navigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
     />
   )

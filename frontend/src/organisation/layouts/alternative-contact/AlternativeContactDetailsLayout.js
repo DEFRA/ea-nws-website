@@ -5,18 +5,14 @@ import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
-import { setProfile } from '../../../common/redux/userSlice'
+import { setOrganizationAlternativeContact } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import {
-  getOrganisationAdditionals,
-  updateOrganisationAdditionals
-} from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
 
 export default function AlternativeContactDetailsLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const navigate = useNavigate()
@@ -28,12 +24,10 @@ export default function AlternativeContactDetailsLayout ({
   const [email, setEmail] = useState('')
   const [telephone, setTelephoneNumber] = useState('')
   const [jobTitle, setJobTitle] = useState('')
-  const session = useSelector((state) => state.session)
-  const organisation = Object.assign(
-    {},
-    getOrganisationAdditionals(session.profile)
-  )
-  const isAdmin = organisation.isAdminRegistering
+  const profile = useSelector((state) => state.session.profile)
+  const organization = useSelector((state) => state.session.organization)
+  const organizationAdditionals = JSON.parse(organization.description)
+  const isAdmin = organizationAdditionals.isAdminRegistering
 
   useEffect(() => {
     setErrorFullName('')
@@ -75,7 +69,7 @@ export default function AlternativeContactDetailsLayout ({
       setErrorFullName(fullNameValidationError)
       setErrorEmail(emailValidationError)
       setErrorTelephone(telephoneValidationError)
-    } else if (email === session.profile.emails[0]) {
+    } else if (email === profile.emails[0]) {
       // alternative contact cannot be the same as the main admin email
       setErrorEmail(
         'Enter a different email address to the main administrator email.'
@@ -86,23 +80,14 @@ export default function AlternativeContactDetailsLayout ({
       const [firstname, ...lastnameParts] = fullName.trim().split(' ')
       const lastname = lastnameParts.join(' ')
 
-      const updatedOrganisation = {
-        ...organisation,
-        alternativeContact: {
-          firstName: firstname,
-          lastName: lastname,
-          email,
-          telephone,
-          jobTitle
-        }
-      }
-
-      const updatedProfile = updateOrganisationAdditionals(
-        session.profile,
-        updatedOrganisation
-      )
-      dispatch(setProfile(updatedProfile))
-      NavigateToNextPage() // TODO send to T&Ms
+      dispatch(setOrganizationAlternativeContact({
+        firstName: firstname,
+        lastName: lastname,
+        email,
+        telephone,
+        jobTitle
+      }))
+      navigateToNextPage()
     }
   }
 
@@ -137,7 +122,7 @@ export default function AlternativeContactDetailsLayout ({
                 : (
                   <p className='govuk-body govuk-!-margin-bottom-5'>
                     This person will be an alternative contact, in case{' '}
-                    {session.profile.firstname} {session.profile.lastname} is
+                    {profile.firstname} {profile.lastname} is
                     unavailable in the future. They will not be given
                     administrator rights.
                   </p>

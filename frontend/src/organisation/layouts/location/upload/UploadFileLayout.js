@@ -13,6 +13,7 @@ export default function UploadFileLayout ({
   const navigate = useNavigate()
   const [errorFileType, setErrorFileType] = useState(null)
   const [errorFileSize, setErrorFileSize] = useState(null)
+  const [errorShapefile, setErrorShapefile] = useState([])
   const [selectedFile, setSelectedFile] = useState(null)
   const [uploading, setUploading] = useState(false)
 
@@ -80,6 +81,7 @@ export default function UploadFileLayout ({
     e.preventDefault()
     setErrorFileSize(null)
     setErrorFileType(null)
+    setErrorShapefile([])
 
     if (!selectedFile) {
       setErrorFileSize('The file is empty')
@@ -145,8 +147,8 @@ export default function UploadFileLayout ({
             navigate
           )
           if (shapefileErrorMessage) {
-            // Displays appropriate error message
-            throw new Error(shapefileErrorMessage)
+            setUploading(false)
+            setErrorShapefile(shapefileErrorMessage)
           }
 
           // TDO: Navigate to confirmation page (once made)
@@ -154,7 +156,7 @@ export default function UploadFileLayout ({
       }
     } catch (err) {
       setUploading(false)
-      setErrorFileType(err.message)
+      setErrorFileType(err)
     }
   }
 
@@ -167,14 +169,22 @@ export default function UploadFileLayout ({
           {!uploading
             ? (
               <>
-                {(errorFileType || errorFileSize) && (
-                  <ErrorSummary errorList={[errorFileType, errorFileSize]} />
+                {(errorFileType ||
+                errorFileSize ||
+                errorShapefile.length > 0) && (
+                  <ErrorSummary
+                    errorList={[
+                      errorFileType,
+                      errorFileSize,
+                      ...errorShapefile
+                    ].filter(Boolean)}
+                  />
                 )}
                 <div className='govuk-grid-column-full'>
                   <h1 className='govuk-heading-l'>Upload file</h1>
                   <div
                     className={
-                    errorFileSize || errorFileType
+                    errorFileSize || errorFileType || errorShapefile.length > 0
                       ? 'govuk-form-group govuk-form-group--error'
                       : 'govuk-form-group'
                   }
@@ -190,6 +200,11 @@ export default function UploadFileLayout ({
                         {errorFileSize}
                       </p>
                     )}
+                    {errorShapefile.map((error, index) => (
+                      <p key={index} className='govuk-error-message'>
+                        {error}
+                      </p>
+                    ))}
                     <input
                       type='file'
                       className={

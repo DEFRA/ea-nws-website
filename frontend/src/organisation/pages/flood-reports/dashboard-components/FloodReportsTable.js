@@ -219,7 +219,9 @@ export default function FloodReportsTable ({
             <tr key={index} className='govuk-table__row'>
               <td className='govuk-table__cell'>
                 <p className='govuk-hint' style={{ marginBottom: '0.2em' }}>
-                  {`Boundary_0${index + 1}`}{' '}
+                  {`Boundary_${warning.meta_data.location_additional.location_name.slice(
+                    -2
+                  )}`}
                   {/* TODO: Link in boundaries when real warning data available */}
                 </p>
                 <Link

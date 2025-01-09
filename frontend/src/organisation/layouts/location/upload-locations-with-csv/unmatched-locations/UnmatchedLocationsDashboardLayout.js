@@ -1,5 +1,7 @@
+import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
+import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import WarningText from '../../../../../common/components/gov-uk/WarningText'
@@ -18,6 +20,7 @@ export default function UnmatchedLocationsDashboardLayout ({
 }) {
   const location = useLocation()
   const dispatch = useDispatch()
+  const [showPopup, setShowPopup] = useState(false)
 
   // Default values for null location.state
   const addedLocations = location?.state?.added || 0
@@ -107,10 +110,6 @@ export default function UnmatchedLocationsDashboardLayout ({
     }
   }
 
-  const handleButton = () => {
-    // TODO: Add route to next page
-  }
-
   const findLocation = (e, index) => {
     e.preventDefault()
     dispatch(
@@ -139,6 +138,31 @@ export default function UnmatchedLocationsDashboardLayout ({
       )
     )
     navigateToNextPage()
+  }
+
+  const popup = () => {
+    if (!showPopup) return null
+
+    return (
+      <Popup
+        onDelete={() => navigateToNextPage()}
+        onClose={() => setShowPopup(false)}
+        title={`Locations ${unmatchedLocationText}`}
+        popupText={
+          <>
+            If you continue any locations {unmatchedLocationText} will not be
+            added to this account and cannot be saved.
+            <br />
+            <br />
+            You can print a list of these locations from the previous screen. If
+            you want tothen add these locations to this account you'll need to
+            either reupload them in a new CSV file or add each one manually.
+          </>
+        }
+        buttonText='Continue'
+        buttonClass='govuk-button'
+      />
+    )
   }
 
   return (
@@ -235,9 +259,11 @@ export default function UnmatchedLocationsDashboardLayout ({
                   (flow === 'unmatched-locations-not-in-england' && 'checking')
                 } locations`}
                 className='govuk-button govuk-button'
-                onClick={handleButton}
+                onClick={() => setShowPopup(true)}
               />
             </div>
+
+            {popup()}
           </div>
         </div>
       </main>

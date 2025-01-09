@@ -18,18 +18,13 @@ export default function ContactMap({ locations }) {
   const [loading, setLoading] = useState(true)
   const [apiKey, setApiKey] = useState(null)
   const [bounds, setBounds] = useState(null)
-  const [centre, setCentre] = useState(null)
-  const [features, setFeatures] = useState(null)
-  const [areaSize, setAreaSize] = useState([])
+  const [markers, setMarkers] = useState([])
+  const [geoJsonShapes, setGeoJsonShapes] = useState([])
 
   useEffect(() => {
     loadLocationsOnMap()
-
     setLoading(false)
   }, [])
-
-  const [markers, setMarkers] = useState([])
-  const [geoJsonShapes, setGeoJsonShapes] = useState([])
 
   const loadLocationsOnMap = () => {
     //load all locations user is connected to onto map
@@ -72,11 +67,11 @@ export default function ContactMap({ locations }) {
     const bbox = turf.bbox(geoJsonFeatureCollection)
     console.log('bbox', bbox)
 
-    const newBounds = L.latLngBounds([bbox[1], bbox[0]], [bbox[3], bbox[2]])
-    console.log('newBounds', newBounds)
+    const newBounds = [
+      [bbox[1], bbox[0]],
+      [bbox[3], bbox[2]]
+    ]
     setBounds(newBounds)
-
-    setCentre(newBounds.getCenter())
   }
 
   const FitBounds = () => {
@@ -84,6 +79,7 @@ export default function ContactMap({ locations }) {
 
     useEffect(() => {
       if (bounds) {
+        console.log('bounds', bounds)
         map.fitBounds(bounds)
       }
     }, [bounds])
@@ -163,10 +159,11 @@ export default function ContactMap({ locations }) {
         <LoadingSpinner />
       ) : (
         <MapContainer
-          center={centre}
+          center={[0, 0]}
           dragging={true}
           scrollWheelZoom={true}
-          zoom={7}
+          zoom={8}
+          minZoom={7}
           zoomControl={true}
           attributionControl={false}
           maxBounds={maxBounds}
@@ -175,7 +172,6 @@ export default function ContactMap({ locations }) {
           {apiKey && apiKey !== 'error' ? (
             <>
               {tileLayerWithHeader}
-              <FitBounds />
               {markers &&
                 markers.map((marker, index) => (
                   <Marker key={index} position={[marker[0], marker[1]]}>
@@ -185,6 +181,8 @@ export default function ContactMap({ locations }) {
               {geoJsonShapes.map((shape, index) => (
                 <GeoJSON key={index} data={shape} />
               ))}
+
+              <FitBounds />
             </>
           ) : (
             <div className='map-error-container'>

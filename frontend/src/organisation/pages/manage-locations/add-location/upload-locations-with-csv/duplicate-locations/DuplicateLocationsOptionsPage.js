@@ -8,7 +8,7 @@ import NotificationBanner from '../../../../../../common/components/gov-uk/Notif
 import Radio from '../../../../../../common/components/gov-uk/Radio'
 import WarningText from '../../../../../../common/components/gov-uk/WarningText'
 import { backendCall } from '../../../../../../common/services/BackendService'
-import { geoSafeToWebLocation } from '../../../../../../common/services/formatters/LocationFormatter'
+import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function DuplicateLocationsOptionsPage () {
@@ -20,6 +20,7 @@ export default function DuplicateLocationsOptionsPage () {
   const duplicateLocations = location?.state?.duplicateLocations
   const orgId = useSelector((state) => state.session.orgId)
   const [dupLocations, setDupLocations] = useState([])
+  const authToken = useSelector((state) => state.session.authToken)
 
   useEffect(() => {
     const getDupLocations = async () => {
@@ -40,6 +41,25 @@ export default function DuplicateLocationsOptionsPage () {
     }
     getDupLocations()
   }, [])
+
+  const getLocation = async (orgId, locationName, type) => {
+    const dataToSend = {
+      orgId,
+      locationName,
+      type
+    }
+    const { data } = await backendCall(
+      dataToSend,
+      'api/locations/search',
+      navigate
+    )
+
+    if (data && data.length === 1) {
+      return data[0]
+    } else {
+      return null
+    }
+  }
 
   const options = [
     {
@@ -86,6 +106,27 @@ export default function DuplicateLocationsOptionsPage () {
           break
         }
         case options[1].value: {
+          await Promise.all(dupLocations.map(async (location) => {
+            // get the exisitng location to use it's ID
+            const existingLocation = await getLocation(orgId, location.additionals.locationName, 'valid')
+            const locationToUpdate = webToGeoSafeLocation(location)
+            // change the location ID to the existing ID in geosafe
+            locationToUpdate.id = existingLocation.id
+            // Update exisiting location in geosafe with new location
+            const dataToSend = { authToken, orgId, location: locationToUpdate }
+            await backendCall(
+              dataToSend,
+              'api/location/update',
+              navigate
+            )
+            // remove location from invalid array
+            const locationIdToRemove = location.id
+            await backendCall(
+              { orgId, locationId: locationIdToRemove },
+              'api/bulk_uploads/remove_invalid_location',
+              navigate
+            )
+          }))
           break
         }
         case options[2].value: {

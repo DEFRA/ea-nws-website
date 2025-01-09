@@ -63,10 +63,10 @@ export default function ManageDuplicateLocationsPage () {
     event.preventDefault()
 
     // Get the existing location (note type is 'valid')
-    const existingLocation = geoSafeToWebLocation(await getLocation(orgId, location.additionals.locationName, 'valid'))
+    const existingLocation = await getLocation(orgId, location.additionals.locationName, 'valid')
 
     // Get the new, duplicate location (note type is 'invalid')
-    const newLocation = geoSafeToWebLocation(await getLocation(orgId, location.additionals.locationName, 'invalid'))
+    const newLocation = await getLocation(orgId, location.additionals.locationName, 'invalid')
 
     if (existingLocation && newLocation) {
       // Now compare the two and let the use choose one

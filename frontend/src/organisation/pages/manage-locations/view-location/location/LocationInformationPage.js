@@ -2,7 +2,6 @@ import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Details from '../../../../../common/components/gov-uk/Details'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import { getLocationAdditionals } from '../../../../../common/redux/userSlice'
@@ -145,7 +144,7 @@ export default function LocationInformationPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-4'>
         <LocationHeader

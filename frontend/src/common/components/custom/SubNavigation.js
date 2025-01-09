@@ -44,9 +44,9 @@ export default function SubNavigation ({ pages, currentPage, type }) {
       <nav aria-label='Sub navigation'>
         <ul className='sub-navigation__list'>
           <li className='sub-navigation__item bold'>
-            <p>
+            <a href='/' style={{ textDecoration: 'none', color: 'black' }}>
               Get flood warnings
-            </p>
+            </a>
           </li>
           {authToken !== null &&
             <li className='sub-navigation__item'>

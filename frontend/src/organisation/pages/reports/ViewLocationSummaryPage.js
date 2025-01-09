@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from 'react'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import { infoUrls } from '../../routes/info/InfoRoutes'
 import BackLink from '../../../common/components/custom/BackLink'
 import { backendCall } from '../../../common/services/BackendService'
 import { useSelector } from 'react-redux'
-import { orgViewReportsUrls } from '../../routes/reports/reportRoutes'
 
 export default function ViewLocationSummaryPage () {
   const navigate = useNavigate()
@@ -217,7 +215,6 @@ export default function ViewLocationSummaryPage () {
   )
   return (
     <>
-      <OrganisationAccountNavigation currentPage={orgViewReportsUrls.ViewSummary} />
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

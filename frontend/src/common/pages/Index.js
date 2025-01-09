@@ -8,15 +8,16 @@ import AlertType from '../enums/AlertType'
 import {
   clearAuth,
   setAuthToken, setContactPreferences,
+  setContacts,
   setCurrentLocation,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
   setCurrentLocationNorthing,
   setLocationBoundaries,
   setOrgCurrentContact,
-  setContacts,
   setOrgId,
   setProfile,
+  setProfileId,
   setRegistrations,
   setSelectedBoundary,
   setSelectedBoundaryType,
@@ -601,6 +602,7 @@ export default function IndexPage () {
       dispatch(setOrgCurrentContact(mockOrgCurrentContact))
       dispatch(setContacts(mockContacts))
       dispatch(setOrgId('1'))
+      dispatch(setProfileId('1'))
       dispatch(setCurrentLocationEasting('520814'))
       dispatch(setCurrentLocationNorthing('185016'))
       setmockSessionActive(true)

@@ -26,19 +26,8 @@ export default function Radio ({
         )}
       >
         <div
-          className='govuk-radios__item' style={{
-            justifyContent: right && 'space-between'
-          }}
+          className='govuk-radios__item'
         >
-          {right &&
-          (
-            <label
-              className='govuk-label right_radio govuk-radios__label'
-              htmlFor={'id' + label}
-            >
-              {label}
-            </label>
-          )}
           <input
             className='govuk-radios__input'
             type='radio'
@@ -47,18 +36,13 @@ export default function Radio ({
             onChange={onChange}
             id={'id' + label}
             checked={checked}
-            style={{
-              marginRight: right && '-10px !important',
-              marginLeft: right && 'auto !important'
-            }}
           />
-          {!right &&
-            <label
+          <label
               className='govuk-label govuk-radios__label'
               htmlFor={'id' + label}
             >
               {label}
-            </label>}
+            </label>          
         </div>
         {conditional && (
           <div className='govuk-radios__conditional'>

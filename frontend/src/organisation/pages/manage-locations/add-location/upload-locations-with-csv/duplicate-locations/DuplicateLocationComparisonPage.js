@@ -62,7 +62,7 @@ export default function DuplicateLocationComparisonPage () {
           {
             state:
             {
-              text: existingOrNew === 'Existing' ? `Existing ${existingLocation} kept` : `${newLocation} replaced`
+              text: existingOrNew === 'Existing' ? `Existing ${existingLocation.additionals.locationName} kept` : `${newLocation.additionals.locationName} replaced`
             }
           }
         )
@@ -98,12 +98,12 @@ export default function DuplicateLocationComparisonPage () {
                   </div>
                   <LocationInformation location={existingLocation} />
                   <div className='org-location-information-footer'>
+                    <p className='govuk-!-margin-0'>Keep existing location</p>
                     <Radio
-                      label='Keep existing location'
+                      label=''
                       name='ExistingOrNewRadio'
                       small='true'
                       onChange={(e) => setExistingOrNew('Existing')}
-                      right
                     />
                   </div>
                 </div>
@@ -115,8 +115,9 @@ export default function DuplicateLocationComparisonPage () {
                   </div>
                   <LocationInformation location={newLocation} comparedLocation={existingLocation} />
                   <div className='org-location-information-footer'>
+                    <p className='govuk-!-margin-0'>Use new location</p>
                     <Radio
-                      label='Use new location'
+                      label=''
                       name='ExistingOrNewRadio'
                       small='true'
                       onChange={(e) => setExistingOrNew('New')}

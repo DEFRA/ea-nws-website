@@ -45,7 +45,7 @@ module.exports = [
               'location/create'
             )
             if (response.data.location) {
-              location.id = response.data.location
+              location.id = response.data.location.id
             } else {
               return createGenericErrorResponse(h)
             }
@@ -58,9 +58,9 @@ module.exports = [
           })
 
           const invalidReasons = {
-            duplicate: invalid.filter((location) => location.error === 'duplicate').length,
-            notInEngland: invalid.filter((location) => location.error === 'not in england').length,
-            notFound: invalid.filter((location) => location.error === 'not found').length
+            duplicate: invalid.filter((location) => location.error.includes('duplicate')).length,
+            notInEngland: invalid.filter((location) => location.error.includes('not in england')).length,
+            notFound: invalid.filter((location) => location.error.includes('not found')).length
           }
 
           return h.response({

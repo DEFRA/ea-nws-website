@@ -5,6 +5,7 @@ import BackLink from '../../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
+import Pagination from '../../../../../../common/components/gov-uk/Pagination'
 import WarningText from '../../../../../../common/components/gov-uk/WarningText'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../../common/services/formatters/LocationFormatter'
@@ -14,7 +15,14 @@ export default function ManageDuplicateLocationsPage () {
   const navigate = useNavigate()
   const orgId = useSelector((state) => state.session.orgId)
   const [duplicateLocations, setDuplicateLocations] = useState([])
+  const [currentPage, setCurrentPage] = useState(1)
   const location = useLocation()
+
+  const locationsPerPage = 20
+  const displayedLocations = duplicateLocations.slice(
+    (currentPage - 1) * locationsPerPage,
+    currentPage * locationsPerPage
+  )
 
   useEffect(() => {
     const getDupLocations = async () => {
@@ -26,7 +34,7 @@ export default function ManageDuplicateLocationsPage () {
       )
       const locations = []
       if (data) {
-        const duplicates = data.filter((location) => location.error === 'duplicate')
+        const duplicates = data.filter((location) => location.error.includes('duplicate'))
         duplicates.forEach((location) => {
           locations.push(geoSafeToWebLocation(location))
         })
@@ -52,7 +60,7 @@ export default function ManageDuplicateLocationsPage () {
       navigate
     )
 
-    if (data && data.length === 1) {
+    if (data) {
       return data[0]
     } else {
       return null
@@ -63,17 +71,18 @@ export default function ManageDuplicateLocationsPage () {
     event.preventDefault()
 
     // Get the existing location (note type is 'valid')
-    const existingLocation = await getLocation(orgId, location.additionals.locationName, 'valid')
+    const existingLocation = geoSafeToWebLocation(await getLocation(orgId, location.additionals.locationName, 'valid'))
 
     // Get the new, duplicate location (note type is 'invalid')
-    const newLocation = await getLocation(orgId, location.additionals.locationName, 'invalid')
+    const newLocation = geoSafeToWebLocation(await getLocation(orgId, location.additionals.locationName, 'invalid'))
+  
 
     if (existingLocation && newLocation) {
       // Now compare the two and let the use choose one
       navigate(orgManageLocationsUrls.add.duplicateLocationComparisonPage, {
         state: {
-          existingLocation,
-          newLocation,
+          existingLocation: existingLocation,
+          newLocation: newLocation,
           numDuplicates: duplicateLocations.length
         }
       })
@@ -81,7 +90,13 @@ export default function ManageDuplicateLocationsPage () {
   }
 
   const handleSubmit = async () => {
-    navigate('/organisation/manage-locations/view-locations')
+    // Might change but if there are still locations left go back to the options page
+    navigate(orgManageLocationsUrls.add.duplicateLocationsOptionsPage, {
+      state: {
+        addedLocations: 0,
+        numDuplicates: duplicateLocations.length
+      }
+    })
   }
 
   const navigateBack = (event) => {
@@ -128,7 +143,7 @@ export default function ManageDuplicateLocationsPage () {
                 </thead>
                 <tbody class='govuk-table__body'>
                   {duplicateLocations &&
-                    duplicateLocations.map((location, index) => {
+                    displayedLocations.map((location, index) => {
                       return (
                         <tr class='govuk-table__row' key={index}>
                           <td class='govuk-table__cell'>
@@ -148,6 +163,10 @@ export default function ManageDuplicateLocationsPage () {
                 </tbody>
               </table>
             </div>
+            <Pagination
+                      totalPages={Math.ceil(duplicateLocations.length / locationsPerPage)}
+                      onPageChange={(val) => setCurrentPage(val)}
+                    />
             <Button
               className='govuk-button'
               text='Finish managing duplicate locations'

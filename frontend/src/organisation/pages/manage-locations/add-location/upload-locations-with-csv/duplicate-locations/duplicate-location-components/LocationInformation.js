@@ -3,6 +3,7 @@ import FloodWarningKey from '../../../../../../components/custom/FloodWarningKey
 import Map from '../../../../../../components/custom/Map'
 
 export default function LocationInformationLayout ({ location, comparedLocation }) {
+  console.log(JSON.stringify(location))
   const additionalData = location.additionals.other
   const formattedAddress = additionalData.full_address?.split(',')
   const comparedAdditionalData = comparedLocation?.additionals.other
@@ -59,7 +60,7 @@ export default function LocationInformationLayout ({ location, comparedLocation 
         <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
           Location
         </h2>
-        <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+        <hr style={{ height: '2px', color: '#000', opacity: '1' }} className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
         <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-0'>
           {LocationHeader()}
         </h3>
@@ -93,7 +94,7 @@ export default function LocationInformationLayout ({ location, comparedLocation 
               <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
                 Address
               </h2>
-              <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+              <hr style={{ height: '2px', color: '#000', opacity: '1' }} className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
               <p>
                 {formattedAddress.map((line, index) => {
                   return (
@@ -115,7 +116,7 @@ export default function LocationInformationLayout ({ location, comparedLocation 
                   <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
                     Key Information
                   </h2>
-                  <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+                  <hr style={{ height: '2px', color: '#000', opacity: '1' }} className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
                   <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                     Location name
                   </h3>
@@ -159,7 +160,7 @@ export default function LocationInformationLayout ({ location, comparedLocation 
               <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
                 Keywords
               </h2>
-              <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+              <hr style={{ height: '2px', color: '#000', opacity: '1' }} className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
               {location.additionals.keywords.map((keyword, index) => {
                 return <p key={index} className='govuk-!-margin-bottom-0' style={(comparedLocation && !comparedLocation.additionals.keywords.includes(keyword)) ? compareStyle : {}}>{keyword}</p>
               })}
@@ -172,7 +173,7 @@ export default function LocationInformationLayout ({ location, comparedLocation 
               <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
                 Action Plan
               </h2>
-              <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+              <hr style={{ height: '2px', color: '#000', opacity: '1' }} className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
               <p style={(comparedLocation && comparedAdditionalData.action_plan !== additionalData.action_plan) ? compareStyle : {}}>{additionalData.action_plan}</p>
             </div>
           )}
@@ -183,7 +184,7 @@ export default function LocationInformationLayout ({ location, comparedLocation 
               <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
                 Notes
               </h2>
-              <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+              <hr style={{ height: '2px', color: '#000', opacity: '1' }} className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
               <p style={(comparedLocation && comparedAdditionalData.notes !== additionalData.notes) ? compareStyle : {}}>{additionalData.notes}</p>
             </div>
           )}

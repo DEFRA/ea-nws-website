@@ -17,7 +17,7 @@ export default function DuplicateLocationsOptionsPage () {
   const [error, setError] = useState('')
   const location = useLocation()
   const addedLocations = location?.state?.addedLocations || 0
-  const duplicateLocations = location?.state?.duplicateLocations
+  const duplicateLocations = location?.state?.numDuplicates
   const orgId = useSelector((state) => state.session.orgId)
   const [dupLocations, setDupLocations] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
@@ -32,8 +32,9 @@ export default function DuplicateLocationsOptionsPage () {
       )
       const locations = []
       if (data) {
-        const duplicates = data.filter((location) => location.error === 'duplicate')
+        const duplicates = data.filter((location) => location.error.includes('duplicate'))
         duplicates.forEach((location) => {
+          console.log(location)
           locations.push(geoSafeToWebLocation(location))
         })
       }
@@ -127,14 +128,16 @@ export default function DuplicateLocationsOptionsPage () {
               navigate
             )
           }))
+          // change to link contacts
+          navigate(orgManageLocationsUrls.view.dashboard,
+            {
+              state:
+          { text: `${dupLocations.length} existing locations replaced` }
+            })
           break
         }
         case options[2].value: {
-          navigate(orgManageLocationsUrls.add.manageDuplicateLocationsPage, {
-            state: {
-              duplicateLocations
-            }
-          })
+          navigate(orgManageLocationsUrls.add.manageDuplicateLocationsPage)
           break
         }
         default:
@@ -158,7 +161,7 @@ export default function DuplicateLocationsOptionsPage () {
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>
-              {duplicateLocations.length} locations already exist with the same
+              {duplicateLocations} locations already exist with the same
               name in this account
             </h1>
             <div

@@ -37,6 +37,23 @@ export default function ConfirmLocationsPage () {
     }
   }
 
+  const getDupLocation = async () => {
+    const dataToSend = { orgId }
+    const { data } = await backendCall(
+      dataToSend,
+      'api/bulk_uploads/get_invalid_locations',
+      navigate
+    )
+    const locations = []
+    if (data) {
+      const duplicates = data.filter((location) => location.error.includes('duplicate'))
+      duplicates.forEach((location) => {
+        locations.push(geoSafeToWebLocation(location))
+      })
+    }
+    return locations[0]
+  }
+
   const handleLocations = async (event) => {
     event.preventDefault()
 
@@ -46,21 +63,30 @@ export default function ConfirmLocationsPage () {
       'api/bulk_uploads/save_locations',
       navigate
     )
+    console.log(data)
+    console.log(JSON.stringify(data))
     if (!errorMessage) {
       if (duplicateLocations > 0) {
         if (duplicateLocations === 1) {
+          const location = await getDupLocation()
+          console.log('loc')
+          console.log(JSON.stringify(location))
           // Get the existing location (note type is 'valid')
-          const existingLocation = geoSafeToWebLocation(await getLocation(orgId, location.Location_name, 'valid'))
+          const existingLocation = geoSafeToWebLocation(await getLocation(orgId, location.additionals.locationName, 'valid'))
 
           // Get the new, duplicate location (note type is 'invalid')
-          const newLocation = geoSafeToWebLocation(await getLocation(orgId, location.Location_name, 'invalid'))
+          const newLocation = geoSafeToWebLocation(await getLocation(orgId, location.additionals.locationName, 'invalid'))
 
           if (existingLocation && newLocation) {
+            console.log('exisiting')
+            console.log(existingLocation)
+            console.log('new')
+            console.log(newLocation)
             // Now compare the two and let the use choose one
             navigate(orgManageLocationsUrls.add.duplicateLocationComparisonPage, {
               state: {
-                existingLocation,
-                newLocation,
+                existingLocation: existingLocation,
+                newLocation: newLocation,
                 numDuplicates: duplicateLocations
               }
             })
@@ -69,7 +95,7 @@ export default function ConfirmLocationsPage () {
           navigate(orgManageLocationsUrls.add.duplicateLocationsOptionsPage, {
             state: {
               addedLocations: data.valid,
-              numDuplicates: data.invalid.duplicates
+              numDuplicates: data.invalid.duplicate
             }
           })
         }

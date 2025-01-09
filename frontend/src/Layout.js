@@ -17,11 +17,11 @@ function Layout () {
       <Header />
       <div className='sub-navigation'>
         <div className='govuk-width-container'>
-       {location.pathname.includes('organisation')
-          ? <OrganisationAccountNavigation currentPage={location.pathname} />
-          : <CitizenAccountNavigation currentPage={location.pathname} />}
-          </div>
-          </div>
+          {location.pathname.includes('organisation')
+            ? <OrganisationAccountNavigation currentPage={location.pathname} />
+            : <CitizenAccountNavigation currentPage={location.pathname} />}
+        </div>
+      </div>
       <div
         className={`${
           location.pathname.includes('organisation') && auth

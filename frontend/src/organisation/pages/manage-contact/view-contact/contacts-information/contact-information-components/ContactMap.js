@@ -61,7 +61,6 @@ export default function ContactMap({ locations }) {
     setGeoJsonShapes(shapes)
 
     const geoJsonFeatureCollection = turf.featureCollection(locationsCollection)
-    setFeatures(geoJsonFeatureCollection)
 
     // calculate boundary around locations
     const bbox = turf.bbox(geoJsonFeatureCollection)

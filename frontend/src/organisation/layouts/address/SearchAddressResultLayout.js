@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../common/components/gov-uk/Button'
@@ -17,10 +17,10 @@ import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLoca
 export default function SearchAddressResultLayout ({
   navigateToNextPage,
   navigateToPreviousPage,
+  navigateToFindPostcodePage,
   navigateToCannotFindAddressPage,
   flow
 }) {
-  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(1)
   const locations = useSelector((state) => state.session.locationSearchResults)
@@ -82,9 +82,14 @@ export default function SearchAddressResultLayout ({
     navigateToNextPage()
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     navigateToPreviousPage()
+  }
+
+  const navigateToFindPostcode = (event) => {
+    event.preventDefault()
+    navigateToFindPostcodePage()
   }
 
   return (
@@ -111,7 +116,7 @@ export default function SearchAddressResultLayout ({
                         : locationPostCode}
                       {'   '}
                       <Link
-                        onClick={() => navigate(-1)}
+                        onClick={(e) => navigateToFindPostcode(e)}
                         className='govuk-link govuk-!-padding-left-5'
                       >
                         Change postcode

@@ -11,6 +11,9 @@ export default function FindLocationByAddressPage () {
 
   const navigateToPreviousPage = () => navigate(-1)
 
+  const navigateToFindPostcodePage = () =>
+    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.postcode)
+
   const navigateToCannotFindAddressPage = () =>
     navigate(
       orgManageLocationsUrls.unmatchedLocations.notFound.cannotFindAddress
@@ -20,6 +23,7 @@ export default function FindLocationByAddressPage () {
     <SearchAddressResultLayout
       navigateToNextPage={navigateToNextPage}
       navigateToPreviousPage={navigateToPreviousPage}
+      navigateToFindPostcodePage={navigateToFindPostcodePage}
       navigateToCannotFindAddressPage={navigateToCannotFindAddressPage}
       flow='unmatched-locations-not-found'
     />

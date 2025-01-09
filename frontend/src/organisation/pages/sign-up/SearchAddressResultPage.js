@@ -10,10 +10,14 @@ export default function SelectAddressPage () {
 
   const navigateToPreviousPage = () => navigate('/organisation/sign-up/address')
 
+  const navigateToFindPostcodePage = () =>
+    navigate('/organisation/sign-up/address')
+
   return (
     <SearchAddressResultLayout
       navigateToNextPage={navigateToNextPage}
       navigateToPreviousPage={navigateToPreviousPage}
+      navigateToFindPostcodePage={navigateToFindPostcodePage}
     />
   )
 }

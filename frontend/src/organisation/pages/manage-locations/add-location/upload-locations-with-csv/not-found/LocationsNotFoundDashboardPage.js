@@ -1,7 +1,7 @@
 import { React } from 'react'
 import { useNavigate } from 'react-router'
-import UnmatchedLocationsDashboardLayout from '../../../../../../layouts/location/upload-locations-with-csv/unmatched-locations/UnmatchedLocationsDashboardLayout'
-import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
+import UnmatchedLocationsDashboardLayout from '../../../../../layouts/location/upload-locations-with-csv/unmatched-locations/UnmatchedLocationsDashboardLayout'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationsNotFoundDashboardPage () {
   const navigate = useNavigate()

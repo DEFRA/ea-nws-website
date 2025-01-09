@@ -28,19 +28,19 @@ import LocationAddLoadingPage from '../../pages/manage-locations/add-location/up
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
 import ConfirmAddingLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
 
-// Unmatched locations: location not found
-import ConfirmLocationNotFoundPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/ConfirmLocationNotFoundPage'
-import FindLocationNotFoundPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/FindLocationNotFoundPage'
-import LocationsNotFoundDashboardPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/LocationsNotFoundDashboardPage'
-import FindLocationNotFoundByCoordinatesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/find-by-coordinates/FindLocationByCoordinatesPage'
-import CannotFindLocationNotFoundByAddressPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/find-by-postcode/CannotFindLocationByAddressPage'
-import FindLocationNotFoundByAddressPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/find-by-postcode/FindLocationByAddressPage'
-import FindLocationNotFoundByPostcodePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/find-by-postcode/FindLocationByPostcodePage'
-import FindLocationNotFoundByDropPinPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/find-on-map/FindLocationByDropPinPage'
-import FindLocationNotFoundOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/find-on-map/FindLocationOnMapPage'
-import LocationNotFoundCoordinatesNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/not-in-england/CoordinatesNotInEnglandPage'
-import LocationNotFoundDropPinNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/not-in-england/DropPinNotInEnglandPage'
-import LocationNotFoundPostcodeNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-found/not-in-england/PostcodeNotInEnglandPage'
+// Unmatched locations not found
+import ConfirmLocationNotFoundPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/ConfirmLocationNotFoundPage'
+import FindLocationNotFoundPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/FindLocationNotFoundPage'
+import LocationsNotFoundDashboardPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/LocationsNotFoundDashboardPage'
+import FindLocationNotFoundByCoordinatesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/find-by-coordinates/FindLocationByCoordinatesPage'
+import CannotFindLocationNotFoundByAddressPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/find-by-postcode/CannotFindLocationByAddressPage'
+import FindLocationNotFoundByAddressPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/find-by-postcode/FindLocationByAddressPage'
+import FindLocationNotFoundByPostcodePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/find-by-postcode/FindLocationByPostcodePage'
+import FindLocationNotFoundByDropPinPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/find-on-map/FindLocationByDropPinPage'
+import FindLocationNotFoundOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/find-on-map/FindLocationOnMapPage'
+import LocationNotFoundCoordinatesNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/not-in-england/CoordinatesNotInEnglandPage'
+import LocationNotFoundDropPinNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/not-in-england/DropPinNotInEnglandPage'
+import LocationNotFoundPostcodeNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/not-in-england/PostcodeNotInEnglandPage'
 
 // edit imports
 import EditConfirmLocationPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/ConfirmLocationPage'

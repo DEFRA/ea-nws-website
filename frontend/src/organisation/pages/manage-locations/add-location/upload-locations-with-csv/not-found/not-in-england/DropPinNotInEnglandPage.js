@@ -1,9 +1,9 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import NotInEnglandLayout from '../../../../../../../layouts/location/add-or-edit-location/error/NotInEnglandLayout'
-import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
+import NotInEnglandLayout from '../../../../../../layouts/location/add-or-edit-location/error/NotInEnglandLayout'
+import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function PostcodeNotInEnglandPage () {
+export default function DropPinNotInEnglandPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {
@@ -25,7 +25,7 @@ export default function PostcodeNotInEnglandPage () {
       postCodeSearchUrl={postCodeSearchUrl}
       xyCoordinatesSearchUrl={xyCoordsSearchUrl}
       dropPinSearchUrl={dropPinSearchUrl}
-      flow='postcode'
+      flow='dropPin'
     />
   )
 }

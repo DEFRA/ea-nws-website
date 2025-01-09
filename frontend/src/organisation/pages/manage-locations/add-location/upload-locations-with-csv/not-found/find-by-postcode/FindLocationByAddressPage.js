@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import SearchAddressResultLayout from '../../../../../../../layouts/address/SearchAddressResultLayout'
-import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
+import SearchAddressResultLayout from '../../../../../../layouts/address/SearchAddressResultLayout'
+import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function FindLocationByAddressPage () {
   const navigate = useNavigate()

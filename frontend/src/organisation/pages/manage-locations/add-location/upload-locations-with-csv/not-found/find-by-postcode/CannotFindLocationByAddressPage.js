@@ -1,7 +1,7 @@
 import { React } from 'react'
 import { useNavigate } from 'react-router'
-import CannotFindAddressLayout from '../../../../../../../layouts/location/add-or-edit-location/error/CannotFindAddressLayout'
-import { orgManageLocationsUrls } from '../../../../../../../routes/manage-locations/ManageLocationsRoutes'
+import CannotFindAddressLayout from '../../../../../../layouts/location/add-or-edit-location/error/CannotFindAddressLayout'
+import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function CannotFindLocationByAddressPage () {
   const navigate = useNavigate()

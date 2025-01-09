@@ -1,7 +1,7 @@
 import { React } from 'react'
 import { useNavigate } from 'react-router'
-import FindUnmatchedLocationLayout from '../../../../../../layouts/location/upload-locations-with-csv/unmatched-locations/FindUnmatchedLocationLayout'
-import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
+import FindUnmatchedLocationLayout from '../../../../../layouts/location/upload-locations-with-csv/unmatched-locations/FindUnmatchedLocationLayout'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function FindLocationNotFoundPage () {
   const navigate = useNavigate()

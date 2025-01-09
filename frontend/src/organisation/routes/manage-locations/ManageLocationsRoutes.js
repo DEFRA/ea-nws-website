@@ -51,7 +51,9 @@ import EditAddressPage from '../../pages/manage-locations/edit-location/edit-ind
 import EditKeyInformationPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/key-information/KeyInformationPage'
 import EditKeywordsPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/keywords/KeywordsPage'
 import EditNotesPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/notes/NotesPage'
-import LiveFLoodMonitoringPage from '../../pages/manage-locations/live-monitoring/LiveFloodMonitoringPage'
+
+// monitoring imports
+import LiveFloodMonitoringPage from '../../pages/manage-locations/live-monitoring/LiveFloodMonitoringPage'
 
 // view imports
 import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
@@ -59,9 +61,8 @@ import ViewMessagesPage from '../../pages/manage-locations/view-location/locatio
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
 
 const urlManageOrg = '/organisation/manage-locations'
-const urlManageOrgViewLocations = urlManageOrg + '/locations'
-const urlManageOrgLiveMonitoring = urlManageOrg + '/live-monitoring'
-const urlManageOrgAddLocations = urlManageOrg + '/add'
+export const urlManageOrgViewLocations = urlManageOrg + '/locations'
+export const urlManageOrgAddLocations = urlManageOrg + '/add'
 const urlManageOrgEditLocations = urlManageOrg + '/edit'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
 const urlManageOrgConfirmLocations = urlManageOrg + '/confirm'
@@ -185,7 +186,7 @@ const orgManageLocationRoutes = [
   // monitoring
   {
     path: orgManageLocationsUrls.monitoring.view,
-    component: <LiveFLoodMonitoringPage />
+    component: <LiveFloodMonitoringPage />
   },
   // add
   {

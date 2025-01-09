@@ -13,7 +13,7 @@ import {
 
 export default function ConfirmDeleteContactDetailsLayout ({
   NavigateToPreviousPage,
-  NavigateToNextPage
+  navigateToNextPage
 }) {
   const location = useLocation()
   const dispatch = useDispatch()
@@ -42,7 +42,7 @@ export default function ConfirmDeleteContactDetailsLayout ({
     )
     if (!errorMessage) {
       dispatch(setProfile(updatedProfile))
-      NavigateToNextPage(location.state.type, location.state.contact)
+      navigateToNextPage(location.state.type, location.state.contact)
     }
   }
 

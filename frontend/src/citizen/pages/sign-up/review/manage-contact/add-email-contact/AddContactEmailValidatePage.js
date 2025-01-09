@@ -1,8 +1,8 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { addContactPreference } from '../../../../../../common/redux/userSlice'
 import ValidateEmailLayout from '../../../../../../common/layouts/email/ValidateEmailLayout'
+import { addContactPreference } from '../../../../../../common/redux/userSlice'
 
 export default function ValidateEmailContactPage () {
   const navigate = useNavigate()
@@ -11,7 +11,7 @@ export default function ValidateEmailContactPage () {
     (state) => state.session.contactPreferences
   )
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     if (!contactPreferences.includes('Email Address')) {
       dispatch(addContactPreference('Email Address'))
     }
@@ -26,7 +26,7 @@ export default function ValidateEmailContactPage () {
 
   return (
     <ValidateEmailLayout
-      NavigateToNextPage={NavigateToNextPage}
+      navigateToNextPage={navigateToNextPage}
       SkipValidation={SkipValidation}
       DifferentEmail={DifferentEmail}
       NavigateToPreviousPage={DifferentEmail}

@@ -10,7 +10,7 @@ export default function ValidateMobileContactPage () {
   )
   const navigate = useNavigate()
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     if (!contactPreferences.includes('Text')) {
       dispatch(addContactPreference('Text'))
     }
@@ -26,7 +26,7 @@ export default function ValidateMobileContactPage () {
 
   return (
     <ValidateMobileLayout
-      NavigateToNextPage={NavigateToNextPage}
+      navigateToNextPage={navigateToNextPage}
       NavigateToPreviousPage={DifferentMobile}
       SkipValidation={SkipValidation}
       DifferentMobile={DifferentMobile}

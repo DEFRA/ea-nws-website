@@ -4,8 +4,8 @@ import AddLandlineLayout from '../../../../../layouts/landline/AddLandlineLayout
 
 export default function AddLandlineContactPage () {
   const navigate = useNavigate()
-  const NavigateToNextPage = () =>
+  const navigateToNextPage = () =>
     navigate('/signup/review/validate-landline')
 
-  return <AddLandlineLayout NavigateToNextPage={NavigateToNextPage} />
+  return <AddLandlineLayout navigateToNextPage={navigateToNextPage} />
 }

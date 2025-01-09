@@ -4,7 +4,7 @@ import AlternativeContactDetailsLayout from '../../layouts/alternative-contact/A
 export default function AlternativeContactDetailsPage () {
   const navigate = useNavigate()
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     navigate('/organisation/sign-up/declaration')
   }
 
@@ -14,7 +14,7 @@ export default function AlternativeContactDetailsPage () {
 
   return (
     <AlternativeContactDetailsLayout
-      NavigateToNextPage={NavigateToNextPage}
+      navigateToNextPage={navigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
     />
   )

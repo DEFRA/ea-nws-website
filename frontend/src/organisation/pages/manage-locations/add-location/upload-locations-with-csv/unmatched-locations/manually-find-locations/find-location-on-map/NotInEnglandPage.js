@@ -12,7 +12,7 @@ export default function NotInEnglandPage () {
     navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.map)
   }
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     navigate(orgManageLocationsUrls.unmatchedLocations.manuallyfind.index, {
       state: 'NotAdded'
     })
@@ -20,7 +20,7 @@ export default function NotInEnglandPage () {
 
   return (
     <NotInEnglandLayout
-      NavigateToNextPage={NavigateToNextPage}
+      navigateToNextPage={navigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
       locationType='csvUpload'
     />

@@ -118,7 +118,7 @@ export default function FullMapInteractiveKey ({
         Key
       </span>
 
-      <hr class='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
+      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
 
       {/* Flood areas */}
       <FloodAreasCheckboxKey
@@ -139,7 +139,7 @@ export default function FullMapInteractiveKey ({
           {locationsInsideFloodAreas()}
           {locationsOutsideFloodAreas()}
 
-          <hr class='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
+          <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
 
           {/* Location filter */}
           <div className='govuk-heading-m govuk-!-font-size-16 govuk-!-margin-top-3 govuk-!-margin-bottom-2'>
@@ -153,7 +153,7 @@ export default function FullMapInteractiveKey ({
             {showAllLocations()}
           </div>
 
-          <hr class='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
+          <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
 
           <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
             This is not a live flood map

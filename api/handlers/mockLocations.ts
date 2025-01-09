@@ -25,7 +25,7 @@ const locations = [
             location_type: 'Office',
             action_plan: '1. Dont panic!',
             notes:
-              'John Smith has the flood plane for this location. His contact number is 01234 567 890',
+              'John Smith has the flood plan for this location. His contact number is 01234 567 890',
             location_data_type: 'xycoords',
             alertTypes: ['ALERT_LVL_3']
           })

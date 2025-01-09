@@ -140,7 +140,6 @@ const addToAlert = async (orgId, location) => {
       alertTypes = other.alertTypes
     }
   })
-  console.log(alertTypes)
   const client = await connectToRedis()
   if (alertTypes.length === 3) {
     await client.json.arrAppend(key, '.severeWarningAlert', location.id)

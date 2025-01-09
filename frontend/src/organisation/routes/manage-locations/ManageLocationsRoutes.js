@@ -59,8 +59,8 @@ import ViewMessagesPage from '../../pages/manage-locations/view-location/locatio
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
 
 const urlManageOrg = '/organisation/manage-locations'
-const urlManageOrgViewLocations = urlManageOrg + '/locations'
-const urlManageOrgAddLocations = urlManageOrg + '/add'
+export const urlManageOrgViewLocations = urlManageOrg + '/locations'
+export const urlManageOrgAddLocations = urlManageOrg + '/add'
 const urlManageOrgEditLocations = urlManageOrg + '/edit'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
 const urlManageOrgConfirmLocations = urlManageOrg + '/confirm'

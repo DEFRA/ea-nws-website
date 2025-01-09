@@ -7,7 +7,7 @@ import Input from '../../../common/components/gov-uk/Input'
 import { backendCall } from '../../../common/services/BackendService'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 
-export default function SignInPageLayout ({ NavigateToNextPage }) {
+export default function SignInPageLayout ({ navigateToNextPage }) {
   const navigate = useNavigate()
   const [email, setEmail] = useState('')
   const [error, setError] = useState('')
@@ -30,7 +30,7 @@ export default function SignInPageLayout ({ NavigateToNextPage }) {
           navigate('/organisation/signin/account-pending')
         }
       } else {
-        NavigateToNextPage({ signinToken: data.signinToken, email })
+        navigateToNextPage({ signinToken: data.signinToken, email })
       }
     }
   }

@@ -6,7 +6,7 @@ import { orgManageLocationsUrls } from '../../../../../../routes/manage-location
 export default function DropPinOnMapPage () {
   const navigate = useNavigate()
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     navigate(orgManageLocationsUrls.add.search.dropPinSearchResults)
   }
 
@@ -16,7 +16,7 @@ export default function DropPinOnMapPage () {
 
   return (
     <DropPinOnMapLayout
-      NavigateToNextPage={NavigateToNextPage}
+      navigateToNextPage={navigateToNextPage}
       NavigateToNotInEnglandPage={NavigateToNotInEnglandPage}
       flow='add'
     />

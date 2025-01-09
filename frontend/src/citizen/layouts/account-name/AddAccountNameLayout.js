@@ -10,7 +10,7 @@ import { addAccountName } from '../../../common/services/ProfileServices'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 
 export default function AddAccountNameLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage,
   buttonText,
   changeName,

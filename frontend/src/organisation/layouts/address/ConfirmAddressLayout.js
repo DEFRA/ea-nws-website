@@ -3,20 +3,18 @@ import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
-import { getOrganisationAdditionals } from '../../../common/services/ProfileServices'
 
 export default function ConfirmAddressLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
-  const profile = useSelector((state) => state.session.profile)
-  const organisation = getOrganisationAdditionals(profile)
-
-  const address = organisation.address.name
+  const organization = useSelector((state) => state.session.organization)
+  const organizationAdditionals = JSON.parse(organization.description)
+  const address = organizationAdditionals.address
 
   const handleSubmit = async () => {
     // Correct address is already stored in
-    NavigateToNextPage()
+    navigateToNextPage()
   }
 
   const navigateBack = async (event) => {

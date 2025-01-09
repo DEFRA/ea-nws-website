@@ -14,6 +14,7 @@ export default function UploadFileLayout ({
   const navigate = useNavigate()
   const [errorFileType, setErrorFileType] = useState(null)
   const [errorFileSize, setErrorFileSize] = useState(null)
+  const [errorShapefile, setErrorShapefile] = useState([])
   const [selectedFile, setSelectedFile] = useState(null)
   const [uploading, setUploading] = useState(false)
 
@@ -81,6 +82,7 @@ export default function UploadFileLayout ({
     e.preventDefault()
     setErrorFileSize(null)
     setErrorFileType(null)
+    setErrorShapefile([])
 
     if (!selectedFile) {
       setErrorFileSize('The file is empty')
@@ -146,7 +148,8 @@ export default function UploadFileLayout ({
             navigate
           )
           if (shapefileErrorMessage) {
-            throw new Error(shapefileErrorMessage)
+            setUploading(false)
+            setErrorShapefile(shapefileErrorMessage)
           }
 
           const { data: geojsonData, errorMessage: geojsonErrorMessage } =
@@ -166,7 +169,7 @@ export default function UploadFileLayout ({
       }
     } catch (err) {
       setUploading(false)
-      setErrorFileType(err.message)
+      setErrorFileType(err)
     }
   }
 
@@ -179,73 +182,78 @@ export default function UploadFileLayout ({
 
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-full'>
-            {!uploading
-              ? (
-                <>
-                  {(errorFileType || errorFileSize) && (
-                    <ErrorSummary errorList={[errorFileType, errorFileSize]} />
-                  )}
-                  <div className='govuk-grid-column-full'>
-                    <h1 className='govuk-heading-l'>Upload file</h1>
-                    <div
+          {!uploading
+            ? (
+              <>
+                {(errorFileType ||
+                errorFileSize ||
+                errorShapefile.length > 0) && (
+                  <ErrorSummary
+                    errorList={[
+                      errorFileType,
+                      errorFileSize,
+                      ...errorShapefile
+                    ].filter(Boolean)}
+                  />
+                )}
+                <div className='govuk-grid-column-full'>
+                  <h1 className='govuk-heading-l'>Upload file</h1>
+                  <div
+                    className={
+                    errorFileSize || errorFileType || errorShapefile.length > 0
+                      ? 'govuk-form-group govuk-form-group--error'
+                      : 'govuk-form-group'
+                  }
+                  >
+                    <p className='govuk-hint'>{fileTypeHint}</p>
+                    {errorFileType && (
+                      <p id='file-upload-1-error' className='govuk-error-message'>
+                        {errorFileType}
+                      </p>
+                    )}
+                    {errorFileSize && (
+                      <p id='file-upload-2-error' className='govuk-error-message'>
+                        {errorFileSize}
+                      </p>
+                    )}
+                    {errorShapefile.map((error, index) => (
+                      <p key={index} className='govuk-error-message'>
+                        {error}
+                      </p>
+                    ))}
+                    <input
+                      type='file'
                       className={
                       errorFileSize || errorFileType
-                        ? 'govuk-form-group govuk-form-group--error'
-                        : 'govuk-form-group'
+                        ? 'govuk-file-upload govuk-file-upload--error'
+                        : 'govuk-file-upload'
                     }
-                    >
-                      <p className='govuk-hint'>{fileTypeHint}</p>
-                      {errorFileType && (
-                        <p
-                          id='file-upload-1-error'
-                          className='govuk-error-message'
-                        >
-                          {errorFileType}
-                        </p>
-                      )}
-                      {errorFileSize && (
-                        <p
-                          id='file-upload-2-error'
-                          className='govuk-error-message'
-                        >
-                          {errorFileSize}
-                        </p>
-                      )}
-                      <input
-                        type='file'
-                        className={
-                        errorFileSize || errorFileType
-                          ? 'govuk-file-upload govuk-file-upload--error'
-                          : 'govuk-file-upload'
-                      }
-                        id='file-upload'
-                        onChange={setValidSelectedFile}
-                      />
-                    </div>
-                    <Button
-                      text='Upload'
-                      className='govuk-button'
-                      onClick={handleUpload}
+                      id='file-upload'
+                      onChange={setValidSelectedFile}
                     />
-                    <Link
-                      onClick={() => navigate(-1)}
-                      className='govuk-body govuk-link inline-link'
-                    >
-                      Cancel
-                    </Link>
                   </div>
-                </>
-                )
-              : (
-                <div className='govuk-!-text-align-centre'>
-                  <h1 className='govuk-heading-l'>Uploading</h1>
-                  <div className='govuk-body'>
-                    <Spinner size='75' />
-                  </div>
+                  <Button
+                    text='Upload'
+                    className='govuk-button'
+                    onClick={handleUpload}
+                  />
+                  <Link
+                    onClick={() => navigate(-1)}
+                    className='govuk-body govuk-link inline-link'
+                  >
+                    Cancel
+                  </Link>
                 </div>
-                )}
-          </div>
+              </>
+              )
+            : (
+              <div className='govuk-!-text-align-centre'>
+                <h1 className='govuk-heading-l'>Uploading</h1>
+                <div className='govuk-body'>
+                  <Spinner size='75' />
+                </div>
+              </div>
+              )}
         </div>
       </main>
     </>

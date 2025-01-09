@@ -4,7 +4,7 @@ import NotesLayout from '../../../layouts/optional-info/NotesLayout'
 export default function AddContactNotesPage () {
   const navigate = useNavigate()
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     // TODO navigate to link locations
     navigate('/')
   }
@@ -19,7 +19,7 @@ export default function AddContactNotesPage () {
   return (
     <>
       <NotesLayout
-        navigateToNextPage={NavigateToNextPage}
+        navigateToNextPage={navigateToNextPage}
         keywordType='contact'
         instructionText={instructionText}
         buttonText='Add contact'

@@ -22,7 +22,7 @@ import { getAdditionals } from '../../services/ProfileServices'
 import ExpiredCodeLayout from '../email/ExpiredCodeLayout'
 
 export default function SignInValidatePageLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const location = useLocation()
@@ -87,7 +87,7 @@ export default function SignInValidatePageLayout ({
         if (isSignUpComplete !== 'true' && lastAccessedUrl !== undefined) {
           setSignUpNotComplete(true)
         } else {
-          NavigateToNextPage()
+          navigateToNextPage()
         }
       }
     }

@@ -4,7 +4,7 @@ import AdminDetailsLayout from '../../../layouts/admin/AdminDetailsLayout'
 export default function AdminDetailsPage () {
   const navigate = useNavigate()
 
-  const NavigateToNextPage = (adminDetails) => {
+  const navigateToNextPage = () => {
     navigate('/organisation/sign-up/admin-email-confirm')
   }
   const NavigateToPreviousPage = () => {
@@ -13,7 +13,7 @@ export default function AdminDetailsPage () {
 
   return (
     <AdminDetailsLayout
-      NavigateToNextPage={() => NavigateToNextPage()}
+      navigateToNextPage={navigateToNextPage}
       NavigateToPreviousPage={NavigateToPreviousPage}
     />
   )

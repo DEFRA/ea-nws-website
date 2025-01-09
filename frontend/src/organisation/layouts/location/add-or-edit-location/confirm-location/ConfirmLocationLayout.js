@@ -22,7 +22,7 @@ import { orgManageLocationsUrls } from '../../../../routes/manage-locations/Mana
 
 export default function ConfirmLocationLayout ({
   navigateToNextPage,
-  navigateToPinDropFlow = null,
+  navigateToPinDropFlow,
   layoutType = 'XandY'
 }) {
   const [error, setError] = useState(null)
@@ -221,7 +221,7 @@ export default function ConfirmLocationLayout ({
               zoomLevel={14}
               shapefileData={shapeGeoData}
             />
-            <div className='govuk-!-margin-top-4'>
+            <div className='govuk-!-column-one-third'>
               <FloodWarningKey showShapefile={layoutType === 'shape'} />
             </div>
             <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>

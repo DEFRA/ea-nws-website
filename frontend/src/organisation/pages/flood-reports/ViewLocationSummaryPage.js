@@ -235,7 +235,7 @@ export default function ViewLocationSummaryPage () {
         currentPage={orgFloodReportsUrls.overview}
       />
       <BackLink onClick={() => navigate(-1)} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
             <h1 className='govuk-heading-l'>Summary of flood messages sent</h1>

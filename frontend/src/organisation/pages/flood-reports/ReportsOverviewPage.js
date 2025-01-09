@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import { orgFloodReportsUrls } from '../../routes/flood-reports/FloodReportsRoutes'
+import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ReportsOverviewPage () {
   const navigate = useNavigate()
@@ -40,7 +41,10 @@ export default function ReportsOverviewPage () {
             <br />
             <h2 className='govuk-heading-m'>Your locations</h2>
             <p>
-              <Link to='#' className='govuk-link'>
+              <Link
+                to={orgManageLocationsUrls.view.dashboard}
+                className='govuk-link'
+              >
                 Locations dashboard
               </Link>{' '}
               has a filter to produce reports

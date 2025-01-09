@@ -180,7 +180,7 @@ export default function LiveFloodWarningsDashboardPage () {
       <Button
         text='Print'
         className='govuk-button govuk-button--secondary inline-block'
-        onClick={() => window.print()}
+        onClick={() => window.print()} // TODO utilise formatted print when available
       />
       <FloodReportsTable
         warnings={warnings}

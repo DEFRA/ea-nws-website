@@ -113,8 +113,8 @@ export default function FloodReportsTable ({
         className='govuk-!-margin-bottom-3'
         style={{ display: 'flex', color: '#505a5f' }}
       >
-        {warnings.length !== displayedWarnings.length &&
-          'Showing ' + displayedWarnings.length + ' of '}
+        {filteredWarnings.length !== warnings.length &&
+          'Showing ' + filteredWarnings.length + ' of '}
         {warnings.length} {warnings.length === 1 ? 'location' : 'locations'}
       </p>
       <table className='govuk-table govuk-table--small-text-until-tablet reports-table-data-position'>

@@ -1,27 +1,27 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
-import Button from '../../../../../common/components/gov-uk/Button'
-import Popup from '../../../../../common/components/custom/Popup'
-import Pagination from '../../../../../common/components/gov-uk/Pagination'
-import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
+import { useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
-import { backendCall } from '../../../../../common/services/BackendService'
-import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
+import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
+import Popup from '../../../../../common/components/custom/Popup'
+import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
+import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
+import { setCurrentLocation } from '../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../common/services/BackendService'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import {
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation
 } from '../../../../../common/services/WfsFloodDataService'
-import { orgManageLocationsUrls } from '../../../..//routes/manage-locations/ManageLocationsRoutes'
+import { riskData } from '../../../../components/custom/RiskCategoryLabel'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import LocationsTable from './dashboard-components/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
-import { setCurrentLocation } from '../../../../../common/redux/userSlice'
-import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 
 export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
@@ -54,7 +54,7 @@ export default function ViewLocationsDashboardPage () {
 
   useEffect(() => {
     setFilteredLocations(locations)
-  }, [])
+  }, [locations])
 
   useEffect(() => {
     setCurrentPage(1)
@@ -78,6 +78,7 @@ export default function ViewLocationsDashboardPage () {
         'api/elasticache/list_locations',
         navigate
       )
+
       const locationsUpdate = []
       if (data) {
         data.forEach((location) => {
@@ -122,6 +123,7 @@ export default function ViewLocationsDashboardPage () {
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
     }
+
     getLocations()
   }, [])
 
@@ -180,16 +182,17 @@ export default function ViewLocationsDashboardPage () {
     useState([])
   const [selectedGroundWaterRiskFilters, setSelectedGroundWaterRiskFilters] =
     useState([])
-  const [selectedKeywordFilters, setSelectedKeywordFilters] =
-    useState([])
-  const [selectedLinkedFilters, setSelectedLinkedFilters] =
-    useState([])
+  const [selectedKeywordFilters, setSelectedKeywordFilters] = useState([])
+  const [selectedLinkedFilters, setSelectedLinkedFilters] = useState([])
 
   const deleteLocationsText = (locationsToBeDeleted) => {
     let text = ''
 
     if (locationsToBeDeleted.length > 1) {
-      text = locationsToBeDeleted.length + ' ' + (selectedLocations.length > 1 ? 'locations' : 'location')
+      text =
+        locationsToBeDeleted.length +
+        ' ' +
+        (selectedLocations.length > 1 ? 'locations' : 'location')
     } else {
       text = locationsToBeDeleted[0].additionals.locationName
     }
@@ -203,12 +206,16 @@ export default function ViewLocationsDashboardPage () {
         show: true,
         text: (
           <>
-            If you continue {deleteLocationsText(locationsToBeDeleted)} will be deleted from this account and
-            will not get flood messages.
+            If you continue {deleteLocationsText(locationsToBeDeleted)} will be
+            deleted from this account and will not get flood messages.
           </>
         ),
-        title: `Delete ${locationsToBeDeleted.length > 1 ? locationsToBeDeleted.length : ''} ${locationsToBeDeleted.length > 1 ? 'locations' : 'location'}`,
-        buttonText: `Delete ${locationsToBeDeleted.length > 1 ? 'locations' : 'location'}`,
+        title: `Delete ${
+          locationsToBeDeleted.length > 1 ? locationsToBeDeleted.length : ''
+        } ${locationsToBeDeleted.length > 1 ? 'locations' : 'location'}`,
+        buttonText: `Delete ${
+          locationsToBeDeleted.length > 1 ? 'locations' : 'location'
+        }`,
         buttonClass: 'govuk-button--warning'
       })
     }
@@ -254,31 +261,40 @@ export default function ViewLocationsDashboardPage () {
     let updatedFilteredLocations = []
 
     if (type === 'messages') {
-      updatedFilteredLocations = locations.filter((location) =>
-        (location.additionals.other?.alertTypes?.length > 0))
+      updatedFilteredLocations = locations.filter(
+        (location) => location.additionals.other?.alertTypes?.length > 0
+      )
       setSelectedFloodMessagesAvailableFilters(['Yes'])
       setSelectedFilters(['Yes'])
     } else if (type === 'linked-locations') {
-      updatedFilteredLocations = locations.filter((location) =>
-        (location.additionals.parentID.length > 0 && location.additionals.other?.alertTypes?.length > 0))
+      updatedFilteredLocations = locations.filter(
+        (location) =>
+          location.additionals.parentID.length > 0 &&
+          location.additionals.other?.alertTypes?.length > 0
+      )
       setSelectedFloodMessagesAvailableFilters(['Yes'])
       setSelectedFilters(['Yes'])
     } else if (type === 'high-medium-risk') {
-      updatedFilteredLocations = locations.filter((location) =>
-        ((location.riverSeaRisk?.title === 'Medium risk' ||
-          location.riverSeaRisk?.title === 'High risk') &&
-          location.additionals.other?.alertTypes?.length === 0))
+      updatedFilteredLocations = locations.filter(
+        (location) =>
+          (location.riverSeaRisk?.title === 'Medium risk' ||
+            location.riverSeaRisk?.title === 'High risk') &&
+          location.additionals.other?.alertTypes?.length === 0
+      )
       setSelectedFloodMessagesAvailableFilters(['Yes'])
       setSelectedFilters(['Yes'])
     } else if (type === 'low-risk') {
-      updatedFilteredLocations = locations.filter((location) =>
-        ((location.riverSeaRisk?.title === 'Low risk') &&
-          location.additionals.other?.alertTypes?.length === 0))
+      updatedFilteredLocations = locations.filter(
+        (location) =>
+          location.riverSeaRisk?.title === 'Low risk' &&
+          location.additionals.other?.alertTypes?.length === 0
+      )
       setSelectedFloodMessagesAvailableFilters(['Yes'])
       setSelectedFilters(['Yes'])
     } else if (type === 'no-links') {
-      updatedFilteredLocations = locations.filter((location) =>
-        (location.linked_contacts?.length === 0))
+      updatedFilteredLocations = locations.filter(
+        (location) => location.linked_contacts?.length === 0
+      )
       setSelectedLinkedFilters(['No'])
       setSelectedFilters(['No'])
     }
@@ -334,7 +350,9 @@ export default function ViewLocationsDashboardPage () {
     if (targetLocation) {
       removeLocations([targetLocation])
       if (selectedLocations.length > 0) {
-        const updatedSelectedLocations = selectedLocations.filter(location => location !== targetLocation)
+        const updatedSelectedLocations = selectedLocations.filter(
+          (location) => location !== targetLocation
+        )
         setSelectedLocations(updatedSelectedLocations)
       }
     } else if (selectedLocations.length > 0) {
@@ -375,17 +393,16 @@ export default function ViewLocationsDashboardPage () {
                     className='govuk-button govuk-button--secondary inline-block'
                     onClick={() => onOpenCloseFilter()}
                   />
-                  &nbsp; &nbsp;
+                &nbsp; &nbsp;
                   <ButtonMenu
                     title='More actions'
                     options={moreActions}
                     onSelect={(index) => onMoreAction(index)}
                   />
-                  &nbsp; &nbsp;
+                &nbsp; &nbsp;
                   <Button
                     text='Print'
                     className='govuk-button govuk-button--secondary inline-block'
-                    // onClick={() => setIsFilterVisible(!isFilterVisible)}
                   />
                   <LocationsTable
                     locations={locations}
@@ -422,19 +439,39 @@ export default function ViewLocationsDashboardPage () {
                       selectedFilters={selectedFilters}
                       setSelectedFilters={setSelectedFilters}
                       selectedLocationTypeFilters={selectedLocationTypeFilters}
-                      setSelectedLocationTypeFilters={setSelectedLocationTypeFilters}
-                      selectedBusinessCriticalityFilters={selectedBusinessCriticalityFilters}
-                      setSelectedBusinessCriticalityFilters={setSelectedBusinessCriticalityFilters}
+                      setSelectedLocationTypeFilters={
+                      setSelectedLocationTypeFilters
+                    }
+                      selectedBusinessCriticalityFilters={
+                      selectedBusinessCriticalityFilters
+                    }
+                      setSelectedBusinessCriticalityFilters={
+                      setSelectedBusinessCriticalityFilters
+                    }
                       selectedKeywordFilters={selectedKeywordFilters}
                       setSelectedKeywordFilters={setSelectedKeywordFilters}
-                      selectedGroundWaterRiskFilters={selectedGroundWaterRiskFilters}
-                      setSelectedGroundWaterRiskFilters={setSelectedGroundWaterRiskFilters}
+                      selectedGroundWaterRiskFilters={
+                      selectedGroundWaterRiskFilters
+                    }
+                      setSelectedGroundWaterRiskFilters={
+                      setSelectedGroundWaterRiskFilters
+                    }
                       selectedRiverSeaRiskFilters={selectedRiverSeaRiskFilters}
-                      setSelectedRiverSeaRiskFilters={setSelectedRiverSeaRiskFilters}
-                      selectedFloodMessagesAvailableFilters={selectedFloodMessagesAvailableFilters}
-                      setSelectedFloodMessagesAvailableFilters={setSelectedFloodMessagesAvailableFilters}
-                      selectedFloodMessagesSentFilters={selectedFloodMessagesSentFilters}
-                      setSelectedFloodMessagesSentFilters={setSelectedFloodMessagesSentFilters}
+                      setSelectedRiverSeaRiskFilters={
+                      setSelectedRiverSeaRiskFilters
+                    }
+                      selectedFloodMessagesAvailableFilters={
+                      selectedFloodMessagesAvailableFilters
+                    }
+                      setSelectedFloodMessagesAvailableFilters={
+                      setSelectedFloodMessagesAvailableFilters
+                    }
+                      selectedFloodMessagesSentFilters={
+                      selectedFloodMessagesSentFilters
+                    }
+                      setSelectedFloodMessagesSentFilters={
+                      setSelectedFloodMessagesSentFilters
+                    }
                       selectedLinkedFilters={selectedLinkedFilters}
                       setSelectedLinkedFilters={setSelectedLinkedFilters}
                     />
@@ -447,13 +484,13 @@ export default function ViewLocationsDashboardPage () {
                         className='govuk-button govuk-button--secondary'
                         onClick={() => onOpenCloseFilter()}
                       />
-                        &nbsp; &nbsp;
+                    &nbsp; &nbsp;
                       <ButtonMenu
                         title='More actions'
                         options={moreActions}
                         onSelect={(index) => onMoreAction(index)}
                       />
-                        &nbsp; &nbsp;
+                    &nbsp; &nbsp;
                       <Button
                         text='Print'
                         className='govuk-button govuk-button--secondary inline-block'
@@ -495,7 +532,9 @@ export default function ViewLocationsDashboardPage () {
                   buttonClass={dialog.buttonClass}
                   setError={(val) =>
                     setDialog((dial) => ({ ...dial, error: val }))}
-                  defaultValue={dialog.input ? targetLocation.additionals.locationName : ''}
+                  defaultValue={
+                    dialog.input ? targetLocation.additionals.locationName : ''
+                  }
                 />
               </>
             )}

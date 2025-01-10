@@ -77,11 +77,15 @@ export default function SearchFilter ({
     )
   ]
 
-  const keywords = [
-    ...new Set(
-      locations.flatMap(location => location.additionals.other?.keywords)
-    )
-  ]
+  const keywords =
+    locations.flatMap(location => {
+      if (Array.isArray(location.additionals)) {
+        return location.additionals
+          .filter(additional => additional.id === 'keywords')
+          .map(additional => JSON.parse(additional.value.s))
+      }
+      return []
+    }).flat()
 
   const linkedLocations = [
     ...new Set(['No', 'Yes'])

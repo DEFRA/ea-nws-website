@@ -17,8 +17,8 @@ import {
   getRiversAndSeaFloodRiskRatingOfLocation
 } from '../../../../../common/services/WfsFloodDataService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
-import { orgManageLocationsUrls } from '../../../..//routes/manage-locations/ManageLocationsRoutes'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import LocationsTable from './dashboard-components/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
@@ -53,7 +53,7 @@ export default function ViewLocationsDashboardPage() {
 
   useEffect(() => {
     setFilteredLocations(locations)
-  }, [])
+  }, [locations])
 
   useEffect(() => {
     setCurrentPage(1)
@@ -77,6 +77,7 @@ export default function ViewLocationsDashboardPage() {
         'api/elasticache/list_locations',
         navigate
       )
+
       const locationsUpdate = []
       if (data) {
         data.forEach((location) => {
@@ -121,6 +122,7 @@ export default function ViewLocationsDashboardPage() {
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
     }
+
     getLocations()
   }, [])
 
@@ -383,7 +385,6 @@ export default function ViewLocationsDashboardPage() {
                 <Button
                   text='Print'
                   className='govuk-button govuk-button--secondary inline-block'
-                  // onClick={() => setIsFilterVisible(!isFilterVisible)}
                 />
                 <LocationsTable
                   locations={locations}

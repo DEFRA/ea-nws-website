@@ -36,7 +36,7 @@ export default function FloodTypeFilter({
         <img
           src={iconSrc}
           alt={`${warningType} Warning Icon`}
-          style={{ width: '80px', height: '55px' }}
+          style={{ width: '100px', height: '75px' }}
         />
       </div>
 

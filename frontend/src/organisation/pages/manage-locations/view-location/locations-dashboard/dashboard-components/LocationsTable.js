@@ -3,8 +3,9 @@ import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import locationPin from '../../../../../../common/assets/images/location_pin.svg'
 import { setCurrentLocation } from '../../../../../../common/redux/userSlice'
-import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 import { webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
+import FullscreenMap from '../../FullscreenMap'
 
 export default function LocationsTable ({
   locations,
@@ -20,6 +21,7 @@ export default function LocationsTable ({
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const [showMap, setShowMap] = useState(false)
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
   const [locationNameSort, setLocationNameSort] = useState('none')
   const [locationTypeSort, setLocationTypeSort] = useState('none')
@@ -86,7 +88,10 @@ export default function LocationsTable ({
       setGetsFloodMessagesSort('ascending')
       setFilteredLocations(
         [...filteredLocations].sort((a, b) =>
-          a.additionals.other?.alertTypes?.length > b.additionals.other?.alertTypes?.length ? 1 : -1
+          a.additionals.other?.alertTypes?.length >
+          b.additionals.other?.alertTypes?.length
+            ? 1
+            : -1
         )
       )
     }
@@ -94,7 +99,10 @@ export default function LocationsTable ({
       setGetsFloodMessagesSort('descending')
       setFilteredLocations(
         [...filteredLocations].sort((a, b) =>
-          a.additionals.other?.alertTypes?.length < b.additionals.other?.alertTypes?.length ? 1 : -1
+          a.additionals.other?.alertTypes?.length <
+          b.additionals.other?.alertTypes?.length
+            ? 1
+            : -1
         )
       )
     }
@@ -159,13 +167,20 @@ export default function LocationsTable ({
     navigate(orgManageLocationsUrls.view.viewMessages)
   }
 
+  const openMap = () => {
+    setShowMap(true)
+  }
+
   return (
     <>
       <p className='govuk-!-margin-bottom-6 locations-table-panel'>
         {filteredLocations.length !== locations.length ? 'Showing ' : ''}
-        {filteredLocations.length !== locations.length ? filteredLocations.length : ''}
+        {filteredLocations.length !== locations.length
+          ? filteredLocations.length
+          : ''}
         {filteredLocations.length !== locations.length ? ' of ' : ''}
-        {locations.length}{locations.length === 1 ? ' location' : ' locations'}{' '}
+        {locations.length}
+        {locations.length === 1 ? ' location' : ' locations'}{' '}
         <span style={{ margin: '0 20px' }}>|</span>
         <span style={{ color: '#1d70b8' }}>
           {selectedLocations.length}{' '}
@@ -173,8 +188,18 @@ export default function LocationsTable ({
         </span>
         <span style={{ margin: '0 20px' }}>|</span>
         <img src={locationPin} alt='Location pin icon' />
-        <Link className='govuk-link'>View on map</Link>
+        <Link className='govuk-link' onClick={openMap}>
+          View on map
+        </Link>
       </p>
+      {showMap && (
+        <FullscreenMap
+          showMap={showMap}
+          setShowMap={setShowMap}
+          locations={locations}
+          filteredLocations={filteredLocations}
+        />
+      )}
       <table className='govuk-table govuk-table--small-text-until-tablet'>
         <thead className='govuk-table__head'>
           <tr className='govuk-table__row'>
@@ -205,7 +230,7 @@ export default function LocationsTable ({
                   sortData(
                     locationNameSort,
                     setLocationNameSort,
-                    'name'
+                    'additionals.locationName'
                   )}
               >
                 Location name
@@ -324,7 +349,7 @@ export default function LocationsTable ({
                   </div>
                 </div>
               </th>
-              <td className='govuk-table__cell'>
+              <td className='govuk-table__cell' style={{ width: '25rem' }}>
                 <Link
                   className='govuk-link'
                   onClick={(e) => viewLocation(e, location)}
@@ -343,7 +368,9 @@ export default function LocationsTable ({
                   className='govuk-link'
                   onClick={(e) => updateMessageSettings(e, location)}
                 >
-                  {location.additionals.other?.alertTypes?.length > 0 ? 'Yes' : 'No'}
+                  {location.additionals.other?.alertTypes?.length > 0
+                    ? 'Yes'
+                    : 'No'}
                 </Link>
               </td>
               <td className='govuk-table__cell'>
@@ -369,7 +396,10 @@ export default function LocationsTable ({
                 </span>
               </td>
               <td className='govuk-table__cell'>
-                <Link onClick={(e) => onAction(e, 'delete', location)}>
+                <Link
+                  className='govuk-link'
+                  onClick={(e) => onAction(e, 'delete', location)}
+                >
                   Delete
                 </Link>
               </td>

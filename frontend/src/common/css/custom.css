@@ -1087,7 +1087,7 @@
 .locations-selected-filters-panel {
   border-bottom-style: solid;
   border-width: thin;
-  border-color:#b1b4b6;
+  border-color: #b1b4b6;
   background-color: #f3f2f1;
   padding-bottom: 1rem;
 }
@@ -1129,7 +1129,7 @@
 }
 
 .locations-selected-filter-icon {
-  width: 1rem,;
+  width: 1rem;
   height: 1rem;
 }
 
@@ -1200,7 +1200,7 @@
 .contacts-selected-filters-panel {
   border-bottom-style: solid;
   border-width: thin;
-  border-color:#b1b4b6;
+  border-color: #b1b4b6;
   background-color: #f3f2f1;
   padding-bottom: 1rem;
 }
@@ -1242,7 +1242,7 @@
 }
 
 .contacts-selected-filter-icon {
-  width: 1rem,;
+  width: 1rem;
   height: 1rem;
 }
 
@@ -1254,6 +1254,58 @@
 .contacts-table-header {
   display: flex;
   color: #505a5f;
+}
+
+.reports-table-data-position .govuk-table__cell {
+  vertical-align: middle;
+}
+
+.reports-table-icon-position {
+  display: 'flex';
+  gap: '0.5rem';
+}
+
+.flood-warning-popup-tab-group {
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+}
+
+.flood-warning-popup-tab {
+  cursor: pointer;
+  padding: 0.5rem 1rem;
+  border-bottom: 2px solid transparent;
+  color: #1d708b;
+}
+
+.flood-warning-popup-tab.selected {
+  border-bottom: 2px solid #1d70b8;
+  color: #000000;
+}
+
+.flood-warning-card {
+  padding: 0.25rem;
+  margin-bottom: 1rem;
+  border: 1px solid #ccc;
+  background-color: #ffd7dc;
+  border-left: 5px solid #db091c;
+  border-radius: 0;
+}
+
+.flood-warning-card.alert {
+  background-color: #fdf1e3;
+  border-left: 5px solid #eb7c25;
+}
+
+.flood-warning-card-content {
+  display: flex;
+  align-items: center;
+}
+
+.flood-warning-card-icon {
+  width: 100px;
+  height: 100px;
+  margin-right: 10px;
 }
 
 .input-with-icon {
@@ -1344,10 +1396,6 @@
 
 .alert-area-pattern-fill {
   fill: url(#alert-pattern);
-}
-
-.existing-boundary-area-pattern-fill {
-  fill: url(#existing-boundary-pattern);
 }
 
 /* flood risk banner */
@@ -1482,9 +1530,29 @@
   opacity: 1;
 }
 
-.textarea-info {
-  margin-top: -28px;
-  color: #505a5f;
+.button-menu {
+  display: inline-block;
+  position: relative;
+}
+.button-menu > .govuk-button,
+govuk-menu-toggle.button-menu > button {
+  margin-bottom: 0;
+  vertical-align: baseline;
+}
+
+.button-menu__toggle-button {
+  display: inline;
+}
+
+.button-menu__toggle-button span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.button-menu__toggle-button svg {
+  transform: rotate(180deg);
+  margin-top: 2px;
 }
 
 .button-menu {

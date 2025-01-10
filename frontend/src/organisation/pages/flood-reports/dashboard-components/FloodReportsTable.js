@@ -4,7 +4,7 @@ import floodAlertIcon from '../../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../../common/assets/images/flood_warning.svg'
 import FloodReportPopup from './FloodReportPopup'
 
-export default function FloodReportsTable ({
+export default function FloodReportsTable({
   warnings,
   displayedWarnings,
   filteredWarnings,
@@ -83,26 +83,6 @@ export default function FloodReportsTable ({
     setResetPaging(!resetPaging)
   }
 
-  const sortLocationType = () => {
-    if (locationTypeSort === 'none' || locationTypeSort === 'descending') {
-      setLocationTypeSort('ascending')
-      setFilteredWarnings(
-        [...filteredWarnings].sort((a, b) =>
-          a.alert_categories.length > b.alert_categories.length ? 1 : -1
-        )
-      )
-    }
-    if (locationTypeSort === 'ascending') {
-      setLocationTypeSort('descending')
-      setFilteredWarnings(
-        [...filteredWarnings].sort((a, b) =>
-          a.alert_categories.length < b.alert_categories.length ? 1 : -1
-        )
-      )
-    }
-    setResetPaging(!resetPaging)
-  }
-
   const sortLinkedContacts = () => {
     // TODO: when linked contacts are available
   }
@@ -132,7 +112,8 @@ export default function FloodReportsTable ({
                     locationNameSort,
                     setLocationNameSort,
                     'meta_data.location_additional.location_name'
-                  )}
+                  )
+                }
               >
                 Location name
               </button>
@@ -149,7 +130,8 @@ export default function FloodReportsTable ({
                     warningTypeSort,
                     setWarningTypeSort,
                     'meta_data.alert_categories'
-                  )}
+                  )
+                }
               >
                 Warning <br />
                 type
@@ -160,7 +142,16 @@ export default function FloodReportsTable ({
               className='govuk-table__header'
               aria-sort={locationTypeSort}
             >
-              <button type='button' onClick={() => sortLocationType()}>
+              <button
+                type='button'
+                onClick={() => {
+                  sortTableData(
+                    locationTypeSort,
+                    setLocationTypeSort,
+                    'meta_data.location_additional.location_type'
+                  )
+                }}
+              >
                 Location or
                 <br /> boundary type
               </button>
@@ -177,7 +168,8 @@ export default function FloodReportsTable ({
                     businessCriticalitySort,
                     setBusinessCriticalitySort,
                     'meta_data.location_additional.business_criticality'
-                  )}
+                  )
+                }
               >
                 Business
                 <br /> criticality
@@ -205,7 +197,8 @@ export default function FloodReportsTable ({
                     lastUpdatedSort,
                     setlastUpdatedSort,
                     '' // TODO: Change  to use the warning time values when available
-                  )}
+                  )
+                }
               >
                 Last
                 <br /> updated
@@ -215,7 +208,7 @@ export default function FloodReportsTable ({
           </tr>
         </thead>
         <tbody className='govuk-table__body'>
-          {filteredWarnings.map((warning, index) => (
+          {displayedWarnings.map((warning, index) => (
             <tr key={index} className='govuk-table__row'>
               <td className='govuk-table__cell'>
                 <p className='govuk-hint' style={{ marginBottom: '0.2em' }}>

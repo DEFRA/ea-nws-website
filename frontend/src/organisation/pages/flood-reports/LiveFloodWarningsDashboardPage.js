@@ -9,7 +9,7 @@ import { orgFloodReportsUrls } from '../../routes/flood-reports/FloodReportsRout
 import FloodReportsFilter from './dashboard-components/FloodReportsFilter'
 import FloodReportsTable from './dashboard-components/FloodReportsTable'
 
-export default function LiveFloodWarningsDashboardPage () {
+export default function LiveFloodWarningsDashboardPage() {
   const navigate = useNavigate()
 
   const [warnings, setWarnings] = useState([])
@@ -17,6 +17,7 @@ export default function LiveFloodWarningsDashboardPage () {
   const [filteredWarnings, setFilteredWarnings] = useState([])
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [selectedFilters, setSelectedFilters] = useState([])
+  const [holdPage, setHoldPage] = useState(0)
 
   const [currentPage, setCurrentPage] = useState(1)
   const [resetPaging, setResetPaging] = useState(false)
@@ -144,20 +145,37 @@ export default function LiveFloodWarningsDashboardPage () {
   }, [])
 
   useEffect(() => {
-    // Set initial displayed warnings when warnings are first loaded
     if (warnings.length > 0) {
+      setFilteredWarnings(warnings)
+    }
+  }, [warnings])
+
+  useEffect(() => {
+    if (filteredWarnings.length > 0) {
       setDisplayedWarnings(
-        warnings.slice(
+        filteredWarnings.slice(
           (currentPage - 1) * warningsPerPage,
           currentPage * warningsPerPage
         )
       )
     }
-  }, [currentPage, warnings])
+  }, [filteredWarnings, currentPage])
+
+  useEffect(() => {
+    if (resetPaging) {
+      setCurrentPage(1)
+      setResetPaging(false)
+    }
+  }, [resetPaging])
 
   useEffect(() => {
     setCurrentPage(1)
-  }, [resetPaging])
+  }, [filteredWarnings])
+
+  const openCloseFilter = () => {
+    setHoldPage(currentPage)
+    setIsFilterVisible(!isFilterVisible)
+  }
 
   // Selected filters
   const [locationNameFilter, setLocationNameFilter] = useState([])
@@ -174,7 +192,7 @@ export default function LiveFloodWarningsDashboardPage () {
       <Button
         text={isFilterVisible ? 'Close filter' : 'Open filter'}
         className='govuk-button govuk-button--secondary inline-block'
-        onClick={() => setIsFilterVisible(!isFilterVisible)}
+        onClick={() => openCloseFilter()}
       />
       &nbsp; &nbsp;
       <Button
@@ -191,8 +209,12 @@ export default function LiveFloodWarningsDashboardPage () {
         setResetPaging={setResetPaging}
       />
       <Pagination
-        totalPages={Math.ceil(displayedWarnings.length / warningsPerPage)}
+        totalPages={Math.ceil(filteredWarnings.length / warningsPerPage)}
         onPageChange={(val) => setCurrentPage(val)}
+        holdPage={holdPage}
+        setHoldPage={setHoldPage}
+        pageList
+        reset={resetPaging}
       />
     </>
   )
@@ -207,43 +229,41 @@ export default function LiveFloodWarningsDashboardPage () {
           <div className='govuk-grid-column-full govuk-body'>
             <br />
             <h1 className='govuk-heading-l'>Live flood warnings</h1>
-            {!isFilterVisible
-              ? (
-                <div className='govuk-grid-row'>
-                  <>{table}</>
-                </div>
-                )
-              : (
-                <div className='govuk-grid-row'>
-                  <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 contacts-filter-container'>
-                    <FloodReportsFilter
-                      warnings={warnings}
-                      setFilteredWarnings={setFilteredWarnings}
-                      resetPaging={resetPaging}
-                      setResetPaging={setResetPaging}
-                      selectedFilters={selectedFilters}
-                      setSelectedFilters={setSelectedFilters}
-                      locationNameFilter={locationNameFilter}
-                      setLocationNameFilter={setLocationNameFilter}
-                      selectedWarningTypeFilters={selectedWarningTypeFilters}
-                      setSelectedWarningTypeFilters={
+            {!isFilterVisible ? (
+              <div className='govuk-grid-row'>
+                <>{table}</>
+              </div>
+            ) : (
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 contacts-filter-container'>
+                  <FloodReportsFilter
+                    warnings={warnings}
+                    setFilteredWarnings={setFilteredWarnings}
+                    resetPaging={resetPaging}
+                    setResetPaging={setResetPaging}
+                    selectedFilters={selectedFilters}
+                    setSelectedFilters={setSelectedFilters}
+                    locationNameFilter={locationNameFilter}
+                    setLocationNameFilter={setLocationNameFilter}
+                    selectedWarningTypeFilters={selectedWarningTypeFilters}
+                    setSelectedWarningTypeFilters={
                       setSelectedWarningTypeFilters
                     }
-                      selectedLocationTypeFilters={selectedLocationTypeFilters}
-                      setSelectedLocationTypeFilters={
+                    selectedLocationTypeFilters={selectedLocationTypeFilters}
+                    setSelectedLocationTypeFilters={
                       setSelectedLocationTypeFilters
                     }
-                      selectedBusCriticalityFilters={
+                    selectedBusCriticalityFilters={
                       selectedBusCriticalityFilters
                     }
-                      setSelectedBusCriticalityFilters={
+                    setSelectedBusCriticalityFilters={
                       setSelectedBusCriticalityFilters
                     }
-                    />
-                  </div>
-                  <div className='govuk-grid-column-three-quarters'>{table}</div>
+                  />
                 </div>
-                )}
+                <div className='govuk-grid-column-three-quarters'>{table}</div>
+              </div>
+            )}
           </div>
         </div>
       </main>

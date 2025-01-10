@@ -339,7 +339,7 @@ const getContactKeys = async (orgId) => {
 
 const updateContact = async (orgId, contact) => {
   await removeContact(orgId, contact.id)
-  await addContact (orgId, contact)
+  await addContact(orgId, contact)
 }
 
 const removeContact = async (orgId, contactID) => {

@@ -13,7 +13,7 @@ export default function AddContactNotesPage () {
 
   const navigateToNextPage = () => {
     // TODO navigate to link locations
-    navigate( orgManageContactsUrls.view.dashboard)
+    navigate(orgManageContactsUrls.view.dashboard)
   }
 
   const onAddContact = async () => {

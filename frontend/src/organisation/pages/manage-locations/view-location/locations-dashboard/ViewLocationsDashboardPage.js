@@ -133,6 +133,7 @@ export default function ViewLocationsDashboardPage () {
         LocationDataType.ADDRESS &&
        location.additionals.other?.location_data_type !==
         LocationDataType.X_AND_Y_COORDS) ||
+      location.coordinates === null ||
       location.coordinates.latitude === null ||
       location.coordinates.longtitude === null
     ) {

@@ -29,15 +29,13 @@ const geoSafeToWebContact = (geoSafeContact) => {
   const additionals = geoSafeContact?.additionals
   additionals?.forEach(additional => {
     if (additional.id === 'keywords') {
-      contact.additionals.keywords = Array => {
-        try {
-          return JSON.parse(additional.value?.s)
-        } catch (e) {
-          return []
-        }
+      let keywords
+      try {
+        keywords = JSON.parse(additional.value?.s)
+      } catch (e) {
+        keywords = []
       }
-    } else if (additional.id === 'other') {
-      contact.additionals.other = JSON.parse(additional.value?.s)
+      contact.additionals.keywords = keywords
     } else {
       contact.additionals[additional.id] = additional.value?.s
     }

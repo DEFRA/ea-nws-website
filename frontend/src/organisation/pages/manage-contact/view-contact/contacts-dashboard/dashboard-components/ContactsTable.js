@@ -161,7 +161,7 @@ export default function ContactsTable ({
                 onClick={() => sortData(
                   jobTitleSort,
                   setJobTitleSort,
-                  (contact) => { return contact.position })}
+                  (contact) => { return contact.additionals.jobTitle })}
               >
                 Job title
               </button>
@@ -217,7 +217,7 @@ export default function ContactsTable ({
                 </Link>
               </td>
               <td className='govuk-table__cell'>
-                {contact.position}
+                {contact.additionals.jobTitle}
               </td>
               <td className='govuk-table__cell'>
                 {contact.emails[0]}

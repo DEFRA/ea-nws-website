@@ -14,6 +14,7 @@ import SearchFilter from './dashboard-components/SearchFilter'
 import { setCurrentContact } from '../../../../../common/redux/userSlice'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import { backendCall } from '../../../../../common/services/BackendService'
+import { geoSafeToWebContact, webToGeoSafeContact } from '../../../../../common/services/formatters/ContactFormatter'
 
 export default function ViewContactsDashboardPage () {
   const navigate = useNavigate()
@@ -73,7 +74,7 @@ export default function ViewContactsDashboardPage () {
       const contactsUpdate = []
       if (data) {
         data.forEach((contact) => {
-          contactsUpdate.push(contact)
+          contactsUpdate.push(geoSafeToWebContact(contact))
         })
       }
 
@@ -143,7 +144,7 @@ export default function ViewContactsDashboardPage () {
     setTargetContact(contact)
     if (action === 'view') {
       e.preventDefault()
-      dispatch(setCurrentContact(contact))
+      dispatch(setCurrentContact(webToGeoSafeContact(contact)))
       navigate(orgManageContactsUrls.view.viewContact)
     } else {
       const contactsToDelete = [contact]

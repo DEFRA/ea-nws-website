@@ -24,7 +24,7 @@ module.exports = [
 
           if (response.status === 200) {
             const contactRes = await apiCall(
-              { authToken: 'Test1' },
+              { authToken: authToken },
               'organization/listContacts'
             )
 

@@ -30,7 +30,7 @@ export default function SearchFilter ({
   const jobTitles = [
     ...new Set(
       contacts
-        .map((contact) => contact.position)
+        .map((contact) => contact.additionals.jobTitle)
         .filter((jobTitle) => jobTitle) // filters out undefined entries
     )
   ]
@@ -84,7 +84,7 @@ export default function SearchFilter ({
     if (selectedJobTitleFilters.length > 0) {
       filteredContacts = filteredContacts.filter((contact) =>
         selectedJobTitleFilters.includes(
-          contact.position
+          contact.additionals.jobTitle
         )
       )
     }

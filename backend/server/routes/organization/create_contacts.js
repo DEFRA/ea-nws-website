@@ -24,13 +24,18 @@ module.exports = [
 
           if (response.status === 200) {
             const contactRes = await apiCall(
-              { authToken: 'Test1' },
+              { authToken: authToken },
               'organization/listContacts'
             )
 
-            await Promise.all(contactRes.data.contacts.map(async (contact) => {
-              await addContact(orgId, contact)
-            }))
+            if (contactRes.data.contacts) {
+              await Promise.all(contactRes.data.contacts.map(async (contact) => {
+                await addContact(orgId, contact)
+              }))
+            }
+            else {
+              return createGenericErrorResponse(h)
+            }
 
             return h.response({ status: 200 })
           } else {

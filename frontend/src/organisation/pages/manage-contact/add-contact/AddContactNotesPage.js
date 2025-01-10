@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import NotesLayout from '../../../layouts/optional-info/NotesLayout'
 import { backendCall } from '../../../../common/services/BackendService'
+import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function AddContactNotesPage () {
   const navigate = useNavigate()
@@ -12,7 +13,7 @@ export default function AddContactNotesPage () {
 
   const navigateToNextPage = () => {
     // TODO navigate to link locations
-    navigate('/organisation/manage-contacts/view-contacts')
+    navigate( orgManageContactsUrls.view.dashboard)
   }
 
   const onAddContact = async () => {

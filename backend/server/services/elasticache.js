@@ -338,21 +338,8 @@ const getContactKeys = async (orgId) => {
 }
 
 const updateContact = async (orgId, contact) => {
-  const contactID = contact.id
-  const key = orgId + ':t_Contacts:' + contactID
-  // Remove contact from keywords as the update call may contain different keywords
-  await removeContactFromKeywords(orgId, contactID)
-  await setJsonData(key, contact)
-  // add contact ID to list
-  let keywords = []
-  contact.additionals.forEach((additional) => {
-    if (additional.id === 'keywords') {
-      keywords = JSON.parse(additional.value?.s)
-    }
-  })
-  for (const keyword of keywords) {
-    await addToKeywordArr(orgId + ':t_Keywords_contact', { name: keyword, linked_ids: [contactID] })
-  }
+  await removeContact(orgId, contact.id)
+  await addContact (orgId, contact)
 }
 
 const removeContact = async (orgId, contactID) => {

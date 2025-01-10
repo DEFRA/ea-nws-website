@@ -4,7 +4,7 @@ import floodAlertIcon from '../../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../../common/assets/images/flood_warning.svg'
 import FloodReportPopup from './FloodReportPopup'
 
-export default function FloodReportsTable({
+export default function FloodReportsTable ({
   warnings,
   displayedWarnings,
   filteredWarnings,
@@ -112,8 +112,7 @@ export default function FloodReportsTable({
                     locationNameSort,
                     setLocationNameSort,
                     'meta_data.location_additional.location_name'
-                  )
-                }
+                  )}
               >
                 Location name
               </button>
@@ -130,8 +129,7 @@ export default function FloodReportsTable({
                     warningTypeSort,
                     setWarningTypeSort,
                     'meta_data.alert_categories'
-                  )
-                }
+                  )}
               >
                 Warning <br />
                 type
@@ -168,8 +166,7 @@ export default function FloodReportsTable({
                     businessCriticalitySort,
                     setBusinessCriticalitySort,
                     'meta_data.location_additional.business_criticality'
-                  )
-                }
+                  )}
               >
                 Business
                 <br /> criticality
@@ -197,8 +194,7 @@ export default function FloodReportsTable({
                     lastUpdatedSort,
                     setlastUpdatedSort,
                     '' // TODO: Change  to use the warning time values when available
-                  )
-                }
+                  )}
               >
                 Last
                 <br /> updated

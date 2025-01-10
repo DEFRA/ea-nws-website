@@ -68,19 +68,19 @@ export default function LiveMap({}) {
 
   const floodSevereWarningMarker = L.icon({
     iconUrl: floodSevereWarningIcon,
-    iconSize: [52, 45],
+    iconSize: [57, 45],
     iconAnchor: [12, 41]
   })
 
   const floodWarningMarker = L.icon({
     iconUrl: floodWarningIcon,
-    iconSize: [52, 45],
+    iconSize: [57, 45],
     iconAnchor: [12, 41]
   })
 
   const floodAlertMarker = L.icon({
     iconUrl: floodAlertIcon,
-    iconSize: [52, 45],
+    iconSize: [57, 45],
     iconAnchor: [12, 41]
   })
 

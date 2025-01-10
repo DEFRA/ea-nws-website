@@ -267,7 +267,7 @@
 }
 
 .live-map-container {
-  height: 80vh;
+  height: 100vh;
   /* width: 73%; */
 }
 
@@ -1092,7 +1092,7 @@
 .locations-selected-filters-panel {
   border-bottom-style: solid;
   border-width: thin;
-  border-color:#b1b4b6;
+  border-color: #b1b4b6;
   background-color: #f3f2f1;
   padding-bottom: 1rem;
 }
@@ -1134,7 +1134,7 @@
 }
 
 .locations-selected-filter-icon {
-  width: 1rem,;
+  width: 1rem;
   height: 1rem;
 }
 
@@ -1147,7 +1147,6 @@
   display: flex;
   color: #505a5f;
 }
-
 
 .locations-map-key {
   display: flex;
@@ -1402,4 +1401,8 @@
   display: inline-flex;
   width: 240px;
   text-align: left;
+}
+
+.custom-checkbox-container .govuk-checkboxes__label:before {
+  background-color: white !important;
 }

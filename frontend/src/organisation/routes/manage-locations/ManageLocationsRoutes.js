@@ -62,6 +62,7 @@ import ViewLocationsDashboardPage from '../../pages/manage-locations/view-locati
 
 const urlManageOrg = '/organisation/manage-locations'
 export const urlManageOrgViewLocations = urlManageOrg + '/locations'
+const urlManageOrgLiveMonitoring = urlManageOrg + '/live-monitoring'
 export const urlManageOrgAddLocations = urlManageOrg + '/add'
 const urlManageOrgEditLocations = urlManageOrg + '/edit'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'

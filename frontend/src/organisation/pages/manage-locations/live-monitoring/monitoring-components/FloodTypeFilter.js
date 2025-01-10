@@ -72,15 +72,12 @@ export default function FloodTypeFilter({
       </div>
 
       <div
-        className='govuk-checkboxes govuk-checkboxes--small'
+        className='govuk-checkboxes govuk-checkboxes--small custom-checkbox-container'
         style={{ flex: '0 0 auto', marginLeft: 'auto' }}
       >
-        <div
-          className='govuk-checkboxes__item'
-          style={{ backgroundColor: 'white' }}
-        >
+        <div className='govuk-checkboxes__item'>
           <input className='govuk-checkboxes__input' type='checkbox' />
-          <span className='govuk-label govuk-checkboxes__label'></span>
+          <span className='govuk-label govuk-checkboxes__label' />
         </div>
       </div>
     </div>

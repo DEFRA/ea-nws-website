@@ -20,6 +20,15 @@
   width: 100%;
   padding-top: 10px;
   padding-bottom: 10px;
+  min-height: 54px;
+  align-content: center;
+}
+
+@media (min-width: 40.0625em) {
+  .sub-navigation {
+    padding-top: 5px;
+    padding-bottom: 5px;
+  }
 }
 
 
@@ -156,8 +165,9 @@
   background: none;
   color: #1d70b8;
   padding-left: 0;
-  border-bottom: 4px;
-  padding-bottom: 3px;
+  border-bottom: 0.25rem;
+  padding-bottom: 0.25rem;
+  padding-top:1rem;
 }
 
 @media (min-width: 40.0625em) {

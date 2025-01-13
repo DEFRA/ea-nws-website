@@ -4,7 +4,6 @@ import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import LocationDataType from '../../../common/enums/LocationDataType'
-import { orgFloodReportsUrls } from '../../routes/flood-reports/FloodReportsRoutes'
 import FloodReportsFilter from './dashboard-components/FloodReportsFilter'
 import FloodReportsTable from './dashboard-components/FloodReportsTable'
 

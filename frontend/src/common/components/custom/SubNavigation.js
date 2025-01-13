@@ -14,8 +14,8 @@ export default function SubNavigation ({ pages, currentPage, type }) {
 
   if (type === 'org') {
     return (
-      <nav aria-label='Sub navigation' >
-        <ul className='sub-navigation-org__list'>
+      <nav aria-label='Sub navigation'>
+        <ul className='sub-navigation__list'>
           <li className='sub-navigation__item bold'>
             <a href='/' style={{ textDecoration: 'none', color: 'black' }}>
               Get flood warnings
@@ -25,7 +25,7 @@ export default function SubNavigation ({ pages, currentPage, type }) {
           {
             authToken !== null &&
           pages.map((page, index) => (
-            <li key={index} className='sub-navigation__item bold'>
+            <li key={index} className='sub-navigation__item'>
               <Link
                 to={page.link}
                 className='sub-navigation__link'

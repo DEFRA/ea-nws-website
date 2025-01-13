@@ -42,11 +42,6 @@ export default function Header () {
                 className='govuk-header__content govuk-grid-row'
                 style={{ display: 'inline-block' }}
               >
-                <p className='govuk-header__service-name'>
-                  {isOrganisationPage
-                    ? 'Get flood warnings for your organisation'
-                    : 'Get flood warnings by text, phone or email'}
-                </p>
                 {authToken
                   ? (
                     <Link

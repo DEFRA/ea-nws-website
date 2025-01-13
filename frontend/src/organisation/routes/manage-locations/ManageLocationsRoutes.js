@@ -21,7 +21,7 @@ import AddAnotherPredefinedBoundaryPage from '../../pages/manage-locations/add-l
 import PredefinedBoundaryOptionalInfoPage from '../../pages/manage-locations/add-location/predefined-boundary/OptionalInfoPage'
 import SelectPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/SelectPredefinedBoundaryPage'
 import ConfirmShapefilePolygonPage from '../../pages/manage-locations/add-location/shapefile-zip/ConfirmShapefilePolygonPage'
-import LocationAddShapefilePage from '../../pages/manage-locations/add-location/shapefile-zip/LocationAddShapefileInfoPage'
+import LocationAddShapefileInfoPage from '../../pages/manage-locations/add-location/shapefile-zip/LocationAddShapefileInfoPage'
 import LocationUploadShapeFilePage from '../../pages/manage-locations/add-location/shapefile-zip/LocationUploadShapeFilePage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirmPage'
@@ -191,7 +191,7 @@ const orgManageLocationRoutes = [
   },
   {
     path: orgManageLocationsUrls.add.addLocationsWithShapefile,
-    component: <LocationAddShapefilePage />
+    component: <LocationAddShapefileInfoPage />
   },
   {
     path: orgManageLocationsUrls.add.uploadLocationsWithShapefile,

@@ -23,10 +23,10 @@ export default function UnmatchedLocationsDashboardLayout ({
   const [showPopup, setShowPopup] = useState(false)
 
   // Default values for null location.state
-  const addedLocations = location?.state?.added || 0
-  const notAddedLocations = location?.state?.notAdded || 0
+  const addedLocations = location?.state?.addedLocations || 0
+  const notAddedLocations = location?.state?.notFoundLocations || 0
   const notAddedLocationsDataGeoSafe =
-    location?.state?.notAddedLocations || null
+    location?.state?.notFoundLocationsData || null
 
   const notAddedLocationsData = []
   if (notAddedLocationsDataGeoSafe) {

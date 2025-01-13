@@ -3,35 +3,118 @@ import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
-import InsetText from '../../../../../../common/components/gov-uk/InsetText'
 import { backendCall } from '../../../../../../common/services/BackendService'
+import { geoSafeToWebLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ConfirmLocationsPage () {
   const navigate = useNavigate()
   const location = useLocation()
-  const locationsValid = location?.state?.valid || 0
-  const locationsInvalid = location?.state?.invalid || 0
+  const validLocations = location?.state?.valid || 0
+  const duplicateLocations = 0 //= location?.state?.duplicates || 0
+  const notInEnglandLocations = location?.state?.notInEngland || 0
+  const notFoundLocations = location?.state?.invalid || 0 // location?.state?.notFound || 0
   const fileName = location?.state?.fileName || ''
   const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
+
+  const getLocation = async (orgId, locationName, type) => {
+    const dataToSend = {
+      orgId,
+      locationName,
+      type
+    }
+    const { data } = await backendCall(
+      dataToSend,
+      'api/locations/search',
+      navigate
+    )
+
+    if (data && data.length === 1) {
+      return data[0]
+    } else {
+      return null
+    }
+  }
+
+  const getDupLocation = async () => {
+    const dataToSend = { orgId }
+    const { data } = await backendCall(
+      dataToSend,
+      'api/bulk_uploads/get_invalid_locations',
+      navigate
+    )
+    const locations = []
+    if (data) {
+      const duplicates = data.filter((location) =>
+        location.error.includes('duplicate')
+      )
+      duplicates.forEach((location) => {
+        locations.push(geoSafeToWebLocation(location))
+      })
+    }
+    return locations[0]
+  }
 
   const handleLocations = async (event) => {
     event.preventDefault()
 
-    const dataToSend = { orgId, fileName }
+    const dataToSend = { authToken, orgId, fileName }
     const { data, errorMessage } = await backendCall(
       dataToSend,
       'api/bulk_uploads/save_locations',
       navigate
     )
+
     if (!errorMessage) {
-      navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard, {
-        state: {
-          added: data.valid,
-          notAdded: data.invalid,
-          notAddedLocations: data.invalidLocations
+      if (duplicateLocations > 0) {
+        if (duplicateLocations === 1) {
+          const location = await getDupLocation()
+
+          // Get the existing location (note type is 'valid')
+          const existingLocation = geoSafeToWebLocation(
+            await getLocation(orgId, location.additionals.locationName, 'valid')
+          )
+
+          // Get the new, duplicate location (note type is 'invalid')
+          const newLocation = geoSafeToWebLocation(
+            await getLocation(
+              orgId,
+              location.additionals.locationName,
+              'invalid'
+            )
+          )
+
+          if (existingLocation && newLocation) {
+            // Now compare the two and let the user choose one
+            navigate(
+              orgManageLocationsUrls.add.duplicateLocationComparisonPage,
+              {
+                state: {
+                  existingLocation,
+                  newLocation,
+                  numDuplicates: duplicateLocations
+                }
+              }
+            )
+          }
+        } else {
+          navigate(orgManageLocationsUrls.add.duplicateLocationsOptionsPage, {
+            state: {
+              addedLocations: data.valid,
+              numDuplicates: data.invalid.duplicate
+            }
+          })
         }
-      })
+      } else {
+        navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard, {
+          state: {
+            addedLocations: data.valid,
+            notFoundLocations: data.invalid,
+            notFoundLocationsData: data.invalidLocations
+          }
+        })
+      }
     } else {
       // got to some sort of error page
     }
@@ -74,23 +157,66 @@ export default function ConfirmLocationsPage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
-              {locationsValid} out of {locationsInvalid + locationsValid}{' '}
+              {validLocations} of{' '}
+              {validLocations +
+                duplicateLocations +
+                notFoundLocations +
+                notInEnglandLocations}{' '}
               locations can be added
             </h1>
             <div className='govuk-body'>
-              <InsetText
-                text={
-                  locationsInvalid +
-                  ' locations need to be matched before they can be added. You can match them after you add the locations that have been found.'
-                }
-              />
+              <div className='govuk-inset-text'>
+                {duplicateLocations > 0 && (
+                  <div>
+                    <strong>{duplicateLocations}</strong> locations already
+                    exist with the same name in this account. You can choose to
+                    keep the existing locations or replace them with the new
+                    locations uploaded.
+                  </div>
+                )}
+                {notFoundLocations > 0 && (
+                  <div>
+                    {/* Only need a break if there is text above */}
+                    {duplicateLocations > 0 && <br />}
+                    <div>
+                      <strong>{notFoundLocations}</strong> locations need to be
+                      found manually in this account before they can be added.
+                    </div>
+                  </div>
+                )}
+                {notInEnglandLocations > 0 && (
+                  <div>
+                    {/* Only need a break if there is text above */}
+                    {(duplicateLocations > 0 || notFoundLocations > 0) && (
+                      <br />
+                    )}
+                    <div>
+                      <strong>{notInEnglandLocations}</strong> locations cannot
+                      be added because they are not in England. You can check
+                      each of the location's details and change them if you
+                      think this is not correct.
+                    </div>
+                  </div>
+                )}
+              </div>
               <Details
-                title='Why do some locations not match?'
+                title='Why are some locations not found?'
                 text={detailsMessage}
               />
+              {validLocations > 0 && (
+                <p>
+                  You can do this after you add the {validLocations} locations
+                  that can be added now.
+                </p>
+              )}
             </div>
+            <br />
             <Button
-              text='Add and continue'
+              text={
+                validLocations > 0
+                  ? `Add ${validLocations} locations`
+                  : 'Continue'
+              }
               className='govuk-button govuk-button'
               onClick={handleLocations}
             />

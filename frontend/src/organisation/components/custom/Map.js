@@ -211,7 +211,7 @@ export default function Map ({
       layer.setStyle({ opacity: 0, fillOpacity: 0 })
     }
   }
-  
+
   const onEachShapefileFeature = (feature, layer) => {
     layer.options.className = 'shapefile-area-pattern-fill'
     layer.setStyle({
@@ -221,7 +221,6 @@ export default function Map ({
     })
     setShapeBounds(layer.getBounds())
   }
-
 
   const FitBounds = () => {
     const map = useMap()
@@ -481,7 +480,7 @@ export default function Map ({
                       )
                     : type !== 'shape' && (
                       <Marker position={centre} interactive={false} />
-                      )}
+                    )}
                 </>
               )}
               {alertArea && (
@@ -514,15 +513,18 @@ export default function Map ({
                   }}
                 />
               )}
-              {shapefileData && (<>
-                <GeoJSON
-                  data={shapefileData}
-                  onEachFeature={onEachShapefileFeature}
-                  ref={(el) => {
-                    shapefileRef.current = el
-                  }}
-                />
-                <FitBounds /></>
+              {shapefileData &&
+              (
+                <>
+                  <GeoJSON
+                    data={shapefileData}
+                    onEachFeature={onEachShapefileFeature}
+                    ref={(el) => {
+                      shapefileRef.current = el
+                    }}
+                  />
+                  <FitBounds />
+                </>
               )}
             </>
             )

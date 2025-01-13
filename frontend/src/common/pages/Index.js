@@ -8,13 +8,11 @@ import AlertType from '../enums/AlertType'
 import {
   clearAuth,
   setAuthToken, setContactPreferences,
-  setCurrentLocation,
-  setCurrentLocationCoordinates,
-  setCurrentLocationEasting,
+  setContacts,
+  setCurrentLocation, setCurrentLocationEasting,
   setCurrentLocationNorthing,
   setLocationBoundaries,
   setOrgCurrentContact,
-  setContacts,
   setOrgId,
   setProfile,
   setRegistrations,
@@ -594,7 +592,7 @@ export default function IndexPage () {
       dispatch(setProfile(profile))
       dispatch(setCurrentLocation(mockCurrentLocation))
       const coordinates = { latitude: 50.84106, longitude: -1.05814 }
-      dispatch(setCurrentLocationCoordinates(coordinates))
+      // dispatch(setCurrentLocationCoordinates(coordinates))
       dispatch(setSelectedBoundaryType(null))
       dispatch(setSelectedBoundary(null))
       dispatch(setLocationBoundaries([]))

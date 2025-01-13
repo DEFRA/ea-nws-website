@@ -32,7 +32,7 @@ module.exports = [
           const { Body } = await s3Client.send(command)
 
           if (!Body) {
-            throw new Error(`Failed to retrieve file from S3: ${key}`)
+            throw new Error('Failed to process file')
           }
 
           const chunks = []

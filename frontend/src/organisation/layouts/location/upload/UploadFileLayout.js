@@ -132,39 +132,41 @@ export default function UploadFileLayout ({
           })
         } else if (uploadMethod === 'shape') {
           // Unzip the uploaded file and send output back to S3
-          const { errorMessage: unzipErrorMessage } = await backendCall(
+          const { errorMessage } = await backendCall(
             { zipFileName: uniqFileName },
             'api/shapefile/unzip',
             navigate
           )
-          if (unzipErrorMessage) {
-            throw new Error('Error uploading file')
-          }
-
-          // Validate the files contained within the zip
-          const { errorMessage: shapefileErrorMessage } = await backendCall(
-            { zipFileName: uniqFileName },
-            'api/shapefile/validate',
-            navigate
-          )
-          if (shapefileErrorMessage) {
+          if (errorMessage) {
             setUploading(false)
-            setErrorShapefile(shapefileErrorMessage)
-          }
-
-          const { data: geojsonData, errorMessage: geojsonErrorMessage } =
+            setErrorShapefile(['Error uploading file'])
+          } else {
+          // Validate the files contained within the zip
+            const { errorMessage } = await backendCall(
+              { zipFileName: uniqFileName },
+              'api/shapefile/validate',
+              navigate
+            )
+            if (errorMessage) {
+              setUploading(false)
+              setErrorShapefile(errorMessage)
+            } else {
+              const { data: geojsonData, errorMessage } =
             await backendCall(
               { zipFileName: uniqFileName },
               'api/shapefile/convert',
               navigate
             )
-          if (geojsonErrorMessage) {
-            throw new Error(geojsonErrorMessage)
+              if (errorMessage) {
+                setUploading(false)
+                setErrorShapefile([errorMessage])
+              } else {
+                navigate(orgManageLocationsUrls.add.confirmLocationsWithShapefile, {
+                  state: { geojsonData }
+                })
+              }
+            }
           }
-
-          navigate(orgManageLocationsUrls.add.confirmLocationsWithShapefile, {
-            state: { geojsonData }
-          })
         }
       }
     } catch (err) {

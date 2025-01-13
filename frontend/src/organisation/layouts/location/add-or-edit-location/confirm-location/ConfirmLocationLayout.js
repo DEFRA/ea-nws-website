@@ -51,7 +51,7 @@ export default function ConfirmLocationLayout ({
   if (layoutType === 'shape') {
     const { geojsonData } = location.state || {}
     const formattArea = (area) => {
-      return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+      return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
     }
 
     shapeGeoData = geojsonData
@@ -83,22 +83,22 @@ export default function ConfirmLocationLayout ({
       )
       dispatch(setCurrentLocationName(shapeName))
     }
-        const dataToSend = { authToken, orgId, location: currentLocation }
-        const { data, errorMessage } = await backendCall(
-          dataToSend,
-          'api/location/create',
-          navigate
-        )
-        if (data) {
-          // need to set the current location due to geosafe creating the ID.
-          dispatch(setCurrentLocation(data))
-          navigateToNextPage()
-        } else {
-          errorMessage
-            ? setError(errorMessage)
-            : setError('Oops, something went wrong')
-        }
-      }
+    const dataToSend = { authToken, orgId, location: currentLocation }
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
+      'api/location/create',
+      navigate
+    )
+    if (data) {
+      // need to set the current location due to geosafe creating the ID.
+      dispatch(setCurrentLocation(data))
+      navigateToNextPage()
+    } else {
+      errorMessage
+        ? setError(errorMessage)
+        : setError('Oops, something went wrong')
+    }
+  }
 
   const handleNavigateToPinDropFlow = (event) => {
     event.preventDefault()

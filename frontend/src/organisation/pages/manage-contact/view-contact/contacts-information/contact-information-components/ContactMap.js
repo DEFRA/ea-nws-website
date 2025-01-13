@@ -64,7 +64,6 @@ export default function ContactMap({ locations }) {
 
     // calculate boundary around locations
     const bbox = turf.bbox(geoJsonFeatureCollection)
-    console.log('bbox', bbox)
 
     const newBounds = [
       [bbox[1], bbox[0]],
@@ -78,7 +77,6 @@ export default function ContactMap({ locations }) {
 
     useEffect(() => {
       if (bounds) {
-        console.log('bounds', bounds)
         map.fitBounds(bounds)
       }
     }, [bounds])

@@ -15,6 +15,8 @@ export default function ContactInformationPage() {
   const keywords = currentContact?.additionals?.find(
     (item) => item.id === 'keywords'
   )
+  console.log('currentContact', currentContact)
+
   const locations = currentContact?.pois
 
   const navigateBack = (e) => {

@@ -1,8 +1,8 @@
 import AddContactChannelsPage from '../../pages/manage-contact/add-contact/AddContactChannelsPage'
 import AddContactDetailsPage from '../../pages/manage-contact/add-contact/AddContactDetailsPage'
 import AddContactKeywordsPage from '../../pages/manage-contact/add-contact/AddContactKeywordsPage'
-import ViewContactsDashboardPage from '../../pages/manage-contact/view-contact/contacts-dashboard/ViewContactsDashboardPage'
 import AddContactNotesPage from '../../pages/manage-contact/add-contact/AddContactNotesPage'
+import ViewContactsDashboardPage from '../../pages/manage-contact/view-contact/contacts-dashboard/ViewContactsDashboardPage'
 import ContactInformationPage from '../../pages/manage-contact/view-contact/contacts-information/ContactInformationPage'
 
 const urlManageContactsOrg = '/organisation/manage-contacts'
@@ -17,7 +17,7 @@ const orgManageContactsUrls = {
   },
   view: {
     dashboard: urlManageContactsOrg + '/view-contacts',
-    viewContact: urlManageContactsOrg + '/contact/view-contact'
+    viewContact: urlManageContactsOrg + '/view-contacts/view'
   }
 }
 

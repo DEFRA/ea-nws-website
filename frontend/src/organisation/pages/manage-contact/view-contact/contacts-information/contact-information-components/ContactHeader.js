@@ -14,7 +14,7 @@ export default function ContactHeader({ contactName, currentPage }) {
           </h1>
         </div>
         <div
-          class='govuk-grid-column-one-half right'
+          className='govuk-grid-column-one-half right'
           style={{
             marginLeft: 'auto',
             display: 'flex',
@@ -22,10 +22,17 @@ export default function ContactHeader({ contactName, currentPage }) {
           }}
         >
           <Button
-            text='Delete contact'
+            text='Promote to admin'
+            className='govuk-button govuk-button--secondary govuk-!-margin-right-5 '
+            style={{
+              marginTop: 'auto'
+            }}
+          />
+          <Button
+            text='Delete user'
             className='govuk-button govuk-button--secondary'
             style={{
-              marginTop: 'auto' /* Push the button to the bottom */
+              marginTop: 'auto'
             }}
           />
         </div>

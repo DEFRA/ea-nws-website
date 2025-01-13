@@ -37,6 +37,7 @@ export default function ViewLocationsDashboardPage() {
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [displayedLocations, setDisplayedLocations] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
+  const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const [dialog, setDialog] = useState({
     show: false,
@@ -132,8 +133,9 @@ export default function ViewLocationsDashboardPage() {
     if (
       (location.additionals.other?.location_data_type !==
         LocationDataType.ADDRESS &&
-        location.additionals.other?.location_data_type !==
-          LocationDataType.X_AND_Y_COORDS) ||
+       location.additionals.other?.location_data_type !==
+        LocationDataType.X_AND_Y_COORDS) ||
+      location.coordinates === null ||
       location.coordinates.latitude === null ||
       location.coordinates.longtitude === null
     ) {
@@ -308,7 +310,7 @@ export default function ViewLocationsDashboardPage() {
     setIsFilterVisible(!isFilterVisible)
   }
 
-  const removeLocations = (locationsToRemove) => {
+  const removeLocations = async (locationsToRemove) => {
     const updatedLocations = locations.filter(
       (location) => !locationsToRemove.includes(location)
     )
@@ -316,7 +318,22 @@ export default function ViewLocationsDashboardPage() {
       (location) => !locationsToRemove.includes(location)
     )
 
-    // dispatch(setLocations(updatedLocations))
+    const locationIds = []
+    locationsToRemove.forEach((location) => {
+      locationIds.push(location.id)
+    })
+
+    const dataToSend = { authToken, orgId, locationIds }
+
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/location/remove',
+      navigate
+    )
+    if (errorMessage) {
+      console.log(errorMessage)
+    }
+
     setLocations([...updatedLocations])
     setFilteredLocations([...updatedFilteredLocations])
 

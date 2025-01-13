@@ -2,27 +2,31 @@ const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
-const { addLocation } = require('../../services/elasticache')
+const { removeContact } = require('../../services/elasticache')
 
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/location/create',
+    path: '/api/organization/remove_contacts',
     handler: async (request, h) => {
       try {
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
 
-        const { authToken, orgId, location } = request.payload
-        if (authToken && location && orgId) {
+        const { authToken, orgId, removeContactIDs } = request.payload
+
+        if (authToken && orgId && removeContactIDs) {
           const response = await apiCall(
-            { authToken: authToken, location: location },
-            'location/create'
+            { authToken: authToken, contactIds: removeContactIDs },
+            'organization/removeContacts'
           )
-          if (response.data.location) {
-            await addLocation(orgId, response.data.location)
-            return h.response({ status: 200, data: response.data.location })
+
+          if (response.status === 200) {
+            await Promise.all(removeContactIDs.map(async (contactID) => {
+              await removeContact(orgId, contactID)
+            }))
+            return h.response({ status: 200 })
           } else {
             return createGenericErrorResponse(h)
           }
@@ -30,7 +34,6 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
       } catch (error) {
-        console.log(error)
         return createGenericErrorResponse(h)
       }
     }

@@ -23,6 +23,15 @@ const apiCall = async (data, path) => {
     data.profile = convertWebProfile(data.profile)
   }
 
+  if (data.location) {
+    data.location.coordinates.latitude = parseInt(
+      data.location.coordinates.latitude * 10 ** 6
+    )
+    data.location.coordinates.longitude = parseInt(
+      data.location.coordinates.longitude * 10 ** 6
+    )
+  }
+
   try {
     const response = await axios.post(url, data, {
       headers: {
@@ -39,6 +48,18 @@ const apiCall = async (data, path) => {
         response.data.profile,
         webProfile
       )
+    }
+
+    if (response.data.location) {
+      response.data.location.coordinates.latitude = response.data.location.coordinates.latitude / 10 ** 6
+      response.data.location.coordinates.longitude = response.data.location.coordinates.longitude / 10 ** 6
+    }
+
+    if (response.data.locations) {
+      response.data.locations.forEach((location) => {
+        location.coordinates.latitude = location.coordinates.latitude / 10 ** 6
+        location.coordinates.longitude = location.coordinates.longitude / 10 ** 6
+      })
     }
 
     return { status: response.status, data: response.data }

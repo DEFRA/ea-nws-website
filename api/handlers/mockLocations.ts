@@ -4,7 +4,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: '34 Hughenden Road, High Wycombe, LE2 7BB',
-    coordinates: { latitude: 50.84106, longitude: -1.05814 },
+    coordinates: { latitude: 51.629, longitude: -0.745 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -29,6 +29,20 @@ const locations = [
             location_data_type: 'xycoords',
             alertTypes: ['ALERT_LVL_3']
           })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'LE2 7BB',
+            x_coordinate: 466413.18,
+            y_coordinate: 105037.31,
+            internal_reference: 'PS01, unit 57, HighW_07',
+            business_criticality: 'Medium',
+            location_type: 'Office',
+            action_plan: '1. Dont panic!',
+            notes:
+              'John Smith has the flood plan for this location. His contact number is 01234 567 890',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_3']
+          })
         }
       }
     ]
@@ -37,8 +51,8 @@ const locations = [
     id: '2',
     enabled: true,
     name: 'UPRN',
-    address: '',
-    coordinates: { latitude: 54.197594, longitude: -3.089788 },
+    address: 'London',
+    coordinates: { latitude: 51.507, longitude: -0.126 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -70,35 +84,9 @@ const locations = [
     id: '3',
     enabled: true,
     name: 'UPRN',
-    address: '',
-    coordinates: null,
-    geometry: {
-      geoJson: {
-        coordinates: [
-          [
-            [-1.5703, 50.8086],
-            [-1.5227, 50.8093],
-            [-1.5315, 50.8766],
-            [-1.4817, 50.883],
-            [-1.4873, 50.9393],
-            [-1.5245, 50.9442],
-            [-1.5112, 50.9735],
-            [-1.4564, 50.9882],
-            [-1.4729, 51.0193],
-            [-1.5393, 51.021],
-            [-1.5642, 51.0109],
-            [-1.5981, 50.9779],
-            [-1.6201, 50.9544],
-            [-1.6231, 50.927],
-            [-1.6255, 50.8882],
-            [-1.5985, 50.8705],
-            [-1.5562, 50.8507],
-            [-1.5703, 50.8086]
-          ]
-        ],
-        type: 'Polygon'
-      }
-    },
+    address: 'Brighton',
+    coordinates: { latitude: 50.828, longitude: -0.142 },
+    geometry: null,
     geocode: null,
     additionals: [
       {
@@ -132,21 +120,9 @@ const locations = [
     id: '4',
     enabled: true,
     name: 'UPRN',
-    address: '',
-    coordinates: null,
-    geometry: {
-      geoJson: {
-        coordinates: [
-          [51.498, -0.126],
-          [51.612, -0.3375],
-          [51.745, -0.475],
-          [51.902, -0.653],
-          [52.048, -0.9435],
-          [52.24, -0.96]
-        ],
-        type: 'LineString'
-      }
-    },
+    address: 'Southampton',
+    coordinates: { latitude: 50.907, longitude: -1.409 },
+    geometry: null,
     geocode: null,
     additionals: [
       {
@@ -180,22 +156,9 @@ const locations = [
     id: '5',
     enabled: true,
     name: 'UPRN',
-    address: '',
-    coordinates: null,
-    geometry: {
-      geoJson: {
-        coordinates: [
-          [
-            [-0.1281, 51.5081],
-            [-0.1295, 51.5082],
-            [-0.129, 51.509],
-            [-0.1277, 51.5089],
-            [-0.1281, 51.5081]
-          ]
-        ],
-        type: 'Polygon'
-      }
-    },
+    address: 'Durham',
+    coordinates: { latitude: 54.777, longitude: -1.579 },
+    geometry: null,
     geocode: null,
     additionals: [
       { id: 'locationName', value: { s: 'Location_05 - boundary variant' } },
@@ -226,8 +189,54 @@ const locations = [
     id: '6',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: 1.323, longitude: 54.21 },
+    address: 'Milton Keynes',
+    coordinates: { latitude: 52.041, longitude: -0.754 },
+    geometry: null,
+    geocode: null,
+    additionals: [
+      { id: 'locationName', value: { s: 'Location_ID6' } },
+      { id: 'parentID', value: { s: '' } },
+      { id: 'targetAreas', value: { s: '' } },
+      { id: 'keywords', value: { s: '["keywords"]' } },
+      {
+        id: 'other',
+        value: {
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'xycoords',
+            alertTypes: []
+          })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: []
+          })
+        }
+      }
+    ]
+  },
+  {
+    id: '7',
+    enabled: true,
+    name: 'UPRN',
+    address: 'Cambridge',
+    coordinates: { latitude: 52.197, longitude: 0.133 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -244,23 +253,36 @@ const locations = [
             x_coordinate: 'lat',
             y_coordinate: 'long',
             internal_reference: 'reference',
-            business_criticality: 'Low',
-            location_type: 'Office',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'xycoords',
-            alertTypes: []
+            alertTypes: ['ALERT_LVL_2']
+          })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: ['ALERT_LVL_2']
           })
         }
       }
     ]
   },
   {
-    id: '7',
+    id: '8',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'Derby',
+    coordinates: { latitude: 52.922, longitude: -1.477 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -277,23 +299,36 @@ const locations = [
             x_coordinate: 'lat',
             y_coordinate: 'long',
             internal_reference: 'reference',
-            business_criticality: 'High',
-            location_type: 'Warehouse',
+            business_criticality: 'Medium',
+            location_type: 'Retail space',
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'xycoords',
-            alertTypes: ['ALERT_LVL_2']
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+          })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Retail space',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
           })
         }
       }
     ]
   },
   {
-    id: '8',
+    id: '9',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'Sheffield',
+    coordinates: { latitude: 53.381, longitude: -1.47 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -310,23 +345,36 @@ const locations = [
             x_coordinate: 'lat',
             y_coordinate: 'long',
             internal_reference: 'reference',
-            business_criticality: 'Medium',
-            location_type: 'Retail space',
+            business_criticality: 'Low',
+            location_type: 'Warehouse',
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'xycoords',
-            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+            alertTypes: ['ALERT_LVL_2']
+          })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: ['ALERT_LVL_2']
           })
         }
       }
     ]
   },
   {
-    id: '9',
+    id: '10',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'Blackburn',
+    coordinates: { latitude: 53.748, longitude: -2.487 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -343,23 +391,36 @@ const locations = [
             x_coordinate: 'lat',
             y_coordinate: 'long',
             internal_reference: 'reference',
-            business_criticality: 'Low',
-            location_type: 'Warehouse',
+            business_criticality: 'Medium',
+            location_type: 'Office',
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'xycoords',
-            alertTypes: ['ALERT_LVL_2']
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+          })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
           })
         }
       }
     ]
   },
   {
-    id: '10',
+    id: '11',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'Worcester',
+    coordinates: { latitude: 52.193, longitude: -2.22 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -376,23 +437,36 @@ const locations = [
             x_coordinate: 'lat',
             y_coordinate: 'long',
             internal_reference: 'reference',
-            business_criticality: 'Medium',
-            location_type: 'Office',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'xycoords',
-            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+            alertTypes: ['ALERT_LVL_3']
+          })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: ['ALERT_LVL_3']
           })
         }
       }
     ]
   },
   {
-    id: '11',
+    id: '12',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'Bradford',
+    coordinates: { latitude: 53.794, longitude: -1.753 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -409,23 +483,36 @@ const locations = [
             x_coordinate: 'lat',
             y_coordinate: 'long',
             internal_reference: 'reference',
-            business_criticality: 'High',
-            location_type: 'Warehouse',
+            business_criticality: 'Low',
+            location_type: 'Retail space',
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'xycoords',
-            alertTypes: ['ALERT_LVL_3']
+            alertTypes: ['ALERT_LVL_2']
+          })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Retail space',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: ['ALERT_LVL_2']
           })
         }
       }
     ]
   },
   {
-    id: '12',
+    id: '13',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'Leeds',
+    coordinates: { latitude: 53.798, longitude: -1.547 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -442,23 +529,36 @@ const locations = [
             x_coordinate: 'lat',
             y_coordinate: 'long',
             internal_reference: 'reference',
-            business_criticality: 'Low',
-            location_type: 'Retail space',
+            business_criticality: 'Medium',
+            location_type: 'Warehouse',
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'xycoords',
-            alertTypes: ['ALERT_LVL_2']
+            alertTypes: []
+          })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: []
           })
         }
       }
     ]
   },
   {
-    id: '13',
+    id: '14',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'Norwich',
+    coordinates: { latitude: 52.629, longitude: 1.295 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -475,23 +575,36 @@ const locations = [
             x_coordinate: 'lat',
             y_coordinate: 'long',
             internal_reference: 'reference',
-            business_criticality: 'Medium',
-            location_type: 'Warehouse',
+            business_criticality: 'Low',
+            location_type: 'Office',
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'xycoords',
-            alertTypes: []
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+          })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
           })
         }
       }
     ]
   },
   {
-    id: '14',
+    id: '15',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'Wembley',
+    coordinates: { latitude: 51.556, longitude: -0.291 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -508,23 +621,36 @@ const locations = [
             x_coordinate: 'lat',
             y_coordinate: 'long',
             internal_reference: 'reference',
-            business_criticality: 'Low',
-            location_type: 'Office',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'xycoords',
-            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+            alertTypes: []
+          })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: []
           })
         }
       }
     ]
   },
   {
-    id: '15',
+    id: '16',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'Nottingham',
+    coordinates: { latitude: 52.954, longitude: -1.152 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -541,23 +667,36 @@ const locations = [
             x_coordinate: 'lat',
             y_coordinate: 'long',
             internal_reference: 'reference',
-            business_criticality: 'High',
+            business_criticality: 'Medium',
             location_type: 'Warehouse',
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'xycoords',
-            alertTypes: []
+            alertTypes: ['ALERT_LVL_2']
+          })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: ['ALERT_LVL_2']
           })
         }
       }
     ]
   },
   {
-    id: '16',
+    id: '17',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'Newcastle upon Tyne',
+    coordinates: { latitude: 54.973, longitude: -1.614 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -574,33 +713,13 @@ const locations = [
             x_coordinate: 'lat',
             y_coordinate: 'long',
             internal_reference: 'reference',
-            business_criticality: 'Medium',
-            location_type: 'Warehouse',
+            business_criticality: 'Low',
+            location_type: 'Retail space',
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'xycoords',
-            alertTypes: ['ALERT_LVL_2']
+            alertTypes: ['ALERT_LVL_3']
           })
-        }
-      }
-    ]
-  },
-  {
-    id: '17',
-    enabled: true,
-    name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
-    geometry: null,
-    geocode: null,
-    additionals: [
-      { id: 'locationName', value: { s: 'Location_ID18' } },
-      { id: 'parentID', value: { s: '' } },
-      { id: 'targetAreas', value: { s: '' } },
-      { id: 'keywords', value: { s: '["keywords"]' } },
-      {
-        id: 'other',
-        value: {
           s: JSON.stringify({
             full_address: 'some address',
             postcode: 'some postcode',
@@ -611,7 +730,7 @@ const locations = [
             location_type: 'Retail space',
             action_plan: 'action plan',
             notes: 'some notes',
-            location_data_type: 'xycoords',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_3']
           })
         }
@@ -622,12 +741,12 @@ const locations = [
     id: '18',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'Liverpool',
+    coordinates: { latitude: 53.404, longitude: -2.985 },
     geometry: null,
     geocode: null,
     additionals: [
-      { id: 'locationName', value: { s: 'Location_ID19' } },
+      { id: 'locationName', value: { s: 'Location_ID18' } },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
       { id: 'keywords', value: { s: '["keywords"]' } },
@@ -647,6 +766,19 @@ const locations = [
             location_data_type: 'xycoords',
             alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
           })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+          })
         }
       }
     ]
@@ -655,12 +787,12 @@ const locations = [
     id: '19',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'Hull',
+    coordinates: { latitude: 53.743, longitude: -0.337 },
     geometry: null,
     geocode: null,
     additionals: [
-      { id: 'locationName', value: { s: 'Location_ID20' } },
+      { id: 'locationName', value: { s: 'Location_ID19' } },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
       { id: 'keywords', value: { s: '["keywords"]' } },
@@ -680,6 +812,19 @@ const locations = [
             location_data_type: 'xycoords',
             alertTypes: ['ALERT_LVL_2']
           })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: ['ALERT_LVL_2']
+          })
         }
       }
     ]
@@ -688,12 +833,12 @@ const locations = [
     id: '20',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'York',
+    coordinates: { latitude: 53.96, longitude: -1.083 },
     geometry: null,
     geocode: null,
     additionals: [
-      { id: 'locationName', value: { s: 'Location_ID21' } },
+      { id: 'locationName', value: { s: 'Location_ID20' } },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
       { id: 'keywords', value: { s: '["keywords"]' } },
@@ -713,6 +858,19 @@ const locations = [
             location_data_type: 'xycoords',
             alertTypes: []
           })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Retail space',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: []
+          })
         }
       }
     ]
@@ -721,12 +879,12 @@ const locations = [
     id: '21',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'Croydon',
+    coordinates: { latitude: 51.378, longitude: -0.103 },
     geometry: null,
     geocode: null,
     additionals: [
-      { id: 'locationName', value: { s: 'Location_ID22' } },
+      { id: 'locationName', value: { s: 'Location_ID21' } },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
       { id: 'keywords', value: { s: '["keywords"]' } },
@@ -746,6 +904,19 @@ const locations = [
             location_data_type: 'xycoords',
             alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
           })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+          })
         }
       }
     ]
@@ -754,12 +925,12 @@ const locations = [
     id: '22',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'Bristol',
+    coordinates: { latitude: 51.455, longitude: -2.594 },
     geometry: null,
     geocode: null,
     additionals: [
-      { id: 'locationName', value: { s: 'Location_ID23' } },
+      { id: 'locationName', value: { s: 'Location_ID22' } },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
       { id: 'keywords', value: { s: '["keywords"]' } },
@@ -779,6 +950,19 @@ const locations = [
             location_data_type: 'xycoords',
             alertTypes: ['ALERT_LVL_2']
           })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: ['ALERT_LVL_2']
+          })
         }
       }
     ]
@@ -787,12 +971,12 @@ const locations = [
     id: '23',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'Oxford',
+    coordinates: { latitude: 51.752, longitude: -1.259 },
     geometry: null,
     geocode: null,
     additionals: [
-      { id: 'locationName', value: { s: 'Location_ID24' } },
+      { id: 'locationName', value: { s: 'Location_ID23' } },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
       { id: 'keywords', value: { s: '["keywords"]' } },
@@ -812,6 +996,19 @@ const locations = [
             location_data_type: 'xycoords',
             alertTypes: ['ALERT_LVL_3']
           })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: ['ALERT_LVL_3']
+          })
         }
       }
     ]
@@ -820,12 +1017,12 @@ const locations = [
     id: '24',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'Middlesbrough',
+    coordinates: { latitude: 54.575, longitude: -1.237 },
     geometry: null,
     geocode: null,
     additionals: [
-      { id: 'locationName', value: { s: 'Location_ID25' } },
+      { id: 'locationName', value: { s: 'Location_ID24' } },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
       { id: 'keywords', value: { s: '["keywords"]' } },
@@ -845,6 +1042,19 @@ const locations = [
             location_data_type: 'xycoords',
             alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
           })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Retail space',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+          })
         }
       }
     ]
@@ -853,12 +1063,12 @@ const locations = [
     id: '25',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'Manchester',
+    coordinates: { latitude: 53.478, longitude: -2.241 },
     geometry: null,
     geocode: null,
     additionals: [
-      { id: 'locationName', value: { s: 'Location_ID26' } },
+      { id: 'locationName', value: { s: 'Location_ID25' } },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
       { id: 'keywords', value: { s: '["keywords"]' } },
@@ -878,6 +1088,19 @@ const locations = [
             location_data_type: 'xycoords',
             alertTypes: ['ALERT_LVL_3']
           })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'High',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: ['ALERT_LVL_3']
+          })
         }
       }
     ]
@@ -886,12 +1109,12 @@ const locations = [
     id: '26',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'Birmingham',
+    coordinates: { latitude: 52.479, longitude: -1.898 },
     geometry: null,
     geocode: null,
     additionals: [
-      { id: 'locationName', value: { s: 'Location_ID27' } },
+      { id: 'locationName', value: { s: 'Location_ID26' } },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
       { id: 'keywords', value: { s: '["keywords"]' } },
@@ -911,6 +1134,19 @@ const locations = [
             location_data_type: 'xycoords',
             alertTypes: ['ALERT_LVL_2']
           })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Low',
+            location_type: 'Warehouse',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
+            alertTypes: ['ALERT_LVL_2']
+          })
         }
       }
     ]
@@ -919,12 +1155,12 @@ const locations = [
     id: '27',
     enabled: true,
     name: 'UPRN',
-    address: 'some address',
-    coordinates: { latitude: null, longitude: null },
+    address: 'Northampton',
+    coordinates: { latitude: 52.237, longitude: -0.9 },
     geometry: null,
     geocode: null,
     additionals: [
-      { id: 'locationName', value: { s: 'Location_ID28' } },
+      { id: 'locationName', value: { s: 'Location_ID27' } },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
       { id: 'keywords', value: { s: '["keywords"]' } },
@@ -942,6 +1178,19 @@ const locations = [
             action_plan: 'action plan',
             notes: 'some notes',
             location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
+          })
+          s: JSON.stringify({
+            full_address: 'some address',
+            postcode: 'some postcode',
+            x_coordinate: 'lat',
+            y_coordinate: 'long',
+            internal_reference: 'reference',
+            business_criticality: 'Medium',
+            location_type: 'Office',
+            action_plan: 'action plan',
+            notes: 'some notes',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_2', 'ALERT_LVL_3']
           })
         }

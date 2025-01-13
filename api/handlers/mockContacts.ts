@@ -2,9 +2,9 @@ const contacts = [
     {
         id: '1',
         enabled: true,
-        firstname: '',
-        lastname: '',
-        emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
+        firstname: 'Stephanie',
+        lastname: 'Beach',
+        emails: ['stephanie.beach@gmail.com', 'steph.beach@gmail.com'],
         mobilePhones: ['07343454590', '07889668367'],
         homePhones: ['01475721535'],
         language: 'EN',
@@ -16,8 +16,8 @@ const contacts = [
             { id: "lastAccessedUrl", value: { s: "/signup/accountname/add" } },
             { id: "signUpComplete", value: { s: 'true' } },
             { id: "businessName", value: { s: "thatOne" } },
-            { id: "jobTitle", value: { s: "tech" } },
-            { id: "keywords", value: { s: '["abc"]' } },
+            { id: "jobTitle", value: { s: 'Operations Director' } },
+            { id: "keywords", value: { s: '["Team 1", "Team 2"]' } },
 
         ],
         unverified: {
@@ -31,9 +31,9 @@ const contacts = [
     {
         id: '2',
         enabled: true,
-        firstname: '',
-        lastname: '',
-        emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
+        firstname: 'Mary',
+        lastname: 'Pepper',
+        emails: ['mary.pepper@gmail.com', 'ma.pepper@gmail.com'],
         mobilePhones: ['07343454590', '07889668367'],
         homePhones: ['01475721535'],
         language: 'EN',
@@ -45,8 +45,8 @@ const contacts = [
             { id: "lastAccessedUrl", value: { s: "/signup/accountname/add" } },
             { id: "signUpComplete", value: { s: 'true' } },
             { id: "businessName", value: { s: "thatOne" } },
-            { id: "jobTitle", value: { s: "tech" } },
-            { id: "keywords", value: { s: '["abc"]' } },
+            { id: "jobTitle", value: { s: 'Regional Manager' } },
+            { id: "keywords", value: { s: '["Team 2"]' } },
 
         ],
         unverified: {
@@ -60,9 +60,9 @@ const contacts = [
     {
         id: '3',
         enabled: true,
-        firstname: '',
-        lastname: '',
-        emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
+        firstname: 'Amanda',
+        lastname: 'Jordan',
+        emails: ['amanda.jordan@gmail.com'],
         mobilePhones: ['07343454590', '07889668367'],
         homePhones: ['01475721535'],
         language: 'EN',
@@ -74,8 +74,8 @@ const contacts = [
             { id: "lastAccessedUrl", value: { s: "/signup/accountname/add" } },
             { id: "signUpComplete", value: { s: 'true' } },
             { id: "businessName", value: { s: "thatOne" } },
-            { id: "jobTitle", value: { s: "tech" } },
-            { id: "keywords", value: { s: '["two"]' } },
+            { id: "jobTitle", value: { s: 'Regional Manager' } },
+            { id: "keywords", value: { s: '[]' } },
 
         ],
         unverified: {
@@ -89,9 +89,9 @@ const contacts = [
     {
         id: '4',
         enabled: true,
-        firstname: '',
-        lastname: '',
-        emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
+        firstname: 'Steve',
+        lastname: 'Binns',
+        emails: ['steve.binns@gmail.com', 'steven.binns@gmail.com'],
         mobilePhones: ['07343454590', '07889668367'],
         homePhones: ['01475721535'],
         language: 'EN',
@@ -103,8 +103,8 @@ const contacts = [
             { id: "lastAccessedUrl", value: { s: "/signup/accountname/add" } },
             { id: "signUpComplete", value: { s: 'true' } },
             { id: "businessName", value: { s: "thatOne" } },
-            { id: "jobTitle", value: { s: "tech" } },
-            { id: "keywords", value: { s: '["abc", "one"]' } },
+            { id: "jobTitle", value: { s: 'Site Manager' } },
+            { id: "keywords", value: { s: '["Team 2", "Team 3"]' } },
 
         ],
         unverified: {

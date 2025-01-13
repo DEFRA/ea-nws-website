@@ -153,7 +153,7 @@ const userSlice = createSlice({
               action_plan: null,
               notes: null,
               location_data_type: null,
-              alertTypes: null
+              alertTypes: []
             })
           }
         }
@@ -333,7 +333,7 @@ const userSlice = createSlice({
                 action_plan: null,
                 notes: null,
                 location_data_type: null,
-                alertTypes: null
+                alertTypes: []
               })
             }
           }
@@ -698,7 +698,7 @@ const userSlice = createSlice({
                 action_plan: null,
                 notes: null,
                 location_data_type: null,
-                alertTypes: null
+                alertTypes: []
               })
             }
           }

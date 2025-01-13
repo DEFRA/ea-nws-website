@@ -310,9 +310,6 @@ export default function IndexPage() {
     emails: ['test@email.com', 'jok@email.com'],
     mobilePhones: null,
     homePhones: ['0131223344', '014122334455'],
-    position: 'Admin',
-    comments:
-      'responsible for of all the petrol stations in the Midlands when Robert Bridge is on holiday.',
     pois: [
       {
         address: 'Big Ben, London, SW1A 0AA',
@@ -507,6 +504,18 @@ export default function IndexPage() {
       {
         id: 'keywords',
         value: { s: JSON.stringify(['test', 'test 1']) }
+      },
+      {
+        id: 'jobTitle',
+        value: { s: JSON.stringify('Admin') }
+      },
+      {
+        id: 'notes',
+        value: {
+          s: JSON.stringify(
+            'responsible for of all the petrol stations in the Midlands when Robert Bridge is on holiday.'
+          )
+        }
       }
     ]
   }

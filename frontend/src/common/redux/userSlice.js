@@ -194,13 +194,19 @@ const userSlice = createSlice({
       emails: null,
       mobilePhones: null,
       homePhones: null,
-      position: null,
-      comments: null,
       pois: null,
       additionals: [
         {
           id: 'keywords',
-          value: null
+          value: { s: '' }
+        },
+        {
+          id: 'jobTitle',
+          value: { s: '' }
+        },
+        {
+          id: 'notes',
+          value: { s: '' }
         }
       ]
     },

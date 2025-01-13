@@ -21,7 +21,9 @@ function Layout () {
             ? <OrganisationAccountNavigation currentPage={location.pathname} />
             : <CitizenAccountNavigation currentPage={location.pathname} />}
         </div>
+
       </div>
+      <PhaseBanner />
       <div
         className={`${
           location.pathname.includes('organisation') && auth
@@ -30,7 +32,6 @@ function Layout () {
         }`}
       >
 
-        <PhaseBanner />
         <Outlet />
       </div>
       <Footer />

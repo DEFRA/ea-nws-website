@@ -74,21 +74,15 @@ export default function ConfirmLocationLayout ({
   }, [shapeLong, shapeLat])
 
   // Switch case to change the button/link logic depending on the location type
-  let handleSubmit
-  switch (layoutType) {
-    case 'shape':
-      handleSubmit = async () => {
-        dispatch(
-          setCurrentLocationGeometry({
-            geoJson: JSON.stringify(shapeGeoData)
-          })
-        )
-        dispatch(setCurrentLocationName(shapeName))
-        navigateToNextPage()
-      }
-      break
-    default:
-      handleSubmit = async () => {
+  const handleSubmit = async () => {
+    if (layoutType === 'shape') {
+      dispatch(
+        setCurrentLocationGeometry({
+          geoJson: JSON.stringify(shapeGeoData)
+        })
+      )
+      dispatch(setCurrentLocationName(shapeName))
+    }
         const dataToSend = { authToken, orgId, location: currentLocation }
         const { data, errorMessage } = await backendCall(
           dataToSend,
@@ -105,7 +99,6 @@ export default function ConfirmLocationLayout ({
             : setError('Oops, something went wrong')
         }
       }
-  }
 
   const handleNavigateToPinDropFlow = (event) => {
     event.preventDefault()

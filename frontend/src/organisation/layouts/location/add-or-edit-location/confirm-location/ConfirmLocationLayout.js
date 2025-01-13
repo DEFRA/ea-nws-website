@@ -19,7 +19,6 @@ import { backendCall } from '../../../../../common/services/BackendService'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 
-
 export default function ConfirmLocationLayout ({
   navigateToNextPage,
   navigateToPinDropFlow,
@@ -112,7 +111,7 @@ export default function ConfirmLocationLayout ({
 
   return (
     <>
-      
+
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>

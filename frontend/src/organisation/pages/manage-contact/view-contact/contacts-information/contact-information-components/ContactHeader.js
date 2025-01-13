@@ -22,13 +22,6 @@ export default function ContactHeader({ contactName, currentPage }) {
           }}
         >
           <Button
-            text='Promote to admin'
-            className='govuk-button govuk-button--secondary govuk-!-margin-right-5 '
-            style={{
-              marginTop: 'auto'
-            }}
-          />
-          <Button
             text='Delete user'
             className='govuk-button govuk-button--secondary'
             style={{

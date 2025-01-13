@@ -31,45 +31,47 @@ export default function ContactMap({ locations }) {
     const locationsCollection = []
     const points = []
     const shapes = []
+    if (locations) {
+      locations.forEach((location) => {
+        let feature
+        const locationType =
+          location.meta_data.location_additional.location_data_type
 
-    locations.forEach((location) => {
-      let feature
-      const locationType =
-        location.meta_data.location_additional.location_data_type
+        // add all points to markers which can be represented on the map
+        // we need to convert points to geojson so we can calculate the bbox
+        if (locationType === LocationDataType.X_AND_Y_COORDS) {
+          // turf accepts in the format [lng,lat] - we save points as [lat,lng]
+          feature = convertDataToGeoJsonFeature('Point', [
+            location.coordinates[1],
+            location.coordinates[0]
+          ])
+          points.push(location.coordinates)
+        } else {
+          feature = location.geometry.geoJson
+          setGeoJsonShapes((prevShapes) => [
+            ...prevShapes,
+            location.geometry.geoJson
+          ])
+          shapes.push(location.geometry.geoJson)
+        }
 
-      // add all points to markers which can be represented on the map
-      // we need to convert points to geojson so we can calculate the bbox
-      if (locationType === LocationDataType.X_AND_Y_COORDS) {
-        // turf accepts in the format [lng,lat] - we save points as [lat,lng]
-        feature = convertDataToGeoJsonFeature('Point', [
-          location.coordinates[1],
-          location.coordinates[0]
-        ])
-        points.push(location.coordinates)
-      } else {
-        feature = location.geometry.geoJson
-        setGeoJsonShapes((prevShapes) => [
-          ...prevShapes,
-          location.geometry.geoJson
-        ])
-        shapes.push(location.geometry.geoJson)
-      }
+        locationsCollection.push(feature)
+      })
+      setMarkers(points)
+      setGeoJsonShapes(shapes)
 
-      locationsCollection.push(feature)
-    })
-    setMarkers(points)
-    setGeoJsonShapes(shapes)
+      const geoJsonFeatureCollection =
+        turf.featureCollection(locationsCollection)
 
-    const geoJsonFeatureCollection = turf.featureCollection(locationsCollection)
+      // calculate boundary around locations
+      const bbox = turf.bbox(geoJsonFeatureCollection)
 
-    // calculate boundary around locations
-    const bbox = turf.bbox(geoJsonFeatureCollection)
-
-    const newBounds = [
-      [bbox[1], bbox[0]],
-      [bbox[3], bbox[2]]
-    ]
-    setBounds(newBounds)
+      const newBounds = [
+        [bbox[1], bbox[0]],
+        [bbox[3], bbox[2]]
+      ]
+      setBounds(newBounds)
+    }
   }
 
   const FitBounds = () => {

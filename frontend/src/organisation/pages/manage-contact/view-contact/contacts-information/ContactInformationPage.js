@@ -12,15 +12,16 @@ import ContactMap from './contact-information-components/ContactMap'
 export default function ContactInformationPage() {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
+  console.log('currentContact', currentContact)
   const contactName = currentContact?.firstName + ' ' + currentContact?.lastName
+  const locations = currentContact?.pois
   const jobTitle = useSelector((state) =>
     getContactAdditional(state, 'jobTitle')
   )
-  const notes = useSelector((state) => getContactAdditional(state, 'notes'))
   const keywords = useSelector((state) =>
     getContactAdditional(state, 'keywords')
   )
-  const locations = currentContact?.pois
+  console.log('keywords', JSON.parse(keywords))
 
   const navigateBack = (e) => {
     e.preventDefault()
@@ -56,7 +57,7 @@ export default function ContactInformationPage() {
               <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
                 Job title
               </h3>
-              <p>{jobTitle ? JSON.parse(jobTitle) : '-'}</p>
+              <p>{jobTitle ? jobTitle : '-'}</p>
             </>
 
             <>
@@ -119,7 +120,7 @@ export default function ContactInformationPage() {
             </>
 
             {/* Keywords details */}
-            {keywords && (
+            {JSON.parse(keywords) && (
               <div className='govuk-!-margin-top-7'>
                 <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
                   Keywords
@@ -137,7 +138,7 @@ export default function ContactInformationPage() {
             )}
 
             {/* Notes details */}
-            {notes && (
+            {currentContact.comments && (
               <div className='govuk-!-margin-top-7'>
                 <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
                   Notes
@@ -150,7 +151,7 @@ export default function ContactInformationPage() {
                   Change
                 </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p>{JSON.parse(notes)}</p>
+                <p>{currentContact.comments}</p>
               </div>
             )}
 
@@ -161,7 +162,7 @@ export default function ContactInformationPage() {
                   Add keywords
                 </Link>
               )}
-              {!notes && (
+              {!currentContact.comments && (
                 <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
                   Add notes
                 </Link>

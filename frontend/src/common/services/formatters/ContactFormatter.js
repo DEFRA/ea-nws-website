@@ -27,7 +27,7 @@ const geoSafeToWebContact = (geoSafeContact) => {
   }
 
   const additionals = geoSafeContact?.additionals
-  additionals?.forEach(additional => {
+  additionals?.forEach((additional) => {
     if (additional.id === 'keywords') {
       let keywords
       try {
@@ -59,11 +59,23 @@ const webToGeoSafeContact = (webContact) => {
     service: webContact.service,
     comments: webContact.comments,
     additionals: [
-      { id: 'lastAccessedUrl', value: { s: webContact.additionals?.lastAccessedUrl } },
-      { id: 'signUpComplete', value: { s: webContact.additionals?.signUpComplete } },
-      { id: 'businessName', value: { s: webContact.additionals?.businessName } },
+      {
+        id: 'lastAccessedUrl',
+        value: { s: webContact.additionals?.lastAccessedUrl }
+      },
+      {
+        id: 'signUpComplete',
+        value: { s: webContact.additionals?.signUpComplete }
+      },
+      {
+        id: 'businessName',
+        value: { s: webContact.additionals?.businessName }
+      },
       { id: 'jobTitle', value: { s: webContact.additionals?.jobTitle } },
-      { id: 'keywords', value: { s: JSON.stringify(webContact.additionals?.keywords) } }
+      {
+        id: 'keywords',
+        value: { s: JSON.stringify(webContact.additionals?.keywords) }
+      }
     ],
     unverified: webContact.unverified,
     metatdata: webContact.metatdata,
@@ -71,6 +83,7 @@ const webToGeoSafeContact = (webContact) => {
     role: webContact.role,
     pendingRole: webContact.pendingRole
   }
+  console.log('contact returned', contact)
   return contact
 }
 

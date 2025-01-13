@@ -41,7 +41,7 @@ const setLocationOtherAdditionals = (additionals, id, value) => {
   }
 }
 
-const getLocationOtherAdditional = (additionals, id) => {
+export const getLocationOtherAdditional = (additionals, id) => {
   for (let i = 0; i < additionals.length; i++) {
     if (additionals[i].id === 'other') {
       const otherAdditionals = JSON.parse(additionals[i].value?.s)

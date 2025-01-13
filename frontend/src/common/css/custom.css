@@ -1371,6 +1371,8 @@
   align-items: center;
   background-color: #f3f2f1;
   padding: 0.625rem;
+  flex-wrap: wrap;
+  align-items: flex-start;
 }
 
 .org-flood-warning-item,
@@ -1390,12 +1392,34 @@
   line-height: 1.2;
 }
 
+.org-flood-warning-square {
+  width: 1.5625rem;
+  height: 1.5625rem;
+  flex-shrink: 0;
+}
+
+.warning-square {
+  background-color: #e5646c;
+}
+
+.alert-square {
+  background-color: #efae6b;
+}
+
 .warning-area-pattern-fill {
   fill: url(#warning-pattern);
 }
 
 .alert-area-pattern-fill {
   fill: url(#alert-pattern);
+}
+
+.existing-boundary-area-pattern-fill {
+  fill: url(#existing-boundary-pattern);
+}
+
+.shapefile-area-pattern-fill {
+  fill: url(#shapefile-pattern);
 }
 
 /* flood risk banner */

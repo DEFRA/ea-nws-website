@@ -20,7 +20,8 @@ import OptionalLocationInformationPage from '../../pages/manage-locations/add-lo
 import AddAnotherPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/AddAnotherPredefinedBoundaryPage'
 import PredefinedBoundaryOptionalInfoPage from '../../pages/manage-locations/add-location/predefined-boundary/OptionalInfoPage'
 import SelectPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/SelectPredefinedBoundaryPage'
-import LocationAddShapefilePage from '../../pages/manage-locations/add-location/shapefile-zip/LocationAddShapefileInfoPage'
+import ConfirmShapefilePolygonPage from '../../pages/manage-locations/add-location/shapefile-zip/ConfirmShapefilePolygonPage'
+import LocationAddShapefileInfoPage from '../../pages/manage-locations/add-location/shapefile-zip/LocationAddShapefileInfoPage'
 import LocationUploadShapeFilePage from '../../pages/manage-locations/add-location/shapefile-zip/LocationUploadShapeFilePage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirmPage'
@@ -80,6 +81,8 @@ const orgManageLocationsUrls = {
     addLocationsWithShapefile: urlManageOrgAddLocations + '/shapefile-info',
     uploadLocationsWithShapefile:
       urlManageOrgAddLocations + '/shapefile-upload',
+    confirmLocationsWithShapefile:
+      urlManageOrgAddLocations + '/shapefile-confirm',
     options: urlManageOrgAddLocations,
     addressInfo: urlManageOrgAddLocations + '/address-info',
     uploadFile: urlManageOrgAddLocations + '/upload-file',
@@ -188,11 +191,15 @@ const orgManageLocationRoutes = [
   },
   {
     path: orgManageLocationsUrls.add.addLocationsWithShapefile,
-    component: <LocationAddShapefilePage />
+    component: <LocationAddShapefileInfoPage />
   },
   {
     path: orgManageLocationsUrls.add.uploadLocationsWithShapefile,
     component: <LocationUploadShapeFilePage />
+  },
+  {
+    path: orgManageLocationsUrls.add.confirmLocationsWithShapefile,
+    component: <ConfirmShapefilePolygonPage />
   },
   {
     path: orgManageLocationsUrls.add.manualAddLocation

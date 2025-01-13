@@ -133,11 +133,14 @@ const addToAlert = async (orgId, location) => {
     }
     await setJsonData(key, struct)
   }
-  let alertTypes
+  let alertTypes = []
   location.additionals.forEach((additional) => {
     if (additional.id === 'other') {
       const other = JSON.parse(additional.value?.s)
       alertTypes = other.alertTypes
+      if (!alertTypes) {
+        alertTypes = []
+      }
     }
   })
   const client = await connectToRedis()
@@ -378,7 +381,7 @@ const orgSignIn = async (profile, organization, locations, contacts) => {
   const orgExists = await checkKeyExists(organization.id + ':org_data')
   if (orgExists) {
     const existingLocations = await getLocationKeys(organization.id)
-    const existingLocationIds = existingLocations.map(location => location.split(':').at(-1)
+    const existingLocationIds = existingLocations.map(location => location.split(':').slice(2).join(':')
     )
     for (const location of locations) {
       if (!existingLocationIds.includes(location.id)) {
@@ -386,7 +389,7 @@ const orgSignIn = async (profile, organization, locations, contacts) => {
       }
     }
     const existingContacts = await getContactKeys(organization.id)
-    const existingContactIds = existingContacts.map(contact => contact.split(':').at(-1)
+    const existingContactIds = existingContacts.map(contact => contact.split(':').slice(2).join(':')
     )
     for (const contact of contacts) {
       if (!existingContactIds.includes(contact.id)) {

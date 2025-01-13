@@ -30,6 +30,7 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
       } catch (error) {
+        console.log(error)
         return createGenericErrorResponse(h)
       }
     }

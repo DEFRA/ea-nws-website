@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
+import { getContactAdditional } from '../../../../../common/redux/userSlice'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import ContactHeader from './contact-information-components/ContactHeader'
 import ContactMap from './contact-information-components/ContactMap'
@@ -11,11 +12,11 @@ import ContactMap from './contact-information-components/ContactMap'
 export default function ContactInformationPage() {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
-  const contactName = currentContact?.firstName + ' ' + currentContact?.lastName
-  const keywords = currentContact?.additionals?.find(
-    (item) => item.id === 'keywords'
+  const contactName =
+    currentContact?.firstName + ' ' + currentContact?.lastNamensoel
+  const keywords = useSelector((state) =>
+    getContactAdditional(state, 'keywords')
   )
-  console.log('currentContact', currentContact)
 
   const locations = currentContact?.pois
 
@@ -116,7 +117,7 @@ export default function ContactInformationPage() {
             </>
 
             {/* Keywords details */}
-            {keywords?.value && (
+            {keywords && (
               <div className='govuk-!-margin-top-7'>
                 <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
                   Keywords
@@ -129,13 +130,7 @@ export default function ContactInformationPage() {
                   Change
                 </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p>
-                  {keywords.value
-                    .replace('[', '')
-                    .replace(']', '')
-                    .replace(/"/g, '')
-                    .replace(/,/g, ', ')}
-                </p>
+                <p>{JSON.parse(keywords).join(', ')}</p>
               </div>
             )}
 
@@ -159,7 +154,7 @@ export default function ContactInformationPage() {
 
             {/* Add more info links */}
             <div className='govuk-!-font-size-19 govuk-!-margin-top-7'>
-              {!keywords?.value && (
+              {!keywords && (
                 <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
                   Add keywords
                 </Link>

@@ -323,191 +323,190 @@ export default function IndexPage() {
             location_data_type: LocationDataType.X_AND_Y_COORDS
           }
         }
-      }
-      // {
-      //   address: 'Stonehenge, Amesbury, SP4 7DE',
-      //   name: 'UPRN',
-      //   coordinates: [51.1789, -1.8262],
-      //   meta_data: {
-      //     location_additional: {
-      //       location_data_type: LocationDataType.X_AND_Y_COORDS
-      //     }
-      //   }
-      // },
-      // {
-      //   address: 'Manchester Town Hall, Manchester, M60 2LA',
-      //   name: 'UPRN',
-      //   coordinates: [53.4794, -2.2444],
-      //   meta_data: {
-      //     location_additional: {
-      //       location_data_type: LocationDataType.X_AND_Y_COORDS
-      //     }
-      //   }
-      // },
-      // {
-      //   address: 'Eden Project, Bodelva, PL24 2SG',
-      //   name: 'UPRN',
-      //   coordinates: [50.3619, -4.7445],
-      //   meta_data: {
-      //     location_additional: {
-      //       location_data_type: LocationDataType.X_AND_Y_COORDS
-      //     }
-      //   }
-      // },
-      // {
-      //   address: 'York Minster, York, YO1 7JN',
-      //   name: 'UPRN',
-      //   coordinates: [53.9611, -1.0815],
-      //   meta_data: {
-      //     location_additional: {
-      //       location_data_type: LocationDataType.X_AND_Y_COORDS
-      //     }
-      //   }
-      // },
-      // // Locations uploaded as a shape file will have been converted to GeoJson
-      // // GeoJson has the coordinates flipped (lng, lat)
-      // {
-      //   address: 'Trafalgar Square, London, WC2N 5DN',
-      //   name: 'UPRN',
-      //   geometry: {
-      //     geoJson: {
-      //       type: 'Feature',
-      //       properties: {},
-      //       geometry: {
-      //         type: 'LineString',
-      //         coordinates: [
-      //           [-0.126, 51.498],
-      //           [-0.3375, 51.612],
-      //           [-0.475, 51.745],
-      //           [-0.653, 51.902],
-      //           [-0.9435, 52.048],
-      //           [-0.96, 52.24]
-      //         ]
-      //       }
-      //     }
-      //   },
-      //   meta_data: {
-      //     location_additional: {
-      //       location_data_type: LocationDataType.SHAPE_LINE
-      //     }
-      //   }
-      // },
-      // // Locations uploaded as a shape file will have been converted to GeoJson
-      // // GeoJson has the coordinates flipped (lng, lat)
-      // {
-      //   address: 'Trafalgar Square, London, WC2N 5DN',
-      //   name: 'UPRN',
-      //   geometry: {
-      //     geoJson: {
-      //       type: 'Feature',
-      //       properties: {},
-      //       geometry: {
-      //         type: 'Polygon',
-      //         coordinates: [
-      //           [
-      //             [-0.1281, 51.5081],
-      //             [-0.1295, 51.5082],
-      //             [-0.129, 51.509],
-      //             [-0.1277, 51.5089],
-      //             [-0.1281, 51.5081]
-      //           ]
-      //         ]
-      //       }
-      //     }
-      //   },
-      //   meta_data: {
-      //     location_additional: {
-      //       location_data_type: LocationDataType.SHAPE_POLYGON
-      //     }
-      //   }
-      // },
-      // // Locations uploaded as a shape file will have been converted to GeoJson
-      // // GeoJson has the coordinates flipped (lng, lat)
-      // {
-      //   address: 'River Thames and London Eye, London',
-      //   name: 'UPRN',
-      //   geometry: {
-      //     geoJson: {
-      //       type: 'Feature',
-      //       properties: {},
-      //       geometry: {
-      //         type: 'MultiPolygon',
-      //         coordinates: [
-      //           [
-      //             [
-      //               [-0.1195, 51.5033],
-      //               [-0.12, 51.5035],
-      //               [-0.1198, 51.504],
-      //               [-0.1193, 51.5038],
-      //               [-0.1195, 51.5033]
-      //             ]
-      //           ],
-      //           [
-      //             [
-      //               [-0.1225, 51.5055],
-      //               [-0.123, 51.5057],
-      //               [-0.1228, 51.5062],
-      //               [-0.1223, 51.506],
-      //               [-0.1225, 51.5055]
-      //             ]
-      //           ]
-      //         ]
-      //       }
-      //     }
-      //   },
-      //   meta_data: {
-      //     location_additional: {
-      //       location_data_type: LocationDataType.SHAPE_POLYGON
-      //     }
-      //   }
-      // },
+      },
+      {
+        address: 'Stonehenge, Amesbury, SP4 7DE',
+        name: 'UPRN',
+        coordinates: [51.1789, -1.8262],
+        meta_data: {
+          location_additional: {
+            location_data_type: LocationDataType.X_AND_Y_COORDS
+          }
+        }
+      },
+      {
+        address: 'Manchester Town Hall, Manchester, M60 2LA',
+        name: 'UPRN',
+        coordinates: [53.4794, -2.2444],
+        meta_data: {
+          location_additional: {
+            location_data_type: LocationDataType.X_AND_Y_COORDS
+          }
+        }
+      },
+      {
+        address: 'Eden Project, Bodelva, PL24 2SG',
+        name: 'UPRN',
+        coordinates: [50.3619, -4.7445],
+        meta_data: {
+          location_additional: {
+            location_data_type: LocationDataType.X_AND_Y_COORDS
+          }
+        }
+      },
+      {
+        address: 'York Minster, York, YO1 7JN',
+        name: 'UPRN',
+        coordinates: [53.9611, -1.0815],
+        meta_data: {
+          location_additional: {
+            location_data_type: LocationDataType.X_AND_Y_COORDS
+          }
+        }
+      },
       // Locations uploaded as a shape file will have been converted to GeoJson
       // GeoJson has the coordinates flipped (lng, lat)
-      //   {
-      //     address: 'New Forest National Park, Hampshire, England',
-      //     name: 'UPRN',
-      //     geometry: {
-      //       geoJson: {
-      //         type: 'Feature',
-      //         properties: {},
-      //         geometry: {
-      //           type: 'Polygon',
-      //           coordinates: [
-      //             [
-      //               [-1.5703, 50.8086],
-      //               [-1.5227, 50.8093],
-      //               [-1.5315, 50.8766],
-      //               [-1.4817, 50.883],
-      //               [-1.4873, 50.9393],
-      //               [-1.5245, 50.9442],
-      //               [-1.5112, 50.9735],
-      //               [-1.4564, 50.9882],
-      //               [-1.4729, 51.0193],
-      //               [-1.5393, 51.021],
-      //               [-1.5642, 51.0109],
-      //               [-1.5981, 50.9779],
-      //               [-1.6201, 50.9544],
-      //               [-1.6231, 50.927],
-      //               [-1.6255, 50.8882],
-      //               [-1.5985, 50.8705],
-      //               [-1.5562, 50.8507],
-      //               [-1.5703, 50.8086]
-      //             ]
-      //           ]
-      //         }
-      //       }
-      //     },
-      //     meta_data: {
-      //       location_additional: {
-      //         location_data_type: LocationDataType.SHAPE_POLYGON
-      //       }
-      //     }
-      //   }
+      {
+        address: 'Trafalgar Square, London, WC2N 5DN',
+        name: 'UPRN',
+        geometry: {
+          geoJson: {
+            type: 'Feature',
+            properties: {},
+            geometry: {
+              type: 'LineString',
+              coordinates: [
+                [-0.126, 51.498],
+                [-0.3375, 51.612],
+                [-0.475, 51.745],
+                [-0.653, 51.902],
+                [-0.9435, 52.048],
+                [-0.96, 52.24]
+              ]
+            }
+          }
+        },
+        meta_data: {
+          location_additional: {
+            location_data_type: LocationDataType.SHAPE_LINE
+          }
+        }
+      },
+      // Locations uploaded as a shape file will have been converted to GeoJson
+      // GeoJson has the coordinates flipped (lng, lat)
+      {
+        address: 'Trafalgar Square, London, WC2N 5DN',
+        name: 'UPRN',
+        geometry: {
+          geoJson: {
+            type: 'Feature',
+            properties: {},
+            geometry: {
+              type: 'Polygon',
+              coordinates: [
+                [
+                  [-0.1281, 51.5081],
+                  [-0.1295, 51.5082],
+                  [-0.129, 51.509],
+                  [-0.1277, 51.5089],
+                  [-0.1281, 51.5081]
+                ]
+              ]
+            }
+          }
+        },
+        meta_data: {
+          location_additional: {
+            location_data_type: LocationDataType.SHAPE_POLYGON
+          }
+        }
+      },
+      // Locations uploaded as a shape file will have been converted to GeoJson
+      // GeoJson has the coordinates flipped (lng, lat)
+      {
+        address: 'River Thames and London Eye, London',
+        name: 'UPRN',
+        geometry: {
+          geoJson: {
+            type: 'Feature',
+            properties: {},
+            geometry: {
+              type: 'MultiPolygon',
+              coordinates: [
+                [
+                  [
+                    [-0.1195, 51.5033],
+                    [-0.12, 51.5035],
+                    [-0.1198, 51.504],
+                    [-0.1193, 51.5038],
+                    [-0.1195, 51.5033]
+                  ]
+                ],
+                [
+                  [
+                    [-0.1225, 51.5055],
+                    [-0.123, 51.5057],
+                    [-0.1228, 51.5062],
+                    [-0.1223, 51.506],
+                    [-0.1225, 51.5055]
+                  ]
+                ]
+              ]
+            }
+          }
+        },
+        meta_data: {
+          location_additional: {
+            location_data_type: LocationDataType.SHAPE_POLYGON
+          }
+        }
+      },
+
+      {
+        address: 'New Forest National Park, Hampshire, England',
+        name: 'UPRN',
+        geometry: {
+          geoJson: {
+            type: 'Feature',
+            properties: {},
+            geometry: {
+              type: 'Polygon',
+              coordinates: [
+                [
+                  [-1.5703, 50.8086],
+                  [-1.5227, 50.8093],
+                  [-1.5315, 50.8766],
+                  [-1.4817, 50.883],
+                  [-1.4873, 50.9393],
+                  [-1.5245, 50.9442],
+                  [-1.5112, 50.9735],
+                  [-1.4564, 50.9882],
+                  [-1.4729, 51.0193],
+                  [-1.5393, 51.021],
+                  [-1.5642, 51.0109],
+                  [-1.5981, 50.9779],
+                  [-1.6201, 50.9544],
+                  [-1.6231, 50.927],
+                  [-1.6255, 50.8882],
+                  [-1.5985, 50.8705],
+                  [-1.5562, 50.8507],
+                  [-1.5703, 50.8086]
+                ]
+              ]
+            }
+          }
+        },
+        meta_data: {
+          location_additional: {
+            location_data_type: LocationDataType.SHAPE_POLYGON
+          }
+        }
+      }
     ],
     additionals: [
       {
         id: 'keywords',
-        value: null
+        value: { s: JSON.stringify(['test', 'test 1']) }
       }
     ]
   }

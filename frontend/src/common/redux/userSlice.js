@@ -814,6 +814,9 @@ const userSlice = createSlice({
     },
     getLocationOther: (state, key) => {
       return getLocationOtherAdditional(state.currentLocation.additionals, key)
+    },
+    getContactAdditional: (state, key) => {
+      return getAdditional(state.orgCurrentContact.additionals, key)
     }
   }
 })
@@ -917,7 +920,8 @@ export const {
 export const {
   getLocationAdditionals,
   getLocationAdditional,
-  getLocationOther
+  getLocationOther,
+  getContactAdditional
 } = userSlice.selectors
 
 export default userSlice.reducer

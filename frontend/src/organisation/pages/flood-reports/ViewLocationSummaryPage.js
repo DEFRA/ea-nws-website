@@ -6,6 +6,7 @@ import BackLink from '../../../common/components/custom/BackLink'
 import { backendCall } from '../../../common/services/BackendService'
 import { useSelector } from 'react-redux'
 
+
 export default function ViewLocationSummaryPage () {
   const navigate = useNavigate()
   const orgId = useSelector((state) => state.session.orgId)
@@ -215,6 +216,7 @@ export default function ViewLocationSummaryPage () {
   )
   return (
     <>
+      
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

@@ -15,7 +15,8 @@ export default function NotesLayout ({
   navigateToNextPage,
   keywordType,
   instructionText,
-  buttonText = 'Continue'
+  buttonText = 'Continue',
+  onSubmit
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -36,7 +37,7 @@ export default function NotesLayout ({
     }
   }, [notes])
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (error) return
     if (notes) {
       switch (keywordType) {
@@ -50,10 +51,11 @@ export default function NotesLayout ({
           break
       }
     }
-
-    // should we update geosafe profile here?
-
-    navigateToNextPage()
+    if (onSubmit) {
+      await onSubmit()
+    } else {
+      navigateToNextPage()
+    }
   }
 
   const navigateBack = (event) => {

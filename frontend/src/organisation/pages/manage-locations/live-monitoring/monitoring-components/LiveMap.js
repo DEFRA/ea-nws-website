@@ -23,7 +23,6 @@ import { locations } from '../dummy-data/LocationsDummyData'
 
 export default function LiveMap({}) {
   const [apiKey, setApiKey] = useState(null)
-  const [latitude, longitude] = [52.5619, -1.4649]
 
   // get flood area data
   useEffect(() => {
@@ -195,7 +194,6 @@ export default function LiveMap({}) {
         {apiKey && tileLayerWithHeader}
         <ZoomControl position='bottomright' />
         <ZoomTracker />
-        {/* <ResetMapButton /> */}
         {locations.map((location, index) => (
           <Marker
             key={index}

@@ -10,6 +10,7 @@ import floodSevereWarningIcon from '../../../../common/assets/images/severe_floo
 import BackLink from '../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../common/components/gov-uk/Button'
+import { orgFloodReportsUrls } from '../../../routes/flood-reports/FloodReportsRoutes'
 import FloodTypeFilter from './monitoring-components/FloodTypeFilter'
 import LiveMap from './monitoring-components/LiveMap'
 
@@ -26,12 +27,13 @@ export default function LiveFLoodMonitoringPage() {
         <div className='govuk-grid-row'>
           <div class='govuk-grid-column-full'>
             <h1 class='govuk-heading-l'>Live flood warnings</h1>
-            <h2
+            <Link
               class='govuk-heading-m govuk-link'
               style={{ color: '#1d70b8', marginBottom: '0' }}
+              to={orgFloodReportsUrls.live}
             >
               202 locations currently affected
-            </h2>
+            </Link>
             <p style={{ marginTop: '0' }}>Updated 10:00pm on 12 June 2024</p>
           </div>
         </div>
@@ -126,10 +128,6 @@ export default function LiveFLoodMonitoringPage() {
               </div>
             </div>
             <br />
-
-            {/* <p className='govuk-body govuk-!-font-weight-bold'>
-              Locations affected
-            </p> */}
           </div>
         </div>
       </main>

@@ -10,10 +10,7 @@ import NotificationBanner from '../../../../../common/components/gov-uk/Notifica
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import { setOrgCurrentContact } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import {
-  geoSafeToWebContact,
-  webToGeoSafeContact
-} from '../../../../../common/services/formatters/ContactFormatter'
+import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import ContactsTable from './dashboard-components/ContactsTable'
 import DashboardHeader from './dashboard-components/DashboardHeader'
@@ -151,8 +148,7 @@ export default function ViewContactsDashboardPage() {
     setTargetContact(contact)
     if (action === 'view') {
       e.preventDefault()
-      console.log('contact before', contact)
-      dispatch(setOrgCurrentContact(webToGeoSafeContact(contact)))
+      dispatch(setOrgCurrentContact(contact))
       navigate(orgManageContactsUrls.view.viewContact)
     } else {
       const contactsToDelete = [contact]

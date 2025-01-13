@@ -48,8 +48,8 @@ const webToGeoSafeContact = (webContact) => {
   const contact = {
     id: webContact.id,
     enabled: webContact.enabled,
-    firstname: webContact.firstname,
-    lastname: webContact.lastname,
+    firstname: webContact.firstName,
+    lastname: webContact.lastName,
     emails: webContact.emails,
     mobilePhones: webContact.mobilePhones,
     homePhones: webContact.homePhones,
@@ -83,7 +83,6 @@ const webToGeoSafeContact = (webContact) => {
     role: webContact.role,
     pendingRole: webContact.pendingRole
   }
-  console.log('contact returned', contact)
   return contact
 }
 

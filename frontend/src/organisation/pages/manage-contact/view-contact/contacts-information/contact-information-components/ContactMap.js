@@ -6,8 +6,8 @@ import { Link } from 'react-router-dom'
 import * as turf from '@turf/turf'
 import L from 'leaflet'
 import iconRetinaUrl from 'leaflet/dist/images/marker-icon-2x.png'
-import iconUrl from 'leaflet/dist/images/marker-icon.png'
 import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
+import locationPin from '../../../../../../common/assets/images/location_pin.svg'
 import LoadingSpinner from '../../../../../../common/components/custom/LoadingSpinner'
 import TileLayerWithHeader from '../../../../../../common/components/custom/TileLayerWithHeader'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
@@ -20,6 +20,7 @@ export default function ContactMap({ locations }) {
   const [bounds, setBounds] = useState(null)
   const [markers, setMarkers] = useState([])
   const [geoJsonShapes, setGeoJsonShapes] = useState([])
+  const [centre, setCentre] = useState([])
 
   useEffect(() => {
     loadLocationsOnMap()
@@ -32,6 +33,7 @@ export default function ContactMap({ locations }) {
     const points = []
     const shapes = []
     if (locations) {
+      setCentre([0, 0])
       locations.forEach((location) => {
         let feature
         const locationType =
@@ -72,6 +74,7 @@ export default function ContactMap({ locations }) {
       ]
       setBounds(newBounds)
     }
+    setCentre([52.7152, -1.17349])
   }
 
   const FitBounds = () => {
@@ -108,7 +111,7 @@ export default function ContactMap({ locations }) {
 
   // Leaflet Marker Icon fix
   const DefaultIcon = L.icon({
-    iconUrl,
+    locationPin,
     iconRetinaUrl,
     shadowUrl,
     iconSize: [25, 41],
@@ -158,7 +161,7 @@ export default function ContactMap({ locations }) {
         <LoadingSpinner />
       ) : (
         <MapContainer
-          center={[0, 0]}
+          center={centre}
           dragging={true}
           scrollWheelZoom={true}
           zoom={8}

@@ -4,7 +4,6 @@ import { Link, useNavigate } from 'react-router-dom'
 import locationPin from '../../../../../common/assets/images/location_pin.svg'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
-import { getContactAdditional } from '../../../../../common/redux/userSlice'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import ContactHeader from './contact-information-components/ContactHeader'
 import ContactMap from './contact-information-components/ContactMap'
@@ -12,16 +11,10 @@ import ContactMap from './contact-information-components/ContactMap'
 export default function ContactInformationPage() {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
-  console.log('currentContact', currentContact)
   const contactName = currentContact?.firstName + ' ' + currentContact?.lastName
   const locations = currentContact?.pois
-  const jobTitle = useSelector((state) =>
-    getContactAdditional(state, 'jobTitle')
-  )
-  const keywords = useSelector((state) =>
-    getContactAdditional(state, 'keywords')
-  )
-  console.log('keywords', JSON.parse(keywords))
+  const jobTitle = currentContact.additionals.jobTitle
+  const keywords = currentContact.additionals.keywords
 
   const navigateBack = (e) => {
     e.preventDefault()
@@ -120,7 +113,7 @@ export default function ContactInformationPage() {
             </>
 
             {/* Keywords details */}
-            {JSON.parse(keywords) && (
+            {keywords.length > 0 && (
               <div className='govuk-!-margin-top-7'>
                 <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
                   Keywords
@@ -133,7 +126,7 @@ export default function ContactInformationPage() {
                   Change
                 </Link>
                 <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                <p>{JSON.parse(keywords).join(', ')}</p>
+                <p>{keywords.join(', ')}</p>
               </div>
             )}
 
@@ -157,7 +150,7 @@ export default function ContactInformationPage() {
 
             {/* Add more info links */}
             <div className='govuk-!-font-size-19 govuk-!-margin-top-7'>
-              {!keywords && (
+              {keywords.length === 0 && (
                 <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
                   Add keywords
                 </Link>

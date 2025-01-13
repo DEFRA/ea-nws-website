@@ -593,10 +593,11 @@ const userSlice = createSlice({
     },
     // org contact data
     setOrgCurrentContact: (state, action) => {
+      console.log('action', action.payload.firstName)
       state.orgCurrentContact.id = action.payload.id
       state.orgCurrentContact.enabled = action.payload.enabled
-      state.orgCurrentContact.firstName = action.payload.firstName
-      state.orgCurrentContact.lastName = action.payload.lastName
+      state.orgCurrentContact.firstName = action.payload.firstname
+      state.orgCurrentContact.lastName = action.payload.lastname
       state.orgCurrentContact.emails = action.payload.emails
       state.orgCurrentContact.mobilePhones = action.payload.mobilePhones
       state.orgCurrentContact.homePhones = action.payload.homePhones

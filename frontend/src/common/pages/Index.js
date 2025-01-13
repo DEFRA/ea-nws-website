@@ -5,7 +5,6 @@ import { Link } from 'react-router-dom'
 import Button from '../components/gov-uk/Button'
 import NotificationBanner from '../components/gov-uk/NotificationBanner'
 import AlertType from '../enums/AlertType'
-import LocationDataType from '../enums/LocationDataType'
 import {
   clearAuth,
   setAuthToken,
@@ -16,7 +15,6 @@ import {
   setCurrentLocationEasting,
   setCurrentLocationNorthing,
   setLocationBoundaries,
-  setOrgCurrentContact,
   setOrgId,
   setProfile,
   setRegistrations,
@@ -302,241 +300,7 @@ export default function IndexPage() {
     )
   }
 
-  const mockOrgCurrentContact = {
-    id: 1,
-    enabled: true,
-    firstName: 'Mary',
-    lastName: 'Test',
-    emails: ['test@email.com', 'jok@email.com'],
-    mobilePhones: null,
-    homePhones: ['0131223344', '014122334455'],
-    pois: [
-      {
-        address: 'Big Ben, London, SW1A 0AA',
-        name: 'UPRN',
-        coordinates: [51.5007, 0.1246],
-        meta_data: {
-          location_additional: {
-            location_data_type: LocationDataType.X_AND_Y_COORDS
-          }
-        }
-      }
-    ],
-    additionals: [
-      {
-        id: 'keywords',
-        value: { s: JSON.stringify(['test', 'test 1']) }
-      },
-      {
-        id: 'jobTitle',
-        value: { s: JSON.stringify('Admin') }
-      },
-      {
-        id: 'notes',
-        value: {
-          s: JSON.stringify(
-            'responsible for of all the petrol stations in the Midlands when Robert Bridge is on holiday.'
-          )
-        }
-      }
-    ]
-  }
-
   const mockContacts = [
-    {
-      id: 1,
-      enabled: true,
-      firstName: 'Rodger',
-      lastName: 'Krone',
-      emails: ['test@email.com', 'rodger@email.com'],
-      mobilePhones: null,
-      homePhones: ['0131223344', '014122334455'],
-      comments: 'responsible for the whole company',
-      pois: [
-        {
-          address: 'Big Ben, London, SW1A 0AA',
-          name: 'UPRN',
-          coordinates: [51.5007, 0.1246],
-          additionals: [
-            {
-              id: 'locationName',
-              value: { s: 'xycoords' }
-            },
-            { id: 'parentID', value: { s: '' } },
-            { id: 'targetAreas', value: { s: '' } },
-            { id: 'keywords', value: { s: '[]' } },
-            {
-              id: 'other',
-              value: {
-                s: JSON.stringify({
-                  full_address: '',
-                  postcode: '',
-                  x_coordinate: 329000.58,
-                  y_coordinate: 478530.6,
-                  internal_reference: '',
-                  business_criticality: '',
-                  location_type: '',
-                  action_plan: '',
-                  notes: '',
-                  location_data_type: 'xycoords',
-                  alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
-                })
-              }
-            }
-          ]
-        }
-      ],
-      additionals: [
-        {
-          id: 'keywords',
-          value: { s: JSON.stringify(['test', 'test 1']) }
-        },
-        {
-          id: 'jobTitle',
-          value: { s: JSON.stringify('CEO') }
-        }
-      ]
-    },
-    {
-      id: 2,
-      enabled: true,
-      firstName: 'Mary',
-      lastName: 'Adams',
-      emails: ['test@email.com', 'rodger@email.com'],
-      mobilePhones: null,
-      homePhones: ['0131223344', '014122334455'],
-      comments: 'technology officer',
-      pois: [
-        {
-          address: 'Stonehenge, Amesbury, SP4 7DE',
-          name: 'UPRN',
-          coordinates: [51.1789, -1.8262],
-          additionals: [
-            {
-              id: 'locationName',
-              value: { s: 'xycoord' }
-            },
-            { id: 'parentID', value: { s: '' } },
-            { id: 'targetAreas', value: { s: '' } },
-            { id: 'keywords', value: { s: '[]' } },
-            {
-              id: 'other',
-              value: {
-                s: JSON.stringify({
-                  full_address: '',
-                  postcode: '',
-                  x_coordinate: 329000.58,
-                  y_coordinate: 478530.6,
-                  internal_reference: '',
-                  business_criticality: '',
-                  location_type: '',
-                  action_plan: '',
-                  notes: '',
-                  location_data_type: 'xycoords',
-                  alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
-                })
-              }
-            }
-          ]
-        }
-      ],
-      additionals: [
-        {
-          id: 'keywords',
-          value: { s: JSON.stringify(['test', 'test 1']) }
-        },
-        {
-          id: 'jobTitle',
-          value: { s: JSON.stringify('CTO') }
-        }
-      ]
-    },
-    {
-      id: 2,
-      enabled: true,
-      firstName: 'Kevin',
-      lastName: 'Moss',
-      emails: ['test@email.com', 'rodger@email.com'],
-      mobilePhones: null,
-      homePhones: ['0131223344', '014122334455'],
-      comments: 'financial officer',
-      pois: [
-        {
-          address: 'New Forest National Park, Hampshire, England',
-          name: 'UPRN',
-          coordinates: null,
-          geometry: {
-            geoJson: {
-              type: 'Feature',
-              properties: {},
-              geometry: {
-                type: 'Polygon',
-                coordinates: [
-                  [
-                    [-1.5703, 50.8086],
-                    [-1.5227, 50.8093],
-                    [-1.5315, 50.8766],
-                    [-1.4817, 50.883],
-                    [-1.4873, 50.9393],
-                    [-1.5245, 50.9442],
-                    [-1.5112, 50.9735],
-                    [-1.4564, 50.9882],
-                    [-1.4729, 51.0193],
-                    [-1.5393, 51.021],
-                    [-1.5642, 51.0109],
-                    [-1.5981, 50.9779],
-                    [-1.6201, 50.9544],
-                    [-1.6231, 50.927],
-                    [-1.6255, 50.8882],
-                    [-1.5985, 50.8705],
-                    [-1.5562, 50.8507],
-                    [-1.5703, 50.8086]
-                  ]
-                ]
-              }
-            }
-          },
-
-          additionals: [
-            {
-              id: 'locationName',
-              value: { s: 'polygon' }
-            },
-            { id: 'parentID', value: { s: '' } },
-            { id: 'targetAreas', value: { s: '' } },
-            { id: 'keywords', value: { s: '[]' } },
-            {
-              id: 'other',
-              value: {
-                s: JSON.stringify({
-                  full_address: '',
-                  postcode: '',
-                  x_coordinate: 329000.58,
-                  y_coordinate: 478530.6,
-                  internal_reference: '',
-                  business_criticality: '',
-                  location_type: '',
-                  action_plan: '',
-                  notes: '',
-                  location_data_type: 'polygon',
-                  alertTypes: ['ALERT_LVL_2']
-                })
-              }
-            }
-          ]
-        }
-      ],
-      additionals: [
-        {
-          id: 'keywords',
-          value: { s: JSON.stringify(['test', 'test 1']) }
-        },
-        {
-          id: 'jobTitle',
-          value: { s: JSON.stringify('CFO') }
-        }
-      ]
-    },
     {
       name: 'Steve Binns',
       job_title: 'Regional Manager',
@@ -794,7 +558,6 @@ export default function IndexPage() {
       dispatch(setSelectedBoundaryType(null))
       dispatch(setSelectedBoundary(null))
       dispatch(setLocationBoundaries([]))
-      dispatch(setOrgCurrentContact(mockOrgCurrentContact))
       dispatch(setContacts(mockContacts))
       dispatch(setOrgId('1'))
       dispatch(setCurrentLocationEasting('520814'))

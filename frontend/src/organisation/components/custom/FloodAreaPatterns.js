@@ -57,3 +57,37 @@ export const createAlertPattern = () => {
     .attr('stroke', '#ffa200')
     .attr('stroke-width', 2)
 }
+
+export const createShapefilePattern = () => {
+  const shapefileSvg = d3
+    .select('body')
+    .append('svg')
+    .attr('width', 0)
+    .attr('height', 0)
+    .attr('id', 'svg-shapefile-pattern')
+
+  const shapefilePattern = shapefileSvg
+    .append('defs')
+    .append('pattern')
+    .attr('id', 'shapefile-pattern')
+    .attr('patternUnits', 'userSpaceOnUse')
+    .attr('width', 20)
+    .attr('height', 20)
+
+  shapefilePattern
+    .append('rect')
+    .attr('width', 5)
+    .attr('height', 5)
+    .attr('x', 5)
+    .attr('y', 5)
+    .attr('fill', '#809095')
+
+  // Second set of squares required to create off-set, checkered pattern
+  shapefilePattern
+    .append('rect')
+    .attr('width', 5)
+    .attr('height', 5)
+    .attr('x', 15)
+    .attr('y', 15)
+    .attr('fill', '#809095')
+}

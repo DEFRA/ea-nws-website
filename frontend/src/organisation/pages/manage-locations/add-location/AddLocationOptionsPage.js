@@ -57,7 +57,9 @@ export default function AddLocationOptionsPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+      <OrganisationAccountNavigation
+        currentPage={orgManageLocationsUrls.view.dashboard}
+      />
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

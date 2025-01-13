@@ -50,9 +50,12 @@ export default function ConfirmLocationLayout ({
   let shapeGeoData, shapeName, shapeArea, shapeLong, shapeLat
   if (layoutType === 'shape') {
     const { geojsonData } = location.state || {}
+    const formattArea = (area) => {
+      return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+    }
 
     shapeGeoData = geojsonData
-    shapeArea = Math.round(shapeGeoData.features[0]?.properties?.Shape_Area)
+    shapeArea = formattArea(Math.round(shapeGeoData.features[0]?.properties?.Shape_Area))
     shapeName = shapeGeoData.fileName
 
     // Calculate coords of centre of polygon to display the map properly
@@ -220,6 +223,7 @@ export default function ConfirmLocationLayout ({
               showMapControls={false}
               zoomLevel={14}
               shapefileData={shapeGeoData}
+              type='shape'
             />
             <div className='govuk-!-column-one-third'>
               <FloodWarningKey showShapefile={layoutType === 'shape'} />

@@ -45,13 +45,14 @@ export default function Map ({
 }) {
   const dispatch = useDispatch()
   const { latitude, longitude } = useSelector(
-    (state) => state.session.currentLocation.coordinates
-  )
+    (state) => state?.session?.currentLocation?.coordinates
+  ) || { latitude: 0, longitude: 0 }
   const centre = [latitude, longitude]
   const [apiKey, setApiKey] = useState(null)
   const [marker, setMarker] = useState(null)
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
+  const [shapeBounds, setShapeBounds] = useState(null)
 
   // get flood area data
   useEffect(() => {
@@ -210,7 +211,7 @@ export default function Map ({
       layer.setStyle({ opacity: 0, fillOpacity: 0 })
     }
   }
-
+  
   const onEachShapefileFeature = (feature, layer) => {
     layer.options.className = 'shapefile-area-pattern-fill'
     layer.setStyle({
@@ -218,6 +219,18 @@ export default function Map ({
       weight: 2,
       fillOpacity: 1.0
     })
+    setShapeBounds(layer.getBounds())
+  }
+
+
+  const FitBounds = () => {
+    const map = useMap()
+
+    useEffect(() => {
+      if (shapeBounds) {
+        map.fitBounds(shapeBounds)
+      }
+    }, [shapeBounds])
   }
 
   const alertAreaRef = useRef(null)
@@ -466,7 +479,7 @@ export default function Map ({
                     ? (
                       <AddMarker />
                       )
-                    : (
+                    : type !== 'shape' && (
                       <Marker position={centre} interactive={false} />
                       )}
                 </>
@@ -501,7 +514,7 @@ export default function Map ({
                   }}
                 />
               )}
-              {shapefileData && (
+              {shapefileData && (<>
                 <GeoJSON
                   data={shapefileData}
                   onEachFeature={onEachShapefileFeature}
@@ -509,6 +522,7 @@ export default function Map ({
                     shapefileRef.current = el
                   }}
                 />
+                <FitBounds /></>
               )}
             </>
             )

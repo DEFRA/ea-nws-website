@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 export default function LocationAddAddressInfoPage () {
@@ -35,7 +34,6 @@ export default function LocationAddAddressInfoPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation currentPage={orgManageLocationsUrls.add.addressInfo} />
       <BackLink onClick={() => navigate(-1)} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

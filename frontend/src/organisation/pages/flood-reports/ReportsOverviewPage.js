@@ -2,7 +2,6 @@ import React from 'react'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import { orgFloodReportsUrls } from '../../routes/flood-reports/FloodReportsRoutes'
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
@@ -11,9 +10,6 @@ export default function ReportsOverviewPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation
-        currentPage={orgFloodReportsUrls.overview}
-      />
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

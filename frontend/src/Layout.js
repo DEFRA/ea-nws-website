@@ -27,7 +27,7 @@ function Layout () {
       <div
         className={`${
           location.pathname.includes('organisation') && auth
-            ? 'custom-width-container'
+            ? 'custom-width-container body-container'
             : 'govuk-width-container body-container'
         }`}
       >

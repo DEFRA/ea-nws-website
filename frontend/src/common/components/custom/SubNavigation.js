@@ -14,7 +14,7 @@ export default function SubNavigation ({ pages, currentPage, type }) {
 
   if (type === 'org') {
     return (
-      <nav aria-label='Sub navigation' className='sub-navigation-org'>
+      <nav aria-label='Sub navigation' >
         <ul className='sub-navigation-org__list'>
           <li className='sub-navigation__item bold'>
             <a href='/' style={{ textDecoration: 'none', color: 'black' }}>

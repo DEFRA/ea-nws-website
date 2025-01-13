@@ -36,10 +36,14 @@ const routes = [].concat(
   require('../routes/add_location/download_flood_history'),
   require('../routes/elasticache/get_data'),
   require('../routes/elasticache/list_locations'),
+  require('../routes/elasticache/list_contacts'),
   require('../routes/location/create'),
   require('../routes/location/remove'),
   require('../routes/location/update'),
-  require('../routes/organization/update')
+  require('../routes/organization/update'),
+  require('../routes/organization/create_contacts'),
+  require('../routes/organization/update_contact'),
+  require('../routes/organization/remove_contacts')
 )
 
 module.exports = {

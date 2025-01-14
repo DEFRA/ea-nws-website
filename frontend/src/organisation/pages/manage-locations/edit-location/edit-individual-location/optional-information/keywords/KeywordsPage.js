@@ -2,7 +2,7 @@ import { useNavigate } from 'react-router-dom'
 import KeywordsLayout from '../../../../../../layouts/optional-info/KeywordsLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function KeywordsPage() {
+export default function KeywordsPage () {
   const navigate = useNavigate()
 
   const keywordText = () => {

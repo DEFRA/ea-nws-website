@@ -11,10 +11,10 @@ import ContactMap from './contact-information-components/ContactMap'
 export default function ContactInformationPage() {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
-  const contactName = currentContact?.firstName + ' ' + currentContact?.lastName
+  const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
   const locations = currentContact?.pois
   const jobTitle = currentContact.additionals.jobTitle
-  const keywords = currentContact.additionals.keywords
+  const keywords = Array.isArray(currentContact.additionals.keywords) ? currentContact.additionals.keywords : []
 
   const navigateBack = (e) => {
     e.preventDefault()
@@ -151,12 +151,12 @@ export default function ContactInformationPage() {
             {/* Add more info links */}
             <div className='govuk-!-font-size-19 govuk-!-margin-top-7'>
               {keywords.length === 0 && (
-                <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                <Link className='govuk-link govuk-!-display-block govuk-!-margin-bottom-1'>
                   Add keywords
                 </Link>
               )}
               {!currentContact.comments && (
-                <Link className='govuk-!-display-block govuk-!-margin-bottom-1'>
+                <Link className='govuk-link govuk-!-display-block govuk-!-margin-bottom-1'>
                   Add notes
                 </Link>
               )}

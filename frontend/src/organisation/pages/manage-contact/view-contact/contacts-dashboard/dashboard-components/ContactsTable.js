@@ -212,7 +212,7 @@ export default function ContactsTable ({
                 </div>
               </th>
               <td className='govuk-table__cell'>
-                <Link onClick={(e) => onAction(e, 'view', contact)}>
+                <Link className='govuk-link' onClick={(e) => onAction(e, 'view', contact)}>
                   {contact.firstname}{contact.lastname.length > 0 ? ' ' + contact.lastname : ''}
                 </Link>
               </td>
@@ -229,7 +229,7 @@ export default function ContactsTable ({
                 0
               </td>
               <td className='govuk-table__cell'>
-                <Link onClick={(e) => onAction(e, 'delete', contact)}>
+                <Link className='govuk-link' onClick={(e) => onAction(e, 'delete', contact)}>
                   Delete
                 </Link>
               </td>

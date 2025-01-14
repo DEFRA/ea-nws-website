@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../../../common/components/gov-uk/CheckBox'
 
-export default function SearchFilter ({
+export default function SearchFilter({
   // TODO: Combine filter values into a single object
   locations,
   setFilteredLocations,
@@ -53,10 +53,7 @@ export default function SearchFilter ({
   const businessCriticality = [
     ...new Set(
       locations
-        .map(
-          (location) =>
-            location.additionals.other?.business_criticality
-        )
+        .map((location) => location.additionals.other?.business_criticality)
         .filter((businessCriticality) => businessCriticality) // filters out undefined entries
     )
   ]
@@ -77,30 +74,44 @@ export default function SearchFilter ({
     )
   ]
 
-  const keywords =
-    locations.flatMap(location => {
+  const keywords = locations
+    .flatMap((location) => {
       if (Array.isArray(location.additionals)) {
         return location.additionals
-          .filter(additional => additional.id === 'keywords')
-          .map(additional => JSON.parse(additional.value.s))
+          .filter((additional) => additional.id === 'keywords')
+          .map((additional) => JSON.parse(additional.value.s))
       }
       return []
-    }).flat()
+    })
+    .flat()
 
-  const linkedLocations = [
-    ...new Set(['No', 'Yes'])
-  ]
+  const linkedLocations = [...new Set(['No', 'Yes'])]
 
   // Visibility filters
   const [locationNameVisible, setLocationNameVisible] = useState(false)
-  const [locationTypeVisible, setLocationTypeVisible] = useState(selectedLocationTypeFilters.length > 0)
-  const [floodMessagesAvailableVisible, setFloodMessagesAvailableVisible] = useState(selectedFloodMessagesAvailableFilters.length > 0)
-  const [floodMessagesSentVisible, setFloodMessagesSentVisible] = useState(selectedFloodMessagesSentFilters.length > 0)
-  const [businessCriticalityVisible, setBusinessCriticalityVisible] = useState(selectedBusinessCriticalityFilters.length > 0)
-  const [riverSeaRiskVisible, setRiverSeaRiskVisible] = useState(selectedRiverSeaRiskFilters.length > 0)
-  const [groundWaterRiskVisible, setGroundWaterRiskVisible] = useState(selectedGroundWaterRiskFilters.length > 0)
-  const [keywordVisible, setKeywordVisible] = useState(selectedKeywordFilters.length > 0)
-  const [linkedVisible, setLinkedVisible] = useState(selectedLinkedFilters.length > 0)
+  const [locationTypeVisible, setLocationTypeVisible] = useState(
+    selectedLocationTypeFilters.length > 0
+  )
+  const [floodMessagesAvailableVisible, setFloodMessagesAvailableVisible] =
+    useState(selectedFloodMessagesAvailableFilters.length > 0)
+  const [floodMessagesSentVisible, setFloodMessagesSentVisible] = useState(
+    selectedFloodMessagesSentFilters.length > 0
+  )
+  const [businessCriticalityVisible, setBusinessCriticalityVisible] = useState(
+    selectedBusinessCriticalityFilters.length > 0
+  )
+  const [riverSeaRiskVisible, setRiverSeaRiskVisible] = useState(
+    selectedRiverSeaRiskFilters.length > 0
+  )
+  const [groundWaterRiskVisible, setGroundWaterRiskVisible] = useState(
+    selectedGroundWaterRiskFilters.length > 0
+  )
+  const [keywordVisible, setKeywordVisible] = useState(
+    selectedKeywordFilters.length > 0
+  )
+  const [linkedVisible, setLinkedVisible] = useState(
+    selectedLinkedFilters.length > 0
+  )
 
   // handle filters applied
   const handleFilterChange = (e, setFilters) => {
@@ -185,17 +196,20 @@ export default function SearchFilter ({
     // Apply keyword filter
     if (selectedKeywordFilters.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
-        selectedKeywordFilters.some(
-          keyword => location.additionals.other?.keywords.includes(keyword)
+        selectedKeywordFilters.some((keyword) =>
+          location.additionals.other?.keywords.includes(keyword)
         )
       )
     }
 
     // Apply linked locations filter
     if (selectedLinkedFilters.length > 0) {
-      filteredLocations = filteredLocations.filter((location) =>
-        (selectedLinkedFilters.includes('Yes') && location.linked_contacts?.length > 0) ||
-        (selectedLinkedFilters.includes('No') && location.linked_contacts?.length === 0)
+      filteredLocations = filteredLocations.filter(
+        (location) =>
+          (selectedLinkedFilters.includes('Yes') &&
+            location.linked_contacts?.length > 0) ||
+          (selectedLinkedFilters.includes('No') &&
+            location.linked_contacts?.length === 0)
       )
     }
 
@@ -230,10 +244,7 @@ export default function SearchFilter ({
           icon={locationNameVisible ? faAngleUp : faAngleDown}
           size='lg'
         />
-        <label
-          className='govuk-label'
-          style={{ color: '#1d70b8' }}
-        >
+        <label className='govuk-label' style={{ color: '#1d70b8' }}>
           Location name
         </label>
       </div>
@@ -276,14 +287,11 @@ export default function SearchFilter ({
         >
           <FontAwesomeIcon icon={visible ? faAngleUp : faAngleDown} size='lg' />
           &nbsp;
-          <label
-            className='govuk-label'
-            style={{ color: '#1d70b8' }}
-          >
+          <label className='govuk-label' style={{ color: '#1d70b8' }}>
             {filterTitle}
           </label>
         </div>
-        {(visible) && (
+        {visible && (
           <div className='govuk-checkboxes govuk-checkboxes--small locations-select-filter'>
             {filterType.map((option) => (
               <CheckBox
@@ -317,9 +325,12 @@ export default function SearchFilter ({
                   {filter}&nbsp;
                 </label>
                 <FontAwesomeIcon
-                  icon={faXmark} className='locations-selected-filter-icon'
+                  icon={faXmark}
+                  className='locations-selected-filter-icon'
                   onClick={() => {
-                    setFilterArray(filterArray.filter((item) => item !== filter))
+                    setFilterArray(
+                      filterArray.filter((item) => item !== filter)
+                    )
                   }}
                 />
               </div>

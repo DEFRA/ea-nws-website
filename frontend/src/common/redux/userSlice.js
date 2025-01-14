@@ -189,23 +189,21 @@ const userSlice = createSlice({
     orgCurrentContact: {
       id: null,
       enabled: null,
-      firstName: null,
-      lastName: null,
+      firstname: null,
+      lastname: null,
       emails: null,
       mobilePhones: null,
       homePhones: null,
+      position: null,
+      comments: null,
       pois: null,
       additionals: [
         {
           id: 'keywords',
-          value: { s: '' }
+          value: { s: '[]' }
         },
         {
           id: 'jobTitle',
-          value: { s: '' }
-        },
-        {
-          id: 'notes',
           value: { s: '' }
         }
       ]
@@ -593,11 +591,10 @@ const userSlice = createSlice({
     },
     // org contact data
     setOrgCurrentContact: (state, action) => {
-      console.log('action', action.payload.firstName)
       state.orgCurrentContact.id = action.payload.id
       state.orgCurrentContact.enabled = action.payload.enabled
-      state.orgCurrentContact.firstName = action.payload.firstname
-      state.orgCurrentContact.lastName = action.payload.lastname
+      state.orgCurrentContact.firstname = action.payload.firstname
+      state.orgCurrentContact.lastname = action.payload.lastname
       state.orgCurrentContact.emails = action.payload.emails
       state.orgCurrentContact.mobilePhones = action.payload.mobilePhones
       state.orgCurrentContact.homePhones = action.payload.homePhones
@@ -613,10 +610,10 @@ const userSlice = createSlice({
       state.orgCurrentContact.enabled = action.payload
     },
     setOrgCurrentContactFirstName: (state, action) => {
-      state.orgCurrentContact.firstName = action.payload
+      state.orgCurrentContact.firstname = action.payload
     },
     setOrgCurrentContactLastName: (state, action) => {
-      state.orgCurrentContact.lastName = action.payload
+      state.orgCurrentContact.lastname = action.payload
     },
     setOrgCurrentContactEmails: (state, action) => {
       state.orgCurrentContact.emails = action.payload
@@ -740,8 +737,8 @@ const userSlice = createSlice({
       state.orgCurrentContact = {
         id: null,
         enabled: null,
-        firstName: null,
-        lastName: null,
+        firstname: null,
+        lastname: null,
         emails: null,
         mobilePhones: null,
         homePhones: null,
@@ -751,7 +748,11 @@ const userSlice = createSlice({
         additionals: [
           {
             id: 'keywords',
-            value: null
+            value: { s: '[]' }
+          },
+          {
+            id: 'jobTitle',
+            value: { s: '' }
           }
         ]
       }

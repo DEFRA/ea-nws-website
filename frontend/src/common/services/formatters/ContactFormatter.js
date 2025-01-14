@@ -48,8 +48,8 @@ const webToGeoSafeContact = (webContact) => {
   const contact = {
     id: webContact.id,
     enabled: webContact.enabled,
-    firstname: webContact.firstName,
-    lastname: webContact.lastName,
+    firstname: webContact.firstname,
+    lastname: webContact.lastname,
     emails: webContact.emails,
     mobilePhones: webContact.mobilePhones,
     homePhones: webContact.homePhones,

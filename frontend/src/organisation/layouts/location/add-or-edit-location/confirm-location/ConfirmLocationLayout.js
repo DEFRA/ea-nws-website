@@ -64,12 +64,14 @@ export default function ConfirmLocationLayout ({
   }
 
   useEffect(() => {
-    dispatch(
-      setCurrentLocationCoordinates({
-        latitude: shapeLat,
-        longitude: shapeLong
-      })
-    )
+    if (layoutType === 'shape') {
+      dispatch(
+        setCurrentLocationCoordinates({
+          latitude: shapeLat,
+          longitude: shapeLong
+        })
+      )
+    }
   }, [shapeLong, shapeLat])
 
   // Switch case to change the button/link logic depending on the location type

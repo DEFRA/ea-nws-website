@@ -36,7 +36,7 @@ export default function KeywordsLayout ({
         'api/elasticache/get_data',
         navigate
       )
-      let orgKeywords = null
+      let orgKeywords = []
       if (data) {
         orgKeywords = data
       }

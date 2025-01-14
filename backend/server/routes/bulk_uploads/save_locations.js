@@ -11,8 +11,9 @@ const {
   convertToPois
 } = require('../../services/bulk_uploads/processLocations')
 const crypto = require('node:crypto')
+const { apiCall } = require('../../services/ApiService')
 
-function uuidv4() {
+function uuidv4 () {
   return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) =>
     (
       +c ^
@@ -30,27 +31,47 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { orgId, fileName } = request.payload
+        const { authToken, orgId, fileName } = request.payload
 
-        if (fileName && orgId) {
+        if (fileName && orgId && authToken) {
           const elasticacheKey = 'bulk_upload:' + fileName.split('.')[0]
           const result = await getJsonData(elasticacheKey)
           const valid = convertToPois(result.data.valid)
           const invalid = convertToPois(result.data.invalid)
-          // add unique location ID and add to elasticache
+          // Add all valid to geosafe and elasticache
           valid.forEach(async (location) => {
-            location.id = uuidv4()
+            const response = await apiCall(
+              { authToken: authToken, location: location },
+              'location/create'
+            )
+            if (response.data.location) {
+              location.id = response.data.location.id
+            } else {
+              return createGenericErrorResponse(h)
+            }
             await addLocation(orgId, location)
           })
+          // Add invalid just to elasticache
           invalid.forEach(async (location) => {
             location.id = uuidv4()
             await addInvLocation(orgId, location)
           })
 
-          // TODO: call geosafe API to add locations to geosafe as well
+          const invalidReasons = {
+            duplicate: invalid.filter((location) =>
+              location.error?.includes('duplicate')
+            ).length,
+            notInEngland: invalid.filter((location) =>
+              location.error?.includes('not in england')
+            ).length,
+            notFound: invalid.filter((location) =>
+              location.error?.includes('not found')
+            ).length
+          }
 
           return h.response({
             status: 200,
+            //data: { valid: valid.length, invalid: invalidReasons }
             data: {
               valid: valid.length,
               invalid: invalid.length,

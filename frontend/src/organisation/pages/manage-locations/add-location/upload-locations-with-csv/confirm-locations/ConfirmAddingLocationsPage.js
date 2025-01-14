@@ -56,6 +56,27 @@ export default function ConfirmLocationsPage () {
     return locations[0]
   }
 
+  const getNotFoundLocation = async () => {
+    const dataToSend = { orgId }
+    const { data } = await backendCall(
+      dataToSend,
+      'api/bulk_uploads/get_invalid_locations',
+      navigate
+    )
+    console.log('data: ', data)
+
+    // const locations = []
+    // if (data) {
+    //   const duplicates = data.filter((location) =>
+    //     location.error.includes('duplicate')
+    //   )
+    //   duplicates.forEach((location) => {
+    //     locations.push(geoSafeToWebLocation(location))
+    //   })
+    // }
+    // return locations[0]
+  }
+
   const handleLocations = async (event) => {
     event.preventDefault()
 
@@ -65,6 +86,8 @@ export default function ConfirmLocationsPage () {
       'api/bulk_uploads/save_locations',
       navigate
     )
+
+    console.log('Saved locations: ', data)
 
     if (!errorMessage) {
       if (duplicateLocations > 0) {
@@ -107,6 +130,8 @@ export default function ConfirmLocationsPage () {
           })
         }
       } else {
+        getNotFoundLocation()
+
         navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard, {
           state: {
             addedLocations: data.valid,

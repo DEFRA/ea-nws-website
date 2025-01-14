@@ -18,7 +18,7 @@ export default function MapInteractiveKey ({
       <div className='govuk-heading-m govuk-!-font-size-16 govuk-!-margin-top-2 govuk-!-margin-bottom-2'>
         Flood areas
       </div>
-      <div>
+      <div style={{ fontSize: '14px' }}>
         <div
           className='govuk-checkboxes govuk-checkboxes--small locations-map-key'
           data-module='govuk-checkboxes'

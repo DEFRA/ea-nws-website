@@ -2,7 +2,7 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
-
+import { Link } from 'react-router-dom'
 export default function ContactUsLayout () {
   const navigate = useNavigate()
 
@@ -10,32 +10,15 @@ export default function ContactUsLayout () {
 
   return (
     <>
-
       {!authToken && <BackLink onClick={() => navigate(-1)} />}
       <main
-        className={
-          authToken
-            ? 'govuk-main-wrapper'
-            : 'govuk-main-wrapper govuk-!-padding-top-4'
-        }
+        className='govuk-main-wrapper govuk-!-padding-top-4'
       >
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
-            <div className='govuk-body'>
-              <h1 className='govuk-heading-l'>Contact us</h1>
-              {!authToken
-                ? (
-                  <p>
-                    Get in touch with us Floodline, if you need help signing up.
-                  </p>
-                  )
-                : (
-                  <p>
-                    Get in touch with us Floodline, if you need help with making
-                    changes to your account
-                  </p>
-                  )}
-              <h2 className='govuk-heading-m'>Floodline</h2>
+          <div className='govuk-body govuk-grid-column-two-thirds'>
+              <h1 className='govuk-heading-l '>Contact us</h1>
+              <p> Get in touch with us, if you need help.</p>
+              <h2 className='govuk-heading-m  govuk-!-margin-bottom-0'>Floodline</h2>
               <p>
                 Telephone: 0345 988 1188
                 <br />
@@ -45,7 +28,15 @@ export default function ContactUsLayout () {
                 <br />
                 <a className='govuk-link'>Find out about call charges</a>
               </p>
-            </div>
+              <h3 className= 'govuk-heading-s govuk-!-margin-bottom-0'>Email queries</h3>
+              <p>
+                Email: {' '}
+                <Link>
+                  enquiries@environment-agency.gov.uk
+                </Link>
+                <br/>
+                Monday to Friday, 8am to 6pm
+              </p>
           </div>
         </div>
       </main>

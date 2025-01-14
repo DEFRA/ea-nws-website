@@ -1,6 +1,5 @@
 import Hapi from '@hapi/hapi'
 import OpenAPIBackend from 'openapi-backend'
-const { logger } = require('../backend/server/plugins/logging')
 
 const server = new Hapi.Server({ port: 9000 })
 
@@ -120,5 +119,4 @@ server.route({
 // start server
 server.start().then(() => {
   console.info(`listening on ${server.info.uri}`)
-  logger.info(`API listening on ${server.info.uri}`)
 })

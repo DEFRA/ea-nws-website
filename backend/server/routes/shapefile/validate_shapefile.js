@@ -9,6 +9,7 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 const { Dbf } = require('dbf-reader')
+const { logger } = require('../../plugins/logging')
 
 const streamToBuffer = async (stream) => {
   return new Promise((resolve, reject) => {
@@ -135,7 +136,7 @@ module.exports = [
             )
           }
         } catch (err) {
-          console.log(err)
+          logger.log(`validate_shapefile error: ${err}`)
         }
         return h.response({
           status: 500,

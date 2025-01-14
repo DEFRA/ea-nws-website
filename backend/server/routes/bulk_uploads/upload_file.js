@@ -1,3 +1,4 @@
+const { logger } = require('../../plugins/logging')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
@@ -27,7 +28,9 @@ module.exports = [
           )
 
           if (!s3BucketName) {
-            console.error('S3 Bucket value undefined in Secrets Manager')
+            logger.error(
+              'upload_file error: S3 Bucket value undefined in Secrets Manager'
+            )
             return createGenericErrorResponse(h)
           }
 

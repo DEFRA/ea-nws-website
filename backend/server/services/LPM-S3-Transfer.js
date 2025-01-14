@@ -2,6 +2,7 @@ const { S3Client, PutObjectCommand } = require('@aws-sdk/client-s3')
 const fs = require('fs')
 const path = require('path')
 const getSecretKeyValue = require('./SecretsManager')
+const { logger } = require('../plugins/logging')
 
 const client = new S3Client()
 
@@ -13,7 +14,7 @@ const isLogOld = (logFilePath) => {
     const twoDaysAgo = Date.now() - 2 * 24 * 60 * 60 * 1000
     return fileCreated < twoDaysAgo
   } catch (err) {
-    console.log(err)
+    logger.error(err)
     return false
   }
 }
@@ -82,7 +83,7 @@ const processLogs = async (directory, bucketName) => {
         await uploadToBucket(newPath, bucketName)
         fs.writeFileSync(logFilePath, '')
       } catch (err) {
-        console.error({ err }, `Failed to process log file: ${logFile}`)
+        logger.error(`Failed to process log file: ${logFile}, ${err}`)
       }
     }
   }

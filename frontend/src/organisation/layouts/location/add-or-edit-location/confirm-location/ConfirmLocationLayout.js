@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
+
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import {
@@ -18,7 +18,6 @@ import {
 import { backendCall } from '../../../../../common/services/BackendService'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ConfirmLocationLayout ({
   navigateToNextPage,
@@ -112,9 +111,7 @@ export default function ConfirmLocationLayout ({
 
   return (
     <>
-      <OrganisationAccountNavigation
-        currentPage={orgManageLocationsUrls.view.dashboard}
-      />
+
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>

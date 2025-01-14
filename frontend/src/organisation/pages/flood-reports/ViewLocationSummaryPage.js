@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import React, { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
-import BackLink from '../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
-import { backendCall } from '../../../common/services/BackendService'
-import { orgFloodReportsUrls } from '../../routes/flood-reports/FloodReportsRoutes'
 import { infoUrls } from '../../routes/info/InfoRoutes'
+import BackLink from '../../../common/components/custom/BackLink'
+import { backendCall } from '../../../common/services/BackendService'
+import { useSelector } from 'react-redux'
 
 export default function ViewLocationSummaryPage () {
   const navigate = useNavigate()
@@ -28,17 +26,13 @@ export default function ViewLocationSummaryPage () {
   }, [])
 
   useEffect(() => {
-    setTotalLocations(
-      alertData?.severeWarningAlert.length +
-        alertData?.severeWarning.length +
-        alertData?.alert.length +
-        alertData?.noAlert.length
-    )
+    setTotalLocations(alertData?.severeWarningAlert.length + alertData?.severeWarning.length + alertData?.alert.length + alertData?.noAlert.length)
   }, [alertData])
 
   const locationTableMessagesBody = (alertData) => (
     <>
       <tbody className='govuk-table__body'>
+
         <tr className='govuk-table__row'>
           <td
             className='govuk-table__cell'
@@ -52,10 +46,8 @@ export default function ViewLocationSummaryPage () {
             className='govuk-table__cell'
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
-            Severe flood warnings
-            <br />
-            Flood warnings
-            <br />
+            Severe flood warnings<br />
+            Flood warnings<br />
             Flood alerts
           </td>
           <td
@@ -63,8 +55,7 @@ export default function ViewLocationSummaryPage () {
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
             5<br />
-            795
-            <br />
+            795<br />
             1,484
           </td>
         </tr>
@@ -81,15 +72,15 @@ export default function ViewLocationSummaryPage () {
             className='govuk-table__cell'
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
-            Flood warnings
-            <br />
+            Flood warnings<br />
             Flood alerts
           </td>
           <td
             className='govuk-table__cell'
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
-            0<br />5
+            0<br />
+            5
           </td>
         </tr>
         <tr className='govuk-table__row'>
@@ -124,6 +115,7 @@ export default function ViewLocationSummaryPage () {
   const locationTableNoMessages = (alertData) => (
     <>
       <tbody className='govuk-table__body'>
+
         <tr className='govuk-table__row'>
           <td
             className='govuk-table__cell'
@@ -137,8 +129,7 @@ export default function ViewLocationSummaryPage () {
             className='govuk-table__cell'
             style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
           >
-            None available
-            <br />
+            None available<br />
             All message types (turned off)
           </td>
           <td
@@ -174,24 +165,19 @@ export default function ViewLocationSummaryPage () {
     </>
   )
 
-  const locationTableHead = (
-    title,
-    paragraph,
-    locationTableBody,
-    numberMessages
-  ) => (
+  const locationTableHead = (title, paragraph, locationTableBody, numberMessages) => (
     <>
       <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-5 govuk-!-display-inline-block'>
         {title}
       </h2>
       <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3 section-break-bold' />
-      <p className='govuk-!-margin-bottom-5'>{paragraph}</p>
+      <p className='govuk-!-margin-bottom-5'>{paragraph}
+
+      </p>
       <Link to={infoUrls.floodTypes} className='govuk-link '>
         What are the different types of flood messages?
       </Link>
-      <p className='govuk-!-margin-top-5'>
-        {numberMessages} of {totalLocations} locations
-      </p>
+      <p className='govuk-!-margin-top-5'>{numberMessages} of {totalLocations} locations</p>
 
       <table className='govuk-table govuk-table--small-text-until-tablet'>
         <thead className='govuk-table__head'>
@@ -216,42 +202,28 @@ export default function ViewLocationSummaryPage () {
   )
   const paragraphMessages = (
     <>
-      This is a summary of how many locations get each of the different types of{' '}
-      <br /> flood messages. Not all flood messages are available for some
-      locations.
+      This is a summary of how many locations get each of the different types of <br /> flood messages.
+      Not all flood messages are available for some locations.
     </>
   )
 
   const paragraphNoMessages = (
     <>
-      This is a summary of locations that will not get messages. This is because{' '}
-      <br />
+      This is a summary of locations that will not get messages. This is because <br />
       no messages are available or messages types have been turned off.
     </>
   )
   return (
     <>
-      <OrganisationAccountNavigation
-        currentPage={orgFloodReportsUrls.overview}
-      />
+
       <BackLink onClick={() => navigate(-1)} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
             <h1 className='govuk-heading-l'>Summary of flood messages sent</h1>
             <div className='govuk-body'>
-              {locationTableHead(
-                'Locations that get flood messages',
-                paragraphMessages,
-                locationTableMessagesBody(alertData),
-                totalLocations - alertData?.noAlert.length
-              )}
-              {locationTableHead(
-                'Locations that will not get flood messages',
-                paragraphNoMessages,
-                locationTableNoMessages(alertData),
-                alertData?.noAlert.length
-              )}
+              {locationTableHead('Locations that get flood messages', paragraphMessages, locationTableMessagesBody(alertData), totalLocations - alertData?.noAlert.length)}
+              {locationTableHead('Locations that will not get flood messages', paragraphNoMessages, locationTableNoMessages(alertData), alertData?.noAlert.length)}
             </div>
           </div>
         </div>

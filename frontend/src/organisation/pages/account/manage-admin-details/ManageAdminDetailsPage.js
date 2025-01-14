@@ -2,7 +2,6 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useLocation } from 'react-router'
 import { Link } from 'react-router-dom'
-import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
 import NotificationBanner from '../../../../common/components/gov-uk/NotificationBanner'
 import { orgAccountUrls } from '../../../routes/account/AccountRoutes'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
@@ -21,7 +20,7 @@ export default function ManageAdminDetailsPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row '>
           {location?.state && (

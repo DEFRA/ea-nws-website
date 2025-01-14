@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function FloodTypeFilter({
+export default function FloodTypeFilter ({
   iconSrc,
   locationsCount,
   warningType,
@@ -61,7 +61,7 @@ export default function FloodTypeFilter({
         }}
       >
         <Link
-          className={'govuk-link govuk-!-font-weight-bold govuk-!-font-size-19'}
+          className='govuk-link govuk-!-font-weight-bold govuk-!-font-size-19'
           style={{ marginRight: '10px', color: '#1d70b8' }}
         >
           {warningText}

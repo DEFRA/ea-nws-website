@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
@@ -253,7 +252,7 @@ export default function ViewContactsDashboardPage() {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+
       <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

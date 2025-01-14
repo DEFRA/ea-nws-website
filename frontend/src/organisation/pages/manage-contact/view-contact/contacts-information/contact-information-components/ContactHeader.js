@@ -33,7 +33,7 @@ export default function ContactHeader({ contactName, currentPage }) {
 
       {/* view contact navigation */}
       <div className='govuk-!-margin-top-6 govuk-!-margin-bottom-9'>
-        <ViewContactSubNavigation currentPage={currentPage} />
+        <ViewContactSubNavigation currentPage={currentPage} type='sub' />
       </div>
     </>
   )

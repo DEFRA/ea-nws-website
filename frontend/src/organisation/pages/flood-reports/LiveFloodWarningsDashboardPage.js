@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../common/components/gov-uk/Button'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import LocationDataType from '../../../common/enums/LocationDataType'
-import { orgFloodReportsUrls } from '../../routes/flood-reports/FloodReportsRoutes'
 import FloodReportsFilter from './dashboard-components/FloodReportsFilter'
 import FloodReportsTable from './dashboard-components/FloodReportsTable'
 
@@ -220,9 +218,6 @@ export default function LiveFloodWarningsDashboardPage () {
   )
   return (
     <>
-      <OrganisationAccountNavigation
-        currentPage={orgFloodReportsUrls.overview}
-      />
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

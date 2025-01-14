@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import Spinner from 'react-bootstrap/esm/Spinner'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import { backendCall } from '../../../../common/services/BackendService'
@@ -177,9 +176,7 @@ export default function UploadFileLayout ({
 
   return (
     <>
-      <OrganisationAccountNavigation
-        currentPage={orgManageLocationsUrls.view.dashboard}
-      />
+
       {!uploading && <BackLink onClick={() => navigate(-1)} />}
 
       <main className='govuk-main-wrapper'>

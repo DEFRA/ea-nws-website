@@ -8,19 +8,17 @@ import floodWarningIcon from '../../../../common/assets/images/flood_warning.svg
 import floodWarningRemovedIcon from '../../../../common/assets/images/flood_warning_removed.svg'
 import floodSevereWarningIcon from '../../../../common/assets/images/severe_flood_warning.svg'
 import BackLink from '../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../common/components/gov-uk/Button'
 import { orgFloodReportsUrls } from '../../../routes/flood-reports/FloodReportsRoutes'
 import FloodTypeFilter from './monitoring-components/FloodTypeFilter'
 import LiveMap from './monitoring-components/LiveMap'
 
-export default function LiveFLoodMonitoringPage() {
+export default function LiveFLoodMonitoringPage () {
   const navigate = useNavigate()
-  const [activeLocations, setActiveLocations] = useState(true)
+  const [activeLocations] = useState(true)
 
   return (
     <>
-      <OrganisationAccountNavigation />
 
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4 govuk-body'>
@@ -39,60 +37,62 @@ export default function LiveFLoodMonitoringPage() {
         </div>
         <div class='govuk-grid-row govuk-!-padding-top-4'>
           <div class='govuk-grid-column-one-third'>
-            {activeLocations ? (
-              <>
-                <FloodTypeFilter
-                  iconSrc={floodSevereWarningIcon}
-                  locationsCount={2}
-                  warningType='Severe'
-                  warningText='Severe flood warning'
-                  warningDescription='Severe flooding - danger to life'
-                />
-                <br />
-                <FloodTypeFilter
-                  iconSrc={floodWarningIcon}
-                  locationsCount={33}
-                  warningType='Warning'
-                  warningText='Flood warning'
-                  warningDescription='Flooding expected - act now'
-                />
-                <br />
-                <FloodTypeFilter
-                  iconSrc={floodAlertIcon}
-                  locationsCount={167}
-                  warningType='Alert'
-                  warningText='Flood alert'
-                  warningDescription='Early alert of possible flooding - be prepared'
-                />
-                <br />
-                <p className='govuk-body govuk-!-font-weight-bold'>
-                  Warnings removed in the last 24 hours
-                </p>
-                <FloodTypeFilter
-                  iconSrc={floodWarningRemovedIcon}
-                  locationsCount={3}
-                  warningType='Removed'
-                  warningText='Warnings removed'
-                  warningDescription=''
-                />
-                <Button
-                  text='Apply filter'
-                  className='govuk-button govuk-button--primary govuk-!-margin-top-3'
-                />
-              </>
-            ) : (
-              <>
-                <h2 class='govuk-heading-m'>Latest warnings</h2>
-                <p className='govuk-!-padding-top-0'>0 to display</p>
-                <br />
-                <p>
-                  You’ll only see flood warnings here when you{' '}
-                  <Link href='#' class='govuk-link'>
-                    add locations
-                  </Link>
-                </p>
-              </>
-            )}
+            {activeLocations
+              ? (
+                <>
+                  <FloodTypeFilter
+                    iconSrc={floodSevereWarningIcon}
+                    locationsCount={2}
+                    warningType='Severe'
+                    warningText='Severe flood warning'
+                    warningDescription='Severe flooding - danger to life'
+                  />
+                  <br />
+                  <FloodTypeFilter
+                    iconSrc={floodWarningIcon}
+                    locationsCount={33}
+                    warningType='Warning'
+                    warningText='Flood warning'
+                    warningDescription='Flooding expected - act now'
+                  />
+                  <br />
+                  <FloodTypeFilter
+                    iconSrc={floodAlertIcon}
+                    locationsCount={167}
+                    warningType='Alert'
+                    warningText='Flood alert'
+                    warningDescription='Early alert of possible flooding - be prepared'
+                  />
+                  <br />
+                  <p className='govuk-body govuk-!-font-weight-bold'>
+                    Warnings removed in the last 24 hours
+                  </p>
+                  <FloodTypeFilter
+                    iconSrc={floodWarningRemovedIcon}
+                    locationsCount={3}
+                    warningType='Removed'
+                    warningText='Warnings removed'
+                    warningDescription=''
+                  />
+                  <Button
+                    text='Apply filter'
+                    className='govuk-button govuk-button--primary govuk-!-margin-top-3'
+                  />
+                </>
+                )
+              : (
+                <>
+                  <h2 class='govuk-heading-m'>Latest warnings</h2>
+                  <p className='govuk-!-padding-top-0'>0 to display</p>
+                  <br />
+                  <p>
+                    You’ll only see flood warnings here when you{' '}
+                    <Link href='#' class='govuk-link'>
+                      add locations
+                    </Link>
+                  </p>
+                </>
+                )}
           </div>
           <div class='govuk-grid-column-two-thirds'>
             <LiveMap />

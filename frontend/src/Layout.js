@@ -20,7 +20,9 @@ function Layout () {
             ? <div className='custom-width-container'><OrganisationAccountNavigation currentPage={location.pathname} /></div>
             : <div className='govuk-width-container'><CitizenAccountNavigation currentPage={location.pathname} /></div>}
       </div>
-      <PhaseBanner type='org'/>
+      {location.pathname.includes('organisation')
+            ? <PhaseBanner type='org' />
+            : <PhaseBanner />}
       <div
         className={`${
           location.pathname.includes('organisation') && auth

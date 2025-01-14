@@ -83,7 +83,7 @@ export default function LocationHeader ({ currentPage }) {
 
       {/* view location navigation */}
       <div className='govuk-!-margin-top-6 govuk-!-margin-bottom-9'>
-        <ViewLocationSubNavigation currentPage={currentPage} />
+        <ViewLocationSubNavigation currentPage={currentPage} type='sub' />
       </div>
     </>
   )

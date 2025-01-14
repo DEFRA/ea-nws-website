@@ -15,11 +15,11 @@ import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageCon
 export default function AddContactDetailsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [firstNameError, setFirstNameError] = useState('')
-  const [lastNameError, setLastNameError] = useState('')
+  const [firstnameError, setFirstNameError] = useState('')
+  const [lastnameError, setLastNameError] = useState('')
   const [jobTitleError, setJobTitleError] = useState('')
-  const [firstName, setFirstName] = useState('')
-  const [lastName, setLastName] = useState('')
+  const [firstname, setFirstName] = useState('')
+  const [lastname, setLastName] = useState('')
   const [jobTitle, setJobTitle] = useState('')
 
   const charLimit = 20
@@ -45,11 +45,11 @@ export default function AddContactDetailsPage () {
 
   const checkMandatory = () => {
     let mandatoryMissing = false
-    if (!firstName) {
+    if (!firstname) {
       setFirstNameError('Enter first name')
       mandatoryMissing = true
     }
-    if (!lastName) {
+    if (!lastname) {
       setLastNameError('Enter last name')
       mandatoryMissing = true
     }
@@ -59,7 +59,7 @@ export default function AddContactDetailsPage () {
   const validateData = () => {
     let dataValid = true
     const mandatoryMissing = checkMandatory()
-    if (firstNameError || lastNameError || jobTitleError || mandatoryMissing) {
+    if (firstnameError || lastnameError || jobTitleError || mandatoryMissing) {
       dataValid = false
     }
     return dataValid
@@ -68,8 +68,8 @@ export default function AddContactDetailsPage () {
   const handleSubmit = () => {
     const dataValid = validateData()
     if (dataValid) {
-      dispatch(setOrgCurrentContactFirstName(firstName))
-      dispatch(setOrgCurrentContactLastName(lastName))
+      dispatch(setOrgCurrentContactFirstName(firstname))
+      dispatch(setOrgCurrentContactLastName(lastname))
       if (jobTitle) {
         dispatch(setOrgCurrentContactPosition(jobTitle))
       }
@@ -84,9 +84,9 @@ export default function AddContactDetailsPage () {
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {(firstNameError || lastNameError || jobTitleError) && (
+            {(firstnameError || lastnameError || jobTitleError) && (
               <ErrorSummary
-                errorList={[firstNameError, lastNameError, jobTitleError]}
+                errorList={[firstnameError, lastnameError, jobTitleError]}
               />
             )}
             <h1 className='govuk-heading-l'>Contact details</h1>
@@ -101,7 +101,7 @@ export default function AddContactDetailsPage () {
                     setFirstNameError,
                     'First name'
                   )}
-                error={firstNameError}
+                error={firstnameError}
                 className='govuk-input govuk-input--width-20'
                 isNameBold
               />
@@ -115,7 +115,7 @@ export default function AddContactDetailsPage () {
                     setLastNameError,
                     'Last name'
                   )}
-                error={lastNameError}
+                error={lastnameError}
                 className='govuk-input govuk-input--width-20'
                 isNameBold
               />

@@ -52,7 +52,7 @@ export default function AddNameLayout ({
     } */
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     NavigateToPreviousPage()
   }

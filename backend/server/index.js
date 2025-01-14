@@ -2,8 +2,9 @@ const hapi = require('@hapi/hapi')
 const config = require('./config')
 const schedule = require('node-schedule')
 const { scheduledLPMTransfer } = require('./services/LPM-S3-Transfer')
+const { logger } = require('./plugins/logging')
 
-async function createServer () {
+async function createServer() {
   // Create the hapi server
   const conf = await config()
 

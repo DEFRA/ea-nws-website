@@ -301,6 +301,10 @@
   width: 12.75em;
 }
 
+.live-map-container {
+  height: 100vh;
+}
+
 @media (max-width: 1099px) {
   .map-container {
     height: 45vh;
@@ -1585,4 +1589,8 @@ govuk-menu-toggle.button-menu > button {
 .leaflet-tooltip-left:before,
 .leaflet-tooltip-right:before {
   border: none !important;
+}
+
+.custom-checkbox-container .govuk-checkboxes__label:before {
+  background-color: white !important;
 }

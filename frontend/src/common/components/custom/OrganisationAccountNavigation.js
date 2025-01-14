@@ -3,9 +3,12 @@ import { orgManageContactsUrls } from '../../../organisation/routes/manage-conta
 import { orgManageLocationsUrls } from '../../../organisation/routes/manage-locations/ManageLocationsRoutes'
 import SubNavigation from './SubNavigation'
 
-export default function OrganisationAccountNavigation ({ currentPage }) {
+export default function OrganisationAccountNavigation({ currentPage }) {
   const pages = [
-    { title: 'Live flood warnings', link: '/organisation/home' },
+    {
+      title: 'Live flood warnings',
+      link: orgManageLocationsUrls.monitoring.view
+    },
     { title: 'Locations', link: orgManageLocationsUrls.view.dashboard },
     { title: 'Contacts', link: orgManageContactsUrls.view.dashboard },
     { title: 'Reports', link: orgFloodReportsUrls.overview }

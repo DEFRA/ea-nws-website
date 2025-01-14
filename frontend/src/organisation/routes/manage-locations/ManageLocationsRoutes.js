@@ -53,6 +53,9 @@ import EditKeyInformationPage from '../../pages/manage-locations/edit-location/e
 import EditKeywordsPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/keywords/KeywordsPage'
 import EditNotesPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/notes/NotesPage'
 
+// monitoring imports
+import LiveFloodMonitoringPage from '../../pages/manage-locations/live-monitoring/LiveFloodMonitoringPage'
+
 // view imports
 import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
 import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
@@ -60,6 +63,7 @@ import ViewLocationsDashboardPage from '../../pages/manage-locations/view-locati
 
 const urlManageOrg = '/organisation/manage-locations'
 export const urlManageOrgViewLocations = urlManageOrg + '/locations'
+const urlManageOrgLiveMonitoring = urlManageOrg + '/live-monitoring'
 export const urlManageOrgAddLocations = urlManageOrg + '/add'
 const urlManageOrgEditLocations = urlManageOrg + '/edit'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
@@ -71,6 +75,9 @@ const orgManageLocationsUrls = {
     dashboard: urlManageOrgViewLocations,
     viewLocation: urlManageOrgViewLocations + '/view',
     viewMessages: urlManageOrgViewLocations + '/view-messages'
+  },
+  monitoring: {
+    view: urlManageOrgLiveMonitoring + '/view'
   },
   add: {
     addLocationWithinBoundaries: {},
@@ -179,6 +186,11 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.view.viewMessages,
     component: <ViewMessagesPage />
+  },
+  // monitoring
+  {
+    path: orgManageLocationsUrls.monitoring.view,
+    component: <LiveFloodMonitoringPage />
   },
   // add
   {

@@ -1,9 +1,7 @@
 import { React } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../common/components/gov-uk/Button'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function NotInEnglandLayout ({
   navigateToNextPage,
@@ -60,9 +58,6 @@ export default function NotInEnglandLayout ({
 
   return (
     <>
-      <OrganisationAccountNavigation
-        currentPage={orgManageLocationsUrls.view.dashboard}
-      />
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-body govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>

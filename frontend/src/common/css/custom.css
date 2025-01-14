@@ -266,6 +266,10 @@
   width: 12.75em;
 }
 
+.live-map-container {
+  height: 100vh;
+}
+
 @media (max-width: 1099px) {
   .map-container {
     height: 45vh;
@@ -1596,4 +1600,8 @@ govuk-menu-toggle.button-menu > button {
   display: inline-flex;
   width: 240px;
   text-align: left;
+}
+
+.custom-checkbox-container .govuk-checkboxes__label:before {
+  background-color: white !important;
 }

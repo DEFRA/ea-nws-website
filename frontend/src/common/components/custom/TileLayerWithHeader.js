@@ -6,8 +6,8 @@ import {
 } from '@react-leaflet/core'
 import L from 'leaflet'
 
-export default function TileLayerWithHeader ({ url, token, bounds }) {
-  function calculateWithin (coords) {
+export default function TileLayerWithHeader({ url, token, bounds }) {
+  function calculateWithin(coords) {
     const tileMatrixSetLimits = {
       7: { x: [60, 64], y: [36, 43] },
       8: { x: [120, 129], y: [71, 87] },
@@ -37,9 +37,9 @@ export default function TileLayerWithHeader ({ url, token, bounds }) {
     return withinLimits()
   }
 
-  function CreateTileLayerWithHeader ({ url, ...options }, context) {
+  function CreateTileLayerWithHeader({ url, ...options }, context) {
     L.TileLayer.WithHeader = L.TileLayer.extend({
-      createTile (coords, done) {
+      createTile(coords, done) {
         const img = document.createElement('img')
         const withinLimits = calculateWithin(coords)
         if (withinLimits) {
@@ -66,7 +66,7 @@ export default function TileLayerWithHeader ({ url, token, bounds }) {
     return createElementObject(layer, context)
   }
 
-  function updateTileLayerWithHeader (layer, props, prevProps) {
+  function updateTileLayerWithHeader(layer, props, prevProps) {
     updateGridLayer(layer, props, prevProps)
     const { url } = props
     if (url != null && url !== prevProps.url) {

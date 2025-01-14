@@ -1,6 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import Details from '../../../common/components/gov-uk/Details'
 import WarningText from '../../../common/components/gov-uk/WarningText'
 import { infoUrls } from '../../routes/info/InfoRoutes'
@@ -33,7 +32,7 @@ export default function FloodAreasPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>

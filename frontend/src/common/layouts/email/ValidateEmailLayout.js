@@ -137,6 +137,7 @@ export default function ValidateEmailLayout ({
 
   return (
     <>
+
       {codeExpired
         ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
         : (

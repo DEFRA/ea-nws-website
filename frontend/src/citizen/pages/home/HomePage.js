@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router'
-import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
+
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import { setSigninType } from '../../../common/redux/userSlice'
 import SubscribedLocationTableLayout from '../manage-locations/SubscribedLocationTable'
@@ -22,7 +22,7 @@ export default function HomePage () {
 
   return (
     <>
-      <CitizenAccountNavigation currentPage={useLocation().pathname} />
+
       {location.state !== null && location.state.removedLocation && (
         <NotificationBanner
           className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'

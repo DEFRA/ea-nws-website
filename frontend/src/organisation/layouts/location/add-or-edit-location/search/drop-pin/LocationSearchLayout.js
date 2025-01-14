@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
 import Autocomplete from '../../../../../../common/components/gov-uk/Autocomplete'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
@@ -12,7 +11,6 @@ import {
   setCurrentLocationCoordinates
 } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
-import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
   const dispatch = useDispatch()
@@ -127,9 +125,6 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
 
   return (
     <>
-      <OrganisationAccountNavigation
-        currentPage={orgManageLocationsUrls.view.dashboard}
-      />
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row govuk-body'>

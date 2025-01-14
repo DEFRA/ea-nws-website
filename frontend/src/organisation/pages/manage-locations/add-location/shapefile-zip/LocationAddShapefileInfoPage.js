@@ -4,7 +4,7 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function LocationAddShapefilePage () {
+export default function LocationAddShapefileInfoPage () {
   const navigate = useNavigate()
 
   // References used to scroll to certain elements on page
@@ -18,6 +18,7 @@ export default function LocationAddShapefilePage () {
 
   return (
     <>
+
       <BackLink onClick={() => navigate(-1)} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

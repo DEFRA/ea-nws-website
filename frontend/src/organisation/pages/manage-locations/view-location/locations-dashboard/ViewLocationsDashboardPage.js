@@ -1,9 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router'
-import BackLink from '../../../../../common/components/custom/BackLink'
 import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
@@ -12,17 +9,18 @@ import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import {
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation
 } from '../../../../../common/services/WfsFloodDataService'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import LocationsTable from './dashboard-components/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
-
+import { useNavigate } from 'react-router'
+import BackLink from '../../../../../common/components/custom/BackLink'
 export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
   const navigate = useNavigate()
@@ -37,6 +35,7 @@ export default function ViewLocationsDashboardPage () {
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [displayedLocations, setDisplayedLocations] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
+  const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const [dialog, setDialog] = useState({
     show: false,
@@ -132,8 +131,9 @@ export default function ViewLocationsDashboardPage () {
     if (
       (location.additionals.other?.location_data_type !==
         LocationDataType.ADDRESS &&
-        location.additionals.other?.location_data_type !==
-          LocationDataType.X_AND_Y_COORDS) ||
+       location.additionals.other?.location_data_type !==
+        LocationDataType.X_AND_Y_COORDS) ||
+      location.coordinates === null ||
       location.coordinates.latitude === null ||
       location.coordinates.longtitude === null
     ) {
@@ -308,7 +308,7 @@ export default function ViewLocationsDashboardPage () {
     setIsFilterVisible(!isFilterVisible)
   }
 
-  const removeLocations = (locationsToRemove) => {
+  const removeLocations = async (locationsToRemove) => {
     const updatedLocations = locations.filter(
       (location) => !locationsToRemove.includes(location)
     )
@@ -316,7 +316,22 @@ export default function ViewLocationsDashboardPage () {
       (location) => !locationsToRemove.includes(location)
     )
 
-    // dispatch(setLocations(updatedLocations))
+    const locationIds = []
+    locationsToRemove.forEach((location) => {
+      locationIds.push(location.id)
+    })
+
+    const dataToSend = { authToken, orgId, locationIds }
+
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/location/remove',
+      navigate
+    )
+    if (errorMessage) {
+      console.log(errorMessage)
+    }
+
     setLocations([...updatedLocations])
     setFilteredLocations([...updatedFilteredLocations])
 
@@ -351,7 +366,7 @@ export default function ViewLocationsDashboardPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+
       <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

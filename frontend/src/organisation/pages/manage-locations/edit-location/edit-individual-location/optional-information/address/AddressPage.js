@@ -1,19 +1,14 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { getLocationAdditional } from '../../../../../../../common/redux/userSlice'
 import AddressLayout from '../../../../../../layouts/optional-info/AddressLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function AddressPage () {
   const navigate = useNavigate()
-  const locationName = useSelector(
-    (state) => getLocationAdditional(state, 'locationName')
-  )
 
   const navigateToNextPage = () => {
     navigate(orgManageLocationsUrls.view.viewLocation, {
-      state: { successMessage: `${locationName} address changed` }
+      state: { successMessage: 'Address changed' }
     })
   }
 

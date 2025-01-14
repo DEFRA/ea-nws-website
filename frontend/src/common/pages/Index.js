@@ -7,14 +7,15 @@ import NotificationBanner from '../components/gov-uk/NotificationBanner'
 import AlertType from '../enums/AlertType'
 import {
   clearAuth,
-  setAuthToken, setContactPreferences,
+  setAuthToken,
+  setContactPreferences,
+  setContacts,
   setCurrentLocation,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
   setCurrentLocationNorthing,
   setLocationBoundaries,
   setOrgCurrentContact,
-  setContacts,
   setOrgId,
   setProfile,
   setRegistrations,
@@ -515,23 +516,21 @@ export default function IndexPage () {
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: null,
-              postcode: null,
-              // Easting EPSG: 27700
-              x_coordinate: null,
-              // Northing EPSG: 27700
-              y_coordinate: null,
-              internal_reference: null,
-              business_criticality: null,
-              location_type: null,
-              action_plan: null,
-              notes: null,
-              location_data_type: null,
-              alertTypes: null
-            }
-          )
+          s: JSON.stringify({
+            full_address: null,
+            postcode: null,
+            // Easting EPSG: 27700
+            x_coordinate: null,
+            // Northing EPSG: 27700
+            y_coordinate: null,
+            internal_reference: null,
+            business_criticality: null,
+            location_type: null,
+            action_plan: null,
+            notes: null,
+            location_data_type: null,
+            alertTypes: null
+          })
         }
       }
     ]

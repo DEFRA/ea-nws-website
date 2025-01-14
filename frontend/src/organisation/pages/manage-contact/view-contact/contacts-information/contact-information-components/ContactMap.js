@@ -14,7 +14,7 @@ import LocationDataType from '../../../../../../common/enums/LocationDataType'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../../../common/services/GeoJsonHandler'
 
-export default function ContactMap({ locations }) {
+export default function ContactMap ({ locations }) {
   const [loading, setLoading] = useState(true)
   const [apiKey, setApiKey] = useState(null)
   const [bounds, setBounds] = useState(null)
@@ -28,7 +28,7 @@ export default function ContactMap({ locations }) {
   }, [])
 
   const loadLocationsOnMap = () => {
-    //load all locations user is connected to onto map
+    // load all locations user is connected to onto map
     const locationsCollection = []
     const points = []
     const shapes = []
@@ -87,7 +87,7 @@ export default function ContactMap({ locations }) {
     }, [bounds])
   }
 
-  async function getApiKey() {
+  async function getApiKey () {
     const { errorMessage, data } = await backendCall(
       'data',
       'api/os-api/oauth2'
@@ -157,45 +157,49 @@ export default function ContactMap({ locations }) {
 
   return (
     <>
-      {loading ? (
-        <LoadingSpinner />
-      ) : (
-        <MapContainer
-          center={centre}
-          dragging={true}
-          scrollWheelZoom={true}
-          zoom={8}
-          minZoom={7}
-          zoomControl={true}
-          attributionControl={false}
-          maxBounds={maxBounds}
-          className={'contacts-map-container'}
-        >
-          {apiKey && apiKey !== 'error' ? (
-            <>
-              {tileLayerWithHeader}
-              {markers &&
+      {loading
+        ? (
+          <LoadingSpinner />
+          )
+        : (
+          <MapContainer
+            center={centre}
+            dragging
+            scrollWheelZoom
+            zoom={8}
+            minZoom={7}
+            zoomControl
+            attributionControl={false}
+            maxBounds={maxBounds}
+            className='contacts-map-container'
+          >
+            {apiKey && apiKey !== 'error'
+              ? (
+                <>
+                  {tileLayerWithHeader}
+                  {markers &&
                 markers.map((marker, index) => (
                   <Marker key={index} position={[marker[0], marker[1]]}>
                     <Popup />
                   </Marker>
                 ))}
-              {geoJsonShapes.map((shape, index) => (
-                <GeoJSON key={index} data={shape} />
-              ))}
+                  {geoJsonShapes.map((shape, index) => (
+                    <GeoJSON key={index} data={shape} />
+                  ))}
 
-              <FitBounds />
-            </>
-          ) : (
-            <div className='map-error-container'>
-              <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
-              <Link className='govuk-body-s' onClick={() => getApiKey()}>
-                Reload map
-              </Link>
-            </div>
+                  <FitBounds />
+                </>
+                )
+              : (
+                <div className='map-error-container'>
+                  <p className='govuk-body-l govuk-!-margin-bottom-1'>Map Error</p>
+                  <Link className='govuk-body-s' onClick={() => getApiKey()}>
+                    Reload map
+                  </Link>
+                </div>
+                )}
+          </MapContainer>
           )}
-        </MapContainer>
-      )}
     </>
   )
 }

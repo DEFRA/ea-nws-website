@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 
-export default function Header ({type}) {
+export default function Header ({ type }) {
   return (
     <>
       <div className='govuk-phase-banner govuk-body'>
@@ -8,7 +8,8 @@ export default function Header ({type}) {
           type === 'org'
             ? 'custom-width-container'
             : 'govuk-width-container'
-        }`}>
+        }`}
+        >
           <p className='govuk-!-margin-bottom-0 ' style={{ display: 'flex', alignItems: 'center' }}>
             <strong className='govuk-tag govuk-phase-banner__content__tag'>
               Beta

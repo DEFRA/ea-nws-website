@@ -1,7 +1,7 @@
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ViewContactSubNavigation from './ViewContactSubNavigation'
 
-export default function ContactHeader({ contactName, currentPage }) {
+export default function ContactHeader ({ contactName, currentPage }) {
   return (
     <>
       <div className='govuk-grid-row'>

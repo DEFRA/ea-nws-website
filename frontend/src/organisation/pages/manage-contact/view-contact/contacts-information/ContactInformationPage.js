@@ -7,7 +7,7 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 import ContactHeader from './contact-information-components/ContactHeader'
 import ContactMap from './contact-information-components/ContactMap'
 
-export default function ContactInformationPage() {
+export default function ContactInformationPage () {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
@@ -48,7 +48,7 @@ export default function ContactInformationPage() {
               <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
                 Job title
               </h3>
-              <p>{jobTitle ? jobTitle : '-'}</p>
+              <p>{jobTitle || '-'}</p>
             </>
 
             <>
@@ -69,13 +69,13 @@ export default function ContactInformationPage() {
               <p>
                 {currentContact.emails
                   ? currentContact.emails.map((email, index) => {
-                      return (
-                        <span key={index}>
-                          {email}
-                          <br />
-                        </span>
-                      )
-                    })
+                    return (
+                      <span key={index}>
+                        {email}
+                        <br />
+                      </span>
+                    )
+                  })
                   : '-'}
               </p>
               <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
@@ -84,13 +84,13 @@ export default function ContactInformationPage() {
               <p>
                 {currentContact.mobilePhones
                   ? currentContact.mobilePhones.map((number, index) => {
-                      return (
-                        <span key={index}>
-                          {number}
-                          <br />
-                        </span>
-                      )
-                    })
+                    return (
+                      <span key={index}>
+                        {number}
+                        <br />
+                      </span>
+                    )
+                  })
                   : '-'}
               </p>
               <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
@@ -99,13 +99,13 @@ export default function ContactInformationPage() {
               <p>
                 {currentContact.homePhones
                   ? currentContact.homePhones.map((number, index) => {
-                      return (
-                        <span key={index}>
-                          {number}
-                          <br />
-                        </span>
-                      )
-                    })
+                    return (
+                      <span key={index}>
+                        {number}
+                        <br />
+                      </span>
+                    )
+                  })
                   : '-'}
               </p>
             </>

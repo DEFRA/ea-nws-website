@@ -50,7 +50,6 @@ export default function OrganisationHeader () {
               </a>
             </div>
 
-
             <nav className='one-login-header__nav'>
               <ul className='one-login-header__nav__list'>
                 <li
@@ -174,7 +173,7 @@ export default function OrganisationHeader () {
           style={{
             backgroundColor: '#1d70b8',
             margin: '0 auto',
-            padding: '0.2rem',
+            padding: '0.2rem'
           }}
         />
       </header>

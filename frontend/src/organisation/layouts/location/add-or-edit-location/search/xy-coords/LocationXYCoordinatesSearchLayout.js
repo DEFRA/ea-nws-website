@@ -108,7 +108,7 @@ export default function LocationXYCoordinatesSearchLayout ({
     }
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
   }

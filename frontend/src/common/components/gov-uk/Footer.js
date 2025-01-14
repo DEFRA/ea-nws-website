@@ -40,7 +40,7 @@ export default function Footer () {
                 <li className='govuk-footer__inline-list-item'>
                   <Link
                     className='govuk-footer__link'
-                    to={location.pathname.includes('organisation')? '/organisation/terms-and-conditions':'/terms-and-conditions'}
+                    to={location.pathname.includes('organisation') ? '/organisation/terms-and-conditions' : '/terms-and-conditions'}
                   >
                     Terms and conditions
                   </Link>

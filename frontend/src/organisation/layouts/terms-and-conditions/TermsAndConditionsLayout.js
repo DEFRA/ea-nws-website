@@ -43,19 +43,19 @@ export default function TermsAndConditionsLayout () {
               We make reasonable efforts to send flood warnings for locations added to your organisation’s account.
             </p>
 
-            <p> However, we cannot guarantee they will be sent or arrive. For example, you may fail to receive a warning due to unplanned network disruption. </p>
+            <p> However, we cannot guarantee they will be sent or arrive. For example, you may fail to receive a warning due to unplanned network disruption.</p>
             <p>
               We aim to develop and issue flood warnings based on the best available data
               and as early as possible before flooding is likely. But we cannot guarantee
               warnings are always accurate or complete due to the sometimes
-              unpredictable nature of weather and flooding. In certain circumstances, we
+              unpredictable nature of weather and flooding. In certain circumstances, we
               may not be able to give as much early notice as we would like
             </p>
-            <p>We’ll send flood warnings to email addresses and telephone numbers added by your administrators. </p>
+            <p>We’ll send flood warnings to email addresses and telephone numbers added by your administrators.</p>
 
             <p>We do not accept responsibility for any:</p>
             <ul className='govuk-list govuk-list--bullet'>
-              <li>flood warnings that fail to send or arrive </li>
+              <li>flood warnings that fail to send or arrive</li>
               <li>action your organisation takes or fails to take in response to a warning</li>
               <li>losses, damage or costs you have in connection with our service except when the law says we must</li>
             </ul>

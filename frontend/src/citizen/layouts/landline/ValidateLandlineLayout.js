@@ -134,6 +134,7 @@ export default function ValidateLandlineLayout ({
 
   return (
     <>
+
       {codeExpired
         ? (
           <ExpiredCodeLayout getNewCode={getNewCode} />

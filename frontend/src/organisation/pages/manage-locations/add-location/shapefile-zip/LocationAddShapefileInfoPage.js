@@ -1,7 +1,6 @@
 import React, { useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../common/components/gov-uk/Button'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
@@ -19,9 +18,7 @@ export default function LocationAddShapefileInfoPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation
-        currentPage={orgManageLocationsUrls.view.dashboard}
-      />
+
       <BackLink onClick={() => navigate(-1)} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

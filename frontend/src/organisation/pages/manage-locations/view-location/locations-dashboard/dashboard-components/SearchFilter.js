@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../../../common/components/gov-uk/CheckBox'
 
-export default function SearchFilter({
+export default function SearchFilter ({
   // TODO: Combine filter values into a single object
   locations,
   setFilteredLocations,

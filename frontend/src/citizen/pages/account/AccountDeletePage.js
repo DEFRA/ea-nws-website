@@ -93,6 +93,7 @@ export default function AccountDeletePage () {
 
   return (
     <>
+
       <BackLink onClick={() => navigate(-1)} />
       {/* Main body */}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

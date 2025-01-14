@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import { setSigninType } from '../../../common/redux/userSlice'
 
 export default function ManageOrganisationDetailsPage () {
@@ -15,7 +14,7 @@ export default function ManageOrganisationDetailsPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+
       <main className='govuk-main-wrapper'>
         <div Name='govuk-grid-row'>
           <div className='govuk-grid-column-full govuk-body'>

@@ -219,8 +219,8 @@ export default function ConfirmLocationLayout ({
             <Map
               showMapControls={false}
               zoomLevel={14}
-              shapefileData={shapeGeoData}
-              type='shape'
+              shapefileData={layoutType === 'shape' ? shapeGeoData : null}
+              type={layoutType === 'shape' ? 'shape' : null}
             />
             <div className='govuk-!-column-one-third'>
               <FloodWarningKey showShapefile={layoutType === 'shape'} />

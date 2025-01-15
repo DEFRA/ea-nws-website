@@ -117,6 +117,4 @@ server.route({
 })
 
 // start server
-server.start().then(() => {
-  console.info(`listening on ${server.info.uri}`)
-})
+server.start().then(() => console.info(`listening on ${server.info.uri}`))

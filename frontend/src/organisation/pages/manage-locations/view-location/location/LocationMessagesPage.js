@@ -5,7 +5,6 @@ import { Link, useNavigate } from 'react-router-dom';
 import linkIcon from '../../../../../common/assets/images/link.svg';
 import BackLink from '../../../../../common/components/custom/BackLink';
 import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner';
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation';
 import Button from '../../../../../common/components/gov-uk/Button';
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner';
 import Radio from '../../../../../common/components/gov-uk/Radio';
@@ -467,7 +466,7 @@ export default function LocationMessagesPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-0'>
         {isBannerDisplayed && (

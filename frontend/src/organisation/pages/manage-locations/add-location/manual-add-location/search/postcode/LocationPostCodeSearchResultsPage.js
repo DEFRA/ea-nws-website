@@ -2,8 +2,6 @@ import { React, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../../common/components/custom/BackLink'
-import LoadingSpinner from '../../../../../../../common/components/custom/LoadingSpinner'
-import OrganisationAccountNavigation from '../../../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../../../common/components/gov-uk/Button'
 import Pagination from '../../../../../../../common/components/gov-uk/Pagination'
 import {
@@ -18,7 +16,7 @@ import {
 } from '../../../../../../../common/redux/userSlice'
 import { convertCoordinatesToEspg27700 } from '../../../../../../../common/services/CoordinatesFormatConverter'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
-
+import LoadingSpinner from '../../../../../../../common/components/custom/LoadingSpinner'
 export default function LocationSearchResultsPage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -71,7 +69,7 @@ export default function LocationSearchResultsPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>

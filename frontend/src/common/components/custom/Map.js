@@ -304,22 +304,6 @@ export default function Map ({
             <Popup />
           </Marker>
         )}
-        {warningArea && types.includes('severe') && (
-          <GeoJSON
-            data={warningArea}
-            style={{ color: '#f70202' }}
-            onEachFeature={function (feature, layer) {
-              interactive &&
-                layer.on({
-                  click: () => dispatch(setSelectedFloodWarningArea(feature))
-                })
-            }}
-            ref={(el) => {
-              warningAreaRef.current = el
-              setWarningAreaRefVisible(true)
-            }}
-          />
-        )}
         {alertArea && types.includes('alert') && (
           <GeoJSON
             data={alertArea}
@@ -333,6 +317,22 @@ export default function Map ({
             ref={(el) => {
               alertAreaRef.current = el
               setAlertAreaRefVisible(true)
+            }}
+          />
+        )}
+        {warningArea && types.includes('severe') && (
+          <GeoJSON
+            data={warningArea}
+            style={{ color: '#f70202' }}
+            onEachFeature={function (feature, layer) {
+              interactive &&
+                layer.on({
+                  click: () => dispatch(setSelectedFloodWarningArea(feature))
+                })
+            }}
+            ref={(el) => {
+              warningAreaRef.current = el
+              setWarningAreaRefVisible(true)
             }}
           />
         )}

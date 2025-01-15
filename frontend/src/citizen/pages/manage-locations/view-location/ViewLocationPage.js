@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
-import CitizenAccountNavigation from '../../../../common/components/custom/CitizenAccountNavigation'
 import FloodWarningKey from '../../../../common/components/custom/FloodWarningKey'
 import Map from '../../../../common/components/custom/Map'
 import Button from '../../../../common/components/gov-uk/Button'
@@ -239,7 +238,6 @@ export default function ViewLocationPage () {
 
   return (
     <>
-      <CitizenAccountNavigation currentPage='/home' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>
           <div className='govuk-grid-row'>

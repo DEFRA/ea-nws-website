@@ -5,10 +5,10 @@ import { orgManageLocationsUrls } from '../../../../../../routes/manage-location
 export default function KeyInformationPage () {
   const navigate = useNavigate()
 
-  const navigateToNextPage = (locationName) => {
+  const navigateToNextPage = () => {
     // If user has updated the location name, we require it here
     navigate(orgManageLocationsUrls.view.viewLocation, {
-      state: { successMessage: `${locationName} key information changed` }
+      state: { successMessage: 'Key information changed' }
     })
   }
 

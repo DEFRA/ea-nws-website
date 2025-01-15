@@ -1,20 +1,22 @@
-import RoomOutlinedIcon from '@mui/icons-material/RoomOutlined'
+import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import locationPin from '../../../../../common/assets/images/location_pin.svg'
 import BackLink from '../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Details from '../../../../../common/components/gov-uk/Details'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import { getLocationAdditionals } from '../../../../../common/redux/userSlice'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import FullscreenMap from '../FullscreenMap'
 import LocationHeader from './location-information-components/LocationHeader'
 
 export default function LocationInformationPage () {
   const navigate = useNavigate()
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = useSelector((state) => getLocationAdditionals(state))
+  const [showMap, setShowMap] = useState(false)
   const keywords = additionalData.keywords
     ? JSON.parse(additionalData.keywords)
     : []
@@ -138,6 +140,10 @@ export default function LocationInformationPage () {
     </>
   )
 
+  const openMap = () => {
+    setShowMap(true)
+  }
+
   const navigateBack = (e) => {
     e.preventDefault()
     navigate(orgManageLocationsUrls.view.dashboard)
@@ -145,7 +151,7 @@ export default function LocationInformationPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-4'>
         <LocationHeader
@@ -283,7 +289,7 @@ export default function LocationInformationPage () {
                   Notes
                 </h2>
                 <Link
-                  className='govuk-link govuk-!-display-inline-block'
+                  className='govuk-link govuk-link govuk-!-display-inline-block'
                   style={{ float: 'right' }}
                   to={
                     orgManageLocationsUrls.edit.individualLocation
@@ -303,7 +309,7 @@ export default function LocationInformationPage () {
                 additionalData.location_data_type !==
                   LocationDataType.BOUNDARY && (
                     <Link
-                      className='govuk-!-display-block govuk-!-margin-bottom-1'
+                      className='govuk-link govuk-!-display-block govuk-!-margin-bottom-1'
                       to={
                       orgManageLocationsUrls.edit.individualLocation
                         .optionalInformation.address
@@ -316,7 +322,7 @@ export default function LocationInformationPage () {
                 additionalData.location_data_type !==
                   LocationDataType.BOUNDARY && (
                     <Link
-                      className='govuk-!-display-block govuk-!-margin-bottom-1'
+                      className='govuk-link govuk-!-display-block govuk-!-margin-bottom-1'
                       to={
                       orgManageLocationsUrls.edit.individualLocation
                         .optionalInformation.keyInformation
@@ -329,7 +335,7 @@ export default function LocationInformationPage () {
                 additionalData.location_data_type !==
                   LocationDataType.BOUNDARY && (
                     <Link
-                      className='govuk-!-display-block govuk-!-margin-bottom-1'
+                      className='govuk-link govuk-!-display-block govuk-!-margin-bottom-1'
                       to={
                       orgManageLocationsUrls.edit.individualLocation
                         .optionalInformation.keyInformation
@@ -353,7 +359,7 @@ export default function LocationInformationPage () {
               )}
               {!additionalData.keywords && (
                 <Link
-                  className='govuk-!-display-block govuk-!-margin-bottom-1'
+                  className='govuk-link govuk-!-display-block govuk-!-margin-bottom-1'
                   to={
                     orgManageLocationsUrls.edit.individualLocation
                       .optionalInformation.keywords
@@ -364,7 +370,7 @@ export default function LocationInformationPage () {
               )}
               {!additionalData.action_plan && (
                 <Link
-                  className='govuk-!-display-block govuk-!-margin-bottom-1'
+                  className='govuk-link govuk-!-display-block govuk-!-margin-bottom-1'
                   to={
                     orgManageLocationsUrls.edit.individualLocation
                       .optionalInformation.actionPlan
@@ -375,7 +381,7 @@ export default function LocationInformationPage () {
               )}
               {!additionalData.notes && (
                 <Link
-                  className='govuk-!-display-block'
+                  className='govuk-link'
                   to={
                     orgManageLocationsUrls.edit.individualLocation
                       .optionalInformation.notes
@@ -397,27 +403,31 @@ export default function LocationInformationPage () {
             )}
           </div>
           {/* other half - map */}
-          {/* nly show map if data allows */}
+          {/* only show map if data allows */}
           {currentLocation.coordinates?.latitude && currentLocation.coordinates?.longitude &&
-              (
-                <div className='govuk-grid-column-one-half'>
-                  <Map showMapControls={false} zoomLevel={14} />
-                  <div className='govuk-!-margin-top-4'>
-                    <FloodWarningKey type='both' />
-                  </div>
-                  <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
-                    This is not a live flood map
-                  </span>
-                  <span className='govuk-caption-m govuk-!-font-size-16'>
-                    It shows fixed areas we provide flood warnings and alerts for
-                  </span>
-                  <div className=' govuk-!-margin-top-4'>
-                    <RoomOutlinedIcon style={{ fontSize: 30 }} />
-                    <Link>Open Map</Link>
-                  </div>
+            (
+              <div className='govuk-grid-column-one-half'>
+                <Map showMapControls={false} zoomLevel={14} />
+                <FloodWarningKey />
+                <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
+                  This is not a live flood map
+                </span>
+                <span className='govuk-caption-m govuk-!-font-size-16'>
+                  It shows fixed areas we provide flood warnings and alerts for
+                </span>
+                <div className=' govuk-!-margin-top-4' style={{ display: 'flex', marginLeft: '-0.5rem' }}>
+                  <img src={locationPin} alt='Location pin icon' />
+                  <Link className='govuk-link' onClick={openMap}>Open map</Link>
                 </div>
-              )}
-
+                {showMap && (
+                  <FullscreenMap
+                    showMap={showMap}
+                    setShowMap={setShowMap}
+                    locations={[currentLocation]}
+                  />
+                )}
+              </div>
+            )}
         </div>
       </main>
     </>

@@ -91,7 +91,7 @@ export default function AlternativeContactDetailsLayout ({
     }
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     NavigateToPreviousPage()
   }

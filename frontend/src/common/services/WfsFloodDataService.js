@@ -37,6 +37,41 @@ export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
   }
 }
 
+export const getSurroundingFloodAreasFromShape = async (geoJsonShape, bboxKM = 0.5) => {
+  const bufferedShape = turf.buffer(geoJsonShape, bboxKM, { units: 'kilometers' });
+  // warning areas
+  let WFSParams = {
+    service: 'WFS',
+    map: 'uk-nfws.qgz',
+    version: '1.1.0',
+    request: 'GetFeature',
+    typename: 'flood_warnings',
+    srsname: 'EPSG:4326',
+    bbox: bufferedShape,
+    outputFormat: 'GEOJSON'
+  }
+
+  const { data: wfsWarningData } = await backendCall(WFSParams, 'api/wfs')
+
+  // alert area
+  WFSParams = {
+    service: 'WFS',
+    map: 'uk-nfws.qgz',
+    version: '1.1.0',
+    request: 'GetFeature',
+    typename: 'flood_alerts',
+    srsname: 'EPSG:4326',
+    bbox: bufferedShape,
+    outputFormat: 'GEOJSON'
+  }
+  const { data: wfsAlertData } = await backendCall(WFSParams, 'api/wfs')
+
+  return {
+    alertArea: wfsAlertData,
+    warningArea: wfsWarningData
+  }
+}
+
 export const getAssociatedAlertArea = async (lat, lng, code) => {
   const bboxKM = 0.5 // size of bounding box from centre in KM
 

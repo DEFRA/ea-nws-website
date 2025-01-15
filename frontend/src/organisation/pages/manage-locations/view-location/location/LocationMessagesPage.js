@@ -1,22 +1,23 @@
-import moment from 'moment'
-import { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
-import linkIcon from '../../../../../common/assets/images/link.svg'
-import BackLink from '../../../../../common/components/custom/BackLink'
-import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner'
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
-import Button from '../../../../../common/components/gov-uk/Button'
-import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
-import Radio from '../../../../../common/components/gov-uk/Radio'
-import AlertType from '../../../../../common/enums/AlertType'
-import { getLocationAdditionals, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
-import { backendCall } from '../../../../../common/services/BackendService'
-import { csvToJson } from '../../../../../common/services/CsvToJson'
-import { getSurroundingFloodAreas } from '../../../../../common/services/WfsFloodDataService'
-import { infoUrls } from '../../../../routes/info/InfoRoutes'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-import LocationHeader from './location-information-components/LocationHeader'
+import moment from 'moment';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom';
+import linkIcon from '../../../../../common/assets/images/link.svg';
+import BackLink from '../../../../../common/components/custom/BackLink';
+import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner';
+import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation';
+import Button from '../../../../../common/components/gov-uk/Button';
+import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner';
+import Radio from '../../../../../common/components/gov-uk/Radio';
+import AlertType from '../../../../../common/enums/AlertType';
+import LocationDataType from '../../../../../common/enums/LocationDataType';
+import { getLocationAdditionals, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice';
+import { backendCall } from '../../../../../common/services/BackendService';
+import { csvToJson } from '../../../../../common/services/CsvToJson';
+import { getSurroundingFloodAreas, getSurroundingFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService';
+import { infoUrls } from '../../../../routes/info/InfoRoutes';
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes';
+import LocationHeader from './location-information-components/LocationHeader';
 export default function LocationMessagesPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -27,9 +28,11 @@ export default function LocationMessagesPage () {
   )
 
   const [loading, setLoading] = useState(true)
-  const { latitude, longitude } = useSelector(
-    (state) => state.session.currentLocation.coordinates
+  const currentLocation = useSelector(
+    (state) => state.session.currentLocation
   )
+
+
   const [alertAreas, setAlertAreas] = useState(null)
   const [warningAreas, setWarningAreas] = useState(null)
   const [floodAreasInputs, setFloodAreasInputs] = useState([])
@@ -38,6 +41,11 @@ export default function LocationMessagesPage () {
   const [floodAlertsCount, setFloodAlertsCount] = useState([])
   const [floodWarningsCount, setFloodWarningsCount] = useState([])
   const [severeFloodWarningsCount, setSevereFloodWarningsCount] = useState([])
+
+  let  latitude =  0
+  let  longitude =  0
+
+
 
   const alertTypes = additionalData.alertTypes
   const allAlertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
@@ -62,10 +70,22 @@ export default function LocationMessagesPage () {
   ]
 
   const surroundingAreas = async () => {
-    const { alertArea, warningArea } = await getSurroundingFloodAreas(
-      latitude, longitude,
-      0.5
-    )
+    let alertArea, warningArea
+    console.log(currentLocation)
+    if(currentLocation.meta_data.location_additional.location_data_type === LocationDataType.X_AND_Y_COORDS){
+      latitude = currentLocation.coordinates[0]
+      longitude = currentLocation.coordinates[1]
+      [alertArea, warningArea]  = await getSurroundingFloodAreas(
+        latitude, longitude,
+        0.5
+      )
+    }else {
+      [alertArea, warningArea]  = await getSurroundingFloodAreasFromShape(
+        currentLocation.geometry,
+        0.5
+      )
+    }
+
     setAlertAreas(alertArea)
     setWarningAreas(warningArea)
   }

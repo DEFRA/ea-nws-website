@@ -1,7 +1,7 @@
 const convertWebProfile = (webProfile) => {
   // format pois for geoSafe
   webProfile.pois.forEach((location) => {
-    if (location.coordinates?.latitude && data.location.coordinates?.longitude) {
+    if (location.coordinates?.latitude && location.coordinates?.longitude) {
       // convert lat/long to degrees in 10^-6
       location.coordinates.latitude = parseInt(
         location.coordinates.latitude * 10 ** 6

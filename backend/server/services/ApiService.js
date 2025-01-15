@@ -23,7 +23,7 @@ const apiCall = async (data, path) => {
     data.profile = convertWebProfile(data.profile)
   }
 
-  if (data.location.coordinates?.latitude && data.location.coordinates?.longitude) {
+  if (data.location?.coordinates?.latitude && data.location?.coordinates?.longitude) {
     data.location.coordinates.latitude = parseInt(
       data.location.coordinates.latitude * 10 ** 6
     )
@@ -50,7 +50,7 @@ const apiCall = async (data, path) => {
       )
     }
 
-    if (response.data.location.coordinates?.latitude && response.data.location.coordinates?.longitude) {
+    if (response.data.location?.coordinates?.latitude && response.data.location?.coordinates?.longitude) {
       response.data.location.coordinates.latitude = response.data.location.coordinates.latitude / 10 ** 6
       response.data.location.coordinates.longitude = response.data.location.coordinates.longitude / 10 ** 6
     }

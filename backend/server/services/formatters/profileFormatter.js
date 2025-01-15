@@ -1,13 +1,15 @@
 const convertWebProfile = (webProfile) => {
   // format pois for geoSafe
   webProfile.pois.forEach((location) => {
-    // convert lat/long to degrees in 10^-6
-    location.coordinates.latitude = parseInt(
-      location.coordinates.latitude * 10 ** 6
-    )
-    location.coordinates.longitude = parseInt(
-      location.coordinates.longitude * 10 ** 6
-    )
+    if (location.coordinates?.latitude && data.location.coordinates?.longitude) {
+      // convert lat/long to degrees in 10^-6
+      location.coordinates.latitude = parseInt(
+        location.coordinates.latitude * 10 ** 6
+      )
+      location.coordinates.longitude = parseInt(
+        location.coordinates.longitude * 10 ** 6
+      )
+    }
     // remove categoies for pois as geoSafe does not support this yet
     delete location.categories
   })
@@ -18,8 +20,10 @@ const convertGeoSafeProfile = (geoSafeProfile) => {
   // format pois for web profile
   geoSafeProfile.pois.forEach((location) => {
     // convert lat/long to degrees
-    location.coordinates.latitude = location.coordinates.latitude / 10 ** 6
-    location.coordinates.longitude = location.coordinates.longitude / 10 ** 6
+    if (location.coordinates?.latitude && location.coordinates?.longitude) {
+      location.coordinates.latitude = location.coordinates.latitude / 10 ** 6
+      location.coordinates.longitude = location.coordinates.longitude / 10 ** 6
+    }
   })
   return geoSafeProfile
 }

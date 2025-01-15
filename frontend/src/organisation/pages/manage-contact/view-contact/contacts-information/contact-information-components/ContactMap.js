@@ -34,6 +34,7 @@ export default function ContactMap({ locations }) {
     const points = []
     const shapes = []
     if (locations) {
+      // centre must be set to 0, 0 as map will be fit accordingly to locations loaded
       setCentre([0, 0])
       locations.forEach((location) => {
         let feature

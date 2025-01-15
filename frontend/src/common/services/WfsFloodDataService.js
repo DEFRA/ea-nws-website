@@ -31,6 +31,7 @@ export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
   }
   const { data: wfsAlertData } = await backendCall(WFSParams, 'api/wfs')
 
+
   return {
     alertArea: wfsAlertData,
     warningArea: wfsWarningData
@@ -38,7 +39,9 @@ export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
 }
 
 export const getSurroundingFloodAreasFromShape = async (geoJsonShape, bboxKM = 0.5) => {
-  const bufferedShape = turf.buffer(geoJsonShape, bboxKM, { units: 'kilometers' });
+  const bbox = turf.bbox(turf.buffer(geoJsonShape, bboxKM, { units: 'kilometers' }))
+  const bboxInput =
+    bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3] + ',EPSG:4326'
   // warning areas
   let WFSParams = {
     service: 'WFS',
@@ -47,10 +50,9 @@ export const getSurroundingFloodAreasFromShape = async (geoJsonShape, bboxKM = 0
     request: 'GetFeature',
     typename: 'flood_warnings',
     srsname: 'EPSG:4326',
-    bbox: bufferedShape,
+    bbox: bboxInput,
     outputFormat: 'GEOJSON'
   }
-
   const { data: wfsWarningData } = await backendCall(WFSParams, 'api/wfs')
 
   // alert area
@@ -61,7 +63,7 @@ export const getSurroundingFloodAreasFromShape = async (geoJsonShape, bboxKM = 0
     request: 'GetFeature',
     typename: 'flood_alerts',
     srsname: 'EPSG:4326',
-    bbox: bufferedShape,
+    bbox: bboxInput,
     outputFormat: 'GEOJSON'
   }
   const { data: wfsAlertData } = await backendCall(WFSParams, 'api/wfs')

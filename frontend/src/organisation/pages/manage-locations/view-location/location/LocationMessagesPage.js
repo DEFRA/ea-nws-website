@@ -40,12 +40,6 @@ export default function LocationMessagesPage () {
   const [floodAlertsCount, setFloodAlertsCount] = useState([])
   const [floodWarningsCount, setFloodWarningsCount] = useState([])
   const [severeFloodWarningsCount, setSevereFloodWarningsCount] = useState([])
-
-  let  latitude =  0
-  let  longitude =  0
-
-
-
   const alertTypes = additionalData.alertTypes
   const allAlertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
   const childrenId = ['flood_alerts.33'] // TODO additionalData.childrenId
@@ -69,24 +63,23 @@ export default function LocationMessagesPage () {
   ]
 
   const surroundingAreas = async () => {
-    let alertArea, warningArea
-    console.log(currentLocation)
-    if(currentLocation.meta_data.location_additional.location_data_type === LocationDataType.X_AND_Y_COORDS){
-      latitude = currentLocation.coordinates[0]
-      longitude = currentLocation.coordinates[1]
-      [alertArea, warningArea]  = await getSurroundingFloodAreas(
-        latitude, longitude,
+    let result
+    if(additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS){
+      result  = await getSurroundingFloodAreas(
+        currentLocation.coordinates.latitude, currentLocation.coordinates.longitude,
         0.5
       )
-    }else {
-      [alertArea, warningArea]  = await getSurroundingFloodAreasFromShape(
-        currentLocation.geometry,
+
+    }else {      
+      const geoJson = JSON.parse(currentLocation.geometry.geoJson)
+      result  = await getSurroundingFloodAreasFromShape(
+        geoJson.geometry,
         0.5
       )
     }
 
-    setAlertAreas(alertArea)
-    setWarningAreas(warningArea)
+    setAlertAreas(result.alertArea)
+    setWarningAreas(result.warningArea)
   }
 
   const setHistoricalData = (area, type, index) => {
@@ -134,7 +127,6 @@ export default function LocationMessagesPage () {
       if (floodHistoryData) {
         if (alertAreas && warningAreas) {
           const allAreas = [...alertAreas.features, ...warningAreas.features]
-          console.log(allAreas)
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Warning', index))
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Warning Rapid Response', index))
@@ -194,10 +186,12 @@ export default function LocationMessagesPage () {
 
   useEffect(() => {
     const fetchAreas = async () => {
-      await surroundingAreas()
+      if(currentLocation && additionalData && (currentLocation.coordinates || currentLocation.geometry || currentLocation.geocode)){
+        await surroundingAreas()
+      }
     }
     fetchAreas()
-  }, [])
+  }, [currentLocation, additionalData])
 
   useEffect(() => {
     async function getHistoryUrl () {

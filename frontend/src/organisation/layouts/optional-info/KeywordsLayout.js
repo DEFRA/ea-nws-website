@@ -29,14 +29,18 @@ export default function KeywordsLayout ({
   const [orgKeywordsOriginal, setOrgKeywordsOriginal] = useState([])
   useEffect(() => {
     const getOrgKeywordsOriginal = async () => {
-      const key = orgId + (keywordType === 'location' ? ':t_Keywords_location' : ':t_Keywords_contact')
+      const key =
+        orgId +
+        (keywordType === 'location'
+          ? ':t_Keywords_location'
+          : ':t_Keywords_contact')
       const dataToSend = { key }
       const { data } = await backendCall(
         dataToSend,
         'api/elasticache/get_data',
         navigate
       )
-      let orgKeywords = null
+      let orgKeywords = []
       if (data) {
         orgKeywords = data
       }
@@ -247,7 +251,6 @@ export default function KeywordsLayout ({
 
   return (
     <>
-
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

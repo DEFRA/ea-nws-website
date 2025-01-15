@@ -1,11 +1,28 @@
-import { Link } from 'react-router-dom'
+import { useEffect } from 'react'
+import { useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import ConfirmationPanel from '../../../../common/components/gov-uk/Panel'
+import { backendCall } from '../../../../common/services/BackendService'
 
-export default function SignUpSuccessPage () {
-  // need to check for authToken
+export default function SignUpSuccessPage() {
+  const navigate = useNavigate()
+  const profile = useSelector((state) => state.session.profile)
+
+  useEffect(() => {
+    const notifySignUpSuccess = async () => {
+      const dataToSend = {
+        email: profile.emails[0],
+        fullName: profile.firstname + profile.lastname
+      }
+
+      await backendCall(dataToSend, 'api/notify/sign_up', navigate)
+    }
+
+    notifySignUpSuccess()
+  }, [])
+
   return (
     <>
-
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

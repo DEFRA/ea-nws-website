@@ -1,9 +1,25 @@
 import * as React from 'react'
+import { useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../components/gov-uk/Button'
+import { backendCall } from '../../services/BackendService'
 
-export default function StartPage () {
+export default function StartPage() {
   const navigate = useNavigate()
+
+  useEffect(() => {
+    const notifySignUpSuccess = async () => {
+      console.log('ye')
+      const dataToSend = {
+        email: 'cameron.purves@uk.leidos.com',
+        fullName: 'Cameron Purves'
+      }
+
+      await backendCall(dataToSend, 'api/notify/sign_up', navigate)
+    }
+
+    notifySignUpSuccess()
+  }, [])
 
   return (
     <>

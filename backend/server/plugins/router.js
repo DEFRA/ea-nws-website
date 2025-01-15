@@ -43,7 +43,9 @@ const routes = [].concat(
   require('../routes/organization/update'),
   require('../routes/organization/create_contacts'),
   require('../routes/organization/update_contact'),
-  require('../routes/organization/remove_contacts')
+  require('../routes/organization/remove_contacts'),
+
+  require('../routes/gov_uk_notify/sign_up_complete')
 )
 
 module.exports = {

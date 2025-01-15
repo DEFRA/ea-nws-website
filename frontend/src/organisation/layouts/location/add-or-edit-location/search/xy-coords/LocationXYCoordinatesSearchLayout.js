@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../../../common/components/gov-uk/Input'
@@ -73,14 +72,14 @@ export default function LocationXYCoordinatesSearchLayout ({
     }
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
   }
 
   return (
     <>
-      <OrganisationAccountNavigation />
+
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

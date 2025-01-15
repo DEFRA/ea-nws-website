@@ -85,6 +85,7 @@ export default function ContactDetailsTable ({
 
   return (
     <>
+
       <h3 className='govuk-heading-m'>{contactTitle}</h3>
       {(contacts.length > 0 || unregisteredContact.length) > 0 && (
         <table className='govuk-table'>

@@ -21,6 +21,7 @@ import {
   getSurroundingFloodAreas,
   isLocationInFloodArea
 } from '../../../common/services/WfsFloodDataService'
+
 export default function LocationSearchResultsLayout ({ continueToNextPage }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -159,6 +160,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
 
   return (
     <>
+
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>

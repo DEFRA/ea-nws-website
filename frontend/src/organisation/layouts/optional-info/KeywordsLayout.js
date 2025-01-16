@@ -231,7 +231,7 @@ export default function KeywordsLayout ({
       const updatedContact = updateAdditionals(currentObject, [
         {
           id: 'keywords',
-          value: {s: JSON.stringify(keywordsArrayChecked)}
+          value: { s: JSON.stringify(keywordsArrayChecked) }
         }
       ])
       dispatch(setOrgCurrentContact(updatedContact))

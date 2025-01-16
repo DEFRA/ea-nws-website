@@ -124,17 +124,19 @@ export default function LocationMessagesPage () {
     const processFloodData = () => {
       if (floodHistoryData) {
         if (alertAreas && warningAreas) {
-          const allAreas = [...alertAreas.features, ...warningAreas.features]
-          allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
+          const allAreas = [ ...warningAreas.features, ...alertAreas.features]
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Warning', index))
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Warning Rapid Response', index))
-        } else if (alertAreas) {
-          alertAreas.features.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
-        } else if (warningAreas) {
+          allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
+        } 
+        else if (warningAreas) {
           warningAreas.features.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
           warningAreas.features.forEach((area, index) => setHistoricalData(area, 'Flood Warning', index))
           warningAreas.features.forEach((area, index) => setHistoricalData(area, 'Flood Warning Rapid Response', index))
         }
+        else if (alertAreas) {
+          alertAreas.features.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
+        } 
       }
     }
     processFloodData()
@@ -143,27 +145,27 @@ export default function LocationMessagesPage () {
   useEffect(() => {
     const populateInputs = (alertAreas, warningAreas) => {
       const updatedFloodAreas = []
+      if (warningAreas) {
+        for (let j = 0; j < warningAreas.length; j++) {
+          updatedFloodAreas.push({
+            areaName:
+            warningAreas[j].properties.TA_NAME,
+            areaType: `${severeFloodWarningsCount[j] > 0 ? 'Severe flood warning area' : 'Flood warning area'}`,
+            messagesSent: `${severeFloodWarningsCount[j]} severe flood warning${severeFloodWarningsCount[j] > 1 ? 's' : ''},  ${floodWarningsCount[j]} flood warning${floodWarningsCount[j] > 1 ? 's' : ''}, ${floodAlertsCount[j]} flood alert${floodAlertsCount[j] > 1 ? 's' : ''}`,
+            linked: childrenId.includes(warningAreas[j].id)
+          })
+        }
+      }
       if (alertAreas) {
+        const warningAreaLength = warningAreas? warningAreas.length : 0
         for (let i = 0; i < alertAreas.length; i++) {
+          const alertAreaIndex = warningAreaLength > 0 ? i + warningAreaLength : i
           updatedFloodAreas.push({
             areaName:
             alertAreas[i].properties.TA_NAME,
             areaType: 'Alert areas',
-            messagesSent: `${floodAlertsCount[i]} flood alert${floodAlertsCount[i] > 1 ? 's' : ''}`,
+            messagesSent: `${floodAlertsCount[alertAreaIndex]} flood alert${floodAlertsCount[alertAreaIndex] > 1 ? 's' : ''}`,
             linked: childrenId.includes(alertAreas[i].id)
-          })
-        }
-      }
-      if (warningAreas) {
-        const alertAreaLenght = alertAreas.length
-        for (let j = 0; j < warningAreas.length; j++) {
-          const warningAreaIndex = alertAreaLenght > 0 ? j + alertAreas.length : j
-          updatedFloodAreas.push({
-            areaName:
-            warningAreas[j].properties.TA_NAME,
-            areaType: `${severeFloodWarningsCount[warningAreaIndex] > 0 ? 'Severe flood warning area' : 'Flood warning area'}`,
-            messagesSent: `${severeFloodWarningsCount[warningAreaIndex]} severe flood warning${severeFloodWarningsCount[warningAreaIndex] > 1 ? 's' : ''},  ${floodWarningsCount[warningAreaIndex]} flood warning${floodWarningsCount[warningAreaIndex] > 1 ? 's' : ''}, ${floodAlertsCount[warningAreaIndex]} flood alert${floodAlertsCount[warningAreaIndex] > 1 ? 's' : ''}`,
-            linked: childrenId.includes(warningAreas[j].id)
           })
         }
       }
@@ -173,7 +175,7 @@ export default function LocationMessagesPage () {
     if (floodHistoryData && (alertAreas || warningAreas)) {
       populateInputs(alertAreas?.features, warningAreas?.features)
     }
-  }, [floodAlertsCount, floodWarningsCount, severeFloodWarningsCount])
+  }, [warningAreas, alertAreas, floodAlertsCount, floodWarningsCount, severeFloodWarningsCount])
 
   useEffect(() => {
     const areAllCountsLoaded = floodAlertsCount.length > 0 && floodWarningsCount.length > 0 && severeFloodWarningsCount.length > 0

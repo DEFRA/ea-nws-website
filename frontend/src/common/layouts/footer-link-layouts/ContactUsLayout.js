@@ -25,7 +25,10 @@ export default function ContactUsLayout () {
               <br />
               24 hour service
               <br />
-              <a className='govuk-link'>Find out about call charges</a>
+              <Link>
+                Find out about call charges
+              </Link>
+
             </p>
             <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>Email queries</h3>
             <p>

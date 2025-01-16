@@ -49,7 +49,7 @@ export default function TermsAndConditionsLayout () {
               and as early as possible before flooding is likely. But we cannot guarantee
               warnings are always accurate or complete due to the sometimes
               unpredictable nature of weather and flooding. In certain circumstances, we
-              may not be able to give as much early notice as we would like
+              may not be able to give as much early notice as we would like.
             </p>
             <p>We’ll send flood warnings to email addresses and telephone numbers added by your administrators.</p>
 
@@ -83,6 +83,7 @@ export default function TermsAndConditionsLayout () {
               <a
                 href='/organisation/privacy'
                 className='govuk-link'
+                target='_blank'
               >
                 {' '}
                 privacy notice (opens new window)

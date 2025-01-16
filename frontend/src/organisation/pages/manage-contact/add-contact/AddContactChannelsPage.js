@@ -22,11 +22,11 @@ export default function AddContactChannelsPage () {
   const [emailInput, setEmailInput] = useState([])
   const [mobileInput, setMobileInput] = useState([])
   const [homeInput, setHomeInput] = useState([])
-  const firstName = useSelector(
-    (state) => state.session.orgCurrentContact.firstName
+  const firstname = useSelector(
+    (state) => state.session.orgCurrentContact.firstname
   )
-  const lastName = useSelector(
-    (state) => state.session.orgCurrentContact.lastName
+  const lastname = useSelector(
+    (state) => state.session.orgCurrentContact.lastname
   )
 
   const navigateBack = (event) => {
@@ -218,7 +218,7 @@ export default function AddContactChannelsPage () {
                 />
             )}
             <h1 className='govuk-heading-l'>
-              Choose how you want {firstName || 'first'} {lastName || 'last'} to
+              Choose how you want {firstname || 'first'} {lastname || 'last'} to
               get flood messages
             </h1>
             <div className='govuk-body'>

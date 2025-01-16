@@ -22,13 +22,13 @@ export default function SelectAddressLayout ({
     currentPage * locationsPerPage
   )
 
-  const handleSelectedLocation = async (event, selectedLocation) => {
+  const handleSelectedLocation = (event, selectedLocation) => {
     event.preventDefault()
     dispatch(setOrganizationAddress(selectedLocation.address))
     navigateToNextPage()
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     NavigateToPreviousPage()
   }

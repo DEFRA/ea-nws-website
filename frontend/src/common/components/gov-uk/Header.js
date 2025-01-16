@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
 import OrganisationHeader from '../custom/OrganisationHeader'
+import PrivateBetaHeader from '../../pages/private-beta/PrivateBetaHeader'
 
 export default function Header () {
   const location = useLocation()
@@ -16,6 +17,8 @@ export default function Header () {
           <OrganisationHeader />
           )
         : (
+          <div>
+          <PrivateBetaHeader/>
           <header className='govuk-header govuk-header--full-width-border' data-module='govuk-header'>
             <div className='govuk-width-container govuk-header__container'>
               <div className='govuk-header__logo'>
@@ -58,12 +61,13 @@ export default function Header () {
                       className='govuk-header__link custom-header-link'
                       to='/contact'
                     >
-                      Contact us
+                      Contact
                     </Link>
                     )}
               </div>
             </div>
           </header>
+          </div>
           )}
     </>
   )

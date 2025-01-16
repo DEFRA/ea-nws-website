@@ -17,6 +17,14 @@ module.exports = [
         const { authToken, orgId, contacts } = request.payload
 
         if (authToken && orgId && contacts) {
+          // remove any null fields from each contact
+          contacts.forEach(contact => {
+            Object.keys(contact).forEach((key) => {
+              if (contact[key] === null && key !== 'id') {
+                delete contact[key]
+              }
+            })
+          })
           const response = await apiCall(
             { authToken: authToken, contacts: contacts },
             'organization/createContacts'

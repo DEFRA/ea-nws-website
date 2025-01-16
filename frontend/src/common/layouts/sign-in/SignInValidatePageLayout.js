@@ -119,6 +119,7 @@ export default function SignInValidatePageLayout ({
 
   return (
     <>
+
       {codeExpired || signUpNotComplete
         ? (
             (codeExpired && <ExpiredCodeLayout getNewCode={getNewCode} />) ||

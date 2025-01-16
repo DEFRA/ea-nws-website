@@ -14,5 +14,5 @@ export default function ViewLocationSubNavigation ({ currentPage }) {
     { title: 'Linked contacts', link: '/' }
   ]
 
-  return <SubNavigation pages={pages} currentPage={currentPage} />
+  return <SubNavigation pages={pages} currentPage={currentPage} type='sub' />
 }

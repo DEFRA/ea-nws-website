@@ -22,7 +22,8 @@ export default function Popup({
   charLimit = 0,
   validateInput = null,
   defaultValue,
-  setOptionsSelected
+  setOptionsSelected,
+  showCancel = true
 }) {
   const handleTextInputChange = (val) => {
     if (input) {
@@ -119,11 +120,13 @@ export default function Popup({
               className={`dialog govuk-button ${buttonClass}`}
               onClick={handleSubmit}
             />
-            <p className='govuk-body popup-dialog-link inline-link'>
-              <Link onClick={() => onClose()} className='govuk-link'>
-                Cancel
-              </Link>
-            </p>{' '}
+            {showCancel && (
+              <p className='govuk-body popup-dialog-link inline-link'>
+                <Link onClick={() => onClose()} className='govuk-link'>
+                  Cancel
+                </Link>
+              </p>
+            )}
           </div>
         </div>
       </div>

@@ -3,7 +3,6 @@ import floodAlertIcon from '../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../common/assets/images/flood_warning.svg'
 import severeFloodWarningIcon from '../../../common/assets/images/severe_flood_warning.svg'
 import BackLink from '../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 
 export default function FloodTypesPage () {
   const navigate = useNavigate()
@@ -15,7 +14,7 @@ export default function FloodTypesPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body'>
         <div className='govuk-grid-row govuk-body'>

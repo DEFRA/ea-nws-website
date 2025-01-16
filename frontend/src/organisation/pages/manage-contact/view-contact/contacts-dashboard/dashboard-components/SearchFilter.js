@@ -30,14 +30,15 @@ export default function SearchFilter ({
   const jobTitles = [
     ...new Set(
       contacts
-        .map((contact) => contact.job_title)
+        .map((contact) => contact.additionals.jobTitle)
         .filter((jobTitle) => jobTitle) // filters out undefined entries
     )
   ]
 
   const keywords = [
     ...new Set(
-      contacts.flatMap(contact => contact.keywords)
+      // contacts.flatMap(contact => contact.additionals.keywords)
+      // contacts.map((contact) => contact.additionals.keywords.map())
     )
   ]
 
@@ -73,7 +74,7 @@ export default function SearchFilter ({
     // Apply contact name filter
     if (contactNameFilter.length > 0) {
       filteredContacts = filteredContacts.filter((contact) =>
-        contact.name
+        (contact.firstname + contact.lastname)
           .toLowerCase()
           .includes(contactNameFilter.toLowerCase())
       )
@@ -83,7 +84,7 @@ export default function SearchFilter ({
     if (selectedJobTitleFilters.length > 0) {
       filteredContacts = filteredContacts.filter((contact) =>
         selectedJobTitleFilters.includes(
-          contact.job_title
+          contact.additionals.jobTitle
         )
       )
     }
@@ -92,7 +93,7 @@ export default function SearchFilter ({
     if (selectedKeywordFilters.length > 0) {
       filteredContacts = filteredContacts.filter((contact) =>
         selectedKeywordFilters.some(
-          keyword => contact.keywords.includes(keyword)
+          keyword => contact.additionals?.keywords.includes(keyword)
         )
       )
     }

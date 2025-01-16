@@ -12,12 +12,12 @@ export default function ConfirmAddressLayout ({
   const organizationAdditionals = JSON.parse(organization.description)
   const address = organizationAdditionals.address
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     // Correct address is already stored in
     navigateToNextPage()
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     NavigateToPreviousPage()
   }

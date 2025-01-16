@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
-import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
@@ -18,13 +15,13 @@ import {
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation
 } from '../../../../../common/services/WfsFloodDataService'
-import { orgManageLocationsUrls } from '../../../..//routes/manage-locations/ManageLocationsRoutes'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import LocationsTable from './dashboard-components/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
 
-export default function ViewLocationsDashboardPage() {
+export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -38,6 +35,7 @@ export default function ViewLocationsDashboardPage() {
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [displayedLocations, setDisplayedLocations] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
+  const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const [optionsSelected, setOptionsSelected] = useState({
     alert: false,
@@ -60,7 +58,7 @@ export default function ViewLocationsDashboardPage() {
 
   useEffect(() => {
     setFilteredLocations(locations)
-  }, [])
+  }, [locations])
 
   useEffect(() => {
     setCurrentPage(1)
@@ -84,6 +82,7 @@ export default function ViewLocationsDashboardPage() {
         'api/elasticache/list_locations',
         navigate
       )
+
       const locationsUpdate = []
       if (data) {
         data.forEach((location) => {
@@ -128,6 +127,7 @@ export default function ViewLocationsDashboardPage() {
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
     }
+
     getLocations()
   }, [])
 
@@ -137,8 +137,9 @@ export default function ViewLocationsDashboardPage() {
     if (
       (location.additionals.other?.location_data_type !==
         LocationDataType.ADDRESS &&
-        location.additionals.other?.location_data_type !==
-          LocationDataType.X_AND_Y_COORDS) ||
+       location.additionals.other?.location_data_type !==
+        LocationDataType.X_AND_Y_COORDS) ||
+      location.coordinates === null ||
       location.coordinates.latitude === null ||
       location.coordinates.longtitude === null
     ) {
@@ -398,7 +399,7 @@ export default function ViewLocationsDashboardPage() {
 
   const editLocations = (locationsToEdit) => {}
 
-  const removeLocations = (locationsToRemove) => {
+  const removeLocations = async (locationsToRemove) => {
     const updatedLocations = locations.filter(
       (location) => !locationsToRemove.includes(location)
     )
@@ -406,7 +407,22 @@ export default function ViewLocationsDashboardPage() {
       (location) => !locationsToRemove.includes(location)
     )
 
-    // dispatch(setLocations(updatedLocations))
+    const locationIds = []
+    locationsToRemove.forEach((location) => {
+      locationIds.push(location.id)
+    })
+
+    const dataToSend = { authToken, orgId, locationIds }
+
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/location/remove',
+      navigate
+    )
+    if (errorMessage) {
+      console.log(errorMessage)
+    }
+
     setLocations([...updatedLocations])
     setFilteredLocations([...updatedFilteredLocations])
 
@@ -450,7 +466,7 @@ export default function ViewLocationsDashboardPage() {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+
       <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
@@ -467,96 +483,97 @@ export default function ViewLocationsDashboardPage() {
             onClickLinked={onClickLinked}
           />
           <div className='govuk-grid-column-full govuk-body'>
-            {!isFilterVisible ? (
-              <>
-                <Button
-                  text='Open filter'
-                  className='govuk-button govuk-button--secondary inline-block'
-                  onClick={() => onOpenCloseFilter()}
-                />
+            {!isFilterVisible
+              ? (
+                <>
+                  <Button
+                    text='Open filter'
+                    className='govuk-button govuk-button--secondary inline-block'
+                    onClick={() => onOpenCloseFilter()}
+                  />
                 &nbsp; &nbsp;
-                <ButtonMenu
-                  title='More actions'
-                  options={moreActions}
-                  onSelect={(index) => onMoreAction(index)}
-                />
+                  <ButtonMenu
+                    title='More actions'
+                    options={moreActions}
+                    onSelect={(index) => onMoreAction(index)}
+                  />
                 &nbsp; &nbsp;
-                <Button
-                  text='Print'
-                  className='govuk-button govuk-button--secondary inline-block'
-                  // onClick={() => setIsFilterVisible(!isFilterVisible)}
-                />
-                <LocationsTable
-                  locations={locations}
-                  displayedLocations={displayedLocations}
-                  filteredLocations={filteredLocations}
-                  selectedLocations={selectedLocations}
-                  setLocations={setLocations}
-                  setSelectedLocations={setSelectedLocations}
-                  setFilteredLocations={setFilteredLocations}
-                  resetPaging={resetPaging}
-                  setResetPaging={setResetPaging}
-                  onAction={onAction}
-                />
-                <Pagination
-                  totalPages={Math.ceil(
-                    filteredLocations.length / locationsPerPage
-                  )}
-                  onPageChange={(val) => setCurrentPage(val)}
-                  holdPage={holdPage}
-                  setHoldPage={setHoldPage}
-                  pageList
-                  reset={resetPaging}
-                />
-              </>
-            ) : (
-              <div className='govuk-grid-row'>
-                <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 locations-filter-container'>
-                  <SearchFilter
+                  <Button
+                    text='Print'
+                    className='govuk-button govuk-button--secondary inline-block'
+                  />
+                  <LocationsTable
                     locations={locations}
+                    displayedLocations={displayedLocations}
+                    filteredLocations={filteredLocations}
+                    selectedLocations={selectedLocations}
+                    setLocations={setLocations}
+                    setSelectedLocations={setSelectedLocations}
                     setFilteredLocations={setFilteredLocations}
                     resetPaging={resetPaging}
                     setResetPaging={setResetPaging}
-                    selectedFilters={selectedFilters}
-                    setSelectedFilters={setSelectedFilters}
-                    selectedLocationTypeFilters={selectedLocationTypeFilters}
-                    setSelectedLocationTypeFilters={
+                    onAction={onAction}
+                  />
+                  <Pagination
+                    totalPages={Math.ceil(
+                      filteredLocations.length / locationsPerPage
+                    )}
+                    onPageChange={(val) => setCurrentPage(val)}
+                    holdPage={holdPage}
+                    setHoldPage={setHoldPage}
+                    pageList
+                    reset={resetPaging}
+                  />
+                </>
+                )
+              : (
+                <div className='govuk-grid-row'>
+                  <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 locations-filter-container'>
+                    <SearchFilter
+                      locations={locations}
+                      setFilteredLocations={setFilteredLocations}
+                      resetPaging={resetPaging}
+                      setResetPaging={setResetPaging}
+                      selectedFilters={selectedFilters}
+                      setSelectedFilters={setSelectedFilters}
+                      selectedLocationTypeFilters={selectedLocationTypeFilters}
+                      setSelectedLocationTypeFilters={
                       setSelectedLocationTypeFilters
                     }
-                    selectedBusinessCriticalityFilters={
+                      selectedBusinessCriticalityFilters={
                       selectedBusinessCriticalityFilters
                     }
-                    setSelectedBusinessCriticalityFilters={
+                      setSelectedBusinessCriticalityFilters={
                       setSelectedBusinessCriticalityFilters
                     }
-                    selectedKeywordFilters={selectedKeywordFilters}
-                    setSelectedKeywordFilters={setSelectedKeywordFilters}
-                    selectedGroundWaterRiskFilters={
+                      selectedKeywordFilters={selectedKeywordFilters}
+                      setSelectedKeywordFilters={setSelectedKeywordFilters}
+                      selectedGroundWaterRiskFilters={
                       selectedGroundWaterRiskFilters
                     }
-                    setSelectedGroundWaterRiskFilters={
+                      setSelectedGroundWaterRiskFilters={
                       setSelectedGroundWaterRiskFilters
                     }
-                    selectedRiverSeaRiskFilters={selectedRiverSeaRiskFilters}
-                    setSelectedRiverSeaRiskFilters={
+                      selectedRiverSeaRiskFilters={selectedRiverSeaRiskFilters}
+                      setSelectedRiverSeaRiskFilters={
                       setSelectedRiverSeaRiskFilters
                     }
-                    selectedFloodMessagesAvailableFilters={
+                      selectedFloodMessagesAvailableFilters={
                       selectedFloodMessagesAvailableFilters
                     }
-                    setSelectedFloodMessagesAvailableFilters={
+                      setSelectedFloodMessagesAvailableFilters={
                       setSelectedFloodMessagesAvailableFilters
                     }
-                    selectedFloodMessagesSentFilters={
+                      selectedFloodMessagesSentFilters={
                       selectedFloodMessagesSentFilters
                     }
-                    setSelectedFloodMessagesSentFilters={
+                      setSelectedFloodMessagesSentFilters={
                       setSelectedFloodMessagesSentFilters
                     }
-                    selectedLinkedFilters={selectedLinkedFilters}
-                    setSelectedLinkedFilters={setSelectedLinkedFilters}
-                  />
-                </div>
+                      selectedLinkedFilters={selectedLinkedFilters}
+                      setSelectedLinkedFilters={setSelectedLinkedFilters}
+                    />
+                  </div>
 
                 <div className='govuk-grid-column-three-quarters'>
                   <div className='govuk-grid-row'>

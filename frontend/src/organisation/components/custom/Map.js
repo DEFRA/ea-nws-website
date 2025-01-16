@@ -24,7 +24,11 @@ import {
   getBoundaries,
   getSurroundingFloodAreas
 } from '../../../common/services/WfsFloodDataService'
-import { createAlertPattern, createWarningPattern } from './FloodAreaPatterns'
+import {
+  createAlertPattern,
+  createShapefilePattern,
+  createWarningPattern
+} from './FloodAreaPatterns'
 import { createExistingBoundaryPattern } from './PredefinedBoundaryPattern'
 
 export default function Map ({
@@ -36,17 +40,19 @@ export default function Map ({
   showFloodAlertAreas = true,
   showMarker = false,
   boundaryList,
-  boundariesAlreadyAdded = []
+  boundariesAlreadyAdded = [],
+  shapefileData = null
 }) {
   const dispatch = useDispatch()
   const { latitude, longitude } = useSelector(
-    (state) => state.session.currentLocation.coordinates
-  )
+    (state) => state?.session?.currentLocation?.coordinates
+  ) || { latitude: 0, longitude: 0 }
   const centre = [latitude, longitude]
   const [apiKey, setApiKey] = useState(null)
   const [marker, setMarker] = useState(null)
   const [alertArea, setAlertArea] = useState(null)
   const [warningArea, setWarningArea] = useState(null)
+  const [shapeBounds, setShapeBounds] = useState(null)
 
   // get flood area data
   useEffect(() => {
@@ -175,6 +181,7 @@ export default function Map ({
     createWarningPattern()
     createAlertPattern()
     createExistingBoundaryPattern()
+    createShapefilePattern()
   }, [])
 
   const onEachWarningAreaFeature = (feature, layer) => {
@@ -205,9 +212,30 @@ export default function Map ({
     }
   }
 
+  const onEachShapefileFeature = (feature, layer) => {
+    layer.options.className = 'shapefile-area-pattern-fill'
+    layer.setStyle({
+      color: '#809095',
+      weight: 2,
+      fillOpacity: 1.0
+    })
+    setShapeBounds(layer.getBounds())
+  }
+
+  const FitBounds = () => {
+    const map = useMap()
+
+    useEffect(() => {
+      if (shapeBounds) {
+        map.fitBounds(shapeBounds)
+      }
+    }, [shapeBounds])
+  }
+
   const alertAreaRef = useRef(null)
   const warningAreaRef = useRef(null)
   const boundaryRef = useRef(null)
+  const shapefileRef = useRef(null)
   const [alertAreaRefVisible, setAlertAreaRefVisible] = useState(false)
   const [warningAreaRefVisible, setWarningAreaRefVisible] = useState(false)
   const [boundaryRefVisible, setBoundaryRefVisible] = useState(false)
@@ -450,9 +478,9 @@ export default function Map ({
                     ? (
                       <AddMarker />
                       )
-                    : (
+                    : type !== 'shape' && (
                       <Marker position={centre} interactive={false} />
-                      )}
+                    )}
                 </>
               )}
               {alertArea && (
@@ -484,6 +512,19 @@ export default function Map ({
                     setBoundaryRefVisible(true)
                   }}
                 />
+              )}
+              {shapefileData &&
+              (
+                <>
+                  <GeoJSON
+                    data={shapefileData}
+                    onEachFeature={onEachShapefileFeature}
+                    ref={(el) => {
+                      shapefileRef.current = el
+                    }}
+                  />
+                  <FitBounds />
+                </>
               )}
             </>
             )

@@ -131,6 +131,7 @@ export default function LocationWithinWarningAreaProximityLayout ({
 
   return (
     <>
+
       {showMobileMap
         ? (
           <>

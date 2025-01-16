@@ -60,6 +60,7 @@ export default function AddEmailLayout ({ navigateToNextPage }) {
 
   return (
     <>
+
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

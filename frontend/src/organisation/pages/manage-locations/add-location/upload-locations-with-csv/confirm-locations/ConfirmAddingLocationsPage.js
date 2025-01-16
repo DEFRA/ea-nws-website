@@ -11,9 +11,9 @@ export default function ConfirmLocationsPage () {
   const navigate = useNavigate()
   const location = useLocation()
   const validLocations = location?.state?.valid || 0
-  const duplicateLocations = 0 //= location?.state?.duplicates || 0
+  const duplicateLocations = location?.state?.duplicates || 0
   const notInEnglandLocations = location?.state?.notInEngland || 0
-  const notFoundLocations = location?.state?.invalid || 0 // location?.state?.notFound || 0
+  const notFoundLocations = location?.state?.notFound || 0
   const fileName = location?.state?.fileName || ''
   const orgId = useSelector((state) => state.session.orgId)
   const authToken = useSelector((state) => state.session.authToken)
@@ -56,25 +56,24 @@ export default function ConfirmLocationsPage () {
     return locations[0]
   }
 
-  const getNotFoundLocation = async () => {
+  const getNotFoundLocations = async () => {
     const dataToSend = { orgId }
     const { data } = await backendCall(
       dataToSend,
       'api/bulk_uploads/get_invalid_locations',
       navigate
     )
-    console.log('data: ', data)
 
-    // const locations = []
-    // if (data) {
-    //   const duplicates = data.filter((location) =>
-    //     location.error.includes('duplicate')
-    //   )
-    //   duplicates.forEach((location) => {
-    //     locations.push(geoSafeToWebLocation(location))
-    //   })
-    // }
-    // return locations[0]
+    const locations = []
+    if (data) {
+      const notFoundLocs = data.filter((location) =>
+        location.error.includes('not found')
+      )
+      notFoundLocs.forEach((location) => {
+        locations.push(geoSafeToWebLocation(location))
+      })
+    }
+    return locations
   }
 
   const handleLocations = async (event) => {
@@ -87,7 +86,8 @@ export default function ConfirmLocationsPage () {
       navigate
     )
 
-    console.log('Saved locations: ', data)
+    // Wait to ensure data is uploaded to elasticache. Not sure what is the best way to handle this.
+    await new Promise((resolve) => setTimeout(resolve, 1000))
 
     if (!errorMessage) {
       if (duplicateLocations > 0) {
@@ -129,16 +129,20 @@ export default function ConfirmLocationsPage () {
             }
           })
         }
-      } else {
-        getNotFoundLocation()
+      } else if (notFoundLocations > 0) {
+        const notFoundLocationsInfo = await getNotFoundLocations()
 
-        navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard, {
-          state: {
-            addedLocations: data.valid,
-            notFoundLocations: data.invalid,
-            notFoundLocationsData: data.invalidLocations
-          }
-        })
+        if (notFoundLocationsInfo) {
+          navigate(
+            orgManageLocationsUrls.unmatchedLocations.notFound.dashboard,
+            {
+              state: {
+                notFoundLocationsInfo,
+                addedLocations: data.valid
+              }
+            }
+          )
+        }
       }
     } else {
       // got to some sort of error page

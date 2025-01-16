@@ -71,12 +71,7 @@ module.exports = [
 
           return h.response({
             status: 200,
-            //data: { valid: valid.length, invalid: invalidReasons }
-            data: {
-              valid: valid.length,
-              invalid: invalid.length,
-              invalidLocations: invalid
-            }
+            data: { valid: valid.length, invalid: invalidReasons }
           })
         } else {
           return createGenericErrorResponse(h)

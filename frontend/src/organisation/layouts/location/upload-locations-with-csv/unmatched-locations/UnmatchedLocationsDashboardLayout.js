@@ -12,7 +12,6 @@ import {
   setCurrentLocationNorthing,
   setCurrentLocationPostcode
 } from '../../../../../common/redux/userSlice'
-import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 
 export default function UnmatchedLocationsDashboardLayout ({
   navigateToNextPage,
@@ -24,16 +23,8 @@ export default function UnmatchedLocationsDashboardLayout ({
 
   // Default values for null location.state
   const addedLocations = location?.state?.addedLocations || 0
-  const notAddedLocations = location?.state?.notFoundLocations || 0
-  const notAddedLocationsDataGeoSafe =
-    location?.state?.notFoundLocationsData || null
-
-  const notAddedLocationsData = []
-  if (notAddedLocationsDataGeoSafe) {
-    notAddedLocationsDataGeoSafe.forEach((location) => {
-      notAddedLocationsData.push(geoSafeToWebLocation(location))
-    })
-  }
+  const notAddedLocationsDataInfo = location?.state?.notFoundLocationsInfo || 0
+  const notAddedLocations = notAddedLocationsDataInfo?.length || 0
 
   const unmatchedLocationText =
     (flow === 'unmatched-locations-not-found' && 'not found') ||
@@ -114,27 +105,27 @@ export default function UnmatchedLocationsDashboardLayout ({
     e.preventDefault()
     dispatch(
       setCurrentLocationName(
-        notAddedLocationsData[index].additionals.locationName
+        notAddedLocationsDataInfo[index].additionals.locationName
       )
     )
     dispatch(
       setCurrentLocationFullAddress(
-        notAddedLocationsData[index].additionals.other.full_address
+        notAddedLocationsDataInfo[index].additionals.other.full_address
       )
     )
     dispatch(
       setCurrentLocationPostcode(
-        notAddedLocationsData[index].additionals.other.postcode
+        notAddedLocationsDataInfo[index].additionals.other.postcode
       )
     )
     dispatch(
       setCurrentLocationEasting(
-        notAddedLocationsData[index].additionals.other.x_coordinate
+        notAddedLocationsDataInfo[index].additionals.other.x_coordinate
       )
     )
     dispatch(
       setCurrentLocationNorthing(
-        notAddedLocationsData[index].additionals.other.y_coordinate
+        notAddedLocationsDataInfo[index].additionals.other.y_coordinate
       )
     )
     navigateToNextPage()
@@ -217,8 +208,8 @@ export default function UnmatchedLocationsDashboardLayout ({
                 </tr>
               </thead>
               <tbody className='govuk-table__body'>
-                {notAddedLocationsData &&
-                  notAddedLocationsData.map((location, index) => {
+                {notAddedLocationsDataInfo &&
+                  notAddedLocationsDataInfo.map((location, index) => {
                     return (
                       <tr className='govuk-table__row' key={index}>
                         <td className='govuk-table__cell'>

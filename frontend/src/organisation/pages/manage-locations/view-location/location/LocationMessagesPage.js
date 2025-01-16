@@ -124,19 +124,17 @@ export default function LocationMessagesPage () {
     const processFloodData = () => {
       if (floodHistoryData) {
         if (alertAreas && warningAreas) {
-          const allAreas = [ ...warningAreas.features, ...alertAreas.features]
+          const allAreas = [...warningAreas.features, ...alertAreas.features]
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Warning', index))
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Warning Rapid Response', index))
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
-        } 
-        else if (warningAreas) {
+        } else if (warningAreas) {
           warningAreas.features.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
           warningAreas.features.forEach((area, index) => setHistoricalData(area, 'Flood Warning', index))
           warningAreas.features.forEach((area, index) => setHistoricalData(area, 'Flood Warning Rapid Response', index))
-        }
-        else if (alertAreas) {
+        } else if (alertAreas) {
           alertAreas.features.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
-        } 
+        }
       }
     }
     processFloodData()
@@ -157,7 +155,7 @@ export default function LocationMessagesPage () {
         }
       }
       if (alertAreas) {
-        const warningAreaLength = warningAreas? warningAreas.length : 0
+        const warningAreaLength = warningAreas ? warningAreas.length : 0
         for (let i = 0; i < alertAreas.length; i++) {
           const alertAreaIndex = warningAreaLength > 0 ? i + warningAreaLength : i
           updatedFloodAreas.push({

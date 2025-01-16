@@ -1,18 +1,31 @@
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import ConfirmationPanel from '../../../common/components/gov-uk/Panel'
 import { clearAuth } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 
 export default function AccountDeleteConfirmPage () {
+  const navigate = useNavigate()
+  const profile = useSelector((state) => state.session.profile)
   const dispatch = useDispatch()
+
   useEffect(() => {
+    const notifyAccountDeletionSuccess = async () => {
+      const dataToSend = {
+        email: profile.emails[0],
+        fullName: profile.firstname + ' ' + profile.lastname
+      }
+
+      await backendCall(dataToSend, 'api/notify/account_deletion', navigate)
+    }
+
+    notifyAccountDeletionSuccess()
     dispatch(clearAuth())
-  })
+  }, [])
 
   return (
     <>
-
       {/* Main body */}
       <main className='govuk-main-wrapper'>
         {/* Account deletion confirmation panel */}

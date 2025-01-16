@@ -12,12 +12,8 @@ const sendEmailNotification = async (
   reference = '',
   emailReplyToId = ''
 ) => {
-  console.log('hit1')
-  let apiKey = await getApiKey()
-  console.log('hit2', apiKey)
+  const apiKey = await getApiKey()
   const notifyClient = new NotifyClient(apiKey)
-
-  console.log('hit4', notifyClient)
 
   notifyClient
     .sendEmail(templateId, emailAddress, {
@@ -27,9 +23,8 @@ const sendEmailNotification = async (
       emailReplyToId: emailReplyToId
     })
     .then(
-      (response) => console.log('3', response)
-
-      //update this to log success in server logs
+      (response) => console.log(response)
+      // update this to log success in server logs
     )
     .catch((err) => console.error(err))
 }
@@ -51,7 +46,24 @@ const sendSmsNotification = (
     })
     .then(
       (response) => console.log(response)
-      //update this to log success in server logs
+      // update this to log success in server logs
+    )
+    .catch((err) => console.error(err))
+}
+
+// below link explains how to send a letter to the correct address
+// https://docs.notifications.service.gov.uk/node.html#send-a-letter-arguments-personalisation-required
+const sendLetter = (templateId, personalisation, reference = '') => {
+  const notifyClient = new NotifyClient(getApiKey)
+
+  notifyClient
+    .sendLetter(templateId, {
+      personalisation: personalisation,
+      reference: reference
+    })
+    .then(
+      (response) => console.log(response)
+      // update this to log success in server log
     )
     .catch((err) => console.error(err))
 }

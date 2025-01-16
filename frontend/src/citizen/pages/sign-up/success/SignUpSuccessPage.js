@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import ConfirmationPanel from '../../../../common/components/gov-uk/Panel'
 import { backendCall } from '../../../../common/services/BackendService'
 
-export default function SignUpSuccessPage() {
+export default function SignUpSuccessPage () {
   const navigate = useNavigate()
   const profile = useSelector((state) => state.session.profile)
 
@@ -12,7 +12,7 @@ export default function SignUpSuccessPage() {
     const notifySignUpSuccess = async () => {
       const dataToSend = {
         email: profile.emails[0],
-        fullName: profile.firstname + profile.lastname
+        fullName: profile.firstname + ' ' + profile.lastname
       }
 
       await backendCall(dataToSend, 'api/notify/sign_up', navigate)

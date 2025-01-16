@@ -7,7 +7,7 @@ const { sendEmailNotification } = require('../../services/GovUkNotify')
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/notify/sign_up',
+    path: '/api/notify/account_deletion',
     handler: async (request, h) => {
       try {
         if (!request.payload) {
@@ -21,7 +21,7 @@ module.exports = [
           }
           const templateId = await getSecretKeyValue(
             'nws/notify/templates',
-            'signUpComplete'
+            'accountDeletion'
           )
 
           sendEmailNotification(templateId, email, personalisation)

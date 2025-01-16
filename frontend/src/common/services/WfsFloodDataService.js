@@ -31,7 +31,6 @@ export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
   }
   const { data: wfsAlertData } = await backendCall(WFSParams, 'api/wfs')
 
-
   return {
     alertArea: wfsAlertData,
     warningArea: wfsWarningData

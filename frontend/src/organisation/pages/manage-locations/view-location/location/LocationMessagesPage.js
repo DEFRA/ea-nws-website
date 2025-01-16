@@ -1,22 +1,22 @@
-import moment from 'moment';
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
-import linkIcon from '../../../../../common/assets/images/link.svg';
-import BackLink from '../../../../../common/components/custom/BackLink';
-import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner';
-import Button from '../../../../../common/components/gov-uk/Button';
-import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner';
-import Radio from '../../../../../common/components/gov-uk/Radio';
-import AlertType from '../../../../../common/enums/AlertType';
-import LocationDataType from '../../../../../common/enums/LocationDataType';
-import { getLocationAdditionals, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice';
-import { backendCall } from '../../../../../common/services/BackendService';
-import { csvToJson } from '../../../../../common/services/CsvToJson';
-import { getSurroundingFloodAreas, getSurroundingFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService';
-import { infoUrls } from '../../../../routes/info/InfoRoutes';
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes';
-import LocationHeader from './location-information-components/LocationHeader';
+import moment from 'moment'
+import { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import linkIcon from '../../../../../common/assets/images/link.svg'
+import BackLink from '../../../../../common/components/custom/BackLink'
+import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner'
+import Button from '../../../../../common/components/gov-uk/Button'
+import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
+import Radio from '../../../../../common/components/gov-uk/Radio'
+import AlertType from '../../../../../common/enums/AlertType'
+import LocationDataType from '../../../../../common/enums/LocationDataType'
+import { getLocationAdditionals, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../common/services/BackendService'
+import { csvToJson } from '../../../../../common/services/CsvToJson'
+import { getSurroundingFloodAreas, getSurroundingFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
+import { infoUrls } from '../../../../routes/info/InfoRoutes'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import LocationHeader from './location-information-components/LocationHeader'
 export default function LocationMessagesPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -30,7 +30,6 @@ export default function LocationMessagesPage () {
   const currentLocation = useSelector(
     (state) => state.session.currentLocation
   )
-
 
   const [alertAreas, setAlertAreas] = useState(null)
   const [warningAreas, setWarningAreas] = useState(null)
@@ -64,15 +63,14 @@ export default function LocationMessagesPage () {
 
   const surroundingAreas = async () => {
     let result
-    if(additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS){
-      result  = await getSurroundingFloodAreas(
+    if (additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS) {
+      result = await getSurroundingFloodAreas(
         currentLocation.coordinates.latitude, currentLocation.coordinates.longitude,
         0.5
       )
-
-    }else {      
+    } else {
       const geoJson = JSON.parse(currentLocation.geometry.geoJson)
-      result  = await getSurroundingFloodAreasFromShape(
+      result = await getSurroundingFloodAreasFromShape(
         geoJson.geometry,
         0.5
       )
@@ -186,7 +184,7 @@ export default function LocationMessagesPage () {
 
   useEffect(() => {
     const fetchAreas = async () => {
-      if(currentLocation && additionalData && (currentLocation.coordinates || currentLocation.geometry || currentLocation.geocode)){
+      if (currentLocation && additionalData && (currentLocation.coordinates || currentLocation.geometry || currentLocation.geocode)) {
         await surroundingAreas()
       }
     }

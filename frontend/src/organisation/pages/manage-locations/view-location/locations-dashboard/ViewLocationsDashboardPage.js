@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useNavigate } from 'react-router'
+import BackLink from '../../../../../common/components/custom/BackLink'
 import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
 import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
@@ -19,8 +21,6 @@ import { orgManageLocationsUrls } from '../../../../routes/manage-locations/Mana
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import LocationsTable from './dashboard-components/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
-import { useNavigate } from 'react-router'
-import BackLink from '../../../../../common/components/custom/BackLink'
 export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
   const navigate = useNavigate()
@@ -133,7 +133,7 @@ export default function ViewLocationsDashboardPage () {
         LocationDataType.ADDRESS &&
        location.additionals.other?.location_data_type !==
         LocationDataType.X_AND_Y_COORDS) ||
-      location.coordinates === null ||
+      !location.coordinates ||
       location.coordinates.latitude === null ||
       location.coordinates.longtitude === null
     ) {

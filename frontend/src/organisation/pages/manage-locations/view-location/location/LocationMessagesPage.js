@@ -69,13 +69,12 @@ export default function LocationMessagesPage () {
         0.5
       )
     } else {
-      const geoJson = JSON.parse(currentLocation.geometry.geoJson)
+      const geoJson = currentLocation.geometry.geoJson
       result = await getSurroundingFloodAreasFromShape(
-        geoJson.geometry,
+        geoJson,
         0.5
       )
     }
-
     setAlertAreas(result.alertArea)
     setWarningAreas(result.warningArea)
   }
@@ -124,16 +123,16 @@ export default function LocationMessagesPage () {
     const processFloodData = () => {
       if (floodHistoryData) {
         if (alertAreas && warningAreas) {
-          const allAreas = [...warningAreas.features, ...alertAreas.features]
+          const allAreas = [...warningAreas, ...alertAreas]
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Warning', index))
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Warning Rapid Response', index))
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
         } else if (warningAreas) {
-          warningAreas.features.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
-          warningAreas.features.forEach((area, index) => setHistoricalData(area, 'Flood Warning', index))
-          warningAreas.features.forEach((area, index) => setHistoricalData(area, 'Flood Warning Rapid Response', index))
+          warningAreas.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
+          warningAreas.forEach((area, index) => setHistoricalData(area, 'Flood Warning', index))
+          warningAreas.forEach((area, index) => setHistoricalData(area, 'Flood Warning Rapid Response', index))
         } else if (alertAreas) {
-          alertAreas.features.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
+          alertAreas.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
         }
       }
     }
@@ -171,7 +170,7 @@ export default function LocationMessagesPage () {
     }
 
     if (floodHistoryData && (alertAreas || warningAreas)) {
-      populateInputs(alertAreas?.features, warningAreas?.features)
+      populateInputs(alertAreas, warningAreas)
     }
   }, [warningAreas, alertAreas, floodAlertsCount, floodWarningsCount, severeFloodWarningsCount])
 

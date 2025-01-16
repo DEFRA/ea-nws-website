@@ -153,7 +153,7 @@ export default function LocationsTable ({
 
   const viewLocation = (e, location) => {
     e.preventDefault()
-    dispatch(setCurrentLocation(webToGeoSafeLocation(location)))
+    dispatch(setCurrentLocation(location))
     navigate(orgManageLocationsUrls.view.viewLocation)
   }
 
@@ -163,7 +163,7 @@ export default function LocationsTable ({
 
   const updateMessageSettings = (e, location) => {
     e.preventDefault()
-    dispatch(setCurrentLocation(webToGeoSafeLocation(location)))
+    dispatch(setCurrentLocation(location))
     navigate(orgManageLocationsUrls.view.viewMessages)
   }
 

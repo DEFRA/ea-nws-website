@@ -1,6 +1,7 @@
 import * as turf from '@turf/turf'
 import L from 'leaflet'
 import leafletPip from 'leaflet-pip'
+import LocationDataType from '../enums/LocationDataType'
 import { backendCall } from './BackendService'
 
 export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
@@ -17,7 +18,6 @@ export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
   }
 
   const { data: wfsWarningData } = await backendCall(WFSParams, 'api/wfs')
-
   // alert area
   WFSParams = {
     service: 'WFS',
@@ -38,7 +38,8 @@ export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
 }
 
 export const getSurroundingFloodAreasFromShape = async (geoJsonShape, bboxKM = 0.5) => {
-  const bbox = turf.bbox(turf.buffer(geoJsonShape, bboxKM, { units: 'kilometers' }))
+  const bufferedShape = turf.buffer(geoJsonShape.geometry, bboxKM, { units: 'kilometers' })
+  const bbox = turf.bbox(bufferedShape)
   const bboxInput =
     bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3] + ',EPSG:4326'
   // warning areas
@@ -52,8 +53,9 @@ export const getSurroundingFloodAreasFromShape = async (geoJsonShape, bboxKM = 0
     bbox: bboxInput,
     outputFormat: 'GEOJSON'
   }
-  const { data: wfsWarningData } = await backendCall(WFSParams, 'api/wfs')
 
+  const { data: wfsWarningData } = await backendCall(WFSParams, 'api/wfs')
+  const filteredWarningData = getIntersections(wfsWarningData, bufferedShape)
   // alert area
   WFSParams = {
     service: 'WFS',
@@ -66,11 +68,34 @@ export const getSurroundingFloodAreasFromShape = async (geoJsonShape, bboxKM = 0
     outputFormat: 'GEOJSON'
   }
   const { data: wfsAlertData } = await backendCall(WFSParams, 'api/wfs')
-
+  const filteredAlertData = getIntersections(wfsAlertData, bufferedShape)
+  
   return {
-    alertArea: wfsAlertData,
-    warningArea: wfsWarningData
+    alertArea: filteredAlertData,
+    warningArea: filteredWarningData
   }
+}
+
+const getIntersections = (areas, bufferedShape) => {
+  const bufferedShapeValid = turf.booleanValid(bufferedShape.geometry)
+  const filteredTargetData = areas.features.filter(area => {
+    if(turf.booleanValid(area.geometry) && bufferedShapeValid){
+      try{ 
+        if(area.geometry.type === LocationDataType.SHAPE_LINE){
+          if(turf.lineIntersect(area.geometry, bufferedShape.geometry)) return true
+        }
+        const poly1 = turf.multiPolygon(bufferedShape.geometry.coordinates) 
+        const poly2 = turf.multiPolygon(area.geometry.coordinates) 
+        const featureCollection = turf.featureCollection([poly1,poly2])  
+        if(turf.intersect(featureCollection)) return true
+      }
+      catch(e){
+        console.error('Error during intersection', e)
+      }
+      return false
+    }   
+  })
+  return filteredTargetData
 }
 
 export const getAssociatedAlertArea = async (lat, lng, code) => {

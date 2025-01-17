@@ -40,7 +40,6 @@ export default function SignUpPage () {
           setError(errorMessage)
         }
       } else {
-        // add email to  emails list
         let updatedProfile = profile
         if (profile.emails[0]) {
           updatedProfile = removeVerifiedContact(updatedProfile, profile.emails[0])

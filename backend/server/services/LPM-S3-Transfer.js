@@ -79,9 +79,9 @@ const processLogs = async (directory, bucketName) => {
       const newPath = path.join(rotatedDir, newName)
 
       try {
-        fs.renameSync(logFilePath, newPath)
-        await uploadToBucket(newPath, bucketName)
+        fs.copyFileSync(logFilePath, newPath)
         fs.writeFileSync(logFilePath, '')
+        await uploadToBucket(newPath, bucketName)
       } catch (err) {
         logger.error(`Failed to process log file: ${logFile}, ${err}`)
       }

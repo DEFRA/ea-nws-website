@@ -325,36 +325,22 @@ const listInvLocations = async (orgId) => {
 const addContact = async (orgId, contact) => {
   const contactID = contact.id
   const key = orgId + ':t_Contacts:' + contactID
-  await setJsonData(key, contact)
-  // add Contact ID to list
-  await addToList(orgId + ':t_Contacts_ID', contactID)
-  let keywords = []
-  contact.additionals.forEach((additional) => {
-    if (additional.id === 'keywords') {
-      keywords = JSON.parse(additional.value?.s)
-    }
-  })
-  for (const keyword of keywords) {
-    await addToKeywordArr(orgId + ':t_Keywords_contact', {
-      name: keyword,
-      linked_ids: [contactID]
-    })
-
   const exists = await checkKeyExists(key)
   if (!exists) {
     await setJsonData(key, contact)
     // add Contact ID to list
     await addToList(orgId + ':t_Contacts_ID', contactID)
-
     let keywords = []
     contact.additionals.forEach((additional) => {
       if (additional.id === 'keywords') {
         keywords = JSON.parse(additional.value?.s)
       }
     })
-
     for (const keyword of keywords) {
-      await addToKeywordArr(orgId + ':t_Keywords_contact', { name: keyword, linked_ids: [contactID] })
+      await addToKeywordArr(orgId + ':t_Keywords_contact', {
+        name: keyword,
+        linked_ids: [contactID]
+      })
     }
   }
 }

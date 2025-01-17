@@ -30,8 +30,9 @@ function Layout () {
             : 'govuk-width-container body-container'
         }`}
       >
-
-        <Outlet />
+        <div className='private-beta-watermark'>
+          <Outlet />
+        </div>
       </div>
       <Footer />
     </div>

@@ -5,7 +5,7 @@ import {
   faCircleChevronUp
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import floodWarningIcon from '../../assets/images/flood_warning.svg'
+import '../../css/custom.css'
 
 export default function PrivateBetaHeader () {
   const [infoOpen, setInfoOpen] = useState(false)
@@ -16,29 +16,53 @@ export default function PrivateBetaHeader () {
 
   return (
     <>
-      <header className='govuk-header--full-width-border' style={{color: '#ffffff', background: '#1d70b8'}}>
-        <div className={'govuk-width-container'} style={{display: 'flex', alignItems: 'center'}}
+      <header className='private-beta-header govuk-header--full-width-border'>
+        <div className={'private-beta-header-container govuk-width-container'}
         >
           <FontAwesomeIcon
             icon={faCircleExclamation}
+            style={{height: '35px', width: '35px'}}
           />
           This is a test service only - do not rely on this for flood warnings
-          <div >
+          <div className='private-beta-header-container-toggle'>
             <FontAwesomeIcon
               icon={infoOpen ? faCircleChevronUp : faCircleChevronDown}
               onClick={() => toggleInfo()}
+              style={{height: '20px', width: '20px'}}
             />
             {!infoOpen && ('Show')}
             {infoOpen && ('Hide')}
           </div>
-          {/* <button onClick={() => toggleMenu()} >
-            Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
-          </button> */}
         </div>
         {infoOpen && (
-          <div className={'govuk-width-container'}
+          <div className='private-beta-header-info-container govuk-width-container'
           >
-            Thank you
+            <p>Thank you for taking part in our trial for our new new flood warning service.</p>
+            <p>This site contains test content only.</p>
+            <p style={{ fontWeight: 700 }}>
+              You must not rely on this for flood warnings.
+            </p>
+            <p>If you need live flood warnings,
+              &nbsp;
+              <a
+                href='https://www.gov.uk/sign-up-for-flood-warnings'
+                className='govuk-link govuk-link--inverse'
+                target='_blank'
+              >
+                sign up here
+              </a>
+              .
+            </p>
+            <p>
+              If you need to contact us about this test service or our trial phase, email us at<br/>
+              <a
+                href='mailto:testfloodwarnings@environment-agency.gov.uk'
+                className='govuk-link govuk-link--inverse'
+                target='_blank'
+              >
+                testfloodwarnings@environment-agency.gov.uk
+              </a>
+            </p>
           </div>
           )}
       </header>

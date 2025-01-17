@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 
-export default function Header ({ type }) {
+export default function Header ({ 
+  type
+ }) {
   return (
     <>
       <div className='govuk-phase-banner govuk-body'>
@@ -16,7 +18,7 @@ export default function Header ({ type }) {
             </strong>
             <span className='govuk-phase-banner__text'>
               This is a new service. Help us improve it and {' '}
-              <Link className='govuk-link' to='/signup/feedback' target='_blank'>
+              <Link className='govuk-link' to='https://forms.office.com/pages/responsepage.aspx?id=UCQKdycCYkyQx044U38RAobIfBygQUhBp4VylTaoNm9UQ1QwTkMwUTlLTDI0NE1KWjFXOVpWQU1KMi4u&route=shorturl' target='_blank'>
                 give your feedback (opens in new tab)
               </Link>{' '}
 

@@ -4,6 +4,7 @@ const {
 const { apiCall } = require('../../services/ApiService')
 const { authCodeValidation } = require('../../services/validations/AuthCodeValidation')
 const { setJsonData } = require('../../services/elasticache')
+const { logger } = require('../../plugins/logging')
 
 module.exports = [
   {
@@ -32,6 +33,7 @@ module.exports = [
           })
         }
       } catch (error) {
+        logger.error(error)
         return createGenericErrorResponse(h)
       }
     }

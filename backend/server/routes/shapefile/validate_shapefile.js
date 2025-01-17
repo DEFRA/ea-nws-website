@@ -9,6 +9,7 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 const { Dbf } = require('dbf-reader')
+const { logger } = require('../../plugins/logging')
 
 const streamToBuffer = async (stream) => {
   return new Promise((resolve, reject) => {
@@ -105,7 +106,8 @@ module.exports = [
               throw new Error()
             }
           }
-        } catch {
+        } catch (error) {
+          logger.error(error)
           errorsArray.push(
             'The selected file could not be uploaded because the location name is missing'
           )
@@ -118,6 +120,7 @@ module.exports = [
           status: 200
         })
       } catch (error) {
+        logger.error(error)
         // An invalid shapefile (and the original zip) should be deleted from the bucket (the user will be asked to upload a correct one)
         try {
           if (Contents.length > 0) {
@@ -135,7 +138,7 @@ module.exports = [
             )
           }
         } catch (err) {
-          console.log(err)
+          logger.error(`validate_shapefile error: ${err}`)
         }
         return h.response({
           status: 500,

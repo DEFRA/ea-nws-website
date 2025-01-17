@@ -2,6 +2,7 @@ const { osPostCodeApiCall } = require('../../services/OrdnanceSurveyApiService')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
+const { logger } = require('../../plugins/logging')
 
 module.exports = [
   {
@@ -17,7 +18,8 @@ module.exports = [
 
         const response = await osPostCodeApiCall(postCode)
         return h.response(response)
-      } catch {
+      } catch (error) {
+        logger.error(error)
         createGenericErrorResponse(h)
       }
     }

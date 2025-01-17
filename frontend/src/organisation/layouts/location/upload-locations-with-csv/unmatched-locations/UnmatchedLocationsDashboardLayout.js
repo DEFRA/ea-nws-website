@@ -8,6 +8,7 @@ import WarningText from '../../../../../common/components/gov-uk/WarningText'
 import {
   setCurrentLocationEasting,
   setCurrentLocationFullAddress,
+  setCurrentLocationId,
   setCurrentLocationName,
   setCurrentLocationNorthing,
   setCurrentLocationPostcode
@@ -28,6 +29,7 @@ export default function UnmatchedLocationsDashboardLayout ({
   const [showPopup, setShowPopup] = useState(false)
 
   const addedLocations = location?.state?.addedLocations || 0
+  const addedLocation = location?.state?.addedLocation || null
   const unmatchedLocationText =
     (flow === 'unmatched-locations-not-found' && 'not found') ||
     (flow === 'unmatched-locations-not-in-england' && 'not in england')
@@ -154,8 +156,71 @@ export default function UnmatchedLocationsDashboardLayout ({
         notAddedLocationsInfo[index].additionals.other.y_coordinate
       )
     )
+    dispatch(setCurrentLocationId(notAddedLocationsInfo[index].id))
     navigateToNextPage()
   }
+
+  const table = () => (
+    <>
+      <p className='govuk-!-margin-bottom-0 locations-table-panel'>
+        {notAddedLocationsInfo?.length}
+        {notAddedLocationsInfo?.length === 1 ? ' location' : ' locations'}{' '}
+      </p>
+      <table className='govuk-table govuk-table--small-text-until-tablet'>
+        <thead className='govuk-table__head'>
+          <tr className='govuk-table__row'>
+            <th scope='col' className='govuk-table__header'>
+              Location name
+            </th>
+            <th scope='col' className='govuk-table__header'>
+              Address uploaded
+            </th>
+            <th scope='col' className='govuk-table__header'>
+              Postcode
+            </th>
+            <th scope='col' className='govuk-table__header'>
+              X and Y coordinates
+            </th>
+            <th scope='col' className='govuk-table__header' />
+          </tr>
+        </thead>
+        <tbody className='govuk-table__body'>
+          {notAddedLocationsInfo &&
+            notAddedLocationsInfo.map((location, index) => {
+              return (
+                <tr className='govuk-table__row' key={index}>
+                  <td className='govuk-table__cell'>
+                    {location.additionals.locationName}
+                  </td>
+                  <td className='govuk-table__cell'>
+                    {location.additionals.other.full_address}
+                  </td>
+                  <td className='govuk-table__cell'>
+                    {location.additionals.other.postcode}
+                  </td>
+                  <td className='govuk-table__cell'>
+                    {location.additionals.other.x_coordinate},{' '}
+                    {location.additionals.other.y_coordinate}
+                  </td>
+                  <td className='govuk-table__cell'>
+                    <Link
+                      className='govuk-link'
+                      onClick={(e) => findLocation(e, index)}
+                    >
+                      {(flow === 'unmatched-locations-not-found' &&
+                        'Find this') ||
+                        (flow === 'unmatched-locations-not-in-england' &&
+                          'Check')}{' '}
+                      location
+                    </Link>
+                  </td>
+                </tr>
+              )
+            })}
+        </tbody>
+      </table>
+    </>
+  )
 
   const popup = () => {
     if (!showPopup) return null
@@ -184,18 +249,23 @@ export default function UnmatchedLocationsDashboardLayout ({
 
   return (
     <>
-      {addedLocations > 0 && (
+      {(addedLocations > 0 || addedLocation) && (
         <NotificationBanner
           className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-top-5 govuk-!-margin-bottom-0'
           title='Success'
-          text={`${addedLocations} locations added`}
+          text={
+            addedLocations > 0
+              ? `${addedLocations} locations added`
+              : `${addedLocation} added`
+          }
         />
       )}
       <main className='govuk-main-wrapper govuk-!-margin-top-3'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l'>
-              {notAddedLocationsInfo?.length} locations {unmatchedLocationText}
+              {notAddedLocationsInfo?.length || 0} locations{' '}
+              {unmatchedLocationText}
             </h1>
             <div className='govuk-body'>
               {info()}
@@ -210,80 +280,24 @@ export default function UnmatchedLocationsDashboardLayout ({
             </div>
           </div>
 
-          <div className='govuk-grid-column-full'>
-            <p className='govuk-!-margin-bottom-0 locations-table-panel'>
-              {notAddedLocationsInfo?.length}
-              {notAddedLocationsInfo?.length === 1
-                ? ' location'
-                : ' locations'}{' '}
-            </p>
-            <table className='govuk-table govuk-table--small-text-until-tablet'>
-              <thead className='govuk-table__head'>
-                <tr className='govuk-table__row'>
-                  <th scope='col' className='govuk-table__header'>
-                    Location name
-                  </th>
-                  <th scope='col' className='govuk-table__header'>
-                    Address uploaded
-                  </th>
-                  <th scope='col' className='govuk-table__header'>
-                    Postcode
-                  </th>
-                  <th scope='col' className='govuk-table__header'>
-                    X and Y coordinates
-                  </th>
-                  <th scope='col' className='govuk-table__header' />
-                </tr>
-              </thead>
-              <tbody className='govuk-table__body'>
-                {notAddedLocationsInfo &&
-                  notAddedLocationsInfo.map((location, index) => {
-                    return (
-                      <tr className='govuk-table__row' key={index}>
-                        <td className='govuk-table__cell'>
-                          {location.additionals.locationName}
-                        </td>
-                        <td className='govuk-table__cell'>
-                          {location.additionals.other.full_address}
-                        </td>
-                        <td className='govuk-table__cell'>
-                          {location.additionals.other.postcode}
-                        </td>
-                        <td className='govuk-table__cell'>
-                          {location.additionals.other.x_coordinate},{' '}
-                          {location.additionals.other.y_coordinate}
-                        </td>
-                        <td className='govuk-table__cell'>
-                          <Link
-                            className='govuk-link'
-                            onClick={(e) => findLocation(e, index)}
-                          >
-                            {(flow === 'unmatched-locations-not-found' &&
-                              'Find this') ||
-                              (flow === 'unmatched-locations-not-in-england' &&
-                                'Check')}{' '}
-                            location
-                          </Link>
-                        </td>
-                      </tr>
-                    )
-                  })}
-              </tbody>
-            </table>
+          {notAddedLocationsInfo?.length > 0 && (
+            <div className='govuk-grid-column-full'>
+              {table()}
+              <div className='govuk-body govuk-!-padding-top-5'>
+                <Button
+                  text={`Finish ${
+                    (flow === 'unmatched-locations-not-found' && 'finding') ||
+                    (flow === 'unmatched-locations-not-in-england' &&
+                      'checking')
+                  } locations`}
+                  className='govuk-button govuk-button'
+                  onClick={() => setShowPopup(true)}
+                />
+              </div>
 
-            <div className='govuk-body govuk-!-padding-top-5'>
-              <Button
-                text={`Finish ${
-                  (flow === 'unmatched-locations-not-found' && 'finding') ||
-                  (flow === 'unmatched-locations-not-in-england' && 'checking')
-                } locations`}
-                className='govuk-button govuk-button'
-                onClick={() => setShowPopup(true)}
-              />
+              {popup()}
             </div>
-
-            {popup()}
-          </div>
+          )}
         </div>
       </main>
     </>

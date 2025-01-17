@@ -18,6 +18,7 @@ import {
 import { backendCall } from '../../../../../common/services/BackendService'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ConfirmLocationLayout ({
   navigateToNextPage,
@@ -88,16 +89,33 @@ export default function ConfirmLocationLayout ({
       )
       dispatch(setCurrentLocationName(shapeName))
     }
+
     const dataToSend = { authToken, orgId, location: currentLocation }
     const { data, errorMessage } = await backendCall(
       dataToSend,
       'api/location/create',
       navigate
     )
+
     if (data) {
       // need to set the current location due to geosafe creating the ID.
       dispatch(setCurrentLocation(data))
-      navigateToNextPage()
+
+      // Remove invalid location from elasticache
+      if (flow === 'unmatched-locations-not-found') {
+        await backendCall(
+          { orgId, locationId: currentLocation.id },
+          'api/bulk_uploads/remove_invalid_location',
+          navigate
+        )
+        navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard, {
+          state: {
+            addedLocation: currentLocation.additionals[0].value.s
+          }
+        })
+      } else {
+        navigateToNextPage()
+      }
     } else {
       errorMessage
         ? setError(errorMessage)

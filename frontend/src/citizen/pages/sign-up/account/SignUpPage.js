@@ -43,7 +43,6 @@ export default function SignUpPage () {
         let updatedProfile = profile
         if (profile.emails[0]) {
           updatedProfile = removeVerifiedContact(updatedProfile, profile.emails[0])
-          dispatch(setProfile(updatedProfile))
         }
         updatedProfile = addVerifiedContact(updatedProfile, 'email', email)
         dispatch(setProfile(updatedProfile))

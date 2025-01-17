@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Link, useLocation } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
@@ -12,23 +12,49 @@ import {
   setCurrentLocationNorthing,
   setCurrentLocationPostcode
 } from '../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../common/services/BackendService'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 
 export default function UnmatchedLocationsDashboardLayout ({
   navigateToNextPage,
   flow
 }) {
+  const navigate = useNavigate()
   const location = useLocation()
   const dispatch = useDispatch()
+
+  const orgId = useSelector((state) => state.session.orgId)
+  const [notAddedLocationsInfo, setNotAddedLocationsInfo] = useState(null)
   const [showPopup, setShowPopup] = useState(false)
 
-  // Default values for null location.state
   const addedLocations = location?.state?.addedLocations || 0
-  const notAddedLocationsDataInfo = location?.state?.notFoundLocationsInfo || 0
-  const notAddedLocations = notAddedLocationsDataInfo?.length || 0
-
   const unmatchedLocationText =
     (flow === 'unmatched-locations-not-found' && 'not found') ||
-    (flow === 'unmatched-locations-not-in-england' && 'not in England')
+    (flow === 'unmatched-locations-not-in-england' && 'not in england')
+
+  useEffect(() => {
+    const getNotAddedLocations = async () => {
+      const dataToSend = { orgId }
+      const { data } = await backendCall(
+        dataToSend,
+        'api/bulk_uploads/get_invalid_locations',
+        navigate
+      )
+
+      if (data.length > 0) {
+        const locations = []
+        const notFoundLocs = data.filter((location) =>
+          location.error.includes('not found')
+        )
+        notFoundLocs.forEach((location) => {
+          locations.push(geoSafeToWebLocation(location))
+        })
+        setNotAddedLocationsInfo(locations)
+      }
+    }
+
+    getNotAddedLocations()
+  }, [])
 
   // Location info
   const info = () => {
@@ -105,27 +131,27 @@ export default function UnmatchedLocationsDashboardLayout ({
     e.preventDefault()
     dispatch(
       setCurrentLocationName(
-        notAddedLocationsDataInfo[index].additionals.locationName
+        notAddedLocationsInfo[index].additionals.locationName
       )
     )
     dispatch(
       setCurrentLocationFullAddress(
-        notAddedLocationsDataInfo[index].additionals.other.full_address
+        notAddedLocationsInfo[index].additionals.other.full_address
       )
     )
     dispatch(
       setCurrentLocationPostcode(
-        notAddedLocationsDataInfo[index].additionals.other.postcode
+        notAddedLocationsInfo[index].additionals.other.postcode
       )
     )
     dispatch(
       setCurrentLocationEasting(
-        notAddedLocationsDataInfo[index].additionals.other.x_coordinate
+        notAddedLocationsInfo[index].additionals.other.x_coordinate
       )
     )
     dispatch(
       setCurrentLocationNorthing(
-        notAddedLocationsDataInfo[index].additionals.other.y_coordinate
+        notAddedLocationsInfo[index].additionals.other.y_coordinate
       )
     )
     navigateToNextPage()
@@ -169,7 +195,7 @@ export default function UnmatchedLocationsDashboardLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l'>
-              {notAddedLocations} locations {unmatchedLocationText}
+              {notAddedLocationsInfo?.length} locations {unmatchedLocationText}
             </h1>
             <div className='govuk-body'>
               {info()}
@@ -186,8 +212,10 @@ export default function UnmatchedLocationsDashboardLayout ({
 
           <div className='govuk-grid-column-full'>
             <p className='govuk-!-margin-bottom-0 locations-table-panel'>
-              {notAddedLocations}
-              {notAddedLocations === 1 ? ' location' : ' locations'}{' '}
+              {notAddedLocationsInfo?.length}
+              {notAddedLocationsInfo?.length === 1
+                ? ' location'
+                : ' locations'}{' '}
             </p>
             <table className='govuk-table govuk-table--small-text-until-tablet'>
               <thead className='govuk-table__head'>
@@ -208,8 +236,8 @@ export default function UnmatchedLocationsDashboardLayout ({
                 </tr>
               </thead>
               <tbody className='govuk-table__body'>
-                {notAddedLocationsDataInfo &&
-                  notAddedLocationsDataInfo.map((location, index) => {
+                {notAddedLocationsInfo &&
+                  notAddedLocationsInfo.map((location, index) => {
                     return (
                       <tr className='govuk-table__row' key={index}>
                         <td className='govuk-table__cell'>

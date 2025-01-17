@@ -56,26 +56,6 @@ export default function ConfirmLocationsPage () {
     return locations[0]
   }
 
-  const getNotFoundLocations = async () => {
-    const dataToSend = { orgId }
-    const { data } = await backendCall(
-      dataToSend,
-      'api/bulk_uploads/get_invalid_locations',
-      navigate
-    )
-
-    const locations = []
-    if (data) {
-      const notFoundLocs = data.filter((location) =>
-        location.error.includes('not found')
-      )
-      notFoundLocs.forEach((location) => {
-        locations.push(geoSafeToWebLocation(location))
-      })
-    }
-    return locations
-  }
-
   const handleLocations = async (event) => {
     event.preventDefault()
 
@@ -130,19 +110,12 @@ export default function ConfirmLocationsPage () {
           })
         }
       } else if (notFoundLocations > 0) {
-        const notFoundLocationsInfo = await getNotFoundLocations()
-
-        if (notFoundLocationsInfo) {
-          navigate(
-            orgManageLocationsUrls.unmatchedLocations.notFound.dashboard,
-            {
-              state: {
-                notFoundLocationsInfo,
-                addedLocations: data.valid
-              }
-            }
-          )
-        }
+        navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard, {
+          state: {
+            notFoundLocations: data.invalid.notFound,
+            addedLocations: data.valid
+          }
+        })
       }
     } else {
       // got to some sort of error page

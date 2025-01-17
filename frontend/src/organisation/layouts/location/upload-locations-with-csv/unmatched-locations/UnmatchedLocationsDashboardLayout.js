@@ -4,6 +4,7 @@ import { Link, useLocation, useNavigate } from 'react-router-dom'
 import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
+import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import WarningText from '../../../../../common/components/gov-uk/WarningText'
 import {
   setCurrentLocationEasting,
@@ -27,7 +28,11 @@ export default function UnmatchedLocationsDashboardLayout ({
 
   const orgId = useSelector((state) => state.session.orgId)
   const [notAddedLocationsInfo, setNotAddedLocationsInfo] = useState(null)
+  const [displayedNotAddedLocationsInfo, setDisplayedNotAddedLocationsInfo] =
+    useState(null)
   const [showPopup, setShowPopup] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
+  const locationsPerPage = 20
 
   const addedLocations = location?.state?.addedLocations || 0
   const addedLocation = location?.state?.addedLocation || null
@@ -58,6 +63,15 @@ export default function UnmatchedLocationsDashboardLayout ({
 
     getNotAddedLocations()
   }, [])
+
+  useEffect(() => {
+    setDisplayedNotAddedLocationsInfo(
+      notAddedLocationsInfo?.slice(
+        (currentPage - 1) * locationsPerPage,
+        currentPage * locationsPerPage
+      )
+    )
+  }, [notAddedLocationsInfo, currentPage])
 
   // Location info
   const info = () => {
@@ -186,8 +200,8 @@ export default function UnmatchedLocationsDashboardLayout ({
           </tr>
         </thead>
         <tbody className='govuk-table__body'>
-          {notAddedLocationsInfo &&
-            notAddedLocationsInfo.map((location, index) => {
+          {displayedNotAddedLocationsInfo &&
+            displayedNotAddedLocationsInfo.map((location, index) => {
               return (
                 <tr className='govuk-table__row' key={index}>
                   <td className='govuk-table__cell'>
@@ -285,7 +299,15 @@ export default function UnmatchedLocationsDashboardLayout ({
           {notAddedLocationsInfo?.length > 0 && (
             <div className='govuk-grid-column-full'>
               {table()}
-              <div className='govuk-body govuk-!-padding-top-5'>
+
+              <div className='govuk-body govuk-!-padding-top-1'>
+                <Pagination
+                  totalPages={Math.ceil(
+                    notAddedLocationsInfo?.length / locationsPerPage
+                  )}
+                  onPageChange={(val) => setCurrentPage(val)}
+                />
+
                 <Button
                   text={`Finish ${
                     (flow === 'unmatched-locations-not-found' && 'finding') ||

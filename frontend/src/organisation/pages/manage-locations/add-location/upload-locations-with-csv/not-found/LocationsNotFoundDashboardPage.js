@@ -10,10 +10,14 @@ export default function LocationsNotFoundDashboardPage () {
     // TODO: navigate to correct page
     navigate(orgManageLocationsUrls.unmatchedLocations.notFound.find)
 
+  const navigateToFindLocation = () =>
+    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.find)
+
   return (
     <>
       <UnmatchedLocationsDashboardLayout
         navigateToNextPage={navigateToNextPage}
+        navigateToFindLocation={navigateToFindLocation}
         flow='unmatched-locations-not-found'
       />
     </>

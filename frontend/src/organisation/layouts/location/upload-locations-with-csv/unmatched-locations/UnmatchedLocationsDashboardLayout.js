@@ -18,6 +18,7 @@ import { geoSafeToWebLocation } from '../../../../../common/services/formatters/
 
 export default function UnmatchedLocationsDashboardLayout ({
   navigateToNextPage,
+  navigateToFindLocation,
   flow
 }) {
   const navigate = useNavigate()
@@ -46,7 +47,7 @@ export default function UnmatchedLocationsDashboardLayout ({
       if (data.length > 0) {
         const locations = []
         const notFoundLocs = data.filter((location) =>
-          location.error.includes('not found')
+          location.error.includes(unmatchedLocationText)
         )
         notFoundLocs.forEach((location) => {
           locations.push(geoSafeToWebLocation(location))
@@ -157,7 +158,7 @@ export default function UnmatchedLocationsDashboardLayout ({
       )
     )
     dispatch(setCurrentLocationId(notAddedLocationsInfo[index].id))
-    navigateToNextPage()
+    navigateToFindLocation()
   }
 
   const table = () => (
@@ -264,7 +265,8 @@ export default function UnmatchedLocationsDashboardLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l'>
-              {notAddedLocationsInfo?.length || 0} locations{' '}
+              {notAddedLocationsInfo?.length || 0} location
+              {notAddedLocationsInfo?.length === 1 ? ' ' : 's '}
               {unmatchedLocationText}
             </h1>
             <div className='govuk-body'>

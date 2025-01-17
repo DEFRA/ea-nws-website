@@ -18,7 +18,6 @@ import {
 import { backendCall } from '../../../../../common/services/BackendService'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ConfirmLocationLayout ({
   navigateToNextPage,
@@ -102,20 +101,17 @@ export default function ConfirmLocationLayout ({
       dispatch(setCurrentLocation(data))
 
       // Remove invalid location from elasticache
-      if (flow === 'unmatched-locations-not-found') {
+      if (
+        flow === 'unmatched-locations-not-found' ||
+        flow === 'unmatched-locations-not-in-england'
+      ) {
         await backendCall(
           { orgId, locationId: currentLocation.id },
           'api/bulk_uploads/remove_invalid_location',
           navigate
         )
-        navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard, {
-          state: {
-            addedLocation: currentLocation.additionals[0].value.s
-          }
-        })
-      } else {
-        navigateToNextPage()
       }
+      navigateToNextPage()
     } else {
       errorMessage
         ? setError(errorMessage)
@@ -186,7 +182,8 @@ export default function ConfirmLocationLayout ({
                 <div className='govuk-!-margin-top-8'>
                   <Button
                     text={
-                      flow === 'unmatched-locations-not-found'
+                      flow === 'unmatched-locations-not-found' ||
+                      flow === 'unmatched-locations-not-in-england'
                         ? 'Add location'
                         : 'Confirm location'
                     }

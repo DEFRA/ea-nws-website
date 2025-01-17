@@ -59,6 +59,7 @@ module.exports = [
           })
         }
       } catch (error) {
+        logger.error(error)
         createGenericErrorResponse(h)
       }
     }

@@ -3,8 +3,10 @@ const fs = require('fs')
 const path = require('path')
 const getSecretKeyValue = require('./SecretsManager')
 const { logger } = require('../plugins/logging')
+const os = require('os')
 
 const client = new S3Client()
+const hostname = os.hostname()
 
 // Checks the most recent entry in a file to determine if it is older than 2 day threshold
 const isLogOld = (logFilePath) => {
@@ -50,7 +52,7 @@ const uploadToBucket = async (filePath, bucketName) => {
 
     const params = {
       Bucket: bucketName,
-      Key: `Website/${fileName}`,
+      Key: `Website/${hostname}/${fileName}`,
       Body: fileContent
     }
 

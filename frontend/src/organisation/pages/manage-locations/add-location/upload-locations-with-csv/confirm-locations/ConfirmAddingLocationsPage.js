@@ -112,7 +112,6 @@ export default function ConfirmLocationsPage () {
       } else if (notFoundLocations > 0) {
         navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard, {
           state: {
-            notFoundLocations: data.invalid.notFound,
             addedLocations: data.valid
           }
         })

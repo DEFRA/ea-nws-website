@@ -1,12 +1,13 @@
 const redis = require('redis')
 const getSecretKeyValue = require('./SecretsManager')
+const { logger } = require('../plugins/logging')
 
 const connectToRedis = async () => {
   const redisEndpoint = await getSecretKeyValue('nws/aws', 'redisEndpoint')
   // Create the client
   const client = redis.createClient({ url: 'rediss://' + redisEndpoint })
   client.on('error', (error) => {
-    console.log('Redis Client Error', error)
+    logger.error(`Redis Client Error: ${error}`)
     throw error
   })
   // Connect to the redis elasticache
@@ -138,6 +139,9 @@ const addToAlert = async (orgId, location) => {
     if (additional.id === 'other') {
       const other = JSON.parse(additional.value?.s)
       alertTypes = other.alertTypes
+      if (!alertTypes) {
+        alertTypes = []
+      }
     }
   })
   const client = await connectToRedis()
@@ -404,7 +408,7 @@ const orgSignIn = async (profile, organization, locations, contacts) => {
     }
     const existingContacts = await getContactKeys(organization.id)
     const existingContactIds = existingContacts.map((contact) =>
-      contact.split(':').at(-1)
+      contact.split(':').slice(2).join(':')
     )
     for (const contact of contacts) {
       if (!existingContactIds.includes(contact.id)) {

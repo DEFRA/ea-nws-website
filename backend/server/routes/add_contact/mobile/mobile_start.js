@@ -8,6 +8,7 @@ const {
 const {
   normalisePhoneNumber
 } = require('../../../services/formatters/NormalisePhoneNumber')
+const { logger } = require('../../../plugins/logging')
 
 module.exports = [
   {
@@ -37,6 +38,7 @@ module.exports = [
           })
         }
       } catch (error) {
+        logger.error(error)
         return createGenericErrorResponse(h)
       }
     }

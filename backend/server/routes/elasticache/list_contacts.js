@@ -1,3 +1,4 @@
+const { logger } = require('../../plugins/logging')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
@@ -26,6 +27,7 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
       } catch (error) {
+        logger.error(error)
         return createGenericErrorResponse(h)
       }
     }

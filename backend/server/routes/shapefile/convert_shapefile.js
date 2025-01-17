@@ -3,6 +3,7 @@ const getSecretKeyValue = require('../../services/SecretsManager')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
+const { logger } = require('../../plugins/logging')
 
 module.exports = [
   {
@@ -63,6 +64,7 @@ module.exports = [
           data: geojson
         })
       } catch (error) {
+        logger.error(error)
         return h.response({
           status: 500,
           errorMessage: error.message || 'An unexpected error occurred'

@@ -12,6 +12,7 @@ export default function AccountDeleteConfirmPage () {
 
   return (
     <>
+
       {/* Main body */}
       <main className='govuk-main-wrapper'>
         {/* Account deletion confirmation panel */}

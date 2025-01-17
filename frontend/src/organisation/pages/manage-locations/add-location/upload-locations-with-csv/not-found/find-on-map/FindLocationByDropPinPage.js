@@ -1,0 +1,31 @@
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
+import DropPinOnMapLayout from '../../../../../../layouts/location/add-or-edit-location/search/drop-pin/DropPinOnMapLayout'
+import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
+
+export default function FindLocationByDropPinPage () {
+  const navigate = useNavigate()
+
+  const navigateToNextPage = () => {
+    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard)
+  }
+
+  const navigateToNotInEnglandPage = () => {
+    navigate(
+      orgManageLocationsUrls.unmatchedLocations.notFound.notInEngland.dropPin
+    )
+  }
+
+  const navigateToDropPinLocationSearchPage = () => {
+    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.map)
+  }
+
+  return (
+    <DropPinOnMapLayout
+      navigateToNextPage={navigateToNextPage}
+      navigateToNotInEnglandPage={navigateToNotInEnglandPage}
+      navigateToDropPinLocationSearchPage={navigateToDropPinLocationSearchPage}
+      flow='unmatched-locations-not-found'
+    />
+  )
+}

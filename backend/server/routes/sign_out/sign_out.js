@@ -1,3 +1,4 @@
+const { logger } = require('../../plugins/logging')
 const { orgSignOut } = require('../../services/elasticache')
 const {
   createGenericErrorResponse
@@ -22,7 +23,8 @@ module.exports = [
         } else {
           return createGenericErrorResponse(h)
         }
-      } catch {
+      } catch (error) {
+        logger.error(error)
         createGenericErrorResponse(h)
       }
     }

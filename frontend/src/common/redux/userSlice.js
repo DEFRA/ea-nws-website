@@ -41,7 +41,7 @@ const setLocationOtherAdditionals = (additionals, id, value) => {
   }
 }
 
-const getLocationOtherAdditional = (additionals, id) => {
+export const getLocationOtherAdditional = (additionals, id) => {
   for (let i = 0; i < additionals.length; i++) {
     if (additionals[i].id === 'other') {
       const otherAdditionals = JSON.parse(additionals[i].value?.s)
@@ -53,7 +53,13 @@ const getLocationOtherAdditional = (additionals, id) => {
 
 const setOrgAdditional = (additionals, id, value) => {
   let orgAdditionals = {}
-  const alertnativeContactInfo = ['firstName', 'lastName', 'email', 'telephone', 'jobTitle']
+  const alertnativeContactInfo = [
+    'firstName',
+    'lastName',
+    'email',
+    'telephone',
+    'jobTitle'
+  ]
   orgAdditionals = JSON.parse(additionals)
   if (alertnativeContactInfo.includes(id)) {
     orgAdditionals.alternativeContact[id] = value
@@ -147,7 +153,7 @@ const userSlice = createSlice({
               action_plan: null,
               notes: null,
               location_data_type: null,
-              alertTypes: null
+              alertTypes: []
             })
           }
         }
@@ -183,17 +189,22 @@ const userSlice = createSlice({
     orgCurrentContact: {
       id: null,
       enabled: null,
-      firstName: null,
-      lastName: null,
+      firstname: null,
+      lastname: null,
       emails: null,
       mobilePhones: null,
       homePhones: null,
       position: null,
       comments: null,
+      pois: null,
       additionals: [
         {
           id: 'keywords',
-          value: null
+          value: { s: '[]' }
+        },
+        {
+          id: 'jobTitle',
+          value: { s: '' }
         }
       ]
     },
@@ -326,7 +337,7 @@ const userSlice = createSlice({
                 action_plan: null,
                 notes: null,
                 location_data_type: null,
-                alertTypes: null
+                alertTypes: []
               })
             }
           }
@@ -469,7 +480,8 @@ const userSlice = createSlice({
       state.organization.logoUrl = action.payload.logoUrl
       state.organization.backgroundUrl = action.payload.backgroundUrl
       state.organization.alertDiffusionZone = action.payload.alertDiffusionZone
-      state.organization.alertDiffusionZoneBoundingBox = action.payload.alertDiffusionZoneBoundingBox
+      state.organization.alertDiffusionZoneBoundingBox =
+        action.payload.alertDiffusionZoneBoundingBox
       state.organization.urlSlug = action.payload.urlSlug
     },
     setOrganizationId: (state, action) => {
@@ -477,37 +489,81 @@ const userSlice = createSlice({
     },
     setOrganizationName: (state, action) => {
       state.organization.name = action.payload
-      state.organization.description = setOrgAdditional(state.organization.description, 'name', action.payload)
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'name',
+        action.payload
+      )
     },
     setOrganizationAddress: (state, action) => {
-      state.organization.description = setOrgAdditional(state.organization.description, 'address', action.payload)
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'address',
+        action.payload
+      )
     },
     setOrganizationCompHouseNum: (state, action) => {
-      state.organization.description = setOrgAdditional(state.organization.description, 'compHouseNum', action.payload)
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'compHouseNum',
+        action.payload
+      )
     },
     setOrganizationEmergencySector: (state, action) => {
-      state.organization.description = setOrgAdditional(state.organization.description, 'emergencySector', action.payload)
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'emergencySector',
+        action.payload
+      )
     },
     setOrganizationIsAdminRegistering: (state, action) => {
-      state.organization.description = setOrgAdditional(state.organization.description, 'isAdminRegistering', action.payload)
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'isAdminRegistering',
+        action.payload
+      )
     },
     setOrganizationAlternativeContact: (state, action) => {
-      state.organization.description = setOrgAdditional(state.organization.description, 'alternativeContact', action.payload)
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'alternativeContact',
+        action.payload
+      )
     },
     setOrganizationACFirstName: (state, action) => {
-      state.organization.description = setOrgAdditional(state.organization.description, 'firstName', action.payload)
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'firstName',
+        action.payload
+      )
     },
     setOrganizationACLastName: (state, action) => {
-      state.organization.description = setOrgAdditional(state.organization.description, 'lastName', action.payload)
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'lastName',
+        action.payload
+      )
     },
     setOrganizationACEmail: (state, action) => {
-      state.organization.description = setOrgAdditional(state.organization.description, 'email', action.payload)
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'email',
+        action.payload
+      )
     },
     setOrganizationACTelephone: (state, action) => {
-      state.organization.description = setOrgAdditional(state.organization.description, 'telephone', action.payload)
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'telephone',
+        action.payload
+      )
     },
     setOrganizationACJobTitle: (state, action) => {
-      state.organization.description = setOrgAdditional(state.organization.description, 'jobTitle', action.payload)
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'jobTitle',
+        action.payload
+      )
     },
     setOrganizationDescription: (state, action) => {
       state.organization.description = action.payload
@@ -537,14 +593,15 @@ const userSlice = createSlice({
     setOrgCurrentContact: (state, action) => {
       state.orgCurrentContact.id = action.payload.id
       state.orgCurrentContact.enabled = action.payload.enabled
-      state.orgCurrentContact.firstName = action.payload.firstName
-      state.orgCurrentContact.lastName = action.payload.lastName
+      state.orgCurrentContact.firstname = action.payload.firstname
+      state.orgCurrentContact.lastname = action.payload.lastname
       state.orgCurrentContact.emails = action.payload.emails
       state.orgCurrentContact.mobilePhones = action.payload.mobilePhones
       state.orgCurrentContact.homePhones = action.payload.homePhones
       state.orgCurrentContact.position = action.payload.position
       state.orgCurrentContact.additionals = action.payload.additionals
       state.orgCurrentContact.comments = action.payload.comments
+      state.orgCurrentContact.pois = action.payload.pois
     },
     setOrgCurrentContactId: (state, action) => {
       state.orgCurrentContact.id = action.payload
@@ -553,10 +610,10 @@ const userSlice = createSlice({
       state.orgCurrentContact.enabled = action.payload
     },
     setOrgCurrentContactFirstName: (state, action) => {
-      state.orgCurrentContact.firstName = action.payload
+      state.orgCurrentContact.firstname = action.payload
     },
     setOrgCurrentContactLastName: (state, action) => {
-      state.orgCurrentContact.lastName = action.payload
+      state.orgCurrentContact.lastname = action.payload
     },
     setOrgCurrentContactEmails: (state, action) => {
       state.orgCurrentContact.emails = action.payload
@@ -572,6 +629,9 @@ const userSlice = createSlice({
     },
     setOrgCurrentContactNotes: (state, action) => {
       state.orgCurrentContact.comments = action.payload
+    },
+    setOrgCurrentContactPois: (state, action) => {
+      state.orgCurrentContact.pois = action.payload
     },
     setOrgCurrentContactAdditionals: (state, action) => {
       state.orgCurrentContact.additionals = action.payload
@@ -642,7 +702,7 @@ const userSlice = createSlice({
                 action_plan: null,
                 notes: null,
                 location_data_type: null,
-                alertTypes: null
+                alertTypes: []
               })
             }
           }
@@ -677,17 +737,22 @@ const userSlice = createSlice({
       state.orgCurrentContact = {
         id: null,
         enabled: null,
-        firstName: null,
-        lastName: null,
+        firstname: null,
+        lastname: null,
         emails: null,
         mobilePhones: null,
         homePhones: null,
         position: null,
         comments: null,
+        pois: null,
         additionals: [
           {
             id: 'keywords',
-            value: null
+            value: { s: '[]' }
+          },
+          {
+            id: 'jobTitle',
+            value: { s: '' }
           }
         ]
       }
@@ -757,6 +822,9 @@ const userSlice = createSlice({
     },
     getLocationOther: (state, key) => {
       return getLocationOtherAdditional(state.currentLocation.additionals, key)
+    },
+    getContactAdditional: (state, key) => {
+      return getAdditional(state.orgCurrentContact.additionals, key)
     }
   }
 })
@@ -850,6 +918,7 @@ export const {
   setOrgCurrentContactPosition,
   setOrgCurrentContactAdditionals,
   setOrgCurrentContactNotes,
+  setOrgCurrentContactPois,
   setContacts,
   // clear state
   clearAuth,
@@ -859,7 +928,8 @@ export const {
 export const {
   getLocationAdditionals,
   getLocationAdditional,
-  getLocationOther
+  getLocationOther,
+  getContactAdditional
 } = userSlice.selectors
 
 export default userSlice.reducer

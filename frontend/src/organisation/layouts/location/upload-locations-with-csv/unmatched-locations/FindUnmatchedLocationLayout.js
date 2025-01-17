@@ -1,21 +1,17 @@
-import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React, { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../../common/components/gov-uk/Radio'
 import {
-  setCurrentLocationEasting,
-  setCurrentLocationFullAddress,
-  setCurrentLocationName,
-  setCurrentLocationNorthing,
+  getLocationAdditional,
+  getLocationOther,
   setCurrentLocationPostcode,
   setLocationSearchResults
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function FindUnmatchedLocationLayout ({
   navigateToFindPostCode,
@@ -25,28 +21,30 @@ export default function FindUnmatchedLocationLayout ({
   flow
 }) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [findLocationOption, setFindLocationOption] = useState('')
   const [error, setError] = useState('')
-  const [coordinatesAvailable, setCoordinatesAvailable] = useState(false)
 
-  const dispatch = useDispatch()
+  const currentLocName = useSelector((state) =>
+    getLocationAdditional(state, 'locationName')
+  )
+  const currentLocAddress = useSelector((state) =>
+    getLocationOther(state, 'full_address')
+  )
+  const currentLocPostcode = useSelector((state) =>
+    getLocationOther(state, 'postcode')
+  )
+  const currentLocXcoordinate = useSelector((state) =>
+    getLocationOther(state, 'x_coordinate')
+  )
+  const currentLocYcoordinate = useSelector((state) =>
+    getLocationOther(state, 'y_coordinate')
+  )
 
-  // TODO: This data will be set from the unmatched location table
-  const location = {
-    name: 'Location_IDXX',
-    address: 'Address',
-    // address: null,
-    // postcode: 'N1 0AG',
-    postcode: null,
-    coordinates: ['X', 'Y']
-    // coordinates: [null, null]
-  }
-
-  useEffect(() => {
-    if (location.coordinates[0] && location.coordinates[1]) {
-      setCoordinatesAvailable(true)
-    }
-  }, [location.coordinates])
+  const coordinatesAvailable = !!(
+    currentLocXcoordinate && currentLocYcoordinate
+  )
+  const postcodeText = currentLocPostcode ? ' and postcode ' : ' '
 
   const findLocationOptions = [
     {
@@ -63,21 +61,16 @@ export default function FindUnmatchedLocationLayout ({
   ]
 
   const handleContinue = async () => {
-    // TODO: This will be set from the unmatched location table
-    dispatch(setCurrentLocationName(location.name))
-    dispatch(setCurrentLocationFullAddress(location.address))
-    dispatch(setCurrentLocationPostcode(location.postcode))
-    dispatch(setCurrentLocationEasting(location.coordinates[0]))
-    dispatch(setCurrentLocationNorthing(location.coordinates[1]))
-
     if (!findLocationOption) {
       setError('Select how do you want to find this location')
     } else if (findLocationOption === findLocationOptions[0].value) {
-      if (!location.postcode) {
+      if (!currentLocPostcode) {
         navigateToFindPostCode()
       } else {
         const dataToSend = {
-          postCode: location.postcode.replace(/[^a-zA-Z0-9]/g, '').toUpperCase()
+          postCode: currentLocPostcode
+            .replace(/[^a-zA-Z0-9]/g, '')
+            .toUpperCase()
         }
         const { data, errorMessage } = await backendCall(
           dataToSend,
@@ -88,6 +81,8 @@ export default function FindUnmatchedLocationLayout ({
           dispatch(setCurrentLocationPostcode(data[0].postcode))
           dispatch(setLocationSearchResults(data))
           navigateToFindAddress()
+        } else {
+          navigateToFindPostCode()
         }
       }
     } else if (findLocationOption === findLocationOptions[1].value) {
@@ -99,22 +94,22 @@ export default function FindUnmatchedLocationLayout ({
 
   const Info = () => (
     <>
-      {coordinatesAvailable && location.address && (
+      {coordinatesAvailable && currentLocAddress && (
         <>
           <p>
-            Both X and Y coordinates and an address and postcode were uploaded
+            Both X and Y coordinates and an address{postcodeText}were uploaded
             for this location.
           </p>
 
           <p>
-            When both X and Y coordinates and an address and postcode are
+            When both X and Y coordinates and an address{postcodeText}are
             provided, we only check the X and Y coordinates to confirm the
             location.
           </p>
         </>
       )}
 
-      {!coordinatesAvailable && location.address && (
+      {!coordinatesAvailable && currentLocAddress && (
         <p>
           Some of the information in the address provided could not be found,
           for example the street name or postcode.
@@ -137,24 +132,24 @@ export default function FindUnmatchedLocationLayout ({
 
   const InsetText = () => (
     <div className='govuk-inset-text'>
-      <strong>{location.name}</strong>
-      {location.address && (
+      <strong>{currentLocName}</strong>
+      {currentLocAddress && (
         <>
           <br />
-          {location.address}
+          {currentLocAddress}
         </>
       )}
-      {coordinatesAvailable && !location.address && (
+      {coordinatesAvailable && !currentLocAddress && (
         <>
           <br />
-          {location.coordinates[0]}, {location.coordinates[1]}
+          {currentLocXcoordinate}, {currentLocYcoordinate}
         </>
       )}
-      {coordinatesAvailable && location.address && (
+      {coordinatesAvailable && currentLocAddress && (
         <>
           <br />
           <br />
-          {location.coordinates[0]}, {location.coordinates[1]}
+          {currentLocXcoordinate}, {currentLocYcoordinate}
         </>
       )}
     </div>
@@ -162,9 +157,6 @@ export default function FindUnmatchedLocationLayout ({
 
   return (
     <>
-      <OrganisationAccountNavigation
-        currentPage={orgManageLocationsUrls.view.dashboard}
-      />
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
@@ -177,7 +169,7 @@ export default function FindUnmatchedLocationLayout ({
               {flow === 'unmatched-locations-not-found'
                 ? 'find'
                 : 'to change the position of'}{' '}
-              {location.name}?
+              {currentLocName}?
             </h1>
 
             {/* Body */}

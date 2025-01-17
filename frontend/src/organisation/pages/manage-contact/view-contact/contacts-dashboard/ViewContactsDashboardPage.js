@@ -1,22 +1,24 @@
 import { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router'
 import { useDispatch, useSelector } from 'react-redux'
-import Popup from '../../../../../common/components/custom/Popup'
+import { useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
-import Button from '../../../../../common/components/gov-uk/Button'
 import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
-import Pagination from '../../../../../common/components/gov-uk/Pagination'
+import Popup from '../../../../../common/components/custom/Popup'
+import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
-import DashboardHeader from './dashboard-components/DashboardHeader'
-import ContactsTable from './dashboard-components/ContactsTable'
-import SearchFilter from './dashboard-components/SearchFilter'
-import { setCurrentContact, setContacts } from '../../../../../common/redux/userSlice'
+import Pagination from '../../../../../common/components/gov-uk/Pagination'
+import { setOrgCurrentContact } from '../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../common/services/BackendService'
+import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
+import ContactsTable from './dashboard-components/ContactsTable'
+import DashboardHeader from './dashboard-components/DashboardHeader'
+import SearchFilter from './dashboard-components/SearchFilter'
 
 export default function ViewContactsDashboardPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [contacts, setContacts] = useState([])
   const [notificationText, setNotificationText] = useState('')
   const [selectedContacts, setSelectedContacts] = useState([])
   const [filteredContacts, setFilteredContacts] = useState([])
@@ -27,6 +29,8 @@ export default function ViewContactsDashboardPage () {
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [displayedContacts, setDisplayedContacts] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
+  const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
   const [dialog, setDialog] = useState({
     show: false,
     text: '',
@@ -39,12 +43,6 @@ export default function ViewContactsDashboardPage () {
   })
 
   const contactsPerPage = 20
-
-  const contacts = useSelector((state) =>
-    state.session.contacts !== null
-      ? state.session.contacts
-      : []
-  )
 
   useEffect(() => {
     setFilteredContacts(contacts)
@@ -64,28 +62,61 @@ export default function ViewContactsDashboardPage () {
     )
   }, [filteredContacts, currentPage])
 
-  const moreActions = [
-    'Link selected to locations',
-    'Delete selected'
-  ]
+  useEffect(() => {
+    const getContacts = async () => {
+      const dataToSend = { orgId }
+      const { data } = await backendCall(
+        dataToSend,
+        'api/elasticache/list_contacts',
+        navigate
+      )
+      const contactsUpdate = []
+      if (data) {
+        data.forEach((contact) => {
+          contactsUpdate.push(geoSafeToWebContact(contact))
+        })
+      }
+
+      // TODO: Get linked locations from the API (EAN-1364)
+      let tempSwitch = false
+      contactsUpdate.forEach(function (contact) {
+        if (tempSwitch) {
+          contact.linked_locations = ['Location 1', 'Location 2']
+          tempSwitch = false
+        } else {
+          contact.linked_locations = []
+          tempSwitch = true
+        }
+      })
+
+      setContacts(contactsUpdate)
+      setFilteredContacts(contactsUpdate)
+    }
+    getContacts()
+  }, [])
+
+  const moreActions = ['Link selected to locations', 'Delete selected']
 
   // selected filters
-  const [contactNameFilter, setContactNameFilter] =
-    useState([])
-  const [selectedJobTitleFilters, setSelectedJobTitleFilters] =
-    useState([])
-  const [selectedKeywordFilters, setSelectedKeywordFilters] =
-    useState([])
-  const [selectedLinkedFilters, setSelectedLinkedFilters] =
-    useState([])
+  const [contactNameFilter, setContactNameFilter] = useState([])
+  const [selectedJobTitleFilters, setSelectedJobTitleFilters] = useState([])
+  const [selectedKeywordFilters, setSelectedKeywordFilters] = useState([])
+  const [selectedLinkedFilters, setSelectedLinkedFilters] = useState([])
 
   const deleteContactsText = (contactsToBeDeleted) => {
     let text = ''
 
     if (contactsToBeDeleted.length > 1) {
-      text = contactsToBeDeleted.length + ' ' + (selectedContacts.length > 1 ? 'contacts' : 'contact')
+      text =
+        contactsToBeDeleted.length +
+        ' ' +
+        (contactsToBeDeleted.length > 1 ? 'contacts' : 'contact')
     } else {
-      text = contactsToBeDeleted[0].name
+      text =
+        contactsToBeDeleted[0].firstname +
+        (contactsToBeDeleted[0].lastname.length > 0
+          ? ' ' + contactsToBeDeleted[0].lastname
+          : '')
     }
 
     return text
@@ -97,12 +128,16 @@ export default function ViewContactsDashboardPage () {
         show: true,
         text: (
           <>
-            If you continue {deleteContactsText(contactsToBeDeleted)} will be deleted from this account and
-            will not get flood messages.
+            If you continue {deleteContactsText(contactsToBeDeleted)} will be
+            deleted from this account and will not get flood messages.
           </>
         ),
-        title: `Delete ${contactsToBeDeleted.length > 1 ? contactsToBeDeleted.length : ''} ${contactsToBeDeleted.length > 1 ? 'contacts' : 'contact'}`,
-        buttonText: `Delete ${contactsToBeDeleted.length > 1 ? 'contacts' : 'contact'}`,
+        title: `Delete ${
+          contactsToBeDeleted.length > 1 ? contactsToBeDeleted.length : ''
+        } ${contactsToBeDeleted.length > 1 ? 'contacts' : 'contact'}`,
+        buttonText: `Delete ${
+          contactsToBeDeleted.length > 1 ? 'contacts' : 'contact'
+        }`,
         buttonClass: 'govuk-button--warning'
       })
     }
@@ -112,7 +147,7 @@ export default function ViewContactsDashboardPage () {
     setTargetContact(contact)
     if (action === 'view') {
       e.preventDefault()
-      dispatch(setCurrentContact(contact))
+      dispatch(setOrgCurrentContact(contact))
       navigate(orgManageContactsUrls.view.viewContact)
     } else {
       const contactsToDelete = [contact]
@@ -129,9 +164,10 @@ export default function ViewContactsDashboardPage () {
   }
 
   const onClickLinked = (type) => {
-    const updatedFilteredContacts = contacts.filter((contact) =>
-      (type === 'linked' && contact.linked_locations.length > 0) ||
-      (type === 'notLinked' && contact.linked_locations.length === 0)
+    const updatedFilteredContacts = contacts.filter(
+      (contact) =>
+        (type === 'linked' && contact.linked_locations.length > 0) ||
+        (type === 'notLinked' && contact.linked_locations.length === 0)
     )
 
     let selectedFilterType = []
@@ -159,7 +195,7 @@ export default function ViewContactsDashboardPage () {
     setIsFilterVisible(!isFilterVisible)
   }
 
-  const removeContacts = (contactsToRemove) => {
+  const removeContacts = async (contactsToRemove) => {
     const updatedContacts = contacts.filter(
       (contact) => !contactsToRemove.includes(contact)
     )
@@ -167,7 +203,21 @@ export default function ViewContactsDashboardPage () {
       (contact) => !contactsToRemove.includes(contact)
     )
 
-    dispatch(setContacts(updatedContacts))
+    const removeContactIDs = []
+    contactsToRemove.forEach((contact) => {
+      removeContactIDs.push(contact.id)
+    })
+
+    const dataToSend = { authToken, orgId, removeContactIDs }
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/organization/remove_contacts',
+      navigate
+    )
+    if (errorMessage) {
+      console.log(errorMessage)
+    }
+
     setContacts([...updatedContacts])
     setFilteredContacts([...updatedFilteredContacts])
 
@@ -184,7 +234,9 @@ export default function ViewContactsDashboardPage () {
     if (targetContact) {
       removeContacts([targetContact])
       if (selectedContacts.length > 0) {
-        const updatedSelectedContacts = selectedContacts.filter(contact => contact !== targetContact)
+        const updatedSelectedContacts = selectedContacts.filter(
+          (contact) => contact !== targetContact
+        )
         setSelectedContacts(updatedSelectedContacts)
       }
     } else if (selectedContacts.length > 0) {
@@ -200,7 +252,7 @@ export default function ViewContactsDashboardPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+
       <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
@@ -212,10 +264,7 @@ export default function ViewContactsDashboardPage () {
               text={notificationText}
             />
           )}
-          <DashboardHeader
-            contacts={contacts}
-            onClickLinked={onClickLinked}
-          />
+          <DashboardHeader contacts={contacts} onClickLinked={onClickLinked} />
           <div className='govuk-grid-column-full govuk-body'>
             {!isFilterVisible
               ? (
@@ -225,17 +274,16 @@ export default function ViewContactsDashboardPage () {
                     className='govuk-button govuk-button--secondary inline-block'
                     onClick={() => onOpenCloseFilter()}
                   />
-                  &nbsp; &nbsp;
+                &nbsp; &nbsp;
                   <ButtonMenu
                     title='More actions'
                     options={moreActions}
                     onSelect={(index) => onMoreAction(index)}
                   />
-                  &nbsp; &nbsp;
+                &nbsp; &nbsp;
                   <Button
                     text='Print'
                     className='govuk-button govuk-button--secondary inline-block'
-                    // onClick={() => setIsFilterVisible(!isFilterVisible)}
                   />
                   <ContactsTable
                     contacts={contacts}
@@ -289,13 +337,13 @@ export default function ViewContactsDashboardPage () {
                         className='govuk-button govuk-button--secondary'
                         onClick={() => onOpenCloseFilter()}
                       />
-                        &nbsp; &nbsp;
+                    &nbsp; &nbsp;
                       <ButtonMenu
                         title='More actions'
                         options={moreActions}
                         onSelect={(index) => onMoreAction(index)}
                       />
-                        &nbsp; &nbsp;
+                    &nbsp; &nbsp;
                       <Button
                         text='Print'
                         className='govuk-button govuk-button--secondary inline-block'

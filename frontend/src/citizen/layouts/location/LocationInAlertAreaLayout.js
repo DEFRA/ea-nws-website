@@ -252,6 +252,7 @@ export default function LocationInAlertAreaLayout ({
 
   return (
     <>
+
       <BackLink onClick={() => handleUserNavigatingBack()} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>

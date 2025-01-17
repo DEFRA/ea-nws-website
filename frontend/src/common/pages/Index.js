@@ -16,9 +16,9 @@ import {
   setCurrentLocationFullAddress,
   setCurrentLocationNorthing,
   setLocationBoundaries,
-  setOrgCurrentContact,
   setOrgId,
   setProfile,
+  setProfileId,
   setRegistrations,
   setSelectedBoundary,
   setSelectedBoundaryType,
@@ -302,46 +302,7 @@ export default function IndexPage () {
     )
   }
 
-  const mockOrgCurrentContact = {
-    id: null,
-    enabled: null,
-    firstName: null,
-    lastName: null,
-    emails: null,
-    mobilePhones: null,
-    homePhones: null,
-    position: null,
-    comments: null,
-    additionals: [
-      {
-        id: 'keywords',
-        value: null
-      }
-    ]
-  }
-
   const mockContacts = [
-    {
-      name: 'Stephanie Beach',
-      job_title: 'Operations Director',
-      email: 'stephanie.beach@company.com',
-      linked_locations: ['Loc_1', 'Loc_2'],
-      keywords: ['Team 1']
-    },
-    {
-      name: 'Mary Pepper',
-      job_title: 'Regional Manager',
-      email: 'mary.pepper@company.com',
-      linked_locations: [],
-      keywords: ['Team 1', 'Team 2']
-    },
-    {
-      name: 'Amanda Jordan',
-      job_title: 'Regional Manager',
-      email: 'amanda.jordan@company.com',
-      linked_locations: ['Loc_3', 'Loc_4'],
-      keywords: ['Team 1', 'Team 3']
-    },
     {
       name: 'Steve Binns',
       job_title: 'Regional Manager',
@@ -517,23 +478,21 @@ export default function IndexPage () {
       {
         id: 'other',
         value: {
-          s: JSON.stringify(
-            {
-              full_address: null,
-              postcode: null,
-              // Easting EPSG: 27700
-              x_coordinate: null,
-              // Northing EPSG: 27700
-              y_coordinate: null,
-              internal_reference: null,
-              business_criticality: null,
-              location_type: null,
-              action_plan: null,
-              notes: null,
-              location_data_type: null,
-              alertTypes: null
-            }
-          )
+          s: JSON.stringify({
+            full_address: null,
+            postcode: null,
+            // Easting EPSG: 27700
+            x_coordinate: null,
+            // Northing EPSG: 27700
+            y_coordinate: null,
+            internal_reference: null,
+            business_criticality: null,
+            location_type: null,
+            action_plan: null,
+            notes: null,
+            location_data_type: null,
+            alertTypes: null
+          })
         }
       }
     ]
@@ -582,10 +541,7 @@ export default function IndexPage () {
         (async () => {
           const dataToSend = { signinToken: uuidv4(), code: 123456, signinType: 'org' }
 
-          await backendCall(
-            dataToSend,
-            'api/sign_in_validate'
-          )
+          await backendCall(dataToSend, 'api/sign_in_validate')
         })()
         dispatch(setSigninType('org'))
       }
@@ -600,9 +556,9 @@ export default function IndexPage () {
       dispatch(setSelectedBoundaryType(null))
       dispatch(setSelectedBoundary(null))
       dispatch(setLocationBoundaries([]))
-      dispatch(setOrgCurrentContact(mockOrgCurrentContact))
       dispatch(setContacts(mockContacts))
-      dispatch(setOrgId('123456'))
+      dispatch(setOrgId('1'))
+      dispatch(setProfileId('1'))
       dispatch(setCurrentLocationEasting('520814'))
       dispatch(setCurrentLocationNorthing('185016'))
       dispatch(

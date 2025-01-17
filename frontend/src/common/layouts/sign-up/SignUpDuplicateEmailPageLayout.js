@@ -43,6 +43,7 @@ export default function SignUpDuplicateEmailPageLayout () {
 
   return (
     <>
+
       <BackLink to={urlSignup} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

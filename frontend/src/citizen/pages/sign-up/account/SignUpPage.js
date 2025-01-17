@@ -11,9 +11,8 @@ import {
   setRegisterToken
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
-import { addVerifiedContact } from '../../../../common/services/ProfileServices'
+import { addVerifiedContact, removeVerifiedContact } from '../../../../common/services/ProfileServices'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
-
 export default function SignUpPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -41,8 +40,11 @@ export default function SignUpPage () {
           setError(errorMessage)
         }
       } else {
-        // add email to  emails list
-        const updatedProfile = addVerifiedContact(profile, 'email', email)
+        let updatedProfile = profile
+        if (profile.emails[0]) {
+          updatedProfile = removeVerifiedContact(updatedProfile, profile.emails[0])
+        }
+        updatedProfile = addVerifiedContact(updatedProfile, 'email', email)
         dispatch(setProfile(updatedProfile))
         dispatch(setRegisterToken(data.registerToken))
         navigate('/signup/validate')
@@ -52,6 +54,7 @@ export default function SignUpPage () {
 
   return (
     <>
+
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

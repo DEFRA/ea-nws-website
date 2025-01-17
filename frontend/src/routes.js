@@ -12,6 +12,7 @@ import commonFooterRoutes from './common/routes/footer/FooterRoutes'
 import commonSignOutRoutes from './common/routes/sign-out/SignOutRoutes'
 import commonStartRoutes from './common/routes/start/StartRoutes'
 import { orgManageAccountRoutes } from './organisation/routes/account/AccountRoutes'
+import { orgFloodReportsRoutes } from './organisation/routes/flood-reports/FloodReportsRoutes'
 import orgFooterRoutes from './organisation/routes/footer/FooterRoutes'
 import orgHomeRoutes from './organisation/routes/home/HomeRoutes'
 import { infoRoutes } from './organisation/routes/info/InfoRoutes'
@@ -20,7 +21,6 @@ import { orgManageKeywordsRoutes } from './organisation/routes/manage-keywords/M
 import { orgManageLocationRoutes } from './organisation/routes/manage-locations/ManageLocationsRoutes'
 import orgSigninRoutes from './organisation/routes/sign-in/SignInRoutes'
 import orgSignupRoutes from './organisation/routes/sign-up/SignUpRoutes'
-import { orgViewReportRoutes } from './organisation/routes/reports/reportRoutes'
 
 // index routes
 const indexRoutes = [{ path: '/index', component: <Index /> }]
@@ -51,5 +51,5 @@ export const authenticatedRoutes = [
   ...orgManageKeywordsRoutes,
   ...orgManageContactsRoutes,
   ...orgManageAccountRoutes,
-  ...orgViewReportRoutes
+  ...orgFloodReportsRoutes
 ]

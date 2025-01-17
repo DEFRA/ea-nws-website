@@ -2,25 +2,21 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
 import Autocomplete from '../../../../../../common/components/gov-uk/Autocomplete'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
-import Radio from '../../../../../../common/components/gov-uk/Radio'
 import {
   getLocationAdditional,
   getLocationOther,
   setCurrentLocationCoordinates
 } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
-import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const [searchOption, setSearchOption] = useState('')
-  const [searchOptionError, setSearchOptionError] = useState('')
-  const searchOptionErrorText = 'Select how you want to find this location'
+
+  const [showNotFound, setShowNotFound] = useState(null)
   const [placeNameTownOrPostcode, setPlaceNameTownOrPostcode] = useState('')
   const placeNameTownOrPostcodeText = 'Enter a place name, town or postcode'
   const [placeNameTownOrPostcodeCoords, setPlaceNameTownOrPostcodeCoords] =
@@ -29,13 +25,6 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
     useState('')
   const [results, setResults] = useState(null)
 
-  // remove error if user changes search option
-  useEffect(() => {
-    setSearchOptionError('')
-    setPlaceNameTownOrPostcodeError('')
-    setPlaceNameTownOrPostcode('')
-  }, [searchOption])
-
   // remove error if user changes place name, town or postcode
   useEffect(() => {
     if (placeNameTownOrPostcodeError) {
@@ -43,53 +32,34 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
     }
   }, [placeNameTownOrPostcode])
 
-  const searchOptions = [
-    { label: 'Place name', value: 'PlaceName' },
-    { label: 'Town', value: 'Town' },
-    { label: 'Postcode', value: 'Postcode' }
-  ]
-
   const handleInputChange = async (value) => {
     setPlaceNameTownOrPostcode(value)
     setResults([])
+
     const valueEmpty = value.length === 0
-    if (searchOption) {
-      const valueLongEnough = value.length >= 3
-      const valueValid = !valueEmpty && valueLongEnough
-      let searchFilter = null
-      if (valueValid) {
-        switch (searchOption) {
-          case searchOptions[0].value:
-            // Leave search filter set to null
-            break
-          case searchOptions[1].value:
-            searchFilter = ['City', 'Town', 'Village']
-            break
-          case searchOptions[2].value:
-            searchFilter = ['Postcode']
-            break
-          default:
-            break
-        }
-        const dataToSend = {
-          name: value,
-          filter: searchFilter
-        }
-        const { data, errorMessage } = await backendCall(
-          dataToSend,
-          'api/os-api/name-search',
-          navigate
-        )
-        if (!errorMessage) {
-          setResults(data)
-          setPlaceNameTownOrPostcodeError('')
-        } else {
-          // show error message from OS Api postcode search
-          setPlaceNameTownOrPostcodeError(errorMessage)
-        }
+    const valueLongEnough = value.length >= 3
+    const valueValid = !valueEmpty && valueLongEnough
+    if (valueValid) {
+      const dataToSend = {
+        name: value,
+        filter: null
+      }
+      const { data, errorMessage } = await backendCall(
+        dataToSend,
+        'api/os-api/name-search',
+        navigate
+      )
+      if (!errorMessage) {
+        setResults(data)
+        setPlaceNameTownOrPostcodeError('')
+        setShowNotFound(false)
+      } else {
+        // show error message from OS Api postcode search
+        setPlaceNameTownOrPostcodeError(errorMessage)
+        setShowNotFound(true)
       }
     } else {
-      setSearchOptionError(valueEmpty ? '' : searchOptionErrorText)
+      setShowNotFound(false)
     }
   }
 
@@ -99,10 +69,6 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
   }
 
   const handleSubmit = () => {
-    if (!searchOption) {
-      setSearchOptionError(searchOptionErrorText)
-    }
-
     const trimmedPlaceNameTownOrPostcode = placeNameTownOrPostcode.trim()
     if (trimmedPlaceNameTownOrPostcode === '') {
       setPlaceNameTownOrPostcodeError(placeNameTownOrPostcodeText)
@@ -112,11 +78,7 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
       )
     }
 
-    if (
-      !searchOptionError &&
-      !placeNameTownOrPostcodeError &&
-      placeNameTownOrPostcodeCoords
-    ) {
+    if (!placeNameTownOrPostcodeError && placeNameTownOrPostcodeCoords) {
       dispatch(setCurrentLocationCoordinates(placeNameTownOrPostcodeCoords))
       navigateToNextPage(placeNameTownOrPostcode)
     }
@@ -163,17 +125,12 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
 
   return (
     <>
-      <OrganisationAccountNavigation
-        currentPage={orgManageLocationsUrls.view.dashboard}
-      />
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
-            {(searchOptionError || placeNameTownOrPostcodeError) && (
-              <ErrorSummary
-                errorList={[searchOptionError, placeNameTownOrPostcodeError]}
-              />
+            {placeNameTownOrPostcodeError && (
+              <ErrorSummary errorList={[placeNameTownOrPostcodeError]} />
             )}
             <h1 className='govuk-heading-l'>Find the location on a map</h1>
             {flow === 'unmatched-locations-not-found' && (
@@ -184,35 +141,6 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
             )}
             {flow === 'unmatched-locations-not-found' && <LocationDetails />}
 
-            {/* TODO: Looks like the radio options are removed from the master screens */}
-            {/* <p>
-              We need some additional information to help us find the location.
-              Select from the following options which of these you want to use.
-            </p> */}
-            <div
-              className={
-                searchOptionError
-                  ? 'govuk-form-group govuk-form-group--error'
-                  : 'govuk-form-group'
-              }
-            >
-              {searchOptionError && (
-                <p className='govuk-error-message'>{searchOptionError}</p>
-              )}
-              <fieldset className='govuk-fieldset'>
-                <div className='govuk-radios' data-module='govuk-radios'>
-                  {searchOptions.map((option) => (
-                    <Radio
-                      key={option.label}
-                      label={option.label}
-                      value={option.value}
-                      name='searchOptionsRadios'
-                      onChange={(e) => setSearchOption(e.target.value)}
-                    />
-                  ))}
-                </div>
-              </fieldset>
-            </div>
             <div
               className={
                 placeNameTownOrPostcodeError
@@ -230,6 +158,7 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
                 menuOpen
                 value={placeNameTownOrPostcode}
                 onClick={(val) => handleOnClick(val)}
+                showNotFound={showNotFound}
                 nameField='address'
               />
             </div>

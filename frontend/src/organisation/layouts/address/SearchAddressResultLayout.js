@@ -1,24 +1,24 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../common/components/gov-uk/Button'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import {
   getLocationAdditional,
   getLocationOther,
+  setCurrentLocationCoordinates,
+  setCurrentLocationFullAddress,
   setOrganizationAddress
 } from '../../../common/redux/userSlice'
-import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function SearchAddressResultLayout ({
   navigateToNextPage,
   navigateToPreviousPage,
+  navigateToFindPostcodePage,
   navigateToCannotFindAddressPage,
   flow
 }) {
-  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(1)
   const locations = useSelector((state) => state.session.locationSearchResults)
@@ -71,20 +71,27 @@ export default function SearchAddressResultLayout ({
 
   const handleSelectedLocation = (event, selectedLocation) => {
     event.preventDefault()
-    dispatch(setOrganizationAddress(selectedLocation.address))
+    if (flow === 'unmatched-locations-not-found') {
+      dispatch(setCurrentLocationFullAddress(selectedLocation.address))
+      dispatch(setCurrentLocationCoordinates(selectedLocation.coordinates))
+    } else {
+      dispatch(setOrganizationAddress(selectedLocation.address))
+    }
     navigateToNextPage()
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     navigateToPreviousPage()
   }
 
+  const navigateToFindPostcode = (event) => {
+    event.preventDefault()
+    navigateToFindPostcodePage()
+  }
+
   return (
     <>
-      <OrganisationAccountNavigation
-        currentPage={orgManageLocationsUrls.view.dashboard}
-      />
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-body'>
@@ -104,7 +111,7 @@ export default function SearchAddressResultLayout ({
                         : locationPostCode}
                       {'   '}
                       <Link
-                        onClick={() => navigate(-1)}
+                        onClick={(e) => navigateToFindPostcode(e)}
                         className='govuk-link govuk-!-padding-left-5'
                       >
                         Change postcode

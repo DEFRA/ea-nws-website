@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function ContactReviewRow ({
+export default function ContactReviewRow({
   contact,
   contactType,
   isConfirmed,
@@ -38,26 +38,17 @@ export default function ContactReviewRow ({
         <td className='govuk-table__header govuk-!-width-one-half'>
           {rowDetails().titleRow}
         </td>
-        <td className='govuk-table__cell'>{contact}</td>
-        {isConfirmed
-          ? (
+        <td className='govuk-table__cell'>
+          {contact}
+          {!isConfirmed && (
             <>
-              <td className='govuk-table__cell' />
-              <td className='govuk-table__cell' />
+              <br />
+              <br />
+              <strong className='govuk-tag govuk-tag--red '>Unconfirmed</strong>
             </>
-            )
-          : (
-            <>
-              <td className='govuk-table__cell'>
-                <strong className='govuk-tag govuk-tag--red'>Unconfirmed</strong>
-              </td>
-              <td className='govuk-table__cell'>
-                <Link to={rowDetails().confirmLink} className='govuk-link'>
-                  Confirm
-                </Link>
-              </td>
-            </>
-            )}
+          )}
+        </td>
+
         <td className='govuk-table__cell'>
           {rowDetails().showDelete && (
             <Link
@@ -70,6 +61,15 @@ export default function ContactReviewRow ({
             >
               Remove
             </Link>
+          )}
+          {!isConfirmed && (
+            <>
+              <br />
+              <br />
+              <Link to={rowDetails().confirmLink} className='govuk-link'>
+                Confirm
+              </Link>
+            </>
           )}
         </td>
       </tr>

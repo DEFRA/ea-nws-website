@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function LocationReviewTable ({ locations }) {
+export default function LocationReviewTable({ locations }) {
   return (
     <div className='govuk-!-padding-bottom-4'>
       <h3 className='govuk-heading-m'>Location you selected</h3>
@@ -10,10 +10,10 @@ export default function LocationReviewTable ({ locations }) {
           <tbody className='govuk-table__body' />
           {locations.map((location, index) => (
             <tr key={index} className='govuk-table__row'>
-              <td className='govuk-table__header  govuk-!-width-one-half'>
+              <td className='govuk-table__header govuk-!-width-one-quarter'>
                 Address
               </td>
-              <td className='govuk-table__cell  govuk-!-width-full'>
+              <td className='govuk-table__cell govuk-!-width-full'>
                 {location.address}
               </td>
 

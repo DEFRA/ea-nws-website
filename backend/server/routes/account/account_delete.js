@@ -1,4 +1,4 @@
-import { logger } from '../../plugins/logging'
+const { logger } = require('../../plugins/logging')
 const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse

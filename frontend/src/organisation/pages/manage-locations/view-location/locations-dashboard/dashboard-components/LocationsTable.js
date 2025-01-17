@@ -3,7 +3,6 @@ import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import locationPin from '../../../../../../common/assets/images/location_pin.svg'
 import { setCurrentLocation } from '../../../../../../common/redux/userSlice'
-import { webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 import FullscreenMap from '../../FullscreenMap'
 

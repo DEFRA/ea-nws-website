@@ -69,7 +69,7 @@ export const getSurroundingFloodAreasFromShape = async (geoJsonShape, bboxKM = 0
   }
   const { data: wfsAlertData } = await backendCall(WFSParams, 'api/wfs')
   const filteredAlertData = getIntersections(wfsAlertData, bufferedShape)
-  
+
   return {
     alertArea: filteredAlertData,
     warningArea: filteredWarningData
@@ -79,21 +79,21 @@ export const getSurroundingFloodAreasFromShape = async (geoJsonShape, bboxKM = 0
 const getIntersections = (areas, bufferedShape) => {
   const bufferedShapeValid = turf.booleanValid(bufferedShape.geometry)
   const filteredTargetData = areas.features.filter(area => {
-    if(turf.booleanValid(area.geometry) && bufferedShapeValid){
-      try{ 
-        if(area.geometry.type === LocationDataType.SHAPE_LINE){
-          if(turf.lineIntersect(area.geometry, bufferedShape.geometry)) return true
+    if (turf.booleanValid(area.geometry) && bufferedShapeValid) {
+      try {
+        if (bufferedShape.geometry.type === LocationDataType.SHAPE_LINE || area.geometry.type === LocationDataType.SHAPE_LINE) {
+          if (turf.lineIntersect(area.geometry, bufferedShape.geometry)) return true
+          return false
         }
-        const poly1 = turf.multiPolygon(bufferedShape.geometry.coordinates) 
-        const poly2 = turf.multiPolygon(area.geometry.coordinates) 
-        const featureCollection = turf.featureCollection([poly1,poly2])  
-        if(turf.intersect(featureCollection)) return true
-      }
-      catch(e){
+        const poly1 = turf.multiPolygon(bufferedShape.geometry.coordinates)
+        const poly2 = turf.multiPolygon(area.geometry.coordinates)
+        const featureCollection = turf.featureCollection([poly1, poly2])
+        if (turf.intersect(featureCollection)) return true
+      } catch (e) {
         console.error('Error during intersection', e)
       }
       return false
-    }   
+    } else return false
   })
   return filteredTargetData
 }

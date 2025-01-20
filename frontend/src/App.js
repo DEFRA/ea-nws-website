@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useCookies, withCookies } from 'react-cookie'
+import { useDispatch, useSelector } from 'react-redux'
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Layout from './Layout'
 import InactivityPopup from './common/components/custom/InactivityPopup'
 import ScrollToTop from './common/components/custom/ScrollToTop'
+import { clearAuth } from './common/redux/userSlice'
 import { authenticatedRoutes, routes } from './routes'
 
-export default function App () {
+function App () {
   const auth = useSelector((state) => state.session.authToken)
   const signinType = useSelector((state) => state.session.signinType)
   const [isInactive, setIsInactive] = useState(false)
@@ -14,6 +16,13 @@ export default function App () {
   const inactivityTimer = useRef(null)
   const redirectTimer = useRef(null)
   const currentRoute = window.location.pathname
+  const dispatch = useDispatch()
+  const [cookies] = useCookies(['authToken'])
+  const hasAuthCookie = cookies.authToken
+
+  if (auth && !hasAuthCookie) {
+    dispatch(clearAuth())
+  }
 
   useEffect(() => {
     if (isPopUpOnScreen === false) {
@@ -120,3 +129,5 @@ export default function App () {
     </BrowserRouter>
   )
 }
+
+export default withCookies(App)

@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import SignOutLayout from '../../layouts/sign-out/SignOutPageLayout'
 import { clearAuth } from '../../redux/userSlice'
@@ -9,6 +10,7 @@ export default function SignOutManuallyPage () {
   const signinType = useSelector((state) => state.session.signinType)
   const profileId = useSelector((state) => state.session.profileId)
   const orgId = useSelector((state) => state.session.orgId)
+  const [cookies, removeCookie] = useCookies(['authToken']);
 
   useEffect(() => {
     const signout = async () => {
@@ -19,6 +21,7 @@ export default function SignOutManuallyPage () {
       // need to call the backend to remove data from elasticache once signed out
       signout()
     }
+    removeCookie('authToken', {path:'/'})
     dispatch(clearAuth())
   }, [])
 

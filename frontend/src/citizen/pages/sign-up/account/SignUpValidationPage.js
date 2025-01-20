@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -33,6 +34,7 @@ export default function SignUpValidationPage () {
   const [codeExpired, setCodeExpired] = useState(false)
   const session = useSelector((state) => state.session)
   const profile = session.profile
+  const [cookies, setCookie] = useCookies(['authToken']);
 
   // if error remove code sent notification
   useEffect(() => {
@@ -65,6 +67,7 @@ export default function SignUpValidationPage () {
           setError(errorMessage)
         }
       } else {
+        setCookie('authToken', data.authToken)
         dispatch(setAuthToken(data.authToken))
         let updatedProfile = updateAdditionals(profile, [
           { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } }

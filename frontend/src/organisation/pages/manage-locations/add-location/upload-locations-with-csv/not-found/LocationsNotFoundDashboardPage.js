@@ -7,8 +7,8 @@ export default function LocationsNotFoundDashboardPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () =>
-    // TODO: navigate to correct page
-    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.find)
+    // TODO: navigate to correct page when available
+    navigate(orgManageLocationsUrls.view.dashboard)
 
   const navigateToFindLocation = () =>
     navigate(orgManageLocationsUrls.unmatchedLocations.notFound.find)

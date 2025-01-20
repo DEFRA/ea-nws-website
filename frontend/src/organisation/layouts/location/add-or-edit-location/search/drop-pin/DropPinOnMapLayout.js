@@ -5,11 +5,14 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
+import store from '../../../../../../common/redux/store'
 import {
   getLocationAdditional,
   getLocationOther,
+  setCurrentLocation,
   setCurrentLocationCoordinates
 } from '../../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../../common/services/BackendService'
 import { convertCoordinatesToEspg27700 } from '../../../../../../common/services/CoordinatesFormatConverter'
 import { locationInEngland } from '../../../../../../common/services/validations/LocationInEngland'
 import Map from '../../../../../components/custom/Map'
@@ -28,6 +31,8 @@ export default function DropPinOnMapLayout ({
   let { latitude, longitude } = useSelector(
     (state) => state.session.currentLocation.coordinates
   )
+  const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
   const [displayCoords, setDisplayCoords] = useState('')
   const [pinCoords, setPinCoords] = useState(null)
   const [error, setError] = useState('')
@@ -104,8 +109,36 @@ export default function DropPinOnMapLayout ({
       )
       if (inEngland) {
         dispatch(setCurrentLocationCoordinates(pinCoords))
-        // TODO: Send currentLocation object to elasticache and geosafe, then navigate
-        navigateToNextPage()
+
+        const locationToAdd = store.getState().session.currentLocation
+        const dataToSend = { authToken, orgId, location: locationToAdd }
+        const { data, errorMessage } = await backendCall(
+          dataToSend,
+          'api/location/create',
+          navigate
+        )
+
+        if (data) {
+          dispatch(setCurrentLocation(data))
+
+          // Remove invalid location from elasticache
+          if (
+            flow === 'unmatched-locations-not-found' ||
+            flow === 'unmatched-locations-not-in-england'
+          ) {
+            await backendCall(
+              { orgId, locationId: locationToAdd.id },
+              'api/bulk_uploads/remove_invalid_location',
+              navigate
+            )
+          }
+
+          navigateToNextPage()
+        } else {
+          errorMessage
+            ? setError(errorMessage)
+            : setError('Oops, something went wrong')
+        }
       } else {
         navigateToNotInEnglandPage()
       }

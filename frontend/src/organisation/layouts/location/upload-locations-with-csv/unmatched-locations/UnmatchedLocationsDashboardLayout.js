@@ -6,16 +6,12 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import WarningText from '../../../../../common/components/gov-uk/WarningText'
-import {
-  setCurrentLocationEasting,
-  setCurrentLocationFullAddress,
-  setCurrentLocationId,
-  setCurrentLocationName,
-  setCurrentLocationNorthing,
-  setCurrentLocationPostcode
-} from '../../../../../common/redux/userSlice'
+import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
-import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import {
+  geoSafeToWebLocation,
+  webToGeoSafeLocation
+} from '../../../../../common/services/formatters/LocationFormatter'
 
 export default function UnmatchedLocationsDashboardLayout ({
   navigateToNextPage,
@@ -147,31 +143,8 @@ export default function UnmatchedLocationsDashboardLayout ({
   const findLocation = (e, index) => {
     e.preventDefault()
     dispatch(
-      setCurrentLocationName(
-        notAddedLocationsInfo[index].additionals.locationName
-      )
+      setCurrentLocation(webToGeoSafeLocation(notAddedLocationsInfo[index]))
     )
-    dispatch(
-      setCurrentLocationFullAddress(
-        notAddedLocationsInfo[index].additionals.other.full_address
-      )
-    )
-    dispatch(
-      setCurrentLocationPostcode(
-        notAddedLocationsInfo[index].additionals.other.postcode
-      )
-    )
-    dispatch(
-      setCurrentLocationEasting(
-        notAddedLocationsInfo[index].additionals.other.x_coordinate
-      )
-    )
-    dispatch(
-      setCurrentLocationNorthing(
-        notAddedLocationsInfo[index].additionals.other.y_coordinate
-      )
-    )
-    dispatch(setCurrentLocationId(notAddedLocationsInfo[index].id))
     navigateToFindLocation()
   }
 
@@ -252,7 +225,7 @@ export default function UnmatchedLocationsDashboardLayout ({
             <br />
             <br />
             You can print a list of these locations from the previous screen. If
-            you want tothen add these locations to this account you'll need to
+            you want to then add these locations to this account you'll need to
             either reupload them in a new CSV file or add each one manually.
           </>
         }

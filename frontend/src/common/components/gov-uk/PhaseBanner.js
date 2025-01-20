@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom'
 
 export default function Header ({ 
-  type
+  type,
+  phase
  }) {
   return (
     <>
@@ -13,12 +14,13 @@ export default function Header ({
         }`}
         >
           <p className='govuk-!-margin-bottom-0 ' style={{ display: 'flex', alignItems: 'center' }}>
-            <strong className='govuk-tag govuk-phase-banner__content__tag'>
-              Beta
-            </strong>
+            {phase === 'beta' && (
+              <strong className='govuk-tag govuk-phase-banner__content__tag'>
+                Beta
+              </strong>)}
             <span className='govuk-phase-banner__text'>
               This is a new service. Help us improve it and {' '}
-              <Link className='govuk-link' to='https://forms.office.com/pages/responsepage.aspx?id=UCQKdycCYkyQx044U38RAobIfBygQUhBp4VylTaoNm9UQ1QwTkMwUTlLTDI0NE1KWjFXOVpWQU1KMi4u&route=shorturl' target='_blank'>
+              <Link className='govuk-link' to='https://forms.office.com/e/YpBL2ecL2a' target='_blank'>
                 give your feedback (opens in new tab)
               </Link>{' '}
 

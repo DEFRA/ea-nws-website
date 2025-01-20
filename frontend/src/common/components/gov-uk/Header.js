@@ -7,6 +7,7 @@ export default function Header () {
   const location = useLocation()
   const authToken = useSelector((state) => state.session.authToken)
   const signinType = useSelector((state) => state.session.signinType) // Assuming signinType is a different state property
+  const servicePhase = 'beta'
 
   const isOrganisationPage = location.pathname.includes('organisation')
 
@@ -18,7 +19,7 @@ export default function Header () {
           )
         : (
           <div>
-          <PrivateBetaHeader/>
+          {(servicePhase === 'beta' && <PrivateBetaHeader/>)}
           <header className='govuk-header govuk-header--full-width-border' data-module='govuk-header'>
             <div className='govuk-width-container govuk-header__container'>
               <div className='govuk-header__logo'>

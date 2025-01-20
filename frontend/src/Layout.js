@@ -11,6 +11,7 @@ import './common/css/custom.css'
 function Layout () {
   const location = useLocation()
   const auth = useSelector((state) => state.session.authToken)
+  const servicePhase = 'beta'
 
   return (
     <div className='page-container'>
@@ -20,17 +21,17 @@ function Layout () {
           ? <div className='custom-width-container'><OrganisationAccountNavigation currentPage={location.pathname} /></div>
           : <div className='govuk-width-container'><CitizenAccountNavigation currentPage={location.pathname} /></div>}
       </div>
-      {location.pathname.includes('organisation')
-        ? <PhaseBanner type='org' />
-        : <PhaseBanner />}
-      <div
-        className={`${
-          location.pathname.includes('organisation') && auth
-            ? 'custom-width-container body-container'
-            : 'govuk-width-container body-container'
-        }`}
-      >
-        <div className='private-beta-watermark'>
+      <div className={(servicePhase === 'beta' ? 'private-beta-watermark' : '')}>
+        {location.pathname.includes('organisation')
+          ? <PhaseBanner type='org' phase={servicePhase} />
+          : <PhaseBanner phase={servicePhase} />}
+        <div
+          className={`${
+            location.pathname.includes('organisation') && auth
+              ? 'custom-width-container body-container'
+              : 'govuk-width-container body-container'
+          }`}
+        >
           <Outlet />
         </div>
       </div>

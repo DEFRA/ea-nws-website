@@ -29,7 +29,6 @@ export default function ConfirmLocationLayout ({
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
-  const currentLocation = useSelector((state) => state.session.currentLocation)
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const locationName = useSelector((state) =>

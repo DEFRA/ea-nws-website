@@ -23,7 +23,7 @@ module.exports = [
               delete contact[key]
             }
           })
-          
+
           const response = await apiCall(
             { authToken: authToken, contact: contact },
             'organization/updateContact'

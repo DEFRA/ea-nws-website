@@ -252,7 +252,7 @@ export default function UnmatchedLocationsDashboardLayout ({
             <br />
             <br />
             You can print a list of these locations from the previous screen. If
-            you want tothen add these locations to this account you'll need to
+            you want to then add these locations to this account you'll need to
             either reupload them in a new CSV file or add each one manually.
           </>
         }

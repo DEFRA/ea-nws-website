@@ -152,7 +152,12 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
   const detailsMessage = (
     <div>
       You can view flood message areas&nbsp;
-      <a href='#' className='govuk-link'>
+      {/* <Link 
+                                className='govuk-link'
+                                onClick={(event) =>
+                                  handleSelectedLocation(event, displayedLocations[0])}
+                              >near this postcode</Link>*/}
+      <a href='/signup/register-location/location-in-proximity-area/alert' className='govuk-link'>
         near this postcode
       </a>
     </div>

@@ -1,3 +1,4 @@
+const { logger } = require('../../plugins/logging')
 const {
   getDownloadFloodHistoryUrl
 } = require('../../services/DownloadFloodHistory')
@@ -16,7 +17,8 @@ module.exports = [
         }
         const response = await getDownloadFloodHistoryUrl()
         return h.response(response)
-      } catch {
+      } catch (error) {
+        logger.error(error)
         createGenericErrorResponse(h)
       }
     }

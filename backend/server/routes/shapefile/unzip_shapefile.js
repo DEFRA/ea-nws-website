@@ -6,6 +6,7 @@ const { PassThrough } = require('stream')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
+const { logger } = require('../../plugins/logging')
 
 module.exports = [
   {
@@ -81,6 +82,7 @@ module.exports = [
           status: 200
         })
       } catch (error) {
+        logger.error(error)
         return h.response({
           status: 500,
           errorMessage: error.message

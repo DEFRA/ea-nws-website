@@ -6,6 +6,7 @@ const {
   convertGeoSafeProfile,
   convertWebProfile
 } = require('./formatters/profileFormatter')
+const { logger } = require('../plugins/logging')
 
 const getErrorMessage = (path, errorMessage) => {
   const apiPath = path.split('/').pop()
@@ -67,6 +68,7 @@ const apiCall = async (data, path) => {
     return { status: response.status, data: response.data }
   } catch (error) {
     if (error.response) {
+      logger.error(error.response)
       const { status } = error.response
       if (status === 400) {
         return {
@@ -82,6 +84,7 @@ const apiCall = async (data, path) => {
         }
       }
     } else if (error.request) {
+      logger.error(error.request)
       // no response was received - probably need to return
       // returning an error so frontend can handle
       return {
@@ -89,6 +92,7 @@ const apiCall = async (data, path) => {
         errorMessage: 'Oops something broke, try again'
       }
     }
+    logger.error(error)
   }
   return null
 }

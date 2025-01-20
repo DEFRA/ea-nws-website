@@ -2,10 +2,13 @@ import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import ConfirmationPanel from '../../../common/components/gov-uk/Panel'
+import Button from '../../../common/components/gov-uk/Button'
 import { clearAuth } from '../../../common/redux/userSlice'
 
 export default function AccountDeleteConfirmPage () {
   const dispatch = useDispatch()
+  const servicePhase = 'beta'
+
   useEffect(() => {
     dispatch(clearAuth())
   })
@@ -21,6 +24,7 @@ export default function AccountDeleteConfirmPage () {
             <ConfirmationPanel
               title='Account deleted'
               body="You'll no longer get flood warnings"
+              preTitle={(servicePhase === 'beta' ? 'TESTING PHASE ONLY' : '')}
             />
           </div>
         </div>
@@ -36,20 +40,37 @@ export default function AccountDeleteConfirmPage () {
           </Link>
           .
         </p>
-        <p className='govuk-body govuk-!-margin-bottom-6'>
-          <Link to='/survey' className='govuk-link'>
-            What do you think of this service?
-          </Link>{' '}
-          Takes 30 seconds
-        </p>
-        <h2 className='govuk-heading-m'>More about flooding</h2>
-        <p className='govuk-body govuk-!-margin-bottom-6'>
-          Find out how to{' '}
-          <Link to='https://gov.uk/flood' className='govuk-link'>
-            protect yourself and your property online from flooding
-          </Link>
-          .
-        </p>
+        {servicePhase !== 'beta' && (
+          <div>
+              <p className='govuk-body govuk-!-margin-bottom-6'>
+                <Link to='/survey' className='govuk-link'>
+                  What do you think of this service?
+                </Link>{' '}
+                Takes 30 seconds
+              </p>
+            <h2 className='govuk-heading-m'>More about flooding</h2>
+            <p className='govuk-body govuk-!-margin-bottom-6'>
+              Find out how to{' '}
+              <Link to='https://gov.uk/flood' className='govuk-link'>
+                protect yourself and your property online from flooding
+              </Link>
+              .
+            </p>
+          </div>
+        )}
+        {servicePhase === 'beta' && (
+          <div>
+            <h1 className='govuk-heading-m govuk-!-margin-top-6'>
+              Now answer some questions about closing your account
+            </h1>
+            <a className='govuk-link' href='https://forms.office.com/e/Rd76JZqNbV'>
+              <Button
+                text='Continue'
+                className='govuk-button'
+                />
+            </a>
+          </div>
+        )}
       </main>
     </>
   )

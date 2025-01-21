@@ -123,7 +123,7 @@ console.log('Alert Area:', alertArea);
       if (isInAlertArea) {
         setHistoricalAlertNumber(alertArea.features[0].properties.FWS_TACODE)
       }
-      if (isInAlertArea) {
+      if (isInWarningArea) {
         setHistoricalWarningNumber(
           warningArea?.features[0].properties.FWS_TACODE
         )

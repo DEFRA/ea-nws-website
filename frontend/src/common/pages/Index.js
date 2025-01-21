@@ -29,7 +29,8 @@ export default function IndexPage () {
   const dispatch = useDispatch()
   const [mockSessionActive, setmockSessionActive] = useState(false)
   const [emptyProfileActive, setEmptyProfileActive] = useState(false)
-  const [cookies, setCookie] = useCookies(['authToken']);
+  // eslint-disable-next-line no-unused-vars
+  const [cookies, setCookie] = useCookies(['authToken'])
 
   const mockOne = {
     id: '',
@@ -538,7 +539,7 @@ export default function IndexPage () {
       }
 
       if (type === 'org') {
-        ;(async () => {
+        (async () => {
           const dataToSend = {
             signinToken: uuidv4(),
             code: 123456,

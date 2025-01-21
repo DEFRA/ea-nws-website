@@ -5,7 +5,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Layout from './Layout'
 import InactivityPopup from './common/components/custom/InactivityPopup'
 import ScrollToTop from './common/components/custom/ScrollToTop'
-import { clearAuth } from './common/redux/userSlice'
+import { clearAuth, setLastActivity } from './common/redux/userSlice'
 import { authenticatedRoutes, routes } from './routes'
 
 function App () {
@@ -16,21 +16,44 @@ function App () {
   const inactivityTimer = useRef(null)
   const redirectTimer = useRef(null)
   const currentRoute = window.location.pathname
-  const dispatch = useDispatch()
-  const [cookies] = useCookies(['authToken'])
+  // eslint-disable-next-line no-unused-vars
+  const [cookies, setCookie, removeCookie] = useCookies(['authToken'])
   const hasAuthCookie = cookies.authToken
+  const dispatch = useDispatch()
+  const lastActivity = useSelector((state) => state.session.lastActivity)
 
-  if (auth && !hasAuthCookie) {
-    dispatch(clearAuth())
-  }
+  /* Clear local storage is no cookies,
+  cookies are only for the browser session. */
+  useEffect(() => {
+    if (auth && !hasAuthCookie) {
+      dispatch(clearAuth())
+    }
+  }, [hasAuthCookie])
+
+  /* Remove the cookie and clear local storage
+  after inactivity period. This protects when closing
+  all website tabs (but not the browser) so there is
+  still a session cookie */
+  useEffect(() => {
+    const currentTime = Date.now()
+    const timeout = (Number(process.env.REACT_APP_INACTIVITY_POPUP) + Number(process.env.REACT_APP_TIMEOUT_POPUP)) * 1000
+    if ((currentTime - lastActivity) > timeout) {
+      removeCookie('authToken', { path: '/' })
+      dispatch(clearAuth())
+    }
+  }, [lastActivity])
 
   useEffect(() => {
     if (isPopUpOnScreen === false) {
       const resetInactivityTimer = () => {
-        if (auth) {
+        if (hasAuthCookie) {
           clearTimeout(inactivityTimer.current)
           clearTimeout(redirectTimer.current)
           setIsInactive(false)
+          /* Keep track of the last active time to be
+          used to determine whether to clear storage and
+          cookies. */
+          dispatch(setLastActivity(Date.now()))
           inactivityTimer.current = setTimeout(() => {
             setIsInactive(true)
             setIsPopUpOnScreen(true)
@@ -40,11 +63,10 @@ function App () {
 
       const events = ['mousemove', 'keydown', 'click', 'scroll', 'touchstart']
 
-      if (auth) {
+      if (hasAuthCookie) {
         events.forEach((event) =>
           window.addEventListener(event, resetInactivityTimer)
         )
-        resetInactivityTimer()
       }
 
       return () => {
@@ -55,7 +77,7 @@ function App () {
         clearTimeout(redirectTimer.current)
       }
     }
-  }, [auth, isPopUpOnScreen])
+  }, [hasAuthCookie, isPopUpOnScreen])
 
   useEffect(() => {
     if (isPopUpOnScreen === true) {
@@ -101,7 +123,7 @@ function App () {
               key={index}
               path={route.path}
               element={
-                auth || isSignOutRoute()
+                hasAuthCookie || isSignOutRoute()
                   ? (
                       route.component
                     )
@@ -116,7 +138,7 @@ function App () {
               key={index}
               path={route.path}
               element={
-                 (route.path === '/signin' || route.path === '/signup/register-location/search') && auth
+                 (route.path === '/signin' || route.path === '/signup/register-location/search') && hasAuthCookie
                    ? <Navigate to='/home' replace />
                    : route.component
               }

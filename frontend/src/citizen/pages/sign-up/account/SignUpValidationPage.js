@@ -34,7 +34,8 @@ export default function SignUpValidationPage () {
   const [codeExpired, setCodeExpired] = useState(false)
   const session = useSelector((state) => state.session)
   const profile = session.profile
-  const [cookies, setCookie] = useCookies(['authToken']);
+  // eslint-disable-next-line no-unused-vars
+  const [cookies, setCookie] = useCookies(['authToken'])
 
   // if error remove code sent notification
   useEffect(() => {

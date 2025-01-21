@@ -37,7 +37,8 @@ export default function ValidateEmailLayout ({
   const [codeExpired, setCodeExpired] = useState(false)
   const profile = useSelector((state) => state.session.profile)
   const signinType = useSelector((state) => state.session.signinType)
-  const [cookies, setCookie] = useCookies(['authToken']);
+  // eslint-disable-next-line no-unused-vars
+  const [cookies, setCookie] = useCookies(['authToken'])
 
   // if error remove code sent notification
   useEffect(() => {

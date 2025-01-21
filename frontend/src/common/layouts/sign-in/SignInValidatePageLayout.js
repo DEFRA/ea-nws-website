@@ -38,7 +38,7 @@ export default function SignInValidatePageLayout ({
   const [signUpNotComplete, setSignUpNotComplete] = useState(false)
   const [lastAccessedUrl, setLastAccessedUrl] = useState('')
   const signinType = useSelector((state) => state.session.signinType)
-  const [cookies, setCookie] = useCookies(['authToken']);
+  const [cookies, setCookie] = useCookies(['authToken'])
 
   // if error remove code sent notification
   useEffect(() => {
@@ -68,6 +68,8 @@ export default function SignInValidatePageLayout ({
         }
       } else {
         setCookie('authToken', data.authToken)
+        console.log('cookie')
+        console.log(cookies.authToken)
         dispatch(setAuthToken(data.authToken))
         dispatch(setProfile(data.profile))
         if (signinType === 'org') {

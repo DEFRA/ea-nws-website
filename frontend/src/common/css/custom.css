@@ -1652,8 +1652,12 @@ govuk-menu-toggle.button-menu > button {
 .private-beta-watermark {
   min-height: 100%;
   background:
-    url('data:image/svg+xml;utf8,<svg style="transform:rotate(28.76deg)" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 100 10"><text x="0" y="0" opacity="0.1" font-family="GDS Transport" fill="%23000">Test service </text></svg>')
+    url('data:image/svg+xml;utf8,<svg style="transform:rotate(28.76deg)" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 100 10"><text x="0" y="0" opacity="0.1" font-family="Arial" fill="%23000">Test service </text></svg>')
     0 0/200px 200px;
+}
+
+.outline-1px {
+  outline: 1px solid lightgray;
 }
 
 .org-service-selection-header {
@@ -1665,4 +1669,14 @@ govuk-menu-toggle.button-menu > button {
 .org-service-selection-footer {
   background-color: #f3f2f1;
   padding: 0.625rem 0 0.625rem 0.625rem;
+}
+
+.org-service-selection-hr {
+  height: 1px;
+  color: #ced0d4
+}
+
+.private-beta-mock-banner {
+  border-left-style: solid;
+  border-width: 10px
 }

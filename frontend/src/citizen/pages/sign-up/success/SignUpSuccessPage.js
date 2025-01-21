@@ -1,9 +1,23 @@
+import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import ConfirmationPanel from '../../../../common/components/gov-uk/Panel'
 import Button from '../../../../common/components/gov-uk/Button'
+import { backendCall } from '../../../../common/services/BackendService'
 
 export default function SignUpSuccessPage () {
-  const servicePhase = 'beta'
+  const [servicePhase, setServicePhase] = useState(false)
+
+  async function getServicePhase () {
+    const { data } = await backendCall(
+      'data',
+      'api/service/get_service_phase'
+    )
+    setServicePhase(data)
+  }
+
+  useEffect(() => {
+    getServicePhase()
+  }, [])
 
   // need to check for authToken
   return (

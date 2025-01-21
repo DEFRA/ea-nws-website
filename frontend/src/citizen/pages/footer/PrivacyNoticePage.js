@@ -1,11 +1,24 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import PrivateBetaPrivacyNoticePage from '../../../common/pages/private-beta/PrivateBetaPrivacyNoticePage'
+import { backendCall } from '../../../common/services/BackendService'
 
 export default function PrivacyNoticePage () {
   const navigate = useNavigate()
-  const servicePhase = 'beta'
+  const [servicePhase, setServicePhase] = useState(false)
+
+  async function getServicePhase () {
+    const { data } = await backendCall(
+      'data',
+      'api/service/get_service_phase'
+    )
+    setServicePhase(data)
+  }
+
+  useEffect(() => {
+    getServicePhase()
+  }, [])
 
   return (
     <>

@@ -91,9 +91,7 @@ export default function ServiceSelectionPage () {
                   />
                 </div>
               </div>
-
               <br />
-
               <Button
                 text='Continue'
                 className='govuk-button'

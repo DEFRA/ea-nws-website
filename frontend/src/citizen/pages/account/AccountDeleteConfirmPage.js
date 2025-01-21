@@ -1,17 +1,30 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import ConfirmationPanel from '../../../common/components/gov-uk/Panel'
 import Button from '../../../common/components/gov-uk/Button'
 import { clearAuth } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 
 export default function AccountDeleteConfirmPage () {
   const dispatch = useDispatch()
-  const servicePhase = 'beta'
+  const [servicePhase, setServicePhase] = useState(false)
+
+  async function getServicePhase () {
+    const { data } = await backendCall(
+      'data',
+      'api/service/get_service_phase'
+    )
+    setServicePhase(data)
+  }
 
   useEffect(() => {
     dispatch(clearAuth())
   })
+
+  useEffect(() => {
+    getServicePhase()
+  }, [])
 
   return (
     <>

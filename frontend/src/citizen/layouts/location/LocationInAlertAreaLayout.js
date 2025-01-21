@@ -31,9 +31,12 @@ export default function LocationInAlertAreaLayout ({
   const [isChecked, setIsChecked] = useState(false)
   const authToken = useSelector((state) => state.session.authToken)
   const profile = useSelector((state) => state.session.profile)
-  const selectedLocation = useSelector(
-    (state) => state.session.selectedLocation
+  const selectedLocation = useSelector((state) =>
+    state.session.selectedLocation.address
+      ? state.session.selectedLocation.address
+      : state.session.locationPostCode
   )
+
   const additionalAlerts = useSelector(
     (state) => state.session.additionalAlerts
   )
@@ -266,7 +269,7 @@ export default function LocationInAlertAreaLayout ({
               text={
                 isUserInNearbyTargetFlowpath
                   ? selectedFloodAlertArea.properties.TA_NAME
-                  : selectedLocation.address
+                  : selectedLocation
               }
             />
           </div>

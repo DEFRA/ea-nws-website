@@ -11,6 +11,9 @@ export default function LocationNotNearDangerLayout ({
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
   )
+  const locationPostCode = useSelector(
+    (state) => state.session.locationPostCode
+  )
 
   return (
     <>
@@ -23,7 +26,9 @@ export default function LocationNotNearDangerLayout ({
               <h1 className='govuk-heading-l'>
                 You cannot get flood messages for this location
               </h1>
-              <InsetText text={selectedLocation.address} />
+              {selectedLocation.address
+                ? <InsetText text={selectedLocation.address} />
+                : <InsetText text={locationPostCode} />}
               <p className='govuk-!-margin-top-5'>Possible reasons are that:</p>
               <ul className='govuk-list govuk-list--bullet'>
                 <li>the risk of flooding is very low</li>

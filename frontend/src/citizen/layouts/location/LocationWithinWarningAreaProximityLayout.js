@@ -36,6 +36,9 @@ export default function LocationWithinWarningAreaProximityLayout ({
   const [floodAreas, setFloodAreas] = useState(null)
   const [error, setError] = useState(null)
   const [showMobileMap, setShowMobileMap] = useState(false)
+  const locationPostCode = useSelector(
+    (state) => state.session.locationPostCode
+  )
 
   const selectedLocation = useSelector(
     (state) => state.session.selectedLocation
@@ -175,7 +178,10 @@ export default function LocationWithinWarningAreaProximityLayout ({
                   <h1 className='govuk-heading-l govuk-!-margin-top-6'>
                     You can get flood messages near this location
                   </h1>
-                  <InsetText text={selectedLocation.address} />
+                  {selectedLocation.address
+                    ? <InsetText text={selectedLocation.address} />
+                    : <InsetText text={locationPostCode} />}
+
                   <p>
                     Flood message areas nearby are highlighted in{' '}
                     {type === 'severe' ? 'red' : 'orange'} on the map.

@@ -36,7 +36,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
     (currentPage - 1) * locationsPerPage,
     currentPage * locationsPerPage
   )
-  
+
   const [floodHistoryUrl, setHistoryUrl] = useState(null)
   const [floodHistoryData, setFloodHistoryData] = useState(null)
 
@@ -100,8 +100,8 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
         selectedLocation.coordinates.latitude,
         selectedLocation.coordinates.longitude
       )
-      console.log('Warning Area:', warningArea);
-console.log('Alert Area:', alertArea);
+      console.log('Warning Area:', warningArea)
+      console.log('Alert Area:', alertArea)
       const isError = !warningArea && !alertArea
 
       const isInAlertArea =
@@ -150,46 +150,41 @@ console.log('Alert Area:', alertArea);
     }
   }
 
-
   const selectCentreOfAllAreas = (event) => {
     event.preventDefault()
-    var features =turf.points(locations.map((l) => 
+    const features = turf.points(locations.map((l) =>
       [l.coordinates.longitude,
         l.coordinates.latitude]
-    ));
-    
-    var center = turf.center(features);
+    ))
+
+    const center = turf.center(features)
     console.log(center)
 
     const centerLocation = {
       coordinates: {
         latitude: center.geometry.coordinates[1],
-        longitude: center.geometry.coordinates[0],
+        longitude: center.geometry.coordinates[0]
       }
-    };
-  
-    handleSelectedLocation(event, centerLocation);
+    }
 
-    
+    handleSelectedLocation(event, centerLocation)
   }
 
   const detailsMessage = (
-    
+
     <div>
       You can view flood message areas&nbsp;
       <Link
-      className = 'govuk-link'
-    onClick={(event)=>selectCentreOfAllAreas(event)}
+        className='govuk-link'
+        onClick={(event) => selectCentreOfAllAreas(event)}
       >
-      near this postcode
+        near this postcode
       </Link>
       {/* <a href='/signup/register-location/location-in-proximity-area/alert' className='govuk-link'>
         near this postcode
       </a> */}
     </div>
   )
-
-
 
   return (
     <>

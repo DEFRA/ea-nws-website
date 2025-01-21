@@ -64,12 +64,14 @@ export default function ConfirmLocationLayout ({
   }
 
   useEffect(() => {
-    dispatch(
-      setCurrentLocationCoordinates({
-        latitude: shapeLat,
-        longitude: shapeLong
-      })
-    )
+    if (layoutType === 'shape') {
+      dispatch(
+        setCurrentLocationCoordinates({
+          latitude: shapeLat,
+          longitude: shapeLong
+        })
+      )
+    }
   }, [shapeLong, shapeLat])
 
   // Switch case to change the button/link logic depending on the location type
@@ -212,8 +214,8 @@ export default function ConfirmLocationLayout ({
             <Map
               showMapControls={false}
               zoomLevel={14}
-              shapefileData={shapeGeoData}
-              type='shape'
+              shapefileData={layoutType === 'shape' ? shapeGeoData : null}
+              type={layoutType === 'shape' ? 'shape' : null}
             />
             <div className='govuk-!-column-one-third'>
               <FloodWarningKey showShapefile={layoutType === 'shape'} />

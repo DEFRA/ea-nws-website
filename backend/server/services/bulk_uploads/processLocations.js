@@ -2,6 +2,7 @@ const { csvToJson } = require('./csvToJson')
 const { validateLocations } = require('./validateLocations')
 const { S3Client, GetObjectCommand } = require('@aws-sdk/client-s3')
 const getSecretKeyValue = require('../SecretsManager')
+const { logger } = require('../../plugins/logging')
 
 const convertToPois = (locations) => {
   const pois = []
@@ -64,6 +65,7 @@ const getCSV = async (fileName) => {
     data = await response.Body.transformToString()
     result.data = data
   } catch (err) {
+    logger.error(err)
     result.errorMessage = err
   }
 

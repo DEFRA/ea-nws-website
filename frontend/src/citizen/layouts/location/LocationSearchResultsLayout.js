@@ -21,7 +21,7 @@ import {
   getSurroundingFloodAreas,
   isLocationInFloodArea
 } from '../../../common/services/WfsFloodDataService'
-
+import * as turf from '@turf/turf'
 export default function LocationSearchResultsLayout ({ continueToNextPage }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -36,7 +36,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
     (currentPage - 1) * locationsPerPage,
     currentPage * locationsPerPage
   )
-
+  
   const [floodHistoryUrl, setHistoryUrl] = useState(null)
   const [floodHistoryData, setFloodHistoryData] = useState(null)
 
@@ -100,7 +100,8 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
         selectedLocation.coordinates.latitude,
         selectedLocation.coordinates.longitude
       )
-
+      console.log('Warning Area:', warningArea);
+console.log('Alert Area:', alertArea);
       const isError = !warningArea && !alertArea
 
       const isInAlertArea =
@@ -124,7 +125,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
       }
       if (isInAlertArea) {
         setHistoricalWarningNumber(
-          warningArea.features[0].properties.FWS_TACODE
+          warningArea?.features[0].properties.FWS_TACODE
         )
       }
 
@@ -149,19 +150,46 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
     }
   }
 
+
+  const selectCentreOfAllAreas = (event) => {
+    event.preventDefault()
+    var features =turf.points(locations.map((l) => 
+      [l.coordinates.longitude,
+        l.coordinates.latitude]
+    ));
+    
+    var center = turf.center(features);
+    console.log(center)
+
+    const centerLocation = {
+      coordinates: {
+        latitude: center.geometry.coordinates[1],
+        longitude: center.geometry.coordinates[0],
+      }
+    };
+  
+    handleSelectedLocation(event, centerLocation);
+
+    
+  }
+
   const detailsMessage = (
+    
     <div>
       You can view flood message areas&nbsp;
-      {/* <Link 
-                                className='govuk-link'
-                                onClick={(event) =>
-                                  handleSelectedLocation(event, displayedLocations[0])}
-                              >near this postcode</Link>*/}
-      <a href='/signup/register-location/location-in-proximity-area/alert' className='govuk-link'>
+      <Link
+      className = 'govuk-link'
+    onClick={(event)=>selectCentreOfAllAreas(event)}
+      >
+      near this postcode
+      </Link>
+      {/* <a href='/signup/register-location/location-in-proximity-area/alert' className='govuk-link'>
         near this postcode
-      </a>
+      </a> */}
     </div>
   )
+
+
 
   return (
     <>

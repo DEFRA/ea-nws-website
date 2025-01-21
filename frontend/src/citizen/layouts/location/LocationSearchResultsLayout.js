@@ -100,7 +100,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
         selectedLocation.coordinates.latitude,
         selectedLocation.coordinates.longitude
       )
-     
+
       const isError = !warningArea && !alertArea
 
       const isInAlertArea =
@@ -157,7 +157,6 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
     ))
 
     const centre = turf.center(features)
-  
 
     const centerLocation = {
       coordinates: {

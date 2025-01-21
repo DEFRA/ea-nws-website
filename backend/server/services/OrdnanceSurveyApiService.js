@@ -96,10 +96,12 @@ const osFindNameApiCall = async (name, filter) => {
   }
 }
 
-const osFindApiCall = async (address, minmatch) => {
+const osFindApiCall = async (address, minmatch = null) => {
   let responseData
   const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
-  const url = `https://api.os.uk/search/places/v1/find?query=${address}&minmatch=${minmatch}&key=${osApiKey}`
+  const url = minmatch
+    ? `https://api.os.uk/search/places/v1/find?query=${address}&minmatch=${minmatch}&key=${osApiKey}`
+    : `https://api.os.uk/search/places/v1/find?query=${address}&key=${osApiKey}`
   proj4.defs(
     'EPSG:27700',
     '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs'
@@ -130,6 +132,11 @@ const osFindApiCall = async (address, minmatch) => {
         }
       })
       return { status: response.status, data: responseData }
+    } else if (response.data.results?.[0].DPA.COUNTRY_CODE !== 'E') {
+      return {
+        status: 500,
+        errorMessage: 'No match in England'
+      }
     } else {
       return {
         status: 500,

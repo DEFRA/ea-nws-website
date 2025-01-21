@@ -100,8 +100,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
         selectedLocation.coordinates.latitude,
         selectedLocation.coordinates.longitude
       )
-      console.log('Warning Area:', warningArea)
-      console.log('Alert Area:', alertArea)
+     
       const isError = !warningArea && !alertArea
 
       const isInAlertArea =
@@ -157,16 +156,18 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
         l.coordinates.latitude]
     ))
 
-    const center = turf.center(features)
-    console.log(center)
+    const centre = turf.center(features)
+  
 
     const centerLocation = {
       coordinates: {
-        latitude: center.geometry.coordinates[1],
-        longitude: center.geometry.coordinates[0]
-      }
+        latitude: centre.geometry.coordinates[1],
+        longitude: centre.geometry.coordinates[0]
+      },
+      address: locationPostCode,
+      name: locations.name
     }
-
+    console.log(centerLocation)
     handleSelectedLocation(event, centerLocation)
   }
 

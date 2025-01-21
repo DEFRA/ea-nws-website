@@ -34,12 +34,9 @@ export default function LocationInSevereWarningAreaLayout ({
   const location = useLocation()
   const authToken = useSelector((state) => state.session.authToken)
   const profile = useSelector((state) => state.session.profile)
-  const selectedLocation = useSelector((state) =>
-    state.session.selectedLocation.address
-      ? state.session.selectedLocation.address
-      : state.session.locationPostCode
+  const selectedLocation = useSelector(
+    (state) => state.session.selectedLocation
   )
-
   const severeFloodWarningCount = useSelector(
     (state) => state.session.severeFloodWarningCount
   )
@@ -231,7 +228,7 @@ export default function LocationInSevereWarningAreaLayout ({
               text={
                 isUserInNearbyTargetFlowpath
                   ? selectedFloodWarningArea.properties.TA_NAME
-                  : selectedLocation
+                  : selectedLocation.address
               }
             />
           </div>

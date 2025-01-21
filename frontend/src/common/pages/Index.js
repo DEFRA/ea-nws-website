@@ -30,7 +30,7 @@ export default function IndexPage () {
   const [mockSessionActive, setmockSessionActive] = useState(false)
   const [emptyProfileActive, setEmptyProfileActive] = useState(false)
   // eslint-disable-next-line no-unused-vars
-  const [cookies, setCookie] = useCookies(['authToken'])
+  const [cookies, setCookie, removeCookie] = useCookies(['authToken'])
 
   const mockOne = {
     id: '',
@@ -567,6 +567,7 @@ export default function IndexPage () {
       dispatch(setCurrentLocationNorthing('185016'))
       setmockSessionActive(true)
     } else {
+      removeCookie('authToken', { path: '/' })
       dispatch(clearAuth())
       setmockSessionActive(false)
     }

@@ -1,7 +1,0 @@
-import React from 'react'
-import TermsAndConditionsLayout from '../../layouts/terms-and-conditions/TermsAndConditionsLayout'
-export default function DeclarationOfAgreement () {
-  return (
-    <TermsAndConditionsLayout />
-  )
-}

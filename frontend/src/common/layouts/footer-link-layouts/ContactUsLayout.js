@@ -25,7 +25,7 @@ export default function ContactUsLayout () {
               <br />
               24 hour service
               <br />
-              <Link to ='https://www.gov.uk/call-charges'>
+              <Link to='https://www.gov.uk/call-charges'>
                 Find out about call charges
               </Link>
 
@@ -34,7 +34,8 @@ export default function ContactUsLayout () {
             <p>
               Email: {' '}
               <Link
-              onClick={() => window.location = 'mailto:enquiries@environment-agency.gov.uk'}>
+                onClick={() => { window.location = 'mailto:enquiries@environment-agency.gov.uk' }}
+              >
                 enquiries@environment-agency.gov.uk
               </Link>
               <br />

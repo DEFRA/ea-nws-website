@@ -5,15 +5,15 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import Select from '../../../../../common/components/gov-uk/Select'
+import store from '../../../../../common/redux/store'
 import {
-  setConsecutiveBoundariesAdded,
-  setCurrentLocationGeometry,
-  setCurrentLocationName,
+  setConsecutiveBoundariesAdded, setCurrentLocation, setCurrentLocationGeometry, setCurrentLocationName,
   setLocationBoundaries,
   setPredefinedBoundaryFlow,
   setSelectedBoundary,
   setSelectedBoundaryType
 } from '../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../common/services/BackendService'
 import { getBoundaryTypes } from '../../../../../common/services/WfsFloodDataService'
 import Map from '../../../../components/custom/Map'
 import PredefinedBoundaryKey from '../../../../components/custom/PredefinedBoundaryKey'
@@ -39,6 +39,8 @@ export default function SelectPredefinedBoundaryPage () {
   const consecutiveBoundariesAdded = useSelector(
     (state) => state.session.consecutiveBoundariesAdded
   )
+  const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
 
   // Get boundary types
   useEffect(() => {
@@ -85,7 +87,7 @@ export default function SelectPredefinedBoundaryPage () {
     dispatch(setSelectedBoundary(boundarySelected))
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (!selectedBoundaryType) {
       setBoundaryTypeError('Select a boundary type')
     }
@@ -94,7 +96,6 @@ export default function SelectPredefinedBoundaryPage () {
       setBoundaryError('Select a boundary')
     }
 
-    // update profile to add location and navigate
     if (selectedBoundaryType && selectedBoundary) {
       const locationBoundary = {
         boundary_type: selectedBoundaryType,
@@ -118,10 +119,21 @@ export default function SelectPredefinedBoundaryPage () {
             locationBoundary.boundary.properties.layer
         )
       )
-      dispatch(setConsecutiveBoundariesAdded(consecutiveBoundariesAdded + 1))
-      dispatch(setPredefinedBoundaryFlow(true))
-      // TODO: This needs to navigate to optional info page once it has been developed
-      navigate(orgManageLocationsUrls.add.optionalInformation.addActionPlan)
+      // since we added to currentLocation we need to get that information to pass to the api
+      const locationToAdd = store.getState().session.currentLocation
+      const dataToSend = { authToken, orgId, location: locationToAdd }
+      const { data } = await backendCall(
+        dataToSend,
+        'api/location/create',
+        navigate
+      )
+      if (data) {
+        dispatch(setCurrentLocation(data))
+        dispatch(setConsecutiveBoundariesAdded(consecutiveBoundariesAdded + 1))
+        dispatch(setPredefinedBoundaryFlow(true))
+        // TODO: This needs to navigate to optional info page once it has been developed
+        navigate(orgManageLocationsUrls.add.optionalInformation.addActionPlan)
+      }
     }
   }
 
@@ -182,7 +194,7 @@ export default function SelectPredefinedBoundaryPage () {
                   <Button
                     className='govuk-button govuk-!-margin-top-4'
                     text='Add predefined boundary'
-                    onClick={handleSubmit}
+                    onClick={() => handleSubmit()}
                   />
                 </div>
                 <div class='govuk-grid-column-two-thirds'>

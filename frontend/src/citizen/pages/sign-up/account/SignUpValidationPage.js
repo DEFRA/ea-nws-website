@@ -33,6 +33,19 @@ export default function SignUpValidationPage () {
   const [codeExpired, setCodeExpired] = useState(false)
   const session = useSelector((state) => state.session)
   const profile = session.profile
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall(
+      'data',
+      'api/service/get_partner_id'
+    )
+    setPartnerId(data)
+  }
+
+  useEffect(() => {
+    getPartnerId()
+  }, [])
 
   // if error remove code sent notification
   useEffect(() => {
@@ -93,7 +106,7 @@ export default function SignUpValidationPage () {
       const data = {
         authToken,
         locationId: poi.id,
-        partnerId: '1', // this is currently a hardcoded value - geosafe to update us on what it is
+        partnerId: partnerId,
         params: getRegistrationParams(profile, alertTypes)
       }
 

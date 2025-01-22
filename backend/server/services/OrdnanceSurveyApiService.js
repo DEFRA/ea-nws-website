@@ -3,6 +3,7 @@ const { locationNameFormatter } = require('./formatters/LocationNameFormatter')
 const getSecretKeyValue = require('../services/SecretsManager')
 const proj4 = require('proj4')
 const axios = require('axios')
+const { logger } = require('../plugins/logging')
 
 const osPostCodeApiCall = async (postCode) => {
   let responseData
@@ -31,7 +32,8 @@ const osPostCodeApiCall = async (postCode) => {
         errorMessage: 'Enter a full postcode in England'
       }
     }
-  } catch {
+  } catch (error) {
+    logger.error(error)
     return {
       status: 500,
       errorMessage: 'Oops, something happened!'
@@ -85,7 +87,8 @@ const osFindNameApiCall = async (name, filter) => {
         errorMessage: 'Enter a place name, town or keyword in England'
       }
     }
-  } catch {
+  } catch (error) {
+    logger.error(error)
     return {
       status: 500,
       errorMessage: 'Oops, something happened!'
@@ -133,7 +136,8 @@ const osFindApiCall = async (address, minmatch) => {
         errorMessage: 'No matches found'
       }
     }
-  } catch {
+  } catch (error) {
+    logger.error(error)
     return {
       status: 500,
       errorMessage: 'Oops, something happened!'
@@ -164,7 +168,8 @@ const osOAuth2ApiCall = async () => {
     )
 
     return { status: 200, data: response.data }
-  } catch {
+  } catch (error) {
+    logger.error(error)
     return {
       status: 500,
       errorMessage: 'Oops, something happened!'

@@ -44,8 +44,9 @@ import LocationNotFoundDropPinNotInEnglandPage from '../../pages/manage-location
 import LocationNotFoundPostcodeNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/not-in-england/PostcodeNotInEnglandPage'
 
 // Unmatched locations: location not in England
-import FindLocationNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-in-england/FindLocationNotInEnglandPage'
-import LocationNotInEnglandInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/not-in-england/LocationNotInEnglandInfoPage'
+import FindLocationNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/FindLocationNotInEnglandPage'
+import LocationNotInEnglandInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/LocationNotInEnglandInfoPage'
+import LocationsNotInEnglandDashboardPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/LocationsNotInEnglandDashboardPage'
 
 // edit imports
 import EditConfirmLocationPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/ConfirmLocationPage'
@@ -193,6 +194,7 @@ const orgManageLocationsUrls = {
       confirm: urlUnmatchedLocationsNotFound + '/confirm-location'
     },
     notInEngland: {
+      dashboard: urlUnmatchedLocationsNotInEngland,
       info: urlUnmatchedLocationsNotInEngland + '/location-info',
       find: urlUnmatchedLocationsNotInEngland + '/find-location',
       postcode: urlUnmatchedLocationsNotInEngland + '/find-location-postcode',
@@ -385,6 +387,10 @@ const orgManageLocationRoutes = [
     component: <LocationNotFoundPostcodeNotInEnglandPage />
   },
   // unmatched locations: location not in England
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard,
+    component: <LocationsNotInEnglandDashboardPage />
+  },
   {
     path: orgManageLocationsUrls.unmatchedLocations.notInEngland.info,
     component: <LocationNotInEnglandInfoPage />

@@ -34,7 +34,7 @@ export default function UnmatchedLocationsDashboardLayout ({
   const addedLocation = location?.state?.addedLocation || null
   const unmatchedLocationText =
     (flow === 'unmatched-locations-not-found' && 'not found') ||
-    (flow === 'unmatched-locations-not-in-england' && 'not in england')
+    (flow === 'unmatched-locations-not-in-england' && 'not in England')
 
   useEffect(() => {
     const getNotAddedLocations = async () => {
@@ -243,7 +243,9 @@ export default function UnmatchedLocationsDashboardLayout ({
           title='Success'
           text={
             addedLocations > 0
-              ? `${addedLocations} locations added`
+              ? `${addedLocations} ${
+                  addedLocations === 1 ? 'location' : 'locations'
+                } added`
               : `${addedLocation} added`
           }
         />

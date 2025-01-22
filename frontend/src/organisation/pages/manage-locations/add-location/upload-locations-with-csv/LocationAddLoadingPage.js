@@ -74,7 +74,7 @@ export default function LocationAddLoadingPage () {
             const notInEnglandLocations = data.data.invalid.filter(
               (invalid) =>
                 Array.isArray(invalid.error) &&
-                invalid.error.includes('not in england')
+                invalid.error.includes('not in England')
             ).length
             setNotInEnglandLocations(notInEnglandLocations)
             // Any other invalid locations are considered to be not found

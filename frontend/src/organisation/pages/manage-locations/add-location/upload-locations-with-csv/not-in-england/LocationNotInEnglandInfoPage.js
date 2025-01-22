@@ -2,16 +2,15 @@ import { React } from 'react'
 import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
-import BackLink from '../../../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../../../common/components/custom/OrganisationAccountNavigation'
-import Button from '../../../../../../../common/components/gov-uk/Button'
+import BackLink from '../../../../../../common/components/custom/BackLink'
+import Button from '../../../../../../common/components/gov-uk/Button'
 import {
   getLocationAdditional,
   getLocationOther
-} from '../../../../../../../common/redux/userSlice'
-import FloodWarningKey from '../../../../../../components/custom/FloodWarningKey'
-import Map from '../../../../../../components/custom/Map'
-import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
+} from '../../../../../../common/redux/userSlice'
+import FloodWarningKey from '../../../../../components/custom/FloodWarningKey'
+import Map from '../../../../../components/custom/Map'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationNotInEnglandInfoPage () {
   const navigate = useNavigate()
@@ -35,9 +34,6 @@ export default function LocationNotInEnglandInfoPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation
-        currentPage={orgManageLocationsUrls.view.dashboard}
-      />
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row govuk-body'>
@@ -76,6 +72,12 @@ export default function LocationNotInEnglandInfoPage () {
               {Math.round(
                 useSelector((state) => getLocationOther(state, 'y_coordinate'))
               )}
+            </p>
+
+            <p className='govuk-!-margin-top-8'>
+              This location is not in England. If you think this is not correct
+              you can change the position of this location by using a postcode,
+              using different X and Y coordinates or dropping a pin on a map.
             </p>
 
             <div className='govuk-!-margin-top-8'>

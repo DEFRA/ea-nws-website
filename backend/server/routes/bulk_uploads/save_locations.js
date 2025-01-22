@@ -63,7 +63,7 @@ module.exports = [
               location.error?.includes('duplicate')
             ).length,
             notInEngland: invalid.filter((location) =>
-              location.error?.includes('not in england')
+              location.error?.includes('not in England')
             ).length,
             notFound: invalid.filter((location) =>
               location.error?.includes('not found')

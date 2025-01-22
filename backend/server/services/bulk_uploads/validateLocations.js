@@ -90,7 +90,7 @@ const validateLocations = async (locations) => {
             if (coordInEngland) {
               valid.push(location)
             } else {
-              location.error = ['not in england']
+              location.error = ['not in England']
               invalid.push(location)
             }
           } else {
@@ -104,7 +104,7 @@ const validateLocations = async (locations) => {
             errorMessage === 'No matches found' &&
               (location.error = ['not found'])
             errorMessage === 'No match in England' &&
-              (location.error = ['not in england'])
+              (location.error = ['not in England'])
             invalid.push(location)
           } else {
             location.coordinates = data[0].coordinates

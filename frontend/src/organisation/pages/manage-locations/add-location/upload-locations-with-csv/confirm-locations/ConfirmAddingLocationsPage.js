@@ -115,6 +115,15 @@ export default function ConfirmLocationsPage () {
             addedLocations: data.valid
           }
         })
+      } else if (notInEnglandLocations > 0) {
+        navigate(
+          orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard,
+          {
+            state: {
+              addedLocations: data.valid
+            }
+          }
+        )
       }
     } else {
       // got to some sort of error page
@@ -215,7 +224,9 @@ export default function ConfirmLocationsPage () {
             <Button
               text={
                 validLocations > 0
-                  ? `Add ${validLocations} locations`
+                  ? `Add ${validLocations} ${
+                      validLocations === 1 ? 'location' : 'locations'
+                    }`
                   : 'Continue'
               }
               className='govuk-button govuk-button'

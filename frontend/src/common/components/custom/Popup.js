@@ -22,8 +22,9 @@ export default function Popup({
   charLimit = 0,
   validateInput = null,
   defaultValue,
-  setOptionsSelected,
-  showCancel = true
+  onRadioChange,
+  showCancel = true,
+  optionsSelected
 }) {
   const handleTextInputChange = (val) => {
     if (input) {
@@ -36,19 +37,22 @@ export default function Popup({
     }
   }
 
-  const handleRadioChange = (option, isItOn, index) => {
-    if (options) {
-      setOptionsSelected()
-    }
-  }
+  const handleRadioChange = (index, isItOn) => {
+    onRadioChange(index, isItOn);
+  };
+
 
   const handleSubmit = () => {
-    if (!input || !options) {
+    console.log('AA')
+    if (!input && !options) {
       onDelete()
     } else {
+      console.log('A')
       if (error === '') {
+        console.log('B')
         const validationError = validateInput()
         if (validationError) {
+          console.log('C')
           setError(validationError)
         } else {
           console.log('Popup.js l54')
@@ -62,26 +66,31 @@ export default function Popup({
     <>
       {options.map((option, index) => (
         <div className='govuk-radios'>
-          <td className='govuk-table__cell' style={{ verticalAlign: 'middle' }}>
-            <strong>{option.label}</strong>
-          </td>
-          <td className='govuk-table__cell'>
-            <Radio
-              label='On'
-              key={option.value + '_on'}
-              name={option.value + 'Radio'}
-              onChange={() => handleRadioChange(option, true, index)}
-            />
-          </td>
-          <td className='govuk-table__cell'>
-            <Radio
-              label='Off'
-              key={option.value + '_off'}
-              name={option.value + 'Radio'}
-              value=''
-              onChange={() => handleRadioChange(option, false, index)}
-            />
-          </td>
+          <tbody className='govuk-table__body'>
+           <tr className='govuk-table__row'>
+            <td className='govuk-table__cell' style={{ verticalAlign: 'middle' }}>
+              <strong>{option.label}</strong>
+            </td>
+            <td className='govuk-table__cell' >
+              <Radio
+                label='On'
+                key={option.value + '_on'}
+                name={option.value + 'Radio'}
+                value={option.sent}
+                onChange={() => handleRadioChange(index, true)}
+              />
+            </td>
+            <td className='govuk-table__cell' >
+              <Radio
+                label='Off'
+                key={option.value + '_off'}
+                name={option.value + 'Radio'}
+                value={option.sent}
+                onChange={() => handleRadioChange(index, false)}
+              />
+            </td>
+          </tr>
+          </tbody>
         </div>
       ))}
     </>

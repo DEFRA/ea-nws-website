@@ -39,11 +39,7 @@ export default function ViewLocationsDashboardPage () {
   const [selectedFilters, setSelectedFilters] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
-  const [optionsSelected, setOptionsSelected] = useState({
-    alert: false,
-    warning: false,
-    severeWarning: false
-  })
+  const [optionsSelected, setOptionsSelected] = useState([false, false, false])
   const [dialog, setDialog] = useState({
     show: false,
     text: '',
@@ -399,7 +395,20 @@ export default function ViewLocationsDashboardPage () {
     setIsFilterVisible(!isFilterVisible)
   }
 
-  const editLocations = (locationsToEdit) => {}
+  const editLocations = (locationsToEdit) => {
+    console.log("here")
+  }
+
+  const handleRadioChange = (index, isItOn) => {
+    console.log('hello')
+    console.log(optionsSelected)
+    setOptionsSelected(prevState => {
+      const newState = [...prevState]
+      newState[index] = isItOn
+      return newState
+    });
+    console.log(optionsSelected)
+  };
 
   const removeLocations = async (locationsToRemove) => {
     const updatedLocations = locations.filter(
@@ -459,6 +468,10 @@ export default function ViewLocationsDashboardPage () {
       const locationsToBeEdited = [...selectedLocations]
       editLocations(locationsToBeEdited)
     }
+  }
+
+  const validateInput = () => {
+
   }
 
   const navigateBack = (event) => {
@@ -635,11 +648,12 @@ export default function ViewLocationsDashboardPage () {
                   setError={(val) =>
                     setDialog((dial) => ({ ...dial, error: val }))
                   }
+                  validateInput={() => validateInput()}
                   defaultValue={
                     dialog.input ? targetLocation.additionals.locationName : ''
                   }
-                  setOptionsSelected={setOptionsSelected}
-                />
+                  onRadioChange={handleRadioChange} />
+                  optionsSelected = {optionsSelected}
               </>
             )}
           </div>

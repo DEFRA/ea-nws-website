@@ -16,11 +16,11 @@ function Layout () {
     <div className='page-container'>
       <Header />
       <div className='sub-navigation'>
-        {location.pathname.includes('organisation')
+        {location.pathname.includes('organisation') && auth
           ? <div className='custom-width-container'><OrganisationAccountNavigation currentPage={location.pathname} /></div>
           : <div className='govuk-width-container'><CitizenAccountNavigation currentPage={location.pathname} /></div>}
       </div>
-      {location.pathname.includes('organisation')
+      {location.pathname.includes('organisation') && auth
         ? <PhaseBanner type='org' />
         : <PhaseBanner />}
       <div

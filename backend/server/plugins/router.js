@@ -45,7 +45,8 @@ const routes = [].concat(
   require('../routes/organization/update_contact'),
   require('../routes/organization/remove_contacts'),
   require('../routes/service/get_service_phase'),
-  require('../routes/service/get_partner_id')
+  require('../routes/service/get_partner_id'),
+  require('../routes/values/gtm')
 )
 
 module.exports = {

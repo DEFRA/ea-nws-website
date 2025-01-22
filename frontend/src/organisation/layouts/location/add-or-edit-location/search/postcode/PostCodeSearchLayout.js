@@ -75,7 +75,7 @@ export default function PostCodeSearchLayout ({
         dispatch(setLocationSearchResults(data))
         navigateToNextPage()
       } else {
-        if (flow === 'unmatched-locations-not-found') {
+        if (flow.includes('unmatched-locations')) {
           navigateToNotInEnglandPage()
         } else {
           // show error message from OS Api postcode search

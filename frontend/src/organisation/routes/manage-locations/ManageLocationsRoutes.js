@@ -48,9 +48,15 @@ import ConfirmLocationNotInEnglandPage from '../../pages/manage-locations/add-lo
 import FindLocationNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/FindLocationNotInEnglandPage'
 import LocationNotInEnglandInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/LocationNotInEnglandInfoPage'
 import LocationsNotInEnglandDashboardPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/LocationsNotInEnglandDashboardPage'
+import FindLocationNotInEnglandByCoordinatesPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/find-by-coordinates/FindLocationByCoordinatesPage'
 import CannotFindLocationNotInEnglandByAddressPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/find-by-postcode/CannotFindLocationByAddressPage'
 import FindLocationNotInEnglandByAddressPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/find-by-postcode/FindLocationByAddressPage'
 import FindLocationNotInEnglandByPostcodePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/find-by-postcode/FindLocationByPostcodePage'
+import FindLocationNotInEnglandByDropPinPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/find-on-map/FindLocationByDropPinPage'
+import FindLocationNotInEnglandOnMapPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/find-on-map/FindLocationOnMapPage'
+import LocationNotInEnglandCoordinatesNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/not-in-england/CoordinatesNotInEnglandPage'
+import LocationNotInEnglandDropPinNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/not-in-england/DropPinNotInEnglandPage'
+import LocationNotInEnglandPostcodeNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/not-in-england/PostcodeNotInEnglandPage'
 
 // edit imports
 import EditConfirmLocationPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/ConfirmLocationPage'
@@ -417,8 +423,35 @@ const orgManageLocationRoutes = [
     component: <CannotFindLocationNotInEnglandByAddressPage />
   },
   {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.coordinates,
+    component: <FindLocationNotInEnglandByCoordinatesPage />
+  },
+  {
     path: orgManageLocationsUrls.unmatchedLocations.notInEngland.confirm,
     component: <ConfirmLocationNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.map,
+    component: <FindLocationNotInEnglandOnMapPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.mapDropPin,
+    component: <FindLocationNotInEnglandByDropPinPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.notInEngland
+      .dropPin,
+    component: <LocationNotInEnglandDropPinNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.notInEngland
+      .coordinates,
+    component: <LocationNotInEnglandCoordinatesNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.notInEngland
+      .postcode,
+    component: <LocationNotInEnglandPostcodeNotInEnglandPage />
   },
   // optional information
   {

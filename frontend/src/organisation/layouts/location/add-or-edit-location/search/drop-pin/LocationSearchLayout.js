@@ -133,13 +133,13 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
               <ErrorSummary errorList={[placeNameTownOrPostcodeError]} />
             )}
             <h1 className='govuk-heading-l'>Find the location on a map</h1>
-            {flow === 'unmatched-locations-not-found' && (
+            {flow.includes('unmatched-locations') && (
               <p>
                 The location you're searching for cannot be found. We need some
                 additional information to help us find it.
               </p>
             )}
-            {flow === 'unmatched-locations-not-found' && <LocationDetails />}
+            {flow.includes('unmatched-locations') && <LocationDetails />}
 
             <div
               className={

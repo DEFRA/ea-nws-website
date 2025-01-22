@@ -187,7 +187,8 @@ export default function UnmatchedLocationsDashboardLayout ({
                     {location.additionals.other.postcode}
                   </td>
                   <td className='govuk-table__cell'>
-                    {location.additionals.other.x_coordinate},{' '}
+                    {location.additionals.other.x_coordinate}
+                    {location.additionals.other.y_coordinate && ', '}
                     {location.additionals.other.y_coordinate}
                   </td>
                   <td className='govuk-table__cell'>

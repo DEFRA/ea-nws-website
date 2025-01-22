@@ -36,6 +36,19 @@ export default function SignUpValidationPage () {
   const profile = session.profile
   // eslint-disable-next-line no-unused-vars
   const [cookies, setCookie] = useCookies(['authToken'])
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall(
+      'data',
+      'api/service/get_partner_id'
+    )
+    setPartnerId(data)
+  }
+
+  useEffect(() => {
+    getPartnerId()
+  }, [])
 
   // if error remove code sent notification
   useEffect(() => {
@@ -97,7 +110,7 @@ export default function SignUpValidationPage () {
       const data = {
         authToken,
         locationId: poi.id,
-        partnerId: '1', // this is currently a hardcoded value - geosafe to update us on what it is
+        partnerId,
         params: getRegistrationParams(profile, alertTypes)
       }
 

@@ -44,9 +44,13 @@ import LocationNotFoundDropPinNotInEnglandPage from '../../pages/manage-location
 import LocationNotFoundPostcodeNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-found/not-in-england/PostcodeNotInEnglandPage'
 
 // Unmatched locations: location not in England
+import ConfirmLocationNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/ConfirmLocationNotInEnglandPage'
 import FindLocationNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/FindLocationNotInEnglandPage'
 import LocationNotInEnglandInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/LocationNotInEnglandInfoPage'
 import LocationsNotInEnglandDashboardPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/LocationsNotInEnglandDashboardPage'
+import CannotFindLocationNotInEnglandByAddressPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/find-by-postcode/CannotFindLocationByAddressPage'
+import FindLocationNotInEnglandByAddressPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/find-by-postcode/FindLocationByAddressPage'
+import FindLocationNotInEnglandByPostcodePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/find-by-postcode/FindLocationByPostcodePage'
 
 // edit imports
 import EditConfirmLocationPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/ConfirmLocationPage'
@@ -398,6 +402,23 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.unmatchedLocations.notInEngland.find,
     component: <FindLocationNotInEnglandPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.postcode,
+    component: <FindLocationNotInEnglandByPostcodePage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.address,
+    component: <FindLocationNotInEnglandByAddressPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland
+      .cannotFindAddress,
+    component: <CannotFindLocationNotInEnglandByAddressPage />
+  },
+  {
+    path: orgManageLocationsUrls.unmatchedLocations.notInEngland.confirm,
+    component: <ConfirmLocationNotInEnglandPage />
   },
   // optional information
   {

@@ -7,17 +7,17 @@ export default function FindLocationNotInEnglandPage () {
   const navigate = useNavigate()
 
   const navigateToFindPostCode = () =>
-    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.postcode)
+    navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.postcode)
 
   const navigateToFindAddress = () =>
-    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.address)
+    navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.address)
 
   const navigateToFindCoordinates = () => {
-    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.coordinates)
+    navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.coordinates)
   }
 
   const navigateToFindLocationOnMap = () => {
-    navigate(orgManageLocationsUrls.unmatchedLocations.notFound.map)
+    navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.map)
   }
 
   return (

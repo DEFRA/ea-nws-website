@@ -102,7 +102,7 @@ export default function PostCodeSearchLayout ({
             <h1 className='govuk-heading-l'>
               What is the location's postcode?
             </h1>
-            {flow === 'unmatched-locations-not-found' && <LocationDetails />}
+            {flow.includes('unmatched-locations') && <LocationDetails />}
             <div className='govuk-body'>
               <Input
                 name='Postcode'

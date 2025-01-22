@@ -71,7 +71,7 @@ export default function SearchAddressResultLayout ({
 
   const handleSelectedLocation = (event, selectedLocation) => {
     event.preventDefault()
-    if (flow === 'unmatched-locations-not-found') {
+    if (flow.includes('unmatched-locations')) {
       dispatch(setCurrentLocationFullAddress(selectedLocation.address))
       dispatch(setCurrentLocationCoordinates(selectedLocation.coordinates))
     } else {
@@ -99,24 +99,21 @@ export default function SearchAddressResultLayout ({
             <div className='govuk-grid-column-two-thirds'>
               <div className='govuk-body'>
                 <h1 className='govuk-heading-l'>Select an address</h1>
-                {flow === 'unmatched-locations-not-found' && (
-                  <LocationDetails />
-                )}
-                {(locationPostCode ||
-                  flow === 'unmatched-locations-not-found') && (
-                    <p className='govuk-body'>
-                      Postcode:{' '}
-                      {flow === 'unmatched-locations-not-found'
-                        ? currentLocationPostcode
-                        : locationPostCode}
-                      {'   '}
-                      <Link
-                        onClick={(e) => navigateToFindPostcode(e)}
-                        className='govuk-link govuk-!-padding-left-5'
-                      >
-                        Change postcode
-                      </Link>
-                    </p>
+                {flow.includes('unmatched-locations') && <LocationDetails />}
+                {(locationPostCode || flow.includes('unmatched-locations')) && (
+                  <p className='govuk-body'>
+                    Postcode:{' '}
+                    {flow.includes('unmatched-locations')
+                      ? currentLocationPostcode
+                      : locationPostCode}
+                    {'   '}
+                    <Link
+                      onClick={(e) => navigateToFindPostcode(e)}
+                      className='govuk-link govuk-!-padding-left-5'
+                    >
+                      Change postcode
+                    </Link>
+                  </p>
                 )}
                 <table className='govuk-table'>
                   <tbody className='govuk-table__body'>

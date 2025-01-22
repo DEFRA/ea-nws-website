@@ -7,6 +7,7 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
+import store from '../../../../../common/redux/store'
 import {
   getLocationAdditional,
   getLocationOther,
@@ -88,8 +89,9 @@ export default function ConfirmLocationLayout ({
       )
       dispatch(setCurrentLocationName(shapeName))
     }
-
-    const dataToSend = { authToken, orgId, location: currentLocation }
+    // since we added to currentLocation we need to get that information to pass to the api
+    const locationToAdd = store.getState().session.currentLocation
+    const dataToSend = { authToken, orgId, location: locationToAdd }
     const { data, errorMessage } = await backendCall(
       dataToSend,
       'api/location/create',

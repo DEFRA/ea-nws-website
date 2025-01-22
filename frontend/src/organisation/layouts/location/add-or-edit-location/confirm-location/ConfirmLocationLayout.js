@@ -101,11 +101,8 @@ export default function ConfirmLocationLayout ({
       dispatch(setCurrentLocation(data))
 
       // Remove invalid location from elasticache
-      if (
-        flow === 'unmatched-locations-not-found' ||
-        flow === 'unmatched-locations-not-in-england'
-      ) {
-        await backendCall(
+      if (flow.includes('unmatched-locations')) {
+        backendCall(
           { orgId, locationId: currentLocation.id },
           'api/bulk_uploads/remove_invalid_location',
           navigate
@@ -182,8 +179,7 @@ export default function ConfirmLocationLayout ({
                 <div className='govuk-!-margin-top-8'>
                   <Button
                     text={
-                      flow === 'unmatched-locations-not-found' ||
-                      flow === 'unmatched-locations-not-in-england'
+                      flow.includes('unmatched-locations')
                         ? 'Add location'
                         : 'Confirm location'
                     }

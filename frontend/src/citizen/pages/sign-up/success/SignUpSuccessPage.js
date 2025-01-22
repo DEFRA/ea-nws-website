@@ -55,13 +55,13 @@ export default function SignUpSuccessPage () {
               </p>
               <ul>
                 <li>
-                  {''}
+
                   <Link to='/home' className='govuk-link'>
                     locations.
                   </Link>
                 </li>
                 <li>
-                  {''}
+
                   <Link to='/managecontacts' className='govuk-link'>
                     email addresses or phone numbers
                   </Link>
@@ -85,7 +85,7 @@ export default function SignUpSuccessPage () {
                     <Button
                       text='Continue'
                       className='govuk-button'
-                      />
+                    />
                   </a>
                 </div>
               )}

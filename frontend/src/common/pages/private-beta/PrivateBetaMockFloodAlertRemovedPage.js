@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 
 export default function PrivateBetaMockFloodAlertRemovedPage () {
@@ -11,8 +11,10 @@ export default function PrivateBetaMockFloodAlertRemovedPage () {
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-body govuk-grid-column-three-quarters govuk-!-margin-left-3 private-beta-mock-banner'
-               style={{backgroundColor: '#F1F0EF', borderColor: '#A8ABAD', height: '75px', lineHeight: '75px' }}>
+          <div
+            className='govuk-body govuk-grid-column-three-quarters govuk-!-margin-left-3 private-beta-mock-banner'
+            style={{ backgroundColor: '#F1F0EF', borderColor: '#A8ABAD', height: '75px', lineHeight: '75px' }}
+          >
             The flood alert was removed
           </div>
           <div className='govuk-grid-column-two-thirds'>
@@ -43,7 +45,7 @@ export default function PrivateBetaMockFloodAlertRemovedPage () {
               <h2 className='govuk-heading-m'>Contact Floodline for advice</h2>
               <p>
                 <span className='govuk-!-font-weight-bold'>
-                  Floodline helpline<br/>
+                  Floodline helpline<br />
                 </span>
                 Telephone: 0345 988 1188
                 <br />

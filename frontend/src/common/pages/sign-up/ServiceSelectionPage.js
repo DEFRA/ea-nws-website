@@ -1,30 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 import Button from '../../components/gov-uk/Button'
 import ErrorSummary from '../../components/gov-uk/ErrorSummary'
 import Radio from '../../components/gov-uk/Radio'
-import TextArea from '../../components/gov-uk/TextArea'
-import { backendCall } from '../../services/BackendService'
 
 export default function ServiceSelectionPage () {
   const navigate = useNavigate()
-  const charLimit = 2000
-  const charLimitText = 'Your answer must be 2000 characters or fewer'
-  const accountDeletionReasonOptions = [
-    { value: 'MovedOutOfArea', label: 'Moved out of area' },
-    { value: 'TooManyWarnings', label: 'Too many warnings' },
-    { value: 'WarningsAreTooLate', label: 'Warnings are too late' },
-    { value: 'NotGettingAnyWarnings', label: 'Not getting any warnings' },
-    { value: 'MyDetailsAreIncorrect', label: 'My details are incorrect' },
-    { value: 'ConcernedAboutPrivacy', label: 'Concerned about privacy' }
-  ]
 
   const [serviceOption, setServiceOption] = useState('')
   const [reasonError, setReasonError] = useState('')
-  const [reasonTextError, setReasonTextError] = useState('')
-  const [furtherInfoError, setFurtherInfoError] = useState('')
 
   useEffect(() => {
     setReasonError('')
@@ -43,8 +28,7 @@ export default function ServiceSelectionPage () {
     if (isValidInput) {
       if (serviceOption === 'citizen') {
         navigate('/signup/register-location/search')
-      }
-      else {
+      } else {
         navigate('/signup/organisation-service')
       }
     }
@@ -59,9 +43,9 @@ export default function ServiceSelectionPage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
             {/* Error summary */}
-            {(reasonError || reasonTextError || furtherInfoError) && (
+            {(reasonError) && (
               <ErrorSummary
-                errorList={[reasonError, reasonTextError, furtherInfoError]}
+                errorList={[reasonError]}
               />
             )}
             <h1 className='govuk-heading-l'>

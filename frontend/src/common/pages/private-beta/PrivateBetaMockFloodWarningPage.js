@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 import floodWarningIcon from '../../assets/images/flood_warning.svg'
 
@@ -12,18 +12,22 @@ export default function PrivateBetaMockFloodWarningPage () {
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-body govuk-grid-column-three-quarters govuk-!-margin-left-3 private-beta-mock-banner'
-               style={{backgroundColor: '#FCEAEC', borderColor: '#DB091C' }}>
+          <div
+            className='govuk-body govuk-grid-column-three-quarters govuk-!-margin-left-3 private-beta-mock-banner'
+            style={{ backgroundColor: '#FCEAEC', borderColor: '#DB091C' }}
+          >
             <img
               src={floodWarningIcon}
-              alt={`Warning Icon`}
+              alt='Warning Icon'
               style={{ width: '100px', height: '75px' }}
             />
             <span className='govuk-!-font-weight-bold'>
               Flooding is expected -{' '}
             </span>
-            <a href='https://www.gov.uk/guidance/flood-alerts-and-warnings-what-they-are-and-what-to-do#flood-warning'
-              className='govuk-link'>
+            <a
+              href='https://www.gov.uk/guidance/flood-alerts-and-warnings-what-they-are-and-what-to-do#flood-warning'
+              className='govuk-link'
+            >
               act now
             </a>
           </div>
@@ -54,7 +58,7 @@ export default function PrivateBetaMockFloodWarningPage () {
               <h2 className='govuk-heading-m'>Contact Floodline for advice</h2>
               <p>
                 <span className='govuk-!-font-weight-bold'>
-                  Floodline helpline<br/>
+                  Floodline helpline<br />
                 </span>
                 Telephone: 0345 988 1188
                 <br />

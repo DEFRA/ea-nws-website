@@ -1,12 +1,7 @@
-import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import React from 'react'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 import Button from '../../components/gov-uk/Button'
-import ErrorSummary from '../../components/gov-uk/ErrorSummary'
-import Radio from '../../components/gov-uk/Radio'
-import TextArea from '../../components/gov-uk/TextArea'
-import { backendCall } from '../../services/BackendService'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
   faCheck
@@ -14,7 +9,7 @@ import {
 
 export default function OrganisationServiceSelectionPage () {
   const navigate = useNavigate()
-  
+
   const panelItem = (
     itemText
   ) => {
@@ -50,22 +45,22 @@ export default function OrganisationServiceSelectionPage () {
                     <span className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4 govuk-!-margin-top-4'>
                       Recommended for
                     </span>
-                    <span className='govuk-caption-m govuk-!-font-size-21 govuk-!-padding-left-4 govuk-!-padding-bottom-5 govuk-!-font-weight-bold' style={{color: '#0b0c0c'}}>
+                    <span className='govuk-caption-m govuk-!-font-size-21 govuk-!-padding-left-4 govuk-!-padding-bottom-5 govuk-!-font-weight-bold' style={{ color: '#0b0c0c' }}>
                       Homes or small businesses
                     </span>
-                    <div className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4 govuk-!-margin-top-4 govuk-!-margin-bottom-4 govuk-!-padding-right-4' style={{color: '#0b0c0c', paddingBottom: '28px'}}>
+                    <div className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4 govuk-!-margin-top-4 govuk-!-margin-bottom-4 govuk-!-padding-right-4' style={{ color: '#0b0c0c', paddingBottom: '28px' }}>
                       {panelItem('Instant sign up')}
                       {panelItem('Best for up to 10 locations')}
                       <FontAwesomeIcon
                         icon={faCheck}
                       />
-                      {' '}Up to:<br/>
-                      <br/>
+                      {' '}Up to:<br />
+                      <br />
                       <span className='govuk-!-margin-left-4'>
-                        5 email addresses for email warnings<br/>
+                        5 email addresses for email warnings<br />
                       </span>
                       <span className='govuk-!-margin-left-4'>
-                        5 numbers for text warnings<br/>
+                        5 numbers for text warnings<br />
                       </span>
                       <span className='govuk-!-margin-left-4'>
                         5 numbers for phone call warnings
@@ -92,11 +87,11 @@ export default function OrganisationServiceSelectionPage () {
                     <span className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4 govuk-!-margin-top-4'>
                       Recommended for
                     </span>
-                    <span className='govuk-caption-m govuk-!-font-size-21 govuk-!-padding-left-4 govuk-!-font-weight-bold' style={{color: '#0b0c0c'}}>
-                      Organisations, local authorities and<br/>
+                    <span className='govuk-caption-m govuk-!-font-size-21 govuk-!-padding-left-4 govuk-!-font-weight-bold' style={{ color: '#0b0c0c' }}>
+                      Organisations, local authorities and<br />
                       other category 1 or 2 responders
                     </span>
-                    <div className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4 govuk-!-margin-top-4 govuk-!-margin-bottom-4 govuk-!-padding-right-4' style={{color: '#0b0c0c'}}>
+                    <div className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4 govuk-!-margin-top-4 govuk-!-margin-bottom-4 govuk-!-padding-right-4' style={{ color: '#0b0c0c' }}>
                       {panelItem('Account usually opened in 3 to 5 days')}
                       {panelItem('Unlimited locations')}
                       {panelItem('Unlimited users who can get flood messages')}

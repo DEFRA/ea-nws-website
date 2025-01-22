@@ -25,24 +25,24 @@ export default function CookiesPage () {
       {servicePhase === 'beta'
         ? (
           <>
-            <PrivateBetaCookiesPage/>
+            <PrivateBetaCookiesPage />
           </>
           )
         : (
           <>
-      <BackLink onClick={() => navigate(-1)} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
-        <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
-            <div className='govuk-body'>
-              <h1 className='govuk-heading-l'>Cookies</h1>
-              <p>coming soon</p>
-            </div>
-          </div>
-        </div>
-      </main>
-      </>
-    )}
-  </>
+            <BackLink onClick={() => navigate(-1)} />
+            <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-two-thirds'>
+                  <div className='govuk-body'>
+                    <h1 className='govuk-heading-l'>Cookies</h1>
+                    <p>coming soon</p>
+                  </div>
+                </div>
+              </div>
+            </main>
+          </>
+          )}
+    </>
   )
-        }
+}

@@ -55,12 +55,12 @@ export default function AccountDeleteConfirmPage () {
         </p>
         {servicePhase !== 'beta' && (
           <div>
-              <p className='govuk-body govuk-!-margin-bottom-6'>
-                <Link to='/survey' className='govuk-link'>
-                  What do you think of this service?
-                </Link>{' '}
-                Takes 30 seconds
-              </p>
+            <p className='govuk-body govuk-!-margin-bottom-6'>
+              <Link to='/survey' className='govuk-link'>
+                What do you think of this service?
+              </Link>{' '}
+              Takes 30 seconds
+            </p>
             <h2 className='govuk-heading-m'>More about flooding</h2>
             <p className='govuk-body govuk-!-margin-bottom-6'>
               Find out how to{' '}
@@ -80,7 +80,7 @@ export default function AccountDeleteConfirmPage () {
               <Button
                 text='Continue'
                 className='govuk-button'
-                />
+              />
             </a>
           </div>
         )}

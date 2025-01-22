@@ -125,11 +125,11 @@ export default function LocationInAlertAreaLayout ({
       if (isUserInNearbyTargetFlowpath) {
         alertTypes = [AlertType.FLOOD_ALERT]
       }
-      
+
       const data = {
         authToken,
         locationId: location.id,
-        partnerId: partnerId,
+        partnerId,
         params: getRegistrationParams(profile, alertTypes)
       }
 
@@ -181,7 +181,7 @@ export default function LocationInAlertAreaLayout ({
       const data = {
         authToken,
         locationId: location.id,
-        partnerId: partnerId
+        partnerId
       }
 
       await backendCall(

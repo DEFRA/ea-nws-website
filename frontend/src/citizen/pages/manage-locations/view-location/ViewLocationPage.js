@@ -173,7 +173,7 @@ export default function ViewLocationPage () {
     const data = {
       authToken,
       locationId: selectedLocation.id,
-      partnerId: partnerId
+      partnerId
     }
 
     const { errorMessage } = await backendCall(
@@ -209,7 +209,7 @@ export default function ViewLocationPage () {
     const data = {
       authToken,
       locationId: selectedLocation.id,
-      partnerId: partnerId,
+      partnerId,
       params: getRegistrationParams(profile, alertTypes)
     }
 

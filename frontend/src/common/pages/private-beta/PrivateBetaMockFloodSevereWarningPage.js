@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 import floodSevereWarningIcon from '../../assets/images/severe_flood_warning.svg'
 
@@ -12,18 +12,22 @@ export default function PrivateBetaMockFloodSevereWarningPage () {
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-body govuk-grid-column-three-quarters govuk-!-margin-left-3 private-beta-mock-banner'
-               style={{backgroundColor: '#FFD7DC', borderColor: '#DB091C' }}>
+          <div
+            className='govuk-body govuk-grid-column-three-quarters govuk-!-margin-left-3 private-beta-mock-banner'
+            style={{ backgroundColor: '#FFD7DC', borderColor: '#DB091C' }}
+          >
             <img
               src={floodSevereWarningIcon}
-              alt={`Severe Warning Icon`}
+              alt='Severe Warning Icon'
               style={{ width: '100px', height: '75px' }}
             />
             <span className='govuk-!-font-weight-bold'>
               Danger to life -{' '}
             </span>
-            <a href='https://www.gov.uk/guidance/flood-alerts-and-warnings-what-they-are-and-what-to-do#severe-flood-warning'
-              className='govuk-link'>
+            <a
+              href='https://www.gov.uk/guidance/flood-alerts-and-warnings-what-they-are-and-what-to-do#severe-flood-warning'
+              className='govuk-link'
+            >
               act now
             </a>
           </div>
@@ -49,7 +53,7 @@ export default function PrivateBetaMockFloodSevereWarningPage () {
               <h2 className='govuk-heading-m'>Contact Floodline for advice</h2>
               <p>
                 <span className='govuk-!-font-weight-bold'>
-                  Floodline helpline<br/>
+                  Floodline helpline<br />
                 </span>
                 Telephone: 0345 988 1188
                 <br />

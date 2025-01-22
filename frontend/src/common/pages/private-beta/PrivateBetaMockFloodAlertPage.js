@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 import floodAlertIcon from '../../assets/images/flood_alert.svg'
 
@@ -12,18 +12,22 @@ export default function PrivateBetaMockFloodAlertPage () {
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-body govuk-grid-column-three-quarters govuk-!-margin-left-3 private-beta-mock-banner'
-               style={{backgroundColor: '#FDF1E3', borderColor: '#EB7C25' }}>
+          <div
+            className='govuk-body govuk-grid-column-three-quarters govuk-!-margin-left-3 private-beta-mock-banner'
+            style={{ backgroundColor: '#FDF1E3', borderColor: '#EB7C25' }}
+          >
             <img
               src={floodAlertIcon}
-              alt={`Alert Icon`}
+              alt='Alert Icon'
               style={{ width: '100px', height: '75px' }}
             />
             <span className='govuk-!-font-weight-bold'>
               Flooding is possible -{' '}
             </span>
-            <a href='https://www.gov.uk/guidance/flood-alerts-and-warnings-what-they-are-and-what-to-do#flood-alert'
-              className='govuk-link'>
+            <a
+              href='https://www.gov.uk/guidance/flood-alerts-and-warnings-what-they-are-and-what-to-do#flood-alert'
+              className='govuk-link'
+            >
               be prepared
             </a>
           </div>
@@ -56,7 +60,7 @@ export default function PrivateBetaMockFloodAlertPage () {
               <h2 className='govuk-heading-m'>Contact Floodline for advice</h2>
               <p>
                 <span className='govuk-!-font-weight-bold'>
-                  Floodline helpline<br/>
+                  Floodline helpline<br />
                 </span>
                 Telephone: 0345 988 1188
                 <br />

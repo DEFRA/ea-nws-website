@@ -106,7 +106,7 @@ export default function SignUpValidationPage () {
       const data = {
         authToken,
         locationId: poi.id,
-        partnerId: partnerId,
+        partnerId,
         params: getRegistrationParams(profile, alertTypes)
       }
 

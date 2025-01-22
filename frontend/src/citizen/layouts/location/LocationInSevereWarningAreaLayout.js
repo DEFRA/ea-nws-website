@@ -102,7 +102,7 @@ export default function LocationInSevereWarningAreaLayout ({
     const data = {
       authToken,
       locationId: location.id,
-      partnerId: partnerId,
+      partnerId,
       params: getRegistrationParams(profile, alertTypes)
     }
 
@@ -142,7 +142,7 @@ export default function LocationInSevereWarningAreaLayout ({
       const data = {
         authToken,
         locationId: location.id,
-        partnerId: partnerId
+        partnerId
       }
 
       await backendCall(

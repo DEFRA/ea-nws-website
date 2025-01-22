@@ -11,9 +11,9 @@ export default function ErrorSummary ({ errorList }) {
               <ul className='govuk-list govuk-error-summary__list'>
                 {errorList.map((error, index) => (
                   <li key={index}>
-                    <a href='' onClick={(e) => e.preventDefault()}>
+                    <li key={index} style={{color: '#d4351c', fontWeight: '700'}}>
                       {error}
-                    </a>
+                    </li>
                   </li>
                 ))}
               </ul>

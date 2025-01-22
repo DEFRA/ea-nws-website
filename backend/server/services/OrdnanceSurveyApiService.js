@@ -6,8 +6,10 @@ const axios = require('axios')
 const { logger } = require('../plugins/logging')
 
 const osPostCodeApiCall = async (postCode) => {
+
   let responseData
   const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
+
   const url = `https://api.os.uk/search/places/v1/postcode?postcode=${postCode}&key=${osApiKey}&output_srs=EPSG:4326`
 
   try {
@@ -36,7 +38,7 @@ const osPostCodeApiCall = async (postCode) => {
     logger.error(error)
     return {
       status: 500,
-      errorMessage: 'Oops, something happened!'
+      errorMessage: 'Enter a real postcode'
     }
   }
 }

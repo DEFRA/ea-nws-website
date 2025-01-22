@@ -271,7 +271,7 @@ export default function LocationInSevereWarningAreaLayout ({
             </ul>
             <p>
               Flood warnings are usually sent 30 minutes to 2 hours before
-              flooding
+              flooding.
             </p>
             <p>
               Severe flood warnings will be sent at any time when life is at

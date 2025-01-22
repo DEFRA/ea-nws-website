@@ -37,6 +37,8 @@ import AddMobileContactStartPage from '../../pages/sign-up/review/manage-contact
 import ValidateMobileContactPage from '../../pages/sign-up/review/manage-contact/add-mobile-contact/AddContactMobileValidatePage'
 import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
 import DeclarationOfAgreementPage from '../../pages/sign-up/user-agreement/DeclarationOfAgreementPage'
+import ServiceSelectionPage from '../../../common/pages/sign-up/ServiceSelectionPage' // TODO: Move to common sign-up routes
+import OrganisationServiceSelectionPage from '../../../common/pages/sign-up/OrganisationServiceSelectionPage' // TODO: Move to common sign-up routes
 
 // sign up routes
 const signupRoutes = [
@@ -193,6 +195,14 @@ const signupRoutes = [
   {
     path: '/signup/review/remove-contact',
     component: <RemoveContactFromReviewConfirmationPage />
+  },
+  {
+    path: '/signup/service-selection',
+    component: <ServiceSelectionPage />
+  },
+  {
+    path: '/signup/organisation-service',
+    component: <OrganisationServiceSelectionPage />
   }
 ]
 

@@ -5,7 +5,7 @@ const getServicePhase = async () => {
       'nws/website',
       'servicePhase'
     )
-    if (response !== null && response.length >= 0) {
+    if (response !== null && response.length > 0) {
       return {
         status: 200,
         data: response

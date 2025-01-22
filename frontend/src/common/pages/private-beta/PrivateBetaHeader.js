@@ -37,7 +37,7 @@ export default function PrivateBetaHeader () {
           <div className='private-beta-header-info-container govuk-width-container'>
             <p>Thank you for taking part in our trial for our new new flood warning service.</p>
             <p>This site contains test content only.</p>
-            <p style={{ fontWeight: 700 }}>
+            <p className='govuk-!-font-weight-bold'>
               You must not rely on this for flood warnings.
             </p>
             <p>If you need live flood warnings,

@@ -5,7 +5,7 @@ const getPartnerId = async () => {
       'nws/website',
       'partnerId'
     )
-    if (response !== null && response.length >= 0) {
+    if (response !== null && response.length > 0) {
       return {
         status: 200,
         data: response

@@ -76,12 +76,11 @@ export default function AccountDeleteConfirmPage () {
             <h1 className='govuk-heading-m govuk-!-margin-top-6'>
               Now answer some questions about closing your account
             </h1>
-            <a className='govuk-link' href='https://forms.office.com/e/Rd76JZqNbV'>
-              <Button
-                text='Continue'
-                className='govuk-button'
-              />
-            </a>
+            <Button
+              text='Continue'
+              className='govuk-button'
+              onClick={() => { window.location.href = 'https://forms.office.com/e/Rd76JZqNbV' }}
+            />
           </div>
         )}
       </main>

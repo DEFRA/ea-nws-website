@@ -14,7 +14,7 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
         const response = await getSecretKeyValue('nws/website', 'gtmId')
-        if (response !== null && response.length >= 0) {
+        if (response !== null && response.length > 0) {
           return {
             status: 200,
             data: response

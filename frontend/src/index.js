@@ -25,7 +25,9 @@ const tagManagerArgs = {
   gtmId: await getGtmId()
 }
 
-TagManager.initialize(tagManagerArgs)
+if (tagManagerArgs.gtmId !== null) {
+  TagManager.initialize(tagManagerArgs)
+}
 
 root.render(
   <React.StrictMode>

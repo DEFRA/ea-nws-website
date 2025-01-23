@@ -4,7 +4,7 @@ export default function Footer () {
 
   return (
     <>
-      <footer className='govuk-footer govuk-!-margin-top-9'>
+      <footer className='govuk-footer'>
         <div className='govuk-width-container'>
           <div className='govuk-footer__meta'>
             <div className='govuk-footer__meta-item govuk-footer__meta-item--grow'>

@@ -61,7 +61,7 @@ export default function TermsAndConditionsPage () {
               <a
                 href='https://naturalresources.wales/footer-links/privacy-notice?lang=en'
                 className='govuk-link'
-                target='blank'
+                target='_blank'
               >treats your personal information (opens new window)
               </a>
               .

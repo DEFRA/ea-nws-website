@@ -10,10 +10,8 @@ export default function ErrorSummary ({ errorList }) {
             <div className='govuk-error-summary__body'>
               <ul className='govuk-list govuk-error-summary__list'>
                 {errorList.map((error, index) => (
-                  <li key={index}>
-                    <li key={index} style={{ color: '#d4351c', fontWeight: '700' }}>
-                      {error}
-                    </li>
+                  <li key={index} style={{ color: '#d4351c', fontWeight: '700' }}>
+                    {error}
                   </li>
                 ))}
               </ul>

@@ -164,9 +164,9 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
         longitude: centre.geometry.coordinates[0]
       },
       address: locationPostCode,
-      name: locations.name
+      name: ''
     }
-    console.log(centerLocation)
+
     handleSelectedLocation(event, centerLocation)
   }
 
@@ -180,9 +180,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
       >
         near this postcode
       </Link>
-      {/* <a href='/signup/register-location/location-in-proximity-area/alert' className='govuk-link'>
-        near this postcode
-      </a> */}
+
     </div>
   )
 

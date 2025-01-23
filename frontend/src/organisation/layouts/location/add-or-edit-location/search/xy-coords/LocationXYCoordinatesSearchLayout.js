@@ -6,6 +6,7 @@ import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../../../common/components/gov-uk/Input'
 import {
+  getLocationAdditional,
   getLocationOther,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
@@ -18,15 +19,16 @@ import { yCoordinateValidation } from '../../../../../../common/services/validat
 
 export default function LocationXYCoordinatesSearchLayout ({
   navigateToNextPage,
-  navigateToNotInEngland
+  navigateToNotInEngland,
+  flow
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const currentXCoordinate = useSelector(
-    (state) => getLocationOther(state, 'x_coordinate')
+  const currentXCoordinate = useSelector((state) =>
+    getLocationOther(state, 'x_coordinate')
   )
-  const currentYCoordinate = useSelector(
-    (state) => getLocationOther(state, 'y_coordinate')
+  const currentYCoordinate = useSelector((state) =>
+    getLocationOther(state, 'y_coordinate')
   )
   const [xCoordinate, setXCoordinate] = useState(currentXCoordinate || '')
   const [xCoordinateError, setXCoordinateError] = useState('')
@@ -41,6 +43,40 @@ export default function LocationXYCoordinatesSearchLayout ({
       setYCoordinateError('')
     }
   }, [xCoordinate, yCoordinate])
+
+  const LocationDetails = () => {
+    const locationName = useSelector((state) =>
+      getLocationAdditional(state, 'locationName')
+    )
+    const locationFullAddress = useSelector((state) =>
+      getLocationOther(state, 'full_address')
+    )
+    const locationXcoordinate = useSelector((state) =>
+      getLocationOther(state, 'x_coordinate')
+    )
+    const locationYcoordinate = useSelector((state) =>
+      getLocationOther(state, 'y_coordinate')
+    )
+
+    return (
+      <div className='govuk-inset-text'>
+        <strong>{locationName}</strong>
+        {locationFullAddress && (
+          <>
+            <br />
+            {locationFullAddress}
+          </>
+        )}
+        <br />
+        {locationXcoordinate && locationYcoordinate && (
+          <>
+            <br />
+            {locationXcoordinate}, {locationYcoordinate}
+          </>
+        )}
+      </div>
+    )
+  }
 
   const handleSubmit = async () => {
     const xCoordinateValidationError = xCoordinateValidation(xCoordinate)
@@ -79,17 +115,19 @@ export default function LocationXYCoordinatesSearchLayout ({
 
   return (
     <>
-
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             {(xCoordinateError || yCoordinateError) && (
               <ErrorSummary errorList={[xCoordinateError, yCoordinateError]} />
             )}
             <h1 className='govuk-heading-l'>
               What are the X and Y coordinates?
             </h1>
+
+            {flow.includes('unmatched-locations') && <LocationDetails />}
+
             <div className='govuk-body'>
               <Input
                 name='X coordinate'

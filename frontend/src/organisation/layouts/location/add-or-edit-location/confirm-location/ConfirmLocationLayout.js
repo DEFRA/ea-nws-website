@@ -23,17 +23,20 @@ import Map from '../../../../components/custom/Map'
 export default function ConfirmLocationLayout ({
   navigateToNextPage,
   navigateToPinDropFlow,
+  flow,
   layoutType = 'XandY'
 }) {
   const [error, setError] = useState(null)
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
+  const currentLocation = useSelector((state) => state.session.currentLocation)
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')
   )
+
   const currentAddress = useSelector((state) =>
     getLocationOther(state, 'full_address')
   )
@@ -54,7 +57,9 @@ export default function ConfirmLocationLayout ({
     }
 
     shapeGeoData = geojsonData
-    shapeArea = formattArea(Math.round(shapeGeoData.features[0]?.properties?.Shape_Area))
+    shapeArea = formattArea(
+      Math.round(shapeGeoData.features[0]?.properties?.Shape_Area)
+    )
     shapeName = shapeGeoData.fileName
 
     // Calculate coords of centre of polygon to display the map properly
@@ -92,9 +97,19 @@ export default function ConfirmLocationLayout ({
       'api/location/create',
       navigate
     )
+
     if (data) {
       // need to set the current location due to geosafe creating the ID.
       dispatch(setCurrentLocation(data))
+
+      // Remove invalid location from elasticache
+      if (flow.includes('unmatched-locations')) {
+        backendCall(
+          { orgId, locationId: currentLocation.id },
+          'api/bulk_uploads/remove_invalid_location',
+          navigate
+        )
+      }
       navigateToNextPage()
     } else {
       errorMessage
@@ -115,19 +130,16 @@ export default function ConfirmLocationLayout ({
 
   return (
     <>
-
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l govuk-!-margin-top-5'>
-              Confirm location
-            </h1>
+            <h1 className='govuk-heading-l '>Confirm location</h1>
 
             {currentAddress && (
               <>
-                <h2 className='govuk-heading-m govuk-!-margin-top-6'>
+                <h2 className='govuk-heading-m govuk-!-margin-top-8'>
                   {locationName}
                 </h2>
                 <hr />
@@ -150,7 +162,7 @@ export default function ConfirmLocationLayout ({
             {/* X and Y coordinates layout (default) */}
             {layoutType === 'XandY' && (
               <>
-                <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-4 govuk-!-margin-bottom-0'>
+                <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-6 govuk-!-margin-bottom-0'>
                   X and Y Coordinates
                 </h3>
                 <p>
@@ -168,10 +180,14 @@ export default function ConfirmLocationLayout ({
 
                 <div className='govuk-!-margin-top-8'>
                   <Button
-                    text='Confirm Location'
+                    text={
+                      flow.includes('unmatched-locations')
+                        ? 'Add location'
+                        : 'Confirm location'
+                    }
                     className='govuk-button'
                     onClick={handleSubmit}
-                  />
+                  />{' '}
                   <Link
                     onClick={navigateBack}
                     className='govuk-body govuk-link inline-link'

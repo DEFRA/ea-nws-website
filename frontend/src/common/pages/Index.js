@@ -13,10 +13,12 @@ import {
   setCurrentLocation,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
+  setCurrentLocationFullAddress,
   setCurrentLocationNorthing,
   setLocationBoundaries,
   setOrgId,
   setProfile,
+  setProfileId,
   setRegistrations,
   setSelectedBoundary,
   setSelectedBoundaryType,
@@ -536,12 +538,8 @@ export default function IndexPage () {
       }
 
       if (type === 'org') {
-        ;(async () => {
-          const dataToSend = {
-            signinToken: uuidv4(),
-            code: 123456,
-            signinType: 'org'
-          }
+        (async () => {
+          const dataToSend = { signinToken: uuidv4(), code: 123456, signinType: 'org' }
 
           await backendCall(dataToSend, 'api/sign_in_validate')
         })()
@@ -560,8 +558,12 @@ export default function IndexPage () {
       dispatch(setLocationBoundaries([]))
       dispatch(setContacts(mockContacts))
       dispatch(setOrgId('1'))
+      dispatch(setProfileId('1'))
       dispatch(setCurrentLocationEasting('520814'))
       dispatch(setCurrentLocationNorthing('185016'))
+      dispatch(
+        setCurrentLocationFullAddress('Kingfisher Way, London, NW10 8TZ')
+      )
       setmockSessionActive(true)
     } else {
       dispatch(clearAuth())

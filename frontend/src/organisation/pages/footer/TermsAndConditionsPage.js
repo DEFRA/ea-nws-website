@@ -51,18 +51,17 @@ export default function TermsAndConditionsPage () {
                 className='govuk-link'
                 target='_blank'
               >
-                privacy notice (opens new window) {' '}
+                privacy notice (opens new window)
               </a>
-              explains how we treat your personal information.
+              {' '} explains how we treat your personal information.
             </p>
 
             <p>Natural Resources Wales use the same systems and will have access to your personal information if you ask for a service in Wales.
               Read how Natural  Resources Wales {' '}
-              {/* ToDo put the correct link once UCD replies */}
               <a
-                href='/organisation/privacy'
+                href='https://naturalresources.wales/footer-links/privacy-notice?lang=en'
                 className='govuk-link'
-                target='_blank'
+                target='blank'
               >treats your personal information (opens new window)
               </a>
               .

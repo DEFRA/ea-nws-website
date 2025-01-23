@@ -13,6 +13,16 @@ export default function ChangeLocationInAlertAreaPage() {
   const locationBeingChanged = useSelector(
     (state) => state.session.locationToBeChanged
   )
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId() {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
+
+  useEffect(() => {
+    getPartnerId()
+  }, [])
 
   const continueToNextPage = async (profile) => {
     let updatedProfile = profile
@@ -27,7 +37,7 @@ export default function ChangeLocationInAlertAreaPage() {
       {
         authToken,
         locationId: locationBeingChanged.id,
-        partnerId: '1' // this is currently a hardcoded value - geosafe to update us
+        partnerId
       },
       'api/partner/unregister_location_from_partner',
       navigate

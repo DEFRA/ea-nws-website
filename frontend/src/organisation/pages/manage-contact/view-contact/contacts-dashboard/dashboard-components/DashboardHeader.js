@@ -2,8 +2,8 @@ import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
-import { urlManageKeywordsOrg } from '../../../../../routes/manage-keywords/ManageKeywordsRoutes'
 import { urlManageContactsAdd } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
+import { urlManageKeywordsOrg } from '../../../../../routes/manage-keywords/ManageKeywordsRoutes'
 
 export default function DashboardHeader ({
   contactsAdded,
@@ -72,7 +72,7 @@ export default function DashboardHeader ({
                 <strong>{count}</strong>
               </h1>
               <Link className='govuk-link' onClick={() => onClickLinked(type)}>
-                {count === 1 ? 'contact' : 'contacts'} {message}
+                {Number(count) === 1 ? 'contact' : 'contacts'} {message}
               </Link>
             </>
           )}

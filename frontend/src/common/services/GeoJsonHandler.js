@@ -35,10 +35,16 @@ export const getAreaOrLength = (geoJsonType, geoJsonData) => {
   let size
 
   switch (geoJsonType) {
-    case 'LineString' || 'MultiLineString':
+    case 'LineString':
       size = turf.length(shape)
       break
-    case 'Polygon' || 'MultiPolygon':
+    case 'MultiLineString':
+      size = turf.length(shape)
+      break
+    case 'Polygon':
+      size = turf.area(shape)
+      break
+    case 'MultiPolygon':
       size = turf.area(shape)
       break
   }

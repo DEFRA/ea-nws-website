@@ -83,9 +83,6 @@
   font-family: 'GDS Transport', arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-decoration: underline;
-  text-decoration-thickness: max(1px, 0.0625rem);
-  text-underline-offset: 0.1578em;
   display: block;
   padding-top: 12px;
   padding-bottom: 12px;
@@ -1473,7 +1470,6 @@
 .org-flood-warning-key {
   display: flex;
   gap: 2.5rem;
-  align-items: center;
   background-color: #f3f2f1;
   padding: 0.625rem;
   flex-wrap: wrap;
@@ -1551,7 +1547,6 @@
   padding: 0 10px 0 0;
   position: relative;
   text-align: inherit;
-  font-size: 1em;
   margin: 0;
 }
 

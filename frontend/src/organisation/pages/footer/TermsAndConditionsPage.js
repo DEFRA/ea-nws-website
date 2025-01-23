@@ -9,14 +9,15 @@ export default function TermsAndConditionsPage () {
       <main className='govuk-main-wrapper govuk-body govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            <h1 className='govuk-heading-l'>Terms and conditions</h1>
+            <h1 className='govuk-heading-l govuk-!-padding-top-4'>Terms and conditions</h1>
             <h2 className='govuk-heading-m'>What we will do</h2>
             <p>
-              We make all reasonable efforts to send the flood warnings you have asked for,
+              We make all reasonable efforts to send the flood warnings you have asked for,<br />
               but we cannot guarantee they will be sent or arrive.
-              Warnings may be sent at any time of day or night
+              Warnings may be sent at <br />
+              any time of day or night
             </p>
-            <h2 className='govuk-heading-m'>We do not:</h2>
+            <h2 className='govuk-heading-m govuk-!-padding-top-3'>We do not:</h2>
             <ul className='govuk-list govuk-list--bullet'>
               <li>accept responsibility if you fail to receive a warning</li>
               <li>guarantee that our online or phone services will be available</li>
@@ -33,7 +34,7 @@ export default function TermsAndConditionsPage () {
             </ul>
             <h2 className='govuk-heading-m'>How we will use your personal information</h2>
             <p>We may use the personal information you provide to:</p>
-            <ul className='govuk-list govuk-list--bullet'>
+            <ul className='govuk-list govuk-list--bullet govuk-!-padding-top-2'>
               <li>send you warnings you’ve asked for</li>
               <li>send you a small number of services or administrative messages</li>
               <li>help emergency services and local councils respond to flooding</li>
@@ -50,13 +51,14 @@ export default function TermsAndConditionsPage () {
                 className='govuk-link'
                 target='_blank'
               >
-                privacy notice (opens new window)
+                privacy notice (opens new window) {' '}
               </a>
               explains how we treat your personal information.
             </p>
 
             <p>Natural Resources Wales use the same systems and will have access to your personal information if you ask for a service in Wales.
               Read how Natural  Resources Wales {' '}
+              {/* ToDo put the correct link once UCD replies */}
               <a
                 href='/organisation/privacy'
                 className='govuk-link'

@@ -1,15 +1,12 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
 import { useNavigate, Link } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 export default function ContactUsLayout () {
   const navigate = useNavigate()
 
-  const authToken = useSelector((state) => state.session.authToken)
-
   return (
     <>
-      {!authToken && <BackLink onClick={() => navigate(-1)} />}
+      <BackLink onClick={() => navigate(-1)} />
       <main
         className='govuk-main-wrapper govuk-!-padding-top-4'
       >
@@ -25,7 +22,10 @@ export default function ContactUsLayout () {
               <br />
               24 hour service
               <br />
-              <Link to='https://www.gov.uk/call-charges'>
+              <Link
+                className='govuk-link'
+                to='https://www.gov.uk/call-charges'
+              >
                 Find out about call charges
               </Link>
 
@@ -34,6 +34,7 @@ export default function ContactUsLayout () {
             <p>
               Email: {' '}
               <Link
+                className='govuk-link'
                 onClick={() => { window.location = 'mailto:enquiries@environment-agency.gov.uk' }}
               >
                 enquiries@environment-agency.gov.uk

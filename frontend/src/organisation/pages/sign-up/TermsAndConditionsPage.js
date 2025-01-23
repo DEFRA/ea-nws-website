@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import BackLink from '../../../common/components/custom/BackLink'
-import { useNavigate, useLocation } from 'react-router'
+import { useNavigate } from 'react-router'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Button from '../../../common/components/gov-uk/Button'
 import Checkbox from '../../../common/components/gov-uk/CheckBox'
@@ -9,7 +9,7 @@ export default function TermsAndConditionsPage () {
   const navigate = useNavigate()
   const [error, setError] = useState('')
   const [isChecked, setIsChecked] = useState(false)
-  const location = useLocation()
+
   const organisationName = useSelector((state) => state.session.organization.name)
   const handleSubmit = () => {
     if (!isChecked) {
@@ -24,13 +24,8 @@ export default function TermsAndConditionsPage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            {location.pathname.includes('sign-up')
-              ? (
-                <h1 className='govuk-heading-l'>Check the terms and conditions</h1>
-                )
-              : (
-                <h1 className='govuk-heading-l'>Terms and conditions</h1>
-                )}
+
+            <h1 className='govuk-heading-l'>Check the terms and conditions</h1>
 
             <p>
               These are the terms and conditions under which we, the Environment Agency,
@@ -91,36 +86,33 @@ export default function TermsAndConditionsPage () {
               explains more about how we treat personal information.
             </p>
 
-            {location.pathname.includes('sign-up') &&
-              <>
-                <h2 className='govuk-heading-m'>Accept terms and conditions</h2>
-                <p>This agreement:</p>
-                <ul className='govuk-list govuk-list--bullet'>
-                  <li>is governed by English law</li>
-                  <li>starts from the date you tick and accept</li>
+            <h2 className='govuk-heading-m govuk-!-padding-top-3'>Accept terms and conditions</h2>
+            <p>This agreement:</p>
+            <ul className='govuk-list govuk-list--bullet'>
+              <li>is governed by English law</li>
+              <li>starts from the date you tick and accept</li>
 
-                </ul>
-                <div
-                  className={
+            </ul>
+            <div
+              className={
                       error
                         ? 'govuk-form-group govuk-form-group--error'
                         : 'govuk-form-group'
                     }
-                >
-                  {error && <p className='govuk-error-message'>{error}</p>}
-                  <Checkbox
-                    onChange={() => setIsChecked(!isChecked)}
-                    checked={isChecked}
-                    label={`I warrant that I’m authorised to agree to these terms and conditions on behalf of ${organisationName}.`}
-                    value='T&C'
-                  />
-                </div>
-                <Button
-                  className='govuk-button'
-                  text='Continue'
-                  onClick={handleSubmit}
-                />
-              </>}
+            >
+              {error && <p className='govuk-error-message'>{error}</p>}
+              <Checkbox
+                onChange={() => setIsChecked(!isChecked)}
+                checked={isChecked}
+                label={`I warrant that I’m authorised to agree to these terms and conditions on behalf of ${organisationName}.`}
+                value='T&C'
+              />
+            </div>
+            <Button
+              className='govuk-button'
+              text='Continue'
+              onClick={handleSubmit}
+            />
 
           </div>
         </div>

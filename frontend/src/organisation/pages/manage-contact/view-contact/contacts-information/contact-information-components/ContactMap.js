@@ -111,7 +111,7 @@ export default function ContactMap ({ locations }) {
 
   // Leaflet Marker Icon fix
   const DefaultIcon = L.icon({
-    locationPin,
+    iconUrl: locationPin,
     iconRetinaUrl,
     shadowUrl,
     iconSize: [25, 41],

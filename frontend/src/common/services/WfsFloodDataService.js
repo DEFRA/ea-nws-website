@@ -6,30 +6,9 @@ import { backendCall } from './BackendService'
 
 export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
   // warning areas
-  let WFSParams = {
-    service: 'WFS',
-    map: 'uk-nfws.qgz',
-    version: '1.1.0',
-    request: 'GetFeature',
-    typename: 'flood_warnings',
-    srsname: 'EPSG:4326',
-    bbox: calculateBoundingBox(lat, lng, bboxKM),
-    outputFormat: 'GEOJSON'
-  }
-
-  const { data: wfsWarningData } = await backendCall(WFSParams, 'api/wfs')
+  const { data: wfsWarningData } = await callForSurroundingAreas(calculateBoundingBox(lat, lng, bboxKM), 'flood_warnings')
   // alert area
-  WFSParams = {
-    service: 'WFS',
-    map: 'uk-nfws.qgz',
-    version: '1.1.0',
-    request: 'GetFeature',
-    typename: 'flood_alerts',
-    srsname: 'EPSG:4326',
-    bbox: calculateBoundingBox(lat, lng, bboxKM),
-    outputFormat: 'GEOJSON'
-  }
-  const { data: wfsAlertData } = await backendCall(WFSParams, 'api/wfs')
+  const { data: wfsAlertData } = await callForSurroundingAreas(calculateBoundingBox(lat, lng, bboxKM), 'flood_alerts')
 
   return {
     alertArea: wfsAlertData,
@@ -38,36 +17,18 @@ export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
 }
 
 export const getSurroundingFloodAreasFromShape = async (geoJsonShape, bboxKM = 0.5) => {
+  // Add a buffer zone around the shape
   const bufferedShape = turf.buffer(geoJsonShape.geometry, bboxKM, { units: 'kilometers' })
+  // Get the boundary box for the buffered shape - it will be a square
   const bbox = turf.bbox(bufferedShape)
   const bboxInput =
     bbox[0] + ',' + bbox[1] + ',' + bbox[2] + ',' + bbox[3] + ',EPSG:4326'
   // warning areas
-  let WFSParams = {
-    service: 'WFS',
-    map: 'uk-nfws.qgz',
-    version: '1.1.0',
-    request: 'GetFeature',
-    typename: 'flood_warnings',
-    srsname: 'EPSG:4326',
-    bbox: bboxInput,
-    outputFormat: 'GEOJSON'
-  }
-
-  const { data: wfsWarningData } = await backendCall(WFSParams, 'api/wfs')
+  const { data: wfsWarningData } = await callForSurroundingAreas(bboxInput, 'flood_warnings')
+  // As the surrounding areas will be for square box, it might return data that is irrelevant to the original shape: we need to filter it
   const filteredWarningData = getIntersections(wfsWarningData, bufferedShape)
   // alert area
-  WFSParams = {
-    service: 'WFS',
-    map: 'uk-nfws.qgz',
-    version: '1.1.0',
-    request: 'GetFeature',
-    typename: 'flood_alerts',
-    srsname: 'EPSG:4326',
-    bbox: bboxInput,
-    outputFormat: 'GEOJSON'
-  }
-  const { data: wfsAlertData } = await backendCall(WFSParams, 'api/wfs')
+  const { data: wfsAlertData } = await callForSurroundingAreas(bboxInput, 'flood_alerts')
   const filteredAlertData = getIntersections(wfsAlertData, bufferedShape)
 
   return {
@@ -81,6 +42,7 @@ const getIntersections = (areas, bufferedShape) => {
   const filteredTargetData = areas.features.filter(area => {
     if (turf.booleanValid(area.geometry) && bufferedShapeValid) {
       try {
+        // Interesection for LINE
         if (bufferedShape.geometry.type === LocationDataType.SHAPE_LINE || area.geometry.type === LocationDataType.SHAPE_LINE) {
           if (turf.lineIntersect(area.geometry, bufferedShape.geometry)) return true
           return false
@@ -96,6 +58,20 @@ const getIntersections = (areas, bufferedShape) => {
     } else return false
   })
   return filteredTargetData
+}
+
+const callForSurroundingAreas = async (bbox, type) => {
+  const WFSParams = {
+    service: 'WFS',
+    map: 'uk-nfws.qgz',
+    version: '1.1.0',
+    request: 'GetFeature',
+    typename: type,
+    srsname: 'EPSG:4326',
+    bbox: bbox,
+    outputFormat: 'GEOJSON'
+  }
+  return await backendCall(WFSParams, 'api/wfs')
 }
 
 export const getAssociatedAlertArea = async (lat, lng, code) => {

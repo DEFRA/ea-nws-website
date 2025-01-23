@@ -6,7 +6,6 @@ const axios = require('axios')
 const { logger } = require('../plugins/logging')
 
 const osPostCodeApiCall = async (postCode) => {
-
   let responseData
   const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
 

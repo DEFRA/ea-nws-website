@@ -480,7 +480,7 @@ const orgSignOut = async (profileId, orgId) => {
   // delete locations
   // delete contacts
   const locationKeys = await getLocationKeys(orgId)
-  const invLocationKeys = await getContactKeys(orgId)
+  const invLocationKeys = await getInvLocationKeys(orgId)
   const contactKeys = await getContactKeys(orgId)
   await Promise.all(locationKeys.map(async (key) => {
     await deleteJsonData(key)

@@ -633,6 +633,20 @@ const userSlice = createSlice({
     setOrgCurrentContactAdditionals: (state, action) => {
       state.orgCurrentContact.additionals = action.payload
     },
+    setOrgCurrentContactKeywords: (state, action) => {
+      setAdditional(
+        state.orgCurrentContact.additionals,
+        'keywords',
+        action.payload
+      )
+    },
+    setOrgCurrentContactJobTitle: (state, action) => {
+      setAdditional(
+        state.orgCurrentContact.additionals,
+        'jobTitle',
+        action.payload
+      )
+    },
     clearOrgCurrentContact: (state) => {
       state.orgCurrentContact = {
         id: null,
@@ -956,6 +970,8 @@ export const {
   setOrgCurrentContactMobilePhones,
   setOrgCurrentContactPosition,
   setOrgCurrentContactAdditionals,
+  setOrgCurrentContactKeywords,
+  setOrgCurrentContactJobTitle,
   setOrgCurrentContactNotes,
   setOrgCurrentContactPois,
   setContacts,

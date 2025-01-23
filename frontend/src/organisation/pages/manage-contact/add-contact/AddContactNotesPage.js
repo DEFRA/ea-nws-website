@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import store from '../../../../common/redux/store'
 import { clearOrgCurrentContact } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import NotesLayout from '../../../layouts/optional-info/NotesLayout'
@@ -10,7 +11,6 @@ export default function AddContactNotesPage () {
   const navigate = useNavigate()
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
-  const orgCurrentContact = useSelector((state) => state.session.orgCurrentContact)
   const dispatch = useDispatch()
 
   const navigateToNextPage = () => {
@@ -19,7 +19,8 @@ export default function AddContactNotesPage () {
   }
 
   const onAddContact = async () => {
-    const dataToSend = { authToken, orgId, contacts: [orgCurrentContact] }
+    const contactToAdd = store.getState().session.orgCurrentContact
+    const dataToSend = { authToken, orgId, contacts: [contactToAdd] }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/organization/create_contacts',

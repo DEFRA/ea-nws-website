@@ -36,7 +36,7 @@ export default function KeywordsLayout ({
         'api/elasticache/get_data',
         navigate
       )
-      let orgKeywords = null
+      let orgKeywords = []
       if (data) {
         orgKeywords = data
       }
@@ -231,7 +231,7 @@ export default function KeywordsLayout ({
       const updatedContact = updateAdditionals(currentObject, [
         {
           id: 'keywords',
-          value: JSON.stringify(keywordsArrayChecked)
+          value: { s: JSON.stringify(keywordsArrayChecked) }
         }
       ])
       dispatch(setOrgCurrentContact(updatedContact))

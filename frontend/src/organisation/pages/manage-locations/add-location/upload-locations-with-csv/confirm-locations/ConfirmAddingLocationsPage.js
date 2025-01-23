@@ -1,14 +1,19 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
+import {
+  setNotFoundLocations,
+  setNotInEnglandLocations
+} from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ConfirmLocationsPage () {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const location = useLocation()
   const validLocations = location?.state?.valid || 0
   const duplicateLocations = location?.state?.duplicates || 0
@@ -109,13 +114,23 @@ export default function ConfirmLocationsPage () {
             }
           })
         }
+
+        notFoundLocations > 0 &&
+          dispatch(setNotFoundLocations(notFoundLocations))
+        notInEnglandLocations > 0 &&
+          dispatch(setNotInEnglandLocations(notInEnglandLocations))
       } else if (notFoundLocations > 0) {
+        dispatch(setNotFoundLocations(notFoundLocations))
+        notInEnglandLocations > 0 &&
+          dispatch(setNotInEnglandLocations(notInEnglandLocations))
+
         navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard, {
           state: {
             addedLocations: data.valid
           }
         })
       } else if (notInEnglandLocations > 0) {
+        dispatch(setNotInEnglandLocations(notInEnglandLocations))
         navigate(
           orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard,
           {

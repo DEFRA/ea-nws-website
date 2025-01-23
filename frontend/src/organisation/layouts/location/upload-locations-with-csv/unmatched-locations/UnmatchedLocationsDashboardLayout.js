@@ -23,6 +23,15 @@ export default function UnmatchedLocationsDashboardLayout ({
   const dispatch = useDispatch()
 
   const orgId = useSelector((state) => state.session.orgId)
+  const notFoundLocations = useSelector(
+    (state) => state.session.notFoundLocations
+  )
+  const notInEnglandLocations = useSelector(
+    (state) => state.session.notInEnglandLocations
+  )
+  const notAddedLocations =
+    (flow.includes('not-found') && notFoundLocations) ||
+    (flow.includes('not-in-england') && notInEnglandLocations)
   const [notAddedLocationsInfo, setNotAddedLocationsInfo] = useState(null)
   const [displayedNotAddedLocationsInfo, setDisplayedNotAddedLocationsInfo] =
     useState(null)
@@ -151,8 +160,8 @@ export default function UnmatchedLocationsDashboardLayout ({
   const table = () => (
     <>
       <p className='govuk-!-margin-bottom-0 locations-table-panel'>
-        {notAddedLocationsInfo?.length}
-        {notAddedLocationsInfo?.length === 1 ? ' location' : ' locations'}{' '}
+        {notAddedLocations}
+        {notAddedLocations === 1 ? ' location' : ' locations'}{' '}
       </p>
       <table className='govuk-table govuk-table--small-text-until-tablet'>
         <thead className='govuk-table__head'>
@@ -173,39 +182,38 @@ export default function UnmatchedLocationsDashboardLayout ({
           </tr>
         </thead>
         <tbody className='govuk-table__body'>
-          {displayedNotAddedLocationsInfo &&
-            displayedNotAddedLocationsInfo.map((location, index) => {
-              return (
-                <tr className='govuk-table__row' key={index}>
-                  <td className='govuk-table__cell'>
-                    {location.additionals.locationName}
-                  </td>
-                  <td className='govuk-table__cell'>
-                    {location.additionals.other.full_address}
-                  </td>
-                  <td className='govuk-table__cell'>
-                    {location.additionals.other.postcode}
-                  </td>
-                  <td className='govuk-table__cell'>
-                    {location.additionals.other.x_coordinate}
-                    {location.additionals.other.y_coordinate && ', '}
-                    {location.additionals.other.y_coordinate}
-                  </td>
-                  <td className='govuk-table__cell'>
-                    <Link
-                      className='govuk-link'
-                      onClick={(e) => findLocation(e, index)}
-                    >
-                      {(flow === 'unmatched-locations-not-found' &&
-                        'Find this') ||
-                        (flow === 'unmatched-locations-not-in-england' &&
-                          'Check')}{' '}
-                      location
-                    </Link>
-                  </td>
-                </tr>
-              )
-            })}
+          {displayedNotAddedLocationsInfo?.map((location, index) => {
+            return (
+              <tr className='govuk-table__row' key={index}>
+                <td className='govuk-table__cell'>
+                  {location.additionals.locationName}
+                </td>
+                <td className='govuk-table__cell'>
+                  {location.additionals.other.full_address}
+                </td>
+                <td className='govuk-table__cell'>
+                  {location.additionals.other.postcode}
+                </td>
+                <td className='govuk-table__cell'>
+                  {location.additionals.other.x_coordinate}
+                  {location.additionals.other.y_coordinate && ', '}
+                  {location.additionals.other.y_coordinate}
+                </td>
+                <td className='govuk-table__cell'>
+                  <Link
+                    className='govuk-link'
+                    onClick={(e) => findLocation(e, index)}
+                  >
+                    {(flow === 'unmatched-locations-not-found' &&
+                      'Find this') ||
+                      (flow === 'unmatched-locations-not-in-england' &&
+                        'Check')}{' '}
+                    location
+                  </Link>
+                </td>
+              </tr>
+            )
+          })}
         </tbody>
       </table>
     </>
@@ -267,8 +275,8 @@ export default function UnmatchedLocationsDashboardLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l'>
-              {notAddedLocationsInfo?.length || 0} location
-              {notAddedLocationsInfo?.length === 1 ? ' ' : 's '}
+              {notAddedLocations || 0} location
+              {notAddedLocations === 1 ? ' ' : 's '}
               {unmatchedLocationText}
             </h1>
             <div className='govuk-body'>
@@ -284,15 +292,13 @@ export default function UnmatchedLocationsDashboardLayout ({
             </div>
           </div>
 
-          {notAddedLocationsInfo?.length > 0 && (
+          {notAddedLocations > 0 && (
             <div className='govuk-grid-column-full'>
               {table()}
 
               <div className='govuk-body govuk-!-padding-top-1'>
                 <Pagination
-                  totalPages={Math.ceil(
-                    notAddedLocationsInfo?.length / locationsPerPage
-                  )}
+                  totalPages={Math.ceil(notAddedLocations / locationsPerPage)}
                   onPageChange={(val) => setCurrentPage(val)}
                 />
 

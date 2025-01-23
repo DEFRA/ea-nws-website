@@ -180,7 +180,6 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
       >
         near this postcode
       </Link>
-
     </div>
   )
 

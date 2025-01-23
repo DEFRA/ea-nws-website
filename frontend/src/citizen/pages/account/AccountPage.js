@@ -15,7 +15,7 @@ export default function AccountPage () {
   }
 
   const profile = useSelector((state) => state.session.profile)
-  const name = profile.firstname + ' ' + profile.lastname || ''
+  const name = (profile?.firstname || '') + ' ' + (profile?.lastname || '')
   const email = profile.emails[0] || ''
   const businessName = getAdditionals(profile, 'businessName')
   const jobTitle = getAdditionals(profile, 'jobTitle')

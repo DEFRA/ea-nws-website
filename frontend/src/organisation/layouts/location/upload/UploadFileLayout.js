@@ -36,7 +36,7 @@ export default function UploadFileLayout ({
       break
     // ZIP file uploaded for shapefile parsing
     case 'shape':
-      allowedFileTypes = ['application/zip']
+      allowedFileTypes = ['application/zip', 'application/x-zip-compressed']
       maxFileSize = 5
       fileTypeHint = 'File must be .zip'
       fileTypeErrorMsg = 'The selected file must be .zip'

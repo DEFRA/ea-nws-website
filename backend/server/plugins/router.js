@@ -44,6 +44,8 @@ const routes = [].concat(
   require('../routes/organization/create_contacts'),
   require('../routes/organization/update_contact'),
   require('../routes/organization/remove_contacts'),
+  require('../routes/gov_uk_notify/sign_up_complete'),
+  require('../routes/gov_uk_notify/account_confirm_deletion'),
   require('../routes/service/get_service_phase'),
   require('../routes/service/get_partner_id'),
   require('../routes/values/gtm')

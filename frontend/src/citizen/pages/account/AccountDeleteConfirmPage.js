@@ -1,34 +1,41 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
-import ConfirmationPanel from '../../../common/components/gov-uk/Panel'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
+import ConfirmationPanel from '../../../common/components/gov-uk/Panel'
 import { clearAuth } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 
 export default function AccountDeleteConfirmPage () {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
+  const profile = useSelector((state) => state.session.profile)
   const [servicePhase, setServicePhase] = useState(false)
 
   async function getServicePhase () {
-    const { data } = await backendCall(
-      'data',
-      'api/service/get_service_phase'
-    )
+    const { data } = await backendCall('data', 'api/service/get_service_phase')
     setServicePhase(data)
   }
 
-  useEffect(() => {
-    dispatch(clearAuth())
-  })
+  async function notifyAccountDeletionSuccess () {
+    const dataToSend = {
+      email: profile.emails[0],
+      fullName: profile.firstname + ' ' + profile.lastname
+    }
+
+    await backendCall(dataToSend, 'api/notify/account_deletion', navigate)
+  }
 
   useEffect(() => {
     getServicePhase()
+    if (profile.emails[0] && profile.firstname && profile.lastname) {
+      notifyAccountDeletionSuccess()
+    }
+    dispatch(clearAuth())
   }, [])
 
   return (
     <>
-
       {/* Main body */}
       <main className='govuk-main-wrapper'>
         {/* Account deletion confirmation panel */}
@@ -37,7 +44,7 @@ export default function AccountDeleteConfirmPage () {
             <ConfirmationPanel
               title='Account deleted'
               body="You'll no longer get flood warnings"
-              preTitle={(servicePhase === 'beta' ? 'TESTING PHASE ONLY' : '')}
+              preTitle={servicePhase === 'beta' ? 'TESTING PHASE ONLY' : ''}
             />
           </div>
         </div>
@@ -79,7 +86,9 @@ export default function AccountDeleteConfirmPage () {
             <Button
               text='Continue'
               className='govuk-button'
-              onClick={() => { window.location.href = 'https://forms.office.com/e/Rd76JZqNbV' }}
+              onClick={() => {
+                window.location.href = 'https://forms.office.com/e/Rd76JZqNbV'
+              }}
             />
           </div>
         )}

@@ -1,6 +1,7 @@
-import { Link } from 'react-router-dom'
-
+import { Link, useLocation } from 'react-router-dom'
 export default function Footer () {
+  const location = useLocation()
+
   return (
     <>
       <footer className='govuk-footer'>
@@ -15,7 +16,11 @@ export default function Footer () {
                   </Link>
                 </li>
                 <li className='govuk-footer__inline-list-item'>
-                  <Link className='govuk-footer__link' to='/privacy'>
+                  <Link
+                    className='govuk-footer__link' to={
+                    location.pathname.includes('organisation') ? '/organisation/privacy' : '/privacy'
+}
+                  >
                     Privacy
                   </Link>
                 </li>
@@ -35,7 +40,7 @@ export default function Footer () {
                 <li className='govuk-footer__inline-list-item'>
                   <Link
                     className='govuk-footer__link'
-                    to='/terms-and-conditions'
+                    to={location.pathname.includes('organisation') ? '/organisation/terms-and-conditions' : '/terms-and-conditions'}
                   >
                     Terms and conditions
                   </Link>

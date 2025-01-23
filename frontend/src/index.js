@@ -31,11 +31,9 @@ if (tagManagerArgs.gtmId !== null) {
 }
 
 root.render(
-  <React.StrictMode>
-    <CookiesProvider defaultSetOptions={{ path: '/' }}>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </CookiesProvider>
-  </React.StrictMode>
+  <CookiesProvider defaultSetOptions={{ path: '/' }}>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </CookiesProvider>
 )

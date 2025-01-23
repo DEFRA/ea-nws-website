@@ -29,7 +29,7 @@ export default function StartPage() {
               <ul className='govuk-list govuk-list--bullet'>
                 <li>prepare for possible flooding</li>
                 <li>
-                  take action if needed, for example protecting or evacuating your home
+                  take action if needed, for example, protecting or evacuating your home
                 </li>
               </ul>
               <p>
@@ -75,7 +75,7 @@ export default function StartPage() {
               <p>
                 Sign up for{' '}
                 <a
-                  href='https://floodline.sepa.org.uk/floodingsignup/'
+                  href='https://myfloodline.sepa.scot/register'
                   className='govuk-link'
                 >
                   flood warnings in Scotland
@@ -120,7 +120,7 @@ export default function StartPage() {
             </div>
           </div>
           <div className='govuk-grid-column-one-third'>
-            <h3 className='govuk-heading-s'>related content</h3>
+            <h3 className='govuk-heading-s'>Related content</h3>
             <ul className='govuk-list'>
               <li>
                 <a

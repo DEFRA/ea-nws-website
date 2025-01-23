@@ -8,6 +8,7 @@ const { logger } = require('../plugins/logging')
 const osPostCodeApiCall = async (postCode) => {
   let responseData
   const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
+
   const url = `https://api.os.uk/search/places/v1/postcode?postcode=${postCode}&key=${osApiKey}&output_srs=EPSG:4326`
 
   try {
@@ -34,9 +35,17 @@ const osPostCodeApiCall = async (postCode) => {
     }
   } catch (error) {
     logger.error(error)
-    return {
-      status: 500,
-      errorMessage: 'Oops, something happened!'
+
+    if (error.response && error.response.status === 400) {
+      return {
+        status: 400,
+        errorMessage: 'Postcode not recognised - try again'
+      }
+    } else {
+      return {
+        status: 500,
+        errorMessage: 'An unknown error has occured'
+      }
     }
   }
 }

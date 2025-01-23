@@ -52,7 +52,7 @@ export default function TermsAndConditionsPage () {
                 target='_blank'
               >
                 privacy notice (opens new window)
-                </a>
+              </a>
               {' '} explains how we treat your personal information.
             </p>
 

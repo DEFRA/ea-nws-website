@@ -82,7 +82,7 @@ export default function TermsAndConditionsPage () {
               >
                 {' '}
                 privacy notice (opens new window)
-              </a>
+              </a>{' '}
               explains more about how we treat personal information.
             </p>
 

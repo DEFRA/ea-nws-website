@@ -134,6 +134,7 @@ export default function ValidateMobileLayout ({
 
   return (
     <>
+
       {codeExpired
         ? (
           <ExpiredCodeLayout getNewCode={getNewCode} />

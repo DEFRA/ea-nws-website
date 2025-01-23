@@ -17,7 +17,7 @@ export default function CompaniesHouseNumLayout ({
   const [error, setError] = useState('')
   const [numberError, setNumberError] = useState('')
 
-  const handleSubmit = async () => {
+  const handleSubmit = () => {
     if (companyNum === null) {
       setError(
         'Select whether your organisation has a Companies House number or not'
@@ -41,7 +41,7 @@ export default function CompaniesHouseNumLayout ({
     }
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     NavigateToPreviousPage()
   }

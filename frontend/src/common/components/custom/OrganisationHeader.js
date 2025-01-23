@@ -50,10 +50,6 @@ export default function OrganisationHeader () {
               </a>
             </div>
 
-            <p className='govuk-header__org-service-name'>
-              Get flood warnings for your organisation
-            </p>
-
             <nav className='one-login-header__nav'>
               <ul className='one-login-header__nav__list'>
                 <li
@@ -177,7 +173,7 @@ export default function OrganisationHeader () {
           style={{
             backgroundColor: '#1d70b8',
             margin: '0 auto',
-            padding: '0.3rem'
+            padding: '0.2rem'
           }}
         />
       </header>

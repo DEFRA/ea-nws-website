@@ -12,8 +12,7 @@ import MainAdminPage from '../../pages/sign-up/mainAdministrator/MainAdminPage'
 import ValidateAdminEmailPage from '../../pages/sign-up/mainAdministrator/ValidateAdminEmailPage'
 import CheckYourAnswersPage from '../../pages/sign-up/review/CheckYourAnswersPage'
 import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
-import DeclarationOfAgreement from '../../pages/sign-up/DeclarationOfAgreementPage'
-
+import TermsAndConditionsPage from '../../pages/sign-up/TermsAndConditionsPage'
 const urlSignUpOrg = '/organisation/sign-up'
 
 // registration
@@ -70,7 +69,7 @@ const signupRoutes = [
   { path: urlSignUpOrg + '/review', component: <CheckYourAnswersPage /> },
   {
     path: urlSignUpOrg + '/declaration',
-    component: <DeclarationOfAgreement />
+    component: <TermsAndConditionsPage />
   }
 ]
 

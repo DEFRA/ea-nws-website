@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -50,6 +50,20 @@ export default function LocationInAlertAreaLayout ({
     ? selectedFloodAlertArea.properties.TA_NAME
     : selectedLocation.address
   const isSignUpFlow = location.pathname.includes('signup')
+
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall(
+      'data',
+      'api/service/get_partner_id'
+    )
+    setPartnerId(data)
+  }
+
+  useEffect(() => {
+    getPartnerId()
+  }, [])
 
   const handleSubmit = async () => {
     let updatedProfile
@@ -115,7 +129,7 @@ export default function LocationInAlertAreaLayout ({
       const data = {
         authToken,
         locationId: location.id,
-        partnerId: '1', // this is currently a hardcoded value - geosafe to update us on what it is
+        partnerId,
         params: getRegistrationParams(profile, alertTypes)
       }
 
@@ -167,7 +181,7 @@ export default function LocationInAlertAreaLayout ({
       const data = {
         authToken,
         locationId: location.id,
-        partnerId: '1' // this is currently a hardcoded value - geosafe to update us
+        partnerId
       }
 
       await backendCall(
@@ -252,6 +266,7 @@ export default function LocationInAlertAreaLayout ({
 
   return (
     <>
+
       <BackLink onClick={() => handleUserNavigatingBack()} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>

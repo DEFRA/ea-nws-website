@@ -1,3 +1,4 @@
+const { logger } = require('../../plugins/logging')
 const { getDownloadTemplateUrl } = require('../../services/DownloadTemplate')
 const {
   createGenericErrorResponse
@@ -14,7 +15,8 @@ module.exports = [
         }
         const response = await getDownloadTemplateUrl()
         return h.response(response)
-      } catch {
+      } catch (error) {
+        logger.error(error)
         createGenericErrorResponse(h)
       }
     }

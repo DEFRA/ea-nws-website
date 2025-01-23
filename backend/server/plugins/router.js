@@ -31,16 +31,26 @@ const routes = [].concat(
   require('../routes/bulk_uploads/get_invalid_locations'),
   require('../routes/bulk_uploads/remove_invalid_location'),
   require('../routes/shapefile/validate_shapefile'),
+  require('../routes/shapefile/unzip_shapefile'),
+  require('../routes/shapefile/convert_shapefile'),
   require('../routes/add_location/duplicate_location'),
   require('../routes/add_location/search'),
   require('../routes/add_location/download_flood_history'),
   require('../routes/elasticache/get_data'),
   require('../routes/elasticache/list_locations'),
-  require('../routes/shapefile/unzip_shapefile'),
+  require('../routes/elasticache/list_contacts'),
   require('../routes/location/create'),
   require('../routes/location/remove'),
   require('../routes/location/update'),
-  require('../routes/organization/update')
+  require('../routes/organization/update'),
+  require('../routes/organization/create_contacts'),
+  require('../routes/organization/update_contact'),
+  require('../routes/organization/remove_contacts'),
+  require('../routes/gov_uk_notify/sign_up_complete'),
+  require('../routes/gov_uk_notify/account_confirm_deletion'),
+  require('../routes/service/get_service_phase'),
+  require('../routes/service/get_partner_id'),
+  require('../routes/values/gtm')
 )
 
 module.exports = {

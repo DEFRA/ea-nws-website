@@ -1,12 +1,13 @@
 const redis = require('redis')
 const getSecretKeyValue = require('./SecretsManager')
+const { logger } = require('../plugins/logging')
 
 const connectToRedis = async () => {
   const redisEndpoint = await getSecretKeyValue('nws/aws', 'redisEndpoint')
   // Create the client
   const client = redis.createClient({ url: 'rediss://' + redisEndpoint })
-  client.on('error', error => {
-    console.log('Redis Client Error', error)
+  client.on('error', (error) => {
+    logger.error(`Redis Client Error: ${error}`)
     throw error
   })
   // Connect to the redis elasticache
@@ -133,11 +134,14 @@ const addToAlert = async (orgId, location) => {
     }
     await setJsonData(key, struct)
   }
-  let alertTypes
+  let alertTypes = []
   location.additionals.forEach((additional) => {
     if (additional.id === 'other') {
       const other = JSON.parse(additional.value?.s)
       alertTypes = other.alertTypes
+      if (!alertTypes) {
+        alertTypes = []
+      }
     }
   })
   const client = await connectToRedis()
@@ -166,7 +170,10 @@ const addLocation = async (orgId, location) => {
     }
   })
   for (const keyword of keywords) {
-    await addToKeywordArr(orgId + ':t_Keywords_location', { name: keyword, linked_ids: [locationID] })
+    await addToKeywordArr(orgId + ':t_Keywords_location', {
+      name: keyword,
+      linked_ids: [locationID]
+    })
   }
 
   await addToAlert(orgId, location)
@@ -179,7 +186,7 @@ const removeLocationFromKeywords = async (orgId, locationID) => {
     const keywordArr = await getJsonData(key)
     keywordArr.forEach((keyword) => {
       let linkedIds = keyword.linked_ids
-      linkedIds = linkedIds.filter(id => id !== locationID)
+      linkedIds = linkedIds.filter((id) => id !== locationID)
       keyword.linked_ids = linkedIds
     })
     await setJsonData(key, keywordArr)
@@ -214,7 +221,10 @@ const updateLocation = async (orgId, location) => {
     }
   })
   for (const keyword of keywords) {
-    await addToKeywordArr(orgId + ':t_Keywords_location', { name: keyword, linked_ids: [locationID] })
+    await addToKeywordArr(orgId + ':t_Keywords_location', {
+      name: keyword,
+      linked_ids: [locationID]
+    })
   }
   console.log('done')
 }
@@ -232,10 +242,12 @@ const getLocationKeys = async (orgId) => {
 const listLocations = async (orgId) => {
   const locationKeys = await getLocationKeys(orgId)
   const locationArr = []
-  await Promise.all(locationKeys.map(async (key) => {
-    const location = await getJsonData(key)
-    locationArr.push(location)
-  }))
+  await Promise.all(
+    locationKeys.map(async (key) => {
+      const location = await getJsonData(key)
+      locationArr.push(location)
+    })
+  )
   return locationArr
 }
 
@@ -284,16 +296,18 @@ const searchInvLocations = async (orgId, searchKey, value) => {
 const findLocationByName = async (orgId, locationName) => {
   const locationKeys = await getLocationKeys(orgId)
   const matchingLocations = []
-  await Promise.all(locationKeys.map(async (key) => {
-    const location = await getJsonData(key)
-    location.additionals.forEach((additional) => {
-      if (additional.id === 'locationName') {
-        if (additional.value.s === locationName) {
-          matchingLocations.push(location)
+  await Promise.all(
+    locationKeys.map(async (key) => {
+      const location = await getJsonData(key)
+      location.additionals.forEach((additional) => {
+        if (additional.id === 'locationName') {
+          if (additional.value.s === locationName) {
+            matchingLocations.push(location)
+          }
         }
-      }
+      })
     })
-  }))
+  )
   return matchingLocations
 }
 
@@ -356,17 +370,23 @@ const listInvLocations = async (orgId) => {
 const addContact = async (orgId, contact) => {
   const contactID = contact.id
   const key = orgId + ':t_Contacts:' + contactID
-  await setJsonData(key, contact)
-  // add Contact ID to list
-  await addToList(orgId + ':t_Contacts_ID', contactID)
-  let keywords = []
-  contact.additionals.forEach((additional) => {
-    if (additional.id === 'keywords') {
-      keywords = JSON.parse(additional.value?.s)
+  const exists = await checkKeyExists(key)
+  if (!exists) {
+    await setJsonData(key, contact)
+    // add Contact ID to list
+    await addToList(orgId + ':t_Contacts_ID', contactID)
+    let keywords = []
+    contact.additionals.forEach((additional) => {
+      if (additional.id === 'keywords') {
+        keywords = JSON.parse(additional.value?.s)
+      }
+    })
+    for (const keyword of keywords) {
+      await addToKeywordArr(orgId + ':t_Keywords_contact', {
+        name: keyword,
+        linked_ids: [contactID]
+      })
     }
-  })
-  for (const keyword of keywords) {
-    await addToKeywordArr(orgId + ':t_Keywords_contact', { name: keyword, linked_ids: [contactID] })
   }
 }
 
@@ -380,12 +400,51 @@ const getContactKeys = async (orgId) => {
   return keys
 }
 
+const updateContact = async (orgId, contact) => {
+  await removeContact(orgId, contact.id)
+  await addContact(orgId, contact)
+}
+
+const removeContact = async (orgId, contactID) => {
+  const key = orgId + ':t_Contacts:' + contactID
+  await removeContactFromKeywords(orgId, contactID)
+  await deleteJsonData(key)
+  await removeFromList(orgId + ':t_Contacts_ID', contactID)
+}
+
+const removeContactFromKeywords = async (orgId, contactID) => {
+  const key = orgId + ':t_Keywords_contact'
+  const arrExists = await checkKeyExists(key)
+  if (arrExists) {
+    const keywordArr = await getJsonData(key)
+    keywordArr.forEach((keyword) => {
+      let linkedIds = keyword.linked_ids
+      linkedIds = linkedIds.filter((id) => id !== contactID)
+      keyword.linked_ids = linkedIds
+    })
+    await setJsonData(key, keywordArr)
+  }
+}
+
+const listContacts = async (orgId) => {
+  const contactKeys = await getContactKeys(orgId)
+  const contactArr = []
+  await Promise.all(
+    contactKeys.map(async (key) => {
+      const contact = await getJsonData(key)
+      contactArr.push(contact)
+    })
+  )
+  return contactArr
+}
+
 const orgSignIn = async (profile, organization, locations, contacts) => {
   await setJsonData(profile.id + ':profile', profile)
   const orgExists = await checkKeyExists(organization.id + ':org_data')
   if (orgExists) {
     const existingLocations = await getLocationKeys(organization.id)
-    const existingLocationIds = existingLocations.map(location => location.split(':').at(-1)
+    const existingLocationIds = existingLocations.map((location) =>
+      location.split(':').slice(2).join(':')
     )
     for (const location of locations) {
       if (!existingLocationIds.includes(location.id)) {
@@ -393,7 +452,8 @@ const orgSignIn = async (profile, organization, locations, contacts) => {
       }
     }
     const existingContacts = await getContactKeys(organization.id)
-    const existingContactIds = existingContacts.map(contact => contact.split(':').at(-1)
+    const existingContactIds = existingContacts.map((contact) =>
+      contact.split(':').slice(2).join(':')
     )
     for (const contact of contacts) {
       if (!existingContactIds.includes(contact.id)) {
@@ -453,9 +513,13 @@ module.exports = {
   findLocationByName,
   findInvLocationByName,
   listLocations,
+  listContacts,
   addInvLocation,
   removeInvLocation,
   listInvLocations,
+  addContact,
+  updateContact,
+  removeContact,
   orgSignIn,
   orgSignOut
 }

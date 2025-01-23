@@ -1,14 +1,13 @@
 import React from 'react'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../common/components/custom/OrganisationAccountNavigation'
 
 export default function CannotChangeLocationManuallyLayout ({ LocationType }) {
   const navigate = useNavigate()
 
   return (
     <>
-      <OrganisationAccountNavigation />
+
       <BackLink
         onClick={(e) => {
           e.preventDefault()

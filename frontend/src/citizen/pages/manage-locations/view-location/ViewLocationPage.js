@@ -3,7 +3,6 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
-import CitizenAccountNavigation from '../../../../common/components/custom/CitizenAccountNavigation'
 import FloodWarningKey from '../../../../common/components/custom/FloodWarningKey'
 import Map from '../../../../common/components/custom/Map'
 import Button from '../../../../common/components/gov-uk/Button'
@@ -75,6 +74,16 @@ export default function ViewLocationPage () {
 
   const areaAreas = type === 'both' ? ['severe', 'alert'] : [type]
 
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall(
+      'data',
+      'api/service/get_partner_id'
+    )
+    setPartnerId(data)
+  }
+
   // get flood area data
   useEffect(() => {
     async function fetchFloodAreaData () {
@@ -92,6 +101,7 @@ export default function ViewLocationPage () {
       setWarningArea(warningArea)
     }
     fetchFloodAreaData()
+    getPartnerId()
   }, [])
 
   // get flood history data
@@ -163,7 +173,7 @@ export default function ViewLocationPage () {
     const data = {
       authToken,
       locationId: selectedLocation.id,
-      partnerId: '1' // this is currently a hardcoded value - geosafe to update us
+      partnerId
     }
 
     const { errorMessage } = await backendCall(
@@ -199,7 +209,7 @@ export default function ViewLocationPage () {
     const data = {
       authToken,
       locationId: selectedLocation.id,
-      partnerId: '1', // this is currently a hardcoded value - geosafe to update us on what it is
+      partnerId,
       params: getRegistrationParams(profile, alertTypes)
     }
 
@@ -239,7 +249,6 @@ export default function ViewLocationPage () {
 
   return (
     <>
-      <CitizenAccountNavigation currentPage='/home' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>
           <div className='govuk-grid-row'>

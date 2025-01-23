@@ -1,12 +1,35 @@
 import React from 'react'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import store from '../../../../common/redux/store'
+import { backendCall } from '../../../../common/services/BackendService'
 import NotesLayout from '../../../layouts/optional-info/NotesLayout'
+import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
+
 export default function AddContactNotesPage () {
   const navigate = useNavigate()
+  const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
 
   const navigateToNextPage = () => {
     // TODO navigate to link locations
-    navigate('/')
+    navigate(orgManageContactsUrls.view.dashboard)
+  }
+
+  const onAddContact = async () => {
+    const contactToAdd = store.getState().session.orgCurrentContact
+    const dataToSend = { authToken, orgId, contacts: [contactToAdd] }
+    const { errorMessage } = await backendCall(
+      dataToSend,
+      'api/organization/create_contacts',
+      navigate
+    )
+
+    if (!errorMessage) {
+      navigateToNextPage()
+    } else {
+      console.log(errorMessage)
+    }
   }
 
   const instructionText = (
@@ -23,6 +46,7 @@ export default function AddContactNotesPage () {
         keywordType='contact'
         instructionText={instructionText}
         buttonText='Add contact'
+        onSubmit={onAddContact}
       />
     </>
   )

@@ -1,21 +1,25 @@
 import React from 'react'
-import alertIcon from '../../../common/assets/images/alert_area_icon.png'
-import warningIcon from '../../../common/assets/images/warning_area_icon.png'
+import shapeIcon from '../../../common/assets/images/shapefile_icon.png'
 
-export default function FloodWarningKey () {
+export default function FloodWarningKey (showShapefile = false) {
   return (
     <div className='org-flood-warning-key'>
+      {showShapefile && (
+        <div className='org-flood-warning-item'>
+          <img src={shapeIcon} alt='Shapefile' />
+          <span className='org-flood-warning-text'>Shapefile</span>
+        </div>
+      )}
       <div className='org-flood-warning-item'>
-        <img src={warningIcon} alt='Flood warning and severe flood area' />
+        <div className='org-flood-warning-square warning-square' />
         <span className='org-flood-warning-text'>
-          Flood warning and
-          <br /> severe flood area
+          Severe flood warnings and flood warnings area
         </span>
       </div>
 
       <div className='org-flood-alert-item'>
-        <img src={alertIcon} alt='Flood alert area' />
-        <span>Flood alert area</span>
+        <div className='org-flood-warning-square alert-square' />
+        <span className='org-flood-warning-text'>Flood alert area</span>
       </div>
     </div>
   )

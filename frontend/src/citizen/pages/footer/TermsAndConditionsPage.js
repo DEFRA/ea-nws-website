@@ -7,6 +7,7 @@ export default function TermsAndConditionsPage () {
 
   return (
     <>
+
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -68,14 +69,14 @@ export default function TermsAndConditionsPage () {
               </p>
               <p>
                 The Environment Agency manages the flood warning systems. Our{' '}
-                <Link to='privacy'>privacy notice </Link> explains how we
+                <Link to='/privacy'>privacy notice </Link> explains how we
                 treat your personal information.
               </p>
               <p>
                 Natural Resources Wales use the same systems and will have
                 access to your personal information if you ask for a service
                 in Wales. Read how Natural Resources Wales{' '}
-                <Link to='privacy'> treats your personal information </Link>
+                <Link to='/privacy'> treats your personal information </Link>
                 .
               </p>
             </div>

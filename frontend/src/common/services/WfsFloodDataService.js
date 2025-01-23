@@ -15,7 +15,6 @@ export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
     bbox: calculateBoundingBox(lat, lng, bboxKM),
     outputFormat: 'GEOJSON'
   }
-
   const { data: wfsWarningData } = await backendCall(WFSParams, 'api/wfs')
 
   // alert area

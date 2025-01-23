@@ -64,14 +64,8 @@ export default function App () {
   }
 
   const isSignOutRoute = () => {
-    if (
-      currentRoute.includes('/signout') ||
+    return currentRoute.includes('/signout') ||
       currentRoute === '/account/delete/confirm'
-    ) {
-      return true
-    } else {
-      return false
-    }
   }
 
   const SignBackInLink = () => {
@@ -87,9 +81,9 @@ export default function App () {
       <ScrollToTop />
       <Routes>
         <Route path='/' element={<Layout />}>
-          {authenticatedRoutes.map((route, index) => (
+          {authenticatedRoutes.map((route) => (
             <Route
-              key={index}
+              key={route.path}
               path={route.path}
               element={
                 auth || isSignOutRoute()
@@ -102,9 +96,9 @@ export default function App () {
               }
             />
           ))}
-          {routes.map((route, index) => (
+          {routes.map((route) => (
             <Route
-              key={index}
+              key={route.path}
               path={route.path}
               element={
                  (route.path === '/signin' || route.path === '/signup/register-location/search') && auth

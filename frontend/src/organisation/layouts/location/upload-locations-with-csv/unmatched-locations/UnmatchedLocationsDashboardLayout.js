@@ -211,12 +211,24 @@ export default function UnmatchedLocationsDashboardLayout ({
     </>
   )
 
+  const nextPage = () => {
+    // Remove all not added locations for the flow (not found or not in England)
+    notAddedLocationsInfo.map((location) =>
+      backendCall(
+        { orgId, locationId: location.id },
+        'api/bulk_uploads/remove_invalid_location',
+        navigate
+      )
+    )
+    navigateToNextPage()
+  }
+
   const popup = () => {
     if (!showPopup) return null
 
     return (
       <Popup
-        onDelete={() => navigateToNextPage()}
+        onDelete={() => nextPage()}
         onClose={() => setShowPopup(false)}
         title={`Locations ${unmatchedLocationText}`}
         popupText={

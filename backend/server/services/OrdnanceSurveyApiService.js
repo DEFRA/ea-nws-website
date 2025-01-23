@@ -35,9 +35,17 @@ const osPostCodeApiCall = async (postCode) => {
     }
   } catch (error) {
     logger.error(error)
-    return {
-      status: 500,
-      errorMessage: 'Enter a real postcode'
+
+    if (error.response && error.response.status === 400) {
+      return {
+        status: 400,
+        errorMessage: 'Postcode not recognised - try again'
+      }
+    } else {
+      return {
+        status: 500,
+        errorMessage: 'An unknown error has occured'
+      }
     }
   }
 }

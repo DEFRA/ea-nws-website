@@ -3,7 +3,11 @@ const handleResponse = (response, navigate) => {
     case 200:
       return { data: response.data, errorMessage: null }
     case 400:
-      return { data: null, errorMessage: 'Bad request, please try again' }
+      if (response.errorMessage) {
+        return { data: null, errorMessage: response.errorMessage }
+      } else {
+        return { data: null, errorMessage: 'Bad request, please try again' }
+      }
     case 404:
       // need to add a not found page
       return navigate('/not-found')

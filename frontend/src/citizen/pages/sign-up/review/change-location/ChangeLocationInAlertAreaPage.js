@@ -23,15 +23,20 @@ export default function ChangeLocationInAlertAreaPage() {
     )
 
     // unregister the selected location to be changed from partner
-    const data = {
-      authToken,
-      locationId: locationBeingChanged.id,
-      partnerId: '1' // this is currently a hardcoded value - geosafe to update us
-    }
-
     await backendCall(
-      data,
+      {
+        authToken,
+        locationId: locationBeingChanged.id,
+        partnerId: '1' // this is currently a hardcoded value - geosafe to update us
+      },
       'api/partner/unregister_location_from_partner',
+      navigate
+    )
+
+    // update profile with removed location
+    await backendCall(
+      { authToken, profile: updatedProfile },
+      'api/profile/update',
       navigate
     )
 

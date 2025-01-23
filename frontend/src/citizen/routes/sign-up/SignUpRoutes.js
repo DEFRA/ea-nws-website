@@ -24,6 +24,7 @@ import ChangeAccountNamePage from '../../pages/sign-up/review/change-account/Cha
 import ChangeFloodAlertPage from '../../pages/sign-up/review/change-flood-alerts/ChangeFloodAlertsPage'
 import ChangeLocationInAlertAreaPage from '../../pages/sign-up/review/change-location/ChangeLocationInAlertAreaPage'
 import ChangeLocationInSevereWarningAreaPage from '../../pages/sign-up/review/change-location/ChangeLocationInSevereWarningAreaPage'
+import ChangeLocationInWarningAreaProximityPage from '../../pages/sign-up/review/change-location/ChangeLocationInWarningAreaProximityPage'
 import ChangeLocationNotNearDangerPage from '../../pages/sign-up/review/change-location/ChangeLocationNotNearDangerPage'
 import ChangeLocationSearchPage from '../../pages/sign-up/review/change-location/ChangeLocationSearchPage'
 import ChangeLocationSearchResultPage from '../../pages/sign-up/review/change-location/ChangeLocationSearchResultPage'
@@ -161,7 +162,6 @@ const signupRoutes = [
     path: '/signup/review/change-location-results',
     component: <ChangeLocationSearchResultPage />
   },
-
   {
     path: '/signup/review/location-in-severe-warning-area',
     component: <ChangeLocationInSevereWarningAreaPage />
@@ -169,6 +169,11 @@ const signupRoutes = [
   {
     path: '/signup/review/location-in-alert-area',
     component: <ChangeLocationInAlertAreaPage />
+  },
+
+  {
+    path: '/signup/review/location-in-proximity-area/:type',
+    component: <ChangeLocationInWarningAreaProximityPage />
   },
   {
     path: '/signup/review/no-danger',

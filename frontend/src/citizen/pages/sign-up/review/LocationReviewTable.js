@@ -1,7 +1,18 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { setLocationToBeChanged } from '../../../../common/redux/userSlice'
 
-export default function LocationReviewTable ({ locations }) {
+export default function LocationReviewTable({ locations }) {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const selectLocationToBeChanged = (event, location) => {
+    event.preventDefault()
+    dispatch(setLocationToBeChanged(location))
+    navigate('/signup/review/change-location-search')
+  }
+
   return (
     <div className='govuk-!-padding-bottom-4'>
       <h3 className='govuk-heading-m'>Location you selected</h3>
@@ -19,7 +30,7 @@ export default function LocationReviewTable ({ locations }) {
 
               <td className='govuk-table__cell'>
                 <Link
-                  to='/signup/review/change-location-search'
+                  onClick={(e) => selectLocationToBeChanged(e, location)}
                   className='govuk-link'
                 >
                   Change

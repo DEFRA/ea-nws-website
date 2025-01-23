@@ -1,8 +1,9 @@
 import React from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import NotesLayout from '../../../layouts/optional-info/NotesLayout'
+import { clearOrgCurrentContact } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
+import NotesLayout from '../../../layouts/optional-info/NotesLayout'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function AddContactNotesPage () {
@@ -10,6 +11,7 @@ export default function AddContactNotesPage () {
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const orgCurrentContact = useSelector((state) => state.session.orgCurrentContact)
+  const dispatch = useDispatch()
 
   const navigateToNextPage = () => {
     // TODO navigate to link locations
@@ -25,6 +27,8 @@ export default function AddContactNotesPage () {
     )
 
     if (!errorMessage) {
+      // Clear current contact
+      dispatch(clearOrgCurrentContact())
       navigateToNextPage()
     } else {
       console.log(errorMessage)

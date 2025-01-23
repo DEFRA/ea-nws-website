@@ -185,7 +185,7 @@ const userSlice = createSlice({
     // org contact data
     orgCurrentContact: {
       id: null,
-      enabled: null,
+      enabled: true,
       firstname: null,
       lastname: null,
       emails: null,
@@ -633,6 +633,30 @@ const userSlice = createSlice({
     setOrgCurrentContactAdditionals: (state, action) => {
       state.orgCurrentContact.additionals = action.payload
     },
+    clearOrgCurrentContact: (state) => {
+      state.orgCurrentContact = {
+        id: null,
+        enabled: true,
+        firstname: null,
+        lastname: null,
+        emails: null,
+        mobilePhones: null,
+        homePhones: null,
+        position: null,
+        comments: null,
+        pois: null,
+        additionals: [
+          {
+            id: 'keywords',
+            value: { s: '[]' }
+          },
+          {
+            id: 'jobTitle',
+            value: { s: '' }
+          }
+        ]
+      }
+    },
     setContacts: (state, action) => {
       state.contacts = action.payload
     },
@@ -750,7 +774,7 @@ const userSlice = createSlice({
       }
       state.orgCurrentContact = {
         id: null,
-        enabled: null,
+        enabled: true,
         firstname: null,
         lastname: null,
         emails: null,
@@ -937,7 +961,8 @@ export const {
   setContacts,
   // clear state
   clearAuth,
-  clearCurrentLocation
+  clearCurrentLocation,
+  clearOrgCurrentContact
 } = userSlice.actions
 
 export const {

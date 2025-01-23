@@ -43,19 +43,14 @@ export default function Popup({
 
 
   const handleSubmit = () => {
-    console.log('AA')
     if (!input && !options) {
       onDelete()
     } else {
-      console.log('A')
       if (error === '') {
-        console.log('B')
         const validationError = validateInput()
         if (validationError) {
-          console.log('C')
           setError(validationError)
         } else {
-          console.log('Popup.js l54')
           onEdit()
         }
       }
@@ -76,7 +71,7 @@ export default function Popup({
                 label='On'
                 key={option.value + '_on'}
                 name={option.value + 'Radio'}
-                value={option.sent}
+                checked={optionsSelected[index]}
                 onChange={() => handleRadioChange(index, true)}
               />
             </td>
@@ -85,7 +80,7 @@ export default function Popup({
                 label='Off'
                 key={option.value + '_off'}
                 name={option.value + 'Radio'}
-                value={option.sent}
+                checked={!optionsSelected[index]}
                 onChange={() => handleRadioChange(index, false)}
               />
             </td>

@@ -15,7 +15,9 @@ import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import {
   getGroundwaterFloodRiskRatingOfLocation,
-  getRiversAndSeaFloodRiskRatingOfLocation
+  getRiversAndSeaFloodRiskRatingOfLocation,
+  getSurroundingFloodAreas,
+  isLocationInFloodArea
 } from '../../../../../common/services/WfsFloodDataService'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -37,6 +39,8 @@ export default function ViewLocationsDashboardPage () {
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [displayedLocations, setDisplayedLocations] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
+  const [unavailableLocationsIds, setUnavailableLocationsIds] = useState([])
+  const [alertOnlyLocationsIds, setAlertOnlyLocationsIds] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const [optionsSelected, setOptionsSelected] = useState([false, false, false])
@@ -49,7 +53,8 @@ export default function ViewLocationsDashboardPage () {
     input: '',
     charLimit: 0,
     error: '',
-    options: []
+    options: [],
+    optionsSelected: []
   })
 
   const locationsPerPage = 20
@@ -202,9 +207,10 @@ export default function ViewLocationsDashboardPage () {
     return text
   }
 
-  const editLocationText = (locationsToBeEdited) => {
-    const unavailableLocationsCount = 0
-    const alertOnlyLocationsCount = 0
+  const editLocationText = async (locationsToBeEdited) => {
+
+    const unavailableLocationsCount = unavailableLocationsIds.length
+    const alertOnlyLocationsCount = alertOnlyLocationsIds.length
     const remainingLocationsCount =
       locationsToBeEdited.length - unavailableLocationsCount
 
@@ -251,6 +257,42 @@ export default function ViewLocationsDashboardPage () {
     return floodMessageAvailabilityText + ' ' + alertText + ' ' + updateText
   }
 
+  const getSelectedLocationsInformations = async (selectedLocations) => {
+    for(const location of selectedLocations){
+      const { warningArea, alertArea } = await getSurroundingFloodAreas(
+        location.coordinates.latitude,
+        location.coordinates.longitude
+      )
+      if(!warningArea && !alertArea){
+        setUnavailableLocationsIds((prevState) => {
+          return [...prevState, location.id]
+        })
+        continue
+      }
+      const isInAlertArea =
+        alertArea &&
+        isLocationInFloodArea(
+          location.coordinates.latitude,
+          location.coordinates.longitude,
+          alertArea
+      )
+      if(isInAlertArea){
+        const isInWarningArea =
+          warningArea &&
+          isLocationInFloodArea(
+            location.coordinates.latitude,
+            location.coordinates.longitude,
+            warningArea
+        )
+        if(!isInWarningArea && isInAlertArea){
+          setAlertOnlyLocationsIds((prevState) => {
+            return [...prevState, location.id]
+          })
+        }
+      }
+    }
+  }
+
   const deleteDialog = (locationsToBeDeleted) => {
     if (locationsToBeDeleted && locationsToBeDeleted.length > 0) {
       setDialog({
@@ -272,9 +314,8 @@ export default function ViewLocationsDashboardPage () {
     }
   }
 
-  const editDialog = (locationsToBeEdited) => {
-    console.log('SelectedLocations:')
-    console.log(locationsToBeEdited)
+  const editDialog = async (locationsToBeEdited) => {
+    await getSelectedLocationsInformations(locationsToBeEdited)
     if (locationsToBeEdited && locationsToBeEdited.length > 0) {
       setDialog({
         show: true,
@@ -396,19 +437,26 @@ export default function ViewLocationsDashboardPage () {
   }
 
   const editLocations = (locationsToEdit) => {
-    console.log("here")
+    const choosenMessages = [optionsSelected[0]?'ALERT_LVL_1':null, optionsSelected[1]?'ALERT_LVL_2':null, optionsSelected[2]?'ALERT_LVL_3':null].filter(message => message !== null)
+    console.log(choosenMessages)
+    for(let i = 0; i < locationsToEdit.length; i++){
+      console.log('this',locationsToEdit[i])
+      if(!unavailableLocationsIds.contains(locationsToEdit.id) && !alertOnlyLocationsIds.contains(locationsToEdit.id)){
+        //set additionals/others/alerts
+      }
+      else if(alertOnlyLocationsIds.contains(locationsToEdit.id)){
+        //set additionals/others/alerts but only alert3
+      }
+    }
   }
 
   const handleRadioChange = (index, isItOn) => {
-    console.log('hello')
-    console.log(optionsSelected)
     setOptionsSelected(prevState => {
       const newState = [...prevState]
       newState[index] = isItOn
       return newState
-    });
-    console.log(optionsSelected)
-  };
+    })
+  }
 
   const removeLocations = async (locationsToRemove) => {
     const updatedLocations = locations.filter(
@@ -463,7 +511,7 @@ export default function ViewLocationsDashboardPage () {
 
   const handleEdit = () => {
     console.log('inHere!')
-    console.log('optionsSelected', optionsSelected)
+    console.log('locations selected: ', selectedLocations)
     if (selectedLocations.length > 0) {
       const locationsToBeEdited = [...selectedLocations]
       editLocations(locationsToBeEdited)
@@ -652,8 +700,10 @@ export default function ViewLocationsDashboardPage () {
                   defaultValue={
                     dialog.input ? targetLocation.additionals.locationName : ''
                   }
-                  onRadioChange={handleRadioChange} />
-                  optionsSelected = {optionsSelected}
+                  onRadioChange={handleRadioChange} 
+                  optionsSelected={optionsSelected}
+                  />
+
               </>
             )}
           </div>

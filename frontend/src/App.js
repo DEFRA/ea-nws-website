@@ -22,7 +22,7 @@ function App () {
   const dispatch = useDispatch()
   const lastActivity = useSelector((state) => state.session.lastActivity)
 
-  /* Clear local storage is no cookies,
+  /* Clear local storage if no cookies,
   cookies are only for the browser session. */
   useEffect(() => {
     if (auth && !hasAuthCookie) {

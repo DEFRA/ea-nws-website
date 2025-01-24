@@ -27,8 +27,6 @@ export default function AddAccountNameLayout ({
       : ''
   )
 
-  console.log('fullnam', fullName)
-
   const handleSubmit = async () => {
     const validationError = fullNameValidation(fullName)
     setError(validationError)

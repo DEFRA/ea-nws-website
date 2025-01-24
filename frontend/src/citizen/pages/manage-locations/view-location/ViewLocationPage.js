@@ -74,6 +74,16 @@ export default function ViewLocationPage () {
 
   const areaAreas = type === 'both' ? ['severe', 'alert'] : [type]
 
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall(
+      'data',
+      'api/service/get_partner_id'
+    )
+    setPartnerId(data)
+  }
+
   // get flood area data
   useEffect(() => {
     async function fetchFloodAreaData () {
@@ -91,6 +101,7 @@ export default function ViewLocationPage () {
       setWarningArea(warningArea)
     }
     fetchFloodAreaData()
+    getPartnerId()
   }, [])
 
   // get flood history data
@@ -162,7 +173,7 @@ export default function ViewLocationPage () {
     const data = {
       authToken,
       locationId: selectedLocation.id,
-      partnerId: '1' // this is currently a hardcoded value - geosafe to update us
+      partnerId
     }
 
     const { errorMessage } = await backendCall(
@@ -198,7 +209,7 @@ export default function ViewLocationPage () {
     const data = {
       authToken,
       locationId: selectedLocation.id,
-      partnerId: '1', // this is currently a hardcoded value - geosafe to update us on what it is
+      partnerId,
       params: getRegistrationParams(profile, alertTypes)
     }
 

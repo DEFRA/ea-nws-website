@@ -11,7 +11,7 @@ export default function ContactInformationPage () {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
-  const locations = currentContact?.pois
+  const locations = null
   const jobTitle = currentContact.additionals.jobTitle
   const keywords = Array.isArray(currentContact.additionals.keywords) ? currentContact.additionals.keywords : []
 

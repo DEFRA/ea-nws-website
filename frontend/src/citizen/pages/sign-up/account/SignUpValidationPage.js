@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -33,6 +34,21 @@ export default function SignUpValidationPage () {
   const [codeExpired, setCodeExpired] = useState(false)
   const session = useSelector((state) => state.session)
   const profile = session.profile
+  // eslint-disable-next-line no-unused-vars
+  const [cookies, setCookie] = useCookies(['authToken'])
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall(
+      'data',
+      'api/service/get_partner_id'
+    )
+    setPartnerId(data)
+  }
+
+  useEffect(() => {
+    getPartnerId()
+  }, [])
 
   // if error remove code sent notification
   useEffect(() => {
@@ -65,6 +81,7 @@ export default function SignUpValidationPage () {
           setError(errorMessage)
         }
       } else {
+        setCookie('authToken', data.authToken)
         dispatch(setAuthToken(data.authToken))
         let updatedProfile = updateAdditionals(profile, [
           { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } }
@@ -93,7 +110,7 @@ export default function SignUpValidationPage () {
       const data = {
         authToken,
         locationId: poi.id,
-        partnerId: '1', // this is currently a hardcoded value - geosafe to update us on what it is
+        partnerId,
         params: getRegistrationParams(profile, alertTypes)
       }
 

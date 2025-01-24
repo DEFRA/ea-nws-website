@@ -18,6 +18,7 @@ export default function LocationInSevereWarningAreaPage () {
       <LocationInSevereWarningAreaLayout
         continueToNextPage={continueToNextPage}
         continueToSearchResultsPage={continueToSearchResultsPage}
+        updateGeoSafeProfile={false}
       />
     </>
   )

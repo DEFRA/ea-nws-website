@@ -72,9 +72,8 @@ export default function LocationWithinWarningAreaProximityLayout({
           console.error('Could not fetch Historic Flood Warning file', e)
         )
     }
-
     getHistoryUrl()
-  })
+  }, [])
 
   const setHistoricalAlertNumber = (AlertArea) => {
     const oneYearAgo = moment().subtract(1, 'years')
@@ -107,7 +106,7 @@ export default function LocationWithinWarningAreaProximityLayout({
         )
       } else if (type === 'alert') {
         dispatch(setAdditionalAlerts(false))
-        setHistoricalAlertNumber(selectedFloodWarningArea.properties.FWS_TACODE)
+        setHistoricalAlertNumber(selectedFloodAlertArea.properties.FWS_TACODE)
       }
       dispatch(setShowOnlySelectedFloodArea(true))
       dispatch(setNearbyTargetAreasFlow(true))
@@ -165,7 +164,12 @@ export default function LocationWithinWarningAreaProximityLayout({
               <div className='govuk-grid-column-two-thirds'>
                 {error && <ErrorSummary errorList={[error]} />}
                 <h1 className='govuk-heading-l govuk-!-margin-top-6'>
-                  You can get flood messages near this location
+                  You can get{' '}
+                  {type === 'severe'
+                    ? 'severe flood warnings and '
+                    : 'early flood alerts '}
+                  {type === 'severe' ? 'flood warnings' : ''} near this location{' '}
+                  {type === 'severe' ? '' : 'about possible flooding'}
                 </h1>
                 <InsetText text={selectedLocation.address} />
                 <p>
@@ -232,7 +236,7 @@ export default function LocationWithinWarningAreaProximityLayout({
                 </div>
                 {type === 'severe' && (
                   <Button
-                    text='Skip to other areas nearby'
+                    text='Skip to flood alert areas nearby'
                     className={`govuk-button govuk-button--secondary ${
                       isMobile ? 'custom-width-button' : ''
                     }`}

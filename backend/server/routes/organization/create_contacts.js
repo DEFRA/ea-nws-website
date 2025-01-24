@@ -1,8 +1,10 @@
+const { logger } = require('../../plugins/logging')
 const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 const { addContact } = require('../../services/elasticache')
+const { normalisePhoneNumber } = require('../../services/formatters/NormalisePhoneNumber')
 
 module.exports = [
   {
@@ -17,6 +19,28 @@ module.exports = [
         const { authToken, orgId, contacts } = request.payload
 
         if (authToken && orgId && contacts) {
+          // remove any null fields from each contact
+          contacts.forEach(contact => {
+            if (Array.isArray(contact.mobilePhones)) {
+              if (contact.mobilePhones.length > 0) {
+                contact.mobilePhones = contact.mobilePhones.map(mobilePhone =>
+                  normalisePhoneNumber(mobilePhone)
+                )
+              }
+            }
+            if (Array.isArray(contact.homePhones)) {
+              if (contact.homePhones.length > 0) {
+                contact.homePhones = contact.homePhones.map(homePhone =>
+                  normalisePhoneNumber(homePhone)
+                )
+              }
+            }
+            Object.keys(contact).forEach((key) => {
+              if (contact[key] === null && key !== 'id') {
+                delete contact[key]
+              }
+            })
+          })
           const response = await apiCall(
             { authToken: authToken, contacts: contacts },
             'organization/createContacts'
@@ -44,6 +68,7 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
       } catch (error) {
+        logger.error(error)
         return createGenericErrorResponse(h)
       }
     }

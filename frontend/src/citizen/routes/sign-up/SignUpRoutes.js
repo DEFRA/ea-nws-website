@@ -24,6 +24,7 @@ import ChangeAccountNamePage from '../../pages/sign-up/review/change-account/Cha
 import ChangeFloodAlertPage from '../../pages/sign-up/review/change-flood-alerts/ChangeFloodAlertsPage'
 import ChangeLocationInAlertAreaPage from '../../pages/sign-up/review/change-location/ChangeLocationInAlertAreaPage'
 import ChangeLocationInSevereWarningAreaPage from '../../pages/sign-up/review/change-location/ChangeLocationInSevereWarningAreaPage'
+import ChangeLocationInWarningAreaProximityPage from '../../pages/sign-up/review/change-location/ChangeLocationInWarningAreaProximityPage'
 import ChangeLocationNotNearDangerPage from '../../pages/sign-up/review/change-location/ChangeLocationNotNearDangerPage'
 import ChangeLocationSearchPage from '../../pages/sign-up/review/change-location/ChangeLocationSearchPage'
 import ChangeLocationSearchResultPage from '../../pages/sign-up/review/change-location/ChangeLocationSearchResultPage'
@@ -37,6 +38,8 @@ import AddMobileContactStartPage from '../../pages/sign-up/review/manage-contact
 import ValidateMobileContactPage from '../../pages/sign-up/review/manage-contact/add-mobile-contact/AddContactMobileValidatePage'
 import SignUpSuccessPage from '../../pages/sign-up/success/SignUpSuccessPage'
 import DeclarationOfAgreementPage from '../../pages/sign-up/user-agreement/DeclarationOfAgreementPage'
+import ServiceSelectionPage from '../../../common/pages/sign-up/ServiceSelectionPage' // TODO: Move to common sign-up routes
+import OrganisationServiceSelectionPage from '../../../common/pages/sign-up/OrganisationServiceSelectionPage' // TODO: Move to common sign-up routes
 
 // sign up routes
 const signupRoutes = [
@@ -161,7 +164,6 @@ const signupRoutes = [
     path: '/signup/review/change-location-results',
     component: <ChangeLocationSearchResultPage />
   },
-
   {
     path: '/signup/review/location-in-severe-warning-area',
     component: <ChangeLocationInSevereWarningAreaPage />
@@ -169,6 +171,11 @@ const signupRoutes = [
   {
     path: '/signup/review/location-in-alert-area',
     component: <ChangeLocationInAlertAreaPage />
+  },
+
+  {
+    path: '/signup/review/location-in-proximity-area/:type',
+    component: <ChangeLocationInWarningAreaProximityPage />
   },
   {
     path: '/signup/review/no-danger',
@@ -193,6 +200,14 @@ const signupRoutes = [
   {
     path: '/signup/review/remove-contact',
     component: <RemoveContactFromReviewConfirmationPage />
+  },
+  {
+    path: '/signup/service-selection',
+    component: <ServiceSelectionPage />
+  },
+  {
+    path: '/signup/organisation-service',
+    component: <OrganisationServiceSelectionPage />
   }
 ]
 

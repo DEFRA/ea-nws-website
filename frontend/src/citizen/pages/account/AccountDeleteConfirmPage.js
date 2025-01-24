@@ -1,18 +1,41 @@
-import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { Link } from 'react-router-dom'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import Button from '../../../common/components/gov-uk/Button'
 import ConfirmationPanel from '../../../common/components/gov-uk/Panel'
 import { clearAuth } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 
 export default function AccountDeleteConfirmPage () {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
+  const profile = useSelector((state) => state.session.profile)
+  const [servicePhase, setServicePhase] = useState(false)
+
+  async function getServicePhase () {
+    const { data } = await backendCall('data', 'api/service/get_service_phase')
+    setServicePhase(data)
+  }
+
+  async function notifyAccountDeletionSuccess () {
+    const dataToSend = {
+      email: profile.emails[0],
+      fullName: profile.firstname + ' ' + profile.lastname
+    }
+
+    await backendCall(dataToSend, 'api/notify/account_deletion', navigate)
+  }
+
   useEffect(() => {
+    getServicePhase()
+    if (profile.emails[0] && profile.firstname && profile.lastname) {
+      notifyAccountDeletionSuccess()
+    }
     dispatch(clearAuth())
-  })
+  }, [])
 
   return (
     <>
-
       {/* Main body */}
       <main className='govuk-main-wrapper'>
         {/* Account deletion confirmation panel */}
@@ -21,6 +44,7 @@ export default function AccountDeleteConfirmPage () {
             <ConfirmationPanel
               title='Account deleted'
               body="You'll no longer get flood warnings"
+              preTitle={servicePhase === 'beta' ? 'TESTING PHASE ONLY' : ''}
             />
           </div>
         </div>
@@ -36,20 +60,38 @@ export default function AccountDeleteConfirmPage () {
           </Link>
           .
         </p>
-        <p className='govuk-body govuk-!-margin-bottom-6'>
-          <Link to='/survey' className='govuk-link'>
-            What do you think of this service?
-          </Link>{' '}
-          Takes 30 seconds
-        </p>
-        <h2 className='govuk-heading-m'>More about flooding</h2>
-        <p className='govuk-body govuk-!-margin-bottom-6'>
-          Find out how to{' '}
-          <Link to='https://gov.uk/flood' className='govuk-link'>
-            protect yourself and your property online from flooding
-          </Link>
-          .
-        </p>
+        {servicePhase !== 'beta' && (
+          <div>
+            <p className='govuk-body govuk-!-margin-bottom-6'>
+              <Link to='/survey' className='govuk-link'>
+                What do you think of this service?
+              </Link>{' '}
+              Takes 30 seconds
+            </p>
+            <h2 className='govuk-heading-m'>More about flooding</h2>
+            <p className='govuk-body govuk-!-margin-bottom-6'>
+              Find out how to{' '}
+              <Link to='https://gov.uk/flood' className='govuk-link'>
+                protect yourself and your property online from flooding
+              </Link>
+              .
+            </p>
+          </div>
+        )}
+        {servicePhase === 'beta' && (
+          <div>
+            <h1 className='govuk-heading-m govuk-!-margin-top-6'>
+              Now answer some questions about closing your account
+            </h1>
+            <Button
+              text='Continue'
+              className='govuk-button'
+              onClick={() => {
+                window.location.href = 'https://forms.office.com/e/Rd76JZqNbV'
+              }}
+            />
+          </div>
+        )}
       </main>
     </>
   )

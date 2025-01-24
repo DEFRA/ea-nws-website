@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import store from '../../../../../common/redux/store'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import ActionPlanLayout from '../../../../layouts/optional-info/ActionPlanLayout'
@@ -11,11 +12,12 @@ export default function ActionPlanPage () {
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
-  const currentLocation = useSelector((state) => state.session.currentLocation)
   const [error, setError] = useState(null)
 
   const navigateToNextPage = async () => {
-    const dataToSend = { authToken, orgId, location: currentLocation }
+    // since we added to currentLocation we need to get that information to pass to the api
+    const locationToAdd = store.getState().session.currentLocation
+    const dataToSend = { authToken, orgId, location: locationToAdd }
     const { data, errorMessage } = await backendCall(
       dataToSend,
       'api/location/update',

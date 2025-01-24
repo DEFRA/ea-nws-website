@@ -1,4 +1,5 @@
 import React from 'react'
+import { CookiesProvider } from 'react-cookie'
 import ReactDOM from 'react-dom/client'
 import TagManager from 'react-gtm-module'
 import { Provider } from 'react-redux'
@@ -30,9 +31,9 @@ if (tagManagerArgs.gtmId !== null) {
 }
 
 root.render(
-  <React.StrictMode>
+  <CookiesProvider defaultSetOptions={{ path: '/' }}>
     <Provider store={store}>
       <App />
     </Provider>
-  </React.StrictMode>
+  </CookiesProvider>
 )

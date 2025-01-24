@@ -97,7 +97,7 @@ url_org_man_loc = {
         'shapefileInfo': url_org_man_loc_path + '/add/shapefile-info',
         'shapefileUpload': url_org_man_loc_path + '/add/shapefile-upload',
         'loading': url_org_man_loc_path + '/add/upload-file/loading',
-        'uploadTemplate': 'http://d39yn09rf1d1o9.cloudfront.net/template.csv',
+        'uploadTemplate': 'https://d39yn09rf1d1o9.cloudfront.net/template.csv',
         'name': url_org_man_loc_path + '/add/name',
         'searchOption': url_org_man_loc_path + '/add/search-option',
         'postcodeSearch': url_org_man_loc_path + '/add/postcode-search',

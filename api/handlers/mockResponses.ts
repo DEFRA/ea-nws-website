@@ -126,7 +126,7 @@ const registrations = {
     description: 'We work to create better places for people and...',
     longName: 'Environment Agency - England',
     logoUrl: 'logo.png',
-    backgroundUrl: 'http://assets.gov.uk',
+    backgroundUrl: 'https://assets.gov.uk',
     urlSlug: 'england'
   },
   registrationDate: '1683741990',

@@ -8,13 +8,11 @@ import Checkbox from '../../../common/components/gov-uk/CheckBox'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import {
   getLocationAdditional,
-  setCurrentLocationKeywords,
-  setOrgCurrentContact
+  setCurrentLocationKeywords, setOrgCurrentContactKeywords
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import {
-  getAdditionals,
-  updateAdditionals
+  getAdditionals
 } from '../../../common/services/ProfileServices'
 
 export default function KeywordsLayout ({
@@ -232,13 +230,7 @@ export default function KeywordsLayout ({
     if (keywordType === 'location') {
       dispatch(setCurrentLocationKeywords(JSON.stringify(keywordsArrayChecked)))
     } else {
-      const updatedContact = updateAdditionals(currentObject, [
-        {
-          id: 'keywords',
-          value: { s: JSON.stringify(keywordsArrayChecked) }
-        }
-      ])
-      dispatch(setOrgCurrentContact(updatedContact))
+      dispatch(setOrgCurrentContactKeywords(JSON.stringify(keywordsArrayChecked)))
     }
 
     navigateToNextPage()

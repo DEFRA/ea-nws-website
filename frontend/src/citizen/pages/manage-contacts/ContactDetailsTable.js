@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import Button from '../../../common/components/gov-uk/Button'
 import { setCurrentContact } from '../../../common/redux/userSlice'
 
-export default function ContactDetailsTable({
+export default function ContactDetailsTable ({
   contacts,
   contactTitle,
   contactType,
@@ -94,25 +94,24 @@ export default function ContactDetailsTable({
                 <td className='custom-table-cell govuk-table__cell'>
                   {contact}
                 </td>
-                {/* <td className='govuk-table__cell' />
-                <td className='govuk-table__cell' /> */}
-                {contact !== primaryContact ? (
-                  <td className='custom-table-cell govuk-table__cell'>
-                    <Link
-                      to='/managecontacts/confirm-delete'
-                      state={{
-                        type: contactType,
-                        contact
-                      }}
-                      className='govuk-link right'
-                    >
-                      Remove
-                    </Link>
-                  </td>
-                ) : (
-                  // empty space in table without this
-                  <td className='govuk-table__cell' />
-                )}
+                {contact !== primaryContact
+                  ? (
+                    <td className='custom-table-cell govuk-table__cell'>
+                      <Link
+                        to='/managecontacts/confirm-delete'
+                        state={{
+                          type: contactType,
+                          contact
+                        }}
+                        className='govuk-link right'
+                      >
+                        Remove
+                      </Link>
+                    </td>
+                    )
+                  : (
+                    <td className='govuk-table__cell' />
+                    )}
               </tr>
             ))}
             {unregisteredContact.map((unregisteredContact, index) => (
@@ -146,17 +145,19 @@ export default function ContactDetailsTable({
           </tbody>
         </table>
       )}
-      {contacts.length + unregisteredContact.length < 5 ? (
-        <Button
-          className='govuk-button govuk-button--secondary'
-          text={`Add ${
+      {contacts.length + unregisteredContact.length < 5
+        ? (
+          <Button
+            className='govuk-button govuk-button--secondary'
+            text={`Add ${
             contactType === 'email address' ? 'an' : 'a'
           } ${contactType}`}
-          onClick={handleButton}
-        />
-      ) : (
-        <MaximumReached />
-      )}
+            onClick={handleButton}
+          />
+          )
+        : (
+          <MaximumReached />
+          )}
     </>
   )
 }

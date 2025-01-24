@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import { setLocationToBeChanged } from '../../../../common/redux/userSlice'
 
-export default function LocationReviewTable({ locations }) {
+export default function LocationReviewTable ({ locations }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 

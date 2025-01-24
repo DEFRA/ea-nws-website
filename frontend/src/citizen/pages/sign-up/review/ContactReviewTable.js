@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import Button from '../../../../common/components/gov-uk/Button'
 import ContactReviewRow from './ContactReviewRow'
 
-export default function ContactReviewTable({ profile, contactPreferences }) {
+export default function ContactReviewTable ({ profile, contactPreferences }) {
   const navigate = useNavigate()
 
   const EmailAddressesSection = () => {
@@ -39,26 +39,26 @@ export default function ContactReviewTable({ profile, contactPreferences }) {
       <>
         {(profile.mobilePhones.length > 0 ||
           profile.unverified?.mobilePhones) && (
-          <tbody className='govuk-table__body'>
-            {profile.mobilePhones.map((mobilePhone, index) => (
-              <ContactReviewRow
-                contact={mobilePhone}
-                contactType='mobilePhone'
-                isConfirmed
-                key={index}
-              />
-            ))}
-            {profile.unverified?.mobilePhones?.map(
-              (unregisteredMobilePhone, index) => (
+            <tbody className='govuk-table__body'>
+              {profile.mobilePhones.map((mobilePhone, index) => (
                 <ContactReviewRow
-                  contact={unregisteredMobilePhone.address}
+                  contact={mobilePhone}
                   contactType='mobilePhone'
-                  isConfirmed={false}
+                  isConfirmed
                   key={index}
                 />
-              )
-            )}
-          </tbody>
+              ))}
+              {profile.unverified?.mobilePhones?.map(
+                (unregisteredMobilePhone, index) => (
+                  <ContactReviewRow
+                    contact={unregisteredMobilePhone.address}
+                    contactType='mobilePhone'
+                    isConfirmed={false}
+                    key={index}
+                  />
+                )
+              )}
+            </tbody>
         )}
       </>
     )

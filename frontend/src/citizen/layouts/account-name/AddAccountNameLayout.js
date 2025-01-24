@@ -9,7 +9,7 @@ import { setProfile } from '../../../common/redux/userSlice'
 import { addAccountName } from '../../../common/services/ProfileServices'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
 
-export default function AddAccountNameLayout({
+export default function AddAccountNameLayout ({
   navigateToNextPage,
   NavigateToPreviousPage,
   buttonText,

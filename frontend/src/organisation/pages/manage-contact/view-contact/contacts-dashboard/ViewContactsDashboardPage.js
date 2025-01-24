@@ -78,15 +78,8 @@ export default function ViewContactsDashboardPage () {
       }
 
       // TODO: Get linked locations from the API (EAN-1364)
-      let tempSwitch = false
       contactsUpdate.forEach(function (contact) {
-        if (tempSwitch) {
-          contact.linked_locations = ['Location 1', 'Location 2']
-          tempSwitch = false
-        } else {
-          contact.linked_locations = []
-          tempSwitch = true
-        }
+        contact.linked_locations = []
       })
 
       setContacts(contactsUpdate)

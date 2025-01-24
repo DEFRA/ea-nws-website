@@ -111,9 +111,6 @@ const userSlice = createSlice({
     // required for historical flood warnings and alerts
     severeFloodWarningCount: null,
     floodAlertCount: null,
-    // keywords
-    locationKeywords: null,
-    contactKeywords: null,
     // required for predefined boundary flow
     selectedBoundaryType: null,
     selectedBoundary: null,
@@ -636,6 +633,20 @@ const userSlice = createSlice({
     setOrgCurrentContactAdditionals: (state, action) => {
       state.orgCurrentContact.additionals = action.payload
     },
+    setOrgCurrentContactKeywords: (state, action) => {
+      setAdditional(
+        state.orgCurrentContact.additionals,
+        'keywords',
+        action.payload
+      )
+    },
+    setOrgCurrentContactJobTitle: (state, action) => {
+      setAdditional(
+        state.orgCurrentContact.additionals,
+        'jobTitle',
+        action.payload
+      )
+    },
     setContacts: (state, action) => {
       state.contacts = action.payload
     },
@@ -645,9 +656,26 @@ const userSlice = createSlice({
       state.registerToken = null
       state.profileId = null
       state.orgId = null
-      state.profile = null
+      state.profile = {
+        id: '',
+        enabled: true,
+        firstname: '',
+        lastname: '',
+        emails: [],
+        mobilePhones: [],
+        homePhones: [],
+        language: 'EN',
+        additionals: [{ id: 'signupComplete', value: { s: 'false' } }],
+        unverified: {
+          emails: [],
+          mobilePhones: [],
+          homePhones: []
+        },
+        pois: []
+      }
       state.contactPreferences = null
       state.registrations = null
+      state.currentContact = null
       state.signinType = null
       // location data
       state.locationName = null
@@ -666,9 +694,9 @@ const userSlice = createSlice({
       // required for predefined boundary flow
       state.selectedBoundaryType = null
       state.selectedBoundary = null
-      // keywords - temporary
-      state.locationKeywords = null
-      state.contactKeywords = null
+      state.locationBoundaries = null
+      state.consecutiveBoundariesAdded = 0
+      state.predefinedBoundaryFlow = null
       // org location data
       state.currentLocation = {
         id: null,
@@ -756,6 +784,7 @@ const userSlice = createSlice({
           }
         ]
       }
+      state.contacts = null
     }
   },
   selectors: {
@@ -917,6 +946,8 @@ export const {
   setOrgCurrentContactMobilePhones,
   setOrgCurrentContactPosition,
   setOrgCurrentContactAdditionals,
+  setOrgCurrentContactKeywords,
+  setOrgCurrentContactJobTitle,
   setOrgCurrentContactNotes,
   setOrgCurrentContactPois,
   setContacts,

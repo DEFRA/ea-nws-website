@@ -1,3 +1,4 @@
+const { logger } = require('../../plugins/logging')
 const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse
@@ -16,6 +17,13 @@ module.exports = [
 
         const { authToken, orgId, contact } = request.payload
         if (authToken && orgId && contact) {
+          // remove any null fields from each contact
+          Object.keys(contact).forEach((key) => {
+            if (contact[key] === null && key !== 'id') {
+              delete contact[key]
+            }
+          })
+
           const response = await apiCall(
             { authToken: authToken, contact: contact },
             'organization/updateContact'
@@ -30,6 +38,7 @@ module.exports = [
           return createGenericErrorResponse(h)
         }
       } catch (error) {
+        logger.error(error)
         return createGenericErrorResponse(h)
       }
     }

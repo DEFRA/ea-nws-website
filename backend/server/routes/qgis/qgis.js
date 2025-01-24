@@ -2,6 +2,7 @@ const { getWfsData } = require('../../services/WfsData')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
+const { logger } = require('../../plugins/logging')
 
 module.exports = [
   {
@@ -11,7 +12,8 @@ module.exports = [
       try {
         const response = await getWfsData(request.payload)
         return h.response(response)
-      } catch {
+      } catch (error) {
+        logger.error(error)
         createGenericErrorResponse(h)
       }
     }

@@ -7,8 +7,8 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
 import {
   setOrgCurrentContactFirstName,
-  setOrgCurrentContactLastName,
-  setOrgCurrentContactPosition
+  setOrgCurrentContactJobTitle,
+  setOrgCurrentContactLastName
 } from '../../../../common/redux/userSlice'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
@@ -71,7 +71,7 @@ export default function AddContactDetailsPage () {
       dispatch(setOrgCurrentContactFirstName(firstname))
       dispatch(setOrgCurrentContactLastName(lastname))
       if (jobTitle) {
-        dispatch(setOrgCurrentContactPosition(jobTitle))
+        dispatch(setOrgCurrentContactJobTitle(jobTitle))
       }
       navigate(orgManageContactsUrls.add.keywords)
     }

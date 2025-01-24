@@ -11,9 +11,8 @@ import {
   setRegisterToken
 } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
-import { addVerifiedContact } from '../../../../common/services/ProfileServices'
+import { addVerifiedContact, removeVerifiedContact } from '../../../../common/services/ProfileServices'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
-
 export default function SignUpPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -41,8 +40,11 @@ export default function SignUpPage () {
           setError(errorMessage)
         }
       } else {
-        // add email to  emails list
-        const updatedProfile = addVerifiedContact(profile, 'email', email)
+        let updatedProfile = profile
+        if (profile.emails[0]) {
+          updatedProfile = removeVerifiedContact(updatedProfile, profile.emails[0])
+        }
+        updatedProfile = addVerifiedContact(updatedProfile, 'email', email)
         dispatch(setProfile(updatedProfile))
         dispatch(setRegisterToken(data.registerToken))
         navigate('/signup/validate')
@@ -59,17 +61,19 @@ export default function SignUpPage () {
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
             <h2 className='govuk-heading-l'>
-              Enter an email address - you'll use this to sign in to your
-              account
+              Enter an email address
             </h2>
             <div className='govuk-body'>
               <p>
-                You'll be able to use your account to update your locations,
-                flood messages or contact details.{' '}
+                We'll send flood messages to this address.{' '}
+              </p>
+              <p>
+                You'll also use this to signin to your account to update your
+                locations, flood messages or contact details.{' '}
               </p>
               <InsetText text='We recommend using an email address you can access 24 hours a day.' />
               <Input
-                className='govuk-input govuk-input--width-10'
+                className='govuk-input govuk-input--width-20'
                 inputType='text'
                 name='Email address'
                 error={error}

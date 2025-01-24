@@ -45,7 +45,7 @@ export default function OrganisationServiceSelectionPage () {
                     <span className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4 govuk-!-margin-top-4'>
                       Recommended for
                     </span>
-                    <span className='govuk-caption-m govuk-!-font-size-24 govuk-!-padding-left-4 govuk-!-padding-bottom-6 govuk-!-font-weight-bold' style={{ color: '#0b0c0c' }}>
+                    <span className='govuk-heading-m govuk-!-padding-left-4 govuk-!-padding-bottom-6'>
                       Homes or small businesses
                     </span>
                     <div className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4 govuk-!-margin-top-4 govuk-!-margin-bottom-4 govuk-!-padding-right-4' style={{ color: '#0b0c0c', paddingBottom: '28px' }}>
@@ -87,7 +87,7 @@ export default function OrganisationServiceSelectionPage () {
                     <span className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4 govuk-!-margin-top-4'>
                       Recommended for
                     </span>
-                    <span className='govuk-caption-m govuk-!-font-size-24 govuk-!-padding-left-4 govuk-!-font-weight-bold' style={{ color: '#0b0c0c' }}>
+                    <span className='govuk-heading-m govuk-!-padding-left-4'>
                       Organisations, local authorities and<br />
                       other category 1 or 2 responders
                     </span>

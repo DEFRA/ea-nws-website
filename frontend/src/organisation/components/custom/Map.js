@@ -333,7 +333,7 @@ export default function Map ({
             })
           )
 
-          await dispatch(setSelectedBoundary(null))
+          dispatch(setSelectedBoundary(null))
         }
       }
     }

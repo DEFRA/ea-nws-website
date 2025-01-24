@@ -83,9 +83,6 @@
   font-family: 'GDS Transport', arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-decoration: underline;
-  text-decoration-thickness: max(1px, 0.0625rem);
-  text-underline-offset: 0.1578em;
   display: block;
   padding-top: 12px;
   padding-bottom: 12px;
@@ -674,12 +671,6 @@
 .one-login-header__nav__link:visited:active {
   color: rgba(255, 255, 255, 0.99);
 }
-.one-login-header__link:link:focus,
-.one-login-header__link:visited:focus,
-.one-login-header__nav__link:link:focus,
-.one-login-header__nav__link:visited:focus {
-  color: #0b0c0c;
-}
 .one-login-header__link:link:hover,
 .one-login-header__link:visited:hover,
 .one-login-header__nav__link:link:hover,
@@ -849,8 +840,6 @@
   .one-login-header__nav__list-item {
     padding: 12px 20px 12px 20px;
     align-self: stretch;
-  }
-  .one-login-header__nav__list-item:not(:last-child) {
   }
 }
 @media (max-width: 40.0525em) {
@@ -1220,7 +1209,7 @@
 }
 
 .locations-selected-filter-icon {
-  width: 1rem,;
+  width: 1rem;
   height: 1rem;
 }
 
@@ -1243,25 +1232,6 @@
   cursor: pointer;
 }
 
-.locations-selected-filter-icon {
-  width: 1rem;
-  height: 1rem;
-}
-
-.locations-table-panel {
-  display: flex;
-  color: #505a5f;
-}
-
-.locations-table-header {
-  display: flex;
-  color: #505a5f;
-}
-
-.locations-map-key {
-  display: flex;
-  align-items: center;
-}
 .locations-filter-title {
   margin: 0 0 0 8px;
   color: #1d70b8;
@@ -1487,7 +1457,6 @@
 .org-flood-warning-key {
   display: flex;
   gap: 2.5rem;
-  align-items: center;
   background-color: #f3f2f1;
   padding: 0.625rem;
   flex-wrap: wrap;
@@ -1565,7 +1534,6 @@
   padding: 0 10px 0 0;
   position: relative;
   text-align: inherit;
-  font-size: 1em;
   margin: 0;
 }
 

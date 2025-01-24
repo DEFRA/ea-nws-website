@@ -72,6 +72,7 @@ const setOrgAdditional = (additionals, id, value) => {
 const userSlice = createSlice({
   name: 'session',
   initialState: {
+    lastActivity: null,
     authToken: null,
     registerToken: null,
     profileId: null,
@@ -187,7 +188,7 @@ const userSlice = createSlice({
     // org contact data
     orgCurrentContact: {
       id: null,
-      enabled: null,
+      enabled: true,
       firstname: null,
       lastname: null,
       emails: null,
@@ -210,6 +211,9 @@ const userSlice = createSlice({
     contacts: null
   },
   reducers: {
+    setLastActivity: (state, action) => {
+      state.lastActivity = action.payload
+    },
     setAuthToken: (state, action) => {
       state.authToken = action.payload
     },
@@ -653,11 +657,36 @@ const userSlice = createSlice({
         action.payload
       )
     },
+    clearOrgCurrentContact: (state) => {
+      state.orgCurrentContact = {
+        id: null,
+        enabled: true,
+        firstname: null,
+        lastname: null,
+        emails: null,
+        mobilePhones: null,
+        homePhones: null,
+        position: null,
+        comments: null,
+        pois: null,
+        additionals: [
+          {
+            id: 'keywords',
+            value: { s: '[]' }
+          },
+          {
+            id: 'jobTitle',
+            value: { s: '' }
+          }
+        ]
+      }
+    },
     setContacts: (state, action) => {
       state.contacts = action.payload
     },
     // Clear state
     clearAuth: (state) => {
+      state.lastActivity = null
       state.authToken = null
       state.registerToken = null
       state.profileId = null
@@ -772,7 +801,7 @@ const userSlice = createSlice({
       }
       state.orgCurrentContact = {
         id: null,
-        enabled: null,
+        enabled: true,
         firstname: null,
         lastname: null,
         emails: null,
@@ -867,6 +896,7 @@ const userSlice = createSlice({
 })
 
 export const {
+  setLastActivity,
   setAuthToken,
   setRegisterToken,
   setProfileId,
@@ -963,7 +993,8 @@ export const {
   setContacts,
   // clear state
   clearAuth,
-  clearCurrentLocation
+  clearCurrentLocation,
+  clearOrgCurrentContact
 } = userSlice.actions
 
 export const {

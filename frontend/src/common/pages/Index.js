@@ -1,5 +1,6 @@
 import * as React from 'react'
 import { useState } from 'react'
+import { useCookies } from 'react-cookie'
 import { useDispatch } from 'react-redux'
 import { Link } from 'react-router-dom'
 import Button from '../components/gov-uk/Button'
@@ -28,6 +29,8 @@ export default function IndexPage () {
   const dispatch = useDispatch()
   const [mockSessionActive, setmockSessionActive] = useState(false)
   const [emptyProfileActive, setEmptyProfileActive] = useState(false)
+  // eslint-disable-next-line no-unused-vars
+  const [cookies, setCookie, removeCookie] = useCookies(['authToken'])
 
   const mockOne = {
     id: '',
@@ -536,7 +539,7 @@ export default function IndexPage () {
       }
 
       if (type === 'org') {
-        ;(async () => {
+        (async () => {
           const dataToSend = {
             signinToken: uuidv4(),
             code: 123456,
@@ -547,7 +550,7 @@ export default function IndexPage () {
         })()
         dispatch(setSigninType('org'))
       }
-
+      setCookie('authToken', authToken)
       dispatch(setAuthToken(authToken))
       dispatch(setRegistrations(registrations))
       dispatch(setContactPreferences(contactPreferences))
@@ -564,6 +567,7 @@ export default function IndexPage () {
       dispatch(setCurrentLocationNorthing('185016'))
       setmockSessionActive(true)
     } else {
+      removeCookie('authToken', { path: '/' })
       dispatch(clearAuth())
       setmockSessionActive(false)
     }

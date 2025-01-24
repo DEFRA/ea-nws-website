@@ -68,4 +68,4 @@ const sendLetter = (templateId, personalisation, reference = '') => {
     .catch((err) => console.error(err))
 }
 
-module.exports = { sendEmailNotification }
+module.exports = { sendEmailNotification, sendSmsNotification, sendLetter }

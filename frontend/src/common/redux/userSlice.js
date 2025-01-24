@@ -72,6 +72,7 @@ const setOrgAdditional = (additionals, id, value) => {
 const userSlice = createSlice({
   name: 'session',
   initialState: {
+    lastActivity: null,
     authToken: null,
     registerToken: null,
     profileId: null,
@@ -210,6 +211,9 @@ const userSlice = createSlice({
     contacts: null
   },
   reducers: {
+    setLastActivity: (state, action) => {
+      state.lastActivity = action.payload
+    },
     setAuthToken: (state, action) => {
       state.authToken = action.payload
     },
@@ -658,6 +662,7 @@ const userSlice = createSlice({
     },
     // Clear state
     clearAuth: (state) => {
+      state.lastActivity = null
       state.authToken = null
       state.registerToken = null
       state.profileId = null
@@ -867,6 +872,7 @@ const userSlice = createSlice({
 })
 
 export const {
+  setLastActivity,
   setAuthToken,
   setRegisterToken,
   setProfileId,

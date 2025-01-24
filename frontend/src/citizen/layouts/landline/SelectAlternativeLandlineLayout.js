@@ -120,7 +120,7 @@ export default function SelectAlternativeLandlineLayout ({
                     <p className='govuk-error-message'>{validationError}</p>
                   )}
                   {mobileNumbers.map((mobileNumber, index) => (
-                    <div style={{ display: 'block' }} key={index}>
+                    <div style={{ display: 'block' }} key={mobileNumber + '.' + index}>
                       <div
                         className='govuk-!-padding-bottom-4'
                         style={{

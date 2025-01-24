@@ -126,7 +126,7 @@ export default function LocationXYCoordinatesSearchLayout ({
               What are the X and Y coordinates?
             </h1>
 
-            {flow.includes('unmatched-locations') && <LocationDetails />}
+            {flow?.includes('unmatched-locations') && <LocationDetails />}
 
             <div className='govuk-body'>
               <Input

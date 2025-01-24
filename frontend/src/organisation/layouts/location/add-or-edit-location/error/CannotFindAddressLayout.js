@@ -70,7 +70,7 @@ export default function CannotFindAddressLayout ({
                 </ul>
               </p>
 
-              {flow === 'unmatched-locations-not-found' && (
+              {flow?.includes('unmatched-locations') && (
                 <Button
                   className='govuk-button govuk-!-margin-top-4'
                   text='Continue'

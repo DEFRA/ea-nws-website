@@ -122,7 +122,7 @@ export default function DropPinOnMapLayout ({
           dispatch(setCurrentLocation(data))
 
           // Remove invalid location from elasticache
-          if (flow.includes('unmatched-locations')) {
+          if (flow?.includes('unmatched-locations')) {
             await backendCall(
               { orgId, locationId: locationToAdd.id },
               'api/bulk_uploads/remove_invalid_location',
@@ -166,7 +166,7 @@ export default function DropPinOnMapLayout ({
                 You can then add the location to this account.
               </p>
 
-              {flow.includes('unmatched-locations') && <LocationDetails />}
+              {flow?.includes('unmatched-locations') && <LocationDetails />}
 
               <div className='govuk-!-margin-bottom-4'>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -240,7 +240,7 @@ export default function DropPinOnMapLayout ({
             className='govuk-button govuk-!-margin-top-6'
             text={
               useLocation().pathname.includes('add') ||
-              flow.includes('unmatched-locations')
+              flow?.includes('unmatched-locations')
                 ? 'Add location'
                 : 'Save location'
             }

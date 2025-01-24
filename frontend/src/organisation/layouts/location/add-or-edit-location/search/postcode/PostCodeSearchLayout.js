@@ -75,7 +75,7 @@ export default function PostCodeSearchLayout ({
         dispatch(setLocationSearchResults(data))
         navigateToNextPage()
       } else {
-        if (flow.includes('unmatched-locations')) {
+        if (flow?.includes('unmatched-locations')) {
           navigateToNotInEnglandPage()
         } else {
           // show error message from OS Api postcode search
@@ -102,7 +102,7 @@ export default function PostCodeSearchLayout ({
             <h1 className='govuk-heading-l'>
               What is the location's postcode?
             </h1>
-            {flow.includes('unmatched-locations') && <LocationDetails />}
+            {flow?.includes('unmatched-locations') && <LocationDetails />}
             <div className='govuk-body'>
               <Input
                 name='Postcode'

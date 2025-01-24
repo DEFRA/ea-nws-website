@@ -35,10 +35,10 @@ export default function ContactReviewRow({
   return (
     <>
       <tr key={key} className='govuk-table__row'>
-        <td className='govuk-table__header govuk-!-width-one-half'>
+        <td className='govuk-table__header text-nowrap'>
           {rowDetails().titleRow}
         </td>
-        <td className='govuk-table__cell'>
+        <td className='custom-table-cell govuk-table__cell'>
           {contact}
           {!isConfirmed && (
             <>
@@ -49,7 +49,7 @@ export default function ContactReviewRow({
           )}
         </td>
 
-        <td className='govuk-table__cell'>
+        <td className='custom-table-cell govuk-table__cell'>
           {rowDetails().showDelete && (
             <Link
               to='/signup/review/remove-contact'

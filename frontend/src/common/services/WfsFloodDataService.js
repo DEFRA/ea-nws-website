@@ -71,7 +71,9 @@ const callForSurroundingAreas = async (bbox, type) => {
     bbox: bbox,
     outputFormat: 'GEOJSON'
   }
-  return await backendCall(WFSParams, 'api/wfs')
+  const result = await backendCall(WFSParams, 'api/wfs')
+  console.log(result)
+  return result
 }
 
 export const getAssociatedAlertArea = async (lat, lng, code) => {

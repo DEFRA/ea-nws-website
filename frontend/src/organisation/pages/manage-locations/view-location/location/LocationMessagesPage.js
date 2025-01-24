@@ -126,14 +126,14 @@ export default function LocationMessagesPage () {
         let warnings
         let alerts
         if (additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS || currentLocation.geometry === null ){
-          allAreas = [...warningAreas.features, ...alertAreas.features] 
-          warnings = [...warningAreas.features]    
-          alerts = [...alertAreas.features]
+          allAreas = alertAreas && warningAreas?  [...warningAreas.features, ...alertAreas.features] : []
+          warnings = warningAreas? [...warningAreas.features]  : []  
+          alerts = alertAreas?[...alertAreas.features] : []
         }
         else{
-          allAreas = [...warningAreas, ...alertAreas] 
-          warnings = [...warningAreas]    
-          alerts = [...alertAreas]
+          allAreas = alertAreas && warningAreas? [...warningAreas, ...alertAreas] : []
+          warnings = warningAreas ? [...warningAreas] : []    
+          alerts = alertAreas? [...alertAreas] : []
         }
         if (alertAreas && warningAreas) {
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Warning', index))

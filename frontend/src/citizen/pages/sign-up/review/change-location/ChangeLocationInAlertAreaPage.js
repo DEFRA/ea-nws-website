@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { setProfile } from '../../../../../common/redux/userSlice'
@@ -6,7 +6,7 @@ import { backendCall } from '../../../../../common/services/BackendService'
 import { removeLocation } from '../../../../../common/services/ProfileServices'
 import LocationInAlertAreaLayout from '../../../../layouts/location/LocationInAlertAreaLayout'
 
-export default function ChangeLocationInAlertAreaPage() {
+export default function ChangeLocationInAlertAreaPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
@@ -15,7 +15,7 @@ export default function ChangeLocationInAlertAreaPage() {
   )
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId() {
+  async function getPartnerId () {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }

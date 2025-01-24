@@ -1,7 +1,7 @@
 import 'leaflet/dist/leaflet.css'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import FloodWarningKey from '../../../common/components/custom/FloodWarningKey'
 import Map from '../../../common/components/custom/Map'
@@ -26,7 +26,7 @@ import {
   getCoordsOfFloodArea
 } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout({
+export default function LocationInSevereWarningAreaLayout ({
   continueToNextPage,
   updateGeoSafeProfile = true
 }) {
@@ -56,10 +56,7 @@ export default function LocationInSevereWarningAreaLayout({
   const [partnerId, setPartnerId] = useState(false)
 
   async function getPartnerId () {
-    const { data } = await backendCall(
-      'data',
-      'api/service/get_partner_id'
-    )
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
 

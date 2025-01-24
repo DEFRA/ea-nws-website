@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import LocationWithinWarningAreaProximityLayout from '../../../../layouts/location/LocationWithinWarningAreaProximityLayout'
 
-export default function ChangeLocationInWarningAreaProximityPage() {
+export default function ChangeLocationInWarningAreaProximityPage () {
   const navigate = useNavigate()
 
   const continueToNearbyFloodAlertsPage = () => {

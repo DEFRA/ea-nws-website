@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { setAdditionalAlerts } from '../../../../../common/redux/userSlice'
 import LocationSearchResultsLayout from '../../../../layouts/location/LocationSearchResultsLayout'
 
-export default function ChangeLocationSearchResultPage() {
+export default function ChangeLocationSearchResultPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 

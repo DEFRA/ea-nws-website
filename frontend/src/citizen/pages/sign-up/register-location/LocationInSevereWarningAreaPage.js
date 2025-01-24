@@ -2,7 +2,7 @@ import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import LocationInSevereWarningAreaLayout from '../../../layouts/location/LocationInSevereWarningAreaLayout'
 
-export default function LocationInSevereWarningAreaPage() {
+export default function LocationInSevereWarningAreaPage () {
   const navigate = useNavigate()
 
   const continueToNextPage = () => {

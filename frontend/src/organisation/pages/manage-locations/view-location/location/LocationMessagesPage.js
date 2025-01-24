@@ -1,5 +1,5 @@
 import moment from 'moment'
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import linkIcon from '../../../../../common/assets/images/link.svg'
@@ -10,7 +10,7 @@ import NotificationBanner from '../../../../../common/components/gov-uk/Notifica
 import Radio from '../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
-import { getLocationAdditionals, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
+import { setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { csvToJson } from '../../../../../common/services/CsvToJson'
 import { getSurroundingFloodAreas, getSurroundingFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
@@ -22,15 +22,15 @@ export default function LocationMessagesPage () {
   const dispatch = useDispatch()
 
   const [isBannerDisplayed, setIsBannerDisplayed] = useState(false)
-  const additionalData = useSelector(
-    (state) => getLocationAdditionals(state)
-  )
+
 
   const [loading, setLoading] = useState(true)
   const currentLocation = useSelector(
     (state) => state.session.currentLocation
   )
-
+  const additionalData = useSelector(
+    (state) => state.session.currentLocation.additionals
+  )
   const [alertAreas, setAlertAreas] = useState(null)
   const [warningAreas, setWarningAreas] = useState(null)
   const [floodAreasInputs, setFloodAreasInputs] = useState([])
@@ -39,10 +39,10 @@ export default function LocationMessagesPage () {
   const [floodAlertsCount, setFloodAlertsCount] = useState([])
   const [floodWarningsCount, setFloodWarningsCount] = useState([])
   const [severeFloodWarningsCount, setSevereFloodWarningsCount] = useState([])
-  const alertTypes = additionalData.alertTypes
+  const alertTypes = additionalData.other.alertTypes
   const allAlertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
   const childrenId = ['flood_alerts.33'] // TODO additionalData.childrenId
-
+  const hasFetchedArea = useRef(false)
   const [alertTypesEnabled, setAlertTypesEnabled] = useState([
     alertTypes?.includes(allAlertTypes[0]),
     alertTypes?.includes(allAlertTypes[1]),
@@ -152,36 +152,38 @@ export default function LocationMessagesPage () {
   }, [floodHistoryData, warningAreas, alertAreas])
 
   useEffect(() => {
-    const populateInputs = (alertAreas, warningAreas) => {
+    const populateInputs = (alertAreas, warningAreas) => {      
       const updatedFloodAreas = []
       if (warningAreas) {
-        for (let j = 0; j < warningAreas.length; j++) {
+        const warningAreasInputs = additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS || currentLocation.geometry === null ? warningAreas.features : warningAreas
+        for (let j = 0; j < warningAreasInputs.length; j++) {
           updatedFloodAreas.push({
             areaName:
-            warningAreas[j].properties.TA_NAME,
+            warningAreasInputs[j].properties.TA_NAME,
             areaType: `${severeFloodWarningsCount[j] > 0 ? 'Severe flood warning area' : 'Flood warning area'}`,
             messagesSent: `${severeFloodWarningsCount[j]} severe flood warning${severeFloodWarningsCount[j] > 1 ? 's' : ''},  ${floodWarningsCount[j]} flood warning${floodWarningsCount[j] > 1 ? 's' : ''}, ${floodAlertsCount[j]} flood alert${floodAlertsCount[j] > 1 ? 's' : ''}`,
-            linked: childrenId.includes(warningAreas[j].id)
+            linked: childrenId.includes(warningAreasInputs[j].id)
           })
         }
       }
       if (alertAreas) {
+        const alertAreasInputs = additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS || currentLocation.geometry === null ? alertAreas.features : alertAreas
         const warningAreaLength = warningAreas ? warningAreas.length : 0
         for (let i = 0; i < alertAreas.length; i++) {
           const alertAreaIndex = warningAreaLength > 0 ? i + warningAreaLength : i
           updatedFloodAreas.push({
             areaName:
-            alertAreas[i].properties.TA_NAME,
+            alertAreasInputs[i].properties.TA_NAME,
             areaType: 'Alert areas',
             messagesSent: `${floodAlertsCount[alertAreaIndex]} flood alert${floodAlertsCount[alertAreaIndex] > 1 ? 's' : ''}`,
-            linked: childrenId.includes(alertAreas[i].id)
+            linked: childrenId.includes(alertAreasInputs[i].id)
           })
         }
       }
       setFloodAreasInputs(updatedFloodAreas)
     }
 
-    if (floodHistoryData && (alertAreas || warningAreas)) {
+    if (floodHistoryData !== null && (alertAreas || warningAreas)) {
       populateInputs(alertAreas, warningAreas)
     }
   }, [warningAreas, alertAreas, floodAlertsCount, floodWarningsCount, severeFloodWarningsCount])
@@ -193,10 +195,21 @@ export default function LocationMessagesPage () {
     }
   }, [floodAreasInputs, floodAlertsCount, floodWarningsCount, severeFloodWarningsCount])
 
+
+  //it should reload the surrounding areas if the location is changed
+  useEffect(() => {
+    if(hasFetchedArea.current){
+      hasFetchedArea.current = false;
+    }
+  }, [currentLocation]);
+
   useEffect(() => {
     const fetchAreas = async () => {
       if (currentLocation && additionalData && (currentLocation.coordinates || currentLocation.geometry || currentLocation.geocode)) {
-        await surroundingAreas()
+        if(!hasFetchedArea.current){
+          await surroundingAreas()
+          hasFetchedArea.current = true
+        }
       }
     }
     fetchAreas()

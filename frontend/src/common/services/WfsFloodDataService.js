@@ -72,7 +72,6 @@ const callForSurroundingAreas = async (bbox, type) => {
     outputFormat: 'GEOJSON'
   }
   const result = await backendCall(WFSParams, 'api/wfs')
-  console.log(result)
   return result
 }
 

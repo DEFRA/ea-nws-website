@@ -107,7 +107,7 @@ export default function OrganisationServiceSelectionPage () {
                       className='govuk-link'
                     >
                       <Button
-                        text='Apply (approval takes 3 to 5 days'
+                        text='Apply (approval takes 3 to 5 days)'
                         className='govuk-button govuk-!-margin-bottom-1'
                       />
                     </a>

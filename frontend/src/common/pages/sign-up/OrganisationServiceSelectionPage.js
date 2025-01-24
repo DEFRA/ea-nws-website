@@ -36,16 +36,16 @@ export default function OrganisationServiceSelectionPage () {
               Select service
             </h1>
             <div className='govuk-body'>
-              <div class='govuk-grid-column-one-half govuk-!-padding-left-0'>
+              <div class='govuk-grid-column-one-half govuk-!-padding-left-0 org-service-selection-container'>
                 <div className='outline-1px'>
                   <div className='org-service-selection-header govuk-heading-m govuk-!-margin-bottom-0'>
                     Standard
                   </div>
-                  <div className='org-service-selection-body'>
+                  <div>
                     <span className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4 govuk-!-margin-top-4'>
                       Recommended for
                     </span>
-                    <span className='govuk-caption-m govuk-!-font-size-21 govuk-!-padding-left-4 govuk-!-padding-bottom-5 govuk-!-font-weight-bold' style={{ color: '#0b0c0c' }}>
+                    <span className='govuk-caption-m govuk-!-font-size-24 govuk-!-padding-left-4 govuk-!-padding-bottom-6 govuk-!-font-weight-bold' style={{ color: '#0b0c0c' }}>
                       Homes or small businesses
                     </span>
                     <div className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4 govuk-!-margin-top-4 govuk-!-margin-bottom-4 govuk-!-padding-right-4' style={{ color: '#0b0c0c', paddingBottom: '28px' }}>
@@ -78,16 +78,16 @@ export default function OrganisationServiceSelectionPage () {
                   </div>
                 </div>
               </div>
-              <div class='govuk-grid-column-one-half govuk-!-padding-left-0'>
+              <div class='govuk-grid-column-one-half govuk-!-padding-left-0 org-service-selection-container'>
                 <div className='outline-1px'>
                   <div className='org-service-selection-header govuk-heading-m govuk-!-margin-bottom-0'>
                     Professional
                   </div>
-                  <div className='org-service-selection-body'>
+                  <div>
                     <span className='govuk-caption-m govuk-!-font-size-19 govuk-!-padding-left-4 govuk-!-margin-top-4'>
                       Recommended for
                     </span>
-                    <span className='govuk-caption-m govuk-!-font-size-21 govuk-!-padding-left-4 govuk-!-font-weight-bold' style={{ color: '#0b0c0c' }}>
+                    <span className='govuk-caption-m govuk-!-font-size-24 govuk-!-padding-left-4 govuk-!-font-weight-bold' style={{ color: '#0b0c0c' }}>
                       Organisations, local authorities and<br />
                       other category 1 or 2 responders
                     </span>

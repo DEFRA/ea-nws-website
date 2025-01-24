@@ -31,12 +31,17 @@ export default function PostCodeSearchLayout ({
     const locationFullAddress = useSelector((state) =>
       getLocationOther(state, 'full_address')
     )
+    const locationPostcode = useSelector((state) =>
+      getLocationOther(state, 'postcode')
+    )
     const locationXcoordinate = useSelector((state) =>
       getLocationOther(state, 'x_coordinate')
     )
     const locationYcoordinate = useSelector((state) =>
       getLocationOther(state, 'y_coordinate')
     )
+
+    const coordinatesAvailable = !!(locationXcoordinate && locationYcoordinate)
 
     return (
       <div className='govuk-inset-text'>
@@ -45,13 +50,24 @@ export default function PostCodeSearchLayout ({
           <>
             <br />
             {locationFullAddress}
+            {locationPostcode && <>, {locationPostcode}</>}
+            {coordinatesAvailable && (
+              <>
+                <br />
+              </>
+            )}
           </>
         )}
-        <br />
-        {locationXcoordinate && locationYcoordinate && (
+        {coordinatesAvailable && (
           <>
             <br />
-            {locationXcoordinate}, {locationYcoordinate}
+            {typeof locationXcoordinate === 'number'
+              ? Math.round(locationXcoordinate)
+              : locationXcoordinate}
+            ,{' '}
+            {typeof locationYcoordinate === 'number'
+              ? Math.round(locationYcoordinate)
+              : locationYcoordinate}
           </>
         )}
       </div>

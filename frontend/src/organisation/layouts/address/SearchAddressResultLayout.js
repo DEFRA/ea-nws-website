@@ -8,9 +8,12 @@ import {
   getLocationAdditional,
   getLocationOther,
   setCurrentLocationCoordinates,
+  setCurrentLocationEasting,
   setCurrentLocationFullAddress,
+  setCurrentLocationNorthing,
   setOrganizationAddress
 } from '../../../common/redux/userSlice'
+import { convertCoordinatesToEspg27700 } from '../../../common/services/CoordinatesFormatConverter'
 
 export default function SearchAddressResultLayout ({
   navigateToNextPage,
@@ -62,7 +65,7 @@ export default function SearchAddressResultLayout ({
         {locationXcoordinate && locationYcoordinate && (
           <>
             <br />
-            {locationXcoordinate}, {locationYcoordinate}
+            {Math.round(locationXcoordinate)}, {Math.round(locationYcoordinate)}
           </>
         )}
       </div>
@@ -74,6 +77,13 @@ export default function SearchAddressResultLayout ({
     if (flow?.includes('unmatched-locations')) {
       dispatch(setCurrentLocationFullAddress(selectedLocation.address))
       dispatch(setCurrentLocationCoordinates(selectedLocation.coordinates))
+
+      const { northing, easting } = convertCoordinatesToEspg27700(
+        selectedLocation.coordinates.longitude,
+        selectedLocation.coordinates.latitude
+      )
+      dispatch(setCurrentLocationNorthing(northing))
+      dispatch(setCurrentLocationEasting(easting))
     } else {
       dispatch(setOrganizationAddress(selectedLocation.address))
     }

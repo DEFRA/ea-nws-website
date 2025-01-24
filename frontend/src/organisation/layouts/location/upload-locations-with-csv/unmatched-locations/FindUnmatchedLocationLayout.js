@@ -137,19 +137,25 @@ export default function FindUnmatchedLocationLayout ({
         <>
           <br />
           {currentLocAddress}
+          {currentLocPostcode && <>, {currentLocPostcode}</>}
+          {coordinatesAvailable && (
+            <>
+              <br />
+            </>
+          )}
         </>
       )}
-      {coordinatesAvailable && !currentLocAddress && (
+
+      {coordinatesAvailable && (
         <>
           <br />
-          {currentLocXcoordinate}, {currentLocYcoordinate}
-        </>
-      )}
-      {coordinatesAvailable && currentLocAddress && (
-        <>
-          <br />
-          <br />
-          {currentLocXcoordinate}, {currentLocYcoordinate}
+          {typeof currentLocXcoordinate === 'number'
+            ? Math.round(currentLocXcoordinate)
+            : currentLocXcoordinate}
+          ,{' '}
+          {typeof currentLocYcoordinate === 'number'
+            ? Math.round(currentLocYcoordinate)
+            : currentLocYcoordinate}
         </>
       )}
     </div>

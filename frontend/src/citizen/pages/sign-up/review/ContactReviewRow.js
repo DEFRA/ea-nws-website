@@ -35,30 +35,21 @@ export default function ContactReviewRow ({
   return (
     <>
       <tr key={key} className='govuk-table__row'>
-        <td className='govuk-table__header govuk-!-width-one-half'>
+        <td className='govuk-table__header text-nowrap'>
           {rowDetails().titleRow}
         </td>
-        <td className='govuk-table__cell'>{contact}</td>
-        {isConfirmed
-          ? (
+        <td className='custom-table-cell govuk-table__cell'>
+          {contact}
+          {!isConfirmed && (
             <>
-              <td className='govuk-table__cell' />
-              <td className='govuk-table__cell' />
+              <br />
+              <br />
+              <strong className='govuk-tag govuk-tag--red '>Unconfirmed</strong>
             </>
-            )
-          : (
-            <>
-              <td className='govuk-table__cell'>
-                <strong className='govuk-tag govuk-tag--red'>Unconfirmed</strong>
-              </td>
-              <td className='govuk-table__cell'>
-                <Link to={rowDetails().confirmLink} className='govuk-link'>
-                  Confirm
-                </Link>
-              </td>
-            </>
-            )}
-        <td className='govuk-table__cell'>
+          )}
+        </td>
+
+        <td className='custom-table-cell govuk-table__cell'>
           {rowDetails().showDelete && (
             <Link
               to='/signup/review/remove-contact'
@@ -70,6 +61,15 @@ export default function ContactReviewRow ({
             >
               Remove
             </Link>
+          )}
+          {!isConfirmed && (
+            <>
+              <br />
+              <br />
+              <Link to={rowDetails().confirmLink} className='govuk-link'>
+                Confirm
+              </Link>
+            </>
           )}
         </td>
       </tr>

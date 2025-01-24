@@ -1,3 +1,4 @@
+const { logger } = require('../plugins/logging')
 const getSecretKeyValue = require('./SecretsManager')
 const getDownloadCitizenFloodHistoryUrl = async () => {
   try {
@@ -16,7 +17,8 @@ const getDownloadCitizenFloodHistoryUrl = async () => {
         errorMessage: 'citizenFloodHistoryUrl has no value!'
       }
     }
-  } catch {
+  } catch (error) {
+    logger.error(error)
     return {
       status: 500,
       errorMessage: 'Oops, something happened!'

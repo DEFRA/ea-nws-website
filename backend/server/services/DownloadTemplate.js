@@ -1,3 +1,4 @@
+const { logger } = require('../plugins/logging')
 const getSecretKeyValue = require('./SecretsManager')
 const getDownloadTemplateUrl = async () => {
   try {
@@ -9,7 +10,8 @@ const getDownloadTemplateUrl = async () => {
       status: 200,
       data: response
     }
-  } catch {
+  } catch (error) {
+    logger.error(error)
     return {
       status: 500,
       errorMessage: 'Oops, something happened!'

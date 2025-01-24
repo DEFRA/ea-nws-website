@@ -63,7 +63,7 @@ export default function LocationMessagesPage () {
 
   const surroundingAreas = async () => {
     let result
-    if (additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS) {
+    if (additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS || currentLocation.geometry === null ) {
       result = await getSurroundingFloodAreas(
         currentLocation.coordinates.latitude, currentLocation.coordinates.longitude,
         0.5
@@ -122,17 +122,29 @@ export default function LocationMessagesPage () {
   useEffect(() => {
     const processFloodData = () => {
       if (floodHistoryData) {
+        let allAreas
+        let warnings
+        let alerts
+        if (additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS || currentLocation.geometry === null ){
+          allAreas = [...warningAreas.features, ...alertAreas.features] 
+          warnings = [...warningAreas.features]    
+          alerts = [...alertAreas.features]
+        }
+        else{
+          allAreas = [...warningAreas, ...alertAreas] 
+          warnings = [...warningAreas]    
+          alerts = [...alertAreas]
+        }
         if (alertAreas && warningAreas) {
-          const allAreas = [...warningAreas, ...alertAreas]
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Warning', index))
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Warning Rapid Response', index))
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
         } else if (warningAreas) {
-          warningAreas.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
-          warningAreas.forEach((area, index) => setHistoricalData(area, 'Flood Warning', index))
-          warningAreas.forEach((area, index) => setHistoricalData(area, 'Flood Warning Rapid Response', index))
+          warnings.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
+          warnings.forEach((area, index) => setHistoricalData(area, 'Flood Warning', index))
+          warnings.forEach((area, index) => setHistoricalData(area, 'Flood Warning Rapid Response', index))
         } else if (alertAreas) {
-          alertAreas.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
+          alerts.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
         }
       }
     }

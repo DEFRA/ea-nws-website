@@ -1726,12 +1726,16 @@ govuk-menu-toggle.button-menu > button {
 .private-beta-watermark {
   min-height: 100%;
   background:
-    url('data:image/svg+xml;utf8,<svg style="transform:rotate(28.76deg)" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 100 10"><text x="0" y="0" opacity="0.1" font-family="Arial" fill="%23000">Test service </text></svg>')
-    0 0/200px 200px;
+    url('data:image/svg+xml;utf8,<svg style="transform:rotate(28.76deg)" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 85 10"><text x="0" y="0" opacity="0.1" font-family="Arial" fill="%23000">Test service</text></svg>')
+    0 0/300px 300px;
 }
 
 .outline-1px {
   outline: 1px solid lightgray;
+}
+
+.org-service-selection-container {
+  background: #ffffff;
 }
 
 .org-service-selection-header {

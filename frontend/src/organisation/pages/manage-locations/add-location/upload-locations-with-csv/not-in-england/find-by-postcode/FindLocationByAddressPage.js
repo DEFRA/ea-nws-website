@@ -1,6 +1,6 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import SearchAddressResultLayout from '../../../../../../layouts/address/SearchAddressResultLayout'
+import AddressSearchLayout from '../../../../../../layouts/location/add-or-edit-location/search/address/AddressSearchLayout'
 import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function FindLocationByAddressPage () {
@@ -20,7 +20,7 @@ export default function FindLocationByAddressPage () {
     )
 
   return (
-    <SearchAddressResultLayout
+    <AddressSearchLayout
       navigateToNextPage={navigateToNextPage}
       navigateToPreviousPage={navigateToPreviousPage}
       navigateToFindPostcodePage={navigateToFindPostcodePage}

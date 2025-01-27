@@ -45,7 +45,12 @@ export default function AddressSearchLayout ({
       dispatch(setCurrentLocationUPRN(selectedLocation.name))
       dispatch(setCurrentLocationCoordinates(selectedLocation.coordinates))
       dispatch(setCurrentLocationAddress(selectedLocation.address))
-      dispatch(setCurrentLocationFullAddress(selectedLocation.address))
+
+      const postcodePattern = /\s*,?\s+\b[A-Z]{1,2}\d[A-Z\d]? \d[A-Z]{2}\b/
+      const fullAddress = selectedLocation.address
+        .replace(postcodePattern, '')
+        .trim()
+      dispatch(setCurrentLocationFullAddress(fullAddress))
       dispatch(setCurrentLocationPostcode(selectedLocation.postcode))
 
       const { northing, easting } = convertCoordinatesToEspg27700(
@@ -63,8 +68,13 @@ export default function AddressSearchLayout ({
 
   return (
     <>
-      <BackLink onClick={() => navigateToPreviousPage()} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <BackLink
+        onClick={(e) => {
+          e.preventDefault()
+          navigateToPreviousPage()
+        }}
+      />
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-body'>
           <div className='govuk-grid-row'>
             {loading
@@ -82,8 +92,11 @@ export default function AddressSearchLayout ({
                       Postcode: {postCode}
                       {'   '}
                       <Link
-                        onClick={() => navigateToFindPostcodePage()}
-                        className='govuk-link govuk-!-padding-left-5'
+                        onClick={(e) => {
+                          e.preventDefault()
+                          navigateToFindPostcodePage()
+                        }}
+                        className='govuk-link govuk-!-margin-left-5'
                       >
                         Change postcode
                       </Link>
@@ -109,7 +122,7 @@ export default function AddressSearchLayout ({
                       </tbody>
                     </table>
                     <Button
-                      text='I cannot find the addressss'
+                      text='I cannot find the address'
                       className='govuk-button govuk-button--secondary'
                       onClick={navigateToCannotFindAddressPage}
                     />

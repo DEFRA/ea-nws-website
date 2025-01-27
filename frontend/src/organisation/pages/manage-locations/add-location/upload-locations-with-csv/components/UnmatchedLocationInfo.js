@@ -31,7 +31,7 @@ export default function UnmatchedLocationInfo () {
         <>
           <br />
           {locationFullAddress}
-          {/* {locationPostCode && <>, {locationPostCode}</>} */}
+          {locationPostCode && <>, {locationPostCode}</>}
           {coordinatesAvailable && (
             <>
               <br />

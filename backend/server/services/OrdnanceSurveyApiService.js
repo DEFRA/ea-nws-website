@@ -138,7 +138,7 @@ const osFindApiCall = async (address, minmatch = null) => {
           address: formattedAddress,
           coordinates: coordinates,
           postcode: result.DPA.POSTCODE,
-          inEngland: result.DPA.COUNTRY_CODE === 'E' ? true : false
+          inEngland: result.DPA.COUNTRY_CODE === 'E'
         }
       })
       return { status: response.status, data: responseData }

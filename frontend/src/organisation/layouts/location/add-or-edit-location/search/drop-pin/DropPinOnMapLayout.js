@@ -7,16 +7,17 @@ import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import store from '../../../../../../common/redux/store'
 import {
-  getLocationAdditional,
-  getLocationOther,
   setCurrentLocation,
-  setCurrentLocationCoordinates
+  setCurrentLocationCoordinates,
+  setCurrentLocationEasting,
+  setCurrentLocationNorthing
 } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { convertCoordinatesToEspg27700 } from '../../../../../../common/services/CoordinatesFormatConverter'
 import { locationInEngland } from '../../../../../../common/services/validations/LocationInEngland'
 import Map from '../../../../../components/custom/Map'
 import MapInteractiveKey from '../../../../../components/custom/MapInteractiveKey'
+import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 
 export default function DropPinOnMapLayout ({
   navigateToNextPage,
@@ -46,12 +47,14 @@ export default function DropPinOnMapLayout ({
       longitude = pinCoords.longitude
     }
 
-    const { northing, easting } = convertCoordinatesToEspg27700(
+    const { easting, northing } = convertCoordinatesToEspg27700(
       longitude,
       latitude
     )
+    dispatch(setCurrentLocationEasting(easting))
+    dispatch(setCurrentLocationNorthing(northing))
 
-    return `${Math.trunc(northing)}, ${Math.trunc(easting)}`
+    return `${Math.trunc(easting)}, ${Math.trunc(northing)}`
   }
 
   useEffect(() => {
@@ -64,40 +67,6 @@ export default function DropPinOnMapLayout ({
       setError('')
     }
   }, [pinCoords])
-
-  const LocationDetails = () => {
-    const locationName = useSelector((state) =>
-      getLocationAdditional(state, 'locationName')
-    )
-    const locationFullAddress = useSelector((state) =>
-      getLocationOther(state, 'full_address')
-    )
-    const locationXcoordinate = useSelector((state) =>
-      getLocationOther(state, 'x_coordinate')
-    )
-    const locationYcoordinate = useSelector((state) =>
-      getLocationOther(state, 'y_coordinate')
-    )
-
-    return (
-      <div className='govuk-inset-text'>
-        <strong>{locationName}</strong>
-        {locationFullAddress && (
-          <>
-            <br />
-            {locationFullAddress}
-          </>
-        )}
-        <br />
-        {locationXcoordinate && locationYcoordinate && (
-          <>
-            <br />
-            {locationXcoordinate}, {locationYcoordinate}
-          </>
-        )}
-      </div>
-    )
-  }
 
   const handleSubmit = async () => {
     if (!pinCoords) {
@@ -166,8 +135,13 @@ export default function DropPinOnMapLayout ({
                 You can then add the location to this account.
               </p>
 
-              {flow?.includes('unmatched-locations') && <LocationDetails />}
-
+              {flow?.includes('unmatched-locations') && (
+                <UnmatchedLocationInfo />
+              )}
+            </div>
+          </div>
+          <div class='govuk-grid-column-three-quarters '>
+            <div className='govuk-body'>
               <div className='govuk-!-margin-bottom-4'>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   {location.state && (

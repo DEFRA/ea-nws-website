@@ -158,7 +158,7 @@ export default function ConfirmLocationLayout ({
                       </span>
                     )
                   })}
-                  {currentPostCode}
+                  {currentPostCode && currentPostCode}
                 </p>
               </>
             )}

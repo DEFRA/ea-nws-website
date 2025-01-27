@@ -22,10 +22,14 @@ export default function LocationNotInEnglandInfoPage () {
     getLocationOther(state, 'full_address')
   )
   const formattedAddress = currentAddress ? currentAddress.split(',') : ''
+  const currentPostCode = useSelector((state) =>
+    getLocationOther(state, 'postcode')
+  )
+  const xCoord = useSelector((state) => getLocationOther(state, 'x_coordinate'))
+  const yCoord = useSelector((state) => getLocationOther(state, 'y_coordinate'))
 
-  const handleSubmit = () => {
+  const handleSubmit = () =>
     navigate(orgManageLocationsUrls.unmatchedLocations.notInEngland.find)
-  }
 
   const navigateBack = (e) => {
     e.preventDefault()
@@ -58,21 +62,23 @@ export default function LocationNotInEnglandInfoPage () {
                       </span>
                     )
                   })}
+                  {currentPostCode && currentPostCode}
                 </p>
               </>
             )}
-            <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-4 govuk-!-margin-bottom-0'>
-              X and Y coordinates
-            </h3>
-            <p>
-              {Math.round(
-                useSelector((state) => getLocationOther(state, 'x_coordinate'))
-              )}
-              {', '}
-              {Math.round(
-                useSelector((state) => getLocationOther(state, 'y_coordinate'))
-              )}
-            </p>
+
+            {xCoord && yCoord && (
+              <>
+                <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-4 govuk-!-margin-bottom-0'>
+                  X and Y coordinates
+                </h3>
+                <p>
+                  {xCoord}
+                  {', '}
+                  {yCoord}
+                </p>
+              </>
+            )}
 
             <p className='govuk-!-margin-top-8'>
               This location is not in England. If you think this is not correct

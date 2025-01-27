@@ -2,20 +2,17 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import Autocomplete from '../../../common/components/gov-uk/Autocomplete'
 import Button from '../../../common/components/gov-uk/Button'
 import Checkbox from '../../../common/components/gov-uk/CheckBox'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import {
   getLocationAdditional,
-  setCurrentLocationKeywords,
-  setOrgCurrentContact
+  setCurrentLocationKeywords, setOrgCurrentContactKeywords
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import {
-  getAdditionals,
-  updateAdditionals
+  getAdditionals
 } from '../../../common/services/ProfileServices'
 
 export default function KeywordsLayout ({
@@ -37,7 +34,7 @@ export default function KeywordsLayout ({
         'api/elasticache/get_data',
         navigate
       )
-      let orgKeywords = null
+      let orgKeywords = []
       if (data) {
         orgKeywords = data
       }
@@ -229,13 +226,7 @@ export default function KeywordsLayout ({
     if (keywordType === 'location') {
       dispatch(setCurrentLocationKeywords(JSON.stringify(keywordsArrayChecked)))
     } else {
-      const updatedContact = updateAdditionals(currentObject, [
-        {
-          id: 'keywords',
-          value: JSON.stringify(keywordsArrayChecked)
-        }
-      ])
-      dispatch(setOrgCurrentContact(updatedContact))
+      dispatch(setOrgCurrentContactKeywords(JSON.stringify(keywordsArrayChecked)))
     }
 
     navigateToNextPage()
@@ -248,7 +239,7 @@ export default function KeywordsLayout ({
 
   return (
     <>
-      <OrganisationAccountNavigation />
+
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

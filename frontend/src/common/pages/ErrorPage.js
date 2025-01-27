@@ -1,30 +1,32 @@
 import React from 'react'
-import { useNavigate } from 'react-router-dom'
-import BackLink from '../components/custom/BackLink'
+import { Link } from 'react-router-dom'
 
 export default function ErrorPage () {
-  const navigate = useNavigate()
-
   return (
     <>
-      <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-body govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
               Sorry, there is a problem with the service
             </h1>
-            <p className='govuk-body'>Try again later.</p>
-            <p className='govuk-body'>
-              If you're in England, Scotland or Wales you can register, update
-              your details or cancel your account by calling Floodline.
+            <p>Try again later.</p>
+
+            <p className='govuk-!-padding-top-6'>
+              <b>Contact us, if you need help</b><br />
+              Telephone: 0345 988 1188<br />
+              Textphone: 0345 602 6340<br />
+              Open 24 hours a day, 7 days a week
             </p>
-            <h3 className='govuk-heading-s'>Floodline</h3>
-            <ul className='govuk-list'>
-              <li>Telephone: 0345 988 1188</li>
-              <li>Textphone: 0345 602 6340</li>
-              <li>24 hour service</li>
-            </ul>
+
+            <p>
+              Email: {' '}
+              <Link>
+                getfloodwarnings@environment-agency.gov.uk
+              </Link>
+              <br />
+              Monday to Friday, 8am to 6pm
+            </p>
           </div>
         </div>
       </main>

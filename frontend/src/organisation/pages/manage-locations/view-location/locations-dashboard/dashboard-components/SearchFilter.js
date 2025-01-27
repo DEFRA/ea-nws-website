@@ -1,24 +1,39 @@
 import {
   faAngleDown,
   faAngleUp,
-  faMagnifyingGlass
+  faMagnifyingGlass,
+  faXmark
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import CheckBox from '../../../../../../common/components/gov-uk/CheckBox'
 
 export default function SearchFilter ({
+  // TODO: Combine filter values into a single object
   locations,
   setFilteredLocations,
   resetPaging,
   setResetPaging,
+  selectedFilters,
+  setSelectedFilters,
   selectedLocationTypeFilters,
   setSelectedLocationTypeFilters,
-  selectedFloodMessagesAvailbleFilters,
-  setSelectedFloodMessagesAvailbleFilters,
   selectedBusinessCriticalityFilters,
-  setSelectedBusinessCriticalityFilters
+  setSelectedBusinessCriticalityFilters,
+  selectedKeywordFilters,
+  setSelectedKeywordFilters,
+  selectedGroundWaterRiskFilters,
+  setSelectedGroundWaterRiskFilters,
+  selectedRiverSeaRiskFilters,
+  setSelectedRiverSeaRiskFilters,
+  selectedFloodMessagesAvailableFilters,
+  setSelectedFloodMessagesAvailableFilters,
+  selectedFloodMessagesSentFilters,
+  setSelectedFloodMessagesSentFilters,
+  selectedLinkedFilters,
+  setSelectedLinkedFilters
 }) {
   // filters
   const [locationNameFilter, setLocationNameFilter] = useState('')
@@ -26,59 +41,89 @@ export default function SearchFilter ({
   const locationTypes = [
     ...new Set(
       locations
-        .map((location) => location.additionals.other.location_type)
+        .map((location) => location.additionals.other?.location_type)
         .filter((locationType) => locationType) // filters out undefined entries
     )
   ]
+
   // the below probably needs updated unless it can only be Yes or No
-  const floodMessagesAvailble = ['Yes', 'No']
+  const floodMessagesAvailable = ['Yes', 'No']
+  const floodMessagesSent = []
+
   const businessCriticality = [
     ...new Set(
       locations
-        .map(
-          (location) =>
-            location.additionals.other.business_criticality
-        )
+        .map((location) => location.additionals.other?.business_criticality)
         .filter((businessCriticality) => businessCriticality) // filters out undefined entries
     )
   ]
 
-  // search filters visibility
-  const [locationNameVisible, setLocationNameVisible] = useState(true)
-  const [locationTypeVisible, setLocationTypeVisible] = useState(true)
-  const [floodMessagesVisible, setFloodMessagesVisible] = useState(true)
-  const [businessCriticalityVisible, setBusinessCriticalityVisible] =
-    useState(true)
+  const riverSeaRisk = [
+    ...new Set(
+      locations
+        .map((location) => location.riverSeaRisk?.title)
+        .filter((title) => title)
+    )
+  ]
+
+  const groundWaterRisk = [
+    ...new Set(
+      locations
+        .map((location) => location.groundWaterRisk?.title)
+        .filter((title) => title)
+    )
+  ]
+
+  const keywords = locations
+    .flatMap((location) => {
+      if (Array.isArray(location.additionals)) {
+        return location.additionals
+          .filter((additional) => additional.id === 'keywords')
+          .map((additional) => JSON.parse(additional.value.s))
+      }
+      return []
+    })
+    .flat()
+
+  const linkedLocations = [...new Set(['No', 'Yes'])]
+
+  // Visibility filters
+  const [locationNameVisible, setLocationNameVisible] = useState(false)
+  const [locationTypeVisible, setLocationTypeVisible] = useState(
+    selectedLocationTypeFilters.length > 0
+  )
+  const [floodMessagesAvailableVisible, setFloodMessagesAvailableVisible] =
+    useState(selectedFloodMessagesAvailableFilters.length > 0)
+  const [floodMessagesSentVisible, setFloodMessagesSentVisible] = useState(
+    selectedFloodMessagesSentFilters.length > 0
+  )
+  const [businessCriticalityVisible, setBusinessCriticalityVisible] = useState(
+    selectedBusinessCriticalityFilters.length > 0
+  )
+  const [riverSeaRiskVisible, setRiverSeaRiskVisible] = useState(
+    selectedRiverSeaRiskFilters.length > 0
+  )
+  const [groundWaterRiskVisible, setGroundWaterRiskVisible] = useState(
+    selectedGroundWaterRiskFilters.length > 0
+  )
+  const [keywordVisible, setKeywordVisible] = useState(
+    selectedKeywordFilters.length > 0
+  )
+  const [linkedVisible, setLinkedVisible] = useState(
+    selectedLinkedFilters.length > 0
+  )
 
   // handle filters applied
-  const handleLocationTypeFilterChange = (event) => {
-    const { value } = event.target
-    setSelectedLocationTypeFilters((prev) => {
-      if (prev.includes(value)) {
+  const handleFilterChange = (e, setFilters) => {
+    const { value } = e.target
+    setFilters((prev) => {
+      if (selectedFilters.includes(value)) {
+        setSelectedFilters([
+          ...selectedFilters.filter((preference) => preference !== value)
+        ])
         return prev.filter((preference) => preference !== value)
       } else {
-        return [...prev, value]
-      }
-    })
-  }
-
-  const handleFloodMessagesAvailbleFilterChange = (event) => {
-    const { value } = event.target
-    setSelectedFloodMessagesAvailbleFilters((prev) => {
-      if (prev.includes(value)) {
-        return prev.filter((preference) => preference !== value)
-      } else {
-        return [...prev, value]
-      }
-    })
-  }
-
-  const handleBusinessCriticalityFilterChange = (event) => {
-    const { value } = event.target
-    setSelectedBusinessCriticalityFilters((prev) => {
-      if (prev.includes(value)) {
-        return prev.filter((preference) => preference !== value)
-      } else {
+        setSelectedFilters([...selectedFilters, value])
         return [...prev, value]
       }
     })
@@ -88,7 +133,7 @@ export default function SearchFilter ({
     let filteredLocations = locations
 
     // Apply Location name filter
-    if (locationNameFilter) {
+    if (locationNameFilter.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
         location.additionals.locationName
           .toLowerCase()
@@ -100,24 +145,24 @@ export default function SearchFilter ({
     if (selectedLocationTypeFilters.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
         selectedLocationTypeFilters.includes(
-          location.additionals.other.location_type
+          location.additionals.other?.location_type
         )
       )
     }
 
     // Apply Flood Messages filter
-    if (selectedFloodMessagesAvailbleFilters.length > 0) {
+    if (selectedFloodMessagesAvailableFilters.length > 0) {
       filteredLocations = filteredLocations.filter((location) => {
         if (
-          selectedFloodMessagesAvailbleFilters.includes('Yes') &&
-          selectedFloodMessagesAvailbleFilters.includes('No')
+          selectedFloodMessagesAvailableFilters.includes('Yes') &&
+          selectedFloodMessagesAvailableFilters.includes('No')
         ) {
           // return all locations
           return true
-        } else if (selectedFloodMessagesAvailbleFilters.includes('Yes')) {
-          return location.additionals.other.alertTypes.length > 0
-        } else if (selectedFloodMessagesAvailbleFilters.includes('No')) {
-          return location.additionals.other.alertTypes.length === 0
+        } else if (selectedFloodMessagesAvailableFilters.includes('Yes')) {
+          return location.additionals.other?.alertTypes?.length > 0
+        } else if (selectedFloodMessagesAvailableFilters.includes('No')) {
+          return location.additionals.other?.alertTypes?.length === 0
         }
 
         // Default return none (this should never be reached)
@@ -129,8 +174,42 @@ export default function SearchFilter ({
     if (selectedBusinessCriticalityFilters.length > 0) {
       filteredLocations = filteredLocations.filter((location) =>
         selectedBusinessCriticalityFilters.includes(
-          location.additionals.other.business_criticality
+          location.additionals.other?.business_criticality
         )
+      )
+    }
+
+    // Apply river sea risk filter
+    if (selectedRiverSeaRiskFilters.length > 0) {
+      filteredLocations = filteredLocations.filter((location) =>
+        selectedRiverSeaRiskFilters.includes(location.riverSeaRisk?.title)
+      )
+    }
+
+    // Apply ground water risk filter
+    if (selectedGroundWaterRiskFilters.length > 0) {
+      filteredLocations = filteredLocations.filter((location) =>
+        selectedGroundWaterRiskFilters.includes(location.groundWaterRisk?.title)
+      )
+    }
+
+    // Apply keyword filter
+    if (selectedKeywordFilters.length > 0) {
+      filteredLocations = filteredLocations.filter((location) =>
+        selectedKeywordFilters.some((keyword) =>
+          location.additionals.other?.keywords.includes(keyword)
+        )
+      )
+    }
+
+    // Apply linked locations filter
+    if (selectedLinkedFilters.length > 0) {
+      filteredLocations = filteredLocations.filter(
+        (location) =>
+          (selectedLinkedFilters.includes('Yes') &&
+            location.linked_contacts?.length > 0) ||
+          (selectedLinkedFilters.includes('No') &&
+            location.linked_contacts?.length === 0)
       )
     }
 
@@ -138,32 +217,39 @@ export default function SearchFilter ({
     setFilteredLocations(filteredLocations)
   }
 
-  return (
+  // Clear all filters
+  const clearFilters = () => {
+    setFilteredLocations(locations)
+    setSelectedFilters([])
+    setLocationNameFilter('')
+    setSelectedLocationTypeFilters([])
+    setSelectedFloodMessagesAvailableFilters([])
+    setSelectedFloodMessagesSentFilters([])
+    setSelectedBusinessCriticalityFilters([])
+    setSelectedRiverSeaRiskFilters([])
+    setSelectedGroundWaterRiskFilters([])
+    setSelectedKeywordFilters([])
+    setSelectedLinkedFilters([])
+  }
+
+  // Location name filter
+  const locationNameSearchFilter = (
     <>
-      <div className='govuk-heading-m locations-filter-header'>
-        <h1 className='govuk-heading-m'>Filter</h1>
-      </div>
-
-      <Button
-        text='Apply Filter'
-        className='govuk-button govuk-button--primary'
-        onClick={() => filterLocations()}
-      />
-      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3' />
-
-      {/* Location name filter */}
+      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-bottom-3 govuk-!-margin-left-3 govuk-!-margin-right-3' />
       <div
-        className='locations-filter-section'
+        className='locations-filter-name-section'
         onClick={() => setLocationNameVisible(!locationNameVisible)}
       >
         <FontAwesomeIcon
           icon={locationNameVisible ? faAngleUp : faAngleDown}
           size='lg'
         />
-        <p className='locations-filter-title'>Location name</p>
+        <label className='govuk-label' style={{ color: '#1d70b8' }}>
+          Location name
+        </label>
       </div>
-      {locationNameVisible && (
-        <div class='govuk-form-group'>
+      {(locationNameVisible || locationNameVisible.length > 0) && (
+        <div class='govuk-form-group' className='locations-name-filter'>
           <div class='input-with-icon'>
             <FontAwesomeIcon icon={faMagnifyingGlass} className='input-icon' />
             <input
@@ -178,90 +264,231 @@ export default function SearchFilter ({
           </div>
         </div>
       )}
-      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3' />
+    </>
+  )
 
-      {/* Location type filter */}
-      <div
-        className='locations-filter-section'
-        onClick={() => {
-          setLocationTypeVisible(!locationTypeVisible)
-        }}
-      >
-        <FontAwesomeIcon
-          icon={locationTypeVisible ? faAngleUp : faAngleDown}
-          size='lg'
-        />
-        <p className='locations-filter-title'>Location type</p>
-      </div>
-      {locationTypeVisible && (
-        <div className='govuk-checkboxes govuk-checkboxes--small'>
-          {locationTypes.map((option) => (
-            <CheckBox
-              key={option}
-              label={option}
-              value={option}
-              checked={selectedLocationTypeFilters.includes(option)}
-              onChange={handleLocationTypeFilterChange}
-            />
-          ))}
+  // All other filters
+  const otherFilter = (
+    filterTitle,
+    filterType,
+    selectedFilterType,
+    setSelectedFilterType,
+    visible,
+    setVisible
+  ) => {
+    return (
+      <>
+        <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3 govuk-!-margin-left-3 govuk-!-margin-right-3' />
+        <div
+          className='locations-filter-other-section'
+          onClick={() => {
+            setVisible(!visible)
+          }}
+        >
+          <FontAwesomeIcon icon={visible ? faAngleUp : faAngleDown} size='lg' />
+          &nbsp;
+          <label className='govuk-label' style={{ color: '#1d70b8' }}>
+            {filterTitle}
+          </label>
         </div>
-      )}
-      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3' />
+        {visible && (
+          <div className='govuk-checkboxes govuk-checkboxes--small locations-select-filter'>
+            {filterType.map((option) => (
+              <CheckBox
+                key={option}
+                label={option}
+                value={option}
+                checked={selectedFilterType.includes(option)}
+                onChange={(e) => handleFilterChange(e, setSelectedFilterType)}
+              />
+            ))}
+          </div>
+        )}
+      </>
+    )
+  }
 
-      {/* Flood messages available filter */}
-      <div
-        className='locations-filter-section'
-        onClick={() => {
-          setFloodMessagesVisible(!floodMessagesVisible)
-        }}
-      >
-        <FontAwesomeIcon
-          icon={floodMessagesVisible ? faAngleUp : faAngleDown}
-          size='lg'
-        />
-        <p className='locations-filter-title'>Flood messages available</p>
-      </div>
-      {floodMessagesVisible && (
-        <div className='govuk-checkboxes govuk-checkboxes--small'>
-          {floodMessagesAvailble.map((option) => (
-            <CheckBox
-              key={option}
-              label={option}
-              value={option}
-              checked={selectedFloodMessagesAvailbleFilters.includes(option)}
-              onChange={handleFloodMessagesAvailbleFilterChange}
-            />
-          ))}
-        </div>
-      )}
-      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3' />
+  // Selected filters
+  const selectedFilterContents = (filterName, filterArray, setFilterArray) => {
+    if (filterArray.length === 0) return null
 
-      {/* Business criticality filter */}
-      <div
-        className='locations-filter-section'
-        onClick={() => {
-          setBusinessCriticalityVisible(!businessCriticalityVisible)
-        }}
-      >
-        <FontAwesomeIcon
-          icon={businessCriticalityVisible ? faAngleUp : faAngleDown}
-          size='lg'
-        />
-        <p className='locations-filter-title'>Business criticality</p>
-      </div>
-      {businessCriticalityVisible && (
-        <div className='govuk-checkboxes govuk-checkboxes--small'>
-          {businessCriticality.map((option) => (
-            <CheckBox
-              key={option}
-              label={option}
-              value={option}
-              checked={selectedBusinessCriticalityFilters.includes(option)}
-              onChange={handleBusinessCriticalityFilterChange}
-            />
-          ))}
+    return (
+      <>
+        <div className='locations-selected-filter-panel'>
+          <h3 className='govuk-heading-s govuk-!-margin-top-5 govuk-!-margin-bottom-2'>
+            {filterName}
+          </h3>
+          <div className='locations-selected-filter-row'>
+            {filterArray.map((filter, index) => (
+              <div key={index} className='locations-selected-filter'>
+                <label className='govuk-label locations-selected-filter-label'>
+                  {filter}&nbsp;
+                </label>
+                <FontAwesomeIcon
+                  icon={faXmark}
+                  className='locations-selected-filter-icon'
+                  onClick={() => {
+                    setFilterArray(
+                      filterArray.filter((item) => item !== filter)
+                    )
+                  }}
+                />
+              </div>
+            ))}
+          </div>
         </div>
-      )}
+      </>
+    )
+  }
+
+  return (
+    <>
+      <div className='locations-filter-panel'>
+        <div className='locations-filter-header'>
+          <h1 className='govuk-heading-m govuk-!-margin-bottom-2'>Filter</h1>
+        </div>
+
+        {/* Selected filters */}
+        {(selectedFilters?.length > 0 || locationNameFilter.length > 0) && (
+          <div className='locations-selected-filters-panel'>
+            <div className='locations-selected-filters-section'>
+              <h2 className='govuk-heading-s' style={{ marginBottom: '0' }}>
+                Selected filters
+              </h2>
+              <Link
+                onClick={clearFilters}
+                className='govuk-body govuk-link inline-link'
+                style={{ marginLeft: 'auto', marginBottom: '0' }}
+              >
+                Clear filters
+              </Link>
+            </div>
+            {selectedFilterContents(
+              'Location type',
+              selectedLocationTypeFilters,
+              setSelectedLocationTypeFilters
+            )}
+            {selectedFilterContents(
+              'Business criticality',
+              selectedBusinessCriticalityFilters,
+              setSelectedBusinessCriticalityFilters
+            )}
+            {selectedFilterContents(
+              'Keywords',
+              selectedKeywordFilters,
+              setSelectedKeywordFilters
+            )}
+            {selectedFilterContents(
+              'Groundwater flood risk',
+              selectedGroundWaterRiskFilters,
+              setSelectedGroundWaterRiskFilters
+            )}
+            {selectedFilterContents(
+              'Rivers and sea flood risk',
+              selectedRiverSeaRiskFilters,
+              setSelectedRiverSeaRiskFilters
+            )}
+            {selectedFilterContents(
+              'Flood messages available',
+              selectedFloodMessagesAvailableFilters,
+              setSelectedFloodMessagesAvailableFilters
+            )}
+            {selectedFilterContents(
+              'Flood messages sent',
+              selectedFloodMessagesSentFilters,
+              setSelectedFloodMessagesSentFilters
+            )}
+            {selectedFilterContents(
+              'Linked to contacts',
+              selectedLinkedFilters,
+              setSelectedLinkedFilters
+            )}
+          </div>
+        )}
+
+        <div className=' govuk-!-margin-top-6 locations-apply-filters'>
+          <Button
+            text='Apply filters'
+            className='govuk-button govuk-button--primary'
+            onClick={() => filterLocations()}
+          />
+        </div>
+
+        {/* Filters */}
+        {locationNameSearchFilter}
+
+        {otherFilter(
+          'Location type',
+          locationTypes,
+          selectedLocationTypeFilters,
+          setSelectedLocationTypeFilters,
+          locationTypeVisible,
+          setLocationTypeVisible
+        )}
+
+        {otherFilter(
+          'Business criticality',
+          businessCriticality,
+          selectedBusinessCriticalityFilters,
+          setSelectedBusinessCriticalityFilters,
+          businessCriticalityVisible,
+          setBusinessCriticalityVisible
+        )}
+
+        {otherFilter(
+          'Keywords',
+          keywords,
+          selectedKeywordFilters,
+          setSelectedKeywordFilters,
+          keywordVisible,
+          setKeywordVisible
+        )}
+
+        {otherFilter(
+          'Groundwater flood risk',
+          groundWaterRisk,
+          selectedGroundWaterRiskFilters,
+          setSelectedGroundWaterRiskFilters,
+          groundWaterRiskVisible,
+          setGroundWaterRiskVisible
+        )}
+
+        {otherFilter(
+          'Rivers and sea flood risk',
+          riverSeaRisk,
+          selectedRiverSeaRiskFilters,
+          setSelectedRiverSeaRiskFilters,
+          riverSeaRiskVisible,
+          setRiverSeaRiskVisible
+        )}
+
+        {otherFilter(
+          'Flood messages available',
+          floodMessagesAvailable,
+          selectedFloodMessagesAvailableFilters,
+          setSelectedFloodMessagesAvailableFilters,
+          floodMessagesAvailableVisible,
+          setFloodMessagesAvailableVisible
+        )}
+
+        {otherFilter(
+          'Flood messages sent',
+          floodMessagesSent,
+          selectedFloodMessagesSentFilters,
+          setSelectedFloodMessagesSentFilters,
+          floodMessagesSentVisible,
+          setFloodMessagesSentVisible
+        )}
+
+        {otherFilter(
+          'Linked to contacts',
+          linkedLocations,
+          selectedLinkedFilters,
+          setSelectedLinkedFilters,
+          linkedVisible,
+          setLinkedVisible
+        )}
+      </div>
     </>
   )
 }

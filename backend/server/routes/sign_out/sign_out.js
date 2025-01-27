@@ -1,3 +1,4 @@
+const { logger } = require('../../plugins/logging')
 const { orgSignOut } = require('../../services/elasticache')
 const {
   createGenericErrorResponse
@@ -12,6 +13,7 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
+
         const { profileId, orgId } = request.payload
         if (profileId && orgId) {
           await orgSignOut(profileId, orgId)
@@ -21,7 +23,8 @@ module.exports = [
         } else {
           return createGenericErrorResponse(h)
         }
-      } catch {
+      } catch (error) {
+        logger.error(error)
         createGenericErrorResponse(h)
       }
     }

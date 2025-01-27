@@ -6,7 +6,7 @@ import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageCon
 export default function AddContactKeywordsPage () {
   const navigate = useNavigate()
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     navigate(orgManageContactsUrls.add.channels)
   }
 
@@ -42,7 +42,7 @@ export default function AddContactKeywordsPage () {
       <KeywordsLayout
         keywordType='contact'
         keywordText={KeywordText}
-        navigateToNextPage={NavigateToNextPage}
+        navigateToNextPage={navigateToNextPage}
       />
     </>
   )

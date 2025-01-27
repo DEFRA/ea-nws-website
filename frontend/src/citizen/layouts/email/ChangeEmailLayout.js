@@ -11,7 +11,7 @@ import { addUnverifiedContact } from '../../../common/services/ProfileServices'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 
 export default function ChangeEmailLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const navigate = useNavigate()
@@ -51,7 +51,7 @@ export default function ChangeEmailLayout ({
             setError(errorMessage)
           } else {
             dispatch(setCurrentContact(email))
-            NavigateToNextPage()
+            navigateToNextPage()
           }
         }
       }
@@ -65,6 +65,7 @@ export default function ChangeEmailLayout ({
 
   return (
     <>
+
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

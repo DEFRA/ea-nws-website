@@ -13,7 +13,7 @@ import {
 
 export default function ConfirmDeleteContactDetailsLayout ({
   NavigateToPreviousPage,
-  NavigateToNextPage
+  navigateToNextPage
 }) {
   const location = useLocation()
   const dispatch = useDispatch()
@@ -42,7 +42,7 @@ export default function ConfirmDeleteContactDetailsLayout ({
     )
     if (!errorMessage) {
       dispatch(setProfile(updatedProfile))
-      NavigateToNextPage(location.state.type, location.state.contact)
+      navigateToNextPage(location.state.type, location.state.contact)
     }
   }
 
@@ -53,6 +53,7 @@ export default function ConfirmDeleteContactDetailsLayout ({
 
   return (
     <>
+
       <BackLink onClick={handleCancelLink} />
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>

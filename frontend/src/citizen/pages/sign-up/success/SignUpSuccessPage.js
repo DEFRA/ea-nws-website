@@ -1,7 +1,34 @@
-import { Link } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import Button from '../../../../common/components/gov-uk/Button'
 import ConfirmationPanel from '../../../../common/components/gov-uk/Panel'
+import { backendCall } from '../../../../common/services/BackendService'
 
 export default function SignUpSuccessPage () {
+  const navigate = useNavigate()
+  const profile = useSelector((state) => state.session.profile)
+  const [servicePhase, setServicePhase] = useState(false)
+
+  async function getServicePhase () {
+    const { data } = await backendCall('data', 'api/service/get_service_phase')
+    setServicePhase(data)
+  }
+
+  async function notifySignUpSuccess () {
+    const dataToSend = {
+      email: profile.emails[0],
+      fullName: profile.firstname + ' ' + profile.lastname
+    }
+
+    await backendCall(dataToSend, 'api/notify/sign_up', navigate)
+  }
+
+  useEffect(() => {
+    getServicePhase()
+    notifySignUpSuccess()
+  }, [])
+
   // need to check for authToken
   return (
     <>
@@ -11,45 +38,64 @@ export default function SignUpSuccessPage () {
             <ConfirmationPanel
               title='Your flood messages are set up'
               body="You've also created your account."
+              preTitle={servicePhase === 'beta' ? 'TESTING PHASE ONLY' : ''}
             />
             <div className='govuk-body govuk-!-margin-top-6'>
+              <h1 className='govuk-heading-m govuk-!-margin-top-6'>
+                What happens next
+              </h1>
               <p>
-                We have sent you an email confirmation. If you have not received
+                We've sent you an email confirmation. If you have not received
                 this within 2 hours, check your spam.
               </p>
-              <h1 className='govuk-heading-m govuk-!-margin-top-6'>
-                Next Steps
-              </h1>
-              <p className='govuk-!-margin-top-6'>
-                You'll now receive flood messages for your location. If any are
-                issued.
-              </p>
-              <p className='govuk-!-margin-top-6'>
-                These will be sent from Floodline at the Environment Agency.
-              </p>
-              <h2 className='govuk-heading-m govuk-!-margin-top-6'>
-                If you want to add more locations or contacts
-              </h2>
+              {servicePhase !== 'beta' && (
+                <div>
+                  <p className='govuk-!-margin-top-6'>
+                    You'll now receive flood messages for your location. If any
+                    are issued.
+                  </p>
+                  <p className='govuk-!-margin-top-6'>
+                    These will be sent from Floodline at the Environment Agency.
+                  </p>
+                </div>
+              )}
               <p className='govuk-body govuk-!-margin-top-6'>
-                You can now use your account to add more{' '}
-                <Link to='/home' className='govuk-link'>
-                  locations.
-                </Link>
+                You can now use your account to add more:
               </p>
-              <p className='govuk-!-margin-top-6'>
-                You can also add more{' '}
-                <Link to='/managecontacts' className='govuk-link'>
-                  email addresses or phone numbers
-                </Link>
-                &nbsp; to receive flood messages.
-              </p>
-              <p className='govuk-!-margin-top-6'>
-                {' '}
-                <Link to='/signup/feedback' className='govuk-link'>
-                  What do you think of the service?
-                </Link>
-                &nbsp; (takes 30 seconds)
-              </p>
+              <ul>
+                <li>
+                  <Link to='/home' className='govuk-link'>
+                    locations.
+                  </Link>
+                </li>
+                <li>
+                  <Link to='/managecontacts' className='govuk-link'>
+                    email addresses or phone numbers
+                  </Link>
+                </li>
+              </ul>
+              {servicePhase !== 'beta' && (
+                <p className='govuk-!-margin-top-6'>
+                  {' '}
+                  <Link to='/signup/feedback' className='govuk-link'>
+                    What do you think of the service?
+                  </Link>
+                  &nbsp; (takes 30 seconds)
+                </p>
+              )}
+              {servicePhase === 'beta' && (
+                <div>
+                  <h1 className='govuk-heading-m govuk-!-margin-top-6'>
+                    Now answer some questions about the sign up process
+                  </h1>
+                  <a
+                    className='govuk-link'
+                    href='https://forms.office.com/e/XgucY9mkPV'
+                  >
+                    <Button text='Continue' className='govuk-button' />
+                  </a>
+                </div>
+              )}
             </div>
           </div>
         </div>

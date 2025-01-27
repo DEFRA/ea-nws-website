@@ -4,6 +4,7 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../../common/components/gov-uk/Radio'
+
 export default function SelectContactTypeToAddPage () {
   const navigate = useNavigate()
   const [selectedContactType, setSelectedContactType] = useState('')
@@ -40,6 +41,7 @@ export default function SelectContactTypeToAddPage () {
 
   return (
     <>
+
       <BackLink to='/signup/review' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

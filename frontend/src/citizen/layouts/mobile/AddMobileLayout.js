@@ -12,7 +12,7 @@ import { normalisePhoneNumber } from '../../../common/services/formatters/Normal
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
 
 export default function AddMobileLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const navigate = useNavigate()
@@ -53,7 +53,7 @@ export default function AddMobileLayout ({
           setError(errorMessage)
         } else {
           dispatch(setCurrentContact(normalisedPhoneNumber))
-          NavigateToNextPage()
+          navigateToNextPage()
         }
       }
     }
@@ -66,6 +66,7 @@ export default function AddMobileLayout ({
 
   return (
     <>
+
       <BackLink onClick={handleBackLink} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

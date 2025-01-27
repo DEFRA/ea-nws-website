@@ -9,6 +9,7 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 const { Dbf } = require('dbf-reader')
+const { logger } = require('../../plugins/logging')
 
 const streamToBuffer = async (stream) => {
   return new Promise((resolve, reject) => {
@@ -29,6 +30,7 @@ module.exports = [
       let Contents = []
       let s3BucketName = ''
       let zipFilePath = ''
+      const errorsArray = []
 
       try {
         if (!request.payload) {
@@ -52,7 +54,7 @@ module.exports = [
 
         // ***  Check 1: empty zip file *** //
         if (!Contents || Contents.length === 0) {
-          throw new Error('The file is empty')
+          errorsArray.push('The file is empty')
         }
 
         // ***  Check 2: all prefixes match *** //
@@ -62,7 +64,7 @@ module.exports = [
         })
         const uniquePrefixes = new Set(prefixes)
         if (uniquePrefixes.size > 1) {
-          throw new Error(
+          errorsArray.push(
             'Each file in the ZIP must have the same prefix, for example, locations.shp, locations.shx or locations.dbf'
           )
         }
@@ -75,7 +77,7 @@ module.exports = [
         })
         for (const required of requiredFilesTypes) {
           if (!presentFileTypes.includes(required)) {
-            throw new Error(
+            errorsArray.push(
               'The ZIP file must contain .shp (main file), .shx (index file) and .dbf (database file)'
             )
           }
@@ -83,27 +85,32 @@ module.exports = [
 
         // ***  Check 4: no location name *** //
         // Retrieve dbf file from bucket (know it exists from Check 3)
-        const dbfResponse = await s3Client.send(
-          new GetObjectCommand({
-            Bucket: s3BucketName,
-            Key: Contents.find((item) => item.Key.endsWith('.dbf'))?.Key
-          })
-        )
-        const dbfBuffer = await streamToBuffer(dbfResponse.Body)
-        const dbfTable = Dbf.read(dbfBuffer)
-        if (dbfTable) {
-          // Find the index of the 'lrf15nm' column (which stores the location name)
-          const locationIndex = dbfTable.columns.findIndex(
-            (col) => col.name === 'lrf15nm'
+        try {
+          const dbfResponse = await s3Client.send(
+            new GetObjectCommand({
+              Bucket: s3BucketName,
+              Key: Contents.find((item) => item.Key.endsWith('.dbf'))?.Key
+            })
           )
-          // Retrieve the location name value and ensure it is not null
-          const locationName =
-            dbfTable.rows[0][dbfTable.columns[locationIndex].name]
-          if (!locationName) {
-            throw new Error(
-              'The selected file could not be uploaded because the location name is missing'
+          const dbfBuffer = await streamToBuffer(dbfResponse.Body)
+          const dbfTable = Dbf.read(dbfBuffer)
+          if (dbfTable) {
+            // Find the index of the 'lrf15nm' column (which stores the location name)
+            const locationIndex = dbfTable.columns.findIndex(
+              (col) => col.name === 'lrf15nm'
             )
+            // Retrieve the location name value and ensure it is not null
+            const locationName =
+              dbfTable.rows[0][dbfTable.columns[locationIndex].name]
+            if (!locationName) {
+              throw new Error()
+            }
           }
+        } catch (error) {
+          logger.error(error)
+          errorsArray.push(
+            'The selected file could not be uploaded because the location name is missing'
+          )
         }
 
         // *** TODO: Implement virus scan after EAN-1122 is complete *** //
@@ -113,6 +120,7 @@ module.exports = [
           status: 200
         })
       } catch (error) {
+        logger.error(error)
         // An invalid shapefile (and the original zip) should be deleted from the bucket (the user will be asked to upload a correct one)
         try {
           if (Contents.length > 0) {
@@ -130,11 +138,11 @@ module.exports = [
             )
           }
         } catch (err) {
-          console.log(err)
+          logger.error(`validate_shapefile error: ${err}`)
         }
         return h.response({
           status: 500,
-          errorMessage: error.message
+          errorMessage: errorsArray
         })
       }
     }

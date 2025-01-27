@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -9,7 +10,10 @@ import InsetText from '../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import {
   setAuthToken,
+  setOrgId,
+  setOrganizationId,
   setProfile,
+  setProfileId,
   setRegisterToken
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
@@ -18,20 +22,23 @@ import { authCodeValidation } from '../../../common/services/validations/AuthCod
 import ExpiredCodeLayout from '../../layouts/expired-code/ExpiredCodeLayout'
 
 export default function ValidateEmailLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   NavigateToPreviousPage
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const registerToken = useSelector((state) => state.session.registerToken)
   const loginEmail = useSelector((state) => state.session.profile.emails[0])
+  const organization = useSelector((state) => state.session.organization)
   const [code, setCode] = useState('')
   const [error, setError] = useState('')
   const [codeResent, setCodeResent] = useState(false)
   const [codeResentTime, setCodeResentTime] = useState(new Date())
   const [codeExpired, setCodeExpired] = useState(false)
-  const session = useSelector((state) => state.session)
-  const profile = session.profile
+  const profile = useSelector((state) => state.session.profile)
+  const signinType = useSelector((state) => state.session.signinType)
+  // eslint-disable-next-line no-unused-vars
+  const [cookies, setCookie] = useCookies(['authToken'])
 
   // if error remove code sent notification
   useEffect(() => {
@@ -44,13 +51,13 @@ export default function ValidateEmailLayout ({
 
     if (validationError === '') {
       const dataToSend = {
-        registerToken,
+        orgRegisterToken: registerToken,
         code
       }
 
       const { data, errorMessage } = await backendCall(
         dataToSend,
-        'api/sign_up_validate',
+        'api/org/sign_up_validate',
         navigate
       )
 
@@ -64,22 +71,37 @@ export default function ValidateEmailLayout ({
           setError(errorMessage)
         }
       } else {
+        setCookie('authToken', data.authToken)
         dispatch(setAuthToken(data.authToken))
+        dispatch(setOrgId(data.organization.id))
+        dispatch(setOrganizationId(data.organization.id))
         const updatedProfile = updateAdditionals(profile, [
-          { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } }
+          { id: 'signupComplete', value: { s: 'false' } },
+          { id: 'lastAccessedUrl', value: { s: '/organisation/sign-up/alternative-contact' } }
         ])
         dispatch(setProfile(updatedProfile))
-        NavigateToNextPage()
+        const profileDataToSend = {
+          profile: updatedProfile,
+          authToken: data.authToken,
+          signinType
+        }
+        const { data: updateData, errorMessage: updateErrorMessage } = await backendCall(profileDataToSend, 'api/profile/update', navigate)
+        if (updateData) {
+          dispatch(setProfileId(updateData.profile.id))
+        } else if (updateErrorMessage) {
+          setError(updateErrorMessage)
+        }
+        navigateToNextPage()
       }
     }
   }
 
   const getNewCode = async (event) => {
     event.preventDefault()
-    const dataToSend = { email: loginEmail }
+    const dataToSend = { name: organization.name, email: loginEmail }
     const { data, errorMessage } = await backendCall(
       dataToSend,
-      'api/sign_up_start',
+      'api/org/sign_up_start',
       navigate
     )
 
@@ -93,7 +115,7 @@ export default function ValidateEmailLayout ({
     }
   }
 
-  const navigateBack = async (event) => {
+  const navigateBack = (event) => {
     event.preventDefault()
     NavigateToPreviousPage()
   }

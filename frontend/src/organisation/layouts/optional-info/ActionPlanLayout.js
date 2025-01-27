@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../common/components/gov-uk/TextArea'
 import { getLocationOther, setCurrentLocationActionPlan } from '../../../common/redux/userSlice'
 
-export default function ActionPlanLayout ({ navigateToNextPage }) {
+export default function ActionPlanLayout ({ navigateToNextPage, error, setError }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const currentActionPlan = useSelector(
@@ -16,7 +15,6 @@ export default function ActionPlanLayout ({ navigateToNextPage }) {
       getLocationOther(state, 'action_plan')
   )
   const [actionPlan, setActionPlan] = useState(currentActionPlan || '')
-  const [error, setError] = useState('')
   const charLimit = 500
 
   useEffect(() => {
@@ -43,7 +41,7 @@ export default function ActionPlanLayout ({ navigateToNextPage }) {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>

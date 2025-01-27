@@ -69,6 +69,7 @@ export default function DeclarationOfAgreementPage () {
 
   return (
     <>
+
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -140,19 +141,6 @@ export default function DeclarationOfAgreementPage () {
                   privacy notice (open new window)
                 </a>
                 explains how we treat your personal information.
-              </p>
-
-              <p>
-                Natural Resources Wales use the same systems and will have
-                access to your personal information if you ask for a service in
-                Wales. Read how Natural Resources Wales
-                <a
-                  href='https://www.gov.uk/government/organisations/environment-agency/about/personal-information-charter'
-                  className='govuk-link'
-                >
-                  {' '}
-                  Treat your personal information (opens new window)
-                </a>
               </p>
 
               <div

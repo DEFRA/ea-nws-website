@@ -9,7 +9,7 @@ export default function ValidateMobilePhone () {
     (state) => state.session.contactPreferences
   )
 
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     if (contactPreferences.includes('PhoneCall')) {
       navigate('/signup/contactpreferences/landline/add')
     } else {
@@ -29,7 +29,7 @@ export default function ValidateMobilePhone () {
   }
   return (
     <ValidateMobileLayout
-      NavigateToNextPage={NavigateToNextPage}
+      navigateToNextPage={navigateToNextPage}
       NavigateToPreviousPage={DifferentMobile}
       SkipValidation={SkipValidation}
       DifferentMobile={DifferentMobile}

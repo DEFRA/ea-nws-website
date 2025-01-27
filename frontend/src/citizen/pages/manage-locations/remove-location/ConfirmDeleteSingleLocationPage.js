@@ -49,6 +49,7 @@ export default function ConfirmDeleteSingleLocationPage () {
 
   return (
     <>
+
       <BackLink onClick={() => navigate(-1)} />
       {error && <ErrorSummary errorList={[error]} />}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

@@ -13,6 +13,7 @@ export default function UploadFileLayout ({
   const navigate = useNavigate()
   const [errorFileType, setErrorFileType] = useState(null)
   const [errorFileSize, setErrorFileSize] = useState(null)
+  const [errorShapefile, setErrorShapefile] = useState([])
   const [selectedFile, setSelectedFile] = useState(null)
   const [uploading, setUploading] = useState(false)
 
@@ -35,7 +36,7 @@ export default function UploadFileLayout ({
       break
     // ZIP file uploaded for shapefile parsing
     case 'shape':
-      allowedFileTypes = ['application/zip']
+      allowedFileTypes = ['application/zip', 'application/x-zip-compressed']
       maxFileSize = 5
       fileTypeHint = 'File must be .zip'
       fileTypeErrorMsg = 'The selected file must be .zip'
@@ -80,6 +81,7 @@ export default function UploadFileLayout ({
     e.preventDefault()
     setErrorFileSize(null)
     setErrorFileType(null)
+    setErrorShapefile([])
 
     if (!selectedFile) {
       setErrorFileSize('The file is empty')
@@ -129,52 +131,75 @@ export default function UploadFileLayout ({
           })
         } else if (uploadMethod === 'shape') {
           // Unzip the uploaded file and send output back to S3
-          const { errorMessage: unzipErrorMessage } = await backendCall(
+          const { errorMessage } = await backendCall(
             { zipFileName: uniqFileName },
             'api/shapefile/unzip',
             navigate
           )
-          if (unzipErrorMessage) {
-            throw new Error('Error uploading file')
-          }
-
+          if (errorMessage) {
+            setUploading(false)
+            setErrorShapefile(['Error uploading file'])
+          } else {
           // Validate the files contained within the zip
-          const { errorMessage: shapefileErrorMessage } = await backendCall(
-            { zipFileName: uniqFileName },
-            'api/shapefile/validate',
-            navigate
-          )
-          if (shapefileErrorMessage) {
-            // Displays appropriate error message
-            throw new Error(shapefileErrorMessage)
+            const { errorMessage } = await backendCall(
+              { zipFileName: uniqFileName },
+              'api/shapefile/validate',
+              navigate
+            )
+            if (errorMessage) {
+              setUploading(false)
+              setErrorShapefile(errorMessage)
+            } else {
+              const { data: geojsonData, errorMessage } =
+            await backendCall(
+              { zipFileName: uniqFileName },
+              'api/shapefile/convert',
+              navigate
+            )
+              if (errorMessage) {
+                setUploading(false)
+                setErrorShapefile([errorMessage])
+              } else {
+                navigate(orgManageLocationsUrls.add.confirmLocationsWithShapefile, {
+                  state: { geojsonData }
+                })
+              }
+            }
           }
-
-          // TDO: Navigate to confirmation page (once made)
         }
       }
     } catch (err) {
       setUploading(false)
-      setErrorFileType(err.message)
+      setErrorFileType(err)
     }
   }
 
   return (
     <>
+
       {!uploading && <BackLink onClick={() => navigate(-1)} />}
 
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           {!uploading
             ? (
               <>
-                {(errorFileType || errorFileSize) && (
-                  <ErrorSummary errorList={[errorFileType, errorFileSize]} />
+                {(errorFileType ||
+                errorFileSize ||
+                errorShapefile.length > 0) && (
+                  <ErrorSummary
+                    errorList={[
+                      errorFileType,
+                      errorFileSize,
+                      ...errorShapefile
+                    ].filter(Boolean)}
+                  />
                 )}
                 <div className='govuk-grid-column-full'>
                   <h1 className='govuk-heading-l'>Upload file</h1>
                   <div
                     className={
-                    errorFileSize || errorFileType
+                    errorFileSize || errorFileType || errorShapefile.length > 0
                       ? 'govuk-form-group govuk-form-group--error'
                       : 'govuk-form-group'
                   }
@@ -190,6 +215,11 @@ export default function UploadFileLayout ({
                         {errorFileSize}
                       </p>
                     )}
+                    {errorShapefile.map((error, index) => (
+                      <p key={index} className='govuk-error-message'>
+                        {error}
+                      </p>
+                    ))}
                     <input
                       type='file'
                       className={

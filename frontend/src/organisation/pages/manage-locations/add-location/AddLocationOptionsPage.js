@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
+import { clearCurrentLocation } from '../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function AddLocationOptionsPage () {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  // Clear the current location when adding a new one
+  dispatch(clearCurrentLocation())
   const [addLocationType, setAddLocationType] = useState('')
   const [addLocationTypeError, setAddLocationTypeError] = useState('')
   const addLocationOptions = [
@@ -52,7 +56,7 @@ export default function AddLocationOptionsPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

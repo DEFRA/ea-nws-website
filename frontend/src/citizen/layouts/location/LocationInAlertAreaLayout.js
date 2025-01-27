@@ -1,6 +1,6 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import FloodWarningKey from '../../../common/components/custom/FloodWarningKey'
 import Map from '../../../common/components/custom/Map'
@@ -23,11 +23,11 @@ import { getCoordsOfFloodArea } from '../../../common/services/WfsFloodDataServi
 export default function LocationInAlertAreaLayout ({
   continueToNextPage,
   continueToSearchResultsPage,
-  canCancel
+  canCancel,
+  updateGeoSafeProfile = true
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const location = useLocation()
   const [isChecked, setIsChecked] = useState(false)
   const authToken = useSelector((state) => state.session.authToken)
   const profile = useSelector((state) => state.session.profile)
@@ -49,7 +49,20 @@ export default function LocationInAlertAreaLayout ({
   const addressToUse = isUserInNearbyTargetFlowpath
     ? selectedFloodAlertArea.properties.TA_NAME
     : selectedLocation.address
-  const isSignUpFlow = location.pathname.includes('signup')
+
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall(
+      'data',
+      'api/service/get_partner_id'
+    )
+    setPartnerId(data)
+  }
+
+  useEffect(() => {
+    getPartnerId()
+  }, [])
 
   const handleSubmit = async () => {
     let updatedProfile
@@ -83,7 +96,7 @@ export default function LocationInAlertAreaLayout ({
       }
     }
 
-    if (!isSignUpFlow) {
+    if (updateGeoSafeProfile) {
       updatedProfile = await updateGeosafeProfile(updatedProfile)
 
       // if user is in sign up flow, then profile returned will be undefined
@@ -92,7 +105,7 @@ export default function LocationInAlertAreaLayout ({
       }
     }
 
-    continueToNextPage()
+    continueToNextPage(updatedProfile)
   }
 
   const registerLocationToPartner = async (profile) => {
@@ -115,7 +128,7 @@ export default function LocationInAlertAreaLayout ({
       const data = {
         authToken,
         locationId: location.id,
-        partnerId: '1', // this is currently a hardcoded value - geosafe to update us on what it is
+        partnerId,
         params: getRegistrationParams(profile, alertTypes)
       }
 
@@ -149,7 +162,7 @@ export default function LocationInAlertAreaLayout ({
       }
     }
 
-    if (!isSignUpFlow) {
+    if (updateGeoSafeProfile) {
       updatedProfile = await updateGeosafeProfile(updatedProfile)
       // if user has added flood alert area, then we need to unregister from that
       if (isUserInNearbyTargetFlowpath && updatedProfile) {
@@ -167,7 +180,7 @@ export default function LocationInAlertAreaLayout ({
       const data = {
         authToken,
         locationId: location.id,
-        partnerId: '1' // this is currently a hardcoded value - geosafe to update us
+        partnerId
       }
 
       await backendCall(
@@ -293,8 +306,7 @@ export default function LocationInAlertAreaLayout ({
               <li>during waking hours when possible</li>
             </ul>
             <p>
-              Total sent in last year:{' '}
-              <b>{floodAlertCount || 0}</b>
+              Total sent in last year: <b>{floodAlertCount || 0}</b>
             </p>
             {additionalAlerts && (
               <>

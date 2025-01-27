@@ -18,7 +18,7 @@ import { authCodeValidation } from '../../services/validations/AuthCodeValidatio
 import ExpiredCodeLayout from './ExpiredCodeLayout'
 
 export default function ValidateEmailLayout ({
-  NavigateToNextPage,
+  navigateToNextPage,
   SkipValidation,
   DifferentEmail,
   NavigateToPreviousPage,
@@ -32,6 +32,7 @@ export default function ValidateEmailLayout ({
   const navigate = useNavigate()
   const [code, setCode] = useState('')
   const authToken = useSelector((state) => state.session.authToken)
+  const signinType = useSelector((state) => state.session.signinType)
   const session = useSelector((state) => state.session)
   const email = session.currentContact
   const [codeResent, setCodeResent] = useState(false)
@@ -61,11 +62,11 @@ export default function ValidateEmailLayout ({
         }
       } else {
         if (changeSignIn) {
-          updateProfile(data.profile, authToken)
+          updateProfile(data.profile, authToken, signinType)
           setError(profileError)
         } else {
           dispatch(setProfile(data.profile))
-          NavigateToNextPage()
+          navigateToNextPage()
         }
       }
     }
@@ -122,7 +123,7 @@ export default function ValidateEmailLayout ({
       dispatch(setProfile(removeVerifiedContact(session.profile, email)))
     }
 
-    const dataToSend = { profile: updatedProfile, authToken: session.authToken }
+    const dataToSend = { profile: updatedProfile, authToken: session.authToken, signinType }
 
     const { errorMessage } = await backendCall(
       dataToSend,
@@ -136,6 +137,7 @@ export default function ValidateEmailLayout ({
 
   return (
     <>
+
       {codeExpired
         ? (<ExpiredCodeLayout getNewCode={getNewCode} />)
         : (

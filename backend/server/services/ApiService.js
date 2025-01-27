@@ -6,6 +6,7 @@ const {
   convertGeoSafeProfile,
   convertWebProfile
 } = require('./formatters/profileFormatter')
+const { logger } = require('../plugins/logging')
 
 const getErrorMessage = (path, errorMessage) => {
   const apiPath = path.split('/').pop()
@@ -21,6 +22,15 @@ const apiCall = async (data, path) => {
   if (data.profile) {
     webProfile = JSON.parse(JSON.stringify(data.profile))
     data.profile = convertWebProfile(data.profile)
+  }
+
+  if (data.location?.coordinates?.latitude && data.location?.coordinates?.longitude) {
+    data.location.coordinates.latitude = parseInt(
+      data.location.coordinates.latitude * 10 ** 6
+    )
+    data.location.coordinates.longitude = parseInt(
+      data.location.coordinates.longitude * 10 ** 6
+    )
   }
 
   try {
@@ -41,9 +51,24 @@ const apiCall = async (data, path) => {
       )
     }
 
+    if (response.data.location?.coordinates?.latitude && response.data.location?.coordinates?.longitude) {
+      response.data.location.coordinates.latitude = response.data.location.coordinates.latitude / 10 ** 6
+      response.data.location.coordinates.longitude = response.data.location.coordinates.longitude / 10 ** 6
+    }
+
+    if (response.data.locations) {
+      response.data.locations.forEach((location) => {
+        if (location.coordinates?.latitude && location.coordinates?.longitude) {
+          location.coordinates.latitude = location.coordinates.latitude / 10 ** 6
+          location.coordinates.longitude = location.coordinates.longitude / 10 ** 6
+        }
+      })
+    }
+
     return { status: response.status, data: response.data }
   } catch (error) {
     if (error.response) {
+      logger.error(error.response)
       const { status } = error.response
       if (status === 400) {
         return {
@@ -59,6 +84,7 @@ const apiCall = async (data, path) => {
         }
       }
     } else if (error.request) {
+      logger.error(error.request)
       // no response was received - probably need to return
       // returning an error so frontend can handle
       return {
@@ -66,6 +92,7 @@ const apiCall = async (data, path) => {
         errorMessage: 'Oops something broke, try again'
       }
     }
+    logger.error(error)
   }
   return null
 }

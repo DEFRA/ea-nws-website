@@ -2,12 +2,12 @@ import { React, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
 import {
   setOrgCurrentContactEmails,
+  setOrgCurrentContactHomePhones,
   setOrgCurrentContactMobilePhones
 } from '../../../../common/redux/userSlice'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
@@ -23,11 +23,11 @@ export default function AddContactChannelsPage () {
   const [emailInput, setEmailInput] = useState([])
   const [mobileInput, setMobileInput] = useState([])
   const [homeInput, setHomeInput] = useState([])
-  const firstName = useSelector(
-    (state) => state.session.orgCurrentContact.firstName
+  const firstname = useSelector(
+    (state) => state.session.orgCurrentContact.firstname
   )
-  const lastName = useSelector(
-    (state) => state.session.orgCurrentContact.lastName
+  const lastname = useSelector(
+    (state) => state.session.orgCurrentContact.lastname
   )
 
   const navigateBack = (event) => {
@@ -184,7 +184,7 @@ export default function AddContactChannelsPage () {
       if (homeInput[0]) newHomePhones.push(homeInput[0])
       if (homeInput[1]) newHomePhones.push(homeInput[1])
       if (newHomePhones.length !== 0) {
-        dispatch(setOrgCurrentContactMobilePhones(newHomePhones))
+        dispatch(setOrgCurrentContactHomePhones(newHomePhones))
       }
       setEmailError(['', ''])
       setHomePhoneError(['', ''])
@@ -197,7 +197,7 @@ export default function AddContactChannelsPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation />
+
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -219,7 +219,7 @@ export default function AddContactChannelsPage () {
                 />
             )}
             <h1 className='govuk-heading-l'>
-              Choose how you want {firstName || 'first'} {lastName || 'last'} to
+              Choose how you want {firstname || 'first'} {lastname || 'last'} to
               get flood messages
             </h1>
             <div className='govuk-body'>

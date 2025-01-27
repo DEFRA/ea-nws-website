@@ -1,7 +1,7 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation } from 'react-router-dom'
-import CitizenAccountNavigation from '../../../common/components/custom/CitizenAccountNavigation'
+
 import Details from '../../../common/components/gov-uk/Details'
 import InsetText from '../../../common/components/gov-uk/InsetText'
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
@@ -62,7 +62,7 @@ export default function ManageContactsPage () {
 
   return (
     <>
-      <CitizenAccountNavigation currentPage={useLocation().pathname} />
+
       {location.state !== null && location.state.removedContact
         ? (
           <NotificationBanner
@@ -94,7 +94,7 @@ export default function ManageContactsPage () {
               Your email addresses and telephone numbers
             </h2>
             <p className='govuk-body'>
-              We'll send flood messages for all your location to all these
+              We'll send flood messages for all your locations to all these
               emails and numbers. You can add more for friends and family, if
               you wish.
             </p>

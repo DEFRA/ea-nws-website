@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../common/components/gov-uk/TextArea'
@@ -16,7 +15,8 @@ export default function NotesLayout ({
   navigateToNextPage,
   keywordType,
   instructionText,
-  buttonText = 'Continue'
+  buttonText = 'Continue',
+  onSubmit
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -37,7 +37,7 @@ export default function NotesLayout ({
     }
   }, [notes])
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (error) return
     if (notes) {
       switch (keywordType) {
@@ -51,10 +51,11 @@ export default function NotesLayout ({
           break
       }
     }
-
-    // should we update geosafe profile here?
-
-    navigateToNextPage()
+    if (onSubmit) {
+      await onSubmit()
+    } else {
+      navigateToNextPage()
+    }
   }
 
   const navigateBack = (event) => {
@@ -64,7 +65,7 @@ export default function NotesLayout ({
 
   return (
     <>
-      <OrganisationAccountNavigation />
+
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>

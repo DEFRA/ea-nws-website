@@ -26,7 +26,7 @@ export default function OrganisationDetailsTable ({ organisation }) {
               UK head office address
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
-              {organisation.address ? `${organisation.address.name}` : '-'}
+              {organisation.address ? `${organisation.address}` : '-'}
             </td>
 
             <td className='govuk-table__cell'>

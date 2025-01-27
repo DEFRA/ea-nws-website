@@ -21,6 +21,7 @@ import {
   getSurroundingFloodAreas,
   isLocationInFloodArea
 } from '../../../common/services/WfsFloodDataService'
+import * as turf from '@turf/turf'
 export default function LocationSearchResultsLayout ({ continueToNextPage }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -121,9 +122,9 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
       if (isInAlertArea) {
         setHistoricalAlertNumber(alertArea.features[0].properties.FWS_TACODE)
       }
-      if (isInAlertArea) {
+      if (isInWarningArea) {
         setHistoricalWarningNumber(
-          warningArea.features[0].properties.FWS_TACODE
+          warningArea?.features[0].properties.FWS_TACODE
         )
       }
 
@@ -148,17 +149,43 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
     }
   }
 
+  const selectCentreOfAllAreas = (event) => {
+    event.preventDefault()
+    const features = turf.points(locations.map((l) =>
+      [l.coordinates.longitude,
+        l.coordinates.latitude]
+    ))
+
+    const centre = turf.center(features)
+
+    const centerLocation = {
+      coordinates: {
+        latitude: centre.geometry.coordinates[1],
+        longitude: centre.geometry.coordinates[0]
+      },
+      address: locationPostCode,
+      name: ''
+    }
+
+    handleSelectedLocation(event, centerLocation)
+  }
+
   const detailsMessage = (
+
     <div>
       You can view flood message areas&nbsp;
-      <a href='#' className='govuk-link'>
+      <Link
+        className='govuk-link'
+        onClick={(event) => selectCentreOfAllAreas(event)}
+      >
         near this postcode
-      </a>
+      </Link>
     </div>
   )
 
   return (
     <>
+
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>

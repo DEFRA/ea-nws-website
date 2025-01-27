@@ -20,7 +20,8 @@ import OptionalLocationInformationPage from '../../pages/manage-locations/add-lo
 import AddAnotherPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/AddAnotherPredefinedBoundaryPage'
 import PredefinedBoundaryOptionalInfoPage from '../../pages/manage-locations/add-location/predefined-boundary/OptionalInfoPage'
 import SelectPredefinedBoundaryPage from '../../pages/manage-locations/add-location/predefined-boundary/SelectPredefinedBoundaryPage'
-import LocationAddShapefilePage from '../../pages/manage-locations/add-location/shapefile-zip/LocationAddShapefileInfoPage'
+import ConfirmShapefilePolygonPage from '../../pages/manage-locations/add-location/shapefile-zip/ConfirmShapefilePolygonPage'
+import LocationAddShapefileInfoPage from '../../pages/manage-locations/add-location/shapefile-zip/LocationAddShapefileInfoPage'
 import LocationUploadShapeFilePage from '../../pages/manage-locations/add-location/shapefile-zip/LocationUploadShapeFilePage'
 import LocationAddAddressInfoPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddAddressInfoPage'
 import LocationAddConfirm from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddConfirmPage'
@@ -52,6 +53,9 @@ import EditKeyInformationPage from '../../pages/manage-locations/edit-location/e
 import EditKeywordsPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/keywords/KeywordsPage'
 import EditNotesPage from '../../pages/manage-locations/edit-location/edit-individual-location/optional-information/notes/NotesPage'
 
+// monitoring imports
+import LiveFloodMonitoringPage from '../../pages/manage-locations/live-monitoring/LiveFloodMonitoringPage'
+
 // view imports
 import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
 import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
@@ -61,8 +65,9 @@ import ViewLocationsDashboardPage from '../../pages/manage-locations/view-locati
 import LinkLocationPage from '../../pages/manage-locations/link-location/LinkLocationPage'
 
 const urlManageOrg = '/organisation/manage-locations'
-const urlManageOrgViewLocations = urlManageOrg + '/locations'
-const urlManageOrgAddLocations = urlManageOrg + '/add'
+export const urlManageOrgViewLocations = urlManageOrg + '/locations'
+const urlManageOrgLiveMonitoring = urlManageOrg + '/live-monitoring'
+export const urlManageOrgAddLocations = urlManageOrg + '/add'
 const urlManageOrgEditLocations = urlManageOrg + '/edit'
 const urlManageOrgUnmatchedLocations = urlManageOrg + '/unmatched-locations'
 const urlManageOrgConfirmLocations = urlManageOrg + '/confirm'
@@ -74,6 +79,9 @@ const orgManageLocationsUrls = {
     viewLocation: urlManageOrgViewLocations + '/view',
     viewMessages: urlManageOrgViewLocations + '/view-messages'
   },
+  monitoring: {
+    view: urlManageOrgLiveMonitoring + '/view'
+  },
   add: {
     addLocationWithinBoundaries: {},
     manualAddLocation: {
@@ -83,6 +91,8 @@ const orgManageLocationsUrls = {
     addLocationsWithShapefile: urlManageOrgAddLocations + '/shapefile-info',
     uploadLocationsWithShapefile:
       urlManageOrgAddLocations + '/shapefile-upload',
+    confirmLocationsWithShapefile:
+      urlManageOrgAddLocations + '/shapefile-confirm',
     options: urlManageOrgAddLocations,
     addressInfo: urlManageOrgAddLocations + '/address-info',
     uploadFile: urlManageOrgAddLocations + '/upload-file',
@@ -183,6 +193,11 @@ const orgManageLocationRoutes = [
     path: orgManageLocationsUrls.view.viewMessages,
     component: <ViewMessagesPage />
   },
+  // monitoring
+  {
+    path: orgManageLocationsUrls.monitoring.view,
+    component: <LiveFloodMonitoringPage />
+  },
   // add
   {
     path: orgManageLocationsUrls.add.options,
@@ -194,11 +209,15 @@ const orgManageLocationRoutes = [
   },
   {
     path: orgManageLocationsUrls.add.addLocationsWithShapefile,
-    component: <LocationAddShapefilePage />
+    component: <LocationAddShapefileInfoPage />
   },
   {
     path: orgManageLocationsUrls.add.uploadLocationsWithShapefile,
     component: <LocationUploadShapeFilePage />
+  },
+  {
+    path: orgManageLocationsUrls.add.confirmLocationsWithShapefile,
+    component: <ConfirmShapefilePolygonPage />
   },
   {
     path: orgManageLocationsUrls.add.manualAddLocation

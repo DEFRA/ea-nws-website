@@ -3,9 +3,9 @@ import AddEmailLayout from '../../../layouts/email/AddEmailLayout'
 
 export default function AddEmailPage () {
   const navigate = useNavigate()
-  const NavigateToNextPage = () => {
+  const navigateToNextPage = () => {
     navigate('/managecontacts/validate-email')
   }
 
-  return <AddEmailLayout NavigateToNextPage={NavigateToNextPage} />
+  return <AddEmailLayout navigateToNextPage={navigateToNextPage} />
 }

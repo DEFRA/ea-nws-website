@@ -41,7 +41,7 @@ const setLocationOtherAdditionals = (additionals, id, value) => {
   }
 }
 
-const getLocationOtherAdditional = (additionals, id) => {
+export const getLocationOtherAdditional = (additionals, id) => {
   for (let i = 0; i < additionals.length; i++) {
     if (additionals[i].id === 'other') {
       const otherAdditionals = JSON.parse(additionals[i].value?.s)
@@ -51,14 +51,49 @@ const getLocationOtherAdditional = (additionals, id) => {
   return ''
 }
 
+const setOrgAdditional = (additionals, id, value) => {
+  let orgAdditionals = {}
+  const alertnativeContactInfo = [
+    'firstName',
+    'lastName',
+    'email',
+    'telephone',
+    'jobTitle'
+  ]
+  orgAdditionals = JSON.parse(additionals)
+  if (alertnativeContactInfo.includes(id)) {
+    orgAdditionals.alternativeContact[id] = value
+  } else {
+    orgAdditionals[id] = value
+  }
+  return JSON.stringify(orgAdditionals)
+}
+
 const userSlice = createSlice({
   name: 'session',
   initialState: {
+    lastActivity: null,
     authToken: null,
     registerToken: null,
     profileId: null,
     orgId: null,
-    profile: null,
+    profile: {
+      id: '',
+      enabled: true,
+      firstname: '',
+      lastname: '',
+      emails: [],
+      mobilePhones: [],
+      homePhones: [],
+      language: 'EN',
+      additionals: [{ id: 'signupComplete', value: { s: 'false' } }],
+      unverified: {
+        emails: [],
+        mobilePhones: [],
+        homePhones: []
+      },
+      pois: []
+    },
     contactPreferences: null,
     registrations: null,
     currentContact: null,
@@ -69,6 +104,8 @@ const userSlice = createSlice({
     locationSearchResults: null,
     selectedLocation: null,
     additionalAlerts: null,
+    // required for when user changes a location at sign up review
+    locationToBeChanged: null,
     // required for nearby flood areas flow
     selectedFloodWarningArea: null,
     selectedFloodAlertArea: null,
@@ -77,9 +114,6 @@ const userSlice = createSlice({
     // required for historical flood warnings and alerts
     severeFloodWarningCount: null,
     floodAlertCount: null,
-    // keywords
-    locationKeywords: null,
-    contactKeywords: null,
     // required for predefined boundary flow
     selectedBoundaryType: null,
     selectedBoundary: null,
@@ -102,7 +136,7 @@ const userSlice = createSlice({
         { id: 'locationName', value: { s: '' } },
         { id: 'parentID', value: { s: '' } },
         { id: 'targetAreas', value: { s: '' } },
-        { id: 'keywords', value: { s: '' } },
+        { id: 'keywords', value: { s: '[]' } },
         {
           id: 'other',
           value: {
@@ -119,32 +153,67 @@ const userSlice = createSlice({
               action_plan: null,
               notes: null,
               location_data_type: null,
-              alertTypes: null
+              alertTypes: []
             })
           }
         }
       ]
     },
+    // org data
+    organization: {
+      id: null,
+      name: null,
+      description: JSON.stringify({
+        name: null,
+        address: null,
+        compHouseNum: null,
+        emergencySector: null,
+        isAdminRegistering: null,
+        alternativeContact: {
+          firstName: null,
+          lastName: null,
+          email: null,
+          telephone: null,
+          jobTitle: null
+        }
+      }),
+      postalCode: null,
+      longName: null,
+      logoUrl: null,
+      backgroundUrl: null,
+      alertDiffusionZone: null,
+      alertDiffusionZoneBoundingBox: null,
+      urlSlug: null
+    },
     // org contact data
     orgCurrentContact: {
       id: null,
-      enabled: null,
-      firstName: null,
-      lastName: null,
+      enabled: true,
+      firstname: null,
+      lastname: null,
       emails: null,
       mobilePhones: null,
       homePhones: null,
       position: null,
       comments: null,
+      pois: null,
       additionals: [
         {
           id: 'keywords',
-          value: null
+          value: { s: '[]' }
+        },
+        {
+          id: 'jobTitle',
+          value: { s: '' }
         }
       ]
-    }
+    },
+    contacts: null
   },
   reducers: {
+    setLastActivity: (state, action) => {
+      state.lastActivity = action.payload
+    },
     setAuthToken: (state, action) => {
       state.authToken = action.payload
     },
@@ -190,6 +259,10 @@ const userSlice = createSlice({
     },
     setAdditionalAlerts: (state, action) => {
       state.additionalAlerts = action.payload
+    },
+    // required for when user changes a location at sign up review
+    setLocationToBeChanged: (state, action) => {
+      state.locationToBeChanged = action.payload
     },
     // required for nearby flood areas flow
     setSelectedFloodWarningArea: (state, action) => {
@@ -237,6 +310,46 @@ const userSlice = createSlice({
       state.currentLocation.geometry = action.payload.geometry
       state.currentLocation.geocode = action.payload.geocode
       state.currentLocation.additionals = action.payload.additionals
+    },
+    clearCurrentLocation: (state) => {
+      state.currentLocation = {
+        id: null,
+        enabled: true,
+        // name is the UPRN
+        name: null,
+        // address is the human readable address or flood area name
+        address: null,
+        // Coordinates in dd (degrees decimal)
+        coordinates: null,
+        geometry: null,
+        geocode: null,
+        additionals: [
+          { id: 'locationName', value: { s: '' } },
+          { id: 'parentID', value: { s: '' } },
+          { id: 'targetAreas', value: { s: '' } },
+          { id: 'keywords', value: { s: '[]' } },
+          {
+            id: 'other',
+            value: {
+              s: JSON.stringify({
+                full_address: null,
+                postcode: null,
+                // Easting EPSG: 27700
+                x_coordinate: null,
+                // Northing EPSG: 27700
+                y_coordinate: null,
+                internal_reference: null,
+                business_criticality: null,
+                location_type: null,
+                action_plan: null,
+                notes: null,
+                location_data_type: null,
+                alertTypes: []
+              })
+            }
+          }
+        ]
+      }
     },
     setCurrentLocationId: (state, action) => {
       state.currentLocation.id = action.payload
@@ -364,18 +477,138 @@ const userSlice = createSlice({
         action.payload
       )
     },
+    // org data
+    setOrganization: (state, action) => {
+      state.organization.id = action.payload.id
+      state.organization.name = action.payload.name
+      state.organization.description = action.payload.description
+      state.organization.postalCode = action.payload.postalCode
+      state.organization.longName = action.payload.longName
+      state.organization.logoUrl = action.payload.logoUrl
+      state.organization.backgroundUrl = action.payload.backgroundUrl
+      state.organization.alertDiffusionZone = action.payload.alertDiffusionZone
+      state.organization.alertDiffusionZoneBoundingBox =
+        action.payload.alertDiffusionZoneBoundingBox
+      state.organization.urlSlug = action.payload.urlSlug
+    },
+    setOrganizationId: (state, action) => {
+      state.organization.id = action.payload
+    },
+    setOrganizationName: (state, action) => {
+      state.organization.name = action.payload
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'name',
+        action.payload
+      )
+    },
+    setOrganizationAddress: (state, action) => {
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'address',
+        action.payload
+      )
+    },
+    setOrganizationCompHouseNum: (state, action) => {
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'compHouseNum',
+        action.payload
+      )
+    },
+    setOrganizationEmergencySector: (state, action) => {
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'emergencySector',
+        action.payload
+      )
+    },
+    setOrganizationIsAdminRegistering: (state, action) => {
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'isAdminRegistering',
+        action.payload
+      )
+    },
+    setOrganizationAlternativeContact: (state, action) => {
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'alternativeContact',
+        action.payload
+      )
+    },
+    setOrganizationACFirstName: (state, action) => {
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'firstName',
+        action.payload
+      )
+    },
+    setOrganizationACLastName: (state, action) => {
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'lastName',
+        action.payload
+      )
+    },
+    setOrganizationACEmail: (state, action) => {
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'email',
+        action.payload
+      )
+    },
+    setOrganizationACTelephone: (state, action) => {
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'telephone',
+        action.payload
+      )
+    },
+    setOrganizationACJobTitle: (state, action) => {
+      state.organization.description = setOrgAdditional(
+        state.organization.description,
+        'jobTitle',
+        action.payload
+      )
+    },
+    setOrganizationDescription: (state, action) => {
+      state.organization.description = action.payload
+    },
+    setOrganizationPostalCode: (state, action) => {
+      state.organization.postalCode = action.payload
+    },
+    setOrganizationLongName: (state, action) => {
+      state.organization.longName = action.payload
+    },
+    setOrganizationLogoUrl: (state, action) => {
+      state.organization.logoUrl = action.payload
+    },
+    setOrganizationBackgroundUrl: (state, action) => {
+      state.organization.backgroundUrl = action.payload
+    },
+    setOrganizationAlertDiffusionZone: (state, action) => {
+      state.organization.alertDiffusionZone = action.payload
+    },
+    setOrganizationAlertDiffusionZoneBoundingBox: (state, action) => {
+      state.organization.alertDiffusionZoneBoundingBox = action.payload
+    },
+    setOrganizationUrlSlug: (state, action) => {
+      state.organization.urlSlug = action.payload
+    },
     // org contact data
     setOrgCurrentContact: (state, action) => {
       state.orgCurrentContact.id = action.payload.id
       state.orgCurrentContact.enabled = action.payload.enabled
-      state.orgCurrentContact.firstName = action.payload.firstName
-      state.orgCurrentContact.lastName = action.payload.lastName
+      state.orgCurrentContact.firstname = action.payload.firstname
+      state.orgCurrentContact.lastname = action.payload.lastname
       state.orgCurrentContact.emails = action.payload.emails
       state.orgCurrentContact.mobilePhones = action.payload.mobilePhones
       state.orgCurrentContact.homePhones = action.payload.homePhones
       state.orgCurrentContact.position = action.payload.position
       state.orgCurrentContact.additionals = action.payload.additionals
       state.orgCurrentContact.comments = action.payload.comments
+      state.orgCurrentContact.pois = action.payload.pois
     },
     setOrgCurrentContactId: (state, action) => {
       state.orgCurrentContact.id = action.payload
@@ -384,10 +617,10 @@ const userSlice = createSlice({
       state.orgCurrentContact.enabled = action.payload
     },
     setOrgCurrentContactFirstName: (state, action) => {
-      state.orgCurrentContact.firstName = action.payload
+      state.orgCurrentContact.firstname = action.payload
     },
     setOrgCurrentContactLastName: (state, action) => {
-      state.orgCurrentContact.lastName = action.payload
+      state.orgCurrentContact.lastname = action.payload
     },
     setOrgCurrentContactEmails: (state, action) => {
       state.orgCurrentContact.emails = action.payload
@@ -404,18 +637,80 @@ const userSlice = createSlice({
     setOrgCurrentContactNotes: (state, action) => {
       state.orgCurrentContact.comments = action.payload
     },
+    setOrgCurrentContactPois: (state, action) => {
+      state.orgCurrentContact.pois = action.payload
+    },
     setOrgCurrentContactAdditionals: (state, action) => {
       state.orgCurrentContact.additionals = action.payload
     },
+    setOrgCurrentContactKeywords: (state, action) => {
+      setAdditional(
+        state.orgCurrentContact.additionals,
+        'keywords',
+        action.payload
+      )
+    },
+    setOrgCurrentContactJobTitle: (state, action) => {
+      setAdditional(
+        state.orgCurrentContact.additionals,
+        'jobTitle',
+        action.payload
+      )
+    },
+    clearOrgCurrentContact: (state) => {
+      state.orgCurrentContact = {
+        id: null,
+        enabled: true,
+        firstname: null,
+        lastname: null,
+        emails: null,
+        mobilePhones: null,
+        homePhones: null,
+        position: null,
+        comments: null,
+        pois: null,
+        additionals: [
+          {
+            id: 'keywords',
+            value: { s: '[]' }
+          },
+          {
+            id: 'jobTitle',
+            value: { s: '' }
+          }
+        ]
+      }
+    },
+    setContacts: (state, action) => {
+      state.contacts = action.payload
+    },
     // Clear state
     clearAuth: (state) => {
+      state.lastActivity = null
       state.authToken = null
       state.registerToken = null
       state.profileId = null
       state.orgId = null
-      state.profile = null
+      state.profile = {
+        id: '',
+        enabled: true,
+        firstname: '',
+        lastname: '',
+        emails: [],
+        mobilePhones: [],
+        homePhones: [],
+        language: 'EN',
+        additionals: [{ id: 'signupComplete', value: { s: 'false' } }],
+        unverified: {
+          emails: [],
+          mobilePhones: [],
+          homePhones: []
+        },
+        pois: []
+      }
       state.contactPreferences = null
       state.registrations = null
+      state.currentContact = null
       state.signinType = null
       // location data
       state.locationName = null
@@ -423,6 +718,8 @@ const userSlice = createSlice({
       state.locationSearchResults = null
       state.selectedLocation = null
       state.additionalAlerts = null
+      // required for when user changes a location at sign up review
+      state.locationToBeChanged = null
       // required for nearby flood areas flow
       state.selectedFloodWarningArea = null
       state.selectedFloodAlertArea = null
@@ -434,9 +731,9 @@ const userSlice = createSlice({
       // required for predefined boundary flow
       state.selectedBoundaryType = null
       state.selectedBoundary = null
-      // keywords - temporary
-      state.locationKeywords = null
-      state.contactKeywords = null
+      state.locationBoundaries = null
+      state.consecutiveBoundariesAdded = 0
+      state.predefinedBoundaryFlow = null
       // org location data
       state.currentLocation = {
         id: null,
@@ -453,7 +750,7 @@ const userSlice = createSlice({
           { id: 'locationName', value: { s: '' } },
           { id: 'parentID', value: { s: '' } },
           { id: 'targetAreas', value: { s: '' } },
-          { id: 'keywords', value: { s: '' } },
+          { id: 'keywords', value: { s: '[]' } },
           {
             id: 'other',
             value: {
@@ -470,29 +767,61 @@ const userSlice = createSlice({
                 action_plan: null,
                 notes: null,
                 location_data_type: null,
-                alertTypes: null
+                alertTypes: []
               })
             }
           }
         ]
       }
+      // org data
+      state.organization = {
+        id: null,
+        name: null,
+        description: JSON.stringify({
+          name: null,
+          address: null,
+          compHouseNum: null,
+          emergencySector: null,
+          isAdminRegistering: null,
+          alternativeContact: {
+            firstName: null,
+            lastName: null,
+            email: null,
+            telephone: null,
+            jobTitle: null
+          }
+        }),
+        postalCode: null,
+        longName: null,
+        logoUrl: null,
+        backgroundUrl: null,
+        alertDiffusionZone: null,
+        alertDiffusionZoneBoundingBox: null,
+        urlSlug: null
+      }
       state.orgCurrentContact = {
         id: null,
-        enabled: null,
-        firstName: null,
-        lastName: null,
+        enabled: true,
+        firstname: null,
+        lastname: null,
         emails: null,
         mobilePhones: null,
         homePhones: null,
         position: null,
         comments: null,
+        pois: null,
         additionals: [
           {
             id: 'keywords',
-            value: null
+            value: { s: '[]' }
+          },
+          {
+            id: 'jobTitle',
+            value: { s: '' }
           }
         ]
       }
+      state.contacts = null
     }
   },
   selectors: {
@@ -559,11 +888,15 @@ const userSlice = createSlice({
     },
     getLocationOther: (state, key) => {
       return getLocationOtherAdditional(state.currentLocation.additionals, key)
+    },
+    getContactAdditional: (state, key) => {
+      return getAdditional(state.orgCurrentContact.additionals, key)
     }
   }
 })
 
 export const {
+  setLastActivity,
   setAuthToken,
   setRegisterToken,
   setProfileId,
@@ -580,6 +913,8 @@ export const {
   setLocationSearchResults,
   setSelectedLocation,
   setAdditionalAlerts,
+  // required for when user changes a location at sign up review
+  setLocationToBeChanged,
   // required for nearby flood areas flow
   setSelectedFloodWarningArea,
   setSelectedFloodAlertArea,
@@ -618,6 +953,28 @@ export const {
   setCurrentLocationKeywords,
   setCurrentLocationDataType,
   setCurrentLocationAlertTypes,
+  // org data
+  setOrganization,
+  setOrganizationId,
+  setOrganizationName,
+  setOrganizationAddress,
+  setOrganizationCompHouseNum,
+  setOrganizationEmergencySector,
+  setOrganizationIsAdminRegistering,
+  setOrganizationAlternativeContact,
+  setOrganizationACFirstName,
+  setOrganizationACLastName,
+  setOrganizationACEmail,
+  setOrganizationACTelephone,
+  setOrganizationACJobTitle,
+  setOrganizationDescription,
+  setOrganizationPostalCode,
+  setOrganizationLongName,
+  setOrganizationLogoUrl,
+  setOrganizationBackgroundUrl,
+  setOrganizationAlertDiffusionZone,
+  setOrganizationAlertDiffusionZoneBoundingBox,
+  setOrganizationUrlSlug,
   // org current contact
   setOrgCurrentContact,
   setOrgCurrentContactId,
@@ -629,15 +986,22 @@ export const {
   setOrgCurrentContactMobilePhones,
   setOrgCurrentContactPosition,
   setOrgCurrentContactAdditionals,
+  setOrgCurrentContactKeywords,
+  setOrgCurrentContactJobTitle,
   setOrgCurrentContactNotes,
+  setOrgCurrentContactPois,
+  setContacts,
   // clear state
-  clearAuth
+  clearAuth,
+  clearCurrentLocation,
+  clearOrgCurrentContact
 } = userSlice.actions
 
 export const {
   getLocationAdditionals,
   getLocationAdditional,
-  getLocationOther
+  getLocationOther,
+  getContactAdditional
 } = userSlice.selectors
 
 export default userSlice.reducer

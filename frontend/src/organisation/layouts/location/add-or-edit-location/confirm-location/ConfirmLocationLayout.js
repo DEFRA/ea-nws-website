@@ -37,6 +37,9 @@ export default function ConfirmLocationLayout ({
     getLocationAdditional(state, 'locationName')
   )
 
+  const currentPostCode = useSelector((state) =>
+    getLocationOther(state, 'postcode')
+  )
   const currentAddress = useSelector((state) =>
     getLocationOther(state, 'full_address')
   )
@@ -155,6 +158,7 @@ export default function ConfirmLocationLayout ({
                       </span>
                     )
                   })}
+                  {currentPostCode}
                 </p>
               </>
             )}

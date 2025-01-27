@@ -25,7 +25,6 @@ export default function LocationPostCodeSearchResultsPage () {
       navigateToPreviousPage={navigateToPreviousPage}
       navigateToFindPostcodePage={navigateToFindPostcodePage}
       navigateToCannotFindAddressPage={navigateToCannotFindAddressPage}
-      flow='unmatched-locations-not-in-england'
     />
   )
 }

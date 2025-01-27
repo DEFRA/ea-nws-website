@@ -1,7 +1,7 @@
 import React from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
-export default function ContactUsLayout () {
+export default function ContactUsLayout ({ email }) {
   const navigate = useNavigate()
 
   return (
@@ -35,9 +35,9 @@ export default function ContactUsLayout () {
               Email: {' '}
               <Link
                 className='govuk-link'
-                onClick={() => { window.location = 'mailto:enquiries@environment-agency.gov.uk' }}
+                onClick={() => { window.location = `mailto:${email}` }}
               >
-                enquiries@environment-agency.gov.uk
+                {email}
               </Link>
               <br />
               Monday to Friday, 8am to 6pm

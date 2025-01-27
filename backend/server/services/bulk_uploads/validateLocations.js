@@ -12,7 +12,7 @@ const getCoords = async (location) => {
   return { errorMessage, data }
 }
 
-function validateCoords (X, Y) {
+function validateCoords(X, Y) {
   // Check its a valid number
   if (!/^\d+$/.test(X) || !/^\d+$/.test(Y)) {
     // X or Y given is not a number
@@ -31,7 +31,7 @@ function validateCoords (X, Y) {
   }
 }
 
-function convertCoords (X, Y) {
+function convertCoords(X, Y) {
   proj4.defs(
     'EPSG:27700',
     '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs'
@@ -103,13 +103,17 @@ const validateLocations = async (locations) => {
           if (errorMessage) {
             errorMessage === 'No matches found' &&
               (location.error = ['not found'])
-            errorMessage === 'No match in England' &&
-              (location.error = ['not in England'])
             invalid.push(location)
           } else {
             location.coordinates = data[0].coordinates
             location.address = data[0].address
-            valid.push(location)
+
+            if (data[0].inEngland) {
+              valid.push(location)
+            } else {
+              location.error = ['not in England']
+              invalid.push(location)
+            }
           }
         } else {
           location.error = ['not found']

@@ -126,7 +126,7 @@ const osFindApiCall = async (address, minmatch = null) => {
     const response = await axios.get(url)
 
     // Check that postcode is in England
-    if (response.data.results?.[0].DPA.COUNTRY_CODE === 'E') {
+    if (response.data.results) {
       responseData = response.data.results.map((result) => {
         const formattedAddress = addressFormatter(result.DPA.ADDRESS)
         const coordinates = convertCoordinates(
@@ -137,15 +137,11 @@ const osFindApiCall = async (address, minmatch = null) => {
           name: result.DPA.UPRN,
           address: formattedAddress,
           coordinates: coordinates,
-          postcode: result.DPA.POSTCODE
+          postcode: result.DPA.POSTCODE,
+          inEngland: result.DPA.COUNTRY_CODE === 'E' ? true : false
         }
       })
       return { status: response.status, data: responseData }
-    } else if (response.data.results?.[0].DPA.COUNTRY_CODE !== 'E') {
-      return {
-        status: 500,
-        errorMessage: 'No match in England'
-      }
     } else {
       return {
         status: 500,

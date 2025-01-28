@@ -23,8 +23,8 @@ const orgManageContactsUrls = {
     viewContact: urlManageContactsOrg + '/view-contacts/view'
   },
   edit: {
-    channels: urlManageContactsEdit +'/channels',
-    notes: urlManageContactsEdit +'/notes',
+    channels: urlManageContactsEdit + '/channels',
+    notes: urlManageContactsEdit + '/notes',
     details: urlManageContactsEdit
   }
 }
@@ -56,14 +56,15 @@ const orgManageContactsRoutes = [
   },
   {
     path: orgManageContactsUrls.edit.channels,
-    component: <EditContactChannelsPage/>
+    component: <EditContactChannelsPage />
   },
-  {path: orgManageContactsUrls.edit.notes,
-    component: <EditContactNotesPage/>
+  {
+    path: orgManageContactsUrls.edit.notes,
+    component: <EditContactNotesPage />
   },
   {
     path: orgManageContactsUrls.edit.details,
-    component:<EditContactDetailsPage/>
+    component: <EditContactDetailsPage />
   }
 ]
 

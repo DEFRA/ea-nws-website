@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import locationPin from '../../../../../common/assets/images/location_pin.svg'
@@ -6,8 +6,9 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import ContactHeader from './contact-information-components/ContactHeader'
 import ContactMap from './contact-information-components/ContactMap'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-import { urlManageKeywordsOrg} from '../../../../routes/manage-keywords/ManageKeywordsRoutes'
+import { urlManageKeywordsOrg } from '../../../../routes/manage-keywords/ManageKeywordsRoutes'
+import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap'
+
 export default function ContactInformationPage () {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
@@ -15,10 +16,16 @@ export default function ContactInformationPage () {
   const locations = null
   const jobTitle = currentContact.additionals.jobTitle
   const keywords = Array.isArray(currentContact.additionals.keywords) ? currentContact.additionals.keywords : []
+  const [showMap, setShowMap] = useState(false)
+  const currentLocation = useSelector((state) => state.session.currentLocation)
 
   const navigateBack = (e) => {
     e.preventDefault()
     navigate(-1)
+  }
+
+  const openMap = () => {
+    setShowMap(true)
   }
 
   return (
@@ -150,15 +157,17 @@ export default function ContactInformationPage () {
             {/* Add more info links */}
             <div className='govuk-!-font-size-19 govuk-!-margin-top-7'>
               {keywords.length === 0 && (
-                <Link className='govuk-link govuk-!-display-block govuk-!-margin-bottom-1'
+                <Link
+                  className='govuk-link govuk-!-display-block govuk-!-margin-bottom-1'
                   to={orgManageContactsUrls.add.keywords}
                 >
                   Add keywords
                 </Link>
               )}
               {!currentContact.comments && (
-                <Link className='govuk-link govuk-!-display-block govuk-!-margin-bottom-1'
-                  to = {orgManageContactsUrls.add.notes}
+                <Link
+                  className='govuk-link govuk-!-display-block govuk-!-margin-bottom-1'
+                  to={orgManageContactsUrls.add.notes}
                 >
                   Add notes
                 </Link>
@@ -179,7 +188,14 @@ export default function ContactInformationPage () {
                 alt='Location Pin'
                 style={{ width: 36, height: 40, transform: 'translateY(6px)' }}
               />
-              <Link className='govuk-link'>Open map</Link>
+              <Link className='govuk-link' onClick={openMap}>Open map</Link>
+              {showMap && (
+                <FullscreenMap
+                  showMap={showMap}
+                  setShowMap={setShowMap}
+                  locations={[currentLocation]}
+                />
+              )}
             </div>
           </div>
         </div>

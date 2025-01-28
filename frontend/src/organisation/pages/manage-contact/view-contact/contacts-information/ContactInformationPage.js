@@ -7,7 +7,7 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 import ContactHeader from './contact-information-components/ContactHeader'
 import ContactMap from './contact-information-components/ContactMap'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-
+import { urlManageKeywordsOrg} from '../../../../routes/manage-keywords/ManageKeywordsRoutes'
 export default function ContactInformationPage () {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
@@ -120,7 +120,7 @@ export default function ContactInformationPage () {
                 <Link
                   className='govuk-link govuk-!-display-inline-block'
                   style={{ float: 'right' }}
-                  // TODO to={}
+                  to={urlManageKeywordsOrg}
                 >
                   Change
                 </Link>

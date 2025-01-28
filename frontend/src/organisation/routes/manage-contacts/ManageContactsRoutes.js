@@ -5,7 +5,7 @@ import AddContactNotesPage from '../../pages/manage-contact/add-contact/AddConta
 import ViewContactsDashboardPage from '../../pages/manage-contact/view-contact/contacts-dashboard/ViewContactsDashboardPage'
 import ContactInformationPage from '../../pages/manage-contact/view-contact/contacts-information/ContactInformationPage'
 import EditContactChannelsPage from '../../pages/manage-contact/edit-contact/EditContactCahnnelsPage'
-import { path } from 'd3'
+import EditContactNotesPage from '../../pages/manage-contact/edit-contact/EditContactNotesPage'
 
 const urlManageContactsOrg = '/organisation/manage-contacts'
 const urlManageContactsAdd = urlManageContactsOrg + '/add'
@@ -23,7 +23,8 @@ const orgManageContactsUrls = {
     viewContact: urlManageContactsOrg + '/view-contacts/view'
   },
   edit: {
-    channels: urlManageContactsEdit +'/channels'
+    channels: urlManageContactsEdit +'/channels',
+    notes: urlManageContactsEdit +'/notes'
   }
 }
 
@@ -55,6 +56,9 @@ const orgManageContactsRoutes = [
   {
     path: orgManageContactsUrls.edit.channels,
     component: <EditContactChannelsPage/>
+  },
+  {path: orgManageContactsUrls.edit.notes,
+    component: <EditContactNotesPage/>
   }
 ]
 

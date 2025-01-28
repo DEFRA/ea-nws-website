@@ -39,7 +39,7 @@ export default function ContactInformationPage () {
               <Link
                 className='govuk-link govuk-!-display-inline-block'
                 style={{ float: 'right' }}
-                to={orgManageLocationsUrls.edit.individualLocation.optionalInformation.keyInformation}
+                to={orgManageContactsUrls.edit.details}
               >
                 Change
               </Link>

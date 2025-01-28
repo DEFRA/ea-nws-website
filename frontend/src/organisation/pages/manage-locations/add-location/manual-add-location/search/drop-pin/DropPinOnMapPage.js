@@ -7,6 +7,10 @@ export default function DropPinOnMapPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {
+    navigate(orgManageLocationsUrls.add.optionalInformation.optionalInfo)
+  }
+
+  const navigateToDropPinLocationSearchPage = () => {
     navigate(orgManageLocationsUrls.add.search.dropPinSearchResults)
   }
 
@@ -17,6 +21,7 @@ export default function DropPinOnMapPage () {
   return (
     <DropPinOnMapLayout
       navigateToNextPage={navigateToNextPage}
+      navigateToDropPinLocationSearchPage={navigateToDropPinLocationSearchPage}
       navigateToNotInEnglandPage={navigateToNotInEnglandPage}
     />
   )

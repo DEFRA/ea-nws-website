@@ -2,6 +2,7 @@ import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
+import LinkBanner from '../../../../../components/custom/LinkBanner'
 import { urlManageContactsAdd } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
 import { urlManageKeywordsOrg } from '../../../../../routes/manage-keywords/ManageKeywordsRoutes'
 
@@ -9,7 +10,10 @@ export default function DashboardHeader ({
   contactsAdded,
   lastUpdated,
   contacts,
-  onClickLinked
+  onClickLinked,
+  linkMode,
+  location,
+  selectedContacts
 }) {
   const navigate = useNavigate()
 
@@ -93,34 +97,51 @@ export default function DashboardHeader ({
   return (
     <>
       <div className='govuk-grid-column-full govuk-body govuk-!-margin-top-6'>
-        <div style={{ display: 'flex' }}>
-          <h1 className='govuk-heading-l'>
-            Manage your organisation's {contacts.length} contacts
-          </h1>
-          <div style={{ marginLeft: 'auto' }}>
-            <Button
-              text='Add contact'
-              className='govuk-button govuk-button--secondary'
-              onClick={() => navigate(urlManageContactsAdd)}
-            />
-            &nbsp; &nbsp;
-            <Button
-              text='Manage keywords'
-              className='govuk-button govuk-button--secondary'
-              onClick={() => navigate(urlManageKeywordsOrg)}
-            />
-          </div>
-        </div>
-
-        <div style={{ display: 'flex', fontSize: '18px' }}>
-          {contacts.filter((item) => item.linked_locations.length > 0).length > 0 && (
-            <ContactsBanner type='linked' />
-          )}
-          {contacts.filter((item) => item.linked_locations.length === 0).length > 0 && (
-            <ContactsBanner type='notLinked' />
-          )}
-        </div>
-      </div>
+        {!linkMode
+          ? (
+          <>
+            <div style={{ display: 'flex' }}>
+              <h1 className='govuk-heading-l'>
+                Manage your organisation's {contacts.length} contacts
+              </h1>
+              <div style={{ marginLeft: 'auto' }}>
+                <Button
+                  text='Add contact'
+                  className='govuk-button govuk-button--secondary'
+                  onClick={() => navigate(urlManageContactsAdd)}
+                />
+                &nbsp; &nbsp;
+                <Button
+                  text='Manage keywords'
+                  className='govuk-button govuk-button--secondary'
+                  onClick={() => navigate(urlManageKeywordsOrg)}
+                />
+              </div>
+            </div>
+            <div style={{ display: 'flex', fontSize: '18px' }}>
+              {contacts.filter((item) => item.linked_locations.length > 0).length > 0 && (
+                <ContactsBanner type='linked' />
+              )}
+              {contacts.filter((item) => item.linked_locations.length === 0).length > 0 && (
+                <ContactsBanner type='notLinked' />
+              )}
+            </div>
+          </>
+        )
+        :
+        (
+          <>
+            <h1 className='govuk-heading-l'>
+              Link location to contacts
+            </h1>
+            <p>
+              Select the contacts you want to link to this location from the list. Then select<br/>
+              Link location to contacts
+            </p>
+            <LinkBanner location={location} selectedContacts={selectedContacts}/>
+          </>
+        )}
+    </div>
     </>
   )
 }

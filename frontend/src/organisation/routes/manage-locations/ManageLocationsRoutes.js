@@ -59,6 +59,7 @@ import LiveFloodMonitoringPage from '../../pages/manage-locations/live-monitorin
 // view imports
 import ViewLocationInformationPage from '../../pages/manage-locations/view-location/location/LocationInformationPage'
 import ViewMessagesPage from '../../pages/manage-locations/view-location/location/LocationMessagesPage'
+import LinkedContactsPage from '../../pages/manage-locations/view-location/location/LinkedContactsPage'
 import ViewLocationsDashboardPage from '../../pages/manage-locations/view-location/locations-dashboard/ViewLocationsDashboardPage'
 
 // link imports
@@ -77,7 +78,8 @@ const orgManageLocationsUrls = {
   view: {
     dashboard: urlManageOrgViewLocations,
     viewLocation: urlManageOrgViewLocations + '/view',
-    viewMessages: urlManageOrgViewLocations + '/view-messages'
+    viewMessages: urlManageOrgViewLocations + '/view-messages',
+    viewLinkedContacts: urlManageOrgViewLocations + '/view-linked-contacts'
   },
   monitoring: {
     view: urlManageOrgLiveMonitoring + '/view'
@@ -192,6 +194,10 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.view.viewMessages,
     component: <ViewMessagesPage />
+  },
+  {
+    path: orgManageLocationsUrls.view.viewLinkedContacts,
+    component: <LinkedContactsPage linkMode={1}/>
   },
   // monitoring
   {

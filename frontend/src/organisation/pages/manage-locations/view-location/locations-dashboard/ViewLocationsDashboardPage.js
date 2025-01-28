@@ -106,15 +106,17 @@ export default function ViewLocationsDashboardPage () {
         location.groundWaterRisk = groundWaterRisks[idx]
       })
 
-      // TODO: Get linked contacts from the API (EAN-1364)
-      let tempSwitch = false
-      locationsUpdate.forEach(function (location) {
-        if (tempSwitch) {
-          location.linked_contacts = ['Contact 1', 'Contact 2']
-          tempSwitch = false
-        } else {
-          location.linked_contacts = []
-          tempSwitch = true
+      locationsUpdate.forEach(async function (location, idx) {
+        const { contactsData } = await backendCall(
+          dataToSend,
+          'api/elasticache/list_contacts',
+          navigate
+        )
+
+        if (contactsData) {
+          contactsData.forEach((contact) => {
+            location.linked_contacts.push(contact.id)
+          })
         }
       })
 

@@ -15,7 +15,7 @@ import ContactsTable from './dashboard-components/ContactsTable'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
 
-export default function ViewContactsDashboardPage () {
+export default function ViewContactsDashboardPage (linkMode) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [contacts, setContacts] = useState([])
@@ -31,6 +31,7 @@ export default function ViewContactsDashboardPage () {
   const [selectedFilters, setSelectedFilters] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
+  const currentLocation = useSelector((state) => state.session.currentLocation)
   const [dialog, setDialog] = useState({
     show: false,
     text: '',
@@ -257,7 +258,12 @@ export default function ViewContactsDashboardPage () {
               text={notificationText}
             />
           )}
-          <DashboardHeader contacts={contacts} onClickLinked={onClickLinked} />
+          <DashboardHeader 
+            contacts={contacts}
+            onClickLinked={onClickLinked}
+            linkMode={linkMode}
+            location={geoSafeToWebContact(currentLocation)}
+            selectedContacts={selectedContacts}/>
           <div className='govuk-grid-column-full govuk-body'>
             {!isFilterVisible
               ? (
@@ -267,17 +273,21 @@ export default function ViewContactsDashboardPage () {
                     className='govuk-button govuk-button--secondary inline-block'
                     onClick={() => onOpenCloseFilter()}
                   />
-                &nbsp; &nbsp;
-                  <ButtonMenu
-                    title='More actions'
-                    options={moreActions}
-                    onSelect={(index) => onMoreAction(index)}
-                  />
-                &nbsp; &nbsp;
-                  <Button
-                    text='Print'
-                    className='govuk-button govuk-button--secondary inline-block'
-                  />
+                  {!linkMode && (
+                    <>
+                    &nbsp; &nbsp;
+                      <ButtonMenu
+                        title='More actions'
+                        options={moreActions}
+                        onSelect={(index) => onMoreAction(index)}
+                      />
+                    &nbsp; &nbsp;
+                      <Button
+                        text='Print'
+                        className='govuk-button govuk-button--secondary inline-block'
+                      />
+                    </>
+                  )}
                   <ContactsTable
                     contacts={contacts}
                     displayedContacts={displayedContacts}
@@ -331,16 +341,20 @@ export default function ViewContactsDashboardPage () {
                         onClick={() => onOpenCloseFilter()}
                       />
                     &nbsp; &nbsp;
+                    {!linkMode && (
+                      <>
                       <ButtonMenu
                         title='More actions'
                         options={moreActions}
                         onSelect={(index) => onMoreAction(index)}
                       />
-                    &nbsp; &nbsp;
+                      &nbsp; &nbsp;
                       <Button
                         text='Print'
                         className='govuk-button govuk-button--secondary inline-block'
                       />
+                      </>
+                    )}
                     </div>
                     <ContactsTable
                       contacts={contacts}

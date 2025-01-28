@@ -59,7 +59,7 @@ export default function ContactInformationPage () {
               <Link
                 className='govuk-link govuk-!-display-inline-block'
                 style={{ float: 'right' }}
-                TODO to={orgManageContactsUrls.edit.channels}
+                to={orgManageContactsUrls.edit.channels}
               >
                 Change
               </Link>

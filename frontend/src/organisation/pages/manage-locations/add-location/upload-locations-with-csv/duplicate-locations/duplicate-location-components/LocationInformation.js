@@ -69,8 +69,10 @@ export default function LocationInformationLayout ({ location, comparedLocation 
           Location
         </h2>
         <hr style={{ height: '2px', color: '#000', opacity: '1' }} className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-        <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-0' 
-        style={(comparedLocation && comparedAdditionalData.location_data_type!== additionalData.location_data_type) ? compareStyle : {}}>
+        <h3
+          className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-0'
+          style={(comparedLocation && comparedAdditionalData.location_data_type !== additionalData.location_data_type) ? compareStyle : {}}
+        >
           {LocationHeader()}
         </h3>
         <p className='govuk-!-margin-top-1'>{LocationData()}</p>
@@ -130,7 +132,7 @@ export default function LocationInformationLayout ({ location, comparedLocation 
                     <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                       Location name
                     </h3>
-                    <p style={!locationNameAdded && comparedLocation && comparedLocation.additionals.locationName? compareStyle : {}}>{location.additionals.locationName}</p>
+                    <p style={!locationNameAdded && comparedLocation && comparedLocation.additionals.locationName ? compareStyle : {}}>{location.additionals.locationName}</p>
                   </div>
                   {additionalData.internal_reference && (
                     <div style={internalReferenceAdded ? compareStyle : {}}>
@@ -185,7 +187,7 @@ export default function LocationInformationLayout ({ location, comparedLocation 
                 Action Plan
               </h2>
               <hr style={{ height: '2px', color: '#000', opacity: '1' }} className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-              <p style={(!actionPlanAdded &&comparedLocation && comparedAdditionalData.action_plan !== additionalData.action_plan) ? compareStyle : {}}>{additionalData.action_plan}</p>
+              <p style={(!actionPlanAdded && comparedLocation && comparedAdditionalData.action_plan !== additionalData.action_plan) ? compareStyle : {}}>{additionalData.action_plan}</p>
             </div>
           )}
 

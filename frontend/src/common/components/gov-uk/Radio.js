@@ -38,11 +38,11 @@ export default function Radio ({
             checked={checked}
           />
           <label
-              className='govuk-label govuk-radios__label'
-              htmlFor={'id' + label}
-            >
-              {label}
-            </label>          
+            className='govuk-label govuk-radios__label'
+            htmlFor={'id' + label}
+          >
+            {label}
+          </label>
         </div>
         {conditional && (
           <div className='govuk-radios__conditional'>

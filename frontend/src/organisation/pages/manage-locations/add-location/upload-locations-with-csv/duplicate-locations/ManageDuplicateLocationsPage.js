@@ -75,14 +75,13 @@ export default function ManageDuplicateLocationsPage () {
 
     // Get the new, duplicate location (note type is 'invalid')
     const newLocation = geoSafeToWebLocation(await getLocation(orgId, location.additionals.locationName, 'invalid'))
-  
 
     if (existingLocation && newLocation) {
       // Now compare the two and let the use choose one
       navigate(orgManageLocationsUrls.add.duplicateLocationComparisonPage, {
         state: {
-          existingLocation: existingLocation,
-          newLocation: newLocation,
+          existingLocation,
+          newLocation,
           numDuplicates: duplicateLocations.length
         }
       })
@@ -164,9 +163,9 @@ export default function ManageDuplicateLocationsPage () {
               </table>
             </div>
             <Pagination
-                      totalPages={Math.ceil(duplicateLocations.length / locationsPerPage)}
-                      onPageChange={(val) => setCurrentPage(val)}
-                    />
+              totalPages={Math.ceil(duplicateLocations.length / locationsPerPage)}
+              onPageChange={(val) => setCurrentPage(val)}
+            />
             <Button
               className='govuk-button'
               text='Finish managing duplicate locations'

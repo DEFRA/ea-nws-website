@@ -85,8 +85,8 @@ export default function ConfirmLocationsPage () {
             // Now compare the two and let the use choose one
             navigate(orgManageLocationsUrls.add.duplicateLocationComparisonPage, {
               state: {
-                existingLocation: existingLocation,
-                newLocation: newLocation,
+                existingLocation,
+                newLocation,
                 numDuplicates: duplicateLocations
               }
             })

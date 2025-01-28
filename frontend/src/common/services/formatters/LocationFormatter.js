@@ -26,7 +26,6 @@ const geoSafeToWebLocation = (geoSafeLocation) => {
         keywords = []
       }
       location.additionals.keywords = keywords
-      
     } else if (additional.id === 'other') {
       location.additionals.other = JSON.parse(additional.value?.s)
     } else {

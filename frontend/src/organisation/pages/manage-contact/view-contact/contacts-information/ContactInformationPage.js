@@ -6,6 +6,7 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import ContactHeader from './contact-information-components/ContactHeader'
 import ContactMap from './contact-information-components/ContactMap'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ContactInformationPage () {
   const navigate = useNavigate()
@@ -38,7 +39,7 @@ export default function ContactInformationPage () {
               <Link
                 className='govuk-link govuk-!-display-inline-block'
                 style={{ float: 'right' }}
-                // TODO to={}
+                to={orgManageLocationsUrls.edit.individualLocation.optionalInformation.keyInformation}
               >
                 Change
               </Link>
@@ -58,7 +59,7 @@ export default function ContactInformationPage () {
               <Link
                 className='govuk-link govuk-!-display-inline-block'
                 style={{ float: 'right' }}
-                // TODO to={}
+                TODO to={orgManageContactsUrls.edit.channels}
               >
                 Change
               </Link>

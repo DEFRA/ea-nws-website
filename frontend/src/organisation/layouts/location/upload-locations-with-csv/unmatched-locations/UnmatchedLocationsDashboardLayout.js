@@ -6,7 +6,11 @@ import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import WarningText from '../../../../../common/components/gov-uk/WarningText'
-import { setCurrentLocation } from '../../../../../common/redux/userSlice'
+import {
+  setCurrentLocation,
+  setNotFoundLocations,
+  setNotInEnglandLocations
+} from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import {
   geoSafeToWebLocation,
@@ -54,12 +58,16 @@ export default function UnmatchedLocationsDashboardLayout ({
         navigate
       )
 
-      if (data.length > 0) {
+      if (
+        data.length === flow.includes('not-found')
+          ? notFoundLocations
+          : notInEnglandLocations
+      ) {
         const locations = []
-        const notFoundLocs = data.filter((location) =>
-          location.error.includes(unmatchedLocationText)
+        const notAddedLocs = data.filter((location) =>
+          location?.error?.includes(unmatchedLocationText)
         )
-        notFoundLocs.forEach((location) => {
+        notAddedLocs.forEach((location) => {
           locations.push(geoSafeToWebLocation(location))
         })
         setNotAddedLocationsInfo(locations)
@@ -228,6 +236,11 @@ export default function UnmatchedLocationsDashboardLayout ({
         navigate
       )
     )
+
+    // Set not added locations to zero
+    flow.includes('not-found') && dispatch(setNotFoundLocations(0))
+    flow.includes('not-in-england') && dispatch(setNotInEnglandLocations(0))
+
     navigateToNextPage()
   }
 

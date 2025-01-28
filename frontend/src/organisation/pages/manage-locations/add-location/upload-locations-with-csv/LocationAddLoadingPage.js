@@ -1,18 +1,22 @@
 import React, { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Spinner } from '../../../../../common/components/custom/Spinner'
+import {
+  setNotFoundLocations,
+  setNotInEnglandLocations
+} from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationAddLoadingPage () {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [status, setStatus] = useState('')
   const [stage, setStage] = useState('Scanning Upload')
   const [validLocations, setValidLocations] = useState(null)
+  const [invalidLocations, setInvalidLocations] = useState(null)
   const [duplicateLocations, setDuplicateLocations] = useState(null)
-  const [notFoundLocations, setNotFoundLocations] = useState(null)
-  const [notInEnglandLocations, setNotInEnglandLocations] = useState(null)
   const location = useLocation()
   const orgId = useSelector((state) => state.session.orgId)
   const fileName = location.state?.fileName
@@ -25,10 +29,7 @@ export default function LocationAddLoadingPage () {
   // Each time the status changes check if it's complete and save the locations to elasticache and geosafe
   useEffect(() => {
     const continueToNextPage = () => {
-      if (
-        duplicateLocations + notFoundLocations + notInEnglandLocations ===
-        0
-      ) {
+      if (invalidLocations === 0) {
         navigate(orgManageLocationsUrls.add.confirm, {
           state: { fileName, valid: validLocations }
         })
@@ -37,9 +38,7 @@ export default function LocationAddLoadingPage () {
           state: {
             fileName,
             valid: validLocations,
-            duplicates: duplicateLocations,
-            notFound: notFoundLocations,
-            notInEngland: notInEnglandLocations
+            duplicates: duplicateLocations
           }
         })
       }
@@ -76,13 +75,16 @@ export default function LocationAddLoadingPage () {
                 Array.isArray(invalid.error) &&
                 invalid.error.includes('not in England')
             ).length
-            setNotInEnglandLocations(notInEnglandLocations)
+            dispatch(setNotInEnglandLocations(notInEnglandLocations))
             // Any other invalid locations are considered to be not found
-            setNotFoundLocations(
-              data.data.invalid.length -
-                duplicateLocations -
-                notInEnglandLocations
+            dispatch(
+              setNotFoundLocations(
+                data.data.invalid.length -
+                  duplicateLocations -
+                  notInEnglandLocations
+              )
             )
+            setInvalidLocations(data.data.invalid.length)
           }
           setStatus(data.status)
         }

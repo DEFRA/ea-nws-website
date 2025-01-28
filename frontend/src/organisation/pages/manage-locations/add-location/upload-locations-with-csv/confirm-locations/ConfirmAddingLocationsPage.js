@@ -17,8 +17,12 @@ export default function ConfirmLocationsPage () {
   const location = useLocation()
   const validLocations = location?.state?.valid || 0
   const duplicateLocations = location?.state?.duplicates || 0
-  const notInEnglandLocations = location?.state?.notInEngland || 0
-  const notFoundLocations = location?.state?.notFound || 0
+  const notFoundLocations = useSelector(
+    (state) => state.session.notFoundLocations
+  )
+  const notInEnglandLocations = useSelector(
+    (state) => state.session.notInEnglandLocations
+  )
   const fileName = location?.state?.fileName || ''
   const orgId = useSelector((state) => state.session.orgId)
   const authToken = useSelector((state) => state.session.authToken)
@@ -71,9 +75,6 @@ export default function ConfirmLocationsPage () {
       navigate
     )
 
-    // Wait to ensure data is uploaded to elasticache. Not sure what is the best way to handle this.
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-
     if (!errorMessage) {
       if (duplicateLocations > 0) {
         if (duplicateLocations === 1) {
@@ -120,17 +121,12 @@ export default function ConfirmLocationsPage () {
         notInEnglandLocations > 0 &&
           dispatch(setNotInEnglandLocations(notInEnglandLocations))
       } else if (notFoundLocations > 0) {
-        dispatch(setNotFoundLocations(notFoundLocations))
-        notInEnglandLocations > 0 &&
-          dispatch(setNotInEnglandLocations(notInEnglandLocations))
-
         navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard, {
           state: {
             addedLocations: data.valid
           }
         })
       } else if (notInEnglandLocations > 0) {
-        dispatch(setNotInEnglandLocations(notInEnglandLocations))
         navigate(
           orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard,
           {

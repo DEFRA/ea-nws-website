@@ -14,11 +14,14 @@ import {
   setCurrentLocation,
   setCurrentLocationCoordinates,
   setCurrentLocationGeometry,
-  setCurrentLocationName
+  setCurrentLocationName,
+  setNotFoundLocations,
+  setNotInEnglandLocations
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function ConfirmLocationLayout ({
   navigateToNextPage,
@@ -49,6 +52,12 @@ export default function ConfirmLocationLayout ({
   )
   const yCoord = Math.round(
     useSelector((state) => getLocationOther(state, 'y_coordinate'))
+  )
+  const notFoundLocations = useSelector(
+    (state) => state.session.notFoundLocations
+  )
+  const notInEnglandLocations = useSelector(
+    (state) => state.session.notInEnglandLocations
   )
 
   // Shapefile polygon specific values
@@ -112,8 +121,30 @@ export default function ConfirmLocationLayout ({
           'api/bulk_uploads/remove_invalid_location',
           navigate
         )
+
+        flow?.includes('not-in-england')
+          ? dispatch(setNotInEnglandLocations(notInEnglandLocations - 1))
+          : dispatch(setNotFoundLocations(notFoundLocations - 1))
       }
-      navigateToNextPage()
+
+      if (
+        flow?.includes('not-found') &&
+        notFoundLocations - 1 === 0 &&
+        notInEnglandLocations > 0
+      ) {
+        // Find locations not in England
+        navigate(
+          orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard
+        )
+      } else if (
+        flow?.includes('not-in-england') &&
+        notInEnglandLocations - 1 === 0
+      ) {
+        // TODO: Navigate to correct page once created
+        navigate(orgManageLocationsUrls.view.dashboard)
+      } else {
+        navigateToNextPage()
+      }
     } else {
       errorMessage
         ? setError(errorMessage)

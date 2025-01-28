@@ -10,7 +10,9 @@ import {
   setCurrentLocation,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
-  setCurrentLocationNorthing
+  setCurrentLocationNorthing,
+  setNotFoundLocations,
+  setNotInEnglandLocations
 } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { convertCoordinatesToEspg27700 } from '../../../../../../common/services/CoordinatesFormatConverter'
@@ -18,6 +20,7 @@ import { locationInEngland } from '../../../../../../common/services/validations
 import Map from '../../../../../components/custom/Map'
 import MapInteractiveKey from '../../../../../components/custom/MapInteractiveKey'
 import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function DropPinOnMapLayout ({
   navigateToNextPage,
@@ -40,6 +43,12 @@ export default function DropPinOnMapLayout ({
   const [showFloodWarningAreas, setShowFloodWarningAreas] = useState(true)
   const [showFloodAlertAreas, setShowFloodAlertAreas] = useState(true)
   const [showFloodExtents, setShowFloodExtents] = useState(true)
+  const notFoundLocations = useSelector(
+    (state) => state.session.notFoundLocations
+  )
+  const notInEnglandLocations = useSelector(
+    (state) => state.session.notInEnglandLocations
+  )
 
   const pinDropCoordsDisplay = () => {
     if (pinCoords) {
@@ -97,9 +106,30 @@ export default function DropPinOnMapLayout ({
               'api/bulk_uploads/remove_invalid_location',
               navigate
             )
+
+            flow?.includes('not-in-england')
+              ? dispatch(setNotInEnglandLocations(notInEnglandLocations - 1))
+              : dispatch(setNotFoundLocations(notFoundLocations - 1))
           }
 
-          navigateToNextPage()
+          if (
+            flow?.includes('not-found') &&
+            notFoundLocations - 1 === 0 &&
+            notInEnglandLocations > 0
+          ) {
+            // Find locations not in England
+            navigate(
+              orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard
+            )
+          } else if (
+            flow?.includes('not-in-england') &&
+            notInEnglandLocations - 1 === 0
+          ) {
+            // TODO: Navigate to correct page once created
+            navigate(orgManageLocationsUrls.view.dashboard)
+          } else {
+            navigateToNextPage()
+          }
         } else {
           errorMessage
             ? setError(errorMessage)
@@ -140,7 +170,7 @@ export default function DropPinOnMapLayout ({
               )}
             </div>
           </div>
-          <div class='govuk-grid-column-three-quarters '>
+          <div className='govuk-grid-column-three-quarters '>
             <div className='govuk-body'>
               <div className='govuk-!-margin-bottom-4'>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
@@ -164,8 +194,8 @@ export default function DropPinOnMapLayout ({
             </div>
           </div>
 
-          <div class='govuk-grid-row'>
-            <div class='govuk-grid-column-three-quarters '>
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-three-quarters '>
               <Map
                 setCoordinates={setPinCoords}
                 type='drop'
@@ -174,7 +204,7 @@ export default function DropPinOnMapLayout ({
                 showMarker={showMarkerInitially}
               />
             </div>
-            <div class='govuk-grid-column-one-quarter'>
+            <div className='govuk-grid-column-one-quarter'>
               <MapInteractiveKey
                 showFloodWarningAreas={showFloodWarningAreas}
                 setShowFloodWarningAreas={setShowFloodWarningAreas}
@@ -186,8 +216,8 @@ export default function DropPinOnMapLayout ({
             </div>
           </div>
 
-          <div class='govuk-grid-row'>
-            <div class='govuk-grid-column-three-quarters'>
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-three-quarters'>
               <div
                 className='govuk-caption-container'
                 style={{

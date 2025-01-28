@@ -1,9 +1,23 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
+import { backendCall } from '../../services/BackendService'
 
 export default function AccessibilityStatementPage () {
   const navigate = useNavigate()
+  const [servicePhase, setServicePhase] = useState(false)
+
+  async function getServicePhase () {
+    const { data } = await backendCall(
+      'data',
+      'api/service/get_service_phase'
+    )
+    setServicePhase(data)
+  }
+
+  useEffect(() => {
+    getServicePhase()
+  }, [])
 
   return (
     <>
@@ -13,7 +27,10 @@ export default function AccessibilityStatementPage () {
           <div className='govuk-grid-column-two-thirds'>
             <div className='govuk-body'>
               <h1 className='govuk-heading-l'>Accessibility statement</h1>
-              <p>coming soon</p>
+              <p>This is not available yet.</p>
+              {servicePhase === 'beta' && (
+                <p>We'll publish our accessibility statement after this testing phase finishes.</p>
+              )}
             </div>
           </div>
         </div>

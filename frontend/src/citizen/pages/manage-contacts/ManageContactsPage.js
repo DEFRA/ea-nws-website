@@ -94,7 +94,7 @@ export default function ManageContactsPage () {
               Your email addresses and telephone numbers
             </h2>
             <p className='govuk-body'>
-              We'll send flood messages for all your location to all these
+              We'll send flood messages for all your locations to all these
               emails and numbers. You can add more for friends and family, if
               you wish.
             </p>

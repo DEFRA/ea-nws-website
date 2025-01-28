@@ -12,6 +12,7 @@ import {
   setLocationSearchResults
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
+import UnmatchedLocationInfo from '../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 
 export default function FindUnmatchedLocationLayout ({
   navigateToFindPostCode,
@@ -130,31 +131,6 @@ export default function FindUnmatchedLocationLayout ({
     </>
   )
 
-  const InsetText = () => (
-    <div className='govuk-inset-text'>
-      <strong>{currentLocName}</strong>
-      {currentLocAddress && (
-        <>
-          <br />
-          {currentLocAddress}
-        </>
-      )}
-      {coordinatesAvailable && !currentLocAddress && (
-        <>
-          <br />
-          {currentLocXcoordinate}, {currentLocYcoordinate}
-        </>
-      )}
-      {coordinatesAvailable && currentLocAddress && (
-        <>
-          <br />
-          <br />
-          {currentLocXcoordinate}, {currentLocYcoordinate}
-        </>
-      )}
-    </div>
-  )
-
   return (
     <>
       <BackLink onClick={() => navigate(-1)} />
@@ -184,7 +160,7 @@ export default function FindUnmatchedLocationLayout ({
                   </p>
                 </>
               )}
-              <InsetText />
+              <UnmatchedLocationInfo />
 
               <div
                 className={

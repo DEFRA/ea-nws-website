@@ -1,24 +1,15 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
-import Button from '../../../common/components/gov-uk/Button'
 import Pagination from '../../../common/components/gov-uk/Pagination'
-import {
-  getLocationAdditional,
-  getLocationOther,
-  setCurrentLocationCoordinates,
-  setCurrentLocationFullAddress,
-  setOrganizationAddress
-} from '../../../common/redux/userSlice'
+import { setOrganizationAddress } from '../../../common/redux/userSlice'
 
-export default function SearchAddressResultLayout ({
+export default function SelectAddressLayout ({
   navigateToNextPage,
-  navigateToPreviousPage,
-  navigateToFindPostcodePage,
-  navigateToCannotFindAddressPage,
-  flow
+  NavigateToPreviousPage
 }) {
+  const navigate = useNavigate()
   const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(1)
   const locations = useSelector((state) => state.session.locationSearchResults)
@@ -31,84 +22,32 @@ export default function SearchAddressResultLayout ({
     currentPage * locationsPerPage
   )
 
-  const currentLocationPostcode = useSelector((state) =>
-    getLocationOther(state, 'postcode')
-  )
-
-  const LocationDetails = () => {
-    const locationName = useSelector((state) =>
-      getLocationAdditional(state, 'locationName')
-    )
-    const locationFullAddress = useSelector((state) =>
-      getLocationOther(state, 'full_address')
-    )
-    const locationXcoordinate = useSelector((state) =>
-      getLocationOther(state, 'x_coordinate')
-    )
-    const locationYcoordinate = useSelector((state) =>
-      getLocationOther(state, 'y_coordinate')
-    )
-
-    return (
-      <div className='govuk-inset-text'>
-        <strong>{locationName}</strong>
-        {locationFullAddress && (
-          <>
-            <br />
-            {locationFullAddress}
-          </>
-        )}
-        <br />
-        {locationXcoordinate && locationYcoordinate && (
-          <>
-            <br />
-            {locationXcoordinate}, {locationYcoordinate}
-          </>
-        )}
-      </div>
-    )
-  }
-
   const handleSelectedLocation = (event, selectedLocation) => {
     event.preventDefault()
-    if (flow.includes('unmatched-locations')) {
-      dispatch(setCurrentLocationFullAddress(selectedLocation.address))
-      dispatch(setCurrentLocationCoordinates(selectedLocation.coordinates))
-    } else {
-      dispatch(setOrganizationAddress(selectedLocation.address))
-    }
+    dispatch(setOrganizationAddress(selectedLocation.address))
     navigateToNextPage()
   }
 
   const navigateBack = (event) => {
     event.preventDefault()
-    navigateToPreviousPage()
-  }
-
-  const navigateToFindPostcode = (event) => {
-    event.preventDefault()
-    navigateToFindPostcodePage()
+    NavigateToPreviousPage()
   }
 
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-body'>
           <div className='govuk-grid-row'>
             <div className='govuk-grid-column-two-thirds'>
               <div className='govuk-body'>
                 <h1 className='govuk-heading-l'>Select an address</h1>
-                {flow.includes('unmatched-locations') && <LocationDetails />}
-                {(locationPostCode || flow.includes('unmatched-locations')) && (
+                {locationPostCode && (
                   <p className='govuk-body'>
-                    Postcode:{' '}
-                    {flow.includes('unmatched-locations')
-                      ? currentLocationPostcode
-                      : locationPostCode}
+                    Postcode: {locationPostCode}
                     {'   '}
                     <Link
-                      onClick={(e) => navigateToFindPostcode(e)}
+                      onClick={() => navigate(-1)}
                       className='govuk-link govuk-!-padding-left-5'
                     >
                       Change postcode
@@ -135,11 +74,6 @@ export default function SearchAddressResultLayout ({
                     ))}
                   </tbody>
                 </table>
-                <Button
-                  text='I cannot find the address'
-                  className='govuk-button govuk-button--secondary govuk-!-margin-top-4'
-                  onClick={navigateToCannotFindAddressPage}
-                />
                 <Pagination
                   totalPages={Math.ceil(locations.length / locationsPerPage)}
                   onPageChange={(val) => setCurrentPage(val)}

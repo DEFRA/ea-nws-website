@@ -72,6 +72,7 @@ const setOrgAdditional = (additionals, id, value) => {
 const userSlice = createSlice({
   name: 'session',
   initialState: {
+    lastActivity: null,
     authToken: null,
     registerToken: null,
     profileId: null,
@@ -105,6 +106,8 @@ const userSlice = createSlice({
     locationSearchResults: null,
     selectedLocation: null,
     additionalAlerts: null,
+    // required for when user changes a location at sign up review
+    locationToBeChanged: null,
     // required for nearby flood areas flow
     selectedFloodWarningArea: null,
     selectedFloodAlertArea: null,
@@ -187,7 +190,7 @@ const userSlice = createSlice({
     // org contact data
     orgCurrentContact: {
       id: null,
-      enabled: null,
+      enabled: true,
       firstname: null,
       lastname: null,
       emails: null,
@@ -210,6 +213,9 @@ const userSlice = createSlice({
     contacts: null
   },
   reducers: {
+    setLastActivity: (state, action) => {
+      state.lastActivity = action.payload
+    },
     setAuthToken: (state, action) => {
       state.authToken = action.payload
     },
@@ -261,6 +267,10 @@ const userSlice = createSlice({
     },
     setAdditionalAlerts: (state, action) => {
       state.additionalAlerts = action.payload
+    },
+    // required for when user changes a location at sign up review
+    setLocationToBeChanged: (state, action) => {
+      state.locationToBeChanged = action.payload
     },
     // required for nearby flood areas flow
     setSelectedFloodWarningArea: (state, action) => {
@@ -641,11 +651,50 @@ const userSlice = createSlice({
     setOrgCurrentContactAdditionals: (state, action) => {
       state.orgCurrentContact.additionals = action.payload
     },
+    setOrgCurrentContactKeywords: (state, action) => {
+      setAdditional(
+        state.orgCurrentContact.additionals,
+        'keywords',
+        action.payload
+      )
+    },
+    setOrgCurrentContactJobTitle: (state, action) => {
+      setAdditional(
+        state.orgCurrentContact.additionals,
+        'jobTitle',
+        action.payload
+      )
+    },
+    clearOrgCurrentContact: (state) => {
+      state.orgCurrentContact = {
+        id: null,
+        enabled: true,
+        firstname: null,
+        lastname: null,
+        emails: null,
+        mobilePhones: null,
+        homePhones: null,
+        position: null,
+        comments: null,
+        pois: null,
+        additionals: [
+          {
+            id: 'keywords',
+            value: { s: '[]' }
+          },
+          {
+            id: 'jobTitle',
+            value: { s: '' }
+          }
+        ]
+      }
+    },
     setContacts: (state, action) => {
       state.contacts = action.payload
     },
     // Clear state
     clearAuth: (state) => {
+      state.lastActivity = null
       state.authToken = null
       state.registerToken = null
       state.profileId = null
@@ -679,6 +728,8 @@ const userSlice = createSlice({
       state.locationSearchResults = null
       state.selectedLocation = null
       state.additionalAlerts = null
+      // required for when user changes a location at sign up review
+      state.locationToBeChanged = null
       // required for nearby flood areas flow
       state.selectedFloodWarningArea = null
       state.selectedFloodAlertArea = null
@@ -760,7 +811,7 @@ const userSlice = createSlice({
       }
       state.orgCurrentContact = {
         id: null,
-        enabled: null,
+        enabled: true,
         firstname: null,
         lastname: null,
         emails: null,
@@ -855,6 +906,7 @@ const userSlice = createSlice({
 })
 
 export const {
+  setLastActivity,
   setAuthToken,
   setRegisterToken,
   setProfileId,
@@ -873,6 +925,8 @@ export const {
   setLocationSearchResults,
   setSelectedLocation,
   setAdditionalAlerts,
+  // required for when user changes a location at sign up review
+  setLocationToBeChanged,
   // required for nearby flood areas flow
   setSelectedFloodWarningArea,
   setSelectedFloodAlertArea,
@@ -944,12 +998,15 @@ export const {
   setOrgCurrentContactMobilePhones,
   setOrgCurrentContactPosition,
   setOrgCurrentContactAdditionals,
+  setOrgCurrentContactKeywords,
+  setOrgCurrentContactJobTitle,
   setOrgCurrentContactNotes,
   setOrgCurrentContactPois,
   setContacts,
   // clear state
   clearAuth,
-  clearCurrentLocation
+  clearCurrentLocation,
+  clearOrgCurrentContact
 } = userSlice.actions
 
 export const {

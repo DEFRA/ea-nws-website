@@ -1,16 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Autocomplete from '../../../../../../common/components/gov-uk/Autocomplete'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
-import {
-  getLocationAdditional,
-  getLocationOther,
-  setCurrentLocationCoordinates
-} from '../../../../../../common/redux/userSlice'
+import { setCurrentLocationCoordinates } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
+import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 
 export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
   const dispatch = useDispatch()
@@ -89,40 +86,6 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
     navigate(-1)
   }
 
-  const LocationDetails = () => {
-    const locationName = useSelector((state) =>
-      getLocationAdditional(state, 'locationName')
-    )
-    const locationFullAddress = useSelector((state) =>
-      getLocationOther(state, 'full_address')
-    )
-    const locationXcoordinate = useSelector((state) =>
-      getLocationOther(state, 'x_coordinate')
-    )
-    const locationYcoordinate = useSelector((state) =>
-      getLocationOther(state, 'y_coordinate')
-    )
-
-    return (
-      <div className='govuk-inset-text'>
-        <strong>{locationName}</strong>
-        {locationFullAddress && (
-          <>
-            <br />
-            {locationFullAddress}
-          </>
-        )}
-        <br />
-        {locationXcoordinate && locationYcoordinate && (
-          <>
-            <br />
-            {locationXcoordinate}, {locationYcoordinate}
-          </>
-        )}
-      </div>
-    )
-  }
-
   return (
     <>
       <BackLink onClick={navigateBack} />
@@ -133,13 +96,13 @@ export default function LocationSearchLayout ({ navigateToNextPage, flow }) {
               <ErrorSummary errorList={[placeNameTownOrPostcodeError]} />
             )}
             <h1 className='govuk-heading-l'>Find the location on a map</h1>
-            {flow.includes('unmatched-locations') && (
+            {flow?.includes('unmatched-locations') && (
               <p>
                 The location you're searching for cannot be found. We need some
                 additional information to help us find it.
               </p>
             )}
-            {flow.includes('unmatched-locations') && <LocationDetails />}
+            {flow?.includes('unmatched-locations') && <UnmatchedLocationInfo />}
 
             <div
               className={

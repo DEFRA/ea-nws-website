@@ -46,8 +46,6 @@ export default function LocationWithinWarningAreaProximityLayout ({
   const selectedFloodAlertArea = useSelector(
     (state) => state.session.selectedFloodAlertArea
   )
-
-  const [floodHistoryUrl, setHistoryUrl] = useState(null)
   const [floodHistoryData, setFloodHistoryData] = useState(null)
 
   useEffect(() => {
@@ -64,12 +62,8 @@ export default function LocationWithinWarningAreaProximityLayout ({
         'data',
         'api/locations/download_flood_history'
       )
-      setHistoryUrl(data)
-    }
 
-    getHistoryUrl()
-    floodHistoryUrl &&
-      fetch(floodHistoryUrl)
+      fetch(data)
         .then((response) => response.text())
         .then((data) => {
           setFloodHistoryData(csvToJson(data))
@@ -77,7 +71,9 @@ export default function LocationWithinWarningAreaProximityLayout ({
         .catch((e) =>
           console.error('Could not fetch Historic Flood Warning file', e)
         )
-  })
+    }
+    getHistoryUrl()
+  }, [])
 
   const setHistoricalAlertNumber = (AlertArea) => {
     const oneYearAgo = moment().subtract(1, 'years')
@@ -131,7 +127,6 @@ export default function LocationWithinWarningAreaProximityLayout ({
 
   return (
     <>
-
       {showMobileMap
         ? (
           <>
@@ -173,8 +168,12 @@ export default function LocationWithinWarningAreaProximityLayout ({
                 <div className='govuk-grid-column-two-thirds'>
                   {error && <ErrorSummary errorList={[error]} />}
                   <h1 className='govuk-heading-l govuk-!-margin-top-6'>
-                    You can get {type === 'severe' ? 'severe flood warnings and ' : 'early flood alerts '}
-                    {type === 'severe' ? 'flood warnings' : ''} near this location {type === 'severe' ? '' : 'about possible flooding'}
+                    You can get{' '}
+                    {type === 'severe'
+                      ? 'severe flood warnings and '
+                      : 'early flood alerts '}
+                    {type === 'severe' ? 'flood warnings' : ''} near this location{' '}
+                    {type === 'severe' ? '' : 'about possible flooding'}
                   </h1>
                   <InsetText text={selectedLocation.address} />
                   <p>

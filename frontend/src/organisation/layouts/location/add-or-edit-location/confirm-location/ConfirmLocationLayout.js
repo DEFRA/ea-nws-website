@@ -37,6 +37,9 @@ export default function ConfirmLocationLayout ({
     getLocationAdditional(state, 'locationName')
   )
 
+  const currentPostCode = useSelector((state) =>
+    getLocationOther(state, 'postcode')
+  )
   const currentAddress = useSelector((state) =>
     getLocationOther(state, 'full_address')
   )
@@ -103,7 +106,7 @@ export default function ConfirmLocationLayout ({
       dispatch(setCurrentLocation(data))
 
       // Remove invalid location from elasticache
-      if (flow.includes('unmatched-locations')) {
+      if (flow?.includes('unmatched-locations')) {
         backendCall(
           { orgId, locationId: currentLocation.id },
           'api/bulk_uploads/remove_invalid_location',
@@ -155,6 +158,7 @@ export default function ConfirmLocationLayout ({
                       </span>
                     )
                   })}
+                  {currentPostCode && currentPostCode}
                 </p>
               </>
             )}
@@ -181,7 +185,7 @@ export default function ConfirmLocationLayout ({
                 <div className='govuk-!-margin-top-8'>
                   <Button
                     text={
-                      flow.includes('unmatched-locations')
+                      flow?.includes('unmatched-locations')
                         ? 'Add location'
                         : 'Confirm location'
                     }

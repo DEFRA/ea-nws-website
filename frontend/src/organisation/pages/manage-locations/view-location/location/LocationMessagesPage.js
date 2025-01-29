@@ -28,9 +28,8 @@ export default function LocationMessagesPage () {
   const currentLocation = useSelector(
     (state) => state.session.currentLocation
   )
-  const additionalData = useSelector(
-    (state) => state.session.currentLocation.additionals
-  )
+  const additionalData = currentLocation.additionals
+  const [isAreaNearby, setIsAreaNearby] = useState(true)
   const [alertAreas, setAlertAreas] = useState(null)
   const [warningAreas, setWarningAreas] = useState(null)
   const [floodAreasInputs, setFloodAreasInputs] = useState([])
@@ -69,7 +68,7 @@ export default function LocationMessagesPage () {
         0.5
       )
     } else {
-      const geoJson = currentLocation.geometry.geoJson
+      const geoJson = JSON.parse(currentLocation.geometry.geoJson)
       result = await getSurroundingFloodAreasFromShape(
         geoJson,
         0.5
@@ -81,7 +80,6 @@ export default function LocationMessagesPage () {
 
   const setHistoricalData = (area, type, index) => {
     const twoYearsAgo = moment().subtract(2, 'years')
-
     if (area) {
       const taCode = area.properties.FWS_TACODE
 
@@ -135,16 +133,20 @@ export default function LocationMessagesPage () {
           warnings = warningAreas ? [...warningAreas] : []    
           alerts = alertAreas? [...alertAreas] : []
         }
-        if (alertAreas && warningAreas) {
+
+        if (alerts.length > 0 && warnings.length > 0) {
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Warning', index))
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Warning Rapid Response', index))
           allAreas.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
-        } else if (warningAreas) {
+        } else if (warnings.length > 0) {
           warnings.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
           warnings.forEach((area, index) => setHistoricalData(area, 'Flood Warning', index))
           warnings.forEach((area, index) => setHistoricalData(area, 'Flood Warning Rapid Response', index))
-        } else if (alertAreas) {
+        } else if (alerts.length > 0) {
           alerts.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
+        }
+        else{
+          setIsAreaNearby(false)
         }
       }
     }
@@ -190,7 +192,7 @@ export default function LocationMessagesPage () {
 
   useEffect(() => {
     const areAllCountsLoaded = floodAlertsCount.length > 0 && floodWarningsCount.length > 0 && severeFloodWarningsCount.length > 0
-    if (floodAreasInputs.length > 0 && areAllCountsLoaded) {
+    if ((floodAreasInputs.length > 0 && areAllCountsLoaded) || !isAreaNearby) {
       setLoading(false)
     }
   }, [floodAreasInputs, floodAlertsCount, floodWarningsCount, severeFloodWarningsCount])
@@ -205,7 +207,7 @@ export default function LocationMessagesPage () {
 
   useEffect(() => {
     const fetchAreas = async () => {
-      if (currentLocation && additionalData && (currentLocation.coordinates || currentLocation.geometry || currentLocation.geocode)) {
+      if (currentLocation && (currentLocation.coordinates || currentLocation.geometry || currentLocation.geocode)) {
         if(!hasFetchedArea.current){
           await surroundingAreas()
           hasFetchedArea.current = true
@@ -367,6 +369,7 @@ export default function LocationMessagesPage () {
         Flood areas
       </h2>
       <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+
       {loading
         ? (<LoadingSpinner />)
         : (

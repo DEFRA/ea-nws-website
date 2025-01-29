@@ -7,6 +7,7 @@ import { backendCall } from './BackendService'
 export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
   // warning areas
   const { data: wfsWarningData } = await callForSurroundingAreas(calculateBoundingBox(lat, lng, bboxKM), 'flood_warnings')
+
   // alert area
   const { data: wfsAlertData } = await callForSurroundingAreas(calculateBoundingBox(lat, lng, bboxKM), 'flood_alerts')
 
@@ -30,7 +31,6 @@ export const getSurroundingFloodAreasFromShape = async (geoJsonShape, bboxKM = 0
   // alert area
   const { data: wfsAlertData } = await callForSurroundingAreas(bboxInput, 'flood_alerts')
   const filteredAlertData = getIntersections(wfsAlertData, bufferedShape)
-
   return {
     alertArea: filteredAlertData,
     warningArea: filteredWarningData
@@ -39,15 +39,17 @@ export const getSurroundingFloodAreasFromShape = async (geoJsonShape, bboxKM = 0
 
 const getIntersections = (areas, bufferedShape) => {
   const bufferedShapeValid = turf.booleanValid(bufferedShape.geometry)
+  if(!bufferedShapeValid) return
+  const bufferedShapeGeometry = bufferedShape.geometry;
   const filteredTargetData = areas.features.filter(area => {
     if (turf.booleanValid(area.geometry) && bufferedShapeValid) {
       try {
         // Interesection for LINE
-        if (bufferedShape.geometry.type === LocationDataType.SHAPE_LINE || area.geometry.type === LocationDataType.SHAPE_LINE) {
-          if (turf.lineIntersect(area.geometry, bufferedShape.geometry)) return true
+        if (bufferedShapeGeometry.type === LocationDataType.SHAPE_LINE || area.geometry.type === LocationDataType.SHAPE_LINE) {
+          if (turf.lineIntersect(area.geometry, bufferedShapeGeometry)) return true
           return false
         }
-        const poly1 = turf.multiPolygon(bufferedShape.geometry.coordinates)
+        const poly1 = turf.multiPolygon(bufferedShapeGeometry.coordinates)
         const poly2 = turf.multiPolygon(area.geometry.coordinates)
         const featureCollection = turf.featureCollection([poly1, poly2])
         if (turf.intersect(featureCollection)) return true

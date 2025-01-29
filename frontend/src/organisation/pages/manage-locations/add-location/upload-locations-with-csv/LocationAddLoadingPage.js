@@ -12,11 +12,13 @@ export default function LocationAddLoadingPage () {
   const [invalidLocations, setInvalidLocations] = useState(null)
   const location = useLocation()
   const fileName = location.state?.fileName
+  const [errors, setErrors] = useState(null)
 
   if (!fileName) {
     // theres not fileName so navigate back. will need to give an error
     navigate(-1)
   }
+
 
   // Each time the status changes check if it's complete and save the locations to elasticache and geosafe
   useEffect(() => {
@@ -38,6 +40,12 @@ export default function LocationAddLoadingPage () {
     if (status === 'complete') {
       continueToNextPage()
     }
+    else if (status === 'rejected') {
+      //navigate back to the upload page and pass the errors
+      navigate(orgManageLocationsUrls.add.uploadFile, {
+        state: { errors: errors }
+      })
+    }
   }, [status])
 
   // Check the status of the processing and update state
@@ -54,6 +62,9 @@ export default function LocationAddLoadingPage () {
           setStage(data.stage)
         }
         if (data?.status !== status) {
+          if (data?.error) {
+            setErrors(data.error)
+          }
           if (data?.data) {
             setValidLocations(data.data?.valid.length)
             setInvalidLocations(data.data?.invalid.length)

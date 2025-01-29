@@ -7,7 +7,7 @@ import { backendCall } from '../../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmLocationsPage () {
+export default function ConfirmAddingLocationsPage () {
   const navigate = useNavigate()
   const location = useLocation()
   const validLocations = location?.state?.valid || 0
@@ -70,8 +70,8 @@ export default function ConfirmLocationsPage () {
           // Get the existing location (note type is 'valid')
           const existingLocation = geoSafeToWebLocation(await getLocation(orgId, location.additionals.locationName, 'valid'))
 
-          // Get the new, duplicate location (note type is 'invalid')
-          const newLocation = geoSafeToWebLocation(await getLocation(orgId, location.additionals.locationName, 'invalid'))
+          // Set the new, duplicate location
+          const newLocation = geoSafeToWebLocation(location)
 
           if (existingLocation && newLocation) {
             // Now compare the two and let the use choose one

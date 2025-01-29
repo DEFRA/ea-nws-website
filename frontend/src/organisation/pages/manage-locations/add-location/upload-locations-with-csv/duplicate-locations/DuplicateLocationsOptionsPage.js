@@ -34,7 +34,6 @@ export default function DuplicateLocationsOptionsPage () {
       if (data) {
         const duplicates = data.filter((location) => location.error.includes('duplicate') && location.error.length === 1)
         duplicates.forEach((location) => {
-          console.log(location)
           locations.push(geoSafeToWebLocation(location))
         })
       }

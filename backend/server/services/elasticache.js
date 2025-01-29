@@ -201,12 +201,10 @@ const removeLocation = async (orgId, locationID) => {
 }
 
 const updateLocation = async (orgId, location) => {
-  console.log(JSON.stringify(location))
   const locationID = location.id
   const key = orgId + ':t_POIS:' + locationID
   const exists = await checkKeyExists(key)
   if (exists) {
-    console.log('location exists, removing first')
     await removeLocation(orgId, locationID)
   }
   await addLocation(orgId, location)

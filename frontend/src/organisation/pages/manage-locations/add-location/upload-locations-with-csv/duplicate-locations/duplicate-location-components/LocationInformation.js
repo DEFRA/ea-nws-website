@@ -3,7 +3,6 @@ import FloodWarningKey from '../../../../../../components/custom/FloodWarningKey
 import Map from '../../../../../../components/custom/Map'
 
 export default function LocationInformationLayout ({ location, comparedLocation }) {
-  console.log(JSON.stringify(location))
   const additionalData = location.additionals.other
   const formattedAddress = additionalData.full_address?.split(',')
   const comparedAdditionalData = comparedLocation?.additionals.other

@@ -63,14 +63,10 @@ export default function ConfirmLocationsPage () {
       'api/bulk_uploads/save_locations',
       navigate
     )
-    console.log(data)
-    console.log(JSON.stringify(data))
     if (!errorMessage) {
       if (duplicateLocations > 0) {
         if (duplicateLocations === 1) {
           const location = await getDupLocation()
-          console.log('loc')
-          console.log(JSON.stringify(location))
           // Get the existing location (note type is 'valid')
           const existingLocation = geoSafeToWebLocation(await getLocation(orgId, location.additionals.locationName, 'valid'))
 
@@ -78,10 +74,6 @@ export default function ConfirmLocationsPage () {
           const newLocation = geoSafeToWebLocation(await getLocation(orgId, location.additionals.locationName, 'invalid'))
 
           if (existingLocation && newLocation) {
-            console.log('exisiting')
-            console.log(existingLocation)
-            console.log('new')
-            console.log(newLocation)
             // Now compare the two and let the use choose one
             navigate(orgManageLocationsUrls.add.duplicateLocationComparisonPage, {
               state: {

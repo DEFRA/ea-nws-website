@@ -18,6 +18,7 @@ export default function LocationInAlertAreaPage () {
       <LocationInAlertAreaLayout
         continueToNextPage={continueToNextPage}
         continueToSearchResultsPage={continueToSearchResultsPage}
+        updateGeoSafeProfile={false}
       />
     </>
   )

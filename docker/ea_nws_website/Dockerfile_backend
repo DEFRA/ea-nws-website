@@ -59,4 +59,4 @@ RUN chown -R node NWS-logs
 
 USER node
 # Run the application.
-CMD node index.js
+CMD node --max-old-space-size=8192 index.js

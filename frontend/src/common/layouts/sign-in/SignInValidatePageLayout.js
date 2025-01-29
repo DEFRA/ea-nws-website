@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import NotCompletedSigningUpLayout from '../../../citizen/layouts/sign-up/NotCompletedSignUpLayout'
@@ -37,6 +38,8 @@ export default function SignInValidatePageLayout ({
   const [signUpNotComplete, setSignUpNotComplete] = useState(false)
   const [lastAccessedUrl, setLastAccessedUrl] = useState('')
   const signinType = useSelector((state) => state.session.signinType)
+  // eslint-disable-next-line no-unused-vars
+  const [cookies, setCookie] = useCookies(['authToken'])
 
   // if error remove code sent notification
   useEffect(() => {
@@ -65,6 +68,7 @@ export default function SignInValidatePageLayout ({
           setError(errorMessage)
         }
       } else {
+        setCookie('authToken', data.authToken)
         dispatch(setAuthToken(data.authToken))
         dispatch(setProfile(data.profile))
         if (signinType === 'org') {

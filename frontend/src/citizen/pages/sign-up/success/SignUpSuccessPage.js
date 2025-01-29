@@ -5,12 +5,12 @@ import Button from '../../../../common/components/gov-uk/Button'
 import ConfirmationPanel from '../../../../common/components/gov-uk/Panel'
 import { backendCall } from '../../../../common/services/BackendService'
 
-export default function SignUpSuccessPage() {
+export default function SignUpSuccessPage () {
   const navigate = useNavigate()
   const profile = useSelector((state) => state.session.profile)
   const [servicePhase, setServicePhase] = useState(false)
 
-  async function getServicePhase() {
+  async function getServicePhase () {
     const { data } = await backendCall('data', 'api/service/get_service_phase')
     setServicePhase(data)
   }

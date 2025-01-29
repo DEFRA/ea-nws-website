@@ -161,7 +161,7 @@ export default function LocationMessagesPage () {
             areaName:
             warningAreasInputs[j].properties.TA_NAME,
             areaType: `${severeFloodWarningsCount[j] > 0 ? 'Severe flood warning area' : 'Flood warning area'}`,
-            messagesSent: `${severeFloodWarningsCount[j]} severe flood warning${severeFloodWarningsCount[j] > 1 ? 's' : ''},  ${floodWarningsCount[j]} flood warning${floodWarningsCount[j] > 1 ? 's' : ''}, ${floodAlertsCount[j]} flood alert${floodAlertsCount[j] > 1 ? 's' : ''}`,
+            messagesSent: [`${severeFloodWarningsCount[j]} severe flood warning${severeFloodWarningsCount[j] > 1 ? 's' : ''}`,  `${floodWarningsCount[j]} flood warning${floodWarningsCount[j] > 1 ? 's' : ''}`, `${floodAlertsCount[j]} flood alert${floodAlertsCount[j] > 1 ? 's' : ''}`],
             linked: childrenId.includes(warningAreasInputs[j].id)
           })
         }
@@ -175,7 +175,7 @@ export default function LocationMessagesPage () {
             areaName:
             alertAreasInputs[i].properties.TA_NAME,
             areaType: 'Alert areas',
-            messagesSent: `${floodAlertsCount[alertAreaIndex]} flood alert${floodAlertsCount[alertAreaIndex] > 1 ? 's' : ''}`,
+            messagesSent: [`${floodAlertsCount[alertAreaIndex]} flood alert${floodAlertsCount[alertAreaIndex] > 1 ? 's' : ''}`],
             linked: childrenId.includes(alertAreasInputs[i].id)
           })
         }
@@ -444,7 +444,10 @@ export default function LocationMessagesPage () {
                           className='govuk-table__cell'
                           style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
                         >
-                          {detail.messagesSent}
+                        {detail.messagesSent.map((messageSent, index) => (
+                          <tr rowSpan={index}>{messageSent}</tr>
+                        ))}
+
                         </td>
                         <td
                           className='govuk-table__cell'

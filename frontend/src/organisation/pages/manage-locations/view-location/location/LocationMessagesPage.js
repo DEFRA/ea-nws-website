@@ -23,7 +23,6 @@ export default function LocationMessagesPage () {
 
   const [isBannerDisplayed, setIsBannerDisplayed] = useState(false)
 
-
   const [loading, setLoading] = useState(true)
   const currentLocation = useSelector(
     (state) => state.session.currentLocation
@@ -62,7 +61,7 @@ export default function LocationMessagesPage () {
 
   const surroundingAreas = async () => {
     let result
-    if (additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS || currentLocation.geometry === null ) {
+    if (additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS || currentLocation.geometry === null) {
       result = await getSurroundingFloodAreas(
         currentLocation.coordinates.latitude, currentLocation.coordinates.longitude,
         0.5
@@ -123,15 +122,14 @@ export default function LocationMessagesPage () {
         let allAreas
         let warnings
         let alerts
-        if (additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS || currentLocation.geometry === null ){
-          allAreas = alertAreas && warningAreas?  [...warningAreas.features, ...alertAreas.features] : []
-          warnings = warningAreas? [...warningAreas.features]  : []  
-          alerts = alertAreas?[...alertAreas.features] : []
-        }
-        else{
-          allAreas = alertAreas && warningAreas? [...warningAreas, ...alertAreas] : []
-          warnings = warningAreas ? [...warningAreas] : []    
-          alerts = alertAreas? [...alertAreas] : []
+        if (additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS || currentLocation.geometry === null) {
+          allAreas = alertAreas && warningAreas ? [...warningAreas.features, ...alertAreas.features] : []
+          warnings = warningAreas ? [...warningAreas.features] : []
+          alerts = alertAreas ? [...alertAreas.features] : []
+        } else {
+          allAreas = alertAreas && warningAreas ? [...warningAreas, ...alertAreas] : []
+          warnings = warningAreas ? [...warningAreas] : []
+          alerts = alertAreas ? [...alertAreas] : []
         }
 
         if (alerts.length > 0 && warnings.length > 0) {
@@ -144,8 +142,7 @@ export default function LocationMessagesPage () {
           warnings.forEach((area, index) => setHistoricalData(area, 'Flood Warning Rapid Response', index))
         } else if (alerts.length > 0) {
           alerts.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
-        }
-        else{
+        } else {
           setIsAreaNearby(false)
         }
       }
@@ -154,7 +151,7 @@ export default function LocationMessagesPage () {
   }, [floodHistoryData, warningAreas, alertAreas])
 
   useEffect(() => {
-    const populateInputs = (alertAreas, warningAreas) => {      
+    const populateInputs = (alertAreas, warningAreas) => {
       const updatedFloodAreas = []
       if (warningAreas) {
         const warningAreasInputs = additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS || currentLocation.geometry === null ? warningAreas.features : warningAreas
@@ -163,7 +160,7 @@ export default function LocationMessagesPage () {
             areaName:
             warningAreasInputs[j].properties.TA_NAME,
             areaType: `${severeFloodWarningsCount[j] > 0 ? 'Severe flood warning area' : 'Flood warning area'}`,
-            messagesSent: [`${severeFloodWarningsCount[j]} severe flood warning${severeFloodWarningsCount[j] > 1 ? 's' : ''}`,  `${floodWarningsCount[j]} flood warning${floodWarningsCount[j] > 1 ? 's' : ''}`, `${floodAlertsCount[j]} flood alert${floodAlertsCount[j] > 1 ? 's' : ''}`],
+            messagesSent: [`${severeFloodWarningsCount[j]} severe flood warning${severeFloodWarningsCount[j] > 1 ? 's' : ''}`, `${floodWarningsCount[j]} flood warning${floodWarningsCount[j] > 1 ? 's' : ''}`, `${floodAlertsCount[j]} flood alert${floodAlertsCount[j] > 1 ? 's' : ''}`],
             linked: childrenId.includes(warningAreasInputs[j].id)
           })
         }
@@ -197,18 +194,17 @@ export default function LocationMessagesPage () {
     }
   }, [floodAreasInputs, floodAlertsCount, floodWarningsCount, severeFloodWarningsCount])
 
-
-  //it should reload the surrounding areas if the location is changed
+  // it should reload the surrounding areas if the location is changed
   useEffect(() => {
-    if(hasFetchedArea.current){
-      hasFetchedArea.current = false;
+    if (hasFetchedArea.current) {
+      hasFetchedArea.current = false
     }
-  }, [currentLocation]);
+  }, [currentLocation])
 
   useEffect(() => {
     const fetchAreas = async () => {
       if (currentLocation && (currentLocation.coordinates || currentLocation.geometry || currentLocation.geocode)) {
-        if(!hasFetchedArea.current){
+        if (!hasFetchedArea.current) {
           await surroundingAreas()
           hasFetchedArea.current = true
         }
@@ -447,9 +443,9 @@ export default function LocationMessagesPage () {
                           className='govuk-table__cell'
                           style={{ verticalAlign: 'middle', padding: '1.5rem 0rem' }}
                         >
-                        {detail.messagesSent.map((messageSent, index) => (
-                          <tr rowSpan={index}>{messageSent}</tr>
-                        ))}
+                          {detail.messagesSent.map((messageSent, index) => (
+                            <tr rowSpan={index} key={index}>{messageSent}</tr>
+                          ))}
 
                         </td>
                         <td

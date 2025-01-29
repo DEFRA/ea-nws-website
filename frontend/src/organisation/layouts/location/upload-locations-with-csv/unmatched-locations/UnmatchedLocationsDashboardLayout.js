@@ -58,11 +58,7 @@ export default function UnmatchedLocationsDashboardLayout ({
         navigate
       )
 
-      if (
-        data.length === flow.includes('not-found')
-          ? notFoundLocations
-          : notInEnglandLocations
-      ) {
+      if (data) {
         const locations = []
         const notAddedLocs = data.filter((location) =>
           location?.error?.includes(unmatchedLocationText)

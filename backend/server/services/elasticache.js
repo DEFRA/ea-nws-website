@@ -208,25 +208,8 @@ const updateLocation = async (orgId, location) => {
   if (exists) {
     console.log('location exists, removing first')
     await removeLocation(orgId, locationID)
-    console.log('removed')
   }
-  console.log('Adding location again')
-  await setJsonData(key, location)
-  console.log('Added')
-  // add location ID to list
-  let keywords = []
-  location.additionals.forEach((additional) => {
-    if (additional.id === 'keywords') {
-      keywords = JSON.parse(additional.value?.s)
-    }
-  })
-  for (const keyword of keywords) {
-    await addToKeywordArr(orgId + ':t_Keywords_location', {
-      name: keyword,
-      linked_ids: [locationID]
-    })
-  }
-  console.log('done')
+  await addLocation(orgId, location)
 }
 
 const getLocationKeys = async (orgId) => {

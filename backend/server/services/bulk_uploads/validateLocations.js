@@ -42,6 +42,19 @@ function convertCoords (X, Y) {
   return { latitude: latitude, longitude: longitude }
 }
 
+function convertTo27700 (X, Y) {
+  proj4.defs(
+    'EPSG:27700',
+    '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs'
+  )
+  proj4.defs('EPSG:4326', '+proj=longlat +datum=WGS84 +no_defs')
+  const [east, north] = proj4('EPSG:4326', 'EPSG:27700', [
+    Number(X),
+    Number(Y)
+  ])
+  return { east: east, north: north }
+}
+
 const validateLocations = async (locations) => {
   // used to store valid and invalid locations
   const valid = []
@@ -76,6 +89,12 @@ const validateLocations = async (locations) => {
             invalid.push(location)
           } else {
             location.coordinates = data[0].coordinates
+            const EPSG27700 = convertTo27700(
+              data[0].coordinates.longitude,
+              data[0].coordinates.latitude
+            )
+            location.X_coordinates = EPSG27700.east
+            location.Y_coordinates = EPSG27700.north
             location.address = data[0].address
             valid.push(location)
           }

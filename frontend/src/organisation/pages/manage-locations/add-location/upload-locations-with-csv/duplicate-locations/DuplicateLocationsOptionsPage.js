@@ -200,7 +200,7 @@ export default function DuplicateLocationsOptionsPage () {
             <Button
               text='Continue'
               className='govuk-button'
-              onClick={handleSubmit}
+              onClick={() => handleSubmit()}
             />
           </div>
         </div>

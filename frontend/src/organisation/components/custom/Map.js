@@ -45,10 +45,10 @@ export default function Map ({
   shapefileData = null
 }) {
   const dispatch = useDispatch()
-  const { currentLatitude, currentLongitude } = useSelector(
+  const { latitude: currentLatitude, longitude: currentLongitude } = useSelector(
     (state) => state?.session?.currentLocation?.coordinates
   ) || { lat: null, long: null }
-  const { latitude, longitude } = manualCoords || { currentLatitude, currentLongitude }
+  const { latitude, longitude } = manualCoords || { latitude: currentLatitude, longitude: currentLongitude }
 
   const centre = [latitude, longitude]
   const [apiKey, setApiKey] = useState(null)

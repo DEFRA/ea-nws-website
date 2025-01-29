@@ -16,14 +16,14 @@ export default function LocationInformationLayout ({ location, comparedLocation 
   }
 
   const sectionClassName = 'govuk-!-padding-left-4 govuk-!-padding-right-4 govuk-!-margin-top-7'
-  const addressAdded = comparedLocation && comparedAdditionalData.full_address === null
+  const addressAdded = comparedLocation && comparedAdditionalData.full_address === ''
   const locationNameAdded = comparedLocation && comparedLocation.additionals.locationName === null
-  const internalReferenceAdded = comparedLocation && comparedAdditionalData.internal_reference === null
-  const businessCriticalityAdded = comparedLocation && comparedAdditionalData.business_criticality === null
-  const locationTypeAdded = comparedLocation && comparedAdditionalData.location_type === null
+  const internalReferenceAdded = comparedLocation && comparedAdditionalData.internal_reference === ''
+  const businessCriticalityAdded = comparedLocation && comparedAdditionalData.business_criticality === ''
+  const locationTypeAdded = comparedLocation && comparedAdditionalData.location_type === ''
   const keywordsAdded = comparedLocation && comparedLocation.additionals.keywords.length === 0
   const actionPlanAdded = comparedLocation && comparedAdditionalData.action_plan.length === 0
-  const notesAdded = comparedLocation && comparedAdditionalData.notes === null
+  const notesAdded = comparedLocation && comparedAdditionalData.notes === ''
 
   const LocationHeader = () => {
     switch (additionalData.location_data_type) {
@@ -132,7 +132,7 @@ export default function LocationInformationLayout ({ location, comparedLocation 
                     <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
                       Location name
                     </h3>
-                    <p style={!locationNameAdded && comparedLocation && comparedLocation.additionals.locationName ? compareStyle : {}}>{location.additionals.locationName}</p>
+                    <p style={!locationNameAdded && comparedLocation && comparedLocation.additionals.locationName !== location.additionals.locationName ? compareStyle : {}}>{location.additionals.locationName}</p>
                   </div>
                   {additionalData.internal_reference && (
                     <div style={internalReferenceAdded ? compareStyle : {}}>

@@ -128,8 +128,7 @@ export default function ConfirmAddingLocationsPage () {
 
   const handleCancel = async (event) => {
     event.preventDefault()
-    // cancel the upload and return to setting screen
-    navigate('/organisation/home')
+    navigate(orgManageLocationsUrls.view.dashboard)
   }
 
   const detailsMessage = (

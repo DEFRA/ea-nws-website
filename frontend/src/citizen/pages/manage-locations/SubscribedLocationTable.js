@@ -12,7 +12,7 @@ import {
 } from '../../../common/redux/userSlice'
 import { getSurroundingFloodAreas } from '../../../common/services/WfsFloodDataService'
 
-export default function SubscribedLocationTable () {
+export default function SubscribedLocationTable() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(1)
@@ -85,7 +85,7 @@ export default function SubscribedLocationTable () {
   }
 
   const isSavedLocationTargetArea = (locationName, areas) => {
-    return areas.filter((area) => locationName === area.properties.TA_NAME)
+    return areas.filter((area) => locationName === area.properties.TA_Name)
   }
 
   const locationTable = () => {

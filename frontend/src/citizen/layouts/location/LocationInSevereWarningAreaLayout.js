@@ -26,7 +26,7 @@ import {
   getCoordsOfFloodArea
 } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout ({
+export default function LocationInSevereWarningAreaLayout({
   continueToNextPage,
   updateGeoSafeProfile = true
 }) {
@@ -50,12 +50,12 @@ export default function LocationInSevereWarningAreaLayout ({
   )
   // address to use for registering and unregistering partner
   const addressToUse = isUserInNearbyTargetFlowpath
-    ? selectedFloodWarningArea.properties.TA_NAME
+    ? selectedFloodWarningArea.properties.TA_Name
     : selectedLocation.address
 
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId () {
+  async function getPartnerId() {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
@@ -152,7 +152,7 @@ export default function LocationInSevereWarningAreaLayout ({
   const addFloodWarningArea = async () => {
     const warningArea = {
       name: '',
-      address: selectedFloodWarningArea.properties.TA_NAME,
+      address: selectedFloodWarningArea.properties.TA_Name,
       coordinates: getCoordsOfFloodArea(selectedFloodWarningArea),
       additionals: setLocationOtherAdditionals([], 'alertTypes', [
         AlertType.SEVERE_FLOOD_WARNING,
@@ -168,7 +168,7 @@ export default function LocationInSevereWarningAreaLayout ({
   const removeFloodWarningArea = async () => {
     const updatedProfile = removeLocation(
       profile,
-      selectedFloodWarningArea.properties.TA_NAME
+      selectedFloodWarningArea.properties.TA_Name
     )
     dispatch(setProfile(updatedProfile))
 
@@ -236,7 +236,7 @@ export default function LocationInSevereWarningAreaLayout ({
             <InsetText
               text={
                 isUserInNearbyTargetFlowpath
-                  ? selectedFloodWarningArea.properties.TA_NAME
+                  ? selectedFloodWarningArea.properties.TA_Name
                   : selectedLocation.address
               }
             />

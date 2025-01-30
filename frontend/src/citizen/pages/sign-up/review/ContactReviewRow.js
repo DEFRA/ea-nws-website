@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function ContactReviewRow ({
+export default function ContactReviewRow({
   contact,
   contactType,
   isConfirmed,
@@ -57,7 +57,7 @@ export default function ContactReviewRow ({
                 type: contactType,
                 contact
               }}
-              className='govuk-link'
+              className='govuk-link right'
             >
               Remove
             </Link>
@@ -66,7 +66,7 @@ export default function ContactReviewRow ({
             <>
               <br />
               <br />
-              <Link to={rowDetails().confirmLink} className='govuk-link'>
+              <Link to={rowDetails().confirmLink} className='govuk-link right'>
                 Confirm
               </Link>
             </>

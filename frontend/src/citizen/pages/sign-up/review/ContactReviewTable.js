@@ -1,19 +1,24 @@
 import React from 'react'
+import { isMobile } from 'react-device-detect'
 import { useNavigate } from 'react-router-dom'
 import Button from '../../../../common/components/gov-uk/Button'
 import ContactReviewRow from './ContactReviewRow'
 
-export default function ContactReviewTable ({ profile, contactPreferences }) {
+export default function ContactReviewTable({ profile, contactPreferences }) {
   const navigate = useNavigate()
 
   const EmailAddressesSection = () => {
     return (
       <>
         {(profile.emails.length > 0 || profile.unverified?.emails) && (
-          <tbody className='govuk-table__body'>
+          <>
             {profile.emails.map((email, index) => (
               <ContactReviewRow
-                contact={email.length > 20 ? email.slice(0, 20) + '...' : email}
+                contact={
+                  email.length > 20 && isMobile
+                    ? email.slice(0, 20) + '...'
+                    : email
+                }
                 contactType='email'
                 isConfirmed
                 key={index}
@@ -28,7 +33,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
                 key={index}
               />
             ))}
-          </tbody>
+          </>
         )}
       </>
     )
@@ -39,26 +44,26 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
       <>
         {(profile.mobilePhones.length > 0 ||
           profile.unverified?.mobilePhones) && (
-            <tbody className='govuk-table__body'>
-              {profile.mobilePhones.map((mobilePhone, index) => (
+          <>
+            {profile.mobilePhones.map((mobilePhone, index) => (
+              <ContactReviewRow
+                contact={mobilePhone}
+                contactType='mobilePhone'
+                isConfirmed
+                key={index}
+              />
+            ))}
+            {profile.unverified?.mobilePhones?.map(
+              (unregisteredMobilePhone, index) => (
                 <ContactReviewRow
-                  contact={mobilePhone}
+                  contact={unregisteredMobilePhone.address}
                   contactType='mobilePhone'
-                  isConfirmed
+                  isConfirmed={false}
                   key={index}
                 />
-              ))}
-              {profile.unverified?.mobilePhones?.map(
-                (unregisteredMobilePhone, index) => (
-                  <ContactReviewRow
-                    contact={unregisteredMobilePhone.address}
-                    contactType='mobilePhone'
-                    isConfirmed={false}
-                    key={index}
-                  />
-                )
-              )}
-            </tbody>
+              )
+            )}
+          </>
         )}
       </>
     )
@@ -68,7 +73,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
     return (
       <>
         {(profile.homePhones.length > 0 || profile.unverified?.homePhones) && (
-          <tbody className='govuk-table__body'>
+          <>
             {profile.homePhones.map((homePhone, index) => (
               <ContactReviewRow
                 contact={homePhone}
@@ -87,7 +92,7 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
                 />
               )
             )}
-          </tbody>
+          </>
         )}
       </>
     )
@@ -101,10 +106,12 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
     <div className='govuk-!-padding-bottom-4'>
       <h3 className='govuk-heading-m'>How you'll get flood messages</h3>
       <table className='govuk-table govuk-!-margin-bottom-0'>
-        <EmailAddressesSection />
-        {contactPreferences.includes('Text') && <MobileNumbersSection />}
-        {contactPreferences.includes('PhoneCall') && <HomePhonesSection />}
-        <br />
+        <tbody className='govuk-table__body'>
+          <EmailAddressesSection />
+          {contactPreferences.includes('Text') && <MobileNumbersSection />}
+          {contactPreferences.includes('PhoneCall') && <HomePhonesSection />}
+          <br />
+        </tbody>
       </table>
       <Button
         className='govuk-button govuk-button--secondary'

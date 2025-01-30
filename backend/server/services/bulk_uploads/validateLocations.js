@@ -8,7 +8,7 @@ const getCoords = async (location) => {
     ', ',
     location.Postcode
   )
-  const { errorMessage, data } = await osFindApiCall(addressWithPostcode)
+  const { errorMessage, data } = await osFindApiCall(addressWithPostcode, 1.0)
   return { errorMessage, data }
 }
 

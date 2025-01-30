@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
@@ -9,7 +9,6 @@ import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/M
 
 export default function ConfirmAddingLocationsPage () {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
   const location = useLocation()
   const validLocations = location?.state?.valid || 0
   const duplicateLocations = location?.state?.duplicates || 0

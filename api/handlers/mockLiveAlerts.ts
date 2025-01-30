@@ -19,7 +19,22 @@ const liveAlerts = {
             {
               id: '0',
               name: 'Wyre estuary at Thornton, between A585, Stanah Road and School Road',
-              geometry: {}
+              geometry: {
+                rings: [],
+                circles: [],
+                polygons: [],
+                geocodes: [],
+                extraInfo: [
+                  {
+                    id: 'TA_CODE',
+                    value: { s: 'SOME CODE 1' }
+                  },
+                  {
+                    id: 'TA_NAME',
+                    value: { s: 'SOME NAME 1' }
+                  }
+                ]
+              }
             }
           ]
         }
@@ -57,7 +72,22 @@ const liveAlerts = {
             {
               id: '0',
               name: 'Lower River Lee from Hoddesdon to Canning Town',
-              geometry: {}
+              geometry: {
+                rings: [],
+                circles: [],
+                polygons: [],
+                geocodes: [],
+                extraInfo: [
+                  {
+                    id: 'TA_CODE',
+                    value: { s: 'SOME CODE 2' }
+                  },
+                  {
+                    id: 'TA_NAME',
+                    value: { s: 'SOME NAME 2' }
+                  }
+                ]
+              }
             }
           ]
         }

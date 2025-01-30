@@ -15,13 +15,10 @@ module.exports = [
         }
 
         const { options } = request.payload
-        if (Object.keys(options).length > 0) {
-          const response = await apiCall({ options: options }, 'alert/list')
 
-          return h.response(response)
-        } else {
-          return createGenericErrorResponse(h)
-        }
+        const response = await apiCall({ options: options }, 'alert/list')
+
+        return h.response(response)
       } catch (error) {
         logger.error(error)
         return createGenericErrorResponse(h)

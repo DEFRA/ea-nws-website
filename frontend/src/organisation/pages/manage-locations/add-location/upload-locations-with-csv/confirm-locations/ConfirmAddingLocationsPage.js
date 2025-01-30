@@ -46,7 +46,7 @@ export default function ConfirmAddingLocationsPage () {
     )
     const locations = []
     if (data) {
-      const duplicates = data.filter((location) => location.error.includes('duplicate') && location.error.length === 1)
+      const duplicates = data.filter((location) => location.error.includes('duplicate') && location?.error?.length === 1)
       duplicates.forEach((location) => {
         locations.push(geoSafeToWebLocation(location))
       })
@@ -63,15 +63,16 @@ export default function ConfirmAddingLocationsPage () {
       'api/bulk_uploads/save_locations',
       navigate
     )
-    if (!errorMessage) {
+    if (!errorMessage && data) {
       if (duplicateLocations > 0) {
         if (duplicateLocations === 1) {
           const location = await getDupLocation()
+          
           // Get the existing location (note type is 'valid')
           const existingLocation = geoSafeToWebLocation(await getLocation(orgId, location.additionals.locationName, 'valid'))
 
           // Set the new, duplicate location
-          const newLocation = geoSafeToWebLocation(location)
+          const newLocation = location
 
           if (existingLocation && newLocation) {
             // Now compare the two and let the use choose one
@@ -195,6 +196,7 @@ export default function ConfirmAddingLocationsPage () {
               )}
             </div>
             <br />
+            {/* TODO: add a loading spinner on click as saving can take a long time */}
             <Button
               text={validLocations > 0 ? `Add ${validLocations} locations` : 'Continue'}
               className='govuk-button govuk-button'

@@ -118,7 +118,7 @@ export default function LocationMessagesPage () {
 
   useEffect(() => {
     const processFloodData = () => {
-      if (floodHistoryData) {
+      if (floodHistoryData && hasFetchedArea) {
         let allAreas
         let warnings
         let alerts
@@ -143,12 +143,14 @@ export default function LocationMessagesPage () {
         } else if (alerts.length > 0) {
           alerts.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
         } else {
-          setIsAreaNearby(false)
+          if (warningAreas && alertAreas){
+            setIsAreaNearby(false)
+          }          
         }
       }
     }
     processFloodData()
-  }, [floodHistoryData, warningAreas, alertAreas])
+  }, [floodHistoryData, warningAreas, alertAreas, hasFetchedArea])
 
   useEffect(() => {
     const populateInputs = (alertAreas, warningAreas) => {
@@ -188,17 +190,15 @@ export default function LocationMessagesPage () {
   }, [warningAreas, alertAreas, floodAlertsCount, floodWarningsCount, severeFloodWarningsCount])
 
   useEffect(() => {
-    const areAllCountsLoaded = floodAlertsCount.length > 0 && floodWarningsCount.length > 0 && severeFloodWarningsCount.length > 0
-    if (!isAreaNearby || (floodAreasInputs.length > 0 && areAllCountsLoaded)  ) {
+    const areAllCountsLoaded = floodAlertsCount.length > 0 || floodWarningsCount.length > 0 || severeFloodWarningsCount.length > 0
+    if ((hasFetchedArea && !isAreaNearby)  || (floodAreasInputs.length > 0 && areAllCountsLoaded)  ) {
       setLoading(false)
     }
-  }, [isAreaNearby, floodAreasInputs, floodAlertsCount, floodWarningsCount, severeFloodWarningsCount])
+  }, [isAreaNearby, alertAreas, warningAreas, floodAreasInputs, floodAlertsCount, floodWarningsCount, severeFloodWarningsCount, hasFetchedArea])
 
   // it should reload the surrounding areas if the location is changed
   useEffect(() => {
-    if (hasFetchedArea.current) {
-      hasFetchedArea.current = false
-    }
+    hasFetchedArea.current = false    
   }, [currentLocation])
 
   useEffect(() => {
@@ -206,12 +206,14 @@ export default function LocationMessagesPage () {
       if (currentLocation && (currentLocation.coordinates || currentLocation.geometry || currentLocation.geocode)) {
         if (!hasFetchedArea.current) {
           await surroundingAreas()
-          hasFetchedArea.current = true
+          if (alertAreas && warningAreas) {
+            hasFetchedArea.current = true;
+          }
         }
       }
     }
     fetchAreas()
-  }, [currentLocation, additionalData])
+  }, [currentLocation, additionalData, alertAreas, warningAreas])
 
   useEffect(() => {
     async function getHistoryUrl () {

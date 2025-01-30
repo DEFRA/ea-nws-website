@@ -3,15 +3,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
-import {
-  setNotFoundLocations,
-  setNotInEnglandLocations
-} from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmLocationsPage () {
+export default function ConfirmAddingLocationsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const location = useLocation()
@@ -55,8 +51,9 @@ export default function ConfirmLocationsPage () {
     )
     const locations = []
     if (data) {
-      const duplicates = data.filter((location) =>
-        location.error.includes('duplicate')
+      const duplicates = data.filter(
+        (location) =>
+          location.error.includes('duplicate') && location.error.length === 1
       )
       duplicates.forEach((location) => {
         locations.push(geoSafeToWebLocation(location))
@@ -85,17 +82,11 @@ export default function ConfirmLocationsPage () {
             await getLocation(orgId, location.additionals.locationName, 'valid')
           )
 
-          // Get the new, duplicate location (note type is 'invalid')
-          const newLocation = geoSafeToWebLocation(
-            await getLocation(
-              orgId,
-              location.additionals.locationName,
-              'invalid'
-            )
-          )
+          // Set the new, duplicate location
+          const newLocation = geoSafeToWebLocation(location)
 
           if (existingLocation && newLocation) {
-            // Now compare the two and let the user choose one
+            // Now compare the two and let the use choose one
             navigate(
               orgManageLocationsUrls.add.duplicateLocationComparisonPage,
               {
@@ -115,11 +106,6 @@ export default function ConfirmLocationsPage () {
             }
           })
         }
-
-        notFoundLocations > 0 &&
-          dispatch(setNotFoundLocations(notFoundLocations))
-        notInEnglandLocations > 0 &&
-          dispatch(setNotInEnglandLocations(notInEnglandLocations))
       } else if (notFoundLocations > 0) {
         navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard, {
           state: {

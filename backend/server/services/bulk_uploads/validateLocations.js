@@ -60,6 +60,16 @@ const isCoordInEngland = async (lat, lng) => {
   return turf.booleanPointInPolygon(point, poly)
 }
 
+function convertTo27700(X, Y) {
+  proj4.defs(
+    'EPSG:27700',
+    '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs'
+  )
+  proj4.defs('EPSG:4326', '+proj=longlat +datum=WGS84 +no_defs')
+  const [east, north] = proj4('EPSG:4326', 'EPSG:27700', [Number(X), Number(Y)])
+  return { east: east, north: north }
+}
+
 const validateLocations = async (locations) => {
   // used to store valid and invalid locations
   const valid = []
@@ -109,6 +119,12 @@ const validateLocations = async (locations) => {
             location.address = data[0].address
 
             if (data[0].inEngland) {
+              const EPSG27700 = convertTo27700(
+                data[0].coordinates.longitude,
+                data[0].coordinates.latitude
+              )
+              location.X_coordinates = EPSG27700.east
+              location.Y_coordinates = EPSG27700.north
               valid.push(location)
             } else {
               location.error = ['not in England']

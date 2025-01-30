@@ -132,7 +132,6 @@
 }
 
 .sub-navigation-org {
-  width: 100vw;
   margin-left: -1.875rem;
   margin-top: -22px;
   background: #f3f2f1;
@@ -354,6 +353,21 @@
   width: 95%;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.org-location-information-header {
+  color: #ffffff;
+  background-color: #505a5f;
+  padding: 0.625rem;
+}
+
+.org-location-information-footer {
+  color: #000000;
+  background-color: #f3f2f1;
+  padding: 0.625rem 0 0.625rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .map-confirm-location-box-mobile-view {
@@ -1625,6 +1639,15 @@
 .section-break-bold {
   border-bottom: 0.05rem solid black;
   opacity: 1;
+}
+
+.outline-1px {
+  outline: 1px solid lightgray;
+}
+
+.textarea-info {
+  margin-top: -28px;
+  color: #505a5f;
 }
 
 .button-menu {

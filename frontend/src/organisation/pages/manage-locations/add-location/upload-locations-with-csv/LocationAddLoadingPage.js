@@ -67,7 +67,8 @@ export default function LocationAddLoadingPage () {
             const duplicateLocations = data.data.invalid.filter(
               (invalid) =>
                 Array.isArray(invalid.error) &&
-                invalid.error.includes('duplicate')
+                invalid.error.includes('duplicate') &&
+                invalid.error.length === 1
             ).length
             setDuplicateLocations(duplicateLocations)
             const notInEnglandLocations = data.data.invalid.filter(

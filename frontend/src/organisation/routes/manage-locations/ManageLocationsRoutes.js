@@ -58,6 +58,11 @@ import LocationNotInEnglandCoordinatesNotInEnglandPage from '../../pages/manage-
 import LocationNotInEnglandDropPinNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/not-in-england/DropPinNotInEnglandPage'
 import LocationNotInEnglandPostcodeNotInEnglandPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/not-in-england/not-in-england/PostcodeNotInEnglandPage'
 
+// Unmatched location: duplicates
+import DuplicateLocationComparisonPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/duplicate-locations/DuplicateLocationComparisonPage'
+import DuplicateLocationsOptionsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/duplicate-locations/DuplicateLocationsOptionsPage'
+import ManageDuplicateLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/duplicate-locations/ManageDuplicateLocationsPage'
+
 // edit imports
 import EditConfirmLocationPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/ConfirmLocationPage'
 import EditLocationSearchOptionsPage from '../../pages/manage-locations/edit-location/edit-individual-location/location/LocationSearchOptionsPage'
@@ -117,7 +122,13 @@ const orgManageLocationsUrls = {
     addressInfo: urlManageOrgAddLocations + '/address-info',
     uploadFile: urlManageOrgAddLocations + '/upload-file',
     loadingPage: urlManageOrgAddLocations + '/upload-file/loading',
-    confirm: urlManageOrgAddLocations + '/confirm',
+    duplicateLocationsOptionsPage:
+      urlManageOrgAddLocations + '/upload-file/duplicate-locations-options',
+    manageDuplicateLocationsPage:
+      urlManageOrgAddLocations + '/upload-file/manage-duplicate-locations',
+    duplicateLocationComparisonPage:
+      urlManageOrgAddLocations + '/upload-file/duplicate-location-comparison',
+    confirm: urlManageOrgAddLocations + '/bulk/confirm',
     name: urlManageOrg + '/add/name',
     error: {
       cannotFindAddress: urlManageOrg + '/add/cannot-find-address',
@@ -285,6 +296,18 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.loadingPage,
     component: <LocationAddLoadingPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.duplicateLocationsOptionsPage,
+    component: <DuplicateLocationsOptionsPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.manageDuplicateLocationsPage,
+    component: <ManageDuplicateLocationsPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.duplicateLocationComparisonPage,
+    component: <DuplicateLocationComparisonPage />
   },
   {
     path: orgManageLocationsUrls.add.confirm,

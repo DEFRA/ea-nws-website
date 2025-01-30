@@ -7,6 +7,7 @@ import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../common/components/gov-uk/Input'
 import {
   setOrgCurrentContactEmails,
+  setOrgCurrentContactHomePhones,
   setOrgCurrentContactMobilePhones
 } from '../../../../common/redux/userSlice'
 import { emailValidation } from '../../../../common/services/validations/EmailValidation'
@@ -183,7 +184,7 @@ export default function AddContactChannelsPage () {
       if (homeInput[0]) newHomePhones.push(homeInput[0])
       if (homeInput[1]) newHomePhones.push(homeInput[1])
       if (newHomePhones.length !== 0) {
-        dispatch(setOrgCurrentContactMobilePhones(newHomePhones))
+        dispatch(setOrgCurrentContactHomePhones(newHomePhones))
       }
       setEmailError(['', ''])
       setHomePhoneError(['', ''])

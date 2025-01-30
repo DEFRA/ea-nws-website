@@ -9,27 +9,26 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
   const EmailAddressesSection = () => {
     return (
       <>
-        {(profile.emails.length > 0 ||
-          profile.unverified?.emails) && (
-            <tbody className='govuk-table__body'>
-              {profile.emails.map((email, index) => (
-                <ContactReviewRow
-                  contact={email}
-                  contactType='email'
-                  isConfirmed
-                  key={index}
-                  emailIndex={index}
-                />
-              ))}
-              {profile.unverified?.emails?.map((unregisteredEmail, index) => (
-                <ContactReviewRow
-                  contact={unregisteredEmail.address}
-                  contactType='email'
-                  isConfirmed={false}
-                  key={index}
-                />
-              ))}
-            </tbody>
+        {(profile.emails.length > 0 || profile.unverified?.emails) && (
+          <tbody className='govuk-table__body'>
+            {profile.emails.map((email, index) => (
+              <ContactReviewRow
+                contact={email.length > 20 ? email.slice(0, 20) + '...' : email}
+                contactType='email'
+                isConfirmed
+                key={index}
+                emailIndex={index}
+              />
+            ))}
+            {profile.unverified?.emails?.map((unregisteredEmail, index) => (
+              <ContactReviewRow
+                contact={unregisteredEmail.address}
+                contactType='email'
+                isConfirmed={false}
+                key={index}
+              />
+            ))}
+          </tbody>
         )}
       </>
     )
@@ -68,28 +67,27 @@ export default function ContactReviewTable ({ profile, contactPreferences }) {
   const HomePhonesSection = () => {
     return (
       <>
-        {(profile.homePhones.length > 0 ||
-          profile.unverified?.homePhones) && (
-            <tbody className='govuk-table__body'>
-              {profile.homePhones.map((homePhone, index) => (
+        {(profile.homePhones.length > 0 || profile.unverified?.homePhones) && (
+          <tbody className='govuk-table__body'>
+            {profile.homePhones.map((homePhone, index) => (
+              <ContactReviewRow
+                contact={homePhone}
+                contactType='homePhone'
+                isConfirmed
+                key={index}
+              />
+            ))}
+            {profile.unverified?.homePhones?.map(
+              (unregisteredHomePhone, index) => (
                 <ContactReviewRow
-                  contact={homePhone}
+                  contact={unregisteredHomePhone.address}
                   contactType='homePhone'
-                  isConfirmed
+                  isConfirmed={false}
                   key={index}
                 />
-              ))}
-              {profile.unverified?.homePhones?.map(
-                (unregisteredHomePhone, index) => (
-                  <ContactReviewRow
-                    contact={unregisteredHomePhone.address}
-                    contactType='homePhone'
-                    isConfirmed={false}
-                    key={index}
-                  />
-                )
-              )}
-            </tbody>
+              )
+            )}
+          </tbody>
         )}
       </>
     )

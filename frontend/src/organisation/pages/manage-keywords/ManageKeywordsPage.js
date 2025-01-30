@@ -231,11 +231,11 @@ export default function ManageKeywordsPage () {
       return keyword
     })
 
-    if (keywordType === 'location') {
+    /* if (keywordType === 'location') {
       // TODO: geosafe call and logic to update keywords then elasticache
     } else {
       // TODO: geosafe call and logic to update keywords then elasticache
-    }
+    } */
 
     setKeywords([...updatedKeywords])
     setNotificationText('Keyword edited')
@@ -249,11 +249,11 @@ export default function ManageKeywordsPage () {
       (keyword) => !keywordsToRemove.includes(keyword)
     )
 
-    if (keywordType === 'location') {
+    /* if (keywordType === 'location') {
       // TODO: geosafe call and logic to update keywords then elasticache
     } else {
       // TODO: geosafe call and logic to update keywords then elasticache
-    }
+    } */
     setKeywords([...updatedKeywords])
 
     if (targetKeyword) {

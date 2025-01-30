@@ -13,5 +13,27 @@ async function getAlertsList(
   //     options: { contactId: string }
   //   }
 
+  console.log('alerts', mockLiveAlerts.liveAlerts)
+
   return { alerts: mockLiveAlerts.liveAlerts }
 }
+
+async function getAlert(
+  context: Context,
+  req: Hapi.Request,
+  res: Hapi.ResponseToolkit
+) {
+  interface Alert {
+    id: string
+  }
+
+  const { id } = req.payload as { id: string }
+
+  if (id) {
+    return mockLiveAlerts.filter((alert: Alert) => alert.id === id)
+  } else {
+    return res.response(responseCodes.INVALID_TOKEN).code(500)
+  }
+}
+
+module.exports = { getAlert, getAlertsList }

@@ -896,6 +896,41 @@ const locations = [
         }
       }
     ]
+  },
+  // below locations are being used to mock locations being affected by a live severe warning area
+  {
+    id: '28',
+    enabled: true,
+    name: 'UPRN',
+    address: 'House of commons',
+    coordinates: { latitude: 51.499, longitude: -0.124637 },
+    geometry: null,
+    geocode: null,
+    additionals: [
+      { id: 'locationName', value: { s: 'House of commons' } },
+      { id: 'parentID', value: { s: '' } },
+      { id: 'targetAreas', value: { s: '' } },
+      { id: 'keywords', value: { s: '["keywords"]' } },
+      {
+        id: 'other',
+        value: {
+          s: JSON.stringify({
+            full_address: 'House of commons',
+            postcode: 'SW1A 0AA',
+            x_coordinate: 466413.18,
+            y_coordinate: 105037.31,
+            internal_reference: 'SW1A 0AA',
+            business_criticality: 'Medium',
+            location_type: 'Office',
+            action_plan: '1. Dont panic!',
+            notes:
+              'Keir starmer has the flood plan for this location. His contact number is 01234 567 890',
+            location_data_type: 'xycoords',
+            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2']
+          })
+        }
+      }
+    ]
   }
 ]
 

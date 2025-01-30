@@ -48,7 +48,9 @@ const routes = [].concat(
   require('../routes/gov_uk_notify/account_confirm_deletion'),
   require('../routes/service/get_service_phase'),
   require('../routes/service/get_partner_id'),
-  require('../routes/values/gtm')
+  require('../routes/values/gtm'),
+  require('../routes/live-alerts/list'),
+  require('../routes/live-alerts/get')
 )
 
 module.exports = {

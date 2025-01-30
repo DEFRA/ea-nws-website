@@ -19,6 +19,7 @@ const orgInvitationHandler = require('./handlers/organisation/orgInvitationHandl
 const locationContactsHandlers = require('./handlers/location/locationContactsHandlers')
 const locationHandlers = require('./handlers/location/locationHandlers')
 const locationPartnerHandlers = require('./handlers/location/locationPartnerHandlers')
+const liveAlertsHandlers = require('./handlers/live_alerts/liveAlertsHandlers')
 const memberLocationPartnerHandlers = require('./handlers/member_register_location_to_partner/memberLocationPartnerHandlers')
 // define api
 const api = new OpenAPIBackend({
@@ -92,7 +93,10 @@ const api = new OpenAPIBackend({
     getLocationUnregisterFromPartner:
       locationPartnerHandlers.getLocationUnregisterFromPartner,
     getLocationUpdateRegistration:
-      locationPartnerHandlers.getLocationUpdateRegistration
+      locationPartnerHandlers.getLocationUpdateRegistration,
+    // live alerts
+    getAlertsList: liveAlertsHandlers.getAlertsList,
+    getAlert: liveAlertsHandlers.getAlert
   }
 })
 

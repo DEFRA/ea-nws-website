@@ -20,12 +20,12 @@ import { backendCall } from '../../../../../common/services/BackendService'
 import { getSurroundingFloodAreas } from '../../../../../common/services/WfsFloodDataService'
 import { locations } from '../dummy-data/LocationsDummyData'
 
-export default function LiveMap () {
+export default function LiveMap() {
   const [apiKey, setApiKey] = useState(null)
 
   // get flood area data
   useEffect(() => {
-    async function fetchFloodAreaData () {}
+    async function fetchFloodAreaData() {}
     fetchFloodAreaData()
   }, [])
 
@@ -35,7 +35,7 @@ export default function LiveMap () {
   const [zoomLevel, setZoomLevel] = useState(null)
 
   useEffect(() => {
-    async function fetchFloodAreaData () {
+    async function fetchFloodAreaData() {
       if (zoomLevel >= 12 && mapCenter) {
         const { alertArea, warningArea } = await getSurroundingFloodAreas(
           mapCenter.lat,
@@ -88,7 +88,7 @@ export default function LiveMap () {
     iconAnchor: [12, 41]
   })
 
-  async function getApiKey () {
+  async function getApiKey() {
     const { data } = await backendCall('data', 'api/os-api/oauth2')
     setApiKey(data.access_token)
   }
@@ -165,7 +165,6 @@ export default function LiveMap () {
   const warningAreaRef = useRef(null)
 
   const getMarker = (type) => {
-    console.log(type)
     switch (type) {
       case 'severe':
         return floodSevereWarningMarker

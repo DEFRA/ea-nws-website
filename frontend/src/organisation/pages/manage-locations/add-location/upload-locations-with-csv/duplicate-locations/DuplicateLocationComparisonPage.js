@@ -97,7 +97,7 @@ export default function DuplicateLocationComparisonPage () {
                     Existing Location
                   </div>
                   <LocationInformation location={existingLocation} />
-                  <div className='org-location-information-footer'>
+                  <div className={`org-location-information-footer ${error && 'error'}`}>
                     <p className='govuk-!-margin-0'>Keep existing location</p>
                     <Radio
                       label=''
@@ -114,7 +114,7 @@ export default function DuplicateLocationComparisonPage () {
                     New Location
                   </div>
                   <LocationInformation location={newLocation} comparedLocation={existingLocation} />
-                  <div className='org-location-information-footer'>
+                  <div className={`org-location-information-footer ${error && 'error'}`}>
                     <p className='govuk-!-margin-0'>Use new location</p>
                     <Radio
                       label=''

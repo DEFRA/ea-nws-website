@@ -165,7 +165,6 @@ export default function LiveMap () {
   const warningAreaRef = useRef(null)
 
   const getMarker = (type) => {
-    console.log(type)
     switch (type) {
       case 'severe':
         return floodSevereWarningMarker

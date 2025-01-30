@@ -22,10 +22,8 @@ const wfsCall = async (bbox, type) => {
 export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
   // warning areas
   const { data: wfsWarningData } = await wfsCall(calculateBoundingBox(lat, lng, bboxKM), 'flood_warnings')
-
   // alert area
   const { data: wfsAlertData } = await wfsCall(calculateBoundingBox(lat, lng, bboxKM), 'flood_alerts')
-
   return {
     alertArea: wfsAlertData,
     warningArea: wfsWarningData
@@ -57,7 +55,7 @@ const getIntersections = (areas, bufferedShape) => {
   if (!bufferedShapeValid) return
   const bufferedShapeGeometry = bufferedShape.geometry
   const filteredTargetData = areas.features.filter(area => {
-    if (turf.booleanValid(area.geometry) && bufferedShapeValid) {
+    if (turf.booleanValid(area.geometry)) {
       try {
         // Interesection for LINE
         if (bufferedShapeGeometry.type === LocationDataType.SHAPE_LINE || area.geometry.type === LocationDataType.SHAPE_LINE) {

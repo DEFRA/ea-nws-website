@@ -189,10 +189,10 @@ export default function LocationMessagesPage () {
 
   useEffect(() => {
     const areAllCountsLoaded = floodAlertsCount.length > 0 && floodWarningsCount.length > 0 && severeFloodWarningsCount.length > 0
-    if ((floodAreasInputs.length > 0 && areAllCountsLoaded) || !isAreaNearby) {
+    if (!isAreaNearby || (floodAreasInputs.length > 0 && areAllCountsLoaded)  ) {
       setLoading(false)
     }
-  }, [floodAreasInputs, floodAlertsCount, floodWarningsCount, severeFloodWarningsCount])
+  }, [isAreaNearby, floodAreasInputs, floodAlertsCount, floodWarningsCount, severeFloodWarningsCount])
 
   // it should reload the surrounding areas if the location is changed
   useEffect(() => {

@@ -5,7 +5,7 @@ const {
 const {
   authCodeValidation
 } = require('../../services/validations/AuthCodeValidation')
-const { orgSignIn } = require('../../services/elasticache')
+const { orgSignIn, addLinkedLocations } = require('../../services/elasticache')
 const { logger } = require('../../plugins/logging')
 
 module.exports = [
@@ -37,6 +37,23 @@ module.exports = [
             )
             // Send the profile to elasticache
             await orgSignIn(response.data.profile, response.data.organization, locationRes.data.locations, contactRes.data.contacts)
+
+            for (const contact of contactRes.data.contacts) {
+              const options = {contactId: contact.id}
+              const linkLocationsRes = await apiCall(
+                { authToken: response.data.authToken,
+                  options: options },
+                'location/list'
+              )
+
+              let locationIDs = [];
+              locationRes.data.locations.forEach(function (location) {
+                locationIDs.push(location.id)
+              })
+
+              await addLinkedLocations(response.data.organization.id, contact.id, locationIDs)
+              // await addLinkedLocations(response.data.organization, contact.id, linkLocationsRes.data.locations)
+            }
           }
           return h.response(response)
         } else {

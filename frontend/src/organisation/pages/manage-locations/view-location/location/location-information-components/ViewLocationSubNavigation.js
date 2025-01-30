@@ -13,7 +13,7 @@ export default function ViewLocationSubNavigation ({ currentPage }) {
     },
     { title: 'Linked contacts',
       link: orgManageLocationsUrls.view.viewLinkedContacts
-     }
+    }
   ]
 
   return <SubNavigation pages={pages} currentPage={currentPage} type='sub' />

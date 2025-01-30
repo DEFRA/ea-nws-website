@@ -15,7 +15,7 @@ import ContactsTable from './dashboard-components/ContactsTable'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
 
-export default function ViewContactsDashboardPage (linkMode) {
+export default function ViewContactsDashboardPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [contacts, setContacts] = useState([])
@@ -31,6 +31,7 @@ export default function ViewContactsDashboardPage (linkMode) {
   const [selectedFilters, setSelectedFilters] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
+  const linkLocations = useSelector((state) => state.session.linkLocations)
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const [dialog, setDialog] = useState({
     show: false,
@@ -261,8 +262,7 @@ export default function ViewContactsDashboardPage (linkMode) {
           <DashboardHeader 
             contacts={contacts}
             onClickLinked={onClickLinked}
-            linkMode={linkMode}
-            location={geoSafeToWebContact(currentLocation)}
+            linkLocations={linkLocations}
             selectedContacts={selectedContacts}/>
           <div className='govuk-grid-column-full govuk-body'>
             {!isFilterVisible
@@ -273,7 +273,7 @@ export default function ViewContactsDashboardPage (linkMode) {
                     className='govuk-button govuk-button--secondary inline-block'
                     onClick={() => onOpenCloseFilter()}
                   />
-                  {!linkMode && (
+                  {linkLocations && linkLocations.length === 0 && (
                     <>
                     &nbsp; &nbsp;
                       <ButtonMenu
@@ -341,7 +341,7 @@ export default function ViewContactsDashboardPage (linkMode) {
                         onClick={() => onOpenCloseFilter()}
                       />
                     &nbsp; &nbsp;
-                    {!linkMode && (
+                    {linkLocations && linkLocations.length === 0 && (
                       <>
                       <ButtonMenu
                         title='More actions'

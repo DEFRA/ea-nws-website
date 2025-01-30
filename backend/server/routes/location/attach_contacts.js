@@ -3,7 +3,7 @@ const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
-const { attachContacts } = require('../../services/elasticache')
+const { addLinkedContacts } = require('../../services/elasticache')
 
 module.exports = [
   {
@@ -24,6 +24,7 @@ module.exports = [
           )
 
           if (response.status === 200) {
+            await addLinkedContacts(orgId, locationId, contactIds)
             return h.response({ status: 200 })
           } else {
             return createGenericErrorResponse(h)

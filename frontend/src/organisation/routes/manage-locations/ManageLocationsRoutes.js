@@ -197,7 +197,7 @@ const orgManageLocationRoutes = [
   },
   {
     path: orgManageLocationsUrls.view.viewLinkedContacts,
-    component: <LinkedContactsPage linkMode={1}/>
+    component: <LinkedContactsPage />
   },
   // monitoring
   {

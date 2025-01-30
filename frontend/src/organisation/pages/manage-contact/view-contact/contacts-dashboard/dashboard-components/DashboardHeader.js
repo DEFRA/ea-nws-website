@@ -11,8 +11,7 @@ export default function DashboardHeader ({
   lastUpdated,
   contacts,
   onClickLinked,
-  linkMode,
-  location,
+  linkLocations,
   selectedContacts
 }) {
   const navigate = useNavigate()
@@ -97,7 +96,7 @@ export default function DashboardHeader ({
   return (
     <>
       <div className='govuk-grid-column-full govuk-body govuk-!-margin-top-6'>
-        {!linkMode
+        {linkLocations && linkLocations.length === 0
           ? (
           <>
             <div style={{ display: 'flex' }}>
@@ -136,9 +135,9 @@ export default function DashboardHeader ({
             </h1>
             <p>
               Select the contacts you want to link to this location from the list. Then select<br/>
-              Link location to contacts
+              Link location to contacts.
             </p>
-            <LinkBanner location={location} selectedContacts={selectedContacts}/>
+            <LinkBanner linkLocations={linkLocations} selectedContacts={selectedContacts}/>
           </>
         )}
     </div>

@@ -2,11 +2,12 @@ import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
+import LinkBanner from '../../../../../components/custom/LinkBanner'
 import { infoUrls } from '../../../../../routes/info/InfoRoutes'
 import { urlManageKeywordsOrg } from '../../../../../routes/manage-keywords/ManageKeywordsRoutes'
 import { urlManageOrgAddLocations } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DashboardHeader ({ locations, onClickLinked }) {
+export default function DashboardHeader ({ locations, onClickLinked, linkContacts }) {
   const navigate = useNavigate()
 
   const floodRiskDetails = (
@@ -275,6 +276,9 @@ export default function DashboardHeader ({ locations, onClickLinked }) {
   return (
     <>
       <div className='govuk-grid-column-full govuk-body govuk-!-margin-top-6'>
+      {linkContacts && linkContacts.length === 0
+        ? (
+        <>
         <div style={{ display: 'flex' }}>
           <h1 className='govuk-heading-l'>
             Manage your organisation's{' '}
@@ -311,10 +315,25 @@ export default function DashboardHeader ({ locations, onClickLinked }) {
           {locations.filter((item) => item.linked_contacts?.length === 0)
             .length > 0 && <FloodBanner type='noContacts' />}
         </span>
-      </div>
 
-      <div className='govuk-grid-column-one-half'>
-        <Details title='What is flood risk?' text={floodRiskDetails} />
+        <div className='govuk-grid-column-one-half'>
+          <Details title='What is flood risk?' text={floodRiskDetails} />
+        </div>
+      </>
+      )
+      :
+      (
+        <>
+          <h1 className='govuk-heading-l'>
+            Link contact to locations
+          </h1>
+          <p>
+            Select the locations you want to link to this contact from the list. Then select<br/>
+            Link contact to locations.
+          </p>
+          <LinkBanner />
+        </>
+      )}
       </div>
     </>
   )

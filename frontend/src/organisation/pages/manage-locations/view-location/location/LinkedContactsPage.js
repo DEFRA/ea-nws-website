@@ -12,12 +12,17 @@ import { infoUrls } from '../../../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import LocationHeader from './location-information-components/LocationHeader'
+import { setLinkLocations } from '../../../../../common/redux/userSlice'
 
 export default function LinkedContactsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const currentLocation = useSelector((state) => state.session.currentLocation)
+
   const linkToContacts = () => {
+    const linkLocations = [currentLocation.id]
+    dispatch(setLinkLocations(linkLocations))
     navigate(orgManageContactsUrls.view.dashboard)
   }
 

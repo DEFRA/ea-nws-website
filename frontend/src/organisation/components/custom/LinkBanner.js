@@ -5,15 +5,20 @@ import Button from '../../../common/components/gov-uk/Button'
 import Checkbox from '../../../common/components/gov-uk/CheckBox'
 import { backendCall } from '../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
+import { geoSafeToWebLocation } from '../../../common/services/formatters/LocationFormatter'
+import { setLinkLocations } from '../../../common/redux/userSlice'
 
 export default function LinkBanner ({
   type,
-  location,
+  linkLocations,
   selectedContacts
  }) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
+  const currentLocation = geoSafeToWebLocation(useSelector((state) => state.session.currentLocation))
   const [onlyShowSelectedOption, setOnlyShowSelectedOption] = useState(false)
 
   const linkContacts = async () => {
@@ -22,19 +27,40 @@ export default function LinkBanner ({
       linkContactIDs.push(contact.id)
     })
 
-    const dataToSend = { authToken, orgId, locationId: location.id, contactIds: linkContactIDs }
+    if (linkLocations) {
+      linkLocations.forEach(async function (locationID, idx) {
+        const dataToSend = { authToken, orgId, locationId: locationID, contactIds: linkContactIDs }
 
-    const { errorMessage } = await backendCall(
-      dataToSend,
-      'api/location/attach_contacts',
-      navigate
-    )
+        const { errorMessage } = await backendCall(
+          dataToSend,
+          'api/location/attach_contacts',
+          navigate
+        )
 
-    if (!errorMessage) {
-      navigate(orgManageLocationsUrls.view.dashboard)
-    } else {
-      console.log(errorMessage)
+        if (!errorMessage) {
+          dispatch(setLinkLocations(null))
+          navigate(orgManageLocationsUrls.view.dashboard)
+        } else {
+          console.log(errorMessage)
+        }
+      })
+  }
+  }
+
+  const linkLocationsText = (locationsToLink) => {
+    let text = ''
+
+    if (locationsToLink && locationsToLink.length > 0) {
+      if (locationsToLink.length > 1) {
+        text =
+          locationsToLink.length + ' locations'
+      } else {
+        text =
+          currentLocation.additionals.locationName
+      }
     }
+
+    return text
   }
 
   const linkContactsText = (contactsToLink) => {
@@ -43,9 +69,7 @@ export default function LinkBanner ({
     if (contactsToLink && contactsToLink.length > 0) {
       if (contactsToLink.length > 1) {
         text =
-          contactsToLink.length +
-          ' ' +
-          (contactsToLink.length > 1 ? 'contacts' : 'contact')
+          contactsToLink.length + ' contacts'
       } else {
         text =
           contactsToLink[0].firstname +
@@ -97,7 +121,7 @@ export default function LinkBanner ({
               alignItems: 'center'
             }}
           >
-            {location.additionals.locationName}
+            {linkLocationsText(linkLocations)}
           </div>
           <span style={{fontWeight: '700' }}>
             to

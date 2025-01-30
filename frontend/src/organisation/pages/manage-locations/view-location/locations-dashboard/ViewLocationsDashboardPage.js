@@ -13,7 +13,7 @@ import {
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation
 } from '../../../../../common/services/WfsFloodDataService'
-import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
@@ -21,6 +21,9 @@ import LocationsTable from './dashboard-components/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
+import { setLinkLocations } from '../../../../../common/redux/userSlice'
+import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
+
 export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
   const navigate = useNavigate()
@@ -37,6 +40,7 @@ export default function ViewLocationsDashboardPage () {
   const [selectedFilters, setSelectedFilters] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
+  const linkContacts = useSelector((state) => state.session.linkContacts)
   const [dialog, setDialog] = useState({
     show: false,
     text: '',
@@ -107,15 +111,17 @@ export default function ViewLocationsDashboardPage () {
       })
 
       locationsUpdate.forEach(async function (location, idx) {
-        const { contactsData } = await backendCall(
-          dataToSend,
-          'api/elasticache/list_contacts',
+        const contactsDataToSend = { authToken, orgId, location }
+        const { data } = await backendCall(
+          contactsDataToSend,
+          'api/elasticache/list_linked_contacts',
           navigate
         )
 
-        if (contactsData) {
-          contactsData.forEach((contact) => {
-            location.linked_contacts.push(contact.id)
+        location.linked_contacts = []
+        if (data) {
+          data.forEach((contactID) => {
+            location.linked_contacts.push(contactID)
           })
         }
       })
@@ -233,10 +239,23 @@ export default function ViewLocationsDashboardPage () {
     }
   }
 
+  const linkContactsToLocations = () => {
+    if (selectedLocations.length > 0) {
+      let linkLocations = []
+      selectedLocations.forEach((location) => {
+        linkLocations.push(location.id)
+      })
+
+      dispatch(setCurrentLocation(webToGeoSafeLocation(selectedLocations[0])))
+      dispatch(setLinkLocations(linkLocations))
+      navigate(orgManageContactsUrls.view.dashboard)
+    }
+  }
+
   const onMoreAction = (index) => {
     switch (index) {
       case 0:
-        // TODO - linking (EAN-1126)
+        linkContactsToLocations()
         break
       case 1:
         // TODO - message settings (EAN-1424)
@@ -382,6 +401,7 @@ export default function ViewLocationsDashboardPage () {
           )}
           <DashboardHeader
             locations={locations}
+            linkContacts={linkContacts}
             onClickLinked={onClickLinked}
           />
           <div className='govuk-grid-column-full govuk-body'>
@@ -393,17 +413,21 @@ export default function ViewLocationsDashboardPage () {
                     className='govuk-button govuk-button--secondary inline-block'
                     onClick={() => onOpenCloseFilter()}
                   />
-                &nbsp; &nbsp;
-                  <ButtonMenu
-                    title='More actions'
-                    options={moreActions}
-                    onSelect={(index) => onMoreAction(index)}
-                  />
-                &nbsp; &nbsp;
-                  <Button
-                    text='Print'
-                    className='govuk-button govuk-button--secondary inline-block'
-                  />
+                  {linkContacts && linkContacts.length === 0 && (
+                    <>
+                    &nbsp; &nbsp;
+                    <ButtonMenu
+                      title='More actions'
+                      options={moreActions}
+                      onSelect={(index) => onMoreAction(index)}
+                    />
+                    &nbsp; &nbsp;
+                    <Button
+                      text='Print'
+                      className='govuk-button govuk-button--secondary inline-block'
+                    />
+                    </>
+                  )}
                   <LocationsTable
                     locations={locations}
                     displayedLocations={displayedLocations}
@@ -484,17 +508,21 @@ export default function ViewLocationsDashboardPage () {
                         className='govuk-button govuk-button--secondary'
                         onClick={() => onOpenCloseFilter()}
                       />
-                    &nbsp; &nbsp;
-                      <ButtonMenu
-                        title='More actions'
-                        options={moreActions}
-                        onSelect={(index) => onMoreAction(index)}
-                      />
-                    &nbsp; &nbsp;
-                      <Button
-                        text='Print'
-                        className='govuk-button govuk-button--secondary inline-block'
-                      />
+                      {linkContacts && linkContacts.length === 0 && (
+                        <>
+                        &nbsp; &nbsp;
+                        <ButtonMenu
+                          title='More actions'
+                          options={moreActions}
+                          onSelect={(index) => onMoreAction(index)}
+                        />
+                        &nbsp; &nbsp;
+                        <Button
+                          text='Print'
+                          className='govuk-button govuk-button--secondary inline-block'
+                        />
+                        </>
+                      )}
                     </div>
                     <LocationsTable
                       locations={locations}

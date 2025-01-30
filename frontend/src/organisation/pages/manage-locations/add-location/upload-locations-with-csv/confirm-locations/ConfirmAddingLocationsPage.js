@@ -67,7 +67,7 @@ export default function ConfirmAddingLocationsPage () {
       if (duplicateLocations > 0) {
         if (duplicateLocations === 1) {
           const location = await getDupLocation()
-          
+
           // Get the existing location (note type is 'valid')
           const existingLocation = geoSafeToWebLocation(await getLocation(orgId, location.additionals.locationName, 'valid'))
 
@@ -147,16 +147,16 @@ export default function ConfirmAddingLocationsPage () {
                 duplicateLocations +
                 notFoundLocations +
                 notInEnglandLocations}{' '}
-              locations can be added
+              location{validLocations > 1 && 's'} can be added
             </h1>
             <div className='govuk-body'>
               <div className='govuk-inset-text'>
                 {duplicateLocations > 0 && (
                   <div>
-                    <strong>{duplicateLocations}</strong> locations already
-                    exist with the same name in this account. You can choose to
-                    keep the existing locations or replace them with the new
-                    locations uploaded.
+                    <strong>{duplicateLocations}</strong> location{duplicateLocations > 1 && 's'} already
+                    exist{duplicateLocations === 1 && 's'} with the same name in this account. You can choose to
+                    keep the existing location{duplicateLocations > 1 && 's'} or replace them with the new
+                    location{duplicateLocations > 1 && 's'} uploaded.
                   </div>
                 )}
                 {notFoundLocations > 0 && (
@@ -164,8 +164,8 @@ export default function ConfirmAddingLocationsPage () {
                     {/* Only need a break if there is text above */}
                     {duplicateLocations > 0 && <br />}
                     <div>
-                      <strong>{notFoundLocations}</strong> locations need to be
-                      found manually in this account before they can be added.
+                      <strong>{notFoundLocations}</strong> location{notFoundLocations > 1 && 's'} need{notFoundLocations === 1 && 's'} to be
+                      found manually in this account before {notFoundLocations > 1 ? 'they' : 'it'} can be added.
                     </div>
                   </div>
                 )}
@@ -176,9 +176,9 @@ export default function ConfirmAddingLocationsPage () {
                       <br />
                     )}
                     <div>
-                      <strong>{notInEnglandLocations}</strong> locations cannot
-                      be added because they are not in England. You can check
-                      each of the location's details and change them if you
+                      <strong>{notInEnglandLocations}</strong> location{notInEnglandLocations > 1 && 's'} cannot
+                      be added because {notInEnglandLocations > 1 ? 'they are' : 'it is'} not in England. You can check
+                      {notInEnglandLocations > 1 && 'each of'} the location's details and change {notInEnglandLocations > 1 ? 'them' : 'it'} if you
                       think this is not correct.
                     </div>
                   </div>
@@ -190,7 +190,7 @@ export default function ConfirmAddingLocationsPage () {
               />
               {validLocations > 0 &&
               (
-                <p>You can do this after you add the {validLocations} locations that
+                <p>You can do this after you add the {validLocations} location{validLocations > 1 && 's'} that
                   can be added now.
                 </p>
               )}
@@ -198,7 +198,7 @@ export default function ConfirmAddingLocationsPage () {
             <br />
             {/* TODO: add a loading spinner on click as saving can take a long time */}
             <Button
-              text={validLocations > 0 ? `Add ${validLocations} locations` : 'Continue'}
+              text={validLocations > 0 ? `Add ${validLocations} location${validLocations > 1 && 's'}` : 'Continue'}
               className='govuk-button govuk-button'
               onClick={handleLocations}
             />

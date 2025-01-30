@@ -30,7 +30,7 @@ export default function LocationHeader ({ currentPage }) {
           <h1 className='govuk-heading-l'>{additionalData.locationName}</h1>
         </div>
         <div
-          class='govuk-grid-column-one-half right'
+          className='govuk-grid-column-one-half right'
           style={{
             marginLeft: 'auto',
             display: 'flex',
@@ -51,7 +51,7 @@ export default function LocationHeader ({ currentPage }) {
           LocationDataType.X_AND_Y_COORDS) &&
         currentLocation.coordinates?.latitude &&
         currentLocation.coordinates?.longitude && (
-          <div class='govuk-grid-row'>
+          <div className='govuk-grid-row'>
             <div className='govuk-grid-column-full'>
               <div className='flood-risk-banner govuk-!-margin-top-2'>
                 <div className='flood-risk-banner-item govuk-!-padding-2'>

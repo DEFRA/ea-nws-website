@@ -115,8 +115,8 @@ export default function DropPinOnMapLayout ({
                   </Link>
                 </div>
               </div>
-              <div class='govuk-grid-row'>
-                <div class='govuk-grid-column-two-thirds'>
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-two-thirds'>
                   <Map
                     setCoordinates={setPinCoords}
                     type='drop'
@@ -125,7 +125,7 @@ export default function DropPinOnMapLayout ({
                     showMarker={showMarkerInitially}
                   />
                 </div>
-                <div class='govuk-grid-column-one-third'>
+                <div className='govuk-grid-column-one-third'>
                   <MapInteractiveKey
                     showFloodWarningAreas={showFloodWarningAreas}
                     setShowFloodWarningAreas={setShowFloodWarningAreas}
@@ -137,8 +137,8 @@ export default function DropPinOnMapLayout ({
                 </div>
               </div>
 
-              <div class='govuk-grid-row'>
-                <div class='govuk-grid-column-two-thirds'>
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-two-thirds'>
                   <div
                     className='govuk-caption-container'
                     style={{

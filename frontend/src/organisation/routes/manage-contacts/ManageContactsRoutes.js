@@ -4,7 +4,7 @@ import AddContactKeywordsPage from '../../pages/manage-contact/add-contact/AddCo
 import AddContactNotesPage from '../../pages/manage-contact/add-contact/AddContactNotesPage'
 import ViewContactsDashboardPage from '../../pages/manage-contact/view-contact/contacts-dashboard/ViewContactsDashboardPage'
 import ContactInformationPage from '../../pages/manage-contact/view-contact/contacts-information/ContactInformationPage'
-import EditContactChannelsPage from '../../pages/manage-contact/edit-contact/EditContactCahnnelsPage'
+import EditContactChannelsPage from '../../pages/manage-contact/edit-contact/EditContactChannelsPage'
 import EditContactNotesPage from '../../pages/manage-contact/edit-contact/EditContactNotesPage'
 import EditContactDetailsPage from '../../pages/manage-contact/edit-contact/EditContactDetailsPage'
 const urlManageContactsOrg = '/organisation/manage-contacts'

@@ -143,32 +143,25 @@ const osFindApiCall = async (address, minmatch) => {
       return { status: response.status, data: responseData }
     } else {
       // Check if postcode is not in England
-      const url = `https://api.os.uk/search/places/v1/find?query=${address}&key=${osApiKey}`
-      try {
-        const response = await axios.get(url)
-        if (response.data.results?.[0].DPA.COUNTRY_CODE !== 'E') {
-          responseData = response.data.results.map((result) => {
-            const coordinates = convertCoordinates(
-              result.DPA.X_COORDINATE,
-              result.DPA.Y_COORDINATE
-            )
-            return {
-              coordinates: coordinates,
-              inEngland: false
-            }
-          })
-          return { status: response.status, data: responseData }
-        } else {
+      if (
+        response.data.results &&
+        response.data.results?.[0].DPA.COUNTRY_CODE !== 'E'
+      ) {
+        responseData = response.data.results.map((result) => {
+          const coordinates = convertCoordinates(
+            result.DPA.X_COORDINATE,
+            result.DPA.Y_COORDINATE
+          )
           return {
-            status: 500,
-            errorMessage: 'No matches found'
+            coordinates: coordinates,
+            inEngland: false
           }
-        }
-      } catch (error) {
-        logger.error(error)
+        })
+        return { status: response.status, data: responseData }
+      } else {
         return {
           status: 500,
-          errorMessage: 'Oops, something happened!'
+          errorMessage: 'No matches found'
         }
       }
     }

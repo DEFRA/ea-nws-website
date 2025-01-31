@@ -223,7 +223,7 @@ export default function ContactsTable ({
                 {contact.emails[0]}
               </td>
               <td className='govuk-table__cell'>
-                {contact.linked_locations.length}
+                {contact.linked_locations?.length}
               </td>
               <td className='govuk-table__cell'>
                 0

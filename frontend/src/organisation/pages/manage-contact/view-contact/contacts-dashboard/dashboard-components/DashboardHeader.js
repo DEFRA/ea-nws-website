@@ -39,13 +39,13 @@ export default function DashboardHeader ({
     if (type === 'linked') {
       heading = 'Contacts linked to locations'
       count =
-        contacts.filter((item) => item.linked_locations.length > 0).length
+        contacts.filter((item) => item.linked_locations?.length > 0).length
 
       message = ' linked to locations'
     } else if (type === 'notLinked') {
       heading = 'Contacts not linked to locations'
       count =
-        contacts.filter((item) => item.linked_locations.length === 0).length
+        contacts.filter((item) => item.linked_locations?.length === 0).length
 
       message = ' not linked to locations'
     }
@@ -118,10 +118,10 @@ export default function DashboardHeader ({
               </div>
             </div>
             <div style={{ display: 'flex', fontSize: '18px' }}>
-              {contacts.filter((item) => item.linked_locations.length > 0).length > 0 && (
+              {contacts.filter((item) => item.linked_locations?.length > 0).length > 0 && (
                 <ContactsBanner type='linked' />
               )}
-              {contacts.filter((item) => item.linked_locations.length === 0).length > 0 && (
+              {contacts.filter((item) => item.linked_locations?.length === 0).length > 0 && (
                 <ContactsBanner type='notLinked' />
               )}
             </div>

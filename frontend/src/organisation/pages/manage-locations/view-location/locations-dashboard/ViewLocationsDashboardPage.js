@@ -130,7 +130,7 @@ export default function ViewLocationsDashboardPage () {
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
     }
-
+    
     getLocations()
 
     setSavedLinkContacts(linkContacts)

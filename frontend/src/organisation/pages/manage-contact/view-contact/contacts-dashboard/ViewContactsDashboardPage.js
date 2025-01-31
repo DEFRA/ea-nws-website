@@ -80,14 +80,26 @@ export default function ViewContactsDashboardPage () {
         })
       }
 
-      // TODO: Get linked locations from the API (EAN-1364)
-      contactsUpdate.forEach(function (contact) {
+      contactsUpdate.forEach(async function (contact, idx) {
+        const contactsDataToSend = { authToken, orgId, contact }
+        const { data } = await backendCall(
+          contactsDataToSend,
+          'api/elasticache/list_linked_locations',
+          navigate
+        )
+
         contact.linked_locations = []
+        if (data) {
+          data.forEach((location) => {
+            contact.linked_locations.push(location.id)
+          })
+        }
       })
 
       setContacts(contactsUpdate)
       setFilteredContacts(contactsUpdate)
     }
+    
     getContacts()
 
     setSavedLinkLocations(linkLocations)

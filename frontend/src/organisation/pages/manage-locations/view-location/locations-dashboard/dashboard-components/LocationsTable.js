@@ -158,10 +158,6 @@ export default function LocationsTable ({
     navigate(orgManageLocationsUrls.view.viewLocation)
   }
 
-  const linkToContacts = (e, location) => {
-    // TODO (EAN-1126)
-  }
-
   const updateMessageSettings = (e, location) => {
     e.preventDefault()
     dispatch(setCurrentLocation(webToGeoSafeLocation(location)))
@@ -379,12 +375,7 @@ export default function LocationsTable ({
                 </Link>
               </td>
               <td className='govuk-table__cell'>
-                <Link
-                  className='govuk-link'
-                  onClick={(e) => linkToContacts(e, location)}
-                >
-                  {location.linked_contacts?.length}
-                </Link>
+                {location.linked_contacts?.length}
               </td>
               <td className='govuk-table__cell'>
                 <span

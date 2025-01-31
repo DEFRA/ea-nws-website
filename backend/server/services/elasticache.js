@@ -411,6 +411,24 @@ const listLinkedContacts = async (orgId, locationID) => {
   return contactArr
 }
 
+const listLinkedLocations = async (orgId, contactID) => {
+  const key = orgId + ':t_Linked_contacts'
+  let locationArr = []
+
+  const arrExists = await checkKeyExists(key)
+
+  if (arrExists) {
+    const linkedArr = await getJsonData(key)
+    linkedArr.forEach((link) => {
+      if (link.id === contactID) {
+        locationArr = [...link.linkIDs]
+      }
+    })
+  }
+
+  return locationArr
+}
+
 const addToLinkedArr = async (key, value) => {
   const arrExists = await checkKeyExists(key)
   if (arrExists) {
@@ -551,6 +569,7 @@ module.exports = {
   updateContact,
   removeContact,
   listLinkedContacts,
+  listLinkedLocations,
   addLinkedLocations,
   addLinkedContacts,
   orgSignIn,

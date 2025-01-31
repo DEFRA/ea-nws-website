@@ -84,8 +84,8 @@ const citizenContact = {
 const citizenContact2 = {
   id: '1',
   enabled: true,
-  firstname: '',
-  lastname: '',
+  firstname: 'John',
+  lastname: 'Smith',
   emails: ['matthew.pepper@gmail.com', 'perry.pepper@gmail.com'],
   mobilePhones: ['07343454590', '07889668367'],
   homePhones: ['01475721535'],
@@ -150,9 +150,22 @@ const registrations = {
 
 const organization = {
   id: '1',
-  name: 'Royal Mail',
-  description: '',
-  postalCode: 'NR30 1AA',
+  name: 'Flood Inc.',
+  description: JSON.stringify({
+    name: 'Flood Inc.',
+    address: '1 ALL SAINTS HOUSE, THE CAUSEWAY, MARLOW, SL7 2AA',
+    compHouseNum: '787878',
+    emergencySector: true,
+    isAdminRegistering: true,
+    alternativeContact: {
+      firstName: 'Joan',
+      lastName: 'Smith',
+      email: 'j.smith@floodinc.com',
+      telephone: '02071739372',
+      jobTitle: 'IT Director'
+    }
+  }),
+  postalCode: '',
   longName: '',
   logoUrl: '',
   backgroundUrl: '',

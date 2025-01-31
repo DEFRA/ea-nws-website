@@ -11,17 +11,113 @@ import {
 } from 'react-leaflet'
 // Leaflet Marker Icon fix
 import L from 'leaflet'
+import { useNavigate } from 'react-router'
 import floodAlertIcon from '../../../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../../../common/assets/images/flood_warning.svg'
 import floodWarningRemovedIcon from '../../../../../common/assets/images/flood_warning_removed.svg'
 import floodSevereWarningIcon from '../../../../../common/assets/images/severe_flood_warning.svg'
 import TileLayerWithHeader from '../../../../../common/components/custom/TileLayerWithHeader'
+import LocationDataType from '../../../../../common/enums/LocationDataType'
 import { backendCall } from '../../../../../common/services/BackendService'
+import { convertDataToGeoJsonFeature } from '../../../../../common/services/GeoJsonHandler'
 import { getSurroundingFloodAreas } from '../../../../../common/services/WfsFloodDataService'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import { locations } from '../dummy-data/LocationsDummyData'
 
 export default function LiveMap() {
+  const navigate = useNavigate()
+  const orgId = useSelector((state) => state.session.orgId)
+  const [points, setPoints] = useState([])
+  const [areas, setAreas] = useState([])
   const [apiKey, setApiKey] = useState(null)
+
+  async function loadMap() {
+    //get orgs locations
+    const { locationsData } = await backendCall(
+      { orgId },
+      'api/elasticache/list_locations',
+      navigate
+    )
+
+    const locations = []
+    if (locationsData) {
+      locationsData.forEach((location) => {
+        locations.push(geoSafeToWebLocation(location))
+      })
+    }
+
+    //loop through locations and convert points to geojson to calculate bbox and compare
+    const locationsCollection = []
+    const markers = []
+    const shapes = []
+    if (locations) {
+      locations.forEach((location) => {
+        let feature
+        const locationType =
+          location.meta_data.location_additional.location_data_type
+
+        if (locationType === LocationDataType.X_AND_Y_COORDS) {
+          // turf accepts in the format [lng,lat] - we save points as [lat,lng]
+          feature = convertDataToGeoJsonFeature('Point', [
+            location.coordinates[1],
+            location.coordinates[0]
+          ])
+          markers.push(location.coordinates)
+        } else {
+          feature = location.geometry.geoJson
+          setGeoJsonShapes((prevShapes) => [
+            ...prevShapes,
+            location.geometry.geoJson
+          ])
+          shapes.push(location.geometry.geoJson)
+        }
+
+        locationsCollection.push(feature)
+      })
+      setPoints(points)
+      setAreas(shapes)
+
+      // calculate boundary around locations
+      const geoJsonFeatureCollection =
+        turf.featureCollection(locationsCollection)
+
+      const bbox = turf.bbox(geoJsonFeatureCollection)
+
+      const bounds = [
+        [bbox[1], bbox[0]],
+        [bbox[3], bbox[2]]
+      ]
+
+      // load live alerts
+      const options = {
+        states: ['CURRENT'],
+        boundingBox: {
+          southWest: { latitude: bbox[1], longitude: bbox[0] },
+          northEast: { latitude: bbox[3], longitude: bbox[2] }
+        },
+        channels: [],
+        partnerId: ''
+      }
+
+      const { liveAlertsData } = await backendCall(
+        { options: options },
+        '/api/alert/list',
+        navigate
+      )
+
+      // using live alerts, call to qgis to get flood area data - store geojson and severity level in a new list
+      //loop over live alerts and compare to feature collection (we shouldnt need seperate markers and shapes?)
+      //  - if it does intersect, add flood area and add location along with a severity level
+      //  - for shape locations, grab the centre of the flood area? ask neil to confirm
+    } else {
+      // show that user has no locations in account
+    }
+  }
+
+  useEffect(() => {
+    async function fetchFloodAreaData() {}
+    fetchFloodAreaData()
+  }, [])
 
   // get flood area data
   useEffect(() => {

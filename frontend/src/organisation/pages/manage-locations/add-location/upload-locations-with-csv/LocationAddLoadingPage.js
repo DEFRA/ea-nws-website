@@ -20,6 +20,7 @@ export default function LocationAddLoadingPage () {
   const location = useLocation()
   const orgId = useSelector((state) => state.session.orgId)
   const fileName = location.state?.fileName
+  const [errors, setErrors] = useState(null)
 
   if (!fileName) {
     // theres not fileName so navigate back. will need to give an error
@@ -45,6 +46,13 @@ export default function LocationAddLoadingPage () {
     }
     if (status === 'complete') {
       continueToNextPage()
+    } else if (status === 'rejected') {
+      // navigate back to the upload page and pass the errors
+      navigate(orgManageLocationsUrls.add.uploadFile, {
+        state: {
+          errors
+        }
+      })
     }
   }, [status])
 
@@ -62,6 +70,9 @@ export default function LocationAddLoadingPage () {
           setStage(data.stage)
         }
         if (data?.status !== status) {
+          if (data?.error) {
+            setErrors(data.error)
+          }
           if (data?.data) {
             setValidLocations(data.data.valid.length)
             const duplicateLocations = data.data.invalid.filter(

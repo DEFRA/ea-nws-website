@@ -1,13 +1,15 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router'
 
 import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
+import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import { setSigninType } from '../../../common/redux/userSlice'
 import SubscribedLocationTableLayout from '../manage-locations/SubscribedLocationTable'
 
 export default function HomePage () {
   const location = useLocation()
+  const [error, setError] = useState(null)
 
   // remove added/removed location success banners
   useEffect(() => {
@@ -31,6 +33,7 @@ export default function HomePage () {
           text={location.state.removedLocation}
         />
       )}
+      {error && <ErrorSummary errorList={[error]} />}
       <main className='govuk-main-wrapper'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
@@ -42,8 +45,8 @@ export default function HomePage () {
                 text={location.state.locationName}
               />
             )}
-            <h1 className='govuk-heading-l'>Home</h1>
-            <SubscribedLocationTableLayout />
+            <h1 className='govuk-heading-l'>Locations and message preferences</h1>
+            <SubscribedLocationTableLayout setError={setError}/>
           </div>
         </div>
       </main>

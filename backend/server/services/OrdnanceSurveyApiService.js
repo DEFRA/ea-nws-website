@@ -109,6 +109,7 @@ const osFindApiCall = async (address, minmatch) => {
   let responseData
   const osApiKey = await getSecretKeyValue('nws/os', 'apiKey')
   const url = `https://api.os.uk/search/places/v1/find?query=${address}&minmatch=${minmatch}&key=${osApiKey}`
+
   proj4.defs(
     'EPSG:27700',
     '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs'
@@ -135,14 +136,33 @@ const osFindApiCall = async (address, minmatch) => {
           name: result.DPA.UPRN,
           address: formattedAddress,
           coordinates: coordinates,
-          postcode: result.DPA.POSTCODE
+          postcode: result.DPA.POSTCODE,
+          inEngland: true
         }
       })
       return { status: response.status, data: responseData }
     } else {
-      return {
-        status: 500,
-        errorMessage: 'No matches found'
+      // Check if postcode is not in England
+      if (
+        response.data.results &&
+        response.data.results?.[0].DPA.COUNTRY_CODE !== 'E'
+      ) {
+        responseData = response.data.results.map((result) => {
+          const coordinates = convertCoordinates(
+            result.DPA.X_COORDINATE,
+            result.DPA.Y_COORDINATE
+          )
+          return {
+            coordinates: coordinates,
+            inEngland: false
+          }
+        })
+        return { status: response.status, data: responseData }
+      } else {
+        return {
+          status: 500,
+          errorMessage: 'No matches found'
+        }
       }
     }
   } catch (error) {

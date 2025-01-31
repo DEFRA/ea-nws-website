@@ -3,13 +3,14 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 
-const { findLocationByName, getJsonData, setJsonData } = require('../../services/elasticache')
+const {
+  findLocationByName,
+  getJsonData,
+  setJsonData
+} = require('../../services/elasticache')
 
 const isDuplicate = async (orgId, locationName) => {
-  const locationArr = await findLocationByName(
-    orgId,
-    locationName
-  )
+  const locationArr = await findLocationByName(orgId, locationName)
   return locationArr.length !== 0
 }
 

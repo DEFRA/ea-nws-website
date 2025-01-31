@@ -1,5 +1,7 @@
 const proj4 = require('proj4')
 const { osFindApiCall } = require('../OrdnanceSurveyApiService')
+const { getWfsData } = require('../../services/WfsData')
+const turf = require('@turf/turf')
 
 const getCoords = async (location) => {
   const addressWithPostcode = location.Full_address.concat(
@@ -42,16 +44,29 @@ function convertCoords (X, Y) {
   return { latitude: latitude, longitude: longitude }
 }
 
+const isCoordInEngland = async (lat, lng) => {
+  const WFSParams = {
+    service: 'WFS',
+    map: 'uk-ob.qgz',
+    version: '1.1.0',
+    request: 'GetFeature',
+    typename: 'aoi-national-boundary',
+    srsname: 'EPSG:4326',
+    outputFormat: 'GEOJSON'
+  }
+  const { data: geojson } = await getWfsData(WFSParams)
+  const point = turf.point([lng, lat])
+  const poly = turf.multiPolygon(geojson.features[0].geometry.coordinates)
+  return turf.booleanPointInPolygon(point, poly)
+}
+
 function convertTo27700 (X, Y) {
   proj4.defs(
     'EPSG:27700',
     '+proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +datum=OSGB36 +units=m +no_defs'
   )
   proj4.defs('EPSG:4326', '+proj=longlat +datum=WGS84 +no_defs')
-  const [east, north] = proj4('EPSG:4326', 'EPSG:27700', [
-    Number(X),
-    Number(Y)
-  ])
+  const [east, north] = proj4('EPSG:4326', 'EPSG:27700', [Number(X), Number(Y)])
   return { east: east, north: north }
 }
 
@@ -76,7 +91,18 @@ const validateLocations = async (locations) => {
               location.X_coordinates,
               location.Y_coordinates
             )
-            valid.push(location)
+
+            // Check if coordinate is in England
+            const coordInEngland = await isCoordInEngland(
+              location.coordinates.latitude,
+              location.coordinates.longitude
+            )
+            if (coordInEngland) {
+              valid.push(location)
+            } else {
+              location.error = ['not in England']
+              invalid.push(location)
+            }
           } else {
             location.error = ['not found']
             invalid.push(location)
@@ -85,18 +111,25 @@ const validateLocations = async (locations) => {
           // calculate X and Y based on address and postcode
           const { errorMessage, data } = await getCoords(location)
           if (errorMessage) {
-            location.error = ['not found']
+            errorMessage === 'No matches found' &&
+              (location.error = ['not found'])
             invalid.push(location)
           } else {
             location.coordinates = data[0].coordinates
-            const EPSG27700 = convertTo27700(
-              data[0].coordinates.longitude,
-              data[0].coordinates.latitude
-            )
-            location.X_coordinates = EPSG27700.east
-            location.Y_coordinates = EPSG27700.north
             location.address = data[0].address
-            valid.push(location)
+
+            if (data[0].inEngland) {
+              const EPSG27700 = convertTo27700(
+                data[0].coordinates.longitude,
+                data[0].coordinates.latitude
+              )
+              location.X_coordinates = EPSG27700.east
+              location.Y_coordinates = EPSG27700.north
+              valid.push(location)
+            } else {
+              location.error = ['not in England']
+              invalid.push(location)
+            }
           }
         } else {
           location.error = ['not found']

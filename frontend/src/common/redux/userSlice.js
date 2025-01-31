@@ -77,6 +77,8 @@ const userSlice = createSlice({
     registerToken: null,
     profileId: null,
     orgId: null,
+    notFoundLocations: null,
+    notInEnglandLocations: null,
     profile: {
       id: '',
       enabled: true,
@@ -225,6 +227,12 @@ const userSlice = createSlice({
     },
     setOrgId: (state, action) => {
       state.orgId = action.payload
+    },
+    setNotFoundLocations: (state, action) => {
+      state.notFoundLocations = action.payload
+    },
+    setNotInEnglandLocations: (state, action) => {
+      state.notInEnglandLocations = action.payload
     },
     setProfile: (state, action) => {
       state.profile = action.payload
@@ -691,6 +699,8 @@ const userSlice = createSlice({
       state.registerToken = null
       state.profileId = null
       state.orgId = null
+      state.notFoundLocations = null
+      state.notInEnglandLocations = null
       state.profile = {
         id: '',
         enabled: true,
@@ -901,6 +911,8 @@ export const {
   setRegisterToken,
   setProfileId,
   setOrgId,
+  setNotFoundLocations,
+  setNotInEnglandLocations,
   setProfile,
   setRegistrations,
   setContactPreferences,

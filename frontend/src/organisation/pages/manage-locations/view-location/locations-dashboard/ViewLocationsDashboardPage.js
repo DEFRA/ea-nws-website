@@ -21,7 +21,7 @@ import LocationsTable from './dashboard-components/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
-import { setLinkLocations } from '../../../../../common/redux/userSlice'
+import { setLinkLocations, setLinkContacts } from '../../../../../common/redux/userSlice'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function ViewLocationsDashboardPage () {
@@ -38,6 +38,7 @@ export default function ViewLocationsDashboardPage () {
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [displayedLocations, setDisplayedLocations] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
+  const [savedLinkContacts, setSavedLinkContacts] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const linkContacts = useSelector((state) => state.session.linkContacts)
@@ -131,6 +132,9 @@ export default function ViewLocationsDashboardPage () {
     }
 
     getLocations()
+
+    setSavedLinkContacts(linkContacts)
+    dispatch(setLinkContacts(null))
   }, [])
 
   const getRiskCategory = async ({ riskAreaType, location }) => {
@@ -401,7 +405,8 @@ export default function ViewLocationsDashboardPage () {
           )}
           <DashboardHeader
             locations={locations}
-            linkContacts={linkContacts}
+            linkContacts={savedLinkContacts}
+            selectedLocations={selectedLocations}
             onClickLinked={onClickLinked}
           />
           <div className='govuk-grid-column-full govuk-body'>
@@ -413,7 +418,7 @@ export default function ViewLocationsDashboardPage () {
                     className='govuk-button govuk-button--secondary inline-block'
                     onClick={() => onOpenCloseFilter()}
                   />
-                  {linkContacts && linkContacts.length === 0 && (
+                  {savedLinkContacts && savedLinkContacts.length === 0 && (
                     <>
                     &nbsp; &nbsp;
                     <ButtonMenu
@@ -439,6 +444,7 @@ export default function ViewLocationsDashboardPage () {
                     resetPaging={resetPaging}
                     setResetPaging={setResetPaging}
                     onAction={onAction}
+                    linkContacts={savedLinkContacts}
                   />
                   <Pagination
                     totalPages={Math.ceil(
@@ -508,7 +514,7 @@ export default function ViewLocationsDashboardPage () {
                         className='govuk-button govuk-button--secondary'
                         onClick={() => onOpenCloseFilter()}
                       />
-                      {linkContacts && linkContacts.length === 0 && (
+                      {savedLinkContacts && savedLinkContacts.length === 0 && (
                         <>
                         &nbsp; &nbsp;
                         <ButtonMenu
@@ -535,6 +541,7 @@ export default function ViewLocationsDashboardPage () {
                       resetPaging={resetPaging}
                       setResetPaging={setResetPaging}
                       onAction={onAction}
+                      linkContacts={savedLinkContacts}
                     />
                     <Pagination
                       totalPages={Math.ceil(

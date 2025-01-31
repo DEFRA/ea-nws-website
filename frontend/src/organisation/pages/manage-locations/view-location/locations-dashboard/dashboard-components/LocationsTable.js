@@ -16,7 +16,8 @@ export default function LocationsTable ({
   setFilteredLocations,
   resetPaging,
   setResetPaging,
-  onAction
+  onAction,
+  linkContacts
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -186,11 +187,15 @@ export default function LocationsTable ({
           {selectedLocations.length}{' '}
           {selectedLocations.length === 1 ? 'location' : 'locations'} selected{' '}
         </span>
-        <span style={{ margin: '0 20px' }}>|</span>
-        <img src={locationPin} alt='Location pin icon' />
-        <Link className='govuk-link' onClick={openMap}>
-          View on map
-        </Link>
+        {!linkContacts && (
+          <>
+            <span style={{ margin: '0 20px' }}>|</span>
+            <img src={locationPin} alt='Location pin icon' />
+            <Link className='govuk-link' onClick={openMap}>
+              View on map
+            </Link>
+          </>
+        )}
       </p>
       {showMap && (
         <FullscreenMap

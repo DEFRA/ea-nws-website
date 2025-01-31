@@ -7,7 +7,7 @@ import { infoUrls } from '../../../../../routes/info/InfoRoutes'
 import { urlManageKeywordsOrg } from '../../../../../routes/manage-keywords/ManageKeywordsRoutes'
 import { urlManageOrgAddLocations } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DashboardHeader ({ locations, onClickLinked, linkContacts }) {
+export default function DashboardHeader ({ locations, onClickLinked, linkContacts, selectedLocations }) {
   const navigate = useNavigate()
 
   const floodRiskDetails = (
@@ -276,7 +276,7 @@ export default function DashboardHeader ({ locations, onClickLinked, linkContact
   return (
     <>
       <div className='govuk-grid-column-full govuk-body govuk-!-margin-top-6'>
-      {linkContacts && linkContacts.length === 0
+      {!linkContacts || linkContacts.length === 0
         ? (
         <>
         <div style={{ display: 'flex' }}>
@@ -331,7 +331,7 @@ export default function DashboardHeader ({ locations, onClickLinked, linkContact
             Select the locations you want to link to this contact from the list. Then select<br/>
             Link contact to locations.
           </p>
-          <LinkBanner />
+          <LinkBanner linkContacts={linkContacts} selectedLocations={selectedLocations}/>
         </>
       )}
       </div>

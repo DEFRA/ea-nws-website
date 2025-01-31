@@ -96,7 +96,7 @@ export default function DashboardHeader ({
   return (
     <>
       <div className='govuk-grid-column-full govuk-body govuk-!-margin-top-6'>
-        {linkLocations && linkLocations.length === 0
+        {!linkLocations || linkLocations.length === 0
           ? (
           <>
             <div style={{ display: 'flex' }}>

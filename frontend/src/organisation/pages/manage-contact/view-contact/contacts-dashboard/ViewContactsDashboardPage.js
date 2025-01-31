@@ -7,7 +7,7 @@ import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
-import { setOrgCurrentContact } from '../../../../../common/redux/userSlice'
+import { setOrgCurrentContact, setLinkLocations } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
@@ -29,6 +29,7 @@ export default function ViewContactsDashboardPage () {
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [displayedContacts, setDisplayedContacts] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
+  const [savedLinkLocations, setSavedLinkLocations] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const linkLocations = useSelector((state) => state.session.linkLocations)
@@ -88,6 +89,9 @@ export default function ViewContactsDashboardPage () {
       setFilteredContacts(contactsUpdate)
     }
     getContacts()
+
+    setSavedLinkLocations(linkLocations)
+    dispatch(setLinkLocations(null))
   }, [])
 
   const moreActions = ['Link selected to locations', 'Delete selected']
@@ -262,7 +266,7 @@ export default function ViewContactsDashboardPage () {
           <DashboardHeader 
             contacts={contacts}
             onClickLinked={onClickLinked}
-            linkLocations={linkLocations}
+            linkLocations={savedLinkLocations}
             selectedContacts={selectedContacts}/>
           <div className='govuk-grid-column-full govuk-body'>
             {!isFilterVisible
@@ -273,7 +277,7 @@ export default function ViewContactsDashboardPage () {
                     className='govuk-button govuk-button--secondary inline-block'
                     onClick={() => onOpenCloseFilter()}
                   />
-                  {linkLocations && linkLocations.length === 0 && (
+                  {savedLinkLocations && savedLinkLocations.length === 0 && (
                     <>
                     &nbsp; &nbsp;
                       <ButtonMenu
@@ -341,7 +345,7 @@ export default function ViewContactsDashboardPage () {
                         onClick={() => onOpenCloseFilter()}
                       />
                     &nbsp; &nbsp;
-                    {linkLocations && linkLocations.length === 0 && (
+                    {savedLinkLocations && savedLinkLocations.length === 0 && (
                       <>
                       <ButtonMenu
                         title='More actions'

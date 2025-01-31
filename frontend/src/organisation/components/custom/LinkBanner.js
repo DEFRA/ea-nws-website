@@ -5,12 +5,14 @@ import Button from '../../../common/components/gov-uk/Button'
 import Checkbox from '../../../common/components/gov-uk/CheckBox'
 import { backendCall } from '../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
+import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 import { geoSafeToWebLocation } from '../../../common/services/formatters/LocationFormatter'
-import { setLinkLocations } from '../../../common/redux/userSlice'
 
 export default function LinkBanner ({
   type,
   linkLocations,
+  linkContacts,
+  selectedLocations,
   selectedContacts
  }) {
   const navigate = useNavigate()
@@ -19,62 +21,105 @@ export default function LinkBanner ({
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const currentLocation = geoSafeToWebLocation(useSelector((state) => state.session.currentLocation))
+  const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const [onlyShowSelectedOption, setOnlyShowSelectedOption] = useState(false)
 
-  const linkContacts = async () => {
-    const linkContactIDs = []
-    selectedContacts.forEach((contact) => {
-      linkContactIDs.push(contact.id)
-    })
+  const linkLocationsContacts = async () => {
+    let linkLocationIDs = []
+    let linkContactIDs = []
 
     if (linkLocations) {
-      linkLocations.forEach(async function (locationID, idx) {
-        const dataToSend = { authToken, orgId, locationId: locationID, contactIds: linkContactIDs }
-
-        const { errorMessage } = await backendCall(
-          dataToSend,
-          'api/location/attach_contacts',
-          navigate
-        )
-
-        if (!errorMessage) {
-          dispatch(setLinkLocations(null))
-          navigate(orgManageLocationsUrls.view.dashboard)
-        } else {
-          console.log(errorMessage)
-        }
+      linkLocationIDs = [...linkLocations]
+      selectedContacts.forEach((contact) => {
+        linkContactIDs.push(contact.id)
       })
-  }
+    }
+    else if (linkContacts) {
+      linkContactIDs = [...linkContacts]
+      selectedLocations.forEach((location) => {
+        linkLocationIDs.push(location.id)
+      })
+    }
+
+    linkLocationIDs.forEach(async function (locationID, idx) {
+      const dataToSend = { authToken, orgId, locationId: locationID, contactIds: linkContactIDs }
+
+      const { errorMessage } = await backendCall(
+        dataToSend,
+        'api/location/attach_contacts',
+        navigate
+      )
+
+      if (!errorMessage) {
+        if (linkLocations) {
+          navigate(orgManageLocationsUrls.view.dashboard)
+        }
+        else if (linkContacts) {
+          navigate(orgManageContactsUrls.view.dashboard)
+        }
+        
+      } else {
+        console.log(errorMessage)
+      }
+    })
   }
 
-  const linkLocationsText = (locationsToLink) => {
+  const firstFieldText = () => {
     let text = ''
 
-    if (locationsToLink && locationsToLink.length > 0) {
-      if (locationsToLink.length > 1) {
+    if (linkLocations && linkLocations.length > 0) {
+      if (linkLocations.length > 1) {
         text =
-          locationsToLink.length + ' locations'
-      } else {
+        linkLocations.length + ' locations'
+      } else if (currentLocation) {
         text =
           currentLocation.additionals.locationName
+      }
+    }
+    else if (linkContacts) {
+      if (linkContacts.length > 1) {
+        text =
+        linkContacts.length + ' contacts'
+      } else if (currentContact) {
+        text =
+          currentContact.firstname +
+          (currentContact.lastname.length > 0
+            ? ' ' + currentContact.lastname
+            : '')
       }
     }
 
     return text
   }
 
-  const linkContactsText = (contactsToLink) => {
-    let text = 'Select contacts'
+  const secondFieldText = () => {
+    let text = ''
 
-    if (contactsToLink && contactsToLink.length > 0) {
-      if (contactsToLink.length > 1) {
+    if (linkLocations) {
+      text = 'Select contacts'
+    } else
+    {
+      text = 'Select locations'
+    }
+
+    if (selectedLocations && selectedLocations.length > 0) {
+      if (selectedLocations.length > 1) {
         text =
-          contactsToLink.length + ' contacts'
+          selectedLocations.length + ' locations'
       } else {
         text =
-          contactsToLink[0].firstname +
-          (contactsToLink[0].lastname.length > 0
-            ? ' ' + contactsToLink[0].lastname
+          selectedLocations[0].additionals.locationName
+      }
+    }
+    else if (selectedContacts && selectedContacts.length > 0) {
+      if (selectedContacts.length > 1) {
+        text =
+          selectedContacts.length + ' contacts'
+      } else {
+        text =
+          selectedContacts[0].firstname +
+          (selectedContacts[0].lastname.length > 0
+            ? ' ' + selectedContacts[0].lastname
             : '')
       }
     }
@@ -121,7 +166,7 @@ export default function LinkBanner ({
               alignItems: 'center'
             }}
           >
-            {linkLocationsText(linkLocations)}
+            {firstFieldText()}
           </div>
           <span style={{fontWeight: '700' }}>
             to
@@ -137,7 +182,7 @@ export default function LinkBanner ({
               alignItems: 'center'
             }}
           >
-            {linkContactsText(selectedContacts)}
+            {secondFieldText()}
           </div>
           {selectedContacts && selectedContacts.length > 0 && (
             <div className='govuk-checkboxes--small' style={{display: 'flex', alignItems: 'center'}}>
@@ -152,9 +197,9 @@ export default function LinkBanner ({
           )}
           <div style={{ marginLeft: 'auto', display: 'flex' }}>
             <Button
-              text='Link location to contacts'
+              text={linkLocations ? 'Link location to contacts' : 'Link contact to locations'}
               className='govuk-button'
-              onClick={() => linkContacts()}
+              onClick={() => linkLocationsContacts()}
             />
           </div>
         </div>

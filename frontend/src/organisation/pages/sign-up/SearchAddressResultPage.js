@@ -1,20 +1,23 @@
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
-import SelectAddressLayout from '../../layouts/address/SearchAddressResultLayout'
+import SearchAddressResultLayout from '../../layouts/address/SearchAddressResultLayout'
 
 export default function SelectAddressPage () {
   const navigate = useNavigate()
+
   const navigateToNextPage = () =>
     navigate('/organisation/sign-up/address-confirm')
 
-  const NavigateToPreviousPage = () => {
+  const navigateToPreviousPage = () => navigate('/organisation/sign-up/address')
+
+  const navigateToFindPostcodePage = () =>
     navigate('/organisation/sign-up/address')
-  }
 
   return (
-    <SelectAddressLayout
+    <SearchAddressResultLayout
       navigateToNextPage={navigateToNextPage}
-      NavigateToPreviousPage={NavigateToPreviousPage}
+      navigateToPreviousPage={navigateToPreviousPage}
+      navigateToFindPostcodePage={navigateToFindPostcodePage}
     />
   )
 }

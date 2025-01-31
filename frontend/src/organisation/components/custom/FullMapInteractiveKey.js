@@ -1,6 +1,6 @@
 import React from 'react'
 import CheckBox from '../../../common/components/gov-uk/CheckBox'
-import FloodAreasCheckboxKey from './FloodAreasCheckboxKey'
+import MapInteractiveKey from './MapInteractiveKey'
 
 export default function FullMapInteractiveKey ({
   showFloodWarningAreas,
@@ -114,14 +114,8 @@ export default function FullMapInteractiveKey ({
 
   return (
     <div>
-      <span className='govuk-heading-m govuk-!-font-size-18 govuk-!-margin-bottom-2'>
-        Key
-      </span>
-
-      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
-
       {/* Flood areas */}
-      <FloodAreasCheckboxKey
+      <MapInteractiveKey
         showFloodWarningAreas={showFloodWarningAreas}
         setShowFloodWarningAreas={setShowFloodWarningAreas}
         showFloodAlertAreas={showFloodAlertAreas}

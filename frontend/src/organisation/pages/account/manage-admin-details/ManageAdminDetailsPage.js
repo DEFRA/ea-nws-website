@@ -47,7 +47,7 @@ export default function ManageAdminDetailsPage () {
           <table className='govuk-table'>
             <tbody className='govuk-table__body'>
               <tr className='govuk-table__row'>
-                <td class='govuk-table__header govuk-!-width-one-quarter'>
+                <td className='govuk-table__header govuk-!-width-one-quarter'>
                   Name
                 </td>
                 <td className='govuk-table__cell  govuk-!-width-full'>
@@ -56,7 +56,7 @@ export default function ManageAdminDetailsPage () {
               </tr>
 
               <tr className='govuk-table__row'>
-                <td class='govuk-table__header govuk-!-width-one-quarter'>
+                <td className='govuk-table__header govuk-!-width-one-quarter'>
                   Email address
                 </td>
                 <td className='govuk-table__cell  govuk-!-width-full'>

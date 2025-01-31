@@ -15,18 +15,20 @@ import { convertCoordinatesToEspg4326 } from '../../../../../../common/services/
 import { locationInEngland } from '../../../../../../common/services/validations/LocationInEngland'
 import { xCoordinateValidation } from '../../../../../../common/services/validations/XCoordinateValidation'
 import { yCoordinateValidation } from '../../../../../../common/services/validations/YCoordinateValidation'
+import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 
 export default function LocationXYCoordinatesSearchLayout ({
   navigateToNextPage,
-  navigateToNotInEngland
+  navigateToNotInEngland,
+  flow
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
-  const currentXCoordinate = useSelector(
-    (state) => getLocationOther(state, 'x_coordinate')
+  const currentXCoordinate = useSelector((state) =>
+    getLocationOther(state, 'x_coordinate')
   )
-  const currentYCoordinate = useSelector(
-    (state) => getLocationOther(state, 'y_coordinate')
+  const currentYCoordinate = useSelector((state) =>
+    getLocationOther(state, 'y_coordinate')
   )
   const [xCoordinate, setXCoordinate] = useState(currentXCoordinate || '')
   const [xCoordinateError, setXCoordinateError] = useState('')
@@ -79,17 +81,19 @@ export default function LocationXYCoordinatesSearchLayout ({
 
   return (
     <>
-
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             {(xCoordinateError || yCoordinateError) && (
               <ErrorSummary errorList={[xCoordinateError, yCoordinateError]} />
             )}
             <h1 className='govuk-heading-l'>
               What are the X and Y coordinates?
             </h1>
+
+            {flow?.includes('unmatched-locations') && <UnmatchedLocationInfo />}
+
             <div className='govuk-body'>
               <Input
                 name='X coordinate'

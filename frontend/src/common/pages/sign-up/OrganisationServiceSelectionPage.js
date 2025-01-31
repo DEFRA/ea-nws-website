@@ -1,11 +1,11 @@
+import {
+  faCheck
+} from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React from 'react'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../components/custom/BackLink'
 import Button from '../../components/gov-uk/Button'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  faCheck
-} from '@fortawesome/free-solid-svg-icons'
 
 export default function OrganisationServiceSelectionPage () {
   const navigate = useNavigate()
@@ -36,7 +36,7 @@ export default function OrganisationServiceSelectionPage () {
               Select service
             </h1>
             <div className='govuk-body'>
-              <div class='govuk-grid-column-one-half govuk-!-padding-left-0 org-service-selection-container'>
+              <div className='govuk-grid-column-one-half govuk-!-padding-left-0 org-service-selection-container'>
                 <div className='outline-1px'>
                   <div className='org-service-selection-header govuk-heading-m govuk-!-margin-bottom-0'>
                     Standard
@@ -78,7 +78,7 @@ export default function OrganisationServiceSelectionPage () {
                   </div>
                 </div>
               </div>
-              <div class='govuk-grid-column-one-half govuk-!-padding-left-0 org-service-selection-container'>
+              <div className='govuk-grid-column-one-half govuk-!-padding-left-0 org-service-selection-container'>
                 <div className='outline-1px'>
                   <div className='org-service-selection-header govuk-heading-m govuk-!-margin-bottom-0'>
                     Professional

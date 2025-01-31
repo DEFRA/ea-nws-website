@@ -23,10 +23,10 @@ export default function LiveFLoodMonitoringPage () {
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4 govuk-body'>
         <div className='govuk-grid-row'>
-          <div class='govuk-grid-column-full'>
-            <h1 class='govuk-heading-l'>Live flood warnings</h1>
+          <div className='govuk-grid-column-full'>
+            <h1 className='govuk-heading-l'>Live flood warnings</h1>
             <Link
-              class='govuk-heading-m govuk-link'
+              className='govuk-heading-m govuk-link'
               style={{ color: '#1d70b8', marginBottom: '0' }}
               to={orgFloodReportsUrls.live}
             >
@@ -35,8 +35,8 @@ export default function LiveFLoodMonitoringPage () {
             <p style={{ marginTop: '0' }}>Updated 10:00pm on 12 June 2024</p>
           </div>
         </div>
-        <div class='govuk-grid-row govuk-!-padding-top-4'>
-          <div class='govuk-grid-column-one-third'>
+        <div className='govuk-grid-row govuk-!-padding-top-4'>
+          <div className='govuk-grid-column-one-third'>
             {activeLocations
               ? (
                 <>
@@ -82,19 +82,19 @@ export default function LiveFLoodMonitoringPage () {
                 )
               : (
                 <>
-                  <h2 class='govuk-heading-m'>Latest warnings</h2>
+                  <h2 className='govuk-heading-m'>Latest warnings</h2>
                   <p className='govuk-!-padding-top-0'>0 to display</p>
                   <br />
                   <p>
                     You’ll only see flood warnings here when you{' '}
-                    <Link href='#' class='govuk-link'>
+                    <Link href='#' className='govuk-link'>
                       add locations
                     </Link>
                   </p>
                 </>
                 )}
           </div>
-          <div class='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-two-thirds'>
             <LiveMap />
             <div
               style={{

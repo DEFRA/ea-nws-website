@@ -14,8 +14,8 @@ export default function MapInteractiveKey ({
       <span className='govuk-heading-m govuk-!-font-size-18 govuk-!-margin-bottom-2'>
         Key
       </span>
-      <hr class='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
-      <div className='govuk-heading-m govuk-!-font-size-16 govuk-!-margin-top-2 govuk-!-margin-bottom-2'>
+      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
+      <div className='govuk-heading-m govuk-!-font-size-14 govuk-!-margin-top-2 govuk-!-margin-bottom-0'>
         Flood areas
       </div>
       <div style={{ fontSize: '14px' }}>
@@ -75,7 +75,7 @@ export default function MapInteractiveKey ({
           </div>
         </div>
       </div>
-      <hr class='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
+      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
     </div>
   )
 }

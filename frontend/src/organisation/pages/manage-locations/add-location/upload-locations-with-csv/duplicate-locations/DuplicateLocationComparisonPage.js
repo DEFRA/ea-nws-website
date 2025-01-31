@@ -82,7 +82,6 @@ export default function DuplicateLocationComparisonPage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
             {error && <ErrorSummary errorList={[error]} />}
-            {/* TODO: use the existing location name here */}
             <h1 className='govuk-heading-l'>
               {newLocation.additionals.locationName} already exists in this account
             </h1>
@@ -91,13 +90,13 @@ export default function DuplicateLocationComparisonPage () {
                 Select if you want to keep the existing location or use the new
                 location uploaded.
               </div>
-              <div class='govuk-grid-column-one-half govuk-!-padding-left-0'>
+              <div className='govuk-grid-column-one-half govuk-!-padding-left-0'>
                 <div className='outline-1px'>
                   <div className='org-location-information-header govuk-heading-m govuk-!-margin-bottom-0'>
                     Existing Location
                   </div>
                   <LocationInformation location={existingLocation} />
-                  <div className='org-location-information-footer'>
+                  <div className={`org-location-information-footer ${error && 'error'}`}>
                     <p className='govuk-!-margin-0'>Keep existing location</p>
                     <Radio
                       label=''
@@ -108,13 +107,13 @@ export default function DuplicateLocationComparisonPage () {
                   </div>
                 </div>
               </div>
-              <div class='govuk-grid-column-one-half govuk-!-padding-right-0'>
+              <div className='govuk-grid-column-one-half govuk-!-padding-right-0'>
                 <div className='outline-1px'>
                   <div className='org-location-information-header govuk-heading-m govuk-!-margin-bottom-0'>
                     New Location
                   </div>
                   <LocationInformation location={newLocation} comparedLocation={existingLocation} />
-                  <div className='org-location-information-footer'>
+                  <div className={`org-location-information-footer ${error && 'error'}`}>
                     <p className='govuk-!-margin-0'>Use new location</p>
                     <Radio
                       label=''

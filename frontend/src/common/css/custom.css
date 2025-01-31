@@ -370,6 +370,10 @@
   align-items: center;
 }
 
+.org-location-information-footer.error {
+  border-left: 5px solid #d4351c;
+}
+
 .map-confirm-location-box-mobile-view {
   position: absolute;
   bottom: 0px;

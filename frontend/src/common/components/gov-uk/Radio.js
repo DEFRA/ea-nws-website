@@ -14,8 +14,7 @@ export default function Radio ({
   conditional,
   conditionalQuestion,
   conditionalInput,
-  conditionalError,
-  right = false
+  conditionalError
 }) {
   return (
     <>

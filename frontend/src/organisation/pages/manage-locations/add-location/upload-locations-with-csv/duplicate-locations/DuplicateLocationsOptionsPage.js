@@ -64,7 +64,7 @@ export default function DuplicateLocationsOptionsPage () {
   const options = [
     {
       value: 'KeepAll',
-      label: 'Keep all existing locations already in this account'
+      label: 'Keep all the existing locations already in this account'
     },
     {
       value: 'ReplaceAll',
@@ -157,7 +157,7 @@ export default function DuplicateLocationsOptionsPage () {
       )}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>
               {duplicateLocations} locations already exist with the same
@@ -171,7 +171,7 @@ export default function DuplicateLocationsOptionsPage () {
               }
             >
               <fieldset className='govuk-fieldset'>
-                <legend className='govuk-fieldset__legend'>
+                <legend className='govuk-fieldset__legend govuk-!-font-weight-bold'>
                   What do you want to do with the duplicate locations?
                 </legend>
                 {error && <p className='govuk-error-message'>{error}</p>}

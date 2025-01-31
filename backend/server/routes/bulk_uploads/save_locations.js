@@ -40,23 +40,23 @@ module.exports = [
           const valid = convertToPois(result.data.valid)
           const invalid = convertToPois(result.data.invalid)
           // Add all valid to geosafe and elasticache
-          valid.forEach(async (location) => {
+          await Promise.all(valid.map(async (location) => {
             const response = await apiCall(
               { authToken: authToken, location: location },
               'location/create'
             )
             if (response.data.location) {
-              location.id = response.data.location.id
+              await addLocation(orgId, response.data.location)
             } else {
               return createGenericErrorResponse(h)
             }
-            await addLocation(orgId, location)
-          })
+          }))
+
           // Add invalid just to elasticache
-          invalid.forEach(async (location) => {
+          await Promise.all(invalid.map(async (location) => {
             location.id = uuidv4()
             await addInvLocation(orgId, location)
-          })
+          }))
 
           const invalidReasons = {
             duplicate: invalid.filter((location) =>

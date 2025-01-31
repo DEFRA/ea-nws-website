@@ -18,6 +18,12 @@ export default function ConfirmAddingLocationsPage () {
   const notInEnglandLocations = useSelector(
     (state) => state.session.notInEnglandLocations
   )
+
+  const totalLocations =
+    validLocations +
+    duplicateLocations +
+    notFoundLocations +
+    notInEnglandLocations
   const fileName = location?.state?.fileName || ''
   const orgId = useSelector((state) => state.session.orgId)
   const authToken = useSelector((state) => state.session.authToken)
@@ -52,7 +58,7 @@ export default function ConfirmAddingLocationsPage () {
     if (data) {
       const duplicates = data.filter(
         (location) =>
-          location.error.includes('duplicate') && location.error.length === 1
+          location.error.includes('duplicate') && location?.error?.length === 1
       )
       duplicates.forEach((location) => {
         locations.push(geoSafeToWebLocation(location))
@@ -70,8 +76,7 @@ export default function ConfirmAddingLocationsPage () {
       'api/bulk_uploads/save_locations',
       navigate
     )
-
-    if (!errorMessage) {
+    if (!errorMessage && data) {
       if (duplicateLocations > 0) {
         if (duplicateLocations === 1) {
           const location = await getDupLocation()
@@ -82,7 +87,7 @@ export default function ConfirmAddingLocationsPage () {
           )
 
           // Set the new, duplicate location
-          const newLocation = geoSafeToWebLocation(location)
+          const newLocation = location
 
           if (existingLocation && newLocation) {
             // Now compare the two and let the use choose one
@@ -162,21 +167,20 @@ export default function ConfirmAddingLocationsPage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
-              {validLocations} of{' '}
-              {validLocations +
-                duplicateLocations +
-                notFoundLocations +
-                notInEnglandLocations}{' '}
-              locations can be added
+              {validLocations} of {totalLocations} location
+              {totalLocations === 1 ? '' : 's'} can be added
             </h1>
             <div className='govuk-body'>
               <div className='govuk-inset-text'>
                 {duplicateLocations > 0 && (
                   <div>
-                    <strong>{duplicateLocations}</strong> locations already
-                    exist with the same name in this account. You can choose to
-                    keep the existing locations or replace them with the new
-                    locations uploaded.
+                    <strong>{duplicateLocations}</strong> location
+                    {duplicateLocations === 1 ? '' : 's'} already exist
+                    {duplicateLocations === 1 ? 's' : ''} with the same name in
+                    this account. You can choose to keep the existing location
+                    {duplicateLocations === 1 ? '' : 's'} or replace them with
+                    the new location{duplicateLocations === 1 ? '' : 's'}{' '}
+                    uploaded.
                   </div>
                 )}
                 {notFoundLocations > 0 && (
@@ -184,8 +188,11 @@ export default function ConfirmAddingLocationsPage () {
                     {/* Only need a break if there is text above */}
                     {duplicateLocations > 0 && <br />}
                     <div>
-                      <strong>{notFoundLocations}</strong> locations need to be
-                      found manually in this account before they can be added.
+                      <strong>{notFoundLocations}</strong> location
+                      {notFoundLocations === 1 ? '' : 's'} need
+                      {notFoundLocations === 1 ? 's' : ''} to be found manually
+                      in this account before{' '}
+                      {notFoundLocations === 1 ? 'it' : 'they'} can be added.
                     </div>
                   </div>
                 )}
@@ -196,10 +203,15 @@ export default function ConfirmAddingLocationsPage () {
                       <br />
                     )}
                     <div>
-                      <strong>{notInEnglandLocations}</strong> locations cannot
-                      be added because they are not in England. You can check
-                      each of the location's details and change them if you
-                      think this is not correct.
+                      <strong>{notInEnglandLocations}</strong> location
+                      {notInEnglandLocations === 1 ? '' : 's'} cannot be added
+                      because{' '}
+                      {notInEnglandLocations === 1 ? 'it is' : 'they are'} not
+                      in England. You can check
+                      {notInEnglandLocations === 1 ? '' : 'each of'} the
+                      location's details and change{' '}
+                      {notInEnglandLocations === 1 ? 'it' : 'them'} if you think
+                      this is not correct.
                     </div>
                   </div>
                 )}
@@ -210,17 +222,18 @@ export default function ConfirmAddingLocationsPage () {
               />
               {validLocations > 0 && (
                 <p>
-                  You can do this after you add the {validLocations} locations
-                  that can be added now.
+                  You can do this after you add the {validLocations} location
+                  {validLocations === 1 ? '' : 's'} that can be added now.
                 </p>
               )}
             </div>
             <br />
+            {/* TODO: add a loading spinner on click as saving can take a long time */}
             <Button
               text={
                 validLocations > 0
-                  ? `Add ${validLocations} ${
-                      validLocations === 1 ? 'location' : 'locations'
+                  ? `Add ${validLocations} location${
+                      validLocations === 1 ? '' : 's'
                     }`
                   : 'Continue'
               }

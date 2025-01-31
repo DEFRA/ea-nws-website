@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
-import OrganisationAccountNavigation from '../../../../../../common/components/custom/OrganisationAccountNavigation'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../../common/components/gov-uk/Pagination'
@@ -105,7 +104,6 @@ export default function ManageDuplicateLocationsPage () {
 
   return (
     <>
-      <OrganisationAccountNavigation />
       <BackLink onClick={navigateBack} />
       {location.state && (
         <NotificationBanner
@@ -116,7 +114,7 @@ export default function ManageDuplicateLocationsPage () {
       )}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l'>
               Manage {duplicateLocations.length} duplicate locations
             </h1>
@@ -131,25 +129,26 @@ export default function ManageDuplicateLocationsPage () {
             />
             <p className='govuk-caption-m govuk-!-margin-bottom-0'>{duplicateLocations.length} locations</p>
             <div className='govuk-body govuk-!-padding-top-2'>
-              <table class='govuk-table govuk-table--small-text-until-tablet'>
-                <thead class='govuk-table__head'>
-                  <tr class='govuk-table__row'>
-                    <th scope='col' class='govuk-table__header'>
+              <table className='govuk-table govuk-table--small-text-until-tablet'>
+                <thead className='govuk-table__head'>
+                  <tr className='govuk-table__row'>
+                    <th scope='col' className='govuk-table__header'>
                       Location name
                     </th>
-                    <th scope='col' class='govuk-table__header' />
+                    <th scope='col' className='govuk-table__header' />
                   </tr>
                 </thead>
-                <tbody class='govuk-table__body'>
+                <tbody className='govuk-table__body'>
                   {duplicateLocations &&
                     displayedLocations.map((location, index) => {
                       return (
-                        <tr class='govuk-table__row' key={index}>
-                          <td class='govuk-table__cell'>
+                        <tr className='govuk-table__row' key={index}>
+                          <td className='govuk-table__cell'>
                             {location.additionals.locationName}
                           </td>
-                          <td class='govuk-table__cell govuk-!-text-align-right'>
+                          <td className='govuk-table__cell govuk-!-text-align-right'>
                             <Link
+                              className='govuk-link'
                               onClick={(event) =>
                                 handleCompareDetails(event, location)}
                             >

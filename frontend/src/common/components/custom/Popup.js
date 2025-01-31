@@ -48,6 +48,7 @@ export default function Popup({
     } else {
       if (error === '') {
         const validationError = validateInput()
+        console.log(validationError)
         if (validationError) {
           setError(validationError)
         } else {
@@ -59,14 +60,16 @@ export default function Popup({
 
   const RadioOptions = ({ options, handleRadioChange }) => (
     <>
+      {error && <p className='govuk-error-message'>{error}</p>}
       {options.map((option, index) => (
         <div className='govuk-radios'>
+        <table className="govuk-table">
           <tbody className='govuk-table__body'>
            <tr className='govuk-table__row'>
-            <td className='govuk-table__cell' style={{ verticalAlign: 'middle' }}>
+            <th className='govuk-table__header govuk-!-width-one-half' scope='row' style={{ verticalAlign: 'middle' }}>
               <strong>{option.label}</strong>
-            </td>
-            <td className='govuk-table__cell' >
+            </th>
+            <td className='govuk-table__cell govuk-!-width-one-quarter' >            
               <Radio
                 label='On'
                 key={option.value + '_on'}
@@ -75,17 +78,18 @@ export default function Popup({
                 onChange={() => handleRadioChange(index, true)}
               />
             </td>
-            <td className='govuk-table__cell' >
+            <td className='govuk-table__cell govuk-!-width-one-quarter'>
               <Radio
                 label='Off'
                 key={option.value + '_off'}
                 name={option.value + 'Radio'}
-                checked={!optionsSelected[index]}
+                checked={!optionsSelected[index]===false}
                 onChange={() => handleRadioChange(index, false)}
               />
             </td>
           </tr>
           </tbody>
+          </table>
         </div>
       ))}
     </>

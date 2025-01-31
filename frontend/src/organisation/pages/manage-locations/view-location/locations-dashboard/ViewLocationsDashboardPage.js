@@ -13,6 +13,7 @@ import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import { updateLocationsAlertTypes } from '../../../../../common/services/ProfileServices'
 import {
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation,
@@ -24,12 +25,11 @@ import { orgManageLocationsUrls } from '../../../../routes/manage-locations/Mana
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import LocationsTable from './dashboard-components/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
-import { updateAdditionals } from '../../../../../common/services/ProfileServices'
-
 export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const profile = useSelector((state) => state.session.profile)
   const [notificationText, setNotificationText] = useState('')
   const [selectedLocations, setSelectedLocations] = useState([])
   const [filteredLocations, setFilteredLocations] = useState([])
@@ -44,7 +44,7 @@ export default function ViewLocationsDashboardPage () {
   const [alertOnlyLocationsIds, setAlertOnlyLocationsIds] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
-  const [optionsSelected, setOptionsSelected] = useState([false, false, false])
+  const [optionsSelected, setOptionsSelected] = useState([null, null, null])
   const [dialog, setDialog] = useState({
     show: false,
     text: '',
@@ -324,21 +324,22 @@ export default function ViewLocationsDashboardPage () {
         }`,
         buttonText: `Update message settings`,
         buttonClass: '',
+        error:'',
         options: [
           {
             label: 'Severe flood warnings',
             value: AlertType.SEVERE_FLOOD_WARNING,
-            sent: false
+            sent: null
           },
           {
             label: 'Flood warnings',
             value: AlertType.FLOOD_WARNING,
-            sent: false
+            sent: null
           },
           {
             label: 'Flood alerts',
             value: AlertType.FLOOD_ALERT,
-            sent: false
+            sent: null
           }
         ]
       })
@@ -435,21 +436,18 @@ export default function ViewLocationsDashboardPage () {
   }
 
   const editLocations = (locationsToEdit) => {
-    const choosenMessages = [optionsSelected[0]?'ALERT_LVL_1':null, optionsSelected[1]?'ALERT_LVL_2':null, optionsSelected[2]?'ALERT_LVL_3':null].filter(message => message !== null)
-    console.log(choosenMessages)
+    const choosenAlerts = [optionsSelected[0]?'ALERT_LVL_1':null, optionsSelected[1]?'ALERT_LVL_2':null, optionsSelected[2]?'ALERT_LVL_3':null].filter(message => message !== null)
+    
+    let updatedProfile
     for(let i = 0; i < locationsToEdit.length; i++){
-      console.log('this',locationsToEdit[i])
-      let updatedAdditionals
-      if(!unavailableLocationsIds.includes(locationsToEdit[i].id) && !alertOnlyLocationsIds.includes(locationsToEdit[i].id)){
-        const updatedLocation = updateAdditionals(locationsToEdit[i], [
-          { id: 'signupComplete', value: { s: 'false' } },
-          { id: 'lastAccessedUrl', value: { s: '/organisation/sign-up/alternative-contact' } }
-        ])
-        //set additionals/others/alerts
+      if(unavailableLocationsIds.includes(locationsToEdit[i])) continue
+      if(!alertOnlyLocationsIds.includes(locationsToEdit[i].id)){
+        updatedProfile = updateLocationsAlertTypes(profile, locationsToEdit[i], choosenAlerts)
       }
       else if(alertOnlyLocationsIds.includes(locationsToEdit.id)){
-        //set additionals/others/alerts but only alert3
+        updatedProfile = updateLocationsAlertTypes(profile, locationsToEdit[i], choosenAlerts.includes('ALERT_LVL_3')?['ALERT_LVL_3']:[])
       }
+      //dispatch(setProfile(updatedProfile))
     }
   }
 
@@ -513,16 +511,15 @@ export default function ViewLocationsDashboardPage () {
   }
 
   const handleEdit = () => {
-    console.log('inHere!')
-    console.log('locations selected: ', selectedLocations)
+    console.log(optionsSelected)
     if (selectedLocations.length > 0) {
       const locationsToBeEdited = [...selectedLocations]
       editLocations(locationsToBeEdited)
     }
   }
 
-  const validateInput = () => {
-    return false
+  const validateInput = () => { 
+    return optionsSelected.includes(null) ? 'There is a problem, select On or Off for each message type': ''
   }
 
   const navigateBack = (event) => {
@@ -696,6 +693,7 @@ export default function ViewLocationsDashboardPage () {
                   buttonText={dialog.buttonText}
                   buttonClass={dialog.buttonClass}
                   options={dialog.options}
+                  error={dialog.error}
                   setError={(val) =>
                     setDialog((dial) => ({ ...dial, error: val }))
                   }

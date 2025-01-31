@@ -69,7 +69,7 @@ const getCSV = async (fileName) => {
     result.data = data
   } catch (err) {
     logger.error(err)
-    result.errorMessage = [{errorType: 'S3 error', errorMessage: err}]
+    result.errorMessage = [{ errorType: 'S3 error', errorMessage: err }]
   }
 
   return result

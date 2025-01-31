@@ -56,7 +56,7 @@ const getErrors = (result) => {
     errors.push({
       errorType: 'Duplicates',
       errorMessage: 'The selected file could not be uploaded because there are duplicate location names',
-      errorDetails: duplicatesArr 
+      errorDetails: duplicatesArr
     })
   }
   if (missingLocationDetailsArr.length > 0) {
@@ -83,7 +83,7 @@ const csvToJson = (csv) => {
   lines = lines.filter(element => element)
   // Check the headers match the template
   if (lines[0] !== template) {
-    return { 
+    return {
       error: [{
         errorType: 'incorrect template',
         errorMessage: 'The selected file could not be uploaded because it is not the correct template'

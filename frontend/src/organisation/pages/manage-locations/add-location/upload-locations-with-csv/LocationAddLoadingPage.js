@@ -23,7 +23,6 @@ export default function LocationAddLoadingPage () {
     navigate(-1)
   }
 
-
   // Each time the status changes check if it's complete and save the locations to elasticache and geosafe
   useEffect(() => {
     const continueToNextPage = () => {
@@ -48,11 +47,12 @@ export default function LocationAddLoadingPage () {
     }
     if (status === 'complete') {
       continueToNextPage()
-    }
-    else if (status === 'rejected') {
-      //navigate back to the upload page and pass the errors
+    } else if (status === 'rejected') {
+      // navigate back to the upload page and pass the errors
       navigate(orgManageLocationsUrls.add.uploadFile, {
-        state: { errors: errors }
+        state: {
+          errors
+        }
       })
     }
   }, [status])

@@ -43,6 +43,7 @@ export default function UnmatchedLocationsDashboardLayout ({
   const [currentPage, setCurrentPage] = useState(1)
   const locationsPerPage = 20
 
+  const message = location?.state?.text || null
   const addedLocations = location?.state?.addedLocations || 0
   const addedLocation = location?.state?.addedLocation || null
   const unmatchedLocationText =
@@ -267,16 +268,16 @@ export default function UnmatchedLocationsDashboardLayout ({
 
   return (
     <>
-      {(addedLocations > 0 || addedLocation) && (
+      {(addedLocations > 0 || addedLocation || message) && (
         <NotificationBanner
           className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-top-5 govuk-!-margin-bottom-0'
           title='Success'
           text={
-            addedLocations > 0
+            message || (addedLocations > 0
               ? `${addedLocations} ${
                   addedLocations === 1 ? 'location' : 'locations'
                 } added`
-              : `${addedLocation} added`
+              : `${addedLocation} added`)
           }
         />
       )}

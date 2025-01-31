@@ -163,7 +163,7 @@ export default function ConfirmAddingLocationsPage () {
                     {duplicateLocations > 0 && <br />}
                     <div>
                       <strong>{notFoundLocations}</strong> location{notFoundLocations === 1 ? '' : 's'} need{notFoundLocations === 1 ? 's' : ''} to be
-                      found manually in this account before {notFoundLocations > 1 ? 'they' : 'it'} can be added.
+                      found manually in this account before {notFoundLocations === 1 ? 'it' : 'they'} can be added.
                     </div>
                   </div>
                 )}
@@ -175,8 +175,8 @@ export default function ConfirmAddingLocationsPage () {
                     )}
                     <div>
                       <strong>{notInEnglandLocations}</strong> location{notInEnglandLocations === 1 ? '' : 's'} cannot
-                      be added because {notInEnglandLocations > 1 ? 'they are' : 'it is'} not in England. You can check
-                      {notInEnglandLocations > 1 && 'each of'} the location's details and change {notInEnglandLocations > 1 ? 'them' : 'it'} if you
+                      be added because {notInEnglandLocations === 1 ? 'it is' : 'they are'} not in England. You can check
+                      {notInEnglandLocations === 1 ? '' : 'each of'} the location's details and change {notInEnglandLocations === 1 ? 'it' : 'them'} if you
                       think this is not correct.
                     </div>
                   </div>

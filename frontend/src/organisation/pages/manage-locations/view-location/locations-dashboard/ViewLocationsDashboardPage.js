@@ -17,7 +17,7 @@ import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../commo
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
-import LocationsTable from './dashboard-components/LocationsTable'
+import LocationsTable from '../../../../components/custom/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
@@ -130,7 +130,7 @@ export default function ViewLocationsDashboardPage () {
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
     }
-    
+
     getLocations()
 
     setSavedLinkContacts(linkContacts)

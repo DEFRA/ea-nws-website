@@ -419,12 +419,21 @@ const listLinkedLocations = async (orgId, contactID) => {
 
   if (arrExists) {
     const linkedArr = await getJsonData(key)
-    linkedArr.forEach((link) => {
+    
+    linkedArr.forEach(async (link) => {
       if (link.id === contactID) {
-        locationArr = [...link.linkIDs]
+        await Promise.all(
+          link.linkIDs.map(async (locationID) => {
+            const locKey = orgId + ':t_POIS:' + locationID
+            const location = await getJsonData(locKey)
+            locationArr.push(location)
+            // console.log(locationArr)
+        }))
       }
     })
   }
+
+  console.log(locationArr)
 
   return locationArr
 }

@@ -28,6 +28,9 @@ import LocationAddConfirm from '../../pages/manage-locations/add-location/upload
 import LocationAddLoadingPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddLoadingPage'
 import LocationAddUploadFilePage from '../../pages/manage-locations/add-location/upload-locations-with-csv/LocationAddUploadFilePage'
 import ConfirmAddingLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/confirm-locations/ConfirmAddingLocationsPage'
+import DuplicateLocationComparisonPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/duplicate-locations/DuplicateLocationComparisonPage'
+import DuplicateLocationsOptionsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/duplicate-locations/DuplicateLocationsOptionsPage'
+import ManageDuplicateLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/duplicate-locations/ManageDuplicateLocationsPage'
 import FindUnmatchedLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/FindUnmatchedLocationsPage'
 import DoNotAddLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/dont-match-locations/DoNotAddLocationsPage'
 import ManuallyFindLocationsPage from '../../pages/manage-locations/add-location/upload-locations-with-csv/unmatched-locations/manually-find-locations/ManuallyFindLocationsPage'
@@ -94,7 +97,13 @@ const orgManageLocationsUrls = {
     addressInfo: urlManageOrgAddLocations + '/address-info',
     uploadFile: urlManageOrgAddLocations + '/upload-file',
     loadingPage: urlManageOrgAddLocations + '/upload-file/loading',
-    confirm: urlManageOrgAddLocations + '/confirm',
+    duplicateLocationsOptionsPage:
+      urlManageOrgAddLocations + '/upload-file/duplicate-locations-options',
+    manageDuplicateLocationsPage:
+      urlManageOrgAddLocations + '/upload-file/manage-duplicate-locations',
+    duplicateLocationComparisonPage:
+      urlManageOrgAddLocations + '/upload-file/duplicate-location-comparison',
+    confirm: urlManageOrgAddLocations + '/bulk/confirm',
     name: urlManageOrg + '/add/name',
     error: {
       cannotFindAddress: urlManageOrg + '/add/cannot-find-address',
@@ -225,6 +234,18 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.add.loadingPage,
     component: <LocationAddLoadingPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.duplicateLocationsOptionsPage,
+    component: <DuplicateLocationsOptionsPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.manageDuplicateLocationsPage,
+    component: <ManageDuplicateLocationsPage />
+  },
+  {
+    path: orgManageLocationsUrls.add.duplicateLocationComparisonPage,
+    component: <DuplicateLocationComparisonPage />
   },
   {
     path: orgManageLocationsUrls.add.confirm,

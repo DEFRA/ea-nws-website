@@ -157,8 +157,8 @@ export default function SelectPredefinedBoundaryPage () {
             <h1 className='govuk-heading-l'>Add predefined boundary</h1>
             <div className='govuk-body'>
               <p>Select a boundary to add to this account.</p>
-              <div class='govuk-grid-row'>
-                <div class='govuk-grid-column-one-third'>
+              <div className='govuk-grid-row'>
+                <div className='govuk-grid-column-one-third'>
                   <br />
                   <Select
                     name='BoundaryType'
@@ -197,7 +197,7 @@ export default function SelectPredefinedBoundaryPage () {
                     onClick={() => handleSubmit()}
                   />
                 </div>
-                <div class='govuk-grid-column-two-thirds'>
+                <div className='govuk-grid-column-two-thirds'>
                   <Map
                     type='boundary'
                     showFloodWarningAreas={false}

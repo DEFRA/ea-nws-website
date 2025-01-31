@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Spinner } from '../../../../../common/components/custom/Spinner'
 import { backendCall } from '../../../../../common/services/BackendService'
@@ -9,8 +10,11 @@ export default function LocationAddLoadingPage () {
   const [status, setStatus] = useState('')
   const [stage, setStage] = useState('Scanning Upload')
   const [validLocations, setValidLocations] = useState(null)
-  const [invalidLocations, setInvalidLocations] = useState(null)
+  const [duplicateLocations, setDuplicateLocations] = useState(null)
+  const [notFoundLocations, setNotFoundLocations] = useState(null)
+  const [notInEnglandLocations, setNotInEnglandLocations] = useState(null)
   const location = useLocation()
+  const orgId = useSelector((state) => state.session.orgId)
   const fileName = location.state?.fileName
 
   if (!fileName) {
@@ -21,7 +25,10 @@ export default function LocationAddLoadingPage () {
   // Each time the status changes check if it's complete and save the locations to elasticache and geosafe
   useEffect(() => {
     const continueToNextPage = () => {
-      if (invalidLocations === 0) {
+      if (
+        duplicateLocations + notFoundLocations + notInEnglandLocations ===
+        0
+      ) {
         navigate(orgManageLocationsUrls.add.confirm, {
           state: { fileName, valid: validLocations }
         })
@@ -30,7 +37,9 @@ export default function LocationAddLoadingPage () {
           state: {
             fileName,
             valid: validLocations,
-            invalid: invalidLocations
+            duplicates: duplicateLocations,
+            notFound: notFoundLocations,
+            notInEngland: notInEnglandLocations
           }
         })
       }
@@ -43,7 +52,7 @@ export default function LocationAddLoadingPage () {
   // Check the status of the processing and update state
   useEffect(() => {
     const interval = setInterval(async () => {
-      const dataToSend = { fileName }
+      const dataToSend = { orgId, fileName }
       const { data, errorMessage } = await backendCall(
         dataToSend,
         'api/bulk_uploads/process_status',
@@ -55,8 +64,25 @@ export default function LocationAddLoadingPage () {
         }
         if (data?.status !== status) {
           if (data?.data) {
-            setValidLocations(data.data?.valid.length)
-            setInvalidLocations(data.data?.invalid.length)
+            setValidLocations(data.data.valid.length)
+            const duplicateLocations = data.data.invalid.filter(
+              (invalid) =>
+                Array.isArray(invalid.error) &&
+                invalid.error.includes('duplicate') && invalid.error.length === 1
+            ).length
+            setDuplicateLocations(duplicateLocations)
+            const notInEnglandLocations = data.data.invalid.filter(
+              (invalid) =>
+                Array.isArray(invalid.error) &&
+                invalid.error.includes('not in england')
+            ).length
+            setNotInEnglandLocations(notInEnglandLocations)
+            // Any other invalid locations are considered to be not found
+            setNotFoundLocations(
+              data.data.invalid.length -
+                duplicateLocations -
+                notInEnglandLocations
+            )
           }
           setStatus(data.status)
         }

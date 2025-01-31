@@ -161,7 +161,7 @@ export default function LocationAddAddressInfoPage () {
               <h3 className='govuk-heading-s govuk-!-margin-bottom-1'>
                 Key information
               </h3>
-              <ul class='govuk-list govuk-list--bullet'>
+              <ul className='govuk-list govuk-list--bullet'>
                 <li>
                   <b>Internal reference</b>
                   <br />

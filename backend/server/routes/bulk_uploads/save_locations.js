@@ -2,14 +2,24 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 
-const { getJsonData, addInvLocation, addLocation } = require('../../services/elasticache')
-const { convertToPois } = require('../../services/bulk_uploads/processLocations')
+const {
+  getJsonData,
+  addInvLocation,
+  addLocation
+} = require('../../services/elasticache')
+const {
+  convertToPois
+} = require('../../services/bulk_uploads/processLocations')
 const crypto = require('node:crypto')
+const { apiCall } = require('../../services/ApiService')
 const { logger } = require('../../plugins/logging')
 
 function uuidv4 () {
-  return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, c =>
-    (+c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> +c / 4).toString(16)
+  return '10000000-1000-4000-8000-100000000000'.replace(/[018]/g, (c) =>
+    (
+      +c ^
+      (crypto.getRandomValues(new Uint8Array(1))[0] & (15 >> (+c / 4)))
+    ).toString(16)
   )
 }
 
@@ -22,26 +32,42 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-        const { orgId, fileName } = request.payload
+        const { authToken, orgId, fileName } = request.payload
 
-        if (fileName && orgId) {
+        if (fileName && orgId && authToken) {
           const elasticacheKey = 'bulk_upload:' + fileName.split('.')[0]
           const result = await getJsonData(elasticacheKey)
           const valid = convertToPois(result.data.valid)
           const invalid = convertToPois(result.data.invalid)
-          // add unique location ID and add to elsaticache
-          valid.forEach(async (location) => {
-            location.id = uuidv4()
-            await addLocation(orgId, location)
-          })
-          invalid.forEach(async (location) => {
+          // Add all valid to geosafe and elasticache
+          await Promise.all(valid.map(async (location) => {
+            const response = await apiCall(
+              { authToken: authToken, location: location },
+              'location/create'
+            )
+            if (response.data.location) {
+              await addLocation(orgId, response.data.location)
+            } else {
+              return createGenericErrorResponse(h)
+            }
+          }))
+
+          // Add invalid just to elasticache
+          await Promise.all(invalid.map(async (location) => {
             location.id = uuidv4()
             await addInvLocation(orgId, location)
+          }))
+
+          const invalidReasons = {
+            duplicate: invalid.filter((location) => location.error.includes('duplicate')).length,
+            notInEngland: invalid.filter((location) => location.error.includes('not in england')).length,
+            notFound: invalid.filter((location) => location.error.includes('not found')).length
+          }
+
+          return h.response({
+            status: 200,
+            data: { valid: valid.length, invalid: invalidReasons }
           })
-
-          // TODO: call geosafe API to add locations to geosafe as well
-
-          return h.response({ status: 200, data: { valid: valid.length, invalid: invalid.length } })
         } else {
           return createGenericErrorResponse(h)
         }

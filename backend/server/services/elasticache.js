@@ -203,22 +203,11 @@ const removeLocation = async (orgId, locationID) => {
 const updateLocation = async (orgId, location) => {
   const locationID = location.id
   const key = orgId + ':t_POIS:' + locationID
-  // Remove location from keywords as the update call may contain different keywords
-  await removeLocationFromKeywords(orgId, locationID)
-  await setJsonData(key, location)
-  // add location ID to list
-  let keywords = []
-  location.additionals.forEach((additional) => {
-    if (additional.id === 'keywords') {
-      keywords = JSON.parse(additional.value?.s)
-    }
-  })
-  for (const keyword of keywords) {
-    await addToKeywordArr(orgId + ':t_Keywords_location', {
-      name: keyword,
-      linked_ids: [locationID]
-    })
+  const exists = await checkKeyExists(key)
+  if (exists) {
+    await removeLocation(orgId, locationID)
   }
+  await addLocation(orgId, location)
 }
 
 const getLocationKeys = async (orgId) => {
@@ -264,6 +253,27 @@ const searchLocations = async (orgId, searchKey, value) => {
   return locationArr
 }
 
+const searchInvLocations = async (orgId, searchKey, value) => {
+  const locationKeys = await getInvLocationKeys(orgId)
+  const locationArr = []
+  const searchKeyArr = searchKey.split('.')
+  await Promise.all(
+    locationKeys.map(async (key) => {
+      const location = await getJsonData(key)
+      let jsonValue = location[searchKeyArr[0]]
+      if (searchKeyArr.length > 1) {
+        for (let i = 1; i < searchKeyArr.length; i++) {
+          jsonValue = jsonValue[searchKeyArr[i]]
+        }
+      }
+      if (value === jsonValue) {
+        locationArr.push(location)
+      }
+    })
+  )
+  return locationArr
+}
+
 const findLocationByName = async (orgId, locationName) => {
   const locationKeys = await getLocationKeys(orgId)
   const matchingLocations = []
@@ -279,6 +289,22 @@ const findLocationByName = async (orgId, locationName) => {
       })
     })
   )
+  return matchingLocations
+}
+
+const findInvLocationByName = async (orgId, locationName) => {
+  const locationKeys = await getInvLocationKeys(orgId)
+  const matchingLocations = []
+  await Promise.all(locationKeys.map(async (key) => {
+    const location = await getJsonData(key)
+    location.additionals.forEach((additional) => {
+      if (additional.id === 'locationName') {
+        if (additional.value.s === locationName) {
+          matchingLocations.push(location)
+        }
+      }
+    })
+  }))
   return matchingLocations
 }
 
@@ -435,19 +461,20 @@ const orgSignOut = async (profileId, orgId) => {
   // delete locations
   // delete contacts
   const locationKeys = await getLocationKeys(orgId)
+  const invLocationKeys = await getInvLocationKeys(orgId)
   const contactKeys = await getContactKeys(orgId)
-  await Promise.all(
-    locationKeys.map(async (key) => {
-      await deleteJsonData(key)
-    })
-  )
-  await Promise.all(
-    contactKeys.map(async (key) => {
-      await deleteJsonData(key)
-    })
-  )
+  await Promise.all(locationKeys.map(async (key) => {
+    await deleteJsonData(key)
+  }))
+  await Promise.all(invLocationKeys.map(async (key) => {
+    await deleteJsonData(key)
+  }))
+  await Promise.all(contactKeys.map(async (key) => {
+    await deleteJsonData(key)
+  }))
 
   await deleteData(orgId + ':t_POIS_locID')
+  await deleteData(orgId + ':t_invPOIS_locID')
   await deleteData(orgId + ':t_Contacts_ID')
   // delete contact and location keywords
   await deleteJsonData(orgId + ':t_Keywords_location')
@@ -463,7 +490,9 @@ module.exports = {
   removeLocation,
   updateLocation,
   searchLocations,
+  searchInvLocations,
   findLocationByName,
+  findInvLocationByName,
   listLocations,
   listContacts,
   addInvLocation,

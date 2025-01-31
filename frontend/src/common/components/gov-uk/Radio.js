@@ -24,7 +24,9 @@ export default function Radio ({
           <div className='govuk-radios govuk-radios--small'>{children}</div>
         )}
       >
-        <div className='govuk-radios__item'>
+        <div
+          className='govuk-radios__item'
+        >
           <input
             className='govuk-radios__input'
             type='radio'

@@ -140,8 +140,8 @@ export default function SearchFilter ({
         </label>
       </div>
       {(contactNameVisible || contactNameFilter.length > 0) && (
-        <div class='govuk-form-group' className='contacts-name-filter'>
-          <div class='input-with-icon'>
+        <div className='govuk-form-group contacts-name-filter'>
+          <div className='input-with-icon'>
             <FontAwesomeIcon icon={faMagnifyingGlass} className='input-icon' />
             <input
               className='govuk-input govuk-input-icon govuk-!-margin-top-3'

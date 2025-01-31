@@ -143,9 +143,9 @@ export default function LocationMessagesPage () {
         } else if (alerts.length > 0) {
           alerts.forEach((area, index) => setHistoricalData(area, 'Flood Alert', index))
         } else {
-          if (warningAreas && alertAreas){
+          if (warningAreas && alertAreas) {
             setIsAreaNearby(false)
-          }          
+          }
         }
       }
     }
@@ -191,14 +191,14 @@ export default function LocationMessagesPage () {
 
   useEffect(() => {
     const areAllCountsLoaded = floodAlertsCount.length > 0 || floodWarningsCount.length > 0 || severeFloodWarningsCount.length > 0
-    if ((hasFetchedArea && !isAreaNearby)  || (floodAreasInputs.length > 0 && areAllCountsLoaded)  ) {
+    if ((hasFetchedArea && !isAreaNearby) || (floodAreasInputs.length > 0 && areAllCountsLoaded)) {
       setLoading(false)
     }
   }, [isAreaNearby, alertAreas, warningAreas, floodAreasInputs, floodAlertsCount, floodWarningsCount, severeFloodWarningsCount, hasFetchedArea])
 
   // it should reload the surrounding areas if the location is changed
   useEffect(() => {
-    hasFetchedArea.current = false    
+    hasFetchedArea.current = false
   }, [currentLocation])
 
   useEffect(() => {
@@ -207,7 +207,7 @@ export default function LocationMessagesPage () {
         if (!hasFetchedArea.current) {
           await surroundingAreas()
           if (alertAreas && warningAreas) {
-            hasFetchedArea.current = true;
+            hasFetchedArea.current = true
           }
         }
       }

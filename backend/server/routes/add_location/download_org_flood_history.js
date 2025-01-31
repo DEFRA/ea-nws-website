@@ -17,10 +17,9 @@ module.exports = [
         }
         const response = await getDownloadOrgFloodHistoryUrl()
         return h.response(response)
-      } catch (error) {
-        logger.error(error)
+      } catch {
         createGenericErrorResponse(h)
-      }
+      } 
     }
   }
 ]

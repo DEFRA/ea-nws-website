@@ -16,7 +16,8 @@ const getDownloadOrgFloodHistoryUrl = async () => {
         errorMessage: 'organisationFloodHistoryUrl has no value!'
       }
     }
-  } catch {
+  } catch (error){
+    logger.error(error)
     return {
       status: 500,
       errorMessage: 'Oops, something happened!'

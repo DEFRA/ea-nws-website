@@ -26,7 +26,7 @@ import {
   getCoordsOfFloodArea
 } from '../../../common/services/WfsFloodDataService'
 
-export default function LocationInSevereWarningAreaLayout({
+export default function LocationInSevereWarningAreaLayout ({
   continueToNextPage,
   updateGeoSafeProfile = true
 }) {
@@ -55,7 +55,7 @@ export default function LocationInSevereWarningAreaLayout({
 
   const [partnerId, setPartnerId] = useState(false)
 
-  async function getPartnerId() {
+  async function getPartnerId () {
     const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }

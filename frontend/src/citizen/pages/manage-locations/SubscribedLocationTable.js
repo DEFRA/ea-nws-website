@@ -12,7 +12,7 @@ import {
 } from '../../../common/redux/userSlice'
 import { getSurroundingFloodAreas } from '../../../common/services/WfsFloodDataService'
 
-export default function SubscribedLocationTable({setError}) {
+export default function SubscribedLocationTable ({ setError }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(1)
@@ -92,8 +92,7 @@ export default function SubscribedLocationTable({setError}) {
   const onClickAddLocation = async () => {
     if (locations.length < maxLocations) {
       navigate('/manage-locations/add/search')
-    }
-    else {
+    } else {
       setError('Maximum number of locations already added')
     }
   }

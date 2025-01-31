@@ -46,7 +46,7 @@ export default function HomePage () {
               />
             )}
             <h1 className='govuk-heading-l'>Locations and message preferences</h1>
-            <SubscribedLocationTableLayout setError={setError}/>
+            <SubscribedLocationTableLayout setError={setError} />
           </div>
         </div>
       </main>

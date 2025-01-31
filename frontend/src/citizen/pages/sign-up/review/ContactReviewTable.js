@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import Button from '../../../../common/components/gov-uk/Button'
 import ContactReviewRow from './ContactReviewRow'
 
-export default function ContactReviewTable({ profile, contactPreferences }) {
+export default function ContactReviewTable ({ profile, contactPreferences }) {
   const navigate = useNavigate()
 
   const EmailAddressesSection = () => {
@@ -44,26 +44,26 @@ export default function ContactReviewTable({ profile, contactPreferences }) {
       <>
         {(profile.mobilePhones.length > 0 ||
           profile.unverified?.mobilePhones) && (
-          <>
-            {profile.mobilePhones.map((mobilePhone, index) => (
-              <ContactReviewRow
-                contact={mobilePhone}
-                contactType='mobilePhone'
-                isConfirmed
-                key={index}
-              />
-            ))}
-            {profile.unverified?.mobilePhones?.map(
-              (unregisteredMobilePhone, index) => (
+            <>
+              {profile.mobilePhones.map((mobilePhone, index) => (
                 <ContactReviewRow
-                  contact={unregisteredMobilePhone.address}
+                  contact={mobilePhone}
                   contactType='mobilePhone'
-                  isConfirmed={false}
+                  isConfirmed
                   key={index}
                 />
-              )
-            )}
-          </>
+              ))}
+              {profile.unverified?.mobilePhones?.map(
+                (unregisteredMobilePhone, index) => (
+                  <ContactReviewRow
+                    contact={unregisteredMobilePhone.address}
+                    contactType='mobilePhone'
+                    isConfirmed={false}
+                    key={index}
+                  />
+                )
+              )}
+            </>
         )}
       </>
     )

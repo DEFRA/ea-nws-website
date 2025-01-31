@@ -24,6 +24,7 @@ import { orgManageLocationsUrls } from '../../../../routes/manage-locations/Mana
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import LocationsTable from './dashboard-components/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
+import { updateAdditionals } from '../../../../../common/services/ProfileServices'
 
 export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
@@ -207,8 +208,7 @@ export default function ViewLocationsDashboardPage () {
     return text
   }
 
-  const editLocationText = async (locationsToBeEdited) => {
-
+  const editLocationText = (locationsToBeEdited) => {
     const unavailableLocationsCount = unavailableLocationsIds.length
     const alertOnlyLocationsCount = alertOnlyLocationsIds.length
     const remainingLocationsCount =
@@ -253,7 +253,6 @@ export default function ViewLocationsDashboardPage () {
         locationsToBeEdited.length
       } location${locationsToBeEdited.length > 1 ? 's' : ''}.`
     }
-
     return floodMessageAvailabilityText + ' ' + alertText + ' ' + updateText
   }
 
@@ -319,7 +318,7 @@ export default function ViewLocationsDashboardPage () {
     if (locationsToBeEdited && locationsToBeEdited.length > 0) {
       setDialog({
         show: true,
-        text: <>{editLocationText(locationsToBeEdited)}</>,
+        text: editLocationText(locationsToBeEdited),
         title: `Update message settings for ${locationsToBeEdited.length} ${
           locationsToBeEdited.length > 1 ? 'locations' : 'location'
         }`,
@@ -341,8 +340,7 @@ export default function ViewLocationsDashboardPage () {
             value: AlertType.FLOOD_ALERT,
             sent: false
           }
-        ],
-        error: ''
+        ]
       })
     }
   }
@@ -441,10 +439,15 @@ export default function ViewLocationsDashboardPage () {
     console.log(choosenMessages)
     for(let i = 0; i < locationsToEdit.length; i++){
       console.log('this',locationsToEdit[i])
-      if(!unavailableLocationsIds.contains(locationsToEdit.id) && !alertOnlyLocationsIds.contains(locationsToEdit.id)){
+      let updatedAdditionals
+      if(!unavailableLocationsIds.includes(locationsToEdit[i].id) && !alertOnlyLocationsIds.includes(locationsToEdit[i].id)){
+        const updatedLocation = updateAdditionals(locationsToEdit[i], [
+          { id: 'signupComplete', value: { s: 'false' } },
+          { id: 'lastAccessedUrl', value: { s: '/organisation/sign-up/alternative-contact' } }
+        ])
         //set additionals/others/alerts
       }
-      else if(alertOnlyLocationsIds.contains(locationsToEdit.id)){
+      else if(alertOnlyLocationsIds.includes(locationsToEdit.id)){
         //set additionals/others/alerts but only alert3
       }
     }
@@ -519,7 +522,7 @@ export default function ViewLocationsDashboardPage () {
   }
 
   const validateInput = () => {
-
+    return false
   }
 
   const navigateBack = (event) => {

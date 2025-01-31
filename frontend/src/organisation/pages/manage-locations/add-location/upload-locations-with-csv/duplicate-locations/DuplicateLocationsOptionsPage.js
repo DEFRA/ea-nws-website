@@ -157,7 +157,7 @@ export default function DuplicateLocationsOptionsPage () {
       )}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>
               {duplicateLocations} locations already exist with the same

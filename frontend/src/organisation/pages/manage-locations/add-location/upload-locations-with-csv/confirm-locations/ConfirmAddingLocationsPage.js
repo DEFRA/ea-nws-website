@@ -14,6 +14,7 @@ export default function ConfirmAddingLocationsPage () {
   const duplicateLocations = location?.state?.duplicates || 0
   const notInEnglandLocations = location?.state?.notInEngland || 0
   const notFoundLocations = location?.state?.notFound || 0
+  const totalLocations = validLocations + duplicateLocations + notFoundLocations + notInEnglandLocations
   const fileName = location?.state?.fileName || ''
   const orgId = useSelector((state) => state.session.orgId)
   const authToken = useSelector((state) => state.session.authToken)
@@ -143,20 +144,17 @@ export default function ConfirmAddingLocationsPage () {
           <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
               {validLocations} of{' '}
-              {validLocations +
-                duplicateLocations +
-                notFoundLocations +
-                notInEnglandLocations}{' '}
-              location{validLocations > 1 && 's'} can be added
+              {totalLocations}{' '}
+              location{totalLocations === 1 ? '' : 's'} can be added
             </h1>
             <div className='govuk-body'>
               <div className='govuk-inset-text'>
                 {duplicateLocations > 0 && (
                   <div>
-                    <strong>{duplicateLocations}</strong> location{duplicateLocations > 1 && 's'} already
-                    exist{duplicateLocations === 1 && 's'} with the same name in this account. You can choose to
-                    keep the existing location{duplicateLocations > 1 && 's'} or replace them with the new
-                    location{duplicateLocations > 1 && 's'} uploaded.
+                    <strong>{duplicateLocations}</strong> location{duplicateLocations === 1 ? '' : 's'} already
+                    exist{duplicateLocations === 1 ? 's' : ''} with the same name in this account. You can choose to
+                    keep the existing location{duplicateLocations === 1 ? '' : 's'} or replace them with the new
+                    location{duplicateLocations === 1 ? '' : 's'} uploaded.
                   </div>
                 )}
                 {notFoundLocations > 0 && (
@@ -164,7 +162,7 @@ export default function ConfirmAddingLocationsPage () {
                     {/* Only need a break if there is text above */}
                     {duplicateLocations > 0 && <br />}
                     <div>
-                      <strong>{notFoundLocations}</strong> location{notFoundLocations > 1 && 's'} need{notFoundLocations === 1 && 's'} to be
+                      <strong>{notFoundLocations}</strong> location{notFoundLocations === 1 ? '' : 's'} need{notFoundLocations === 1 ? 's' : ''} to be
                       found manually in this account before {notFoundLocations > 1 ? 'they' : 'it'} can be added.
                     </div>
                   </div>
@@ -176,7 +174,7 @@ export default function ConfirmAddingLocationsPage () {
                       <br />
                     )}
                     <div>
-                      <strong>{notInEnglandLocations}</strong> location{notInEnglandLocations > 1 && 's'} cannot
+                      <strong>{notInEnglandLocations}</strong> location{notInEnglandLocations === 1 ? '' : 's'} cannot
                       be added because {notInEnglandLocations > 1 ? 'they are' : 'it is'} not in England. You can check
                       {notInEnglandLocations > 1 && 'each of'} the location's details and change {notInEnglandLocations > 1 ? 'them' : 'it'} if you
                       think this is not correct.
@@ -190,7 +188,7 @@ export default function ConfirmAddingLocationsPage () {
               />
               {validLocations > 0 &&
               (
-                <p>You can do this after you add the {validLocations} location{validLocations > 1 && 's'} that
+                <p>You can do this after you add the {validLocations} location{validLocations === 1 ? '' : 's'} that
                   can be added now.
                 </p>
               )}
@@ -198,7 +196,7 @@ export default function ConfirmAddingLocationsPage () {
             <br />
             {/* TODO: add a loading spinner on click as saving can take a long time */}
             <Button
-              text={validLocations > 0 ? `Add ${validLocations} location${validLocations > 1 && 's'}` : 'Continue'}
+              text={validLocations > 0 ? `Add ${validLocations} location${validLocations === 1 ? '' : 's'}` : 'Continue'}
               className='govuk-button govuk-button'
               onClick={handleLocations}
             />

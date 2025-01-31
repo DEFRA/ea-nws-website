@@ -84,7 +84,7 @@ export default function OptionalLocationInformationPage () {
                     </p>
                   </li>
                   <li>
-                    <h3 class='govuk-heading-s'>Location type</h3>
+                    <h3 className='govuk-heading-s'>Location type</h3>
                     <p className='govuk-body'>
                       For example, pumping station, ground floor flat, office,
                       retail unit.

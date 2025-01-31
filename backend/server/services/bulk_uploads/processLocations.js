@@ -40,6 +40,9 @@ const convertToPois = (locations) => {
         }
       ]
     }
+    if (location.error) {
+      poi.error = location.error
+    }
     pois.push(poi)
   })
 

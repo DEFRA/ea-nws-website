@@ -433,7 +433,7 @@ const listLinkedLocations = async (orgId, contactID) => {
     })
   }
 
-  console.log(locationArr)
+  // console.log(locationArr)
 
   return locationArr
 }
@@ -465,6 +465,28 @@ const addToLinkedArr = async (key, value) => {
   }
 }
 
+const removeFromLinkedArr = async (key, value) => {
+  const arrExists = await checkKeyExists(key)
+  if (arrExists) {
+    const linkedArr = await getJsonData(key)
+    if (linkedArr) {
+      let removedLink = false
+      linkedArr.forEach((link) => {
+        if (link.id === value.id) {
+          itemIndex = link.linkIDs.indexOf(value.linkIDs[0])
+          if (itemIndex > -1) {
+            link.linkIDs.splice(itemIndex, 1)
+            removedLink = true
+          }
+        }
+      })
+      if (removedLink) {
+        await setJsonData(key, linkedArr)
+      }
+    }
+  }
+}
+
 const addLinkedLocations = async (orgId, contactID, locationIDs) => {
   if (locationIDs) {
     for (const locationID of locationIDs) {
@@ -489,6 +511,21 @@ const addLinkedContacts = async (orgId, locationID, contactIDs) => {
         linkIDs: [contactID]
       })
       await addToLinkedArr(orgId + ':t_Linked_contacts', {
+        id: contactID,
+        linkIDs: [locationID]
+      })
+    }
+  }
+}
+
+const removeLinkedContacts = async (orgId, locationID, contactIDs) => {
+  if (contactIDs) {
+    for (const contactID of contactIDs) {
+      await removeFromLinkedArr(orgId + ':t_Linked_locations', {
+        id: locationID,
+        linkIDs: [contactID]
+      })
+      await removeFromLinkedArr(orgId + ':t_Linked_contacts', {
         id: contactID,
         linkIDs: [locationID]
       })
@@ -581,6 +618,7 @@ module.exports = {
   listLinkedLocations,
   addLinkedLocations,
   addLinkedContacts,
+  removeLinkedContacts,
   orgSignIn,
   orgSignOut
 }

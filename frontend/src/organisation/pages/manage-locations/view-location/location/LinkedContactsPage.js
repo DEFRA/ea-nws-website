@@ -160,7 +160,32 @@ export default function LinkedContactsPage () {
   }
 
   const unlinkContacts = (contactsToUnlink) => {
-    console.log(contactsToUnlink)
+    contactsToUnlink.forEach(async function (contact, idx) {
+      const dataToSend = { authToken, orgId, locationId: currentLocation.id, contactIds: [contact.id] }
+
+      const { errorMessage } = await backendCall(
+        dataToSend,
+        'api/location/detach_contacts',
+        navigate
+      )
+
+      if (errorMessage) {
+        console.log(errorMessage)
+      }
+    })
+
+    const updatedContacts = linkedContacts.filter(
+      (contact) => !contactsToUnlink.includes(contact)
+    )
+    const updatedFilteredContacts = filteredContacts.filter(
+      (contact) => !contactsToUnlink.includes(contact)
+    )
+
+    setLinkedContacts([...updatedContacts])
+    setFilteredContacts([...updatedFilteredContacts])
+    setSelectedContacts([])
+
+    setResetPaging(!resetPaging)
   }
 
   const linkedContactsSection = (

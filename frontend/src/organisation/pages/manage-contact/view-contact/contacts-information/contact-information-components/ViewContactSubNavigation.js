@@ -7,7 +7,7 @@ export default function ViewContactSubNavigation ({ currentPage }) {
       title: 'User details',
       link: orgManageContactsUrls.view.viewContact
     },
-    { title: 'Linked contacts',
+    { title: 'Linked locations',
       link: orgManageContactsUrls.view.viewLinkedLocations
     }
   ]

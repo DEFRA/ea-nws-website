@@ -225,7 +225,32 @@ export default function LinkedLocationsPage () {
   }
 
   const unlinkLocations = (locationsToUnlink) => {
-    console.log(locationsToUnlink)
+    locationsToUnlink.forEach(async function (location, idx) {
+      const dataToSend = { authToken, orgId, locationId: location.id, contactIds: [currentContact.id] }
+
+      const { errorMessage } = await backendCall(
+        dataToSend,
+        'api/location/detach_contacts',
+        navigate
+      )
+
+      if (errorMessage) {
+        console.log(errorMessage)
+      }
+    })
+
+    const updatedLocations = linkedLocations.filter(
+      (location) => !locationsToUnlink.includes(location)
+    )
+    const updatedFilteredLocations = filteredLocations.filter(
+      (location) => !locationsToUnlink.includes(location)
+    )
+
+    setLinkedLocations([...updatedLocations])
+    setFilteredLocations([...updatedFilteredLocations])
+    setSelectedLocations([])
+
+    setResetPaging(!resetPaging)
   }
 
   const linkedLocationsSection = (

@@ -49,8 +49,8 @@ export default function SectorLayout ({
                 }
               >
                 <p className='govuk-hint'>
-                For example, a  police, fire or ambulance service, local authority or member of <br/>
-                 a local resilience forum.
+                  For example, a  police, fire or ambulance service, local authority or member of <br />
+                  a local resilience forum.
                 </p>
                 {error && (
                   <p className='govuk-error-message'>

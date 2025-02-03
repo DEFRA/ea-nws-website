@@ -17,6 +17,7 @@ export default function LocationsTable ({
   resetPaging,
   setResetPaging,
   onAction,
+  actionText,
   linkContacts
 }) {
   const navigate = useNavigate()
@@ -394,9 +395,9 @@ export default function LocationsTable ({
               <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'
-                  onClick={(e) => onAction(e, 'delete', location)}
+                  onClick={(e) => onAction(e, actionText, location)}
                 >
-                  Delete
+                  {actionText}
                 </Link>
               </td>
             </tr>

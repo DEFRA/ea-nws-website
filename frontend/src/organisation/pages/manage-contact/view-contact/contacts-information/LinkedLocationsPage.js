@@ -26,11 +26,81 @@ export default function LinkedLocationsPage () {
   const [filteredLocations, setFilteredLocations] = useState([])
   const [selectedLocations, setSelectedLocations] = useState([])
   const [displayedLocations, setDisplayedLocations] = useState([])
+  const [resetPaging, setResetPaging] = useState(false)
 
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
+
+  const test_locations = [
+    {
+      id: '1',
+      enabled: true,
+      name: 'UPRN',
+      address: '34 Hughenden Road, High Wycombe, LE2 7BB',
+      coordinates: { latitude: 51.629, longitude: -0.745 },
+      geometry: null,
+      geocode: null,
+      additionals: [
+        { id: 'locationName', value: { s: 'Location_01 - address variant' } },
+        { id: 'parentID', value: { s: '' } },
+        { id: 'targetAreas', value: { s: '' } },
+        { id: 'keywords', value: { s: '["Midlands"]' } },
+        {
+          id: 'other',
+          value: {
+            s: JSON.stringify({
+              full_address: 'some address',
+              postcode: 'LE2 7BB',
+              x_coordinate: 466413.18,
+              y_coordinate: 105037.31,
+              internal_reference: 'PS01, unit 57, HighW_07',
+              business_criticality: 'Medium',
+              location_type: 'Office',
+              action_plan: '1. Dont panic!',
+              notes:
+                'John Smith has the flood plan for this location. His contact number is 01234 567 890',
+              location_data_type: 'xycoords',
+              alertTypes: ['ALERT_LVL_3']
+            })
+          }
+        }
+      ]
+    },
+    {
+      id: '2',
+      enabled: true,
+      name: 'UPRN',
+      address: 'London',
+      coordinates: { latitude: 51.507, longitude: -0.126 },
+      geometry: null,
+      geocode: null,
+      additionals: [
+        { id: 'locationName', value: { s: 'Location_02 - xy coord variant' } },
+        { id: 'parentID', value: { s: '' } },
+        { id: 'targetAreas', value: { s: '' } },
+        { id: 'keywords', value: { s: '[]' } },
+        {
+          id: 'other',
+          value: {
+            s: JSON.stringify({
+              full_address: '',
+              postcode: '',
+              x_coordinate: 329000.58,
+              y_coordinate: 478530.6,
+              internal_reference: '',
+              business_criticality: 'High',
+              location_type: '',
+              action_plan: '',
+              notes: '',
+              location_data_type: 'xycoords',
+              alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
+            })
+          }
+        }
+      ]
+    }]
 
   useEffect(() => {
     setFilteredLocations(linkedLocations)
@@ -38,22 +108,34 @@ export default function LinkedLocationsPage () {
   }, [linkedLocations])
 
   useEffect(() => {
+    setSelectedLocations([])
+  }, [resetPaging])
+
+  useEffect(() => {
+    setDisplayedLocations(filteredLocations)
+  }, [filteredLocations])
+
+  useEffect(() => {
     const getLinkedLocations = async () => {
-      const contactsDataToSend = { orgId, contact: currentContact }
-      const { data } = await backendCall(
-        contactsDataToSend,
-        'api/elasticache/list_linked_locations',
-        navigate
-      )
+      // const contactsDataToSend = { orgId, contact: currentContact }
+      // const { data } = await backendCall(
+      //   contactsDataToSend,
+      //   'api/elasticache/list_linked_locations',
+      //   navigate
+      // )
 
-      console.log(data)
+      // const locationsUpdate = []
+      // if (data) {
+      //   data.forEach((location) => {
+      //     locationsUpdate.push(geoSafeToWebLocation(location))
+      //   })
+      // }
 
+      // TODO - remove test code
       const locationsUpdate = []
-      if (data) {
-        data.forEach((location) => {
-          locationsUpdate.push(geoSafeToWebLocation(location))
-        })
-      }
+      test_locations.forEach((location) => {
+        locationsUpdate.push(geoSafeToWebLocation(location))
+      })
 
 
       const riverSeaRisks = await Promise.all(
@@ -96,8 +178,6 @@ export default function LinkedLocationsPage () {
 
       setLinkedLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
-
-      console.log(locationsUpdate)
     }
 
     getLinkedLocations()
@@ -139,6 +219,15 @@ export default function LinkedLocationsPage () {
     navigate(orgManageLocationsUrls.view.dashboard)
   }
 
+  const onUnlink = (e, action, location) => {
+    const locationsToUnlink = [location]
+    unlinkLocations(locationsToUnlink)
+  }
+
+  const unlinkLocations = (locationsToUnlink) => {
+    console.log(locationsToUnlink)
+  }
+
   const linkedLocationsSection = (
     <>
       <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
@@ -148,8 +237,13 @@ export default function LinkedLocationsPage () {
       
       <Button
         text='Link to locations'
-        className='govuk-button govuk-button--secondary'
+        className='govuk-button govuk-button--secondary govuk-!-margin-right-2'
         onClick={linkToLocations}
+      />
+      <Button
+        text='Unlink selected'
+        className='govuk-button govuk-button--secondary'
+        onClick={() => unlinkLocations(selectedLocations)} 
       />
     </>
   )
@@ -177,9 +271,10 @@ export default function LinkedLocationsPage () {
           setLocations={setLinkedLocations}
           setSelectedLocations={setSelectedLocations}
           setFilteredLocations={setFilteredLocations}
-          // resetPaging={resetPaging}
-          // setResetPaging={setResetPaging}
-          // onAction={onAction}
+          resetPaging={resetPaging}
+          setResetPaging={setResetPaging}
+          onAction={onUnlink}
+          actionText='Unlink'
         />
       </main>
     </>

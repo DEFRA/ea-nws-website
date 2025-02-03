@@ -11,7 +11,7 @@ import { setOrgCurrentContact, setLinkLocations } from '../../../../../common/re
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
-import ContactsTable from './dashboard-components/ContactsTable'
+import ContactsTable from '../../../../components/custom/ContactsTable'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
 
@@ -315,6 +315,7 @@ export default function ViewContactsDashboardPage () {
                     resetPaging={resetPaging}
                     setResetPaging={setResetPaging}
                     onAction={onAction}
+                    actionText='Delete'
                   />
                   <Pagination
                     totalPages={Math.ceil(
@@ -383,6 +384,7 @@ export default function ViewContactsDashboardPage () {
                       resetPaging={resetPaging}
                       setResetPaging={setResetPaging}
                       onAction={onAction}
+                      actionText='Delete'
                     />
                     <Pagination
                       totalPages={Math.ceil(

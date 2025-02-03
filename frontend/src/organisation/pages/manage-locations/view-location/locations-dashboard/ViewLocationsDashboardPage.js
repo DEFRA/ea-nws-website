@@ -444,6 +444,7 @@ export default function ViewLocationsDashboardPage () {
                     resetPaging={resetPaging}
                     setResetPaging={setResetPaging}
                     onAction={onAction}
+                    actionText='Delete'
                     linkContacts={savedLinkContacts}
                   />
                   <Pagination
@@ -541,6 +542,7 @@ export default function ViewLocationsDashboardPage () {
                       resetPaging={resetPaging}
                       setResetPaging={setResetPaging}
                       onAction={onAction}
+                      actionText='Delete'
                       linkContacts={savedLinkContacts}
                     />
                     <Pagination

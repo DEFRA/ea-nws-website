@@ -8,7 +8,8 @@ export default function ContactsTable ({
   selectedContacts,
   setSelectedContacts,
   setFilteredContacts,
-  onAction
+  onAction,
+  actionText
 }) {
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
   const [contactNameSort, setContactNameSort] = useState('none')
@@ -229,8 +230,8 @@ export default function ContactsTable ({
                 0
               </td>
               <td className='govuk-table__cell'>
-                <Link className='govuk-link' onClick={(e) => onAction(e, 'delete', contact)}>
-                  Delete
+                <Link className='govuk-link' onClick={(e) => onAction(e, actionText, contact)}>
+                  {actionText}
                 </Link>
               </td>
             </tr>

@@ -44,8 +44,7 @@ export default function CheckYourAnswersPage () {
 
   return (
     <>
-      {/* TODO - Should navigate back to Terms and Condition - Sprint 7 */}
-      <BackLink to='/organisation/sign-up/alternative-contact' />
+      <BackLink to='/organisation/sign-up/declaration' />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row '>
           <h2 className='govuk-heading-l'>Check your answers</h2>

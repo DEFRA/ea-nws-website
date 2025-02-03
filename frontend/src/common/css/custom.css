@@ -772,6 +772,7 @@
 @media (min-width: 40.0625em) {
   .toggle-enabled .one-login-header__nav {
     display: block;
+    height: 51.5px;
   }
 }
 @media (max-width: 40.0525em) {
@@ -796,6 +797,7 @@
   .one-login-header__nav__list {
     display: flex;
     align-items: center;
+    height: 100%;
   }
 }
 
@@ -812,7 +814,7 @@
 /* Styles for the active state */
 .one-login-header__nav__list-item.active,
 .one-login-header__nav__list-item:hover {
-  background-color: #ffdd00;
+  background-color: #F3F2F1;
 }
 
 .one-login-header__nav__list-item.no-highlight:hover,
@@ -824,20 +826,29 @@
   content: '';
   position: absolute;
   bottom: 0;
-  left: 5%;
-  width: 90%;
+  left: 10%;
+  width: 80%;
   height: 4px;
-  background-color: black;
+  background-color: #1D70B8;
 }
 
 .one-login-header__nav__list-item .active,
 .one-login-header__nav__list-item:hover .highlighted {
-  color: #000000;
+  color: #1D70B8;
 }
 
 .one-login-header__nav__list-item.active span,
 .one-login-header__nav__list-item:hover span {
-  color: #000000;
+  color: #1D70B8;
+}
+
+.one-login-header__nav__list-item svg {
+  stroke: #FFFFFF;
+}
+
+.one-login-header__nav__list-item.active svg,
+.one-login-header__nav__list-item:hover svg {
+  stroke: #1D70B8;
 }
 
 @media (min-width: 40.0625em) {
@@ -904,7 +915,6 @@
   color: #0b0c0c;
   padding: 15px 0;
   margin: 0;
-  margin-left: 3rem;
   margin-right: 5rem;
 }
 @media print {

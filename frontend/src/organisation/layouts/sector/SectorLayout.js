@@ -38,8 +38,7 @@ export default function SectorLayout ({
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>
-              Is your organisation involved in responding to public emergencies
-              or incidents?
+              Is your organisation a Category 1 or Category 2 responder?
             </h1>
             <div className='govuk-body'>
               <div
@@ -50,9 +49,8 @@ export default function SectorLayout ({
                 }
               >
                 <p className='govuk-hint'>
-                  Known as Category 1 or Category 2 responders. For example,
-                  police, fire or ambulance services, local authorities or
-                  member of a local resilience forum.
+                For example, a  police, fire or ambulance service, local authority or member of <br/>
+                 a local resilience forum.
                 </p>
                 {error && (
                   <p className='govuk-error-message'>

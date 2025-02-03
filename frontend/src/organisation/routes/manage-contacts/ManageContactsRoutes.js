@@ -4,9 +4,12 @@ import AddContactKeywordsPage from '../../pages/manage-contact/add-contact/AddCo
 import AddContactNotesPage from '../../pages/manage-contact/add-contact/AddContactNotesPage'
 import ViewContactsDashboardPage from '../../pages/manage-contact/view-contact/contacts-dashboard/ViewContactsDashboardPage'
 import ContactInformationPage from '../../pages/manage-contact/view-contact/contacts-information/ContactInformationPage'
-
+import EditContactChannelsPage from '../../pages/manage-contact/edit-contact/EditContactChannelsPage'
+import EditContactNotesPage from '../../pages/manage-contact/edit-contact/EditContactNotesPage'
+import EditContactDetailsPage from '../../pages/manage-contact/edit-contact/EditContactDetailsPage'
 const urlManageContactsOrg = '/organisation/manage-contacts'
 const urlManageContactsAdd = urlManageContactsOrg + '/add'
+const urlManageContactsEdit = urlManageContactsOrg + '/edit'
 
 const orgManageContactsUrls = {
   add: {
@@ -18,6 +21,11 @@ const orgManageContactsUrls = {
   view: {
     dashboard: urlManageContactsOrg + '/view-contacts',
     viewContact: urlManageContactsOrg + '/view-contacts/view'
+  },
+  edit: {
+    channels: urlManageContactsEdit + '/channels',
+    notes: urlManageContactsEdit + '/notes',
+    details: urlManageContactsEdit
   }
 }
 
@@ -45,6 +53,18 @@ const orgManageContactsRoutes = [
   {
     path: orgManageContactsUrls.view.viewContact,
     component: <ContactInformationPage />
+  },
+  {
+    path: orgManageContactsUrls.edit.channels,
+    component: <EditContactChannelsPage />
+  },
+  {
+    path: orgManageContactsUrls.edit.notes,
+    component: <EditContactNotesPage />
+  },
+  {
+    path: orgManageContactsUrls.edit.details,
+    component: <EditContactDetailsPage />
   }
 ]
 

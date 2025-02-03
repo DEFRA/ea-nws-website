@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -47,16 +47,13 @@ export default function LocationInAlertAreaLayout ({
   )
   // address to use for registering and unregistering partner
   const addressToUse = isUserInNearbyTargetFlowpath
-    ? selectedFloodAlertArea.properties.TA_NAME
+    ? selectedFloodAlertArea.properties.TA_Name
     : selectedLocation.address
 
   const [partnerId, setPartnerId] = useState(false)
 
   async function getPartnerId () {
-    const { data } = await backendCall(
-      'data',
-      'api/service/get_partner_id'
-    )
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
 
@@ -194,7 +191,7 @@ export default function LocationInAlertAreaLayout ({
   const addFloodAlertArea = async () => {
     const alertArea = {
       name: '',
-      address: selectedFloodAlertArea.properties.TA_NAME,
+      address: selectedFloodAlertArea.properties.TA_Name,
       coordinates: getCoordsOfFloodArea(selectedFloodAlertArea),
       additionals: setLocationOtherAdditionals([], 'alertTypes', [
         AlertType.FLOOD_ALERT
@@ -209,7 +206,7 @@ export default function LocationInAlertAreaLayout ({
   const removeFloodAlertArea = async () => {
     const updatedProfile = await removeLocation(
       profile,
-      selectedFloodAlertArea.properties.TA_NAME
+      selectedFloodAlertArea.properties.TA_Name
     )
     dispatch(setProfile(updatedProfile))
 
@@ -277,7 +274,7 @@ export default function LocationInAlertAreaLayout ({
             <InsetText
               text={
                 isUserInNearbyTargetFlowpath
-                  ? selectedFloodAlertArea.properties.TA_NAME
+                  ? selectedFloodAlertArea.properties.TA_Name
                   : selectedLocation.address
               }
             />

@@ -65,7 +65,7 @@ export default function SignUpSuccessPage () {
               <ul>
                 <li>
                   <Link to='/home' className='govuk-link'>
-                    locations.
+                    locations
                   </Link>
                 </li>
                 <li>

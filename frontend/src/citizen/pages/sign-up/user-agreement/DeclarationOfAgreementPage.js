@@ -136,9 +136,9 @@ export default function DeclarationOfAgreementPage () {
                 <a
                   href='https://www.fws.environment-agency.gov.uk/app/olr/privacy'
                   className='govuk-link'
+                  target='_blank' rel='noreferrer'
                 >
-                  {' '}
-                  privacy notice (open new window)
+                  {' '}privacy notice (open new window){' '}
                 </a>
                 explains how we treat your personal information.
               </p>

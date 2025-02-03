@@ -9,7 +9,7 @@ export default function ContactReviewTable ({ alternativeContact }) {
       </h3>
       <table className='govuk-table'>
         <tr className='govuk-table__row'>
-          <td class='govuk-table__header  govuk-!-width-one-quarter'>Name</td>
+          <td className='govuk-table__header  govuk-!-width-one-quarter'>Name</td>
           <td className='govuk-table__cell  govuk-!-width-full'>{fullName}</td>
           <td className='govuk-table__cell'>
             {/* TODO - Add correct link when implemented */}
@@ -19,7 +19,7 @@ export default function ContactReviewTable ({ alternativeContact }) {
           </td>
         </tr>
         <tr className='govuk-table__row'>
-          <td class='govuk-table__header  govuk-!-width-one-quarter'>
+          <td className='govuk-table__header  govuk-!-width-one-quarter'>
             Email address
           </td>
           <td className='govuk-table__cell  govuk-!-width-full'>
@@ -33,7 +33,7 @@ export default function ContactReviewTable ({ alternativeContact }) {
           </td>
         </tr>
         <tr className='govuk-table__row'>
-          <td class='govuk-table__header  govuk-!-width-one-quarter'>
+          <td className='govuk-table__header  govuk-!-width-one-quarter'>
             Telephone number
           </td>
           <td className='govuk-table__cell  govuk-!-width-full'>
@@ -47,7 +47,7 @@ export default function ContactReviewTable ({ alternativeContact }) {
           </td>
         </tr>
         <tr className='govuk-table__row'>
-          <td class='govuk-table__header  govuk-!-width-one-quarter'>
+          <td className='govuk-table__header  govuk-!-width-one-quarter'>
             Job title (optional)
           </td>
           <td className='govuk-table__cell  govuk-!-width-full'>

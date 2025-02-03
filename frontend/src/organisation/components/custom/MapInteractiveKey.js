@@ -1,8 +1,4 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import PublicSharpIcon from '@mui/icons-material/PublicSharp'
 import React from 'react'
-import alertIcon from '../../../common/assets/images/alert_area_icon.png'
-import warningIcon from '../../../common/assets/images/warning_area_icon.png'
 import CheckBox from '../../../common/components/gov-uk/CheckBox'
 
 export default function MapInteractiveKey ({
@@ -18,11 +14,11 @@ export default function MapInteractiveKey ({
       <span className='govuk-heading-m govuk-!-font-size-18 govuk-!-margin-bottom-2'>
         Key
       </span>
-      <hr class='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
+      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
       <div className='govuk-heading-m govuk-!-font-size-14 govuk-!-margin-top-2 govuk-!-margin-bottom-0'>
         Flood areas
       </div>
-      <div>
+      <div style={{ fontSize: '14px' }}>
         <div
           className='govuk-checkboxes govuk-checkboxes--small locations-map-key'
           data-module='govuk-checkboxes'
@@ -32,19 +28,16 @@ export default function MapInteractiveKey ({
             onChange={() => setShowFloodWarningAreas(!showFloodWarningAreas)}
             checked={showFloodWarningAreas}
           />
-          <img
-            src={warningIcon}
-            style={{
-              width: '24px',
-              height: 'auto',
-              marginLeft: '-15px',
-              marginRight: '7px'
-            }}
-          />
-          <p style={{ fontSize: '14px', margin: 0 }}>
-            Flood warning and <br />
-            severe area
-          </p>
+          <div className='org-flood-warning-item'>
+            <span
+              className='org-flood-warning-square warning-square'
+              style={{ marginLeft: '-1rem' }}
+            />
+            <span className='org-flood-warning-text'>
+              Flood warning and <br />
+              severe area
+            </span>
+          </div>
           <br />
         </div>
         <div
@@ -56,21 +49,13 @@ export default function MapInteractiveKey ({
             onChange={() => setShowFloodAlertAreas(!showFloodAlertAreas)}
             checked={showFloodAlertAreas}
           />
-          <FontAwesomeIcon
-            icon={PublicSharpIcon}
-            size='xl'
-            style={{ marginLeft: '-15px', marginRight: '7px' }}
-          />
-          <img
-            src={alertIcon}
-            style={{
-              width: '24px',
-              height: 'auto',
-              marginLeft: '-15px',
-              marginRight: '7px'
-            }}
-          />
-          <p style={{ fontSize: '14px', margin: 0 }}>Flood alert area</p>
+          <div className='org-flood-alert-item'>
+            <div
+              className='org-flood-warning-square alert-square'
+              style={{ marginLeft: '-1rem' }}
+            />
+            <span className='org-flood-warning-text'>Flood alert area</span>
+          </div>
         </div>
         <div
           className='govuk-checkboxes govuk-checkboxes--small locations-map-key'
@@ -81,24 +66,16 @@ export default function MapInteractiveKey ({
             onChange={() => setShowFloodExtents(!showFloodExtents)}
             checked={showFloodExtents}
           />
-          <FontAwesomeIcon
-            icon={PublicSharpIcon}
-            size='xl'
-            style={{ marginLeft: '-15px', marginRight: '7px' }}
-          />
-          <img
-            src={alertIcon}
-            style={{
-              width: '24px',
-              height: 'auto',
-              marginLeft: '-15px',
-              marginRight: '7px'
-            }}
-          />
-          <p style={{ fontSize: '14px', margin: 0 }}>Flood extent</p>
+          <div className='org-flood-alert-item'>
+            <div
+              className='org-flood-warning-square alert-square'
+              style={{ marginLeft: '-1rem' }}
+            />
+            <span className='org-flood-warning-text'>Flood extent</span>
+          </div>
         </div>
       </div>
-      <hr class='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
+      <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-1' />
     </div>
   )
 }

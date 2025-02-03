@@ -14,10 +14,11 @@ import {
   setCurrentLocation,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
+  setCurrentLocationFullAddress,
   setCurrentLocationNorthing,
-  setLocationBoundaries,
-  setOrgId,
+  setLocationBoundaries, setOrgId,
   setProfile,
+  setProfileId,
   setRegistrations,
   setSelectedBoundary,
   setSelectedBoundaryType,
@@ -563,8 +564,12 @@ export default function IndexPage () {
       dispatch(setLocationBoundaries([]))
       dispatch(setContacts(mockContacts))
       dispatch(setOrgId('1'))
+      dispatch(setProfileId('1'))
       dispatch(setCurrentLocationEasting('520814'))
       dispatch(setCurrentLocationNorthing('185016'))
+      dispatch(
+        setCurrentLocationFullAddress('Kingfisher Way, London, NW10 8TZ')
+      )
       setmockSessionActive(true)
     } else {
       removeCookie('authToken', { path: '/' })

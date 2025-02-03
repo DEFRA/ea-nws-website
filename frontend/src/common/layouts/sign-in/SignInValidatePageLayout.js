@@ -13,6 +13,7 @@ import {
   setAuthToken,
   setContactPreferences,
   setOrgId,
+  setOrganization,
   setProfile,
   setProfileId,
   setRegistrations
@@ -74,6 +75,7 @@ export default function SignInValidatePageLayout ({
         if (signinType === 'org') {
           dispatch(setProfileId(data.profile.id))
           dispatch(setOrgId(data.organization.id))
+          dispatch(setOrganization(data.organization))
         }
         dispatch(setRegistrations(data.registrations))
         dispatch(

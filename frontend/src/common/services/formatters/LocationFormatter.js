@@ -17,15 +17,15 @@ const geoSafeToWebLocation = (geoSafeLocation) => {
   }
 
   const additionals = geoSafeLocation?.additionals
-  additionals?.forEach(additional => {
+  additionals?.forEach((additional) => {
     if (additional.id === 'keywords') {
-      location.additionals.keywords = Array => {
-        try {
-          return JSON.parse(additional.value?.s)
-        } catch (e) {
-          return []
-        }
+      let keywords
+      try {
+        keywords = JSON.parse(additional.value?.s)
+      } catch (e) {
+        keywords = []
       }
+      location.additionals.keywords = keywords
     } else if (additional.id === 'other') {
       location.additionals.other = JSON.parse(additional.value?.s)
     } else {
@@ -46,10 +46,16 @@ const webToGeoSafeLocation = (webLocation) => {
     geometry: webLocation.geometry,
     geocode: webLocation.geocode,
     additionals: [
-      { id: 'locationName', value: { s: webLocation.additionals?.locationName } },
+      {
+        id: 'locationName',
+        value: { s: webLocation.additionals?.locationName }
+      },
       { id: 'parentID', value: { s: webLocation.additionals?.parentID } },
       { id: 'targetAreas', value: { s: webLocation.additionals?.targetAreas } },
-      { id: 'keywords', value: { s: JSON.stringify(webLocation.additionals?.keywords) } },
+      {
+        id: 'keywords',
+        value: { s: JSON.stringify(webLocation.additionals?.keywords) }
+      },
       {
         id: 'other',
         value: {

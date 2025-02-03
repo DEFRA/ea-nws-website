@@ -148,13 +148,13 @@ export default function FloodReportsFilter ({
       </div>
       {(locationNameVisible || locationNameFilter.length > 0) && (
         <div
-          class='govuk-form-group'
+          className='govuk-form-group'
           style={{
             paddingLeft: 20,
             paddingRight: 20
           }}
         >
-          <div class='input-with-icon'>
+          <div className='input-with-icon'>
             <FontAwesomeIcon icon={faMagnifyingGlass} className='input-icon' />
             <input
               className='govuk-input govuk-input-icon govuk-!-margin-top-3'

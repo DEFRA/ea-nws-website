@@ -39,11 +39,13 @@ export default function FindUnmatchedLocationsPage () {
 
   return (
     <>
-      <NotificationBanner
-        className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-10 govuk-!-margin-top-5'
-        title='Success'
-        text={`${addedLocations} locations added`}
-      />
+      {addedLocations > 0 && (
+        <NotificationBanner
+          className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-10 govuk-!-margin-top-5'
+          title='Success'
+          text={`${addedLocations} locations added`}
+        />
+      )}
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>

@@ -24,9 +24,9 @@ export default function LocationInAlertAreaPage () {
       // if user has selected a flood warning area, only show the name of the warning area in
       // location added banner
       if (selectedFloodWarningArea) {
-        name = selectedFloodWarningArea.properties.TA_NAME
+        name = selectedFloodWarningArea.properties.TA_Name
       } else {
-        name = selectedFloodAlertArea.properties.TA_NAME
+        name = selectedFloodAlertArea.properties.TA_Name
       }
     } else {
       name = selectedLocation.address

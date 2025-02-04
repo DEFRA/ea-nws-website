@@ -8,8 +8,7 @@ export default function XYCoordinatesNotInEnglandPage () {
   const xyCoordsSearchUrl =
     orgManageLocationsUrls.add.search.xyCoordinatesSearch
 
-  const dropPinSearchUrl =
-    orgManageLocationsUrls.unmatchedLocations.manuallyfind.map
+  const dropPinSearchUrl = orgManageLocationsUrls.add.search.dropPinSearch
 
   return (
     <NotInEnglandLayout

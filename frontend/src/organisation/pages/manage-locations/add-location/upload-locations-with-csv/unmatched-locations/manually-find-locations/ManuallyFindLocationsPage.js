@@ -117,38 +117,40 @@ export default function ManuallyFindLocationsPage () {
                 {locations?.length} locations not matched
               </h2>
 
-              <table class='govuk-table govuk-table--small-text-until-tablet'>
-                <thead class='govuk-table__head'>
-                  <tr class='govuk-table__row'>
-                    <th scope='col' class='govuk-table__header'>
+              <table className='govuk-table govuk-table--small-text-until-tablet'>
+                <thead className='govuk-table__head'>
+                  <tr className='govuk-table__row'>
+                    <th scope='col' className='govuk-table__header'>
                       Location name
                     </th>
-                    <th scope='col' class='govuk-table__header'>
+                    <th scope='col' className='govuk-table__header'>
                       Address uploaded
                     </th>
-                    <th scope='col' class='govuk-table__header'>
+                    <th scope='col' className='govuk-table__header'>
                       Postcode
                     </th>
-                    <th scope='col' class='govuk-table__header' />
+                    <th scope='col' className='govuk-table__header' />
                   </tr>
                 </thead>
-                <tbody class='govuk-table__body'>
+                <tbody className='govuk-table__body'>
                   {locations &&
                     locations.map((location, index) => {
                       return (
-                        <tr class='govuk-table__row' key={index}>
-                          <th scope='row' class='govuk-table__header'>
-                            {location.name}
+                        <tr className='govuk-table__row' key={index}>
+                          <th scope='row' className='govuk-table__header'>
+                            {
+                              location.additionals.locationName
+                            }
                           </th>
-                          <td class='govuk-table__cell'>
+                          <td className='govuk-table__cell'>
                             {
                               location.additionals.other.full_address
                             }
                           </td>
-                          <td class='govuk-table__cell'>
+                          <td className='govuk-table__cell'>
                             {location.additionals.other.postcode}
                           </td>
-                          <td class='govuk-table__cell'>
+                          <td className='govuk-table__cell'>
                             <Link
                               onClick={(event) => handleFind(event, location)}
                             >

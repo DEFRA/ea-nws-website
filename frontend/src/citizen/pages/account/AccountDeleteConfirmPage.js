@@ -55,7 +55,7 @@ export default function AccountDeleteConfirmPage () {
         <h2 className='govuk-heading-m'>If you change your mind</h2>
         <p className='govuk-body govuk-!-margin-bottom-6'>
           You'll need to{' '}
-          <Link to='/signup/register-location/search' className='govuk-link'>
+          <Link to='/signup/service-selection' className='govuk-link'>
             sign up again
           </Link>
           .

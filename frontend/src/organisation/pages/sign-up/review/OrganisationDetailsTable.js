@@ -9,7 +9,7 @@ export default function OrganisationDetailsTable ({ organisation }) {
       <table className='govuk-table'>
         <tbody className='govuk-table__body'>
           <tr className='govuk-table__row'>
-            <td class='govuk-table__header govuk-!-width-one-quarter'>Name</td>
+            <td className='govuk-table__header govuk-!-width-one-quarter'>Name</td>
             <td className='govuk-table__cell  govuk-!-width-full'>
               {organisation.name}
             </td>
@@ -22,7 +22,7 @@ export default function OrganisationDetailsTable ({ organisation }) {
             </td>
           </tr>
           <tr className='govuk-table__row'>
-            <td class='govuk-table__header  govuk-!-width-one-quarter'>
+            <td className='govuk-table__header  govuk-!-width-one-quarter'>
               UK head office address
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
@@ -37,7 +37,7 @@ export default function OrganisationDetailsTable ({ organisation }) {
             </td>
           </tr>
           <tr className='govuk-table__row'>
-            <td class='govuk-table__header  govuk-!-width-one-quarter'>
+            <td className='govuk-table__header  govuk-!-width-one-quarter'>
               Has Companies House number?
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
@@ -51,7 +51,7 @@ export default function OrganisationDetailsTable ({ organisation }) {
             </td>
           </tr>
           <tr className='govuk-table__row'>
-            <td class='govuk-table__header  govuk-!-width-one-quarter'>
+            <td className='govuk-table__header  govuk-!-width-one-quarter'>
               Companies House number
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>
@@ -66,7 +66,7 @@ export default function OrganisationDetailsTable ({ organisation }) {
             </td>
           </tr>
           <tr className='govuk-table__row'>
-            <td class='govuk-table__header  govuk-!-width-one-quarter'>
+            <td className='govuk-table__header  govuk-!-width-one-quarter'>
               Involved in responding to public emergencies or incidents?
             </td>
             <td className='govuk-table__cell  govuk-!-width-full'>

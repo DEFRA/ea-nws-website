@@ -1,21 +1,70 @@
 import React, { useEffect, useState } from 'react'
 import Spinner from 'react-bootstrap/esm/Spinner'
-import { Link, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import { backendCall } from '../../../../common/services/BackendService'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
+const csvErrorText = (error, index, templateUrl) => {
+  let errorText
+  switch (error.errorType) {
+    case 'incorrect template':
+      return (
+        <p key={index} className='govuk-body'>
+          <a className='govuk-link ' href={templateUrl}>
+            Download the template
+          </a>
+          , add your organisation’s locations and try again.
+        </p>
+      )
+    case 'Duplicates':
+      errorText = 'Each location name must be unique. You need to change the location names, or delete the duplicate locations from the file, for the following lines that have the same location name:'
+      break
+    case 'Missing location details':
+      errorText = 'You need to add either a full address and postcode or X and Y coordinates for lines:'
+      break
+    case 'Missing location name':
+      errorText = 'You need to add unique location names for lines:'
+      break
+  }
+  return (
+    <p key={index} className='govuk-body'>
+      {errorText} <br />
+      {error.errorDetails && error.errorDetails.join(', ')}
+    </p>
+  )
+}
+
 export default function UploadFileLayout ({
   uploadMethod // Currently either "csv" or "shape"
 }) {
   const navigate = useNavigate()
+  const location = useLocation()
   const [errorFileType, setErrorFileType] = useState(null)
   const [errorFileSize, setErrorFileSize] = useState(null)
   const [errorShapefile, setErrorShapefile] = useState([])
   const [selectedFile, setSelectedFile] = useState(null)
   const [uploading, setUploading] = useState(false)
+  const [csvErrors, setCsvErrors] = useState([])
+  const [templateUrl, setTemplateUrl] = useState(null)
+
+  async function getTemplateUrl () {
+    const { data } = await backendCall(
+      'data',
+      'api/bulk_uploads/download_template'
+    )
+    setTemplateUrl(data)
+  }
+
+  useEffect(() => {
+    if (location?.state?.errors) {
+      setCsvErrors(location?.state?.errors)
+      setUploading(false)
+      getTemplateUrl()
+    }
+  }, [])
 
   const backendRoute = 'api/bulk_uploads/upload_file'
 
@@ -48,8 +97,12 @@ export default function UploadFileLayout ({
   }
 
   useEffect(() => {
-    setErrorFileType(null)
-    setErrorFileSize(null)
+    if (selectedFile !== null) {
+      setErrorFileType(null)
+      setErrorFileSize(null)
+      setCsvErrors([])
+      setErrorShapefile([])
+    }
   }, [selectedFile])
 
   const setValidSelectedFile = (data) => {
@@ -179,27 +232,29 @@ export default function UploadFileLayout ({
 
       {!uploading && <BackLink onClick={() => navigate(-1)} />}
 
-      <main className='govuk-main-wrapper'>
+      <main className='govuk-main-wrapper govuk-!-width-two-thirds'>
         <div className='govuk-grid-row'>
           {!uploading
             ? (
               <>
                 {(errorFileType ||
                 errorFileSize ||
+                csvErrors.length > 0 ||
                 errorShapefile.length > 0) && (
                   <ErrorSummary
                     errorList={[
                       errorFileType,
                       errorFileSize,
-                      ...errorShapefile
+                      ...errorShapefile,
+                      ...Array.from(csvErrors, (error) => error.errorMessage)
                     ].filter(Boolean)}
                   />
                 )}
-                <div className='govuk-grid-column-full'>
+                <div className='govuk-grid-column-two-thirds'>
                   <h1 className='govuk-heading-l'>Upload file</h1>
                   <div
                     className={
-                    errorFileSize || errorFileType || errorShapefile.length > 0
+                    errorFileSize || errorFileType || csvErrors.length > 0 || errorShapefile.length > 0
                       ? 'govuk-form-group govuk-form-group--error'
                       : 'govuk-form-group'
                   }
@@ -220,6 +275,11 @@ export default function UploadFileLayout ({
                         {error}
                       </p>
                     ))}
+                    {csvErrors.map((error, index) => (
+                      <p key={index} className='govuk-error-message'>
+                        {error.errorMessage}
+                      </p>
+                    ))}
                     <input
                       type='file'
                       className={
@@ -231,17 +291,14 @@ export default function UploadFileLayout ({
                       onChange={setValidSelectedFile}
                     />
                   </div>
+                  {csvErrors.map((error, index) => (
+                    csvErrorText(error, index, templateUrl)
+                  ))}
                   <Button
-                    text='Upload'
-                    className='govuk-button'
+                    text='Upload file'
+                    className='govuk-button govuk-!-margin-top-4'
                     onClick={handleUpload}
                   />
-                  <Link
-                    onClick={() => navigate(-1)}
-                    className='govuk-body govuk-link inline-link'
-                  >
-                    Cancel
-                  </Link>
                 </div>
               </>
               )

@@ -10,11 +10,15 @@ async function getEmailStart(
 ) {
   const { authToken } = req.payload as { authToken: string }
   const { email } = req.payload as { email: string }
+  const {signupComplete} = req.payload as {signupComplete:string}
   // 200 Success
   if (authToken !== 'WrongAuthToken' && email !== 'invalid@email.com') {
     if (email === 'duplicate@email.com') {
       console.log('duplicate email, responding 500')
       return res.response(responseCodes.DUPLICATE_EMAIL).code(500)
+    }
+    if(signupComplete === 'pending'){
+      return res.response(responseCodes.PENDING_ACCOUNT).code(500)
     }
     return res.response(responseCodes.SUCCESS)
   } else {

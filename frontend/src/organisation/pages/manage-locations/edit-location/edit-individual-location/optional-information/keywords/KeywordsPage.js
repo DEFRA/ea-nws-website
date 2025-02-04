@@ -7,7 +7,7 @@ export default function KeywordsPage () {
 
   const navigateToNextPage = updateLocationAndNavigate(
     setError,
-    'keywords changed'
+    'Keywords changed'
   )
 
   const keywordText = (

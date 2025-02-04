@@ -11,17 +11,22 @@ import {
 } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { locationNameValidation } from '../../../../../../common/services/validations/LocationNameValidation'
-import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
+import {
+  orgManageLocationsUrls,
+  urlManageOrgAddLocations
+} from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationNamePage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [name, setName] = useState('')
   const [error, setError] = useState('')
+
   const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
 
   const locationNameUsedBefore = async (locationName) => {
-    const dataToSend = { authToken, locationName }
+    const dataToSend = { orgId, authToken, locationName }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/locations/check_duplicate',
@@ -60,7 +65,7 @@ export default function LocationNamePage () {
 
   const navigateBack = (event) => {
     event.preventDefault()
-    navigate(-1)
+    navigate(urlManageOrgAddLocations)
   }
 
   return (

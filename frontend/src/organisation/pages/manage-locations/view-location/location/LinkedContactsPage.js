@@ -5,6 +5,7 @@ import linkIcon from '../../../../../common/assets/images/link.svg'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import ContactsTable from '../../../../components/custom/ContactsTable'
 import Button from '../../../../../common/components/gov-uk/Button'
+import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Radio from '../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../common/enums/AlertType'
@@ -27,10 +28,13 @@ export default function LinkedContactsPage () {
   const [selectedContacts, setSelectedContacts] = useState([])
   const [displayedContacts, setDisplayedContacts] = useState([])
   const [resetPaging, setResetPaging] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const currentLocation = geoSafeToWebLocation(useSelector((state) => state.session.currentLocation))
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
+
+  const contactsPerPage = 10
 
   const test_contacts = [
     {
@@ -100,8 +104,13 @@ export default function LinkedContactsPage () {
   }, [resetPaging])
 
   useEffect(() => {
-    setDisplayedContacts(filteredContacts)
-  }, [filteredContacts])
+    setDisplayedContacts(
+      filteredContacts.slice(
+        (currentPage - 1) * contactsPerPage,
+        currentPage * contactsPerPage
+      )
+    )
+  }, [filteredContacts, currentPage])
 
   useEffect(() => {
     const getLinkedContacts = async () => {
@@ -234,6 +243,14 @@ export default function LinkedContactsPage () {
           setResetPaging={setResetPaging}
           onAction={onUnlink}
           actionText='Unlink'
+        />
+        <Pagination
+          totalPages={Math.ceil(
+            filteredContacts.length / contactsPerPage
+          )}
+          onPageChange={(val) => setCurrentPage(val)}
+          pageList
+          reset={resetPaging}
         />
       </main>
     </>

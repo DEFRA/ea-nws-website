@@ -384,6 +384,14 @@ export default function ViewLocationsDashboardPage () {
     }
   }
 
+  const onOnlyShowSelected = (enabled) => {
+    if (enabled) {
+      setFilteredLocations(selectedLocations)
+    } else {
+      setFilteredLocations(locations)
+    }
+  }
+
   const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
@@ -408,6 +416,7 @@ export default function ViewLocationsDashboardPage () {
             linkContacts={savedLinkContacts}
             selectedLocations={selectedLocations}
             onClickLinked={onClickLinked}
+            onOnlyShowSelected={onOnlyShowSelected}
           />
           <div className='govuk-grid-column-full govuk-body'>
             {!isFilterVisible

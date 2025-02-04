@@ -13,7 +13,8 @@ export default function LinkBanner ({
   linkLocations,
   linkContacts,
   selectedLocations,
-  selectedContacts
+  selectedContacts,
+  onOnlyShowSelected
  }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -127,10 +128,12 @@ export default function LinkBanner ({
     return text
   }
 
-  const onlyShowSelected = () => {
-    setOnlyShowSelectedOption(!onlyShowSelectedOption)
-
-
+  const actionOnlyShowSelected = () => {
+    setOnlyShowSelectedOption((onlyShowSelectedOption) => {
+      const updatedOnlyShowSelectedOption = !onlyShowSelectedOption
+      onOnlyShowSelected(updatedOnlyShowSelectedOption)
+      return updatedOnlyShowSelectedOption
+    })
   }
 
   return (
@@ -158,7 +161,6 @@ export default function LinkBanner ({
           <div
             style={{
               border: '1px solid #b1b4b6',
-              width: '277px',
               height: '50px',
               paddingLeft: '20px',
               paddingRight: '20px',
@@ -174,7 +176,6 @@ export default function LinkBanner ({
           <div
             style={{
               border: '1px solid #b1b4b6',
-              width: '277px',
               height: '50px',
               paddingLeft: '20px',
               paddingRight: '20px',
@@ -184,18 +185,18 @@ export default function LinkBanner ({
           >
             {secondFieldText()}
           </div>
-          {selectedContacts && selectedContacts.length > 0 && (
+          {((selectedContacts && selectedContacts.length > 0) || (selectedLocations && selectedLocations.length > 0)) && (
             <div className='govuk-checkboxes--small' style={{display: 'flex', alignItems: 'center'}}>
               <Checkbox
                 label='Only show selected'
                 checked={onlyShowSelectedOption}
-                onChange={(e) => {
-                  onlyShowSelected()
+                onChange={() => {
+                  actionOnlyShowSelected()
                 }}
               />
             </div>
           )}
-          <div style={{ marginLeft: 'auto', display: 'flex' }}>
+          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
             <Button
               text={linkLocations ? 'Link location to contacts' : 'Link contact to locations'}
               className='govuk-button'

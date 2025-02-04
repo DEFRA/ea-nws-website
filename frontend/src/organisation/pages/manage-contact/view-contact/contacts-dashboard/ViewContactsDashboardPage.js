@@ -256,6 +256,14 @@ export default function ViewContactsDashboardPage () {
     }
   }
 
+  const onOnlyShowSelected = (enabled) => {
+    if (enabled) {
+      setFilteredContacts(selectedContacts)
+    } else {
+      setFilteredContacts(contacts)
+    }
+  }
+
   const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
@@ -279,7 +287,8 @@ export default function ViewContactsDashboardPage () {
             contacts={contacts}
             onClickLinked={onClickLinked}
             linkLocations={savedLinkLocations}
-            selectedContacts={selectedContacts}/>
+            selectedContacts={selectedContacts}
+            onOnlyShowSelected={onOnlyShowSelected}/>
           <div className='govuk-grid-column-full govuk-body'>
             {!isFilterVisible
               ? (

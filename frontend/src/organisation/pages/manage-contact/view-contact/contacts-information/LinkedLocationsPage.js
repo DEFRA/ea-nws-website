@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
+import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import LocationsTable from '../../../../components/custom/LocationsTable'
 import Button from '../../../../../common/components/gov-uk/Button'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -27,11 +28,14 @@ export default function LinkedLocationsPage () {
   const [selectedLocations, setSelectedLocations] = useState([])
   const [displayedLocations, setDisplayedLocations] = useState([])
   const [resetPaging, setResetPaging] = useState(false)
+  const [currentPage, setCurrentPage] = useState(1)
 
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
+
+  const locationsPerPage = 10
 
   const test_locations = [
     {
@@ -112,8 +116,13 @@ export default function LinkedLocationsPage () {
   }, [resetPaging])
 
   useEffect(() => {
-    setDisplayedLocations(filteredLocations)
-  }, [filteredLocations])
+    setDisplayedLocations(
+      filteredLocations.slice(
+        (currentPage - 1) * locationsPerPage,
+        currentPage * locationsPerPage
+      )
+    )
+  }, [filteredLocations, currentPage])
 
   useEffect(() => {
     const getLinkedLocations = async () => {
@@ -300,6 +309,14 @@ export default function LinkedLocationsPage () {
           setResetPaging={setResetPaging}
           onAction={onUnlink}
           actionText='Unlink'
+        />
+        <Pagination
+          totalPages={Math.ceil(
+            filteredLocations.length / locationsPerPage
+          )}
+          onPageChange={(val) => setCurrentPage(val)}
+          pageList
+          reset={resetPaging}
         />
       </main>
     </>

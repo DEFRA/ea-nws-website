@@ -16,7 +16,6 @@ async function getEmailStart(
       console.log('duplicate email, responding 500')
       return res.response(responseCodes.DUPLICATE_EMAIL).code(500)
     }
-    
     return res.response(responseCodes.SUCCESS)
   } else {
     return res.response(responseCodes.INVALID_TOKEN).code(500)

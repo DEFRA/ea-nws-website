@@ -374,13 +374,15 @@ export default function ViewLocationsDashboardPage () {
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          {notificationText && (
-            <NotificationBanner
-              className='govuk-notification-banner govuk-notification-banner--success'
-              title='Success'
-              text={notificationText}
-            />
-          )}
+          <div className='govuk-grid-column-full govuk-body'>
+            {notificationText && (
+              <NotificationBanner
+                className='govuk-notification-banner govuk-notification-banner--success'
+                title='Success'
+                text={notificationText}
+              />
+            )}
+          </div>
           <DashboardHeader
             locations={locations}
             onClickLinked={onClickLinked}

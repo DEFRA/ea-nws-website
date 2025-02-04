@@ -11,12 +11,8 @@ async function getSigninStart(
 ) {
   console.log('Received SignInStart request for: ', req.payload)
   const { email } = req.payload as { email: string }
-  const { signupComplete } = req.payload as { signupComplete:string }
   if (email === 'invalid@email.com') {
     return res.response(responseCodes.UNKNOWN_EMAIL).code(500)
-  }
-  if(signupComplete === 'pending'){
-    return res.response(responseCodes.PENDING_ACCOUNT).code(500)
   }
   console.log('Valid email, responding 200')
   return { signinToken: '123456' }

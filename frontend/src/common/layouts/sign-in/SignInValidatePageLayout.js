@@ -92,6 +92,9 @@ export default function SignInValidatePageLayout ({
 
         if (isSignUpComplete !== 'true' && lastAccessedUrl !== undefined) {
           setSignUpNotComplete(true)
+        } else if (isSignUpComplete === 'pending' && lastAccessedUrl !== undefined) {
+          setSignUpNotComplete(true)
+          navigate('/organisation/signin/account-pending')
         } else {
           navigateToNextPage()
         }

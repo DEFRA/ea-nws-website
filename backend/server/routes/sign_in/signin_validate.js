@@ -20,7 +20,9 @@ module.exports = [
 
         const { signinToken, code, signinType } = request.payload
         const error = authCodeValidation(code)
-
+        if(response.data.profile.signinComplete === 'pending'){
+          error = 'account pending'
+        }
         if (!error && signinToken) {
           const response = await apiCall(
             { signinToken: signinToken, code: code },

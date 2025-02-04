@@ -28,10 +28,11 @@ export default function CheckYourAnswersPage () {
     )
 
     const updatedProfile = updateAdditionals(profile, [
-      { id: 'signupComplete', value: { s: 'true' } },
+      { id: 'signupComplete', value: { s: 'pending' } },
       { id: 'lastAccessedUrl', value: { s: '/organisation/sign-up/success' } }
     ])
     dispatch(setProfile(updatedProfile))
+
     const profileDataToSend = {
       profile: updatedProfile,
       authToken,

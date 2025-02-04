@@ -26,7 +26,7 @@ export default function SignInPageLayout ({ navigateToNextPage }) {
       )
       if (errorMessage !== null) {
         setError(errorMessage)
-        if ((errorMessage === 'Email address not recognised - check and try again' || errorMessage === 'account pending') && location.pathname.includes('organisation')) {
+        if (errorMessage === 'Email address not recognised - check and try again' && location.pathname.includes('organisation')) {
           navigate('/organisation/signin/account-pending')
         }
       } else {

@@ -11,7 +11,7 @@ import {
 } from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function OptionalLocationInformationPage() {
+export default function OptionalLocationInformationPage () {
   const navigate = useNavigate()
   const locationName = useSelector((state) =>
     getLocationAdditional(state, 'locationName')

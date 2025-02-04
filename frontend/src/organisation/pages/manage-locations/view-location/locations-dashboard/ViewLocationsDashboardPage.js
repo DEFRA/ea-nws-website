@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router'
+import BackLink from '../../../../../common/components/custom/BackLink'
 import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
 import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
@@ -19,13 +21,15 @@ import { orgManageLocationsUrls } from '../../../../routes/manage-locations/Mana
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import LocationsTable from './dashboard-components/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
-import { useNavigate } from 'react-router'
-import BackLink from '../../../../../common/components/custom/BackLink'
+
 export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [notificationText, setNotificationText] = useState('')
+  const location = useLocation()
+
+  const successMessage = location.state?.successMessage || ''
+  const [notificationText, setNotificationText] = useState(successMessage)
   const [selectedLocations, setSelectedLocations] = useState([])
   const [filteredLocations, setFilteredLocations] = useState([])
   const [targetLocation, setTargetLocation] = useState(null)
@@ -131,8 +135,8 @@ export default function ViewLocationsDashboardPage () {
     if (
       (location.additionals.other?.location_data_type !==
         LocationDataType.ADDRESS &&
-       location.additionals.other?.location_data_type !==
-        LocationDataType.X_AND_Y_COORDS) ||
+        location.additionals.other?.location_data_type !==
+          LocationDataType.X_AND_Y_COORDS) ||
       location.coordinates === null ||
       location.coordinates.latitude === null ||
       location.coordinates.longtitude === null
@@ -366,7 +370,6 @@ export default function ViewLocationsDashboardPage () {
 
   return (
     <>
-
       <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

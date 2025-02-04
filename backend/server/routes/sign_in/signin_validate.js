@@ -20,15 +20,24 @@ module.exports = [
 
         const { signinToken, code, signinType } = request.payload
         const error = authCodeValidation(code)
-        if(response.data.profile.signinComplete === 'pending'){
-          error = 'account pending'
-        }
+
         if (!error && signinToken) {
           const response = await apiCall(
             { signinToken: signinToken, code: code },
             'member/signinValidate'
           )
+
           if (signinType === 'org') {
+            const signupComplete = response.data.profile.additionals?.find(
+              (additional) => additional.id === 'signupComplete'
+            )
+
+            if (signupComplete?.value?.s === 'pending') {
+              return h.response({
+                status: 500,
+                errorMessage: 'account pending'
+              })
+            }
             const locationRes = await apiCall(
               { authToken: response.data.authToken },
               'location/list'
@@ -37,6 +46,7 @@ module.exports = [
               { authToken: response.data.authToken },
               'organization/listContacts'
             )
+
             // Send the profile to elasticache
             await orgSignIn(response.data.profile, response.data.organization, locationRes.data.locations, contactRes.data.contacts)
           }

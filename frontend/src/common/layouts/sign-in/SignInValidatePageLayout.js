@@ -60,7 +60,9 @@ export default function SignInValidatePageLayout ({
       )
 
       if (errorMessage !== null) {
-        if (
+        if (errorMessage === 'account pending') {
+          navigate('/organisation/signin/account-pending')
+        } else if (
           errorMessage ===
           'The code you have entered has expired - please request a new code'
         ) {
@@ -92,9 +94,6 @@ export default function SignInValidatePageLayout ({
 
         if (isSignUpComplete !== 'true' && lastAccessedUrl !== undefined) {
           setSignUpNotComplete(true)
-        } else if (isSignUpComplete === 'pending' && lastAccessedUrl !== undefined) {
-          setSignUpNotComplete(true)
-          navigate('/organisation/signin/account-pending')
         } else {
           navigateToNextPage()
         }

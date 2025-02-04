@@ -5,10 +5,13 @@ import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../../../common/components/gov-uk/Input'
-import { setCurrentLocationName } from '../../../../../../common/redux/userSlice'
+import {
+  setCurrentLocationDataType,
+  setCurrentLocationName
+} from '../../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../../common/services/BackendService'
 import { locationNameValidation } from '../../../../../../common/services/validations/LocationNameValidation'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
-import { backendCall } from '../../../../../../common/services/BackendService'
 
 export default function LocationNamePage () {
   const dispatch = useDispatch()
@@ -43,11 +46,12 @@ export default function LocationNamePage () {
     } else {
       const duplicateFound = await locationNameUsedBefore(locationName)
       if (error === '') {
+        dispatch(setCurrentLocationName(locationName))
+        dispatch(setCurrentLocationDataType('xycoords'))
+
         if (duplicateFound) {
-          dispatch(setCurrentLocationName(locationName))
           navigate(orgManageLocationsUrls.add.error.alreadyExists)
         } else {
-          dispatch(setCurrentLocationName(locationName))
           navigate(orgManageLocationsUrls.add.search.searchOption)
         }
       }
@@ -61,7 +65,6 @@ export default function LocationNamePage () {
 
   return (
     <>
-
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

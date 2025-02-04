@@ -5,18 +5,18 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
-import { getLocationAdditional, getLocationOther } from '../../../../../common/redux/userSlice'
+import {
+  getLocationAdditional,
+  getLocationOther
+} from '../../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function OptionalLocationInformationPage () {
+export default function OptionalLocationInformationPage() {
   const navigate = useNavigate()
-  const locationName = useSelector(
-    (state) => getLocationAdditional(state, 'locationName')
+  const locationName = useSelector((state) =>
+    getLocationAdditional(state, 'locationName')
   )
-  const postcode = useSelector(
-    (state) =>
-      getLocationOther(state, 'postcode')
-  )
+  const postcode = useSelector((state) => getLocationOther(state, 'postcode'))
   const navigateToNextPage = () => {
     if (postcode) {
       navigate(orgManageLocationsUrls.add.optionalInformation.addKeyInformation)
@@ -32,7 +32,6 @@ export default function OptionalLocationInformationPage () {
 
   return (
     <>
-
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
@@ -132,7 +131,7 @@ export default function OptionalLocationInformationPage () {
             />
             &nbsp; &nbsp;
             <Link
-              to='/' // this will change when page is created
+              to={orgManageLocationsUrls.view.viewLocation}
               className='govuk-link inline-link'
             >
               I'll do this later

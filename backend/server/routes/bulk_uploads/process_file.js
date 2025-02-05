@@ -4,6 +4,7 @@ const {
 } = require('../../services/GenericErrorResponse')
 
 const { processLocations } = require('../../services/bulk_uploads/processLocations')
+const { scanResults } = require('../../services/bulk_uploads/scanResults')
 const { setJsonData } = require('../../services/elasticache')
 
 module.exports = [
@@ -15,14 +16,25 @@ module.exports = [
         if (request.payload.Message) {
           const fileName = request.payload.Message
           const elasticacheKey = 'bulk_upload:' + fileName.split('.')[0]
-          await setJsonData(elasticacheKey, { stage: 'Processing', status: 'working' })
-          const response = await processLocations(request.payload.Message)
-          if (response.errorMessage) {
-            await setJsonData(elasticacheKey, { stage: 'Processing', status: 'rejected', error: response.errorMessage })
-          } else if (response.data) {
-            await setJsonData(elasticacheKey, { stage: 'Processing', status: 'complete', data: response.data })
+          await setJsonData(elasticacheKey, { stage: 'Scanning Upload', status: 'working' })
+          const scanResult = await scanResults(request.payload.Message)
+          if (scanResult?.data?.scanComplete === true) {
+            if (scanResult?.data?.scanResult === 'THREATS_FOUND') {
+              await setJsonData(elasticacheKey, { stage: 'Scanning Upload', status: 'rejected', error: 'The selected file contains a virus' })
+            } else if (scanResult?.data?.scanResult === 'NO_THREATS_FOUND') {
+              const response = await processLocations(request.payload.Message)
+              if (response.errorMessage) {
+                await setJsonData(elasticacheKey, { stage: 'Processing', status: 'rejected', error: response.errorMessage })
+              } else if (response.data) {
+                await setJsonData(elasticacheKey, { stage: 'Processing', status: 'complete', data: response.data })
+              } else {
+                await setJsonData(elasticacheKey, { stage: 'Processing', status: 'rejected', error: 'Unknown error' })
+              }
+            } else {
+              await setJsonData(elasticacheKey, { stage: 'Scanning Upload', status: 'rejected', error: 'Error Scanning File' })
+            }
           } else {
-            await setJsonData(elasticacheKey, { stage: 'Processing', status: 'rejected', error: 'Unknown error' })
+            await setJsonData(elasticacheKey, { stage: 'Scanning Upload', status: 'rejected', error: 'Error Scanning File' })
           }
 
           return h.response({ status: 200 })

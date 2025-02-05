@@ -11,9 +11,12 @@ import {
   setOrgCurrentContactJobTitle,
   setOrgCurrentContactLastName
 } from '../../../common/redux/userSlice'
-import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function ContactDetailsLayout () {
+export default function ContactDetailsLayout ({
+  navigateToNextPage,
+  error,
+  setError
+}) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [firstnameError, setFirstNameError] = useState('')
@@ -74,20 +77,25 @@ export default function ContactDetailsLayout () {
       if (jobTitle) {
         dispatch(setOrgCurrentContactJobTitle(jobTitle))
       }
-      navigate(orgManageContactsUrls.add.keywords)
+
+      navigateToNextPage()
     }
   }
 
   return (
     <>
-
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
-            {(firstnameError || lastnameError || jobTitleError) && (
+            {(firstnameError || lastnameError || jobTitleError || error) && (
               <ErrorSummary
-                errorList={[firstnameError, lastnameError, jobTitleError]}
+                errorList={[
+                  firstnameError,
+                  lastnameError,
+                  jobTitleError,
+                  error
+                ]}
               />
             )}
             <h1 className='govuk-heading-l'>Contact details</h1>
@@ -134,11 +142,13 @@ export default function ContactDetailsLayout () {
                 className='govuk-input govuk-input--width-20'
                 isNameBold
               />
-              <Button
-                text='Continue'
-                className='govuk-button'
-                onClick={handleSubmit}
-              />
+              <div className='govuk-!-margin-top-8'>
+                <Button
+                  text='Continue'
+                  className='govuk-button'
+                  onClick={handleSubmit}
+                />
+              </div>
             </div>
           </div>
         </div>

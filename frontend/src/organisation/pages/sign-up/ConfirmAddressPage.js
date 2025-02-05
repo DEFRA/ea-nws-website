@@ -6,7 +6,7 @@ export default function ConfirmAddressPage () {
   const navigateToNextPage = () => navigate('/organisation/sign-up/number')
 
   const NavigateToPreviousPage = () => {
-    navigate('/organisation/sign-up/address')
+    navigate('/organisation/sign-up/address-search')
   }
 
   return (

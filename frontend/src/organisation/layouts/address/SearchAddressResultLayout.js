@@ -7,7 +7,7 @@ import { setOrganizationAddress } from '../../../common/redux/userSlice'
 
 export default function SelectAddressLayout ({
   navigateToNextPage,
-  NavigateToPreviousPage
+  navigateToPreviousPage
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -30,7 +30,7 @@ export default function SelectAddressLayout ({
 
   const navigateBack = (event) => {
     event.preventDefault()
-    NavigateToPreviousPage()
+    navigateToPreviousPage()
   }
 
   return (

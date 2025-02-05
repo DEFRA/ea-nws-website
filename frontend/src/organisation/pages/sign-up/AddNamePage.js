@@ -3,7 +3,7 @@ import AddNameLayout from '../../layouts/name/AddNameLayout'
 
 export default function AddNamePage () {
   const navigate = useNavigate()
-  const navigateToNextPage = () => navigate('/organisation/sign-up/address')
+  const navigateToNextPage = () => navigate('/organisation/sign-up/main-admin')
 
   const NavigateToPreviousPage = () => {
     navigate(-1)

@@ -371,7 +371,6 @@ export default function ViewLocationsDashboardPage () {
   return (
     <>
       <BackLink onClick={navigateBack} />
-
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full govuk-body'>

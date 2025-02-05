@@ -1,9 +1,10 @@
+const { logger } = require('../plugins/logging')
 const getSecretKeyValue = require('./SecretsManager')
-const getDownloadOrgFloodHistoryUrl = async () => {
+const getDownloadFloodHistoryUrl = async () => {
   try {
     const response = await getSecretKeyValue(
       'nws/website',
-      'organisationFloodHistoryUrl'
+      'addressFloodHistoryUrl'
     )
     if (response !== null && response.length >= 0) {
       return {
@@ -13,10 +14,10 @@ const getDownloadOrgFloodHistoryUrl = async () => {
     } else {
       return {
         status: 500,
-        errorMessage: 'organisationFloodHistoryUrl has no value!'
+        errorMessage: 'addressFloodHistoryUrl has no value!'
       }
     }
-  } catch (error){
+  } catch (error) {
     logger.error(error)
     return {
       status: 500,
@@ -26,5 +27,5 @@ const getDownloadOrgFloodHistoryUrl = async () => {
 }
 
 module.exports = {
-  getDownloadOrgFloodHistoryUrl
+  getDownloadFloodHistoryUrl
 }

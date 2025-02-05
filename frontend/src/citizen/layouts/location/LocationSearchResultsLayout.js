@@ -1,3 +1,4 @@
+import * as turf from '@turf/turf'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -21,7 +22,6 @@ import {
   getSurroundingFloodAreas,
   isLocationInFloodArea
 } from '../../../common/services/WfsFloodDataService'
-import * as turf from '@turf/turf'
 export default function LocationSearchResultsLayout ({ continueToNextPage }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -44,7 +44,7 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
     async function getHistoryUrl () {
       const { data } = await backendCall(
         'data',
-        'api/locations/download_citizen_flood_history'
+        'api/locations/download_flood_history'
       )
       setHistoryUrl(data)
     }

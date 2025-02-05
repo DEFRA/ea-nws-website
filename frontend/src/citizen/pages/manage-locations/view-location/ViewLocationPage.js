@@ -140,7 +140,7 @@ export default function ViewLocationPage () {
     async function getHistoryUrl () {
       const { data } = await backendCall(
         'data',
-        'api/locations/download_citizen_flood_history'
+        'api/locations/download_flood_history'
       )
 
       data &&

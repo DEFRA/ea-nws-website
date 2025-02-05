@@ -274,7 +274,7 @@ export default function DashboardHeader ({ locations, onClickLinked }) {
 
   return (
     <>
-      <div className='govuk-grid-column-full govuk-body govuk-!-margin-top-6'>
+      <div className='govuk-grid-column-full govuk-body govuk-!-margin-top-4'>
         <div style={{ display: 'flex' }}>
           <h1 className='govuk-heading-l'>
             Manage your organisation's{' '}

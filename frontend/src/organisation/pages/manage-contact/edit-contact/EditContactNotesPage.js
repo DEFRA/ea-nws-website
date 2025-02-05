@@ -1,4 +1,4 @@
-import React from 'react'
+import { React, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import store from '../../../../common/redux/store'
@@ -14,6 +14,7 @@ export default function EditContactNotesPage () {
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const dispatch = useDispatch()
+  const [error, setError] = useState('')
 
   const navigateToNextPage = () => {
     // TODO navigate to link locations
@@ -53,6 +54,8 @@ export default function EditContactNotesPage () {
         instructionText={instructionText}
         buttonText='Add contact'
         onSubmit={onAddContact}
+        error={error}
+        setError={setError}
       />
     </>
   )

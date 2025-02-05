@@ -86,7 +86,7 @@ export default function DropPinOnMapLayout ({
         pinCoords.longitude
       )
       if (inEngland) {
-        setCurrentLocationCoordinates(pinCoords)
+        dispatch(setCurrentLocationCoordinates(pinCoords))
 
         const locationToAdd = store.getState().session.currentLocation
         const dataToSend = { authToken, orgId, location: locationToAdd }

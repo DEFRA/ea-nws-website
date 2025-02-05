@@ -1,10 +1,11 @@
-import React from 'react'
+import { React, useState } from 'react'
 import { useNavigate } from 'react-router'
 import NotesLayout from '../../../../layouts/optional-info/NotesLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function AddNotesPage () {
   const navigate = useNavigate()
+  const [error, setError] = useState(null)
 
   const navigateToNextPage = () => {
     // TODO: Navigate to correct destination when available.
@@ -24,6 +25,8 @@ export default function AddNotesPage () {
         navigateToNextPage={navigateToNextPage}
         keywordType='location'
         instructionText={instructionText}
+        error={error}
+        setError={setError}
       />
     </>
   )

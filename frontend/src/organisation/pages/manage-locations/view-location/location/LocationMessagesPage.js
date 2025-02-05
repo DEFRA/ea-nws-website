@@ -10,7 +10,7 @@ import NotificationBanner from '../../../../../common/components/gov-uk/Notifica
 import Radio from '../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
-import { setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
+import { getLocationOtherAdditional, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { csvToJson } from '../../../../../common/services/CsvToJson'
 import { getSurroundingFloodAreas, getSurroundingFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
@@ -28,6 +28,7 @@ export default function LocationMessagesPage () {
     (state) => state.session.currentLocation
   )
   const additionalData = currentLocation.additionals
+  
   const [isAreaNearby, setIsAreaNearby] = useState(true)
   const [alertAreas, setAlertAreas] = useState(null)
   const [warningAreas, setWarningAreas] = useState(null)
@@ -37,7 +38,10 @@ export default function LocationMessagesPage () {
   const [floodAlertsCount, setFloodAlertsCount] = useState([])
   const [floodWarningsCount, setFloodWarningsCount] = useState([])
   const [severeFloodWarningsCount, setSevereFloodWarningsCount] = useState([])
-  const alertTypes = additionalData.other.alertTypes
+  const alertTypes =  getLocationOtherAdditional(
+    additionalData,
+    'alertTypes'
+  )
   const allAlertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
   const childrenId = ['flood_alerts.33'] // TODO additionalData.childrenId
   const hasFetchedArea = useRef(false)

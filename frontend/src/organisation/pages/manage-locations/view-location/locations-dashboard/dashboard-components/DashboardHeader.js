@@ -7,12 +7,13 @@ import { infoUrls } from '../../../../../routes/info/InfoRoutes'
 import { urlManageKeywordsOrg } from '../../../../../routes/manage-keywords/ManageKeywordsRoutes'
 import { urlManageOrgAddLocations } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function DashboardHeader ({ 
+export default function DashboardHeader ({
   locations,
   onClickLinked,
   linkContacts,
   selectedLocations,
-  onOnlyShowSelected }) {
+  onOnlyShowSelected
+}) {
   const navigate = useNavigate()
 
   const floodRiskDetails = (
@@ -281,64 +282,63 @@ export default function DashboardHeader ({
   return (
     <>
       <div className='govuk-grid-column-full govuk-body govuk-!-margin-top-6'>
-      {!linkContacts || linkContacts.length === 0
-        ? (
-        <>
-        <div style={{ display: 'flex' }}>
-          <h1 className='govuk-heading-l'>
-            Manage your organisation's{' '}
-            {locations.length > 1 ? locations.length : null} locations
-          </h1>
-          <div style={{ marginLeft: 'auto' }}>
-            <Button
-              text='Add locations'
-              className='govuk-button govuk-button--secondary'
-              onClick={() => navigate(urlManageOrgAddLocations)}
-            />
+        {!linkContacts || linkContacts.length === 0
+          ? (
+            <>
+              <div style={{ display: 'flex' }}>
+                <h1 className='govuk-heading-l'>
+                  Manage your organisation's{' '}
+                  {locations.length > 1 ? locations.length : null} locations
+                </h1>
+                <div style={{ marginLeft: 'auto' }}>
+                  <Button
+                    text='Add locations'
+                    className='govuk-button govuk-button--secondary'
+                    onClick={() => navigate(urlManageOrgAddLocations)}
+                  />
             &nbsp; &nbsp;
-            <Button
-              text='Manage keywords'
-              className='govuk-button govuk-button--secondary'
-              onClick={() => navigate(urlManageKeywordsOrg)}
-            />
-          </div>
-        </div>
+                  <Button
+                    text='Manage keywords'
+                    className='govuk-button govuk-button--secondary'
+                    onClick={() => navigate(urlManageKeywordsOrg)}
+                  />
+                </div>
+              </div>
 
-        <span style={{ display: 'flex', fontSize: '18px' }}>
-          <FloodBanner type='floodMessages' />
-          {(locations.filter(
-            (item) =>
-              (item.riverSeaRisk?.title === 'Medium risk' ||
+              <span style={{ display: 'flex', fontSize: '18px' }}>
+                <FloodBanner type='floodMessages' />
+                {(locations.filter(
+                  (item) =>
+                    (item.riverSeaRisk?.title === 'Medium risk' ||
                 item.riverSeaRisk?.title === 'High risk') &&
               item.additionals.other?.alertTypes?.length === 0
-          ).length > 0 ||
+                ).length > 0 ||
             locations.filter(
               (item) =>
                 item.riverSeaRisk?.title === 'Low risk' &&
                 item.additionals.other?.alertTypes?.length === 0
             ).length > 0) && <FloodBanner type='noFloodMessages' />}
-          {locations.filter((item) => item.linked_contacts?.length === 0)
-            .length > 0 && <FloodBanner type='noContacts' />}
-        </span>
+                {locations.filter((item) => item.linked_contacts?.length === 0)
+                  .length > 0 && <FloodBanner type='noContacts' />}
+              </span>
 
-        <div className='govuk-grid-column-one-half'>
-          <Details title='What is flood risk?' text={floodRiskDetails} />
-        </div>
-      </>
-      )
-      :
-      (
-        <>
-          <h1 className='govuk-heading-l'>
-            Link contact to locations
-          </h1>
-          <p>
-            Select the locations you want to link to this contact from the list. Then select<br/>
-            Link contact to locations.
-          </p>
-          <LinkBanner linkContacts={linkContacts} selectedLocations={selectedLocations} onOnlyShowSelected={onOnlyShowSelected}/>
-        </>
-      )}
+              <div className='govuk-grid-column-one-half'>
+                <Details title='What is flood risk?' text={floodRiskDetails} />
+              </div>
+            </>
+            )
+          : (
+            <>
+              <h1 className='govuk-heading-l'>
+                Link contact to locations
+              </h1>
+              <p>
+                Select the locations you want to link to this contact from the list. Then select<br />
+                Link contact to locations.
+              </p>
+              <LinkBanner linkContacts={linkContacts} selectedLocations={selectedLocations} onOnlyShowSelected={onOnlyShowSelected} />
+            </>
+            )}
       </div>
     </>
   )

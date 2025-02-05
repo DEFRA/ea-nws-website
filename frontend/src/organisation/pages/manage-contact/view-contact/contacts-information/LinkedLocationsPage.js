@@ -1,23 +1,23 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
-import Pagination from '../../../../../common/components/gov-uk/Pagination'
-import LocationsTable from '../../../../components/custom/LocationsTable'
 import Button from '../../../../../common/components/gov-uk/Button'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
-import ContactHeader from './contact-information-components/ContactHeader'
+import Pagination from '../../../../../common/components/gov-uk/Pagination'
+import LocationDataType from '../../../../../common/enums/LocationDataType'
+import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setLinkContacts } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import {
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation
 } from '../../../../../common/services/WfsFloodDataService'
-import { riskData } from '../../../../components/custom/RiskCategoryLabel'
-import RiskAreaType from '../../../../../common/enums/RiskAreaType'
-import LocationDataType from '../../../../../common/enums/LocationDataType'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import LocationsTable from '../../../../components/custom/LocationsTable'
+import { riskData } from '../../../../components/custom/RiskCategoryLabel'
+import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import ContactHeader from './contact-information-components/ContactHeader'
 
 export default function LinkedLocationsPage () {
   const navigate = useNavigate()
@@ -36,75 +36,6 @@ export default function LinkedLocationsPage () {
   const orgId = useSelector((state) => state.session.orgId)
 
   const locationsPerPage = 10
-
-  const test_locations = [
-    {
-      id: '1',
-      enabled: true,
-      name: 'UPRN',
-      address: '34 Hughenden Road, High Wycombe, LE2 7BB',
-      coordinates: { latitude: 51.629, longitude: -0.745 },
-      geometry: null,
-      geocode: null,
-      additionals: [
-        { id: 'locationName', value: { s: 'Location_01 - address variant' } },
-        { id: 'parentID', value: { s: '' } },
-        { id: 'targetAreas', value: { s: '' } },
-        { id: 'keywords', value: { s: '["Midlands"]' } },
-        {
-          id: 'other',
-          value: {
-            s: JSON.stringify({
-              full_address: 'some address',
-              postcode: 'LE2 7BB',
-              x_coordinate: 466413.18,
-              y_coordinate: 105037.31,
-              internal_reference: 'PS01, unit 57, HighW_07',
-              business_criticality: 'Medium',
-              location_type: 'Office',
-              action_plan: '1. Dont panic!',
-              notes:
-                'John Smith has the flood plan for this location. His contact number is 01234 567 890',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_3']
-            })
-          }
-        }
-      ]
-    },
-    {
-      id: '2',
-      enabled: true,
-      name: 'UPRN',
-      address: 'London',
-      coordinates: { latitude: 51.507, longitude: -0.126 },
-      geometry: null,
-      geocode: null,
-      additionals: [
-        { id: 'locationName', value: { s: 'Location_02 - xy coord variant' } },
-        { id: 'parentID', value: { s: '' } },
-        { id: 'targetAreas', value: { s: '' } },
-        { id: 'keywords', value: { s: '[]' } },
-        {
-          id: 'other',
-          value: {
-            s: JSON.stringify({
-              full_address: '',
-              postcode: '',
-              x_coordinate: 329000.58,
-              y_coordinate: 478530.6,
-              internal_reference: '',
-              business_criticality: 'High',
-              location_type: '',
-              action_plan: '',
-              notes: '',
-              location_data_type: 'xycoords',
-              alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
-            })
-          }
-        }
-      ]
-    }]
 
   useEffect(() => {
     setFilteredLocations(linkedLocations)
@@ -126,26 +57,19 @@ export default function LinkedLocationsPage () {
 
   useEffect(() => {
     const getLinkedLocations = async () => {
-      // const contactsDataToSend = { orgId, contact: currentContact }
-      // const { data } = await backendCall(
-      //   contactsDataToSend,
-      //   'api/elasticache/list_linked_locations',
-      //   navigate
-      // )
+      const contactsDataToSend = { orgId, contact: currentContact }
+      const { data } = await backendCall(
+        contactsDataToSend,
+        'api/elasticache/list_linked_locations',
+        navigate
+      )
 
-      // const locationsUpdate = []
-      // if (data) {
-      //   data.forEach((location) => {
-      //     locationsUpdate.push(geoSafeToWebLocation(location))
-      //   })
-      // }
-
-      // TODO - remove test code
       const locationsUpdate = []
-      test_locations.forEach((location) => {
-        locationsUpdate.push(geoSafeToWebLocation(location))
-      })
-
+      if (data) {
+        data.forEach((location) => {
+          locationsUpdate.push(geoSafeToWebLocation(location))
+        })
+      }
 
       const riverSeaRisks = await Promise.all(
         locationsUpdate.map((location) =>
@@ -267,18 +191,27 @@ export default function LinkedLocationsPage () {
       <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
         Linked locations
       </h2>
-      <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-      
+      <div className='govuk-!-margin-top-2 govuk-!-margin-bottom-5' style={{ height: '2px', backgroundColor: 'black' }} />
+      {linkedLocations.length === 0 &&
+        <div className='govuk-!-width-one-half govuk-!-margin-bottom-6'>
+          <p className='govuk-body'>
+            This user is not currently getting any flood messages. You need to link them to the locations you want them to get messages for.
+          </p>
+          <p className='govuk-body'>
+            This user will then get sent flood messages for all the locations they're linked to.
+          </p>
+        </div>}
       <Button
         text='Link to locations'
         className='govuk-button govuk-button--secondary govuk-!-margin-right-2'
         onClick={linkToLocations}
       />
-      <Button
-        text='Unlink selected'
-        className='govuk-button govuk-button--secondary'
-        onClick={() => unlinkLocations(selectedLocations)} 
-      />
+      {linkedLocations.length > 0 &&
+        <Button
+          text='Unlink selected'
+          className='govuk-button govuk-button--secondary'
+          onClick={() => unlinkLocations(selectedLocations)}
+        />}
     </>
   )
 
@@ -297,27 +230,29 @@ export default function LinkedLocationsPage () {
           currentPage={orgManageContactsUrls.view.viewLinkedLocations}
         />
         {linkedLocationsSection}
-        <LocationsTable
-          locations={linkedLocations}
-          displayedLocations={displayedLocations}
-          filteredLocations={filteredLocations}
-          selectedLocations={selectedLocations}
-          setLocations={setLinkedLocations}
-          setSelectedLocations={setSelectedLocations}
-          setFilteredLocations={setFilteredLocations}
-          resetPaging={resetPaging}
-          setResetPaging={setResetPaging}
-          onAction={onUnlink}
-          actionText='Unlink'
-        />
-        <Pagination
-          totalPages={Math.ceil(
-            filteredLocations.length / locationsPerPage
-          )}
-          onPageChange={(val) => setCurrentPage(val)}
-          pageList
-          reset={resetPaging}
-        />
+        {linkedLocations.length > 0 && <>
+          <LocationsTable
+            locations={linkedLocations}
+            displayedLocations={displayedLocations}
+            filteredLocations={filteredLocations}
+            selectedLocations={selectedLocations}
+            setLocations={setLinkedLocations}
+            setSelectedLocations={setSelectedLocations}
+            setFilteredLocations={setFilteredLocations}
+            resetPaging={resetPaging}
+            setResetPaging={setResetPaging}
+            onAction={onUnlink}
+            actionText='Unlink'
+          />
+          <Pagination
+            totalPages={Math.ceil(
+              filteredLocations.length / locationsPerPage
+            )}
+            onPageChange={(val) => setCurrentPage(val)}
+            pageList
+            reset={resetPaging}
+          />
+        </>}
       </main>
     </>
   )

@@ -1,23 +1,17 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useNavigate } from 'react-router-dom'
-import linkIcon from '../../../../../common/assets/images/link.svg'
+import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
-import ContactsTable from '../../../../components/custom/ContactsTable'
 import Button from '../../../../../common/components/gov-uk/Button'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
-import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
-import Radio from '../../../../../common/components/gov-uk/Radio'
-import AlertType from '../../../../../common/enums/AlertType'
-import { getLocationAdditionals, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
-import { infoUrls } from '../../../../routes/info/InfoRoutes'
-import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
-import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
-import LocationHeader from './location-information-components/LocationHeader'
 import { setLinkLocations } from '../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
-import { backendCall } from '../../../../../common/services/BackendService'
+import ContactsTable from '../../../../components/custom/ContactsTable'
+import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import LocationHeader from './location-information-components/LocationHeader'
 
 export default function LinkedContactsPage () {
   const navigate = useNavigate()
@@ -35,64 +29,6 @@ export default function LinkedContactsPage () {
   const orgId = useSelector((state) => state.session.orgId)
 
   const contactsPerPage = 10
-
-  const test_contacts = [
-    {
-      id: '1',
-      enabled: true,
-      firstname: 'Stephanie',
-      lastname: 'Beach',
-      emails: ['stephanie.beach@gmail.com', 'steph.beach@gmail.com'],
-      mobilePhones: ['07343454590', '07889668367'],
-      homePhones: ['01475721535'],
-      language: 'EN',
-      position: null,
-      unit: null,
-      service: null,
-      comments: null,
-      additionals: [
-        { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } },
-        { id: 'signUpComplete', value: { s: 'true' } },
-        { id: 'businessName', value: { s: 'thatOne' } },
-        { id: 'jobTitle', value: { s: 'Operations Director' } },
-        { id: 'keywords', value: { s: '["Team 1", "Team 2"]' } }
-      ],
-      unverified: {
-        homePhones: [{ address: '01475721535' }]
-      },
-      metatdata: null,
-      pois: null,
-      role: null,
-      pendingRole: null
-    },
-    {
-      id: '2',
-      enabled: true,
-      firstname: 'Mary',
-      lastname: 'Pepper',
-      emails: ['mary.pepper@gmail.com', 'ma.pepper@gmail.com'],
-      mobilePhones: ['07343454590', '07889668367'],
-      homePhones: ['01475721535'],
-      language: 'EN',
-      position: null,
-      unit: null,
-      service: null,
-      comments: null,
-      additionals: [
-        { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } },
-        { id: 'signUpComplete', value: { s: 'true' } },
-        { id: 'businessName', value: { s: 'thatOne' } },
-        { id: 'jobTitle', value: { s: 'Regional Manager' } },
-        { id: 'keywords', value: { s: '["Team 2"]' } }
-      ],
-      unverified: {
-        homePhones: [{ address: '01475721535' }]
-      },
-      metatdata: null,
-      pois: null,
-      role: null,
-      pendingRole: null
-    }]
 
   useEffect(() => {
     setFilteredContacts(linkedContacts)
@@ -114,25 +50,19 @@ export default function LinkedContactsPage () {
 
   useEffect(() => {
     const getLinkedContacts = async () => {
-      // const locationsDataToSend = { orgId, location: currentLocation }
-      // const { data } = await backendCall(
-      //   contactsDataToSend,
-      //   'api/elasticache/list_linked_contacts',
-      //   navigate
-      // )
+      const locationsDataToSend = { orgId, location: currentLocation }
+      const { data } = await backendCall(
+        locationsDataToSend,
+        'api/elasticache/list_linked_contacts',
+        navigate
+      )
 
-      // const contactsUpdate = []
-      // if (data) {
-      //   data.forEach((contact) => {
-      //     contactsUpdate.push(geoSafeToWebContact(contact))
-      //   })
-      // }
-
-      // TODO - remove test code
       const contactsUpdate = []
-      test_contacts.forEach((contact) => {
-        contactsUpdate.push(geoSafeToWebContact(contact))
-      })
+      if (data) {
+        data.forEach((contact) => {
+          contactsUpdate.push(geoSafeToWebContact(contact))
+        })
+      }
 
       contactsUpdate.forEach(async function (contact, idx) {
         const contactsDataToSend = { authToken, orgId, contact }
@@ -202,18 +132,26 @@ export default function LinkedContactsPage () {
       <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
         Linked contacts
       </h2>
-      <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-      
+      <div className='govuk-!-margin-top-2 govuk-!-margin-bottom-5' style={{ height: '2px', backgroundColor: 'black' }} />
+      {linkedContacts.length === 0 &&
+        <div className='govuk-!-width-one-half govuk-!-margin-bottom-6'>
+          <p className='govuk-body'>
+            No contacts have been linked to this location. This means there are currently no flood messages sent to contacts for this location.
+          </p>
+          <p className='govuk-body'>
+            To enable contacts to get flood messages, you need to link them to the locations you want them to get messages for. Any contacts not linked to locations will not get flood messages.
+          </p>
+        </div>}
       <Button
         text='Link to contacts'
         className='govuk-button govuk-button--secondary govuk-!-margin-right-2'
         onClick={linkToContacts}
       />
-      <Button
+      {linkedContacts.length > 0 && <Button
         text='Unlink selected'
         className='govuk-button govuk-button--secondary'
-        onClick={() => unlinkContacts(selectedContacts)} 
-      />
+        onClick={() => unlinkContacts(selectedContacts)}
+                                    />}
     </>
   )
 
@@ -231,27 +169,29 @@ export default function LinkedContactsPage () {
           currentPage={orgManageLocationsUrls.view.viewLinkedContacts}
         />
         {linkedContactsSection}
-        <ContactsTable
-          contacts={linkedContacts}
-          displayedContacts={displayedContacts}
-          filteredContacts={filteredContacts}
-          selectedContacts={selectedContacts}
-          setContacts={setLinkedContacts}
-          setSelectedContacts={setSelectedContacts}
-          setFilteredContacts={setFilteredContacts}
-          resetPaging={resetPaging}
-          setResetPaging={setResetPaging}
-          onAction={onUnlink}
-          actionText='Unlink'
-        />
-        <Pagination
-          totalPages={Math.ceil(
-            filteredContacts.length / contactsPerPage
-          )}
-          onPageChange={(val) => setCurrentPage(val)}
-          pageList
-          reset={resetPaging}
-        />
+        {linkedContacts.length > 0 && <>
+          <ContactsTable
+            contacts={linkedContacts}
+            displayedContacts={displayedContacts}
+            filteredContacts={filteredContacts}
+            selectedContacts={selectedContacts}
+            setContacts={setLinkedContacts}
+            setSelectedContacts={setSelectedContacts}
+            setFilteredContacts={setFilteredContacts}
+            resetPaging={resetPaging}
+            setResetPaging={setResetPaging}
+            onAction={onUnlink}
+            actionText='Unlink'
+          />
+          <Pagination
+            totalPages={Math.ceil(
+              filteredContacts.length / contactsPerPage
+            )}
+            onPageChange={(val) => setCurrentPage(val)}
+            pageList
+            reset={resetPaging}
+          />
+        </>}
       </main>
     </>
   )

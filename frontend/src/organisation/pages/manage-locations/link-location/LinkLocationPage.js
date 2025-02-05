@@ -9,7 +9,7 @@ export default function LinkLocationPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {
-    
+
   }
 
   const navigateBack = (event) => {
@@ -30,7 +30,7 @@ export default function LinkLocationPage () {
             </h1>
             <p className='govuk-body'>
               As an admin you automatically get sent all available flood messages for
-              the predefined boundary just added. 
+              the predefined boundary just added.
             </p>
             <p className='govuk-body'>
               But contacts will not be able to get flood messages for the predefined
@@ -38,7 +38,7 @@ export default function LinkLocationPage () {
               any locations will not get flood messages.
             </p>
             <p className='govuk-body'>
-              Contacts do not have access to this account and cannot log in to it. 
+              Contacts do not have access to this account and cannot log in to it.
             </p>
             <Button
               className='govuk-button'

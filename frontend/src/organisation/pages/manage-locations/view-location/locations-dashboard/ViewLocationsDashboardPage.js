@@ -7,7 +7,7 @@ import NotificationBanner from '../../../../../common/components/gov-uk/Notifica
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
-import { setCurrentLocation } from '../../../../../common/redux/userSlice'
+import { setCurrentLocation, setLinkLocations, setLinkContacts } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import {
   getGroundwaterFloodRiskRatingOfLocation,
@@ -21,7 +21,6 @@ import LocationsTable from '../../../../components/custom/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
 import { useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
-import { setLinkLocations, setLinkContacts } from '../../../../../common/redux/userSlice'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function ViewLocationsDashboardPage () {
@@ -245,7 +244,7 @@ export default function ViewLocationsDashboardPage () {
 
   const linkContactsToLocations = () => {
     if (selectedLocations.length > 0) {
-      let linkLocations = []
+      const linkLocations = []
       selectedLocations.forEach((location) => {
         linkLocations.push(location.id)
       })
@@ -430,16 +429,16 @@ export default function ViewLocationsDashboardPage () {
                   {savedLinkContacts && savedLinkContacts.length === 0 && (
                     <>
                     &nbsp; &nbsp;
-                    <ButtonMenu
-                      title='More actions'
-                      options={moreActions}
-                      onSelect={(index) => onMoreAction(index)}
-                    />
+                      <ButtonMenu
+                        title='More actions'
+                        options={moreActions}
+                        onSelect={(index) => onMoreAction(index)}
+                      />
                     &nbsp; &nbsp;
-                    <Button
-                      text='Print'
-                      className='govuk-button govuk-button--secondary inline-block'
-                    />
+                      <Button
+                        text='Print'
+                        className='govuk-button govuk-button--secondary inline-block'
+                      />
                     </>
                   )}
                   <LocationsTable
@@ -527,16 +526,16 @@ export default function ViewLocationsDashboardPage () {
                       {savedLinkContacts && savedLinkContacts.length === 0 && (
                         <>
                         &nbsp; &nbsp;
-                        <ButtonMenu
-                          title='More actions'
-                          options={moreActions}
-                          onSelect={(index) => onMoreAction(index)}
-                        />
+                          <ButtonMenu
+                            title='More actions'
+                            options={moreActions}
+                            onSelect={(index) => onMoreAction(index)}
+                          />
                         &nbsp; &nbsp;
-                        <Button
-                          text='Print'
-                          className='govuk-button govuk-button--secondary inline-block'
-                        />
+                          <Button
+                            text='Print'
+                            className='govuk-button govuk-button--secondary inline-block'
+                          />
                         </>
                       )}
                     </div>

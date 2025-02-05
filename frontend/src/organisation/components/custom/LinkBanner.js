@@ -1,12 +1,12 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import Button from '../../../common/components/gov-uk/Button'
 import Checkbox from '../../../common/components/gov-uk/CheckBox'
 import { backendCall } from '../../../common/services/BackendService'
-import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
-import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 import { geoSafeToWebLocation } from '../../../common/services/formatters/LocationFormatter'
+import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
+import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LinkBanner ({
   type,
@@ -15,7 +15,7 @@ export default function LinkBanner ({
   selectedLocations,
   selectedContacts,
   onOnlyShowSelected
- }) {
+}) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -34,8 +34,7 @@ export default function LinkBanner ({
       selectedContacts.forEach((contact) => {
         linkContactIDs.push(contact.id)
       })
-    }
-    else if (linkContacts) {
+    } else if (linkContacts) {
       linkContactIDs = [...linkContacts]
       selectedLocations.forEach((location) => {
         linkLocationIDs.push(location.id)
@@ -54,11 +53,9 @@ export default function LinkBanner ({
       if (!errorMessage) {
         if (linkLocations) {
           navigate(orgManageLocationsUrls.view.dashboard)
-        }
-        else if (linkContacts) {
+        } else if (linkContacts) {
           navigate(orgManageContactsUrls.view.dashboard)
         }
-        
       } else {
         console.log(errorMessage)
       }
@@ -76,8 +73,7 @@ export default function LinkBanner ({
         text =
           currentLocation.additionals.locationName
       }
-    }
-    else if (linkContacts) {
+    } else if (linkContacts) {
       if (linkContacts.length > 1) {
         text =
         linkContacts.length + ' contacts'
@@ -98,8 +94,7 @@ export default function LinkBanner ({
 
     if (linkLocations) {
       text = 'Select contacts'
-    } else
-    {
+    } else {
       text = 'Select locations'
     }
 
@@ -111,8 +106,7 @@ export default function LinkBanner ({
         text =
           selectedLocations[0].additionals.locationName
       }
-    }
-    else if (selectedContacts && selectedContacts.length > 0) {
+    } else if (selectedContacts && selectedContacts.length > 0) {
       if (selectedContacts.length > 1) {
         text =
           selectedContacts.length + ' contacts'
@@ -147,15 +141,18 @@ export default function LinkBanner ({
         style={{
           border: '1px solid #b1b4b6',
           backgroundColor: '#f3f2f1',
-          padding: '1.5rem 1.5rem 1.5rem 1.5rem',
+          padding: '30px 20px',
           gap: '30px'
         }}
       >
         <div
-            style={{display: 'flex',
-            alignItems: 'center', gap: '15px'}}
-          >
-          <span style={{fontWeight: '700' }}>
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '15px'
+          }}
+        >
+          <span style={{ fontWeight: '700' }}>
             Link
           </span>
           <div
@@ -170,7 +167,7 @@ export default function LinkBanner ({
           >
             {firstFieldText()}
           </div>
-          <span style={{fontWeight: '700' }}>
+          <span style={{ fontWeight: '700' }}>
             to
           </span>
           <div
@@ -186,9 +183,10 @@ export default function LinkBanner ({
             {secondFieldText()}
           </div>
           {((selectedContacts && selectedContacts.length > 0) || (selectedLocations && selectedLocations.length > 0)) && (
-            <div className='govuk-checkboxes--small' style={{display: 'flex', alignItems: 'center'}}>
+            <div className='govuk-checkboxes--small' style={{ display: 'flex', alignItems: 'center' }}>
               <Checkbox
                 label='Only show selected'
+                style={{ maxWidth: '100%' }}
                 checked={onlyShowSelectedOption}
                 onChange={() => {
                   actionOnlyShowSelected()
@@ -199,7 +197,7 @@ export default function LinkBanner ({
           <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center' }}>
             <Button
               text={linkLocations ? 'Link location to contacts' : 'Link contact to locations'}
-              className='govuk-button'
+              className='govuk-button govuk-!-margin-0'
               onClick={() => linkLocationsContacts()}
             />
           </div>

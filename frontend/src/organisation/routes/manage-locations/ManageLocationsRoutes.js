@@ -602,7 +602,7 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.link.linkLocation,
     component: <LinkLocationPage />
-  },
+  }
 ]
 
 export { orgManageLocationRoutes, orgManageLocationsUrls }

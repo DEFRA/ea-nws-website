@@ -99,7 +99,7 @@ export default function ViewContactsDashboardPage () {
       setContacts(contactsUpdate)
       setFilteredContacts(contactsUpdate)
     }
-    
+
     getContacts()
 
     setSavedLinkLocations(linkLocations)
@@ -283,12 +283,13 @@ export default function ViewContactsDashboardPage () {
               text={notificationText}
             />
           )}
-          <DashboardHeader 
+          <DashboardHeader
             contacts={contacts}
             onClickLinked={onClickLinked}
             linkLocations={savedLinkLocations}
             selectedContacts={selectedContacts}
-            onOnlyShowSelected={onOnlyShowSelected}/>
+            onOnlyShowSelected={onOnlyShowSelected}
+          />
           <div className='govuk-grid-column-full govuk-body'>
             {!isFilterVisible
               ? (
@@ -367,20 +368,20 @@ export default function ViewContactsDashboardPage () {
                         onClick={() => onOpenCloseFilter()}
                       />
                     &nbsp; &nbsp;
-                    {savedLinkLocations && savedLinkLocations.length === 0 && (
-                      <>
-                      <ButtonMenu
-                        title='More actions'
-                        options={moreActions}
-                        onSelect={(index) => onMoreAction(index)}
-                      />
+                      {savedLinkLocations && savedLinkLocations.length === 0 && (
+                        <>
+                          <ButtonMenu
+                            title='More actions'
+                            options={moreActions}
+                            onSelect={(index) => onMoreAction(index)}
+                          />
                       &nbsp; &nbsp;
-                      <Button
-                        text='Print'
-                        className='govuk-button govuk-button--secondary inline-block'
-                      />
-                      </>
-                    )}
+                          <Button
+                            text='Print'
+                            className='govuk-button govuk-button--secondary inline-block'
+                          />
+                        </>
+                      )}
                     </div>
                     <ContactsTable
                       contacts={contacts}

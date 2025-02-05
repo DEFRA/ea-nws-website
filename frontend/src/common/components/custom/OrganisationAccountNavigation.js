@@ -10,7 +10,7 @@ export default function OrganisationAccountNavigation ({ currentPage }) {
       link: orgManageLocationsUrls.monitoring.view
     },
     { title: 'Locations', link: orgManageLocationsUrls.view.dashboard },
-    { title: 'Users', link: orgManageContactsUrls.view.dashboard },
+    { title: 'Contacts', link: orgManageContactsUrls.view.dashboard },
     { title: 'Reports', link: orgFloodReportsUrls.overview }
   ]
 

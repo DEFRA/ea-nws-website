@@ -5,12 +5,7 @@ import Details from '../../../../../../common/components/gov-uk/Details'
 import { urlManageContactsAdd } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
 import { urlManageKeywordsOrg } from '../../../../../routes/manage-keywords/ManageKeywordsRoutes'
 
-export default function DashboardHeader ({
-  contactsAdded,
-  lastUpdated,
-  contacts,
-  onClickLinked
-}) {
+export default function DashboardHeader ({ contacts, onClickLinked }) {
   const navigate = useNavigate()
 
   const noContactsDetails = (
@@ -35,14 +30,14 @@ export default function DashboardHeader ({
 
     if (type === 'linked') {
       heading = 'Contacts linked to locations'
-      count =
-        contacts.filter((item) => item.linked_locations.length > 0).length
+      count = contacts.filter((item) => item.linked_locations.length > 0).length
 
       message = ' linked to locations'
     } else if (type === 'notLinked') {
       heading = 'Contacts not linked to locations'
-      count =
-        contacts.filter((item) => item.linked_locations.length === 0).length
+      count = contacts.filter(
+        (item) => item.linked_locations.length === 0
+      ).length
 
       message = ' not linked to locations'
     }
@@ -66,9 +61,7 @@ export default function DashboardHeader ({
         >
           {(type === 'linked' || type === 'notLinked') && (
             <>
-              <h1
-                style={{ color: type === 'notLinked' ? 'crimson' : 'black' }}
-              >
+              <h1 style={{ color: type === 'notLinked' ? 'crimson' : 'black' }}>
                 <strong>{count}</strong>
               </h1>
               <Link className='govuk-link' onClick={() => onClickLinked(type)}>
@@ -95,7 +88,8 @@ export default function DashboardHeader ({
       <div className='govuk-grid-column-full govuk-body govuk-!-margin-top-6'>
         <div style={{ display: 'flex' }}>
           <h1 className='govuk-heading-l'>
-            Manage your organisation's {contacts.length} contacts
+            Manage your organisation's {contacts.length > 1 && contacts.length}{' '}
+            contact{contacts.length !== 1 && 's'}
           </h1>
           <div style={{ marginLeft: 'auto' }}>
             <Button
@@ -113,12 +107,10 @@ export default function DashboardHeader ({
         </div>
 
         <div style={{ display: 'flex', fontSize: '18px' }}>
-          {contacts.filter((item) => item.linked_locations.length > 0).length > 0 && (
-            <ContactsBanner type='linked' />
-          )}
-          {contacts.filter((item) => item.linked_locations.length === 0).length > 0 && (
-            <ContactsBanner type='notLinked' />
-          )}
+          {contacts.filter((item) => item.linked_locations.length > 0).length >
+            0 && <ContactsBanner type='linked' />}
+          {contacts.filter((item) => item.linked_locations.length === 0)
+            .length > 0 && <ContactsBanner type='notLinked' />}
         </div>
       </div>
     </>

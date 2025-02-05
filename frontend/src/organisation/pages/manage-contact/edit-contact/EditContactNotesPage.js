@@ -7,7 +7,9 @@ import { backendCall } from '../../../../common/services/BackendService'
 import NotesLayout from '../../../layouts/optional-info/NotesLayout'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
 
-export default function AddContactNotesPage () {
+export default function EditContactNotesPage () {
+  // ToDo add in edit functionality at a later date
+
   const navigate = useNavigate()
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)

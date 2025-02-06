@@ -1,5 +1,5 @@
 const {
-  getDownloadCitizenFloodHistoryUrl
+  getDownloadFloodHistoryUrl
 } = require('../../services/DownloadFloodHistory')
 const {
   createGenericErrorResponse

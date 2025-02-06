@@ -7,18 +7,19 @@ import { useEffect } from 'react'
 export default function SignUpSuccessPage () {
   // need to check for authToken
   const navigate = useNavigate()
+  const profile = useSelector((state) =>state.session.profile )
   const organization = useSelector((state) => state.session.organization)
   const orgCurrentContact = useSelector((state) => state.session.orgCurrentContact)
   async function notifySignUpSuccessEa () {
     // add in the rest of the data
     const dataToSend = {
-      email: orgCurrentContact.emails[0],
+      email: profile.emails[0],
       refNumber: 1, // will need to change
       orgName: organization.description.name,
       address: organization.description.address,
       companyHouseNumber: organization.description.compHouseNum,
       professionalPartner: '', // will need to change
-      fullName: orgCurrentContact.firstname + ' ' + orgCurrentContact.lastname,
+      fullName: profile.firstname + ' ' + profile.lastname,
       alternavtiveContactFullName: organization.description.alternativeContact.firstName + ' ' + organization.description.alternativeContact.lastName,
       alternavtiveContactEmail: organization.description.alternativeContact.email,
       alternavtiveContactTelephone: organization.description.alternativeContact.telephone,
@@ -31,13 +32,13 @@ export default function SignUpSuccessPage () {
   async function notifySignUpSuccessOrg () {
     // add in the rest of the data
     const dataToSend = {
-      email: orgCurrentContact.emails[0],
+      email: profile.emails[0],
       refNumber: 1, // will need to change
       orgName: organization.description.name,
       address: organization.description.address,
       companyHouseNumber: organization.description.compHouseNum,
       professionalPartner: '', // will need to change
-      fullName: orgCurrentContact.firstname + ' ' + orgCurrentContact.lastname,
+      fullName: profile.firstname + ' ' + profile.lastname,
       alternavtiveContactFullName: organization.description.alternativeContact.firstName + ' ' + organization.description.alternativeContact.lastName,
       alternavtiveContactEmail: organization.description.alternativeContact.email,
       alternavtiveContactTelephone: organization.description.alternativeContact.telephone,

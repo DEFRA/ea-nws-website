@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
+import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import { setProfile } from '../../../common/redux/userSlice'
 import { addAccountName } from '../../../common/services/ProfileServices'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
@@ -15,17 +16,22 @@ export default function AddAccountNameLayout ({
   buttonText,
   changeName,
   updateProfile,
-  profileError
+  profileError,
+  signupFlow = false
 }) {
   const dispatch = useDispatch()
   const [error, setError] = useState('')
   const session = useSelector((state) => state.session)
+  const currentContact = useSelector((state) => state.session?.currentContact)
   const authToken = session.authToken
   const [fullName, setFullName] = useState(
     session.profile?.firstname && session.profile?.lastname
       ? `${session.profile.firstname} ${session.profile.lastname}`
       : ''
   )
+  const location = useLocation()
+
+  const notificationHeading = location?.state === 'mobile' ? 'Mobile number confirmed' : location?.state === 'landline' ? 'Telephone number confirmed' : ''
 
   const handleSubmit = async () => {
     const validationError = fullNameValidation(fullName)
@@ -57,6 +63,12 @@ export default function AddAccountNameLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
+            {(currentContact && signupFlow) && <NotificationBanner
+                  className='govuk-notification-banner govuk-notification-banner--success'
+                  title='Success'
+                  heading={notificationHeading}
+                  text={currentContact}
+                />}
             <h2 className='govuk-heading-l'>
               {changeName ? 'Change your name' : 'Enter your name'}
             </h2>

@@ -5,7 +5,7 @@ export default function ValidateLandlinePhonePage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {
-    navigate('/signup/accountname/add')
+    navigate('/signup/accountname/add', {state: 'landline'})
   }
 
   const SkipValidation = () => {

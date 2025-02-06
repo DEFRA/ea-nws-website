@@ -13,7 +13,7 @@ export default function ValidateMobilePhone () {
     if (contactPreferences.includes('PhoneCall')) {
       navigate('/signup/contactpreferences/landline/add')
     } else {
-      navigate('/signup/accountname/add')
+      navigate('/signup/accountname/add', {state: 'mobile'})
     }
   }
   const SkipValidation = () => {

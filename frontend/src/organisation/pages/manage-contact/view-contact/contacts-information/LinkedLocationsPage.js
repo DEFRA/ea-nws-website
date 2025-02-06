@@ -230,29 +230,30 @@ export default function LinkedLocationsPage () {
           currentPage={orgManageContactsUrls.view.viewLinkedLocations}
         />
         {linkedLocationsSection}
-        {linkedLocations.length > 0 && <>
-          <LocationsTable
-            locations={linkedLocations}
-            displayedLocations={displayedLocations}
-            filteredLocations={filteredLocations}
-            selectedLocations={selectedLocations}
-            setLocations={setLinkedLocations}
-            setSelectedLocations={setSelectedLocations}
-            setFilteredLocations={setFilteredLocations}
-            resetPaging={resetPaging}
-            setResetPaging={setResetPaging}
-            onAction={onUnlink}
-            actionText='Unlink'
-          />
-          <Pagination
-            totalPages={Math.ceil(
-              filteredLocations.length / locationsPerPage
-            )}
-            onPageChange={(val) => setCurrentPage(val)}
-            pageList
-            reset={resetPaging}
-          />
-        </>}
+        {linkedLocations.length > 0 &&
+          <>
+            <LocationsTable
+              locations={linkedLocations}
+              displayedLocations={displayedLocations}
+              filteredLocations={filteredLocations}
+              selectedLocations={selectedLocations}
+              setLocations={setLinkedLocations}
+              setSelectedLocations={setSelectedLocations}
+              setFilteredLocations={setFilteredLocations}
+              resetPaging={resetPaging}
+              setResetPaging={setResetPaging}
+              onAction={onUnlink}
+              actionText='Unlink'
+            />
+            <Pagination
+              totalPages={Math.ceil(
+                filteredLocations.length / locationsPerPage
+              )}
+              onPageChange={(val) => setCurrentPage(val)}
+              pageList
+              reset={resetPaging}
+            />
+          </>}
       </main>
     </>
   )

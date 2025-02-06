@@ -169,29 +169,30 @@ export default function LinkedContactsPage () {
           currentPage={orgManageLocationsUrls.view.viewLinkedContacts}
         />
         {linkedContactsSection}
-        {linkedContacts.length > 0 && <>
-          <ContactsTable
-            contacts={linkedContacts}
-            displayedContacts={displayedContacts}
-            filteredContacts={filteredContacts}
-            selectedContacts={selectedContacts}
-            setContacts={setLinkedContacts}
-            setSelectedContacts={setSelectedContacts}
-            setFilteredContacts={setFilteredContacts}
-            resetPaging={resetPaging}
-            setResetPaging={setResetPaging}
-            onAction={onUnlink}
-            actionText='Unlink'
-          />
-          <Pagination
-            totalPages={Math.ceil(
-              filteredContacts.length / contactsPerPage
-            )}
-            onPageChange={(val) => setCurrentPage(val)}
-            pageList
-            reset={resetPaging}
-          />
-        </>}
+        {linkedContacts.length > 0 &&
+          <>
+            <ContactsTable
+              contacts={linkedContacts}
+              displayedContacts={displayedContacts}
+              filteredContacts={filteredContacts}
+              selectedContacts={selectedContacts}
+              setContacts={setLinkedContacts}
+              setSelectedContacts={setSelectedContacts}
+              setFilteredContacts={setFilteredContacts}
+              resetPaging={resetPaging}
+              setResetPaging={setResetPaging}
+              onAction={onUnlink}
+              actionText='Unlink'
+            />
+            <Pagination
+              totalPages={Math.ceil(
+                filteredContacts.length / contactsPerPage
+              )}
+              onPageChange={(val) => setCurrentPage(val)}
+              pageList
+              reset={resetPaging}
+            />
+          </>}
       </main>
     </>
   )

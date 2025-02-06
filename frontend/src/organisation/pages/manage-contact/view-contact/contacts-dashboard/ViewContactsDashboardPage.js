@@ -7,11 +7,11 @@ import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
-import { setOrgCurrentContact, setLinkLocations } from '../../../../../common/redux/userSlice'
+import { setLinkLocations, setOrgCurrentContact } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
-import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import ContactsTable from '../../../../components/custom/ContactsTable'
+import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
 
@@ -33,7 +33,6 @@ export default function ViewContactsDashboardPage () {
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const linkLocations = useSelector((state) => state.session.linkLocations)
-  const currentLocation = useSelector((state) => state.session.currentLocation)
   const [dialog, setDialog] = useState({
     show: false,
     text: '',

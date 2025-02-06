@@ -423,7 +423,7 @@ const listContacts = async (orgId) => {
 
 const listLinkedContacts = async (orgId, locationID) => {
   const key = orgId + ':t_Linked_locations'
-  let contactArr = []
+  const contactArr = []
 
   const arrExists = await checkKeyExists(key)
 
@@ -437,7 +437,7 @@ const listLinkedContacts = async (orgId, locationID) => {
             const contact = await getJsonData(contactKey)
             contactArr.push(contact)
             // console.log(locationArr)
-        }))
+          }))
       }
     }))
   }
@@ -447,14 +447,14 @@ const listLinkedContacts = async (orgId, locationID) => {
 
 const listLinkedLocations = async (orgId, contactID) => {
   const key = orgId + ':t_Linked_contacts'
-  let locationArr = []
+  const locationArr = []
 
   const arrExists = await checkKeyExists(key)
 
   if (arrExists) {
     const linkedArr = await getJsonData(key)
     console.log(linkedArr)
-    
+
     await Promise.all(linkedArr.map(async (link) => {
       if (link.id === contactID) {
         await Promise.all(
@@ -463,7 +463,7 @@ const listLinkedLocations = async (orgId, contactID) => {
             const location = await getJsonData(locKey)
             locationArr.push(location)
             // console.log(locationArr)
-        }))
+          }))
       }
     }))
   }
@@ -508,7 +508,7 @@ const removeFromLinkedArr = async (key, value) => {
       let removedLink = false
       linkedArr.forEach((link) => {
         if (link.id === value.id) {
-          itemIndex = link.linkIDs.indexOf(value.linkIDs[0])
+          const itemIndex = link.linkIDs.indexOf(value.linkIDs[0])
           if (itemIndex > -1) {
             link.linkIDs.splice(itemIndex, 1)
             removedLink = true
@@ -529,7 +529,7 @@ const addLinkedLocations = async (orgId, contactID, locationIDs) => {
         id: locationID,
         linkIDs: [contactID]
       })
-    
+
       await addToLinkedArr(orgId + ':t_Linked_contacts', {
         id: contactID,
         linkIDs: [locationID]

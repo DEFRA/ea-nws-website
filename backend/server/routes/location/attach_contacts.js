@@ -16,7 +16,7 @@ module.exports = [
         }
 
         const { authToken, orgId, locationId, contactIds } = request.payload
-        
+
         if (authToken && orgId && locationId && contactIds) {
           const response = await apiCall(
             { authToken: authToken, locationId: locationId, contactIds: contactIds },

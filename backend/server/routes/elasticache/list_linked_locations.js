@@ -19,7 +19,7 @@ module.exports = [
 
         if (orgId) {
           const result = await listLinkedLocations(orgId, contact.id)
-          
+
           if (result) {
             return h.response({ status: 200, data: result })
           } else {

@@ -5,7 +5,7 @@ export default function ValidateAdminEmailPage () {
   const navigate = useNavigate()
 
   const navigateToNextPage = () => {
-    navigate('/organisation/sign-up/alternative-contact')
+    navigate('/organisation/sign-up/address')
   }
 
   const NavigateToPreviousPage = () => {

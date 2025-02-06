@@ -22,9 +22,6 @@ export default function AddKeywordsPage () {
       <br /> <br />
       You can add a maximum of 50 keywords and each keyword can be single or
       multiple words, for example ‘South’ or ‘South West’.
-      <br /> <br />
-      Once you use a keyword it will be saved so you can select it for any other
-      contacts.
     </p>
   )
 

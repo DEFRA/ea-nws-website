@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router'
+import BackLink from '../../../../../common/components/custom/BackLink'
 import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
 import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
@@ -7,27 +9,28 @@ import NotificationBanner from '../../../../../common/components/gov-uk/Notifica
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
-import { setCurrentLocation, setLinkLocations, setLinkContacts } from '../../../../../common/redux/userSlice'
+import { setCurrentLocation, setLinkContacts, setLinkLocations } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import {
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation
 } from '../../../../../common/services/WfsFloodDataService'
 import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import LocationsTable from '../../../../components/custom/LocationsTable'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
+import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
-import LocationsTable from '../../../../components/custom/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
-import { useNavigate } from 'react-router'
-import BackLink from '../../../../../common/components/custom/BackLink'
-import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [notificationText, setNotificationText] = useState('')
+  const location = useLocation()
+
+  const successMessage = location.state?.successMessage || ''
+  const [notificationText, setNotificationText] = useState(successMessage)
   const [selectedLocations, setSelectedLocations] = useState([])
   const [filteredLocations, setFilteredLocations] = useState([])
   const [targetLocation, setTargetLocation] = useState(null)
@@ -142,8 +145,8 @@ export default function ViewLocationsDashboardPage () {
     if (
       (location.additionals.other?.location_data_type !==
         LocationDataType.ADDRESS &&
-       location.additionals.other?.location_data_type !==
-        LocationDataType.X_AND_Y_COORDS) ||
+        location.additionals.other?.location_data_type !==
+          LocationDataType.X_AND_Y_COORDS) ||
       location.coordinates === null ||
       location.coordinates.latitude === null ||
       location.coordinates.longtitude === null
@@ -398,18 +401,19 @@ export default function ViewLocationsDashboardPage () {
 
   return (
     <>
-
       <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          {notificationText && (
-            <NotificationBanner
-              className='govuk-notification-banner govuk-notification-banner--success'
-              title='Success'
-              text={notificationText}
-            />
-          )}
+          <div className='govuk-grid-column-full govuk-body'>
+            {notificationText && (
+              <NotificationBanner
+                className='govuk-notification-banner govuk-notification-banner--success'
+                title='Success'
+                text={notificationText}
+              />
+            )}
+          </div>
           <DashboardHeader
             locations={locations}
             linkContacts={savedLinkContacts}

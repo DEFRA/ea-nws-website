@@ -9,7 +9,9 @@ import { setCurrentLocationAddress } from '../../../common/redux/userSlice'
 
 export default function AddressLayout ({
   navigateToNextPage,
-  additionalInfo = ''
+  additionalInfo = '',
+  error,
+  setError
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -17,7 +19,6 @@ export default function AddressLayout ({
     (state) => state.session.currentLocation.address
   )
   const [address, setAddress] = useState(currentAddress || '')
-  const [error, setError] = useState('')
   const charLimit = 200
 
   useEffect(() => {
@@ -41,7 +42,6 @@ export default function AddressLayout ({
 
   return (
     <>
-
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>

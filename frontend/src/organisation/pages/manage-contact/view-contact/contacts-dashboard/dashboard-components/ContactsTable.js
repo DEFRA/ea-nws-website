@@ -1,5 +1,9 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { setOrgCurrentContact } from '../../../../../../common/redux/userSlice'
+import { webToGeoSafeContact } from '../../../../../../common/services/formatters/ContactFormatter'
+import { orgManageContactsUrls } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function ContactsTable ({
   contacts,
@@ -10,6 +14,9 @@ export default function ContactsTable ({
   setFilteredContacts,
   onAction
 }) {
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
+
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
   const [contactNameSort, setContactNameSort] = useState('none')
   const [jobTitleSort, setJobTitleSort] = useState('none')
@@ -61,11 +68,14 @@ export default function ContactsTable ({
   }
 
   const sortLinkedLocations = () => {
-    if (linkedLocationsSort === 'none' || linkedLocationsSort === 'descending') {
+    if (
+      linkedLocationsSort === 'none' ||
+      linkedLocationsSort === 'descending'
+    ) {
       setLinkedLocationsSort('ascending')
       setFilteredContacts(
         [...filteredContacts].sort((a, b) => {
-          if (a.linked_locations === null && b.linked_locations === null) return 0
+          if (a.linked_locations === null && b.linked_locations === null) { return 0 }
           if (a.linked_locations === null) return 1
           if (b.linked_locations === null) return -1
           return a.linked_locations > b.linked_locations ? 1 : -1
@@ -76,7 +86,7 @@ export default function ContactsTable ({
       setLinkedLocationsSort('descending')
       setFilteredContacts(
         [...filteredContacts].sort((a, b) => {
-          if (a.linked_locations === null && b.linked_locations === null) return 0
+          if (a.linked_locations === null && b.linked_locations === null) { return 0 }
           if (a.linked_locations === null) return 1
           if (b.linked_locations === null) return -1
           return a.linked_locations < b.linked_locations ? 1 : -1
@@ -85,9 +95,7 @@ export default function ContactsTable ({
     }
   }
 
-  const sortMessagesReceived = () => {
-
-  }
+  const sortMessagesReceived = () => {}
 
   const handleHeaderCheckboxChange = (event) => {
     const isChecked = event.target.checked
@@ -112,13 +120,22 @@ export default function ContactsTable ({
     setSelectedContacts(updatedSelectedContacts)
   }
 
+  const viewContact = (e, contact) => {
+    e.preventDefault()
+    dispatch(setOrgCurrentContact(webToGeoSafeContact(contact)))
+    navigate(orgManageContactsUrls.view.viewContact)
+  }
+
   return (
     <>
       <p className='govuk-!-margin-bottom-6 contacts-table-panel'>
         {filteredContacts.length !== contacts.length ? 'Showing ' : ''}
-        {filteredContacts.length !== contacts.length ? filteredContacts.length : ''}
+        {filteredContacts.length !== contacts.length
+          ? filteredContacts.length
+          : ''}
         {filteredContacts.length !== contacts.length ? ' of ' : ''}
-        {contacts.length}{contacts.length === 1 ? ' contact' : ' contacts'}{' '}
+        {contacts.length}
+        {contacts.length === 1 ? ' contact' : ' contacts'}{' '}
         <span style={{ margin: '0 20px' }}>|</span>
         <span style={{ color: '#1d70b8' }}>
           {selectedContacts.length}{' '}
@@ -144,45 +161,65 @@ export default function ContactsTable ({
                 </div>
               </div>
             </th>
-            <th scope='col' className='govuk-table__header' aria-sort={contactNameSort}>
+            <th
+              scope='col'
+              className='govuk-table__header'
+              aria-sort={contactNameSort}
+            >
               <button
                 type='button'
-                onClick={() => sortData(
-                  contactNameSort,
-                  setContactNameSort,
-                  (contact) => { return contact.firstname + contact.lastname })}
+                onClick={() =>
+                  sortData(contactNameSort, setContactNameSort, (contact) => {
+                    return contact.firstname + contact.lastname
+                  })}
               >
                 Name
               </button>
             </th>
-            <th scope='col' className='govuk-table__header' aria-sort={jobTitleSort}>
+            <th
+              scope='col'
+              className='govuk-table__header'
+              aria-sort={jobTitleSort}
+            >
               <button
                 type='button'
-                onClick={() => sortData(
-                  jobTitleSort,
-                  setJobTitleSort,
-                  (contact) => { return contact.additionals.jobTitle })}
+                onClick={() =>
+                  sortData(jobTitleSort, setJobTitleSort, (contact) => {
+                    return contact.additionals.jobTitle
+                  })}
               >
                 Job title
               </button>
             </th>
-            <th scope='col' className='govuk-table__header' aria-sort={emailSort}>
+            <th
+              scope='col'
+              className='govuk-table__header'
+              aria-sort={emailSort}
+            >
               <button
                 type='button'
-                onClick={() => sortData(
-                  emailSort,
-                  setEmailSort,
-                  (contact) => { return contact.emails[0] })}
+                onClick={() =>
+                  sortData(emailSort, setEmailSort, (contact) => {
+                    return contact.emails[0]
+                  })}
               >
                 Email
               </button>
             </th>
-            <th scope='col' className='govuk-table__header' aria-sort={linkedLocationsSort}>
+            <th
+              scope='col'
+              className='govuk-table__header'
+              aria-sort={linkedLocationsSort}
+            >
               <button type='button' onClick={() => sortLinkedLocations()}>
                 Linked locations
               </button>
             </th>
-            <th scope='col' className='govuk-table__header' aria-sort={messagesReceivedSort}>
+            <th
+              scope='col'
+              className='govuk-table__header'
+              aria-sort={messagesReceivedSort}
+            >
               <button type='button' onClick={() => sortMessagesReceived()}>
                 Messages received in
                 <br /> last 2 years for current
@@ -212,24 +249,28 @@ export default function ContactsTable ({
                 </div>
               </th>
               <td className='govuk-table__cell'>
-                <Link className='govuk-link' onClick={(e) => onAction(e, 'view', contact)}>
-                  {contact.firstname}{contact.lastname.length > 0 ? ' ' + contact.lastname : ''}
+                <Link
+                  className='govuk-link'
+                  // onClick={(e) => onAction(e, 'view', contact)}
+                  onClick={(e) => viewContact(e, contact)}
+                >
+                  {contact.firstname}
+                  {contact.lastname.length > 0 ? ' ' + contact.lastname : ''}
                 </Link>
               </td>
               <td className='govuk-table__cell'>
                 {contact.additionals.jobTitle}
               </td>
-              <td className='govuk-table__cell'>
-                {contact.emails[0]}
-              </td>
+              <td className='govuk-table__cell'>{contact.emails[0]}</td>
               <td className='govuk-table__cell'>
                 {contact.linked_locations.length}
               </td>
+              <td className='govuk-table__cell'>0</td>
               <td className='govuk-table__cell'>
-                0
-              </td>
-              <td className='govuk-table__cell'>
-                <Link className='govuk-link' onClick={(e) => onAction(e, 'delete', contact)}>
+                <Link
+                  className='govuk-link'
+                  onClick={(e) => onAction(e, 'delete', contact)}
+                >
                   Delete
                 </Link>
               </td>

@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import locationPin from '../../../../../common/assets/images/location_pin.svg'
 import BackLink from '../../../../../common/components/custom/BackLink'
+import { getContactAdditional } from '../../../../../common/redux/userSlice'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
-import { urlManageKeywordsOrg } from '../../../../routes/manage-keywords/ManageKeywordsRoutes'
 import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap'
 import ContactHeader from './contact-information-components/ContactHeader'
 import ContactMap from './contact-information-components/ContactMap'
@@ -12,12 +12,16 @@ import ContactMap from './contact-information-components/ContactMap'
 export default function ContactInformationPage () {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
+
+  const jobTitle = useSelector((state) =>
+    getContactAdditional(state, 'jobTitle')
+  )
+  const contactKeywords = useSelector((state) =>
+    getContactAdditional(state, 'keywords')
+  )
+  const keywords = contactKeywords ? JSON.parse(contactKeywords) : []
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
   const locations = null
-  const jobTitle = currentContact.additionals.jobTitle
-  const keywords = Array.isArray(currentContact.additionals.keywords)
-    ? currentContact.additionals.keywords
-    : []
   const [showMap, setShowMap] = useState(false)
   const currentLocation = useSelector((state) => state.session.currentLocation)
 
@@ -129,7 +133,7 @@ export default function ContactInformationPage () {
                 <Link
                   className='govuk-link govuk-!-display-inline-block'
                   style={{ float: 'right' }}
-                  to={urlManageKeywordsOrg}
+                  to={orgManageContactsUrls.edit.keywords}
                 >
                   Change
                 </Link>
@@ -161,7 +165,7 @@ export default function ContactInformationPage () {
               {keywords.length === 0 && (
                 <Link
                   className='govuk-link govuk-!-display-block govuk-!-margin-bottom-1'
-                  to={orgManageContactsUrls.add.keywords}
+                  to={orgManageContactsUrls.edit.keywords}
                 >
                   Add keywords
                 </Link>
@@ -169,7 +173,7 @@ export default function ContactInformationPage () {
               {!currentContact.comments && (
                 <Link
                   className='govuk-link govuk-!-display-block govuk-!-margin-bottom-1'
-                  to={orgManageContactsUrls.add.notes}
+                  to={orgManageContactsUrls.edit.notes}
                 >
                   Add notes
                 </Link>

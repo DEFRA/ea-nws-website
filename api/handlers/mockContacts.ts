@@ -11,7 +11,7 @@ const contacts = [
     position: null,
     unit: null,
     service: null,
-    comments: null,
+    comments: 'This is a comment',
     additionals: [
       { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } },
       { id: 'signUpComplete', value: { s: 'true' } },

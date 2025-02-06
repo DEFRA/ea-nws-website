@@ -4,12 +4,12 @@ const { logger } = require('../../plugins/logging')
 
 const timer = ms => new Promise(resolve => setTimeout(resolve, ms))
 
-const getTags = async (fileName) => {
+const getTags = async (fileName, folder) => {
   const client = new S3Client({})
   const bucket = await getSecretKeyValue('nws/aws', 'bulkUploadBucket')
   const params = {
     Bucket: bucket,
-    Key: `csv-uploads/${fileName}`
+    Key: `${folder}/${fileName}`
   }
   const command = new GetObjectTaggingCommand(params)
   const result = {
@@ -37,11 +37,11 @@ const getTags = async (fileName) => {
   return result
 }
 
-const scanResults = async (fileName) => {
+const scanResults = async (fileName, folder) => {
   let scanCompleted = false
   let { errorMessage, data } = { errorMessage: null, data: null }
   while (!scanCompleted) {
-    const result = await getTags(fileName)
+    const result = await getTags(fileName, folder)
     if (result.errorMessage) {
       scanCompleted = true
       errorMessage = result.errorMessage

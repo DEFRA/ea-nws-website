@@ -3,26 +3,26 @@ const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
 
-const { processLocations } = require('../../services/bulk_uploads/processLocations')
 const { scanResults } = require('../../services/bulk_uploads/scanResults')
 const { setJsonData } = require('../../services/elasticache')
+const { processShapefile } = require('../../services/shapefile/processShapefile')
 
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/bulk_uploads/process_file',
+    path: '/api/shapefile/process_file',
     handler: async (request, h) => {
       try {
         if (request.payload.Message) {
           const fileName = request.payload.Message
-          const elasticacheKey = 'bulk_upload:' + fileName.split('.')[0]
+          const elasticacheKey = 'shapefile:' + fileName.split('.')[0]
           await setJsonData(elasticacheKey, { stage: 'Scanning Upload', status: 'working' })
-          const scanResult = await scanResults(request.payload.Message, 'csv-uploads')
+          const scanResult = await scanResults(request.payload.Message, 'zip-uploads/zip')
           if (scanResult?.data?.scanComplete === true) {
             if (scanResult?.data?.scanResult === 'THREATS_FOUND') {
               await setJsonData(elasticacheKey, { stage: 'Scanning Upload', status: 'rejected', error: [{ errorType: 'virus', errorMessage: 'The selected file contains a virus' }] })
             } else if (scanResult?.data?.scanResult === 'NO_THREATS_FOUND') {
-              const response = await processLocations(request.payload.Message)
+              const response = await processShapefile(request.payload.Message)
               if (response.errorMessage) {
                 await setJsonData(elasticacheKey, { stage: 'Processing', status: 'rejected', error: response.errorMessage })
               } else if (response.data) {

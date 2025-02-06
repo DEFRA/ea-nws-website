@@ -1,6 +1,6 @@
 const getSecretKeyValue = require('./SecretsManager')
 const NotifyClient = require('notifications-node-client').NotifyClient
-const { logger } = require ('../plugins/logging')
+const { logger } = require('../plugins/logging')
 const getApiKey = async () => {
   return await getSecretKeyValue('nws/notify', 'apiKey')
 }
@@ -15,7 +15,7 @@ const sendEmailNotification = async (
   const apiKey = await getApiKey()
   const notifyClient = new NotifyClient(apiKey)
 
-  let options = {
+  const options = {
     personalisation: personalisation,
     reference: reference,
     oneClickUnsubscribeURL: '',
@@ -23,7 +23,7 @@ const sendEmailNotification = async (
   }
 
   notifyClient
-    .sendEmail(templateId, emailAddress, options )
+    .sendEmail(templateId, emailAddress, options)
     .then(
       (response) => logger.info(response)
       // update this to log success in server logs

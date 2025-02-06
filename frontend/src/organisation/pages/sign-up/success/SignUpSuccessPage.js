@@ -1,10 +1,56 @@
 import { Link, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import BackLink from '../../../../common/components/custom/BackLink'
 import ConfirmationPanel from '../../../../common/components/gov-uk/Panel'
-
+import { backendCall } from '../../../../common/services/BackendService'
+import { useEffect } from 'react'
 export default function SignUpSuccessPage () {
   // need to check for authToken
   const navigate = useNavigate()
+  const organization = useSelector((state) => state.session.organization)
+  const orgCurrentContact = useSelector((state) => state.session.orgCurrentContact)
+  async function notifySignUpSuccessEa () {
+    // add in the rest of the data
+    const dataToSend = {
+      email: orgCurrentContact.emails[0],
+      refNumber: 1, // will need to change
+      orgName: organization.description.name,
+      address: organization.description.address,
+      companyHouseNumber: organization.description.compHouseNum,
+      professionalPartner: '', // will need to change
+      fullName: orgCurrentContact.firstname + ' ' + orgCurrentContact.lastname,
+      alternavtiveContactFullName: organization.description.alternativeContact.firstName + ' ' + organization.description.alternativeContact.lastName,
+      alternavtiveContactEmail: organization.description.alternativeContact.email,
+      alternavtiveContactTelephone: organization.description.alternativeContact.telephone,
+      alternavtiveContactJob: organization.description.alternativeContact.jobTitle,
+      submissionDateTime: 'tuesday' // change
+    }
+    await backendCall(dataToSend, '/api/notify/account_pending_ea', navigate)
+  }
+
+  async function notifySignUpSuccessOrg () {
+    // add in the rest of the data
+    const dataToSend = {
+      email: orgCurrentContact.emails[0],
+      refNumber: 1, // will need to change
+      orgName: organization.description.name,
+      address: organization.description.address,
+      companyHouseNumber: organization.description.compHouseNum,
+      professionalPartner: '', // will need to change
+      fullName: orgCurrentContact.firstname + ' ' + orgCurrentContact.lastname,
+      alternavtiveContactFullName: organization.description.alternativeContact.firstName + ' ' + organization.description.alternativeContact.lastName,
+      alternavtiveContactEmail: organization.description.alternativeContact.email,
+      alternavtiveContactTelephone: organization.description.alternativeContact.telephone,
+      alternavtiveContactJob: organization.description.alternativeContact.jobTitle,
+      eaEmail: 'exampleEA@email.com' // change
+    }
+    await backendCall(dataToSend, '/api/notify/account_pending_org', navigate)
+  }
+
+  useEffect(() => {
+    notifySignUpSuccessEa()
+    notifySignUpSuccessOrg()
+  }, [])
 
   return (
     <>

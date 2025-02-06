@@ -24,6 +24,47 @@ export default function LinkBanner ({
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const [onlyShowSelectedOption, setOnlyShowSelectedOption] = useState(false)
 
+  const getSuccessMessage = () => {
+    let afterText = ''
+    let beforeText = ''
+    if (linkLocations) {
+      if (currentLocation) {
+        afterText='this location'
+      }
+      if (selectedContacts && selectedContacts.length > 0) {
+        if (selectedContacts.length > 1) {
+          beforeText =
+            selectedContacts.length + ' contacts linked to '
+        } else {
+          beforeText =
+            selectedContacts[0].firstname +
+            (selectedContacts[0].lastname.length > 0
+              ? ' ' + selectedContacts[0].lastname
+              : '') + ' is linked to '
+        }
+      }
+    }
+    if (linkContacts) {
+      if (currentContact) {
+        beforeText =
+        currentContact.firstname +
+            (currentContact.lastname.length > 0
+              ? ' ' + currentContact.lastname
+              : '') + ' is linked to '
+      }
+      if (selectedLocations && selectedLocations.length > 0) {
+        if (selectedLocations.length > 1) {
+          afterText =
+            selectedLocations.length + ' locations'
+        } else {
+          afterText =
+            selectedLocations[0].additionals.locationName
+        }
+      }
+    }
+    return beforeText+afterText
+  }
+
   const linkLocationsContacts = async () => {
     let linkLocationIDs = []
     let linkContactIDs = []
@@ -50,10 +91,16 @@ export default function LinkBanner ({
       )
 
       if (!errorMessage) {
+        const successMessage = getSuccessMessage()
         if (linkLocations) {
-          navigate(orgManageLocationsUrls.view.dashboard)
+
+          navigate(orgManageLocationsUrls.view.dashboard, {state: {
+            successMessage: successMessage
+          }})
         } else if (linkContacts) {
-          navigate(orgManageContactsUrls.view.dashboard)
+          navigate(orgManageContactsUrls.view.dashboard, {state: {
+            successMessage: successMessage
+          }})
         }
       } else {
         console.log(errorMessage)

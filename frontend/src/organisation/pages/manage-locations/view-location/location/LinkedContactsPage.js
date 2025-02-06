@@ -93,13 +93,13 @@ export default function LinkedContactsPage () {
     navigate(orgManageContactsUrls.view.dashboard)
   }
 
-  const onUnlink = (e, action, contact) => {
+  const onUnlink = async (e, action, contact) => {
     const contactsToUnlink = [contact]
-    unlinkContacts(contactsToUnlink)
+    await unlinkContacts(contactsToUnlink)
   }
 
-  const unlinkContacts = (contactsToUnlink) => {
-    contactsToUnlink.forEach(async function (contact, idx) {
+  const unlinkContacts = async (contactsToUnlink) => {
+    for (const contact of contactsToUnlink) {
       const dataToSend = { authToken, orgId, locationId: currentLocation.id, contactIds: [contact.id] }
 
       const { errorMessage } = await backendCall(
@@ -111,7 +111,7 @@ export default function LinkedContactsPage () {
       if (errorMessage) {
         console.log(errorMessage)
       }
-    })
+    }
 
     const updatedContacts = linkedContacts.filter(
       (contact) => !contactsToUnlink.includes(contact)

@@ -152,13 +152,13 @@ export default function LinkedLocationsPage () {
     navigate(orgManageLocationsUrls.view.dashboard)
   }
 
-  const onUnlink = (e, action, location) => {
+  const onUnlink = async (e, action, location) => {
     const locationsToUnlink = [location]
-    unlinkLocations(locationsToUnlink)
+    await unlinkLocations(locationsToUnlink)
   }
 
-  const unlinkLocations = (locationsToUnlink) => {
-    locationsToUnlink.forEach(async function (location, idx) {
+  const unlinkLocations = async (locationsToUnlink) => {
+    for (const location of locationsToUnlink) {
       const dataToSend = { authToken, orgId, locationId: location.id, contactIds: [currentContact.id] }
 
       const { errorMessage } = await backendCall(
@@ -170,7 +170,7 @@ export default function LinkedLocationsPage () {
       if (errorMessage) {
         console.log(errorMessage)
       }
-    })
+    }
 
     const updatedLocations = linkedLocations.filter(
       (location) => !locationsToUnlink.includes(location)

@@ -1,7 +1,6 @@
 import * as turf from '@turf/turf'
 import L from 'leaflet'
 import leafletPip from 'leaflet-pip'
-import LocationDataType from '../enums/LocationDataType'
 import { backendCall } from './BackendService'
 
 const wfsCall = async (bbox, type) => {
@@ -32,6 +31,7 @@ export const getSurroundingFloodAreas = async (lat, lng, bboxKM = 0.5) => {
 
 export const getSurroundingFloodAreasFromShape = async (geoJsonShape, bboxKM = 0.5) => {
   // Add a buffer zone around the shape
+  console.log(geoJsonShape)
   const bufferedShape = turf.buffer(geoJsonShape.geometry, bboxKM, { units: 'kilometers' })
   // Get the boundary box for the buffered shape - it will be a square
   const bbox = turf.bbox(bufferedShape)
@@ -57,19 +57,19 @@ const getIntersections = (areas, bufferedShape) => {
   const filteredTargetData = areas.features.filter(area => {
     if (turf.booleanValid(area.geometry)) {
       try {
+        return turf.booleanIntersects(area.geometry, bufferedShapeGeometry)
         // Interesection for LINE
-        if (bufferedShapeGeometry.type === LocationDataType.SHAPE_LINE || area.geometry.type === LocationDataType.SHAPE_LINE) {
+        /*if (bufferedShapeGeometry.type === LocationDataType.SHAPE_LINE || area.geometry.type === LocationDataType.SHAPE_LINE) {
           if (turf.lineIntersect(area.geometry, bufferedShapeGeometry)) return true
           return false
         }
         const poly1 = turf.multiPolygon(bufferedShapeGeometry.coordinates)
         const poly2 = turf.multiPolygon(area.geometry.coordinates)
         const featureCollection = turf.featureCollection([poly1, poly2])
-        if (turf.intersect(featureCollection)) return true
+        if (turf.intersect(featureCollection)) return true*/
       } catch (e) {
         console.error('Error during intersection', e)
       }
-      return false
     } else return false
   })
   return filteredTargetData

@@ -19,7 +19,7 @@ const DUPLICATE = 'duplicate'
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/bulk_uploads/process_status',
+    path: '/api/shapefile/process_status',
     handler: async (request, h) => {
       try {
         if (!request.payload) {

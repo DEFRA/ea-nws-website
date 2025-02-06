@@ -4,10 +4,10 @@ import { Link, useNavigate } from 'react-router-dom'
 import locationPin from '../../../../../common/assets/images/location_pin.svg'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
-import ContactHeader from './contact-information-components/ContactHeader'
-import ContactMap from './contact-information-components/ContactMap'
 import { urlManageKeywordsOrg } from '../../../../routes/manage-keywords/ManageKeywordsRoutes'
 import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap'
+import ContactHeader from './contact-information-components/ContactHeader'
+import ContactMap from './contact-information-components/ContactMap'
 
 export default function ContactInformationPage () {
   const navigate = useNavigate()
@@ -15,7 +15,9 @@ export default function ContactInformationPage () {
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
   const locations = null
   const jobTitle = currentContact.additionals.jobTitle
-  const keywords = Array.isArray(currentContact.additionals.keywords) ? currentContact.additionals.keywords : []
+  const keywords = Array.isArray(currentContact.additionals.keywords)
+    ? currentContact.additionals.keywords
+    : []
   const [showMap, setShowMap] = useState(false)
   const currentLocation = useSelector((state) => state.session.currentLocation)
 
@@ -60,7 +62,7 @@ export default function ContactInformationPage () {
             </>
 
             <>
-              <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
+              <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-6 govuk-!-display-inline-block'>
                 Email addresses and numbers
               </h2>
               <Link
@@ -188,7 +190,9 @@ export default function ContactInformationPage () {
                 alt='Location Pin'
                 style={{ width: 36, height: 40, transform: 'translateY(6px)' }}
               />
-              <Link className='govuk-link' onClick={openMap}>Open map</Link>
+              <Link className='govuk-link' onClick={openMap}>
+                Open map
+              </Link>
               {showMap && (
                 <FullscreenMap
                   showMap={showMap}

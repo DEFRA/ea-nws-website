@@ -13,14 +13,17 @@ import {
 } from '../../../common/redux/userSlice'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
-import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
-export default function ContactChannelsLayout () {
+
+export default function ContactChannelsLayout ({
+  navigateToNextPage,
+  error,
+  setError
+}) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [emailError, setEmailError] = useState(['', ''])
   const [homePhoneError, setHomePhoneError] = useState(['', ''])
   const [mobilePhoneError, setMobilePhoneError] = useState(['', ''])
-  const [error, setError] = useState('')
   const [emailInput, setEmailInput] = useState([])
   const [mobileInput, setMobileInput] = useState([])
   const [homeInput, setHomeInput] = useState([])
@@ -192,15 +195,14 @@ export default function ContactChannelsLayout () {
       setMobilePhoneError(['', ''])
       setError('')
 
-      navigate(orgManageContactsUrls.add.notes)
+      navigateToNextPage()
     }
   }
 
   return (
     <>
-
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(error ||
@@ -236,11 +238,9 @@ export default function ContactChannelsLayout () {
                 <br />
               </div>
               <div
-                className={
-                  error === '' ? '' : 'govuk-form-group govuk-form-group--error'
-                }
+                className={error && 'govuk-form-group govuk-form-group--error'}
               >
-                {error !== '' && (
+                {error && (
                   <p
                     id='govuk-text-input-error'
                     className='govuk-error-message'

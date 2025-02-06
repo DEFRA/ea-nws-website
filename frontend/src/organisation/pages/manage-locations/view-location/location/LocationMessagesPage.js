@@ -157,13 +157,23 @@ export default function LocationMessagesPage () {
   useEffect(() => {
     const populateInputs = (alertAreas, warningAreas) => {
       const updatedFloodAreas = []
+      let warnings
+      let alerts
+      if (additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS || currentLocation.geometry === null) {
+        warnings = warningAreas ? [...warningAreas.features] : []
+        alerts = alertAreas ? [...alertAreas.features] : []
+      } else {
+        warnings = warningAreas ? [...warningAreas] : []
+        alerts = alertAreas ? [...alertAreas] : []
+      }
       if (warningAreas) {
         const warningAreasInputs = additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS || currentLocation.geometry === null ? warningAreas.features : warningAreas
+        
         for (let j = 0; j < warningAreasInputs.length; j++) {
           updatedFloodAreas.push({
             areaName:
-            warningAreas.features[j].properties.TA_Name,
-            areaType: `${warningAreas.features[j].properties.category} area`,
+            warnings[j].properties.TA_Name,
+            areaType: `${warnings[j].properties.category} area`,
             messagesSent: [`${severeFloodWarningsCount[j]} severe flood warning${severeFloodWarningsCount[j] > 1 ? 's' : ''}`, `${floodWarningsCount[j]} flood warning${floodWarningsCount[j] > 1 ? 's' : ''}`, `${floodAlertsCount[j]} flood alert${floodAlertsCount[j] > 1 ? 's' : ''}`],
             linked: childrenId.includes(warningAreasInputs[j].id)
           })
@@ -176,8 +186,8 @@ export default function LocationMessagesPage () {
           const alertAreaIndex = warningAreaLength > 0 ? i + warningAreaLength : i
           updatedFloodAreas.push({
             areaName:
-            alertAreas.features[i].properties.TA_Name,
-            areaType: `${alertAreas.features[i].properties.category} area`,
+            alerts[i].properties.TA_Name,
+            areaType: `${alerts[i].properties.category} area`,
             messagesSent: [`${floodAlertsCount[alertAreaIndex]} flood alert${floodAlertsCount[alertAreaIndex] > 1 ? 's' : ''}`],
             linked: childrenId.includes(alertAreasInputs[i].id)
           })

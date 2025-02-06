@@ -59,16 +59,17 @@ const getIntersections = (areas, bufferedShape) => {
       try {
         return turf.booleanIntersects(area.geometry, bufferedShapeGeometry)
         // Interesection for LINE
-        /*if (bufferedShapeGeometry.type === LocationDataType.SHAPE_LINE || area.geometry.type === LocationDataType.SHAPE_LINE) {
+        /* if (bufferedShapeGeometry.type === LocationDataType.SHAPE_LINE || area.geometry.type === LocationDataType.SHAPE_LINE) {
           if (turf.lineIntersect(area.geometry, bufferedShapeGeometry)) return true
           return false
         }
         const poly1 = turf.multiPolygon(bufferedShapeGeometry.coordinates)
         const poly2 = turf.multiPolygon(area.geometry.coordinates)
         const featureCollection = turf.featureCollection([poly1, poly2])
-        if (turf.intersect(featureCollection)) return true*/
+        if (turf.intersect(featureCollection)) return true */
       } catch (e) {
         console.error('Error during intersection', e)
+        return false
       }
     } else return false
   })

@@ -82,7 +82,6 @@ export default function LocationMessagesPage () {
     setWarningAreas(result.warningArea)
   }
 
-  
   const setHistoricalData = (area, type, index) => {
     const twoYearsAgo = moment().subtract(2, 'years')
     if (area) {
@@ -152,7 +151,7 @@ export default function LocationMessagesPage () {
       }
     }
     processFloodData()
-  }, [floodHistoryData, warningAreas, alertAreas, hasFetchedArea]) 
+  }, [floodHistoryData, warningAreas, alertAreas, hasFetchedArea])
 
   useEffect(() => {
     const populateInputs = (alertAreas, warningAreas) => {
@@ -168,7 +167,7 @@ export default function LocationMessagesPage () {
       }
       if (warningAreas) {
         const warningAreasInputs = additionalData.location_data_type === LocationDataType.X_AND_Y_COORDS || currentLocation.geometry === null ? warningAreas.features : warningAreas
-        
+
         for (let j = 0; j < warningAreasInputs.length; j++) {
           updatedFloodAreas.push({
             areaName:
@@ -247,7 +246,7 @@ export default function LocationMessagesPage () {
         .catch((e) =>
           console.error('Could not fetch Organisation Historic Flood Warning file', e)
         )
-  }, [floodHistoryUrl]) 
+  }, [floodHistoryUrl])
 
   const handleSubmit = () => {
     if (

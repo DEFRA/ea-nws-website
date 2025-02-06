@@ -182,7 +182,7 @@ export default function FloodReportsFilter ({
   ) => {
     return (
       <>
-        <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-top-3 govuk-!-margin-bottom-3 govuk-!-margin-left-3 govuk-!-margin-right-3' />
+        <hr className='govuk-section-break govuk-section-break--visible govuk-!-margin-3' />
         <div
           className='contacts-filter-other-section'
           onClick={() => {
@@ -237,6 +237,7 @@ export default function FloodReportsFilter ({
 
     return (
       <>
+
         <div
           className='selected-filter'
           style={{

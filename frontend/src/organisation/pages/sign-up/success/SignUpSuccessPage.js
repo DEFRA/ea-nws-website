@@ -7,9 +7,8 @@ import { useEffect } from 'react'
 export default function SignUpSuccessPage () {
   // need to check for authToken
   const navigate = useNavigate()
-  const profile = useSelector((state) =>state.session.profile )
+  const profile = useSelector((state) => state.session.profile)
   const organization = useSelector((state) => state.session.organization)
-  const orgCurrentContact = useSelector((state) => state.session.orgCurrentContact)
   async function notifySignUpSuccessEa () {
     // add in the rest of the data
     const dataToSend = {

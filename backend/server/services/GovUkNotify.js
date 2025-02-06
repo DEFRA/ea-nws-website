@@ -1,6 +1,6 @@
 const getSecretKeyValue = require('./SecretsManager')
 const NotifyClient = require('notifications-node-client').NotifyClient
-
+const { logger } = require ('../plugins/logging')
 const getApiKey = async () => {
   return await getSecretKeyValue('nws/notify', 'apiKey')
 }
@@ -15,18 +15,20 @@ const sendEmailNotification = async (
   const apiKey = await getApiKey()
   const notifyClient = new NotifyClient(apiKey)
 
+  let options = {
+    personalisation: personalisation,
+    reference: reference,
+    oneClickUnsubscribeURL: '',
+    emailReplyToId: emailReplyToId
+  }
+
   notifyClient
-    .sendEmail(templateId, emailAddress, {
-      personalisation: personalisation,
-      reference: reference,
-      oneClickUnsubscribeURL: '',
-      emailReplyToId: emailReplyToId
-    })
+    .sendEmail(templateId, emailAddress, options )
     .then(
-      (response) => console.log(response)
+      (response) => logger.info(response)
       // update this to log success in server logs
     )
-    .catch((err) => console.error(err))
+    .catch((err) => logger.error(err))
 }
 
 const sendSmsNotification = (
@@ -45,10 +47,10 @@ const sendSmsNotification = (
       smsSenderId: smsSenderId
     })
     .then(
-      (response) => console.log(response)
+      (response) => logger.info(response)
       // update this to log success in server logs
     )
-    .catch((err) => console.error(err))
+    .catch((err) => logger.error(err))
 }
 
 // below link explains how to send a letter to the correct address
@@ -62,10 +64,10 @@ const sendLetter = (templateId, personalisation, reference = '') => {
       reference: reference
     })
     .then(
-      (response) => console.log(response)
+      (response) => logger.info(response)
       // update this to log success in server log
     )
-    .catch((err) => console.error(err))
+    .catch((err) => logger.error(err))
 }
 
 module.exports = { sendEmailNotification, sendSmsNotification, sendLetter }

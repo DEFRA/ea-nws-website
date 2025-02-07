@@ -19,11 +19,11 @@ module.exports = [
         }
 
         const { signinToken, code, signinType } = request.payload
-        const error = authCodeValidation(code)
+        const { error, code: formattedCode } = authCodeValidation(code)
 
         if (!error && signinToken) {
           const response = await apiCall(
-            { signinToken: signinToken, code: code },
+            { signinToken: signinToken, code: formattedCode },
             'member/signinValidate'
           )
           if (signinType === 'org') {

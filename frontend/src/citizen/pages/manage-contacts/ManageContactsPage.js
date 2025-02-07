@@ -55,7 +55,6 @@ export default function ManageContactsPage () {
       case 'homePhone':
         return 'Telephone number confirmed'
       default:
-        return
     }
   }
 
@@ -106,7 +105,7 @@ export default function ManageContactsPage () {
             className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
             title='Success'
             heading={confirmedHeading(location.state.confirmedtype)}
-            text={location.state.confirmedvalue+' will receive flood messages'}
+            text={location.state.confirmedvalue + ' will receive flood messages'}
           />
           )
         : null}

@@ -1,12 +1,13 @@
 const authCodeValidation = (code) => {
   if (!code || code === '') {
-    return 'Enter code'
+    return { error: 'Enter code' }
   }
+  const formattedCode = code.replace(/\s+/g, '')
   const numberPattern = new RegExp(`^[0-9]{${6}}$`)
-  if (!numberPattern.test(code)) {
-    return 'Code must be 6 numbers'
+  if (!numberPattern.test(formattedCode)) {
+    return { error: 'Code must be 6 numbers' }
   }
-  return ''
+  return { code: formattedCode }
 }
 
 module.exports = { authCodeValidation }

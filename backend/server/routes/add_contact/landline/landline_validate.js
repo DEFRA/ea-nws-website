@@ -18,11 +18,11 @@ module.exports = [
         }
 
         const { authToken, msisdn, code } = request.payload
-        const error = authCodeValidation(code)
+        const { error, code: formattedCode } = authCodeValidation(code)
 
         if (!error && authToken) {
           const response = await apiCall(
-            { authToken: authToken, msisdn: msisdn, code: code },
+            { authToken: authToken, msisdn: msisdn, code: formattedCode },
             'member/verifyHomePhoneValidate'
           )
           return h.response(response)

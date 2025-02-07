@@ -16,7 +16,7 @@ export default function AddAccountNameLayout ({
   buttonText,
   changeName,
   updateProfile,
-  profileError,
+  profileError
 }) {
   const dispatch = useDispatch()
   const [error, setError] = useState('')
@@ -60,11 +60,11 @@ export default function AddAccountNameLayout ({
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
             {location?.state?.banner && <NotificationBanner
-                  className='govuk-notification-banner govuk-notification-banner--success'
-                  title='Success'
-                  heading={location?.state?.banner?.heading}
-                  text={location?.state?.banner?.text}
-                />}
+              className='govuk-notification-banner govuk-notification-banner--success'
+              title='Success'
+              heading={location?.state?.banner?.heading}
+              text={location?.state?.banner?.text}
+                                        />}
             <h2 className='govuk-heading-l'>
               {changeName ? 'Change your name' : 'Enter your name'}
             </h2>

@@ -46,10 +46,10 @@ export default function ValidateEmailLayout ({
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const validationError = authCodeValidation(code)
+    const { error: validationError, code: formattedCode } = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      const dataToSend = { authToken, email, code }
+      const dataToSend = { authToken, email, code: formattedCode }
       const { errorMessage, data } = await backendCall(
         dataToSend,
         'api/add_contact/email/validate'

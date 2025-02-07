@@ -28,8 +28,9 @@ export default function ViewLocationsDashboardPage () {
   const dispatch = useDispatch()
   const location = useLocation()
 
-  const successMessage = location.state?.successMessage || ''
-  const [notificationText, setNotificationText] = useState(successMessage)
+  const [notificationText, setNotificationText] = useState(
+    location.state?.successMessage
+  )
   const [selectedLocations, setSelectedLocations] = useState([])
   const [filteredLocations, setFilteredLocations] = useState([])
   const [targetLocation, setTargetLocation] = useState(null)
@@ -374,15 +375,13 @@ export default function ViewLocationsDashboardPage () {
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-full govuk-body'>
-            {notificationText && (
-              <NotificationBanner
-                className='govuk-notification-banner govuk-notification-banner--success'
-                title='Success'
-                text={notificationText}
-              />
-            )}
-          </div>
+          {notificationText && (
+            <NotificationBanner
+              className='govuk-notification-banner govuk-notification-banner--success'
+              title='Success'
+              text={notificationText}
+            />
+          )}
           <DashboardHeader
             locations={locations}
             onClickLinked={onClickLinked}

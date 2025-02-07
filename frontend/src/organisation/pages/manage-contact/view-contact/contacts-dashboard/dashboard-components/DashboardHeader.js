@@ -101,7 +101,8 @@ export default function DashboardHeader ({ contacts, onClickLinked }) {
             <Button
               text='Manage keywords'
               className='govuk-button govuk-button--secondary'
-              onClick={() => navigate(urlManageKeywordsOrg)}
+              onClick={() =>
+                navigate(urlManageKeywordsOrg, { state: { type: 'contact' } })}
             />
           </div>
         </div>

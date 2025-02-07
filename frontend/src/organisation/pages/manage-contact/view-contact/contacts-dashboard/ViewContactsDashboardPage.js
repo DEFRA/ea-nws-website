@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
 import Popup from '../../../../../common/components/custom/Popup'
@@ -18,8 +18,12 @@ import SearchFilter from './dashboard-components/SearchFilter'
 export default function ViewContactsDashboardPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const location = useLocation()
+
   const [contacts, setContacts] = useState([])
-  const [notificationText, setNotificationText] = useState('')
+  const [notificationText, setNotificationText] = useState(
+    location.state?.successMessage
+  )
   const [selectedContacts, setSelectedContacts] = useState([])
   const [filteredContacts, setFilteredContacts] = useState([])
   const [targetContact, setTargetContact] = useState(null)
@@ -245,7 +249,6 @@ export default function ViewContactsDashboardPage () {
 
   return (
     <>
-
       <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>

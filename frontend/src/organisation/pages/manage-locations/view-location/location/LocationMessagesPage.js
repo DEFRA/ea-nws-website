@@ -10,7 +10,7 @@ import NotificationBanner from '../../../../../common/components/gov-uk/Notifica
 import Radio from '../../../../../common/components/gov-uk/Radio'
 import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
-import { getLocationOtherAdditional, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
+import { getLocationAdditionals, getLocationOtherAdditional, setCurrentLocationAlertTypes } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { csvToJson } from '../../../../../common/services/CsvToJson'
 import { getSurroundingFloodAreas, getSurroundingFloodAreasFromShape } from '../../../../../common/services/WfsFloodDataService'
@@ -28,7 +28,7 @@ export default function LocationMessagesPage () {
   const currentLocation = useSelector(
     (state) => state.session.currentLocation
   )
-  const additionalData = currentLocation.additionals
+  const additionalData = useSelector((state) => getLocationAdditionals(state))
 
   const [isAreaNearby, setIsAreaNearby] = useState(true)
   const [alertAreas, setAlertAreas] = useState(null)
@@ -172,8 +172,8 @@ export default function LocationMessagesPage () {
           updatedFloodAreas.push({
             areaName:
             warnings[j].properties.TA_Name,
-            areaType: `${warnings[j].properties.category} area`,
-            messagesSent: [`${severeFloodWarningsCount[j]} severe flood warning${severeFloodWarningsCount[j] > 1 ? 's' : ''}`, `${floodWarningsCount[j]} flood warning${floodWarningsCount[j] > 1 ? 's' : ''}`, `${floodAlertsCount[j]} flood alert${floodAlertsCount[j] > 1 ? 's' : ''}`],
+            areaType: `${warnings[j].properties.category === 'Flood Warning Rapid Response' ? 'Severe flood warning' : 'Flood warning'} area`,
+            messagesSent: [`${severeFloodWarningsCount[j]} severe flood warning${severeFloodWarningsCount[j] > 1 ? 's' : ''}`, `${floodWarningsCount[j]} flood warning${floodWarningsCount[j] > 1 ? 's' : ''}`],
             linked: childrenId.includes(warningAreasInputs[j].id)
           })
         }
@@ -186,7 +186,7 @@ export default function LocationMessagesPage () {
           updatedFloodAreas.push({
             areaName:
             alerts[i].properties.TA_Name,
-            areaType: `${alerts[i].properties.category} area`,
+            areaType: `Flood alert area`,
             messagesSent: [`${floodAlertsCount[alertAreaIndex]} flood alert${floodAlertsCount[alertAreaIndex] > 1 ? 's' : ''}`],
             linked: childrenId.includes(alertAreasInputs[i].id)
           })

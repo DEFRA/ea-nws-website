@@ -8,7 +8,7 @@ import Checkbox from '../../../../common/components/gov-uk/CheckBox'
 import { setCurrentLocationChildrenIDs } from '../../../../common/redux/userSlice'
 import { infoUrls } from '../../../routes/info/InfoRoutes'
 
-export default function LinkLocationsPage() {
+export default function LinkLocationsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 

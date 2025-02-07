@@ -4,9 +4,9 @@ import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
+import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
-import { setLinkContacts } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import {
   getGroundwaterFloodRiskRatingOfLocation,
@@ -29,6 +29,7 @@ export default function LinkedLocationsPage () {
   const [displayedLocations, setDisplayedLocations] = useState([])
   const [resetPaging, setResetPaging] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
+  const [unlinkNotification, setUnlinkNotification] = useState('')
 
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
@@ -153,6 +154,16 @@ export default function LinkedLocationsPage () {
     }})
   }
 
+  const getUnlinkText = (locationsUnlinked) => {
+    let unlinkText = ''
+
+    if (locationsUnlinked.length > 0) {
+      unlinkText = locationsUnlinked.length + ' location' + (locationsUnlinked.length > 1 ? 's' : '') + ' unlinked'
+    }
+
+    return unlinkText
+  }
+
   const onUnlink = async (e, action, location) => {
     const locationsToUnlink = [location]
     await unlinkLocations(locationsToUnlink)
@@ -172,6 +183,8 @@ export default function LinkedLocationsPage () {
         console.log(errorMessage)
       }
     }
+
+    setUnlinkNotification(getUnlinkText(locationsToUnlink))
 
     const updatedLocations = linkedLocations.filter(
       (location) => !locationsToUnlink.includes(location)
@@ -226,6 +239,13 @@ export default function LinkedLocationsPage () {
 
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-0'>
+        {unlinkNotification.length > 0 && (
+          <NotificationBanner
+            className='govuk-notification-banner govuk-notification-banner--success'
+            title='Success'
+            text={unlinkNotification}
+          />
+        )}
         <ContactHeader
           contactName={contactName}
           currentPage={orgManageContactsUrls.view.viewLinkedLocations}

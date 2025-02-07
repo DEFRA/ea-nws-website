@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
+import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import { setLinkLocations } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
@@ -23,6 +24,7 @@ export default function LinkedContactsPage () {
   const [displayedContacts, setDisplayedContacts] = useState([])
   const [resetPaging, setResetPaging] = useState(false)
   const [currentPage, setCurrentPage] = useState(1)
+  const [unlinkNotification, setUnlinkNotification] = useState('')
 
   const currentLocation = geoSafeToWebLocation(useSelector((state) => state.session.currentLocation))
   const authToken = useSelector((state) => state.session.authToken)
@@ -95,6 +97,16 @@ export default function LinkedContactsPage () {
     }})
   }
 
+  const getUnlinkText = (contactsUnlinked) => {
+    let unlinkText = ''
+
+    if (contactsUnlinked.length > 0) {
+      unlinkText = contactsUnlinked.length + ' contact' + (contactsUnlinked.length > 1 ? 's' : '') + ' unlinked'
+    }
+
+    return unlinkText
+  }
+
   const onUnlink = async (e, action, contact) => {
     const contactsToUnlink = [contact]
     await unlinkContacts(contactsToUnlink)
@@ -114,6 +126,8 @@ export default function LinkedContactsPage () {
         console.log(errorMessage)
       }
     }
+
+    setUnlinkNotification(getUnlinkText(contactsToUnlink))
 
     const updatedContacts = linkedContacts.filter(
       (contact) => !contactsToUnlink.includes(contact)
@@ -167,6 +181,13 @@ export default function LinkedContactsPage () {
 
       <BackLink onClick={(e) => navigateBack(e)} />
       <main className='govuk-main-wrapper govuk-body govuk-!-margin-top-0'>
+        {unlinkNotification.length > 0 && (
+          <NotificationBanner
+            className='govuk-notification-banner govuk-notification-banner--success'
+            title='Success'
+            text={unlinkNotification}
+          />
+        )}
         <LocationHeader
           currentPage={orgManageLocationsUrls.view.viewLinkedContacts}
         />

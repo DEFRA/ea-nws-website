@@ -6,7 +6,7 @@ export default function EditContactDetailsPage () {
   const [error, setError] = useState(null)
   const navigateToNextPage = UpdateContactAndNavigate(
     setError,
-    'Contact details changed'
+    'Key information changed'
   )
 
   return (

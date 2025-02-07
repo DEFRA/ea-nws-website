@@ -44,7 +44,7 @@ const contacts = [
       { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } },
       { id: 'signUpComplete', value: { s: 'true' } },
       { id: 'businessName', value: { s: 'thatOne' } },
-      { id: 'jobTitle', value: { s: 'Regional Manager' } },
+      { id: 'jobTitle', value: { s: '' } },
       { id: 'keywords', value: { s: '["Team 2"]' } }
     ],
     unverified: {

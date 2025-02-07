@@ -5,10 +5,7 @@ import UpdateContactAndNavigate from '../UpdateContactAndNavigate'
 export default function EditContactNotesPage () {
   const [error, setError] = useState('')
 
-  const navigateToNextPage = UpdateContactAndNavigate(
-    setError,
-    'Contact notes changed'
-  )
+  const navigateToNextPage = UpdateContactAndNavigate(setError, 'Notes changed')
 
   const instructionText = (
     <>

@@ -7,7 +7,7 @@ export default function EditContactKeywordsPage () {
 
   const navigateToNextPage = UpdateContactAndNavigate(
     setError,
-    'Contact keywords changed'
+    'Keywords changed'
   )
 
   const KeywordText = (

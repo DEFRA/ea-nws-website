@@ -6,7 +6,7 @@ export default function EditContactChannelsPage () {
   const [error, setError] = useState(null)
   const navigateToNextPage = UpdateContactAndNavigate(
     setError,
-    'Contact channel changed'
+    'Email addresses and numbers changed'
   )
 
   return (

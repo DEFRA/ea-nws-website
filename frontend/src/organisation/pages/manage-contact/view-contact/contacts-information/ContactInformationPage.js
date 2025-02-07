@@ -62,7 +62,7 @@ export default function ContactInformationPage () {
               <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
                 Job title
               </h3>
-              <p>{jobTitle || '-'}</p>
+              <p>{jobTitle}</p>
             </>
 
             <>

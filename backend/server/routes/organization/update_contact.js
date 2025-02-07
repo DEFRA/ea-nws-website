@@ -28,9 +28,9 @@ module.exports = [
             { authToken: authToken, contact: contact },
             'organization/updateContact'
           )
-          if (response.data.contact) {
-            await updateContact(orgId, response.data.contact)
-            return h.response({ status: 200, data: response.data.contact })
+          if (response.data) {
+            await updateContact(orgId, response.data)
+            return h.response({ status: 200, data: response.data })
           } else {
             return createGenericErrorResponse(h)
           }

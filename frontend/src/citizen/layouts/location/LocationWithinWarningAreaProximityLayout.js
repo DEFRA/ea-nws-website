@@ -14,13 +14,13 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import InsetText from '../../../common/components/gov-uk/InsetText'
 import Radio from '../../../common/components/gov-uk/Radio'
 import {
-    setAdditionalAlerts,
-    setFloodAlertCount,
-    setNearbyTargetAreasFlow,
-    setSelectedFloodAlertArea,
-    setSelectedFloodWarningArea,
-    setSevereFloodWarningCount,
-    setShowOnlySelectedFloodArea
+  setAdditionalAlerts,
+  setFloodAlertCount,
+  setNearbyTargetAreasFlow,
+  setSelectedFloodAlertArea,
+  setSelectedFloodWarningArea,
+  setSevereFloodWarningCount,
+  setShowOnlySelectedFloodArea
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { csvToJson } from '../../../common/services/CsvToJson'
@@ -181,8 +181,10 @@ export default function LocationWithinWarningAreaProximityLayout ({
                     {type === 'severe' ? 'red' : 'orange'} on the map.
                   </p>
                   <p>
-                    If you choose one of these, you'll get early alerts about
-                    possible flooding.
+                    If you choose one of these, you'll get{' '}
+                    {type === 'severe'
+                      ? 'flood messages about danger to life or property.'
+                      : 'early alerts aboutpossible flooding.'}
                   </p>
                 </div>
               </div>

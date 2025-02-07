@@ -13,10 +13,9 @@ import { setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { csvToJson } from '../../../../common/services/CsvToJson'
 import {
-    getLocationOtherAdditional,
-    getRegistrationParams,
-    removeLocation,
-    updateLocationsAlertTypes
+  getLocationOtherAdditional,
+  getRegistrationParams,
+  updateLocationsAlertTypes
 } from '../../../../common/services/ProfileServices'
 import { getSurroundingFloodAreas } from '../../../../common/services/WfsFloodDataService'
 
@@ -170,13 +169,13 @@ export default function ViewLocationPage () {
   }, [alertArea, warningArea])
 
   const deleteLocation = async () => {
-      navigate('/manage-locations/remove', {
-        state: { 
-          name: selectedLocation.address,
-          locationId: selectedLocation.id,
-          partnerId
-          }
-      })
+    navigate('/manage-locations/remove', {
+      state: {
+        name: selectedLocation.address,
+        locationId: selectedLocation.id,
+        partnerId
+      }
+    })
   }
 
   const handleOptionalAlertSave = async (e) => {

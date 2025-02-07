@@ -8,19 +8,19 @@ import LoadingSpinner from '../../../common/components/custom/LoadingSpinner'
 import Details from '../../../common/components/gov-uk/Details'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import {
-    setFloodAlertCount,
-    setNearbyTargetAreasFlow,
-    setSelectedFloodAlertArea,
-    setSelectedFloodWarningArea,
-    setSelectedLocation,
-    setSevereFloodWarningCount,
-    setShowOnlySelectedFloodArea
+  setFloodAlertCount,
+  setNearbyTargetAreasFlow,
+  setSelectedFloodAlertArea,
+  setSelectedFloodWarningArea,
+  setSelectedLocation,
+  setSevereFloodWarningCount,
+  setShowOnlySelectedFloodArea
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { csvToJson } from '../../../common/services/CsvToJson'
 import {
-    getSurroundingFloodAreas,
-    isLocationInFloodArea
+  getSurroundingFloodAreas,
+  isLocationInFloodArea
 } from '../../../common/services/WfsFloodDataService'
 export default function LocationSearchResultsLayout ({ continueToNextPage }) {
   const dispatch = useDispatch()

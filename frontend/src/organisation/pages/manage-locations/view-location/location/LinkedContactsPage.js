@@ -92,9 +92,11 @@ export default function LinkedContactsPage () {
   const linkToContacts = () => {
     const linkLocations = [currentLocation.id]
     dispatch(setLinkLocations(linkLocations))
-    navigate(orgManageContactsUrls.view.dashboard, {state: {
-      linkLocations: linkLocations, linkSource: 'info'
-    }})
+    navigate(orgManageContactsUrls.view.dashboard, {
+      state: {
+        linkLocations, linkSource: 'info'
+      }
+    })
   }
 
   const getUnlinkText = (contactsUnlinked) => {

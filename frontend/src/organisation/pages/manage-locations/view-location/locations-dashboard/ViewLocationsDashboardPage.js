@@ -9,13 +9,13 @@ import NotificationBanner from '../../../../../common/components/gov-uk/Notifica
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
-import { setCurrentLocation, setLinkContacts, setLinkLocations } from '../../../../../common/redux/userSlice'
+import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import {
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation
 } from '../../../../../common/services/WfsFloodDataService'
-import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import LocationsTable from '../../../../components/custom/LocationsTable'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
@@ -42,7 +42,6 @@ export default function ViewLocationsDashboardPage () {
   const [selectedFilters, setSelectedFilters] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
-  const linkContacts = useSelector((state) => state.session.linkContacts)
   const [dialog, setDialog] = useState({
     show: false,
     text: '',
@@ -243,14 +242,16 @@ export default function ViewLocationsDashboardPage () {
 
   const linkContactsToLocations = () => {
     if (selectedLocations.length > 0) {
-      let linkLocations = []
+      const linkLocations = []
       selectedLocations.forEach((location) => {
         linkLocations.push(location.id)
       })
 
-      navigate(orgManageContactsUrls.view.dashboard, {state: {
-        linkLocations: linkLocations, linkSource: 'dashboard'
-      }})
+      navigate(orgManageContactsUrls.view.dashboard, {
+        state: {
+          linkLocations, linkSource: 'dashboard'
+        }
+      })
     }
   }
 

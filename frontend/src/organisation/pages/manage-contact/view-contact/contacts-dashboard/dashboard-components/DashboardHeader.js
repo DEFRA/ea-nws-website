@@ -142,7 +142,8 @@ export default function DashboardHeader ({
                 linkLocations={linkLocations}
                 selectedContacts={selectedContacts}
                 onOnlyShowSelected={onOnlyShowSelected}
-                linkSource={linkSource}/>
+                linkSource={linkSource}
+              />
             </>
             )}
       </div>

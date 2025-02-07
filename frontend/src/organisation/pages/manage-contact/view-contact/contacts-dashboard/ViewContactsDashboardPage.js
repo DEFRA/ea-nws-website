@@ -167,14 +167,16 @@ export default function ViewContactsDashboardPage () {
   const onMoreAction = (index) => {
     if (index === 0) {
       if (selectedContacts.length > 0) {
-        let linkContacts = []
+        const linkContacts = []
         selectedContacts.forEach((contact) => {
           linkContacts.push(contact.id)
         })
 
-        navigate(orgManageLocationsUrls.view.dashboard, {state: {
-          linkContacts: linkContacts, linkSource: 'dashboard'
-        }})
+        navigate(orgManageLocationsUrls.view.dashboard, {
+          state: {
+            linkContacts, linkSource: 'dashboard'
+          }
+        })
       }
     } else if (index === 1) {
       deleteDialog(selectedContacts)

@@ -30,7 +30,7 @@ export default function LinkBanner ({
     let beforeText = ''
     if (linkLocations) {
       if (currentLocation) {
-        afterText='this location'
+        afterText = 'this location'
       }
       if (selectedContacts && selectedContacts.length > 0) {
         if (selectedContacts.length > 1) {
@@ -63,7 +63,7 @@ export default function LinkBanner ({
         }
       }
     }
-    return beforeText+afterText
+    return beforeText + afterText
   }
 
   const linkLocationsContacts = async () => {
@@ -94,24 +94,32 @@ export default function LinkBanner ({
       if (!errorMessage) {
         const successMessage = getSuccessMessage()
         if (linkLocations) {
-          if (linkSource == 'dashboard') {
-            navigate(orgManageLocationsUrls.view.dashboard, {state: {
-              successMessage: successMessage
-            }})
+          if (linkSource === 'dashboard') {
+            navigate(orgManageLocationsUrls.view.dashboard, {
+              state: {
+                successMessage
+              }
+            })
           } else {
-            navigate(orgManageLocationsUrls.view.viewLinkedContacts, {state: {
-              successMessage: successMessage
-            }})
+            navigate(orgManageLocationsUrls.view.viewLinkedContacts, {
+              state: {
+                successMessage
+              }
+            })
           }
         } else if (linkContacts) {
-          if (linkSource == 'dashboard') {
-            navigate(orgManageContactsUrls.view.dashboard, {state: {
-              successMessage: successMessage
-            }})
+          if (linkSource === 'dashboard') {
+            navigate(orgManageContactsUrls.view.dashboard, {
+              state: {
+                successMessage
+              }
+            })
           } else {
-            navigate(orgManageContactsUrls.view.viewLinkedLocations, {state: {
-              successMessage: successMessage
-            }})
+            navigate(orgManageContactsUrls.view.viewLinkedLocations, {
+              state: {
+                successMessage
+              }
+            })
           }
         }
       } else {

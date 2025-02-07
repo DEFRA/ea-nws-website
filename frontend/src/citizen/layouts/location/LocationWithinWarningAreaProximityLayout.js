@@ -14,13 +14,13 @@ import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import InsetText from '../../../common/components/gov-uk/InsetText'
 import Radio from '../../../common/components/gov-uk/Radio'
 import {
-  setAdditionalAlerts,
-  setFloodAlertCount,
-  setNearbyTargetAreasFlow,
-  setSelectedFloodAlertArea,
-  setSelectedFloodWarningArea,
-  setSevereFloodWarningCount,
-  setShowOnlySelectedFloodArea
+    setAdditionalAlerts,
+    setFloodAlertCount,
+    setNearbyTargetAreasFlow,
+    setSelectedFloodAlertArea,
+    setSelectedFloodWarningArea,
+    setSevereFloodWarningCount,
+    setShowOnlySelectedFloodArea
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { csvToJson } from '../../../common/services/CsvToJson'
@@ -102,11 +102,11 @@ export default function LocationWithinWarningAreaProximityLayout ({
       if (type === 'severe') {
         dispatch(setAdditionalAlerts(true))
         setHistoricalWarningNumber(
-          selectedFloodWarningArea.properties.FWS_TACODE
+          selectedFloodWarningArea.properties.TA_CODE
         )
       } else if (type === 'alert') {
         dispatch(setAdditionalAlerts(false))
-        setHistoricalAlertNumber(selectedFloodAlertArea.properties.FWS_TACODE)
+        setHistoricalAlertNumber(selectedFloodAlertArea.properties.TA_CODE)
       }
       dispatch(setShowOnlySelectedFloodArea(true))
       dispatch(setNearbyTargetAreasFlow(true))

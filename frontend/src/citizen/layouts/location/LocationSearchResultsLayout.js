@@ -1,3 +1,4 @@
+import * as turf from '@turf/turf'
 import moment from 'moment'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
@@ -7,21 +8,20 @@ import LoadingSpinner from '../../../common/components/custom/LoadingSpinner'
 import Details from '../../../common/components/gov-uk/Details'
 import Pagination from '../../../common/components/gov-uk/Pagination'
 import {
-  setFloodAlertCount,
-  setNearbyTargetAreasFlow,
-  setSelectedFloodAlertArea,
-  setSelectedFloodWarningArea,
-  setSelectedLocation,
-  setSevereFloodWarningCount,
-  setShowOnlySelectedFloodArea
+    setFloodAlertCount,
+    setNearbyTargetAreasFlow,
+    setSelectedFloodAlertArea,
+    setSelectedFloodWarningArea,
+    setSelectedLocation,
+    setSevereFloodWarningCount,
+    setShowOnlySelectedFloodArea
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import { csvToJson } from '../../../common/services/CsvToJson'
 import {
-  getSurroundingFloodAreas,
-  isLocationInFloodArea
+    getSurroundingFloodAreas,
+    isLocationInFloodArea
 } from '../../../common/services/WfsFloodDataService'
-import * as turf from '@turf/turf'
 export default function LocationSearchResultsLayout ({ continueToNextPage }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -120,11 +120,11 @@ export default function LocationSearchResultsLayout ({ continueToNextPage }) {
         )
 
       if (isInAlertArea) {
-        setHistoricalAlertNumber(alertArea.features[0].properties.FWS_TACODE)
+        setHistoricalAlertNumber(alertArea.features[0].properties.TA_CODE)
       }
       if (isInWarningArea) {
         setHistoricalWarningNumber(
-          warningArea?.features[0].properties.FWS_TACODE
+          warningArea?.features[0].properties.TA_CODE
         )
       }
 

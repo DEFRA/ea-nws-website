@@ -13,10 +13,10 @@ import { setProfile } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import { csvToJson } from '../../../../common/services/CsvToJson'
 import {
-  getLocationOtherAdditional,
-  getRegistrationParams,
-  removeLocation,
-  updateLocationsAlertTypes
+    getLocationOtherAdditional,
+    getRegistrationParams,
+    removeLocation,
+    updateLocationsAlertTypes
 } from '../../../../common/services/ProfileServices'
 import { getSurroundingFloodAreas } from '../../../../common/services/WfsFloodDataService'
 
@@ -110,7 +110,7 @@ export default function ViewLocationPage () {
       const oneYearAgo = moment().subtract(1, 'years')
       if (alertArea) {
         const taCodes = alertArea.features.map((el) => {
-          return el.properties.FWS_TACODE
+          return el.properties.TA_CODE
         })
 
         const filteredAlert = floodHistoryData
@@ -126,7 +126,7 @@ export default function ViewLocationPage () {
 
       if (warningArea) {
         const taCodes = warningArea.features.map((el) => {
-          return el.properties.FWS_TACODE
+          return el.properties.TA_CODE
         })
 
         const filteredWarning = floodHistoryData

@@ -1,39 +1,56 @@
 import 'leaflet/dist/leaflet.css'
-import React, { useEffect, useMemo, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useState } from 'react'
 import {
   GeoJSON,
   MapContainer,
-  Marker,
-  Popup,
   TileLayer,
   ZoomControl,
   useMapEvents
 } from 'react-leaflet'
 // Leaflet Marker Icon fix
+import * as turf from '@turf/turf'
 import L from 'leaflet'
+import { Marker, Popup } from 'react-leaflet'
+import { useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import floodAlertIcon from '../../../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../../../common/assets/images/flood_warning.svg'
 import floodWarningRemovedIcon from '../../../../../common/assets/images/flood_warning_removed.svg'
 import floodSevereWarningIcon from '../../../../../common/assets/images/severe_flood_warning.svg'
+import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinner'
 import TileLayerWithHeader from '../../../../../common/components/custom/TileLayerWithHeader'
+import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../../common/services/GeoJsonHandler'
-import { getSurroundingFloodAreas } from '../../../../../common/services/WfsFloodDataService'
+import { getFloodAreaByTaCode } from '../../../../../common/services/WfsFloodDataService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
-import { locations } from '../dummy-data/LocationsDummyData'
 
-export default function LiveMap() {
+export default function LiveMap(
+  showSevereLocations = true,
+  showWarningLocations = true,
+  showAlertLocations = true
+) {
   const navigate = useNavigate()
   const orgId = useSelector((state) => state.session.orgId)
-  const [points, setPoints] = useState([])
-  const [areas, setAreas] = useState([])
   const [apiKey, setApiKey] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  //shapes and boundarys
+  const [shapes, setShapes] = useState([])
+  //Severe locations
+  const [severePoints, setSeverePoints] = useState([])
+  const [severeFloodAreas, setSevereFloodAreas] = useState([])
+  //Warning locations
+  const [warningPoints, setWarningPoints] = useState([])
+  const [warningFloodAreas, setWarningFloodAreas] = useState([])
+  //Alert locations
+  const [alertPoints, setAlertPoints] = useState([])
+  const [alertFloodAreas, setAlertFloodAreas] = useState([])
 
   async function loadMap() {
     //get orgs locations
-    const { locationsData } = await backendCall(
+    const { data: locationsData, errorMessage } = await backendCall(
       { orgId },
       'api/elasticache/list_locations',
       navigate
@@ -48,45 +65,29 @@ export default function LiveMap() {
 
     //loop through locations and convert points to geojson to calculate bbox and compare
     const locationsCollection = []
-    const markers = []
-    const shapes = []
     if (locations) {
       locations.forEach((location) => {
         let feature
-        const locationType =
-          location.meta_data.location_additional.location_data_type
+        const locationType = location.additionals.other.location_data_type
 
         if (locationType === LocationDataType.X_AND_Y_COORDS) {
           // turf accepts in the format [lng,lat] - we save points as [lat,lng]
           feature = convertDataToGeoJsonFeature('Point', [
-            location.coordinates[1],
-            location.coordinates[0]
+            location.coordinates.longitude,
+            location.coordinates.latitude
           ])
-          markers.push(location.coordinates)
         } else {
           feature = location.geometry.geoJson
-          setGeoJsonShapes((prevShapes) => [
-            ...prevShapes,
-            location.geometry.geoJson
-          ])
-          shapes.push(location.geometry.geoJson)
         }
 
         locationsCollection.push(feature)
       })
-      setPoints(points)
-      setAreas(shapes)
 
       // calculate boundary around locations
       const geoJsonFeatureCollection =
         turf.featureCollection(locationsCollection)
 
       const bbox = turf.bbox(geoJsonFeatureCollection)
-
-      const bounds = [
-        [bbox[1], bbox[0]],
-        [bbox[3], bbox[2]]
-      ]
 
       // load live alerts
       const options = {
@@ -99,66 +100,114 @@ export default function LiveMap() {
         partnerId: ''
       }
 
-      const { liveAlertsData } = await backendCall(
+      // get live alerts
+      const { data: liveAlertsData, errorMessage } = await backendCall(
         { options: options },
-        '/api/alert/list',
+        'api/alert/list',
         navigate
       )
 
-      // using live alerts, call to qgis to get flood area data - store geojson and severity level in a new list
-      //loop over live alerts and compare to feature collection (we shouldnt need seperate markers and shapes?)
-      //  - if it does intersect, add flood area and add location along with a severity level
-      //  - for shape locations, grab the centre of the flood area? ask neil to confirm
+      // loop through live alerts - loop through all locations to find affected locations
+      for (const liveAlert of liveAlertsData.alerts) {
+        const TA_CODE = getExtraInfo(
+          liveAlert.mode.zoneDesc.placemarks[0].geometry.extraInfo,
+          'TA_CODE'
+        )
+        const severity = liveAlert.type
+        const floodArea = await getFloodAreaByTaCode(TA_CODE)
+
+        for (const location of locations) {
+          const locationType = location.additionals.other.location_data_type
+          if (locationType === LocationDataType.X_AND_Y_COORDS) {
+            const point = convertDataToGeoJsonFeature('Point', [
+              location.coordinates.longitude,
+              location.coordinates.latitude
+            ])
+
+            const intersects = turf.booleanIntersects(point, floodArea.geometry)
+
+            if (intersects) {
+              switch (severity) {
+                case AlertType.SEVERE_FLOOD_WARNING:
+                  setSeverePoints((prevPoints) => [...prevPoints, point])
+                  setSevereFloodAreas((prevAreas) => [...prevAreas, floodArea])
+                  break
+
+                case AlertType.FLOOD_WARNING:
+                  setWarningPoints((prevPoints) => [...prevPoints, point])
+                  setWarningFloodAreas((prevAreas) => [...prevAreas, floodArea])
+                  break
+
+                case AlertType.FLOOD_ALERT:
+                  setAlertPoints((prevPoints) => [...prevPoints, point])
+                  setAlertFloodAreas((prevAreas) => [...prevAreas, floodArea])
+                  break
+              }
+            }
+          } else {
+            // const flattenedFloodArea = flattenIfMultiPolygon(floodArea.geometry)
+            // const flattenedLocation = flattenIfMultiPolygon(
+            //   location.geometry.geoJson
+            // )
+            // let intersectionPoint
+            // flattenedFloodArea.features.forEach((floodPolygon) => {
+            //   flattenedLocation.features.forEach((locationPolygon) => {
+            //     console.log('floodPolygon', floodPolygon)
+            //     console.log('locationPolygon', locationPolygon)
+            //     intersectionPoint = turf.intersect(
+            //       floodPolygon.geometry,
+            //       locationPolygon.geometry
+            //     )
+            //     // If an intersection is found, break out of the loop
+            //     if (intersectionPoint) {
+            //       console.log('Intersection found:', intersectionPoint)
+            //       setShapes((prevShapes) => [
+            //         ...prevShapes,
+            //         location.geometry.geoJson
+            //       ])
+            //       return
+            //     }
+            //   })
+            // })
+            // if (intersectionPoint) {
+            //   console.log('intersectionPoint', intersectionPoint)
+            // }
+          }
+        }
+      }
     } else {
       // show that user has no locations in account
     }
   }
 
-  useEffect(() => {
-    async function fetchFloodAreaData() {}
-    fetchFloodAreaData()
-  }, [])
+  const flattenIfMultiPolygon = (geometry) => {
+    if (geometry.type === 'MultiPolygon') {
+      return turf.flatten(geometry)
+    }
+    return {
+      type: 'FeatureCollection',
+      features: [geometry]
+    }
+  }
 
-  // get flood area data
-  useEffect(() => {
-    async function fetchFloodAreaData() {}
-    fetchFloodAreaData()
-  }, [])
-
-  const [alertArea, setAlertArea] = useState(null)
-  const [warningArea, setWarningArea] = useState(null)
-  const [mapCenter, setMapCenter] = useState(null)
-  const [zoomLevel, setZoomLevel] = useState(null)
-
-  useEffect(() => {
-    async function fetchFloodAreaData() {
-      if (zoomLevel >= 12 && mapCenter) {
-        const { alertArea, warningArea } = await getSurroundingFloodAreas(
-          mapCenter.lat,
-          mapCenter.lng,
-          2
-        )
-        setAlertArea(alertArea)
-        setWarningArea(warningArea)
+  const getExtraInfo = (extraInfo, id) => {
+    if (extraInfo) {
+      for (let i = 0; i < extraInfo.length; i++) {
+        if (extraInfo[i].id === id) {
+          return extraInfo[i].value?.s
+        }
       }
     }
-    fetchFloodAreaData()
-  }, [mapCenter, zoomLevel])
-
-  const ZoomTracker = () => {
-    const map = useMapEvents({
-      zoomend: () => {
-        setZoomLevel(map.getZoom())
-      },
-      moveend: () => {
-        // get center
-        const center = map.getCenter()
-        setMapCenter({ lat: center.lat, lng: center.lng })
-      }
-    })
-
-    return null
+    return ''
   }
+
+  useEffect(() => {
+    ;(async () => {
+      await loadMap()
+      setLoading(false)
+      console.log('finished')
+    })()
+  }, [])
 
   const floodSevereWarningMarker = L.icon({
     iconUrl: floodSevereWarningIcon,
@@ -244,86 +293,124 @@ export default function LiveMap() {
     []
   )
 
-  useEffect(() => {
-    if (zoomLevel < 12) {
-      if (warningAreaRef.current) {
-        warningAreaRef.current.clearLayers()
-      }
-      if (alertAreaRef.current) {
-        alertAreaRef.current.clearLayers()
-      }
-      setAlertArea(null)
-      setWarningArea(null)
-    }
-  }, [zoomLevel])
+  const [zoomLevel, setZoomLevel] = useState(null)
 
-  const alertAreaRef = useRef(null)
-  const warningAreaRef = useRef(null)
+  const ZoomTracker = () => {
+    const map = useMapEvents({
+      zoomend: () => {
+        setZoomLevel(map.getZoom())
+      }
+    })
 
-  const getMarker = (type) => {
-    switch (type) {
-      case 'severe':
-        return floodSevereWarningMarker
-      case 'warning':
-        return floodWarningMarker
-      case 'alert':
-        return floodAlertMarker
-      case 'removed':
-        return floodWarningRemovedMarker
-    }
+    return null
   }
 
   return (
     <>
-      <MapContainer
-        center={[52.7152, -1.17349]}
-        zoom={7}
-        zoomControl={false}
-        attributionControl={false}
-        minZoom={7}
-        maxBounds={maxBounds}
-        className='live-map-container'
-      >
-        {osmTileLayer}
-        {apiKey && tileLayerWithHeader}
-        <ZoomControl position='bottomright' />
-        <ZoomTracker />
-        {locations.map((location, index) => (
-          <Marker
-            key={index}
-            icon={getMarker(location.type)}
-            position={[
-              location.coordinates.latitude,
-              location.coordinates.longitude
-            ]}
-          >
-            <Popup>
-              Latitude: {location.coordinates.latitude}, Longitude:{' '}
-              {location.coordinates.longitude}
-            </Popup>
-          </Marker>
-        ))}
-        {warningArea && (
-          <GeoJSON
-            key={warningArea}
-            data={warningArea}
-            style={{ color: '#f70202' }}
-            ref={(el) => {
-              warningAreaRef.current = el
-            }}
-          />
-        )}
-        {alertArea && (
-          <GeoJSON
-            key={alertArea}
-            data={alertArea}
-            style={{ color: '#ffa200' }}
-            ref={(el) => {
-              alertAreaRef.current = el
-            }}
-          />
-        )}
-      </MapContainer>
+      {loading ? (
+        <>
+          <LoadingSpinner />
+        </>
+      ) : (
+        <MapContainer
+          center={[52.7152, -1.17349]}
+          zoom={7}
+          zoomControl={false}
+          attributionControl={false}
+          minZoom={7}
+          maxBounds={maxBounds}
+          className='live-map-container'
+        >
+          {osmTileLayer}
+          {apiKey && tileLayerWithHeader}
+          <ZoomControl position='bottomright' />
+          <ZoomTracker />
+          {/* locations affected by live flood severe warning areas */}
+          {showSevereLocations && (
+            <>
+              {severePoints.length > 0 &&
+                severePoints.map((severePoint, index) => (
+                  <Marker
+                    key={index}
+                    position={[
+                      severePoint.geometry.coordinates[1],
+                      severePoint.geometry.coordinates[0]
+                    ]}
+                    icon={floodSevereWarningMarker}
+                  >
+                    <Popup />
+                  </Marker>
+                ))}
+
+              {severeFloodAreas.length > 0 &&
+                zoomLevel >= 12 &&
+                severeFloodAreas.map((floodArea, index) => (
+                  <GeoJSON
+                    key={index}
+                    data={floodArea}
+                    style={{ color: '#f70202' }}
+                  />
+                ))}
+            </>
+          )}
+          {/* locations affected by live flood warning areas */}
+          {showWarningLocations && (
+            <>
+              {warningPoints.length > 0 &&
+                warningPoints.map((warningPoint, index) => (
+                  <Marker
+                    key={index}
+                    position={[
+                      warningPoint.geometry.coordinates[1],
+                      warningPoint.geometry.coordinates[0]
+                    ]}
+                    icon={floodWarningMarker}
+                  >
+                    <Popup />
+                  </Marker>
+                ))}
+
+              {warningFloodAreas.length > 0 &&
+                zoomLevel >= 12 &&
+                warningFloodAreas.map((floodArea, index) => (
+                  <GeoJSON
+                    key={index}
+                    data={floodArea}
+                    style={{ color: '#f70202' }}
+                  />
+                ))}
+            </>
+          )}
+          {/* locations affected by live flood alert areas */}
+          {showAlertLocations && (
+            <>
+              {alertPoints.length > 0 &&
+                alertPoints.map((alertPoint, index) => (
+                  <Marker
+                    key={index}
+                    position={[
+                      alertPoint.geometry.coordinates[1],
+                      alertPoint.geometry.coordinates[0]
+                    ]}
+                    icon={floodAlertMarker}
+                  >
+                    <Popup />
+                  </Marker>
+                ))}
+
+              {alertFloodAreas.length > 0 &&
+                zoomLevel >= 12 &&
+                alertFloodAreas.map((floodArea, index) => (
+                  <GeoJSON
+                    key={index}
+                    data={floodArea}
+                    style={{ color: '#ffa200' }}
+                  />
+                ))}
+            </>
+          )}
+        </MapContainer>
+      )}
     </>
   )
 }

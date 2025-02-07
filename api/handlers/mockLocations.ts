@@ -4,7 +4,10 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Big Ben, London, SW1A 0AA',
-    coordinates: { latitude: 51.629, longitude: 0.124 },
+    coordinates: {
+      latitude: 51.49907586 * 10 ** 6,
+      longitude: -0.136347269 * 10 ** 6
+    },
     geometry: null,
     geocode: null,
     additionals: [
@@ -37,8 +40,11 @@ const locations = [
     id: '2',
     enabled: true,
     name: 'UPRN',
-    address: 'Stonehenge, Amesbury, SP4 7DE',
-    coordinates: { latitude: 51.178, longitude: -1.826 },
+    address: 'South Devon EstuariesS',
+    coordinates: {
+      latitude: 50.67978054 * 10 ** 6,
+      longitude: -3.4786089 * 10 ** 6
+    },
     geometry: null,
     geocode: null,
     additionals: [
@@ -70,8 +76,11 @@ const locations = [
     id: '3',
     enabled: true,
     name: 'UPRN',
-    address: 'Eden Project, Bodelva, PL24 2SG',
-    coordinates: { latitude: 50.362, longitude: -4.744 },
+    address: 'My house at ulverston',
+    coordinates: {
+      latitude: 54.189244 * 10 ** 6,
+      longitude: -3.06762096 * 10 ** 6
+    },
     geometry: null,
     geocode: null,
     additionals: [
@@ -107,7 +116,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'York Minster, York, YO1 7JN',
-    coordinates: { latitude: 53.961, longitude: -1.081 },
+    coordinates: { latitude: 53.961 * 10 ** 6, longitude: -1.081 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -142,28 +151,32 @@ const locations = [
     id: '5',
     enabled: true,
     name: 'UPRN',
-    address: 'Trafalgar Square, London, WC2N 5DN',
+    address: 'York',
     coordinates: null,
     geometry: {
       geoJson: {
         type: 'Feature',
         properties: {},
         geometry: {
-          type: 'LineString',
+          type: 'Polygon',
           coordinates: [
-            [-0.126, 51.498],
-            [-0.3375, 51.612],
-            [-0.475, 51.745],
-            [-0.653, 51.902],
-            [-0.9435, 52.048],
-            [-0.96, 52.24]
+            [
+              [-1.131, 53.93],
+              [-1.108, 53.97],
+              [-1.075, 53.99],
+              [-1.05, 53.99],
+              [-1.04, 53.96],
+              [-1.05, 53.93],
+              [-1.09, 53.92],
+              [-1.131, 53.93]
+            ]
           ]
         }
       }
     },
     geocode: null,
     additionals: [
-      { id: 'locationName', value: { s: 'Location_05 - line variant' } },
+      { id: 'locationName', value: { s: 'Location_05 - polygon variant' } },
       { id: 'parentID', value: { s: '' } },
       { id: 'targetAreas', value: { s: '' } },
       { id: 'keywords', value: { s: '["keyword 1", "keyword 2"]' } },
@@ -180,7 +193,7 @@ const locations = [
             location_type: '',
             action_plan: '',
             notes: '',
-            location_data_type: 'line',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_3', 'ALERT_LVL_2']
           })
         }
@@ -503,248 +516,271 @@ const locations = [
           ]
         }
       }
-    }
-  },
-  {
-    id: '12',
-    enabled: true,
-    name: 'UPRN',
-    address: 'M1 Motorway, England',
-    coordinates: null,
-    geometry: {
-      geoJson: {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'LineString',
-          coordinates: [
-            [-0.256, 51.605],
-            [-0.431, 52.1],
-            [-1.132, 52.75],
-            [-1.5, 53.1],
-            [-1.55, 53.4],
-            [-1.532, 53.8]
-          ]
-        }
-      }
     },
     geocode: null,
     additionals: [
-      { id: 'locationName', value: { s: 'Location_43 - M1 Motorway' } },
-      { id: 'keywords', value: { s: '["Motorway", "Transport"]' } },
+      { id: 'locationName', value: { s: 'Location_43 - The Cotswolds' } },
+      { id: 'keywords', value: { s: '["Cottages", "Town"]' } },
       {
         id: 'other',
         value: {
           s: JSON.stringify({
-            full_address: 'M1 Motorway, England',
+            full_address: 'The Cotswolds, England',
             postcode: '',
             x_coordinate: '',
             y_coordinate: '',
-            internal_reference: 'Major motorway',
+            internal_reference: 'Nice town',
             business_criticality: 'High',
             location_type: 'Transport',
             action_plan: '1. Monitor congestion levels.',
-            notes: 'Key transport route, heavy traffic expected.',
-            location_data_type: 'line',
+            notes: 'possible toflooding',
+            location_data_type: 'polygon',
             alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2']
           })
         }
       }
     ]
   },
+  // {
+  //   id: '12',
+  //   enabled: true,
+  //   name: 'UPRN',
+  //   address: 'M1 Motorway, England',
+  //   coordinates: null,
+  //   geometry: {
+  //     geoJson: {
+  //       type: 'Feature',
+  //       properties: {},
+  //       geometry: {
+  //         type: 'LineString',
+  //         coordinates: [
+  //           [-0.256, 51.605],
+  //           [-0.431, 52.1],
+  //           [-1.132, 52.75],
+  //           [-1.5, 53.1],
+  //           [-1.55, 53.4],
+  //           [-1.532, 53.8]
+  //         ]
+  //       }
+  //     }
+  //   },
+  //   geocode: null,
+  //   additionals: [
+  //     { id: 'locationName', value: { s: 'Location_43 - M1 Motorway' } },
+  //     { id: 'keywords', value: { s: '["Motorway", "Transport"]' } },
+  //     {
+  //       id: 'other',
+  //       value: {
+  //         s: JSON.stringify({
+  //           full_address: 'M1 Motorway, England',
+  //           postcode: '',
+  //           x_coordinate: '',
+  //           y_coordinate: '',
+  //           internal_reference: 'Major motorway',
+  //           business_criticality: 'High',
+  //           location_type: 'Transport',
+  //           action_plan: '1. Monitor congestion levels.',
+  //           notes: 'Key transport route, heavy traffic expected.',
+  //           location_data_type: 'line',
+  //           alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_2']
+  //         })
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   id: '12',
+  //   enabled: true,
+  //   name: 'UPRN',
+  //   address: 'South West Coast Path, England',
+  //   coordinates: null,
+  //   geometry: {
+  //     geoJson: {
+  //       type: 'Feature',
+  //       properties: {},
+  //       geometry: {
+  //         type: 'LineString',
+  //         coordinates: [
+  //           [-3.51, 50.7],
+  //           [-4.25, 50.9],
+  //           [-4.75, 51.1],
+  //           [-5.0, 51.3],
+  //           [-5.15, 51.5]
+  //         ]
+  //       }
+  //     }
+  //   },
+  //   geocode: null,
+  //   additionals: [
+  //     {
+  //       id: 'locationName',
+  //       value: { s: 'Location_44 - South West Coast Path' }
+  //     },
+  //     { id: 'keywords', value: { s: '["Motorway", "Transport"]' } },
+  //     {
+  //       id: 'other',
+  //       value: {
+  //         s: JSON.stringify({
+  //           full_address: 'South West Coast Path, England',
+  //           postcode: '',
+  //           x_coordinate: '',
+  //           y_coordinate: '',
+  //           internal_reference: 'National Trail',
+  //           business_criticality: 'Medium',
+  //           location_type: 'Walking Trail',
+  //           action_plan: '1. Ensure safety measures for hikers.',
+  //           notes: 'Stunning coastal views, challenging terrain.',
+  //           location_data_type: 'line',
+  //           alertTypes: ['ALERT_LVL_2']
+  //         })
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   id: '13',
+  //   enabled: true,
+  //   name: 'UPRN',
+  //   address: 'M6 Motorway, England',
+  //   coordinates: null,
+  //   geometry: {
+  //     geoJson: {
+  //       type: 'Feature',
+  //       properties: {},
+  //       geometry: {
+  //         type: 'LineString',
+  //         coordinates: [
+  //           [-1.9, 52.4],
+  //           [-2.15, 52.8],
+  //           [-2.35, 53.2],
+  //           [-2.55, 53.8],
+  //           [-2.8, 54.4]
+  //         ]
+  //       }
+  //     }
+  //   },
+  //   geocode: null,
+  //   additionals: [
+  //     { id: 'locationName', value: { s: 'Location_45 - M6 Motorway' } },
+  //     { id: 'keywords', value: { s: '["Motorway", "Transport"]' } },
+  //     {
+  //       id: 'other',
+  //       value: {
+  //         s: JSON.stringify({
+  //           full_address: 'M6 Motorway, England',
+  //           postcode: '',
+  //           x_coordinate: '',
+  //           y_coordinate: '',
+  //           internal_reference: 'Major motorway',
+  //           business_criticality: 'High',
+  //           location_type: 'Transport',
+  //           action_plan: '1. Monitor traffic conditions.',
+  //           notes: 'Connects the Midlands to the North West.',
+  //           location_data_type: 'line',
+  //           alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_3']
+  //         })
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   id: '14',
+  //   enabled: true,
+  //   name: 'UPRN',
+  //   address: "Hadrian's Wall Path, England",
+  //   coordinates: null,
+  //   geometry: {
+  //     geoJson: {
+  //       type: 'Feature',
+  //       properties: {},
+  //       geometry: {
+  //         type: 'LineString',
+  //         coordinates: [
+  //           [-2.15, 54.97],
+  //           [-2.45, 54.95],
+  //           [-2.75, 54.92],
+  //           [-3.05, 54.9],
+  //           [-3.35, 54.88]
+  //         ]
+  //       }
+  //     }
+  //   },
+  //   geocode: null,
+  //   additionals: [
+  //     { id: 'locationName', value: { s: "Location_46 - Hadrian's Wall Path" } },
+  //     { id: 'keywords', value: { s: '["Motorway", "Transport"]' } },
+  //     {
+  //       id: 'other',
+  //       value: {
+  //         s: JSON.stringify({
+  //           full_address: "Hadrian's Wall Path, England",
+  //           postcode: '',
+  //           x_coordinate: '',
+  //           y_coordinate: '',
+  //           internal_reference: 'Historic Trail',
+  //           business_criticality: 'Medium',
+  //           location_type: 'Walking Trail',
+  //           action_plan: '1. Preserve historical significance.',
+  //           notes: 'Popular for walking, follows ancient Roman Wall.',
+  //           location_data_type: 'line',
+  //           alertTypes: ['ALERT_LVL_2']
+  //         })
+  //       }
+  //     }
+  //   ]
+  // },
+  // {
+  //   id: '15',
+  //   enabled: true,
+  //   name: 'UPRN',
+  //   address: 'M25 Motorway, England',
+  //   coordinates: null,
+  //   geometry: {
+  //     geoJson: {
+  //       type: 'Feature',
+  //       properties: {},
+  //       geometry: {
+  //         type: 'LineString',
+  //         coordinates: [
+  //           [-0.22, 51.65],
+  //           [0.0, 51.7],
+  //           [0.25, 51.65],
+  //           [0.15, 51.5],
+  //           [-0.2, 51.45]
+  //         ]
+  //       }
+  //     }
+  //   },
+  //   geocode: null,
+  //   additionals: [
+  //     { id: 'locationName', value: { s: 'Location_47 - M25 Motorway' } },
+  //     { id: 'keywords', value: { s: '["Motorway", "Transport"]' } },
+  //     {
+  //       id: 'other',
+  //       value: {
+  //         s: JSON.stringify({
+  //           full_address: 'M25 Motorway, England',
+  //           postcode: '',
+  //           x_coordinate: '',
+  //           y_coordinate: '',
+  //           internal_reference: 'London Ring Road',
+  //           business_criticality: 'High',
+  //           location_type: 'Transport',
+  //           action_plan: '1. Monitor congestion.',
+  //           notes: 'Most congested motorway in the UK.',
+  //           location_data_type: 'line',
+  //           alertTypes: ['ALERT_LVL_3']
+  //         })
+  //       }
+  //     }
+  //   ]
+  // },
   {
-    id: '12',
-    enabled: true,
-    name: 'UPRN',
-    address: 'South West Coast Path, England',
-    coordinates: null,
-    geometry: {
-      geoJson: {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'LineString',
-          coordinates: [
-            [-3.51, 50.7],
-            [-4.25, 50.9],
-            [-4.75, 51.1],
-            [-5.0, 51.3],
-            [-5.15, 51.5]
-          ]
-        }
-      }
-    },
-    geocode: null,
-    additionals: [
-      {
-        id: 'locationName',
-        value: { s: 'Location_44 - South West Coast Path' }
-      },
-      { id: 'keywords', value: { s: '["Motorway", "Transport"]' } },
-      {
-        id: 'other',
-        value: {
-          s: JSON.stringify({
-            full_address: 'South West Coast Path, England',
-            postcode: '',
-            x_coordinate: '',
-            y_coordinate: '',
-            internal_reference: 'National Trail',
-            business_criticality: 'Medium',
-            location_type: 'Walking Trail',
-            action_plan: '1. Ensure safety measures for hikers.',
-            notes: 'Stunning coastal views, challenging terrain.',
-            location_data_type: 'line',
-            alertTypes: ['ALERT_LVL_2']
-          })
-        }
-      }
-    ]
-  },
-  {
-    id: '13',
-    enabled: true,
-    name: 'UPRN',
-    address: 'M6 Motorway, England',
-    coordinates: null,
-    geometry: {
-      geoJson: {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'LineString',
-          coordinates: [
-            [-1.9, 52.4],
-            [-2.15, 52.8],
-            [-2.35, 53.2],
-            [-2.55, 53.8],
-            [-2.8, 54.4]
-          ]
-        }
-      }
-    },
-    geocode: null,
-    additionals: [
-      { id: 'locationName', value: { s: 'Location_45 - M6 Motorway' } },
-      { id: 'keywords', value: { s: '["Motorway", "Transport"]' } },
-      {
-        id: 'other',
-        value: {
-          s: JSON.stringify({
-            full_address: 'M6 Motorway, England',
-            postcode: '',
-            x_coordinate: '',
-            y_coordinate: '',
-            internal_reference: 'Major motorway',
-            business_criticality: 'High',
-            location_type: 'Transport',
-            action_plan: '1. Monitor traffic conditions.',
-            notes: 'Connects the Midlands to the North West.',
-            location_data_type: 'line',
-            alertTypes: ['ALERT_LVL_1', 'ALERT_LVL_3']
-          })
-        }
-      }
-    ]
-  },
-  {
-    id: '14',
-    enabled: true,
-    name: 'UPRN',
-    address: "Hadrian's Wall Path, England",
-    coordinates: null,
-    geometry: {
-      geoJson: {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'LineString',
-          coordinates: [
-            [-2.15, 54.97],
-            [-2.45, 54.95],
-            [-2.75, 54.92],
-            [-3.05, 54.9],
-            [-3.35, 54.88]
-          ]
-        }
-      }
-    },
-    geocode: null,
-    additionals: [
-      { id: 'locationName', value: { s: "Location_46 - Hadrian's Wall Path" } },
-      { id: 'keywords', value: { s: '["Motorway", "Transport"]' } },
-      {
-        id: 'other',
-        value: {
-          s: JSON.stringify({
-            full_address: "Hadrian's Wall Path, England",
-            postcode: '',
-            x_coordinate: '',
-            y_coordinate: '',
-            internal_reference: 'Historic Trail',
-            business_criticality: 'Medium',
-            location_type: 'Walking Trail',
-            action_plan: '1. Preserve historical significance.',
-            notes: 'Popular for walking, follows ancient Roman Wall.',
-            location_data_type: 'line',
-            alertTypes: ['ALERT_LVL_2']
-          })
-        }
-      }
-    ]
-  },
-  {
-    id: '15',
-    enabled: true,
-    name: 'UPRN',
-    address: 'M25 Motorway, England',
-    coordinates: null,
-    geometry: {
-      geoJson: {
-        type: 'Feature',
-        properties: {},
-        geometry: {
-          type: 'LineString',
-          coordinates: [
-            [-0.22, 51.65],
-            [0.0, 51.7],
-            [0.25, 51.65],
-            [0.15, 51.5],
-            [-0.2, 51.45]
-          ]
-        }
-      }
-    },
-    geocode: null,
-    additionals: [
-      { id: 'locationName', value: { s: 'Location_47 - M25 Motorway' } },
-      { id: 'keywords', value: { s: '["Motorway", "Transport"]' } },
-      {
-        id: 'other',
-        value: {
-          s: JSON.stringify({
-            full_address: 'M25 Motorway, England',
-            postcode: '',
-            x_coordinate: '',
-            y_coordinate: '',
-            internal_reference: 'London Ring Road',
-            business_criticality: 'High',
-            location_type: 'Transport',
-            action_plan: '1. Monitor congestion.',
-            notes: 'Most congested motorway in the UK.',
-            location_data_type: 'line',
-            alertTypes: ['ALERT_LVL_3']
-          })
-        }
-      }
-    ]
-  },
-  {
-    id: 16,
+    id: '16',
     enabled: true,
     name: 'UPRN',
     address: 'Buckingham Palace, London, SW1A 1AA',
-    coordinates: { latitude: 51.5014, longitude: -0.1419 },
+    coordinates: { latitude: 51.5014 * 10 ** 6, longitude: -0.1419 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -771,11 +807,11 @@ const locations = [
     ]
   },
   {
-    id: 17,
+    id: '17',
     enabled: true,
     name: 'UPRN',
     address: 'Tower Bridge, London, SE1 2UP',
-    coordinates: { latitude: 51.5055, longitude: -0.0754 },
+    coordinates: { latitude: 51.5055 * 10 ** 6, longitude: -0.0754 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -802,11 +838,11 @@ const locations = [
     ]
   },
   {
-    id: 18,
+    id: '18',
     enabled: true,
     name: 'UPRN',
     address: 'Manchester Piccadilly Station, Manchester, M1 2QF',
-    coordinates: { latitude: 53.4774, longitude: -2.2313 },
+    coordinates: { latitude: 53.4774 * 10 ** 6, longitude: -2.2313 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -836,11 +872,11 @@ const locations = [
     ]
   },
   {
-    id: 19,
+    id: '19',
     enabled: true,
     name: 'UPRN',
     address: 'Liverpool Lime Street Station, Liverpool, L1 1JD',
-    coordinates: { latitude: 53.4075, longitude: -2.9778 },
+    coordinates: { latitude: 53.4075 * 10 ** 6, longitude: -2.9778 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -870,11 +906,11 @@ const locations = [
     ]
   },
   {
-    id: 20,
+    id: '20',
     enabled: true,
     name: 'UPRN',
     address: 'Birmingham New Street Station, Birmingham, B2 4QA',
-    coordinates: { latitude: 52.4776, longitude: -1.8982 },
+    coordinates: { latitude: 52.4776 * 10 ** 6, longitude: -1.8982 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -904,11 +940,11 @@ const locations = [
     ]
   },
   {
-    id: 21,
+    id: '21',
     enabled: true,
     name: 'UPRN',
     address: 'The Shard, London, SE1 9SG',
-    coordinates: { latitude: 51.5045, longitude: -0.0865 },
+    coordinates: { latitude: 51.5045 * 10 ** 6, longitude: -0.0865 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -935,11 +971,11 @@ const locations = [
     ]
   },
   {
-    id: 22,
+    id: '22',
     enabled: true,
     name: 'UPRN',
     address: 'Windsor Castle, Windsor, SL4 1NJ',
-    coordinates: { latitude: 51.4839, longitude: -0.6044 },
+    coordinates: { latitude: 51.4839 * 10 ** 6, longitude: -0.6044 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -966,11 +1002,11 @@ const locations = [
     ]
   },
   {
-    id: 23,
+    id: '23',
     enabled: true,
     name: 'UPRN',
     address: 'Oxford University, Oxford, OX1 2JD',
-    coordinates: { latitude: 51.7548, longitude: -1.2544 },
+    coordinates: { latitude: 51.7548 * 10 ** 6, longitude: -1.2544 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -997,11 +1033,11 @@ const locations = [
     ]
   },
   {
-    id: 24,
+    id: '24',
     enabled: true,
     name: 'UPRN',
     address: 'Cambridge University, Cambridge, CB2 1TN',
-    coordinates: { latitude: 52.2053, longitude: 0.1218 },
+    coordinates: { latitude: 52.2053 * 10 ** 6, longitude: 0.1218 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -1031,11 +1067,11 @@ const locations = [
     ]
   },
   {
-    id: 25,
+    id: '25',
     enabled: true,
     name: 'UPRN',
     address: 'York Minster, York, YO1 7HH',
-    coordinates: { latitude: 53.961, longitude: -1.0815 },
+    coordinates: { latitude: 53.961 * 10 ** 6, longitude: -1.0815 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -1062,11 +1098,11 @@ const locations = [
     ]
   },
   {
-    id: 25,
+    id: '25',
     enabled: true,
     name: 'UPRN',
     address: 'York Minster, York, YO1 7HH',
-    coordinates: { latitude: 53.961, longitude: -1.0815 },
+    coordinates: { latitude: 53.961 * 10 ** 6, longitude: -1.0815 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -1093,11 +1129,11 @@ const locations = [
     ]
   },
   {
-    id: 26,
+    id: '26',
     enabled: true,
     name: 'UPRN',
     address: 'Newcastle Central Station, Newcastle, NE1 5DL',
-    coordinates: { latitude: 54.9689, longitude: -1.6174 },
+    coordinates: { latitude: 54.9689 * 10 ** 6, longitude: -1.6174 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -1124,7 +1160,7 @@ const locations = [
     ]
   },
   {
-    id: 27,
+    id: '27',
     enabled: true,
     name: 'UPRN',
     address: 'Lake District National Park, Cumbria',
@@ -1189,7 +1225,7 @@ const locations = [
     ]
   },
   {
-    id: 28,
+    id: '28',
     enabled: true,
     name: 'UPRN',
     address: 'New Forest National Park, Hampshire',
@@ -1255,7 +1291,7 @@ const locations = [
     ]
   },
   {
-    id: 29,
+    id: '29',
     enabled: true,
     name: 'UPRN',
     address: 'South Downs National Park, Sussex',
@@ -1322,7 +1358,7 @@ const locations = [
     ]
   },
   {
-    id: 30,
+    id: '30',
     enabled: true,
     name: 'UPRN',
     address: 'Exmoor National Park, Somerset',

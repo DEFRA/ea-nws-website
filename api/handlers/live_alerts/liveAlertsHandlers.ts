@@ -13,9 +13,10 @@ async function getAlertsList(
   //     options: { contactId: string }
   //   }
 
-  console.log('alerts', mockLiveAlerts.liveAlerts)
-
-  return { alerts: mockLiveAlerts.liveAlerts }
+  return {
+    alerts: mockLiveAlerts.liveAlerts.alerts,
+    total: mockLiveAlerts.liveAlerts.total
+  }
 }
 
 async function getAlert(

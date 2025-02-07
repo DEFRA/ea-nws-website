@@ -1,6 +1,6 @@
 import { faSquareFull } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import floodAlertIcon from '../../../../common/assets/images/flood_alert.svg'
@@ -9,7 +9,6 @@ import floodWarningRemovedIcon from '../../../../common/assets/images/flood_warn
 import floodSevereWarningIcon from '../../../../common/assets/images/severe_flood_warning.svg'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
-import { backendCall } from '../../../../common/services/BackendService'
 import { orgFloodReportsUrls } from '../../../routes/flood-reports/FloodReportsRoutes'
 import FloodTypeFilter from './monitoring-components/FloodTypeFilter'
 import LiveMap from './monitoring-components/LiveMap'
@@ -18,24 +17,12 @@ export default function LiveFLoodMonitoringPage() {
   const navigate = useNavigate()
   const [activeLocations] = useState(true)
 
-  async function getBboxOfAllLocations() {}
-
-  useEffect(async () => {
-    const { data, errorMessage } = await backendCall(
-      {},
-      'api/alert/list',
-      navigate
-    )
-    console.log('data life', data)
-    console.log('errorMessage live', errorMessage)
-  }, [])
-
   return (
     <>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4 govuk-body'>
         <div className='govuk-grid-row'>
-          <div class='govuk-grid-column-full'>
+          <div class='govuk-grid-column-one-third'>
             <h1 class='govuk-heading-l'>Live flood warnings</h1>
             <Link
               class='govuk-heading-m govuk-link'

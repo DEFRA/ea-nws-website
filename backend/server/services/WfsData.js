@@ -6,6 +6,7 @@ const getWfsData = async (WFSParams) => {
   const wfsURL = `${baseWFSURL}?${new URLSearchParams(WFSParams).toString()}`
 
   try {
+    console.log(wfsURL)
     const wfsData = await fetch(wfsURL).then((response) => response.json())
     return { status: 200, data: wfsData }
   } catch (error) {

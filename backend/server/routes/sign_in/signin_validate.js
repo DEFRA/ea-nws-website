@@ -17,7 +17,6 @@ module.exports = [
         if (!request.payload) {
           return createGenericErrorResponse(h)
         }
-
         const { signinToken, code, signinType } = request.payload
         const error = authCodeValidation(code)
 
@@ -31,12 +30,19 @@ module.exports = [
               { authToken: response.data.authToken },
               'location/list'
             )
+
             const contactRes = await apiCall(
               { authToken: response.data.authToken },
               'organization/listContacts'
             )
+
             // Send the profile to elasticache
-            await orgSignIn(response.data.profile, response.data.organization, locationRes.data.locations, contactRes.data.contacts)
+            await orgSignIn(
+              response.data.profile,
+              response.data.organization,
+              locationRes.data.locations,
+              contactRes.data.contacts
+            )
           }
           return h.response(response)
         } else {

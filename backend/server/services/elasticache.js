@@ -436,7 +436,6 @@ const listLinkedContacts = async (orgId, locationID) => {
             const contactKey = orgId + ':t_Contacts:' + contactID
             const contact = await getJsonData(contactKey)
             contactArr.push(contact)
-            // console.log(locationArr)
           }))
       }
     }))
@@ -453,7 +452,6 @@ const listLinkedLocations = async (orgId, contactID) => {
 
   if (arrExists) {
     const linkedArr = await getJsonData(key)
-    console.log(linkedArr)
 
     await Promise.all(linkedArr.map(async (link) => {
       if (link.id === contactID) {
@@ -462,13 +460,10 @@ const listLinkedLocations = async (orgId, contactID) => {
             const locKey = orgId + ':t_POIS:' + locationID
             const location = await getJsonData(locKey)
             locationArr.push(location)
-            // console.log(locationArr)
           }))
       }
     }))
   }
-
-  console.log(locationArr)
 
   return locationArr
 }

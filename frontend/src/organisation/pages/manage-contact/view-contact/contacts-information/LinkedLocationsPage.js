@@ -148,8 +148,9 @@ export default function LinkedLocationsPage () {
 
   const linkToLocations = () => {
     const linkContacts = [currentContact.id]
-    dispatch(setLinkContacts(linkContacts))
-    navigate(orgManageLocationsUrls.view.dashboard)
+    navigate(orgManageLocationsUrls.view.dashboard, {state: {
+      linkContacts: linkContacts, linkSource: 'info'
+    }})
   }
 
   const onUnlink = async (e, action, location) => {

@@ -13,7 +13,8 @@ export default function DashboardHeader ({
   onClickLinked,
   linkLocations,
   selectedContacts,
-  onOnlyShowSelected
+  onOnlyShowSelected,
+  linkSource
 }) {
   const navigate = useNavigate()
 
@@ -137,7 +138,11 @@ export default function DashboardHeader ({
                 Select the contacts you want to link to this location from the list. Then select<br />
                 Link location to contacts.
               </p>
-              <LinkBanner linkLocations={linkLocations} selectedContacts={selectedContacts} onOnlyShowSelected={onOnlyShowSelected} />
+              <LinkBanner
+                linkLocations={linkLocations}
+                selectedContacts={selectedContacts}
+                onOnlyShowSelected={onOnlyShowSelected}
+                linkSource={linkSource}/>
             </>
             )}
       </div>

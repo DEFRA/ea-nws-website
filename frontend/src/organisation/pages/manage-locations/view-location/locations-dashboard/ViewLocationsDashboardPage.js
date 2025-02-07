@@ -40,7 +40,6 @@ export default function ViewLocationsDashboardPage () {
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [displayedLocations, setDisplayedLocations] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
-  const [savedLinkContacts, setSavedLinkContacts] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const linkContacts = useSelector((state) => state.session.linkContacts)
@@ -123,8 +122,8 @@ export default function ViewLocationsDashboardPage () {
 
         location.linked_contacts = []
         if (data) {
-          data.forEach((contactID) => {
-            location.linked_contacts.push(contactID)
+          data.forEach((contact) => {
+            location.linked_contacts.push(contact.id)
           })
         }
       })
@@ -134,9 +133,6 @@ export default function ViewLocationsDashboardPage () {
     }
 
     getLocations()
-
-    setSavedLinkContacts(linkContacts)
-    dispatch(setLinkContacts(null))
   }, [])
 
   const getRiskCategory = async ({ riskAreaType, location }) => {
@@ -247,14 +243,14 @@ export default function ViewLocationsDashboardPage () {
 
   const linkContactsToLocations = () => {
     if (selectedLocations.length > 0) {
-      const linkLocations = []
+      let linkLocations = []
       selectedLocations.forEach((location) => {
         linkLocations.push(location.id)
       })
 
-      dispatch(setCurrentLocation(webToGeoSafeLocation(selectedLocations[0])))
-      dispatch(setLinkLocations(linkLocations))
-      navigate(orgManageContactsUrls.view.dashboard)
+      navigate(orgManageContactsUrls.view.dashboard, {state: {
+        linkLocations: linkLocations, linkSource: 'dashboard'
+      }})
     }
   }
 
@@ -416,10 +412,11 @@ export default function ViewLocationsDashboardPage () {
           </div>
           <DashboardHeader
             locations={locations}
-            linkContacts={savedLinkContacts}
+            linkContacts={location.state?.linkContacts}
             selectedLocations={selectedLocations}
             onClickLinked={onClickLinked}
             onOnlyShowSelected={onOnlyShowSelected}
+            linkSource={location.state?.linkSource}
           />
           <div className='govuk-grid-column-full govuk-body'>
             {!isFilterVisible
@@ -430,7 +427,7 @@ export default function ViewLocationsDashboardPage () {
                     className='govuk-button govuk-button--secondary inline-block'
                     onClick={() => onOpenCloseFilter()}
                   />
-                  {savedLinkContacts && savedLinkContacts.length === 0 && (
+                  {(!location.state || !location.state.linkContacts || location.state.linkContacts.length === 0) && (
                     <>
                     &nbsp; &nbsp;
                       <ButtonMenu
@@ -457,7 +454,7 @@ export default function ViewLocationsDashboardPage () {
                     setResetPaging={setResetPaging}
                     onAction={onAction}
                     actionText='Delete'
-                    linkContacts={savedLinkContacts}
+                    linkContacts={location.state?.linkContacts}
                   />
                   <Pagination
                     totalPages={Math.ceil(
@@ -527,7 +524,7 @@ export default function ViewLocationsDashboardPage () {
                         className='govuk-button govuk-button--secondary'
                         onClick={() => onOpenCloseFilter()}
                       />
-                      {savedLinkContacts && savedLinkContacts.length === 0 && (
+                      {(!location.state || !location.state.linkContacts || location.state.linkContacts.length === 0) && (
                         <>
                         &nbsp; &nbsp;
                           <ButtonMenu
@@ -555,7 +552,7 @@ export default function ViewLocationsDashboardPage () {
                       setResetPaging={setResetPaging}
                       onAction={onAction}
                       actionText='Delete'
-                      linkContacts={savedLinkContacts}
+                      linkContacts={location.state?.linkContacts}
                     />
                     <Pagination
                       totalPages={Math.ceil(

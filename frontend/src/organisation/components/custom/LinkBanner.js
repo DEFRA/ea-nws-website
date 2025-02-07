@@ -14,7 +14,8 @@ export default function LinkBanner ({
   linkContacts,
   selectedLocations,
   selectedContacts,
-  onOnlyShowSelected
+  onOnlyShowSelected,
+  linkSource
 }) {
   const navigate = useNavigate()
 
@@ -93,14 +94,25 @@ export default function LinkBanner ({
       if (!errorMessage) {
         const successMessage = getSuccessMessage()
         if (linkLocations) {
-
-          navigate(orgManageLocationsUrls.view.dashboard, {state: {
-            successMessage: successMessage
-          }})
+          if (linkSource == 'dashboard') {
+            navigate(orgManageLocationsUrls.view.dashboard, {state: {
+              successMessage: successMessage
+            }})
+          } else {
+            navigate(orgManageLocationsUrls.view.viewLinkedContacts, {state: {
+              successMessage: successMessage
+            }})
+          }
         } else if (linkContacts) {
-          navigate(orgManageContactsUrls.view.dashboard, {state: {
-            successMessage: successMessage
-          }})
+          if (linkSource == 'dashboard') {
+            navigate(orgManageContactsUrls.view.dashboard, {state: {
+              successMessage: successMessage
+            }})
+          } else {
+            navigate(orgManageContactsUrls.view.viewLinkedLocations, {state: {
+              successMessage: successMessage
+            }})
+          }
         }
       } else {
         console.log(errorMessage)

@@ -170,28 +170,13 @@ export default function ViewLocationPage () {
   }, [alertArea, warningArea])
 
   const deleteLocation = async () => {
-    const data = {
-      authToken,
-      locationId: selectedLocation.id,
-      partnerId
-    }
-
-    const { errorMessage } = await backendCall(
-      data,
-      'api/partner/unregister_location_from_partner',
-      navigate
-    )
-
-    if (!errorMessage) {
-      const updatedProfile = removeLocation(profile, selectedLocation.address)
-      dispatch(setProfile(updatedProfile))
-
-      await updateGeosafeProfile(updatedProfile)
-
       navigate('/manage-locations/remove', {
-        state: { name: selectedLocation.address }
+        state: { 
+          name: selectedLocation.address,
+          locationId: selectedLocation.id,
+          partnerId
+          }
       })
-    }
   }
 
   const handleOptionalAlertSave = async (e) => {

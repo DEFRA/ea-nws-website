@@ -61,7 +61,7 @@ export default function ValidateLandlineLayout ({
         }
       } else {
         dispatch(setProfile(data.profile))
-        navigateToNextPage()
+        navigateToNextPage(homePhone)
       }
     }
   }

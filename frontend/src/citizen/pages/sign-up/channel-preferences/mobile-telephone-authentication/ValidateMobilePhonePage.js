@@ -9,11 +9,11 @@ export default function ValidateMobilePhone () {
     (state) => state.session.contactPreferences
   )
 
-  const navigateToNextPage = () => {
+  const navigateToNextPage = (mobile) => {
     if (contactPreferences.includes('PhoneCall')) {
-      navigate('/signup/contactpreferences/landline/add')
+      navigate('/signup/contactpreferences/landline/add', {state: {banner: {heading: 'Mobile number confirmed', text: mobile}}})
     } else {
-      navigate('/signup/accountname/add', {state: 'mobile'})
+      navigate('/signup/accountname/add', {state: {banner: {heading: 'Mobile number confirmed', text: mobile}}})
     }
   }
   const SkipValidation = () => {

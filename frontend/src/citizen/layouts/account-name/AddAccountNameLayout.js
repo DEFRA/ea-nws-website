@@ -17,12 +17,10 @@ export default function AddAccountNameLayout ({
   changeName,
   updateProfile,
   profileError,
-  signupFlow = false
 }) {
   const dispatch = useDispatch()
   const [error, setError] = useState('')
   const session = useSelector((state) => state.session)
-  const currentContact = useSelector((state) => state.session?.currentContact)
   const authToken = session.authToken
   const [fullName, setFullName] = useState(
     session.profile?.firstname && session.profile?.lastname
@@ -30,8 +28,6 @@ export default function AddAccountNameLayout ({
       : ''
   )
   const location = useLocation()
-
-  const notificationHeading = location?.state === 'mobile' ? 'Mobile number confirmed' : location?.state === 'landline' ? 'Telephone number confirmed' : ''
 
   const handleSubmit = async () => {
     const validationError = fullNameValidation(fullName)
@@ -63,11 +59,11 @@ export default function AddAccountNameLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
-            {(currentContact && signupFlow) && <NotificationBanner
+            {location?.state?.banner && <NotificationBanner
                   className='govuk-notification-banner govuk-notification-banner--success'
                   title='Success'
-                  heading={notificationHeading}
-                  text={currentContact}
+                  heading={location?.state?.banner?.heading}
+                  text={location?.state?.banner?.text}
                 />}
             <h2 className='govuk-heading-l'>
               {changeName ? 'Change your name' : 'Enter your name'}

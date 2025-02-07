@@ -1,7 +1,7 @@
 /* eslint-disable no-use-before-define */
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
@@ -29,8 +29,8 @@ export default function SelectAlternativeLandlineLayout ({
   const dispatch = useDispatch()
   const profile = useSelector((state) => state.session.profile)
   const authToken = useSelector((state) => state.session.authToken)
-  const currentContact = useSelector((state) => state.session?.currentContact)
-
+  const location = useLocation()
+  
   const unverifiedMobileNumbers = []
   profile.unverified && profile.unverified?.mobilePhones?.forEach((entry) => { unverifiedMobileNumbers.push(entry.address) })
   const verifiedMobileNumbers = profile.mobilePhones
@@ -100,11 +100,11 @@ export default function SelectAlternativeLandlineLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error, validationError]} />}
-            {currentContact && <NotificationBanner
+            {location?.state?.banner && <NotificationBanner
                   className='govuk-notification-banner govuk-notification-banner--success'
                   title='Success'
-                  heading='Mobile number confirmed'
-                  text={currentContact}
+                  heading={location?.state?.banner?.heading}
+                  text={location?.state?.banner?.text}
                 />}
             <h2 className='govuk-heading-l'>
               Which telephone number do you want to use to get flood messages

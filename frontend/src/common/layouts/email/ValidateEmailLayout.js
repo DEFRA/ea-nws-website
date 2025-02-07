@@ -66,7 +66,7 @@ export default function ValidateEmailLayout ({
           setError(profileError)
         } else {
           dispatch(setProfile(data.profile))
-          navigateToNextPage()
+          navigateToNextPage(email)
         }
       }
     }

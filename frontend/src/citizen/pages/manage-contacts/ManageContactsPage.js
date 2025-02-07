@@ -24,7 +24,7 @@ export default function ManageContactsPage () {
           first
         </>
       )
-    } else if (unconfirmedtype === 'mobile telephone number') {
+    } else if (unconfirmedtype === 'mobilePhone') {
       return (
         <>
           You need to{' '}
@@ -44,6 +44,19 @@ export default function ManageContactsPage () {
         first
       </>
     )
+  }
+
+  const confirmedHeading = (confirmedtype) => {
+    switch (confirmedtype) {
+      case 'email':
+        return 'Email address confirmed'
+      case 'mobilePhone':
+        return 'Mobile number confirmed'
+      case 'homePhone':
+        return 'Telephone number confirmed'
+      default:
+        return
+    }
   }
 
   const detailsMessage = (
@@ -84,6 +97,16 @@ export default function ManageContactsPage () {
             ' yet'
           }
             text={unconfirmedMessage(location.state.unconfirmedtype)}
+          />
+          )
+        : null}
+      {location.state !== null && location.state.confirmedtype
+        ? (
+          <NotificationBanner
+            className='govuk-notification-banner govuk-notification-banner--success govuk-!-margin-bottom-0 govuk-!-margin-top-4'
+            title='Success'
+            heading={confirmedHeading(location.state.confirmedtype)}
+            text={location.state.confirmedvalue+' will receive flood messages'}
           />
           )
         : null}

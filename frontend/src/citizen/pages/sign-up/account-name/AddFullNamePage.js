@@ -42,7 +42,6 @@ export default function AddFullNamePage () {
       buttonText='Continue'
       updateProfile={updateProfile}
       profileError={error}
-      signupFlow={true}
     />
   )
 }

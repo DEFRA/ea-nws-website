@@ -139,7 +139,6 @@ const userSlice = createSlice({
         { id: 'parentID', value: { s: '' } },
         { id: 'targetAreas', value: { s: '' } },
         { id: 'keywords', value: { s: '[]' } },
-        { id: 'childrenIDs', value: { s: '[]' } },
         {
           id: 'other',
           value: {
@@ -156,7 +155,8 @@ const userSlice = createSlice({
               action_plan: null,
               notes: null,
               location_data_type: null,
-              alertTypes: []
+              alertTypes: [],
+              childrenIDs: []
             })
           }
         }
@@ -353,7 +353,8 @@ const userSlice = createSlice({
                 action_plan: null,
                 notes: null,
                 location_data_type: null,
-                alertTypes: []
+                alertTypes: [],
+                childrenIDs: []
               })
             }
           }
@@ -406,13 +407,6 @@ const userSlice = createSlice({
       setAdditional(
         state.currentLocation.additionals,
         'keywords',
-        action.payload
-      )
-    },
-    setCurrentLocationChildrenIDs: (state, action) => {
-      setAdditional(
-        state.currentLocation.additionals,
-        'childrenIDs',
         action.payload
       )
     },
@@ -490,6 +484,13 @@ const userSlice = createSlice({
       setLocationOtherAdditionals(
         state.currentLocation.additionals,
         'alertTypes',
+        action.payload
+      )
+    },
+    setCurrentLocationChildrenIDs: (state, action) => {
+      setLocationOtherAdditionals(
+        state.currentLocation.additionals,
+        'childrenIDs',
         action.payload
       )
     },
@@ -971,9 +972,9 @@ export const {
   setCurrentLocationActionPlan,
   setCurrentLocationNotes,
   setCurrentLocationKeywords,
-  setCurrentLocationChildrenIDs,
   setCurrentLocationDataType,
   setCurrentLocationAlertTypes,
+  setCurrentLocationChildrenIDs,
   // org data
   setOrganization,
   setOrganizationId,

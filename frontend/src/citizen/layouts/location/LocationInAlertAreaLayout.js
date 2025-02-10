@@ -99,6 +99,7 @@ export default function LocationInAlertAreaLayout ({
       // if user is in sign up flow, then profile returned will be undefined
       if (updatedProfile) {
         await registerLocationToPartner(updatedProfile)
+        dispatch(setProfile(updatedProfile))
       }
     }
 
@@ -129,9 +130,14 @@ export default function LocationInAlertAreaLayout ({
         params: getRegistrationParams(profile, alertTypes)
       }
 
+      const backendRoute = additionalAlerts
+        ? 'api/partner/update_location_registration'
+        : 'api/partner/register_location_to_partner'
+
+
       await backendCall(
         data,
-        'api/partner/register_location_to_partner',
+        backendRoute,
         navigate
       )
     }
@@ -164,6 +170,7 @@ export default function LocationInAlertAreaLayout ({
       // if user has added flood alert area, then we need to unregister from that
       if (isUserInNearbyTargetFlowpath && updatedProfile) {
         unregisterLocationFromPartner(updatedProfile)
+        dispatch(setProfile(updatedProfile))
       }
     }
 

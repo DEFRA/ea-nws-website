@@ -85,6 +85,7 @@ export default function LocationInSevereWarningAreaLayout ({
       // if user is in sign up flow, then profile returned will be undefined
       if (updatedProfile) {
         await registerLocationToPartner(updatedProfile)
+        dispatch(setProfile(updatedProfile))
       }
     }
 
@@ -124,6 +125,7 @@ export default function LocationInSevereWarningAreaLayout ({
       // if user is in sign up flow, then profile returned will be undefined
       if (updatedProfile) {
         unregisterLocationFromPartner(updatedProfile)
+        dispatch(setProfile(updatedProfile))
       }
     }
 

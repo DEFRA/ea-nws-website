@@ -21,7 +21,7 @@ frontend:
       image:
         repository: 533267401207.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
         pullPolicy: Always
-        tag: "frontend-0.3.2"
+        tag: "frontend-0.3.3"
       livenessProbe:
         httpGet:
           path: /
@@ -48,7 +48,7 @@ frontend:
   ingress:
     enabled: false
   nodeSelector:
-    eks.amazonaws.com/nodegroup: public-website-20241126153657334000000005
+    eks.amazonaws.com/nodegroup: public-website-20250205094904337900000001
 
   tolerations: []
   affinity:
@@ -92,7 +92,7 @@ backend:
       image:
         repository: 533267401207.dkr.ecr.eu-west-2.amazonaws.com/ea-nws-website-containers
         pullPolicy: Always
-        tag: "backend-0.3.2"
+        tag: "backend-0.3.3"
       livenessProbe:
         httpGet:
           path: /liveness
@@ -119,7 +119,7 @@ backend:
   ingress:
     enabled: false
   nodeSelector:
-    eks.amazonaws.com/nodegroup: public-website-20241126153657334000000005
+    eks.amazonaws.com/nodegroup: public-website-20250205094904337900000001
   tolerations: []
   affinity:
     podAntiAffinity:

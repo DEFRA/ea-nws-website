@@ -23,6 +23,19 @@ export default function SubscribedLocationTable ({ setError }) {
     currentPage * locationsPerPage
   )
   const maxLocations = 15
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall(
+      'data',
+      'api/service/get_partner_id'
+    )
+    setPartnerId(data)
+  }
+
+  useEffect(() => {
+    getPartnerId()
+  }, [])
 
   const detailsMessage = (
     <div>
@@ -120,7 +133,9 @@ export default function SubscribedLocationTable ({ setError }) {
           <Link
             to='/manage-locations/remove'
             state={{
-              name: location.address
+              name: location.address,
+              locationId: location.id,
+              partnerId
             }}
             className='govuk-link'
           >

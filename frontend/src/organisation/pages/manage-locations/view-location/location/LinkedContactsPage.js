@@ -214,7 +214,7 @@ export default function LinkedContactsPage () {
               setResetPaging={setResetPaging}
               onAction={onAction}
               actionText='Unlink'
-              contactPrefix={'linked'}
+              contactPrefix='linked'
             />
             <Pagination
               totalPages={Math.ceil(

@@ -19,7 +19,7 @@ export default function LocationsTable ({
   onAction,
   actionText,
   linkContacts,
-  locationPrefix,
+  locationPrefix
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()

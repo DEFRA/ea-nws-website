@@ -274,7 +274,7 @@ export default function LinkedLocationsPage () {
               setResetPaging={setResetPaging}
               onAction={onAction}
               actionText='Unlink'
-              locationPrefix={'linked'}
+              locationPrefix='linked'
             />
             <Pagination
               totalPages={Math.ceil(

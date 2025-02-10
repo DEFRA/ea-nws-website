@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
@@ -14,6 +15,11 @@ import { orgManageContactsUrls } from '../../../../routes/manage-contacts/Manage
 import ContactsTable from './dashboard-components/ContactsTable'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
+import { csvToJson } from '../../../../../common/services/CsvToJson'
+import {
+  getSurroundingFloodAreas,
+  isLocationInFloodArea
+} from '../../../../../common/services/WfsFloodDataService'
 
 export default function ViewContactsDashboardPage () {
   const navigate = useNavigate()
@@ -31,6 +37,8 @@ export default function ViewContactsDashboardPage () {
   const [selectedFilters, setSelectedFilters] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
+  const [floodHistoryUrl, setHistoryUrl] = useState(null)
+  const [floodHistoryData, setFloodHistoryData] = useState(null)
   const [dialog, setDialog] = useState({
     show: false,
     text: '',
@@ -61,6 +69,26 @@ export default function ViewContactsDashboardPage () {
       )
     )
   }, [filteredContacts, currentPage])
+
+  useEffect(() => {
+    async function getHistoryUrl () {
+      const { data } = await backendCall(
+        'data',
+        'api/locations/download_flood_history'
+      )
+      setHistoryUrl(data)
+    }
+
+    getHistoryUrl()
+    floodHistoryUrl && fetch(floodHistoryUrl)
+      .then((response) => response.text())
+      .then((data) => {
+        setFloodHistoryData(csvToJson(data))
+      })
+      .catch((e) =>
+        console.error('Could not fetch Historic Flood Warning file', e)
+      )
+  }, [floodHistoryUrl])
 
   useEffect(() => {
     const getContacts = async () => {
@@ -236,6 +264,51 @@ export default function ViewContactsDashboardPage () {
       const contactsToRemove = [...selectedContacts]
       removeContacts(contactsToRemove)
     }
+  }
+
+  const getHistoricalMessageNumber = (area) => {
+    const twoYearsAgo = moment().subtract(2, 'years')
+
+    const areaAlert = floodHistoryData.filter(
+      (alert) =>
+        alert.CODE === area &&
+        moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
+    )
+    
+    return areaAlert.length
+  }
+
+  const getLocationMessageCount = async (location) => {
+    let messageCount = 0
+    const { warningArea, alertArea } = await getSurroundingFloodAreas(
+      location.coordinates.latitude,
+      location.coordinates.longitude
+    )
+
+    const isInAlertArea =
+      alertArea &&
+      isLocationInFloodArea(
+        location.coordinates.latitude,
+        location.coordinates.longitude,
+        alertArea
+      )
+
+    const isInWarningArea =
+      warningArea &&
+      isLocationInFloodArea(
+        location.coordinates.latitude,
+        location.coordinates.longitude,
+        warningArea
+      )
+
+    if (isInAlertArea) {
+      messageCount += getHistoricalMessageNumber(alertArea.features[0].properties.TA_CODE)
+    }
+    if (isInWarningArea) {
+      messageCount += getHistoricalMessageNumber(warningArea?.features[0].properties.TA_CODE)
+    }
+
+    return messageCount
   }
 
   const navigateBack = (event) => {

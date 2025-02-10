@@ -29,8 +29,14 @@ export default function LinkBanner ({
     let afterText = ''
     let beforeText = ''
     if (linkLocations) {
-      if (currentLocation) {
-        afterText = 'this location'
+      if (linkLocations.length > 1) {
+        afterText = linkLocations.length + ' locations'
+      } else if (currentLocation) {
+        if (linkSource === 'dashboard') {
+          afterText = currentLocation.additionals.locationName
+        } else {
+          afterText = 'this location'
+        }
       }
       if (selectedContacts && selectedContacts.length > 0) {
         if (selectedContacts.length > 1) {
@@ -41,17 +47,19 @@ export default function LinkBanner ({
             selectedContacts[0].firstname +
             (selectedContacts[0].lastname.length > 0
               ? ' ' + selectedContacts[0].lastname
-              : '') + ' is linked to '
+              : '') + ' linked to '
         }
       }
     }
     if (linkContacts) {
-      if (currentContact) {
+      if (linkContacts.length > 1) {
+        beforeText = linkContacts.length + ' contacts linked to '
+      } else if (currentContact) {
         beforeText =
         currentContact.firstname +
             (currentContact.lastname.length > 0
               ? ' ' + currentContact.lastname
-              : '') + ' is linked to '
+              : '') + ' linked to '
       }
       if (selectedLocations && selectedLocations.length > 0) {
         if (selectedLocations.length > 1) {

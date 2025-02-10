@@ -15,7 +15,7 @@ import {
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation
 } from '../../../../../common/services/WfsFloodDataService'
-import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import LocationsTable from '../../../../components/custom/LocationsTable'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
@@ -246,6 +246,10 @@ export default function ViewLocationsDashboardPage () {
       selectedLocations.forEach((location) => {
         linkLocations.push(location.id)
       })
+
+      if (selectedLocations.length === 1) {
+        dispatch(setCurrentLocation(webToGeoSafeLocation(selectedLocations[0])))
+      }
 
       navigate(orgManageContactsUrls.view.dashboard, {
         state: {

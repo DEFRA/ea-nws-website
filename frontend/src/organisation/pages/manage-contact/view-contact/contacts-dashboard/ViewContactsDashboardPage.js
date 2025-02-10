@@ -172,6 +172,10 @@ export default function ViewContactsDashboardPage () {
           linkContacts.push(contact.id)
         })
 
+        if (selectedContacts.length === 1) {
+          dispatch(setOrgCurrentContact(selectedContacts[0]))
+        }
+
         navigate(orgManageLocationsUrls.view.dashboard, {
           state: {
             linkContacts, linkSource: 'dashboard'

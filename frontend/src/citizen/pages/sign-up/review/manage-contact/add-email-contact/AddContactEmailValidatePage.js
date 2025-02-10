@@ -12,8 +12,8 @@ export default function ValidateEmailContactPage () {
   )
 
   const navigateToNextPage = () => {
-    if (!contactPreferences.includes('Email Address')) {
-      dispatch(addContactPreference('Email Address'))
+    if (!contactPreferences.includes('Email')) {
+      dispatch(addContactPreference('Email'))
     }
     navigate('/signup/review')
   }

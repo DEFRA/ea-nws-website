@@ -17,27 +17,47 @@ export default function ConfirmDeleteSingleLocationPage () {
   const [error, setError] = useState('')
 
   const handleSubmit = async () => {
-    const updatedProfile = removeLocation(session.profile, location.state.name)
-
     const data = {
       authToken: session.authToken,
-      profile: updatedProfile
+      locationId: location.state.locationId,
+      partnerId: location.state.partnerId
     }
 
-    // profile returned but we just need to make sure no error is returned
     const { errorMessage } = await backendCall(
       data,
-      'api/profile/update',
+      'api/partner/unregister_location_from_partner',
       navigate
     )
 
     if (!errorMessage) {
-      dispatch(setProfile(updatedProfile))
-      navigate('/home', {
-        state: {
-          removedLocation: location.state.name
-        }
-      })
+      const updatedProfile = removeLocation(session.profile, location.state.name)
+
+      const data = {
+        authToken: session.authToken,
+        profile: updatedProfile
+      }
+
+      // profile returned but we just need to make sure no error is returned
+      const { errorMessage } = await backendCall(
+        data,
+        'api/profile/update',
+        navigate
+      )
+
+      if (!errorMessage) {
+        dispatch(setProfile(updatedProfile))
+        navigate('/home', {
+          state: {
+            removedLocation: location.state.name
+          }
+        })
+      } else {
+        setError(
+          'An error occured trying to remove a location.  ' +
+            location.state.name +
+            ' has not been removed. Please try again later.'
+        )
+      }
     } else {
       setError(
         'An error occured trying to remove a location.  ' +

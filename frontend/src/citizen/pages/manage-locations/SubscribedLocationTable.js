@@ -48,7 +48,7 @@ export default function SubscribedLocationTable ({ setError }) {
     dispatch(setShowOnlySelectedFloodArea(false))
     dispatch(setSelectedFloodWarningArea(null))
     dispatch(setSelectedFloodAlertArea(null))
-  })
+  }, [])
 
   const viewSelectedLocation = async (location) => {
     const { alertArea, warningArea } = await getSurroundingFloodAreas(

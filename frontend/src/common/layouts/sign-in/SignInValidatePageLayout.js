@@ -49,11 +49,10 @@ export default function SignInValidatePageLayout ({
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-
-    const validationError = authCodeValidation(code)
+    const { error: validationError, code: formattedCode } = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      const dataToSend = { signinToken, code, signinType }
+      const dataToSend = { signinToken, code: formattedCode, signinType }
       const { errorMessage, data } = await backendCall(
         dataToSend,
         'api/sign_in_validate'

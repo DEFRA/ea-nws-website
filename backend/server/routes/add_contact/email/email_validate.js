@@ -18,11 +18,11 @@ module.exports = [
         }
 
         const { authToken, email, code } = request.payload
-        const error = authCodeValidation(code)
+        const { error, code: formattedCode } = authCodeValidation(code)
 
         if (!error && authToken) {
           const response = await apiCall(
-            { authToken: authToken, email: email, code: code },
+            { authToken: authToken, email: email, code: formattedCode },
             'member/verifyEmailValidate'
           )
           return h.response(response)

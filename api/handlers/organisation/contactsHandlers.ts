@@ -107,7 +107,7 @@ async function getOrgUpdateContact(
 
   if (authToken !== 'WrongAuthToken' && contact) {
     // geosafe returns the contact
-    return contact
+    return { contact: contact }
   } else {
     return res.response(responseCodes.INVALID_TOKEN).code(500)
   }

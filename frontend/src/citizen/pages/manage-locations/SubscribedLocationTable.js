@@ -10,6 +10,7 @@ import {
   setSelectedLocation,
   setShowOnlySelectedFloodArea
 } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 import { getSurroundingFloodAreas } from '../../../common/services/WfsFloodDataService'
 
 export default function SubscribedLocationTable ({ setError }) {

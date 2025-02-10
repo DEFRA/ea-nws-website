@@ -134,7 +134,6 @@ export default function LocationInAlertAreaLayout ({
         ? 'api/partner/update_location_registration'
         : 'api/partner/register_location_to_partner'
 
-
       await backendCall(
         data,
         backendRoute,

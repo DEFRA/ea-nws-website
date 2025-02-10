@@ -24,27 +24,54 @@ const getErrors = (result) => {
       prev.push({ Location_name: curr.Location_name, Line_number: curr.Line_number, count: 1 })
       return prev
     }, [])
-    return nameReduce.filter((location) => { return location.count !== 1 })
+    const duplicates = nameReduce.filter((location) => { return location.count !== 1 })
+    return Array.from(duplicates, (duplicate) => duplicate.Line_number)
   }
 
-  const missingMandatory = () => {
-    const missingMandatory = []
+  const missingLocationDetails = () => {
+    const missingLocationDetails = []
     result.forEach((location) => {
-      if (!location.Location_name || (!(location.X_coordinates && location.Y_coordinates) && !((location.Full_address && location.Postcode)))) {
-        missingMandatory.push(location.Line_number)
+      if (!(location.X_coordinates && location.Y_coordinates) && !((location.Full_address && location.Postcode))) {
+        missingLocationDetails.push(location.Line_number)
       }
     })
-    return missingMandatory
+    return missingLocationDetails
+  }
+
+  const missingLocationName = () => {
+    const missingLocationName = []
+    result.forEach((location) => {
+      if (!location.Location_name) {
+        missingLocationName.push(location.Line_number)
+      }
+    })
+    return missingLocationName
   }
 
   const duplicatesArr = duplicates()
-  const missingMandatoryArr = missingMandatory()
+  const missingLocationDetailsArr = missingLocationDetails()
+  const missingLocationNameArr = missingLocationName()
 
   if (duplicatesArr.length > 0) {
-    errors.push({ errorType: 'Duplicates', errorDetails: duplicatesArr })
+    errors.push({
+      errorType: 'Duplicates',
+      errorMessage: 'The selected file could not be uploaded because there are duplicate location names',
+      errorDetails: duplicatesArr
+    })
   }
-  if (missingMandatoryArr.length > 0) {
-    errors.push({ errorType: 'Missing mandatory', errorDetails: missingMandatoryArr })
+  if (missingLocationDetailsArr.length > 0) {
+    errors.push({
+      errorType: 'Missing location details',
+      errorMessage: 'The selected file could not be uploaded because all locations need to include either a full address and postcode or X and Y coordinates',
+      errorDetails: missingLocationDetailsArr
+    })
+  }
+  if (missingLocationNameArr.length > 0) {
+    errors.push({
+      errorType: 'Missing location name',
+      errorMessage: 'The selected file could not be uploaded because some location names are missing',
+      errorDetails: missingLocationNameArr
+    })
   }
 
   return errors
@@ -56,7 +83,12 @@ const csvToJson = (csv) => {
   lines = lines.filter(element => element)
   // Check the headers match the template
   if (lines[0] !== template) {
-    return { error: 'Headers do not match!' }
+    return {
+      error: [{
+        errorType: 'incorrect template',
+        errorMessage: 'The selected file could not be uploaded because it is not the correct template'
+      }]
+    }
   }
   // Get all the headers and format them
   const formattedHeaders = lines[0].replaceAll(' ', '_')

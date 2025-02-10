@@ -14,8 +14,10 @@ import {
   setCurrentLocation,
   setCurrentLocationCoordinates,
   setCurrentLocationEasting,
+  setCurrentLocationFullAddress,
   setCurrentLocationNorthing,
-  setLocationBoundaries, setOrgId,
+  setLocationBoundaries,
+  setOrgId,
   setProfile,
   setProfileId,
   setRegistrations,
@@ -566,6 +568,9 @@ export default function IndexPage () {
       dispatch(setProfileId('1'))
       dispatch(setCurrentLocationEasting('520814'))
       dispatch(setCurrentLocationNorthing('185016'))
+      dispatch(
+        setCurrentLocationFullAddress('Kingfisher Way, London, NW10 8TZ')
+      )
       setmockSessionActive(true)
     } else {
       removeCookie('authToken', { path: '/' })

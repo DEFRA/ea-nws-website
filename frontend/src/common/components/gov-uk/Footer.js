@@ -11,7 +11,11 @@ export default function Footer () {
               <h2 className='govuk-visually-hidden'>Support links</h2>
               <ul className='govuk-footer__inline-list'>
                 <li className='govuk-footer__inline-list-item'>
-                  <Link className='govuk-footer__link' to='/contact'>
+                  <Link
+                    className='govuk-footer__link' to={
+                    location.pathname.includes('organisation') ? '/organisation/contact' : '/contact'
+                  }
+                  >
                     Contact
                   </Link>
                 </li>

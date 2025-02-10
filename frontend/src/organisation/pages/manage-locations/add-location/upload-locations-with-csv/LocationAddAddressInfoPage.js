@@ -26,7 +26,7 @@ export default function LocationAddAddressInfoPage () {
 
   useEffect(() => {
     getTemplateUrl()
-  })
+  }, [])
 
   const handleButton = async () => {
     navigate(orgManageLocationsUrls.add.uploadFile)

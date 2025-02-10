@@ -348,7 +348,7 @@ export default function LocationInformationPage () {
                 additionalData.location_data_type !==
                   LocationDataType.BOUNDARY && (
                     <Link
-                      className='govuk-!-display-block govuk-!-margin-bottom-1'
+                      className='govuk-link govuk-!-display-block govuk-!-margin-bottom-1'
                       to={
                       orgManageLocationsUrls.edit.individualLocation
                         .optionalInformation.keyInformation

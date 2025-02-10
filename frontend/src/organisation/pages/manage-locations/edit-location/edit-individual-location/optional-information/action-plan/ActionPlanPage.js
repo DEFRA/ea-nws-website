@@ -1,20 +1,22 @@
-import React from 'react'
-import { useNavigate } from 'react-router'
+import { React, useState } from 'react'
 import ActionPlanLayout from '../../../../../../layouts/optional-info/ActionPlanLayout'
-import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
+import updateLocationAndNavigate from '../../../../updateLocationAndNavigate'
 
 export default function ActionPlanPage () {
-  const navigate = useNavigate()
+  const [error, setError] = useState(null)
 
-  const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.view.viewLocation, {
-      state: { successMessage: 'Action plan changed' }
-    })
-  }
+  const navigateToNextPage = updateLocationAndNavigate(
+    setError,
+    'Action plan changed'
+  )
 
   return (
     <>
-      <ActionPlanLayout navigateToNextPage={navigateToNextPage} />
+      <ActionPlanLayout
+        navigateToNextPage={navigateToNextPage}
+        error={error}
+        setError={setError}
+      />
     </>
   )
 }

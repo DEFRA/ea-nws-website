@@ -17,7 +17,7 @@ const geoSafeToWebLocation = (geoSafeLocation) => {
   }
 
   const additionals = geoSafeLocation?.additionals
-  additionals?.forEach(additional => {
+  additionals?.forEach((additional) => {
     if (additional.id === 'keywords') {
       let keywords
       try {
@@ -46,10 +46,16 @@ const webToGeoSafeLocation = (webLocation) => {
     geometry: webLocation.geometry,
     geocode: webLocation.geocode,
     additionals: [
-      { id: 'locationName', value: { s: webLocation.additionals?.locationName } },
+      {
+        id: 'locationName',
+        value: { s: webLocation.additionals?.locationName }
+      },
       { id: 'parentID', value: { s: webLocation.additionals?.parentID } },
       { id: 'targetAreas', value: { s: webLocation.additionals?.targetAreas } },
-      { id: 'keywords', value: { s: JSON.stringify(webLocation.additionals?.keywords) } },
+      {
+        id: 'keywords',
+        value: { s: JSON.stringify(webLocation.additionals?.keywords) }
+      },
       {
         id: 'other',
         value: {

@@ -4,7 +4,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: '34 Hughenden Road, High Wycombe, LE2 7BB',
-    coordinates: { latitude: 51.629, longitude: -0.745 },
+    coordinates: { latitude: 51.629 * 10 ** 6, longitude: -0.745 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -38,7 +38,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'London',
-    coordinates: { latitude: 51.507, longitude: -0.126 },
+    coordinates: { latitude: 51.507 * 10 ** 6, longitude: -0.126 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -71,7 +71,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Brighton',
-    coordinates: { latitude: 50.828, longitude: -0.142 },
+    coordinates: { latitude: 50.828 * 10 ** 6, longitude: -0.142 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -107,7 +107,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Southampton',
-    coordinates: { latitude: 50.907, longitude: -1.409 },
+    coordinates: { latitude: 50.907 * 10 ** 6, longitude: -1.409 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -143,7 +143,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Durham',
-    coordinates: { latitude: 54.777, longitude: -1.579 },
+    coordinates: { latitude: 54.777 * 10 ** 6, longitude: -1.579 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -176,7 +176,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Milton Keynes',
-    coordinates: { latitude: 52.041, longitude: -0.754 },
+    coordinates: { latitude: 52.041 * 10 ** 6, longitude: -0.754 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -209,7 +209,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Cambridge',
-    coordinates: { latitude: 52.197, longitude: 0.133 },
+    coordinates: { latitude: 52.197 * 10 ** 6, longitude: 0.133 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -242,7 +242,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Derby',
-    coordinates: { latitude: 52.922, longitude: -1.477 },
+    coordinates: { latitude: 52.922 * 10 ** 6, longitude: -1.477 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -275,7 +275,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Sheffield',
-    coordinates: { latitude: 53.381, longitude: -1.47 },
+    coordinates: { latitude: 53.381 * 10 ** 6, longitude: -1.47 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -308,7 +308,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Blackburn',
-    coordinates: { latitude: 53.748, longitude: -2.487 },
+    coordinates: { latitude: 53.748 * 10 ** 6, longitude: -2.487 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -341,7 +341,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Worcester',
-    coordinates: { latitude: 52.193, longitude: -2.22 },
+    coordinates: { latitude: 52.193 * 10 ** 6, longitude: -2.22 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -374,7 +374,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Bradford',
-    coordinates: { latitude: 53.794, longitude: -1.753 },
+    coordinates: { latitude: 53.794 * 10 ** 6, longitude: -1.753 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -407,7 +407,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Leeds',
-    coordinates: { latitude: 53.798, longitude: -1.547 },
+    coordinates: { latitude: 53.798 * 10 ** 6, longitude: -1.547 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -440,7 +440,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Norwich',
-    coordinates: { latitude: 52.629, longitude: 1.295 },
+    coordinates: { latitude: 52.629 * 10 ** 6, longitude: 1.295 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -473,7 +473,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Wembley',
-    coordinates: { latitude: 51.556, longitude: -0.291 },
+    coordinates: { latitude: 51.556 * 10 ** 6, longitude: -0.291 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -506,7 +506,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Nottingham',
-    coordinates: { latitude: 52.954, longitude: -1.152 },
+    coordinates: { latitude: 52.954 * 10 ** 6, longitude: -1.152 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -539,7 +539,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Newcastle upon Tyne',
-    coordinates: { latitude: 54.973, longitude: -1.614 },
+    coordinates: { latitude: 54.973 * 10 ** 6, longitude: -1.614 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -572,7 +572,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Liverpool',
-    coordinates: { latitude: 53.404, longitude: -2.985 },
+    coordinates: { latitude: 53.404 * 10 ** 6, longitude: -2.985 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -605,7 +605,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Hull',
-    coordinates: { latitude: 53.743, longitude: -0.337 },
+    coordinates: { latitude: 53.743 * 10 ** 6, longitude: -0.337 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -638,7 +638,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'York',
-    coordinates: { latitude: 53.96, longitude: -1.083 },
+    coordinates: { latitude: 53.96 * 10 ** 6, longitude: -1.083 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -671,7 +671,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Croydon',
-    coordinates: { latitude: 51.378, longitude: -0.103 },
+    coordinates: { latitude: 51.378 * 10 ** 6, longitude: -0.103 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -704,7 +704,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Bristol',
-    coordinates: { latitude: 51.455, longitude: -2.594 },
+    coordinates: { latitude: 51.455 * 10 ** 6, longitude: -2.594 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -737,7 +737,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Oxford',
-    coordinates: { latitude: 51.752, longitude: -1.259 },
+    coordinates: { latitude: 51.752 * 10 ** 6, longitude: -1.259 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -770,7 +770,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Middlesbrough',
-    coordinates: { latitude: 54.575, longitude: -1.237 },
+    coordinates: { latitude: 54.575 * 10 ** 6, longitude: -1.237 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -803,7 +803,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Manchester',
-    coordinates: { latitude: 53.478, longitude: -2.241 },
+    coordinates: { latitude: 53.478 * 10 ** 6, longitude: -2.241 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -836,7 +836,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Birmingham',
-    coordinates: { latitude: 52.479, longitude: -1.898 },
+    coordinates: { latitude: 52.479 * 10 ** 6, longitude: -1.898 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [
@@ -869,7 +869,7 @@ const locations = [
     enabled: true,
     name: 'UPRN',
     address: 'Northampton',
-    coordinates: { latitude: 52.237, longitude: -0.9 },
+    coordinates: { latitude: 52.237 * 10 ** 6, longitude: -0.9 * 10 ** 6 },
     geometry: null,
     geocode: null,
     additionals: [

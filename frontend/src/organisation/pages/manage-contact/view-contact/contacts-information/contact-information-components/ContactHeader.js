@@ -22,7 +22,7 @@ export default function ContactHeader ({ contactName, currentPage }) {
           }}
         >
           <Button
-            text='Delete user'
+            text='Delete contact'
             className='govuk-button govuk-button--secondary'
             style={{
               marginTop: 'auto'

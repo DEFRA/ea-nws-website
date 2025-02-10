@@ -21,21 +21,19 @@ const convertToPois = (locations) => {
         {
           id: 'other',
           value: {
-            s: JSON.stringify(
-              {
-                full_address: location.Full_address,
-                postcode: location.Postcode,
-                x_coordinate: location.X_coordinates,
-                y_coordinate: location.Y_coordinates,
-                internal_reference: location.Internal_reference,
-                business_criticality: location.Business_criticality,
-                location_type: location.Location_type,
-                action_plan: location.Action_plan,
-                notes: location.Notes,
-                location_data_type: 'xycoords',
-                alertTypes: []
-              }
-            )
+            s: JSON.stringify({
+              full_address: location.Full_address,
+              postcode: location.Postcode,
+              x_coordinate: location.X_coordinates,
+              y_coordinate: location.Y_coordinates,
+              internal_reference: location.Internal_reference,
+              business_criticality: location.Business_criticality,
+              location_type: location.Location_type,
+              action_plan: location.Action_plan,
+              notes: location.Notes,
+              location_data_type: 'xycoords',
+              alertTypes: []
+            })
           }
         }
       ]
@@ -69,7 +67,7 @@ const getCSV = async (fileName) => {
     result.data = data
   } catch (err) {
     logger.error(err)
-    result.errorMessage = err
+    result.errorMessage = [{ errorType: 'S3 error', errorMessage: err }]
   }
 
   return result

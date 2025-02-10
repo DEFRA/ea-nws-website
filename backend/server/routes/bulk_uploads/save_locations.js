@@ -59,9 +59,15 @@ module.exports = [
           }))
 
           const invalidReasons = {
-            duplicate: invalid.filter((location) => location.error.includes('duplicate')).length,
-            notInEngland: invalid.filter((location) => location.error.includes('not in england')).length,
-            notFound: invalid.filter((location) => location.error.includes('not found')).length
+            duplicate: invalid.filter((location) =>
+              location.error?.includes('duplicate')
+            ).length,
+            notInEngland: invalid.filter((location) =>
+              location.error?.includes('not in England')
+            ).length,
+            notFound: invalid.filter((location) =>
+              location.error?.includes('not found')
+            ).length
           }
 
           return h.response({

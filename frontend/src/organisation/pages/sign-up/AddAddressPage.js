@@ -8,7 +8,7 @@ export default function AddAddressPage () {
     navigate('/organisation/sign-up/address-search')
   }
   const NavigateToPreviousPage = () => {
-    navigate('/organisation/sign-up')
+    navigate('/organisation/sign-up/admin-email-confirm')
   }
 
   return (

@@ -13,6 +13,7 @@ import {
   setAuthToken,
   setContactPreferences,
   setOrgId,
+  setOrganization,
   setProfile,
   setProfileId,
   setRegistrations
@@ -59,7 +60,9 @@ export default function SignInValidatePageLayout ({
       )
 
       if (errorMessage !== null) {
-        if (
+        if (errorMessage === 'account pending') {
+          navigate('/organisation/signin/account-pending')
+        } else if (
           errorMessage ===
           'The code you have entered has expired - please request a new code'
         ) {
@@ -74,6 +77,7 @@ export default function SignInValidatePageLayout ({
         if (signinType === 'org') {
           dispatch(setProfileId(data.profile.id))
           dispatch(setOrgId(data.organization.id))
+          dispatch(setOrganization(data.organization))
         }
         dispatch(setRegistrations(data.registrations))
         dispatch(

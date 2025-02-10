@@ -295,16 +295,18 @@ const findLocationByName = async (orgId, locationName) => {
 const findInvLocationByName = async (orgId, locationName) => {
   const locationKeys = await getInvLocationKeys(orgId)
   const matchingLocations = []
-  await Promise.all(locationKeys.map(async (key) => {
-    const location = await getJsonData(key)
-    location.additionals.forEach((additional) => {
-      if (additional.id === 'locationName') {
-        if (additional.value.s === locationName) {
-          matchingLocations.push(location)
+  await Promise.all(
+    locationKeys.map(async (key) => {
+      const location = await getJsonData(key)
+      location.additionals.forEach((additional) => {
+        if (additional.id === 'locationName') {
+          if (additional.value.s === locationName) {
+            matchingLocations.push(location)
+          }
         }
-      }
+      })
     })
-  }))
+  )
   return matchingLocations
 }
 
@@ -463,15 +465,21 @@ const orgSignOut = async (profileId, orgId) => {
   const locationKeys = await getLocationKeys(orgId)
   const invLocationKeys = await getInvLocationKeys(orgId)
   const contactKeys = await getContactKeys(orgId)
-  await Promise.all(locationKeys.map(async (key) => {
-    await deleteJsonData(key)
-  }))
-  await Promise.all(invLocationKeys.map(async (key) => {
-    await deleteJsonData(key)
-  }))
-  await Promise.all(contactKeys.map(async (key) => {
-    await deleteJsonData(key)
-  }))
+  await Promise.all(
+    locationKeys.map(async (key) => {
+      await deleteJsonData(key)
+    })
+  )
+  await Promise.all(
+    invLocationKeys.map(async (key) => {
+      await deleteJsonData(key)
+    })
+  )
+  await Promise.all(
+    contactKeys.map(async (key) => {
+      await deleteJsonData(key)
+    })
+  )
 
   await deleteData(orgId + ':t_POIS_locID')
   await deleteData(orgId + ':t_invPOIS_locID')

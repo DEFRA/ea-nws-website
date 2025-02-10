@@ -21,6 +21,13 @@ export default function DuplicateLocationComparisonPage () {
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
+  const notFoundLocations = useSelector(
+    (state) => state.session.notFoundLocations
+  )
+  const notInEnglandLocations = useSelector(
+    (state) => state.session.notInEnglandLocations
+  )
+
   // remove error if user changes selection
   useEffect(() => {
     if (error) {
@@ -40,11 +47,7 @@ export default function DuplicateLocationComparisonPage () {
         // change the location ID to the existing ID in geosafe
         locationToUpdate.id = existingLocation.id
         const dataToSend = { authToken, orgId, location: locationToUpdate }
-        await backendCall(
-          dataToSend,
-          'api/location/update',
-          navigate
-        )
+        await backendCall(dataToSend, 'api/location/update', navigate)
       }
       // need to remove the invalid location from elasticache
       const locationIdToRemove = newLocation.id
@@ -55,17 +58,25 @@ export default function DuplicateLocationComparisonPage () {
       )
 
       if (numDuplicates === 1) {
-        // navigate to link contacts, for now navigate to locations dashboard
-        navigate(orgManageLocationsUrls.view.dashboard)
+        if (notFoundLocations > 1) {
+          navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard)
+        } else if (notInEnglandLocations > 1) {
+          navigate(
+            orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard
+          )
+        } else {
+          // navigate to link contacts, for now navigate to locations dashboard
+          navigate(orgManageLocationsUrls.view.dashboard)
+        }
       } else {
-        navigate(orgManageLocationsUrls.add.manageDuplicateLocationsPage,
-          {
-            state:
-            {
-              text: existingOrNew === 'Existing' ? `Existing ${existingLocation.additionals.locationName} kept` : `${newLocation.additionals.locationName} replaced`
-            }
+        navigate(orgManageLocationsUrls.add.manageDuplicateLocationsPage, {
+          state: {
+            text:
+              existingOrNew === 'Existing'
+                ? `Existing ${existingLocation.additionals.locationName} kept`
+                : `${newLocation.additionals.locationName} replaced`
           }
-        )
+        })
       }
     }
   }
@@ -83,7 +94,8 @@ export default function DuplicateLocationComparisonPage () {
           <div className='govuk-grid-column-full'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>
-              {newLocation.additionals.locationName} already exists in this account
+              {newLocation.additionals.locationName} already exists in this
+              account
             </h1>
             <div className='govuk-body'>
               <div className='govuk-!-margin-bottom-6'>

@@ -3,7 +3,7 @@ import SectorLayout from '../../layouts/sector/SectorLayout'
 
 export default function SectorPage () {
   const navigate = useNavigate()
-  const navigateToNextPage = () => navigate('/organisation/sign-up/main-admin')
+  const navigateToNextPage = () => navigate('/organisation/sign-up/alternative-contact')
 
   const NavigateToPreviousPage = () => {
     navigate('/organisation/sign-up/number')

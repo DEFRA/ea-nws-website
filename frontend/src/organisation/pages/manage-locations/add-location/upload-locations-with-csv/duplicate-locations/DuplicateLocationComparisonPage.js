@@ -90,37 +90,39 @@ export default function DuplicateLocationComparisonPage () {
                 Select if you want to keep the existing location or use the new
                 location uploaded.
               </div>
-              <div className='govuk-grid-column-one-half govuk-!-padding-left-0'>
-                <div className='outline-1px'>
-                  <div className='org-location-information-header govuk-heading-m govuk-!-margin-bottom-0'>
-                    Existing Location
-                  </div>
-                  <LocationInformation location={existingLocation} />
-                  <div className={`org-location-information-footer ${error && 'error'}`}>
-                    <p className='govuk-!-margin-0'>Keep existing location</p>
-                    <Radio
-                      label=''
-                      name='ExistingOrNewRadio'
-                      small='true'
-                      onChange={(e) => setExistingOrNew('Existing')}
-                    />
+              <div className='org-location-comparison'>
+                <div className='govuk-grid-column-one-half govuk-!-padding-left-0'>
+                  <div className='outline-1px org-location-comparison-box'>
+                    <div className='org-location-information-header govuk-heading-m govuk-!-margin-bottom-0'>
+                      Existing Location
+                    </div>
+                    <LocationInformation location={existingLocation} />
+                    <div className={`org-location-information-footer ${error && 'error'}`}>
+                      <p className='govuk-!-margin-0'>Keep existing location</p>
+                      <Radio
+                        label=''
+                        name='ExistingOrNewRadio'
+                        small='true'
+                        onChange={(e) => setExistingOrNew('Existing')}
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div className='govuk-grid-column-one-half govuk-!-padding-right-0'>
-                <div className='outline-1px'>
-                  <div className='org-location-information-header govuk-heading-m govuk-!-margin-bottom-0'>
-                    New Location
-                  </div>
-                  <LocationInformation location={newLocation} comparedLocation={existingLocation} />
-                  <div className={`org-location-information-footer ${error && 'error'}`}>
-                    <p className='govuk-!-margin-0'>Use new location</p>
-                    <Radio
-                      label=''
-                      name='ExistingOrNewRadio'
-                      small='true'
-                      onChange={(e) => setExistingOrNew('New')}
-                    />
+                <div className='govuk-grid-column-one-half govuk-!-padding-right-0'>
+                  <div className='outline-1px org-location-comparison-box'>
+                    <div className='org-location-information-header govuk-heading-m govuk-!-margin-bottom-0'>
+                      New Location
+                    </div>
+                    <LocationInformation location={newLocation} comparedLocation={existingLocation} />
+                    <div className={`org-location-information-footer ${error && 'error'}`}>
+                      <p className='govuk-!-margin-0'>Use new location</p>
+                      <Radio
+                        label=''
+                        name='ExistingOrNewRadio'
+                        small='true'
+                        onChange={(e) => setExistingOrNew('New')}
+                      />
+                    </div>
                   </div>
                 </div>
               </div>

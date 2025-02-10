@@ -41,11 +41,11 @@ export default function SignUpSuccessPage () {
     // add in the rest of the data
     const dataToSend = {
       email: profile.emails[0],
-      refNumber: 1, // will need to change
+      refNumber: organization.id,
       orgName: organization.description.name,
       address: organization.description.address,
       companyHouseNumber: organization.description.compHouseNum,
-      professionalPartner: '', // will need to change
+      professionalPartner: organization.emergencySector,
       fullName: profile.firstname + ' ' + profile.lastname,
       alternavtiveContactFullName: organization.description.alternativeContact.firstName + ' ' + organization.description.alternativeContact.lastName,
       alternavtiveContactEmail: organization.description.alternativeContact.email,

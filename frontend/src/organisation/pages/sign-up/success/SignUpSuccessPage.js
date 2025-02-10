@@ -11,19 +11,28 @@ export default function SignUpSuccessPage () {
   const organization = useSelector((state) => state.session.organization)
   async function notifySignUpSuccessEa () {
     // add in the rest of the data
+    const submissionDateTime = new Date().toLocaleString('en-GB', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    }).replace('AM', 'am').replace('PM', 'pm')
+
     const dataToSend = {
       email: profile.emails[0],
-      refNumber: 1, // will need to change
+      refNumber: organization.id,
       orgName: organization.description.name,
       address: organization.description.address,
       companyHouseNumber: organization.description.compHouseNum,
-      professionalPartner: '', // will need to change
+      professionalPartner: organization.emergencySector,
       fullName: profile.firstname + ' ' + profile.lastname,
       alternavtiveContactFullName: organization.description.alternativeContact.firstName + ' ' + organization.description.alternativeContact.lastName,
       alternavtiveContactEmail: organization.description.alternativeContact.email,
       alternavtiveContactTelephone: organization.description.alternativeContact.telephone,
       alternavtiveContactJob: organization.description.alternativeContact.jobTitle,
-      submissionDateTime: 'tuesday' // change
+      submissionDateTime
     }
     await backendCall(dataToSend, '/api/notify/account_pending_ea', navigate)
   }

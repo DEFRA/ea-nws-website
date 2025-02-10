@@ -174,7 +174,7 @@ export default function LocationInformation ({ location, comparedLocation }) {
               </h2>
               <hr style={{ height: '2px', color: '#000', opacity: '1' }} className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
               {location?.additionals?.keywords.map((keyword, index, keywords) => {
-                return <span key={index} style={(!keywordsAdded && comparedLocation && !comparedLocation?.additionals?.keywords?.includes(keyword)) ? compareStyle : {}}>{keyword}{index + 1 === keywords.length? '' : ', '}</span>
+                return <span key={index} style={(!keywordsAdded && comparedLocation && !comparedLocation?.additionals?.keywords?.includes(keyword)) ? compareStyle : {}}>{keyword}{index + 1 === keywords.length ? '' : ', '}</span>
               })}
             </div>
           )}

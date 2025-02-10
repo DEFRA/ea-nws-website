@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
@@ -7,6 +7,7 @@ import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
 import RiskAreaType from '../../../../../common/enums/RiskAreaType'
+import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import {
   getGroundwaterFloodRiskRatingOfLocation,
@@ -21,6 +22,7 @@ import ContactHeader from './contact-information-components/ContactHeader'
 
 export default function LinkedLocationsPage () {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const [linkedLocations, setLinkedLocations] = useState([])
   const [filteredLocations, setFilteredLocations] = useState([])
@@ -165,9 +167,15 @@ export default function LinkedLocationsPage () {
     return unlinkText
   }
 
-  const onUnlink = async (e, action, location) => {
-    const locationsToUnlink = [location]
-    await unlinkLocations(locationsToUnlink)
+  const onAction = async (e, action, location) => {
+    if (action === 'view') {
+      e.preventDefault()
+      dispatch(setCurrentLocation(location))
+      navigate(orgManageLocationsUrls.view.viewLocation)
+    } else {
+      const locationsToUnlink = [location]
+      await unlinkLocations(locationsToUnlink)
+    }
   }
 
   const unlinkLocations = async (locationsToUnlink) => {
@@ -264,7 +272,7 @@ export default function LinkedLocationsPage () {
               setFilteredLocations={setFilteredLocations}
               resetPaging={resetPaging}
               setResetPaging={setResetPaging}
-              onAction={onUnlink}
+              onAction={onAction}
               actionText='Unlink'
             />
             <Pagination

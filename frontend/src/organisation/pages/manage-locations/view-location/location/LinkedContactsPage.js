@@ -5,7 +5,7 @@ import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
 import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import NotificationBanner from '../../../../../common/components/gov-uk/NotificationBanner'
-import { setLinkLocations } from '../../../../../common/redux/userSlice'
+import { setLinkLocations, setOrgCurrentContact } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
@@ -109,9 +109,15 @@ export default function LinkedContactsPage () {
     return unlinkText
   }
 
-  const onUnlink = async (e, action, contact) => {
-    const contactsToUnlink = [contact]
-    await unlinkContacts(contactsToUnlink)
+  const onAction = async (e, action, contact) => {
+    if (action === 'view') {
+      e.preventDefault()
+      dispatch(setOrgCurrentContact(contact))
+      navigate(orgManageContactsUrls.view.viewContact)
+    } else {
+      const contactsToUnlink = [contact]
+      await unlinkContacts(contactsToUnlink)
+    }
   }
 
   const unlinkContacts = async (contactsToUnlink) => {
@@ -206,7 +212,7 @@ export default function LinkedContactsPage () {
               setFilteredContacts={setFilteredContacts}
               resetPaging={resetPaging}
               setResetPaging={setResetPaging}
-              onAction={onUnlink}
+              onAction={onAction}
               actionText='Unlink'
             />
             <Pagination

@@ -181,7 +181,6 @@ export default function LocationInSevereWarningAreaLayout ({
       selectedLocation.coordinates.longitude,
       selectedFloodWarningArea.properties.parenttacode
     )
-    console.log(selectedFloodWarningArea)
 
     if (associatedAlertArea) {
       dispatch(setSelectedFloodAlertArea(associatedAlertArea))

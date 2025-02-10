@@ -15,31 +15,32 @@ module.exports = [{
 
       const {
         email, refNumber, orgName, address, companyHouseNumber
-        , professionalPartner, fullName, alternavtiveContactFullName,
-        alternavtiveContactEmail, alternavtiveContactTelephone,
-        alternavtiveContactJob, eaEmail
+        , professionalPartner, fullName, alternativeContactFullName,
+        alternativeContactEmail, alternativeContactTelephone,
+        alternativeContactJob, eaEmail
       } = request.payload
 
       if (
         email && refNumber && orgName && address && companyHouseNumber &&
-                professionalPartner && fullName && alternavtiveContactFullName &&
-                alternavtiveContactEmail && alternavtiveContactTelephone &&
-                alternavtiveContactJob && eaEmail
+                professionalPartner && fullName && alternativeContactFullName &&
+                alternativeContactEmail && alternativeContactTelephone &&
+                alternativeContactJob && eaEmail
       ) {
         const personalisation = {
-          full_name: fullName,
-          ref_number: refNumber,
-          org_name: orgName,
-          address: address,
-          company_house_number: companyHouseNumber,
-          professional_Partner: professionalPartner,
-          email: email,
-          alternavtive_contact_full_name: alternavtiveContactFullName,
-          alternavtive_contact_email: alternavtiveContactEmail,
-          alternavtive_contact_telephone: alternavtiveContactTelephone,
-          alternavtive_contact_job: alternavtiveContactJob,
-          ea_email: eaEmail
-        }
+          email: email,  
+          full_name: fullName,  
+          org_name: orgName,  
+          address: address,  
+          company_house_number: companyHouseNumber,  
+          professional_partner: professionalPartner,  
+          alternative_contact_full_name: alternativeContactFullName,  
+          alternative_contact_email: alternativeContactEmail,  
+          alternative_contact_telephone: alternativeContactTelephone,  
+          alternative_contact_job: alternativeContactJob,  
+          ea_email: eaEmail  
+        };
+        
+        
         const templateId = await getSecretKeyValue(
           'nws/notify/templates',
           'accountPendingOrgAdmin'

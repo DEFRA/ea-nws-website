@@ -16,31 +16,32 @@ module.exports = [
 
         const {
           email, refNumber, orgName, address, companyHouseNumber
-          , professionalPartner, fullName, alternavtiveContactFullName,
-          alternavtiveContactEmail, alternavtiveContactTelephone,
-          alternavtiveContactJob, submissionDateTime
+          , professionalPartner, fullName, alternativeContactFullName,
+          alternativeContactEmail, alternativeContactTelephone,
+          alternativeContactJob, submissionDateTime
         } = request.payload
 
         if (
           email && refNumber && orgName && address && companyHouseNumber &&
-                    professionalPartner && fullName && alternavtiveContactFullName &&
-                    alternavtiveContactEmail && alternavtiveContactTelephone &&
-                    alternavtiveContactJob && submissionDateTime
+                    professionalPartner && fullName && alternativeContactFullName &&
+                    alternativeContactEmail && alternativeContactTelephone &&
+                    alternativeContactJob && submissionDateTime
         ) {
           const personalisation = {
-            full_name: fullName,
-            ref_number: refNumber,
-            org_name: orgName,
-            address: address,
-            company_house_number: companyHouseNumber,
-            professional_Partner: professionalPartner,
-            email: email,
-            alternavtive_contact_full_name: alternavtiveContactFullName,
-            alternavtive_contact_email: alternavtiveContactEmail,
-            alternavtive_contact_telephone: alternavtiveContactTelephone,
-            alternavtive_contact_job: alternavtiveContactJob,
-            submission_date_time: submissionDateTime
-          }
+            email: email,  
+            full_name: fullName,  
+            ref_number: refNumber,  
+            org_name: orgName,  
+            address: address,  
+            company_house_number: companyHouseNumber,  
+            professional_partner: professionalPartner,  
+            alternative_contact_full_name: alternativeContactFullName,  
+            alternative_contact_email: alternativeContactEmail,  
+            alternative_contact_telephone: alternativeContactTelephone,  
+            alternative_contact_job: alternativeContactJob,  
+            submission_date_time: submissionDateTime  
+          };
+          
           const templateId = await getSecretKeyValue(
             'nws/notify/templates',
             'accountPendingEaAdmin'

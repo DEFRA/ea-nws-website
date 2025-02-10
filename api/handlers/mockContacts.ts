@@ -32,9 +32,9 @@ const contacts = [
     enabled: true,
     firstname: 'Mary',
     lastname: 'Pepper',
-    emails: ['mary.pepper@gmail.com', 'ma.pepper@gmail.com'],
-    mobilePhones: ['07343454590', '07889668367'],
-    homePhones: ['01475721535'],
+    emails: [],
+    mobilePhones: ['07343454590'],
+    homePhones: [],
     language: 'EN',
     position: null,
     unit: null,
@@ -45,7 +45,7 @@ const contacts = [
       { id: 'signUpComplete', value: { s: 'true' } },
       { id: 'businessName', value: { s: 'thatOne' } },
       { id: 'jobTitle', value: { s: '' } },
-      { id: 'keywords', value: { s: '["Team 2"]' } }
+      { id: 'keywords', value: { s: '[]' } }
     ],
     unverified: {
       homePhones: [{ address: '01475721535' }]

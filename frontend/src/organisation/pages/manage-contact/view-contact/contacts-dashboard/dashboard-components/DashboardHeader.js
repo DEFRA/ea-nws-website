@@ -1,12 +1,15 @@
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
+import { clearOrgCurrentContact } from '../../../../../../common/redux/userSlice'
 import { urlManageContactsAdd } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
 import { urlManageKeywordsOrg } from '../../../../../routes/manage-keywords/ManageKeywordsRoutes'
 
 export default function DashboardHeader ({ contacts, onClickLinked }) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const noContactsDetails = (
     <>
@@ -95,7 +98,10 @@ export default function DashboardHeader ({ contacts, onClickLinked }) {
             <Button
               text='Add contact'
               className='govuk-button govuk-button--secondary'
-              onClick={() => navigate(urlManageContactsAdd)}
+              onClick={() => {
+                dispatch(clearOrgCurrentContact())
+                navigate(urlManageContactsAdd)
+              }}
             />
             &nbsp; &nbsp;
             <Button

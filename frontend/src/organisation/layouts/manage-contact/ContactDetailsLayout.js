@@ -12,11 +12,7 @@ import {
   setOrgCurrentContactLastName
 } from '../../../common/redux/userSlice'
 
-export default function ContactDetailsLayout ({
-  navigateToNextPage,
-  error,
-  setError
-}) {
+export default function ContactDetailsLayout ({ navigateToNextPage, error }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [firstnameError, setFirstNameError] = useState('')
@@ -80,9 +76,7 @@ export default function ContactDetailsLayout ({
     if (dataValid) {
       dispatch(setOrgCurrentContactFirstName(firstname))
       dispatch(setOrgCurrentContactLastName(lastname))
-      if (jobTitle) {
-        dispatch(setOrgCurrentContactJobTitle(jobTitle))
-      }
+      jobTitle != null && dispatch(setOrgCurrentContactJobTitle(jobTitle))
 
       navigateToNextPage()
     }

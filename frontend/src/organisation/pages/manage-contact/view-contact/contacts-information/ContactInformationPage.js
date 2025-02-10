@@ -59,10 +59,15 @@ export default function ContactInformationPage () {
               <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
               <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>Name</h3>
               <p>{contactName}</p>
-              <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
-                Job title
-              </h3>
-              <p>{jobTitle}</p>
+
+              {jobTitle && (
+                <>
+                  <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
+                    Job title
+                  </h3>
+                  <p>{jobTitle}</p>
+                </>
+              )}
             </>
 
             <>
@@ -77,51 +82,57 @@ export default function ContactInformationPage () {
                 Change
               </Link>
               <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-              <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
-                Email addresses
-              </h3>
-              <p>
-                {currentContact.emails
-                  ? currentContact.emails.map((email, index) => {
-                    return (
-                      <span key={index}>
-                        {email}
-                        <br />
-                      </span>
-                    )
-                  })
-                  : '-'}
-              </p>
-              <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
-                UK mobile numbers for texts
-              </h3>
-              <p>
-                {currentContact.mobilePhones
-                  ? currentContact.mobilePhones.map((number, index) => {
-                    return (
-                      <span key={index}>
-                        {number}
-                        <br />
-                      </span>
-                    )
-                  })
-                  : '-'}
-              </p>
-              <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
-                UK telephone numbers for voice messages
-              </h3>
-              <p>
-                {currentContact.homePhones
-                  ? currentContact.homePhones.map((number, index) => {
-                    return (
-                      <span key={index}>
-                        {number}
-                        <br />
-                      </span>
-                    )
-                  })
-                  : '-'}
-              </p>
+              {currentContact.emails?.length > 0 && (
+                <>
+                  <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
+                    Email addresses
+                  </h3>
+                  <p>
+                    {currentContact.emails.map((email, index) => {
+                      return (
+                        <span key={index}>
+                          {email}
+                          <br />
+                        </span>
+                      )
+                    })}
+                  </p>
+                </>
+              )}
+              {currentContact.mobilePhones?.length > 0 && (
+                <>
+                  <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
+                    UK mobile numbers for texts
+                  </h3>
+                  <p>
+                    {currentContact.mobilePhones.map((number, index) => {
+                      return (
+                        <span key={index}>
+                          {number}
+                          <br />
+                        </span>
+                      )
+                    })}
+                  </p>
+                </>
+              )}
+              {currentContact.homePhones?.length > 0 && (
+                <>
+                  <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
+                    UK telephone numbers for voice messages
+                  </h3>
+                  <p>
+                    {currentContact.homePhones.map((number, index) => {
+                      return (
+                        <span key={index}>
+                          {number}
+                          <br />
+                        </span>
+                      )
+                    })}
+                  </p>
+                </>
+              )}
             </>
 
             {/* Keywords details */}

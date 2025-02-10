@@ -18,7 +18,8 @@ export default function LocationsTable ({
   setResetPaging,
   onAction,
   actionText,
-  linkContacts
+  linkContacts,
+  locationPrefix,
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -178,6 +179,7 @@ export default function LocationsTable ({
           : ''}
         {filteredLocations.length !== locations.length ? ' of ' : ''}
         {locations.length}
+        {locationPrefix ? ' ' + locationPrefix : ''}
         {locations.length === 1 ? ' location' : ' locations'}{' '}
         <span style={{ margin: '0 20px' }}>|</span>
         <span style={{ color: '#1d70b8' }}>

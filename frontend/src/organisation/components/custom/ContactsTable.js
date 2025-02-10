@@ -9,7 +9,8 @@ export default function ContactsTable ({
   setSelectedContacts,
   setFilteredContacts,
   onAction,
-  actionText
+  actionText,
+  contactPrefix
 }) {
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
   const [contactNameSort, setContactNameSort] = useState('none')
@@ -119,7 +120,9 @@ export default function ContactsTable ({
         {filteredContacts.length !== contacts.length ? 'Showing ' : ''}
         {filteredContacts.length !== contacts.length ? filteredContacts.length : ''}
         {filteredContacts.length !== contacts.length ? ' of ' : ''}
-        {contacts.length}{contacts.length === 1 ? ' contact' : ' contacts'}{' '}
+        {contacts.length}
+        {contactPrefix ? ' ' + contactPrefix : ''}
+        {contacts.length === 1 ? ' contact' : ' contacts'}{' '}
         <span style={{ margin: '0 20px' }}>|</span>
         <span style={{ color: '#1d70b8' }}>
           {selectedContacts.length}{' '}

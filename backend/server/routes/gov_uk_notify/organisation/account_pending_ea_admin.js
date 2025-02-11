@@ -16,14 +16,14 @@ module.exports = [
 
         const {
           email, refNumber, orgName, address, companyHouseNumber
-          , professionalPartner, fullName, alternativeContactFullName,
+          , responder, fullName, alternativeContactFullName,
           alternativeContactEmail, alternativeContactTelephone,
           alternativeContactJob, submissionDateTime
         } = request.payload
 
         if (
           email && refNumber && orgName && address && companyHouseNumber &&
-                    professionalPartner && fullName && alternativeContactFullName &&
+          responder && fullName && alternativeContactFullName &&
                     alternativeContactEmail && alternativeContactTelephone &&
                     alternativeContactJob && submissionDateTime
         ) {
@@ -34,7 +34,7 @@ module.exports = [
             organisation_name: orgName,  
             head_office_address: address,  
             companies_house_number: companyHouseNumber,  
-            professional_partner: professionalPartner,  
+            responder: responder,  
             alternative_contact_full_name: alternativeContactFullName,  
             alternative_contact_email: alternativeContactEmail,  
             alternative_contact_telephone_number: alternativeContactTelephone,  
@@ -46,6 +46,9 @@ module.exports = [
             'nws/notify/templates',
             'accountPendingEaAdmin'
           )
+          /* ToDo the email as the perameter below will need to be
+             changed to the EA email address and not the one got from
+             the request.payload */
           sendEmailNotification(templateId, email, personalisation)
           return h.response({ status: 200 })
         } else {

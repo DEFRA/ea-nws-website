@@ -11,9 +11,10 @@ export default function SignUpSuccessPage () {
   const profile = useSelector((state) => state.session.profile)
   const organization = useSelector((state) => state.session.organization)
   const organizationAdditionals = JSON.parse(organization.description)
- 
+  const responderValue = organizationAdditionals.emergencySector? "yes" : "no"
+  
+
   async function notifySignUpSuccessEa () {
-    // add in the rest of the data
     const submissionDateTime = new Date().toLocaleString('en-GB', {
       day: 'numeric',
       month: 'long',
@@ -28,8 +29,8 @@ export default function SignUpSuccessPage () {
       refNumber: organization.id,
       orgName: organizationAdditionals.name,
       address: organizationAdditionals.address,
-      companyHouseNumber: 'no', // change these back to none hard coded values later
-      professionalPartner: 'no',
+      companyHouseNumber: 'no',
+      responder: responderValue,
       fullName: profile.firstname + ' ' + profile.lastname,
       alternativeContactFullName: organizationAdditionals.alternativeContact.firstName + ' ' + organizationAdditionals.alternativeContact.lastName,
       alternativeContactEmail: organizationAdditionals.alternativeContact.email,
@@ -37,29 +38,28 @@ export default function SignUpSuccessPage () {
       alternativeContactJob: organizationAdditionals.alternativeContact.jobTitle,
       submissionDateTime:submissionDateTime
     }
-    console.log("The first data to send it", dataToSend)
     await backendCall(dataToSend, 'api/notify/account_pending_ea', navigate)
   }
 
 
 
   async function notifySignUpSuccessOrg () {
-    // add in the rest of the data
+    
     const dataToSend = {
+      // ToDo change the eaEmail to their email once confirmed
       email: profile.emails[0],
       refNumber: organization.id,
       orgName: organizationAdditionals.name,
       address: organizationAdditionals.address,
-      companyHouseNumber: "no",
-      professionalPartner: "no",
+      companyHouseNumber: 'no',
+      responder: responderValue,
       fullName: profile.firstname + ' ' + profile.lastname,
       alternativeContactFullName: organizationAdditionals.alternativeContact.firstName + ' ' + organizationAdditionals.alternativeContact.lastName,
       alternativeContactEmail: organizationAdditionals.alternativeContact.email,
       alternativeContactTelephone: organizationAdditionals.alternativeContact.telephone,
       alternativeContactJob: organizationAdditionals.alternativeContact.jobTitle,
-      eaEmail: 'exampleEA@email.com' // change
+      eaEmail: 'exampleEA@email.com' 
     }
-    console.log("The second data to send it", dataToSend)
     await backendCall(dataToSend, 'api/notify/account_pending_org', navigate)
   }
 

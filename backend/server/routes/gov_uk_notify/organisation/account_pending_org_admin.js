@@ -15,14 +15,14 @@ module.exports = [{
 
       const {
         email, refNumber, orgName, address, companyHouseNumber
-        , professionalPartner, fullName, alternativeContactFullName,
+        , responder, fullName, alternativeContactFullName,
         alternativeContactEmail, alternativeContactTelephone,
         alternativeContactJob, eaEmail
       } = request.payload
 
       if (
         email && refNumber && orgName && address && companyHouseNumber &&
-                professionalPartner && fullName && alternativeContactFullName &&
+        responder && fullName && alternativeContactFullName &&
                 alternativeContactEmail && alternativeContactTelephone &&
                 alternativeContactJob && eaEmail
       ) {
@@ -32,7 +32,7 @@ module.exports = [{
           organisation_name: orgName,  
           head_office_address: address,  
           companies_house_number: companyHouseNumber,  
-          professional_partner: professionalPartner,  
+          responder: responder,  
           alternative_contact_full_name: alternativeContactFullName,  
           alternative_contact_email: alternativeContactEmail,  
           alternative_contact_telephone_number: alternativeContactTelephone,  

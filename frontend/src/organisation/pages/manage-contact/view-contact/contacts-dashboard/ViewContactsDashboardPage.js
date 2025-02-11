@@ -1,7 +1,7 @@
 import moment from 'moment'
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router'
+import { useNavigate, useLocation } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
 import Popup from '../../../../../common/components/custom/Popup'
@@ -11,8 +11,9 @@ import Pagination from '../../../../../common/components/gov-uk/Pagination'
 import { setOrgCurrentContact } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebContact } from '../../../../../common/services/formatters/ContactFormatter'
+import ContactsTable from '../../../../components/custom/ContactsTable'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
-import ContactsTable from './dashboard-components/ContactsTable'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
 import SearchFilter from './dashboard-components/SearchFilter'
 import { csvToJson } from '../../../../../common/services/CsvToJson'
@@ -24,8 +25,11 @@ import {
 export default function ViewContactsDashboardPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const location = useLocation()
+
+  const successMessage = location.state?.successMessage || ''
   const [contacts, setContacts] = useState([])
-  const [notificationText, setNotificationText] = useState('')
+  const [notificationText, setNotificationText] = useState(successMessage)
   const [selectedContacts, setSelectedContacts] = useState([])
   const [filteredContacts, setFilteredContacts] = useState([])
   const [targetContact, setTargetContact] = useState(null)
@@ -71,48 +75,49 @@ export default function ViewContactsDashboardPage () {
   }, [filteredContacts, currentPage])
 
   useEffect(() => {
-    async function getHistoryUrl () {
-      const { data } = await backendCall(
-        'data',
-        'api/locations/download_flood_history'
-      )
-      setHistoryUrl(data)
-    }
-
-    getHistoryUrl()
-    floodHistoryUrl && fetch(floodHistoryUrl)
-      .then((response) => response.text())
-      .then((data) => {
-        setFloodHistoryData(csvToJson(data))
-      })
-      .catch((e) =>
-        console.error('Could not fetch Historic Flood Warning file', e)
-      )
-  }, [floodHistoryUrl])
-
-  useEffect(() => {
     const getContacts = async () => {
       const dataToSend = { orgId }
-      const { data } = await backendCall(
+      const contactsData = await backendCall(
         dataToSend,
         'api/elasticache/list_contacts',
         navigate
       )
       const contactsUpdate = []
-      if (data) {
-        data.forEach((contact) => {
+      if (contactsData.data) {
+        contactsData.data.forEach((contact) => {
           contactsUpdate.push(geoSafeToWebContact(contact))
         })
       }
 
-      // TODO: Get linked locations from the API (EAN-1364)
-      contactsUpdate.forEach(function (contact) {
+      const historyFileUrl = await backendCall(
+        'data',
+        'api/locations/download_flood_history'
+      )
+
+      let historyData = await fetch(historyFileUrl.data).then((response) => response.text()).then((data) => csvToJson(data))
+
+      contactsUpdate.forEach(async function (contact, idx) {
+        const contactsDataToSend = { authToken, orgId, contact }
+        const { data } = await backendCall(
+          contactsDataToSend,
+          'api/elasticache/list_linked_locations',
+          navigate
+        )
+
         contact.linked_locations = []
+        contact.message_count = 0
+        if (data) {
+          data.forEach(async function (location) {
+            contact.linked_locations.push(location.id)
+            contact.message_count += await getLocationMessageCount(historyData, location)
+          })
+        }
       })
 
       setContacts(contactsUpdate)
       setFilteredContacts(contactsUpdate)
     }
+
     getContacts()
   }, [])
 
@@ -178,7 +183,22 @@ export default function ViewContactsDashboardPage () {
 
   const onMoreAction = (index) => {
     if (index === 0) {
-      // TODO
+      if (selectedContacts.length > 0) {
+        const linkContacts = []
+        selectedContacts.forEach((contact) => {
+          linkContacts.push(contact.id)
+        })
+
+        if (selectedContacts.length === 1) {
+          dispatch(setOrgCurrentContact(selectedContacts[0]))
+        }
+
+        navigate(orgManageLocationsUrls.view.dashboard, {
+          state: {
+            linkContacts, linkSource: 'dashboard'
+          }
+        })
+      }
     } else if (index === 1) {
       deleteDialog(selectedContacts)
     }
@@ -266,10 +286,10 @@ export default function ViewContactsDashboardPage () {
     }
   }
 
-  const getHistoricalMessageNumber = (area) => {
+  const getHistoricalMessageNumber = (historyData, area) => {
     const twoYearsAgo = moment().subtract(2, 'years')
 
-    const areaAlert = floodHistoryData.filter(
+    const areaAlert = historyData.filter(
       (alert) =>
         alert.CODE === area &&
         moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
@@ -278,8 +298,9 @@ export default function ViewContactsDashboardPage () {
     return areaAlert.length
   }
 
-  const getLocationMessageCount = async (location) => {
+  const getLocationMessageCount = async (historyData, location) => {
     let messageCount = 0
+
     const { warningArea, alertArea } = await getSurroundingFloodAreas(
       location.coordinates.latitude,
       location.coordinates.longitude
@@ -302,13 +323,21 @@ export default function ViewContactsDashboardPage () {
       )
 
     if (isInAlertArea) {
-      messageCount += getHistoricalMessageNumber(alertArea.features[0].properties.TA_CODE)
+      messageCount += getHistoricalMessageNumber(historyData, alertArea.features[0].properties.TA_CODE)
     }
     if (isInWarningArea) {
-      messageCount += getHistoricalMessageNumber(warningArea?.features[0].properties.TA_CODE)
+      messageCount += getHistoricalMessageNumber(historyData, warningArea?.features[0].properties.TA_CODE)
     }
 
     return messageCount
+  }
+
+  const onOnlyShowSelected = (enabled) => {
+    if (enabled) {
+      setFilteredContacts(selectedContacts)
+    } else {
+      setFilteredContacts(contacts)
+    }
   }
 
   const navigateBack = (event) => {
@@ -330,7 +359,14 @@ export default function ViewContactsDashboardPage () {
               text={notificationText}
             />
           )}
-          <DashboardHeader contacts={contacts} onClickLinked={onClickLinked} />
+          <DashboardHeader
+            contacts={contacts}
+            onClickLinked={onClickLinked}
+            linkLocations={location.state?.linkLocations}
+            selectedContacts={selectedContacts}
+            onOnlyShowSelected={onOnlyShowSelected}
+            linkSource={location.state?.linkSource}
+          />
           <div className='govuk-grid-column-full govuk-body'>
             {!isFilterVisible
               ? (
@@ -340,17 +376,21 @@ export default function ViewContactsDashboardPage () {
                     className='govuk-button govuk-button--secondary inline-block'
                     onClick={() => onOpenCloseFilter()}
                   />
-                &nbsp; &nbsp;
-                  <ButtonMenu
-                    title='More actions'
-                    options={moreActions}
-                    onSelect={(index) => onMoreAction(index)}
-                  />
-                &nbsp; &nbsp;
-                  <Button
-                    text='Print'
-                    className='govuk-button govuk-button--secondary inline-block'
-                  />
+                  {(!location.state || !location.state.linkLocations || location.state.linkLocations.length === 0) && (
+                    <>
+                    &nbsp; &nbsp;
+                      <ButtonMenu
+                        title='More actions'
+                        options={moreActions}
+                        onSelect={(index) => onMoreAction(index)}
+                      />
+                    &nbsp; &nbsp;
+                      <Button
+                        text='Print'
+                        className='govuk-button govuk-button--secondary inline-block'
+                      />
+                    </>
+                  )}
                   <ContactsTable
                     contacts={contacts}
                     displayedContacts={displayedContacts}
@@ -362,6 +402,7 @@ export default function ViewContactsDashboardPage () {
                     resetPaging={resetPaging}
                     setResetPaging={setResetPaging}
                     onAction={onAction}
+                    actionText='Delete'
                   />
                   <Pagination
                     totalPages={Math.ceil(
@@ -404,16 +445,20 @@ export default function ViewContactsDashboardPage () {
                         onClick={() => onOpenCloseFilter()}
                       />
                     &nbsp; &nbsp;
-                      <ButtonMenu
-                        title='More actions'
-                        options={moreActions}
-                        onSelect={(index) => onMoreAction(index)}
-                      />
-                    &nbsp; &nbsp;
-                      <Button
-                        text='Print'
-                        className='govuk-button govuk-button--secondary inline-block'
-                      />
+                      {(!location.state || !location.state.linkLocations || location.state.linkLocations.length === 0) && (
+                        <>
+                          <ButtonMenu
+                            title='More actions'
+                            options={moreActions}
+                            onSelect={(index) => onMoreAction(index)}
+                          />
+                      &nbsp; &nbsp;
+                          <Button
+                            text='Print'
+                            className='govuk-button govuk-button--secondary inline-block'
+                          />
+                        </>
+                      )}
                     </div>
                     <ContactsTable
                       contacts={contacts}
@@ -426,6 +471,7 @@ export default function ViewContactsDashboardPage () {
                       resetPaging={resetPaging}
                       setResetPaging={setResetPaging}
                       onAction={onAction}
+                      actionText='Delete'
                     />
                     <Pagination
                       totalPages={Math.ceil(

@@ -122,6 +122,9 @@ const userSlice = createSlice({
     locationBoundaries: null,
     consecutiveBoundariesAdded: 0,
     predefinedBoundaryFlow: null,
+    // linked locations/contacts
+    linkLocations: null,
+    linkContacts: null,
     // org location data
     currentLocation: {
       id: null,
@@ -307,6 +310,12 @@ const userSlice = createSlice({
     },
     setPredefinedBoundaryFlow: (state, action) => {
       state.predefinedBoundaryFlow = action.payload
+    },
+    setLinkLocations: (state, action) => {
+      state.linkLocations = action.payload
+    },
+    setLinkContacts: (state, action) => {
+      state.linkContacts = action.payload
     },
     // org location data
     setCurrentLocation: (state, action) => {
@@ -941,6 +950,8 @@ export const {
   setLocationBoundaries,
   setConsecutiveBoundariesAdded,
   setPredefinedBoundaryFlow,
+  setLinkLocations,
+  setLinkContacts,
   // org location data
   setCurrentLocation,
   setCurrentLocationId,

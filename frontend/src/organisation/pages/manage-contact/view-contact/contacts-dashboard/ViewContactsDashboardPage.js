@@ -41,8 +41,6 @@ export default function ViewContactsDashboardPage () {
   const [selectedFilters, setSelectedFilters] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
-  const [floodHistoryUrl, setHistoryUrl] = useState(null)
-  const [floodHistoryData, setFloodHistoryData] = useState(null)
   const [dialog, setDialog] = useState({
     show: false,
     text: '',
@@ -94,7 +92,7 @@ export default function ViewContactsDashboardPage () {
         'api/locations/download_flood_history'
       )
 
-      let historyData = await fetch(historyFileUrl.data).then((response) => response.text()).then((data) => csvToJson(data))
+      const historyData = await fetch(historyFileUrl.data).then((response) => response.text()).then((data) => csvToJson(data))
 
       contactsUpdate.forEach(async function (contact, idx) {
         const contactsDataToSend = { authToken, orgId, contact }
@@ -294,7 +292,7 @@ export default function ViewContactsDashboardPage () {
         alert.CODE === area &&
         moment(alert.DATE, 'DD/MM/YYYY') > twoYearsAgo
     )
-    
+
     return areaAlert.length
   }
 

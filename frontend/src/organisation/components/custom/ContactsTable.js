@@ -10,7 +10,8 @@ export default function ContactsTable ({
   setFilteredContacts,
   onAction,
   actionText,
-  contactPrefix
+  contactPrefix,
+  printMode
 }) {
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
   const [contactNameSort, setContactNameSort] = useState('none')
@@ -216,7 +217,7 @@ export default function ContactsTable ({
                 </div>
               </th>
               <td className='govuk-table__cell'>
-                <Link className='govuk-link' onClick={(e) => onAction(e, 'view', contact)}>
+                <Link className={!printMode ? 'govuk-link' : ''} onClick={(e) => onAction(e, 'view', contact)}>
                   {contact.firstname}{contact.lastname.length > 0 ? ' ' + contact.lastname : ''}
                 </Link>
               </td>
@@ -233,7 +234,7 @@ export default function ContactsTable ({
                 0
               </td>
               <td className='govuk-table__cell'>
-                <Link className='govuk-link' onClick={(e) => onAction(e, actionText, contact)}>
+                <Link className={!printMode ? 'govuk-link' : ''} onClick={(e) => onAction(e, actionText, contact)}>
                   {actionText}
                 </Link>
               </td>

@@ -21,6 +21,8 @@ export default function ViewContactsDashboardPage () {
   const dispatch = useDispatch()
   const location = useLocation()
 
+  const defaultContactsPerPage = 20
+
   const successMessage = location.state?.successMessage || ''
   const [contacts, setContacts] = useState([])
   const [notificationText, setNotificationText] = useState(successMessage)
@@ -35,6 +37,7 @@ export default function ViewContactsDashboardPage () {
   const [selectedFilters, setSelectedFilters] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
+  const [contactsPerPage, setContactsPerPage] = useState(defaultContactsPerPage)
   const [dialog, setDialog] = useState({
     show: false,
     text: '',
@@ -46,11 +49,16 @@ export default function ViewContactsDashboardPage () {
     error: ''
   })
 
-  const contactsPerPage = 20
-
   useEffect(() => {
     setFilteredContacts(contacts)
   }, [])
+
+  useEffect(() => {
+    if (!contactsPerPage) {
+      window.print()
+      setContactsPerPage(defaultContactsPerPage)
+    }
+  }, [displayedContacts])
 
   useEffect(() => {
     setCurrentPage(1)
@@ -58,13 +66,17 @@ export default function ViewContactsDashboardPage () {
   }, [resetPaging])
 
   useEffect(() => {
-    setDisplayedContacts(
-      filteredContacts.slice(
-        (currentPage - 1) * contactsPerPage,
-        currentPage * contactsPerPage
+    if (contactsPerPage) {
+      setDisplayedContacts(
+        filteredContacts.slice(
+          (currentPage - 1) * contactsPerPage,
+          currentPage * contactsPerPage
+        )
       )
-    )
-  }, [filteredContacts, currentPage])
+    } else {
+      setDisplayedContacts(filteredContacts)
+    }
+  }, [filteredContacts, currentPage, contactsPerPage])
 
   useEffect(() => {
     const getContacts = async () => {
@@ -187,6 +199,11 @@ export default function ViewContactsDashboardPage () {
     }
   }
 
+  const onPrint = () => {
+    setContactsPerPage(null)
+    
+  }
+
   const onClickLinked = (type) => {
     const updatedFilteredContacts = contacts.filter(
       (contact) =>
@@ -303,6 +320,7 @@ export default function ViewContactsDashboardPage () {
             selectedContacts={selectedContacts}
             onOnlyShowSelected={onOnlyShowSelected}
             linkSource={location.state?.linkSource}
+            printMode={contactsPerPage ? null : true}
           />
           <div className='govuk-grid-column-full govuk-body'>
             {!isFilterVisible
@@ -325,6 +343,7 @@ export default function ViewContactsDashboardPage () {
                       <Button
                         text='Print'
                         className='govuk-button govuk-button--secondary inline-block'
+                        onClick={() => onPrint()}
                       />
                     </>
                   )}
@@ -340,22 +359,26 @@ export default function ViewContactsDashboardPage () {
                     setResetPaging={setResetPaging}
                     onAction={onAction}
                     actionText='Delete'
+                    printMode={contactsPerPage ? null : true}
                   />
-                  <Pagination
-                    totalPages={Math.ceil(
-                      filteredContacts.length / contactsPerPage
-                    )}
-                    onPageChange={(val) => setCurrentPage(val)}
-                    holdPage={holdPage}
-                    setHoldPage={setHoldPage}
-                    pageList
-                    reset={resetPaging}
-                  />
+                  {contactsPerPage && (
+                    <Pagination
+                      totalPages={Math.ceil(
+                        filteredContacts.length / contactsPerPage
+                      )}
+                      onPageChange={(val) => setCurrentPage(val)}
+                      holdPage={holdPage}
+                      setHoldPage={setHoldPage}
+                      pageList
+                      reset={resetPaging}
+                    />
+                  )}
                 </>
                 )
               : (
                 <div className='govuk-grid-row'>
                   <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 contacts-filter-container'>
+                  {/* {contactsPerPage && ( */}
                     <SearchFilter
                       contacts={contacts}
                       setFilteredContacts={setFilteredContacts}
@@ -371,7 +394,9 @@ export default function ViewContactsDashboardPage () {
                       setSelectedKeywordFilters={setSelectedKeywordFilters}
                       selectedLinkedFilters={selectedLinkedFilters}
                       setSelectedLinkedFilters={setSelectedLinkedFilters}
+                      printMode={contactsPerPage ? null : true}
                     />
+                  {/* )} */}
                   </div>
 
                   <div className='govuk-grid-column-three-quarters'>
@@ -393,6 +418,7 @@ export default function ViewContactsDashboardPage () {
                           <Button
                             text='Print'
                             className='govuk-button govuk-button--secondary inline-block'
+                            onClick={() => onPrint()}
                           />
                         </>
                       )}
@@ -409,17 +435,20 @@ export default function ViewContactsDashboardPage () {
                       setResetPaging={setResetPaging}
                       onAction={onAction}
                       actionText='Delete'
+                      printMode={contactsPerPage ? null : true}
                     />
-                    <Pagination
-                      totalPages={Math.ceil(
-                        filteredContacts.length / contactsPerPage
-                      )}
-                      onPageChange={(val) => setCurrentPage(val)}
-                      holdPage={holdPage}
-                      setHoldPage={setHoldPage}
-                      pageList
-                      reset={resetPaging}
-                    />
+                    {contactsPerPage && (
+                      <Pagination
+                        totalPages={Math.ceil(
+                          filteredContacts.length / contactsPerPage
+                        )}
+                        onPageChange={(val) => setCurrentPage(val)}
+                        holdPage={holdPage}
+                        setHoldPage={setHoldPage}
+                        pageList
+                        reset={resetPaging}
+                      />
+                    )}
                   </div>
                 </div>
                 )}

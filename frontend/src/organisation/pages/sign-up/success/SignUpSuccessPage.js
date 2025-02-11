@@ -11,8 +11,7 @@ export default function SignUpSuccessPage () {
   const profile = useSelector((state) => state.session.profile)
   const organization = useSelector((state) => state.session.organization)
   const organizationAdditionals = JSON.parse(organization.description)
-  const responderValue = organizationAdditionals.emergencySector? "yes" : "no"
-  
+  const responderValue = organizationAdditionals.emergencySector ? 'yes' : 'no'
 
   async function notifySignUpSuccessEa () {
     const submissionDateTime = new Date().toLocaleString('en-GB', {
@@ -29,49 +28,44 @@ export default function SignUpSuccessPage () {
       refNumber: organization.id,
       orgName: organizationAdditionals.name,
       address: organizationAdditionals.address,
-      companyHouseNumber: 'no',
+      companyHouseNumber: organizationAdditionals.compHouseNum,
       responder: responderValue,
       fullName: profile.firstname + ' ' + profile.lastname,
       alternativeContactFullName: organizationAdditionals.alternativeContact.firstName + ' ' + organizationAdditionals.alternativeContact.lastName,
       alternativeContactEmail: organizationAdditionals.alternativeContact.email,
       alternativeContactTelephone: organizationAdditionals.alternativeContact.telephone,
       alternativeContactJob: organizationAdditionals.alternativeContact.jobTitle,
-      submissionDateTime:submissionDateTime
+      submissionDateTime
     }
     await backendCall(dataToSend, 'api/notify/account_pending_ea', navigate)
   }
 
-
-
   async function notifySignUpSuccessOrg () {
-    
     const dataToSend = {
       // ToDo change the eaEmail to their email once confirmed
       email: profile.emails[0],
       refNumber: organization.id,
       orgName: organizationAdditionals.name,
       address: organizationAdditionals.address,
-      companyHouseNumber: 'no',
+      companyHouseNumber: organizationAdditionals.compHouseNum,
       responder: responderValue,
       fullName: profile.firstname + ' ' + profile.lastname,
       alternativeContactFullName: organizationAdditionals.alternativeContact.firstName + ' ' + organizationAdditionals.alternativeContact.lastName,
       alternativeContactEmail: organizationAdditionals.alternativeContact.email,
       alternativeContactTelephone: organizationAdditionals.alternativeContact.telephone,
       alternativeContactJob: organizationAdditionals.alternativeContact.jobTitle,
-      eaEmail: 'exampleEA@email.com' 
+      eaEmail: 'exampleEA@email.com'
     }
     await backendCall(dataToSend, 'api/notify/account_pending_org', navigate)
   }
 
-
-
   useEffect(() => {
-    async function sendNotifications() {
-      await notifySignUpSuccessEa();
-      await notifySignUpSuccessOrg();
+    async function sendNotifications () {
+      await notifySignUpSuccessEa()
+      await notifySignUpSuccessOrg()
     }
-    sendNotifications();
-  }, []);
+    sendNotifications()
+  }, [])
 
   return (
     <>

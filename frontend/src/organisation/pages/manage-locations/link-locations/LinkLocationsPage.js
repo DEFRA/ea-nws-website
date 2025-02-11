@@ -13,7 +13,7 @@ import {
 } from '../../../../common/services/WfsFloodDataService'
 import { infoUrls } from '../../../routes/info/InfoRoutes'
 
-export default function LinkLocationsPage() {
+export default function LinkLocationsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
@@ -35,7 +35,7 @@ export default function LinkLocationsPage() {
   }
 
   useEffect(() => {
-    async function fetchFloodAreas() {
+    async function fetchFloodAreas () {
       if (!currentLocation) return
 
       let alertAreas = []
@@ -140,8 +140,8 @@ export default function LinkLocationsPage() {
               </td>
               <td className='govuk-table__cell'>{area.properties.category}</td>
               <td className='govuk-table__cell'>
-                0 severe flood warnings <br />
-                0 flood warnings <br />0 flood alerts
+                X severe flood warnings <br />
+                X flood warnings <br />X flood alerts
               </td>
               <td className='govuk-table__cell'>
                 <div
@@ -154,8 +154,7 @@ export default function LinkLocationsPage() {
                   <Checkbox
                     value={area.properties.FWS_TACODE}
                     onChange={() =>
-                      handleCheckboxChange(area.properties.FWS_TACODE)
-                    }
+                      handleCheckboxChange(area.properties.FWS_TACODE)}
                     checked={childrenIDs.includes(area.properties.FWS_TACODE)}
                   />
                 </div>

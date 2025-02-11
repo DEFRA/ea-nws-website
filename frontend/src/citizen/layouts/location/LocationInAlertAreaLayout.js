@@ -130,7 +130,7 @@ export default function LocationInAlertAreaLayout ({
         params: getRegistrationParams(profile, alertTypes)
       }
 
-      const backendRoute = additionalAlerts
+      const backendRoute = (additionalAlerts && !isUserInNearbyTargetFlowpath)
         ? 'api/partner/update_location_registration'
         : 'api/partner/register_location_to_partner'
 

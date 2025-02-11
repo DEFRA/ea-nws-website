@@ -28,17 +28,17 @@ module.exports = [
                     alternativeContactJob && submissionDateTime
         ) {
           const personalisation = {
-            email: email,  
+            email_address: email,  
             full_name: fullName,  
-            ref_number: refNumber,  
-            org_name: orgName,  
-            address: address,  
-            company_house_number: companyHouseNumber,  
+            reference_number: refNumber,  
+            organisation_name: orgName,  
+            head_office_address: address,  
+            companies_house_number: companyHouseNumber,  
             professional_partner: professionalPartner,  
             alternative_contact_full_name: alternativeContactFullName,  
             alternative_contact_email: alternativeContactEmail,  
-            alternative_contact_telephone: alternativeContactTelephone,  
-            alternative_contact_job: alternativeContactJob,  
+            alternative_contact_telephone_number: alternativeContactTelephone,  
+            alternative_contact_job_title: alternativeContactJob,  
             submission_date_time: submissionDateTime  
           };
           

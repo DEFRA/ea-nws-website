@@ -88,7 +88,28 @@ export default function ContactsTable ({
   }
 
   const sortMessagesReceived = () => {
-
+    if (messagesReceivedSort === 'none' || messagesReceivedSort === 'descending') {
+      setMessagesReceivedSort('ascending')
+      setFilteredContacts(
+        [...filteredContacts].sort((a, b) => {
+          if (a.message_count === null && b.message_count === null) return 0
+          if (a.message_count === null) return 1
+          if (b.message_count === null) return -1
+          return a.message_count > b.message_count ? 1 : -1
+        })
+      )
+    }
+    if (messagesReceivedSort === 'ascending') {
+      setMessagesReceivedSort('descending')
+      setFilteredContacts(
+        [...filteredContacts].sort((a, b) => {
+          if (a.message_count === null && b.message_count === null) return 0
+          if (a.message_count === null) return 1
+          if (b.message_count === null) return -1
+          return a.message_count < b.message_count ? 1 : -1
+        })
+      )
+    }
   }
 
   const handleHeaderCheckboxChange = (event) => {

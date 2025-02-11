@@ -8,7 +8,9 @@ export default function ContactsTable ({
   selectedContacts,
   setSelectedContacts,
   setFilteredContacts,
-  onAction
+  onAction,
+  actionText,
+  contactPrefix
 }) {
   const [isTopCheckboxChecked, setIsTopCheckboxChecked] = useState(false)
   const [contactNameSort, setContactNameSort] = useState('none')
@@ -118,7 +120,9 @@ export default function ContactsTable ({
         {filteredContacts.length !== contacts.length ? 'Showing ' : ''}
         {filteredContacts.length !== contacts.length ? filteredContacts.length : ''}
         {filteredContacts.length !== contacts.length ? ' of ' : ''}
-        {contacts.length}{contacts.length === 1 ? ' contact' : ' contacts'}{' '}
+        {contacts.length}
+        {contactPrefix ? ' ' + contactPrefix : ''}
+        {contacts.length === 1 ? ' contact' : ' contacts'}{' '}
         <span style={{ margin: '0 20px' }}>|</span>
         <span style={{ color: '#1d70b8' }}>
           {selectedContacts.length}{' '}
@@ -223,14 +227,14 @@ export default function ContactsTable ({
                 {contact.emails[0]}
               </td>
               <td className='govuk-table__cell'>
-                {contact.linked_locations.length}
+                {contact.linked_locations?.length}
               </td>
               <td className='govuk-table__cell'>
                 0
               </td>
               <td className='govuk-table__cell'>
-                <Link className='govuk-link' onClick={(e) => onAction(e, 'delete', contact)}>
-                  Delete
+                <Link className='govuk-link' onClick={(e) => onAction(e, actionText, contact)}>
+                  {actionText}
                 </Link>
               </td>
             </tr>

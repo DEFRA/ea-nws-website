@@ -25,6 +25,13 @@ export default function DuplicateLocationsOptionsPage () {
   const [dupLocations, setDupLocations] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
 
+  const notFoundLocations = useSelector(
+    (state) => state.session.notFoundLocations
+  )
+  const notInEnglandLocations = useSelector(
+    (state) => state.session.notInEnglandLocations
+  )
+
   useEffect(() => {
     const getDupLocations = async () => {
       const dataToSend = { orgId }
@@ -100,6 +107,13 @@ export default function DuplicateLocationsOptionsPage () {
     if (!option) {
       setError('Select what you want to do with the duplicate locations')
     } else {
+      const url =
+        notFoundLocations > 0
+          ? orgManageLocationsUrls.unmatchedLocations.notFound.dashboard
+          : notInEnglandLocations > 0
+            ? orgManageLocationsUrls.unmatchedLocations.notFound.dashboard
+            : orgManageLocationsUrls.view.dashboard // change to link contacts
+
       switch (option) {
         case options[0].value: {
           await Promise.all(
@@ -112,9 +126,9 @@ export default function DuplicateLocationsOptionsPage () {
               )
             })
           )
-          // change to link contacts
+
           navigateToNextPage(
-            orgManageLocationsUrls.view.dashboard,
+            url,
             `${dupLocations.length} existing locations kept`
           )
           break
@@ -148,9 +162,8 @@ export default function DuplicateLocationsOptionsPage () {
             })
           )
 
-          // change to link contacts
           navigateToNextPage(
-            orgManageLocationsUrls.view.dashboard,
+            url,
             `${dupLocations.length} existing locations replaced`
           )
           break

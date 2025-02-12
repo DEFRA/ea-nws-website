@@ -79,7 +79,7 @@ export default function ConfirmDeleteSingleLocationPage () {
               Are you sure you want to remove this location?
             </h2>
             <InsetText text={location.state?.name} />
-            <p className='govuk-!-margin-bottom-6'>
+            <p className='govuk-!-margin-bottom-6 govuk-body'>
               You'll no longer get any flood warnings or alerts for this
               location.
             </p>

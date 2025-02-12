@@ -122,23 +122,18 @@ export default function ConfirmLocationLayout ({
     }
 
     const locationToAdd = store.getState().session.currentLocation
+    const duplicateLocation = await checkDuplicateLocation()
 
     // Check for duplicates
-    if (flow?.includes('unmatched-locations')) {
-      const existingLocation = geoSafeToWebLocation(
-        await checkDuplicateLocation()
-      )
-
-      if (existingLocation) {
-        navigate(orgManageLocationsUrls.add.duplicateLocationComparisonPage, {
-          state: {
-            existingLocation,
-            newLocation: geoSafeToWebLocation(locationToAdd),
-            numDuplicates: 1,
-            flow
-          }
-        })
-      }
+    if (duplicateLocation) {
+      navigate(orgManageLocationsUrls.add.duplicateLocationComparisonPage, {
+        state: {
+          existingLocation: geoSafeToWebLocation(duplicateLocation),
+          newLocation: geoSafeToWebLocation(locationToAdd),
+          numDuplicates: 1,
+          flow
+        }
+      })
 
       return
     }

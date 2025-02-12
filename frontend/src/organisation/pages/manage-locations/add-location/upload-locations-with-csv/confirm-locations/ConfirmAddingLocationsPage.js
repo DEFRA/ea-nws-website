@@ -76,7 +76,6 @@ export default function ConfirmAddingLocationsPage () {
       'api/bulk_uploads/save_locations',
       navigate
     )
-    await new Promise((resolve) => setTimeout(resolve, 5000))
 
     if (!errorMessage && data) {
       if (duplicateLocations > 0) {
@@ -102,10 +101,6 @@ export default function ConfirmAddingLocationsPage () {
                   numDuplicates: duplicateLocations
                 }
               }
-            )
-          } else {
-            console.log(
-              'Error in getting existing location and/or new location for 1 duplicate'
             )
           }
         } else {
@@ -133,7 +128,6 @@ export default function ConfirmAddingLocationsPage () {
         )
       }
     } else {
-      console.log('Error is getting data from save_locations')
       // got to some sort of error page
     }
   }

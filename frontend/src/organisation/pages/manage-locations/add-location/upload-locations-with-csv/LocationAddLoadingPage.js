@@ -94,12 +94,13 @@ export default function LocationAddLoadingPage () {
             dispatch(setNotInEnglandLocations(notInEnglandLocations))
 
             // Not found locations
-            const notFoundLocations = data.data.invalid.filter(
-              (invalid) =>
-                Array.isArray(invalid.error) &&
-                invalid.error.includes('not found')
-            ).length
-            dispatch(setNotFoundLocations(notFoundLocations))
+            dispatch(
+              setNotFoundLocations(
+                data.data.invalid.length -
+                  duplicateLocations -
+                  notInEnglandLocations
+              )
+            )
             setInvalidLocations(data.data.invalid.length)
           }
           setStatus(data.status)

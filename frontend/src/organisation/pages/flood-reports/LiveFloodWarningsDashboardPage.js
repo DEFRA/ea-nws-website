@@ -10,16 +10,19 @@ import FloodReportsTable from './dashboard-components/FloodReportsTable'
 export default function LiveFloodWarningsDashboardPage () {
   const navigate = useNavigate()
 
+  const defaultWarningsPerPage = 20
+
   const [warnings, setWarnings] = useState([])
   const [displayedWarnings, setDisplayedWarnings] = useState([])
   const [filteredWarnings, setFilteredWarnings] = useState([])
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [selectedFilters, setSelectedFilters] = useState([])
   const [holdPage, setHoldPage] = useState(0)
+  const [warningsPerPage, setWarningsPerPage] = useState(defaultWarningsPerPage)
 
   const [currentPage, setCurrentPage] = useState(1)
   const [resetPaging, setResetPaging] = useState(false)
-  const warningsPerPage = 10
+  
 
   // TODO: Integrate real warning data when available
   useEffect(() => {
@@ -143,21 +146,32 @@ export default function LiveFloodWarningsDashboardPage () {
   }, [])
 
   useEffect(() => {
+    if (!warningsPerPage) {
+      window.print()
+      setWarningsPerPage(defaultWarningsPerPage)
+    }
+  }, [displayedWarnings])
+
+  useEffect(() => {
     if (warnings.length > 0) {
       setFilteredWarnings(warnings)
     }
   }, [warnings])
 
   useEffect(() => {
-    if (filteredWarnings.length > 0) {
-      setDisplayedWarnings(
-        filteredWarnings.slice(
-          (currentPage - 1) * warningsPerPage,
-          currentPage * warningsPerPage
+    if (warningsPerPage) {
+      if (filteredWarnings.length > 0) {
+        setDisplayedWarnings(
+          filteredWarnings.slice(
+            (currentPage - 1) * warningsPerPage,
+            currentPage * warningsPerPage
+          )
         )
-      )
+      }
+    } else {
+      setDisplayedWarnings(filteredWarnings)
     }
-  }, [filteredWarnings, currentPage])
+  }, [filteredWarnings, currentPage, warningsPerPage])
 
   useEffect(() => {
     if (resetPaging) {
@@ -185,6 +199,10 @@ export default function LiveFloodWarningsDashboardPage () {
   const [selectedBusCriticalityFilters, setSelectedBusCriticalityFilters] =
     useState([])
 
+  const onPrint = () => {
+    setWarningsPerPage(null)
+  }
+
   const table = (
     <>
       <Button
@@ -196,7 +214,7 @@ export default function LiveFloodWarningsDashboardPage () {
       <Button
         text='Print'
         className='govuk-button govuk-button--secondary inline-block'
-        onClick={() => window.print()} // TODO utilise formatted print when available
+        onClick={() => onPrint()}
       />
       <FloodReportsTable
         warnings={warnings}
@@ -205,15 +223,18 @@ export default function LiveFloodWarningsDashboardPage () {
         setFilteredWarnings={setFilteredWarnings}
         resetPaging={resetPaging}
         setResetPaging={setResetPaging}
+        printMode={warningsPerPage ? null : true}
       />
-      <Pagination
-        totalPages={Math.ceil(filteredWarnings.length / warningsPerPage)}
-        onPageChange={(val) => setCurrentPage(val)}
-        holdPage={holdPage}
-        setHoldPage={setHoldPage}
-        pageList
-        reset={resetPaging}
-      />
+      {warningsPerPage && (
+        <Pagination
+          totalPages={Math.ceil(filteredWarnings.length / warningsPerPage)}
+          onPageChange={(val) => setCurrentPage(val)}
+          holdPage={holdPage}
+          setHoldPage={setHoldPage}
+          pageList
+          reset={resetPaging}
+        />
+      )}
     </>
   )
   return (
@@ -256,6 +277,7 @@ export default function LiveFloodWarningsDashboardPage () {
                       setSelectedBusCriticalityFilters={
                       setSelectedBusCriticalityFilters
                     }
+                    printMode={warningsPerPage ? null : true}
                     />
                   </div>
                   <div className='govuk-grid-column-three-quarters'>{table}</div>

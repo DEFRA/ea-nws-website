@@ -201,7 +201,6 @@ export default function ViewContactsDashboardPage () {
 
   const onPrint = () => {
     setContactsPerPage(null)
-    
   }
 
   const onClickLinked = (type) => {
@@ -378,7 +377,6 @@ export default function ViewContactsDashboardPage () {
               : (
                 <div className='govuk-grid-row'>
                   <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 contacts-filter-container'>
-                  {/* {contactsPerPage && ( */}
                     <SearchFilter
                       contacts={contacts}
                       setFilteredContacts={setFilteredContacts}
@@ -396,7 +394,6 @@ export default function ViewContactsDashboardPage () {
                       setSelectedLinkedFilters={setSelectedLinkedFilters}
                       printMode={contactsPerPage ? null : true}
                     />
-                  {/* )} */}
                   </div>
 
                   <div className='govuk-grid-column-three-quarters'>

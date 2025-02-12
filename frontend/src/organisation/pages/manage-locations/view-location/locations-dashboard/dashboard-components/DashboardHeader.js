@@ -13,7 +13,8 @@ export default function DashboardHeader ({
   linkContacts,
   selectedLocations,
   onOnlyShowSelected,
-  linkSource
+  linkSource,
+  printMode
 }) {
   const navigate = useNavigate()
 
@@ -154,7 +155,7 @@ export default function DashboardHeader ({
                   <strong>{count[0]}</strong>
                 </h1>
                 <Link
-                  className='govuk-link'
+                  className={!printMode ? 'govuk-link' : ''}
                   onClick={() => onClickLinked('messages')}
                 >
                   {count[0] === 1 ? 'location' : 'locations'} {message[0]}
@@ -176,7 +177,7 @@ export default function DashboardHeader ({
                     <strong>{count[1]}</strong>
                   </h1>
                   <Link
-                    className='govuk-link'
+                    className={!printMode ? 'govuk-link' : ''}
                     onClick={() => onClickLinked('linked-locations')}
                   >
                     {count[1] === 1 ? 'location' : 'locations'} {message[1]}
@@ -198,7 +199,7 @@ export default function DashboardHeader ({
                     <strong>{count[0]}</strong>
                   </h1>
                   <Link
-                    className='govuk-link'
+                    className={!printMode ? 'govuk-link' : ''}
                     onClick={() => onClickLinked('high-medium-risk')}
                   >
                     {count[0] === 1 ? 'location' : 'locations'} {message[0]}
@@ -232,7 +233,7 @@ export default function DashboardHeader ({
                     <strong>{count[1]}</strong>
                   </h1>
                   <Link
-                    className='govuk-link'
+                    className={!printMode ? 'govuk-link' : ''}
                     onClick={() => onClickLinked('low-risk')}
                   >
                     {count[1] === 1 ? 'location' : 'locations'} {message[1]}
@@ -247,7 +248,7 @@ export default function DashboardHeader ({
                 <strong>{count[0]}</strong>
               </h1>
               <Link
-                className='govuk-link'
+                className={!printMode ? 'govuk-link' : ''}
                 onClick={() => onClickLinked('no-links')}
               >
                 {count[0] === 1 ? 'location' : 'locations'} {message[0]}
@@ -258,13 +259,13 @@ export default function DashboardHeader ({
 
         <p className='govuk-!-margin-top-2'>
           {type === 'floodMessages' && (
-            <Link className='govuk-link' onClick={handleFloodAreas}>
+            <Link className={!printMode ? 'govuk-link' : ''} onClick={handleFloodAreas}>
               What are flood areas?
             </Link>
           )}
           {type === 'noFloodMessages' && (
             // TODO: Add route to link locations
-            <Link className='govuk-link'>
+            <Link className={!printMode ? 'govuk-link' : ''}>
               Link these locations to nearby flood areas to get flood messages
             </Link>
           )}

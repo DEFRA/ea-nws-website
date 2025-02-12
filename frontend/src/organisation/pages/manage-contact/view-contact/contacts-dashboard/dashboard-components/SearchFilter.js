@@ -38,8 +38,7 @@ export default function SearchFilter ({
 
   const keywords = [
     ...new Set(
-      // contacts.flatMap(contact => contact.additionals.keywords)
-      // contacts.map((contact) => contact.additionals.keywords.map())
+      contacts.flatMap(contact => contact.additionals.keywords)
     )
   ]
 

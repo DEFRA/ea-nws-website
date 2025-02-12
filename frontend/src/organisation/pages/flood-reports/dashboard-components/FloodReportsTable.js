@@ -10,7 +10,8 @@ export default function FloodReportsTable ({
   filteredWarnings,
   setFilteredWarnings,
   resetPaging,
-  setResetPaging
+  setResetPaging,
+  printMode
 }) {
   const [popupVisible, setPopupVisible] = useState(false)
   const [popupWarning, setPopupWarning] = useState(null)
@@ -214,7 +215,7 @@ export default function FloodReportsTable ({
                   {/* TODO: Link in boundaries when real warning data available */}
                 </p>
                 <Link
-                  className='govuk-link'
+                  className={!printMode ? 'govuk-link' : ''}
                   onClick={(e) => {
                     e.preventDefault()
                     openPopup(warning)

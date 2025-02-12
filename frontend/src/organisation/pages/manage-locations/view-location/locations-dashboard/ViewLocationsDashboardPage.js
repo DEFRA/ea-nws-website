@@ -29,6 +29,8 @@ export default function ViewLocationsDashboardPage () {
   const dispatch = useDispatch()
   const location = useLocation()
 
+  const defaultLocationsPerPage = 20
+
   const successMessage = location.state?.successMessage || ''
   const [notificationText, setNotificationText] = useState(successMessage)
   const [selectedLocations, setSelectedLocations] = useState([])
@@ -40,6 +42,7 @@ export default function ViewLocationsDashboardPage () {
   const [isFilterVisible, setIsFilterVisible] = useState(false)
   const [displayedLocations, setDisplayedLocations] = useState([])
   const [selectedFilters, setSelectedFilters] = useState([])
+  const [locationsPerPage, setLocationsPerPage] = useState(defaultLocationsPerPage)
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const [dialog, setDialog] = useState({
@@ -53,7 +56,12 @@ export default function ViewLocationsDashboardPage () {
     error: ''
   })
 
-  const locationsPerPage = 20
+  useEffect(() => {
+    if (!locationsPerPage) {
+      window.print()
+      setLocationsPerPage(defaultLocationsPerPage)
+    }
+  }, [displayedLocations])
 
   useEffect(() => {
     setFilteredLocations(locations)
@@ -65,13 +73,17 @@ export default function ViewLocationsDashboardPage () {
   }, [resetPaging])
 
   useEffect(() => {
-    setDisplayedLocations(
-      filteredLocations.slice(
-        (currentPage - 1) * locationsPerPage,
-        currentPage * locationsPerPage
+    if (locationsPerPage) {
+      setDisplayedLocations(
+        filteredLocations.slice(
+          (currentPage - 1) * locationsPerPage,
+          currentPage * locationsPerPage
+        )
       )
-    )
-  }, [filteredLocations, currentPage])
+    } else {
+      setDisplayedLocations(filteredLocations)
+    }
+  }, [filteredLocations, currentPage, locationsPerPage])
 
   useEffect(() => {
     const getLocations = async () => {
@@ -274,6 +286,10 @@ export default function ViewLocationsDashboardPage () {
     }
   }
 
+  const onPrint = () => {
+    setLocationsPerPage(null)
+  }
+
   const onClickLinked = (type) => {
     setSelectedFilters([])
     setSelectedLocationTypeFilters([])
@@ -422,6 +438,7 @@ export default function ViewLocationsDashboardPage () {
             onClickLinked={onClickLinked}
             onOnlyShowSelected={onOnlyShowSelected}
             linkSource={location.state?.linkSource}
+            printMode={locationsPerPage ? null : true}
           />
           <div className='govuk-grid-column-full govuk-body'>
             {!isFilterVisible
@@ -444,6 +461,7 @@ export default function ViewLocationsDashboardPage () {
                       <Button
                         text='Print'
                         className='govuk-button govuk-button--secondary inline-block'
+                        onClick={() => onPrint()}
                       />
                     </>
                   )}
@@ -460,17 +478,20 @@ export default function ViewLocationsDashboardPage () {
                     onAction={onAction}
                     actionText='Delete'
                     linkContacts={location.state?.linkContacts}
+                    printMode={locationsPerPage ? null : true}
                   />
-                  <Pagination
-                    totalPages={Math.ceil(
-                      filteredLocations.length / locationsPerPage
-                    )}
-                    onPageChange={(val) => setCurrentPage(val)}
-                    holdPage={holdPage}
-                    setHoldPage={setHoldPage}
-                    pageList
-                    reset={resetPaging}
-                  />
+                  {locationsPerPage && (
+                    <Pagination
+                      totalPages={Math.ceil(
+                        filteredLocations.length / locationsPerPage
+                      )}
+                      onPageChange={(val) => setCurrentPage(val)}
+                      holdPage={holdPage}
+                      setHoldPage={setHoldPage}
+                      pageList
+                      reset={resetPaging}
+                    />
+                  )}
                 </>
                 )
               : (
@@ -519,6 +540,7 @@ export default function ViewLocationsDashboardPage () {
                     }
                       selectedLinkedFilters={selectedLinkedFilters}
                       setSelectedLinkedFilters={setSelectedLinkedFilters}
+                      printMode={locationsPerPage ? null : true}
                     />
                   </div>
 
@@ -541,6 +563,7 @@ export default function ViewLocationsDashboardPage () {
                           <Button
                             text='Print'
                             className='govuk-button govuk-button--secondary inline-block'
+                            onClick={() => onPrint()}
                           />
                         </>
                       )}
@@ -558,17 +581,20 @@ export default function ViewLocationsDashboardPage () {
                       onAction={onAction}
                       actionText='Delete'
                       linkContacts={location.state?.linkContacts}
+                      printMode={locationsPerPage ? null : true}
                     />
-                    <Pagination
-                      totalPages={Math.ceil(
-                        filteredLocations.length / locationsPerPage
-                      )}
-                      onPageChange={(val) => setCurrentPage(val)}
-                      holdPage={holdPage}
-                      setHoldPage={setHoldPage}
-                      pageList
-                      reset={resetPaging}
-                    />
+                    {locationsPerPage && (
+                      <Pagination
+                        totalPages={Math.ceil(
+                          filteredLocations.length / locationsPerPage
+                        )}
+                        onPageChange={(val) => setCurrentPage(val)}
+                        holdPage={holdPage}
+                        setHoldPage={setHoldPage}
+                        pageList
+                        reset={resetPaging}
+                      />
+                    )}
                   </div>
                 </div>
                 )}

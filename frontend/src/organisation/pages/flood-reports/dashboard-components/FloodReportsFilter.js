@@ -24,7 +24,8 @@ export default function FloodReportsFilter ({
   selectedLocationTypeFilters,
   setSelectedLocationTypeFilters,
   selectedBusCriticalityFilters,
-  setSelectedBusCriticalityFilters
+  setSelectedBusCriticalityFilters,
+  printMode
 }) {
   const warningTypes = [
     ...new Set(['Severe flood warnings', 'Flood warnings', 'Flood alerts'])
@@ -308,7 +309,7 @@ export default function FloodReportsFilter ({
               </h2>
               <Link
                 onClick={clearFilters}
-                className='govuk-body govuk-link inline-link'
+                className={!printMode ? 'govuk-body govuk-link inline-link' : 'govuk-body'}
                 style={{ marginLeft: 'auto', marginBottom: '0' }}
               >
                 Clear filters

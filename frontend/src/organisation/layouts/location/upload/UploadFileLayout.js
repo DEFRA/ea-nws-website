@@ -77,7 +77,7 @@ export default function UploadFileLayout ({
   switch (uploadMethod) {
     // CSV file uploaded for bulk upload
     case 'csv':
-      allowedFileTypes = ['text/csv']
+      allowedFileTypes = ['text/csv', 'application/vnd.ms-excel']
       maxFileSize = 5
       fileTypeHint = 'File must be .csv'
       fileTypeErrorMsg = 'The selected file must be .csv'
@@ -116,6 +116,13 @@ export default function UploadFileLayout ({
   // Check for valid file
   const checkFile = (file) => {
     if (!allowedFileTypes.includes(file.type)) {
+      setErrorFileType(fileTypeErrorMsg)
+      return false
+    }
+
+    // For firefox on windows we have to allow xls file MIME type.
+    // check the file name ends with .csv to stop .xls.
+    if (uploadMethod === 'csv' && !file.name.endsWith('.csv')) {
       setErrorFileType(fileTypeErrorMsg)
       return false
     }

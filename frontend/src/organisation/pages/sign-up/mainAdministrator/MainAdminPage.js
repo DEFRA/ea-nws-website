@@ -9,7 +9,7 @@ export default function MainAdminPage () {
   }
 
   const NavigateToPreviousPage = () => {
-    navigate('/organisation/sign-up/sector')
+    navigate('/organisation/sign-up')
   }
 
   return (

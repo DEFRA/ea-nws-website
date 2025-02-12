@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import { setOrgCurrentContact } from '../../../../../../common/redux/userSlice'
-import { webToGeoSafeContact } from '../../../../../../common/services/formatters/ContactFormatter'
-import { orgManageContactsUrls } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
+import { setOrgCurrentContact } from '../../../common/redux/userSlice'
+import { webToGeoSafeContact } from '../../../common/services/formatters/ContactFormatter'
+import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 
 export default function ContactsTable ({
   contacts,
@@ -12,7 +12,9 @@ export default function ContactsTable ({
   selectedContacts,
   setSelectedContacts,
   setFilteredContacts,
-  onAction
+  onAction,
+  actionText,
+  contactPrefix
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -75,7 +77,9 @@ export default function ContactsTable ({
       setLinkedLocationsSort('ascending')
       setFilteredContacts(
         [...filteredContacts].sort((a, b) => {
-          if (a.linked_locations === null && b.linked_locations === null) { return 0 }
+          if (a.linked_locations === null && b.linked_locations === null) {
+            return 0
+          }
           if (a.linked_locations === null) return 1
           if (b.linked_locations === null) return -1
           return a.linked_locations > b.linked_locations ? 1 : -1
@@ -86,7 +90,9 @@ export default function ContactsTable ({
       setLinkedLocationsSort('descending')
       setFilteredContacts(
         [...filteredContacts].sort((a, b) => {
-          if (a.linked_locations === null && b.linked_locations === null) { return 0 }
+          if (a.linked_locations === null && b.linked_locations === null) {
+            return 0
+          }
           if (a.linked_locations === null) return 1
           if (b.linked_locations === null) return -1
           return a.linked_locations < b.linked_locations ? 1 : -1
@@ -135,6 +141,7 @@ export default function ContactsTable ({
           : ''}
         {filteredContacts.length !== contacts.length ? ' of ' : ''}
         {contacts.length}
+        {contactPrefix ? ' ' + contactPrefix : ''}
         {contacts.length === 1 ? ' contact' : ' contacts'}{' '}
         <span style={{ margin: '0 20px' }}>|</span>
         <span style={{ color: '#1d70b8' }}>
@@ -263,15 +270,16 @@ export default function ContactsTable ({
               </td>
               <td className='govuk-table__cell'>{contact.emails[0]}</td>
               <td className='govuk-table__cell'>
-                {contact.linked_locations.length}
+                {contact.linked_locations?.length}
               </td>
+              <td className='govuk-table__cell'>0</td>
               <td className='govuk-table__cell'>0</td>
               <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'
-                  onClick={(e) => onAction(e, 'delete', contact)}
+                  onClick={(e) => onAction(e, actionText, contact)}
                 >
-                  Delete
+                  {actionText}
                 </Link>
               </td>
             </tr>

@@ -361,6 +361,16 @@
   padding: 0.625rem;
 }
 
+.org-location-comparison {
+  display: flex;
+}
+
+.org-location-comparison-box {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .org-location-information-footer {
   color: #000000;
   background-color: #f3f2f1;
@@ -368,6 +378,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: auto;
 }
 
 .org-location-information-footer.error {

@@ -8,6 +8,8 @@ import EditContactKeywordsPage from '../../pages/manage-contact/edit-contact/Edi
 import EditContactNotesPage from '../../pages/manage-contact/edit-contact/EditContactNotesPage'
 import ViewContactsDashboardPage from '../../pages/manage-contact/view-contact/contacts-dashboard/ViewContactsDashboardPage'
 import ContactInformationPage from '../../pages/manage-contact/view-contact/contacts-information/ContactInformationPage'
+import LinkedLocationsPage from '../../pages/manage-contact/view-contact/contacts-information/LinkedLocationsPage'
+
 const urlManageContactsOrg = '/organisation/manage-contacts'
 const urlManageContactsAdd = urlManageContactsOrg + '/add'
 const urlManageContactsEdit = urlManageContactsOrg + '/edit'
@@ -21,7 +23,8 @@ const orgManageContactsUrls = {
   },
   view: {
     dashboard: urlManageContactsOrg + '/view-contacts',
-    viewContact: urlManageContactsOrg + '/view-contacts/view'
+    viewContact: urlManageContactsOrg + '/view-contacts/view',
+    viewLinkedLocations: urlManageContactsOrg + '/view-linked-locations'
   },
   edit: {
     details: urlManageContactsEdit,
@@ -66,6 +69,10 @@ const orgManageContactsRoutes = [
   {
     path: orgManageContactsUrls.edit.keywords,
     component: <EditContactKeywordsPage />
+  },
+  {
+    path: orgManageContactsUrls.view.viewLinkedLocations,
+    component: <LinkedLocationsPage />
   },
   {
     path: orgManageContactsUrls.edit.channels,

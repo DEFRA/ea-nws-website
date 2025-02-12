@@ -9,7 +9,7 @@ export default function AlternativeContactDetailsPage () {
   }
 
   const NavigateToPreviousPage = () => {
-    navigate('/organisation/sign-up/main-admin')
+    navigate('/organisation/sign-up/sector')
   }
 
   return (

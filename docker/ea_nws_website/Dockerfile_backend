@@ -43,8 +43,6 @@ COPY backend/index.js .
 
 # backend
 COPY --from=backend_build /usr/src/app/node_modules ./node_modules
-COPY --from=backend_build /usr/src/app/bin ./bin
-COPY --from=backend_build /usr/src/app/client ./client
 COPY --from=backend_build /usr/src/app/server ./server
 
 # Expose the port that the application listens on (backend).

@@ -26,11 +26,12 @@ import { convertDataToGeoJsonFeature } from '../../../../../common/services/GeoJ
 import { getFloodAreaByTaCode } from '../../../../../common/services/WfsFloodDataService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 
-export default function LiveMap(
-  showSevereLocations = true,
-  showWarningLocations = true,
-  showAlertLocations = true
-) {
+export default function LiveMap({
+  showSevereLocations,
+  showWarningLocations,
+  showAlertLocations,
+  onFloodAreasUpdate
+}) {
   const navigate = useNavigate()
   const orgId = useSelector((state) => state.session.orgId)
   const [apiKey, setApiKey] = useState(null)
@@ -47,6 +48,16 @@ export default function LiveMap(
   //Alert locations
   const [alertPoints, setAlertPoints] = useState([])
   const [alertFloodAreas, setAlertFloodAreas] = useState([])
+
+  useEffect(() => {
+    if (onFloodAreasUpdate) {
+      onFloodAreasUpdate({
+        severeFloodAreas,
+        warningFloodAreas,
+        alertFloodAreas
+      })
+    }
+  }, [severeFloodAreas, warningFloodAreas, alertFloodAreas])
 
   async function loadMap() {
     //get orgs locations

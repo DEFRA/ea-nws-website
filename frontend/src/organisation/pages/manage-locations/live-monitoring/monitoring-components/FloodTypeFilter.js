@@ -1,12 +1,14 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function FloodTypeFilter ({
+export default function FloodTypeFilter({
   iconSrc,
   locationsCount,
   warningType,
   warningText,
-  warningDescription
+  warningDescription,
+  showFloodType,
+  updateFloodTypeVisibility
 }) {
   const backgroundColor = () => {
     switch (warningType) {
@@ -76,7 +78,12 @@ export default function FloodTypeFilter ({
         style={{ flex: '0 0 auto', marginLeft: 'auto' }}
       >
         <div className='govuk-checkboxes__item'>
-          <input className='govuk-checkboxes__input' type='checkbox' />
+          <input
+            className='govuk-checkboxes__input'
+            type='checkbox'
+            checked={showFloodType}
+            onChange={() => updateFloodTypeVisibility(!showFloodType)}
+          />
           <span className='govuk-label govuk-checkboxes__label' />
         </div>
       </div>

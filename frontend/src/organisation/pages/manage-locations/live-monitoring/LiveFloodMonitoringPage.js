@@ -16,6 +16,23 @@ import LiveMap from './monitoring-components/LiveMap'
 export default function LiveFLoodMonitoringPage() {
   const navigate = useNavigate()
   const [activeLocations] = useState(true)
+  const [showSevereLocations, setShowSevereLocations] = useState(true)
+  const [showWarningLocations, setShowWarningLocations] = useState(true)
+  const [showAlertLocations, setShowAlertLocations] = useState(true)
+  const [floodData, setFloodData] = useState({
+    severeFloodAreas: [],
+    warningFloodAreas: [],
+    alertFloodAreas: []
+  })
+
+  const handleFloodAreasUpdate = (data) => {
+    setFloodData(data)
+  }
+
+  const totalLocations =
+    floodData.severeFloodAreas.length +
+    floodData.warningFloodAreas.length +
+    floodData.alertFloodAreas.length
 
   return (
     <>
@@ -29,7 +46,7 @@ export default function LiveFLoodMonitoringPage() {
               style={{ color: '#1d70b8', marginBottom: '0' }}
               to={orgFloodReportsUrls.live}
             >
-              202 locations currently affected
+              {totalLocations} locations currently affected
             </Link>
             <p style={{ marginTop: '0' }}>Updated 10:00pm on 12 June 2024</p>
           </div>
@@ -40,26 +57,32 @@ export default function LiveFLoodMonitoringPage() {
               <>
                 <FloodTypeFilter
                   iconSrc={floodSevereWarningIcon}
-                  locationsCount={2}
+                  locationsCount={floodData.severeFloodAreas.length}
                   warningType='Severe'
                   warningText='Severe flood warning'
                   warningDescription='Severe flooding - danger to life'
+                  showFloodType={showSevereLocations}
+                  updateFloodTypeVisibility={setShowSevereLocations}
                 />
                 <br />
                 <FloodTypeFilter
                   iconSrc={floodWarningIcon}
-                  locationsCount={33}
+                  locationsCount={floodData.warningFloodAreas.length}
                   warningType='Warning'
                   warningText='Flood warning'
                   warningDescription='Flooding expected - act now'
+                  showFloodType={showWarningLocations}
+                  updateFloodTypeVisibility={setShowWarningLocations}
                 />
                 <br />
                 <FloodTypeFilter
                   iconSrc={floodAlertIcon}
-                  locationsCount={167}
+                  locationsCount={floodData.alertFloodAreas.length}
                   warningType='Alert'
                   warningText='Flood alert'
                   warningDescription='Early alert of possible flooding - be prepared'
+                  showFloodType={showAlertLocations}
+                  updateFloodTypeVisibility={setShowAlertLocations}
                 />
                 <br />
                 <p className='govuk-body govuk-!-font-weight-bold'>
@@ -92,7 +115,12 @@ export default function LiveFLoodMonitoringPage() {
             )}
           </div>
           <div class='govuk-grid-column-two-thirds'>
-            <LiveMap />
+            <LiveMap
+              showSevereLocations={showSevereLocations}
+              showWarningLocations={showWarningLocations}
+              showAlertLocations={showAlertLocations}
+              onFloodAreasUpdate={handleFloodAreasUpdate}
+            />
             <div
               style={{
                 display: 'flex',

@@ -31,7 +31,7 @@ export default function SkipConfirmLayout (contactPreference) {
 
             </h1>
             <Button
-              text={"I'll confirm this later"}
+              text="I'll confirm this later"
               className='govuk-button'
               onClick={handleSubmit}
             />

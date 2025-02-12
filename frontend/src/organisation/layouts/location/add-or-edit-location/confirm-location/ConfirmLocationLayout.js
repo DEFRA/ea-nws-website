@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../../common/components/custom/BackLink'
-
 import Button from '../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../common/components/gov-uk/ErrorSummary'
 import store from '../../../../../common/redux/store'
@@ -19,6 +18,7 @@ import {
   setNotInEnglandLocations
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -91,6 +91,25 @@ export default function ConfirmLocationLayout ({
     }
   }, [shapeLong, shapeLat])
 
+  const checkDuplicateLocation = async () => {
+    const dataToSend = {
+      orgId,
+      locationName,
+      type: 'valid'
+    }
+    const { data } = await backendCall(
+      dataToSend,
+      'api/locations/search',
+      navigate
+    )
+
+    if (data) {
+      return data[0]
+    } else {
+      return null
+    }
+  }
+
   // Switch case to change the button/link logic depending on the location type
   const handleSubmit = async () => {
     if (layoutType === 'shape') {
@@ -101,8 +120,30 @@ export default function ConfirmLocationLayout ({
       )
       dispatch(setCurrentLocationName(shapeName))
     }
-    // since we added to currentLocation we need to get that information to pass to the api
+
     const locationToAdd = store.getState().session.currentLocation
+
+    // Check for duplicates
+    if (flow?.includes('unmatched-locations')) {
+      const existingLocation = geoSafeToWebLocation(
+        await checkDuplicateLocation()
+      )
+
+      if (existingLocation) {
+        navigate(orgManageLocationsUrls.add.duplicateLocationComparisonPage, {
+          state: {
+            existingLocation,
+            newLocation: geoSafeToWebLocation(locationToAdd),
+            numDuplicates: 1,
+            flow
+          }
+        })
+      }
+
+      return
+    }
+
+    // since we added to currentLocation we need to get that information to pass to the api
     const dataToSend = { authToken, orgId, location: locationToAdd }
     const { data, errorMessage } = await backendCall(
       dataToSend,

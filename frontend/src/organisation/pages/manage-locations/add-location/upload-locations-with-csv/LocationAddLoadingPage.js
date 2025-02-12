@@ -75,6 +75,8 @@ export default function LocationAddLoadingPage () {
           }
           if (data?.data) {
             setValidLocations(data.data.valid.length)
+
+            // Duplicate location that are found
             const duplicateLocations = data.data.invalid.filter(
               (invalid) =>
                 Array.isArray(invalid.error) &&
@@ -82,20 +84,22 @@ export default function LocationAddLoadingPage () {
                 invalid.error.length === 1
             ).length
             setDuplicateLocations(duplicateLocations)
+
+            // Not in England locations
             const notInEnglandLocations = data.data.invalid.filter(
               (invalid) =>
                 Array.isArray(invalid.error) &&
                 invalid.error.includes('not in England')
             ).length
             dispatch(setNotInEnglandLocations(notInEnglandLocations))
-            // Any other invalid locations are considered to be not found
-            dispatch(
-              setNotFoundLocations(
-                data.data.invalid.length -
-                  duplicateLocations -
-                  notInEnglandLocations
-              )
-            )
+
+            // Not found locations
+            const notFoundLocations = data.data.invalid.filter(
+              (invalid) =>
+                Array.isArray(invalid.error) &&
+                invalid.error.includes('not found')
+            ).length
+            dispatch(setNotFoundLocations(notFoundLocations))
             setInvalidLocations(data.data.invalid.length)
           }
           setStatus(data.status)

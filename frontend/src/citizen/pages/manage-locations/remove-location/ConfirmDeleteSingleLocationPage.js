@@ -1,4 +1,4 @@
-import { React, useState } from 'react'
+import { React, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -15,6 +15,10 @@ export default function ConfirmDeleteSingleLocationPage () {
   const navigate = useNavigate()
   const session = useSelector((state) => state.session)
   const [error, setError] = useState('')
+
+  useEffect(() => {
+    window.history.replaceState({}, location.pathname)
+  }, [location])
 
   const handleSubmit = async () => {
     const data = {

@@ -139,7 +139,6 @@ export default function SubscribedLocationTable ({ setError }) {
               partnerId
             }}
             className='govuk-link'
-            replace
           >
             Remove
           </Link>

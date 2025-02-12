@@ -22,7 +22,6 @@ export default function LiveFloodWarningsDashboardPage () {
 
   const [currentPage, setCurrentPage] = useState(1)
   const [resetPaging, setResetPaging] = useState(false)
-  
 
   // TODO: Integrate real warning data when available
   useEffect(() => {
@@ -277,7 +276,7 @@ export default function LiveFloodWarningsDashboardPage () {
                       setSelectedBusCriticalityFilters={
                       setSelectedBusCriticalityFilters
                     }
-                    printMode={warningsPerPage ? null : true}
+                      printMode={warningsPerPage ? null : true}
                     />
                   </div>
                   <div className='govuk-grid-column-three-quarters'>{table}</div>

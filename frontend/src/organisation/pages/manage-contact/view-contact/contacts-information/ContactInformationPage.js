@@ -3,19 +3,25 @@ import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import locationPin from '../../../../../common/assets/images/location_pin.svg'
 import BackLink from '../../../../../common/components/custom/BackLink'
+import { getContactAdditional } from '../../../../../common/redux/userSlice'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
+import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap'
 import ContactHeader from './contact-information-components/ContactHeader'
 import ContactMap from './contact-information-components/ContactMap'
-import { urlManageKeywordsOrg } from '../../../../routes/manage-keywords/ManageKeywordsRoutes'
-import FullscreenMap from '../../../manage-locations/view-location/FullscreenMap'
 
 export default function ContactInformationPage () {
   const navigate = useNavigate()
   const currentContact = useSelector((state) => state.session.orgCurrentContact)
+
+  const jobTitle = useSelector((state) =>
+    getContactAdditional(state, 'jobTitle')
+  )
+  const contactKeywords = useSelector((state) =>
+    getContactAdditional(state, 'keywords')
+  )
+  const keywords = contactKeywords ? JSON.parse(contactKeywords) : []
   const contactName = currentContact?.firstname + ' ' + currentContact?.lastname
   const locations = null
-  const jobTitle = currentContact.additionals.jobTitle
-  const keywords = Array.isArray(currentContact.additionals.keywords) ? currentContact.additionals.keywords : []
   const [showMap, setShowMap] = useState(false)
   const currentLocation = useSelector((state) => state.session.currentLocation)
 
@@ -53,14 +59,19 @@ export default function ContactInformationPage () {
               <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
               <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>Name</h3>
               <p>{contactName}</p>
-              <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
-                Job title
-              </h3>
-              <p>{jobTitle || '-'}</p>
+
+              {jobTitle && (
+                <>
+                  <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
+                    Job title
+                  </h3>
+                  <p>{jobTitle}</p>
+                </>
+              )}
             </>
 
             <>
-              <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
+              <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-6 govuk-!-display-inline-block'>
                 Email addresses and numbers
               </h2>
               <Link
@@ -71,51 +82,57 @@ export default function ContactInformationPage () {
                 Change
               </Link>
               <hr className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-              <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
-                Email addresses
-              </h3>
-              <p>
-                {currentContact.emails
-                  ? currentContact.emails.map((email, index) => {
-                    return (
-                      <span key={index}>
-                        {email}
-                        <br />
-                      </span>
-                    )
-                  })
-                  : '-'}
-              </p>
-              <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
-                UK mobile numbers for texts
-              </h3>
-              <p>
-                {currentContact.mobilePhones
-                  ? currentContact.mobilePhones.map((number, index) => {
-                    return (
-                      <span key={index}>
-                        {number}
-                        <br />
-                      </span>
-                    )
-                  })
-                  : '-'}
-              </p>
-              <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
-                UK telephone numbers for voice messages
-              </h3>
-              <p>
-                {currentContact.homePhones
-                  ? currentContact.homePhones.map((number, index) => {
-                    return (
-                      <span key={index}>
-                        {number}
-                        <br />
-                      </span>
-                    )
-                  })
-                  : '-'}
-              </p>
+              {currentContact.emails?.length > 0 && (
+                <>
+                  <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
+                    Email addresses
+                  </h3>
+                  <p>
+                    {currentContact.emails.map((email, index) => {
+                      return (
+                        <span key={index}>
+                          {email}
+                          <br />
+                        </span>
+                      )
+                    })}
+                  </p>
+                </>
+              )}
+              {currentContact.mobilePhones?.length > 0 && (
+                <>
+                  <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
+                    UK mobile numbers for texts
+                  </h3>
+                  <p>
+                    {currentContact.mobilePhones.map((number, index) => {
+                      return (
+                        <span key={index}>
+                          {number}
+                          <br />
+                        </span>
+                      )
+                    })}
+                  </p>
+                </>
+              )}
+              {currentContact.homePhones?.length > 0 && (
+                <>
+                  <h3 className='govuk-heading-s govuk-!-margin-bottom-0'>
+                    UK telephone numbers for voice messages
+                  </h3>
+                  <p>
+                    {currentContact.homePhones.map((number, index) => {
+                      return (
+                        <span key={index}>
+                          {number}
+                          <br />
+                        </span>
+                      )
+                    })}
+                  </p>
+                </>
+              )}
             </>
 
             {/* Keywords details */}
@@ -127,7 +144,7 @@ export default function ContactInformationPage () {
                 <Link
                   className='govuk-link govuk-!-display-inline-block'
                   style={{ float: 'right' }}
-                  to={urlManageKeywordsOrg}
+                  to={orgManageContactsUrls.edit.keywords}
                 >
                   Change
                 </Link>
@@ -159,7 +176,7 @@ export default function ContactInformationPage () {
               {keywords.length === 0 && (
                 <Link
                   className='govuk-link govuk-!-display-block govuk-!-margin-bottom-1'
-                  to={orgManageContactsUrls.add.keywords}
+                  to={orgManageContactsUrls.edit.keywords}
                 >
                   Add keywords
                 </Link>
@@ -167,7 +184,7 @@ export default function ContactInformationPage () {
               {!currentContact.comments && (
                 <Link
                   className='govuk-link govuk-!-display-block govuk-!-margin-bottom-1'
-                  to={orgManageContactsUrls.add.notes}
+                  to={orgManageContactsUrls.edit.notes}
                 >
                   Add notes
                 </Link>
@@ -188,7 +205,9 @@ export default function ContactInformationPage () {
                 alt='Location Pin'
                 style={{ width: 36, height: 40, transform: 'translateY(6px)' }}
               />
-              <Link className='govuk-link' onClick={openMap}>Open map</Link>
+              <Link className='govuk-link' onClick={openMap}>
+                Open map
+              </Link>
               {showMap && (
                 <FullscreenMap
                   showMap={showMap}

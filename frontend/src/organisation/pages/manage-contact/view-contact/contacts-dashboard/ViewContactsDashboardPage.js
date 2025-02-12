@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate, useLocation } from 'react-router'
+import { useLocation, useNavigate } from 'react-router'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
 import Popup from '../../../../../common/components/custom/Popup'
@@ -23,9 +23,10 @@ export default function ViewContactsDashboardPage () {
 
   const defaultContactsPerPage = 20
 
-  const successMessage = location.state?.successMessage || ''
   const [contacts, setContacts] = useState([])
-  const [notificationText, setNotificationText] = useState(successMessage)
+  const [notificationText, setNotificationText] = useState(
+    location.state?.successMessage
+  )
   const [selectedContacts, setSelectedContacts] = useState([])
   const [filteredContacts, setFilteredContacts] = useState([])
   const [targetContact, setTargetContact] = useState(null)
@@ -190,7 +191,8 @@ export default function ViewContactsDashboardPage () {
 
         navigate(orgManageLocationsUrls.view.dashboard, {
           state: {
-            linkContacts, linkSource: 'dashboard'
+            linkContacts,
+            linkSource: 'dashboard'
           }
         })
       }
@@ -300,7 +302,6 @@ export default function ViewContactsDashboardPage () {
 
   return (
     <>
-
       <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
@@ -330,7 +331,9 @@ export default function ViewContactsDashboardPage () {
                     className='govuk-button govuk-button--secondary inline-block'
                     onClick={() => onOpenCloseFilter()}
                   />
-                  {(!location.state || !location.state.linkLocations || location.state.linkLocations.length === 0) && (
+                  {(!location.state ||
+                  !location.state.linkLocations ||
+                  location.state.linkLocations.length === 0) && (
                     <>
                     &nbsp; &nbsp;
                       <ButtonMenu
@@ -404,14 +407,16 @@ export default function ViewContactsDashboardPage () {
                         onClick={() => onOpenCloseFilter()}
                       />
                     &nbsp; &nbsp;
-                      {(!location.state || !location.state.linkLocations || location.state.linkLocations.length === 0) && (
+                      {(!location.state ||
+                      !location.state.linkLocations ||
+                      location.state.linkLocations.length === 0) && (
                         <>
                           <ButtonMenu
                             title='More actions'
                             options={moreActions}
                             onSelect={(index) => onMoreAction(index)}
                           />
-                      &nbsp; &nbsp;
+                        &nbsp; &nbsp;
                           <Button
                             text='Print'
                             className='govuk-button govuk-button--secondary inline-block'

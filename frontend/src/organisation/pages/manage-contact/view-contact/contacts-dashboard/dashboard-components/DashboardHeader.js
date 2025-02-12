@@ -1,7 +1,9 @@
+import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
+import { clearOrgCurrentContact } from '../../../../../../common/redux/userSlice'
 import LinkBanner from '../../../../../components/custom/LinkBanner'
 import { urlManageContactsAdd } from '../../../../../routes/manage-contacts/ManageContactsRoutes'
 import { urlManageKeywordsOrg } from '../../../../../routes/manage-keywords/ManageKeywordsRoutes'
@@ -18,6 +20,7 @@ export default function DashboardHeader ({
   printMode
 }) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   const noContactsDetails = (
     <>
@@ -41,14 +44,16 @@ export default function DashboardHeader ({
 
     if (type === 'linked') {
       heading = 'Contacts linked to locations'
-      count =
-        contacts.filter((item) => item.linked_locations?.length > 0).length
+      count = contacts.filter(
+        (item) => item.linked_locations?.length > 0
+      ).length
 
       message = ' linked to locations'
     } else if (type === 'notLinked') {
       heading = 'Contacts not linked to locations'
-      count =
-        contacts.filter((item) => item.linked_locations?.length === 0).length
+      count = contacts.filter(
+        (item) => item.linked_locations?.length === 0
+      ).length
 
       message = ' not linked to locations'
     }
@@ -72,9 +77,7 @@ export default function DashboardHeader ({
         >
           {(type === 'linked' || type === 'notLinked') && (
             <>
-              <h1
-                style={{ color: type === 'notLinked' ? 'crimson' : 'black' }}
-              >
+              <h1 style={{ color: type === 'notLinked' ? 'crimson' : 'black' }}>
                 <strong>{count}</strong>
               </h1>
               <Link className={!printMode ? 'govuk-link' : ''} onClick={() => onClickLinked(type)}>
@@ -110,33 +113,37 @@ export default function DashboardHeader ({
                   <Button
                     text='Add contact'
                     className='govuk-button govuk-button--secondary'
-                    onClick={() => navigate(urlManageContactsAdd)}
+                    onClick={() => {
+                      dispatch(clearOrgCurrentContact())
+                      navigate(urlManageContactsAdd)
+                    }}
                   />
                 &nbsp; &nbsp;
                   <Button
                     text='Manage keywords'
                     className='govuk-button govuk-button--secondary'
-                    onClick={() => navigate(urlManageKeywordsOrg)}
+                    onClick={() =>
+                      navigate(urlManageKeywordsOrg, {
+                        state: { type: 'contact' }
+                      })}
                   />
                 </div>
               </div>
               <div style={{ display: 'flex', fontSize: '18px' }}>
-                {contacts.filter((item) => item.linked_locations?.length > 0).length > 0 && (
-                  <ContactsBanner type='linked' />
-                )}
-                {contacts.filter((item) => item.linked_locations?.length === 0).length > 0 && (
-                  <ContactsBanner type='notLinked' />
-                )}
+                {contacts.filter((item) => item.linked_locations?.length > 0)
+                  .length > 0 && <ContactsBanner type='linked' />}
+                {contacts.filter((item) => item.linked_locations?.length === 0)
+                  .length > 0 && <ContactsBanner type='notLinked' />}
               </div>
             </>
             )
           : (
             <>
-              <h1 className='govuk-heading-l'>
-                Link location to contacts
-              </h1>
+              <h1 className='govuk-heading-l'>Link location to contacts</h1>
               <p>
-                Select the contacts you want to link to this location from the list. Then select<br />
+                Select the contacts you want to link to this location from the
+                list. Then select
+                <br />
                 Link location to contacts.
               </p>
               <LinkBanner

@@ -283,7 +283,7 @@ export default function DashboardHeader ({
 
   return (
     <>
-      <div className='govuk-grid-column-full govuk-body govuk-!-margin-top-4'>
+      <div className='govuk-grid-column-full govuk-body govuk-!-margin-top-6'>
         {!linkContacts || linkContacts.length === 0
           ? (
             <>
@@ -298,7 +298,7 @@ export default function DashboardHeader ({
                     className='govuk-button govuk-button--secondary'
                     onClick={() => navigate(urlManageOrgAddLocations)}
                   />
-            &nbsp; &nbsp;
+                &nbsp; &nbsp;
                   <Button
                     text='Manage keywords'
                     className='govuk-button govuk-button--secondary'
@@ -312,14 +312,14 @@ export default function DashboardHeader ({
                 {(locations.filter(
                   (item) =>
                     (item.riverSeaRisk?.title === 'Medium risk' ||
-                item.riverSeaRisk?.title === 'High risk') &&
-              item.additionals.other?.alertTypes?.length === 0
+                    item.riverSeaRisk?.title === 'High risk') &&
+                  item.additionals.other?.alertTypes?.length === 0
                 ).length > 0 ||
-            locations.filter(
-              (item) =>
-                item.riverSeaRisk?.title === 'Low risk' &&
-                item.additionals.other?.alertTypes?.length === 0
-            ).length > 0) && <FloodBanner type='noFloodMessages' />}
+                locations.filter(
+                  (item) =>
+                    item.riverSeaRisk?.title === 'Low risk' &&
+                    item.additionals.other?.alertTypes?.length === 0
+                ).length > 0) && <FloodBanner type='noFloodMessages' />}
                 {locations.filter((item) => item.linked_contacts?.length === 0)
                   .length > 0 && <FloodBanner type='noContacts' />}
               </span>
@@ -331,11 +331,11 @@ export default function DashboardHeader ({
             )
           : (
             <>
-              <h1 className='govuk-heading-l'>
-                Link contact to locations
-              </h1>
+              <h1 className='govuk-heading-l'>Link contact to locations</h1>
               <p>
-                Select the locations you want to link to this contact from the list. Then select<br />
+                Select the locations you want to link to this contact from the
+                list. Then select
+                <br />
                 Link contact to locations.
               </p>
               <LinkBanner

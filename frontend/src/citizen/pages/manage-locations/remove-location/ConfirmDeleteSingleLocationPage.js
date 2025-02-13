@@ -36,20 +36,19 @@ export default function ConfirmDeleteSingleLocationPage () {
     if (!errorMessage) {
       const updatedProfile = removeLocation(session.profile, location.state.name)
 
-      const data = {
+      const dataToSend = {
         authToken: session.authToken,
         profile: updatedProfile
       }
 
-      // profile returned but we just need to make sure no error is returned
-      const { errorMessage } = await backendCall(
-        data,
+      const { errorMessage, data } = await backendCall(
+        dataToSend,
         'api/profile/update',
         navigate
       )
 
       if (!errorMessage) {
-        dispatch(setProfile(updatedProfile))
+        dispatch(setProfile(data.profile))
         navigate('/home', {
           state: {
             removedLocation: location.state.name

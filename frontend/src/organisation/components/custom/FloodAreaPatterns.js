@@ -71,23 +71,15 @@ export const createShapefilePattern = () => {
     .append('pattern')
     .attr('id', 'shapefile-pattern')
     .attr('patternUnits', 'userSpaceOnUse')
-    .attr('width', 20)
-    .attr('height', 20)
+    .attr('width', 10) // Smaller for finer lines
+    .attr('height', 10)
 
   shapefilePattern
-    .append('rect')
-    .attr('width', 5)
-    .attr('height', 5)
-    .attr('x', 5)
-    .attr('y', 5)
-    .attr('fill', '#809095')
-
-  // Second set of squares required to create off-set, checkered pattern
-  shapefilePattern
-    .append('rect')
-    .attr('width', 5)
-    .attr('height', 5)
-    .attr('x', 15)
-    .attr('y', 15)
-    .attr('fill', '#809095')
+    .append('line')
+    .attr('x1', 0)
+    .attr('y1', 10)
+    .attr('x2', 10)
+    .attr('y2', 0)
+    .attr('stroke', '#809095')
+    .attr('stroke-width', 2)
 }

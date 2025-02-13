@@ -11,8 +11,9 @@ import {
 import * as turf from '@turf/turf'
 import L from 'leaflet'
 import { Marker, Popup } from 'react-leaflet'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
+import { Link } from 'react-router-dom'
 import floodAlertIcon from '../../../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../../../common/assets/images/flood_warning.svg'
 import floodWarningRemovedIcon from '../../../../../common/assets/images/flood_warning_removed.svg'
@@ -21,10 +22,15 @@ import LoadingSpinner from '../../../../../common/components/custom/LoadingSpinn
 import TileLayerWithHeader from '../../../../../common/components/custom/TileLayerWithHeader'
 import AlertType from '../../../../../common/enums/AlertType'
 import LocationDataType from '../../../../../common/enums/LocationDataType'
+import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../../common/services/GeoJsonHandler'
 import { getFloodAreaByTaCode } from '../../../../../common/services/WfsFloodDataService'
-import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import {
+  geoSafeToWebLocation,
+  webToGeoSafeLocation
+} from '../../../../../common/services/formatters/LocationFormatter'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LiveMap({
   showSevereLocations,
@@ -33,6 +39,7 @@ export default function LiveMap({
   onFloodAreasUpdate
 }) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const orgId = useSelector((state) => state.session.orgId)
   const [apiKey, setApiKey] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -48,16 +55,6 @@ export default function LiveMap({
   //Alert locations
   const [alertPoints, setAlertPoints] = useState([])
   const [alertFloodAreas, setAlertFloodAreas] = useState([])
-
-  useEffect(() => {
-    if (onFloodAreasUpdate) {
-      onFloodAreasUpdate({
-        severeFloodAreas,
-        warningFloodAreas,
-        alertFloodAreas
-      })
-    }
-  }, [severeFloodAreas, warningFloodAreas, alertFloodAreas])
 
   async function loadMap() {
     //get orgs locations
@@ -129,60 +126,43 @@ export default function LiveMap({
 
         for (const location of locations) {
           const locationType = location.additionals.other.location_data_type
+
           if (locationType === LocationDataType.X_AND_Y_COORDS) {
             const point = convertDataToGeoJsonFeature('Point', [
               location.coordinates.longitude,
               location.coordinates.latitude
             ])
 
-            const intersects = turf.booleanIntersects(point, floodArea.geometry)
+            point.properties = {
+              ...point.properties,
+              locationData: location
+            }
 
-            if (intersects) {
-              switch (severity) {
-                case AlertType.SEVERE_FLOOD_WARNING:
-                  setSeverePoints((prevPoints) => [...prevPoints, point])
-                  setSevereFloodAreas((prevAreas) => [...prevAreas, floodArea])
-                  break
-
-                case AlertType.FLOOD_WARNING:
-                  setWarningPoints((prevPoints) => [...prevPoints, point])
-                  setWarningFloodAreas((prevAreas) => [...prevAreas, floodArea])
-                  break
-
-                case AlertType.FLOOD_ALERT:
-                  setAlertPoints((prevPoints) => [...prevPoints, point])
-                  setAlertFloodAreas((prevAreas) => [...prevAreas, floodArea])
-                  break
-              }
+            if (turf.booleanIntersects(point, floodArea.geometry)) {
+              processFloodAlert(severity, point, floodArea)
             }
           } else {
-            // const flattenedFloodArea = flattenIfMultiPolygon(floodArea.geometry)
-            // const flattenedLocation = flattenIfMultiPolygon(
-            //   location.geometry.geoJson
-            // )
-            // let intersectionPoint
-            // flattenedFloodArea.features.forEach((floodPolygon) => {
-            //   flattenedLocation.features.forEach((locationPolygon) => {
-            //     console.log('floodPolygon', floodPolygon)
-            //     console.log('locationPolygon', locationPolygon)
-            //     intersectionPoint = turf.intersect(
-            //       floodPolygon.geometry,
-            //       locationPolygon.geometry
-            //     )
-            //     // If an intersection is found, break out of the loop
-            //     if (intersectionPoint) {
-            //       console.log('Intersection found:', intersectionPoint)
-            //       setShapes((prevShapes) => [
-            //         ...prevShapes,
-            //         location.geometry.geoJson
-            //       ])
-            //       return
-            //     }
-            //   })
-            // })
-            // if (intersectionPoint) {
-            //   console.log('intersectionPoint', intersectionPoint)
-            // }
+            const intersects = turf.booleanIntersects(
+              location.geometry.geoJson,
+              floodArea.geometry
+            )
+            console.log('location id', location.id)
+            console.log('intersects', intersects)
+
+            console.log('floodArea', floodArea)
+
+            if (intersects) {
+              intersectionPoint.properties = {
+                ...intersectionPoint.properties,
+                locationData: location
+              }
+
+              setShapes((prevShape) => [
+                ...prevShape,
+                location.geometry.geoJson
+              ])
+              processFloodAlert(severity, intersectionPoint, floodArea)
+            }
           }
         }
       }
@@ -191,13 +171,22 @@ export default function LiveMap({
     }
   }
 
-  const flattenIfMultiPolygon = (geometry) => {
-    if (geometry.type === 'MultiPolygon') {
-      return turf.flatten(geometry)
-    }
-    return {
-      type: 'FeatureCollection',
-      features: [geometry]
+  const processFloodAlert = (severity, point, floodArea) => {
+    switch (severity) {
+      case AlertType.SEVERE_FLOOD_WARNING:
+        setSeverePoints((prevPoints) => [...prevPoints, point])
+        setSevereFloodAreas((prevAreas) => [...prevAreas, floodArea])
+        break
+
+      case AlertType.FLOOD_WARNING:
+        setWarningPoints((prevPoints) => [...prevPoints, point])
+        setWarningFloodAreas((prevAreas) => [...prevAreas, floodArea])
+        break
+
+      case AlertType.FLOOD_ALERT:
+        setAlertPoints((prevPoints) => [...prevPoints, point])
+        setAlertFloodAreas((prevAreas) => [...prevAreas, floodArea])
+        break
     }
   }
 
@@ -212,6 +201,12 @@ export default function LiveMap({
     return ''
   }
 
+  const viewLocation = (e, location) => {
+    e.preventDefault()
+    dispatch(setCurrentLocation(webToGeoSafeLocation(location)))
+    navigate(orgManageLocationsUrls.view.viewLocation)
+  }
+
   useEffect(() => {
     ;(async () => {
       await loadMap()
@@ -219,6 +214,14 @@ export default function LiveMap({
       console.log('finished')
     })()
   }, [])
+
+  useEffect(() => {
+    onFloodAreasUpdate({
+      severeFloodAreasAmount: severeFloodAreas.length,
+      warningFloodAreasAmount: warningFloodAreas.length,
+      alertFloodAreasAmount: alertFloodAreas.length
+    })
+  }, [loading])
 
   const floodSevereWarningMarker = L.icon({
     iconUrl: floodSevereWarningIcon,
@@ -316,6 +319,15 @@ export default function LiveMap({
     return null
   }
 
+  const onEachShapeFeature = (feature, layer) => {
+    layer.options.className = 'shapefile-area-pattern-fill'
+    layer.setStyle({
+      color: '#809095',
+      weight: 2,
+      fillOpacity: 1.0
+    })
+  }
+
   return (
     <>
       {loading ? (
@@ -336,6 +348,14 @@ export default function LiveMap({
           {apiKey && tileLayerWithHeader}
           <ZoomControl position='bottomright' />
           <ZoomTracker />
+          {/* boundary's or shape files uploaded that are affected by live flood areas */}
+          {shapes.map((shape, index) => (
+            <GeoJSON
+              key={index}
+              data={shape}
+              onEachFeature={onEachShapeFeature}
+            />
+          ))}
           {/* locations affected by live flood severe warning areas */}
           {showSevereLocations && (
             <>
@@ -349,7 +369,18 @@ export default function LiveMap({
                     ]}
                     icon={floodSevereWarningMarker}
                   >
-                    <Popup />
+                    <Popup offset={[17, -20]}>
+                      <Link
+                        onClick={(e) =>
+                          viewLocation(e, severePoint.properties.locationData)
+                        }
+                      >
+                        {
+                          severePoint.properties.locationData.additionals
+                            .locationName
+                        }
+                      </Link>
+                    </Popup>
                   </Marker>
                 ))}
 
@@ -377,7 +408,18 @@ export default function LiveMap({
                     ]}
                     icon={floodWarningMarker}
                   >
-                    <Popup />
+                    <Popup offset={[17, -20]}>
+                      <Link
+                        onClick={(e) =>
+                          viewLocation(e, warningPoint.properties.locationData)
+                        }
+                      >
+                        {
+                          warningPoint.properties.locationData.additionals
+                            .locationName
+                        }
+                      </Link>
+                    </Popup>
                   </Marker>
                 ))}
 
@@ -405,7 +447,18 @@ export default function LiveMap({
                     ]}
                     icon={floodAlertMarker}
                   >
-                    <Popup />
+                    <Popup offset={[17, -20]}>
+                      <Link
+                        onClick={(e) =>
+                          viewLocation(e, alertPoint.properties.locationData)
+                        }
+                      >
+                        {
+                          alertPoint.properties.locationData.additionals
+                            .locationName
+                        }
+                      </Link>
+                    </Popup>
                   </Marker>
                 ))}
 

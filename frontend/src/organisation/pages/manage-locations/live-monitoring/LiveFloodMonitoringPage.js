@@ -20,9 +20,9 @@ export default function LiveFLoodMonitoringPage() {
   const [showWarningLocations, setShowWarningLocations] = useState(true)
   const [showAlertLocations, setShowAlertLocations] = useState(true)
   const [floodData, setFloodData] = useState({
-    severeFloodAreas: [],
-    warningFloodAreas: [],
-    alertFloodAreas: []
+    severeFloodAreasAmount: 0,
+    warningFloodAreasAmount: 0,
+    alertFloodAreasAmount: 0
   })
 
   const handleFloodAreasUpdate = (data) => {
@@ -30,9 +30,9 @@ export default function LiveFLoodMonitoringPage() {
   }
 
   const totalLocations =
-    floodData.severeFloodAreas.length +
-    floodData.warningFloodAreas.length +
-    floodData.alertFloodAreas.length
+    floodData.severeFloodAreasAmount +
+    floodData.warningFloodAreasAmount +
+    floodData.alertFloodAreasAmount
 
   return (
     <>
@@ -57,7 +57,7 @@ export default function LiveFLoodMonitoringPage() {
               <>
                 <FloodTypeFilter
                   iconSrc={floodSevereWarningIcon}
-                  locationsCount={floodData.severeFloodAreas.length}
+                  locationsCount={floodData.severeFloodAreasAmount}
                   warningType='Severe'
                   warningText='Severe flood warning'
                   warningDescription='Severe flooding - danger to life'
@@ -67,7 +67,7 @@ export default function LiveFLoodMonitoringPage() {
                 <br />
                 <FloodTypeFilter
                   iconSrc={floodWarningIcon}
-                  locationsCount={floodData.warningFloodAreas.length}
+                  locationsCount={floodData.warningFloodAreasAmount}
                   warningType='Warning'
                   warningText='Flood warning'
                   warningDescription='Flooding expected - act now'
@@ -77,7 +77,7 @@ export default function LiveFLoodMonitoringPage() {
                 <br />
                 <FloodTypeFilter
                   iconSrc={floodAlertIcon}
-                  locationsCount={floodData.alertFloodAreas.length}
+                  locationsCount={floodData.alertFloodAreasAmount}
                   warningType='Alert'
                   warningText='Flood alert'
                   warningDescription='Early alert of possible flooding - be prepared'
@@ -90,7 +90,7 @@ export default function LiveFLoodMonitoringPage() {
                 </p>
                 <FloodTypeFilter
                   iconSrc={floodWarningRemovedIcon}
-                  locationsCount={3}
+                  locationsCount={0}
                   warningType='Removed'
                   warningText='Warnings removed'
                   warningDescription=''

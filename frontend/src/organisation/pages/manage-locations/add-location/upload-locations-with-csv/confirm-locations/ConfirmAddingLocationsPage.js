@@ -208,7 +208,7 @@ export default function ConfirmAddingLocationsPage () {
                       {notInEnglandLocations === 1 ? '' : 's'} cannot be added
                       because{' '}
                       {notInEnglandLocations === 1 ? 'it is' : 'they are'} not
-                      in England. You can check
+                      in England. You can check{' '}
                       {notInEnglandLocations === 1 ? '' : 'each of'} the
                       location's details and change{' '}
                       {notInEnglandLocations === 1 ? 'it' : 'them'} if you think

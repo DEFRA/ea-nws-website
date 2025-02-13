@@ -43,7 +43,6 @@ export default function ViewLocationsDashboardPage () {
   const [alertOnlyLocationsIds, setAlertOnlyLocationsIds] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
-  const [optionsSelected, setOptionsSelected] = useState([null, null, null])
   const [options, setOptions] = useState(
     [
       {
@@ -436,32 +435,38 @@ export default function ViewLocationsDashboardPage () {
     setIsFilterVisible(!isFilterVisible)
   }
 
-  const editLocations = (locationsToEdit) => {
-    const choosenAlerts = [optionsSelected[0]?'ALERT_LVL_1':null, optionsSelected[1]?'ALERT_LVL_2':null, optionsSelected[2]?'ALERT_LVL_3':null].filter(message => message !== null)
-
+  const editLocations = async (locationsToEdit) => {
+    const choosenAlerts = [options[0].sent?'ALERT_LVL_1':null, options[1].sent?'ALERT_LVL_2':null, options[2].sent?'ALERT_LVL_3':null].filter(message => message !== null)
+    const updatedLocations = [...locationsToEdit]
     for(let i = 0; i < locationsToEdit.length; i++){
       console.log("additionals: ",locationsToEdit[i].additionals.other)
       if(unavailableLocationsIds.includes(locationsToEdit[i])) continue
       if(!alertOnlyLocationsIds.includes(locationsToEdit[i].id)){
-
-        locationsToEdit[i].additionals = setLocationAlertTypeOrg(
-          locationsToEdit[i].additionals,
+        updatedLocations[i].additionals = setLocationAlertTypeOrg(
+          updatedLocations[i].additionals,
           choosenAlerts
         )
       }
       else if(alertOnlyLocationsIds.includes(locationsToEdit.id)){
-        locationsToEdit[i].additionals = setLocationAlertTypeOrg(
-          locationsToEdit[i].additionals,
+        updatedLocations[i].additionals = setLocationAlertTypeOrg(
+          updatedLocations[i].additionals,
           choosenAlerts.includes('ALERT_LVL_3')?['ALERT_LVL_3']:[]
         )
       }
     }
 
-    const updatedLocations = [
-      ...locations.filter(location => !locationsToEdit.some(editedLocation => editedLocation.id === location.id)), 
-      ...locationsToEdit 
-    ]    
+    const dataToSend = { authToken, orgId, locations: updatedLocations }
 
+    const {data, errorMessage } = await backendCall(
+      dataToSend,
+      'api/location/bulk_update',
+      navigate
+    )
+    if (data) {
+      // need to dispatch updated??
+    } else {
+      console.error(errorMessage) 
+    }
   }
 
   const handleRadioChange = (index, isItOn) => {
@@ -534,8 +539,8 @@ export default function ViewLocationsDashboardPage () {
     }
   }
 
-  const validateInput = () => { 
-    return optionsSelected.includes(null) ? 'There is a problem, select On or Off for each message type': ''
+  const validateInput = () => {     
+    return options.some(option => option.sent === null) ? 'There is a problem, select On or Off for each message type': ''
   }
 
   const navigateBack = (event) => {

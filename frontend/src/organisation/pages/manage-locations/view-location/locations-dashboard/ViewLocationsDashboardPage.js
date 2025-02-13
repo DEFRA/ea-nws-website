@@ -13,7 +13,7 @@ import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
-import { updateLocationsAlertTypes } from '../../../../../common/services/ProfileServices'
+import { setLocationOtherAdditionalsObject } from '../../../../../common/services/ProfileServices'
 import {
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation,
@@ -437,18 +437,32 @@ export default function ViewLocationsDashboardPage () {
 
   const editLocations = (locationsToEdit) => {
     const choosenAlerts = [optionsSelected[0]?'ALERT_LVL_1':null, optionsSelected[1]?'ALERT_LVL_2':null, optionsSelected[2]?'ALERT_LVL_3':null].filter(message => message !== null)
-    
-    let updatedProfile
+
     for(let i = 0; i < locationsToEdit.length; i++){
+      console.log("additionals: ",locationsToEdit[i].additionals.other)
       if(unavailableLocationsIds.includes(locationsToEdit[i])) continue
       if(!alertOnlyLocationsIds.includes(locationsToEdit[i].id)){
-        updatedProfile = updateLocationsAlertTypes(profile, locationsToEdit[i], choosenAlerts)
+
+        locationsToEdit[i].additionals = setLocationOtherAdditionalsObject(
+          locationsToEdit[i].additionals,
+          'alertTypes',
+          choosenAlerts
+        )
       }
       else if(alertOnlyLocationsIds.includes(locationsToEdit.id)){
-        updatedProfile = updateLocationsAlertTypes(profile, locationsToEdit[i], choosenAlerts.includes('ALERT_LVL_3')?['ALERT_LVL_3']:[])
+        locationsToEdit[i].additionals = setLocationOtherAdditionalsObject(
+          locationsToEdit[i].additionals,
+          'alertTypes',
+          choosenAlerts.includes('ALERT_LVL_3')?['ALERT_LVL_3']:[]
+        )
       }
-      //dispatch(setProfile(updatedProfile))
     }
+    /*const updatedLocations = [
+      ...locations.filter(location => !locationsToEdit.some(editedLocation => editedLocation.id === location.id)), 
+      ...locationsToEdit 
+    ]
+    console.log(updatedLocations)
+    dispatch(setLocations(updatedLocations))*/
   }
 
   const handleRadioChange = (index, isItOn) => {

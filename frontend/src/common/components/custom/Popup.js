@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import '../../css/custom.css'
 import Button from '../gov-uk/Button'
@@ -23,8 +23,7 @@ export default function Popup({
   validateInput = null,
   defaultValue,
   onRadioChange,
-  showCancel = true,
-  optionsSelected
+  showCancel = true
 }) {
   const handleTextInputChange = (val) => {
     if (input) {
@@ -38,17 +37,22 @@ export default function Popup({
   }
 
   const handleRadioChange = (index, isItOn) => {
-    onRadioChange(index, isItOn);
-  };
+    onRadioChange(index, isItOn)
+  }
 
+  useEffect(() => {
+    if(options){
+      console.log(options)
+      RadioOptions(options)
+    }
+  }, [options])
 
   const handleSubmit = () => {
-    if (!input && !options) {
+    if (!input && !options) { 
       onDelete()
     } else {
       if (error === '') {
         const validationError = validateInput()
-        console.log(validationError)
         if (validationError) {
           setError(validationError)
         } else {
@@ -58,7 +62,7 @@ export default function Popup({
     }
   }
 
-  const RadioOptions = ({ options, handleRadioChange }) => (
+  const RadioOptions = ({ options }) => (
     <>
       {error && <p className='govuk-error-message'>{error}</p>}
       {options.map((option, index) => (
@@ -74,7 +78,7 @@ export default function Popup({
                 label='On'
                 key={option.value + '_on'}
                 name={option.value + 'Radio'}
-                checked={optionsSelected[index]}
+                checked={option.sent}
                 onChange={() => handleRadioChange(index, true)}
               />
             </td>
@@ -83,7 +87,7 @@ export default function Popup({
                 label='Off'
                 key={option.value + '_off'}
                 name={option.value + 'Radio'}
-                checked={!optionsSelected[index]===false}
+                checked={!option.sent===false}
                 onChange={() => handleRadioChange(index, false)}
               />
             </td>
@@ -119,7 +123,6 @@ export default function Popup({
           {options && (
             <RadioOptions
               options={options}
-              handleRadioChange={handleRadioChange}
             />
           )}
           <div className='popup-dialog-flex'>

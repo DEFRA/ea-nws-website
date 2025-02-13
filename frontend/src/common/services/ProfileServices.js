@@ -301,27 +301,12 @@ const setLocationOtherAdditionals = (additionals, id, value) => {
   return additionals
 }
 
-const setLocationOtherAdditionalsObject = (additionals, id, value) => {
-  let idFound = false
-  let otherAdditionals = {}
-  console.log('Additions in profile service:', additionals)
- 
-    console.log('Additional[i]', additionals.other)
+const setLocationAlertTypeOrg = (additionals, value) => {
     if (additionals.other !== null) {
-      console.log('in here')
-      idFound = true
-      //otherAdditionals = JSON.parse(additionals[i].value?.s)
-      otherAdditionals = value
-      additionals.value = { s: JSON.stringify(otherAdditionals) }
+      additionals.other.alertTypes = value
+      return additionals
     }
-  
-  if (!idFound) {
-    additionals.push({
-      id: 'other',
-      value: { s: JSON.stringify({ [id]: value }) }
-    })
-  }
-  return additionals
+    return null
 }
 
 const getLocationOtherAdditional = (additionals, id) => {
@@ -349,5 +334,5 @@ module.exports = {
   addLocation,
   removeLocation,
   updateLocationsAlertTypes,
-  setLocationOtherAdditionalsObject
+  setLocationAlertTypeOrg
 }

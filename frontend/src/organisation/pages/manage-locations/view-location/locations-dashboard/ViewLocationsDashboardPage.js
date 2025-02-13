@@ -13,7 +13,7 @@ import RiskAreaType from '../../../../../common/enums/RiskAreaType'
 import { setCurrentLocation } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
-import { setLocationOtherAdditionalsObject } from '../../../../../common/services/ProfileServices'
+import { setLocationAlertTypeOrg } from '../../../../../common/services/ProfileServices'
 import {
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation,
@@ -29,7 +29,6 @@ export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const profile = useSelector((state) => state.session.profile)
   const [notificationText, setNotificationText] = useState('')
   const [selectedLocations, setSelectedLocations] = useState([])
   const [filteredLocations, setFilteredLocations] = useState([])
@@ -45,6 +44,25 @@ export default function ViewLocationsDashboardPage () {
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
   const [optionsSelected, setOptionsSelected] = useState([null, null, null])
+  const [options, setOptions] = useState(
+    [
+      {
+        label: 'Severe flood warnings',
+        value: AlertType.SEVERE_FLOOD_WARNING,
+        sent: null
+      },
+      {
+        label: 'Flood warnings',
+        value: AlertType.FLOOD_WARNING,
+        sent: null
+      },
+      {
+        label: 'Flood alerts',
+        value: AlertType.FLOOD_ALERT,
+        sent: null
+      }
+    ]
+  )
   const [dialog, setDialog] = useState({
     show: false,
     text: '',
@@ -54,8 +72,7 @@ export default function ViewLocationsDashboardPage () {
     input: '',
     charLimit: 0,
     error: '',
-    options: [],
-    optionsSelected: []
+    options: null
   })
 
   const locationsPerPage = 20
@@ -325,23 +342,7 @@ export default function ViewLocationsDashboardPage () {
         buttonText: `Update message settings`,
         buttonClass: '',
         error:'',
-        options: [
-          {
-            label: 'Severe flood warnings',
-            value: AlertType.SEVERE_FLOOD_WARNING,
-            sent: null
-          },
-          {
-            label: 'Flood warnings',
-            value: AlertType.FLOOD_WARNING,
-            sent: null
-          },
-          {
-            label: 'Flood alerts',
-            value: AlertType.FLOOD_ALERT,
-            sent: null
-          }
-        ]
+        options: options
       })
     }
   }
@@ -443,33 +444,35 @@ export default function ViewLocationsDashboardPage () {
       if(unavailableLocationsIds.includes(locationsToEdit[i])) continue
       if(!alertOnlyLocationsIds.includes(locationsToEdit[i].id)){
 
-        locationsToEdit[i].additionals = setLocationOtherAdditionalsObject(
+        locationsToEdit[i].additionals = setLocationAlertTypeOrg(
           locationsToEdit[i].additionals,
-          'alertTypes',
           choosenAlerts
         )
       }
       else if(alertOnlyLocationsIds.includes(locationsToEdit.id)){
-        locationsToEdit[i].additionals = setLocationOtherAdditionalsObject(
+        locationsToEdit[i].additionals = setLocationAlertTypeOrg(
           locationsToEdit[i].additionals,
-          'alertTypes',
           choosenAlerts.includes('ALERT_LVL_3')?['ALERT_LVL_3']:[]
         )
       }
     }
-    /*const updatedLocations = [
+
+    const updatedLocations = [
       ...locations.filter(location => !locationsToEdit.some(editedLocation => editedLocation.id === location.id)), 
       ...locationsToEdit 
-    ]
-    console.log(updatedLocations)
-    dispatch(setLocations(updatedLocations))*/
+    ]    
+
   }
 
   const handleRadioChange = (index, isItOn) => {
-    setOptionsSelected(prevState => {
-      const newState = [...prevState]
-      newState[index] = isItOn
-      return newState
+    setOptions(prevOptions => {
+      const updatedOptions = [...prevOptions]
+      updatedOptions[index] = {
+        ...updatedOptions[index],
+        sent: isItOn
+      }
+      console.log("changed: ",updatedOptions)
+      return updatedOptions
     })
   }
 
@@ -525,7 +528,6 @@ export default function ViewLocationsDashboardPage () {
   }
 
   const handleEdit = () => {
-    console.log(optionsSelected)
     if (selectedLocations.length > 0) {
       const locationsToBeEdited = [...selectedLocations]
       editLocations(locationsToBeEdited)
@@ -716,7 +718,6 @@ export default function ViewLocationsDashboardPage () {
                     dialog.input ? targetLocation.additionals.locationName : ''
                   }
                   onRadioChange={handleRadioChange} 
-                  optionsSelected={optionsSelected}
                   />
 
               </>

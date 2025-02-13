@@ -1,16 +1,14 @@
-import React from 'react'
-import { useNavigate } from 'react-router-dom'
+import { React, useState } from 'react'
 import AddressLayout from '../../../../../../layouts/optional-info/AddressLayout'
-import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
+import updateLocationAndNavigate from '../../../../updateLocationAndNavigate'
 
 export default function AddressPage () {
-  const navigate = useNavigate()
+  const [error, setError] = useState(null)
 
-  const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.view.viewLocation, {
-      state: { successMessage: 'Address changed' }
-    })
-  }
+  const navigateToNextPage = updateLocationAndNavigate(
+    setError,
+    'Address changed'
+  )
 
   const additionalInfo = (
     <p>
@@ -27,6 +25,8 @@ export default function AddressPage () {
     <AddressLayout
       navigateToNextPage={navigateToNextPage}
       additionalInfo={additionalInfo}
+      error={error}
+      setError={setError}
     />
   )
 }

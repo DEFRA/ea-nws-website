@@ -77,6 +77,8 @@ const userSlice = createSlice({
     registerToken: null,
     profileId: null,
     orgId: null,
+    notFoundLocations: null,
+    notInEnglandLocations: null,
     profile: {
       id: '',
       enabled: true,
@@ -120,6 +122,9 @@ const userSlice = createSlice({
     locationBoundaries: null,
     consecutiveBoundariesAdded: 0,
     predefinedBoundaryFlow: null,
+    // linked locations/contacts
+    linkLocations: null,
+    linkContacts: null,
     // org location data
     currentLocation: {
       id: null,
@@ -226,6 +231,12 @@ const userSlice = createSlice({
     setOrgId: (state, action) => {
       state.orgId = action.payload
     },
+    setNotFoundLocations: (state, action) => {
+      state.notFoundLocations = action.payload
+    },
+    setNotInEnglandLocations: (state, action) => {
+      state.notInEnglandLocations = action.payload
+    },
     setProfile: (state, action) => {
       state.profile = action.payload
     },
@@ -299,6 +310,12 @@ const userSlice = createSlice({
     },
     setPredefinedBoundaryFlow: (state, action) => {
       state.predefinedBoundaryFlow = action.payload
+    },
+    setLinkLocations: (state, action) => {
+      state.linkLocations = action.payload
+    },
+    setLinkContacts: (state, action) => {
+      state.linkContacts = action.payload
     },
     // org location data
     setCurrentLocation: (state, action) => {
@@ -691,6 +708,8 @@ const userSlice = createSlice({
       state.registerToken = null
       state.profileId = null
       state.orgId = null
+      state.notFoundLocations = null
+      state.notInEnglandLocations = null
       state.profile = {
         id: '',
         enabled: true,
@@ -901,6 +920,8 @@ export const {
   setRegisterToken,
   setProfileId,
   setOrgId,
+  setNotFoundLocations,
+  setNotInEnglandLocations,
   setProfile,
   setRegistrations,
   setContactPreferences,
@@ -929,6 +950,8 @@ export const {
   setLocationBoundaries,
   setConsecutiveBoundariesAdded,
   setPredefinedBoundaryFlow,
+  setLinkLocations,
+  setLinkContacts,
   // org location data
   setCurrentLocation,
   setCurrentLocationId,

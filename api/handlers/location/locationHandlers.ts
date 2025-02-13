@@ -40,6 +40,10 @@ async function getLocationList(
     if (options?.contactId) {
       // Geosafe returns all locations linked to contactId#
       console.log('there is a contact ID')
+      return {
+        locations: mockLocations.allLocations,
+        total: mockLocations.allLocations.length
+      }
     } else {
       console.log('no contact ID returning all locations')
       return {
@@ -47,7 +51,6 @@ async function getLocationList(
         total: mockLocations.allLocations.length
       }
     }
-    return res.response(responseCodes.SUCCESS)
   } else {
     return res.response(responseCodes.INVALID_TOKEN).code(500)
   }

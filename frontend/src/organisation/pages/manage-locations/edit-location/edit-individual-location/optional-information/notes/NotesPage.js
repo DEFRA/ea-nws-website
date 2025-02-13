@@ -1,22 +1,22 @@
-import React from 'react'
-import { useNavigate } from 'react-router'
+import { React, useState } from 'react'
 import NotesLayout from '../../../../../../layouts/optional-info/NotesLayout'
-import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
+import updateLocationAndNavigate from '../../../../updateLocationAndNavigate'
 
 export default function NotesPage () {
-  const navigate = useNavigate()
+  const [error, setError] = useState(null)
 
-  const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.view.viewLocation, {
-      state: { successMessage: 'Notes changed' }
-    })
-  }
+  const navigateToNextPage = updateLocationAndNavigate(
+    setError,
+    'Notes changed'
+  )
 
   return (
     <>
       <NotesLayout
         navigateToNextPage={navigateToNextPage}
         keywordType='location'
+        error={error}
+        setError={setError}
       />
     </>
   )

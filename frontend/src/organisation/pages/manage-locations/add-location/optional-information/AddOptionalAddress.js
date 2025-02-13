@@ -1,10 +1,11 @@
-import React from 'react'
+import { React, useState } from 'react'
 import { useNavigate } from 'react-router'
 import AddressLayout from '../../../../layouts/optional-info/AddressLayout'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function AddOptionalAddress () {
   const navigate = useNavigate()
+  const [error, setError] = useState(null)
 
   const navigateToNextPage = () => {
     navigate(orgManageLocationsUrls.add.optionalInformation.addKeyInformation)
@@ -12,7 +13,11 @@ export default function AddOptionalAddress () {
 
   return (
     <>
-      <AddressLayout navigateToNextPage={navigateToNextPage} />
+      <AddressLayout
+        navigateToNextPage={navigateToNextPage}
+        error={error}
+        setError={setError}
+      />
     </>
   )
 }

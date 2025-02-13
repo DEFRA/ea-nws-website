@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useLocation, useNavigate } from 'react-router'
+import BackLink from '../../../../../common/components/custom/BackLink'
 import ButtonMenu from '../../../../../common/components/custom/ButtonMenu'
 import Popup from '../../../../../common/components/custom/Popup'
 import Button from '../../../../../common/components/gov-uk/Button'
@@ -13,19 +15,23 @@ import {
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation
 } from '../../../../../common/services/WfsFloodDataService'
-import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import LocationsTable from '../../../../components/custom/LocationsTable'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
+import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import DashboardHeader from './dashboard-components/DashboardHeader'
-import LocationsTable from './dashboard-components/LocationsTable'
 import SearchFilter from './dashboard-components/SearchFilter'
-import { useNavigate } from 'react-router'
-import BackLink from '../../../../../common/components/custom/BackLink'
+
 export default function ViewLocationsDashboardPage () {
   const [locations, setLocations] = useState([])
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const [notificationText, setNotificationText] = useState('')
+  const location = useLocation()
+
+  const [notificationText, setNotificationText] = useState(
+    location.state?.successMessage
+  )
   const [selectedLocations, setSelectedLocations] = useState([])
   const [filteredLocations, setFilteredLocations] = useState([])
   const [targetLocation, setTargetLocation] = useState(null)
@@ -106,15 +112,19 @@ export default function ViewLocationsDashboardPage () {
         location.groundWaterRisk = groundWaterRisks[idx]
       })
 
-      // TODO: Get linked contacts from the API (EAN-1364)
-      let tempSwitch = false
-      locationsUpdate.forEach(function (location) {
-        if (tempSwitch) {
-          location.linked_contacts = ['Contact 1', 'Contact 2']
-          tempSwitch = false
-        } else {
-          location.linked_contacts = []
-          tempSwitch = true
+      locationsUpdate.forEach(async function (location, idx) {
+        const contactsDataToSend = { authToken, orgId, location }
+        const { data } = await backendCall(
+          contactsDataToSend,
+          'api/elasticache/list_linked_contacts',
+          navigate
+        )
+
+        location.linked_contacts = []
+        if (data) {
+          data.forEach((contact) => {
+            location.linked_contacts.push(contact.id)
+          })
         }
       })
 
@@ -131,8 +141,8 @@ export default function ViewLocationsDashboardPage () {
     if (
       (location.additionals.other?.location_data_type !==
         LocationDataType.ADDRESS &&
-       location.additionals.other?.location_data_type !==
-        LocationDataType.X_AND_Y_COORDS) ||
+        location.additionals.other?.location_data_type !==
+          LocationDataType.X_AND_Y_COORDS) ||
       location.coordinates === null ||
       location.coordinates.latitude === null ||
       location.coordinates.longtitude === null
@@ -231,10 +241,29 @@ export default function ViewLocationsDashboardPage () {
     }
   }
 
+  const linkContactsToLocations = () => {
+    if (selectedLocations.length > 0) {
+      const linkLocations = []
+      selectedLocations.forEach((location) => {
+        linkLocations.push(location.id)
+      })
+
+      if (selectedLocations.length === 1) {
+        dispatch(setCurrentLocation(webToGeoSafeLocation(selectedLocations[0])))
+      }
+
+      navigate(orgManageContactsUrls.view.dashboard, {
+        state: {
+          linkLocations, linkSource: 'dashboard'
+        }
+      })
+    }
+  }
+
   const onMoreAction = (index) => {
     switch (index) {
       case 0:
-        // TODO - linking (EAN-1126)
+        linkContactsToLocations()
         break
       case 1:
         // TODO - message settings (EAN-1424)
@@ -359,6 +388,14 @@ export default function ViewLocationsDashboardPage () {
     }
   }
 
+  const onOnlyShowSelected = (enabled) => {
+    if (enabled) {
+      setFilteredLocations(selectedLocations)
+    } else {
+      setFilteredLocations(locations)
+    }
+  }
+
   const navigateBack = (event) => {
     event.preventDefault()
     navigate(-1)
@@ -366,7 +403,6 @@ export default function ViewLocationsDashboardPage () {
 
   return (
     <>
-
       <BackLink onClick={navigateBack} />
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
@@ -380,7 +416,11 @@ export default function ViewLocationsDashboardPage () {
           )}
           <DashboardHeader
             locations={locations}
+            linkContacts={location.state?.linkContacts}
+            selectedLocations={selectedLocations}
             onClickLinked={onClickLinked}
+            onOnlyShowSelected={onOnlyShowSelected}
+            linkSource={location.state?.linkSource}
           />
           <div className='govuk-grid-column-full govuk-body'>
             {!isFilterVisible
@@ -391,17 +431,21 @@ export default function ViewLocationsDashboardPage () {
                     className='govuk-button govuk-button--secondary inline-block'
                     onClick={() => onOpenCloseFilter()}
                   />
-                &nbsp; &nbsp;
-                  <ButtonMenu
-                    title='More actions'
-                    options={moreActions}
-                    onSelect={(index) => onMoreAction(index)}
-                  />
-                &nbsp; &nbsp;
-                  <Button
-                    text='Print'
-                    className='govuk-button govuk-button--secondary inline-block'
-                  />
+                  {(!location.state || !location.state.linkContacts || location.state.linkContacts.length === 0) && (
+                    <>
+                    &nbsp; &nbsp;
+                      <ButtonMenu
+                        title='More actions'
+                        options={moreActions}
+                        onSelect={(index) => onMoreAction(index)}
+                      />
+                    &nbsp; &nbsp;
+                      <Button
+                        text='Print'
+                        className='govuk-button govuk-button--secondary inline-block'
+                      />
+                    </>
+                  )}
                   <LocationsTable
                     locations={locations}
                     displayedLocations={displayedLocations}
@@ -413,6 +457,8 @@ export default function ViewLocationsDashboardPage () {
                     resetPaging={resetPaging}
                     setResetPaging={setResetPaging}
                     onAction={onAction}
+                    actionText='Delete'
+                    linkContacts={location.state?.linkContacts}
                   />
                   <Pagination
                     totalPages={Math.ceil(
@@ -482,17 +528,21 @@ export default function ViewLocationsDashboardPage () {
                         className='govuk-button govuk-button--secondary'
                         onClick={() => onOpenCloseFilter()}
                       />
-                    &nbsp; &nbsp;
-                      <ButtonMenu
-                        title='More actions'
-                        options={moreActions}
-                        onSelect={(index) => onMoreAction(index)}
-                      />
-                    &nbsp; &nbsp;
-                      <Button
-                        text='Print'
-                        className='govuk-button govuk-button--secondary inline-block'
-                      />
+                      {(!location.state || !location.state.linkContacts || location.state.linkContacts.length === 0) && (
+                        <>
+                        &nbsp; &nbsp;
+                          <ButtonMenu
+                            title='More actions'
+                            options={moreActions}
+                            onSelect={(index) => onMoreAction(index)}
+                          />
+                        &nbsp; &nbsp;
+                          <Button
+                            text='Print'
+                            className='govuk-button govuk-button--secondary inline-block'
+                          />
+                        </>
+                      )}
                     </div>
                     <LocationsTable
                       locations={locations}
@@ -505,6 +555,8 @@ export default function ViewLocationsDashboardPage () {
                       resetPaging={resetPaging}
                       setResetPaging={setResetPaging}
                       onAction={onAction}
+                      actionText='Delete'
+                      linkContacts={location.state?.linkContacts}
                     />
                     <Pagination
                       totalPages={Math.ceil(

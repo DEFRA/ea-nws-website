@@ -19,15 +19,15 @@ export default function NotInEnglandLayout ({
   const listItems = {
     postcode: postCodeSearchUrl && (
       <li key='postcode'>
-        <Link to={postCodeSearchUrl} className='govuk-link inline-link'>
+        <Link to={postCodeSearchUrl} className='govuk-link'>
           {flow === 'postcode' ? 'use a different postcode' : 'use a postcode'}
         </Link>
       </li>
     ),
     xyCoordinate: xyCoordinatesSearchUrl && (
       <li key='xyCoordinate'>
-        <Link to={xyCoordinatesSearchUrl} className='govuk-link inline-link'>
-          {flow === 'xyCoordinate'
+        <Link to={xyCoordinatesSearchUrl} className='govuk-link'>
+          {flow === 'coordinates'
             ? 'use a different set of X and Y coordinates'
             : 'use X and Y coordinates'}
         </Link>
@@ -35,7 +35,7 @@ export default function NotInEnglandLayout ({
     ),
     dropPin: dropPinSearchUrl && (
       <li key='dropPin'>
-        <Link to={dropPinSearchUrl} className='govuk-link inline-link'>
+        <Link to={dropPinSearchUrl} className='govuk-link'>
           {flow === 'dropPin'
             ? 'drop a pin on a different place on a map'
             : 'find the location on a map'}
@@ -59,9 +59,9 @@ export default function NotInEnglandLayout ({
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-body govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-body govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l'>
               This location is not in England and cannot be added to this
               account
@@ -110,11 +110,15 @@ export default function NotInEnglandLayout ({
             </div>
           </div>
         </div>
-        <Button
-          className='govuk-button'
-          text='Continue'
-          onClick={handleSubmit}
-        />
+
+        <br />
+        {navigateToNextPage && (
+          <Button
+            className='govuk-button'
+            text='Continue'
+            onClick={handleSubmit}
+          />
+        )}
       </main>
     </>
   )

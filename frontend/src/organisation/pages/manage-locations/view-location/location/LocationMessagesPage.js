@@ -223,7 +223,7 @@ export default function LocationMessagesPage () {
 
       {floodAreasInputs.length > 0 && (
         <>
-          <span class='govuk-caption-m'>
+          <span className='govuk-caption-m'>
             {floodAreasInputs.length} flood areas
           </span>
 

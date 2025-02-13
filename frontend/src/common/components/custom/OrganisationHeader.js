@@ -1,15 +1,21 @@
 import {
   faAngleDown,
-  faAngleUp,
-  faMagnifyingGlass
+  faAngleUp
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useSelector } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
+import { orgAccountUrls } from '../../../organisation/routes/account/AccountRoutes'
+import { urlManageKeywordsOrg } from '../../../organisation/routes/manage-keywords/ManageKeywordsRoutes'
 
 export default function OrganisationHeader () {
   const [activeHeader, setActiveHeader] = useState(null)
+  const navigate = useNavigate()
+  const firstname = useSelector((state) => state?.session?.profile?.firstname) || null
+  const lastname = useSelector((state) => state?.session?.profile?.lastname) || null
+  const formattedName = firstname && lastname ? firstname.charAt(0) + '.' + lastname : ''
+  const orgName = useSelector((state) => state?.session?.organization?.name) || null
 
   const handleActiveHeader = (item) => {
     if (item === activeHeader) {
@@ -17,6 +23,23 @@ export default function OrganisationHeader () {
     } else {
       setActiveHeader(item)
     }
+  }
+
+  const handleAdmin = (event) => {
+    event.preventDefault()
+    if (activeHeader === 'accountDetails') {
+      setActiveHeader(null)
+      navigate(-1)
+    } else {
+      setActiveHeader('accountDetails')
+      navigate(orgAccountUrls.admin.details)
+    }
+  }
+
+  const handleClick = (event, link) => {
+    event.preventDefault()
+    setActiveHeader(null)
+    navigate(link)
   }
 
   return (
@@ -60,63 +83,58 @@ export default function OrganisationHeader () {
                 >
                   <FontAwesomeIcon
                     icon={
-                      activeHeader === 'orgDetails' ? faAngleDown : faAngleUp
+                      activeHeader === 'orgDetails' ? faAngleUp : faAngleDown
                     }
-                    size='lg'
                     className={`${
                       activeHeader === 'orgDetails' && 'active'
                     } highlighted`}
                   />
-                  <AccountCircleOutlinedIcon
-                    style={{ fontSize: 38 }}
-                    className={`${
-                      activeHeader === 'orgDetails' && 'active'
-                    } highlighted`}
-                  />
+                  <svg width='25' height='25' viewBox='0 0 21 21' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                    <g clipPath='url(#clip0_2324_180503)'>
+                      <path d='M6.41797 4.58337V6.25004' strokeWidth='2' />
+                      <path d='M6.41797 7.91669V9.58335' strokeWidth='2' />
+                      <path d='M6.41797 11.25V12.9167' strokeWidth='2' />
+                      <path d='M10.5859 7.91669V9.58335' strokeWidth='2' />
+                      <path d='M10.5859 4.58337V6.25004' strokeWidth='2' />
+                      <path d='M10.5859 11.25V12.9167' strokeWidth='2' />
+                      <path d='M14.3359 8.33337H19.3359V18.3334H14.3359V8.33337Z' strokeWidth='2' />
+                      <path d='M14.3346 18.3334V1.66669H2.66797V18.3334H14.3346Z' strokeWidth='2' />
+                      <path d='M8.5 15V18.3333' strokeWidth='2' />
+                    </g>
+                    <defs>
+                      <clipPath id='clip0_2324_180503'>
+                        <rect width='20' height='20' fill={activeHeader === 'orgDetails' ? '#1D70B8' : 'white'} transform='translate(1)' />
+                      </clipPath>
+                    </defs>
+                  </svg>
 
-                  <span>Flood Inc.</span>
+                  <span className='govuk-!-font-weight-bold'>{orgName}</span>
+                </li>
+                <li className='one-login-header__nav__list-item org-header-divider-line-container no-highlight'>
+                  <div className='org-header-divider-line' />
                 </li>
                 <li
                   className={`one-login-header__nav__list-item ${
                     activeHeader === 'accountDetails' && 'active'
                   }`}
-                  onClick={() => handleActiveHeader('accountDetails')}
+                  onClick={(event) => handleAdmin(event)}
                 >
-                  <FontAwesomeIcon
-                    icon={
-                      activeHeader === 'accountDetails'
-                        ? faAngleDown
-                        : faAngleUp
-                    }
-                    size='lg'
-                    className={`${
-                      activeHeader === 'accountDetails' && 'active'
-                    } highlighted`}
-                  />
-                  <AccountCircleOutlinedIcon
-                    style={{ fontSize: 38 }}
-                    className={`${
-                      activeHeader === 'accountDetails' && 'active'
-                    } highlighted`}
-                  />
 
-                  <span>F.Waters</span>
+                  <svg width='25' height='25' viewBox='0 0 23 23' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                    <path d='M11.3475 12.9411C13.5458 12.9411 15.3279 11.159 15.3279 8.9607C15.3279 6.76242 13.5458 4.98035 11.3475 4.98035C9.14926 4.98035 7.36719 6.76242 7.36719 8.9607C7.36719 11.159 9.14926 12.9411 11.3475 12.9411Z' strokeWidth='1.71' strokeLinecap='round' strokeLinejoin='round' />
+                    <path d='M4.55078 19.1504C5.26126 17.9842 6.2598 17.0203 7.45041 16.3516C8.64101 15.6827 9.98363 15.3314 11.3492 15.3314C12.7148 15.3314 14.0575 15.6827 15.2481 16.3516C16.4387 17.0203 17.4371 17.9842 18.1477 19.1504' strokeWidth='1.71' strokeLinecap='round' strokeLinejoin='round' />
+                    <path d='M11.3489 21.6979C17.0646 21.6979 21.6979 17.0646 21.6979 11.3489C21.6979 5.63338 17.0646 1 11.3489 1C5.63338 1 1 5.63338 1 11.3489C1 17.0646 5.63338 21.6979 11.3489 21.6979Z' strokeWidth='1.71' strokeLinecap='round' strokeLinejoin='round' />
+                  </svg>
+
+                  <span className='govuk-!-font-weight-bold'>{formattedName}</span>
                 </li>
 
-                <li className='one-login-header__nav__list-item org-header-divider-line-container'>
+                <li className='one-login-header__nav__list-item org-header-divider-line-container no-highlight'>
                   <div className='org-header-divider-line' />
-                </li>
-                <li
-                  className='one-login-header__nav__list-item'
-                  style={{
-                    backgroundColor: '#1d70b8'
-                  }}
-                >
-                  <FontAwesomeIcon icon={faMagnifyingGlass} size='lg' />
                 </li>
                 <li className='one-login-header__nav__list-item no-highlight'>
                   <Link
-                    className='one-login-header__nav__link'
+                    className='one-login-header__nav__link govuk-!-font-weight-bold'
                     to='organisation/signout'
                   >
                     Sign out
@@ -131,11 +149,9 @@ export default function OrganisationHeader () {
         {activeHeader === 'orgDetails' && (
           <div className='service-header toggle-enabled govuk-!-padding-top-5 govuk-!-padding-bottom-5'>
             <div>
-              <div className='service-header__container'>
-                <h2 className='service-header__heading'>
-                  Organisation
-                  <br />
-                  details
+              <div className='service-header__container custom-width-container'>
+                <h2 className='service-header__heading govuk-!-font-weight-bold'>
+                  {orgName}
                 </h2>
                 <div>
                   <nav>
@@ -147,20 +163,24 @@ export default function OrganisationHeader () {
                       <li className='service-header__nav-list-item '>
                         <Link
                           className='service-header__nav-list-item-link'
-                          to='/organisation/manage-organisation-details'
+                          onClick={(event) => handleClick(event, orgAccountUrls.organisation.orgDetails)}
                         >
                           Organisation Details
                         </Link>
                       </li>
+                      {/* TODO: option 2 to manage admin users
                       <li className='service-header__nav-list-item '>
                         <a className='service-header__nav-list-item-link'>
                           Manage admin users
                         </a>
-                      </li>
+                      </li> */}
                       <li className='service-header__nav-list-item'>
-                        <a className='service-header__nav-list-item-link'>
+                        <Link
+                          className='service-header__nav-list-item-link'
+                          onClick={(event) => handleClick(event, urlManageKeywordsOrg)}
+                        >
                           Manage Keywords
-                        </a>
+                        </Link>
                       </li>
                     </ul>
                   </nav>

@@ -5,16 +5,28 @@ import { Link } from 'react-router-dom'
 import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
-import { setCurrentLocationCoordinates } from '../../../../../../common/redux/userSlice'
+import store from '../../../../../../common/redux/store'
+import {
+  setCurrentLocation,
+  setCurrentLocationCoordinates,
+  setCurrentLocationEasting,
+  setCurrentLocationNorthing,
+  setNotFoundLocations,
+  setNotInEnglandLocations
+} from '../../../../../../common/redux/userSlice'
+import { backendCall } from '../../../../../../common/services/BackendService'
 import { convertCoordinatesToEspg27700 } from '../../../../../../common/services/CoordinatesFormatConverter'
 import { locationInEngland } from '../../../../../../common/services/validations/LocationInEngland'
 import Map from '../../../../../components/custom/Map'
 import MapInteractiveKey from '../../../../../components/custom/MapInteractiveKey'
+import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
+import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function DropPinOnMapLayout ({
   navigateToNextPage,
   navigateToDropPinLocationSearchPage,
-  navigateToNotInEnglandPage
+  navigateToNotInEnglandPage,
+  flow
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -23,12 +35,20 @@ export default function DropPinOnMapLayout ({
   let { latitude, longitude } = useSelector(
     (state) => state.session.currentLocation.coordinates
   )
+  const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
   const [displayCoords, setDisplayCoords] = useState('')
   const [pinCoords, setPinCoords] = useState(null)
   const [error, setError] = useState('')
   const [showFloodWarningAreas, setShowFloodWarningAreas] = useState(true)
   const [showFloodAlertAreas, setShowFloodAlertAreas] = useState(true)
   const [showFloodExtents, setShowFloodExtents] = useState(true)
+  const notFoundLocations = useSelector(
+    (state) => state.session.notFoundLocations
+  )
+  const notInEnglandLocations = useSelector(
+    (state) => state.session.notInEnglandLocations
+  )
 
   const pinDropCoordsDisplay = () => {
     if (pinCoords) {
@@ -36,12 +56,14 @@ export default function DropPinOnMapLayout ({
       longitude = pinCoords.longitude
     }
 
-    const { northing, easting } = convertCoordinatesToEspg27700(
+    const { easting, northing } = convertCoordinatesToEspg27700(
       longitude,
       latitude
     )
+    dispatch(setCurrentLocationEasting(easting))
+    dispatch(setCurrentLocationNorthing(northing))
 
-    return `${Math.trunc(northing)}, ${Math.trunc(easting)}`
+    return `${Math.trunc(easting)}, ${Math.trunc(northing)}`
   }
 
   useEffect(() => {
@@ -56,7 +78,7 @@ export default function DropPinOnMapLayout ({
   }, [pinCoords])
 
   const handleSubmit = async () => {
-    if (pinCoords === '') {
+    if (!pinCoords) {
       setError('Click on the map to drop a pin')
     } else {
       const inEngland = await locationInEngland(
@@ -65,8 +87,54 @@ export default function DropPinOnMapLayout ({
       )
       if (inEngland) {
         dispatch(setCurrentLocationCoordinates(pinCoords))
-        // TODO: Send currentLocation object to elasticache and geosafe, then navigate
-        navigateToNextPage()
+
+        const locationToAdd = store.getState().session.currentLocation
+        const dataToSend = { authToken, orgId, location: locationToAdd }
+        const { data, errorMessage } = await backendCall(
+          dataToSend,
+          'api/location/create',
+          navigate
+        )
+
+        if (data) {
+          dispatch(setCurrentLocation(data))
+
+          // Remove invalid location from elasticache
+          if (flow?.includes('unmatched-locations')) {
+            await backendCall(
+              { orgId, locationId: locationToAdd.id },
+              'api/bulk_uploads/remove_invalid_location',
+              navigate
+            )
+
+            flow?.includes('not-in-england')
+              ? dispatch(setNotInEnglandLocations(notInEnglandLocations - 1))
+              : dispatch(setNotFoundLocations(notFoundLocations - 1))
+          }
+
+          if (
+            flow?.includes('not-found') &&
+            notFoundLocations - 1 === 0 &&
+            notInEnglandLocations > 0
+          ) {
+            // Find locations not in England
+            navigate(
+              orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard
+            )
+          } else if (
+            flow?.includes('not-in-england') &&
+            notInEnglandLocations - 1 === 0
+          ) {
+            // TODO: Navigate to correct page once created
+            navigate(orgManageLocationsUrls.view.dashboard)
+          } else {
+            navigateToNextPage()
+          }
+        } else {
+          errorMessage
+            ? setError(errorMessage)
+            : setError('Oops, something went wrong')
+        }
       } else {
         navigateToNotInEnglandPage()
       }
@@ -86,16 +154,24 @@ export default function DropPinOnMapLayout ({
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
-            <h1 className='govuk-heading-l'>Find location on a map</h1>
+            <h1 className='govuk-heading-l'>Find the location on a map</h1>
             <div className='govuk-body'>
               <p>
                 Click on the map to drop a pin where you think this location is.
                 You can then add the location to this account.
               </p>
+
+              {flow?.includes('unmatched-locations') && (
+                <UnmatchedLocationInfo />
+              )}
+            </div>
+          </div>
+          <div className='govuk-grid-column-three-quarters '>
+            <div className='govuk-body'>
               <div className='govuk-!-margin-bottom-4'>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   {location.state && (
@@ -115,68 +191,71 @@ export default function DropPinOnMapLayout ({
                   </Link>
                 </div>
               </div>
-              <div class='govuk-grid-row'>
-                <div class='govuk-grid-column-two-thirds'>
-                  <Map
-                    setCoordinates={setPinCoords}
-                    type='drop'
-                    showFloodWarningAreas={showFloodWarningAreas}
-                    showFloodAlertAreas={showFloodAlertAreas}
-                    showMarker={showMarkerInitially}
-                  />
-                </div>
-                <div class='govuk-grid-column-one-third'>
-                  <MapInteractiveKey
-                    showFloodWarningAreas={showFloodWarningAreas}
-                    setShowFloodWarningAreas={setShowFloodWarningAreas}
-                    showFloodAlertAreas={showFloodAlertAreas}
-                    setShowFloodAlertAreas={setShowFloodAlertAreas}
-                    showFloodExtents={showFloodExtents}
-                    setShowFloodExtents={setShowFloodExtents}
-                  />
-                </div>
-              </div>
-
-              <div class='govuk-grid-row'>
-                <div class='govuk-grid-column-two-thirds'>
-                  <div
-                    className='govuk-caption-container'
-                    style={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between'
-                    }}
-                  >
-                    <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
-                      This is not a live flood map
-                    </span>
-                    <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-margin-top-1'>
-                      X and Y {displayCoords}
-                    </span>
-                  </div>
-                  <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-margin-top-1'>
-                    It shows fixed areas that we provide flood warnings and
-                    alerts for.
-                  </span>
-                </div>
-              </div>
             </div>
-            <Button
-              className='govuk-button govuk-!-margin-top-4'
-              text={
-                useLocation().pathname.includes('add')
-                  ? 'Add location'
-                  : 'Save location'
-              }
-              onClick={handleSubmit}
-            />
-            <Link
-              onClick={navigateBack}
-              className='govuk-body govuk-link inline-link govuk-!-margin-top-4 govuk-!-margin-left-2'
-            >
-              Cancel
-            </Link>
           </div>
+
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-three-quarters '>
+              <Map
+                setCoordinates={setPinCoords}
+                type='drop'
+                showFloodWarningAreas={showFloodWarningAreas}
+                showFloodAlertAreas={showFloodAlertAreas}
+                showMarker={showMarkerInitially}
+              />
+            </div>
+            <div className='govuk-grid-column-one-quarter'>
+              <MapInteractiveKey
+                showFloodWarningAreas={showFloodWarningAreas}
+                setShowFloodWarningAreas={setShowFloodWarningAreas}
+                showFloodAlertAreas={showFloodAlertAreas}
+                setShowFloodAlertAreas={setShowFloodAlertAreas}
+                showFloodExtents={showFloodExtents}
+                setShowFloodExtents={setShowFloodExtents}
+              />
+            </div>
+          </div>
+
+          <div className='govuk-grid-row'>
+            <div className='govuk-grid-column-three-quarters'>
+              <div
+                className='govuk-caption-container'
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between'
+                }}
+              >
+                <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-font-weight-bold govuk-!-margin-top-4'>
+                  This is not a live flood map
+                </span>
+                {pinCoords && (
+                  <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-margin-top-4'>
+                    X and Y {displayCoords}
+                  </span>
+                )}
+              </div>
+              <span className='govuk-caption-m govuk-!-font-size-16 govuk-!-margin-top-1'>
+                It shows fixed areas that we provide flood warnings and alerts
+                for.
+              </span>
+            </div>
+          </div>
+          <Button
+            className='govuk-button govuk-!-margin-top-6'
+            text={
+              useLocation().pathname.includes('add') ||
+              flow?.includes('unmatched-locations')
+                ? 'Add location'
+                : 'Save location'
+            }
+            onClick={handleSubmit}
+          />
+          <Link
+            onClick={navigateBack}
+            className='govuk-body govuk-link inline-link govuk-!-margin-top-6 govuk-!-margin-left-2'
+          >
+            Cancel
+          </Link>
         </div>
       </main>
     </>

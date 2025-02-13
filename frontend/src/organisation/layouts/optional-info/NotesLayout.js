@@ -40,17 +40,16 @@ export default function NotesLayout ({
 
   const handleSubmit = async () => {
     if (error) return
-    if (notes) {
-      switch (keywordType) {
-        case 'location':
-          dispatch(setCurrentLocationNotes(notes))
-          break
-        case 'contact':
-          dispatch(setOrgCurrentContactNotes(notes))
-          break
-        default:
-          break
-      }
+
+    switch (keywordType) {
+      case 'location':
+        dispatch(setCurrentLocationNotes(notes))
+        break
+      case 'contact':
+        dispatch(setOrgCurrentContactNotes(notes))
+        break
+      default:
+        break
     }
     if (onSubmit) {
       await onSubmit()

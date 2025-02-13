@@ -4,10 +4,13 @@ import { orgManageContactsUrls } from '../../../../../routes/manage-contacts/Man
 export default function ViewContactSubNavigation ({ currentPage }) {
   const pages = [
     {
-      title: 'User details',
+      title: "Contact's details",
       link: orgManageContactsUrls.view.viewContact
     },
-    { title: 'Linked locations', link: '/' }
+    {
+      title: 'Linked locations',
+      link: orgManageContactsUrls.view.viewLinkedLocations
+    }
   ]
 
   return <SubNavigation pages={pages} currentPage={currentPage} type='sub' />

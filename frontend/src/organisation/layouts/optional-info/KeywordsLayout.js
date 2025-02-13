@@ -48,7 +48,7 @@ export default function KeywordsLayout ({
   }, [keywordType])
 
   const currentObject = useSelector((state) =>
-    keywordType === 'location '
+    keywordType === 'location'
       ? state.session.currentLocation
         ? state.session.currentLocation
         : null
@@ -60,7 +60,7 @@ export default function KeywordsLayout ({
   let orgKeywords = [...orgKeywordsOriginal]
 
   const entryId = useSelector((state) =>
-    keywordType === 'location '
+    keywordType === 'location'
       ? state.session.currentLocation.id
         ? state.session.currentLocation.id
         : ''
@@ -246,9 +246,9 @@ export default function KeywordsLayout ({
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
+          <div className='govuk-grid-column-one-half'>
             {(keywordError || error) && (
               <ErrorSummary errorList={[keywordError, error]} />
             )}

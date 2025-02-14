@@ -454,17 +454,18 @@ export default function ViewLocationsDashboardPage () {
 
     const dataToSend = { authToken, orgId, locations: updatedLocations }
 
+    console.log('A')
     const {data, errorMessage } = await backendCall(
       dataToSend,
       'api/location/bulk_update',
       navigate
     )
-    console.log('Sent')
     if (data) {
-      // need to dispatch updated??
+      console.log('DATA: ',data)
     } else {
       console.error(errorMessage) 
     }
+    //setDialog({ ...dialog, show: false })
   }
 
   const handleRadioChange = (index, isItOn) => {    

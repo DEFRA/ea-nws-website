@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import NotCompletedSigningUpLayout from '../../../citizen/layouts/sign-up/NotCompletedSignUpLayout'
@@ -12,6 +13,7 @@ import {
   setAuthToken,
   setContactPreferences,
   setOrgId,
+  setOrganization,
   setProfile,
   setProfileId,
   setRegistrations
@@ -37,6 +39,8 @@ export default function SignInValidatePageLayout ({
   const [signUpNotComplete, setSignUpNotComplete] = useState(false)
   const [lastAccessedUrl, setLastAccessedUrl] = useState('')
   const signinType = useSelector((state) => state.session.signinType)
+  // eslint-disable-next-line no-unused-vars
+  const [cookies, setCookie] = useCookies(['authToken'])
 
   // if error remove code sent notification
   useEffect(() => {
@@ -45,18 +49,19 @@ export default function SignInValidatePageLayout ({
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-
-    const validationError = authCodeValidation(code)
+    const { error: validationError, code: formattedCode } = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      const dataToSend = { signinToken, code, signinType }
+      const dataToSend = { signinToken, code: formattedCode, signinType }
       const { errorMessage, data } = await backendCall(
         dataToSend,
         'api/sign_in_validate'
       )
 
       if (errorMessage !== null) {
-        if (
+        if (errorMessage === 'account pending') {
+          navigate('/organisation/signin/account-pending')
+        } else if (
           errorMessage ===
           'The code you have entered has expired - please request a new code'
         ) {
@@ -65,11 +70,13 @@ export default function SignInValidatePageLayout ({
           setError(errorMessage)
         }
       } else {
+        setCookie('authToken', data.authToken)
         dispatch(setAuthToken(data.authToken))
         dispatch(setProfile(data.profile))
         if (signinType === 'org') {
           dispatch(setProfileId(data.profile.id))
           dispatch(setOrgId(data.organization.id))
+          dispatch(setOrganization(data.organization))
         }
         dispatch(setRegistrations(data.registrations))
         dispatch(

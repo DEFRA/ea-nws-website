@@ -10,9 +10,10 @@ import {
   setSelectedLocation,
   setShowOnlySelectedFloodArea
 } from '../../../common/redux/userSlice'
+import { backendCall } from '../../../common/services/BackendService'
 import { getSurroundingFloodAreas } from '../../../common/services/WfsFloodDataService'
 
-export default function SubscribedLocationTable () {
+export default function SubscribedLocationTable ({ setError }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [currentPage, setCurrentPage] = useState(1)
@@ -22,6 +23,20 @@ export default function SubscribedLocationTable () {
     (currentPage - 1) * locationsPerPage,
     currentPage * locationsPerPage
   )
+  const maxLocations = 15
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall(
+      'data',
+      'api/service/get_partner_id'
+    )
+    setPartnerId(data)
+  }
+
+  useEffect(() => {
+    getPartnerId()
+  }, [])
 
   const detailsMessage = (
     <div>
@@ -34,8 +49,8 @@ export default function SubscribedLocationTable () {
       </p>
       <p>
         Or you could&nbsp;
-        <Link to='/deleteaccount' className='govuk-link'>
-          Delete your account
+        <Link to='/account/delete' className='govuk-link'>
+          delete your account
         </Link>
         &nbsp;instead.
       </p>
@@ -47,7 +62,7 @@ export default function SubscribedLocationTable () {
     dispatch(setShowOnlySelectedFloodArea(false))
     dispatch(setSelectedFloodWarningArea(null))
     dispatch(setSelectedFloodAlertArea(null))
-  })
+  }, [])
 
   const viewSelectedLocation = async (location) => {
     const { alertArea, warningArea } = await getSurroundingFloodAreas(
@@ -85,7 +100,15 @@ export default function SubscribedLocationTable () {
   }
 
   const isSavedLocationTargetArea = (locationName, areas) => {
-    return areas.filter((area) => locationName === area.properties.TA_NAME)
+    return areas.filter((area) => locationName === area.properties.TA_Name)
+  }
+
+  const onClickAddLocation = async () => {
+    if (locations.length < maxLocations) {
+      navigate('/manage-locations/add/search')
+    } else {
+      setError('Maximum number of locations already added')
+    }
   }
 
   const locationTable = () => {
@@ -111,7 +134,9 @@ export default function SubscribedLocationTable () {
           <Link
             to='/manage-locations/remove'
             state={{
-              name: location.address
+              name: location.address,
+              locationId: location.id,
+              partnerId
             }}
             className='govuk-link'
           >
@@ -164,7 +189,7 @@ export default function SubscribedLocationTable () {
         <Button
           text='Add new location'
           className='govuk-button govuk-button--secondary'
-          onClick={() => navigate('/manage-locations/add/search')}
+          onClick={() => onClickAddLocation()}
         />
         {locations.length === 1 && (
           <Details

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -33,6 +34,8 @@ export default function SignUpValidationPage () {
   const [codeExpired, setCodeExpired] = useState(false)
   const session = useSelector((state) => state.session)
   const profile = session.profile
+  // eslint-disable-next-line no-unused-vars
+  const [cookies, setCookie] = useCookies(['authToken'])
   const [partnerId, setPartnerId] = useState(false)
 
   async function getPartnerId () {
@@ -53,13 +56,13 @@ export default function SignUpValidationPage () {
   }, [error])
 
   const handleSubmit = async () => {
-    const validationError = authCodeValidation(code)
+    const { error: validationError, code: formattedCode } = authCodeValidation(code)
     setError(validationError)
 
     if (validationError === '') {
       const dataToSend = {
         registerToken,
-        code
+        code: formattedCode
       }
 
       const { data, errorMessage } = await backendCall(
@@ -78,6 +81,7 @@ export default function SignUpValidationPage () {
           setError(errorMessage)
         }
       } else {
+        setCookie('authToken', data.authToken)
         dispatch(setAuthToken(data.authToken))
         let updatedProfile = updateAdditionals(profile, [
           { id: 'lastAccessedUrl', value: { s: '/signup/accountname/add' } }

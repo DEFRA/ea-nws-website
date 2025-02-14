@@ -1,7 +1,7 @@
 import React from 'react'
 import shapeIcon from '../../../common/assets/images/shapefile_icon.png'
 
-export default function FloodWarningKey (showShapefile = false) {
+export default function FloodWarningKey ({ showShapefile = false }) {
   return (
     <div className='org-flood-warning-key'>
       {showShapefile && (

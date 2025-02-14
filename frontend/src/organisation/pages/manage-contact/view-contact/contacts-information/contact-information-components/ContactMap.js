@@ -11,6 +11,7 @@ import locationPin from '../../../../../../common/assets/images/location_pin.svg
 import LoadingSpinner from '../../../../../../common/components/custom/LoadingSpinner'
 import TileLayerWithHeader from '../../../../../../common/components/custom/TileLayerWithHeader'
 import LocationDataType from '../../../../../../common/enums/LocationDataType'
+import { getLocationOtherAdditional } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { convertDataToGeoJsonFeature } from '../../../../../../common/services/GeoJsonHandler'
 
@@ -33,47 +34,56 @@ export default function ContactMap ({ locations }) {
     const points = []
     const shapes = []
     if (locations) {
+      // centre must be set to 0, 0 as map will be fit accordingly to locations loaded
       setCentre([0, 0])
       locations.forEach((location) => {
         let feature
-        const locationType =
-          location.meta_data.location_additional.location_data_type
+        const locationType = getLocationOtherAdditional(
+          location.additionals,
+          'location_data_type'
+        )
 
-        // add all points to markers which can be represented on the map
-        // we need to convert points to geojson so we can calculate the bbox
-        if (locationType === LocationDataType.X_AND_Y_COORDS) {
-          // turf accepts in the format [lng,lat] - we save points as [lat,lng]
-          feature = convertDataToGeoJsonFeature('Point', [
-            location.coordinates[1],
-            location.coordinates[0]
-          ])
-          points.push(location.coordinates)
-        } else {
-          feature = location.geometry.geoJson
-          setGeoJsonShapes((prevShapes) => [
-            ...prevShapes,
-            location.geometry.geoJson
-          ])
-          shapes.push(location.geometry.geoJson)
+        if (locationType) {
+          // add all points to markers which can be represented on the map
+          // we need to convert points to geojson so we can calculate the bbox
+          if (locationType === LocationDataType.X_AND_Y_COORDS) {
+            // turf accepts in the format [lng,lat] - we save points as [lat,lng]
+            feature = convertDataToGeoJsonFeature('Point', [
+              location.coordinates[1],
+              location.coordinates[0]
+            ])
+            points.push(location.coordinates)
+          } else {
+            feature = location.geometry.geoJson
+            setGeoJsonShapes((prevShapes) => [
+              ...prevShapes,
+              location.geometry.geoJson
+            ])
+            shapes.push(location.geometry.geoJson)
+          }
+
+          locationsCollection.push(feature)
         }
-
-        locationsCollection.push(feature)
       })
-      setMarkers(points)
-      setGeoJsonShapes(shapes)
 
-      const geoJsonFeatureCollection =
-        turf.featureCollection(locationsCollection)
+      if (locationsCollection) {
+        setMarkers(points)
+        setGeoJsonShapes(shapes)
 
-      // calculate boundary around locations
-      const bbox = turf.bbox(geoJsonFeatureCollection)
+        const geoJsonFeatureCollection =
+          turf.featureCollection(locationsCollection)
 
-      const newBounds = [
-        [bbox[1], bbox[0]],
-        [bbox[3], bbox[2]]
-      ]
-      setBounds(newBounds)
+        // calculate boundary around locations
+        const bbox = turf.bbox(geoJsonFeatureCollection)
+
+        const newBounds = [
+          [bbox[1], bbox[0]],
+          [bbox[3], bbox[2]]
+        ]
+        setBounds(newBounds)
+      }
     }
+    // no linked locations, setting to centre of England
     setCentre([52.7152, -1.17349])
   }
 
@@ -82,6 +92,7 @@ export default function ContactMap ({ locations }) {
 
     useEffect(() => {
       if (bounds) {
+        console.log('hit')
         map.fitBounds(bounds)
       }
     }, [bounds])
@@ -183,10 +194,10 @@ export default function ContactMap ({ locations }) {
                     <Popup />
                   </Marker>
                 ))}
-                  {geoJsonShapes.map((shape, index) => (
-                    <GeoJSON key={index} data={shape} />
-                  ))}
-
+                  {geoJsonShapes &&
+                geoJsonShapes.map((shape, index) => (
+                  <GeoJSON key={index} data={shape} />
+                ))}
                   <FitBounds />
                 </>
                 )

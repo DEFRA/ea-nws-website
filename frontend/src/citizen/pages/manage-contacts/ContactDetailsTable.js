@@ -51,7 +51,7 @@ export default function ContactDetailsTable ({
     return (
       <>
         <Link
-          className='govuk-link'
+          className='govuk-link right'
           onClick={(e) => {
             e.preventDefault()
             handleContactSelection(contact, nextPage)
@@ -85,53 +85,46 @@ export default function ContactDetailsTable ({
 
   return (
     <>
-
       <h3 className='govuk-heading-m'>{contactTitle}</h3>
       {(contacts.length > 0 || unregisteredContact.length) > 0 && (
         <table className='govuk-table'>
           <tbody className='govuk-table__body'>
             {contacts.map((contact, index) => (
               <tr key={index} className='govuk-table__row'>
-                <td className='govuk-table__cell govuk-!-width-full'>
+                <td className='custom-table-cell govuk-table__cell'>
                   {contact}
                 </td>
-                <td className='govuk-table__cell' />
-                <td className='govuk-table__cell' />
                 {contact !== primaryContact
                   ? (
-                    <td className='govuk-table__cell'>
+                    <td className='custom-table-cell govuk-table__cell'>
                       <Link
                         to='/managecontacts/confirm-delete'
                         state={{
                           type: contactType,
                           contact
                         }}
-                        className='govuk-link'
+                        className='govuk-link right'
                       >
                         Remove
                       </Link>
                     </td>
                     )
                   : (
-                // empty space in table without this
                     <td className='govuk-table__cell' />
                     )}
               </tr>
             ))}
             {unregisteredContact.map((unregisteredContact, index) => (
               <tr key={index} className='govuk-table__row'>
-                <td className='govuk-table__cell govuk-!-width-full'>
+                <td className='custom-table-cell govuk-table__cell'>
                   {unregisteredContact.address}
-                </td>
-                <td className='govuk-table__cell'>
+                  <br />
+                  <br />
                   <strong className='govuk-tag govuk-tag--red'>
                     Unconfirmed
                   </strong>
                 </td>
-                <td className='govuk-table__cell'>
-                  <UnconfirmedLink contact={unregisteredContact.address} />
-                </td>
-                <td className='govuk-table__cell'>
+                <td className='custom-table-cell govuk-table__cell'>
                   <Link
                     to='/managecontacts/confirm-delete'
                     state={{
@@ -139,10 +132,13 @@ export default function ContactDetailsTable ({
                       contact: unregisteredContact.address,
                       navigateTo: '/managecontacts'
                     }}
-                    className='govuk-link'
+                    className='govuk-link right'
                   >
                     Remove
                   </Link>
+                  <br />
+                  <br />
+                  <UnconfirmedLink contact={unregisteredContact.address} />
                 </td>
               </tr>
             ))}

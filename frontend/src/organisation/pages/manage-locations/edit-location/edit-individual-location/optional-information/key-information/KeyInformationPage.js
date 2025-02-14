@@ -1,22 +1,21 @@
-import { useNavigate } from 'react-router-dom'
+import { React, useState } from 'react'
 import KeyInformationLayout from '../../../../../../layouts/optional-info/KeyInformationLayout'
-import { orgManageLocationsUrls } from '../../../../../../routes/manage-locations/ManageLocationsRoutes'
+import updateLocationAndNavigate from '../../../../updateLocationAndNavigate'
 
 export default function KeyInformationPage () {
-  const navigate = useNavigate()
+  const [error, setError] = useState(null)
 
-  const navigateToNextPage = () => {
-    // If user has updated the location name, we require it here
-    navigate(orgManageLocationsUrls.view.viewLocation, {
-      state: { successMessage: 'Key information changed' }
-    })
-  }
+  const navigateToNextPage = updateLocationAndNavigate(
+    setError,
+    'Key information changed'
+  )
 
   return (
     <>
       <KeyInformationLayout
         flow='edit'
         navigateToNextPage={navigateToNextPage}
+        error={error}
       />
     </>
   )

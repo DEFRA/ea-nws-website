@@ -1,10 +1,11 @@
 /* eslint-disable no-use-before-define */
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
+import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import Radio from '../../../common/components/gov-uk/Radio'
 import { setCurrentContact, setProfile } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
@@ -28,6 +29,7 @@ export default function SelectAlternativeLandlineLayout ({
   const dispatch = useDispatch()
   const profile = useSelector((state) => state.session.profile)
   const authToken = useSelector((state) => state.session.authToken)
+  const location = useLocation()
 
   const unverifiedMobileNumbers = []
   profile.unverified && profile.unverified?.mobilePhones?.forEach((entry) => { unverifiedMobileNumbers.push(entry.address) })
@@ -98,6 +100,12 @@ export default function SelectAlternativeLandlineLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error, validationError]} />}
+            {location?.state?.banner && <NotificationBanner
+              className='govuk-notification-banner govuk-notification-banner--success'
+              title='Success'
+              heading={location?.state?.banner?.heading}
+              text={location?.state?.banner?.text}
+                                        />}
             <h2 className='govuk-heading-l'>
               Which telephone number do you want to use to get flood messages
               by phone call?
@@ -120,7 +128,7 @@ export default function SelectAlternativeLandlineLayout ({
                     <p className='govuk-error-message'>{validationError}</p>
                   )}
                   {mobileNumbers.map((mobileNumber, index) => (
-                    <div style={{ display: 'block' }} key={index}>
+                    <div style={{ display: 'block' }} key={mobileNumber + '.' + index}>
                       <div
                         className='govuk-!-padding-bottom-4'
                         style={{

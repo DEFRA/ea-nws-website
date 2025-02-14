@@ -72,10 +72,13 @@ const setOrgAdditional = (additionals, id, value) => {
 const userSlice = createSlice({
   name: 'session',
   initialState: {
+    lastActivity: null,
     authToken: null,
     registerToken: null,
     profileId: null,
     orgId: null,
+    notFoundLocations: null,
+    notInEnglandLocations: null,
     profile: {
       id: '',
       enabled: true,
@@ -103,6 +106,8 @@ const userSlice = createSlice({
     locationSearchResults: null,
     selectedLocation: null,
     additionalAlerts: null,
+    // required for when user changes a location at sign up review
+    locationToBeChanged: null,
     // required for nearby flood areas flow
     selectedFloodWarningArea: null,
     selectedFloodAlertArea: null,
@@ -117,6 +122,9 @@ const userSlice = createSlice({
     locationBoundaries: null,
     consecutiveBoundariesAdded: 0,
     predefinedBoundaryFlow: null,
+    // linked locations/contacts
+    linkLocations: null,
+    linkContacts: null,
     // org location data
     currentLocation: {
       id: null,
@@ -185,7 +193,7 @@ const userSlice = createSlice({
     // org contact data
     orgCurrentContact: {
       id: null,
-      enabled: null,
+      enabled: true,
       firstname: null,
       lastname: null,
       emails: null,
@@ -208,6 +216,9 @@ const userSlice = createSlice({
     contacts: null
   },
   reducers: {
+    setLastActivity: (state, action) => {
+      state.lastActivity = action.payload
+    },
     setAuthToken: (state, action) => {
       state.authToken = action.payload
     },
@@ -219,6 +230,12 @@ const userSlice = createSlice({
     },
     setOrgId: (state, action) => {
       state.orgId = action.payload
+    },
+    setNotFoundLocations: (state, action) => {
+      state.notFoundLocations = action.payload
+    },
+    setNotInEnglandLocations: (state, action) => {
+      state.notInEnglandLocations = action.payload
     },
     setProfile: (state, action) => {
       state.profile = action.payload
@@ -233,7 +250,7 @@ const userSlice = createSlice({
       state.currentContact = action.payload
     },
     addContactPreference: (state, action) => {
-      state.contactPreferences = action.payload
+      state.contactPreferences.push(action.payload)
     },
     setSigninType: (state, action) => {
       state.signinType = action.payload
@@ -253,6 +270,10 @@ const userSlice = createSlice({
     },
     setAdditionalAlerts: (state, action) => {
       state.additionalAlerts = action.payload
+    },
+    // required for when user changes a location at sign up review
+    setLocationToBeChanged: (state, action) => {
+      state.locationToBeChanged = action.payload
     },
     // required for nearby flood areas flow
     setSelectedFloodWarningArea: (state, action) => {
@@ -289,6 +310,12 @@ const userSlice = createSlice({
     },
     setPredefinedBoundaryFlow: (state, action) => {
       state.predefinedBoundaryFlow = action.payload
+    },
+    setLinkLocations: (state, action) => {
+      state.linkLocations = action.payload
+    },
+    setLinkContacts: (state, action) => {
+      state.linkContacts = action.payload
     },
     // org location data
     setCurrentLocation: (state, action) => {
@@ -647,15 +674,42 @@ const userSlice = createSlice({
         action.payload
       )
     },
+    clearOrgCurrentContact: (state) => {
+      state.orgCurrentContact = {
+        id: null,
+        enabled: true,
+        firstname: null,
+        lastname: null,
+        emails: null,
+        mobilePhones: null,
+        homePhones: null,
+        position: null,
+        comments: null,
+        pois: null,
+        additionals: [
+          {
+            id: 'keywords',
+            value: { s: '[]' }
+          },
+          {
+            id: 'jobTitle',
+            value: { s: '' }
+          }
+        ]
+      }
+    },
     setContacts: (state, action) => {
       state.contacts = action.payload
     },
     // Clear state
     clearAuth: (state) => {
+      state.lastActivity = null
       state.authToken = null
       state.registerToken = null
       state.profileId = null
       state.orgId = null
+      state.notFoundLocations = null
+      state.notInEnglandLocations = null
       state.profile = {
         id: '',
         enabled: true,
@@ -683,6 +737,8 @@ const userSlice = createSlice({
       state.locationSearchResults = null
       state.selectedLocation = null
       state.additionalAlerts = null
+      // required for when user changes a location at sign up review
+      state.locationToBeChanged = null
       // required for nearby flood areas flow
       state.selectedFloodWarningArea = null
       state.selectedFloodAlertArea = null
@@ -764,7 +820,7 @@ const userSlice = createSlice({
       }
       state.orgCurrentContact = {
         id: null,
-        enabled: null,
+        enabled: true,
         firstname: null,
         lastname: null,
         emails: null,
@@ -859,10 +915,13 @@ const userSlice = createSlice({
 })
 
 export const {
+  setLastActivity,
   setAuthToken,
   setRegisterToken,
   setProfileId,
   setOrgId,
+  setNotFoundLocations,
+  setNotInEnglandLocations,
   setProfile,
   setRegistrations,
   setContactPreferences,
@@ -875,6 +934,8 @@ export const {
   setLocationSearchResults,
   setSelectedLocation,
   setAdditionalAlerts,
+  // required for when user changes a location at sign up review
+  setLocationToBeChanged,
   // required for nearby flood areas flow
   setSelectedFloodWarningArea,
   setSelectedFloodAlertArea,
@@ -889,6 +950,8 @@ export const {
   setLocationBoundaries,
   setConsecutiveBoundariesAdded,
   setPredefinedBoundaryFlow,
+  setLinkLocations,
+  setLinkContacts,
   // org location data
   setCurrentLocation,
   setCurrentLocationId,
@@ -953,7 +1016,8 @@ export const {
   setContacts,
   // clear state
   clearAuth,
-  clearCurrentLocation
+  clearCurrentLocation,
+  clearOrgCurrentContact
 } = userSlice.actions
 
 export const {

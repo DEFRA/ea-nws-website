@@ -41,12 +41,15 @@ export default function Map ({
   showMarker = false,
   boundaryList,
   boundariesAlreadyAdded = [],
+  manualCoords,
   shapefileData = null
 }) {
   const dispatch = useDispatch()
-  const { latitude, longitude } = useSelector(
+  const { latitude: currentLatitude, longitude: currentLongitude } = useSelector(
     (state) => state?.session?.currentLocation?.coordinates
   ) || { latitude: 0, longitude: 0 }
+  const { latitude, longitude } = manualCoords || { latitude: currentLatitude, longitude: currentLongitude }
+
   const centre = [latitude, longitude]
   const [apiKey, setApiKey] = useState(null)
   const [marker, setMarker] = useState(null)
@@ -330,7 +333,7 @@ export default function Map ({
             })
           )
 
-          await dispatch(setSelectedBoundary(null))
+          dispatch(setSelectedBoundary(null))
         }
       }
     }

@@ -15,10 +15,15 @@ import {
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 
-export default function KeyInformationLayout ({ flow, navigateToNextPage }) {
+export default function KeyInformationLayout ({
+  flow,
+  navigateToNextPage,
+  error
+}) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   const [locationName, setLocationName] = useState(
     additionalData.locationName ? additionalData.locationName : ''
@@ -46,7 +51,7 @@ export default function KeyInformationLayout ({ flow, navigateToNextPage }) {
       // only execute if location name has been changed
       if (locationName !== additionalData.locationName) {
         if (locationName) {
-          const dataToSend = { authToken, locationName }
+          const dataToSend = { authToken, orgId, locationName }
           const { errorMessage } = await backendCall(
             dataToSend,
             'api/locations/check_duplicate',
@@ -109,13 +114,12 @@ export default function KeyInformationLayout ({ flow, navigateToNextPage }) {
 
   return (
     <>
-
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-one-half'>
-            {locationNameError && (
-              <ErrorSummary errorList={[locationNameError]} />
+            {(locationNameError || error) && (
+              <ErrorSummary errorList={[locationNameError, error]} />
             )}
             <h1 className='govuk-heading-l govuk-!-margin-top-3'>
               Key information

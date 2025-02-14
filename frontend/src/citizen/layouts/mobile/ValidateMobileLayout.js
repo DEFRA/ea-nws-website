@@ -42,10 +42,10 @@ export default function ValidateMobileLayout ({
 
   const handleSubmit = async (event) => {
     event.preventDefault()
-    const validationError = authCodeValidation(code)
+    const { error: validationError, code: formattedCode } = authCodeValidation(code)
     setError(validationError)
     if (validationError === '') {
-      const dataToSend = { authToken, code, msisdn: mobile }
+      const dataToSend = { authToken, code: formattedCode, msisdn: mobile }
       const { errorMessage, data } = await backendCall(
         dataToSend,
         'api/add_contact/mobile/validate',
@@ -62,7 +62,7 @@ export default function ValidateMobileLayout ({
         }
       } else {
         dispatch(setProfile(data.profile))
-        navigateToNextPage()
+        navigateToNextPage(mobile)
       }
     }
   }

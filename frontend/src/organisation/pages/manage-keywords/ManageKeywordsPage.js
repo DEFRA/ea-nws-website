@@ -2,8 +2,7 @@ import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useEffect, useMemo, useState } from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate } from 'react-router'
-import { Link } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Popup from '../../../common/components/custom/Popup'
 import Autocomplete from '../../../common/components/gov-uk/Autocomplete'
@@ -16,9 +15,10 @@ import KeywordsTable from '../../components/custom/KeywordsTable'
 
 export default function ManageKeywordsPage () {
   const navigate = useNavigate()
+  const location = useLocation()
   const [cacheKeywords, setCacheKeywords] = useState([])
   const [keywords, setKeywords] = useState([])
-  const [keywordType, setKeywordType] = useState('location')
+  const [keywordType, setKeywordType] = useState(location?.state?.type || 'location')
   const [notificationText, setNotificationText] = useState('')
   const [selectedKeywords, setSelectedKeywords] = useState([])
   const [filteredKeywords, setFilteredKeywords] = useState([])
@@ -231,11 +231,11 @@ export default function ManageKeywordsPage () {
       return keyword
     })
 
-    if (keywordType === 'location') {
+    /* if (keywordType === 'location') {
       // TODO: geosafe call and logic to update keywords then elasticache
     } else {
       // TODO: geosafe call and logic to update keywords then elasticache
-    }
+    } */
 
     setKeywords([...updatedKeywords])
     setNotificationText('Keyword edited')
@@ -249,11 +249,11 @@ export default function ManageKeywordsPage () {
       (keyword) => !keywordsToRemove.includes(keyword)
     )
 
-    if (keywordType === 'location') {
+    /* if (keywordType === 'location') {
       // TODO: geosafe call and logic to update keywords then elasticache
     } else {
       // TODO: geosafe call and logic to update keywords then elasticache
-    }
+    } */
     setKeywords([...updatedKeywords])
 
     if (targetKeyword) {
@@ -354,7 +354,7 @@ export default function ManageKeywordsPage () {
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-full'>
             {notificationText && (

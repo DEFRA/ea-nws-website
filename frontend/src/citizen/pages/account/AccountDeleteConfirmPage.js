@@ -6,18 +6,18 @@ import ConfirmationPanel from '../../../common/components/gov-uk/Panel'
 import { clearAuth } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 
-export default function AccountDeleteConfirmPage() {
+export default function AccountDeleteConfirmPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const profile = useSelector((state) => state.session.profile)
   const [servicePhase, setServicePhase] = useState(false)
 
-  async function getServicePhase() {
+  async function getServicePhase () {
     const { data } = await backendCall('data', 'api/service/get_service_phase')
     setServicePhase(data)
   }
 
-  async function notifyAccountDeletionSuccess() {
+  async function notifyAccountDeletionSuccess () {
     const dataToSend = {
       email: profile.emails[0],
       fullName: profile.firstname + ' ' + profile.lastname
@@ -55,7 +55,7 @@ export default function AccountDeleteConfirmPage() {
         <h2 className='govuk-heading-m'>If you change your mind</h2>
         <p className='govuk-body govuk-!-margin-bottom-6'>
           You'll need to{' '}
-          <Link to='/signup/register-location/search' className='govuk-link'>
+          <Link to='/signup/service-selection' className='govuk-link'>
             sign up again
           </Link>
           .

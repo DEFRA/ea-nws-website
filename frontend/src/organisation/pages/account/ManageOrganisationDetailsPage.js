@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { setSigninType } from '../../../common/redux/userSlice'
 
 export default function ManageOrganisationDetailsPage () {
   const dispatch = useDispatch()
+  const orgDetails = useSelector((state) => state?.session?.organization) || null
+  const formattedOrg = JSON.parse(orgDetails?.description)
 
   useEffect(() => {
     dispatch(setSigninType('org'))
-  })
+  }, [])
 
   const email = 'getfloodwarnings@environment-agency.gov.uk'
 
@@ -32,7 +34,7 @@ export default function ManageOrganisationDetailsPage () {
                     Name
                   </td>
                   <td className='govuk-table__cell  govuk-!-width-three-quarter'>
-                    Flood Inc.
+                    {orgDetails?.name}
                   </td>
                 </tr>
                 <tr className='govuk-table__row'>
@@ -40,7 +42,7 @@ export default function ManageOrganisationDetailsPage () {
                     UK head office address
                   </td>
                   <td className='govuk-table__cell   govuk-!-width-three-quarter'>
-                    1 All Saints house, The Causeway
+                    {formattedOrg?.address}
                   </td>
                 </tr>
                 <tr className='govuk-table__row'>
@@ -48,7 +50,7 @@ export default function ManageOrganisationDetailsPage () {
                     Has Companies House number?
                   </td>
                   <td className='govuk-table__cell   govuk-!-width-three-quarter'>
-                    Yes
+                    {formattedOrg?.compHouseNum ? 'Yes' : 'No'}
                   </td>
                 </tr>
                 <tr className='govuk-table__row'>
@@ -56,7 +58,7 @@ export default function ManageOrganisationDetailsPage () {
                     Companies House number
                   </td>
                   <td className='govuk-table__cell   govuk-!-width-three-quarter'>
-                    07889 456732
+                    {formattedOrg?.compHouseNum}
                   </td>
                 </tr>
                 <tr className='govuk-table__row'>
@@ -64,7 +66,7 @@ export default function ManageOrganisationDetailsPage () {
                     Involved in responding to public emergencies or incidents?
                   </td>
                   <td className='govuk-table__cell   govuk-!-width-three-quarter'>
-                    Yes
+                    {formattedOrg?.emergencySector ? 'Yes' : 'No'}
                   </td>
                 </tr>
               </tbody>
@@ -79,7 +81,7 @@ export default function ManageOrganisationDetailsPage () {
                   Name
                 </td>
                 <td className='govuk-table__cell   govuk-!-width-three-quarter'>
-                  Joan Smith
+                  {formattedOrg?.alternativeContact?.firstName + ' ' + formattedOrg?.alternativeContact?.lastName}
                 </td>
               </tr>
               <tr className='govuk-table__row'>
@@ -87,7 +89,7 @@ export default function ManageOrganisationDetailsPage () {
                   Email address
                 </td>
                 <td className='govuk-table__cell   govuk-!-width-three-quarter'>
-                  j.smith@floodinc.com
+                  {formattedOrg?.alternativeContact?.email}
                 </td>
               </tr>
               <tr className='govuk-table__row'>
@@ -95,7 +97,7 @@ export default function ManageOrganisationDetailsPage () {
                   Telephone number
                 </td>
                 <td className='govuk-table__cell   govuk-!-width-three-quarter'>
-                  0207 1739372
+                  {formattedOrg?.alternativeContact?.telephone}
                 </td>
               </tr>
               <tr className='govuk-table__row'>
@@ -103,7 +105,7 @@ export default function ManageOrganisationDetailsPage () {
                   Job title (optional)
                 </td>
                 <td className='govuk-table__cell   govuk-!-width-three-quarter'>
-                  IT Director
+                  {formattedOrg?.alternativeContact?.jobTitle}
                 </td>
               </tr>
               <br />

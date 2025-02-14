@@ -1,7 +1,8 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
+import { React, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import store from '../../../../common/redux/store'
+import { setOrgCurrentContact } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import NotesLayout from '../../../layouts/optional-info/NotesLayout'
 import { orgManageContactsUrls } from '../../../routes/manage-contacts/ManageContactsRoutes'
@@ -10,10 +11,12 @@ export default function AddContactNotesPage () {
   const navigate = useNavigate()
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
+  const dispatch = useDispatch()
+  const [error, setError] = useState('')
 
   const navigateToNextPage = () => {
     // TODO navigate to link locations
-    navigate(orgManageContactsUrls.view.dashboard)
+    navigate(orgManageContactsUrls.view.viewContact)
   }
 
   const onAddContact = async () => {
@@ -26,6 +29,7 @@ export default function AddContactNotesPage () {
     )
 
     if (!errorMessage) {
+      dispatch(setOrgCurrentContact(contactToAdd))
       navigateToNextPage()
     } else {
       console.log(errorMessage)
@@ -47,6 +51,8 @@ export default function AddContactNotesPage () {
         instructionText={instructionText}
         buttonText='Add contact'
         onSubmit={onAddContact}
+        error={error}
+        setError={setError}
       />
     </>
   )

@@ -1,7 +1,7 @@
 import 'leaflet/dist/leaflet.css'
-import React, { useState, useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link, useLocation, useNavigate } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import FloodWarningKey from '../../../common/components/custom/FloodWarningKey'
 import Map from '../../../common/components/custom/Map'
@@ -27,11 +27,11 @@ import {
 } from '../../../common/services/WfsFloodDataService'
 
 export default function LocationInSevereWarningAreaLayout ({
-  continueToNextPage
+  continueToNextPage,
+  updateGeoSafeProfile = true
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const location = useLocation()
   const authToken = useSelector((state) => state.session.authToken)
   const profile = useSelector((state) => state.session.profile)
   const selectedLocation = useSelector(
@@ -50,17 +50,13 @@ export default function LocationInSevereWarningAreaLayout ({
   )
   // address to use for registering and unregistering partner
   const addressToUse = isUserInNearbyTargetFlowpath
-    ? selectedFloodWarningArea.properties.TA_NAME
+    ? selectedFloodWarningArea.properties.TA_Name
     : selectedLocation.address
-  const isSignUpFlow = location.pathname.includes('signup')
 
   const [partnerId, setPartnerId] = useState(false)
 
   async function getPartnerId () {
-    const { data } = await backendCall(
-      'data',
-      'api/service/get_partner_id'
-    )
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
     setPartnerId(data)
   }
 
@@ -83,12 +79,13 @@ export default function LocationInSevereWarningAreaLayout ({
     // we must always show user the optional flood alert areas
     dispatch(setAdditionalAlerts(true))
 
-    if (!isSignUpFlow) {
+    if (updateGeoSafeProfile) {
       updatedProfile = await updateGeosafeProfile(updatedProfile)
 
       // if user is in sign up flow, then profile returned will be undefined
       if (updatedProfile) {
         await registerLocationToPartner(updatedProfile)
+        dispatch(setProfile(updatedProfile))
       }
     }
 
@@ -123,11 +120,12 @@ export default function LocationInSevereWarningAreaLayout ({
 
     dispatch(setAdditionalAlerts(false))
 
-    if (!isSignUpFlow) {
+    if (updateGeoSafeProfile) {
       updatedProfile = await updateGeosafeProfile(profile)
       // if user is in sign up flow, then profile returned will be undefined
       if (updatedProfile) {
         unregisterLocationFromPartner(updatedProfile)
+        dispatch(setProfile(updatedProfile))
       }
     }
 
@@ -156,7 +154,7 @@ export default function LocationInSevereWarningAreaLayout ({
   const addFloodWarningArea = async () => {
     const warningArea = {
       name: '',
-      address: selectedFloodWarningArea.properties.TA_NAME,
+      address: selectedFloodWarningArea.properties.TA_Name,
       coordinates: getCoordsOfFloodArea(selectedFloodWarningArea),
       additionals: setLocationOtherAdditionals([], 'alertTypes', [
         AlertType.SEVERE_FLOOD_WARNING,
@@ -172,7 +170,7 @@ export default function LocationInSevereWarningAreaLayout ({
   const removeFloodWarningArea = async () => {
     const updatedProfile = removeLocation(
       profile,
-      selectedFloodWarningArea.properties.TA_NAME
+      selectedFloodWarningArea.properties.TA_Name
     )
     dispatch(setProfile(updatedProfile))
 
@@ -183,7 +181,7 @@ export default function LocationInSevereWarningAreaLayout ({
     const associatedAlertArea = await getAssociatedAlertArea(
       selectedLocation.coordinates.latitude,
       selectedLocation.coordinates.longitude,
-      selectedFloodWarningArea.properties.PARENT
+      selectedFloodWarningArea.properties.parenttacode
     )
 
     if (associatedAlertArea) {
@@ -229,7 +227,6 @@ export default function LocationInSevereWarningAreaLayout ({
 
   return (
     <>
-
       <BackLink onClick={() => handleUserNavigatingBack()} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row govuk-body'>
@@ -241,7 +238,7 @@ export default function LocationInSevereWarningAreaLayout ({
             <InsetText
               text={
                 isUserInNearbyTargetFlowpath
-                  ? selectedFloodWarningArea.properties.TA_NAME
+                  ? selectedFloodWarningArea.properties.TA_Name
                   : selectedLocation.address
               }
             />
@@ -278,8 +275,7 @@ export default function LocationInSevereWarningAreaLayout ({
               risk.
             </p>
             <p>
-              Total sent in last year:{' '}
-              <b>{severeFloodWarningCount || 0}</b>
+              Total sent in last year: <b>{severeFloodWarningCount || 0}</b>
             </p>
             <Button
               text='Confirm you want this location'

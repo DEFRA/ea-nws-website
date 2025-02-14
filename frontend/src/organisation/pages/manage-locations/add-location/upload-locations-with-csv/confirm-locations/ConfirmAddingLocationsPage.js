@@ -3,34 +3,130 @@ import { useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import Details from '../../../../../../common/components/gov-uk/Details'
-import InsetText from '../../../../../../common/components/gov-uk/InsetText'
 import { backendCall } from '../../../../../../common/services/BackendService'
+import { geoSafeToWebLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
-export default function ConfirmLocationsPage () {
+export default function ConfirmAddingLocationsPage () {
   const navigate = useNavigate()
   const location = useLocation()
-  const locationsValid = location?.state?.valid || 0
-  const locationsInvalid = location?.state?.invalid || 0
+  const validLocations = location?.state?.valid || 0
+  const duplicateLocations = location?.state?.duplicates || 0
+  const notFoundLocations = useSelector(
+    (state) => state.session.notFoundLocations
+  )
+  const notInEnglandLocations = useSelector(
+    (state) => state.session.notInEnglandLocations
+  )
+
+  const totalLocations =
+    validLocations +
+    duplicateLocations +
+    notFoundLocations +
+    notInEnglandLocations
   const fileName = location?.state?.fileName || ''
   const orgId = useSelector((state) => state.session.orgId)
+  const authToken = useSelector((state) => state.session.authToken)
+
+  const getLocation = async (orgId, locationName, type) => {
+    const dataToSend = {
+      orgId,
+      locationName,
+      type
+    }
+    const { data } = await backendCall(
+      dataToSend,
+      'api/locations/search',
+      navigate
+    )
+
+    if (data && data.length === 1) {
+      return data[0]
+    } else {
+      return null
+    }
+  }
+
+  const getDupLocation = async () => {
+    const dataToSend = { orgId }
+    const { data } = await backendCall(
+      dataToSend,
+      'api/bulk_uploads/get_invalid_locations',
+      navigate
+    )
+    const locations = []
+    if (data) {
+      const duplicates = data.filter(
+        (location) =>
+          location.error.includes('duplicate') && location?.error?.length === 1
+      )
+      duplicates.forEach((location) => {
+        locations.push(geoSafeToWebLocation(location))
+      })
+    }
+    return locations[0]
+  }
 
   const handleLocations = async (event) => {
     event.preventDefault()
 
-    const dataToSend = { orgId, fileName }
+    const dataToSend = { authToken, orgId, fileName }
     const { data, errorMessage } = await backendCall(
       dataToSend,
       'api/bulk_uploads/save_locations',
       navigate
     )
-    if (!errorMessage) {
-      navigate(orgManageLocationsUrls.unmatchedLocations.index, {
-        state: {
-          added: data.valid,
-          notAdded: data.invalid
+
+    if (!errorMessage && data) {
+      if (duplicateLocations > 0) {
+        if (duplicateLocations === 1) {
+          const location = await getDupLocation()
+
+          // Get the existing location (note type is 'valid')
+          const existingLocation = geoSafeToWebLocation(
+            await getLocation(orgId, location.additionals.locationName, 'valid')
+          )
+
+          // Set the new, duplicate location
+          const newLocation = location
+
+          if (existingLocation && newLocation) {
+            // Now compare the two and let the use choose one
+            navigate(
+              orgManageLocationsUrls.add.duplicateLocationComparisonPage,
+              {
+                state: {
+                  existingLocation,
+                  newLocation,
+                  numDuplicates: duplicateLocations
+                }
+              }
+            )
+          }
+        } else {
+          navigate(orgManageLocationsUrls.add.duplicateLocationsOptionsPage, {
+            state: {
+              addedLocations: data.valid,
+              numDuplicates: duplicateLocations
+            }
+          })
         }
-      })
+      } else if (notFoundLocations > 0) {
+        navigate(orgManageLocationsUrls.unmatchedLocations.notFound.dashboard, {
+          state: {
+            addedLocations: data.valid
+          }
+        })
+      } else if (notInEnglandLocations > 0) {
+        navigate(
+          orgManageLocationsUrls.unmatchedLocations.notInEngland.dashboard,
+          {
+            state: {
+              addedLocations: data.valid
+            }
+          }
+        )
+      }
     } else {
       // got to some sort of error page
     }
@@ -38,8 +134,7 @@ export default function ConfirmLocationsPage () {
 
   const handleCancel = async (event) => {
     event.preventDefault()
-    // cancel the upload and return to setting screen
-    navigate('/organisation/home')
+    navigate(orgManageLocationsUrls.view.dashboard)
   }
 
   const detailsMessage = (
@@ -73,23 +168,76 @@ export default function ConfirmLocationsPage () {
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             <h1 className='govuk-heading-l'>
-              {locationsValid} out of {locationsInvalid + locationsValid}{' '}
-              locations can be added
+              {validLocations} of {totalLocations} location
+              {totalLocations === 1 ? '' : 's'} can be added
             </h1>
             <div className='govuk-body'>
-              <InsetText
-                text={
-                  locationsInvalid +
-                  ' locations need to be matched before they can be added. You can match them after you add the locations that have been found.'
-                }
-              />
+              <div className='govuk-inset-text'>
+                {duplicateLocations > 0 && (
+                  <div>
+                    <strong>{duplicateLocations}</strong> location
+                    {duplicateLocations === 1 ? '' : 's'} already exist
+                    {duplicateLocations === 1 ? 's' : ''} with the same name in
+                    this account. You can choose to keep the existing location
+                    {duplicateLocations === 1 ? '' : 's'} or replace them with
+                    the new location{duplicateLocations === 1 ? '' : 's'}{' '}
+                    uploaded.
+                  </div>
+                )}
+                {notFoundLocations > 0 && (
+                  <div>
+                    {/* Only need a break if there is text above */}
+                    {duplicateLocations > 0 && <br />}
+                    <div>
+                      <strong>{notFoundLocations}</strong> location
+                      {notFoundLocations === 1 ? '' : 's'} need
+                      {notFoundLocations === 1 ? 's' : ''} to be found manually
+                      in this account before{' '}
+                      {notFoundLocations === 1 ? 'it' : 'they'} can be added.
+                    </div>
+                  </div>
+                )}
+                {notInEnglandLocations > 0 && (
+                  <div>
+                    {/* Only need a break if there is text above */}
+                    {(duplicateLocations > 0 || notFoundLocations > 0) && (
+                      <br />
+                    )}
+                    <div>
+                      <strong>{notInEnglandLocations}</strong> location
+                      {notInEnglandLocations === 1 ? '' : 's'} cannot be added
+                      because{' '}
+                      {notInEnglandLocations === 1 ? 'it is' : 'they are'} not
+                      in England. You can check{' '}
+                      {notInEnglandLocations === 1 ? '' : 'each of'} the
+                      location's details and change{' '}
+                      {notInEnglandLocations === 1 ? 'it' : 'them'} if you think
+                      this is not correct.
+                    </div>
+                  </div>
+                )}
+              </div>
               <Details
-                title='Why do some locations not match?'
+                title='Why are some locations not found?'
                 text={detailsMessage}
               />
+              {validLocations > 0 && (
+                <p>
+                  You can do this after you add the {validLocations} location
+                  {validLocations === 1 ? '' : 's'} that can be added now.
+                </p>
+              )}
             </div>
+            <br />
+            {/* TODO: add a loading spinner on click as saving can take a long time */}
             <Button
-              text='Add and continue'
+              text={
+                validLocations > 0
+                  ? `Add ${validLocations} location${
+                      validLocations === 1 ? '' : 's'
+                    }`
+                  : 'Continue'
+              }
               className='govuk-button govuk-button'
               onClick={handleLocations}
             />

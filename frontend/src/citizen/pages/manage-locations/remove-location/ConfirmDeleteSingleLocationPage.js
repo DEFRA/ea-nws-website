@@ -1,4 +1,4 @@
-import { React, useState } from 'react'
+import { React, useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -16,28 +16,51 @@ export default function ConfirmDeleteSingleLocationPage () {
   const session = useSelector((state) => state.session)
   const [error, setError] = useState('')
 
-  const handleSubmit = async () => {
-    const updatedProfile = removeLocation(session.profile, location.state.name)
+  useEffect(() => {
+    window.history.replaceState({}, location.pathname)
+  }, [location])
 
+  const handleSubmit = async () => {
     const data = {
       authToken: session.authToken,
-      profile: updatedProfile
+      locationId: location.state.locationId,
+      partnerId: location.state.partnerId
     }
 
-    // profile returned but we just need to make sure no error is returned
     const { errorMessage } = await backendCall(
       data,
-      'api/profile/update',
+      'api/partner/unregister_location_from_partner',
       navigate
     )
 
     if (!errorMessage) {
-      dispatch(setProfile(updatedProfile))
-      navigate('/home', {
-        state: {
-          removedLocation: location.state.name
-        }
-      })
+      const updatedProfile = removeLocation(session.profile, location.state.name)
+
+      const dataToSend = {
+        authToken: session.authToken,
+        profile: updatedProfile
+      }
+
+      const { errorMessage, data } = await backendCall(
+        dataToSend,
+        'api/profile/update',
+        navigate
+      )
+
+      if (!errorMessage) {
+        dispatch(setProfile(data.profile))
+        navigate('/home', {
+          state: {
+            removedLocation: location.state.name
+          }
+        })
+      } else {
+        setError(
+          'An error occured trying to remove a location.  ' +
+            location.state.name +
+            ' has not been removed. Please try again later.'
+        )
+      }
     } else {
       setError(
         'An error occured trying to remove a location.  ' +
@@ -59,7 +82,7 @@ export default function ConfirmDeleteSingleLocationPage () {
               Are you sure you want to remove this location?
             </h2>
             <InsetText text={location.state?.name} />
-            <p className='govuk-!-margin-bottom-6'>
+            <p className='govuk-!-margin-bottom-6 govuk-body'>
               You'll no longer get any flood warnings or alerts for this
               location.
             </p>

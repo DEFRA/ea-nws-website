@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react'
+import { useCookies } from 'react-cookie'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
@@ -36,6 +37,8 @@ export default function ValidateEmailLayout ({
   const [codeExpired, setCodeExpired] = useState(false)
   const profile = useSelector((state) => state.session.profile)
   const signinType = useSelector((state) => state.session.signinType)
+  // eslint-disable-next-line no-unused-vars
+  const [cookies, setCookie] = useCookies(['authToken'])
 
   // if error remove code sent notification
   useEffect(() => {
@@ -43,13 +46,13 @@ export default function ValidateEmailLayout ({
   }, [error])
 
   const handleSubmit = async () => {
-    const validationError = authCodeValidation(code)
+    const { error: validationError, code: formattedCode } = authCodeValidation(code)
     setError(validationError)
 
     if (validationError === '') {
       const dataToSend = {
         orgRegisterToken: registerToken,
-        code
+        code: formattedCode
       }
 
       const { data, errorMessage } = await backendCall(
@@ -68,6 +71,7 @@ export default function ValidateEmailLayout ({
           setError(errorMessage)
         }
       } else {
+        setCookie('authToken', data.authToken)
         dispatch(setAuthToken(data.authToken))
         dispatch(setOrgId(data.organization.id))
         dispatch(setOrganizationId(data.organization.id))

@@ -83,9 +83,6 @@
   font-family: 'GDS Transport', arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-decoration: underline;
-  text-decoration-thickness: max(1px, 0.0625rem);
-  text-underline-offset: 0.1578em;
   display: block;
   padding-top: 12px;
   padding-bottom: 12px;
@@ -135,7 +132,6 @@
 }
 
 .sub-navigation-org {
-  width: 100vw;
   margin-left: -1.875rem;
   margin-top: -22px;
   background: #f3f2f1;
@@ -357,6 +353,36 @@
   width: 95%;
   left: 50%;
   transform: translateX(-50%);
+}
+
+.org-location-information-header {
+  color: #ffffff;
+  background-color: #505a5f;
+  padding: 0.625rem;
+}
+
+.org-location-comparison {
+  display: flex;
+}
+
+.org-location-comparison-box {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.org-location-information-footer {
+  color: #000000;
+  background-color: #f3f2f1;
+  padding: 0.625rem 0 0.625rem 1.25rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: auto;
+}
+
+.org-location-information-footer.error {
+  border-left: 5px solid #d4351c;
 }
 
 .map-confirm-location-box-mobile-view {
@@ -660,12 +686,6 @@
 .one-login-header__nav__link:visited:active {
   color: rgba(255, 255, 255, 0.99);
 }
-.one-login-header__link:link:focus,
-.one-login-header__link:visited:focus,
-.one-login-header__nav__link:link:focus,
-.one-login-header__nav__link:visited:focus {
-  color: #0b0c0c;
-}
 .one-login-header__link:link:hover,
 .one-login-header__link:visited:hover,
 .one-login-header__nav__link:link:hover,
@@ -763,6 +783,7 @@
 @media (min-width: 40.0625em) {
   .toggle-enabled .one-login-header__nav {
     display: block;
+    height: 51.5px;
   }
 }
 @media (max-width: 40.0525em) {
@@ -787,6 +808,7 @@
   .one-login-header__nav__list {
     display: flex;
     align-items: center;
+    height: 100%;
   }
 }
 
@@ -803,7 +825,7 @@
 /* Styles for the active state */
 .one-login-header__nav__list-item.active,
 .one-login-header__nav__list-item:hover {
-  background-color: #ffdd00;
+  background-color: #F3F2F1;
 }
 
 .one-login-header__nav__list-item.no-highlight:hover,
@@ -815,28 +837,35 @@
   content: '';
   position: absolute;
   bottom: 0;
-  left: 5%;
-  width: 90%;
+  left: 10%;
+  width: 80%;
   height: 4px;
-  background-color: black;
+  background-color: #1D70B8;
 }
 
 .one-login-header__nav__list-item .active,
 .one-login-header__nav__list-item:hover .highlighted {
-  color: #000000;
+  color: #1D70B8;
 }
 
 .one-login-header__nav__list-item.active span,
 .one-login-header__nav__list-item:hover span {
-  color: #000000;
+  color: #1D70B8;
+}
+
+.one-login-header__nav__list-item svg {
+  stroke: #FFFFFF;
+}
+
+.one-login-header__nav__list-item.active svg,
+.one-login-header__nav__list-item:hover svg {
+  stroke: #1D70B8;
 }
 
 @media (min-width: 40.0625em) {
   .one-login-header__nav__list-item {
     padding: 12px 20px 12px 20px;
     align-self: stretch;
-  }
-  .one-login-header__nav__list-item:not(:last-child) {
   }
 }
 @media (max-width: 40.0525em) {
@@ -897,7 +926,6 @@
   color: #0b0c0c;
   padding: 15px 0;
   margin: 0;
-  margin-left: 3rem;
   margin-right: 5rem;
 }
 @media print {
@@ -1164,7 +1192,7 @@
 .locations-selected-filters-panel {
   border-bottom-style: solid;
   border-width: thin;
-  border-color:#b1b4b6;
+  border-color: #b1b4b6;
   background-color: #f3f2f1;
   padding-bottom: 1rem;
 }
@@ -1206,7 +1234,7 @@
 }
 
 .locations-selected-filter-icon {
-  width: 1rem,;
+  width: 1rem;
   height: 1rem;
 }
 
@@ -1229,25 +1257,6 @@
   cursor: pointer;
 }
 
-.locations-selected-filter-icon {
-  width: 1rem;
-  height: 1rem;
-}
-
-.locations-table-panel {
-  display: flex;
-  color: #505a5f;
-}
-
-.locations-table-header {
-  display: flex;
-  color: #505a5f;
-}
-
-.locations-map-key {
-  display: flex;
-  align-items: center;
-}
 .locations-filter-title {
   margin: 0 0 0 8px;
   color: #1d70b8;
@@ -1473,7 +1482,6 @@
 .org-flood-warning-key {
   display: flex;
   gap: 2.5rem;
-  align-items: center;
   background-color: #f3f2f1;
   padding: 0.625rem;
   flex-wrap: wrap;
@@ -1551,7 +1559,6 @@
   padding: 0 10px 0 0;
   position: relative;
   text-align: inherit;
-  font-size: 1em;
   margin: 0;
 }
 
@@ -1659,6 +1666,15 @@
   opacity: 1;
 }
 
+.outline-1px {
+  outline: 1px solid lightgray;
+}
+
+.textarea-info {
+  margin-top: -28px;
+  color: #505a5f;
+}
+
 .button-menu {
   display: inline-block;
   position: relative;
@@ -1720,7 +1736,7 @@ govuk-menu-toggle.button-menu > button {
 }
 
 .private-beta-header {
-  font-family: "GDS Transport", arial, sans-serif;
+  font-family: 'GDS Transport', arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-weight: 700;
@@ -1757,13 +1773,16 @@ govuk-menu-toggle.button-menu > button {
 
 .private-beta-watermark {
   min-height: 100%;
-  background:
-    url('data:image/svg+xml;utf8,<svg style="transform:rotate(28.76deg)" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 100 10"><text x="0" y="0" opacity="0.1" font-family="Arial" fill="%23000">Test service </text></svg>')
-    0 0/200px 200px;
+  background: url('data:image/svg+xml;utf8,<svg style="transform:rotate(28.76deg)" xmlns="http://www.w3.org/2000/svg"  viewBox="0 0 85 10"><text x="0" y="0" opacity="0.1" font-family="Arial" fill="%23000">Test service</text></svg>')
+    0 0/300px 300px;
 }
 
 .outline-1px {
   outline: 1px solid lightgray;
+}
+
+.org-service-selection-container {
+  background: #ffffff;
 }
 
 .org-service-selection-header {
@@ -1779,10 +1798,24 @@ govuk-menu-toggle.button-menu > button {
 
 .org-service-selection-hr {
   height: 1px;
-  color: #ced0d4
+  color: #b1b4b6;
 }
 
 .private-beta-mock-banner {
   border-left-style: solid;
-  border-width: 10px
+  border-width: 10px;
+}
+
+.custom-table-cell {
+  text-overflow: ellipsis !important;
+  overflow: hidden !important;
+  max-width: 50vw !important;
+}
+
+.text-nowrap {
+  text-wrap: nowrap;
+}
+
+.right {
+  float: right;
 }

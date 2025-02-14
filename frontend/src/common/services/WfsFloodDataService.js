@@ -46,7 +46,7 @@ export const getFloodAreaByTaCode = async (code) => {
     typename: 'flood_warnings',
     srsname: 'EPSG:4326',
     outputFormat: 'GEOJSON',
-    filter: `<Filter><PropertyIsEqualTo><PropertyName>FWS_TACODE</PropertyName><Literal>${code}</Literal></PropertyIsEqualTo></Filter>`
+    filter: `<Filter><PropertyIsEqualTo><PropertyName>TA_CODE</PropertyName><Literal>${code}</Literal></PropertyIsEqualTo></Filter>`
   }
   const { data: wfsWarningData } = await backendCall(WFSParams, 'api/wfs')
 
@@ -59,7 +59,7 @@ export const getFloodAreaByTaCode = async (code) => {
     typename: 'flood_alerts',
     srsname: 'EPSG:4326',
     outputFormat: 'GEOJSON',
-    filter: `<Filter><PropertyIsEqualTo><PropertyName>FWS_TACODE</PropertyName><Literal>${code}</Literal></PropertyIsEqualTo></Filter>`
+    filter: `<Filter><PropertyIsEqualTo><PropertyName>TA_CODE</PropertyName><Literal>${code}</Literal></PropertyIsEqualTo></Filter>`
   }
   const { data: wfsAlertData } = await backendCall(WFSParams, 'api/wfs')
 

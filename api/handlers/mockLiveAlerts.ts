@@ -231,6 +231,118 @@ const liveAlerts = {
       execution: {},
       workspaceId: '1',
       workspaceName: 'National Workspace'
+    },
+    {
+      // this is affecting a boundary - York
+      id: '5',
+      version: 123456,
+      name: 'Flood alert',
+      description: { en: 'Flood', additionalLabels: [] },
+      effectiveDate: 1734003781, // unix time
+      expirationDate: 1734004381,
+      duration: {},
+      urgency: 'SEVERE',
+      severity: 'MINOR',
+      certainty: 'OBSERVED',
+      mode: {
+        zoneDesc: {
+          name: '122WAF946',
+          placemarks: [
+            {
+              id: '0',
+              name: 'Upper River Ouse',
+              geometry: {
+                rings: [],
+                circles: [],
+                polygons: [],
+                geocodes: [],
+                extraInfo: [
+                  {
+                    id: 'TA_CODE',
+                    value: { s: '122WAF946' }
+                  },
+                  {
+                    id: 'TA_NAME',
+                    value: {
+                      s: 'Upper River Ouse'
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      channels: [{ channelId: '1', placemarks: [0], countryCodes: [] }],
+      type: 'ALERT_LVL_3',
+      sender: '',
+      scope: 'PUBLIC',
+      capStatus: 'ACTUAL',
+      categories: ['MET'],
+      eventType: {
+        en: 'Flood',
+        additionalLabels: []
+      },
+      eventCode: { domain: 'NWS', code: 'FLOOD' },
+      execution: {},
+      workspaceId: '1',
+      workspaceName: 'National Workspace'
+    },
+    {
+      // this is affecting a boundary - York
+      id: '6',
+      version: 123456,
+      name: 'Flood warning',
+      description: { en: 'Flood', additionalLabels: [] },
+      effectiveDate: 1734003781, // unix time
+      expirationDate: 1734004381,
+      duration: {},
+      urgency: 'SEVERE',
+      severity: 'MINOR',
+      certainty: 'OBSERVED',
+      mode: {
+        zoneDesc: {
+          name: '122FWF776',
+          placemarks: [
+            {
+              id: '0',
+              name: 'River Foss at Layerthorpe to Foss Islands Road, Stonebow and Piccadilly',
+              geometry: {
+                rings: [],
+                circles: [],
+                polygons: [],
+                geocodes: [],
+                extraInfo: [
+                  {
+                    id: 'TA_CODE',
+                    value: { s: '122FWF776' }
+                  },
+                  {
+                    id: 'TA_NAME',
+                    value: {
+                      s: 'River Foss at Layerthorpe to Foss Islands Road, Stonebow and Piccadilly'
+                    }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      },
+      channels: [{ channelId: '1', placemarks: [0], countryCodes: [] }],
+      type: 'ALERT_LVL_2',
+      sender: '',
+      scope: 'PUBLIC',
+      capStatus: 'ACTUAL',
+      categories: ['MET'],
+      eventType: {
+        en: 'Flood',
+        additionalLabels: []
+      },
+      eventCode: { domain: 'NWS', code: 'FLOOD' },
+      execution: {},
+      workspaceId: '1',
+      workspaceName: 'National Workspace'
     }
   ]
 }

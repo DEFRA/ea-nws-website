@@ -10,7 +10,7 @@ export default function FloodTypeFilter({
   showFloodType,
   updateFloodTypeVisibility
 }) {
-  const backgroundColor = () => {
+  const backgroundColour = () => {
     switch (warningType) {
       case 'Severe':
         return '#FFD7DC'
@@ -31,7 +31,7 @@ export default function FloodTypeFilter({
         justifyContent: 'space-between',
         paddingTop: '10px',
         paddingBottom: '10px',
-        backgroundColor: backgroundColor()
+        backgroundColor: backgroundColour()
       }}
     >
       <div style={{ flex: '0 0 auto', marginRight: '12px' }}>

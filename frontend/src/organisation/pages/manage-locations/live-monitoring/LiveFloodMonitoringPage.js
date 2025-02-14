@@ -10,6 +10,7 @@ import floodSevereWarningIcon from '../../../../common/assets/images/severe_floo
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import { orgFloodReportsUrls } from '../../../routes/flood-reports/FloodReportsRoutes'
+import FloodDataInformationPopup from './monitoring-components/FloodDataInformationPopup'
 import FloodTypeFilter from './monitoring-components/FloodTypeFilter'
 import LiveMap from './monitoring-components/LiveMap'
 

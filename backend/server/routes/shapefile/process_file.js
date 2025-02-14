@@ -22,6 +22,7 @@ module.exports = [
             if (scanResult?.data?.scanResult === 'THREATS_FOUND') {
               await setJsonData(elasticacheKey, { stage: 'Scanning Upload', status: 'rejected', error: [{ errorType: 'virus', errorMessage: 'The selected file contains a virus' }] })
             } else if (scanResult?.data?.scanResult === 'NO_THREATS_FOUND') {
+              await setJsonData(elasticacheKey, { stage: 'Processing', status: 'working' })
               const response = await processShapefile(request.payload.Message)
               if (response.errorMessage) {
                 await setJsonData(elasticacheKey, { stage: 'Processing', status: 'rejected', error: response.errorMessage })

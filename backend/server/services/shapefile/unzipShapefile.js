@@ -65,7 +65,7 @@ const unzipShapefile = async (zipFileName) => {
         .on('error', (err) => reject(new Error(err)))
     })
 
-    return
+    return {}
   } catch (error) {
     logger.error(error)
     return {

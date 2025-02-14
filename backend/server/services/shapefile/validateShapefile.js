@@ -110,7 +110,7 @@ const validateShapefile = async (zipFileName) => {
       )
     }
     // No errors thrown means a valid shapefile
-    return
+    return {}
   } catch (error) {
     logger.error(error)
     // An invalid shapefile (and the original zip) should be deleted from the bucket (the user will be asked to upload a correct one)

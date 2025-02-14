@@ -36,7 +36,7 @@ module.exports = [
               // Check invalid locations for duplicates
               const locationName = result.data.properties?.name ||
               result.data.properties?.lrf15nm ||
-              result.data.properties.fileName
+              result.data.properties?.fileName
               if (await isDuplicate(orgId, locationName)) {
                 // An invalid location should already have at least one error
                 // but do not assume this is the case

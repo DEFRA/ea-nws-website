@@ -36,6 +36,16 @@ export default function LocationInformationPage () {
     }
   }
 
+  const getShapePolygonArea = () => {
+    const formattArea = (area) => {
+      return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    }
+    const shapeArea = formattArea(
+      Math.round(currentLocation.geometry.properties?.Shape_Area)
+    )
+    return shapeArea
+  }
+
   const LocationData = () => {
     switch (additionalData.location_data_type) {
       case LocationDataType.X_AND_Y_COORDS:
@@ -48,7 +58,7 @@ export default function LocationInformationPage () {
         )
       case LocationDataType.SHAPE_POLYGON:
         // code to return shape area
-        return <>2 square km (dummy data)</>
+        return <>{getShapePolygonArea()} square metres</>
       case LocationDataType.SHAPE_LINE:
         // code to return length of line
         return <>0.5km (dummy data)</>
@@ -241,7 +251,7 @@ export default function LocationInformationPage () {
             )}
 
             {/* Keywords details */}
-            {additionalData.keywords && (
+            {keywords.length > 0 && (
               <div className='govuk-!-margin-top-7'>
                 <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-display-inline-block'>
                   Keywords

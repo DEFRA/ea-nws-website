@@ -18,7 +18,11 @@ import shadowUrl from 'leaflet/dist/images/marker-shadow.png'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import TileLayerWithHeader from '../../../common/components/custom/TileLayerWithHeader'
-import { setSelectedBoundary } from '../../../common/redux/userSlice'
+import LocationDataType from '../../../common/enums/LocationDataType'
+import {
+  getLocationOther,
+  setSelectedBoundary
+} from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
 import {
   getBoundaries,
@@ -41,14 +45,24 @@ export default function Map ({
   showMarker = false,
   boundaryList,
   boundariesAlreadyAdded = [],
-  manualCoords,
-  shapefileData = null
+  manualCoords
 }) {
   const dispatch = useDispatch()
-  const { latitude: currentLatitude, longitude: currentLongitude } = useSelector(
-    (state) => state?.session?.currentLocation?.coordinates
-  ) || { latitude: 0, longitude: 0 }
-  const { latitude, longitude } = manualCoords || { latitude: currentLatitude, longitude: currentLongitude }
+  const { latitude: currentLatitude, longitude: currentLongitude } =
+    useSelector((state) => state?.session?.currentLocation?.coordinates) || {
+      latitude: 0,
+      longitude: 0
+    }
+  const { latitude, longitude } = manualCoords || {
+    latitude: currentLatitude,
+    longitude: currentLongitude
+  }
+  const locationGeometry = useSelector(
+    (state) => state?.session?.currentLocation?.geometry
+  )
+  const currentLocationDataType = useSelector((state) =>
+    getLocationOther(state, 'location_data_type')
+  )
 
   const centre = [latitude, longitude]
   const [apiKey, setApiKey] = useState(null)
@@ -475,15 +489,17 @@ export default function Map ({
                   <ResetMapButton />
                 </>
               )}
-              {type !== 'boundary' && (
+              {type !== 'boundary' &&
+              currentLocationDataType !== LocationDataType.SHAPE_POLYGON &&
+              currentLocationDataType !== LocationDataType.SHAPE_LINE && (
                 <>
                   {type === 'drop'
                     ? (
                       <AddMarker />
                       )
-                    : type !== 'shape' && (
+                    : (
                       <Marker position={centre} interactive={false} />
-                    )}
+                      )}
                 </>
               )}
               {alertArea && (
@@ -516,11 +532,10 @@ export default function Map ({
                   }}
                 />
               )}
-              {shapefileData &&
-              (
+              {locationGeometry && (
                 <>
                   <GeoJSON
-                    data={shapefileData}
+                    data={locationGeometry}
                     onEachFeature={onEachShapefileFeature}
                     ref={(el) => {
                       shapefileRef.current = el

@@ -1,10 +1,20 @@
+import { centroid } from '@turf/turf'
 import React, { useEffect, useState } from 'react'
 import Spinner from 'react-bootstrap/esm/Spinner'
+import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
+import store from '../../../../common/redux/store'
+import {
+  setCurrentLocationCoordinates,
+  setCurrentLocationGeometry,
+  setCurrentLocationName
+} from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
+import { geoSafeToWebLocation } from '../../../../common/services/formatters/LocationFormatter'
+import { locationInEngland } from '../../../../common/services/validations/LocationInEngland'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
 const csvErrorText = (error, index, templateUrl) => {
@@ -20,10 +30,12 @@ const csvErrorText = (error, index, templateUrl) => {
         </p>
       )
     case 'Duplicates':
-      errorText = 'Each location name must be unique. You need to change the location names, or delete the duplicate locations from the file, for the following lines that have the same location name:'
+      errorText =
+        'Each location name must be unique. You need to change the location names, or delete the duplicate locations from the file, for the following lines that have the same location name:'
       break
     case 'Missing location details':
-      errorText = 'You need to add either a full address and postcode or X and Y coordinates for lines:'
+      errorText =
+        'You need to add either a full address and postcode or X and Y coordinates for lines:'
       break
     case 'Missing location name':
       errorText = 'You need to add unique location names for lines:'
@@ -41,6 +53,7 @@ export default function UploadFileLayout ({
   uploadMethod // Currently either "csv" or "shape"
 }) {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const location = useLocation()
   const [errorFileType, setErrorFileType] = useState(null)
   const [errorFileSize, setErrorFileSize] = useState(null)
@@ -49,6 +62,7 @@ export default function UploadFileLayout ({
   const [uploading, setUploading] = useState(false)
   const [csvErrors, setCsvErrors] = useState([])
   const [templateUrl, setTemplateUrl] = useState(null)
+  const orgId = useSelector((state) => state.session.orgId)
 
   async function getTemplateUrl () {
     const { data } = await backendCall(
@@ -137,6 +151,25 @@ export default function UploadFileLayout ({
     return true
   }
 
+  const checkDuplicateLocation = async (locationName) => {
+    const dataToSend = {
+      orgId,
+      locationName,
+      type: 'valid'
+    }
+    const { data } = await backendCall(
+      dataToSend,
+      'api/locations/search',
+      navigate
+    )
+
+    if (data.length > 0) {
+      return data[0]
+    } else {
+      return null
+    }
+  }
+
   const handleUpload = async (e) => {
     e.preventDefault()
     setErrorFileSize(null)
@@ -200,7 +233,7 @@ export default function UploadFileLayout ({
             setUploading(false)
             setErrorShapefile(['Error uploading file'])
           } else {
-          // Validate the files contained within the zip
+            // Validate the files contained within the zip
             const { errorMessage } = await backendCall(
               { zipFileName: uniqFileName },
               'api/shapefile/validate',
@@ -210,19 +243,70 @@ export default function UploadFileLayout ({
               setUploading(false)
               setErrorShapefile(errorMessage)
             } else {
-              const { data: geojsonData, errorMessage } =
-            await backendCall(
-              { zipFileName: uniqFileName },
-              'api/shapefile/convert',
-              navigate
-            )
+              const { data: geojsonData, errorMessage } = await backendCall(
+                { zipFileName: uniqFileName },
+                'api/shapefile/convert',
+                navigate
+              )
               if (errorMessage) {
                 setUploading(false)
                 setErrorShapefile([errorMessage])
               } else {
-                navigate(orgManageLocationsUrls.add.confirmLocationsWithShapefile, {
-                  state: { geojsonData }
-                })
+                const bbox = geojsonData?.features[0]?.geometry?.bbox
+
+                const inEngland =
+                  (await locationInEngland(bbox[1], bbox[0])) &&
+                  (await locationInEngland(bbox[3], bbox[2]))
+
+                const existingLocation = await checkDuplicateLocation(
+                  geojsonData?.features[0]?.properties?.lrf15nm
+                )
+
+                // Calculate coords of centre of polygon to display the map properly
+                const polygonCentre = centroid(
+                  geojsonData.features[0]?.geometry
+                )
+
+                const formattArea = (area) => {
+                  return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+                }
+                const shapeArea = formattArea(
+                  Math.round(geojsonData.features[0]?.properties?.Shape_Area)
+                )
+                dispatch(
+                  setCurrentLocationCoordinates({
+                    latitude: polygonCentre.geometry.coordinates[1],
+                    longitude: polygonCentre.geometry.coordinates[0]
+                  })
+                )
+                // console.log('geojsondata: ', geojsonData)
+                dispatch(setCurrentLocationGeometry(geojsonData.features[0]))
+                dispatch(setCurrentLocationName(geojsonData.fileName))
+
+                const newLocation = store.getState().session.currentLocation
+                // console.log('newLocation: ', newLocation)
+
+                if (inEngland && !existingLocation) {
+                  navigate(
+                    orgManageLocationsUrls.add.confirmLocationsWithShapefile,
+                    {
+                      state: { shapeArea }
+                    }
+                  )
+                } else if (inEngland && existingLocation) {
+                  navigate(
+                    orgManageLocationsUrls.add.duplicateLocationComparisonPage,
+                    {
+                      state: {
+                        existingLocation,
+                        newLocation: geoSafeToWebLocation(newLocation),
+                        numDuplicates: 1
+                      }
+                    }
+                  )
+                } else {
+                  // Not in England
+                }
               }
             }
           }
@@ -236,7 +320,6 @@ export default function UploadFileLayout ({
 
   return (
     <>
-
       {!uploading && <BackLink onClick={() => navigate(-1)} />}
 
       <main className='govuk-main-wrapper govuk-!-width-two-thirds'>
@@ -261,7 +344,10 @@ export default function UploadFileLayout ({
                   <h1 className='govuk-heading-l'>Upload file</h1>
                   <div
                     className={
-                    errorFileSize || errorFileType || csvErrors.length > 0 || errorShapefile.length > 0
+                    errorFileSize ||
+                    errorFileType ||
+                    csvErrors.length > 0 ||
+                    errorShapefile.length > 0
                       ? 'govuk-form-group govuk-form-group--error'
                       : 'govuk-form-group'
                   }
@@ -298,9 +384,9 @@ export default function UploadFileLayout ({
                       onChange={setValidSelectedFile}
                     />
                   </div>
-                  {csvErrors.map((error, index) => (
+                  {csvErrors.map((error, index) =>
                     csvErrorText(error, index, templateUrl)
-                  ))}
+                  )}
                   <Button
                     text='Upload file'
                     className='govuk-button govuk-!-margin-top-4'

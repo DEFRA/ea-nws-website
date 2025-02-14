@@ -5,7 +5,11 @@ import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
 import Radio from '../../../../common/components/gov-uk/Radio'
-import { clearCurrentLocation } from '../../../../common/redux/userSlice'
+import LocationDataType from '../../../../common/enums/LocationDataType'
+import {
+  clearCurrentLocation,
+  setCurrentLocationDataType
+} from '../../../../common/redux/userSlice'
 import { orgManageLocationsUrls } from '../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function AddLocationOptionsPage () {
@@ -40,15 +44,19 @@ export default function AddLocationOptionsPage () {
       switch (addLocationType) {
         case addLocationOptions[0].value:
           navigate(orgManageLocationsUrls.add.addressInfo)
+          dispatch(setCurrentLocationDataType(LocationDataType.X_AND_Y_COORDS))
           break
         case addLocationOptions[1].value:
           navigate(orgManageLocationsUrls.add.addLocationsWithShapefile)
+          dispatch(setCurrentLocationDataType(LocationDataType.SHAPE_POLYGON))
           break
         case addLocationOptions[2].value:
           navigate(orgManageLocationsUrls.add.name)
+          dispatch(setCurrentLocationDataType(LocationDataType.X_AND_Y_COORDS))
           break
         case addLocationOptions[3].value:
           navigate(orgManageLocationsUrls.add.predefinedBoundary.select)
+          dispatch(setCurrentLocationDataType(LocationDataType.BOUNDARY))
           break
       }
     }
@@ -56,7 +64,6 @@ export default function AddLocationOptionsPage () {
 
   return (
     <>
-
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

@@ -16,7 +16,9 @@ export default function NotesLayout ({
   keywordType,
   instructionText,
   buttonText = 'Continue',
-  onSubmit
+  onSubmit,
+  error,
+  setError
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -26,7 +28,6 @@ export default function NotesLayout ({
       : state.session.orgCurrentContact.comments
   )
   const [notes, setNotes] = useState(currentNotes || '')
-  const [error, setError] = useState('')
   const charLimit = 500
 
   useEffect(() => {
@@ -39,17 +40,16 @@ export default function NotesLayout ({
 
   const handleSubmit = async () => {
     if (error) return
-    if (notes) {
-      switch (keywordType) {
-        case 'location':
-          dispatch(setCurrentLocationNotes(notes))
-          break
-        case 'contact':
-          dispatch(setOrgCurrentContactNotes(notes))
-          break
-        default:
-          break
-      }
+
+    switch (keywordType) {
+      case 'location':
+        dispatch(setCurrentLocationNotes(notes))
+        break
+      case 'contact':
+        dispatch(setOrgCurrentContactNotes(notes))
+        break
+      default:
+        break
     }
     if (onSubmit) {
       await onSubmit()
@@ -65,7 +65,6 @@ export default function NotesLayout ({
 
   return (
     <>
-
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>

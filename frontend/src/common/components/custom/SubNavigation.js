@@ -1,12 +1,13 @@
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import '../../css/custom.css'
 
 export default function SubNavigation ({ pages, currentPage, type }) {
   const session = useSelector((state) => state.session)
   const authToken = session.authToken
   const [menuOpen, setMenuOpen] = useState(false)
+  const location = useLocation()
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen)
@@ -23,7 +24,7 @@ export default function SubNavigation ({ pages, currentPage, type }) {
           </li>
 
           {
-            authToken !== null &&
+            (authToken !== null && !location.pathname.includes('sign-up')) &&
           pages.map((page, index) => (
             <li key={index} className='sub-navigation__item'>
               <Link
@@ -69,14 +70,13 @@ export default function SubNavigation ({ pages, currentPage, type }) {
               Get flood warnings
             </a>
           </li>
-          {authToken !== null &&
+          {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration')) &&
             <li className='sub-navigation__item'>
               <button onClick={() => toggleMenu()} className='sub-navigation__menu'>
                 Menu {menuOpen ? '\u{25B2}' : '\u{25BC}'}
               </button>
             </li>}
-
-          {authToken !== null &&
+          {(authToken !== null && !location.pathname.includes('signup') && !location.pathname.includes('declaration')) &&
           pages.map((page, index) => (
             <li key={index} className={`sub-navigation__item ${!menuOpen && 'closed'}`}>
               <Link

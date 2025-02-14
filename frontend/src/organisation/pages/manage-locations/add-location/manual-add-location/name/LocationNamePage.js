@@ -5,20 +5,28 @@ import BackLink from '../../../../../../common/components/custom/BackLink'
 import Button from '../../../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../../../../common/components/gov-uk/Input'
-import { setCurrentLocationName } from '../../../../../../common/redux/userSlice'
-import { locationNameValidation } from '../../../../../../common/services/validations/LocationNameValidation'
-import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
+import {
+  setCurrentLocationDataType,
+  setCurrentLocationName
+} from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
+import { locationNameValidation } from '../../../../../../common/services/validations/LocationNameValidation'
+import {
+  orgManageLocationsUrls,
+  urlManageOrgAddLocations
+} from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationNamePage () {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const [name, setName] = useState('')
   const [error, setError] = useState('')
+
   const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
 
   const locationNameUsedBefore = async (locationName) => {
-    const dataToSend = { authToken, locationName }
+    const dataToSend = { orgId, authToken, locationName }
     const { errorMessage } = await backendCall(
       dataToSend,
       'api/locations/check_duplicate',
@@ -43,11 +51,12 @@ export default function LocationNamePage () {
     } else {
       const duplicateFound = await locationNameUsedBefore(locationName)
       if (error === '') {
+        dispatch(setCurrentLocationName(locationName))
+        dispatch(setCurrentLocationDataType('xycoords'))
+
         if (duplicateFound) {
-          dispatch(setCurrentLocationName(locationName))
           navigate(orgManageLocationsUrls.add.error.alreadyExists)
         } else {
-          dispatch(setCurrentLocationName(locationName))
           navigate(orgManageLocationsUrls.add.search.searchOption)
         }
       }
@@ -56,12 +65,11 @@ export default function LocationNamePage () {
 
   const navigateBack = (event) => {
     event.preventDefault()
-    navigate(-1)
+    navigate(urlManageOrgAddLocations)
   }
 
   return (
     <>
-
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>

@@ -15,7 +15,6 @@ import { csvToJson } from '../../../../common/services/CsvToJson'
 import {
   getLocationOtherAdditional,
   getRegistrationParams,
-  removeLocation,
   updateLocationsAlertTypes
 } from '../../../../common/services/ProfileServices'
 import { getSurroundingFloodAreas } from '../../../../common/services/WfsFloodDataService'
@@ -110,7 +109,7 @@ export default function ViewLocationPage () {
       const oneYearAgo = moment().subtract(1, 'years')
       if (alertArea) {
         const taCodes = alertArea.features.map((el) => {
-          return el.properties.FWS_TACODE
+          return el.properties.TA_CODE
         })
 
         const filteredAlert = floodHistoryData
@@ -126,7 +125,7 @@ export default function ViewLocationPage () {
 
       if (warningArea) {
         const taCodes = warningArea.features.map((el) => {
-          return el.properties.FWS_TACODE
+          return el.properties.TA_CODE
         })
 
         const filteredWarning = floodHistoryData
@@ -170,28 +169,13 @@ export default function ViewLocationPage () {
   }, [alertArea, warningArea])
 
   const deleteLocation = async () => {
-    const data = {
-      authToken,
-      locationId: selectedLocation.id,
-      partnerId
-    }
-
-    const { errorMessage } = await backendCall(
-      data,
-      'api/partner/unregister_location_from_partner',
-      navigate
-    )
-
-    if (!errorMessage) {
-      const updatedProfile = removeLocation(profile, selectedLocation.address)
-      dispatch(setProfile(updatedProfile))
-
-      await updateGeosafeProfile(updatedProfile)
-
-      navigate('/manage-locations/remove', {
-        state: { name: selectedLocation.address }
-      })
-    }
+    navigate('/manage-locations/remove', {
+      state: {
+        name: selectedLocation.address,
+        locationId: selectedLocation.id,
+        partnerId
+      }
+    })
   }
 
   const handleOptionalAlertSave = async (e) => {

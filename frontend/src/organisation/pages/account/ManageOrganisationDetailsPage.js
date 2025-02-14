@@ -10,7 +10,7 @@ export default function ManageOrganisationDetailsPage () {
 
   useEffect(() => {
     dispatch(setSigninType('org'))
-  })
+  }, [])
 
   const email = 'getfloodwarnings@environment-agency.gov.uk'
 

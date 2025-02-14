@@ -46,13 +46,13 @@ export default function ValidateEmailLayout ({
   }, [error])
 
   const handleSubmit = async () => {
-    const validationError = authCodeValidation(code)
+    const { error: validationError, code: formattedCode } = authCodeValidation(code)
     setError(validationError)
 
     if (validationError === '') {
       const dataToSend = {
         orgRegisterToken: registerToken,
-        code
+        code: formattedCode
       }
 
       const { data, errorMessage } = await backendCall(

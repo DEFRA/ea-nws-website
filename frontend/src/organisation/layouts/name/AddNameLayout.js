@@ -17,7 +17,7 @@ export default function AddNameLayout ({
   const [error, setError] = useState('')
   useEffect(() => {
     dispatch(setSigninType('org'))
-  })
+  }, [])
 
   const handleSubmit = () => {
     const validationError = orgNameValidation(name)

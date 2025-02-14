@@ -8,7 +8,10 @@ import NotificationBanner from '../../../../../../common/components/gov-uk/Notif
 import Radio from '../../../../../../common/components/gov-uk/Radio'
 import WarningText from '../../../../../../common/components/gov-uk/WarningText'
 import { backendCall } from '../../../../../../common/services/BackendService'
-import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
+import {
+  geoSafeToWebLocation,
+  webToGeoSafeLocation
+} from '../../../../../../common/services/formatters/LocationFormatter'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function DuplicateLocationsOptionsPage () {
@@ -22,6 +25,13 @@ export default function DuplicateLocationsOptionsPage () {
   const [dupLocations, setDupLocations] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
 
+  const notFoundLocations = useSelector(
+    (state) => state.session.notFoundLocations
+  )
+  const notInEnglandLocations = useSelector(
+    (state) => state.session.notInEnglandLocations
+  )
+
   useEffect(() => {
     const getDupLocations = async () => {
       const dataToSend = { orgId }
@@ -32,7 +42,10 @@ export default function DuplicateLocationsOptionsPage () {
       )
       const locations = []
       if (data) {
-        const duplicates = data.filter((location) => location.error.includes('duplicate') && location.error.length === 1)
+        const duplicates = data.filter(
+          (location) =>
+            location.error.includes('duplicate') && location.error.length === 1
+        )
         duplicates.forEach((location) => {
           locations.push(geoSafeToWebLocation(location))
         })
@@ -83,56 +96,76 @@ export default function DuplicateLocationsOptionsPage () {
     setError('')
   }, [option])
 
+  // Navigate to next page
+  const navigateToNextPage = (url, message) => {
+    navigate(url, {
+      state: { text: message }
+    })
+  }
+
   const handleSubmit = async () => {
     if (!option) {
       setError('Select what you want to do with the duplicate locations')
     } else {
+      const url =
+        notFoundLocations > 0
+          ? orgManageLocationsUrls.unmatchedLocations.notFound.dashboard
+          : notInEnglandLocations > 0
+            ? orgManageLocationsUrls.unmatchedLocations.notFound.dashboard
+            : orgManageLocationsUrls.view.dashboard // change to link contacts
+
       switch (option) {
         case options[0].value: {
-          await Promise.all(dupLocations.map(async (location) => {
-            const locationIdToRemove = location.id
-            await backendCall(
-              { orgId, locationId: locationIdToRemove },
-              'api/bulk_uploads/remove_invalid_location',
-              navigate
-            )
-          }))
-          // change to link contacts
-          navigate(orgManageLocationsUrls.view.dashboard,
-            {
-              state:
-          { text: `${dupLocations.length} existing locations kept` }
+          await Promise.all(
+            dupLocations.map(async (location) => {
+              const locationIdToRemove = location.id
+              await backendCall(
+                { orgId, locationId: locationIdToRemove },
+                'api/bulk_uploads/remove_invalid_location',
+                navigate
+              )
             })
+          )
+
+          navigateToNextPage(
+            url,
+            `${dupLocations.length} existing locations kept`
+          )
           break
         }
         case options[1].value: {
-          await Promise.all(dupLocations.map(async (location) => {
-            // get the exisitng location to use it's ID
-            const existingLocation = await getLocation(orgId, location.additionals.locationName, 'valid')
-            const locationToUpdate = webToGeoSafeLocation(location)
-            // change the location ID to the existing ID in geosafe
-            locationToUpdate.id = existingLocation.id
-            // Update exisiting location in geosafe with new location
-            const dataToSend = { authToken, orgId, location: locationToUpdate }
-            await backendCall(
-              dataToSend,
-              'api/location/update',
-              navigate
-            )
-            // remove location from invalid array
-            const locationIdToRemove = location.id
-            await backendCall(
-              { orgId, locationId: locationIdToRemove },
-              'api/bulk_uploads/remove_invalid_location',
-              navigate
-            )
-          }))
-          // change to link contacts
-          navigate(orgManageLocationsUrls.view.dashboard,
-            {
-              state:
-          { text: `${dupLocations.length} existing locations replaced` }
+          await Promise.all(
+            dupLocations.map(async (location) => {
+              // get the exisitng location to use it's ID
+              const existingLocation = await getLocation(
+                orgId,
+                location.additionals.locationName,
+                'valid'
+              )
+              const locationToUpdate = webToGeoSafeLocation(location)
+              // change the location ID to the existing ID in geosafe
+              locationToUpdate.id = existingLocation.id
+              // Update exisiting location in geosafe with new location
+              const dataToSend = {
+                authToken,
+                orgId,
+                location: locationToUpdate
+              }
+              await backendCall(dataToSend, 'api/location/update', navigate)
+              // remove location from invalid array
+              const locationIdToRemove = location.id
+              await backendCall(
+                { orgId, locationId: locationIdToRemove },
+                'api/bulk_uploads/remove_invalid_location',
+                navigate
+              )
             })
+          )
+
+          navigateToNextPage(
+            url,
+            `${dupLocations.length} existing locations replaced`
+          )
           break
         }
         case options[2].value: {
@@ -160,8 +193,8 @@ export default function DuplicateLocationsOptionsPage () {
           <div className='govuk-grid-column-one-half'>
             {error && <ErrorSummary errorList={[error]} />}
             <h1 className='govuk-heading-l'>
-              {duplicateLocations} locations already exist with the same
-              name in this account
+              {duplicateLocations} locations already exist with the same name in
+              this account
             </h1>
             <div
               className={

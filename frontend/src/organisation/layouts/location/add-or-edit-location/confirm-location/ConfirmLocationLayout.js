@@ -14,6 +14,7 @@ import {
   setNotInEnglandLocations
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
+import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
 import FloodWarningKey from '../../../../components/custom/FloodWarningKey'
 import Map from '../../../../components/custom/Map'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
@@ -59,8 +60,43 @@ export default function ConfirmLocationLayout ({
 
   const shapeArea = location.state?.shapeArea
 
+  const checkDuplicateLocation = async () => {
+    const dataToSend = {
+      orgId,
+      locationName,
+      type: 'valid'
+    }
+    const { data } = await backendCall(
+      dataToSend,
+      'api/locations/search',
+      navigate
+    )
+
+    if (data) {
+      return data[0]
+    } else {
+      return null
+    }
+  }
+
   // Switch case to change the button/link logic depending on the location type
   const handleSubmit = async () => {
+    const duplicateLocation = await checkDuplicateLocation()
+
+    // Check for duplicates
+    if (duplicateLocation) {
+      navigate(orgManageLocationsUrls.add.duplicateLocationComparisonPage, {
+        state: {
+          existingLocation: geoSafeToWebLocation(duplicateLocation),
+          newLocation: geoSafeToWebLocation(currentLocation),
+          numDuplicates: 1,
+          flow
+        }
+      })
+
+      return
+    }
+
     const dataToSend = { authToken, orgId, location: currentLocation }
     const { data, errorMessage } = await backendCall(
       dataToSend,

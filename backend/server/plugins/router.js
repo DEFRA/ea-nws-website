@@ -1,5 +1,4 @@
 const routes = [].concat(
-  require('../routes/public'),
   require('../routes/sign_in/signin_start'),
   require('../routes/sign_in/signin_validate'),
   require('../routes/sign_up/signup_start'),
@@ -50,11 +49,13 @@ const routes = [].concat(
   require('../routes/organization/create_contacts'),
   require('../routes/organization/update_contact'),
   require('../routes/organization/remove_contacts'),
-  require('../routes/gov_uk_notify/sign_up_complete'),
-  require('../routes/gov_uk_notify/account_confirm_deletion'),
+  require('../routes/gov_uk_notify/citizen/sign_up_complete'),
+  require('../routes/gov_uk_notify/citizen/account_confirm_deletion'),
   require('../routes/service/get_service_phase'),
   require('../routes/service/get_partner_id'),
-  require('../routes/values/gtm')
+  require('../routes/values/gtm'),
+  require('../routes/gov_uk_notify/organisation/account_pending_ea_admin'),
+  require('../routes/gov_uk_notify/organisation/account_pending_org_admin')
 )
 
 module.exports = {

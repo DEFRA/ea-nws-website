@@ -250,7 +250,7 @@ const userSlice = createSlice({
       state.currentContact = action.payload
     },
     addContactPreference: (state, action) => {
-      state.contactPreferences = action.payload
+      state.contactPreferences.push(action.payload)
     },
     setSigninType: (state, action) => {
       state.signinType = action.payload

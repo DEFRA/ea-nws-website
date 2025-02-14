@@ -1,10 +1,70 @@
 import { Link, useNavigate } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import BackLink from '../../../../common/components/custom/BackLink'
 import ConfirmationPanel from '../../../../common/components/gov-uk/Panel'
+import { backendCall } from '../../../../common/services/BackendService'
+import { useEffect } from 'react'
 
 export default function SignUpSuccessPage () {
   // need to check for authToken
   const navigate = useNavigate()
+  const profile = useSelector((state) => state.session.profile)
+  const organization = useSelector((state) => state.session.organization)
+  const organizationAdditionals = JSON.parse(organization.description)
+  const responderValue = organizationAdditionals.emergencySector ? 'yes' : 'no'
+  const jobTitle = organizationAdditionals.alternativeContact.jobTitle.trim() || '-'
+  const compHouseNum = organizationAdditionals.compHouseNum ?? '-'
+
+  async function notifySignUpSuccessEa () {
+    const submissionDateTime = new Date().toLocaleString('en-GB', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      hour: 'numeric',
+      minute: '2-digit',
+      hour12: true
+    }).replace('AM', 'am').replace('PM', 'pm')
+
+    const dataToSend = {
+      email: profile.emails[0],
+      refNumber: organization.id,
+      orgName: organizationAdditionals.name,
+      address: organizationAdditionals.address,
+      companyHouseNumber: compHouseNum,
+      responder: responderValue,
+      fullName: profile.firstname + ' ' + profile.lastname,
+      alternativeContactFullName: organizationAdditionals.alternativeContact.firstName + ' ' + organizationAdditionals.alternativeContact.lastName,
+      alternativeContactEmail: organizationAdditionals.alternativeContact.email,
+      alternativeContactTelephone: organizationAdditionals.alternativeContact.telephone,
+      alternativeContactJob: jobTitle,
+      submissionDateTime
+    }
+    await backendCall(dataToSend, 'api/notify/account_pending_ea', navigate)
+  }
+
+  async function notifySignUpSuccessOrg () {
+    const dataToSend = {
+      // ToDo change the eaEmail to their email once confirmed
+      email: profile.emails[0],
+      refNumber: organization.id,
+      orgName: organizationAdditionals.name,
+      address: organizationAdditionals.address,
+      companyHouseNumber: compHouseNum,
+      responder: responderValue,
+      fullName: profile.firstname + ' ' + profile.lastname,
+      alternativeContactFullName: organizationAdditionals.alternativeContact.firstName + ' ' + organizationAdditionals.alternativeContact.lastName,
+      alternativeContactEmail: organizationAdditionals.alternativeContact.email,
+      alternativeContactTelephone: organizationAdditionals.alternativeContact.telephone,
+      alternativeContactJob: jobTitle,
+      eaEmail: 'exampleEA@email.com'
+    }
+    await backendCall(dataToSend, 'api/notify/account_pending_org', navigate)
+  }
+
+  useEffect(() => {
+    notifySignUpSuccessEa()
+    notifySignUpSuccessOrg()
+  }, [])
 
   return (
     <>

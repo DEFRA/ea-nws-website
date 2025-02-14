@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import Input from '../../../common/components/gov-uk/Input'
+import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import { setProfile } from '../../../common/redux/userSlice'
 import { addAccountName } from '../../../common/services/ProfileServices'
 import { fullNameValidation } from '../../../common/services/validations/FullNameValidation'
@@ -26,6 +27,7 @@ export default function AddAccountNameLayout ({
       ? `${session.profile.firstname} ${session.profile.lastname}`
       : ''
   )
+  const location = useLocation()
 
   const handleSubmit = async () => {
     const validationError = fullNameValidation(fullName)
@@ -57,6 +59,12 @@ export default function AddAccountNameLayout ({
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {error && <ErrorSummary errorList={[error]} />}
+            {location?.state?.banner && <NotificationBanner
+              className='govuk-notification-banner govuk-notification-banner--success'
+              title='Success'
+              heading={location?.state?.banner?.heading}
+              text={location?.state?.banner?.text}
+                                        />}
             <h2 className='govuk-heading-l'>
               {changeName ? 'Change your name' : 'Enter your name'}
             </h2>

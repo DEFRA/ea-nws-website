@@ -26,5 +26,5 @@ export default function SignOutManuallyPage () {
     dispatch(clearAuth())
   }, [])
 
-  return <SignOutLayout text={"You've signed out"} />
+  return <SignOutLayout text="You've signed out" />
 }

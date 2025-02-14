@@ -43,25 +43,7 @@ export default function ViewLocationsDashboardPage () {
   const [alertOnlyLocationsIds, setAlertOnlyLocationsIds] = useState([])
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
-  const [options, setOptions] = useState(
-    [
-      {
-        label: 'Severe flood warnings',
-        value: AlertType.SEVERE_FLOOD_WARNING,
-        sent: null
-      },
-      {
-        label: 'Flood warnings',
-        value: AlertType.FLOOD_WARNING,
-        sent: null
-      },
-      {
-        label: 'Flood alerts',
-        value: AlertType.FLOOD_ALERT,
-        sent: null
-      }
-    ]
-  )
+
   const [dialog, setDialog] = useState({
     show: false,
     text: '',
@@ -71,7 +53,7 @@ export default function ViewLocationsDashboardPage () {
     input: '',
     charLimit: 0,
     error: '',
-    options: null
+    options: []
   })
 
   const locationsPerPage = 20
@@ -341,7 +323,23 @@ export default function ViewLocationsDashboardPage () {
         buttonText: `Update message settings`,
         buttonClass: '',
         error:'',
-        options: options
+        options: [
+          {
+            label: 'Severe flood warnings',
+            value: AlertType.SEVERE_FLOOD_WARNING,
+            sent: null
+          },
+          {
+            label: 'Flood warnings',
+            value: AlertType.FLOOD_WARNING,
+            sent: null
+          },
+          {
+            label: 'Flood alerts',
+            value: AlertType.FLOOD_ALERT,
+            sent: null
+          }
+        ]
       })
     }
   }
@@ -436,10 +434,9 @@ export default function ViewLocationsDashboardPage () {
   }
 
   const editLocations = async (locationsToEdit) => {
-    const choosenAlerts = [options[0].sent?'ALERT_LVL_1':null, options[1].sent?'ALERT_LVL_2':null, options[2].sent?'ALERT_LVL_3':null].filter(message => message !== null)
+    const choosenAlerts = [dialog.options[0].sent?'ALERT_LVL_1':null, dialog.options[1].sent?'ALERT_LVL_2':null, dialog.options[2].sent?'ALERT_LVL_3':null].filter(message => message !== null)
     const updatedLocations = [...locationsToEdit]
     for(let i = 0; i < locationsToEdit.length; i++){
-      console.log("additionals: ",locationsToEdit[i].additionals.other)
       if(unavailableLocationsIds.includes(locationsToEdit[i])) continue
       if(!alertOnlyLocationsIds.includes(locationsToEdit[i].id)){
         updatedLocations[i].additionals = setLocationAlertTypeOrg(
@@ -462,6 +459,7 @@ export default function ViewLocationsDashboardPage () {
       'api/location/bulk_update',
       navigate
     )
+    console.log('Sent')
     if (data) {
       // need to dispatch updated??
     } else {
@@ -469,15 +467,15 @@ export default function ViewLocationsDashboardPage () {
     }
   }
 
-  const handleRadioChange = (index, isItOn) => {
-    setOptions(prevOptions => {
-      const updatedOptions = [...prevOptions]
-      updatedOptions[index] = {
-        ...updatedOptions[index],
+  const handleRadioChange = (index, isItOn) => {    
+    setDialog(prevDialog => {
+      const updatedDialog = {...prevDialog}
+      updatedDialog.options = [...prevDialog.options]
+      updatedDialog.options[index] = {
+        ...updatedDialog.options[index],
         sent: isItOn
       }
-      console.log("changed: ",updatedOptions)
-      return updatedOptions
+      return updatedDialog
     })
   }
 
@@ -540,7 +538,7 @@ export default function ViewLocationsDashboardPage () {
   }
 
   const validateInput = () => {     
-    return options.some(option => option.sent === null) ? 'There is a problem, select On or Off for each message type': ''
+    return dialog.options.some(option => option.sent === null) ? 'There is a problem, select On or Off for each message type': ''
   }
 
   const navigateBack = (event) => {

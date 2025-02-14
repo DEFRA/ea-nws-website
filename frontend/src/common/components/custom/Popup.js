@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import '../../css/custom.css'
 import Button from '../gov-uk/Button'
@@ -25,6 +25,7 @@ export default function Popup({
   onRadioChange,
   showCancel = true
 }) {
+
   const handleTextInputChange = (val) => {
     if (input) {
       setTextInput(val)
@@ -39,13 +40,6 @@ export default function Popup({
   const handleRadioChange = (index, isItOn) => {
     onRadioChange(index, isItOn)
   }
-
-  useEffect(() => {
-    if(options){
-      console.log(options)
-      RadioOptions(options)
-    }
-  }, [options])
 
   const handleSubmit = () => {
     if (!input && !options) { 
@@ -87,7 +81,7 @@ export default function Popup({
                 label='Off'
                 key={option.value + '_off'}
                 name={option.value + 'Radio'}
-                checked={!option.sent===false}
+                checked={option.sent===false}
                 onChange={() => handleRadioChange(index, false)}
               />
             </td>

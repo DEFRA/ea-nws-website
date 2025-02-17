@@ -1481,7 +1481,7 @@
 
 .org-flood-warning-key {
   display: flex;
-  gap: 2.5rem;
+  gap: 1.25rem 1.75rem;
   background-color: #f3f2f1;
   padding: 0.625rem;
   flex-wrap: wrap;

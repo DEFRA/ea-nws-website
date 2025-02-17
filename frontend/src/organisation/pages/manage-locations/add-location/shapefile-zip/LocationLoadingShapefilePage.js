@@ -95,7 +95,9 @@ export default function LocationLoadingShapefilePage () {
           }
         })
       } else {
-        // Not in England
+        navigate(orgManageLocationsUrls.add.error.shapefileNotInEngland, {
+          state: { shapeArea }
+        })
       }
     }
 

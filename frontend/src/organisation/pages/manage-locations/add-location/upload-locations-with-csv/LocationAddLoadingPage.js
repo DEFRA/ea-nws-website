@@ -118,7 +118,6 @@ export default function LocationAddLoadingPage () {
     }
   }, [])
 
-  // Only temporary to trigger file processing until scanning in AWS is implemented
   useEffect(() => {
     const startProcessing = async () => {
       const dataToSend = { Message: fileName }

@@ -153,7 +153,10 @@ export default function ConfirmLocationLayout ({
 
   const navigateBack = (event) => {
     event.preventDefault()
-    navigate(-1)
+    currentLocationDataType === LocationDataType.SHAPE_POLYGON ||
+    currentLocationDataType === LocationDataType.SHAPE_LINE
+      ? navigate(orgManageLocationsUrls.add.uploadLocationsWithShapefile)
+      : navigate(-1)
   }
 
   return (

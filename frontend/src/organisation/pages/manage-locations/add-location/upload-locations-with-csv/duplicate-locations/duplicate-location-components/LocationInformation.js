@@ -4,9 +4,17 @@ import Map from '../../../../../../components/custom/Map'
 
 export default function LocationInformation ({ location, comparedLocation }) {
   const additionalData = location?.additionals?.other
-  const formattedAddress = (additionalData?.full_address + ', ' + additionalData?.postcode)?.split(',')
+  const formattedAddress = (
+    additionalData?.full_address +
+    ', ' +
+    additionalData?.postcode
+  )?.split(',')
   const comparedAdditionalData = comparedLocation?.additionals?.other
-  const comparedFormattedAddress = (comparedAdditionalData?.full_address + ', ' + comparedAdditionalData?.postcode)?.split(',')
+  const comparedFormattedAddress = (
+    comparedAdditionalData?.full_address +
+    ', ' +
+    comparedAdditionalData?.postcode
+  )?.split(',')
 
   const compareStyle = {
     backgroundColor: '#D2E2F1',
@@ -14,14 +22,22 @@ export default function LocationInformation ({ location, comparedLocation }) {
     borderBottomColor: '#5694CA'
   }
 
-  const sectionClassName = 'govuk-!-padding-left-4 govuk-!-padding-right-4 govuk-!-margin-top-7'
-  const addressAdded = comparedLocation && comparedAdditionalData?.full_address === ''
-  const locationNameAdded = comparedLocation && comparedLocation?.additionals?.locationName === null
-  const internalReferenceAdded = comparedLocation && comparedAdditionalData?.internal_reference === ''
-  const businessCriticalityAdded = comparedLocation && comparedAdditionalData?.business_criticality === ''
-  const locationTypeAdded = comparedLocation && comparedAdditionalData?.location_type === ''
-  const keywordsAdded = comparedLocation && comparedLocation?.additionals?.keywords?.length === 0
-  const actionPlanAdded = comparedLocation && comparedAdditionalData?.action_plan?.length === 0
+  const sectionClassName =
+    'govuk-!-padding-left-4 govuk-!-padding-right-4 govuk-!-margin-top-7'
+  const addressAdded =
+    comparedLocation && comparedAdditionalData?.full_address === ''
+  const locationNameAdded =
+    comparedLocation && comparedLocation?.additionals?.locationName === null
+  const internalReferenceAdded =
+    comparedLocation && comparedAdditionalData?.internal_reference === ''
+  const businessCriticalityAdded =
+    comparedLocation && comparedAdditionalData?.business_criticality === ''
+  const locationTypeAdded =
+    comparedLocation && comparedAdditionalData?.location_type === ''
+  const keywordsAdded =
+    comparedLocation && comparedLocation?.additionals?.keywords?.length === 0
+  const actionPlanAdded =
+    comparedLocation && comparedAdditionalData?.action_plan?.length === 0
   const notesAdded = comparedLocation && comparedAdditionalData?.notes === ''
 
   const LocationHeader = () => {
@@ -38,6 +54,16 @@ export default function LocationInformation ({ location, comparedLocation }) {
     }
   }
 
+  const getShapePolygonArea = () => {
+    const formattArea = (area) => {
+      return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    }
+    const shapeArea = formattArea(
+      Math.round(location.geometry.properties?.Shape_Area)
+    )
+    return shapeArea
+  }
+
   const LocationData = () => {
     switch (additionalData?.location_data_type) {
       case LocationDataType.ADDRESS:
@@ -51,7 +77,7 @@ export default function LocationInformation ({ location, comparedLocation }) {
         )
       case LocationDataType.SHAPE_POLYGON:
         // code to return shape area
-        return <>2 square km (dummy data)</>
+        return <>{getShapePolygonArea()} square metres</>
       case LocationDataType.SHAPE_LINE:
         // code to return length of line
         return <>0.5km (dummy data)</>
@@ -62,15 +88,36 @@ export default function LocationInformation ({ location, comparedLocation }) {
   }
 
   const locationDetails = (
-    <div style={(comparedLocation && comparedAdditionalData?.full_address === null) ? compareStyle : {}}>
-      <div className={additionalData?.full_address ? sectionClassName : 'govuk-!-padding-left-4 govuk-!-padding-right-4'}>
+    <div
+      style={
+        comparedLocation && comparedAdditionalData?.full_address === null
+          ? compareStyle
+          : {}
+      }
+    >
+      <div
+        className={
+          additionalData?.full_address
+            ? sectionClassName
+            : 'govuk-!-padding-left-4 govuk-!-padding-right-4'
+        }
+      >
         <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
           Location
         </h2>
-        <hr style={{ height: '2px', color: '#000', opacity: '1' }} className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+        <hr
+          style={{ height: '2px', color: '#000', opacity: '1' }}
+          className='govuk-!-margin-top-1 govuk-!-margin-bottom-3'
+        />
         <h3
           className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-top-1 govuk-!-margin-bottom-0'
-          style={(comparedLocation && comparedAdditionalData?.location_data_type !== additionalData?.location_data_type) ? compareStyle : {}}
+          style={
+            comparedLocation &&
+            comparedAdditionalData?.location_data_type !==
+              additionalData?.location_data_type
+              ? compareStyle
+              : {}
+          }
         >
           {LocationHeader()}
         </h3>
@@ -84,7 +131,11 @@ export default function LocationInformation ({ location, comparedLocation }) {
       <main className='govuk-body'>
         {/* map */}
         <div>
-          <Map showMapControls={false} zoomLevel={14} manualCoords={location.coordinates} />
+          <Map
+            showMapControls={false}
+            zoomLevel={14}
+            manualCoords={location.coordinates}
+          />
           <div>
             <FloodWarningKey type='both' />
           </div>
@@ -100,15 +151,31 @@ export default function LocationInformation ({ location, comparedLocation }) {
         <div>
           {/* Address details */}
           {additionalData?.full_address && (
-            <div className='govuk-!-padding-left-4 govuk-!-padding-right-4' style={addressAdded ? compareStyle : {}}>
+            <div
+              className='govuk-!-padding-left-4 govuk-!-padding-right-4'
+              style={addressAdded ? compareStyle : {}}
+            >
               <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
                 Address
               </h2>
-              <hr style={{ height: '2px', color: '#000', opacity: '1' }} className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
+              <hr
+                style={{ height: '2px', color: '#000', opacity: '1' }}
+                className='govuk-!-margin-top-1 govuk-!-margin-bottom-3'
+              />
               <p>
                 {formattedAddress.map((line, index) => {
                   return (
-                    <span key={index} style={(!addressAdded && comparedLocation && comparedFormattedAddress[index] !== formattedAddress[index]) ? compareStyle : {}}>
+                    <span
+                      key={index}
+                      style={
+                        !addressAdded &&
+                        comparedLocation &&
+                        comparedFormattedAddress[index] !==
+                          formattedAddress[index]
+                          ? compareStyle
+                          : {}
+                      }
+                    >
                       {line}
                       <br />
                     </span>
@@ -120,84 +187,181 @@ export default function LocationInformation ({ location, comparedLocation }) {
           {/* Location details */}
           {locationDetails}
           {/* Key Information details */}
-          {additionalData?.location_data_type !==
-              LocationDataType.BOUNDARY && (
-                <div className={sectionClassName}>
-                  <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
-                    Key Information
-                  </h2>
-                  <hr style={{ height: '2px', color: '#000', opacity: '1' }} className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-                  <div style={locationNameAdded ? compareStyle : {}}>
-                    <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                      Location name
-                    </h3>
-                    <p style={!locationNameAdded && comparedLocation && comparedLocation?.additionals?.locationName !== location?.additionals?.locationName ? compareStyle : {}}>{location?.additionals?.locationName}</p>
-                  </div>
-                  {additionalData?.internal_reference && (
-                    <div style={internalReferenceAdded ? compareStyle : {}}>
-                      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                        Internal reference
-                      </h3>
-                      <p style={(!internalReferenceAdded && comparedLocation && comparedAdditionalData?.internal_reference !== additionalData?.internal_reference) ? compareStyle : {}}>
-                        {additionalData?.internal_reference}
-                      </p>
-                    </div>
-                  )}
-                  {additionalData?.business_criticality && (
-                    <div style={businessCriticalityAdded ? compareStyle : {}}>
-                      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                        Business criticality
-                      </h3>
-                      <p style={(!businessCriticalityAdded && comparedLocation && comparedAdditionalData?.business_criticality !== additionalData?.business_criticality) ? compareStyle : {}}>
-                        {additionalData?.business_criticality}
-                      </p>
-                    </div>
-                  )}
-                  {additionalData?.location_type && (
-                    <div style={locationTypeAdded ? compareStyle : {}}>
-                      <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
-                        Location type
-                      </h3>
-                      <p style={(!locationTypeAdded && comparedLocation && comparedAdditionalData?.location_type !== additionalData?.location_type) ? compareStyle : {}}>
-                        {additionalData?.location_type}
-                      </p>
-                    </div>
-                  )}
+          {additionalData?.location_data_type !== LocationDataType.BOUNDARY && (
+            <div className={sectionClassName}>
+              <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
+                Key Information
+              </h2>
+              <hr
+                style={{ height: '2px', color: '#000', opacity: '1' }}
+                className='govuk-!-margin-top-1 govuk-!-margin-bottom-3'
+              />
+              <div style={locationNameAdded ? compareStyle : {}}>
+                <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                  Location name
+                </h3>
+                <p
+                  style={
+                    !locationNameAdded &&
+                    comparedLocation &&
+                    comparedLocation?.additionals?.locationName !==
+                      location?.additionals?.locationName
+                      ? compareStyle
+                      : {}
+                  }
+                >
+                  {location?.additionals?.locationName}
+                </p>
+              </div>
+              {additionalData?.internal_reference && (
+                <div style={internalReferenceAdded ? compareStyle : {}}>
+                  <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                    Internal reference
+                  </h3>
+                  <p
+                    style={
+                      !internalReferenceAdded &&
+                      comparedLocation &&
+                      comparedAdditionalData?.internal_reference !==
+                        additionalData?.internal_reference
+                        ? compareStyle
+                        : {}
+                    }
+                  >
+                    {additionalData?.internal_reference}
+                  </p>
                 </div>
+              )}
+              {additionalData?.business_criticality && (
+                <div style={businessCriticalityAdded ? compareStyle : {}}>
+                  <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                    Business criticality
+                  </h3>
+                  <p
+                    style={
+                      !businessCriticalityAdded &&
+                      comparedLocation &&
+                      comparedAdditionalData?.business_criticality !==
+                        additionalData?.business_criticality
+                        ? compareStyle
+                        : {}
+                    }
+                  >
+                    {additionalData?.business_criticality}
+                  </p>
+                </div>
+              )}
+              {additionalData?.location_type && (
+                <div style={locationTypeAdded ? compareStyle : {}}>
+                  <h3 className='govuk-heading-s govuk-!-font-size-16 govuk-!-margin-bottom-0'>
+                    Location type
+                  </h3>
+                  <p
+                    style={
+                      !locationTypeAdded &&
+                      comparedLocation &&
+                      comparedAdditionalData?.location_type !==
+                        additionalData?.location_type
+                        ? compareStyle
+                        : {}
+                    }
+                  >
+                    {additionalData?.location_type}
+                  </p>
+                </div>
+              )}
+            </div>
           )}
 
           {/* Keywords details */}
           {location?.additionals?.keywords && (
-            <div className={sectionClassName} style={keywordsAdded ? compareStyle : {}}>
+            <div
+              className={sectionClassName}
+              style={keywordsAdded ? compareStyle : {}}
+            >
               <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
                 Keywords
               </h2>
-              <hr style={{ height: '2px', color: '#000', opacity: '1' }} className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-              {location?.additionals?.keywords.map((keyword, index, keywords) => {
-                return <span key={index} style={(!keywordsAdded && comparedLocation && !comparedLocation?.additionals?.keywords?.includes(keyword)) ? compareStyle : {}}>{keyword}{index + 1 === keywords.length ? '' : ', '}</span>
-              })}
+              <hr
+                style={{ height: '2px', color: '#000', opacity: '1' }}
+                className='govuk-!-margin-top-1 govuk-!-margin-bottom-3'
+              />
+              {location?.additionals?.keywords.map(
+                (keyword, index, keywords) => {
+                  return (
+                    <span
+                      key={index}
+                      style={
+                        !keywordsAdded &&
+                        comparedLocation &&
+                        !comparedLocation?.additionals?.keywords?.includes(
+                          keyword
+                        )
+                          ? compareStyle
+                          : {}
+                      }
+                    >
+                      {keyword}
+                      {index + 1 === keywords.length ? '' : ', '}
+                    </span>
+                  )
+                }
+              )}
             </div>
           )}
 
           {/* Action plan details */}
           {additionalData?.action_plan && (
-            <div className={sectionClassName} style={actionPlanAdded ? compareStyle : {}}>
+            <div
+              className={sectionClassName}
+              style={actionPlanAdded ? compareStyle : {}}
+            >
               <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
                 Action Plan
               </h2>
-              <hr style={{ height: '2px', color: '#000', opacity: '1' }} className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-              <p style={(!actionPlanAdded && comparedLocation && comparedAdditionalData?.action_plan !== additionalData?.action_plan) ? compareStyle : {}}>{additionalData?.action_plan}</p>
+              <hr
+                style={{ height: '2px', color: '#000', opacity: '1' }}
+                className='govuk-!-margin-top-1 govuk-!-margin-bottom-3'
+              />
+              <p
+                style={
+                  !actionPlanAdded &&
+                  comparedLocation &&
+                  comparedAdditionalData?.action_plan !==
+                    additionalData?.action_plan
+                    ? compareStyle
+                    : {}
+                }
+              >
+                {additionalData?.action_plan}
+              </p>
             </div>
           )}
 
           {/* Notes details */}
           {additionalData?.notes && (
-            <div className={sectionClassName} style={notesAdded ? compareStyle : {}}>
+            <div
+              className={sectionClassName}
+              style={notesAdded ? compareStyle : {}}
+            >
               <h2 className='govuk-heading-m govuk-!-margin-bottom-0 govuk-!-margin-top-3 govuk-!-display-inline-block'>
                 Notes
               </h2>
-              <hr style={{ height: '2px', color: '#000', opacity: '1' }} className='govuk-!-margin-top-1 govuk-!-margin-bottom-3' />
-              <p style={(!notesAdded && comparedLocation && comparedAdditionalData?.notes !== additionalData?.notes) ? compareStyle : {}}>{additionalData?.notes}</p>
+              <hr
+                style={{ height: '2px', color: '#000', opacity: '1' }}
+                className='govuk-!-margin-top-1 govuk-!-margin-bottom-3'
+              />
+              <p
+                style={
+                  !notesAdded &&
+                  comparedLocation &&
+                  comparedAdditionalData?.notes !== additionalData?.notes
+                    ? compareStyle
+                    : {}
+                }
+              >
+                {additionalData?.notes}
+              </p>
             </div>
           )}
         </div>

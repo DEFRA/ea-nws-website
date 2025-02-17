@@ -21,7 +21,7 @@ module.exports = [
           }
           const templateId = await getSecretKeyValue(
             'nws/notify/templates',
-            'signUpComplete'
+            'signupComplete'
           )
 
           sendEmailNotification(templateId, email, personalisation)

@@ -39,6 +39,7 @@ export default function Popup({
 
   const handleRadioChange = (index, isItOn) => {
     onRadioChange(index, isItOn)
+    setError('')
   }
 
   const handleSubmit = () => {

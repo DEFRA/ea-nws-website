@@ -278,12 +278,7 @@ export default function ViewLocationsDashboardPage () {
         location.coordinates.latitude,
         location.coordinates.longitude
       )
-      if(!warningArea && !alertArea){
-        setUnavailableLocationsIds((prevState) => {
-          return [...prevState, location.id]
-        })
-        continue
-      }
+
       const isInAlertArea =
         alertArea &&
         isLocationInFloodArea(
@@ -291,19 +286,22 @@ export default function ViewLocationsDashboardPage () {
           location.coordinates.longitude,
           alertArea
       )
-      if(isInAlertArea){
-        const isInWarningArea =
-          warningArea &&
-          isLocationInFloodArea(
-            location.coordinates.latitude,
-            location.coordinates.longitude,
-            warningArea
-        )
-        if(!isInWarningArea && isInAlertArea){
-          setAlertOnlyLocationsIds((prevState) => {
-            return [...prevState, location.id]
-          })
-        }
+      const isInWarningArea =
+        warningArea &&
+        isLocationInFloodArea(
+          location.coordinates.latitude,
+          location.coordinates.longitude,
+          warningArea
+      )
+
+      if(!isInAlertArea && !isInWarningArea) {
+        setUnavailableLocationsIds((prevState) => {
+          return [...prevState, location.id]
+        })
+      } else if (!isInWarningArea && isInAlertArea) {
+        setAlertOnlyLocationsIds((prevState) => {
+          return [...prevState, location.id]
+        })
       }
     }
   }

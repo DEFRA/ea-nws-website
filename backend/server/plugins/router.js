@@ -43,7 +43,6 @@ const routes = [].concat(
   require('../routes/location/create'),
   require('../routes/location/remove'),
   require('../routes/location/update'),
-  require('../routes/location/bulk_update'),
   require('../routes/location/attach_contacts'),
   require('../routes/location/detach_contacts'),
   require('../routes/location/register_to_partner'),

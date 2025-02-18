@@ -128,7 +128,12 @@ export default function DropPinOnMapLayout ({
       if (inEngland && !duplicateLocation) {
         dispatch(setCurrentLocationCoordinates(pinCoords))
 
-        const dataToSend = { authToken, orgId, location: locationToAdd }
+        // Set default alert types
+        let newWebLocation = geoSafeToWebLocation(locationToAdd)
+        newWebLocation.additionals.other.alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
+        let newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
+
+        const dataToSend = { authToken, orgId, location: newGeosafeLocation }
         const { data, errorMessage } = await backendCall(
           dataToSend,
           'api/location/create',
@@ -136,14 +141,9 @@ export default function DropPinOnMapLayout ({
         )
 
         if (data) {
-          // Set default alert types
-          let newWebLocation = geoSafeToWebLocation(data)
-          newWebLocation.additionals.other.alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
-          let newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
-
           const registerData = {
             authToken,
-            location: newGeosafeLocation,
+            locationId: data.id,
             partnerId,
             params: {
               channelVoiceEnabled: false,

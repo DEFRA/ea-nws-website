@@ -3,7 +3,6 @@ const { apiCall } = require('../../services/ApiService')
 const {
   createGenericErrorResponse
 } = require('../../services/GenericErrorResponse')
-const { addToAlert } = require('../../services/elasticache')
 
 module.exports = [
   {
@@ -11,25 +10,19 @@ module.exports = [
     path: '/api/location/register_to_partner',
     handler: async (request, h) => {
       try {
-        const { authToken, location, partnerId, params } = request.payload
+        const { authToken, locationId, partnerId, params } = request.payload
 
-        if (authToken && partnerId && Object.keys(params).length > 0) {
+        if (authToken && partnerId && locationId && Object.keys(params).length > 0) {
           const response = await apiCall(
             {
               authToken: authToken,
-              locationId: location.id,
+              locationId: locationId,
               partnerId: partnerId,
               params: params
             },
             'location/registerToPartner'
           )
-
-          if (response.status === 200) {
-            await addToAlert(orgId, location)
-            return h.response(response)
-          } else {
-            return createGenericErrorResponse(h)
-          }
+          return h.response(response)
         } else {
           return createGenericErrorResponse(h)
         }

@@ -15,7 +15,10 @@ import {
   getGroundwaterFloodRiskRatingOfLocation,
   getRiversAndSeaFloodRiskRatingOfLocation
 } from '../../../../../common/services/WfsFloodDataService'
-import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import {
+  geoSafeToWebLocation,
+  webToGeoSafeLocation
+} from '../../../../../common/services/formatters/LocationFormatter'
 import LocationsTable from '../../../../components/custom/LocationsTable'
 import { riskData } from '../../../../components/custom/RiskCategoryLabel'
 import { orgManageContactsUrls } from '../../../../routes/manage-contacts/ManageContactsRoutes'
@@ -254,7 +257,8 @@ export default function ViewLocationsDashboardPage () {
 
       navigate(orgManageContactsUrls.view.dashboard, {
         state: {
-          linkLocations, linkSource: 'dashboard'
+          linkLocations,
+          linkSource: 'dashboard'
         }
       })
     }
@@ -431,7 +435,9 @@ export default function ViewLocationsDashboardPage () {
                     className='govuk-button govuk-button--secondary inline-block'
                     onClick={() => onOpenCloseFilter()}
                   />
-                  {(!location.state || !location.state.linkContacts || location.state.linkContacts.length === 0) && (
+                  {(!location.state ||
+                  !location.state.linkContacts ||
+                  location.state.linkContacts.length === 0) && (
                     <>
                     &nbsp; &nbsp;
                       <ButtonMenu
@@ -474,7 +480,7 @@ export default function ViewLocationsDashboardPage () {
                 )
               : (
                 <div className='govuk-grid-row'>
-                  <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 locations-filter-container'>
+                  <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3'>
                     <SearchFilter
                       locations={locations}
                       setFilteredLocations={setFilteredLocations}
@@ -528,7 +534,9 @@ export default function ViewLocationsDashboardPage () {
                         className='govuk-button govuk-button--secondary'
                         onClick={() => onOpenCloseFilter()}
                       />
-                      {(!location.state || !location.state.linkContacts || location.state.linkContacts.length === 0) && (
+                      {(!location.state ||
+                      !location.state.linkContacts ||
+                      location.state.linkContacts.length === 0) && (
                         <>
                         &nbsp; &nbsp;
                           <ButtonMenu

@@ -358,7 +358,7 @@ export default function ViewContactsDashboardPage () {
                 )
               : (
                 <div className='govuk-grid-row'>
-                  <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3 contacts-filter-container'>
+                  <div className='govuk-grid-column-one-quarter govuk-!-padding-bottom-3'>
                     <SearchFilter
                       contacts={contacts}
                       setFilteredContacts={setFilteredContacts}

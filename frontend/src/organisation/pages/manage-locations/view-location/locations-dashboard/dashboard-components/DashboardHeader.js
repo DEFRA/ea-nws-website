@@ -84,7 +84,7 @@ export default function DashboardHeader ({ locations, onClickLinked }) {
       count.push(
         locations.filter(
           (item) =>
-            item.additionals.parentID?.length > 0 &&
+            item.additionals.other?.childrenIDs?.length > 0 &&
             item.additionals.other?.alertTypes?.length > 0
         ).length
       )
@@ -154,7 +154,7 @@ export default function DashboardHeader ({ locations, onClickLinked }) {
               </div>
               {locations.filter(
                 (item) =>
-                  item.additionals.parentID?.length > 0 &&
+                  item.additionals.other?.childrenIDs?.length > 0 &&
                   item.additionals.other?.alertTypes?.length > 0
               ).length > 0 && (
                 <div

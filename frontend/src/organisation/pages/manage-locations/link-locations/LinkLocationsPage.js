@@ -1,12 +1,14 @@
-import { distance, point } from '@turf/turf'
+import { point, pointToPolygonDistance } from '@turf/turf'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch, useSelector, useStore } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import Checkbox from '../../../../common/components/gov-uk/CheckBox'
-import { setCurrentLocationChildrenIDs } from '../../../../common/redux/userSlice'
+import AlertType from '../../../../common/enums/AlertType'
+import { getLocationAdditionals, getLocationOther, setCurrentLocation, setCurrentLocationChildrenIDs } from '../../../../common/redux/userSlice'
+import { backendCall } from '../../../../common/services/BackendService'
 import {
   getSurroundingFloodAreas,
   getSurroundingFloodAreasFromShape
@@ -16,43 +18,115 @@ import { infoUrls } from '../../../routes/info/InfoRoutes'
 export default function LinkLocationsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-
+  const store = useStore()
   const currentLocation = useSelector((state) => state.session.currentLocation)
-  const [childrenIDs, setChildrenIDs] = useState([])
+  const additionalData = useSelector((state) => getLocationAdditionals(state))
+  const authToken = useSelector((state) => state.session.authToken)
+  const exisitingChildrenIDs = useSelector((state) => getLocationOther(state, 'childrenIDs'))
+  const orgId = useSelector((state) => state.session.orgId)
+  const [selectedTAs, setSelectedTAs] = useState([])
   const [floodAreas, setFloodAreas] = useState([])
+  const [childrenIDs, setChildrenIDs] = useState([])
 
   const handleCheckboxChange = (areaId) => {
-    setChildrenIDs((prev) =>
+    setSelectedTAs((prev) =>
       prev.includes(areaId)
         ? prev.filter((id) => id !== areaId)
         : [...prev, areaId]
     )
   }
 
-  const handleSubmit = () => {
-    dispatch(setCurrentLocationChildrenIDs(childrenIDs))
-    navigate('#') // TODO: Navigate to correct next page
+  const handleSubmit = async () => {
+      for (const areaId of selectedTAs) {
+        const TargetAreaToAdd = floodAreas.find((floodArea) => floodArea.properties.TA_CODE === areaId)
+        if (TargetAreaToAdd) {
+          const alertTypes = TargetAreaToAdd.properties.category === 'Flood Warning'
+          ?
+          [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
+          :
+          TargetAreaToAdd.properties.category === 'Flood Alert'
+          ?
+          [AlertType.FLOOD_ALERT]
+          :
+          []
+          const locationToAdd = {
+            id: null,
+            name: null,
+            enabled: true,
+            address: TargetAreaToAdd.properties.TA_Name,
+            coordinates: {
+              latitude: Number(TargetAreaToAdd.properties.latitude.replace(',', '.')),
+              longitude: Number(TargetAreaToAdd.properties.longitude.replace(',', '.'))
+            },
+            additionals: [
+              { 
+                id: 'parentID',
+                value: { s: currentLocation.id } 
+              },
+              {
+                id: "other",
+                value: {
+                  s: JSON.stringify(
+                    {
+                      alertTypes: alertTypes
+                    }
+                  )
+                }
+              }
+            ]
+          }
+
+          const dataToSend = { authToken, orgId, location: locationToAdd }
+          const { data, errorMessage } = await backendCall(
+            dataToSend,
+            'api/location/create',
+            navigate
+          )
+          if (data) {
+            setChildrenIDs((prev) =>
+              [...prev, {id: data.id, TA_CODE: areaId}]
+            ) 
+          } else {
+            //TODO set an error
+          }
+        }
+      }
+
+      await dispatch(setCurrentLocationChildrenIDs(childrenIDs)).unwrap()
+      const locationToAdd = store.getState().session.currentLocation
+      const dataToSend = { authToken, orgId, location: locationToAdd }
+      const { data, errorMessage } = await backendCall(
+        dataToSend,
+        'api/location/update',
+        navigate
+      )
+      if (data) {
+        dispatch(setCurrentLocation(data))
+        navigate('#') // TODO: Navigate to correct next page
+      } 
   }
 
   useEffect(() => {
     async function fetchFloodAreas () {
       if (!currentLocation) return
+      const currentLinked = exisitingChildrenIDs?.map((child) => child.TA_CODE)
 
       let alertAreas = []
       let warningAreas = []
       if (currentLocation.geometry) {
         const { alertArea, warningArea } =
-          await getSurroundingFloodAreasFromShape(currentLocation.geometry)
+          await getSurroundingFloodAreasFromShape(currentLocation.geometry, 1.0)
 
-        alertAreas = alertArea.features
-        warningAreas = warningArea.features
+        alertAreas = alertArea.features.filter((area) => !currentLinked?.includes(area.properties.TA_CODE))
+        warningAreas = warningArea.features.filter((area) => !currentLinked?.includes(area.properties.TA_CODE))
       } else {
         const { alertArea, warningArea } = await getSurroundingFloodAreas(
           currentLocation.coordinates.latitude,
-          currentLocation.coordinates.longitude
+          currentLocation.coordinates.longitude,
+          1.0
         )
-        alertAreas = alertArea.features
-        warningAreas = warningArea.features
+        alertAreas = alertArea.features.filter((area) => !currentLinked?.includes(area.properties.TA_CODE))
+        warningAreas = warningArea.features.filter((area) => !currentLinked?.includes(area.properties.TA_CODE))
       }
 
       const locationPoint = point([
@@ -62,14 +136,10 @@ export default function LinkLocationsPage () {
 
       const floodAreasWithDistances = [...alertAreas, ...warningAreas].map(
         (area) => {
-          const floodPoint = point([
-            area.geometry.coordinates[0][0][0][0],
-            area.geometry.coordinates[0][0][0][1]
-          ])
-
-          const distanceM = distance(locationPoint, floodPoint, {
+          const distanceM = pointToPolygonDistance(locationPoint, area.geometry, {
             units: 'meters'
           })
+
 
           return {
             ...area,
@@ -152,10 +222,10 @@ export default function LinkLocationsPage () {
                   }}
                 >
                   <Checkbox
-                    value={area.properties.FWS_TACODE}
+                    value={area.properties.TA_CODE}
                     onChange={() =>
-                      handleCheckboxChange(area.properties.FWS_TACODE)}
-                    checked={childrenIDs.includes(area.properties.FWS_TACODE)}
+                      handleCheckboxChange(area.properties.TA_CODE)}
+                    checked={selectedTAs.includes(area.properties.TA_CODE)}
                   />
                 </div>
               </td>
@@ -175,7 +245,7 @@ export default function LinkLocationsPage () {
             <br />
             <h1 className='govuk-heading-l'>Select nearby flood areas</h1>
             <p className='govuk-body'>
-              {currentLocation.name} is near to these flood areas. You can
+              {additionalData.locationName} is near to these flood areas. You can
               select 1 or more nearby flood areas you want to link this location
               to.
               <br />

@@ -296,7 +296,7 @@ export default function LocationMessagesPage () {
         text='Link to nearby flood areas'
         className='govuk-button govuk-button--secondary'
         // TODO: Add link to nearby flood areas
-        onClick={() => navigate('/')}
+        onClick={() => navigate(orgManageLocationsUrls.add.linkToTargetArea)}
       />
     </>
   )

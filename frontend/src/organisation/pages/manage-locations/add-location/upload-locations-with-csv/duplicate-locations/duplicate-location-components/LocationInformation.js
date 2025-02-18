@@ -40,6 +40,10 @@ export default function LocationInformation ({ location, comparedLocation }) {
     comparedLocation && comparedAdditionalData?.action_plan?.length === 0
   const notesAdded = comparedLocation && comparedAdditionalData?.notes === ''
 
+  const isShapeFile =
+    additionalData?.location_data_type === LocationDataType.SHAPE_POLYGON ||
+    additionalData?.location_data_type === LocationDataType.SHAPE_LINE
+
   const LocationHeader = () => {
     switch (additionalData?.location_data_type) {
       case LocationDataType.ADDRESS:
@@ -90,14 +94,18 @@ export default function LocationInformation ({ location, comparedLocation }) {
   const locationDetails = (
     <div
       style={
-        comparedLocation && comparedAdditionalData?.full_address === null
+        comparedLocation &&
+        ((!isShapeFile && comparedAdditionalData?.full_address === null) ||
+          (isShapeFile &&
+            comparedAdditionalData?.geometry?.properties?.Shape_Area === null))
           ? compareStyle
           : {}
       }
     >
       <div
         className={
-          additionalData?.full_address
+          (!isShapeFile && additionalData?.full_address) ||
+          (isShapeFile && additionalData?.geometry?.properties?.Shape_Area)
             ? sectionClassName
             : 'govuk-!-padding-left-4 govuk-!-padding-right-4'
         }
@@ -274,7 +282,7 @@ export default function LocationInformation ({ location, comparedLocation }) {
           )}
 
           {/* Keywords details */}
-          {location?.additionals?.keywords && (
+          {location?.additionals?.keywords.length > 0 && (
             <div
               className={sectionClassName}
               style={keywordsAdded ? compareStyle : {}}

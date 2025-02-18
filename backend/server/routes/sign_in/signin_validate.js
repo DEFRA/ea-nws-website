@@ -5,7 +5,7 @@ const {
 const {
   authCodeValidation
 } = require('../../services/validations/AuthCodeValidation')
-const { orgSignIn } = require('../../services/elasticache')
+const { orgSignIn, addLinkedLocations } = require('../../services/elasticache')
 const { logger } = require('../../plugins/logging')
 
 module.exports = [
@@ -19,14 +19,25 @@ module.exports = [
         }
 
         const { signinToken, code, signinType } = request.payload
-        const error = authCodeValidation(code)
+        const { error, code: formattedCode } = authCodeValidation(code)
 
         if (!error && signinToken) {
           const response = await apiCall(
-            { signinToken: signinToken, code: code },
+            { signinToken: signinToken, code: formattedCode },
             'member/signinValidate'
           )
+
           if (signinType === 'org') {
+            const signupComplete = response.data.profile.additionals?.find(
+              (additional) => additional.id === 'signupComplete'
+            )
+
+            if (signupComplete?.value?.s === 'pending') {
+              return h.response({
+                status: 500,
+                errorMessage: 'account pending'
+              })
+            }
             const locationRes = await apiCall(
               { authToken: response.data.authToken },
               'location/list'
@@ -35,8 +46,27 @@ module.exports = [
               { authToken: response.data.authToken },
               'organization/listContacts'
             )
+
             // Send the profile to elasticache
             await orgSignIn(response.data.profile, response.data.organization, locationRes.data.locations, contactRes.data.contacts)
+
+            for (const contact of contactRes.data.contacts) {
+              const options = { contactId: contact.id }
+              const linkLocationsRes = await apiCall(
+                {
+                  authToken: response.data.authToken,
+                  options: options
+                },
+                'location/list'
+              )
+
+              const locationIDs = []
+              linkLocationsRes.data.locations.forEach(function (location) {
+                locationIDs.push(location.id)
+              })
+
+              await addLinkedLocations(response.data.organization.id, contact.id, locationIDs)
+            }
           }
           return h.response(response)
         } else {

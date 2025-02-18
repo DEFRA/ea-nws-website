@@ -18,6 +18,10 @@ export default function LocationInAlertAreaPage () {
     (state) => state.session.selectedFloodAlertArea
   )
 
+  const continueToSearchResultsPage = () => {
+    navigate('/manage-locations/add/search-results')
+  }
+
   const continueToNextPage = () => {
     let name
     if (isUserInNearbyTargetFlowpath) {
@@ -41,7 +45,7 @@ export default function LocationInAlertAreaPage () {
 
   return (
     <>
-      <LocationInAlertAreaLayout continueToNextPage={continueToNextPage} />
+      <LocationInAlertAreaLayout continueToNextPage={continueToNextPage} continueToSearchResultsPage={continueToSearchResultsPage} />
     </>
   )
 }

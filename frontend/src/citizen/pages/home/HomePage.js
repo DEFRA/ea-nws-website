@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router'
 
-import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
+import NotificationBanner from '../../../common/components/gov-uk/NotificationBanner'
 import { setSigninType } from '../../../common/redux/userSlice'
 import SubscribedLocationTableLayout from '../manage-locations/SubscribedLocationTable'
 
@@ -20,7 +20,7 @@ export default function HomePage () {
   const dispatch = useDispatch()
   useEffect(() => {
     dispatch(setSigninType('citizen'))
-  })
+  }, [])
 
   return (
     <>

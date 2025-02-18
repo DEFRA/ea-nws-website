@@ -102,11 +102,11 @@ export default function LocationWithinWarningAreaProximityLayout ({
       if (type === 'severe') {
         dispatch(setAdditionalAlerts(true))
         setHistoricalWarningNumber(
-          selectedFloodWarningArea.properties.FWS_TACODE
+          selectedFloodWarningArea.properties.TA_CODE
         )
       } else if (type === 'alert') {
         dispatch(setAdditionalAlerts(false))
-        setHistoricalAlertNumber(selectedFloodAlertArea.properties.FWS_TACODE)
+        setHistoricalAlertNumber(selectedFloodAlertArea.properties.TA_CODE)
       }
       dispatch(setShowOnlySelectedFloodArea(true))
       dispatch(setNearbyTargetAreasFlow(true))
@@ -181,8 +181,10 @@ export default function LocationWithinWarningAreaProximityLayout ({
                     {type === 'severe' ? 'red' : 'orange'} on the map.
                   </p>
                   <p>
-                    If you choose one of these, you'll get early alerts about
-                    possible flooding.
+                    If you choose one of these, you'll get{' '}
+                    {type === 'severe'
+                      ? 'flood messages about danger to life or property.'
+                      : 'early alerts aboutpossible flooding.'}
                   </p>
                 </div>
               </div>

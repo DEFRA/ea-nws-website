@@ -88,7 +88,7 @@ export const getAssociatedAlertArea = async (lat, lng, code) => {
   )
 
   const filteredOutOtherAlertAreas = wfsAlertData?.features.filter(
-    (floodArea) => floodArea.properties.FWS_TACODE === code
+    (floodArea) => floodArea.properties.TA_CODE === code
   )
   if (filteredOutOtherAlertAreas.length > 0) {
     return filteredOutOtherAlertAreas[0]

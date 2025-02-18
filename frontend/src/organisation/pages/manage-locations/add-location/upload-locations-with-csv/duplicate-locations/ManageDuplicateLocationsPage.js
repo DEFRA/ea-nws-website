@@ -33,7 +33,10 @@ export default function ManageDuplicateLocationsPage () {
       )
       const locations = []
       if (data) {
-        const duplicates = data.filter((location) => location.error.includes('duplicate') && location.error.length === 1)
+        const duplicates = data.filter(
+          (location) =>
+            location.error.includes('duplicate') && location.error.length === 1
+        )
         duplicates.forEach((location) => {
           locations.push(geoSafeToWebLocation(location))
         })
@@ -70,10 +73,14 @@ export default function ManageDuplicateLocationsPage () {
     event.preventDefault()
 
     // Get the existing location (note type is 'valid')
-    const existingLocation = geoSafeToWebLocation(await getLocation(orgId, location.additionals.locationName, 'valid'))
+    const existingLocation = geoSafeToWebLocation(
+      await getLocation(orgId, location.additionals.locationName, 'valid')
+    )
 
     // Get the new, duplicate location (note type is 'invalid')
-    const newLocation = geoSafeToWebLocation(await getLocation(orgId, location.additionals.locationName, 'invalid'))
+    const newLocation = geoSafeToWebLocation(
+      await getLocation(orgId, location.additionals.locationName, 'invalid')
+    )
 
     if (existingLocation && newLocation) {
       // Now compare the two and let the use choose one
@@ -116,7 +123,8 @@ export default function ManageDuplicateLocationsPage () {
         <div className='govuk-grid-row govuk-body'>
           <div className='govuk-grid-column-one-half'>
             <h1 className='govuk-heading-l'>
-              Manage {duplicateLocations.length} duplicate locations
+              Manage {duplicateLocations.length} duplicate location
+              {duplicateLocations.length !== 1 ? 's' : ''}
             </h1>
             <div className='govuk-!-padding-bottom-4'>
               You need to choose if you want to keep or replace all of them.
@@ -127,7 +135,10 @@ export default function ManageDuplicateLocationsPage () {
               text='Print duplicate locations'
               onClick={handlePrint}
             />
-            <p className='govuk-caption-m govuk-!-margin-bottom-0'>{duplicateLocations.length} locations</p>
+            <p className='govuk-caption-m govuk-!-margin-bottom-0'>
+              {duplicateLocations.length} location
+              {duplicateLocations.length !== 1 ? 's' : ''}
+            </p>
             <div className='govuk-body govuk-!-padding-top-2'>
               <table className='govuk-table govuk-table--small-text-until-tablet'>
                 <thead className='govuk-table__head'>
@@ -162,7 +173,9 @@ export default function ManageDuplicateLocationsPage () {
               </table>
             </div>
             <Pagination
-              totalPages={Math.ceil(duplicateLocations.length / locationsPerPage)}
+              totalPages={Math.ceil(
+                duplicateLocations.length / locationsPerPage
+              )}
               onPageChange={(val) => setCurrentPage(val)}
             />
             <Button

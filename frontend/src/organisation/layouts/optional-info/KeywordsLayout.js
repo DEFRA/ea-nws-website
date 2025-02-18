@@ -8,17 +8,17 @@ import Checkbox from '../../../common/components/gov-uk/CheckBox'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import {
   getLocationAdditional,
-  setCurrentLocationKeywords, setOrgCurrentContactKeywords
+  setCurrentLocationKeywords,
+  setOrgCurrentContactKeywords
 } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
-import {
-  getAdditionals
-} from '../../../common/services/ProfileServices'
+import { getAdditionals } from '../../../common/services/ProfileServices'
 
 export default function KeywordsLayout ({
   keywordType,
   navigateToNextPage,
-  keywordText
+  keywordText,
+  error = null
 }) {
   const dispatch = useDispatch()
   const navigate = useNavigate()
@@ -48,7 +48,7 @@ export default function KeywordsLayout ({
   }, [keywordType])
 
   const currentObject = useSelector((state) =>
-    keywordType === 'location '
+    keywordType === 'location'
       ? state.session.currentLocation
         ? state.session.currentLocation
         : null
@@ -60,7 +60,7 @@ export default function KeywordsLayout ({
   let orgKeywords = [...orgKeywordsOriginal]
 
   const entryId = useSelector((state) =>
-    keywordType === 'location '
+    keywordType === 'location'
       ? state.session.currentLocation.id
         ? state.session.currentLocation.id
         : ''
@@ -230,7 +230,9 @@ export default function KeywordsLayout ({
     if (keywordType === 'location') {
       dispatch(setCurrentLocationKeywords(JSON.stringify(keywordsArrayChecked)))
     } else {
-      dispatch(setOrgCurrentContactKeywords(JSON.stringify(keywordsArrayChecked)))
+      dispatch(
+        setOrgCurrentContactKeywords(JSON.stringify(keywordsArrayChecked))
+      )
     }
 
     navigateToNextPage()
@@ -244,10 +246,12 @@ export default function KeywordsLayout ({
   return (
     <>
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
-          <div className='govuk-grid-column-two-thirds'>
-            {keywordError && <ErrorSummary errorList={[keywordError]} />}
+          <div className='govuk-grid-column-one-half'>
+            {(keywordError || error) && (
+              <ErrorSummary errorList={[keywordError, error]} />
+            )}
             <h1 className='govuk-heading-l'>
               {`Add keywords for this ${keywordType} (optional)`}
             </h1>

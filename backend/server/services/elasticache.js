@@ -426,6 +426,148 @@ const listContacts = async (orgId) => {
   return contactArr
 }
 
+const listLinkedContacts = async (orgId, locationID) => {
+  const key = orgId + ':t_Linked_locations'
+  const contactArr = []
+
+  const arrExists = await checkKeyExists(key)
+
+  if (arrExists) {
+    const linkedArr = await getJsonData(key)
+    await Promise.all(linkedArr.map(async (link) => {
+      if (link.id === locationID) {
+        await Promise.all(
+          link.linkIDs.map(async (contactID) => {
+            const contactKey = orgId + ':t_Contacts:' + contactID
+            const contact = await getJsonData(contactKey)
+            contactArr.push(contact)
+          }))
+      }
+    }))
+  }
+
+  return contactArr
+}
+
+const listLinkedLocations = async (orgId, contactID) => {
+  const key = orgId + ':t_Linked_contacts'
+  const locationArr = []
+
+  const arrExists = await checkKeyExists(key)
+
+  if (arrExists) {
+    const linkedArr = await getJsonData(key)
+
+    await Promise.all(linkedArr.map(async (link) => {
+      if (link.id === contactID) {
+        await Promise.all(
+          link.linkIDs.map(async (locationID) => {
+            const locKey = orgId + ':t_POIS:' + locationID
+            const location = await getJsonData(locKey)
+            locationArr.push(location)
+          }))
+      }
+    }))
+  }
+
+  return locationArr
+}
+
+const addToLinkedArr = async (key, value) => {
+  const arrExists = await checkKeyExists(key)
+  if (arrExists) {
+    const linkedArr = await getJsonData(key)
+    if (linkedArr) {
+      let linkExists = false
+      linkedArr.forEach((link) => {
+        if (link.id === value.id) {
+          linkExists = true
+          if (!link.linkIDs.includes(value.linkIDs[0])) {
+            link.linkIDs.push(value.linkIDs[0])
+          }
+        }
+      })
+      if (linkExists) {
+        await setJsonData(key, linkedArr)
+      } else {
+        await addToJsonArr(key, value)
+      }
+    } else {
+      await setJsonData(key, [value])
+    }
+  } else {
+    await setJsonData(key, [value])
+  }
+}
+
+const removeFromLinkedArr = async (key, value) => {
+  const arrExists = await checkKeyExists(key)
+  if (arrExists) {
+    const linkedArr = await getJsonData(key)
+    if (linkedArr) {
+      let removedLink = false
+      linkedArr.forEach((link) => {
+        if (link.id === value.id) {
+          const itemIndex = link.linkIDs.indexOf(value.linkIDs[0])
+          if (itemIndex > -1) {
+            link.linkIDs.splice(itemIndex, 1)
+            removedLink = true
+          }
+        }
+      })
+      if (removedLink) {
+        await setJsonData(key, linkedArr)
+      }
+    }
+  }
+}
+
+const addLinkedLocations = async (orgId, contactID, locationIDs) => {
+  if (locationIDs) {
+    for (const locationID of locationIDs) {
+      await addToLinkedArr(orgId + ':t_Linked_locations', {
+        id: locationID,
+        linkIDs: [contactID]
+      })
+
+      await addToLinkedArr(orgId + ':t_Linked_contacts', {
+        id: contactID,
+        linkIDs: [locationID]
+      })
+    }
+  }
+}
+
+const addLinkedContacts = async (orgId, locationID, contactIDs) => {
+  if (contactIDs) {
+    for (const contactID of contactIDs) {
+      await addToLinkedArr(orgId + ':t_Linked_locations', {
+        id: locationID,
+        linkIDs: [contactID]
+      })
+      await addToLinkedArr(orgId + ':t_Linked_contacts', {
+        id: contactID,
+        linkIDs: [locationID]
+      })
+    }
+  }
+}
+
+const removeLinkedContacts = async (orgId, locationID, contactIDs) => {
+  if (contactIDs) {
+    for (const contactID of contactIDs) {
+      await removeFromLinkedArr(orgId + ':t_Linked_locations', {
+        id: locationID,
+        linkIDs: [contactID]
+      })
+      await removeFromLinkedArr(orgId + ':t_Linked_contacts', {
+        id: contactID,
+        linkIDs: [locationID]
+      })
+    }
+  }
+}
+
 const orgSignIn = async (profile, organization, locations, contacts) => {
   await setJsonData(profile.id + ':profile', profile)
   const orgExists = await checkKeyExists(organization.id + ':org_data')
@@ -493,6 +635,8 @@ const orgSignOut = async (profileId, orgId) => {
   await deleteJsonData(orgId + ':t_Keywords_location')
   await deleteJsonData(orgId + ':t_Keywords_contact')
   await deleteJsonData(orgId + ':alertLocations')
+  await deleteJsonData(orgId + ':t_Linked_locations')
+  await deleteJsonData(orgId + ':t_Linked_contacts')
 }
 
 module.exports = {
@@ -514,6 +658,11 @@ module.exports = {
   addContact,
   updateContact,
   removeContact,
+  listLinkedContacts,
+  listLinkedLocations,
+  addLinkedLocations,
+  addLinkedContacts,
+  removeLinkedContacts,
   orgSignIn,
   orgSignOut
 }

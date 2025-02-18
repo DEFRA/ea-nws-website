@@ -35,6 +35,7 @@ module.exports = [
             if (result.data) {
               // Check invalid locations for duplicates
               result.data.invalid.forEach(async (location) => {
+                if (location.error.includes(DUPLICATE)) return
                 if (await isDuplicate(orgId, location.Location_name)) {
                   // An invalid location should already have at least one error
                   // but do not assume this is the case

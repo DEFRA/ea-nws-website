@@ -150,10 +150,8 @@ export default function OrganisationHeader () {
           <div className='service-header toggle-enabled govuk-!-padding-top-5 govuk-!-padding-bottom-5'>
             <div>
               <div className='service-header__container custom-width-container'>
-                <h2 className='service-header__heading'>
-                  Organisation
-                  <br />
-                  details
+                <h2 className='service-header__heading govuk-!-font-weight-bold'>
+                  {orgName}
                 </h2>
                 <div>
                   <nav>

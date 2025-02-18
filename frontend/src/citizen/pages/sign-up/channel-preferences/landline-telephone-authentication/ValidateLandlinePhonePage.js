@@ -4,8 +4,8 @@ import ValidateLandlineLayout from '../../../../layouts/landline/ValidateLandlin
 export default function ValidateLandlinePhonePage () {
   const navigate = useNavigate()
 
-  const navigateToNextPage = () => {
-    navigate('/signup/accountname/add')
+  const navigateToNextPage = (homePhone) => {
+    navigate('/signup/accountname/add', { state: { banner: { heading: 'Telephone number confirmed', text: homePhone } } })
   }
 
   const SkipValidation = () => {

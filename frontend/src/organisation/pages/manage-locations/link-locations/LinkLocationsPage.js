@@ -7,7 +7,7 @@ import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import Checkbox from '../../../../common/components/gov-uk/CheckBox'
 import AlertType from '../../../../common/enums/AlertType'
-import { getLocationAdditionals, getLocationOther, setCurrentLocation, setCurrentLocationChildrenIDs } from '../../../../common/redux/userSlice'
+import { getLocationAdditionals, getLocationOther, setCurrentLocation } from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
   getSurroundingFloodAreas,
@@ -34,6 +34,26 @@ export default function LinkLocationsPage () {
         ? prev.filter((id) => id !== areaId)
         : [...prev, areaId]
     )
+  }
+
+  const setLocationChildrenIDs = (location, value) => {
+    let idFound = false
+    let otherAdditionals = {}
+    for (let i = 0; i < location.additionals.length; i++) {
+      if (location.additionals[i].id === 'other') {
+        idFound = true
+        otherAdditionals = JSON.parse(location.additionals[i].value?.s)
+        otherAdditionals['childrenIDs'] = value
+        location.additionals[i].value = { s: JSON.stringify(otherAdditionals) }
+      }
+    }
+    if (!idFound) {
+      location.additionals.push({
+        id: 'other',
+        value: { s: JSON.stringify({ 'childrenIDs': value }) }
+      })
+    }
+    return location
   }
 
   const handleSubmit = async () => {
@@ -92,8 +112,9 @@ export default function LinkLocationsPage () {
         }
       }
 
-      await dispatch(setCurrentLocationChildrenIDs(childrenIDs)).unwrap()
-      const locationToAdd = store.getState().session.currentLocation
+      console.log(childrenIDs)
+
+      const locationToAdd = setLocationChildrenIDs(JSON.parse(JSON.stringify(currentLocation)), childrenIDs)
       const dataToSend = { authToken, orgId, location: locationToAdd }
       const { data, errorMessage } = await backendCall(
         dataToSend,

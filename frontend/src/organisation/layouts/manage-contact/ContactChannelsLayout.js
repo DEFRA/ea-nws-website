@@ -13,17 +13,26 @@ import {
 } from '../../../common/redux/userSlice'
 import { emailValidation } from '../../../common/services/validations/EmailValidation'
 import { phoneValidation } from '../../../common/services/validations/PhoneValidation'
-import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
-export default function ContactChannelsLayout () {
+
+export default function ContactChannelsLayout ({
+  navigateToNextPage,
+  error,
+  setError
+}) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [emailError, setEmailError] = useState(['', ''])
   const [homePhoneError, setHomePhoneError] = useState(['', ''])
   const [mobilePhoneError, setMobilePhoneError] = useState(['', ''])
-  const [error, setError] = useState('')
-  const [emailInput, setEmailInput] = useState([])
-  const [mobileInput, setMobileInput] = useState([])
-  const [homeInput, setHomeInput] = useState([])
+  const [emailInput, setEmailInput] = useState(
+    useSelector((state) => state.session.orgCurrentContact.emails) || []
+  )
+  const [mobileInput, setMobileInput] = useState(
+    useSelector((state) => state.session.orgCurrentContact.mobilePhones || [])
+  )
+  const [homeInput, setHomeInput] = useState(
+    useSelector((state) => state.session.orgCurrentContact.homePhones || [])
+  )
   const firstname = useSelector(
     (state) => state.session.orgCurrentContact.firstname
   )
@@ -170,37 +179,33 @@ export default function ContactChannelsLayout () {
     const dataValid = validateData()
     if (dataValid) {
       const newEmails = []
-      if (emailInput[0]) newEmails.push(emailInput[0])
-      if (emailInput[1]) newEmails.push(emailInput[1])
-      if (newEmails.length !== 0) {
-        dispatch(setOrgCurrentContactEmails(newEmails))
-      }
+      if (emailInput[0] != null && emailInput[0]?.length !== 0) { newEmails.push(emailInput[0]) }
+      if (emailInput[1] != null && emailInput[1]?.length !== 0) { newEmails.push(emailInput[1]) }
+      dispatch(setOrgCurrentContactEmails(newEmails))
+
       const newMobilePhones = []
-      if (mobileInput[0]) newMobilePhones.push(mobileInput[0])
-      if (mobileInput[1]) newMobilePhones.push(mobileInput[1])
-      if (newMobilePhones.length !== 0) {
-        dispatch(setOrgCurrentContactMobilePhones(newMobilePhones))
-      }
+      if (mobileInput[0] != null && mobileInput[0]?.length !== 0) { newMobilePhones.push(mobileInput[0]) }
+      if (mobileInput[1] != null && mobileInput[1]?.length !== 0) { newMobilePhones.push(mobileInput[1]) }
+      dispatch(setOrgCurrentContactMobilePhones(newMobilePhones))
+
       const newHomePhones = []
-      if (homeInput[0]) newHomePhones.push(homeInput[0])
-      if (homeInput[1]) newHomePhones.push(homeInput[1])
-      if (newHomePhones.length !== 0) {
-        dispatch(setOrgCurrentContactHomePhones(newHomePhones))
-      }
+      if (homeInput[0] != null && homeInput[0]?.length !== 0) { newHomePhones.push(homeInput[0]) }
+      if (homeInput[1] != null && homeInput[1]?.length !== 0) { newHomePhones.push(homeInput[1]) }
+      dispatch(setOrgCurrentContactHomePhones(newHomePhones))
+
       setEmailError(['', ''])
       setHomePhoneError(['', ''])
       setMobilePhoneError(['', ''])
       setError('')
 
-      navigate(orgManageContactsUrls.add.notes)
+      navigateToNextPage()
     }
   }
 
   return (
     <>
-
       <BackLink onClick={navigateBack} />
-      <main className='govuk-main-wrapper govuk-!-padding-top-4'>
+      <main className='govuk-main-wrapper govuk-!-padding-top-8'>
         <div className='govuk-grid-row'>
           <div className='govuk-grid-column-two-thirds'>
             {(error ||
@@ -236,11 +241,9 @@ export default function ContactChannelsLayout () {
                 <br />
               </div>
               <div
-                className={
-                  error === '' ? '' : 'govuk-form-group govuk-form-group--error'
-                }
+                className={error && 'govuk-form-group govuk-form-group--error'}
               >
-                {error !== '' && (
+                {error && (
                   <p
                     id='govuk-text-input-error'
                     className='govuk-error-message'
@@ -253,6 +256,7 @@ export default function ContactChannelsLayout () {
                   inputType='text'
                   onChange={(val) =>
                     setEmailInput((inputs) => [val, inputs[1]])}
+                  value={emailInput[0]}
                   error={emailError[0]}
                   className='govuk-input govuk-input--width-20'
                   isNameBold
@@ -262,6 +266,7 @@ export default function ContactChannelsLayout () {
                   inputType='text'
                   onChange={(val) =>
                     setEmailInput((inputs) => [inputs[0], val])}
+                  value={emailInput[1]}
                   error={emailError[1]}
                   className='govuk-input govuk-input--width-20'
                 />
@@ -270,6 +275,7 @@ export default function ContactChannelsLayout () {
                   inputType='text'
                   onChange={(val) =>
                     setMobileInput((inputs) => [val, inputs[1]])}
+                  value={mobileInput[0]}
                   className='govuk-input govuk-input--width-20'
                   isNameBold
                   labelSize='s'
@@ -279,6 +285,7 @@ export default function ContactChannelsLayout () {
                   inputType='text'
                   onChange={(val) =>
                     setMobileInput((inputs) => [inputs[0], val])}
+                  value={mobileInput[1]}
                   className='govuk-input govuk-input--width-20'
                   error={mobilePhoneError[1]}
                 />
@@ -289,12 +296,14 @@ export default function ContactChannelsLayout () {
                   className='govuk-input govuk-input--width-20'
                   isNameBold
                   labelSize='s'
+                  value={homeInput[0]}
                   error={homePhoneError[0]}
                 />
                 <Input
                   inputType='text'
                   onChange={(val) => setHomeInput((inputs) => [inputs[0], val])}
                   className='govuk-input govuk-input--width-20'
+                  value={homeInput[1]}
                   error={homePhoneError[1]}
                 />
               </div>

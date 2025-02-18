@@ -1,10 +1,10 @@
-import { useState } from 'react'
 import {
-  faCircleExclamation,
   faCircleChevronDown,
-  faCircleChevronUp
+  faCircleChevronUp,
+  faCircleExclamation
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { useState } from 'react'
 import '../../css/custom.css'
 
 export default function PrivateBetaHeader () {
@@ -35,7 +35,7 @@ export default function PrivateBetaHeader () {
         </div>
         {infoOpen && (
           <div className='private-beta-header-info-container govuk-width-container'>
-            <p>Thank you for taking part in our trial for our new new flood warning service.</p>
+            <p>Thank you for taking part in our trial for our new flood warning service.</p>
             <p>This site contains test content only.</p>
             <p className='govuk-!-font-weight-bold'>
               You must not rely on this for flood warnings.

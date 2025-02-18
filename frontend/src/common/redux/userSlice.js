@@ -122,6 +122,9 @@ const userSlice = createSlice({
     locationBoundaries: null,
     consecutiveBoundariesAdded: 0,
     predefinedBoundaryFlow: null,
+    // linked locations/contacts
+    linkLocations: null,
+    linkContacts: null,
     // org location data
     currentLocation: {
       id: null,
@@ -248,7 +251,7 @@ const userSlice = createSlice({
       state.currentContact = action.payload
     },
     addContactPreference: (state, action) => {
-      state.contactPreferences = action.payload
+      state.contactPreferences.push(action.payload)
     },
     setSigninType: (state, action) => {
       state.signinType = action.payload
@@ -308,6 +311,12 @@ const userSlice = createSlice({
     },
     setPredefinedBoundaryFlow: (state, action) => {
       state.predefinedBoundaryFlow = action.payload
+    },
+    setLinkLocations: (state, action) => {
+      state.linkLocations = action.payload
+    },
+    setLinkContacts: (state, action) => {
+      state.linkContacts = action.payload
     },
     // org location data
     setCurrentLocation: (state, action) => {
@@ -786,7 +795,8 @@ const userSlice = createSlice({
                 action_plan: null,
                 notes: null,
                 location_data_type: null,
-                alertTypes: []
+                alertTypes: [],
+                childrenIDs: []
               })
             }
           }
@@ -899,6 +909,10 @@ const userSlice = createSlice({
         alertTypes: getLocationOtherAdditional(
           state.currentLocation.additionals,
           'alertTypes'
+        ),
+        childrenIDs: getLocationOtherAdditional(
+          state.currentLocation.additionals,
+          'childrenIDs'
         )
       }
     },
@@ -950,6 +964,8 @@ export const {
   setLocationBoundaries,
   setConsecutiveBoundariesAdded,
   setPredefinedBoundaryFlow,
+  setLinkLocations,
+  setLinkContacts,
   // org location data
   setCurrentLocation,
   setCurrentLocationId,

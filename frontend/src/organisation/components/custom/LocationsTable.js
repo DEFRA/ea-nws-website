@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
-import locationPin from '../../../../../../common/assets/images/location_pin.svg'
-import { setCurrentLocation } from '../../../../../../common/redux/userSlice'
-import { webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
-import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
-import FullscreenMap from '../../FullscreenMap'
+import locationPin from '../../../common/assets/images/location_pin.svg'
+import { setCurrentLocation } from '../../../common/redux/userSlice'
+import { webToGeoSafeLocation } from '../../../common/services/formatters/LocationFormatter'
+import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
+import FullscreenMap from '../../pages/manage-locations/view-location/FullscreenMap'
 
 export default function LocationsTable ({
   locations,
@@ -16,7 +16,10 @@ export default function LocationsTable ({
   setFilteredLocations,
   resetPaging,
   setResetPaging,
-  onAction
+  onAction,
+  actionText,
+  linkContacts,
+  locationPrefix
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -157,10 +160,6 @@ export default function LocationsTable ({
     navigate(orgManageLocationsUrls.view.viewLocation)
   }
 
-  const linkToContacts = (e, location) => {
-    // TODO (EAN-1126)
-  }
-
   const updateMessageSettings = (e, location) => {
     e.preventDefault()
     dispatch(setCurrentLocation(webToGeoSafeLocation(location)))
@@ -180,17 +179,22 @@ export default function LocationsTable ({
           : ''}
         {filteredLocations.length !== locations.length ? ' of ' : ''}
         {locations.length}
+        {locationPrefix ? ' ' + locationPrefix : ''}
         {locations.length === 1 ? ' location' : ' locations'}{' '}
         <span style={{ margin: '0 20px' }}>|</span>
         <span style={{ color: '#1d70b8' }}>
           {selectedLocations.length}{' '}
           {selectedLocations.length === 1 ? 'location' : 'locations'} selected{' '}
         </span>
-        <span style={{ margin: '0 20px' }}>|</span>
-        <img src={locationPin} alt='Location pin icon' />
-        <Link className='govuk-link' onClick={openMap}>
-          View on map
-        </Link>
+        {!linkContacts && (
+          <>
+            <span style={{ margin: '0 20px' }}>|</span>
+            <img src={locationPin} alt='Location pin icon' />
+            <Link className='govuk-link' onClick={openMap}>
+              View on map
+            </Link>
+          </>
+        )}
       </p>
       {showMap && (
         <FullscreenMap
@@ -374,12 +378,7 @@ export default function LocationsTable ({
                 </Link>
               </td>
               <td className='govuk-table__cell'>
-                <Link
-                  className='govuk-link'
-                  onClick={(e) => linkToContacts(e, location)}
-                >
-                  {location.linked_contacts?.length}
-                </Link>
+                {location.linked_contacts?.length}
               </td>
               <td className='govuk-table__cell'>
                 <span
@@ -398,9 +397,9 @@ export default function LocationsTable ({
               <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'
-                  onClick={(e) => onAction(e, 'delete', location)}
+                  onClick={(e) => onAction(e, actionText, location)}
                 >
-                  Delete
+                  {actionText}
                 </Link>
               </td>
             </tr>

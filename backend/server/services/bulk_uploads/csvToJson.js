@@ -1,7 +1,7 @@
 const template = require('./template')
 
 function splitLines (text) {
-  return text.split('\n')
+  return text.split(/\r?\n|\r|\n/g)
 }
 
 function splitLine (line) {

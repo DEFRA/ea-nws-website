@@ -19,7 +19,6 @@ module.exports = [
         if (authToken && locations && orgId) {
           const updatedLocations = []
           for(let i = 0; i < locations.length; i++){
-            console.log('1')
             const response = await apiCall(
               { authToken: authToken, location: locations[i] },
               'location/update'
@@ -27,16 +26,11 @@ module.exports = [
             console.log("responseStatus@", response.status)
             if (response.status === 200) {
               await updateLocation(orgId, response.data.location)
-              console.log('A')
-              updatedLocations.push(response.data.location)              
-              console.log('B')
+              updatedLocations.push(response.data.location)
             } else {
-              console.log('C')
               updatedLocations.push(null)  
             }
-            console.log('D')
           }    
-          console.log('updated', updatedLocations)
           return h.response({ status: 200, data: updatedLocations })      
         } else {
           return createGenericErrorResponse(h)

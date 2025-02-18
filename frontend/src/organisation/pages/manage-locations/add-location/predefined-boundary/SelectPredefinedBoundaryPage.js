@@ -149,10 +149,10 @@ export default function SelectPredefinedBoundaryPage () {
           locationId: data.id,
           partnerId,
           params: {
-            channelVoiceEnabled: false,
-            channelSmsEnabled: false,
-            channelEmailEnabled: false,
-            channelMobileAppEnabled: false,
+            channelVoiceEnabled: true,
+            channelSmsEnabled: true,
+            channelEmailEnabled: true,
+            channelMobileAppEnabled: true,
             partnerCanView: true,
             partnerCanEdit: true,
             alertTypes: [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]

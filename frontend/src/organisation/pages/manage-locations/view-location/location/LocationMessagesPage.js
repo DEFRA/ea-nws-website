@@ -1,6 +1,7 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
+import store from '../../../../../common/redux/store'
 import linkIcon from '../../../../../common/assets/images/link.svg'
 import BackLink from '../../../../../common/components/custom/BackLink'
 import Button from '../../../../../common/components/gov-uk/Button'
@@ -11,15 +12,26 @@ import { getLocationAdditionals, setCurrentLocationAlertTypes } from '../../../.
 import { infoUrls } from '../../../../routes/info/InfoRoutes'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 import LocationHeader from './location-information-components/LocationHeader'
+import { backendCall } from '../../../../../common/services/BackendService'
 
 export default function LocationMessagesPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
+  const authToken = useSelector((state) => state.session.authToken)
+  const orgId = useSelector((state) => state.session.orgId)
+
   const [isBannerDisplayed, setIsBannerDisplayed] = useState(false)
   const additionalData = useSelector(
     (state) => getLocationAdditionals(state)
   )
+
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
 
   const alertTypes = additionalData.alertTypes
   const allAlertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
@@ -66,7 +78,11 @@ export default function LocationMessagesPage () {
     }
   ]
 
-  const handleSumbit = () => {
+  useEffect(() => {
+    getPartnerId()
+  }, [])
+
+  const handleSumbit = async () => {
     if (
       alertTypesEnabledOriginal.every(
         (value, index) => value === alertTypesEnabled[index]
@@ -84,6 +100,32 @@ export default function LocationMessagesPage () {
       if (alertTypesDispatch.length > 0) {
         dispatch(setCurrentLocationAlertTypes(alertTypesDispatch))
       }
+
+      const locationToUpdate = store.getState().session.currentLocation
+
+      const updateData = { authToken, orgId, location: locationToUpdate }
+      await backendCall(updateData, 'api/location/update', navigate)
+
+      const registerData = {
+        authToken,
+        locationId: locationToUpdate.id,
+        partnerId,
+        params: {
+          channelVoiceEnabled: true,
+          channelSmsEnabled: true,
+          channelEmailEnabled: true,
+          channelMobileAppEnabled: true,
+          partnerCanView: true,
+          partnerCanEdit: true,
+          alertTypes: alertTypesDispatch
+        }
+      }
+
+      await backendCall(
+        registerData,
+        'api/location/update_registration',
+        navigate
+      )
     }
   }
 

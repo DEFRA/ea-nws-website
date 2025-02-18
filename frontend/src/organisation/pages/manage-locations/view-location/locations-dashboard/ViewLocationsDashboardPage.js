@@ -64,6 +64,13 @@ export default function ViewLocationsDashboardPage () {
 
   const locationsPerPage = 20
 
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
+
   useEffect(() => {
     setFilteredLocations(locations)
   }, [locations])
@@ -140,6 +147,7 @@ export default function ViewLocationsDashboardPage () {
       setFilteredLocations(locationsUpdate)
     }
 
+    getPartnerId()
     getLocations()
   }, [])
 
@@ -481,20 +489,33 @@ export default function ViewLocationsDashboardPage () {
       }
     }
 
-    const dataToSend = { authToken, orgId, locations: updatedLocations }
+    for(let i = 0; i < updatedLocations.length; i++){
+      const updateData = { authToken, orgId, location: webToGeoSafeLocation(updatedLocations[i]) }
+      await backendCall(updateData, 'api/location/update', navigate)
 
-    console.log('A')
-    const {data, errorMessage } = await backendCall(
-      dataToSend,
-      'api/location/bulk_update',
-      navigate
-    )
-    if (data) {
-      console.log('DATA: ',data)
-    } else {
-      console.error(errorMessage) 
+      const registerData = {
+        authToken,
+        locationId: updatedLocations[i].id,
+        partnerId,
+        params: {
+          channelVoiceEnabled: true,
+          channelSmsEnabled: true,
+          channelEmailEnabled: true,
+          channelMobileAppEnabled: true,
+          partnerCanView: true,
+          partnerCanEdit: true,
+          alertTypes: choosenAlerts
+        }
+      }
+
+      await backendCall(
+        registerData,
+        'api/location/update_registration',
+        navigate
+      )
     }
-    //setDialog({ ...dialog, show: false })
+
+    setDialog({ ...dialog, show: false })
   }
 
   const handleRadioChange = (index, isItOn) => {    

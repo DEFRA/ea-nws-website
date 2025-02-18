@@ -195,6 +195,7 @@ export default function FullscreenMap ({
 
   const alertAreaRef = useRef(null)
   const warningAreaRef = useRef(null)
+  const shapefileRef = useRef(null)
 
   const handleCloseMap = () => {
     setShowMap(false)
@@ -350,6 +351,15 @@ export default function FullscreenMap ({
     return isValidLocation && (isInFloodArea || isOutsideFloodArea)
   }
 
+  const onEachShapefileFeature = (feature, layer) => {
+    layer.options.className = 'shapefile-area-pattern-fill'
+    layer.setStyle({
+      color: '#809095',
+      weight: 2,
+      fillOpacity: 1.0
+    })
+  }
+
   return (
     <div>
       <Modal show={showMap} onHide={handleCloseMap} fullscreen centered>
@@ -374,30 +384,40 @@ export default function FullscreenMap ({
                 {mapLocations
                   .filter(displayLocationsWithAlerts)
                   .map((location, index) => (
-                    <Marker
-                      key={index}
-                      position={[
-                        location.coordinates.latitude,
-                        location.coordinates.longitude
-                      ]}
-                    >
-                      <Popup offset={[0, -25]}>
-                        <Link
-                          className='govuk-link'
-                          // onClick={(e) => viewLocation(e, location)}
-                        >
-                          {location.additionals.locationName ||
-                            location.additionals[0].value.s}
-                        </Link>
-                        <br />
-                        {filteredLocations
-                          ? location.additionals.other.location_type
-                          : JSON.parse(location.additionals[4]?.value?.s)
-                            .location_type}
-                        <br />
-                        {location.address}
-                      </Popup>
-                    </Marker>
+                    <div key={index}>
+                      <Marker
+                        position={[
+                          location.coordinates.latitude,
+                          location.coordinates.longitude
+                        ]}
+                      >
+                        <Popup offset={[0, -25]}>
+                          <Link
+                            className='govuk-link'
+                            // onClick={(e) => viewLocation(e, location)}
+                          >
+                            {location.additionals.locationName ||
+                              location.additionals[0].value.s}
+                          </Link>
+                          <br />
+                          {filteredLocations
+                            ? location.additionals.other.location_type
+                            : JSON.parse(location.additionals[4]?.value?.s)
+                              .location_type}
+                          <br />
+                          {location.address}
+                        </Popup>
+                      </Marker>
+                      {location.geometry && (
+                        <GeoJSON
+                          data={location.geometry}
+                          onEachFeature={onEachShapefileFeature}
+                          ref={(el) => {
+                            shapefileRef.current = el
+                          }}
+                        />
+                      )}
+                    </div>
                   ))}
                 {warningArea && (
                   <GeoJSON

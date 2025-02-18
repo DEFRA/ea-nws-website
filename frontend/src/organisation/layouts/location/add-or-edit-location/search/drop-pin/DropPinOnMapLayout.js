@@ -17,12 +17,13 @@ import {
 } from '../../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../../common/services/BackendService'
 import { convertCoordinatesToEspg27700 } from '../../../../../../common/services/CoordinatesFormatConverter'
-import { geoSafeToWebLocation } from '../../../../../../common/services/formatters/LocationFormatter'
+import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../../common/services/formatters/LocationFormatter'
 import { locationInEngland } from '../../../../../../common/services/validations/LocationInEngland'
 import Map from '../../../../../components/custom/Map'
 import MapInteractiveKey from '../../../../../components/custom/MapInteractiveKey'
 import UnmatchedLocationInfo from '../../../../../pages/manage-locations/add-location/upload-locations-with-csv/components/UnmatchedLocationInfo'
 import { orgManageLocationsUrls } from '../../../../../routes/manage-locations/ManageLocationsRoutes'
+import AlertType from '../../../../../../common/enums/AlertType'
 
 export default function DropPinOnMapLayout ({
   navigateToNextPage,
@@ -71,6 +72,17 @@ export default function DropPinOnMapLayout ({
 
     return `${Math.trunc(easting)}, ${Math.trunc(northing)}`
   }
+
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
+
+  useEffect(() => {
+    getPartnerId()
+  }, [])
 
   useEffect(() => {
     setDisplayCoords(pinDropCoordsDisplay())
@@ -124,7 +136,33 @@ export default function DropPinOnMapLayout ({
         )
 
         if (data) {
-          dispatch(setCurrentLocation(data))
+          // Set default alert types
+          let newWebLocation = geoSafeToWebLocation(data)
+          newWebLocation.additionals.other.alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
+          let newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
+
+          const registerData = {
+            authToken,
+            location: newGeosafeLocation,
+            partnerId,
+            params: {
+              channelVoiceEnabled: false,
+              channelSmsEnabled: false,
+              channelEmailEnabled: false,
+              channelMobileAppEnabled: false,
+              partnerCanView: true,
+              partnerCanEdit: true,
+              alertTypes: [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
+            }
+          }
+
+          await backendCall(
+            registerData,
+            'api/location/register_to_partner',
+            navigate
+          )
+      
+          dispatch(setCurrentLocation(newGeosafeLocation))
 
           // Remove invalid location from elasticache
           if (flow?.includes('unmatched-locations')) {

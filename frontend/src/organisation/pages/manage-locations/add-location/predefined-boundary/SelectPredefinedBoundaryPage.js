@@ -18,6 +18,8 @@ import { getBoundaryTypes } from '../../../../../common/services/WfsFloodDataSer
 import Map from '../../../../components/custom/Map'
 import PredefinedBoundaryKey from '../../../../components/custom/PredefinedBoundaryKey'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
+import { geoSafeToWebLocation, webToGeoSafeLocation } from '../../../../../common/services/formatters/LocationFormatter'
+import AlertType from '../../../../../common/enums/AlertType'
 
 export default function SelectPredefinedBoundaryPage () {
   const dispatch = useDispatch()
@@ -42,6 +44,13 @@ export default function SelectPredefinedBoundaryPage () {
   const authToken = useSelector((state) => state.session.authToken)
   const orgId = useSelector((state) => state.session.orgId)
 
+  const [partnerId, setPartnerId] = useState(false)
+
+  async function getPartnerId () {
+    const { data } = await backendCall('data', 'api/service/get_partner_id')
+    setPartnerId(data)
+  }
+
   // Get boundary types
   useEffect(() => {
     const getBoundaryTypesList = async () => {
@@ -49,6 +58,7 @@ export default function SelectPredefinedBoundaryPage () {
       setBoundaryTypes(boundaryTypesList)
     }
     getBoundaryTypesList()
+    getPartnerId()
   }, [])
 
   useEffect(() => {
@@ -128,7 +138,33 @@ export default function SelectPredefinedBoundaryPage () {
         navigate
       )
       if (data) {
-        dispatch(setCurrentLocation(data))
+        // Set default alert types
+        let newWebLocation = geoSafeToWebLocation(data)
+        newWebLocation.additionals.other.alertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
+        let newGeosafeLocation = webToGeoSafeLocation(newWebLocation)
+
+        const registerData = {
+          authToken,
+          location: newGeosafeLocation,
+          partnerId,
+          params: {
+            channelVoiceEnabled: false,
+            channelSmsEnabled: false,
+            channelEmailEnabled: false,
+            channelMobileAppEnabled: false,
+            partnerCanView: true,
+            partnerCanEdit: true,
+            alertTypes: [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
+          }
+        }
+
+        await backendCall(
+          registerData,
+          'api/location/register_to_partner',
+          navigate
+        )
+        
+        dispatch(setCurrentLocation(newGeosafeLocation))
         dispatch(setConsecutiveBoundariesAdded(consecutiveBoundariesAdded + 1))
         dispatch(setPredefinedBoundaryFlow(true))
         // TODO: This needs to navigate to optional info page once it has been developed

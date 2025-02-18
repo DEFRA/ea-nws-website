@@ -48,7 +48,7 @@ export default function AddLocationOptionsPage () {
           break
         case addLocationOptions[1].value:
           navigate(orgManageLocationsUrls.add.addLocationsWithShapefile)
-          dispatch(setCurrentLocationDataType(LocationDataType.SHAPE_POLYGON))
+          // Note: Data type for shape file is decided once we know if it is a polygon or a line
           break
         case addLocationOptions[2].value:
           navigate(orgManageLocationsUrls.add.name)

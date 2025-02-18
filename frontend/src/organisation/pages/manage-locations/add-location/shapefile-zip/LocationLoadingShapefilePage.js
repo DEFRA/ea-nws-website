@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
 import { Spinner } from '../../../../../common/components/custom/Spinner'
+import LocationDataType from '../../../../../common/enums/LocationDataType'
 import store from '../../../../../common/redux/store'
 import {
   setCurrentLocationCoordinates,
+  setCurrentLocationDataType,
   setCurrentLocationGeometry,
   setCurrentLocationName
 } from '../../../../../common/redux/userSlice'
@@ -52,6 +54,10 @@ export default function LocationLoadingShapefilePage () {
   // Each time the status changes check if it's complete and save the locations to elasticache and geosafe
   useEffect(() => {
     const continueToNextPage = async () => {
+      geojsonData.features[0]?.geometry.type === 'Polygon'
+        ? dispatch(setCurrentLocationDataType(LocationDataType.SHAPE_POLYGON))
+        : dispatch(setCurrentLocationDataType(LocationDataType.SHAPE_LINE))
+
       const bbox = geojsonData?.features[0]?.geometry?.bbox
 
       const inEngland =

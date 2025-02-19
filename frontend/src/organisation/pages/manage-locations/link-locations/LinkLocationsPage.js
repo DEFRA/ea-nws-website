@@ -7,7 +7,11 @@ import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import Checkbox from '../../../../common/components/gov-uk/CheckBox'
 import AlertType from '../../../../common/enums/AlertType'
-import { getLocationAdditionals, getLocationOther, setCurrentLocation } from '../../../../common/redux/userSlice'
+import {
+  getLocationAdditionals,
+  getLocationOther,
+  setCurrentLocation
+} from '../../../../common/redux/userSlice'
 import { backendCall } from '../../../../common/services/BackendService'
 import {
   getSurroundingFloodAreas,
@@ -18,11 +22,12 @@ import { infoUrls } from '../../../routes/info/InfoRoutes'
 export default function LinkLocationsPage () {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const store = useStore()
   const currentLocation = useSelector((state) => state.session.currentLocation)
   const additionalData = useSelector((state) => getLocationAdditionals(state))
   const authToken = useSelector((state) => state.session.authToken)
-  const exisitingChildrenIDs = useSelector((state) => getLocationOther(state, 'childrenIDs'))
+  const exisitingChildrenIDs = useSelector((state) =>
+    getLocationOther(state, 'childrenIDs')
+  )
   const orgId = useSelector((state) => state.session.orgId)
   const [selectedTAs, setSelectedTAs] = useState([])
   const [floodAreas, setFloodAreas] = useState([])
@@ -43,88 +48,113 @@ export default function LinkLocationsPage () {
       if (location.additionals[i].id === 'other') {
         idFound = true
         otherAdditionals = JSON.parse(location.additionals[i].value?.s)
-        otherAdditionals['childrenIDs'] = value
+        otherAdditionals.childrenIDs = value
         location.additionals[i].value = { s: JSON.stringify(otherAdditionals) }
       }
     }
     if (!idFound) {
       location.additionals.push({
         id: 'other',
-        value: { s: JSON.stringify({ 'childrenIDs': value }) }
+        value: { s: JSON.stringify({ childrenIDs: value }) }
       })
     }
     return location
   }
 
   const handleSubmit = async () => {
-      for (const areaId of selectedTAs) {
-        const TargetAreaToAdd = floodAreas.find((floodArea) => floodArea.properties.TA_CODE === areaId)
-        if (TargetAreaToAdd) {
-          const alertTypes = TargetAreaToAdd.properties.category === 'Flood Warning'
-          ?
-          [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
-          :
-          TargetAreaToAdd.properties.category === 'Flood Alert'
-          ?
-          [AlertType.FLOOD_ALERT]
-          :
-          []
-          const locationToAdd = {
-            id: null,
-            name: null,
-            enabled: true,
-            address: TargetAreaToAdd.properties.TA_Name,
-            coordinates: {
-              latitude: Number(TargetAreaToAdd.properties.latitude.replace(',', '.')),
-              longitude: Number(TargetAreaToAdd.properties.longitude.replace(',', '.'))
+    for (const areaId of selectedTAs) {
+      const TargetAreaToAdd = floodAreas.find(
+        (floodArea) => floodArea.properties.TA_CODE === areaId
+      )
+      if (TargetAreaToAdd) {
+        const alertTypes =
+          TargetAreaToAdd.properties.category === 'Flood Warning'
+            ? [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING]
+            : TargetAreaToAdd.properties.category === 'Flood Alert'
+              ? [AlertType.FLOOD_ALERT]
+              : []
+        const locationToAdd = {
+          id: null,
+          name: null,
+          enabled: true,
+          address: TargetAreaToAdd.properties.TA_Name,
+          coordinates: {
+            latitude: Number(
+              TargetAreaToAdd.properties.latitude.replace(',', '.')
+            ),
+            longitude: Number(
+              TargetAreaToAdd.properties.longitude.replace(',', '.')
+            )
+          },
+          additionals: [
+            {
+              id: 'parentID',
+              value: { s: currentLocation.id }
             },
-            additionals: [
-              { 
-                id: 'parentID',
-                value: { s: currentLocation.id } 
-              },
-              {
-                id: "other",
-                value: {
-                  s: JSON.stringify(
-                    {
-                      alertTypes: alertTypes
-                    }
-                  )
-                }
+            {
+              id: 'other',
+              value: {
+                s: JSON.stringify({
+                  alertTypes
+                })
               }
-            ]
-          }
+            }
+          ]
+        }
 
-          const dataToSend = { authToken, orgId, location: locationToAdd }
-          const { data, errorMessage } = await backendCall(
-            dataToSend,
-            'api/location/create',
-            navigate
-          )
-          if (data) {
-            setChildrenIDs((prev) =>
-              [...prev, {id: data.id, TA_CODE: areaId}]
-            ) 
-          } else {
-            //TODO set an error
-          }
+        const dataToSend = { authToken, orgId, location: locationToAdd }
+        const { data, errorMessage } = await backendCall(
+          dataToSend,
+          'api/location/create',
+          navigate
+        )
+        if (data) {
+          setChildrenIDs((prev) => [...prev, { id: data.id, TA_CODE: areaId }])
+        } else {
+          // TODO set an error
         }
       }
+    }
 
-      console.log(childrenIDs)
+    console.log(childrenIDs)
 
-      const locationToAdd = setLocationChildrenIDs(JSON.parse(JSON.stringify(currentLocation)), childrenIDs)
-      const dataToSend = { authToken, orgId, location: locationToAdd }
-      const { data, errorMessage } = await backendCall(
-        dataToSend,
-        'api/location/update',
-        navigate
-      )
-      if (data) {
-        dispatch(setCurrentLocation(data))
-        navigate('#') // TODO: Navigate to correct next page
-      } 
+    const locationToAdd = setLocationChildrenIDs(
+      JSON.parse(JSON.stringify(currentLocation)),
+      childrenIDs
+    )
+    const dataToSend = { authToken, orgId, location: locationToAdd }
+    const { data, errorMessage } = await backendCall(
+      dataToSend,
+      'api/location/update',
+      navigate
+    )
+    if (data) {
+      dispatch(setCurrentLocation(data))
+      navigate('#') // TODO: Navigate to correct next page
+    }
+  }
+
+  // Compute the minimum positive distance from any point in a Polygon/MultiPolygon to the flood area
+  function computeMinPositiveDistance (locationGeometry, floodPolygon) {
+    let minDistance = Infinity
+    let coords = []
+
+    if (locationGeometry.type === 'Polygon') {
+      coords = locationGeometry.coordinates[0]
+    } else if (locationGeometry.type === 'MultiPolygon') {
+      // Flatten the outer rings of all polygons in the multipolygon
+      coords = locationGeometry.coordinates.flatMap((poly) => poly[0])
+    }
+
+    coords.forEach((coord) => {
+      const pt = point(coord)
+      const dist = pointToPolygonDistance(pt, floodPolygon, { units: 'meters' })
+      if (dist >= 0 && dist < minDistance) {
+        minDistance = dist
+      }
+    })
+
+    return minDistance === Infinity ? -1 : minDistance
   }
 
   useEffect(() => {
@@ -138,29 +168,48 @@ export default function LinkLocationsPage () {
         const { alertArea, warningArea } =
           await getSurroundingFloodAreasFromShape(currentLocation.geometry, 1.0)
 
-        alertAreas = alertArea.features.filter((area) => !currentLinked?.includes(area.properties.TA_CODE))
-        warningAreas = warningArea.features.filter((area) => !currentLinked?.includes(area.properties.TA_CODE))
+        alertAreas = alertArea.features.filter(
+          (area) => !currentLinked?.includes(area.properties.TA_CODE)
+        )
+        warningAreas = warningArea.features.filter(
+          (area) => !currentLinked?.includes(area.properties.TA_CODE)
+        )
       } else {
         const { alertArea, warningArea } = await getSurroundingFloodAreas(
           currentLocation.coordinates.latitude,
           currentLocation.coordinates.longitude,
           1.0
         )
-        alertAreas = alertArea.features.filter((area) => !currentLinked?.includes(area.properties.TA_CODE))
-        warningAreas = warningArea.features.filter((area) => !currentLinked?.includes(area.properties.TA_CODE))
+        alertAreas = alertArea.features.filter(
+          (area) => !currentLinked?.includes(area.properties.TA_CODE)
+        )
+        warningAreas = warningArea.features.filter(
+          (area) => !currentLinked?.includes(area.properties.TA_CODE)
+        )
       }
 
-      const locationPoint = point([
-        currentLocation.coordinates.longitude,
-        currentLocation.coordinates.latitude
-      ])
-
-      const floodAreasWithDistances = [...alertAreas, ...warningAreas].map(
+      let floodAreasWithDistances = [...alertAreas, ...warningAreas].map(
         (area) => {
-          const distanceM = pointToPolygonDistance(locationPoint, area.geometry, {
-            units: 'meters'
-          })
+          let distanceM = 0
 
+          if (currentLocation.coordinates) {
+            // Use the coordinate point for locations that have them
+            const locationPoint = point([
+              currentLocation.coordinates.longitude,
+              currentLocation.coordinates.latitude
+            ])
+            distanceM = pointToPolygonDistance(locationPoint, area.geometry, {
+              units: 'meters'
+            })
+          } else if (currentLocation.geometry) {
+            // For shapefile locations, compute the smallest positive distance
+            distanceM = computeMinPositiveDistance(
+              currentLocation.geometry,
+              area.geometry
+            )
+          }
+
+          if (distanceM < 0) return null
 
           return {
             ...area,
@@ -171,6 +220,8 @@ export default function LinkLocationsPage () {
           }
         }
       )
+      // Filter out any nulls from negative distances
+      floodAreasWithDistances = floodAreasWithDistances.filter(Boolean)
       setFloodAreas(floodAreasWithDistances)
     }
 
@@ -266,9 +317,9 @@ export default function LinkLocationsPage () {
             <br />
             <h1 className='govuk-heading-l'>Select nearby flood areas</h1>
             <p className='govuk-body'>
-              {additionalData.locationName} is near to these flood areas. You can
-              select 1 or more nearby flood areas you want to link this location
-              to.
+              {additionalData.locationName} is near to these flood areas. You
+              can select 1 or more nearby flood areas you want to link this
+              location to.
               <br />
               <Link to={infoUrls.floodAreas} className='govuk-link inline-link'>
                 What are flood areas?

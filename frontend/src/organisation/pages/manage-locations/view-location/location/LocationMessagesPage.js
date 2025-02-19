@@ -24,7 +24,7 @@ export default function LocationMessagesPage () {
   const additionalData = useSelector(
     (state) => getLocationAdditionals(state)
   )
-  
+
   const alertTypes = additionalData.alertTypes
   const allAlertTypes = [AlertType.SEVERE_FLOOD_WARNING, AlertType.FLOOD_WARNING, AlertType.FLOOD_ALERT]
 
@@ -63,12 +63,11 @@ export default function LocationMessagesPage () {
   }, [])
 
   const onClick = (e, location) => {
-      e.preventDefault()
-      dispatch(setCurrentLocation(location))
-      // Will need a different page to view the nearby area but no figma?
-      navigate(orgManageLocationsUrls.view.viewLocation)
+    e.preventDefault()
+    dispatch(setCurrentLocation(location))
+    // Will need a different page to view the nearby area but no figma?
+    navigate(orgManageLocationsUrls.view.viewLocation)
   }
-  
 
   const floodAreasInputs = [
     {

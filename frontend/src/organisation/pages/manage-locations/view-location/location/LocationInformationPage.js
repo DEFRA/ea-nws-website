@@ -309,12 +309,12 @@ export default function LocationInformationPage () {
 
             {/* Add more info links */}
             <div className='govuk-!-font-size-19 govuk-!-margin-top-7'>
-              <div>
+              <div className='govuk-!-margin-bottom-1'>
                 {!currentLocation.address &&
                   additionalData.location_data_type !==
                     LocationDataType.BOUNDARY && (
                       <Link
-                        className='govuk-link govuk-!-margin-bottom-1'
+                        className='govuk-link'
                         to={
                         orgManageLocationsUrls.edit.individualLocation
                           .optionalInformation.address
@@ -324,12 +324,12 @@ export default function LocationInformationPage () {
                       </Link>
                 )}
               </div>
-              <div>
+              <div className='govuk-!-margin-bottom-1'>
                 {!additionalData.internal_reference &&
                   additionalData.location_data_type !==
                     LocationDataType.BOUNDARY && (
                       <Link
-                        className='govuk-link govuk-!-margin-bottom-1'
+                        className='govuk-link'
                         to={
                         orgManageLocationsUrls.edit.individualLocation
                           .optionalInformation.keyInformation
@@ -339,12 +339,12 @@ export default function LocationInformationPage () {
                       </Link>
                 )}
               </div>
-              <div>
+              <div className='govuk-!-margin-bottom-1'>
                 {!additionalData.business_criticality &&
                   additionalData.location_data_type !==
                     LocationDataType.BOUNDARY && (
                       <Link
-                        className='govuk-link govuk-!-margin-bottom-1'
+                        className='govuk-link'
                         to={
                         orgManageLocationsUrls.edit.individualLocation
                           .optionalInformation.keyInformation
@@ -354,12 +354,12 @@ export default function LocationInformationPage () {
                       </Link>
                 )}
               </div>
-              <div>
+              <div className='govuk-!-margin-bottom-1'>
                 {!additionalData.location_type &&
                   additionalData.location_data_type !==
                     LocationDataType.BOUNDARY && (
                       <Link
-                        className='govuk-link govuk-!-margin-bottom-1'
+                        className='govuk-link'
                         to={
                         orgManageLocationsUrls.edit.individualLocation
                           .optionalInformation.keyInformation
@@ -369,10 +369,10 @@ export default function LocationInformationPage () {
                       </Link>
                 )}
               </div>
-              <div>
+              <div className='govuk-!-margin-bottom-1'>
                 {!additionalData.keywords && (
                   <Link
-                    className='govuk-link govuk-!-margin-bottom-1'
+                    className='govuk-link'
                     to={
                       orgManageLocationsUrls.edit.individualLocation
                         .optionalInformation.keywords
@@ -382,7 +382,7 @@ export default function LocationInformationPage () {
                   </Link>
                 )}
               </div>
-              <div>
+              <div className='govuk-!-margin-bottom-1'>
                 {!additionalData.action_plan && (
                   <Link
                     className='govuk-link'

@@ -290,21 +290,23 @@ export default function ViewContactsDashboardPage () {
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          {notificationText && (
-            <NotificationBanner
-              className='govuk-notification-banner govuk-notification-banner--success'
-              title='Success'
-              text={notificationText}
+          <div className='govuk-grid-column-full'>
+            {notificationText && (
+              <NotificationBanner
+                className='govuk-notification-banner govuk-notification-banner--success'
+                title='Success'
+                text={notificationText}
+              />
+            )}
+            <DashboardHeader
+              contacts={contacts}
+              onClickLinked={onClickLinked}
+              linkLocations={location.state?.linkLocations}
+              selectedContacts={selectedContacts}
+              onOnlyShowSelected={onOnlyShowSelected}
+              linkSource={location.state?.linkSource}
             />
-          )}
-          <DashboardHeader
-            contacts={contacts}
-            onClickLinked={onClickLinked}
-            linkLocations={location.state?.linkLocations}
-            selectedContacts={selectedContacts}
-            onOnlyShowSelected={onOnlyShowSelected}
-            linkSource={location.state?.linkSource}
-          />
+          </div>
           <div className='govuk-grid-column-full govuk-body'>
             {!isFilterVisible
               ? (

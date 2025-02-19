@@ -411,21 +411,23 @@ export default function ViewLocationsDashboardPage () {
 
       <main className='govuk-main-wrapper govuk-!-padding-top-4'>
         <div className='govuk-grid-row'>
-          {notificationText && (
-            <NotificationBanner
-              className='govuk-notification-banner govuk-notification-banner--success'
-              title='Success'
-              text={notificationText}
+          <div className='govuk-grid-column-full'>
+            {notificationText && (
+              <NotificationBanner
+                className='govuk-notification-banner govuk-notification-banner--success'
+                title='Success'
+                text={notificationText}
+              />
+            )}
+            <DashboardHeader
+              locations={locations}
+              linkContacts={location.state?.linkContacts}
+              selectedLocations={selectedLocations}
+              onClickLinked={onClickLinked}
+              onOnlyShowSelected={onOnlyShowSelected}
+              linkSource={location.state?.linkSource}
             />
-          )}
-          <DashboardHeader
-            locations={locations}
-            linkContacts={location.state?.linkContacts}
-            selectedLocations={selectedLocations}
-            onClickLinked={onClickLinked}
-            onOnlyShowSelected={onOnlyShowSelected}
-            linkSource={location.state?.linkSource}
-          />
+          </div>
           <div className='govuk-grid-column-full govuk-body'>
             {!isFilterVisible
               ? (

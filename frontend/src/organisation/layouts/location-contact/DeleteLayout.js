@@ -7,6 +7,7 @@ import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import { getLocationAdditionals } from '../../../common/redux/userSlice'
 import { backendCall } from '../../../common/services/BackendService'
+import { orgManageContactsUrls } from '../../routes/manage-contacts/ManageContactsRoutes'
 import { orgManageLocationsUrls } from '../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function DeleteLayout () {
@@ -17,30 +18,41 @@ export default function DeleteLayout () {
   const orgId = useSelector((state) => state.session.orgId)
   const isLocation = location.pathname.includes('manage-locations')
   const idToDelete = useSelector((state) =>
-    isLocation ? state.session.currentLocation.id : null
+    isLocation
+      ? state.session.currentLocation.id
+      : state.session.orgCurrentContact.id
   )
   const nameToDelete = useSelector((state) =>
-    isLocation ? getLocationAdditionals(state).locationName : null
+    isLocation
+      ? getLocationAdditionals(state).locationName
+      : state.session.orgCurrentContact.firstname +
+        ' ' +
+        state.session.orgCurrentContact.lastname
   )
   const [error, setError] = useState(false)
 
   const handleDelete = async () => {
     const dataToSend = isLocation
       ? { authToken, orgId, locationIds: [idToDelete] }
-      : null
+      : { authToken, orgId, removeContactIDs: [idToDelete] }
 
     const { errorMessage } = await backendCall(
       dataToSend,
-      isLocation ? 'api/location/remove' : null,
+      isLocation ? 'api/location/remove' : 'api/organization/remove_contacts',
       navigate
     )
 
     if (!errorMessage) {
-      navigate(isLocation ? orgManageLocationsUrls.view.dashboard : null, {
-        state: {
-          successMessage: `${nameToDelete} deleted`
+      navigate(
+        isLocation
+          ? orgManageLocationsUrls.view.dashboard
+          : orgManageContactsUrls.view.dashboard,
+        {
+          state: {
+            successMessage: `${nameToDelete} deleted`
+          }
         }
-      })
+      )
     } else {
       setError(errorMessage)
     }

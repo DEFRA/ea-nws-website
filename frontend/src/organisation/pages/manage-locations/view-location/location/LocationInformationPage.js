@@ -95,8 +95,7 @@ export default function LocationInformationPage () {
         </h2>
         {additionalData.location_data_type !== LocationDataType.BOUNDARY && (
           <Link
-            className='govuk-link govuk-!-display-inline-block'
-            style={{ float: 'right' }}
+            className='govuk-link right'
             onClick={(e) => navigateToChangeLocation(e)}
           >
             Change

@@ -7,7 +7,7 @@ export default function ConfirmShapefilePolygonPage () {
 
   // TODO: Update this to navigate to next page in flow, once it's created
   const navigateToNextPage = () => {
-    navigate(orgManageLocationsUrls.view.dashboard)
+    navigate(orgManageLocationsUrls.view.viewLocation)
   }
 
   return (

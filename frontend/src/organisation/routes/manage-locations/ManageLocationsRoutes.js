@@ -93,6 +93,9 @@ import ViewLocationsDashboardPage from '../../pages/manage-locations/view-locati
 // link imports
 import LinkLocationPage from '../../pages/manage-locations/link-location/LinkLocationPage'
 
+// delete location
+import DeleteLocationPage from '../../pages/manage-locations/delete/DeleteLocationPage'
+
 const urlManageOrg = '/organisation/manage-locations'
 export const urlManageOrgViewLocations = urlManageOrg + '/locations'
 const urlManageOrgLiveMonitoring = urlManageOrg + '/live-monitoring'
@@ -253,7 +256,8 @@ const orgManageLocationsUrls = {
   },
   link: {
     linkLocation: urlManageOrg + '/link-locations'
-  }
+  },
+  delete: urlManageOrg + '/delete-location'
 }
 
 // Manage location routes
@@ -615,6 +619,11 @@ const orgManageLocationRoutes = [
   {
     path: orgManageLocationsUrls.link.linkLocation,
     component: <LinkLocationPage />
+  },
+  // Delete location
+  {
+    path: orgManageLocationsUrls.delete,
+    component: <DeleteLocationPage />
   }
 ]
 

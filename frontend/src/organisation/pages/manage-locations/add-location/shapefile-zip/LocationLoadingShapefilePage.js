@@ -1,4 +1,4 @@
-import { centroid } from '@turf/turf'
+import { area, centroid } from '@turf/turf'
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useLocation, useNavigate } from 'react-router'
@@ -13,7 +13,7 @@ import {
 } from '../../../../../common/redux/userSlice'
 import { backendCall } from '../../../../../common/services/BackendService'
 import { geoSafeToWebLocation } from '../../../../../common/services/formatters/LocationFormatter'
-import { locationInEngland } from '../../../../../common/services/validations/LocationInEngland'
+// import { locationInEngland } from '../../../../../common/services/validations/LocationInEngland'
 import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function LocationLoadingShapefilePage () {
@@ -30,6 +30,50 @@ export default function LocationLoadingShapefilePage () {
   if (!fileName) {
     // theres not fileName so navigate back. will need to give an error
     navigate(-1)
+  }
+
+  // Takes a GeoJSON FeatureCollection and converts to a MultiPolygon (for shapefile handling)
+  const convertToMultiPolygon = (geojsonData) => {
+    if (!geojsonData || geojsonData.type !== 'FeatureCollection') {
+      return geojsonData // No changes needed
+    }
+
+    const multiPolygonCoords = geojsonData.features
+      .filter(
+        (feature) =>
+          feature.geometry?.type === 'Polygon' ||
+          feature.geometry?.type === 'MultiPolygon'
+      )
+      .map(
+        (feature) =>
+          feature.geometry.type === 'Polygon'
+            ? [feature.geometry.coordinates] // Wrap Polygon coords as MultiPolygon
+            : feature.geometry.coordinates // Keep MultiPolygon as is
+      )
+      .flat()
+
+    const properties = geojsonData.features[0]?.properties || {}
+
+    return {
+      type: 'Feature',
+      properties: { ...properties, fileName: geojsonData.fileName },
+      geometry: {
+        type: 'MultiPolygon',
+        coordinates: multiPolygonCoords
+      }
+    }
+  }
+
+  const calculateShapeArea = (geojson) => {
+    if (!geojson || geojson.type !== 'Feature' || !geojson.geometry) {
+      return 0
+    }
+
+    const formatShapeArea = (area) => {
+      return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') // Separate area with commas
+    }
+
+    return formatShapeArea(Math.round(area(geojson) / 1000))
   }
 
   const checkDuplicateLocation = async (locationName) => {
@@ -54,37 +98,34 @@ export default function LocationLoadingShapefilePage () {
   // Each time the status changes check if it's complete and save the locations to elasticache and geosafe
   useEffect(() => {
     const continueToNextPage = async () => {
-      geojsonData.features[0]?.geometry.type === 'Polygon'
+      geojsonData.geometry.type === 'Polygon' ||
+      geojsonData.geometry.type === 'MultiPolygon'
         ? dispatch(setCurrentLocationDataType(LocationDataType.SHAPE_POLYGON))
         : dispatch(setCurrentLocationDataType(LocationDataType.SHAPE_LINE))
 
-      const bbox = geojsonData?.features[0]?.geometry?.bbox
+      // const bbox = geojsonData.geometry?.bbox
 
-      const inEngland =
-        (await locationInEngland(bbox[1], bbox[0])) &&
-        (await locationInEngland(bbox[3], bbox[2]))
+      const inEngland = true
+      // (await locationInEngland(bbox[1], bbox[0])) &&
+      // (await locationInEngland(bbox[3], bbox[2]))
 
-      const existingLocation = await checkDuplicateLocation(
-        geojsonData?.features[0]?.properties?.lrf15nm
-      )
+      const locationName =
+        geojsonData.properties.name || geojsonData.properties.fileName
+
+      const existingLocation = await checkDuplicateLocation(locationName)
 
       // Calculate coords of centre of polygon to display the map properly
-      const polygonCentre = centroid(geojsonData.features[0]?.geometry)
+      const polygonCentre = centroid(geojsonData.geometry)
+      const shapeArea = calculateShapeArea(geojsonData)
 
-      const formattArea = (area) => {
-        return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
-      }
-      const shapeArea = formattArea(
-        Math.round(geojsonData.features[0]?.properties?.Shape_Area)
-      )
       dispatch(
         setCurrentLocationCoordinates({
           latitude: polygonCentre.geometry.coordinates[1],
           longitude: polygonCentre.geometry.coordinates[0]
         })
       )
-      dispatch(setCurrentLocationGeometry(geojsonData.features[0]))
-      dispatch(setCurrentLocationName(geojsonData.fileName))
+      dispatch(setCurrentLocationGeometry(geojsonData))
+      dispatch(setCurrentLocationName(locationName))
 
       const newLocation = store.getState().session.currentLocation
 
@@ -137,7 +178,8 @@ export default function LocationLoadingShapefilePage () {
             setErrors(data.error)
           }
           if (data?.data) {
-            setGeojsonData(data.data)
+            const processedGeojsonData = convertToMultiPolygon(data.data)
+            setGeojsonData(processedGeojsonData)
           }
           setStatus(data.status)
         }

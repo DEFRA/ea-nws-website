@@ -1,3 +1,4 @@
+import { area } from '@turf/turf'
 import { useState } from 'react'
 import { useSelector } from 'react-redux'
 import { Link, useNavigate } from 'react-router-dom'
@@ -37,13 +38,15 @@ export default function LocationInformationPage () {
   }
 
   const getShapePolygonArea = () => {
-    const formattArea = (area) => {
-      return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+    if (!currentLocation.geometry || currentLocation.geometry.type !== 'Feature' || !currentLocation.geometry.geometry) {
+      return 0
     }
-    const shapeArea = formattArea(
-      Math.round(currentLocation.geometry.properties?.Shape_Area)
-    )
-    return shapeArea
+
+    const formatShapeArea = (area) => {
+      return area.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') // Separate area with commas
+    }
+
+    return formatShapeArea(Math.round(area(currentLocation.geometry) / 1000))
   }
 
   const LocationData = () => {
@@ -57,7 +60,6 @@ export default function LocationInformationPage () {
           </>
         )
       case LocationDataType.SHAPE_POLYGON:
-        // code to return shape area
         return <>{getShapePolygonArea()} square metres</>
       case LocationDataType.SHAPE_LINE:
         // code to return length of line

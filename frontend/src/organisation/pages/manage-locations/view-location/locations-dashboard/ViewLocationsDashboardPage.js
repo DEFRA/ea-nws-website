@@ -224,55 +224,68 @@ export default function ViewLocationsDashboardPage () {
     return text
   }
 
-  const editLocationText = (locationsToBeEdited) => {
-    const unavailableLocationsCount = unavailableLocationsIds.length
-    const alertOnlyLocationsCount = alertOnlyLocationsIds.length
-    const remainingLocationsCount =
-      locationsToBeEdited.length - unavailableLocationsCount
-
-    let updateText = ''
-    let floodMessageAvailabilityText = ''
-    let alertText = ''
-    if (unavailableLocationsCount > 0) {
-      floodMessageAvailabilityText = `Flood messages are unavailable for ${unavailableLocationsCount} of the ${
-        locationsToBeEdited.length
-      } selected. To get flood messages for these locations you may be able to link them to any nearby flood areas that get flood messages.
-        Any updates will change the message settings for all ${remainingLocationsCount} location${
-        remainingLocationsCount ? 's' : ''
-      }.`
-      alertText = `Select the type of flood messages you want the other ${remainingLocationsCount} location${
-        remainingLocationsCount ? 's' : ''
-      } to get.`
-      if (alertOnlyLocationsCount === 0) {
-        updateText = `Select the type of flood messages you want the other ${remainingLocationsCount} location${
-          remainingLocationsCount ? 's' : ''
-        } to get. Any updates will change the settings for all ${remainingLocationsCount} location${
-          remainingLocationsCount ? 's' : ''
-        } `
-      }
-    }
-    if (alertOnlyLocationsCount > 0) {
-      floodMessageAvailabilityText = `Select the type of flood messages you want for th${
-        locationsToBeEdited.length > 1 ? 'ese' : 'is'
-      } location${locationsToBeEdited.length > 1 ? 's' : ''} to get. `
-      alertText += `${alertOnlyLocationsCount} of these locations is in a place that can only get flood alert even if severe flood warning and flood warning are selected.`
-      updateText =
-        'Any update will change the messages settings for all locations where those message types are available.'
-    }
-    if (alertOnlyLocationsCount === 0 && unavailableLocationsCount === 0) {
-      floodMessageAvailabilityText = `Select the type of flood messages you want for th${
-        locationsToBeEdited.length > 1 ? 'ese' : 'is'
-      } ${locationsToBeEdited.length} location${
-        locationsToBeEdited.length > 1 ? 's' : ''
-      } to get. `
-      updateText = `Any updates will change the message settings for all ${
-        locationsToBeEdited.length
-      } location${locationsToBeEdited.length > 1 ? 's' : ''}.`
-    }
-    return floodMessageAvailabilityText + ' ' + alertText + ' ' + updateText
+  const editLocationText = (locationsToBeEdited, unavailableLocs, alertOnlyLocs) => {
+    return (
+      <>
+        {unavailableLocs.length === 0 && (
+          <>
+            <p>
+              Select the type of flood messages you want these {locationsToBeEdited.length} locations to get.
+            </p>
+            {alertOnlyLocs.length === 0 && (
+              <p>
+                Any updates will change the message settings for all {locationsToBeEdited.length} locations. 
+              </p>
+            )}
+            {alertOnlyLocs.length > 0 && (
+              <p>
+                {alertOnlyLocs.length} of these locations is in a place that can only get flood alerts even if severe flood warnings and
+                flood warnings are selected.
+              </p>
+            )}
+          </>
+        )}
+        {unavailableLocs.length > 0 && (
+          <>
+            <p>
+              Flood messages are unavailable for {unavailableLocs.length} of the {locationsToBeEdited.length} locations selected. To get flood
+              messages for these locations you may be able to link them to any nearby flood areas
+              that get flood messages.
+            </p>
+            {locationsToBeEdited.length > unavailableLocs.length && (
+              <>
+                <p>
+                  Select the type of flood messages you want the other {locationsToBeEdited.length - unavailableLocs.length} locations to get.
+                </p>  
+                {alertOnlyLocs.length === 0 && (
+                  <p>
+                    Any updates will change the message settings for all {locationsToBeEdited.length - unavailableLocs.length} locations. 
+                  </p>
+                )}
+                {alertOnlyLocs.length > 0 && (
+                  <>
+                    <p>
+                      {alertOnlyLocs.length} of these locations is in a place that can only get flood alerts even if severe flood warnings and
+                      flood warnings are selected.
+                    </p>
+                    <p>
+                      Any updates will change the message settings for all locations where those message
+                      types are available.  
+                    </p>
+                  </>
+                )}
+                </>
+            )}
+          </>
+        )}
+      </>
+    )
   }
 
-  const getSelectedLocationsInformations = async (selectedLocations) => {
+  const getSelectedLocationsInformation = async (selectedLocations) => {
+    let unavailableLocs = []
+    let alertOnlyLocs = []
+
     for(const location of selectedLocations){
       const { warningArea, alertArea } = await getSurroundingFloodAreas(
         location.coordinates.latitude,
@@ -295,15 +308,16 @@ export default function ViewLocationsDashboardPage () {
       )
 
       if(!isInAlertArea && !isInWarningArea) {
-        setUnavailableLocationsIds((prevState) => {
-          return [...prevState, location.id]
-        })
+        unavailableLocs.push(location.id)
       } else if (!isInWarningArea && isInAlertArea) {
-        setAlertOnlyLocationsIds((prevState) => {
-          return [...prevState, location.id]
-        })
+        alertOnlyLocs.push(location.id)
       }
     }
+
+    setUnavailableLocationsIds(unavailableLocs)
+    setAlertOnlyLocationsIds(alertOnlyLocs)
+
+    return editLocationText(selectedLocations, unavailableLocs, alertOnlyLocs)
   }
 
   const deleteDialog = (locationsToBeDeleted) => {
@@ -328,11 +342,11 @@ export default function ViewLocationsDashboardPage () {
   }
 
   const editDialog = async (locationsToBeEdited) => {
-    await getSelectedLocationsInformations(locationsToBeEdited)
+    let dialogText = await getSelectedLocationsInformation(locationsToBeEdited)
     if (locationsToBeEdited && locationsToBeEdited.length > 0) {
       setDialog({
         show: true,
-        text: editLocationText(locationsToBeEdited),
+        text: dialogText,
         title: `Update message settings for ${locationsToBeEdited.length} ${
           locationsToBeEdited.length > 1 ? 'locations' : 'location'
         }`,
@@ -469,50 +483,48 @@ export default function ViewLocationsDashboardPage () {
   }
 
   const editLocations = async (locationsToEdit) => {
-    const choosenAlerts = [dialog.options[0].sent?'ALERT_LVL_1':null, dialog.options[1].sent?'ALERT_LVL_2':null, dialog.options[2].sent?'ALERT_LVL_3':null].filter(message => message !== null)
-    const updatedLocations = [...locationsToEdit]
-    for(let i = 0; i < locationsToEdit.length; i++){
-      if(unavailableLocationsIds.includes(locationsToEdit[i])) continue
-      if(!alertOnlyLocationsIds.includes(locationsToEdit[i].id)){
-        updatedLocations[i].additionals = setLocationAlertTypeOrg(
-          updatedLocations[i].additionals,
-          choosenAlerts
-        )
-      }
-      else if(alertOnlyLocationsIds.includes(locationsToEdit.id)){
-        updatedLocations[i].additionals = setLocationAlertTypeOrg(
-          updatedLocations[i].additionals,
-          choosenAlerts.includes('ALERT_LVL_3')?['ALERT_LVL_3']:[]
-        )
-      }
+    let chosenAlerts = []
+    if (dialog.options[0].sent){
+      chosenAlerts.push(AlertType.SEVERE_FLOOD_WARNING)
+    }
+    if (dialog.options[1].sent){
+      chosenAlerts.push(AlertType.FLOOD_WARNING)
+    }
+    if (dialog.options[2].sent){
+      chosenAlerts.push(AlertType.FLOOD_ALERT)
     }
 
-    for(let i = 0; i < updatedLocations.length; i++){
-      const updateData = { authToken, orgId, location: webToGeoSafeLocation(updatedLocations[i]) }
-      await backendCall(updateData, 'api/location/update', navigate)
+    for (let i = 0; i < locationsToEdit.length; i++) {
+      if (!unavailableLocationsIds.includes(locationsToEdit[i].id)) {
+        locationsToEdit[i].additionals.other.alertTypes = chosenAlerts
 
-      const registerData = {
-        authToken,
-        locationId: updatedLocations[i].id,
-        partnerId,
-        params: {
-          channelVoiceEnabled: true,
-          channelSmsEnabled: true,
-          channelEmailEnabled: true,
-          channelMobileAppEnabled: true,
-          partnerCanView: true,
-          partnerCanEdit: true,
-          alertTypes: choosenAlerts
+        const updateData = { authToken, orgId, location: webToGeoSafeLocation(locationsToEdit[i]) }
+        await backendCall(updateData, 'api/location/update', navigate)
+
+        const registerData = {
+          authToken,
+          locationId: locationsToEdit[i].id,
+          partnerId,
+          params: {
+            channelVoiceEnabled: true,
+            channelSmsEnabled: true,
+            channelEmailEnabled: true,
+            channelMobileAppEnabled: true,
+            partnerCanView: true,
+            partnerCanEdit: true,
+            alertTypes: chosenAlerts
+          }
         }
-      }
 
-      await backendCall(
-        registerData,
-        'api/location/update_registration',
-        navigate
-      )
+        await backendCall(
+          registerData,
+          'api/location/update_registration',
+          navigate
+        )
+      }
     }
 
+    setSelectedLocations([])
     setDialog({ ...dialog, show: false })
   }
 
@@ -592,6 +604,13 @@ export default function ViewLocationsDashboardPage () {
       const locationsToBeEdited = [...selectedLocations]
       editLocations(locationsToBeEdited)
     }
+  }
+
+  const handleClose = () => {
+    setUnavailableLocationsIds([])
+    setAlertOnlyLocationsIds([])
+
+    setDialog({ ...dialog, show: false })
   }
 
   const validateInput = () => {     
@@ -778,7 +797,7 @@ export default function ViewLocationsDashboardPage () {
                 <Popup
                   onEdit={() => handleEdit()}
                   onDelete={() => handleDelete()}
-                  onClose={() => setDialog({ ...dialog, show: false })}
+                  onClose={() => handleClose()}
                   title={dialog.title}
                   popupText={dialog.text}
                   buttonText={dialog.buttonText}

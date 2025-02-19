@@ -1,14 +1,20 @@
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { Link, useNavigate } from 'react-router-dom'
 import floodAlertIcon from '../../../../../common/assets/images/flood_alert.svg'
 import floodWarningIcon from '../../../../../common/assets/images/flood_warning.svg'
 import floodSevereWarningIcon from '../../../../../common/assets/images/severe_flood_warning.svg'
 import Button from '../../../../../common/components/gov-uk/Button'
 import AlertType from '../../../../../common/enums/AlertType'
+import { setSelectedLocation } from '../../../../../common/redux/userSlice'
+import { orgManageLocationsUrls } from '../../../../routes/manage-locations/ManageLocationsRoutes'
 
 export default function FloodDataInformationPopup({
   locationsFloodInformation,
   onClose
 }) {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
+
   const FLOOD_WARNING_CONFIG = {
     [AlertType.SEVERE_FLOOD_WARNING]: {
       type: 'Severe flood warning',
@@ -58,48 +64,30 @@ export default function FloodDataInformationPopup({
           />
         </div>
 
-        <div
-          style={{
-            display: 'flex', // Ensures labels and values are in a row
-            alignItems: 'flex-start',
-            gap: '10px' // Adds space between label and value columns
-          }}
-        >
-          {/* Labels Section */}
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              whiteSpace: 'nowrap' // Prevents text wrapping
-            }}
-          >
-            <span className='govuk-!-margin-bottom-1 govuk-!-font-weight-bold govuk-!-font-size-19'>
+        <div style={{ flex: 1 }}>
+          <div className='govuk-grid-row text-nowrap'>
+            <span className='govuk-grid-column-one-quarter govuk-!-font-weight-bold govuk-!-font-size-19'>
               Type
             </span>
-            <span className='govuk-!-margin-bottom-1 govuk-!-font-weight-bold govuk-!-font-size-19'>
-              Flood area
-            </span>
-            <span className='govuk-!-font-weight-bold govuk-!-font-size-19'>
-              Area code
+            <span className='govuk-grid-column-three-quarters govuk-!-font-size-19'>
+              {config.type}
             </span>
           </div>
 
-          {/* Values Section */}
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start'
-            }}
-          >
-            <span className='govuk-!-margin-bottom-1 govuk-!-font-size-19'>
-              {config.type}
+          <div className='govuk-grid-row'>
+            <span className='govuk-grid-column-one-quarter govuk-!-font-weight-bold govuk-!-font-size-19 text-nowrap'>
+              Flood area
             </span>
-            <span className='govuk-!-margin-bottom-1 govuk-!-font-size-19'>
+            <span className='govuk-grid-column-three-quarters govuk-!-font-size-19'>
               {floodInformation.floodData.name}
             </span>
-            <span className='govuk-!-font-size-19'>
+          </div>
+
+          <div className='govuk-grid-row text-nowrap'>
+            <span className='govuk-grid-column-one-quarter govuk-!-font-weight-bold govuk-!-font-size-19'>
+              Area code
+            </span>
+            <span className='govuk-grid-column-three-quarters govuk-!-font-size-19'>
               {floodInformation.floodData.code}
             </span>
           </div>
@@ -119,6 +107,12 @@ export default function FloodDataInformationPopup({
     </a>
   )
 
+  const viewLocation = async (e, location) => {
+    e.preventDefault()
+    await dispatch(setSelectedLocation(location))
+    navigate(orgManageLocationsUrls.view.viewLocation)
+  }
+
   return (
     <div className='popup-dialog govuk-body'>
       <div className='popup-dialog-container'>
@@ -130,7 +124,13 @@ export default function FloodDataInformationPopup({
         </div>
         <div className='popup-dialog-body'>
           <h1 class='govuk-heading-l govuk-link'>
-            <Link>{locationsFloodInformation[0].locationData.address}</Link>
+            <Link
+              onClick={(e) =>
+                viewLocation(e, locationsFloodInformation[0].locationData)
+              }
+            >
+              {locationsFloodInformation[0].locationData.address}
+            </Link>
           </h1>
           <p>placeholder for navigation</p>
           {/* Scrollable section if there are more than 2 items */}
@@ -157,7 +157,6 @@ export default function FloodDataInformationPopup({
                       .linkText
                   }
                 />
-
                 <br />
                 <br />
               </div>

@@ -29,12 +29,12 @@ export default function FloodTypeFilter({
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingTop: '10px',
-        paddingBottom: '10px',
+        paddingTop: '5px',
+        paddingBottom: '5px',
         backgroundColor: backgroundColour()
       }}
     >
-      <div style={{ flex: '0 0 auto', marginRight: '12px' }}>
+      <div style={{ flex: '0 0 auto', marginRight: '2px' }}>
         <img
           src={iconSrc}
           alt={`${warningType} Warning Icon`}
@@ -51,7 +51,7 @@ export default function FloodTypeFilter({
         }}
       >
         <span className='govuk-!-font-size-27'>{locationsCount}</span>
-        <span className='govuk-!-font-size-16'>locations</span>
+        <span style={{ fontSize: '14px' }}>locations</span>
       </div>
 
       <div
@@ -63,12 +63,12 @@ export default function FloodTypeFilter({
         }}
       >
         <Link
-          className='govuk-link govuk-!-font-weight-bold govuk-!-font-size-19'
+          className='govuk-link govuk-!-font-weight-bold govuk-!-font-size-16 text-nowrap govuk-!-margin-bottom-1'
           style={{ marginRight: '10px', color: '#1d70b8' }}
         >
           {warningText}
         </Link>
-        <span className='govuk-caption-m govuk-!-font-size-16'>
+        <span className='govuk-caption-m' style={{ fontSize: '14px' }}>
           {warningDescription}
         </span>
       </div>

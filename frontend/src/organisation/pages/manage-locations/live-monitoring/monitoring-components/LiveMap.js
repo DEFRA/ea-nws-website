@@ -63,12 +63,12 @@ export default function LiveMap({
     useState(false)
   const [locationsFloodInformation, setLocationsFloodInformation] = useState([])
 
-  function viewFloodInformationData(data) {
+  const viewFloodInformationData = (data) => {
     setShowFloodInformationData(true)
     setLocationsFloodInformation(findAllFloodAreasAffectingLocation(data))
   }
 
-  function findAllFloodAreasAffectingLocation(data) {
+  const findAllFloodAreasAffectingLocation = (data) => {
     const allPoints = [...severePoints, ...warningPoints, ...alertPoints]
 
     return allPoints
@@ -94,7 +94,7 @@ export default function LiveMap({
     })
   }, [loading])
 
-  async function loadMap() {
+  const loadMap = async () => {
     //get orgs locations
     const { data: locationsData, errorMessage } = await backendCall(
       { orgId },

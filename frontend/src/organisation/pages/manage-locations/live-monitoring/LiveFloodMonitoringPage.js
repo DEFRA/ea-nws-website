@@ -10,7 +10,6 @@ import floodSevereWarningIcon from '../../../../common/assets/images/severe_floo
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import { orgFloodReportsUrls } from '../../../routes/flood-reports/FloodReportsRoutes'
-import FloodDataInformationPopup from './monitoring-components/FloodDataInformationPopup'
 import FloodTypeFilter from './monitoring-components/FloodTypeFilter'
 import LiveMap from './monitoring-components/LiveMap'
 
@@ -20,6 +19,11 @@ export default function LiveFLoodMonitoringPage() {
   const [showSevereLocations, setShowSevereLocations] = useState(true)
   const [showWarningLocations, setShowWarningLocations] = useState(true)
   const [showAlertLocations, setShowAlertLocations] = useState(true)
+  const [filters, setFilters] = useState({
+    severeAreas: true,
+    warningAreas: true,
+    alertAreas: true
+  })
   const [floodData, setFloodData] = useState({
     severeFloodAreasAmount: 0,
     warningFloodAreasAmount: 0,
@@ -30,26 +34,57 @@ export default function LiveFLoodMonitoringPage() {
     setFloodData(data)
   }
 
+  const applyFilter = () => {
+    setFilters({
+      severeAreas: showSevereLocations,
+      warningAreas: showWarningLocations,
+      alertAreas: showAlertLocations
+    })
+  }
+
   const totalLocations =
     floodData.severeFloodAreasAmount +
     floodData.warningFloodAreasAmount +
     floodData.alertFloodAreasAmount
+
+  const lastUpdated = () => {
+    const now = new Date()
+
+    let hours = now.getHours()
+    const minutes = now.getMinutes().toString().padStart(2, '0')
+    const ampm = hours >= 12 ? 'pm' : 'am'
+
+    // Convert to 12-hour format
+    hours = hours % 12 || 12 // Convert 0 to 12 for 12 AM and keep other
+    const time = `${hours}:${minutes}${ampm}`
+
+    const date = now.toLocaleDateString('en-GB', {
+      day: '2-digit',
+      month: 'long',
+      year: 'numeric'
+    })
+
+    return `${time} on ${date}`
+  }
 
   return (
     <>
       <BackLink onClick={() => navigate(-1)} />
       <main className='govuk-main-wrapper govuk-!-padding-top-4 govuk-body'>
         <div className='govuk-grid-row'>
-          <div class='govuk-grid-column-one-third'>
+          <div class='govuk-grid-column-two-thirds'>
             <h1 class='govuk-heading-l'>Live flood warnings</h1>
             <Link
               class='govuk-heading-m govuk-link'
               style={{ color: '#1d70b8', marginBottom: '0' }}
               to={orgFloodReportsUrls.live}
             >
-              {totalLocations} locations currently affected
+              {totalLocations} of your organisation's locations currently
+              affected
             </Link>
-            <p style={{ marginTop: '0' }}>Updated 10:00pm on 12 June 2024</p>
+            <p className='govuk-!-font-size-16' style={{ marginTop: '0' }}>
+              Updated {lastUpdated()}
+            </p>
           </div>
         </div>
         <div class='govuk-grid-row govuk-!-padding-top-4'>
@@ -99,6 +134,9 @@ export default function LiveFLoodMonitoringPage() {
                 <Button
                   text='Apply filter'
                   className='govuk-button govuk-button--primary govuk-!-margin-top-3'
+                  onClick={() => {
+                    applyFilter()
+                  }}
                 />
               </>
             ) : (
@@ -117,9 +155,9 @@ export default function LiveFLoodMonitoringPage() {
           </div>
           <div class='govuk-grid-column-two-thirds'>
             <LiveMap
-              showSevereLocations={showSevereLocations}
-              showWarningLocations={showWarningLocations}
-              showAlertLocations={showAlertLocations}
+              showSevereLocations={filters.severeAreas}
+              showWarningLocations={filters.warningAreas}
+              showAlertLocations={filters.alertAreas}
               onFloodAreasUpdate={handleFloodAreasUpdate}
             />
             <div

@@ -197,6 +197,7 @@
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  overflow-x: hidden;
 }
 
 .popup-dialog-container {
@@ -825,7 +826,7 @@
 /* Styles for the active state */
 .one-login-header__nav__list-item.active,
 .one-login-header__nav__list-item:hover {
-  background-color: #F3F2F1;
+  background-color: #f3f2f1;
 }
 
 .one-login-header__nav__list-item.no-highlight:hover,
@@ -840,26 +841,26 @@
   left: 10%;
   width: 80%;
   height: 4px;
-  background-color: #1D70B8;
+  background-color: #1d70b8;
 }
 
 .one-login-header__nav__list-item .active,
 .one-login-header__nav__list-item:hover .highlighted {
-  color: #1D70B8;
+  color: #1d70b8;
 }
 
 .one-login-header__nav__list-item.active span,
 .one-login-header__nav__list-item:hover span {
-  color: #1D70B8;
+  color: #1d70b8;
 }
 
 .one-login-header__nav__list-item svg {
-  stroke: #FFFFFF;
+  stroke: #ffffff;
 }
 
 .one-login-header__nav__list-item.active svg,
 .one-login-header__nav__list-item:hover svg {
-  stroke: #1D70B8;
+  stroke: #1d70b8;
 }
 
 @media (min-width: 40.0625em) {

@@ -1,6 +1,6 @@
 import { point, pointToPolygonDistance } from '@turf/turf'
 import React, { useEffect, useState } from 'react'
-import { useDispatch, useSelector, useStore } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router'
 import { Link } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
@@ -94,9 +94,7 @@ export default function LinkLocationsPage () {
             {
               id: 'other',
               value: {
-                s: JSON.stringify({
-                  alertTypes
-                })
+                s: JSON.stringify({ alertTypes })
               }
             }
           ]
@@ -112,6 +110,7 @@ export default function LinkLocationsPage () {
           setChildrenIDs((prev) => [...prev, { id: data.id, TA_CODE: areaId }])
         } else {
           // TODO set an error
+          console.log(errorMessage)
         }
       }
     }
@@ -131,6 +130,9 @@ export default function LinkLocationsPage () {
     if (data) {
       dispatch(setCurrentLocation(data))
       navigate('#') // TODO: Navigate to correct next page
+    } else {
+      // TODO set an error
+      console.log(errorMessage)
     }
   }
 

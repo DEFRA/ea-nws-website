@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Spinner from 'react-bootstrap/esm/Spinner'
-import { useLocation, useNavigate } from 'react-router-dom'
+import { Link, useLocation, useNavigate } from 'react-router-dom'
 import BackLink from '../../../../common/components/custom/BackLink'
 import Button from '../../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../../common/components/gov-uk/ErrorSummary'
@@ -16,8 +16,28 @@ const csvErrorText = (error, index, templateUrl) => {
           <a className='govuk-link ' href={templateUrl}>
             Download the template
           </a>
-          , add your organisation’s locations and try again.
+          , add your organisation's locations and try again.
         </p>
+      )
+    case 'virus':
+      return (
+        <div key={index}>
+          <p className='govuk-body'>
+            <a className='govuk-link ' href={templateUrl}>
+              Download the template
+            </a>
+            and try again.
+          </p>
+          <p classNAme='govuk-body'>
+            If you still cannot upload your organisation's locations contact us within 48 hours at{' '}
+            <Link
+              className='govuk-link'
+              onClick={() => { window.location = 'mailto:getfloodwarnings@environment-agency.gov.uk' }}
+            >
+              getfloodwarnings@environment-agency.gov.uk
+            </Link>.
+          </p>
+        </div>
       )
     case 'Duplicates':
       errorText = 'Each location name must be unique. You need to change the location names, or delete the duplicate locations from the file, for the following lines that have the same location name:'
@@ -28,6 +48,8 @@ const csvErrorText = (error, index, templateUrl) => {
     case 'Missing location name':
       errorText = 'You need to add unique location names for lines:'
       break
+    default:
+      return
   }
   return (
     <p key={index} className='govuk-body'>
@@ -35,6 +57,29 @@ const csvErrorText = (error, index, templateUrl) => {
       {error.errorDetails && error.errorDetails.join(', ')}
     </p>
   )
+}
+
+const shapeErrorText = (error, index) => {
+  switch (error.errorType) {
+    case 'virus':
+      return (
+        <div key={index}>
+          <p className='govuk-body'>
+            Create a new shapefile and try again.
+          </p>
+          <p classNAme='govuk-body'>
+            If you still cannot upload your organisation's locations contact us within 48 hours at{' '}
+            <Link
+              className='govuk-link'
+              onClick={() => { window.location = 'mailto:getfloodwarnings@environment-agency.gov.uk' }}
+            >
+              getfloodwarnings@environment-agency.gov.uk
+            </Link>.
+          </p>
+        </div>
+      )
+    default:
+  }
 }
 
 export default function UploadFileLayout ({
@@ -60,7 +105,11 @@ export default function UploadFileLayout ({
 
   useEffect(() => {
     if (location?.state?.errors) {
-      setCsvErrors(location?.state?.errors)
+      if (uploadMethod === 'csv') {
+        setCsvErrors(location?.state?.errors)
+      } else if (uploadMethod === 'shape') {
+        setErrorShapefile(location?.state?.errors)
+      }
       setUploading(false)
       getTemplateUrl()
     }
@@ -77,7 +126,7 @@ export default function UploadFileLayout ({
   switch (uploadMethod) {
     // CSV file uploaded for bulk upload
     case 'csv':
-      allowedFileTypes = ['text/csv']
+      allowedFileTypes = ['text/csv', 'application/vnd.ms-excel']
       maxFileSize = 5
       fileTypeHint = 'File must be .csv'
       fileTypeErrorMsg = 'The selected file must be .csv'
@@ -89,7 +138,7 @@ export default function UploadFileLayout ({
       maxFileSize = 5
       fileTypeHint = 'File must be .zip'
       fileTypeErrorMsg = 'The selected file must be .zip'
-      bucketFolder = 'zip-uploads'
+      bucketFolder = 'zip-uploads/zip'
       break
     default:
       // Null values already set
@@ -116,6 +165,13 @@ export default function UploadFileLayout ({
   // Check for valid file
   const checkFile = (file) => {
     if (!allowedFileTypes.includes(file.type)) {
+      setErrorFileType(fileTypeErrorMsg)
+      return false
+    }
+
+    // For firefox on windows we have to allow xls file MIME type.
+    // check the file name ends with .csv to stop .xls.
+    if (uploadMethod === 'csv' && !file.name.endsWith('.csv')) {
       setErrorFileType(fileTypeErrorMsg)
       return false
     }
@@ -183,42 +239,11 @@ export default function UploadFileLayout ({
             }
           })
         } else if (uploadMethod === 'shape') {
-          // Unzip the uploaded file and send output back to S3
-          const { errorMessage } = await backendCall(
-            { zipFileName: uniqFileName },
-            'api/shapefile/unzip',
-            navigate
-          )
-          if (errorMessage) {
-            setUploading(false)
-            setErrorShapefile(['Error uploading file'])
-          } else {
-          // Validate the files contained within the zip
-            const { errorMessage } = await backendCall(
-              { zipFileName: uniqFileName },
-              'api/shapefile/validate',
-              navigate
-            )
-            if (errorMessage) {
-              setUploading(false)
-              setErrorShapefile(errorMessage)
-            } else {
-              const { data: geojsonData, errorMessage } =
-            await backendCall(
-              { zipFileName: uniqFileName },
-              'api/shapefile/convert',
-              navigate
-            )
-              if (errorMessage) {
-                setUploading(false)
-                setErrorShapefile([errorMessage])
-              } else {
-                navigate(orgManageLocationsUrls.add.confirmLocationsWithShapefile, {
-                  state: { geojsonData }
-                })
-              }
+          navigate(orgManageLocationsUrls.add.loadingShapefilePage, {
+            state: {
+              fileName: uniqFileName
             }
-          }
+          })
         }
       }
     } catch (err) {
@@ -245,7 +270,7 @@ export default function UploadFileLayout ({
                     errorList={[
                       errorFileType,
                       errorFileSize,
-                      ...errorShapefile,
+                      ...Array.from(errorShapefile, (error) => error.errorMessage),
                       ...Array.from(csvErrors, (error) => error.errorMessage)
                     ].filter(Boolean)}
                   />
@@ -272,7 +297,7 @@ export default function UploadFileLayout ({
                     )}
                     {errorShapefile.map((error, index) => (
                       <p key={index} className='govuk-error-message'>
-                        {error}
+                        {error.errorMessage}
                       </p>
                     ))}
                     {csvErrors.map((error, index) => (
@@ -293,6 +318,9 @@ export default function UploadFileLayout ({
                   </div>
                   {csvErrors.map((error, index) => (
                     csvErrorText(error, index, templateUrl)
+                  ))}
+                  {errorShapefile.map((error, index) => (
+                    shapeErrorText(error, index)
                   ))}
                   <Button
                     text='Upload file'

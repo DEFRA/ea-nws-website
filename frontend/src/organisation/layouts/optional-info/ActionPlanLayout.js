@@ -5,14 +5,20 @@ import BackLink from '../../../common/components/custom/BackLink'
 import Button from '../../../common/components/gov-uk/Button'
 import ErrorSummary from '../../../common/components/gov-uk/ErrorSummary'
 import TextArea from '../../../common/components/gov-uk/TextArea'
-import { getLocationOther, setCurrentLocationActionPlan } from '../../../common/redux/userSlice'
+import {
+  getLocationOther,
+  setCurrentLocationActionPlan
+} from '../../../common/redux/userSlice'
 
-export default function ActionPlanLayout ({ navigateToNextPage, error, setError }) {
+export default function ActionPlanLayout ({
+  navigateToNextPage,
+  error,
+  setError
+}) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const currentActionPlan = useSelector(
-    (state) =>
-      getLocationOther(state, 'action_plan')
+  const currentActionPlan = useSelector((state) =>
+    getLocationOther(state, 'action_plan')
   )
   const [actionPlan, setActionPlan] = useState(currentActionPlan || '')
   const charLimit = 500
@@ -27,7 +33,6 @@ export default function ActionPlanLayout ({ navigateToNextPage, error, setError 
 
   const handleSubmit = () => {
     if (error) return
-
     dispatch(setCurrentLocationActionPlan(actionPlan))
     // should update the geosafe profile here?
 
@@ -41,7 +46,6 @@ export default function ActionPlanLayout ({ navigateToNextPage, error, setError 
 
   return (
     <>
-
       <BackLink onClick={navigateBack} />
       <main className='govuk-main-wrapper govuk-!-margin-top-5'>
         <div className='govuk-grid-row'>

@@ -18,11 +18,11 @@ module.exports = [
         }
 
         const { registerToken, code } = request.payload
-        const error = authCodeValidation(code)
+        const { error, code: formattedCode } = authCodeValidation(code)
 
         if (!error && registerToken) {
           const response = await apiCall(
-            { registerToken: registerToken, code: code },
+            { registerToken: registerToken, code: formattedCode },
             'member/registerValidate'
           )
           return h.response(response)

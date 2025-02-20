@@ -17,11 +17,11 @@ module.exports = [
         }
 
         const { code, orgRegisterToken } = request.payload
-        const error = authCodeValidation(code)
+        const { error, code: formattedCode } = authCodeValidation(code)
 
         if (!error && orgRegisterToken) {
           const response = await apiCall(
-            { orgRegisterToken: orgRegisterToken, code: code },
+            { orgRegisterToken: orgRegisterToken, code: formattedCode },
             'organization/registerValidate'
           )
           await setJsonData(response.data.organization.id + ':org_data', response.data.organization)

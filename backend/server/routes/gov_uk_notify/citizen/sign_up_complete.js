@@ -1,13 +1,13 @@
-const getSecretKeyValue = require('../../services/SecretsManager')
+const getSecretKeyValue = require('../../../services/SecretsManager')
 const {
   createGenericErrorResponse
-} = require('../../services/GenericErrorResponse')
-const { sendEmailNotification } = require('../../services/GovUkNotify')
+} = require('../../../services/GenericErrorResponse')
+const { sendEmailNotification } = require('../../../services/GovUkNotify')
 
 module.exports = [
   {
     method: ['POST'],
-    path: '/api/notify/account_deletion',
+    path: '/api/notify/sign_up',
     handler: async (request, h) => {
       try {
         if (!request.payload) {
@@ -21,7 +21,7 @@ module.exports = [
           }
           const templateId = await getSecretKeyValue(
             'nws/notify/templates',
-            'accountDeletion'
+            'signUpComplete'
           )
 
           sendEmailNotification(templateId, email, personalisation)

@@ -272,10 +272,6 @@ export default function ContactsTable ({
                 {contact.linked_locations?.length}
               </td>
               <td className='govuk-table__cell'>0</td>
-              <td className='govuk-table__cell'>0</td>
-              <td className='govuk-table__cell'>
-                0
-              </td>
               <td className='govuk-table__cell'>
                 <Link
                   className='govuk-link'

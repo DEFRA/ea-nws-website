@@ -320,7 +320,6 @@ export default function ViewContactsDashboardPage () {
             selectedContacts={selectedContacts}
             onOnlyShowSelected={onOnlyShowSelected}
             linkSource={location.state?.linkSource}
-            printMode={contactsPerPage ? null : true}
           />
           <div className='govuk-grid-column-full govuk-body'>
             {!isFilterVisible
@@ -361,7 +360,6 @@ export default function ViewContactsDashboardPage () {
                     setResetPaging={setResetPaging}
                     onAction={onAction}
                     actionText='Delete'
-                    printMode={contactsPerPage ? null : true}
                   />
                   {contactsPerPage && (
                     <Pagination
@@ -395,7 +393,6 @@ export default function ViewContactsDashboardPage () {
                       setSelectedKeywordFilters={setSelectedKeywordFilters}
                       selectedLinkedFilters={selectedLinkedFilters}
                       setSelectedLinkedFilters={setSelectedLinkedFilters}
-                      printMode={contactsPerPage ? null : true}
                     />
                   </div>
 
@@ -437,7 +434,6 @@ export default function ViewContactsDashboardPage () {
                       setResetPaging={setResetPaging}
                       onAction={onAction}
                       actionText='Delete'
-                      printMode={contactsPerPage ? null : true}
                     />
                     {contactsPerPage && (
                       <Pagination

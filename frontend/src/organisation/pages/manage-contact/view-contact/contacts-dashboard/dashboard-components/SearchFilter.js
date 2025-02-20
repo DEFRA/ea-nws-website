@@ -25,8 +25,7 @@ export default function SearchFilter ({
   selectedKeywordFilters,
   setSelectedKeywordFilters,
   selectedLinkedFilters,
-  setSelectedLinkedFilters,
-  printMode
+  setSelectedLinkedFilters
 }) {
   const jobTitles = [
     ...new Set(
@@ -248,7 +247,7 @@ export default function SearchFilter ({
               </h2>
               <Link
                 onClick={clearFilters}
-                className={!printMode ? 'govuk-body govuk-link inline-link' : 'govuk-body'}
+                className='govuk-body govuk-link inline-link'
                 style={{ marginLeft: 'auto', marginBottom: '0' }}
               >
                 Clear filters

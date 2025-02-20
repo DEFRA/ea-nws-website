@@ -14,8 +14,7 @@ export default function ContactsTable ({
   setFilteredContacts,
   onAction,
   actionText,
-  contactPrefix,
-  printMode
+  contactPrefix
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -258,7 +257,7 @@ export default function ContactsTable ({
               </th>
               <td className='govuk-table__cell'>
                 <Link
-                  className={!printMode ? 'govuk-link' : ''}
+                  className='govuk-link'
                   onClick={(e) => viewContact(e, contact)}
                 >
                   {contact.firstname}
@@ -279,7 +278,7 @@ export default function ContactsTable ({
               </td>
               <td className='govuk-table__cell'>
                 <Link
-                  className={!printMode ? 'govuk-link' : ''}
+                  className='govuk-link'
                   onClick={(e) => onAction(e, actionText, contact)}
                 >
                   {actionText}

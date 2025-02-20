@@ -1819,3 +1819,10 @@ govuk-menu-toggle.button-menu > button {
 .right {
   float: right;
 }
+
+/* This should stay near the end of the stylesheet to override link styling for print */
+@media print {
+  a[href]:after {
+    content: none !important;
+  }
+}

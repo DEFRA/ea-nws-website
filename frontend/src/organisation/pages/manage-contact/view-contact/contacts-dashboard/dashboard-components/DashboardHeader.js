@@ -16,8 +16,7 @@ export default function DashboardHeader ({
   linkLocations,
   selectedContacts,
   onOnlyShowSelected,
-  linkSource,
-  printMode
+  linkSource
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -80,7 +79,7 @@ export default function DashboardHeader ({
               <h1 style={{ color: type === 'notLinked' ? 'crimson' : 'black' }}>
                 <strong>{count}</strong>
               </h1>
-              <Link className={!printMode ? 'govuk-link' : ''} onClick={() => onClickLinked(type)}>
+              <Link className='govuk-link' onClick={() => onClickLinked(type)}>
                 {Number(count) === 1 ? 'contact' : 'contacts'} {message}
               </Link>
             </>

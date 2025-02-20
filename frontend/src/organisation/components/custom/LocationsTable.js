@@ -19,8 +19,7 @@ export default function LocationsTable ({
   onAction,
   actionText,
   linkContacts,
-  locationPrefix,
-  printMode
+  locationPrefix
 }) {
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -191,7 +190,7 @@ export default function LocationsTable ({
           <>
             <span style={{ margin: '0 20px' }}>|</span>
             <img src={locationPin} alt='Location pin icon' />
-            <Link className={!printMode ? 'govuk-link' : ''} onClick={openMap}>
+            <Link className='govuk-link' onClick={openMap}>
               View on map
             </Link>
           </>
@@ -356,7 +355,7 @@ export default function LocationsTable ({
               </th>
               <td className='govuk-table__cell' style={{ width: '25rem' }}>
                 <Link
-                  className={!printMode ? 'govuk-link' : ''}
+                  className='govuk-link'
                   onClick={(e) => viewLocation(e, location)}
                 >
                   {location.additionals.locationName}
@@ -370,7 +369,7 @@ export default function LocationsTable ({
               </td>
               <td className='govuk-table__cell'>
                 <Link
-                  className={!printMode ? 'govuk-link' : ''}
+                  className='govuk-link'
                   onClick={(e) => updateMessageSettings(e, location)}
                 >
                   {location.additionals.other?.alertTypes?.length > 0
@@ -397,7 +396,7 @@ export default function LocationsTable ({
               </td>
               <td className='govuk-table__cell'>
                 <Link
-                  className={!printMode ? 'govuk-link' : ''}
+                  className='govuk-link'
                   onClick={(e) => onAction(e, actionText, location)}
                 >
                   {actionText}

@@ -140,6 +140,10 @@ export default function ViewLocationsDashboardPage () {
         }
       })
 
+      window.onload = (event) => {
+        console.log("page is fully loaded");
+      };
+
       setLocations(locationsUpdate)
       setFilteredLocations(locationsUpdate)
     }
@@ -437,7 +441,6 @@ export default function ViewLocationsDashboardPage () {
             onClickLinked={onClickLinked}
             onOnlyShowSelected={onOnlyShowSelected}
             linkSource={location.state?.linkSource}
-            printMode={locationsPerPage ? null : true}
           />
           <div className='govuk-grid-column-full govuk-body'>
             {!isFilterVisible
@@ -477,7 +480,6 @@ export default function ViewLocationsDashboardPage () {
                     onAction={onAction}
                     actionText='Delete'
                     linkContacts={location.state?.linkContacts}
-                    printMode={locationsPerPage ? null : true}
                   />
                   {locationsPerPage && (
                     <Pagination
@@ -539,7 +541,6 @@ export default function ViewLocationsDashboardPage () {
                     }
                       selectedLinkedFilters={selectedLinkedFilters}
                       setSelectedLinkedFilters={setSelectedLinkedFilters}
-                      printMode={locationsPerPage ? null : true}
                     />
                   </div>
 
@@ -580,7 +581,6 @@ export default function ViewLocationsDashboardPage () {
                       onAction={onAction}
                       actionText='Delete'
                       linkContacts={location.state?.linkContacts}
-                      printMode={locationsPerPage ? null : true}
                     />
                     {locationsPerPage && (
                       <Pagination

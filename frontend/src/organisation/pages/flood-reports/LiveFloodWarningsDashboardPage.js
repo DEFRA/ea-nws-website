@@ -222,7 +222,6 @@ export default function LiveFloodWarningsDashboardPage () {
         setFilteredWarnings={setFilteredWarnings}
         resetPaging={resetPaging}
         setResetPaging={setResetPaging}
-        printMode={warningsPerPage ? null : true}
       />
       {warningsPerPage && (
         <Pagination
@@ -276,7 +275,6 @@ export default function LiveFloodWarningsDashboardPage () {
                       setSelectedBusCriticalityFilters={
                       setSelectedBusCriticalityFilters
                     }
-                      printMode={warningsPerPage ? null : true}
                     />
                   </div>
                   <div className='govuk-grid-column-three-quarters'>{table}</div>
